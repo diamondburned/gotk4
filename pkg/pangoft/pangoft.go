@@ -2,15 +2,7 @@
 
 package pangoft
 
-import (
-	"github.com/diamondburned/gotk4/internal/callback"
-)
-
-// #cgo pkg-config: pango
+// #cgo pkg-config: pango pangoft2
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangoft2.h>
-// extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) { callback.Delete(ptr) }

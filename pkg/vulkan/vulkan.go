@@ -2,14 +2,6 @@
 
 package vulkan
 
-import (
-	"github.com/diamondburned/gotk4/internal/callback"
-)
-
 // #cgo pkg-config: gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) { callback.Delete(ptr) }

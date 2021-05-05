@@ -2,11 +2,7 @@
 
 package gio
 
-import (
-	"github.com/diamondburned/gotk4/internal/callback"
-)
-
-// #cgo pkg-config: gobject-introspection-1.0
+// #cgo pkg-config: gobject-introspection-1.0 gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -19,11 +15,7 @@ import (
 // #include <gio/gunixmounts.h>
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
-// extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) { callback.Delete(ptr) }
 
 type BusType int
 

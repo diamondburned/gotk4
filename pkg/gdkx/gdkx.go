@@ -2,18 +2,10 @@
 
 package gdkx
 
-import (
-	"github.com/diamondburned/gotk4/internal/callback"
-)
-
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: gtk4 gtk4-x11
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/x11/gdkx.h>
-// extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) { callback.Delete(ptr) }
 
 type X11DeviceType int
 

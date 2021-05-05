@@ -12,6 +12,7 @@ import (
 // includes, C includes and namespaces of a single gir file.
 type Repository struct {
 	Includes   []Include   `xml:"http://www.gtk.org/introspection/core/1.0 include"`
+	Packages   []Package   `xml:"http://www.gtk.org/introspection/core/1.0 package"`
 	CIncludes  []CInclude  `xml:"http://www.gtk.org/introspection/c/1.0 include"`
 	Namespaces []Namespace `xml:"http://www.gtk.org/introspection/core/1.0 namespace"`
 }

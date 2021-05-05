@@ -2,18 +2,10 @@
 
 package cairo
 
-import (
-	"github.com/diamondburned/gotk4/internal/callback"
-)
-
-// #cgo pkg-config: gobject-introspection-1.0
+// #cgo pkg-config: gobject-introspection-1.0 cairo-gobject
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <cairo-gobject.h>
-// extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) { callback.Delete(ptr) }
 
 type Status int
 

@@ -2,18 +2,10 @@
 
 package gsk
 
-import (
-	"github.com/diamondburned/gotk4/internal/callback"
-)
-
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: gtk4 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gsk/gsk.h>
-// extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) { callback.Delete(ptr) }
 
 type BlendMode int
 

@@ -118,17 +118,23 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 		pen.Line()
 	}
 
-	pen.Words("// #cgo pkg-config:", ng.current.Repository.Pkg)
+	pkgs := []string{"// #cgo pkg-config:", ng.current.Repository.Pkg}
+	for _, pkg := range ng.current.Repository.Packages {
+		pkgs = append(pkgs, pkg.Name)
+	}
+
+	pen.Words(pkgs...)
 	pen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations") // opt to warn over comments
 	for _, cIncl := range ng.current.Repository.CIncludes {
 		pen.Words("// #include", fmt.Sprintf("<%s>", cIncl.Name))
 	}
-	pen.Words("// extern void callbackDelete(gpointer);")
+	// pen.Words("// extern void callbackDelete(gpointer);")
 	pen.Words(`import "C"`)
 	pen.Line()
 
-	pen.Words("//export callbackDelete")
-	pen.Block(`func callbackDelete(ptr C.gpointer) { callback.Delete(ptr) }`)
+	// TODO: detect when this is needed.
+	// pen.Words("//export callbackDelete")
+	// pen.Block(`func callbackDelete(ptr C.gpointer) { callback.Delete(uintptr(ptr)) }`)
 
 	pen.Write(ng.body.Bytes())
 

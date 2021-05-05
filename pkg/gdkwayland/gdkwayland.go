@@ -2,15 +2,7 @@
 
 package gdkwayland
 
-import (
-	"github.com/diamondburned/gotk4/internal/callback"
-)
-
-// #cgo pkg-config: gtk4
+// #cgo pkg-config: gtk4 gtk4-wayland
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/wayland/gdkwayland.h>
-// extern void callbackDelete(gpointer);
 import "C"
-
-//export callbackDelete
-func callbackDelete(ptr C.gpointer) { callback.Delete(ptr) }

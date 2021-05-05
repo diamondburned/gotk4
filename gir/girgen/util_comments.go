@@ -1,33 +1,19 @@
-package gir
+package girgen
 
 import (
-	"encoding/xml"
 	"fmt"
+	"go/doc"
 	"regexp"
 	"strings"
 	"unicode"
-	"unicode/utf8"
 
-	"github.com/dave/jennifer/jen"
-	"github.com/mitchellh/go-wordwrap"
+	"github.com/diamondburned/gotk4/gir"
 )
 
-type Doc struct {
-	XMLName  xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 doc"`
-	Filename string   `xml:"filename,attr"`
-	Line     int      `xml:"line,attr"`
-	String   string   `xml:",innerxml"`
-}
-
-// Lower returns the comment with the first character lower-cased.
-func (d Doc) Lower() string {
-	r, sz := utf8.DecodeRuneInString(d.String)
-	if sz > 0 {
-		return string(unicode.ToLower(r)) + d.String[sz:]
-	}
-
-	return d.String
-}
+const (
+	CommentsColumnLimit = 80 - 3 // account for prefix "// "
+	CommentsTabWidth    = 4
+)
 
 var (
 	cmtNamespaceRegex = regexp.MustCompile(`#[A-Z]\w+?[A-Z]`)
@@ -42,45 +28,18 @@ var (
 	)
 )
 
-// GenGoComments generates comments in idiomatic Go style. The given selfName
-// replaces @self with the given receiver.
-func (d Doc) GenGoComments(selfName, prefix string) *jen.Statement {
-	return d.GenGoCommentsIndent(0, selfName, prefix)
-}
-
-func (d Doc) GenGoCommentsIndent(indentLvl uint, selfName, prefix string) *jen.Statement {
-	if d.String == "" {
-		return nil
+// GoDoc renders a Go documentation string from the given GIR doc. If doc is
+// nil, then an empty string is returned.
+func GoDoc(doc *gir.Doc, indentLvl int, self string) string {
+	if doc == nil {
+		return ""
 	}
-
-	cmt := d.Lower()
-
-	// Replace @self with the given receiver name.
-	cmt = cmtArgumentsRegex.ReplaceAllStringFunc(cmt, func(str string) string {
-		if str == "@self" && selfName != "" {
-			return selfName
-		}
-		return str[1:]
-	})
-
-	return GenCommentReflowLinesIndent(indentLvl, prefix, cmt)
+	return CommentReflowLinesIndent(indentLvl, self, doc.String)
 }
-
-func (d Doc) GenComments() *jen.Statement {
-	return jen.Comment(d.String).Line()
-}
-
-const (
-	CommentsColumnLimit = 80 - 3 // account for prefix "// "
-	CommentsTabWidth    = 4
-)
 
 // CommentReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go
 // comment strings. It is automatically indented.
-func CommentReflowLinesIndent(indentLvl uint, self, cmt string) string {
-	// Account for the indentation in the column limit.
-	columns := CommentsColumnLimit - (CommentsTabWidth * indentLvl)
-
+func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 	// Trim the word "this" away to make the sentence gramatically correct.
 	cmt = strings.TrimPrefix(cmt, "this ")
 
@@ -90,26 +49,27 @@ func CommentReflowLinesIndent(indentLvl uint, self, cmt string) string {
 		return str[len(str)-1:]
 	})
 
-	// Replace snake-cased functions with known ones in the namespace. Prepend a
-	// C prefix otherwise.
-	cmt = cmtFunctionsRegex.ReplaceAllStringFunc(cmt, func(str string) string {
-		var fnName = strings.TrimSuffix(str, "()")
+	// TODO: Replace snake-cased functions with known ones in the namespace.
+	// Prepend a C prefix otherwise.
 
-		switch fn := activeNamespace.FnWithC(fnName); fn := fn.(type) {
-		case Method:
-			if fn.Parameters.HasInstanceParameter() {
-				return fmt.Sprintf(
-					"(%s).%s()",
-					fn.Parameters.InstanceParameter.Type.GoType(),
-					fn.GoName(),
-				)
-			}
-		case GoNamer:
-			return fmt.Sprintf("%s()", fn.GoName())
-		}
-
-		return fmt.Sprintf("C.%s()", fnName)
-	})
+	// cmt = cmtFunctionsRegex.ReplaceAllStringFunc(cmt, func(str string) string {
+	// 	fnName := strings.TrimSuffix(str, "()")
+	// 	result := ns.gen.Repos.FindCType(fnName)
+	//
+	// 	if result.Method != nil {
+	// 		if fn.Parameters.HasInstanceParameter() {
+	// 			return fmt.Sprintf(
+	// 				"(%s).%s()",
+	// 				fn.Parameters.InstanceParameter.Type.GoType(),
+	// 				fn.GoName(),
+	// 			)
+	// 		}
+	// 	} else {
+	// 		return fmt.Sprintf("%s()", fn.GoName())
+	// 	}
+	//
+	// 	return fmt.Sprintf("C.%s()", fnName)
+	// })
 
 	// Replace C primitives with Go's.
 	cmt = cmtPrimitiveRegex.ReplaceAllStringFunc(cmt, func(str string) string {
@@ -150,7 +110,7 @@ func CommentReflowLinesIndent(indentLvl uint, self, cmt string) string {
 
 			// Render the codeblock in GoDoc markup.
 			for i, line := range lines {
-				lines[i] = "   " + line
+				lines[i] = "     " + line
 			}
 			paragraphs[i] = strings.Join(lines, "\n")
 
@@ -168,23 +128,48 @@ func CommentReflowLinesIndent(indentLvl uint, self, cmt string) string {
 		default:
 			paragraph = strings.TrimSpace(cmtWhitespaceProc.Replace(paragraph))
 			if i == 0 {
-				paragraph = fmt.Sprintf("%s %s", self, paragraph)
+				// Prefix the paragraph with the current entity.
+				paragraph = fmt.Sprintf("%s: %s", self, lowerFirstLetter(paragraph))
 			}
-			paragraph = wordwrap.WrapString(paragraph, columns)
 			paragraphs[i] = paragraph
 		}
 	}
 
 	cmt = strings.Join(paragraphs, "\n\n")
 
-	lines := strings.Split(cmt, "\n")
-	for i, line := range lines {
-		lines[i] = "// " + line
-	}
+	// Account for the indentation in the column limit.
+	col := CommentsColumnLimit - (CommentsTabWidth * indentLvl)
+	cmt = makeComment(cmt, indentLvl, col)
 
-	return strings.Join(lines, "\n")
+	return cmt
+}
+
+func makeComment(p string, ident, col int) string {
+	builder := strings.Builder{}
+	builder.Grow(len(p) + 64)
+
+	doc.ToText(&builder, p, strings.Repeat("\t", ident)+"// ", "    ", col)
+	return builder.String()
 }
 
 func openOrCloseCodeblock(paragraph string) bool {
 	return strings.HasPrefix(paragraph, "|[") || strings.HasSuffix(paragraph, "]|")
+}
+
+func lowerFirstLetter(p string) string {
+	if p == "" {
+		return ""
+	}
+
+	runes := []rune(p)
+	if len(runes) < 2 {
+		return string(unicode.ToLower(runes[0]))
+	}
+
+	// Edge case: gTK, etc.
+	if unicode.IsUpper(runes[1]) {
+		return p
+	}
+
+	return string(unicode.ToLower(runes[0])) + string(runes[1:])
 }

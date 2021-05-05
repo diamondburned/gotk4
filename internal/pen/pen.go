@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"io"
 	"strings"
+	"text/template"
 )
 
 // Pen is an utility writer.
@@ -24,8 +25,22 @@ func New(w io.Writer) *Pen {
 
 // Block writes a (whitespace-trimmed) block of text and inserts 2 lines.
 func (p *Pen) Block(block string) {
+	if p.err != nil {
+		return
+	}
+
 	p.WriteString(strings.TrimSpace(block))
 	p.Line()
+	p.Line()
+}
+
+// BlockTmpl writes a template into the pen.
+func (p *Pen) BlockTmpl(tmpl *template.Template, args interface{}) {
+	if p.err != nil {
+		return
+	}
+
+	p.err = tmpl.Execute(&p.Writer, args)
 	p.Line()
 }
 
@@ -49,6 +64,7 @@ func (p *Pen) Words(words ...string) {
 	p.Line()
 }
 
+// Line adds a line.
 func (p *Pen) Line() {
 	if p.err != nil {
 		return
@@ -58,6 +74,7 @@ func (p *Pen) Line() {
 	return
 }
 
+// Flush flushes the internal buffer into the writer.
 func (p *Pen) Flush() error {
 	if p.err != nil {
 		return p.err

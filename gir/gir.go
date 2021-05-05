@@ -174,6 +174,9 @@ type TypeFindResult struct {
 	Function  *Function
 	Callback  *Callback
 	Interface *Interface
+
+	// TODO: Methods
+	// TODO: Enum Members
 }
 
 // IsPtr returns true if the resulting type is a pointer.
@@ -277,6 +280,59 @@ func (repos *Repositories) FindType(nspName, nspVersion, typ string) *TypeFindRe
 		if iface.Name == typ {
 			r.Interface = &iface
 			return &r
+		}
+	}
+
+	return nil
+}
+
+// FindCType works like FindType but for C types.
+func (repos *Repositories) FindCType(cTyp string) *TypeFindResult {
+	r := TypeFindResult{
+		NamespaceFindResult: &NamespaceFindResult{},
+	}
+
+	for _, r.Repository = range *repos {
+		for _, r.Namespace = range r.Repository.Namespaces {
+			// Avoid searching the whole namespace by verifying the prefix.
+			if !strings.HasPrefix(cTyp, r.Namespace.CIdentifierPrefixes) {
+				continue
+			}
+
+			for _, class := range r.Namespace.Classes {
+				if class.Name == cTyp {
+					r.Class = &class
+					return &r
+				}
+			}
+
+			for _, enum := range r.Namespace.Enums {
+				if enum.Name == cTyp {
+					r.Enum = &enum
+					return &r
+				}
+			}
+
+			for _, function := range r.Namespace.Functions {
+				if function.Name == cTyp {
+					r.Function = &function
+					return &r
+				}
+			}
+
+			for _, callback := range r.Namespace.Callbacks {
+				if callback.Name == cTyp {
+					r.Callback = &callback
+					return &r
+				}
+			}
+
+			for _, iface := range r.Namespace.Interfaces {
+				if iface.Name == cTyp {
+					r.Interface = &iface
+					return &r
+				}
+			}
 		}
 	}
 

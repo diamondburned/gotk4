@@ -44,7 +44,7 @@ func IncludeDirs(pkgs ...string) ([]string, error) {
 		}
 
 		return nil, fmt.Errorf(
-			"pkg-config failed with status %d: %s",
+			"pkg-config failed with status %d:\n%s",
 			exitErr.ExitCode(), exitErr.Stderr,
 		)
 	}

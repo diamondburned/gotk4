@@ -148,12 +148,12 @@ type Method struct {
 }
 
 type Namespace struct {
-	XMLName            xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 namespace"`
-	Name               string   `xml:"name,attr"`
-	Version            string   `xml:"version,attr"`
-	SharedLibrary      string   `xml:"shared-library,attr"`
-	IdentifierPrefixes string   `xml:"http://www.gtk.org/introspection/c/1.0 identifier-prefixes,attr"`
-	SymbolPrefixes     string   `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefixes,attr"`
+	XMLName             xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 namespace"`
+	Name                string   `xml:"name,attr"`
+	Version             string   `xml:"version,attr"`
+	SharedLibrary       string   `xml:"shared-library,attr"`
+	CIdentifierPrefixes string   `xml:"http://www.gtk.org/introspection/c/1.0 identifier-prefixes,attr"`
+	CSymbolPrefixes     string   `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefixes,attr"`
 
 	Classes     []Class      `xml:"http://www.gtk.org/introspection/core/1.0 class"`
 	Records     []Record     `xml:"http://www.gtk.org/introspection/core/1.0 record"`

@@ -1,10 +1,25 @@
 package main
 
 import (
+	"flag"
 	"log"
+	"os"
+	"path/filepath"
+	"sync"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/gir/girgen"
+	"github.com/diamondburned/gotk4/gir/goimports"
 )
+
+var (
+	output string
+)
+
+func init() {
+	flag.StringVar(&output, "o", "./", "output directory to mkdir in")
+	flag.Parse()
+}
 
 type Package struct {
 	Name       string
@@ -52,9 +67,56 @@ func main() {
 		}
 	}
 
+	var wg sync.WaitGroup
+
+	gen := girgen.NewGenerator(repos)
+	gen.WithLogger(log.New(os.Stderr, "[girgen]", log.LstdFlags))
+
 	for _, repo := range repos {
 		for _, namespace := range repo.Namespaces {
-			log.Println("got namespace", namespace.Name, "version", namespace.Version)
+			ng := gen.UseNamespace(namespace.Name)
+
+			wg.Add(1)
+			go func() {
+				writeNamespace(ng)
+				wg.Done()
+			}()
 		}
+	}
+
+	wg.Wait()
+}
+
+func writeNamespace(ng *girgen.NamespaceGenerator) {
+	pkg := ng.PackageName()
+	dir := filepath.Join(output, pkg)
+	out := filepath.Join(dir, pkg+".go")
+
+	if err := os.Mkdir(dir, os.ModePerm|os.ModeDir); err != nil {
+		if !os.IsExist(err) {
+			log.Println("mkdir failed:", err)
+			return
+		}
+	}
+
+	f, err := os.Create(out)
+	if err != nil {
+		log.Println("failed to create go file:", err)
+		return
+	}
+	defer f.Close()
+
+	if err := ng.Generate(f); err != nil {
+		log.Println("generation error:", err)
+		return
+	}
+
+	if err := f.Close(); err != nil {
+		log.Println("failed to close file:", err)
+		return
+	}
+
+	if err := goimports.File(out); err != nil {
+		log.Println("failed to run goimports on output:", err)
 	}
 }

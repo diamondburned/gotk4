@@ -1,244 +1,291 @@
 package gir
 
-import "encoding/xml"
+import (
+	"fmt"
+	"path"
+	"strings"
+	"unicode"
 
-type Annotation struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 attribute"`
-	Name    string   `xml:"name,attr"`
-	Value   string   `xml:"value,attr"`
+	"github.com/diamondburned/gotk4/gir/pkgconfig"
+	"github.com/pkg/errors"
+)
+
+// PackageRoot is the root of the gotk4 (this) package.
+const PackageRoot = "github.com/diamondburned/gotk4"
+
+// ImportPath generates the full import path from the package root.
+func ImportPath(pkgPath string) string {
+	return path.Join(PackageRoot, pkgPath)
 }
 
-type Array struct {
-	XMLName        xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 array"`
-	Length         int      `xml:"http://www.gtk.org/introspection/core/1.0 length"`
-	ZeroTerminated int      `xml:"http://www.gtk.org/introspection/core/1.0 zero-terminated"`
-
-	CType string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-
-	Type Type `xml:"http://www.gtk.org/introspection/core/1.0 type"`
+// GoPackageName converts a GIR package name to a Go package name. It's only
+// tested against a known set of GIR files.
+func GoPackageName(girPkgName string) string {
+	return strings.Map(func(r rune) rune {
+		if !unicode.IsLetter(r) {
+			return -1
+		}
+		return unicode.ToLower(r)
+	}, girPkgName)
 }
 
-type CInclude struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/c/1.0 include"`
-	Name    string   `xml:"name,attr"`
+// GoNamespace converts a namespace's name to a Go package name.
+func GoNamespace(namespace Namespace) string {
+	return GoPackageName(namespace.Name)
 }
 
-type CallableAttrs struct {
-	Name        string `xml:"name,attr"`
-	CType       string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-	CIdentifier string `xml:"http://www.gtk.org/introspection/c/1.0 identifier,attr"`
+// SplitGIRType splits the given GIR type string into 2 parts: the namespace,
+// which preceeds the period, and the type name. If there is no period, then an
+// empty string is returned for namespace.
+func SplitGIRType(typ string) (namespace, typeName string) {
+	parts := strings.SplitN(typ, ".", 2)
+	if len(parts) == 2 {
+		return parts[0], parts[1]
+	}
 
-	Deprecated        int    `xml:"deprecated,attr"`
-	DeprecatedVersion string `xml:"deprecated-version,attr"`
-
-	Parameters  *Parameters
-	ReturnValue *ReturnValue `xml:"http://www.gtk.org/introspection/core/1.0 return-value"`
-	Doc         *Doc
+	return "", parts[0]
 }
 
-type Callback struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 callback"`
-	CallableAttrs
+// Repositories contains a list of known repositories.
+type Repositories []PkgRepository
+
+// AddSelected adds a single package but only searches for the given list of
+// GIR files.
+func (repos *Repositories) AddSelected(pkg string, namespaces []string) error {
+	found := 0
+
+	filter := func(r *Repository) bool {
+		repoNames := r.Namespaces
+		r.Namespaces = repoNames[:0]
+
+		for _, namespace := range repoNames {
+			for _, nsp := range namespaces {
+				if nsp == namespace.Name {
+					r.Namespaces = append(r.Namespaces, namespace)
+					found++
+					break
+				}
+			}
+		}
+
+		return len(r.Namespaces) > 0
+	}
+
+	girs, err := pkgconfig.FindGirFiles(pkg)
+	if err != nil {
+		return errors.Wrapf(err, "failed to get gir files for %q", pkg)
+	}
+
+	for _, gir := range girs {
+		repo, err := ParseRepository(gir)
+		if err != nil {
+			return errors.Wrapf(err, "failed to parse file %q", gir)
+		}
+
+		if !filter(repo) {
+			continue
+		}
+
+		*repos = append(*repos, PkgRepository{
+			Repository: *repo,
+			Pkg:        pkg,
+			Path:       gir,
+		})
+	}
+
+	if found != len(namespaces) {
+		return fmt.Errorf("only %d girs found", found)
+	}
+
+	return nil
 }
 
-type Class struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 class"`
-	Name    string   `xml:"name,attr"`
+// Add finds the given pkg name to be searched using pkg-config and added into
+// the list of repositories.
+func (repos *Repositories) Add(pkg string) error {
+	girs, err := pkgconfig.FindGirFiles(pkg)
+	if err != nil {
+		return errors.Wrapf(err, "failed to get gir files for %q", pkg)
+	}
 
-	CType         string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-	CSymbolPrefix string `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefix,attr"`
+	for _, gir := range girs {
+		repo, err := ParseRepository(gir)
+		if err != nil {
+			return errors.Wrapf(err, "failed to parse file %q", gir)
+		}
 
-	Parent string `xml:"parent,attr"`
+		*repos = append(*repos, PkgRepository{
+			Repository: *repo,
+			Pkg:        pkg,
+			Path:       gir,
+		})
+	}
 
-	GLibTypeName   string `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
-	GLibGetType    string `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
-	GLibTypeStruct string `xml:"http://www.gtk.org/introspection/glib/1.0 type-struct,attr"`
-
-	Implements   []Implements  `xml:"http://www.gtk.org/introspection/core/1.0 implements"`
-	Constructors []Constructor `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
-	Methods      []Method      `xml:"http://www.gtk.org/introspection/core/1.0 method"`
-	Fields       []Field       `xml:"http://www.gtk.org/introspection/core/1.0 field"`
+	return nil
 }
 
-type Constructor struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
-	CallableAttrs
+// NamespaceFindResult is the result returned from FindNamespace.
+type NamespaceFindResult struct {
+	Repository PkgRepository
+	Namespace  Namespace
 }
 
-type Doc struct {
-	XMLName  xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 doc"`
-	Filename string   `xml:"filename,attr"`
-	Line     int      `xml:"line,attr"`
-	String   string   `xml:",innerxml"`
+// Eq compares that the resulting namespace's name and version match.
+func (res *NamespaceFindResult) Eq(other *NamespaceFindResult) bool {
+	return true &&
+		res.Namespace.Name == other.Namespace.Name &&
+		res.Namespace.Version == other.Namespace.Version
 }
 
-type Enum struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 enumeration"`
-	Name    string   `xml:"name,attr"` // Go case
-	Version string   `xml:"version,attr"`
+// FindNamespace finds the repository and namespace with the given name and
+// version.
+func (repos *Repositories) FindNamespace(name, version string) *NamespaceFindResult {
+	for _, repo := range *repos {
+		for _, nsp := range repo.Namespaces {
+			if nsp.Name != name {
+				continue
+			}
+			// Only skip the namespace if the version is not empty AND it
+			// doesn't match, in case a namespace doesn't actually have a
+			// version.
+			if nsp.Version != version && version != "" {
+				continue
+			}
 
-	Doc *Doc
+			return &NamespaceFindResult{
+				Repository: repo,
+				Namespace:  nsp,
+			}
+		}
+	}
 
-	GLibTypeName string `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
-	GLibGetType  string `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
-
-	CType string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-
-	Members []Member `xml:"http://www.gtk.org/introspection/core/1.0 member"`
+	return nil
 }
 
-type Field struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 field"`
-	Name    string   `xml:"name,attr"`
-	Type    Type
-	Doc     *Doc
+// TypeFindResult is the result
+type TypeFindResult struct {
+	*NamespaceFindResult
+
+	SameNamespace bool
+
+	// Only one of these fields are not nil. They should also be read-only.
+	Class     *Class
+	Enum      *Enum
+	Function  *Function
+	Callback  *Callback
+	Interface *Interface
 }
 
-type Function struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 function"`
-	CallableAttrs
+// IsPtr returns true if the resulting type is a pointer.
+func (res *TypeFindResult) IsPtr() bool {
+	return res.Ptr() > 0
 }
 
-type Implements struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 implements"`
-	Name    string   `xml:"name,attr"`
+// Ptr returns the level of nested pointers.
+func (res *TypeFindResult) Ptr() int {
+	_, ctype := res.Info()
+	ptr := strings.Count(ctype, "*")
+
+	// Edge case: interfaces must not be pointers. We should still sometimes
+	// allow for pointers to interfaces, if needed, but this likely won't work.
+	if ptr > 0 && res.Interface != nil {
+		ptr--
+	}
+
+	return ptr
 }
 
-type Include struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 include"`
-	Name    string   `xml:"name,attr"`
-	Version *string  `xml:"version,attr"`
+// Info gets the name and C type of the resulting type. The name returned is in
+// camel case.
+func (res *TypeFindResult) Info() (name, ctype string) {
+	switch {
+	case res.Class != nil:
+		return res.Class.Name, res.Class.CType
+	case res.Enum != nil:
+		return res.Enum.Name, res.Enum.CType
+	case res.Function != nil:
+		return res.Function.Name, res.Function.CType
+	case res.Callback != nil:
+		return res.Callback.Name, res.Callback.CType
+	case res.Interface != nil:
+		return res.Interface.Name, res.Interface.CType
+	}
+
+	panic("TypeFindResult has all 5 fields nil")
 }
 
-type InstanceParameter struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 instance-parameter"`
-	ParameterAttrs
+// FindType finds a type in the repositories from the given current namespace
+// name, version, and the GIR type name.
+func (repos *Repositories) FindType(nspName, nspVersion, typ string) *TypeFindResult {
+	var r TypeFindResult
+
+	// need this for the version
+	currentNamespace := repos.FindNamespace(nspName, nspVersion)
+
+	if namespace, typeName := SplitGIRType(typ); namespace != "" {
+		// Search the namespace's version, if possible or available.
+		var version string
+		for _, incl := range currentNamespace.Repository.Includes {
+			if incl.Name == nspName && incl.Version != nil {
+				version = *incl.Version
+				break
+			}
+		}
+
+		r.NamespaceFindResult = repos.FindNamespace(namespace, version)
+		typ = typeName
+
+	} else {
+		r.NamespaceFindResult = currentNamespace
+		r.SameNamespace = true
+		typ = typeName
+	}
+
+	if r.NamespaceFindResult == nil {
+		return nil
+	}
+
+	for _, class := range r.Namespace.Classes {
+		if class.Name == typ {
+			r.Class = &class
+			return &r
+		}
+	}
+
+	for _, enum := range r.Namespace.Enums {
+		if enum.Name == typ {
+			r.Enum = &enum
+			return &r
+		}
+	}
+
+	for _, function := range r.Namespace.Functions {
+		if function.Name == typ {
+			r.Function = &function
+			return &r
+		}
+	}
+
+	for _, callback := range r.Namespace.Callbacks {
+		if callback.Name == typ {
+			r.Callback = &callback
+			return &r
+		}
+	}
+
+	for _, iface := range r.Namespace.Interfaces {
+		if iface.Name == typ {
+			r.Interface = &iface
+			return &r
+		}
+	}
+
+	return nil
 }
 
-type Interface struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 interface"`
-	Name    string   `xml:"name,attr"`
-
-	CType         string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-	CSymbolPrefix string `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefix,attr"`
-
-	GLibTypeName   string `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
-	GLibGetType    string `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
-	GLibTypeStruct string `xml:"http://www.gtk.org/introspection/glib/1.0 type-struct,attr"`
-
-	Functions     []Function     `xml:"http://www.gtk.org/introspection/core/1.0 function"`
-	Methods       []Method       `xml:"http://www.gtk.org/introspection/core/1.0 method"` // translated to Go fns
-	Prerequisites []Prerequisite `xml:"http://www.gtk.org/introspection/core/1.0 prerequisite"`
-}
-
-type Member struct {
-	XMLName     xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 member"`
-	Name        string   `xml:"name,attr"`
-	Value       int      `xml:"value,attr"`
-	CIdentifier string   `xml:"http://www.gtk.org/introspection/c/1.0 identifer,attr"`
-
-	Doc *Doc
-}
-
-type Method struct {
-	XMLName     xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 method"`
-	Name        string   `xml:"name,attr"`
-	CIdentifier string   `xml:"http://www.gtk.org/introspection/c/1.0 identifier,attr"`
-	CallableAttrs
-}
-
-type Namespace struct {
-	XMLName            xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 namespace"`
-	Name               string   `xml:"name,attr"`
-	Version            string   `xml:"version,attr"`
-	SharedLibrary      string   `xml:"shared-library,attr"`
-	IdentifierPrefixes string   `xml:"http://www.gtk.org/introspection/c/1.0 identifier-prefixes,attr"`
-	SymbolPrefixes     string   `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefixes,attr"`
-
-	Classes     []Class      `xml:"http://www.gtk.org/introspection/core/1.0 class"`
-	Records     []Record     `xml:"http://www.gtk.org/introspection/core/1.0 record"`
-	Enums       []Enum       `xml:"http://www.gtk.org/introspection/core/1.0 enumeration"`
-	Functions   []Function   `xml:"http://www.gtk.org/introspection/core/1.0 function"`
-	Callbacks   []Callback   `xml:"http://www.gtk.org/introspection/core/1.0 callback"`
-	Interfaces  []Interface  `xml:"http://www.gtk.org/introspection/core/1.0 interface"`
-	Annotations []Annotation `xml:"http://www.gtk.org/introspection/core/1.0 attribute"`
-}
-
-type Package struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 package"`
-	Name    string   `xml:"name,attr"`
-}
-
-type Parameter struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 parameter"`
-	ParameterAttrs
-}
-
-type ParameterAttrs struct {
-	Name      string `xml:"name,attr"`
-	AllowNone int    `xml:"allow-none,attr"` // 1 == true?
-	TransferOwnership
-	Type Type
-	Doc  *Doc
-}
-
-type Parameters struct {
-	XMLName           xml.Name           `xml:"http://www.gtk.org/introspection/core/1.0 parameters"`
-	InstanceParameter *InstanceParameter `xml:"http://www.gtk.org/introspection/core/1.0 instance-parameter"`
-	Parameters        []Parameter        `xml:"http://www.gtk.org/introspection/core/1.0 parameter"`
-}
-
-type Prerequisite struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 prerequisite"`
-	Name    string   `xml:"name,attr"`
-}
-
-type Record struct {
-	XMLName              xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 record"`
-	Name                 string   `xml:"name,attr"`
-	CType                string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-	Disguised            bool     `xml:"disguised,attr"`
-	GLibTypeName         string   `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
-	GLibGetType          string   `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
-	CSymbolPrefix        string   `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefix,attr"`
-	Foreign              bool     `xml:"foreign,attr"`
-	GLibIsGTypeStructFor string   `xml:"http://www.gtk.org/introspection/glib/1.0 is-gtype-struct-for,attr"`
-	Introspectable       bool     `xml:"introspectable,attr"`
-	Deprecated           string   `xml:"deprecated,attr"`
-	DeprecatedVersion    string   `xml:"deprecated-version,attr"`
-	Version              string   `xml:"version,attr"`
-	Stability            string   `xml:"stability,attr"`
-
-	Fields       []Field       `xml:"http://www.gtk.org/introspection/core/1.0 field"`
-	Functions    []Function    `xml:"http://www.gtk.org/introspection/core/1.0 function"`
-	Unions       []Union       `xml:"http://www.gtk.org/introspection/core/1.0 union"`
-	Methods      []Method      `xml:"http://www.gtk.org/introspection/core/1.0 method"`
-	Constructors []Constructor `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
-	Properties   []Property    `xml:"http://www.gtk.org/introspection/core/1.0 property"`
-	Annotations  []Annotation  `xml:"http://www.gtk.org/introspection/core/1.0 attribute"`
-}
-
-type Union struct{}
-
-type Property struct{}
-
-type ReturnValue struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 return-value"`
-	TransferOwnership
-	Doc *Doc
-
-	// Possible enums.
-	Type  *Type
-	Array *Array
-}
-
-type TransferOwnership struct {
-	TransferOwnership *string `xml:"transfer-ownership,attr"`
-}
-
-type Type struct {
-	XMLName        xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 type"`
-	Name           string   `xml:"name,attr"`
-	CType          string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-	Introspectable *bool    `xml:"introspectable,attr"`
+// PkgRepository wraps a Repository to add additional information.
+type PkgRepository struct {
+	Repository
+	Pkg  string // arg for pkg-config
+	Path string // gir file path
 }

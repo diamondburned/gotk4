@@ -194,7 +194,33 @@ type Prerequisite struct {
 }
 
 type Record struct {
+	XMLName              xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 record"`
+	Name                 string   `xml:"name,attr"`
+	CType                string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
+	Disguised            bool     `xml:"disguised,attr"`
+	GLibTypeName         string   `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
+	GLibGetType          string   `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
+	CSymbolPrefix        string   `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefix,attr"`
+	Foreign              bool     `xml:"foreign,attr"`
+	GLibIsGTypeStructFor string   `xml:"http://www.gtk.org/introspection/glib/1.0 is-gtype-struct-for,attr"`
+	Introspectable       bool     `xml:"introspectable,attr"`
+	Deprecated           string   `xml:"deprecated,attr"`
+	DeprecatedVersion    string   `xml:"deprecated-version,attr"`
+	Version              string   `xml:"version,attr"`
+	Stability            string   `xml:"stability,attr"`
+
+	Fields       []Field       `xml:"http://www.gtk.org/introspection/core/1.0 field"`
+	Functions    []Function    `xml:"http://www.gtk.org/introspection/core/1.0 function"`
+	Unions       []Union       `xml:"http://www.gtk.org/introspection/core/1.0 union"`
+	Methods      []Method      `xml:"http://www.gtk.org/introspection/core/1.0 method"`
+	Constructors []Constructor `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
+	Properties   []Property    `xml:"http://www.gtk.org/introspection/core/1.0 property"`
+	Annotations  []Annotation  `xml:"http://www.gtk.org/introspection/core/1.0 attribute"`
 }
+
+type Union struct{}
+
+type Property struct{}
 
 type ReturnValue struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 return-value"`

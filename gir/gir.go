@@ -229,8 +229,8 @@ func (repos *Repositories) FindType(nspName, nspVersion, typ string) *TypeFindRe
 		// Search the namespace's version, if possible or available.
 		var version string
 		for _, incl := range currentNamespace.Repository.Includes {
-			if incl.Name == nspName && incl.Version != nil {
-				version = *incl.Version
+			if incl.Name == nspName && incl.Version != "" {
+				version = incl.Version
 				break
 			}
 		}

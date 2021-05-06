@@ -2,6 +2,24 @@ package gir
 
 import "encoding/xml"
 
+type Alias struct {
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 alias"`
+
+	Name  string `xml:"name,attr"`
+	CType string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
+
+	InfoAttrs
+	InfoElements
+
+	Type Type
+}
+
+type AnyType struct {
+	// Possible variants.
+	Type  *Type  `xml:"http://www.gtk.org/introspection/core/1.0 type"`
+	Array *Array `xml:"http://www.gtk.org/introspection/core/1.0 array"`
+}
+
 type Annotation struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 attribute"`
 	Name    string   `xml:"name,attr"`
@@ -10,13 +28,31 @@ type Annotation struct {
 
 type Array struct {
 	XMLName        xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 array"`
-	Length         int      `xml:"http://www.gtk.org/introspection/core/1.0 length"`
-	ZeroTerminated int      `xml:"http://www.gtk.org/introspection/core/1.0 zero-terminated"`
-
-	CType string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-
-	Type Type `xml:"http://www.gtk.org/introspection/core/1.0 type"`
+	Name           string   `xml:"name,attr"`
+	ZeroTerminated bool     `xml:"zero-terminated,attr"`
+	FixedSize      int      `xml:"fixed-size,attr"`
+	Introspectable bool     `xml:"introspectable,attr"`
+	Length         int      `xml:"length,attr"`
+	CType          string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
+	Type           AnyType
 }
+
+type Bitfield struct {
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 bitfield"`
+
+	Name         string `xml:"name,attr"` // Go case
+	CType        string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
+	GLibTypeName string `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
+	GLibGetType  string `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
+
+	Members   []Member   `xml:"http://www.gtk.org/introspection/core/1.0 member"`
+	Functions []Function `xml:"http://www.gtk.org/introspection/core/1.0 function"`
+
+	InfoAttrs
+	InfoElements
+}
+
+type Boxed struct{}
 
 type CInclude struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/c/1.0 include"`
@@ -60,6 +96,8 @@ type Class struct {
 	Fields       []Field       `xml:"http://www.gtk.org/introspection/core/1.0 field"`
 }
 
+type Constant struct{}
+
 type Constructor struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
 	CallableAttrs
@@ -72,19 +110,24 @@ type Doc struct {
 	String   string   `xml:",innerxml"`
 }
 
+type DocElements struct {
+	Doc *Doc
+}
+
 type Enum struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 enumeration"`
-	Name    string   `xml:"name,attr"` // Go case
-	Version string   `xml:"version,attr"`
 
-	Doc *Doc
+	Name            string `xml:"name,attr"` // Go case
+	CType           string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
+	GLibTypeName    string `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
+	GLibGetType     string `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
+	GLibErrorDomain string `xml:"http://www.gtk.org/introspection/glib/1.0 error-domain,attr"`
 
-	GLibTypeName string `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
-	GLibGetType  string `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
+	Members   []Member   `xml:"http://www.gtk.org/introspection/core/1.0 member"`
+	Functions []Function `xml:"http://www.gtk.org/introspection/core/1.0 function"`
 
-	CType string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-
-	Members []Member `xml:"http://www.gtk.org/introspection/core/1.0 member"`
+	InfoAttrs
+	InfoElements
 }
 
 type Field struct {
@@ -107,7 +150,20 @@ type Implements struct {
 type Include struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 include"`
 	Name    string   `xml:"name,attr"`
-	Version *string  `xml:"version,attr"`
+	Version string   `xml:"version,attr"`
+}
+
+type InfoAttrs struct {
+	Introspectable    bool   `xml:"introspectable,attr"`
+	Deprecated        string `xml:"deprecated,attr"`
+	DeprecatedVersion string `xml:"deprecated-version,attr"`
+	Version           string `xml:"version,attr"`
+	Stability         string `xml:"stability,attr"`
+}
+
+type InfoElements struct {
+	DocElements
+	Annotations []Annotation `xml:"http://www.gtk.org/introspection/core/1.0 attribute"`
 }
 
 type InstanceParameter struct {
@@ -134,10 +190,12 @@ type Interface struct {
 type Member struct {
 	XMLName     xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 member"`
 	Name        string   `xml:"name,attr"`
-	Value       int      `xml:"value,attr"`
+	Value       string   `xml:"value,attr"`
 	CIdentifier string   `xml:"http://www.gtk.org/introspection/c/1.0 identifer,attr"`
+	GLibNick    string   `xml:"http://www.gtk.org/introspection/glib/1.0 nick,attr"`
 
-	Doc *Doc
+	InfoAttrs
+	InfoElements
 }
 
 type Method struct {
@@ -148,20 +206,27 @@ type Method struct {
 }
 
 type Namespace struct {
-	XMLName             xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 namespace"`
-	Name                string   `xml:"name,attr"`
-	Version             string   `xml:"version,attr"`
-	SharedLibrary       string   `xml:"shared-library,attr"`
-	CIdentifierPrefixes string   `xml:"http://www.gtk.org/introspection/c/1.0 identifier-prefixes,attr"`
-	CSymbolPrefixes     string   `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefixes,attr"`
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 namespace"`
 
+	Name                string `xml:"name,attr"`
+	Version             string `xml:"version,attr"`
+	CIdentifierPrefixes string `xml:"http://www.gtk.org/introspection/c/1.0 identifier-prefixes,attr"`
+	CSymbolPrefixes     string `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefixes,attr"`
+	Prefix              string `xml:"http://www.gtk.org/introspection/c/1.0 prefix,attr"`
+	SharedLibrary       string `xml:"shared-library,attr"`
+
+	Aliases     []Alias      `xml:"http://www.gtk.org/introspection/core/1.0 alias"`
 	Classes     []Class      `xml:"http://www.gtk.org/introspection/core/1.0 class"`
+	Interfaces  []Interface  `xml:"http://www.gtk.org/introspection/core/1.0 interface"`
 	Records     []Record     `xml:"http://www.gtk.org/introspection/core/1.0 record"`
 	Enums       []Enum       `xml:"http://www.gtk.org/introspection/core/1.0 enumeration"`
 	Functions   []Function   `xml:"http://www.gtk.org/introspection/core/1.0 function"`
+	Unions      []Union      `xml:"http://www.gtk.org/introspection/core/1.0 union"`
+	Bitfields   []Bitfield   `xml:"http://www.gtk.org/introspection/core/1.0 bitfield"`
 	Callbacks   []Callback   `xml:"http://www.gtk.org/introspection/core/1.0 callback"`
-	Interfaces  []Interface  `xml:"http://www.gtk.org/introspection/core/1.0 interface"`
+	Constants   []Constant   `xml:"http://www.gtk.org/introspection/core/1.0 constant"`
 	Annotations []Annotation `xml:"http://www.gtk.org/introspection/core/1.0 attribute"`
+	Boxeds      []Boxed      `xml:"http://www.gtk.org/introspection/core/1.0 boxed"`
 }
 
 type Package struct {
@@ -193,6 +258,8 @@ type Prerequisite struct {
 	Name    string   `xml:"name,attr"`
 }
 
+type Property struct{}
+
 type Record struct {
 	XMLName              xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 record"`
 	Name                 string   `xml:"name,attr"`
@@ -203,11 +270,6 @@ type Record struct {
 	CSymbolPrefix        string   `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefix,attr"`
 	Foreign              bool     `xml:"foreign,attr"`
 	GLibIsGTypeStructFor string   `xml:"http://www.gtk.org/introspection/glib/1.0 is-gtype-struct-for,attr"`
-	Introspectable       bool     `xml:"introspectable,attr"`
-	Deprecated           string   `xml:"deprecated,attr"`
-	DeprecatedVersion    string   `xml:"deprecated-version,attr"`
-	Version              string   `xml:"version,attr"`
-	Stability            string   `xml:"stability,attr"`
 
 	Fields       []Field       `xml:"http://www.gtk.org/introspection/core/1.0 field"`
 	Functions    []Function    `xml:"http://www.gtk.org/introspection/core/1.0 function"`
@@ -215,30 +277,55 @@ type Record struct {
 	Methods      []Method      `xml:"http://www.gtk.org/introspection/core/1.0 method"`
 	Constructors []Constructor `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
 	Properties   []Property    `xml:"http://www.gtk.org/introspection/core/1.0 property"`
-	Annotations  []Annotation  `xml:"http://www.gtk.org/introspection/core/1.0 attribute"`
+
+	InfoAttrs
+	InfoElements
 }
 
-type Union struct{}
-
-type Property struct{}
-
 type ReturnValue struct {
-	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 return-value"`
+	XMLName        xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 return-value"`
+	Introspectable bool     `xml:"introspectable,attr"`
+	Nullable       bool     `xml:"nullable,attr"`
+	Closure        int      `xml:"closure,attr"`
+	Scope          string   `xml:"scope,attr"`
+	Destroy        int      `xml:"destroy,attr"`
+	Skip           bool     `xml:"skip,attr"`
+	AllowNone      bool     `xml:"allow-none,attr"`
 	TransferOwnership
-	Doc *Doc
-
-	// Possible enums.
-	Type  *Type
-	Array *Array
+	DocElements
+	AnyType
 }
 
 type TransferOwnership struct {
-	TransferOwnership *string `xml:"transfer-ownership,attr"`
+	TransferOwnership string `xml:"transfer-ownership,attr"`
 }
 
 type Type struct {
-	XMLName        xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 type"`
-	Name           string   `xml:"name,attr"`
-	CType          string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-	Introspectable *bool    `xml:"introspectable,attr"`
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 type"`
+
+	Name           string `xml:"name,attr"`
+	CType          string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
+	Introspectable bool   `xml:"introspectable,attr"`
+
+	DocElements
+	AnyType
+}
+
+type Union struct {
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 union"`
+
+	Name          string `xml:"name,attr"` // Go case
+	CType         string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
+	CSymbolPrefix string `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefix,attr"`
+	GLibTypeName  string `xml:"http://www.gtk.org/introspection/glib/1.0 type-name,attr"`
+	GLibGetType   string `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
+
+	InfoAttrs
+	InfoElements
+
+	Fields       []Field       `xml:"http://www.gtk.org/introspection/core/1.0 field"`
+	Constructors []Constructor `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
+	Methods      []Method      `xml:"http://www.gtk.org/introspection/core/1.0 method"`
+	Functions    []Function    `xml:"http://www.gtk.org/introspection/core/1.0 function"`
+	Records      []Record      `xml:"http://www.gtk.org/introspection/core/1.0 record"`
 }

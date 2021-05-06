@@ -11,9 +11,15 @@ import (
 // Repository represents a GObject Introspection Repository, which contains the
 // includes, C includes and namespaces of a single gir file.
 type Repository struct {
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 repository"`
+
+	Version             string `xml:"version,attr"`
+	CIdentifierPrefixes string `xml:"http://www.gtk.org/introspection/c/1.0 identifier-prefixes,attr"`
+	CSymbolPrefixes     string `xml:"http://www.gtk.org/introspection/c/1.0 symbol-prefixes,attr"`
+
 	Includes   []Include   `xml:"http://www.gtk.org/introspection/core/1.0 include"`
-	Packages   []Package   `xml:"http://www.gtk.org/introspection/core/1.0 package"`
 	CIncludes  []CInclude  `xml:"http://www.gtk.org/introspection/c/1.0 include"`
+	Packages   []Package   `xml:"http://www.gtk.org/introspection/core/1.0 package"`
 	Namespaces []Namespace `xml:"http://www.gtk.org/introspection/core/1.0 namespace"`
 }
 

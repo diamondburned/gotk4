@@ -2,7 +2,18 @@
 
 package pangofc
 
+import (
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: pango pangofc
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangofc-fontmap.h>
 import "C"
+
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+
+		// Objects/Classes
+	})
+}

@@ -2,10 +2,31 @@
 
 package gsk
 
+import (
+	"unsafe"
+
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gtk4 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gsk/gsk.h>
 import "C"
+
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+		// Enums
+		{T: glib.Type(C.gsk_blend_mode_get_type()), F: marshalBlendMode},
+		{T: glib.Type(C.gsk_corner_get_type()), F: marshalCorner},
+		{T: glib.Type(C.gsk_gl_uniform_type_get_type()), F: marshalGLUniformType},
+		{T: glib.Type(C.gsk_render_node_type_get_type()), F: marshalRenderNodeType},
+		{T: glib.Type(C.gsk_scaling_filter_get_type()), F: marshalScalingFilter},
+		{T: glib.Type(C.gsk_serialization_error_get_type()), F: marshalSerializationError},
+		{T: glib.Type(C.gsk_transform_category_get_type()), F: marshalTransformCategory},
+
+		// Objects/Classes
+	})
+}
 
 type BlendMode int
 
@@ -58,6 +79,10 @@ const (
 	BlendModeLuminosity BlendMode = 15
 )
 
+func marshalBlendMode(p uintptr) (interface{}, error) {
+	return BlendMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Corner int
 
 const (
@@ -70,6 +95,10 @@ const (
 	// CornerBottomLeft: the bottom left corner
 	CornerBottomLeft Corner = 3
 )
+
+func marshalCorner(p uintptr) (interface{}, error) {
+	return Corner(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type GLUniformType int
 
@@ -91,6 +120,10 @@ const (
 	// GLUniformTypeVec4: a GLSL vec4 / graphene_vec4_t uniform
 	GLUniformTypeVec4 GLUniformType = 7
 )
+
+func marshalGLUniformType(p uintptr) (interface{}, error) {
+	return GLUniformType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type RenderNodeType int
 
@@ -157,6 +190,10 @@ const (
 	RenderNodeTypeGlShaderNode RenderNodeType = 25
 )
 
+func marshalRenderNodeType(p uintptr) (interface{}, error) {
+	return RenderNodeType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ScalingFilter int
 
 const (
@@ -168,6 +205,10 @@ const (
 	// generation, with linear interpolation along the mipmap levels
 	ScalingFilterTrilinear ScalingFilter = 2
 )
+
+func marshalScalingFilter(p uintptr) (interface{}, error) {
+	return ScalingFilter(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SerializationError int
 
@@ -181,6 +222,10 @@ const (
 	// serialization
 	SerializationErrorInvalidData SerializationError = 2
 )
+
+func marshalSerializationError(p uintptr) (interface{}, error) {
+	return SerializationError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type TransformCategory int
 
@@ -204,6 +249,10 @@ const (
 	TransformCategory2DAffine TransformCategory = 4
 	// TransformCategory2DTranslate: the matrix is a 2D translation.
 	TransformCategory2DTranslate TransformCategory = 5
-	// TransformCategoryIDentity: the matrix is the identity matrix.
-	TransformCategoryIDentity TransformCategory = 6
+	// TransformCategoryIdentity: the matrix is the identity matrix.
+	TransformCategoryIdentity TransformCategory = 6
 )
+
+func marshalTransformCategory(p uintptr) (interface{}, error) {
+	return TransformCategory(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}

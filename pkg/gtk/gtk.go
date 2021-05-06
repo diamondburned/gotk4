@@ -2,10 +2,117 @@
 
 package gtk
 
+import (
+	"unsafe"
+
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gtk4 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
+
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+		// Enums
+		{T: glib.Type(C.gtk_accessible_autocomplete_get_type()), F: marshalAccessibleAutocomplete},
+		{T: glib.Type(C.gtk_accessible_invalid_state_get_type()), F: marshalAccessibleInvalidState},
+		{T: glib.Type(C.gtk_accessible_property_get_type()), F: marshalAccessibleProperty},
+		{T: glib.Type(C.gtk_accessible_relation_get_type()), F: marshalAccessibleRelation},
+		{T: glib.Type(C.gtk_accessible_role_get_type()), F: marshalAccessibleRole},
+		{T: glib.Type(C.gtk_accessible_sort_get_type()), F: marshalAccessibleSort},
+		{T: glib.Type(C.gtk_accessible_state_get_type()), F: marshalAccessibleState},
+		{T: glib.Type(C.gtk_accessible_tristate_get_type()), F: marshalAccessibleTristate},
+		{T: glib.Type(C.gtk_align_get_type()), F: marshalAlign},
+		{T: glib.Type(C.gtk_arrow_type_get_type()), F: marshalArrowType},
+		{T: glib.Type(C.gtk_assistant_page_type_get_type()), F: marshalAssistantPageType},
+		{T: glib.Type(C.gtk_baseline_position_get_type()), F: marshalBaselinePosition},
+		{T: glib.Type(C.gtk_border_style_get_type()), F: marshalBorderStyle},
+		{T: glib.Type(C.gtk_builder_error_get_type()), F: marshalBuilderError},
+		{T: glib.Type(C.gtk_buttons_type_get_type()), F: marshalButtonsType},
+		{T: glib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
+		{T: glib.Type(C.gtk_cell_renderer_mode_get_type()), F: marshalCellRendererMode},
+		{T: glib.Type(C.gtk_constraint_attribute_get_type()), F: marshalConstraintAttribute},
+		{T: glib.Type(C.gtk_constraint_relation_get_type()), F: marshalConstraintRelation},
+		{T: glib.Type(C.gtk_constraint_strength_get_type()), F: marshalConstraintStrength},
+		{T: glib.Type(C.gtk_constraint_vfl_parser_error_get_type()), F: marshalConstraintVflParserError},
+		{T: glib.Type(C.gtk_corner_type_get_type()), F: marshalCornerType},
+		// Skipped CssParserError.
+		// Skipped CssParserWarning.
+		{T: glib.Type(C.gtk_delete_type_get_type()), F: marshalDeleteType},
+		{T: glib.Type(C.gtk_direction_type_get_type()), F: marshalDirectionType},
+		{T: glib.Type(C.gtk_editable_properties_get_type()), F: marshalEditableProperties},
+		{T: glib.Type(C.gtk_entry_icon_position_get_type()), F: marshalEntryIconPosition},
+		{T: glib.Type(C.gtk_event_sequence_state_get_type()), F: marshalEventSequenceState},
+		{T: glib.Type(C.gtk_file_chooser_action_get_type()), F: marshalFileChooserAction},
+		{T: glib.Type(C.gtk_file_chooser_error_get_type()), F: marshalFileChooserError},
+		{T: glib.Type(C.gtk_filter_change_get_type()), F: marshalFilterChange},
+		{T: glib.Type(C.gtk_filter_match_get_type()), F: marshalFilterMatch},
+		{T: glib.Type(C.gtk_icon_size_get_type()), F: marshalIconSize},
+		{T: glib.Type(C.gtk_icon_theme_error_get_type()), F: marshalIconThemeError},
+		{T: glib.Type(C.gtk_icon_view_drop_position_get_type()), F: marshalIconViewDropPosition},
+		{T: glib.Type(C.gtk_image_type_get_type()), F: marshalImageType},
+		{T: glib.Type(C.gtk_input_purpose_get_type()), F: marshalInputPurpose},
+		{T: glib.Type(C.gtk_justification_get_type()), F: marshalJustification},
+		{T: glib.Type(C.gtk_level_bar_mode_get_type()), F: marshalLevelBarMode},
+		{T: glib.Type(C.gtk_license_get_type()), F: marshalLicense},
+		{T: glib.Type(C.gtk_message_type_get_type()), F: marshalMessageType},
+		{T: glib.Type(C.gtk_movement_step_get_type()), F: marshalMovementStep},
+		{T: glib.Type(C.gtk_notebook_tab_get_type()), F: marshalNotebookTab},
+		{T: glib.Type(C.gtk_number_up_layout_get_type()), F: marshalNumberUpLayout},
+		{T: glib.Type(C.gtk_ordering_get_type()), F: marshalOrdering},
+		{T: glib.Type(C.gtk_orientation_get_type()), F: marshalOrientation},
+		{T: glib.Type(C.gtk_overflow_get_type()), F: marshalOverflow},
+		{T: glib.Type(C.gtk_pack_type_get_type()), F: marshalPackType},
+		{T: glib.Type(C.gtk_pad_action_type_get_type()), F: marshalPadActionType},
+		{T: glib.Type(C.gtk_page_orientation_get_type()), F: marshalPageOrientation},
+		{T: glib.Type(C.gtk_page_set_get_type()), F: marshalPageSet},
+		{T: glib.Type(C.gtk_pan_direction_get_type()), F: marshalPanDirection},
+		{T: glib.Type(C.gtk_policy_type_get_type()), F: marshalPolicyType},
+		{T: glib.Type(C.gtk_position_type_get_type()), F: marshalPositionType},
+		{T: glib.Type(C.gtk_print_duplex_get_type()), F: marshalPrintDuplex},
+		{T: glib.Type(C.gtk_print_error_get_type()), F: marshalPrintError},
+		{T: glib.Type(C.gtk_print_operation_action_get_type()), F: marshalPrintOperationAction},
+		{T: glib.Type(C.gtk_print_operation_result_get_type()), F: marshalPrintOperationResult},
+		{T: glib.Type(C.gtk_print_pages_get_type()), F: marshalPrintPages},
+		{T: glib.Type(C.gtk_print_quality_get_type()), F: marshalPrintQuality},
+		{T: glib.Type(C.gtk_print_status_get_type()), F: marshalPrintStatus},
+		{T: glib.Type(C.gtk_propagation_limit_get_type()), F: marshalPropagationLimit},
+		{T: glib.Type(C.gtk_propagation_phase_get_type()), F: marshalPropagationPhase},
+		{T: glib.Type(C.gtk_recent_manager_error_get_type()), F: marshalRecentManagerError},
+		{T: glib.Type(C.gtk_response_type_get_type()), F: marshalResponseType},
+		{T: glib.Type(C.gtk_revealer_transition_type_get_type()), F: marshalRevealerTransitionType},
+		{T: glib.Type(C.gtk_scroll_step_get_type()), F: marshalScrollStep},
+		{T: glib.Type(C.gtk_scroll_type_get_type()), F: marshalScrollType},
+		{T: glib.Type(C.gtk_scrollable_policy_get_type()), F: marshalScrollablePolicy},
+		{T: glib.Type(C.gtk_selection_mode_get_type()), F: marshalSelectionMode},
+		{T: glib.Type(C.gtk_sensitivity_type_get_type()), F: marshalSensitivityType},
+		{T: glib.Type(C.gtk_shortcut_scope_get_type()), F: marshalShortcutScope},
+		{T: glib.Type(C.gtk_shortcut_type_get_type()), F: marshalShortcutType},
+		{T: glib.Type(C.gtk_size_group_mode_get_type()), F: marshalSizeGroupMode},
+		{T: glib.Type(C.gtk_size_request_mode_get_type()), F: marshalSizeRequestMode},
+		{T: glib.Type(C.gtk_sort_type_get_type()), F: marshalSortType},
+		{T: glib.Type(C.gtk_sorter_change_get_type()), F: marshalSorterChange},
+		{T: glib.Type(C.gtk_sorter_order_get_type()), F: marshalSorterOrder},
+		{T: glib.Type(C.gtk_spin_button_update_policy_get_type()), F: marshalSpinButtonUpdatePolicy},
+		{T: glib.Type(C.gtk_spin_type_get_type()), F: marshalSpinType},
+		{T: glib.Type(C.gtk_stack_transition_type_get_type()), F: marshalStackTransitionType},
+		{T: glib.Type(C.gtk_string_filter_match_mode_get_type()), F: marshalStringFilterMatchMode},
+		{T: glib.Type(C.gtk_system_setting_get_type()), F: marshalSystemSetting},
+		{T: glib.Type(C.gtk_text_direction_get_type()), F: marshalTextDirection},
+		{T: glib.Type(C.gtk_text_extend_selection_get_type()), F: marshalTextExtendSelection},
+		{T: glib.Type(C.gtk_text_view_layer_get_type()), F: marshalTextViewLayer},
+		{T: glib.Type(C.gtk_text_window_type_get_type()), F: marshalTextWindowType},
+		{T: glib.Type(C.gtk_tree_view_column_sizing_get_type()), F: marshalTreeViewColumnSizing},
+		{T: glib.Type(C.gtk_tree_view_drop_position_get_type()), F: marshalTreeViewDropPosition},
+		{T: glib.Type(C.gtk_tree_view_grid_lines_get_type()), F: marshalTreeViewGridLines},
+		{T: glib.Type(C.gtk_unit_get_type()), F: marshalUnit},
+		{T: glib.Type(C.gtk_wrap_mode_get_type()), F: marshalWrapMode},
+
+		// Objects/Classes
+	})
+}
 
 type AccessibleAutocomplete int
 
@@ -28,6 +135,10 @@ const (
 	AccessibleAutocompleteBoth AccessibleAutocomplete = 3
 )
 
+func marshalAccessibleAutocomplete(p uintptr) (interface{}, error) {
+	return AccessibleAutocomplete(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type AccessibleInvalidState int
 
 const (
@@ -41,6 +152,10 @@ const (
 	// AccessibleInvalidStateSpelling: a spelling error was detected
 	AccessibleInvalidStateSpelling AccessibleInvalidState = 3
 )
+
+func marshalAccessibleInvalidState(p uintptr) (interface{}, error) {
+	return AccessibleInvalidState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type AccessibleProperty int
 
@@ -114,6 +229,10 @@ const (
 	AccessiblePropertyValueText AccessibleProperty = 18
 )
 
+func marshalAccessibleProperty(p uintptr) (interface{}, error) {
+	return AccessibleProperty(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type AccessibleRelation int
 
 const (
@@ -181,6 +300,10 @@ const (
 	// of listitems or treeitems. Value type: integer
 	AccessibleRelationSetSize AccessibleRelation = 17
 )
+
+func marshalAccessibleRelation(p uintptr) (interface{}, error) {
+	return AccessibleRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type AccessibleRole int
 
@@ -367,6 +490,10 @@ const (
 	AccessibleRoleWindow AccessibleRole = 77
 )
 
+func marshalAccessibleRole(p uintptr) (interface{}, error) {
+	return AccessibleRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type AccessibleSort int
 
 const (
@@ -382,6 +509,10 @@ const (
 	// has been applied.
 	AccessibleSortOther AccessibleSort = 3
 )
+
+func marshalAccessibleSort(p uintptr) (interface{}, error) {
+	return AccessibleSort(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type AccessibleState int
 
@@ -414,6 +545,10 @@ const (
 	AccessibleStateSelected AccessibleState = 7
 )
 
+func marshalAccessibleState(p uintptr) (interface{}, error) {
+	return AccessibleState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type AccessibleTristate int
 
 const (
@@ -424,6 +559,10 @@ const (
 	// AccessibleTristateMixed: the state is `mixed`
 	AccessibleTristateMixed AccessibleTristate = 2
 )
+
+func marshalAccessibleTristate(p uintptr) (interface{}, error) {
+	return AccessibleTristate(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Align int
 
@@ -441,6 +580,10 @@ const (
 	AlignBaseline Align = 4
 )
 
+func marshalAlign(p uintptr) (interface{}, error) {
+	return Align(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ArrowType int
 
 const (
@@ -455,6 +598,10 @@ const (
 	// ArrowTypeNone: no arrow.
 	ArrowTypeNone ArrowType = 4
 )
+
+func marshalArrowType(p uintptr) (interface{}, error) {
+	return ArrowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type AssistantPageType int
 
@@ -482,6 +629,10 @@ const (
 	AssistantPageTypeCustom AssistantPageType = 5
 )
 
+func marshalAssistantPageType(p uintptr) (interface{}, error) {
+	return AssistantPageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type BaselinePosition int
 
 const (
@@ -492,6 +643,10 @@ const (
 	// BaselinePositionBottom: align the baseline at the bottom
 	BaselinePositionBottom BaselinePosition = 2
 )
+
+func marshalBaselinePosition(p uintptr) (interface{}, error) {
+	return BaselinePosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type BorderStyle int
 
@@ -517,6 +672,10 @@ const (
 	// BorderStyleRidge: looks as if it were coming out of the canvas
 	BorderStyleRidge BorderStyle = 9
 )
+
+func marshalBorderStyle(p uintptr) (interface{}, error) {
+	return BorderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type BuilderError int
 
@@ -566,6 +725,10 @@ const (
 	BuilderErrorInvalidFunction BuilderError = 14
 )
 
+func marshalBuilderError(p uintptr) (interface{}, error) {
+	return BuilderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ButtonsType int
 
 const (
@@ -583,6 +746,10 @@ const (
 	ButtonsTypeOkCancel ButtonsType = 5
 )
 
+func marshalButtonsType(p uintptr) (interface{}, error) {
+	return ButtonsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type CellRendererAccelMode int
 
 const (
@@ -591,6 +758,10 @@ const (
 	// CellRendererAccelModeOther: other accelerator mode
 	CellRendererAccelModeOther CellRendererAccelMode = 1
 )
+
+func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
+	return CellRendererAccelMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type CellRendererMode int
 
@@ -605,6 +776,10 @@ const (
 	// CellRendererModeEditable: the cell can be edited or otherwise modified.
 	CellRendererModeEditable CellRendererMode = 2
 )
+
+func marshalCellRendererMode(p uintptr) (interface{}, error) {
+	return CellRendererMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type ConstraintAttribute int
 
@@ -642,6 +817,10 @@ const (
 	ConstraintAttributeBaseline ConstraintAttribute = 11
 )
 
+func marshalConstraintAttribute(p uintptr) (interface{}, error) {
+	return ConstraintAttribute(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ConstraintRelation int
 
 const (
@@ -652,6 +831,10 @@ const (
 	// ConstraintRelationGe: greater than, or equal
 	ConstraintRelationGe ConstraintRelation = 1
 )
+
+func marshalConstraintRelation(p uintptr) (interface{}, error) {
+	return ConstraintRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type ConstraintStrength int
 
@@ -666,6 +849,10 @@ const (
 	// ConstraintStrengthWeak: a weak constraint
 	ConstraintStrengthWeak ConstraintStrength = 1
 )
+
+func marshalConstraintStrength(p uintptr) (interface{}, error) {
+	return ConstraintStrength(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type ConstraintVflParserError int
 
@@ -684,6 +871,10 @@ const (
 	ConstraintVflParserErrorRelation ConstraintVflParserError = 5
 )
 
+func marshalConstraintVflParserError(p uintptr) (interface{}, error) {
+	return ConstraintVflParserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type CornerType int
 
 const (
@@ -701,32 +892,36 @@ const (
 	CornerTypeBottomRight CornerType = 3
 )
 
-type CssParserError int
+func marshalCornerType(p uintptr) (interface{}, error) {
+	return CornerType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+type CSSParserError int
 
 const (
-	// CssParserErrorFailed: unknown failure.
-	CssParserErrorFailed CssParserError = 0
-	// CssParserErrorSyntax: the given text does not form valid syntax
-	CssParserErrorSyntax CssParserError = 1
-	// CssParserErrorImport: failed to import a resource
-	CssParserErrorImport CssParserError = 2
-	// CssParserErrorName: the given name has not been defined
-	CssParserErrorName CssParserError = 3
-	// CssParserErrorUnknownValue: the given value is not correct
-	CssParserErrorUnknownValue CssParserError = 4
+	// CSSParserErrorFailed: unknown failure.
+	CSSParserErrorFailed CSSParserError = 0
+	// CSSParserErrorSyntax: the given text does not form valid syntax
+	CSSParserErrorSyntax CSSParserError = 1
+	// CSSParserErrorImport: failed to import a resource
+	CSSParserErrorImport CSSParserError = 2
+	// CSSParserErrorName: the given name has not been defined
+	CSSParserErrorName CSSParserError = 3
+	// CSSParserErrorUnknownValue: the given value is not correct
+	CSSParserErrorUnknownValue CSSParserError = 4
 )
 
-type CssParserWarning int
+type CSSParserWarning int
 
 const (
-	// CssParserWarningDeprecated: the given construct is deprecated and will be
+	// CSSParserWarningDeprecated: the given construct is deprecated and will be
 	// removed in a future version
-	CssParserWarningDeprecated CssParserWarning = 0
-	// CssParserWarningSyntax: a syntax construct was used that should be
+	CSSParserWarningDeprecated CSSParserWarning = 0
+	// CSSParserWarningSyntax: a syntax construct was used that should be
 	// avoided
-	CssParserWarningSyntax CssParserWarning = 1
-	// CssParserWarningUnimplemented: a feature is not implemented
-	CssParserWarningUnimplemented CssParserWarning = 2
+	CSSParserWarningSyntax CSSParserWarning = 1
+	// CSSParserWarningUnimplemented: a feature is not implemented
+	CSSParserWarningUnimplemented CSSParserWarning = 2
 )
 
 type DeleteType int
@@ -755,6 +950,10 @@ const (
 	DeleteTypeWhitespace DeleteType = 7
 )
 
+func marshalDeleteType(p uintptr) (interface{}, error) {
+	return DeleteType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type DirectionType int
 
 const (
@@ -772,6 +971,10 @@ const (
 	DirectionTypeRight DirectionType = 5
 )
 
+func marshalDirectionType(p uintptr) (interface{}, error) {
+	return DirectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type EditableProperties int
 
 const (
@@ -786,6 +989,10 @@ const (
 	EditablePropertiesNumProperties      EditableProperties = 8
 )
 
+func marshalEditableProperties(p uintptr) (interface{}, error) {
+	return EditableProperties(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type EntryIconPosition int
 
 const (
@@ -797,6 +1004,10 @@ const (
 	EntryIconPositionSecondary EntryIconPosition = 1
 )
 
+func marshalEntryIconPosition(p uintptr) (interface{}, error) {
+	return EntryIconPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type EventSequenceState int
 
 const (
@@ -807,6 +1018,10 @@ const (
 	// EventSequenceStateDenied: the sequence is denied.
 	EventSequenceStateDenied EventSequenceState = 2
 )
+
+func marshalEventSequenceState(p uintptr) (interface{}, error) {
+	return EventSequenceState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type FileChooserAction int
 
@@ -822,6 +1037,10 @@ const (
 	FileChooserActionSelectFolder FileChooserAction = 2
 )
 
+func marshalFileChooserAction(p uintptr) (interface{}, error) {
+	return FileChooserAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type FileChooserError int
 
 const (
@@ -836,6 +1055,10 @@ const (
 	// (e.g. "http://foo" without a slash after that).
 	FileChooserErrorIncompleteHostname FileChooserError = 3
 )
+
+func marshalFileChooserError(p uintptr) (interface{}, error) {
+	return FileChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type FilterChange int
 
@@ -853,6 +1076,10 @@ const (
 	FilterChangeMoreStrict FilterChange = 2
 )
 
+func marshalFilterChange(p uintptr) (interface{}, error) {
+	return FilterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type FilterMatch int
 
 const (
@@ -867,6 +1094,10 @@ const (
 	FilterMatchAll FilterMatch = 2
 )
 
+func marshalFilterMatch(p uintptr) (interface{}, error) {
+	return FilterMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type IconSize int
 
 const (
@@ -878,6 +1109,10 @@ const (
 	IconSizeLarge IconSize = 2
 )
 
+func marshalIconSize(p uintptr) (interface{}, error) {
+	return IconSize(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type IconThemeError int
 
 const (
@@ -886,6 +1121,10 @@ const (
 	// IconThemeErrorFailed: an unspecified error occurred.
 	IconThemeErrorFailed IconThemeError = 1
 )
+
+func marshalIconThemeError(p uintptr) (interface{}, error) {
+	return IconThemeError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type IconViewDropPosition int
 
@@ -904,6 +1143,10 @@ const (
 	IconViewDropPositionDropBelow IconViewDropPosition = 5
 )
 
+func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
+	return IconViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ImageType int
 
 const (
@@ -916,6 +1159,10 @@ const (
 	// ImageTypePaintable: the widget contains a Paintable
 	ImageTypePaintable ImageType = 3
 )
+
+func marshalImageType(p uintptr) (interface{}, error) {
+	return ImageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type InputPurpose int
 
@@ -930,8 +1177,8 @@ const (
 	InputPurposeNumber InputPurpose = 3
 	// InputPurposePhone: edited field expects phone number
 	InputPurposePhone InputPurpose = 4
-	// InputPurposeUrl: edited field expects URL
-	InputPurposeUrl InputPurpose = 5
+	// InputPurposeURL: edited field expects URL
+	InputPurposeURL InputPurpose = 5
 	// InputPurposeEmail: edited field expects email address
 	InputPurposeEmail InputPurpose = 6
 	// InputPurposeName: edited field expects the name of a person
@@ -944,6 +1191,10 @@ const (
 	// InputPurposeTerminal: allow any character, in addition to control codes
 	InputPurposeTerminal InputPurpose = 10
 )
+
+func marshalInputPurpose(p uintptr) (interface{}, error) {
+	return InputPurpose(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Justification int
 
@@ -958,6 +1209,10 @@ const (
 	JustificationFill Justification = 3
 )
 
+func marshalJustification(p uintptr) (interface{}, error) {
+	return Justification(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type LevelBarMode int
 
 const (
@@ -966,6 +1221,10 @@ const (
 	// LevelBarModeDiscrete: the bar has a discrete mode
 	LevelBarModeDiscrete LevelBarMode = 1
 )
+
+func marshalLevelBarMode(p uintptr) (interface{}, error) {
+	return LevelBarMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type License int
 
@@ -1014,6 +1273,10 @@ const (
 	LicenseMpl20 License = 17
 )
 
+func marshalLicense(p uintptr) (interface{}, error) {
+	return License(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type MessageType int
 
 const (
@@ -1028,6 +1291,10 @@ const (
 	// MessageTypeOther: none of the above
 	MessageTypeOther MessageType = 4
 )
+
+func marshalMessageType(p uintptr) (interface{}, error) {
+	return MessageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type MovementStep int
 
@@ -1054,6 +1321,10 @@ const (
 	MovementStepHorizontalPages MovementStep = 9
 )
 
+func marshalMovementStep(p uintptr) (interface{}, error) {
+	return MovementStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type NotebookTab int
 
 const (
@@ -1062,6 +1333,10 @@ const (
 	// NotebookTabLast: the last tab in the notebook
 	NotebookTabLast NotebookTab = 1
 )
+
+func marshalNotebookTab(p uintptr) (interface{}, error) {
+	return NotebookTab(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type NumberUpLayout int
 
@@ -1084,6 +1359,10 @@ const (
 	NumberUpLayoutBtrl NumberUpLayout = 7
 )
 
+func marshalNumberUpLayout(p uintptr) (interface{}, error) {
+	return NumberUpLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Ordering int
 
 const (
@@ -1095,6 +1374,10 @@ const (
 	OrderingLarger Ordering = 1
 )
 
+func marshalOrdering(p uintptr) (interface{}, error) {
+	return Ordering(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Orientation int
 
 const (
@@ -1103,6 +1386,10 @@ const (
 	// OrientationVertical: the element is in vertical orientation.
 	OrientationVertical Orientation = 1
 )
+
+func marshalOrientation(p uintptr) (interface{}, error) {
+	return Orientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Overflow int
 
@@ -1115,6 +1402,10 @@ const (
 	OverflowHidden Overflow = 1
 )
 
+func marshalOverflow(p uintptr) (interface{}, error) {
+	return Overflow(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PackType int
 
 const (
@@ -1123,6 +1414,10 @@ const (
 	// PackTypeEnd: the child is packed into the end of the widget
 	PackTypeEnd PackType = 1
 )
+
+func marshalPackType(p uintptr) (interface{}, error) {
+	return PackType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type PadActionType int
 
@@ -1134,6 +1429,10 @@ const (
 	// PadActionTypeStrip: action is triggered by a pad strip
 	PadActionTypeStrip PadActionType = 2
 )
+
+func marshalPadActionType(p uintptr) (interface{}, error) {
+	return PadActionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type PageOrientation int
 
@@ -1148,6 +1447,10 @@ const (
 	PageOrientationReverseLandscape PageOrientation = 3
 )
 
+func marshalPageOrientation(p uintptr) (interface{}, error) {
+	return PageOrientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PageSet int
 
 const (
@@ -1158,6 +1461,10 @@ const (
 	// PageSetOdd: odd pages.
 	PageSetOdd PageSet = 2
 )
+
+func marshalPageSet(p uintptr) (interface{}, error) {
+	return PageSet(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type PanDirection int
 
@@ -1171,6 +1478,10 @@ const (
 	// PanDirectionDown: panned downwards
 	PanDirectionDown PanDirection = 3
 )
+
+func marshalPanDirection(p uintptr) (interface{}, error) {
+	return PanDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type PolicyType int
 
@@ -1190,6 +1501,10 @@ const (
 	PolicyTypeExternal PolicyType = 3
 )
 
+func marshalPolicyType(p uintptr) (interface{}, error) {
+	return PolicyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PositionType int
 
 const (
@@ -1203,6 +1518,10 @@ const (
 	PositionTypeBottom PositionType = 3
 )
 
+func marshalPositionType(p uintptr) (interface{}, error) {
+	return PositionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PrintDuplex int
 
 const (
@@ -1213,6 +1532,10 @@ const (
 	// PrintDuplexVertical: vertical duplex.
 	PrintDuplexVertical PrintDuplex = 2
 )
+
+func marshalPrintDuplex(p uintptr) (interface{}, error) {
+	return PrintDuplex(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type PrintError int
 
@@ -1227,6 +1550,10 @@ const (
 	// paper size from a key file.
 	PrintErrorInvalidFile PrintError = 3
 )
+
+func marshalPrintError(p uintptr) (interface{}, error) {
+	return PrintError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type PrintOperationAction int
 
@@ -1243,6 +1570,10 @@ const (
 	PrintOperationActionExport PrintOperationAction = 3
 )
 
+func marshalPrintOperationAction(p uintptr) (interface{}, error) {
+	return PrintOperationAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PrintOperationResult int
 
 const (
@@ -1258,6 +1589,10 @@ const (
 	PrintOperationResultInProgress PrintOperationResult = 3
 )
 
+func marshalPrintOperationResult(p uintptr) (interface{}, error) {
+	return PrintOperationResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PrintPages int
 
 const (
@@ -1271,6 +1606,10 @@ const (
 	PrintPagesSelection PrintPages = 3
 )
 
+func marshalPrintPages(p uintptr) (interface{}, error) {
+	return PrintPages(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PrintQuality int
 
 const (
@@ -1283,6 +1622,10 @@ const (
 	// PrintQualityDraft: draft quality.
 	PrintQualityDraft PrintQuality = 3
 )
+
+func marshalPrintQuality(p uintptr) (interface{}, error) {
+	return PrintQuality(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type PrintStatus int
 
@@ -1312,6 +1655,10 @@ const (
 	PrintStatusFinishedAborted PrintStatus = 8
 )
 
+func marshalPrintStatus(p uintptr) (interface{}, error) {
+	return PrintStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PropagationLimit int
 
 const (
@@ -1323,6 +1670,10 @@ const (
 	// types have two targets (origin and destination).
 	PropagationLimitSameNative PropagationLimit = 1
 )
+
+func marshalPropagationLimit(p uintptr) (interface{}, error) {
+	return PropagationLimit(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type PropagationPhase int
 
@@ -1346,14 +1697,18 @@ const (
 	PropagationPhaseTarget PropagationPhase = 3
 )
 
+func marshalPropagationPhase(p uintptr) (interface{}, error) {
+	return PropagationPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type RecentManagerError int
 
 const (
 	// RecentManagerErrorNotFound: the URI specified does not exists in the
 	// recently used resources list.
 	RecentManagerErrorNotFound RecentManagerError = 0
-	// RecentManagerErrorInvalidUri: the URI specified is not valid.
-	RecentManagerErrorInvalidUri RecentManagerError = 1
+	// RecentManagerErrorInvalidURI: the URI specified is not valid.
+	RecentManagerErrorInvalidURI RecentManagerError = 1
 	// RecentManagerErrorInvalidEncoding: the supplied string is not UTF-8
 	// encoded.
 	RecentManagerErrorInvalidEncoding RecentManagerError = 2
@@ -1369,6 +1724,10 @@ const (
 	// RecentManagerErrorUnknown: unspecified error.
 	RecentManagerErrorUnknown RecentManagerError = 6
 )
+
+func marshalRecentManagerError(p uintptr) (interface{}, error) {
+	return RecentManagerError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type ResponseType int
 
@@ -1398,6 +1757,10 @@ const (
 	ResponseTypeHelp ResponseType = -11
 )
 
+func marshalResponseType(p uintptr) (interface{}, error) {
+	return ResponseType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type RevealerTransitionType int
 
 const (
@@ -1423,6 +1786,10 @@ const (
 	RevealerTransitionTypeSwingDown RevealerTransitionType = 9
 )
 
+func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
+	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ScrollStep int
 
 const (
@@ -1439,6 +1806,10 @@ const (
 	// ScrollStepHorizontalEnds: scroll to the horizontal ends.
 	ScrollStepHorizontalEnds ScrollStep = 5
 )
+
+func marshalScrollStep(p uintptr) (interface{}, error) {
+	return ScrollStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type ScrollType int
 
@@ -1477,6 +1848,10 @@ const (
 	ScrollTypeEnd ScrollType = 15
 )
 
+func marshalScrollType(p uintptr) (interface{}, error) {
+	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ScrollablePolicy int
 
 const (
@@ -1487,6 +1862,10 @@ const (
 	// size
 	ScrollablePolicyNatural ScrollablePolicy = 1
 )
+
+func marshalScrollablePolicy(p uintptr) (interface{}, error) {
+	return ScrollablePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SelectionMode int
 
@@ -1508,6 +1887,10 @@ const (
 	SelectionModeMultiple SelectionMode = 3
 )
 
+func marshalSelectionMode(p uintptr) (interface{}, error) {
+	return SelectionMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type SensitivityType int
 
 const (
@@ -1519,6 +1902,10 @@ const (
 	// SensitivityTypeOff: the control is always insensitive
 	SensitivityTypeOff SensitivityType = 2
 )
+
+func marshalSensitivityType(p uintptr) (interface{}, error) {
+	return SensitivityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type ShortcutScope int
 
@@ -1532,6 +1919,10 @@ const (
 	// ShortcutScopeGlobal: shortcuts are handled by the root widget.
 	ShortcutScopeGlobal ShortcutScope = 2
 )
+
+func marshalShortcutScope(p uintptr) (interface{}, error) {
+	return ShortcutScope(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type ShortcutType int
 
@@ -1568,6 +1959,10 @@ const (
 	ShortcutTypeGestureSwipeRight ShortcutType = 9
 )
 
+func marshalShortcutType(p uintptr) (interface{}, error) {
+	return ShortcutType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type SizeGroupMode int
 
 const (
@@ -1580,6 +1975,10 @@ const (
 	// SizeGroupModeBoth: group affects both horizontal and vertical requisition
 	SizeGroupModeBoth SizeGroupMode = 3
 )
+
+func marshalSizeGroupMode(p uintptr) (interface{}, error) {
+	return SizeGroupMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SizeRequestMode int
 
@@ -1595,6 +1994,10 @@ const (
 	SizeRequestModeConstantSize SizeRequestMode = 2
 )
 
+func marshalSizeRequestMode(p uintptr) (interface{}, error) {
+	return SizeRequestMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type SortType int
 
 const (
@@ -1603,6 +2006,10 @@ const (
 	// SortTypeDescending: sorting is in descending order.
 	SortTypeDescending SortType = 1
 )
+
+func marshalSortType(p uintptr) (interface{}, error) {
+	return SortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SorterChange int
 
@@ -1622,6 +2029,10 @@ const (
 	SorterChangeMoreStrict SorterChange = 3
 )
 
+func marshalSorterChange(p uintptr) (interface{}, error) {
+	return SorterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type SorterOrder int
 
 const (
@@ -1636,6 +2047,10 @@ const (
 	SorterOrderTotal SorterOrder = 2
 )
 
+func marshalSorterOrder(p uintptr) (interface{}, error) {
+	return SorterOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type SpinButtonUpdatePolicy int
 
 const (
@@ -1647,6 +2062,10 @@ const (
 	// adjustment
 	SpinButtonUpdatePolicyIfValid SpinButtonUpdatePolicy = 1
 )
+
+func marshalSpinButtonUpdatePolicy(p uintptr) (interface{}, error) {
+	return SpinButtonUpdatePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SpinType int
 
@@ -1666,6 +2085,10 @@ const (
 	// SpinTypeUserDefined: change by a specified amount.
 	SpinTypeUserDefined SpinType = 6
 )
+
+func marshalSpinType(p uintptr) (interface{}, error) {
+	return SpinType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type StackTransitionType int
 
@@ -1728,6 +2151,10 @@ const (
 	StackTransitionTypeRotateLeftRight StackTransitionType = 22
 )
 
+func marshalStackTransitionType(p uintptr) (interface{}, error) {
+	return StackTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type StringFilterMatchMode int
 
 const (
@@ -1740,6 +2167,10 @@ const (
 	// StringFilterMatchModePrefix: the text must begin with the search string.
 	StringFilterMatchModePrefix StringFilterMatchMode = 2
 )
+
+func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
+	return StringFilterMatchMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SystemSetting int
 
@@ -1761,16 +2192,24 @@ const (
 	SystemSettingIconTheme SystemSetting = 4
 )
 
+func marshalSystemSetting(p uintptr) (interface{}, error) {
+	return SystemSetting(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TextDirection int
 
 const (
 	// TextDirectionNone: no direction.
 	TextDirectionNone TextDirection = 0
-	// TextDirectionLtr: left to right text direction.
-	TextDirectionLtr TextDirection = 1
-	// TextDirectionRtl: right to left text direction.
-	TextDirectionRtl TextDirection = 2
+	// TextDirectionLTR: left to right text direction.
+	TextDirectionLTR TextDirection = 1
+	// TextDirectionRTL: right to left text direction.
+	TextDirectionRTL TextDirection = 2
 )
+
+func marshalTextDirection(p uintptr) (interface{}, error) {
+	return TextDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type TextExtendSelection int
 
@@ -1783,6 +2222,10 @@ const (
 	TextExtendSelectionLine TextExtendSelection = 1
 )
 
+func marshalTextExtendSelection(p uintptr) (interface{}, error) {
+	return TextExtendSelection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TextViewLayer int
 
 const (
@@ -1792,6 +2235,10 @@ const (
 	// TextViewLayerAboveText: the layer rendered above the text.
 	TextViewLayerAboveText TextViewLayer = 1
 )
+
+func marshalTextViewLayer(p uintptr) (interface{}, error) {
+	return TextViewLayer(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type TextWindowType int
 
@@ -1810,6 +2257,10 @@ const (
 	TextWindowTypeBottom TextWindowType = 6
 )
 
+func marshalTextWindowType(p uintptr) (interface{}, error) {
+	return TextWindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TreeViewColumnSizing int
 
 const (
@@ -1822,6 +2273,10 @@ const (
 	// TreeViewColumnSizingFixed: columns are a fixed numbers of pixels wide.
 	TreeViewColumnSizingFixed TreeViewColumnSizing = 2
 )
+
+func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
+	return TreeViewColumnSizing(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type TreeViewDropPosition int
 
@@ -1838,6 +2293,10 @@ const (
 	TreeViewDropPositionIntoOrAfter TreeViewDropPosition = 3
 )
 
+func marshalTreeViewDropPosition(p uintptr) (interface{}, error) {
+	return TreeViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TreeViewGridLines int
 
 const (
@@ -1851,6 +2310,10 @@ const (
 	TreeViewGridLinesBoth TreeViewGridLines = 3
 )
 
+func marshalTreeViewGridLines(p uintptr) (interface{}, error) {
+	return TreeViewGridLines(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Unit int
 
 const (
@@ -1863,6 +2326,10 @@ const (
 	// UnitMm: dimensions in millimeters
 	UnitMm Unit = 3
 )
+
+func marshalUnit(p uintptr) (interface{}, error) {
+	return Unit(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type WrapMode int
 
@@ -1879,3 +2346,7 @@ const (
 	// is not enough, also between graphemes
 	WrapModeWordChar WrapMode = 3
 )
+
+func marshalWrapMode(p uintptr) (interface{}, error) {
+	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}

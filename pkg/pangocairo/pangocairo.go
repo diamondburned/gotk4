@@ -2,7 +2,18 @@
 
 package pangocairo
 
+import (
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: pango pangocairo
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangocairo.h>
 import "C"
+
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+
+		// Objects/Classes
+	})
+}

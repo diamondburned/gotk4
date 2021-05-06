@@ -2,23 +2,73 @@
 
 package glib
 
+import (
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
 import "C"
 
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+		// Enums
+		// Skipped BookmarkFileError.
+		// Skipped ChecksumType.
+		// Skipped ConvertError.
+		// Skipped DateDMY.
+		// Skipped DateMonth.
+		// Skipped DateWeekday.
+		// Skipped ErrorType.
+		// Skipped FileError.
+		// Skipped IOChannelError.
+		// Skipped IOError.
+		// Skipped IOStatus.
+		// Skipped KeyFileError.
+		// Skipped LogWriterOutput.
+		// Skipped MarkupError.
+		// Skipped NormalizeMode.
+		// Skipped NumberParserError.
+		// Skipped OnceStatus.
+		// Skipped OptionArg.
+		// Skipped OptionError.
+		// Skipped RegexError.
+		// Skipped SeekType.
+		// Skipped ShellError.
+		// Skipped SliceConfig.
+		// Skipped SpawnError.
+		// Skipped TestFileType.
+		// Skipped TestLogType.
+		// Skipped TestResult.
+		// Skipped ThreadError.
+		// Skipped TimeType.
+		// Skipped TokenType.
+		// Skipped TraverseType.
+		// Skipped UnicodeBreakType.
+		// Skipped UnicodeScript.
+		// Skipped UnicodeType.
+		// Skipped UriError.
+		// Skipped UserDirectory.
+		// Skipped VariantClass.
+		// Skipped VariantParseError.
+
+		// Objects/Classes
+	})
+}
+
 type BookmarkFileError int
 
 const (
-	// BookmarkFileErrorInvalidUri: URI was ill-formed
-	BookmarkFileErrorInvalidUri BookmarkFileError = 0
+	// BookmarkFileErrorInvalidURI: URI was ill-formed
+	BookmarkFileErrorInvalidURI BookmarkFileError = 0
 	// BookmarkFileErrorInvalidValue: a requested field was not found
 	BookmarkFileErrorInvalidValue BookmarkFileError = 1
 	// BookmarkFileErrorAppNotRegistered: a requested application did not
 	// register a bookmark
 	BookmarkFileErrorAppNotRegistered BookmarkFileError = 2
-	// BookmarkFileErrorUriNotFound: a requested URI was not found
-	BookmarkFileErrorUriNotFound BookmarkFileError = 3
+	// BookmarkFileErrorURINotFound: a requested URI was not found
+	BookmarkFileErrorURINotFound BookmarkFileError = 3
 	// BookmarkFileErrorRead: document was ill formed
 	BookmarkFileErrorRead BookmarkFileError = 4
 	// BookmarkFileErrorUnknownEncoding: the text being parsed was in an unknown
@@ -33,16 +83,16 @@ const (
 type ChecksumType int
 
 const (
-	// ChecksumTypeMd5: use the MD5 hashing algorithm
-	ChecksumTypeMd5 ChecksumType = 0
-	// ChecksumTypeSha1: use the SHA-1 hashing algorithm
-	ChecksumTypeSha1 ChecksumType = 1
-	// ChecksumTypeSha256: use the SHA-256 hashing algorithm
-	ChecksumTypeSha256 ChecksumType = 2
-	// ChecksumTypeSha512: use the SHA-512 hashing algorithm (Since: 2.36)
-	ChecksumTypeSha512 ChecksumType = 3
-	// ChecksumTypeSha384: use the SHA-384 hashing algorithm (Since: 2.51)
-	ChecksumTypeSha384 ChecksumType = 4
+	// ChecksumTypeMD5: use the MD5 hashing algorithm
+	ChecksumTypeMD5 ChecksumType = 0
+	// ChecksumTypeSHA1: use the SHA-1 hashing algorithm
+	ChecksumTypeSHA1 ChecksumType = 1
+	// ChecksumTypeSHA256: use the SHA-256 hashing algorithm
+	ChecksumTypeSHA256 ChecksumType = 2
+	// ChecksumTypeSHA512: use the SHA-512 hashing algorithm (Since: 2.36)
+	ChecksumTypeSHA512 ChecksumType = 3
+	// ChecksumTypeSHA384: use the SHA-384 hashing algorithm (Since: 2.51)
+	ChecksumTypeSHA384 ChecksumType = 4
 )
 
 type ConvertError int
@@ -59,15 +109,15 @@ const (
 	ConvertErrorFailed ConvertError = 2
 	// ConvertErrorPartialInput: partial character sequence at end of input.
 	ConvertErrorPartialInput ConvertError = 3
-	// ConvertErrorBadUri: URI is invalid.
-	ConvertErrorBadUri ConvertError = 4
+	// ConvertErrorBadURI: URI is invalid.
+	ConvertErrorBadURI ConvertError = 4
 	// ConvertErrorNotAbsolutePath: pathname is not an absolute path.
 	ConvertErrorNotAbsolutePath ConvertError = 5
 	// ConvertErrorNoMemory: no memory available. Since: 2.40
 	ConvertErrorNoMemory ConvertError = 6
-	// ConvertErrorEmbeddedNul: an embedded NUL character is present in
+	// ConvertErrorEmbeddedNUL: an embedded NUL character is present in
 	// conversion output where a NUL-terminated string is expected. Since: 2.56
-	ConvertErrorEmbeddedNul ConvertError = 7
+	ConvertErrorEmbeddedNUL ConvertError = 7
 )
 
 type DateDMY int
@@ -138,12 +188,12 @@ type ErrorType int
 const (
 	// ErrorTypeUnknown: unknown error
 	ErrorTypeUnknown ErrorType = 0
-	// ErrorTypeUnexpEof: unexpected end of file
-	ErrorTypeUnexpEof ErrorType = 1
-	// ErrorTypeUnexpEofInString: unterminated string constant
-	ErrorTypeUnexpEofInString ErrorType = 2
-	// ErrorTypeUnexpEofInComment: unterminated comment
-	ErrorTypeUnexpEofInComment ErrorType = 3
+	// ErrorTypeUnexpEOF: unexpected end of file
+	ErrorTypeUnexpEOF ErrorType = 1
+	// ErrorTypeUnexpEOFInString: unterminated string constant
+	ErrorTypeUnexpEOFInString ErrorType = 2
+	// ErrorTypeUnexpEOFInComment: unterminated comment
+	ErrorTypeUnexpEOFInComment ErrorType = 3
 	// ErrorTypeNonDigitInConst: non-digit character in a number
 	ErrorTypeNonDigitInConst ErrorType = 4
 	// ErrorTypeDigitRadix: digit beyond radix in a number
@@ -228,10 +278,10 @@ const (
 	// and prevented completion of the call. When this happens, you should try
 	// the call again.
 	FileErrorIntr FileError = 20
-	// FileErrorIo: input/output error; usually used for physical read or write
+	// FileErrorIO: input/output error; usually used for physical read or write
 	// errors. i.e. the disk or other physical device hardware is returning
 	// errors.
-	FileErrorIo FileError = 21
+	FileErrorIO FileError = 21
 	// FileErrorPerm: operation not permitted; only the owner of the file (or
 	// other resource) or processes with special privileges can perform the
 	// operation.
@@ -252,8 +302,8 @@ const (
 	IOChannelErrorFbig IOChannelError = 0
 	// IOChannelErrorInval: invalid argument.
 	IOChannelErrorInval IOChannelError = 1
-	// IOChannelErrorIo: IO error.
-	IOChannelErrorIo IOChannelError = 2
+	// IOChannelErrorIO: IO error.
+	IOChannelErrorIO IOChannelError = 2
 	// IOChannelErrorIsdir: file is a directory.
 	IOChannelErrorIsdir IOChannelError = 3
 	// IOChannelErrorNospc: no space left on device.
@@ -288,8 +338,8 @@ const (
 	IOStatusError IOStatus = 0
 	// IOStatusNormal: success.
 	IOStatusNormal IOStatus = 1
-	// IOStatusEof: end of file.
-	IOStatusEof IOStatus = 2
+	// IOStatusEOF: end of file.
+	IOStatusEOF IOStatus = 2
 	// IOStatusAgain: resource temporarily unavailable.
 	IOStatusAgain IOStatus = 3
 )
@@ -324,8 +374,8 @@ const (
 type MarkupError int
 
 const (
-	// MarkupErrorBadUtf8: text being parsed was not valid UTF-8
-	MarkupErrorBadUtf8 MarkupError = 0
+	// MarkupErrorBadUTF8: text being parsed was not valid UTF-8
+	MarkupErrorBadUTF8 MarkupError = 0
 	// MarkupErrorEmpty: document contained nothing, or only whitespace
 	MarkupErrorEmpty MarkupError = 1
 	// MarkupErrorParse: document was ill-formed
@@ -350,26 +400,26 @@ const (
 	// NormalizeModeDefault: standardize differences that do not affect the text
 	// content, such as the above-mentioned accent representation
 	NormalizeModeDefault NormalizeMode = 0
-	// NormalizeModeNfd: another name for G_NORMALIZE_DEFAULT
-	NormalizeModeNfd NormalizeMode = 0
+	// NormalizeModeNFD: another name for G_NORMALIZE_DEFAULT
+	NormalizeModeNFD NormalizeMode = 0
 	// NormalizeModeDefaultCompose: like G_NORMALIZE_DEFAULT, but with composed
 	// forms rather than a maximally decomposed form
 	NormalizeModeDefaultCompose NormalizeMode = 1
-	// NormalizeModeNfc: another name for G_NORMALIZE_DEFAULT_COMPOSE
-	NormalizeModeNfc NormalizeMode = 1
+	// NormalizeModeNFC: another name for G_NORMALIZE_DEFAULT_COMPOSE
+	NormalizeModeNFC NormalizeMode = 1
 	// NormalizeModeAll: beyond G_NORMALIZE_DEFAULT also standardize the
 	// "compatibility" characters in Unicode, such as SUPERSCRIPT THREE to the
 	// standard forms (in this case DIGIT THREE). Formatting information may be
 	// lost but for most text operations such characters should be considered
 	// the same
 	NormalizeModeAll NormalizeMode = 2
-	// NormalizeModeNfkd: another name for G_NORMALIZE_ALL
-	NormalizeModeNfkd NormalizeMode = 2
+	// NormalizeModeNFKD: another name for G_NORMALIZE_ALL
+	NormalizeModeNFKD NormalizeMode = 2
 	// NormalizeModeAllCompose: like G_NORMALIZE_ALL, but with composed forms
 	// rather than a maximally decomposed form
 	NormalizeModeAllCompose NormalizeMode = 3
-	// NormalizeModeNfkc: another name for G_NORMALIZE_ALL_COMPOSE
-	NormalizeModeNfkc NormalizeMode = 3
+	// NormalizeModeNFKC: another name for G_NORMALIZE_ALL_COMPOSE
+	NormalizeModeNFKC NormalizeMode = 3
 )
 
 type NumberParserError int
@@ -664,8 +714,8 @@ const (
 	SpawnErrorLoop SpawnError = 11
 	// SpawnErrorTxtbusy: execv() returned `ETXTBUSY`
 	SpawnErrorTxtbusy SpawnError = 12
-	// SpawnErrorIo: execv() returned `EIO`
-	SpawnErrorIo SpawnError = 13
+	// SpawnErrorIO: execv() returned `EIO`
+	SpawnErrorIO SpawnError = 13
 	// SpawnErrorNfile: execv() returned `ENFILE`
 	SpawnErrorNfile SpawnError = 14
 	// SpawnErrorMfile: execv() returned `EMFILE`
@@ -738,8 +788,8 @@ const (
 type TokenType int
 
 const (
-	// TokenTypeEof: the end of the file
-	TokenTypeEof TokenType = 0
+	// TokenTypeEOF: the end of the file
+	TokenTypeEOF TokenType = 0
 	// TokenTypeLeftParen: a '(' character
 	TokenTypeLeftParen TokenType = 40
 	// TokenTypeRightParen: a ')' character
@@ -776,10 +826,10 @@ const (
 	TokenTypeString TokenType = 264
 	// TokenTypeSymbol: a symbol
 	TokenTypeSymbol TokenType = 265
-	// TokenTypeIDentifier: an identifier
-	TokenTypeIDentifier TokenType = 266
-	// TokenTypeIDentifierNull: a null identifier
-	TokenTypeIDentifierNull TokenType = 267
+	// TokenTypeIdentifier: an identifier
+	TokenTypeIdentifier TokenType = 266
+	// TokenTypeIdentifierNull: a null identifier
+	TokenTypeIdentifierNull TokenType = 267
 	// TokenTypeCommentSingle: one line comment
 	TokenTypeCommentSingle TokenType = 268
 	// TokenTypeCommentMulti: multi line comment
@@ -846,8 +896,8 @@ const (
 	UnicodeBreakTypeQuotation UnicodeBreakType = 17
 	// UnicodeBreakTypeExclamation: exclamation/Interrogation (EX)
 	UnicodeBreakTypeExclamation UnicodeBreakType = 18
-	// UnicodeBreakTypeIDeographic: ideographic (ID)
-	UnicodeBreakTypeIDeographic UnicodeBreakType = 19
+	// UnicodeBreakTypeIdeographic: ideographic (ID)
+	UnicodeBreakTypeIdeographic UnicodeBreakType = 19
 	// UnicodeBreakTypeNumeric: numeric (NU)
 	UnicodeBreakTypeNumeric UnicodeBreakType = 20
 	// UnicodeBreakTypeInfixSeparator: infix Separator (Numeric) (IS)
@@ -1291,31 +1341,31 @@ const (
 	UnicodeTypeSpaceSeparator UnicodeType = 29
 )
 
-type UriError int
+type URIError int
 
 const (
-	// UriErrorFailed: generic error if no more specific error is available. See
+	// URIErrorFailed: generic error if no more specific error is available. See
 	// the error message for details.
-	UriErrorFailed UriError = 0
-	// UriErrorBadScheme: the scheme of a URI could not be parsed.
-	UriErrorBadScheme UriError = 1
-	// UriErrorBadUser: the user/userinfo of a URI could not be parsed.
-	UriErrorBadUser UriError = 2
-	// UriErrorBadPassword: the password of a URI could not be parsed.
-	UriErrorBadPassword UriError = 3
-	// UriErrorBadAuthParams: the authentication parameters of a URI could not
+	URIErrorFailed URIError = 0
+	// URIErrorBadScheme: the scheme of a URI could not be parsed.
+	URIErrorBadScheme URIError = 1
+	// URIErrorBadUser: the user/userinfo of a URI could not be parsed.
+	URIErrorBadUser URIError = 2
+	// URIErrorBadPassword: the password of a URI could not be parsed.
+	URIErrorBadPassword URIError = 3
+	// URIErrorBadAuthParams: the authentication parameters of a URI could not
 	// be parsed.
-	UriErrorBadAuthParams UriError = 4
-	// UriErrorBadHost: the host of a URI could not be parsed.
-	UriErrorBadHost UriError = 5
-	// UriErrorBadPort: the port of a URI could not be parsed.
-	UriErrorBadPort UriError = 6
-	// UriErrorBadPath: the path of a URI could not be parsed.
-	UriErrorBadPath UriError = 7
-	// UriErrorBadQuery: the query of a URI could not be parsed.
-	UriErrorBadQuery UriError = 8
-	// UriErrorBadFragment: the fragment of a URI could not be parsed.
-	UriErrorBadFragment UriError = 9
+	URIErrorBadAuthParams URIError = 4
+	// URIErrorBadHost: the host of a URI could not be parsed.
+	URIErrorBadHost URIError = 5
+	// URIErrorBadPort: the port of a URI could not be parsed.
+	URIErrorBadPort URIError = 6
+	// URIErrorBadPath: the path of a URI could not be parsed.
+	URIErrorBadPath URIError = 7
+	// URIErrorBadQuery: the query of a URI could not be parsed.
+	URIErrorBadQuery URIError = 8
+	// URIErrorBadFragment: the fragment of a URI could not be parsed.
+	URIErrorBadFragment URIError = 9
 )
 
 type UserDirectory int

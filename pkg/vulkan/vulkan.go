@@ -2,6 +2,17 @@
 
 package vulkan
 
+import (
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 import "C"
+
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+
+		// Objects/Classes
+	})
+}

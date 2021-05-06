@@ -2,10 +2,46 @@
 
 package cairo
 
+import (
+	"unsafe"
+
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gobject-introspection-1.0 cairo-gobject
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <cairo-gobject.h>
 import "C"
+
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+		// Enums
+		{T: glib.Type(C.cairo_gobject_status_get_type()), F: marshalStatus},
+		{T: glib.Type(C.cairo_gobject_content_get_type()), F: marshalContent},
+		{T: glib.Type(C.cairo_gobject_operator_get_type()), F: marshalOperator},
+		{T: glib.Type(C.cairo_gobject_antialias_get_type()), F: marshalAntialias},
+		{T: glib.Type(C.cairo_gobject_fill_rule_get_type()), F: marshalFillRule},
+		{T: glib.Type(C.cairo_gobject_line_cap_get_type()), F: marshalLineCap},
+		{T: glib.Type(C.cairo_gobject_line_join_get_type()), F: marshalLineJoin},
+		{T: glib.Type(C.cairo_gobject_text_cluster_flags_get_type()), F: marshalTextClusterFlags},
+		{T: glib.Type(C.cairo_gobject_font_slant_get_type()), F: marshalFontSlant},
+		{T: glib.Type(C.cairo_gobject_font_weight_get_type()), F: marshalFontWeight},
+		{T: glib.Type(C.cairo_gobject_subpixel_order_get_type()), F: marshalSubpixelOrder},
+		{T: glib.Type(C.cairo_gobject_hint_style_get_type()), F: marshalHintStyle},
+		{T: glib.Type(C.cairo_gobject_hint_metrics_get_type()), F: marshalHintMetrics},
+		{T: glib.Type(C.cairo_gobject_font_type_get_type()), F: marshalFontType},
+		{T: glib.Type(C.cairo_gobject_path_data_type_get_type()), F: marshalPathDataType},
+		{T: glib.Type(C.cairo_gobject_device_type_get_type()), F: marshalDeviceType},
+		{T: glib.Type(C.cairo_gobject_surface_type_get_type()), F: marshalSurfaceType},
+		{T: glib.Type(C.cairo_gobject_format_get_type()), F: marshalFormat},
+		{T: glib.Type(C.cairo_gobject_pattern_type_get_type()), F: marshalPatternType},
+		{T: glib.Type(C.cairo_gobject_extend_get_type()), F: marshalExtend},
+		{T: glib.Type(C.cairo_gobject_filter_get_type()), F: marshalFilter},
+		{T: glib.Type(C.cairo_gobject_region_overlap_get_type()), F: marshalRegionOverlap},
+
+		// Objects/Classes
+	})
+}
 
 type Status int
 
@@ -51,6 +87,10 @@ const (
 	StatusJbig2GlobalMissing      Status = 38
 )
 
+func marshalStatus(p uintptr) (interface{}, error) {
+	return Status(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Content int
 
 const (
@@ -58,6 +98,10 @@ const (
 	ContentAlpha      Content = 8192
 	ContentColorAlpha Content = 12288
 )
+
+func marshalContent(p uintptr) (interface{}, error) {
+	return Content(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Operator int
 
@@ -93,6 +137,10 @@ const (
 	OperatorHslLuminosity Operator = 28
 )
 
+func marshalOperator(p uintptr) (interface{}, error) {
+	return Operator(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Antialias int
 
 const (
@@ -105,12 +153,20 @@ const (
 	AntialiasBest     Antialias = 6
 )
 
+func marshalAntialias(p uintptr) (interface{}, error) {
+	return Antialias(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type FillRule int
 
 const (
 	FillRuleWinding FillRule = 0
 	FillRuleEvenOdd FillRule = 1
 )
+
+func marshalFillRule(p uintptr) (interface{}, error) {
+	return FillRule(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type LineCap int
 
@@ -120,6 +176,10 @@ const (
 	LineCapSquare LineCap = 2
 )
 
+func marshalLineCap(p uintptr) (interface{}, error) {
+	return LineCap(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type LineJoin int
 
 const (
@@ -128,11 +188,19 @@ const (
 	LineJoinBevel LineJoin = 2
 )
 
+func marshalLineJoin(p uintptr) (interface{}, error) {
+	return LineJoin(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TextClusterFlags int
 
 const (
 	TextClusterFlagsBackward TextClusterFlags = 1
 )
+
+func marshalTextClusterFlags(p uintptr) (interface{}, error) {
+	return TextClusterFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type FontSlant int
 
@@ -142,12 +210,20 @@ const (
 	FontSlantOblique FontSlant = 2
 )
 
+func marshalFontSlant(p uintptr) (interface{}, error) {
+	return FontSlant(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type FontWeight int
 
 const (
 	FontWeightNormal FontWeight = 0
 	FontWeightBold   FontWeight = 1
 )
+
+func marshalFontWeight(p uintptr) (interface{}, error) {
+	return FontWeight(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SubpixelOrder int
 
@@ -159,6 +235,10 @@ const (
 	SubpixelOrderVbgr    SubpixelOrder = 4
 )
 
+func marshalSubpixelOrder(p uintptr) (interface{}, error) {
+	return SubpixelOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type HintStyle int
 
 const (
@@ -169,6 +249,10 @@ const (
 	HintStyleFull    HintStyle = 4
 )
 
+func marshalHintStyle(p uintptr) (interface{}, error) {
+	return HintStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type HintMetrics int
 
 const (
@@ -176,6 +260,10 @@ const (
 	HintMetricsOff     HintMetrics = 1
 	HintMetricsOn      HintMetrics = 2
 )
+
+func marshalHintMetrics(p uintptr) (interface{}, error) {
+	return HintMetrics(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type FontType int
 
@@ -187,6 +275,10 @@ const (
 	FontTypeUser   FontType = 4
 )
 
+func marshalFontType(p uintptr) (interface{}, error) {
+	return FontType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PathDataType int
 
 const (
@@ -196,19 +288,27 @@ const (
 	PathDataTypeClosePath PathDataType = 3
 )
 
+func marshalPathDataType(p uintptr) (interface{}, error) {
+	return PathDataType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type DeviceType int
 
 const (
 	DeviceTypeDrm     DeviceType = 0
 	DeviceTypeGl      DeviceType = 1
 	DeviceTypeScript  DeviceType = 2
-	DeviceTypeXCb     DeviceType = 3
-	DeviceTypeXLib    DeviceType = 4
-	DeviceTypeXMl     DeviceType = 5
+	DeviceTypeXcb     DeviceType = 3
+	DeviceTypeXlib    DeviceType = 4
+	DeviceTypeXml     DeviceType = 5
 	DeviceTypeCogl    DeviceType = 6
 	DeviceTypeWin32   DeviceType = 7
 	DeviceTypeInvalid DeviceType = -1
 )
+
+func marshalDeviceType(p uintptr) (interface{}, error) {
+	return DeviceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SurfaceType int
 
@@ -216,8 +316,8 @@ const (
 	SurfaceTypeImage         SurfaceType = 0
 	SurfaceTypePdf           SurfaceType = 1
 	SurfaceTypePs            SurfaceType = 2
-	SurfaceTypeXLib          SurfaceType = 3
-	SurfaceTypeXCb           SurfaceType = 4
+	SurfaceTypeXlib          SurfaceType = 3
+	SurfaceTypeXcb           SurfaceType = 4
 	SurfaceTypeGlitz         SurfaceType = 5
 	SurfaceTypeQuartz        SurfaceType = 6
 	SurfaceTypeWin32         SurfaceType = 7
@@ -234,11 +334,15 @@ const (
 	SurfaceTypeGl            SurfaceType = 18
 	SurfaceTypeDrm           SurfaceType = 19
 	SurfaceTypeTee           SurfaceType = 20
-	SurfaceTypeXMl           SurfaceType = 21
+	SurfaceTypeXml           SurfaceType = 21
 	SurfaceTypeSkia          SurfaceType = 22
 	SurfaceTypeSubsurface    SurfaceType = 23
 	SurfaceTypeCogl          SurfaceType = 24
 )
+
+func marshalSurfaceType(p uintptr) (interface{}, error) {
+	return SurfaceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Format int
 
@@ -252,6 +356,10 @@ const (
 	FormatRgb30    Format = 5
 )
 
+func marshalFormat(p uintptr) (interface{}, error) {
+	return Format(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PatternType int
 
 const (
@@ -263,6 +371,10 @@ const (
 	PatternTypeRasterSource PatternType = 5
 )
 
+func marshalPatternType(p uintptr) (interface{}, error) {
+	return PatternType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Extend int
 
 const (
@@ -271,6 +383,10 @@ const (
 	ExtendReflect Extend = 2
 	ExtendPad     Extend = 3
 )
+
+func marshalExtend(p uintptr) (interface{}, error) {
+	return Extend(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Filter int
 
@@ -283,6 +399,10 @@ const (
 	FilterGaussian Filter = 5
 )
 
+func marshalFilter(p uintptr) (interface{}, error) {
+	return Filter(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type RegionOverlap int
 
 const (
@@ -290,3 +410,7 @@ const (
 	RegionOverlapOut  RegionOverlap = 1
 	RegionOverlapPart RegionOverlap = 2
 )
+
+func marshalRegionOverlap(p uintptr) (interface{}, error) {
+	return RegionOverlap(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}

@@ -2,10 +2,42 @@
 
 package gdk
 
+import (
+	"unsafe"
+
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gtk4 gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 import "C"
+
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+		// Enums
+		{T: glib.Type(C.gdk_axis_use_get_type()), F: marshalAxisUse},
+		{T: glib.Type(C.gdk_crossing_mode_get_type()), F: marshalCrossingMode},
+		{T: glib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
+		{T: glib.Type(C.gdk_device_tool_type_get_type()), F: marshalDeviceToolType},
+		{T: glib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
+		{T: glib.Type(C.gdk_event_type_get_type()), F: marshalEventType},
+		{T: glib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
+		{T: glib.Type(C.gdk_gl_error_get_type()), F: marshalGLError},
+		{T: glib.Type(C.gdk_gravity_get_type()), F: marshalGravity},
+		{T: glib.Type(C.gdk_input_source_get_type()), F: marshalInputSource},
+		{T: glib.Type(C.gdk_key_match_get_type()), F: marshalKeyMatch},
+		{T: glib.Type(C.gdk_memory_format_get_type()), F: marshalMemoryFormat},
+		{T: glib.Type(C.gdk_notify_type_get_type()), F: marshalNotifyType},
+		{T: glib.Type(C.gdk_scroll_direction_get_type()), F: marshalScrollDirection},
+		{T: glib.Type(C.gdk_subpixel_layout_get_type()), F: marshalSubpixelLayout},
+		{T: glib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
+		{T: glib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
+		{T: glib.Type(C.gdk_vulkan_error_get_type()), F: marshalVulkanError},
+
+		// Objects/Classes
+	})
+}
 
 type AxisUse int
 
@@ -22,10 +54,10 @@ const (
 	AxisUseDeltaY AxisUse = 4
 	// AxisUsePressure: the axis is used for pressure information.
 	AxisUsePressure AxisUse = 5
-	// AxisUseXTilt: the axis is used for x tilt information.
-	AxisUseXTilt AxisUse = 6
-	// AxisUseYTilt: the axis is used for y tilt information.
-	AxisUseYTilt AxisUse = 7
+	// AxisUseXtilt: the axis is used for x tilt information.
+	AxisUseXtilt AxisUse = 6
+	// AxisUseYtilt: the axis is used for y tilt information.
+	AxisUseYtilt AxisUse = 7
 	// AxisUseWheel: the axis is used for wheel information.
 	AxisUseWheel AxisUse = 8
 	// AxisUseDistance: the axis is used for pen/tablet distance information
@@ -37,6 +69,10 @@ const (
 	// AxisUseLast: a constant equal to the numerically highest axis value.
 	AxisUseLast AxisUse = 12
 )
+
+func marshalAxisUse(p uintptr) (interface{}, error) {
+	return AxisUse(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type CrossingMode int
 
@@ -66,6 +102,10 @@ const (
 	CrossingModeDeviceSwitch CrossingMode = 8
 )
 
+func marshalCrossingMode(p uintptr) (interface{}, error) {
+	return CrossingMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type DevicePadFeature int
 
 const (
@@ -76,6 +116,10 @@ const (
 	// DevicePadFeatureStrip: a straight interactive area
 	DevicePadFeatureStrip DevicePadFeature = 2
 )
+
+func marshalDevicePadFeature(p uintptr) (interface{}, error) {
+	return DevicePadFeature(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type DeviceToolType int
 
@@ -98,6 +142,10 @@ const (
 	DeviceToolTypeLens DeviceToolType = 7
 )
 
+func marshalDeviceToolType(p uintptr) (interface{}, error) {
+	return DeviceToolType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type DragCancelReason int
 
 const (
@@ -108,6 +156,10 @@ const (
 	// DragCancelReasonError: unspecified error.
 	DragCancelReasonError DragCancelReason = 2
 )
+
+func marshalDragCancelReason(p uintptr) (interface{}, error) {
+	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type EventType int
 
@@ -181,6 +233,10 @@ const (
 	EventTypeEventLast EventType = 28
 )
 
+func marshalEventType(p uintptr) (interface{}, error) {
+	return EventType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type FullscreenMode int
 
 const (
@@ -189,6 +245,10 @@ const (
 	// FullscreenModeAllMonitors: span across all monitors when fullscreen.
 	FullscreenModeAllMonitors FullscreenMode = 1
 )
+
+func marshalFullscreenMode(p uintptr) (interface{}, error) {
+	return FullscreenMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type GLError int
 
@@ -204,6 +264,10 @@ const (
 	// GLErrorLinkFailed: the shader linking failed
 	GLErrorLinkFailed GLError = 4
 )
+
+func marshalGLError(p uintptr) (interface{}, error) {
+	return GLError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Gravity int
 
@@ -231,6 +295,10 @@ const (
 	GravityStatic Gravity = 10
 )
 
+func marshalGravity(p uintptr) (interface{}, error) {
+	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type InputSource int
 
 const (
@@ -255,6 +323,10 @@ const (
 	InputSourceTabletPad InputSource = 6
 )
 
+func marshalInputSource(p uintptr) (interface{}, error) {
+	return InputSource(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type KeyMatch int
 
 const (
@@ -266,6 +338,10 @@ const (
 	// KeyMatchExact: the key event matches
 	KeyMatchExact KeyMatch = 2
 )
+
+func marshalKeyMatch(p uintptr) (interface{}, error) {
+	return KeyMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type MemoryFormat int
 
@@ -296,6 +372,10 @@ const (
 	MemoryFormatNFormats MemoryFormat = 9
 )
 
+func marshalMemoryFormat(p uintptr) (interface{}, error) {
+	return MemoryFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type NotifyType int
 
 const (
@@ -319,6 +399,10 @@ const (
 	NotifyTypeUnknown NotifyType = 5
 )
 
+func marshalNotifyType(p uintptr) (interface{}, error) {
+	return NotifyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ScrollDirection int
 
 const (
@@ -334,6 +418,10 @@ const (
 	// scroll events. See gdk_scroll_event_get_deltas()
 	ScrollDirectionSmooth ScrollDirection = 4
 )
+
+func marshalScrollDirection(p uintptr) (interface{}, error) {
+	return ScrollDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SubpixelLayout int
 
@@ -351,6 +439,10 @@ const (
 	// SubpixelLayoutVerticalBgr: the layout is vertical, the order is BGR
 	SubpixelLayoutVerticalBgr SubpixelLayout = 5
 )
+
+func marshalSubpixelLayout(p uintptr) (interface{}, error) {
+	return SubpixelLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SurfaceEdge int
 
@@ -373,6 +465,10 @@ const (
 	SurfaceEdgeSouthEast SurfaceEdge = 7
 )
 
+func marshalSurfaceEdge(p uintptr) (interface{}, error) {
+	return SurfaceEdge(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TouchpadGesturePhase int
 
 const (
@@ -388,6 +484,10 @@ const (
 	TouchpadGesturePhaseCancel TouchpadGesturePhase = 3
 )
 
+func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
+	return TouchpadGesturePhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type VulkanError int
 
 const (
@@ -397,3 +497,7 @@ const (
 	// VulkanErrorNotAvailable: vulkan support is not available on this Surface
 	VulkanErrorNotAvailable VulkanError = 1
 )
+
+func marshalVulkanError(p uintptr) (interface{}, error) {
+	return VulkanError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}

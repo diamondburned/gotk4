@@ -118,5 +118,8 @@ func writeNamespace(ng *girgen.NamespaceGenerator) {
 
 	if err := goimports.File(out); err != nil {
 		log.Println("failed to run goimports on output:", err)
+		return
 	}
+
+	log.Println("Finished generating", ng.PackageName(), "at", ng.Repository().Path)
 }

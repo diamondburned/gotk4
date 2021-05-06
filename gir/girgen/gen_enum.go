@@ -5,14 +5,23 @@ import (
 )
 
 var enumTmpl = newGoTemplate(`
-	type {{ .Name }} int
+	{{ $type := (PascalToGo .Name) }}
+
+	type {{ $type }} int
 
 	const (
 		{{ range .Members }}
 		{{- $name := ($.FormatMember .Name) -}}
 		{{- GoDoc .Doc 1 $name -}}
-		{{ $name }} {{ $.Name }} = {{ .Value }}
-		{{ end }})
+		{{ $name }} {{ $type }} = {{ .Value }}
+		{{ end -}}
+	)
+
+	{{ if .GLibGetType }}
+	func marshal{{ $type }}(p uintptr) (interface{}, error) {
+		return {{ $type }}(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+	}
+	{{ end }}
 `)
 
 type enumGenerator struct {
@@ -21,7 +30,7 @@ type enumGenerator struct {
 }
 
 func (eg *enumGenerator) FormatMember(memberName string) string {
-	return eg.Name + SnakeToGo(true, memberName)
+	return PascalToGo(eg.Name) + SnakeToGo(true, memberName)
 }
 
 func (ng *NamespaceGenerator) generateEnums() {

@@ -2,6 +2,12 @@
 
 package gio
 
+import (
+	"unsafe"
+
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: gobject-introspection-1.0 gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
@@ -17,6 +23,56 @@ package gio
 // #include <gio/gunixsocketaddress.h>
 import "C"
 
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+		// Enums
+		{T: glib.Type(C.g_bus_type_get_type()), F: marshalBusType},
+		{T: glib.Type(C.g_converter_result_get_type()), F: marshalConverterResult},
+		{T: glib.Type(C.g_credentials_type_get_type()), F: marshalCredentialsType},
+		{T: glib.Type(C.g_dbus_error_get_type()), F: marshalDBusError},
+		{T: glib.Type(C.g_dbus_message_byte_order_get_type()), F: marshalDBusMessageByteOrder},
+		{T: glib.Type(C.g_dbus_message_header_field_get_type()), F: marshalDBusMessageHeaderField},
+		{T: glib.Type(C.g_dbus_message_type_get_type()), F: marshalDBusMessageType},
+		{T: glib.Type(C.g_data_stream_byte_order_get_type()), F: marshalDataStreamByteOrder},
+		{T: glib.Type(C.g_data_stream_newline_type_get_type()), F: marshalDataStreamNewlineType},
+		{T: glib.Type(C.g_drive_start_stop_type_get_type()), F: marshalDriveStartStopType},
+		{T: glib.Type(C.g_emblem_origin_get_type()), F: marshalEmblemOrigin},
+		{T: glib.Type(C.g_file_attribute_status_get_type()), F: marshalFileAttributeStatus},
+		{T: glib.Type(C.g_file_attribute_type_get_type()), F: marshalFileAttributeType},
+		{T: glib.Type(C.g_file_monitor_event_get_type()), F: marshalFileMonitorEvent},
+		{T: glib.Type(C.g_file_type_get_type()), F: marshalFileType},
+		{T: glib.Type(C.g_filesystem_preview_type_get_type()), F: marshalFilesystemPreviewType},
+		{T: glib.Type(C.g_io_error_enum_get_type()), F: marshalIOErrorEnum},
+		{T: glib.Type(C.g_io_module_scope_flags_get_type()), F: marshalIOModuleScopeFlags},
+		{T: glib.Type(C.g_memory_monitor_warning_level_get_type()), F: marshalMemoryMonitorWarningLevel},
+		{T: glib.Type(C.g_mount_operation_result_get_type()), F: marshalMountOperationResult},
+		{T: glib.Type(C.g_network_connectivity_get_type()), F: marshalNetworkConnectivity},
+		{T: glib.Type(C.g_notification_priority_get_type()), F: marshalNotificationPriority},
+		{T: glib.Type(C.g_password_save_get_type()), F: marshalPasswordSave},
+		{T: glib.Type(C.g_pollable_return_get_type()), F: marshalPollableReturn},
+		{T: glib.Type(C.g_resolver_error_get_type()), F: marshalResolverError},
+		{T: glib.Type(C.g_resolver_record_type_get_type()), F: marshalResolverRecordType},
+		{T: glib.Type(C.g_resource_error_get_type()), F: marshalResourceError},
+		{T: glib.Type(C.g_socket_client_event_get_type()), F: marshalSocketClientEvent},
+		{T: glib.Type(C.g_socket_family_get_type()), F: marshalSocketFamily},
+		{T: glib.Type(C.g_socket_listener_event_get_type()), F: marshalSocketListenerEvent},
+		{T: glib.Type(C.g_socket_protocol_get_type()), F: marshalSocketProtocol},
+		{T: glib.Type(C.g_socket_type_get_type()), F: marshalSocketType},
+		{T: glib.Type(C.g_tls_authentication_mode_get_type()), F: marshalTlsAuthenticationMode},
+		{T: glib.Type(C.g_tls_certificate_request_flags_get_type()), F: marshalTlsCertificateRequestFlags},
+		{T: glib.Type(C.g_tls_channel_binding_error_get_type()), F: marshalTlsChannelBindingError},
+		{T: glib.Type(C.g_tls_channel_binding_type_get_type()), F: marshalTlsChannelBindingType},
+		{T: glib.Type(C.g_tls_database_lookup_flags_get_type()), F: marshalTlsDatabaseLookupFlags},
+		{T: glib.Type(C.g_tls_error_get_type()), F: marshalTlsError},
+		{T: glib.Type(C.g_tls_interaction_result_get_type()), F: marshalTlsInteractionResult},
+		{T: glib.Type(C.g_tls_rehandshake_mode_get_type()), F: marshalTlsRehandshakeMode},
+		{T: glib.Type(C.g_unix_socket_address_type_get_type()), F: marshalUnixSocketAddressType},
+		{T: glib.Type(C.g_zlib_compressor_format_get_type()), F: marshalZlibCompressorFormat},
+
+		// Objects/Classes
+	})
+}
+
 type BusType int
 
 const (
@@ -31,6 +87,10 @@ const (
 	BusTypeSession BusType = 2
 )
 
+func marshalBusType(p uintptr) (interface{}, error) {
+	return BusType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ConverterResult int
 
 const (
@@ -43,6 +103,10 @@ const (
 	// ConverterResultFlushed: flushing is finished
 	ConverterResultFlushed ConverterResult = 3
 )
+
+func marshalConverterResult(p uintptr) (interface{}, error) {
+	return ConverterResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type CredentialsType int
 
@@ -69,6 +133,10 @@ const (
 	CredentialsTypeAppleXucred CredentialsType = 6
 )
 
+func marshalCredentialsType(p uintptr) (interface{}, error) {
+	return CredentialsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type DBusError int
 
 const (
@@ -86,9 +154,9 @@ const (
 	// DBusErrorNoReply: no reply to a message expecting one, usually means a
 	// timeout occurred.
 	DBusErrorNoReply DBusError = 4
-	// DBusErrorIoError: something went wrong reading or writing to a socket,
+	// DBusErrorIOError: something went wrong reading or writing to a socket,
 	// for example.
-	DBusErrorIoError DBusError = 5
+	DBusErrorIOError DBusError = 5
 	// DBusErrorBadAddress: a D-Bus bus address was malformed.
 	DBusErrorBadAddress DBusError = 6
 	// DBusErrorNotSupported: requested operation isn't supported (like ENOSYS
@@ -200,6 +268,10 @@ const (
 	DBusErrorPropertyReadOnly DBusError = 44
 )
 
+func marshalDBusError(p uintptr) (interface{}, error) {
+	return DBusError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type DBusMessageByteOrder int
 
 const (
@@ -208,6 +280,10 @@ const (
 	// DBusMessageByteOrderLittleEndian: the byte order is little endian.
 	DBusMessageByteOrderLittleEndian DBusMessageByteOrder = 108
 )
+
+func marshalDBusMessageByteOrder(p uintptr) (interface{}, error) {
+	return DBusMessageByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type DBusMessageHeaderField int
 
@@ -237,6 +313,10 @@ const (
 	DBusMessageHeaderFieldNumUnixFds DBusMessageHeaderField = 9
 )
 
+func marshalDBusMessageHeaderField(p uintptr) (interface{}, error) {
+	return DBusMessageHeaderField(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type DBusMessageType int
 
 const (
@@ -252,6 +332,10 @@ const (
 	DBusMessageTypeSignal DBusMessageType = 4
 )
 
+func marshalDBusMessageType(p uintptr) (interface{}, error) {
+	return DBusMessageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type DataStreamByteOrder int
 
 const (
@@ -263,6 +347,10 @@ const (
 	// architecture.
 	DataStreamByteOrderHostEndian DataStreamByteOrder = 2
 )
+
+func marshalDataStreamByteOrder(p uintptr) (interface{}, error) {
+	return DataStreamByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type DataStreamNewlineType int
 
@@ -279,6 +367,10 @@ const (
 	// type.
 	DataStreamNewlineTypeAny DataStreamNewlineType = 3
 )
+
+func marshalDataStreamNewlineType(p uintptr) (interface{}, error) {
+	return DataStreamNewlineType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type DriveStartStopType int
 
@@ -300,6 +392,10 @@ const (
 	DriveStartStopTypePassword DriveStartStopType = 4
 )
 
+func marshalDriveStartStopType(p uintptr) (interface{}, error) {
+	return DriveStartStopType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type EmblemOrigin int
 
 const (
@@ -315,6 +411,10 @@ const (
 	EmblemOriginTag EmblemOrigin = 3
 )
 
+func marshalEmblemOrigin(p uintptr) (interface{}, error) {
+	return EmblemOrigin(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type FileAttributeStatus int
 
 const (
@@ -325,6 +425,10 @@ const (
 	// FileAttributeStatusErrorSetting: indicates an error in setting the value.
 	FileAttributeStatusErrorSetting FileAttributeStatus = 2
 )
+
+func marshalFileAttributeStatus(p uintptr) (interface{}, error) {
+	return FileAttributeStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type FileAttributeType int
 
@@ -350,6 +454,10 @@ const (
 	// FileAttributeTypeStringv: a nil terminated char **. Since 2.22
 	FileAttributeTypeStringv FileAttributeType = 9
 )
+
+func marshalFileAttributeType(p uintptr) (interface{}, error) {
+	return FileAttributeType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type FileMonitorEvent int
 
@@ -386,6 +494,10 @@ const (
 	FileMonitorEventMovedOut FileMonitorEvent = 10
 )
 
+func marshalFileMonitorEvent(p uintptr) (interface{}, error) {
+	return FileMonitorEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type FileType int
 
 const (
@@ -407,6 +519,10 @@ const (
 	FileTypeMountable FileType = 6
 )
 
+func marshalFileType(p uintptr) (interface{}, error) {
+	return FileType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type FilesystemPreviewType int
 
 const (
@@ -419,6 +535,10 @@ const (
 	// FilesystemPreviewTypeNever: never preview files.
 	FilesystemPreviewTypeNever FilesystemPreviewType = 2
 )
+
+func marshalFilesystemPreviewType(p uintptr) (interface{}, error) {
+	return FilesystemPreviewType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type IOErrorEnum int
 
@@ -538,6 +658,10 @@ const (
 	IOErrorEnumMessageTooLarge IOErrorEnum = 46
 )
 
+func marshalIOErrorEnum(p uintptr) (interface{}, error) {
+	return IOErrorEnum(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type IOModuleScopeFlags int
 
 const (
@@ -548,6 +672,10 @@ const (
 	// as previously loaded module.
 	IOModuleScopeFlagsBlockDuplicates IOModuleScopeFlags = 1
 )
+
+func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
+	return IOModuleScopeFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type MemoryMonitorWarningLevel int
 
@@ -567,6 +695,10 @@ const (
 	MemoryMonitorWarningLevelCritical MemoryMonitorWarningLevel = 255
 )
 
+func marshalMemoryMonitorWarningLevel(p uintptr) (interface{}, error) {
+	return MemoryMonitorWarningLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type MountOperationResult int
 
 const (
@@ -580,6 +712,10 @@ const (
 	// implemented)
 	MountOperationResultUnhandled MountOperationResult = 2
 )
+
+func marshalMountOperationResult(p uintptr) (interface{}, error) {
+	return MountOperationResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type NetworkConnectivity int
 
@@ -598,6 +734,10 @@ const (
 	// to be able to reach the full Internet.
 	NetworkConnectivityFull NetworkConnectivity = 4
 )
+
+func marshalNetworkConnectivity(p uintptr) (interface{}, error) {
+	return NetworkConnectivity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type NotificationPriority int
 
@@ -620,6 +760,10 @@ const (
 	NotificationPriorityUrgent NotificationPriority = 3
 )
 
+func marshalNotificationPriority(p uintptr) (interface{}, error) {
+	return NotificationPriority(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type PasswordSave int
 
 const (
@@ -630,6 +774,10 @@ const (
 	// PasswordSavePermanently: save a password permanently.
 	PasswordSavePermanently PasswordSave = 2
 )
+
+func marshalPasswordSave(p uintptr) (interface{}, error) {
+	return PasswordSave(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type PollableReturn int
 
@@ -643,6 +791,10 @@ const (
 	PollableReturnWouldBlock PollableReturn = -27
 )
 
+func marshalPollableReturn(p uintptr) (interface{}, error) {
+	return PollableReturn(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ResolverError int
 
 const (
@@ -654,6 +806,10 @@ const (
 	// ResolverErrorInternal: unknown error
 	ResolverErrorInternal ResolverError = 2
 )
+
+func marshalResolverError(p uintptr) (interface{}, error) {
+	return ResolverError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type ResolverRecordType int
 
@@ -670,6 +826,10 @@ const (
 	ResolverRecordTypeNs ResolverRecordType = 5
 )
 
+func marshalResolverRecordType(p uintptr) (interface{}, error) {
+	return ResolverRecordType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ResourceError int
 
 const (
@@ -678,6 +838,10 @@ const (
 	// ResourceErrorInternal: unknown error
 	ResourceErrorInternal ResourceError = 1
 )
+
+func marshalResourceError(p uintptr) (interface{}, error) {
+	return ResourceError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SocketClientEvent int
 
@@ -707,6 +871,10 @@ const (
 	SocketClientEventComplete SocketClientEvent = 8
 )
 
+func marshalSocketClientEvent(p uintptr) (interface{}, error) {
+	return SocketClientEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type SocketFamily int
 
 const (
@@ -719,6 +887,10 @@ const (
 	// SocketFamilyIpv6: the IPv6 family
 	SocketFamilyIpv6 SocketFamily = 10
 )
+
+func marshalSocketFamily(p uintptr) (interface{}, error) {
+	return SocketFamily(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SocketListenerEvent int
 
@@ -735,6 +907,10 @@ const (
 	SocketListenerEventListened SocketListenerEvent = 3
 )
 
+func marshalSocketListenerEvent(p uintptr) (interface{}, error) {
+	return SocketListenerEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type SocketProtocol int
 
 const (
@@ -749,6 +925,10 @@ const (
 	// SocketProtocolSctp: SCTP over IP
 	SocketProtocolSctp SocketProtocol = 132
 )
+
+func marshalSocketProtocol(p uintptr) (interface{}, error) {
+	return SocketProtocol(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type SocketType int
 
@@ -765,6 +945,10 @@ const (
 	SocketTypeSeqpacket SocketType = 3
 )
 
+func marshalSocketType(p uintptr) (interface{}, error) {
+	return SocketType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TlsAuthenticationMode int
 
 const (
@@ -776,12 +960,20 @@ const (
 	TlsAuthenticationModeRequired TlsAuthenticationMode = 2
 )
 
+func marshalTlsAuthenticationMode(p uintptr) (interface{}, error) {
+	return TlsAuthenticationMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TlsCertificateRequestFlags int
 
 const (
 	// TlsCertificateRequestFlagsNone: no flags
 	TlsCertificateRequestFlagsNone TlsCertificateRequestFlags = 0
 )
+
+func marshalTlsCertificateRequestFlags(p uintptr) (interface{}, error) {
+	return TlsCertificateRequestFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type TlsChannelBindingError int
 
@@ -808,6 +1000,10 @@ const (
 	TlsChannelBindingErrorGeneralError TlsChannelBindingError = 4
 )
 
+func marshalTlsChannelBindingError(p uintptr) (interface{}, error) {
+	return TlsChannelBindingError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TlsChannelBindingType int
 
 const (
@@ -821,6 +1017,10 @@ const (
 	TlsChannelBindingTypeServerEndPoint TlsChannelBindingType = 1
 )
 
+func marshalTlsChannelBindingType(p uintptr) (interface{}, error) {
+	return TlsChannelBindingType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TlsDatabaseLookupFlags int
 
 const (
@@ -830,6 +1030,10 @@ const (
 	// a private key.
 	TlsDatabaseLookupFlagsKeypair TlsDatabaseLookupFlags = 1
 )
+
+func marshalTlsDatabaseLookupFlags(p uintptr) (interface{}, error) {
+	return TlsDatabaseLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type TlsError int
 
@@ -851,14 +1055,18 @@ const (
 	// requested a client-side certificate, but none was provided. See
 	// g_tls_connection_set_certificate().
 	TlsErrorCertificateRequired TlsError = 5
-	// TlsErrorEof: the TLS connection was closed without proper notice, which
+	// TlsErrorEOF: the TLS connection was closed without proper notice, which
 	// may indicate an attack. See g_tls_connection_set_require_close_notify().
-	TlsErrorEof TlsError = 6
+	TlsErrorEOF TlsError = 6
 	// TlsErrorInappropriateFallback: the TLS handshake failed because the
 	// client sent the fallback SCSV, indicating a protocol downgrade attack.
 	// Since: 2.60
 	TlsErrorInappropriateFallback TlsError = 7
 )
+
+func marshalTlsError(p uintptr) (interface{}, error) {
+	return TlsError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type TlsInteractionResult int
 
@@ -874,6 +1082,10 @@ const (
 	TlsInteractionResultFailed TlsInteractionResult = 2
 )
 
+func marshalTlsInteractionResult(p uintptr) (interface{}, error) {
+	return TlsInteractionResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TlsRehandshakeMode int
 
 const (
@@ -884,6 +1096,10 @@ const (
 	// TlsRehandshakeModeUnsafely: allow unsafe rehandshaking
 	TlsRehandshakeModeUnsafely TlsRehandshakeMode = 2
 )
+
+func marshalTlsRehandshakeMode(p uintptr) (interface{}, error) {
+	return TlsRehandshakeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type UnixSocketAddressType int
 
@@ -901,6 +1117,10 @@ const (
 	UnixSocketAddressTypeAbstractPadded UnixSocketAddressType = 4
 )
 
+func marshalUnixSocketAddressType(p uintptr) (interface{}, error) {
+	return UnixSocketAddressType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type ZlibCompressorFormat int
 
 const (
@@ -911,3 +1131,7 @@ const (
 	// ZlibCompressorFormatRaw: deflate compression with no header
 	ZlibCompressorFormatRaw ZlibCompressorFormat = 2
 )
+
+func marshalZlibCompressorFormat(p uintptr) (interface{}, error) {
+	return ZlibCompressorFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}

@@ -2,10 +2,23 @@
 
 package pangoot
 
+import (
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: pango pangoot
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pango-ot.h>
 import "C"
+
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+		// Enums
+		// Skipped TableType.
+
+		// Objects/Classes
+	})
+}
 
 type TableType int
 

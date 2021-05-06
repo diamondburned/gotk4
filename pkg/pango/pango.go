@@ -2,10 +2,42 @@
 
 package pango
 
+import (
+	"unsafe"
+
+	"github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config: pango pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pango.h>
 import "C"
+
+func init() {
+	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+		// Enums
+		{T: glib.Type(C.pango_alignment_get_type()), F: marshalAlignment},
+		{T: glib.Type(C.pango_attr_type_get_type()), F: marshalAttrType},
+		{T: glib.Type(C.pango_bidi_type_get_type()), F: marshalBidiType},
+		{T: glib.Type(C.pango_coverage_level_get_type()), F: marshalCoverageLevel},
+		{T: glib.Type(C.pango_direction_get_type()), F: marshalDirection},
+		{T: glib.Type(C.pango_ellipsize_mode_get_type()), F: marshalEllipsizeMode},
+		{T: glib.Type(C.pango_gravity_get_type()), F: marshalGravity},
+		{T: glib.Type(C.pango_gravity_hint_get_type()), F: marshalGravityHint},
+		{T: glib.Type(C.pango_overline_get_type()), F: marshalOverline},
+		{T: glib.Type(C.pango_render_part_get_type()), F: marshalRenderPart},
+		{T: glib.Type(C.pango_script_get_type()), F: marshalScript},
+		{T: glib.Type(C.pango_stretch_get_type()), F: marshalStretch},
+		{T: glib.Type(C.pango_style_get_type()), F: marshalStyle},
+		{T: glib.Type(C.pango_tab_align_get_type()), F: marshalTabAlign},
+		{T: glib.Type(C.pango_underline_get_type()), F: marshalUnderline},
+		{T: glib.Type(C.pango_variant_get_type()), F: marshalVariant},
+		{T: glib.Type(C.pango_weight_get_type()), F: marshalWeight},
+		{T: glib.Type(C.pango_wrap_mode_get_type()), F: marshalWrapMode},
+
+		// Objects/Classes
+	})
+}
 
 type Alignment int
 
@@ -17,6 +49,10 @@ const (
 	// AlignmentRight: put all available space on the left
 	AlignmentRight Alignment = 2
 )
+
+func marshalAlignment(p uintptr) (interface{}, error) {
+	return Alignment(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type AttrType int
 
@@ -99,6 +135,10 @@ const (
 	AttrTypeOverlineColor AttrType = 30
 )
 
+func marshalAttrType(p uintptr) (interface{}, error) {
+	return AttrType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type BidiType int
 
 const (
@@ -142,6 +182,10 @@ const (
 	BidiTypeOn BidiType = 18
 )
 
+func marshalBidiType(p uintptr) (interface{}, error) {
+	return BidiType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type CoverageLevel int
 
 const (
@@ -161,26 +205,34 @@ const (
 	CoverageLevelExact CoverageLevel = 3
 )
 
+func marshalCoverageLevel(p uintptr) (interface{}, error) {
+	return CoverageLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Direction int
 
 const (
-	// DirectionLtr: a strong left-to-right direction
-	DirectionLtr Direction = 0
-	// DirectionRtl: a strong right-to-left direction
-	DirectionRtl Direction = 1
-	// DirectionTtbLtr: deprecated value; treated the same as
+	// DirectionLTR: a strong left-to-right direction
+	DirectionLTR Direction = 0
+	// DirectionRTL: a strong right-to-left direction
+	DirectionRTL Direction = 1
+	// DirectionTtbLTR: deprecated value; treated the same as
 	// PANGO_DIRECTION_RTL.
-	DirectionTtbLtr Direction = 2
-	// DirectionTtbRtl: deprecated value; treated the same as
+	DirectionTtbLTR Direction = 2
+	// DirectionTtbRTL: deprecated value; treated the same as
 	// PANGO_DIRECTION_LTR
-	DirectionTtbRtl Direction = 3
-	// DirectionWeakLtr: a weak left-to-right direction
-	DirectionWeakLtr Direction = 4
-	// DirectionWeakRtl: a weak right-to-left direction
-	DirectionWeakRtl Direction = 5
+	DirectionTtbRTL Direction = 3
+	// DirectionWeakLTR: a weak left-to-right direction
+	DirectionWeakLTR Direction = 4
+	// DirectionWeakRTL: a weak right-to-left direction
+	DirectionWeakRTL Direction = 5
 	// DirectionNeutral: no direction specified
 	DirectionNeutral Direction = 6
 )
+
+func marshalDirection(p uintptr) (interface{}, error) {
+	return Direction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type EllipsizeMode int
 
@@ -194,6 +246,10 @@ const (
 	// EllipsizeModeEnd: omit characters at the end of the text
 	EllipsizeModeEnd EllipsizeMode = 3
 )
+
+func marshalEllipsizeMode(p uintptr) (interface{}, error) {
+	return EllipsizeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Gravity int
 
@@ -209,6 +265,10 @@ const (
 	// GravityAuto: gravity is resolved from the context matrix
 	GravityAuto Gravity = 4
 )
+
+func marshalGravity(p uintptr) (interface{}, error) {
+	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type GravityHint int
 
@@ -226,6 +286,10 @@ const (
 	GravityHintLine GravityHint = 2
 )
 
+func marshalGravityHint(p uintptr) (interface{}, error) {
+	return GravityHint(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Overline int
 
 const (
@@ -235,6 +299,10 @@ const (
 	// being underlined.
 	OverlineSingle Overline = 1
 )
+
+func marshalOverline(p uintptr) (interface{}, error) {
+	return Overline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type RenderPart int
 
@@ -250,6 +318,10 @@ const (
 	// RenderPartOverline: overlines
 	RenderPartOverline RenderPart = 4
 )
+
+func marshalRenderPart(p uintptr) (interface{}, error) {
+	return RenderPart(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Script int
 
@@ -493,6 +565,10 @@ const (
 	ScriptSignwriting Script = 116
 )
 
+func marshalScript(p uintptr) (interface{}, error) {
+	return Script(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Stretch int
 
 const (
@@ -516,6 +592,10 @@ const (
 	StretchUltraExpanded Stretch = 8
 )
 
+func marshalStretch(p uintptr) (interface{}, error) {
+	return Stretch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Style int
 
 const (
@@ -527,12 +607,20 @@ const (
 	StyleItalic Style = 2
 )
 
+func marshalStyle(p uintptr) (interface{}, error) {
+	return Style(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type TabAlign int
 
 const (
 	// TabAlignLeft: the tab stop appears to the left of the text.
 	TabAlignLeft TabAlign = 0
 )
+
+func marshalTabAlign(p uintptr) (interface{}, error) {
+	return TabAlign(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Underline int
 
@@ -567,6 +655,10 @@ const (
 	UnderlineErrorLine Underline = 7
 )
 
+func marshalUnderline(p uintptr) (interface{}, error) {
+	return Underline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type Variant int
 
 const (
@@ -576,6 +668,10 @@ const (
 	// smaller variants of the capital characters.
 	VariantSmallCaps Variant = 1
 )
+
+func marshalVariant(p uintptr) (interface{}, error) {
+	return Variant(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
 type Weight int
 
@@ -606,6 +702,10 @@ const (
 	WeightUltraheavy Weight = 1000
 )
 
+func marshalWeight(p uintptr) (interface{}, error) {
+	return Weight(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 type WrapMode int
 
 const (
@@ -617,3 +717,7 @@ const (
 	// character boundaries if there is not enough space for a full word.
 	WrapModeWordChar WrapMode = 2
 )
+
+func marshalWrapMode(p uintptr) (interface{}, error) {
+	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}

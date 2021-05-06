@@ -16,6 +16,7 @@ import (
 func newGoTemplate(block string) *template.Template {
 	t := template.New("")
 	t.Funcs(template.FuncMap{
+		"PascalToGo":               PascalToGo,
 		"SnakeToGo":                SnakeToGo,
 		"FirstChar":                FirstChar,
 		"GoDoc":                    GoDoc,
@@ -30,6 +31,10 @@ type Generator struct {
 	// KnownTypes contains a list of type checks that return true if the given
 	// type matches a known type.
 	KnownTypes []func(string) bool
+	// NoMarshalPkgs contains a list of namespace package names that don't have
+	// marshalers generated. GLib is by default in this list, because it
+	// shouldn't have any marshalers.
+	NoMarshalPkgs []string
 
 	Repos   gir.Repositories
 	current gir.NamespaceFindResult
@@ -96,6 +101,7 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
+	ng.generateInit()
 	ng.generateEnums()
 
 	if err := ng.pen.Flush(); err != nil {
@@ -144,6 +150,16 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 // PackageName returns the current namespace's package name.
 func (ng *NamespaceGenerator) PackageName() string {
 	return gir.GoNamespace(ng.current.Namespace)
+}
+
+// Namespace returns the generator's namespace.
+func (ng *NamespaceGenerator) Namespace() gir.Namespace {
+	return ng.current.Namespace
+}
+
+// Repository returns the generator's repository.
+func (ng *NamespaceGenerator) Repository() gir.PkgRepository {
+	return ng.current.Repository
 }
 
 func (ng *NamespaceGenerator) addImport(pkgPath string) {

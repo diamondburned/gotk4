@@ -31,10 +31,10 @@ func X11AtomToXatomForDisplay(display *X11Display, atom gdk.Atom) xlib.Atom
 
 // X11DeviceGetID: returns the device ID as seen by XInput2.
 //
-// &gt; If gdk_disable_multidevice() has been called, this function &gt; will
-// respectively return 2/3 for the core pointer and keyboard, &gt; (matching the
-// IDs for the Virtual Core Pointer and Keyboard in &gt; XInput 2), but calling
-// this function on any slave devices (i.e. &gt; those managed via XInput 1.x),
+// > If gdk_disable_multidevice() has been called, this function > will
+// respectively return 2/3 for the core pointer and keyboard, > (matching the
+// IDs for the Virtual Core Pointer and Keyboard in > XInput 2), but calling
+// this function on any slave devices (i.e. > those managed via XInput 1.x),
 // will return 0.
 func X11DeviceGetID(device *X11DeviceCore) int
 

@@ -1474,8 +1474,8 @@ func EventPeek() *Event
 //
 //    {
 //      // motion_event handler
-//      x = motion_event-&gt;x;
-//      y = motion_event-&gt;y;
+//      x = motion_event->x;
+//      y = motion_event->y;
 //      // handle (x,y) motion
 //      gdk_event_request_motions (motion_event); // handles is_hint events
 //    }
@@ -1861,7 +1861,7 @@ func SelectionSendNotifyForDisplay(display *Display, requestor *Window, selectio
 //
 // By default, GDK tries all included backends.
 //
-// For example, |[&lt;!-- language="C" --&gt; gdk_set_allowed_backends
+// For example, |[<!-- language="C" --> gdk_set_allowed_backends
 // ("wayland,quartz,*"); ]| instructs GDK to try the Wayland backend first,
 // followed by the Quartz backend, and then all others.
 //
@@ -1922,8 +1922,8 @@ func TestRenderSync(window *Window)
 func TestSimulateButton(window *Window, x int, y int, button uint, modifiers ModifierType, buttonPressrelease EventType) bool
 
 // TestSimulateKey: this function is intended to be used in GTK+ test programs.
-// If (@x,@y) are &gt; (-1,-1), it will warp the mouse pointer to the given
-// (@x,@y) coordinates within @window and simulate a key press or release event.
+// If (@x,@y) are > (-1,-1), it will warp the mouse pointer to the given (@x,@y)
+// coordinates within @window and simulate a key press or release event.
 //
 // When the mouse pointer is warped to the target location, use of this function
 // outside of test programs that run in their own virtual windowing system (e.g.
@@ -1964,7 +1964,7 @@ func ThreadsAddIdle(function glib.SourceFunc, data unsafe.Pointer) uint
 //       SomeWidget *self = data;
 //       // do stuff with self
 //
-//       self-&gt;idle_id = 0;
+//       self->idle_id = 0;
 //
 //       // gdk_threads_leave(); would be needed for g_idle_add()
 //       return FALSE;
@@ -1973,7 +1973,7 @@ func ThreadsAddIdle(function glib.SourceFunc, data unsafe.Pointer) uint
 //    static void
 //    some_widget_do_stuff_later (SomeWidget *self)
 //    {
-//       self-&gt;idle_id = gdk_threads_add_idle (idle_callback, self)
+//       self->idle_id = gdk_threads_add_idle (idle_callback, self)
 //       // using g_idle_add() here would require thread protection in the callback
 //    }
 //
@@ -1981,9 +1981,9 @@ func ThreadsAddIdle(function glib.SourceFunc, data unsafe.Pointer) uint
 //    some_widget_finalize (GObject *object)
 //    {
 //       SomeWidget *self = SOME_WIDGET (object);
-//       if (self-&gt;idle_id)
-//         g_source_remove (self-&gt;idle_id);
-//       G_OBJECT_CLASS (parent_class)-&gt;finalize (object);
+//       if (self->idle_id)
+//         g_source_remove (self->idle_id);
+//       G_OBJECT_CLASS (parent_class)->finalize (object);
 //    }
 //
 func ThreadsAddIdleFull(priority int, function glib.SourceFunc, data unsafe.Pointer, notify unsafe.Pointer) uint
@@ -2017,24 +2017,24 @@ func ThreadsAddTimeout(interval uint, function glib.SourceFunc, data unsafe.Poin
 //
 //       // do stuff with self
 //
-//       self-&gt;timeout_id = 0;
+//       self->timeout_id = 0;
 //
 //       return G_SOURCE_REMOVE;
 //    }
 //
 //    static void some_widget_do_stuff_later (SomeWidget *self)
 //    {
-//       self-&gt;timeout_id = g_timeout_add (timeout_callback, self)
+//       self->timeout_id = g_timeout_add (timeout_callback, self)
 //    }
 //
 //    static void some_widget_finalize (GObject *object)
 //    {
 //       SomeWidget *self = SOME_WIDGET (object);
 //
-//       if (self-&gt;timeout_id)
-//         g_source_remove (self-&gt;timeout_id);
+//       if (self->timeout_id)
+//         g_source_remove (self->timeout_id);
 //
-//       G_OBJECT_CLASS (parent_class)-&gt;finalize (object);
+//       G_OBJECT_CLASS (parent_class)->finalize (object);
 //    }
 func ThreadsAddTimeoutFull(priority int, interval uint, function glib.SourceFunc, data unsafe.Pointer, notify unsafe.Pointer) uint
 
@@ -2789,16 +2789,16 @@ type FrameTimings struct {
 //
 //    	GdkGeometry hints;
 //
-//    	hints.base_width = terminal-&gt;char_width;
-//            hints.base_height = terminal-&gt;char_height;
-//            hints.min_width = terminal-&gt;char_width;
-//            hints.min_height = terminal-&gt;char_height;
-//            hints.width_inc = terminal-&gt;char_width;
-//            hints.height_inc = terminal-&gt;char_height;
+//    	hints.base_width = terminal->char_width;
+//            hints.base_height = terminal->char_height;
+//            hints.min_width = terminal->char_width;
+//            hints.min_height = terminal->char_height;
+//            hints.width_inc = terminal->char_width;
+//            hints.height_inc = terminal->char_height;
 //
 //     gtk_window_set_geometry_hints (GTK_WINDOW (toplevel),
 //                                    GTK_WIDGET (terminal),
-//                                    &amp;hints,
+//                                    &hints,
 //                                    GDK_HINT_RESIZE_INC |
 //                                    GDK_HINT_MIN_SIZE |
 //                                    GDK_HINT_BASE_SIZE);

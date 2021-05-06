@@ -403,8 +403,8 @@ const (
 	// assemble/disassemble a virtual drive from several physical drives.
 	DriveStartStopTypeMultidisk DriveStartStopType = 3
 	// DriveStartStopTypePassword: the start/stop methods will unlock/lock the
-	// disk (for example using the ATA &lt;quote&gt;SECURITY UNLOCK
-	// DEVICE&lt;/quote&gt; command)
+	// disk (for example using the ATA <quote>SECURITY UNLOCK DEVICE</quote>
+	// command)
 	DriveStartStopTypePassword DriveStartStopType = 4
 )
 
@@ -580,7 +580,7 @@ func marshalFilesystemPreviewType(p uintptr) (interface{}, error) {
 // Note that this domain may be extended in future GLib releases. In general,
 // new error codes either only apply to new APIs, or else replace
 // G_IO_ERROR_FAILED in cases that were not explicitly distinguished before. You
-// should therefore avoid writing code like |[&lt;!-- language="C" --&gt; if
+// should therefore avoid writing code like |[<!-- language="C" --> if
 // (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED)) { // Assume that
 // this is EPRINTERONFIRE ... } ]| but should instead treat all unrecognized
 // error codes the same as IO_ERROR_FAILED.
@@ -727,7 +727,7 @@ func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
 
 // MemoryMonitorWarningLevel: memory availability warning levels.
 //
-//    if (warning_level &gt; G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
+//    if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
 //      drop_caches ();
 type MemoryMonitorWarningLevel int
 
@@ -1670,7 +1670,7 @@ func ContentTypeIsUnknown(_type string) bool
 //      // Load MIME data from the system
 //      g_content_type_set_mime_dirs (NULL);
 //      // Isolate the environment
-//      g_test_init (&amp;argc, &amp;argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
+//      g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 //
 //      …
 //
@@ -2808,15 +2808,15 @@ type OutputVector struct {
 // These are combined into a binary resource bundle.
 //
 //
-//    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-//    &lt;gresources&gt;
-//      &lt;gresource prefix="/org/gtk/Example"&gt;
-//        &lt;file&gt;data/splashscreen.png&lt;/file&gt;
-//        &lt;file compressed="true"&gt;dialog.ui&lt;/file&gt;
-//        &lt;file preprocess="xml-stripblanks"&gt;menumarkup.xml&lt;/file&gt;
-//        &lt;file alias="example.css"&gt;data/example.css&lt;/file&gt;
-//      &lt;/gresource&gt;
-//    &lt;/gresources&gt;
+//    <?xml version="1.0" encoding="UTF-8"?>
+//    <gresources>
+//      <gresource prefix="/org/gtk/Example">
+//        <file>data/splashscreen.png</file>
+//        <file compressed="true">dialog.ui</file>
+//        <file preprocess="xml-stripblanks">menumarkup.xml</file>
+//        <file alias="example.css">data/example.css</file>
+//      </gresource>
+//    </gresources>
 //
 //
 //    /org/gtk/Example/data/splashscreen.png
@@ -2928,7 +2928,7 @@ type Resource struct {
 //
 //      ...
 //
-//      plugin-&gt;schema_source =
+//      plugin->schema_source =
 //        g_settings_schema_source_new_from_directory (dir,
 //          g_settings_schema_source_get_default (), FALSE, NULL);
 //
@@ -2946,9 +2946,9 @@ type Resource struct {
 //      GSettingsSchema *schema;
 //
 //      if (schema_id == NULL)
-//        schema_id = plugin-&gt;identifier;
+//        schema_id = plugin->identifier;
 //
-//      schema = g_settings_schema_source_lookup (plugin-&gt;schema_source,
+//      schema = g_settings_schema_source_lookup (plugin->schema_source,
 //                                                schema_id, FALSE);
 //
 //      if (schema == NULL)
@@ -3021,15 +3021,13 @@ type StaticResource struct {
 }
 
 // UnixMountEntry: defines a Unix mount entry (e.g.
-// &lt;filename&gt;/media/cdrom&lt;/filename&gt;). This corresponds roughly to a
-// mtab entry.
+// <filename>/media/cdrom</filename>). This corresponds roughly to a mtab entry.
 type UnixMountEntry struct {
 	native *C.GUnixMountEntry
 }
 
-// UnixMountPoint: defines a Unix mount point (e.g.
-// &lt;filename&gt;/dev&lt;/filename&gt;). This corresponds roughly to a fstab
-// entry.
+// UnixMountPoint: defines a Unix mount point (e.g. <filename>/dev</filename>).
+// This corresponds roughly to a fstab entry.
 type UnixMountPoint struct {
 	native *C.GUnixMountPoint
 }

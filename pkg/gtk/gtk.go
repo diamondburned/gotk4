@@ -392,8 +392,8 @@ func marshalButtonRole(p uintptr) (interface{}, error) {
 // choices are appropriate, simply use GTK_BUTTONS_NONE then call
 // gtk_dialog_add_buttons().
 //
-// &gt; Please note that GTK_BUTTONS_OK, GTK_BUTTONS_YES_NO &gt; and
-// GTK_BUTTONS_OK_CANCEL are discouraged by the &gt; [GNOME Human Interface
+// > Please note that GTK_BUTTONS_OK, GTK_BUTTONS_YES_NO > and
+// GTK_BUTTONS_OK_CANCEL are discouraged by the > [GNOME Human Interface
 // Guidelines](http://library.gnome.org/devel/hig-book/stable/).
 type ButtonsType int
 
@@ -2463,7 +2463,7 @@ func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey uint, k
 
 // AcceleratorName: converts an accelerator keyval and modifier mask into a
 // string parseable by gtk_accelerator_parse(). For example, if you pass in
-// K_KEY_q and K_CONTROL_MASK, this function returns “&lt;Control&gt;q”.
+// K_KEY_q and K_CONTROL_MASK, this function returns “<Control>q”.
 //
 // If you need to display accelerators in the user interface, see
 // gtk_accelerator_get_label().
@@ -2477,14 +2477,13 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
 
 // AcceleratorParse: parses a string representing an accelerator. The format
-// looks like “&lt;Control&gt;a” or “&lt;Shift&gt;&lt;Alt&gt;F1” or
-// “&lt;Release&gt;z” (the last one is for key release).
+// looks like “<Control>a” or “<Shift><Alt>F1” or “<Release>z” (the last one is
+// for key release).
 //
 // The parser is fairly liberal and allows lower or upper case, and also
-// abbreviations such as “&lt;Ctl&gt;” and “&lt;Ctrl&gt;”. Key names are parsed
-// using gdk_keyval_from_name(). For character keys the name is not the symbol,
-// but the lowercase name, e.g. one would use “&lt;Ctrl&gt;minus” instead of
-// “&lt;Ctrl&gt;-”.
+// abbreviations such as “<Ctl>” and “<Ctrl>”. Key names are parsed using
+// gdk_keyval_from_name(). For character keys the name is not the symbol, but
+// the lowercase name, e.g. one would use “<Ctrl>minus” instead of “<Ctrl>-”.
 //
 // If the parse fails, @accelerator_key and @accelerator_mods will be set to 0
 // (zero).
@@ -3187,8 +3186,8 @@ func RcGetStyle(widget *Widget) *Style
 // actually have corresponding GTK+ widgets. An example of this would be items
 // inside a GNOME canvas widget.
 //
-//    gtk_widget_path (widget, NULL, &amp;path, NULL);
-//    gtk_widget_class_path (widget, NULL, &amp;class_path, NULL);
+//    gtk_widget_path (widget, NULL, &path, NULL);
+//    gtk_widget_class_path (widget, NULL, &class_path, NULL);
 //    gtk_rc_get_style_by_paths (gtk_widget_get_settings (widget),
 //                               path, class_path,
 //                               G_OBJECT_TYPE (widget));
@@ -3670,7 +3669,7 @@ func TestTextSet(widget *Widget, string string)
 // and button release event) in the middle of the first GdkWindow found that
 // belongs to @widget. For windowless widgets like Button (which returns false
 // from gtk_widget_get_has_window()), this will often be an input-only event
-// window. For other widgets, this is usually widget-&gt;window. Certain caveats
+// window. For other widgets, this is usually widget->window. Certain caveats
 // should be considered when using this function, in particular because the
 // mouse pointer is warped to the button click location, see
 // gdk_test_simulate_button() for details.
@@ -3680,10 +3679,9 @@ func TestWidgetClick(widget *Widget, button uint, modifiers gdk.ModifierType) bo
 // events in the middle of the first GdkWindow found that belongs to @widget.
 // For windowless widgets like Button (which returns false from
 // gtk_widget_get_has_window()), this will often be an input-only event window.
-// For other widgets, this is usually widget-&gt;window. Certain caveats should
-// be considered when using this function, in particular because the mouse
-// pointer is warped to the key press location, see gdk_test_simulate_key() for
-// details.
+// For other widgets, this is usually widget->window. Certain caveats should be
+// considered when using this function, in particular because the mouse pointer
+// is warped to the key press location, see gdk_test_simulate_key() for details.
 func TestWidgetSendKey(widget *Widget, keyval uint, modifiers gdk.ModifierType) bool
 
 // TestWidgetWaitForDraw: enters the main loop and waits for @widget to be
@@ -3731,7 +3729,7 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path 
 //
 // A persistent window
 //
-//    #include &lt;gtk/gtk.h&gt;
+//    #include <gtk/gtk.h>
 //
 //    int
 //    main (int argc, char **argv)
@@ -3739,7 +3737,7 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path 
 //      GtkWidget *win, *but;
 //      const char *text = "Close yourself. I mean it!";
 //
-//      gtk_init (&amp;argc, &amp;argv);
+//      gtk_init (&argc, &argv);
 //
 //      win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 //      g_signal_connect (win,

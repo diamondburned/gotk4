@@ -122,10 +122,9 @@ type Strv *string
 // year 2038, and you cannot use the address of a #GTime variable as argument to
 // the UNIX time() function.
 //
-// Instead, do the following: |[&lt;!-- language="C" --&gt; time_t ttime; GTime
-// gtime;
+// Instead, do the following: |[<!-- language="C" --> time_t ttime; GTime gtime;
 //
-//    time (&amp;ttime);
+//    time (&ttime);
 //    gtime = (GTime)ttime;
 //
 type Time int32
@@ -655,8 +654,8 @@ const (
 	RegexErrorRangeOutOfOrder RegexError = 108
 	// RegexErrorNothingToRepeat: nothing to repeat. Since 2.16
 	RegexErrorNothingToRepeat RegexError = 109
-	// RegexErrorUnrecognizedCharacter: unrecognized character after "(?",
-	// "(?&lt;" or "(?P". Since 2.16
+	// RegexErrorUnrecognizedCharacter: unrecognized character after "(?", "(?<"
+	// or "(?P". Since 2.16
 	RegexErrorUnrecognizedCharacter RegexError = 112
 	// RegexErrorPosixNamedClassOutsideClass: POSIX named classes are supported
 	// only within a class. Since 2.16
@@ -865,7 +864,7 @@ const (
 	SpawnErrorIsdir SpawnError = 17
 	// SpawnErrorLibbad: execv() returned `ELIBBAD`
 	SpawnErrorLibbad SpawnError = 18
-	// SpawnErrorFailed: some other fatal failure, `error-&gt;message` should
+	// SpawnErrorFailed: some other fatal failure, `error->message` should
 	// explain.
 	SpawnErrorFailed SpawnError = 19
 )
@@ -1957,8 +1956,8 @@ func AtomicIntAdd(atomic *int, val int) int
 //
 // This call acts as a full compiler and hardware memory barrier.
 //
-// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic
-// &amp;= val; return tmp; }`.
+// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic &=
+// val; return tmp; }`.
 func AtomicIntAnd(atomic *uint, val uint) uint
 
 // AtomicIntCompareAndExchange: compares @atomic to @oldval and, if equal, sets
@@ -2033,8 +2032,8 @@ func AtomicPointerAdd(atomic *unsafe.Pointer, val int) int
 // AtomicPointerAnd: performs an atomic bitwise 'and' of the value of @atomic
 // and @val, storing the result back in @atomic.
 //
-// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic
-// &amp;= val; return tmp; }`.
+// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic &=
+// val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicPointerAnd(atomic *unsafe.Pointer, val uint) uint
@@ -2205,8 +2204,8 @@ func Basename(fileName *string) *string
 // Attempting to lock on two different bits within the same integer is not
 // supported and will very probably cause deadlocks.
 //
-// The value of the bit that is set is (1u &lt;&lt; @bit). If @bit is not
-// between 0 and 31 then the result is undefined.
+// The value of the bit that is set is (1u << @bit). If @bit is not between 0
+// and 31 then the result is undefined.
 //
 // This function accesses @address atomically. All other accesses to @address
 // must be atomic in order for this function to work reliably.
@@ -2234,8 +2233,8 @@ func BitStorage(number uint32) uint
 // Attempting to lock on two different bits within the same integer is not
 // supported.
 //
-// The value of the bit that is set is (1u &lt;&lt; @bit). If @bit is not
-// between 0 and 31 then the result is undefined.
+// The value of the bit that is set is (1u << @bit). If @bit is not between 0
+// and 31 then the result is undefined.
 //
 // This function accesses @address atomically. All other accesses to @address
 // must be atomic in order for this function to work reliably.
@@ -4265,8 +4264,8 @@ func MainCurrentSource() *Source
 //    free_allocated_memory (void)
 //    {
 //      GList *l;
-//      for (l = free_list; l; l = l-&gt;next);
-//        g_free (l-&gt;data);
+//      for (l = free_list; l; l = l->next);
+//        g_free (l->data);
 //      g_list_free (free_list);
 //      free_list = NULL;
 //     }
@@ -4291,10 +4290,10 @@ func MainCurrentSource() *Source
 //    allocate_memory (gsize size)
 //    {
 //      FreeListBlock *block = g_new (FreeListBlock, 1);
-//      block-&gt;mem = g_malloc (size);
-//      block-&gt;depth = g_main_depth ();
+//      block->mem = g_malloc (size);
+//      block->depth = g_main_depth ();
 //      free_list = g_list_prepend (free_list, block);
-//      return block-&gt;mem;
+//      return block->mem;
 //    }
 //
 //    void
@@ -4305,11 +4304,11 @@ func MainCurrentSource() *Source
 //      int depth = g_main_depth ();
 //      for (l = free_list; l; );
 //        {
-//          GList *next = l-&gt;next;
-//          FreeListBlock *block = l-&gt;data;
-//          if (block-&gt;depth &gt; depth)
+//          GList *next = l->next;
+//          FreeListBlock *block = l->data;
+//          if (block->depth > depth)
 //            {
-//              g_free (block-&gt;mem);
+//              g_free (block->mem);
 //              g_free (block);
 //              free_list = g_list_delete_link (free_list, l);
 //            }
@@ -4399,10 +4398,9 @@ func MarkupErrorQuark() Quark
 // and attribute values.
 //
 // Note also that this function will produce character references in the range
-// of &amp;#x1; ... &amp;#x1f; for all control sequences except for tabstop,
-// newline and carriage return. The character references in this range are not
-// valid XML 1.0, but they are valid XML 1.1 and will be accepted by the GMarkup
-// parser.
+// of &#x1; ... &#x1f; for all control sequences except for tabstop, newline and
+// carriage return. The character references in this range are not valid XML
+// 1.0, but they are valid XML 1.1 and will be accepted by the GMarkup parser.
 func MarkupEscapeText(text string, length int) string
 
 // MarkupPrintfEscaped: formats arguments according to @format, escaping all
@@ -4411,14 +4409,14 @@ func MarkupEscapeText(text string, length int) string
 // output, without having to worry that the strings might themselves contain
 // markup.
 //
-//    const char *store = "Fortnum &amp; Mason";
+//    const char *store = "Fortnum & Mason";
 //    const char *item = "Tea";
 //    char *output;
 //
-//    output = g_markup_printf_escaped ("&lt;purchase&gt;"
-//                                      "&lt;store&gt;s&lt;/store&gt;"
-//                                      "&lt;item&gt;s&lt;/item&gt;"
-//                                      "&lt;/purchase&gt;",
+//    output = g_markup_printf_escaped ("<purchase>"
+//                                      "<store>s</store>"
+//                                      "<item>s</item>"
+//                                      "</purchase>",
 //                                      store, item);
 //
 func MarkupPrintfEscaped(format string) string
@@ -4517,7 +4515,7 @@ func NumberParserErrorQuark() Quark
 // following example shows how it can be used together with the g_log()
 // functions.
 //
-//    #include &lt;glib.h&gt;
+//    #include <glib.h>
 //
 //    static void
 //    log_handler (const gchar   *log_domain,
@@ -4582,11 +4580,11 @@ func OnErrorStackTrace(prgName string)
 //
 //      static gsize initialization_value = 0;
 //
-//      if (g_once_init_enter (&amp;initialization_value))
+//      if (g_once_init_enter (&initialization_value))
 //        {
 //          gsize setup_value = 42; // initialization code here
 //
-//          g_once_init_leave (&amp;initialization_value, setup_value);
+//          g_once_init_leave (&initialization_value, setup_value);
 //        }
 //
 //      // use initialization_value here
@@ -5921,8 +5919,8 @@ func Strlcat(dest string, src string, destSize uint) uint
 // At most @dest_size - 1 characters will be copied. Always nul-terminates
 // (unless @dest_size is 0). This function does not allocate memory. Unlike
 // strncpy(), this function doesn't pad @dest (so it's often faster). It returns
-// the size of the attempted result, strlen (src), so if @retval &gt;=
-// @dest_size, truncation occurred.
+// the size of the attempted result, strlen (src), so if @retval >= @dest_size,
+// truncation occurred.
 //
 // Caveat: strlcpy() is supposedly more secure than strcpy() or strncpy(), but
 // if you really want to avoid screwups, g_strdup() is an even better idea.
@@ -6427,9 +6425,9 @@ func TestSubprocess() bool
 //
 // This should be called at the top of a test function.
 //
-// For example: |[&lt;!-- language="C" --&gt; static void test_array_sort (void)
-// { g_test_summary ("Test my_array_sort() sorts the array correctly and stably,
-// " "including testing zero length and one-element arrays.");
+// For example: |[<!-- language="C" --> static void test_array_sort (void) {
+// g_test_summary ("Test my_array_sort() sorts the array correctly and stably, "
+// "including testing zero length and one-element arrays.");
 //
 //      …
 //    }
@@ -6534,7 +6532,7 @@ func TestTrapReachedTimeout() bool
 //      int
 //      main (int argc, char **argv)
 //      {
-//        g_test_init (&amp;argc, &amp;argv, NULL);
+//        g_test_init (&argc, &argv, NULL);
 //
 //        g_test_add_func ("/myobject/create_large_object",
 //                         test_create_large_object);
@@ -6844,8 +6842,8 @@ func UnicharCombiningClass(uc uint32) int
 // exactly the inverse of g_unichar_decompose(). No composition can have either
 // of @a or @b equal to zero. To be precise, this function composes if and only
 // if there exists a Primary Composite P which is canonically equivalent to the
-// sequence &lt;@a,@b&gt;. See the Unicode Standard for the definition of
-// Primary Composite.
+// sequence <@a,@b>. See the Unicode Standard for the definition of Primary
+// Composite.
 //
 // If @a and @b do not compose a new character, @ch is set to zero.
 //
@@ -7279,9 +7277,9 @@ func URIParse(uriString string, flags UriFlags) *Uri
 // G_URI_PARAMS_WWW_FORM is handled as documented for g_uri_params_iter_init().
 //
 // If G_URI_PARAMS_CASE_INSENSITIVE is passed to @flags, attributes will be
-// compared case-insensitively, so a params string `attr=123&amp;Attr=456` will
-// only return a single attribute–value pair, `Attr=456`. Case will be preserved
-// in the returned attributes.
+// compared case-insensitively, so a params string `attr=123&Attr=456` will only
+// return a single attribute–value pair, `Attr=456`. Case will be preserved in
+// the returned attributes.
 //
 // If @params cannot be parsed (for example, it contains two @separators
 // characters in a row), then @error is set and nil is returned.
@@ -7878,17 +7876,17 @@ type Checksum struct {
 // collect the data.
 //
 // Here is an example for using GCond to block a thread until a condition is
-// satisfied: |[&lt;!-- language="C" --&gt; gpointer current_data = NULL; GMutex
+// satisfied: |[<!-- language="C" --> gpointer current_data = NULL; GMutex
 // data_mutex; GCond data_cond;
 //
-// void push_data (gpointer data) { g_mutex_lock (&amp;data_mutex); current_data
-// = data; g_cond_signal (&amp;data_cond); g_mutex_unlock (&amp;data_mutex); }
+// void push_data (gpointer data) { g_mutex_lock (&data_mutex); current_data =
+// data; g_cond_signal (&data_cond); g_mutex_unlock (&data_mutex); }
 //
 // gpointer pop_data (void) { gpointer data;
 //
-// g_mutex_lock (&amp;data_mutex); while (!current_data) g_cond_wait
-// (&amp;data_cond, &amp;data_mutex); data = current_data; current_data = NULL;
-// g_mutex_unlock (&amp;data_mutex);
+// g_mutex_lock (&data_mutex); while (!current_data) g_cond_wait (&data_cond,
+// &data_mutex); data = current_data; current_data = NULL; g_mutex_unlock
+// (&data_mutex);
 //
 // return data; } ]| Whenever a thread calls pop_data() now, it will wait until
 // current_data is non-nil, i.e. until some other thread has called push_data().
@@ -8271,28 +8269,28 @@ type Queue struct {
 // lock when a reader already holds the lock and a writer is queued to acquire
 // it.
 //
-// Here is an example for an array with access functions: |[&lt;!-- language="C"
-// --&gt; GRWLock lock; GPtrArray *array;
+// Here is an example for an array with access functions: |[<!-- language="C"
+// --> GRWLock lock; GPtrArray *array;
 //
 // gpointer my_array_get (guint index) { gpointer retval = NULL;
 //
 // if (!array) return NULL;
 //
-// g_rw_lock_reader_lock (&amp;lock); if (index &lt; array-&gt;len) retval =
-// g_ptr_array_index (array, index); g_rw_lock_reader_unlock (&amp;lock);
+// g_rw_lock_reader_lock (&lock); if (index < array->len) retval =
+// g_ptr_array_index (array, index); g_rw_lock_reader_unlock (&lock);
 //
 // return retval; }
 //
 // void my_array_set (guint index, gpointer data) { g_rw_lock_writer_lock
-// (&amp;lock);
+// (&lock);
 //
 // if (!array) array = g_ptr_array_new ();
 //
-// if (index &gt;= array-&gt;len) g_ptr_array_set_size (array, index+1);
+// if (index >= array->len) g_ptr_array_set_size (array, index+1);
 // g_ptr_array_index (array, index) = data;
 //
-// g_rw_lock_writer_unlock (&amp;lock); } ]| This example shows an array which
-// can be accessed by many readers (the my_array_get() function) simultaneously,
+// g_rw_lock_writer_unlock (&lock); } ]| This example shows an array which can
+// be accessed by many readers (the my_array_get() function) simultaneously,
 // whereas the writers (the my_array_set() function) will only be allowed one at
 // a time and only if no readers currently access the array. This is because of
 // the potentially dangerous resizing of the array. Using these functions is
@@ -8771,7 +8769,7 @@ type URI struct {
 
 // URIParamsIter: many URI schemes include one or more attribute/value pairs as
 // part of the URI value. For example
-// `scheme://server/path?query=string&amp;is=there` has two attributes –
+// `scheme://server/path?query=string&is=there` has two attributes –
 // `query=string` and `is=there` – in its query part.
 //
 // A ParamsIter structure represents an iterator that can be used to iterate
@@ -9063,17 +9061,17 @@ type VariantBuilder struct {
 //        GVariantDict dict;
 //        guint32 count;
 //
-//        g_variant_dict_init (&amp;dict, orig);
-//        if (!g_variant_dict_lookup (&amp;dict, "count", "u", &amp;count))
+//        g_variant_dict_init (&dict, orig);
+//        if (!g_variant_dict_lookup (&dict, "count", "u", &count))
 //          {
 //            g_set_error (...);
-//            g_variant_dict_clear (&amp;dict);
+//            g_variant_dict_clear (&dict);
 //            return NULL;
 //          }
 //
-//        g_variant_dict_insert (&amp;dict, "count", "u", count + 1);
+//        g_variant_dict_insert (&dict, "count", "u", count + 1);
 //
-//        return g_variant_dict_end (&amp;dict);
+//        return g_variant_dict_end (&dict);
 //      }
 //
 //
@@ -9089,7 +9087,7 @@ type VariantBuilder struct {
 //
 //        dict = g_variant_dict_new (orig);
 //
-//        if (g_variant_dict_lookup (dict, "count", "u", &amp;count))
+//        if (g_variant_dict_lookup (dict, "count", "u", &count))
 //          {
 //            g_variant_dict_insert (dict, "count", "u", count + 1);
 //            result = g_variant_dict_end (dict);

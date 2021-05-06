@@ -3,6 +3,7 @@ package girgen
 import (
 	"fmt"
 	"go/doc"
+	"html"
 	"regexp"
 	"strings"
 	"unicode"
@@ -149,6 +150,7 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 	col := CommentsColumnLimit - (CommentsTabWidth * indentLvl)
 
 	cmt = strings.Join(paragraphs, "\n\n")
+	cmt = html.UnescapeString(cmt)
 	cmt = docText(cmt, col)
 
 	ident := strings.Repeat("\t", indentLvl)

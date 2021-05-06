@@ -79,7 +79,7 @@ func main() {
 	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
 
 	gen := girgen.NewGenerator(repos)
-	gen.WithLogger(log.New(os.Stderr, "[girgen]", log.LstdFlags))
+	gen.WithLogger(log.New(os.Stderr, "[girgen] ", log.LstdFlags|log.Lmsgprefix))
 
 	for _, repo := range repos {
 		for _, namespace := range repo.Namespaces {

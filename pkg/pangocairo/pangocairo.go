@@ -176,7 +176,7 @@ func ShowErrorUnderline(cr *cairo.Context, x float64, y float64, width float64, 
 // current point of the cairo context.
 //
 // Note that @text is the start of the text for layout, which is then indexed by
-// `glyph_item-&gt;item-&gt;offset`.
+// `glyph_item->item->offset`.
 func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem)
 
 // ShowGlyphString: draws the glyphs in @glyphs in the specified cairo context.

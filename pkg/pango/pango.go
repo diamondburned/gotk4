@@ -174,9 +174,9 @@ func marshalAttrType(p uintptr) (interface{}, error) {
 }
 
 // BidiType: `PangoBidiType` represents the bidirectional character type of a
-// Unicode character as specified by the &lt;ulink
-// url="http://www.unicode.org/reports/tr9/"&gt;Unicode bidirectional
-// algorithm&lt;/ulink&gt;.
+// Unicode character as specified by the <ulink
+// url="http://www.unicode.org/reports/tr9/">Unicode bidirectional
+// algorithm</ulink>.
 type BidiType int
 
 const (
@@ -1749,8 +1749,8 @@ type GlyphItem struct {
 //
 // The *forward direction* of the iterator is the logical direction of text.
 // That is, with increasing @start_index and @start_char values. If @glyph_item
-// is right-to-left (that is, if `glyph_item-&gt;item-&gt;analysis.level` is
-// odd), then @start_glyph decreases as the iterator moves forward. Moreover, in
+// is right-to-left (that is, if `glyph_item->item->analysis.level` is odd),
+// then @start_glyph decreases as the iterator moves forward. Moreover, in
 // right-to-left cases, @start_glyph is greater than @end_glyph.
 //
 // An iterator should be initialized using either
@@ -1763,12 +1763,12 @@ type GlyphItem struct {
 //
 // “` PangoGlyphItemIter cluster_iter; gboolean have_cluster;
 //
-// for (have_cluster = pango_glyph_item_iter_init_start (&amp;cluster_iter,
+// for (have_cluster = pango_glyph_item_iter_init_start (&cluster_iter,
 // glyph_item, text); have_cluster; have_cluster =
-// pango_glyph_item_iter_next_cluster (&amp;cluster_iter)) { ... } “`
+// pango_glyph_item_iter_next_cluster (&cluster_iter)) { ... } “`
 //
 // Note that @text is the start of the text for layout, which is then indexed by
-// `glyph_item-&gt;item-&gt;offset` to get to the text of @glyph_item. The
+// `glyph_item->item->offset` to get to the text of @glyph_item. The
 // @start_index and @end_index values can directly index into @text. The
 // @start_glyph, @end_glyph, @start_char, and @end_char values however are
 // zero-based for the @glyph_item. For each cluster, the item pointed at by the
@@ -1867,7 +1867,7 @@ type LayoutIter struct {
 type LayoutLine struct {
 	// Layout: the layout this line belongs to, might be nil
 	Layout *Layout
-	// StartIndex: start of line as byte index into layout-&gt;text
+	// StartIndex: start of line as byte index into layout->text
 	StartIndex int
 	// Length: length of line in bytes
 	Length int
@@ -1944,9 +1944,8 @@ type LogAttr struct {
 //
 // The transformation is given by
 //
-// “` x_device = x_user * matrix-&gt;xx + y_user * matrix-&gt;xy +
-// matrix-&gt;x0; y_device = x_user * matrix-&gt;yx + y_user * matrix-&gt;yy +
-// matrix-&gt;y0; “`
+// “` x_device = x_user * matrix->xx + y_user * matrix->xy + matrix->x0;
+// y_device = x_user * matrix->yx + y_user * matrix->yy + matrix->y0; “`
 type Matrix struct {
 	// XX: 1st component of the transformation matrix
 	XX float64

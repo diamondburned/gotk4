@@ -3,9 +3,7 @@ package goimports
 import (
 	"fmt"
 	"io"
-	"os"
 	"os/exec"
-	"path/filepath"
 	"sync"
 
 	"github.com/pkg/errors"
@@ -43,33 +41,17 @@ func Pipe(w io.Writer, r io.Reader, args ...string) error {
 	return run(w, r, args...)
 }
 
-// File runs goimports on a temporary file while reading from the given
-// filename, then overrides the file with the output.
+// Dir runs goimports recursively on a directory.
+func Dir(dir string, args ...string) error {
+	return File(dir, args...)
+}
+
+// File runs goimports on the given file.
 func File(file string, args ...string) error {
-	// Make a new temp file in the same directory as the output to allow mv.
-	tmp, err := os.CreateTemp(filepath.Dir(file), ".gir-goimports-")
-	if err != nil {
-		return errors.Wrap(err, "failed to mktemp")
-	}
+	argv := []string{"-w", file}
+	argv = append(argv, args...)
 
-	defer os.Remove(tmp.Name())
-	defer tmp.Close()
-
-	args = append([]string{file}, args...)
-
-	if err := run(tmp, nil, args...); err != nil {
-		return err
-	}
-
-	if err := tmp.Close(); err != nil {
-		return errors.Wrap(err, "failed to close tmp")
-	}
-
-	if err := os.Rename(tmp.Name(), file); err != nil {
-		return errors.Wrap(err, "failed to swap output")
-	}
-
-	return nil
+	return run(nil, nil, argv...)
 }
 
 // run runs goimports.
@@ -88,7 +70,7 @@ func run(dst io.Writer, r io.Reader, args ...string) error {
 
 	if err := cmd.Run(); err != nil {
 		var exitErr *exec.ExitError
-		if !errors.As(err, &exitErr) {
+		if !errors.As(err, &exitErr) || exitErr.Stderr == nil {
 			return errors.Wrap(err, "goimports failed")
 		}
 

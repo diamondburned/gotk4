@@ -5,10 +5,11 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/glib"
 	"github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-introspection-1.0 gio-2.0 gio-unix-2.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
 // #include <gio/gfiledescriptorbased.h>
@@ -73,6 +74,7 @@ func init() {
 	})
 }
 
+// BusType: an enumeration for well-known message buses.
 type BusType int
 
 const (
@@ -91,6 +93,7 @@ func marshalBusType(p uintptr) (interface{}, error) {
 	return BusType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ConverterResult: results returned from g_converter_convert().
 type ConverterResult int
 
 const (
@@ -108,6 +111,8 @@ func marshalConverterResult(p uintptr) (interface{}, error) {
 	return ConverterResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// CredentialsType: enumeration describing different kinds of native credential
+// types.
 type CredentialsType int
 
 const (
@@ -137,6 +142,7 @@ func marshalCredentialsType(p uintptr) (interface{}, error) {
 	return CredentialsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// DBusError: error codes for the G_DBUS_ERROR error domain.
 type DBusError int
 
 const (
@@ -272,6 +278,8 @@ func marshalDBusError(p uintptr) (interface{}, error) {
 	return DBusError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// DBusMessageByteOrder: enumeration used to describe the byte order of a D-Bus
+// message.
 type DBusMessageByteOrder int
 
 const (
@@ -285,6 +293,7 @@ func marshalDBusMessageByteOrder(p uintptr) (interface{}, error) {
 	return DBusMessageByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// DBusMessageHeaderField: header fields used in BusMessage.
 type DBusMessageHeaderField int
 
 const (
@@ -317,6 +326,7 @@ func marshalDBusMessageHeaderField(p uintptr) (interface{}, error) {
 	return DBusMessageHeaderField(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// DBusMessageType: message types used in BusMessage.
 type DBusMessageType int
 
 const (
@@ -336,6 +346,8 @@ func marshalDBusMessageType(p uintptr) (interface{}, error) {
 	return DBusMessageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// DataStreamByteOrder: GDataStreamByteOrder is used to ensure proper endianness
+// of streaming data sources across various machine architectures.
 type DataStreamByteOrder int
 
 const (
@@ -352,6 +364,8 @@ func marshalDataStreamByteOrder(p uintptr) (interface{}, error) {
 	return DataStreamByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// DataStreamNewlineType: GDataStreamNewlineType is used when checking for or
+// setting the line endings for a given file.
 type DataStreamNewlineType int
 
 const (
@@ -372,6 +386,8 @@ func marshalDataStreamNewlineType(p uintptr) (interface{}, error) {
 	return DataStreamNewlineType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// DriveStartStopType: enumeration describing how a drive can be
+// started/stopped.
 type DriveStartStopType int
 
 const (
@@ -396,6 +412,8 @@ func marshalDriveStartStopType(p uintptr) (interface{}, error) {
 	return DriveStartStopType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// EmblemOrigin: GEmblemOrigin is used to add information about the origin of
+// the emblem to #GEmblem.
 type EmblemOrigin int
 
 const (
@@ -415,6 +433,8 @@ func marshalEmblemOrigin(p uintptr) (interface{}, error) {
 	return EmblemOrigin(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// FileAttributeStatus: used by g_file_set_attributes_from_info() when setting
+// file attributes.
 type FileAttributeStatus int
 
 const (
@@ -430,6 +450,7 @@ func marshalFileAttributeStatus(p uintptr) (interface{}, error) {
 	return FileAttributeStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// FileAttributeType: the data types for file attributes.
 type FileAttributeType int
 
 const (
@@ -459,6 +480,7 @@ func marshalFileAttributeType(p uintptr) (interface{}, error) {
 	return FileAttributeType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// FileMonitorEvent: specifies what type of event a monitor event is.
 type FileMonitorEvent int
 
 const (
@@ -498,6 +520,16 @@ func marshalFileMonitorEvent(p uintptr) (interface{}, error) {
 	return FileMonitorEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// FileType: indicates the file's on-disk type.
+//
+// On Windows systems a file will never have G_FILE_TYPE_SYMBOLIC_LINK type; use
+// Info and G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK to determine whether a file is
+// a symlink or not. This is due to the fact that NTFS does not have a single
+// filesystem object type for symbolic links - it has files that symlink to
+// files, and directories that symlink to directories. Type enumeration cannot
+// precisely represent this important distinction, which is why all Windows
+// symlinks will continue to be reported as G_FILE_TYPE_REGULAR or
+// G_FILE_TYPE_DIRECTORY.
 type FileType int
 
 const (
@@ -523,6 +555,9 @@ func marshalFileType(p uintptr) (interface{}, error) {
 	return FileType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// FilesystemPreviewType: indicates a hint from the file system whether files
+// should be previewed in a file manager. Returned as the value of the key
+// FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
 type FilesystemPreviewType int
 
 const (
@@ -540,6 +575,18 @@ func marshalFilesystemPreviewType(p uintptr) (interface{}, error) {
 	return FilesystemPreviewType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// IOErrorEnum: error codes returned by GIO functions.
+//
+// Note that this domain may be extended in future GLib releases. In general,
+// new error codes either only apply to new APIs, or else replace
+// G_IO_ERROR_FAILED in cases that were not explicitly distinguished before. You
+// should therefore avoid writing code like |[&lt;!-- language="C" --&gt; if
+// (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED)) { // Assume that
+// this is EPRINTERONFIRE ... } ]| but should instead treat all unrecognized
+// error codes the same as IO_ERROR_FAILED.
+//
+// See also Return for a cheaper way of returning G_IO_ERROR_WOULD_BLOCK to
+// callers without allocating a #GError.
 type IOErrorEnum int
 
 const (
@@ -662,6 +709,7 @@ func marshalIOErrorEnum(p uintptr) (interface{}, error) {
 	return IOErrorEnum(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// IOModuleScopeFlags: flags for use with g_io_module_scope_new().
 type IOModuleScopeFlags int
 
 const (
@@ -677,6 +725,10 @@ func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
 	return IOModuleScopeFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// MemoryMonitorWarningLevel: memory availability warning levels.
+//
+//    if (warning_level &gt; G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
+//      drop_caches ();
 type MemoryMonitorWarningLevel int
 
 const (
@@ -699,6 +751,8 @@ func marshalMemoryMonitorWarningLevel(p uintptr) (interface{}, error) {
 	return MemoryMonitorWarningLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// MountOperationResult: GMountOperationResult is returned as a result when a
+// request for information is send by the mounting operation.
 type MountOperationResult int
 
 const (
@@ -717,6 +771,8 @@ func marshalMountOperationResult(p uintptr) (interface{}, error) {
 	return MountOperationResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// NetworkConnectivity: the host's network connectivity state, as reported by
+// Monitor.
 type NetworkConnectivity int
 
 const (
@@ -739,6 +795,7 @@ func marshalNetworkConnectivity(p uintptr) (interface{}, error) {
 	return NetworkConnectivity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// NotificationPriority: priority levels for #GNotifications.
 type NotificationPriority int
 
 const (
@@ -764,6 +821,11 @@ func marshalNotificationPriority(p uintptr) (interface{}, error) {
 	return NotificationPriority(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PasswordSave: GPasswordSave is used to indicate the lifespan of a saved
+// password.
+//
+// #Gvfs stores passwords in the Gnome keyring when this flag allows it to, and
+// later retrieves it again from there
 type PasswordSave int
 
 const (
@@ -779,6 +841,15 @@ func marshalPasswordSave(p uintptr) (interface{}, error) {
 	return PasswordSave(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PollableReturn: return value for various IO operations that signal errors via
+// the return value and not necessarily via a #GError.
+//
+// This enum exists to be able to return errors to callers without having to
+// allocate a #GError. Allocating #GErrors can be quite expensive for regularly
+// happening errors like G_IO_ERROR_WOULD_BLOCK.
+//
+// In case of G_POLLABLE_RETURN_FAILED a #GError should be set for the operation
+// to give details about the error that happened.
 type PollableReturn int
 
 const (
@@ -795,6 +866,8 @@ func marshalPollableReturn(p uintptr) (interface{}, error) {
 	return PollableReturn(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ResolverError: an error code used with G_RESOLVER_ERROR in a #GError returned
+// from a #GResolver routine.
 type ResolverError int
 
 const (
@@ -811,6 +884,36 @@ func marshalResolverError(p uintptr) (interface{}, error) {
 	return ResolverError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ResolverRecordType: the type of record that g_resolver_lookup_records() or
+// g_resolver_lookup_records_async() should retrieve. The records are returned
+// as lists of #GVariant tuples. Each record type has different values in the
+// variant tuples returned.
+//
+// G_RESOLVER_RECORD_SRV records are returned as variants with the signature
+// `(qqqs)`, containing a `guint16` with the priority, a `guint16` with the
+// weight, a `guint16` with the port, and a string of the hostname.
+//
+// G_RESOLVER_RECORD_MX records are returned as variants with the signature
+// `(qs)`, representing a `guint16` with the preference, and a string containing
+// the mail exchanger hostname.
+//
+// G_RESOLVER_RECORD_TXT records are returned as variants with the signature
+// `(as)`, representing an array of the strings in the text record. Note: Most
+// TXT records only contain a single string, but [RFC
+// 1035](https://tools.ietf.org/html/rfc1035#section-3.3.14) does allow a record
+// to contain multiple strings. The RFC which defines the interpretation of a
+// specific TXT record will likely require concatenation of multiple strings if
+// they are present, as with [RFC
+// 7208](https://tools.ietf.org/html/rfc7208#section-3.3).
+//
+// G_RESOLVER_RECORD_SOA records are returned as variants with the signature
+// `(ssuuuuu)`, representing a string containing the primary name server, a
+// string containing the administrator, the serial as a `guint32`, the refresh
+// interval as a `guint32`, the retry interval as a `guint32`, the expire
+// timeout as a `guint32`, and the TTL as a `guint32`.
+//
+// G_RESOLVER_RECORD_NS records are returned as variants with the signature
+// `(s)`, representing a string of the hostname of the name server.
 type ResolverRecordType int
 
 const (
@@ -830,6 +933,8 @@ func marshalResolverRecordType(p uintptr) (interface{}, error) {
 	return ResolverRecordType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ResourceError: an error code used with G_RESOURCE_ERROR in a #GError returned
+// from a #GResource routine.
 type ResourceError int
 
 const (
@@ -843,6 +948,10 @@ func marshalResourceError(p uintptr) (interface{}, error) {
 	return ResourceError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SocketClientEvent: describes an event occurring on a Client. See the
+// Client::event signal for more details.
+//
+// Additional values may be added to this type in the future.
 type SocketClientEvent int
 
 const (
@@ -875,6 +984,8 @@ func marshalSocketClientEvent(p uintptr) (interface{}, error) {
 	return SocketClientEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SocketFamily: the protocol family of a Address. (These values are identical
+// to the system defines AF_INET, AF_INET6 and AF_UNIX, if available.)
 type SocketFamily int
 
 const (
@@ -892,6 +1003,10 @@ func marshalSocketFamily(p uintptr) (interface{}, error) {
 	return SocketFamily(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SocketListenerEvent: describes an event occurring on a Listener. See the
+// Listener::event signal for more details.
+//
+// Additional values may be added to this type in the future.
 type SocketListenerEvent int
 
 const (
@@ -911,6 +1026,13 @@ func marshalSocketListenerEvent(p uintptr) (interface{}, error) {
 	return SocketListenerEvent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SocketProtocol: a protocol identifier is specified when creating a #GSocket,
+// which is a family/type specific identifier, where 0 means the default
+// protocol for the particular family/type.
+//
+// This enum contains a set of commonly available and used protocols. You can
+// also pass any other identifiers handled by the platform in order to use
+// protocols not listed here.
 type SocketProtocol int
 
 const (
@@ -930,6 +1052,8 @@ func marshalSocketProtocol(p uintptr) (interface{}, error) {
 	return SocketProtocol(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SocketType: flags used when creating a #GSocket. Some protocols may not
+// implement all the socket types.
 type SocketType int
 
 const (
@@ -949,6 +1073,7 @@ func marshalSocketType(p uintptr) (interface{}, error) {
 	return SocketType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TlsAuthenticationMode: the client authentication mode for a ServerConnection.
 type TlsAuthenticationMode int
 
 const (
@@ -964,6 +1089,10 @@ func marshalTlsAuthenticationMode(p uintptr) (interface{}, error) {
 	return TlsAuthenticationMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TlsCertificateRequestFlags: flags for
+// g_tls_interaction_request_certificate(),
+// g_tls_interaction_request_certificate_async(), and
+// g_tls_interaction_invoke_request_certificate().
 type TlsCertificateRequestFlags int
 
 const (
@@ -975,6 +1104,8 @@ func marshalTlsCertificateRequestFlags(p uintptr) (interface{}, error) {
 	return TlsCertificateRequestFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TlsChannelBindingError: an error code used with G_TLS_CHANNEL_BINDING_ERROR
+// in a #GError to indicate a TLS channel binding retrieval error.
 type TlsChannelBindingError int
 
 const (
@@ -1004,6 +1135,10 @@ func marshalTlsChannelBindingError(p uintptr) (interface{}, error) {
 	return TlsChannelBindingError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TlsChannelBindingType: the type of TLS channel binding data to retrieve from
+// Connection or Connection, as documented by RFC 5929. The
+// [`tls-unique-for-telnet`](https://tools.ietf.org/html/rfc5929#section-5)
+// binding type is not currently implemented.
 type TlsChannelBindingType int
 
 const (
@@ -1021,6 +1156,10 @@ func marshalTlsChannelBindingType(p uintptr) (interface{}, error) {
 	return TlsChannelBindingType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TlsDatabaseLookupFlags: flags for
+// g_tls_database_lookup_certificate_for_handle(),
+// g_tls_database_lookup_certificate_issuer(), and
+// g_tls_database_lookup_certificates_issued_by().
 type TlsDatabaseLookupFlags int
 
 const (
@@ -1035,6 +1174,8 @@ func marshalTlsDatabaseLookupFlags(p uintptr) (interface{}, error) {
 	return TlsDatabaseLookupFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TlsError: an error code used with G_TLS_ERROR in a #GError returned from a
+// TLS-related routine.
 type TlsError int
 
 const (
@@ -1068,6 +1209,8 @@ func marshalTlsError(p uintptr) (interface{}, error) {
 	return TlsError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TlsInteractionResult: GTlsInteractionResult is returned by various functions
+// in Interaction when finishing an interaction request.
 type TlsInteractionResult int
 
 const (
@@ -1086,6 +1229,8 @@ func marshalTlsInteractionResult(p uintptr) (interface{}, error) {
 	return TlsInteractionResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TlsRehandshakeMode: when to allow rehandshaking. See
+// g_tls_connection_set_rehandshake_mode().
 type TlsRehandshakeMode int
 
 const (
@@ -1101,6 +1246,18 @@ func marshalTlsRehandshakeMode(p uintptr) (interface{}, error) {
 	return TlsRehandshakeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// UnixSocketAddressType: the type of name used by a SocketAddress.
+// G_UNIX_SOCKET_ADDRESS_PATH indicates a traditional unix domain socket bound
+// to a filesystem path. G_UNIX_SOCKET_ADDRESS_ANONYMOUS indicates a socket not
+// bound to any name (eg, a client-side socket, or a socket created with
+// socketpair()).
+//
+// For abstract sockets, there are two incompatible ways of naming them; the man
+// pages suggest using the entire `struct sockaddr_un` as the name, padding the
+// unused parts of the sun_path field with zeroes; this corresponds to
+// G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED. However, many programs instead just
+// use a portion of sun_path, and pass an appropriate smaller length to bind()
+// or connect(). This is G_UNIX_SOCKET_ADDRESS_ABSTRACT.
 type UnixSocketAddressType int
 
 const (
@@ -1121,6 +1278,8 @@ func marshalUnixSocketAddressType(p uintptr) (interface{}, error) {
 	return UnixSocketAddressType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ZlibCompressorFormat: used to select the type of data format to use for
+// Decompressor and Compressor.
 type ZlibCompressorFormat int
 
 const (
@@ -1134,4 +1293,1743 @@ const (
 
 func marshalZlibCompressorFormat(p uintptr) (interface{}, error) {
 	return ZlibCompressorFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ActionNameIsValid: checks if @action_name is valid.
+//
+// @action_name is valid if it consists only of alphanumeric characters, plus
+// '-' and '.'. The empty string is not a valid action name.
+//
+// It is an error to call this function with a non-utf8 @action_name.
+// @action_name must not be nil.
+func ActionNameIsValid(actionName string) bool
+
+// ActionParseDetailedName: parses a detailed action name into its separate name
+// and target components.
+//
+// Detailed action names can have three formats.
+//
+// The first format is used to represent an action name with no target value and
+// consists of just an action name containing no whitespace nor the characters
+// ':', '(' or ')'. For example: "app.action".
+//
+// The second format is used to represent an action with a target value that is
+// a non-empty string consisting only of alphanumerics, plus '-' and '.'. In
+// that case, the action name and target value are separated by a double colon
+// ("::"). For example: "app.action::target".
+//
+// The third format is used to represent an action with any type of target
+// value, including strings. The target value follows the action name,
+// surrounded in parens. For example: "app.action(42)". The target value is
+// parsed using g_variant_parse(). If a tuple-typed value is desired, it must be
+// specified in the same way, resulting in two sets of parens, for example:
+// "app.action((1,2,3))". A string target can be specified this way as well:
+// "app.action('target')". For strings, this third format must be used if *
+// target value is empty or contains characters other than alphanumerics, '-'
+// and '.'.
+func ActionParseDetailedName(detailedName string, actionName *string, targetValue **glib.Variant) bool
+
+// ActionPrintDetailedName: formats a detailed action name from @action_name and
+// @target_value.
+//
+// It is an error to call this function with an invalid action name.
+//
+// This function is the opposite of g_action_parse_detailed_name(). It will
+// produce a string that can be parsed back to the @action_name and
+// @target_value by that function.
+//
+// See that function for the types of strings that will be printed by this
+// function.
+func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) string
+
+// AppInfoCreateFromCommandline: creates a new Info from the given information.
+//
+// Note that for @commandline, the quoting rules of the Exec key of the
+// [freedesktop.org Desktop Entry
+// Specification](http://freedesktop.org/Standards/desktop-entry-spec) are
+// applied. For example, if the @commandline contains percent-encoded URIs, the
+// percent-character must be doubled in order to prevent it from being swallowed
+// by Exec key unquoting. See the specification for exact quoting rules.
+func AppInfoCreateFromCommandline(commandline *string, applicationName string, flags AppInfoCreateFlags) AppInfo
+
+// AppInfoGetAll: gets a list of all of the applications currently registered on
+// this system.
+//
+// For desktop files, this includes applications that have `NoDisplay=true` set
+// or are excluded from display by means of `OnlyShowIn` or `NotShowIn`. See
+// g_app_info_should_show(). The returned list does not include applications
+// which have the `Hidden` key set.
+func AppInfoGetAll() *glib.List
+
+// AppInfoGetAllForType: gets a list of all Infos for a given content type,
+// including the recommended and fallback Infos. See
+// g_app_info_get_recommended_for_type() and g_app_info_get_fallback_for_type().
+func AppInfoGetAllForType(contentType string) *glib.List
+
+// AppInfoGetDefaultForType: gets the default Info for a given content type.
+func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfo
+
+// AppInfoGetDefaultForURIScheme: gets the default application for handling URIs
+// with the given URI scheme. A URI scheme is the initial part of the URI, up to
+// but not including the ':', e.g. "http", "ftp" or "sip".
+func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfo
+
+// AppInfoGetFallbackForType: gets a list of fallback Infos for a given content
+// type, i.e. those applications which claim to support the given content type
+// by MIME type subclassing and not directly.
+func AppInfoGetFallbackForType(contentType string) *glib.List
+
+// AppInfoGetRecommendedForType: gets a list of recommended Infos for a given
+// content type, i.e. those applications which claim to support the given
+// content type exactly, and not by MIME type subclassing. Note that the first
+// application of the list is the last used one, i.e. the last one for which
+// g_app_info_set_as_last_used_for_type() has been called.
+func AppInfoGetRecommendedForType(contentType string) *glib.List
+
+// AppInfoLaunchDefaultForURI: utility function that launches the default
+// application registered to handle the specified uri. Synchronous I/O is done
+// on the uri to detect the type of the file if required.
+//
+// The D-Bus–activated applications don't have to be started if your application
+// terminates too soon after this function. To prevent this, use
+// g_app_info_launch_default_for_uri_async() instead.
+func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) bool
+
+// AppInfoLaunchDefaultForURIAsync: async version of
+// g_app_info_launch_default_for_uri().
+//
+// This version is useful if you are interested in receiving error information
+// in the case where the application is sandboxed and the portal may present an
+// application chooser dialog to the user.
+//
+// This is also useful if you want to be sure that the D-Bus–activated
+// applications are really started before termination and if you are interested
+// in receiving error information from their activation.
+func AppInfoLaunchDefaultForURIAsync(uri string, context *AppLaunchContext, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+
+// AppInfoLaunchDefaultForURIFinish: finishes an asynchronous
+// launch-default-for-uri operation.
+func AppInfoLaunchDefaultForURIFinish(result AsyncResult) bool
+
+// AppInfoResetTypeAssociations: removes all changes to the type associations
+// done by g_app_info_set_as_default_for_type(),
+// g_app_info_set_as_default_for_extension(), g_app_info_add_supports_type() or
+// g_app_info_remove_supports_type().
+func AppInfoResetTypeAssociations(contentType string)
+
+// AsyncInitableNewvAsync: helper function for constructing Initable object.
+// This is similar to g_object_newv() but also initializes the object
+// asynchronously.
+//
+// When the initialization is finished, @callback will be called. You can then
+// call g_async_initable_new_finish() to get the new object and check for any
+// errors.
+func AsyncInitableNewvAsync(objectType glib.Type, nParameters uint, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+
+// BusGet: asynchronously connects to the message bus specified by @bus_type.
+//
+// When the operation is finished, @callback will be invoked. You can then call
+// g_bus_get_finish() to get the result of the operation.
+//
+// This is an asynchronous failable function. See g_bus_get_sync() for the
+// synchronous version.
+func BusGet(busType BusType, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+
+// BusGetFinish: finishes an operation started with g_bus_get().
+//
+// The returned object is a singleton, that is, shared with other callers of
+// g_bus_get() and g_bus_get_sync() for @bus_type. In the event that you need a
+// private message bus connection, use g_dbus_address_get_for_bus_sync() and
+// g_dbus_connection_new_for_address().
+//
+// Note that the returned BusConnection object will (usually) have the
+// BusConnection:exit-on-close property set to true.
+func BusGetFinish(res AsyncResult) *DBusConnection
+
+// BusGetSync: synchronously connects to the message bus specified by @bus_type.
+// Note that the returned object may shared with other callers, e.g. if two
+// separate parts of a process calls this function with the same @bus_type, they
+// will share the same object.
+//
+// This is a synchronous failable function. See g_bus_get() and
+// g_bus_get_finish() for the asynchronous version.
+//
+// The returned object is a singleton, that is, shared with other callers of
+// g_bus_get() and g_bus_get_sync() for @bus_type. In the event that you need a
+// private message bus connection, use g_dbus_address_get_for_bus_sync() and
+// g_dbus_connection_new_for_address().
+//
+// Note that the returned BusConnection object will (usually) have the
+// BusConnection:exit-on-close property set to true.
+func BusGetSync(busType BusType, cancellable *Cancellable) *DBusConnection
+
+// BusOwnName: starts acquiring @name on the bus specified by @bus_type and
+// calls @name_acquired_handler and @name_lost_handler when the name is acquired
+// respectively lost. Callbacks will be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this function from.
+//
+// You are guaranteed that one of the @name_acquired_handler and
+// @name_lost_handler callbacks will be invoked after calling this function -
+// there are three possible cases:
+//
+// - @name_lost_handler with a nil connection (if a connection to the bus can't
+// be made).
+//
+// - @bus_acquired_handler then @name_lost_handler (if the name can't be
+// obtained)
+//
+// - @bus_acquired_handler then @name_acquired_handler (if the name was
+// obtained).
+//
+// When you are done owning the name, just call g_bus_unown_name() with the
+// owner id this function returns.
+//
+// If the name is acquired or lost (for example another application could
+// acquire the name if you allow replacement or the application currently owning
+// the name exits), the handlers are also invoked. If the BusConnection that is
+// used for attempting to own the name closes, then @name_lost_handler is
+// invoked since it is no longer possible for other processes to access the
+// process.
+//
+// You cannot use g_bus_own_name() several times for the same name (unless
+// interleaved with calls to g_bus_unown_name()) - only the first call will
+// work.
+//
+// Another guarantee is that invocations of @name_acquired_handler and
+// @name_lost_handler are guaranteed to alternate; that is, if
+// @name_acquired_handler is invoked then you are guaranteed that the next time
+// one of the handlers is invoked, it will be @name_lost_handler. The reverse is
+// also true.
+//
+// If you plan on exporting objects (using e.g.
+// g_dbus_connection_register_object()), note that it is generally too late to
+// export the objects in @name_acquired_handler. Instead, you can do this in
+// @bus_acquired_handler since you are guaranteed that this will run before
+// @name is requested from the bus.
+//
+// This behavior makes it very simple to write applications that wants to [own
+// names][gdbus-owning-names] and export objects. Simply register objects to be
+// exported in @bus_acquired_handler and unregister the objects (if any) in
+// @name_lost_handler.
+func BusOwnName(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredHandler BusAcquiredCallback, nameAcquiredHandler BusNameAcquiredCallback, nameLostHandler BusNameLostCallback, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer) uint
+
+// BusOwnNameOnConnection: like g_bus_own_name() but takes a BusConnection
+// instead of a Type.
+func BusOwnNameOnConnection(connection *DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredHandler BusNameAcquiredCallback, nameLostHandler BusNameLostCallback, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer) uint
+
+// BusOwnNameOnConnectionWithClosures: version of g_bus_own_name_on_connection()
+// using closures instead of callbacks for easier binding in other languages.
+func BusOwnNameOnConnectionWithClosures(connection *DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredClosure **glib.Closure, nameLostClosure **glib.Closure) uint
+
+// BusOwnNameWithClosures: version of g_bus_own_name() using closures instead of
+// callbacks for easier binding in other languages.
+func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredClosure **glib.Closure, nameAcquiredClosure **glib.Closure, nameLostClosure **glib.Closure) uint
+
+// BusUnownName: stops owning a name.
+//
+// Note that there may still be D-Bus traffic to process (relating to owning and
+// unowning the name) in the current thread-default Context after this function
+// has returned. You should continue to iterate the Context until the Notify
+// function passed to g_bus_own_name() is called, in order to avoid memory leaks
+// through callbacks queued on the Context after it’s stopped being iterated.
+func BusUnownName(ownerID uint)
+
+// BusUnwatchName: stops watching a name.
+//
+// Note that there may still be D-Bus traffic to process (relating to watching
+// and unwatching the name) in the current thread-default Context after this
+// function has returned. You should continue to iterate the Context until the
+// Notify function passed to g_bus_watch_name() is called, in order to avoid
+// memory leaks through callbacks queued on the Context after it’s stopped being
+// iterated.
+func BusUnwatchName(watcherID uint)
+
+// BusWatchName: starts watching @name on the bus specified by @bus_type and
+// calls @name_appeared_handler and @name_vanished_handler when the name is
+// known to have an owner respectively known to lose its owner. Callbacks will
+// be invoked in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread you are calling
+// this function from.
+//
+// You are guaranteed that one of the handlers will be invoked after calling
+// this function. When you are done watching the name, just call
+// g_bus_unwatch_name() with the watcher id this function returns.
+//
+// If the name vanishes or appears (for example the application owning the name
+// could restart), the handlers are also invoked. If the BusConnection that is
+// used for watching the name disconnects, then @name_vanished_handler is
+// invoked since it is no longer possible to access the name.
+//
+// Another guarantee is that invocations of @name_appeared_handler and
+// @name_vanished_handler are guaranteed to alternate; that is, if
+// @name_appeared_handler is invoked then you are guaranteed that the next time
+// one of the handlers is invoked, it will be @name_vanished_handler. The
+// reverse is also true.
+//
+// This behavior makes it very simple to write applications that want to take
+// action when a certain [name exists][gdbus-watching-names]. Basically, the
+// application should create object proxies in @name_appeared_handler and
+// destroy them again (if any) in @name_vanished_handler.
+func BusWatchName(busType BusType, name string, flags BusNameWatcherFlags, nameAppearedHandler BusNameAppearedCallback, nameVanishedHandler BusNameVanishedCallback, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer) uint
+
+// BusWatchNameOnConnection: like g_bus_watch_name() but takes a BusConnection
+// instead of a Type.
+func BusWatchNameOnConnection(connection *DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedHandler BusNameAppearedCallback, nameVanishedHandler BusNameVanishedCallback, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer) uint
+
+// BusWatchNameOnConnectionWithClosures: version of
+// g_bus_watch_name_on_connection() using closures instead of callbacks for
+// easier binding in other languages.
+func BusWatchNameOnConnectionWithClosures(connection *DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedClosure **glib.Closure, nameVanishedClosure **glib.Closure) uint
+
+// BusWatchNameWithClosures: version of g_bus_watch_name() using closures
+// instead of callbacks for easier binding in other languages.
+func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcherFlags, nameAppearedClosure **glib.Closure, nameVanishedClosure **glib.Closure) uint
+
+// ContentTypeCanBeExecutable: checks if a content type can be executable. Note
+// that for instance things like text files can be executables (i.e. scripts and
+// batch files).
+func ContentTypeCanBeExecutable(_type string) bool
+
+// ContentTypeEquals: compares two content types for equality.
+func ContentTypeEquals(type1 string, type2 string) bool
+
+// ContentTypeFromMimeType: tries to find a content type based on the mime type
+// name.
+func ContentTypeFromMimeType(mimeType string) string
+
+// ContentTypeGetDescription: gets the human readable description of the content
+// type.
+func ContentTypeGetDescription(_type string) string
+
+// ContentTypeGetGenericIconName: gets the generic icon name for a content type.
+//
+// See the
+// [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+// specification for more on the generic icon name.
+func ContentTypeGetGenericIconName(_type string) string
+
+// ContentTypeGetIcon: gets the icon for a content type.
+func ContentTypeGetIcon(_type string) Icon
+
+// ContentTypeGetMimeDirs: get the list of directories which MIME data is loaded
+// from. See g_content_type_set_mime_dirs() for details.
+func ContentTypeGetMimeDirs() []string
+
+// ContentTypeGetMimeType: gets the mime type for the content type, if one is
+// registered.
+func ContentTypeGetMimeType(_type string) string
+
+// ContentTypeGetSymbolicIcon: gets the symbolic icon for a content type.
+func ContentTypeGetSymbolicIcon(_type string) Icon
+
+// ContentTypeGuess: guesses the content type based on example data. If the
+// function is uncertain, @result_uncertain will be set to true. Either
+// @filename or @data may be nil, in which case the guess will be based solely
+// on the other argument.
+func ContentTypeGuess(filename string, dataSize uint, resultUncertain *bool) string
+
+// ContentTypeGuessForTree: tries to guess the type of the tree with root @root,
+// by looking at the files it contains. The result is an array of content types,
+// with the best guess coming first.
+//
+// The types returned all have the form x-content/foo, e.g. x-content/audio-cdda
+// (for audio CDs) or x-content/image-dcf (for a camera memory card). See the
+// [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+// specification for more on x-content types.
+//
+// This function is useful in the implementation of
+// g_mount_guess_content_type().
+func ContentTypeGuessForTree(root File) []string
+
+// ContentTypeIsA: determines if @type is a subset of @supertype.
+func ContentTypeIsA(_type string, supertype string) bool
+
+// ContentTypeIsMimeType: determines if @type is a subset of @mime_type.
+// Convenience wrapper around g_content_type_is_a().
+func ContentTypeIsMimeType(_type string, mimeType string) bool
+
+// ContentTypeIsUnknown: checks if the content type is the generic "unknown"
+// type. On UNIX this is the "application/octet-stream" mimetype, while on win32
+// it is "*" and on OSX it is a dynamic type or octet-stream.
+func ContentTypeIsUnknown(_type string) bool
+
+// ContentTypeSetMimeDirs: set the list of directories used by GIO to load the
+// MIME database. If @dirs is nil, the directories used are the default:
+//
+// - the `mime` subdirectory of the directory in `$XDG_DATA_HOME` - the `mime`
+// subdirectory of every directory in `$XDG_DATA_DIRS`
+//
+// This function is intended to be used when writing tests that depend on
+// information stored in the MIME database, in order to control the data.
+//
+// Typically, in case your tests use G_TEST_OPTION_ISOLATE_DIRS, but they depend
+// on the system’s MIME database, you should call this function with @dirs set
+// to nil before calling g_test_init(), for instance:
+//
+//      // Load MIME data from the system
+//      g_content_type_set_mime_dirs (NULL);
+//      // Isolate the environment
+//      g_test_init (&amp;argc, &amp;argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
+//
+//      …
+//
+//      return g_test_run ();
+//
+func ContentTypeSetMimeDirs()
+
+// ContentTypesGetRegistered: gets a list of strings containing all the
+// registered content types known to the system. The list and its data should be
+// freed using `g_list_free_full (list, g_free)`.
+func ContentTypesGetRegistered() *glib.List
+
+// DbusAddressEscapeValue: escape @string so it can appear in a D-Bus address as
+// the value part of a key-value pair.
+//
+// For instance, if @string is `/run/bus-for-:0`, this function would return
+// `/run/bus-for-3A0`, which could be used in a D-Bus address like
+// `unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-3A0`.
+func DbusAddressEscapeValue(string string) string
+
+// DbusAddressGetForBusSync: synchronously looks up the D-Bus address for the
+// well-known message bus instance specified by @bus_type. This may involve
+// using various platform specific mechanisms.
+//
+// The returned address will be in the [D-Bus address
+// format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+func DbusAddressGetForBusSync(busType BusType, cancellable *Cancellable) string
+
+// DbusAddressGetStream: asynchronously connects to an endpoint specified by
+// @address and sets up the connection so it is in a state to run the
+// client-side of the D-Bus authentication conversation. @address must be in the
+// [D-Bus address
+// format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// When the operation is finished, @callback will be invoked. You can then call
+// g_dbus_address_get_stream_finish() to get the result of the operation.
+//
+// This is an asynchronous failable function. See
+// g_dbus_address_get_stream_sync() for the synchronous version.
+func DbusAddressGetStream(address string, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+
+// DbusAddressGetStreamFinish: finishes an operation started with
+// g_dbus_address_get_stream().
+func DbusAddressGetStreamFinish(res AsyncResult, outGuid *string) *IOStream
+
+// DbusAddressGetStreamSync: synchronously connects to an endpoint specified by
+// @address and sets up the connection so it is in a state to run the
+// client-side of the D-Bus authentication conversation. @address must be in the
+// [D-Bus address
+// format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// This is a synchronous failable function. See g_dbus_address_get_stream() for
+// the asynchronous version.
+func DbusAddressGetStreamSync(address string, outGuid *string, cancellable *Cancellable) *IOStream
+
+// DbusAnnotationInfoLookup: looks up the value of an annotation.
+//
+// The cost of this function is O(n) in number of annotations.
+func DbusAnnotationInfoLookup(name string) string
+
+// DbusErrorEncodeGerror: creates a D-Bus error name to use for @error. If
+// @error matches a registered error (cf. g_dbus_error_register_error()), the
+// corresponding D-Bus error name will be returned.
+//
+// Otherwise the a name of the form
+// `org.gtk.GDBus.UnmappedGError.Quark._ESCAPED_QUARK_NAME.Code_ERROR_CODE` will
+// be used. This allows other GDBus applications to map the error on the wire
+// back to a #GError using g_dbus_error_new_for_dbus_error().
+//
+// This function is typically only used in object mappings to put a #GError on
+// the wire. Regular applications should not use it.
+func DbusErrorEncodeGerror(error *glib.Error) string
+
+// DbusErrorGetRemoteError: gets the D-Bus error name used for @error, if any.
+//
+// This function is guaranteed to return a D-Bus error name for all #GErrors
+// returned from functions handling remote method calls (e.g.
+// g_dbus_connection_call_finish()) unless g_dbus_error_strip_remote_error() has
+// been used on @error.
+func DbusErrorGetRemoteError(error *glib.Error) string
+
+// DbusErrorIsRemoteError: checks if @error represents an error received via
+// D-Bus from a remote peer. If so, use g_dbus_error_get_remote_error() to get
+// the name of the error.
+func DbusErrorIsRemoteError(error *glib.Error) bool
+
+// DbusErrorNewForDbusError: creates a #GError based on the contents of
+// @dbus_error_name and @dbus_error_message.
+//
+// Errors registered with g_dbus_error_register_error() will be looked up using
+// @dbus_error_name and if a match is found, the error domain and code is used.
+// Applications can use g_dbus_error_get_remote_error() to recover
+// @dbus_error_name.
+//
+// If a match against a registered error is not found and the D-Bus error name
+// is in a form as returned by g_dbus_error_encode_gerror() the error domain and
+// code encoded in the name is used to create the #GError. Also,
+// @dbus_error_name is added to the error message such that it can be recovered
+// with g_dbus_error_get_remote_error().
+//
+// Otherwise, a #GError with the error code G_IO_ERROR_DBUS_ERROR in the
+// IO_ERROR error domain is returned. Also, @dbus_error_name is added to the
+// error message such that it can be recovered with
+// g_dbus_error_get_remote_error().
+//
+// In all three cases, @dbus_error_name can always be recovered from the
+// returned #GError using the g_dbus_error_get_remote_error() function (unless
+// g_dbus_error_strip_remote_error() hasn't been used on the returned error).
+//
+// This function is typically only used in object mappings to prepare #GError
+// instances for applications. Regular applications should not use it.
+func DbusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) *glib.Error
+
+func DbusErrorQuark() glib.Quark
+
+// DbusErrorRegisterError: creates an association to map between
+// @dbus_error_name and #GErrors specified by @error_domain and @error_code.
+//
+// This is typically done in the routine that returns the #GQuark for an error
+// domain.
+func DbusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool
+
+// DbusErrorRegisterErrorDomain: helper function for associating a #GError error
+// domain with D-Bus error names.
+func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *uint, numEntries uint)
+
+// DbusErrorStripRemoteError: looks for extra information in the error message
+// used to recover the D-Bus error name and strips it if found. If stripped, the
+// message field in @error will correspond exactly to what was received on the
+// wire.
+//
+// This is typically used when presenting errors to the end user.
+func DbusErrorStripRemoteError(error *glib.Error) bool
+
+// DbusErrorUnregisterError: destroys an association previously set up with
+// g_dbus_error_register_error().
+func DbusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool
+
+// DbusGenerateGuid: generate a D-Bus GUID that can be used with e.g.
+// g_dbus_connection_new().
+//
+// See the D-Bus specification regarding what strings are valid D-Bus GUID (for
+// example, D-Bus GUIDs are not RFC-4122 compliant).
+func DbusGenerateGuid() string
+
+// DbusGvalueToGvariant: converts a #GValue to a #GVariant of the type indicated
+// by the @type parameter.
+//
+// The conversion is using the following rules:
+//
+// - TYPE_STRING: 's', 'o', 'g' or 'ay' - TYPE_STRV: 'as', 'ao' or 'aay' -
+// TYPE_BOOLEAN: 'b' - TYPE_UCHAR: 'y' - TYPE_INT: 'i', 'n' - TYPE_UINT: 'u',
+// 'q' - TYPE_INT64 'x' - TYPE_UINT64: 't' - TYPE_DOUBLE: 'd' - TYPE_VARIANT:
+// Any Type
+//
+// This can fail if e.g. @gvalue is of type TYPE_STRING and @type is
+// ['i'][G-VARIANT-TYPE-INT32:CAPS]. It will also fail for any #GType (including
+// e.g. TYPE_OBJECT and TYPE_BOXED derived-types) not in the table above.
+//
+// Note that if @gvalue is of type TYPE_VARIANT and its value is nil, the empty
+// #GVariant instance (never nil) for @type is returned (e.g. 0 for scalar
+// types, the empty string for string types, '/' for object path types, the
+// empty array for any array type and so on).
+//
+// See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
+// to a #GValue.
+func DbusGvalueToGvariant(gvalue **glib.Value, _type *glib.VariantType) *glib.Variant
+
+// DbusGvariantToGvalue: converts a #GVariant to a #GValue. If @value is
+// floating, it is consumed.
+//
+// The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
+// this function is essentially its reverse form. So, a #GVariant containing any
+// basic or string array type will be converted to a #GValue containing a basic
+// value or string array. Any other #GVariant (handle, variant, tuple, dict
+// entry) will be converted to a #GValue containing that #GVariant.
+//
+// The conversion never fails - a valid #GValue is always returned in
+// @out_gvalue.
+func DbusGvariantToGvalue(value *glib.Variant, outGvalue **glib.Value)
+
+// DbusIsAddress: checks if @string is a [D-Bus
+// address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// This doesn't check if @string is actually supported by BusServer or
+// BusConnection - use g_dbus_is_supported_address() to do more checks.
+func DbusIsAddress(string string) bool
+
+// DbusIsGuid: checks if @string is a D-Bus GUID.
+//
+// See the D-Bus specification regarding what strings are valid D-Bus GUID (for
+// example, D-Bus GUIDs are not RFC-4122 compliant).
+func DbusIsGuid(string string) bool
+
+// DbusIsInterfaceName: checks if @string is a valid D-Bus interface name.
+func DbusIsInterfaceName(string string) bool
+
+// DbusIsMemberName: checks if @string is a valid D-Bus member (e.g. signal or
+// method) name.
+func DbusIsMemberName(string string) bool
+
+// DbusIsName: checks if @string is a valid D-Bus bus name (either unique or
+// well-known).
+func DbusIsName(string string) bool
+
+// DbusIsSupportedAddress: like g_dbus_is_address() but also checks if the
+// library supports the transports in @string and that key/value pairs for each
+// transport are valid. See the specification of the [D-Bus address
+// format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+func DbusIsSupportedAddress(string string) bool
+
+// DbusIsUniqueName: checks if @string is a valid D-Bus unique bus name.
+func DbusIsUniqueName(string string) bool
+
+// DtlsClientConnectionNew: creates a new ClientConnection wrapping @base_socket
+// which is assumed to communicate with the server identified by
+// @server_identity.
+func DtlsClientConnectionNew(baseSocket DatagramBased, serverIdentity SocketConnectable) DtlsClientConnection
+
+// DtlsServerConnectionNew: creates a new ServerConnection wrapping
+// @base_socket.
+func DtlsServerConnectionNew(baseSocket DatagramBased, certificate *TlsCertificate) DtlsServerConnection
+
+// FileNewForCommandlineArg: creates a #GFile with the given argument from the
+// command line. The value of @arg can be either a URI, an absolute path or a
+// relative path resolved relative to the current working directory. This
+// operation never fails, but the returned object might not support any I/O
+// operation if @arg points to a malformed path.
+//
+// Note that on Windows, this function expects its argument to be in UTF-8 --
+// not the system code page. This means that you should not use this function
+// with string from argv as it is passed to main(). g_win32_get_command_line()
+// will return a UTF-8 version of the commandline. #GApplication also uses UTF-8
+// but g_application_command_line_create_file_for_arg() may be more useful for
+// you there. It is also always possible to use this function with Context
+// arguments of type G_OPTION_ARG_FILENAME.
+func FileNewForCommandlineArg(arg *string) File
+
+// FileNewForCommandlineArgAndCwd: creates a #GFile with the given argument from
+// the command line.
+//
+// This function is similar to g_file_new_for_commandline_arg() except that it
+// allows for passing the current working directory as an argument instead of
+// using the current working directory of the process.
+//
+// This is useful if the commandline argument was given in a context other than
+// the invocation of the current process.
+//
+// See also g_application_command_line_create_file_for_arg().
+func FileNewForCommandlineArgAndCwd(arg *string, cwd *string) File
+
+// FileNewForPath: constructs a #GFile for a given path. This operation never
+// fails, but the returned object might not support any I/O operation if @path
+// is malformed.
+func FileNewForPath(path *string) File
+
+// FileNewForURI: constructs a #GFile for a given URI. This operation never
+// fails, but the returned object might not support any I/O operation if @uri is
+// malformed or if the uri type is not supported.
+func FileNewForURI(uri string) File
+
+// FileNewTmp: opens a file in the preferred directory for temporary files (as
+// returned by g_get_tmp_dir()) and returns a #GFile and IOStream pointing to
+// it.
+//
+// @tmpl should be a string in the GLib file name encoding containing a sequence
+// of six 'X' characters, and containing no directory components. If it is nil,
+// a default template is used.
+//
+// Unlike the other #GFile constructors, this will return nil if a temporary
+// file could not be created.
+func FileNewTmp(tmpl *string, iostream **FileIOStream) File
+
+// FileParseName: constructs a #GFile with the given @parse_name (i.e. something
+// given by g_file_get_parse_name()). This operation never fails, but the
+// returned object might not support any I/O operation if the @parse_name cannot
+// be parsed.
+func FileParseName(parseName string) File
+
+// IconDeserialize: deserializes a #GIcon previously serialized using
+// g_icon_serialize().
+func IconDeserialize(value *glib.Variant) Icon
+
+// IconHash: gets a hash for an icon.
+func IconHash(icon unsafe.Pointer) uint
+
+// IconNewForString: generate a #GIcon instance from @str. This function can
+// fail if @str is not valid - see g_icon_to_string() for discussion.
+//
+// If your application or library provides one or more #GIcon implementations
+// you need to ensure that each #GType is registered with the type system prior
+// to calling g_icon_new_for_string().
+func IconNewForString(str string) Icon
+
+// InitableNewv: helper function for constructing #GInitable object. This is
+// similar to g_object_newv() but also initializes the object and returns nil,
+// setting an error on failure.
+func InitableNewv(objectType glib.Type, nParameters uint, cancellable *Cancellable) *glib.Object
+
+// IOErrorFromErrno: converts errno.h error codes into GIO error codes. The
+// fallback value G_IO_ERROR_FAILED is returned for error codes not currently
+// handled (but note that future GLib releases may return a more specific value
+// instead).
+//
+// As errno is global and may be modified by intermediate function calls, you
+// should save its value as soon as the call which sets it
+func IOErrorFromErrno(errNo int) IOErrorEnum
+
+// IOErrorQuark: gets the GIO Error Quark.
+func IOErrorQuark() glib.Quark
+
+// IOExtensionPointImplement: registers @type as extension for the extension
+// point with name @extension_point_name.
+//
+// If @type has already been registered as an extension for this extension
+// point, the existing OExtension object is returned.
+func IOExtensionPointImplement(extensionPointName string, _type glib.Type, extensionName string, priority int) *IOExtension
+
+// IOExtensionPointLookup: looks up an existing extension point.
+func IOExtensionPointLookup(name string) *IOExtensionPoint
+
+// IOExtensionPointRegister: registers an extension point.
+func IOExtensionPointRegister(name string) *IOExtensionPoint
+
+// IOModulesLoadAllInDirectory: loads all the modules in the specified
+// directory.
+//
+// If don't require all modules to be initialized (and thus registering all
+// gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
+// delayed/lazy loading of modules.
+func IOModulesLoadAllInDirectory(dirname *string) *glib.List
+
+// IOModulesLoadAllInDirectoryWithScope: loads all the modules in the specified
+// directory.
+//
+// If don't require all modules to be initialized (and thus registering all
+// gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
+// delayed/lazy loading of modules.
+func IOModulesLoadAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) *glib.List
+
+// IOModulesScanAllInDirectory: scans all the modules in the specified
+// directory, ensuring that any extension point implemented by a module is
+// registered.
+//
+// This may not actually load and initialize all the types in each module, some
+// modules may be lazily loaded and initialized when an extension point it
+// implements is used with e.g. g_io_extension_point_get_extensions() or
+// g_io_extension_point_get_extension_by_name().
+//
+// If you need to guarantee that all types are loaded in all the modules, use
+// g_io_modules_load_all_in_directory().
+func IOModulesScanAllInDirectory(dirname *string)
+
+// IOModulesScanAllInDirectoryWithScope: scans all the modules in the specified
+// directory, ensuring that any extension point implemented by a module is
+// registered.
+//
+// This may not actually load and initialize all the types in each module, some
+// modules may be lazily loaded and initialized when an extension point it
+// implements is used with e.g. g_io_extension_point_get_extensions() or
+// g_io_extension_point_get_extension_by_name().
+//
+// If you need to guarantee that all types are loaded in all the modules, use
+// g_io_modules_load_all_in_directory().
+func IOModulesScanAllInDirectoryWithScope(dirname *string, scope *IOModuleScope)
+
+// IOSchedulerCancelAllJobs: cancels all cancellable I/O jobs.
+//
+// A job is cancellable if a #GCancellable was passed into
+// g_io_scheduler_push_job().
+func IOSchedulerCancelAllJobs()
+
+// IOSchedulerPushJob: schedules the I/O job to run in another thread.
+//
+// @notify will be called on @user_data after @job_func has returned, regardless
+// whether the job was cancelled or has run to completion.
+//
+// If @cancellable is not nil, it can be used to cancel the I/O job by calling
+// g_cancellable_cancel() or by calling g_io_scheduler_cancel_all_jobs().
+func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, userData unsafe.Pointer, notify unsafe.Pointer, ioPriority int, cancellable *Cancellable)
+
+// KeyfileSettingsBackendNew: creates a keyfile-backed Backend.
+//
+// The filename of the keyfile to use is given by @filename.
+//
+// All settings read to or written from the backend must fall under the path
+// given in @root_path (which must start and end with a slash and not contain
+// two consecutive slashes). @root_path may be "/".
+//
+// If @root_group is non-nil then it specifies the name of the keyfile group
+// used for keys that are written directly below @root_path. For example, if
+// @root_path is "/apps/example/" and @root_group is "toplevel", then settings
+// the key "/apps/example/enabled" to a value of true will cause the following
+// to appear in the keyfile:
+//
+//
+//      [toplevel]
+//      enabled=true
+//
+// If @root_group is nil then it is not permitted to store keys directly below
+// the @root_path.
+//
+// For keys not stored directly below @root_path (ie: in a sub-path), the name
+// of the subpath (with the final slash stripped) is used as the name of the
+// keyfile group. To continue the example, if
+// "/apps/example/profiles/default/font-size" were set to 12 then the following
+// would appear in the keyfile:
+//
+//
+//      [profiles/default]
+//      font-size=12
+//
+// The backend will refuse writes (and return writability as being false) for
+// keys outside of @root_path and, in the event that @root_group is nil, also
+// for keys directly under @root_path. Writes will also be refused if the
+// backend detects that it has the inability to rewrite the keyfile (ie: the
+// containing directory is not writable).
+//
+// There is no checking done for your key namespace clashing with the syntax of
+// the key file format. For example, if you have '[' or ']' characters in your
+// path names or '=' in your key names you may be in trouble.
+//
+// The backend reads default values from a keyfile called `defaults` in the
+// directory specified by the SettingsBackend:defaults-dir property, and a list
+// of locked keys from a text file with the name `locks` in the same location.
+func KeyfileSettingsBackendNew(filename string, rootPath string, rootGroup string) *SettingsBackend
+
+// MemoryMonitorDupDefault: gets a reference to the default Monitor for the
+// system.
+func MemoryMonitorDupDefault() MemoryMonitor
+
+// MemorySettingsBackendNew: creates a memory-backed Backend.
+//
+// This backend allows changes to settings, but does not write them to any
+// backing storage, so the next time you run your application, the memory
+// backend will start out with the default values again.
+func MemorySettingsBackendNew() *SettingsBackend
+
+// NetworkMonitorGetDefault: gets the default Monitor for the system.
+func NetworkMonitorGetDefault() NetworkMonitor
+
+// NetworkingInit: initializes the platform networking libraries (eg, on
+// Windows, this calls WSAStartup()). GLib will call this itself if it is
+// needed, so you only need to call it if you directly call system networking
+// functions (without calling any GLib networking functions first).
+func NetworkingInit()
+
+// NullSettingsBackendNew: creates a readonly Backend.
+//
+// This backend does not allow changes to settings, so all settings will always
+// have their default values.
+func NullSettingsBackendNew() *SettingsBackend
+
+// PollableSourceNew: utility method for InputStream and OutputStream
+// implementations. Creates a new #GSource that expects a callback of type
+// SourceFunc. The new source does not actually do anything on its own; use
+// g_source_add_child_source() to add other sources to it to cause it to
+// trigger.
+func PollableSourceNew(pollableStream **glib.Object) *glib.Source
+
+// PollableSourceNewFull: utility method for InputStream and OutputStream
+// implementations. Creates a new #GSource, as with g_pollable_source_new(), but
+// also attaching @child_source (with a dummy callback), and @cancellable, if
+// they are non-nil.
+func PollableSourceNewFull(pollableStream *glib.Object, childSource *glib.Source, cancellable *Cancellable) *glib.Source
+
+// PollableStreamRead: tries to read from @stream, as with g_input_stream_read()
+// (if @blocking is true) or g_pollable_input_stream_read_nonblocking() (if
+// @blocking is false). This can be used to more easily share code between
+// blocking and non-blocking implementations of a method.
+//
+// If @blocking is false, then @stream must be a InputStream for which
+// g_pollable_input_stream_can_poll() returns true, or else the behavior is
+// undefined. If @blocking is true, then @stream does not need to be a
+// InputStream.
+func PollableStreamRead(stream *InputStream, count uint, blocking bool, cancellable *Cancellable) int
+
+// PollableStreamWrite: tries to write to @stream, as with
+// g_output_stream_write() (if @blocking is true) or
+// g_pollable_output_stream_write_nonblocking() (if @blocking is false). This
+// can be used to more easily share code between blocking and non-blocking
+// implementations of a method.
+//
+// If @blocking is false, then @stream must be a OutputStream for which
+// g_pollable_output_stream_can_poll() returns true or else the behavior is
+// undefined. If @blocking is true, then @stream does not need to be a
+// OutputStream.
+func PollableStreamWrite(stream *OutputStream, count uint, blocking bool, cancellable *Cancellable) int
+
+// PollableStreamWriteAll: tries to write @count bytes to @stream, as with
+// g_output_stream_write_all(), but using g_pollable_stream_write() rather than
+// g_output_stream_write().
+//
+// On a successful write of @count bytes, true is returned, and @bytes_written
+// is set to @count.
+//
+// If there is an error during the operation (including G_IO_ERROR_WOULD_BLOCK
+// in the non-blocking case), false is returned and @error is set to indicate
+// the error status, @bytes_written is updated to contain the number of bytes
+// written into the stream before the error occurred.
+//
+// As with g_pollable_stream_write(), if @blocking is false, then @stream must
+// be a OutputStream for which g_pollable_output_stream_can_poll() returns true
+// or else the behavior is undefined. If @blocking is true, then @stream does
+// not need to be a OutputStream.
+func PollableStreamWriteAll(stream *OutputStream, count uint, blocking bool, bytesWritten *uint, cancellable *Cancellable) bool
+
+// ProxyGetDefaultForProtocol: find the `gio-proxy` extension point for a proxy
+// implementation that supports the specified protocol.
+func ProxyGetDefaultForProtocol(protocol string) Proxy
+
+// ProxyResolverGetDefault: gets the default Resolver for the system.
+func ProxyResolverGetDefault() ProxyResolver
+
+// ResolverErrorQuark: gets the #GResolver Error Quark.
+func ResolverErrorQuark() glib.Quark
+
+// ResourceErrorQuark: gets the #GResource Error Quark.
+func ResourceErrorQuark() glib.Quark
+
+// ResourceLoad: loads a binary resource bundle and creates a #GResource
+// representation of it, allowing you to query it for data.
+//
+// If you want to use this resource in the global resource namespace you need to
+// register it with g_resources_register().
+//
+// If @filename is empty or the data in it is corrupt, G_RESOURCE_ERROR_INTERNAL
+// will be returned. If @filename doesn’t exist, or there is an error in reading
+// it, an error from g_mapped_file_new() will be returned.
+func ResourceLoad(filename *string) *Resource
+
+// ResourcesEnumerateChildren: returns all the names of children at the
+// specified @path in the set of globally registered resources. The return
+// result is a nil terminated list of strings which should be released with
+// g_strfreev().
+//
+// @lookup_flags controls the behaviour of the lookup.
+func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []string
+
+// ResourcesGetInfo: looks for a file at the specified @path in the set of
+// globally registered resources and if found returns information about it.
+//
+// @lookup_flags controls the behaviour of the lookup.
+func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags, size *uint, flags *uint32) bool
+
+// ResourcesLookupData: looks for a file at the specified @path in the set of
+// globally registered resources and returns a #GBytes that lets you directly
+// access the data in memory.
+//
+// The data is always followed by a zero byte, so you can safely use the data as
+// a C string. However, that byte is not included in the size of the GBytes.
+//
+// For uncompressed resource files this is a pointer directly into the resource
+// bundle, which is typically in some readonly data section in the program
+// binary. For compressed files we allocate memory on the heap and automatically
+// uncompress the data.
+//
+// @lookup_flags controls the behaviour of the lookup.
+func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Bytes
+
+// ResourcesOpenStream: looks for a file at the specified @path in the set of
+// globally registered resources and returns a Stream that lets you read the
+// data.
+//
+// @lookup_flags controls the behaviour of the lookup.
+func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) *InputStream
+
+// ResourcesRegister: registers the resource with the process-global set of
+// resources. Once a resource is registered the files in it can be accessed with
+// the global resource lookup functions like g_resources_lookup_data().
+func ResourcesRegister(resource *Resource)
+
+// ResourcesUnregister: unregisters the resource from the process-global set of
+// resources.
+func ResourcesUnregister(resource *Resource)
+
+// SettingsSchemaSourceGetDefault: gets the default system schema source.
+//
+// This function is not required for normal uses of #GSettings but it may be
+// useful to authors of plugin management systems or to those who want to
+// introspect the content of schemas.
+//
+// If no schemas are installed, nil will be returned.
+//
+// The returned source may actually consist of multiple schema sources from
+// different directories, depending on which directories were given in
+// `XDG_DATA_DIRS` and `GSETTINGS_SCHEMA_DIR`. For this reason, all lookups
+// performed against the default source should probably be done recursively.
+func SettingsSchemaSourceGetDefault() *SettingsSchemaSource
+
+// SimpleAsyncReportErrorInIdle: reports an error in an asynchronous function in
+// an idle function by directly setting the contents of the Result with the
+// given error information.
+func SimpleAsyncReportErrorInIdle(object **glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, domain glib.Quark, code int, format string)
+
+// SimpleAsyncReportGerrorInIdle: reports an error in an idle function. Similar
+// to g_simple_async_report_error_in_idle(), but takes a #GError rather than
+// building a new one.
+func SimpleAsyncReportGerrorInIdle(object **glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
+
+// SimpleAsyncReportTakeGerrorInIdle: reports an error in an idle function.
+// Similar to g_simple_async_report_gerror_in_idle(), but takes over the
+// caller's ownership of @error, so the caller does not have to free it any
+// more.
+func SimpleAsyncReportTakeGerrorInIdle(object **glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
+
+// SrvTargetListSort: sorts @targets in place according to the algorithm in RFC
+// 2782.
+func SrvTargetListSort(targets *glib.List) *glib.List
+
+// TlsBackendGetDefault: gets the default Backend for the system.
+func TlsBackendGetDefault() TlsBackend
+
+// TlsChannelBindingErrorQuark: gets the TLS channel binding error quark.
+func TlsChannelBindingErrorQuark() glib.Quark
+
+// TlsClientConnectionNew: creates a new ClientConnection wrapping
+// @base_io_stream (which must have pollable input and output streams) which is
+// assumed to communicate with the server identified by @server_identity.
+//
+// See the documentation for Connection:base-io-stream for restrictions on when
+// application code can run operations on the @base_io_stream after this
+// function has returned.
+func TlsClientConnectionNew(baseIOStream *IOStream, serverIdentity SocketConnectable) TlsClientConnection
+
+// TlsErrorQuark: gets the TLS error quark.
+func TlsErrorQuark() glib.Quark
+
+// TlsFileDatabaseNew: creates a new FileDatabase which uses anchor certificate
+// authorities in @anchors to verify certificate chains.
+//
+// The certificates in @anchors must be PEM encoded.
+func TlsFileDatabaseNew(anchors *string) TlsFileDatabase
+
+// TlsServerConnectionNew: creates a new ServerConnection wrapping
+// @base_io_stream (which must have pollable input and output streams).
+//
+// See the documentation for Connection:base-io-stream for restrictions on when
+// application code can run operations on the @base_io_stream after this
+// function has returned.
+func TlsServerConnectionNew(baseIOStream *IOStream, certificate *TlsCertificate) TlsServerConnection
+
+// UnixIsMountPathSystemInternal: determines if @mount_path is considered an
+// implementation of the OS. This is primarily used for hiding mountable and
+// mounted volumes that only are used in the OS and has little to no relevance
+// to the casual user.
+func UnixIsMountPathSystemInternal(mountPath *string) bool
+
+// UnixIsSystemDevicePath: determines if @device_path is considered a block
+// device path which is only used in implementation of the OS. This is primarily
+// used for hiding mounted volumes that are intended as APIs for programs to
+// read, and system administrators at a shell; rather than something that
+// should, for example, appear in a GUI. For example, the Linux `/proc`
+// filesystem.
+//
+// The list of device paths considered ‘system’ ones may change over time.
+func UnixIsSystemDevicePath(devicePath string) bool
+
+// UnixIsSystemFsType: determines if @fs_type is considered a type of file
+// system which is only used in implementation of the OS. This is primarily used
+// for hiding mounted volumes that are intended as APIs for programs to read,
+// and system administrators at a shell; rather than something that should, for
+// example, appear in a GUI. For example, the Linux `/proc` filesystem.
+//
+// The list of file system types considered ‘system’ ones may change over time.
+func UnixIsSystemFsType(fsType string) bool
+
+// UnixMountAt: gets a MountEntry for a given mount path. If @time_read is set,
+// it will be filled with a unix timestamp for checking if the mounts have
+// changed since with g_unix_mounts_changed_since().
+//
+// If more mounts have the same mount path, the last matching mount is returned.
+func UnixMountAt(mountPath *string, timeRead *uint64) *UnixMountEntry
+
+// UnixMountCompare: compares two unix mounts.
+func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int
+
+// UnixMountCopy: makes a copy of @mount_entry.
+func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry
+
+// UnixMountFor: gets a MountEntry for a given file path. If @time_read is set,
+// it will be filled with a unix timestamp for checking if the mounts have
+// changed since with g_unix_mounts_changed_since().
+//
+// If more mounts have the same mount path, the last matching mount is returned.
+func UnixMountFor(filePath *string, timeRead *uint64) *UnixMountEntry
+
+// UnixMountFree: frees a unix mount.
+func UnixMountFree(mountEntry *UnixMountEntry)
+
+// UnixMountGetDevicePath: gets the device path for a unix mount.
+func UnixMountGetDevicePath(mountEntry *UnixMountEntry) *string
+
+// UnixMountGetFsType: gets the filesystem type for the unix mount.
+func UnixMountGetFsType(mountEntry *UnixMountEntry) string
+
+// UnixMountGetMountPath: gets the mount path for a unix mount.
+func UnixMountGetMountPath(mountEntry *UnixMountEntry) *string
+
+// UnixMountGetOptions: gets a comma-separated list of mount options for the
+// unix mount. For example, `rw,relatime,seclabel,data=ordered`.
+//
+// This is similar to g_unix_mount_point_get_options(), but it takes a
+// MountEntry as an argument.
+func UnixMountGetOptions(mountEntry *UnixMountEntry) string
+
+// UnixMountGetRootPath: gets the root of the mount within the filesystem. This
+// is useful e.g. for mounts created by bind operation, or btrfs subvolumes.
+//
+// For example, the root path is equal to "/" for mount created by "mount
+// /dev/sda1 /mnt/foo" and "/bar" for "mount --bind /mnt/foo/bar /mnt/bar".
+func UnixMountGetRootPath(mountEntry *UnixMountEntry) string
+
+// UnixMountGuessCanEject: guesses whether a Unix mount can be ejected.
+func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool
+
+// UnixMountGuessIcon: guesses the icon of a Unix mount.
+func UnixMountGuessIcon(mountEntry *UnixMountEntry) Icon
+
+// UnixMountGuessName: guesses the name of a Unix mount. The result is a
+// translated string.
+func UnixMountGuessName(mountEntry *UnixMountEntry) string
+
+// UnixMountGuessShouldDisplay: guesses whether a Unix mount should be displayed
+// in the UI.
+func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool
+
+// UnixMountGuessSymbolicIcon: guesses the symbolic icon of a Unix mount.
+func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Icon
+
+// UnixMountIsReadonly: checks if a unix mount is mounted read only.
+func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool
+
+// UnixMountIsSystemInternal: checks if a Unix mount is a system mount. This is
+// the Boolean OR of g_unix_is_system_fs_type(), g_unix_is_system_device_path()
+// and g_unix_is_mount_path_system_internal() on @mount_entry’s properties.
+//
+// The definition of what a ‘system’ mount entry is may change over time as new
+// file system types and device paths are ignored.
+func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool
+
+// UnixMountPointAt: gets a MountPoint for a given mount path. If @time_read is
+// set, it will be filled with a unix timestamp for checking if the mount points
+// have changed since with g_unix_mount_points_changed_since().
+//
+// If more mount points have the same mount path, the last matching mount point
+// is returned.
+func UnixMountPointAt(mountPath *string, timeRead *uint64) *UnixMountPoint
+
+// UnixMountPointsChangedSince: checks if the unix mount points have changed
+// since a given unix time.
+func UnixMountPointsChangedSince(time uint64) bool
+
+// UnixMountPointsGet: gets a #GList of MountPoint containing the unix mount
+// points. If @time_read is set, it will be filled with the mount timestamp,
+// allowing for checking if the mounts have changed with
+// g_unix_mount_points_changed_since().
+func UnixMountPointsGet(timeRead *uint64) *glib.List
+
+// UnixMountsChangedSince: checks if the unix mounts have changed since a given
+// unix time.
+func UnixMountsChangedSince(time uint64) bool
+
+// UnixMountsGet: gets a #GList of MountEntry containing the unix mounts. If
+// @time_read is set, it will be filled with the mount timestamp, allowing for
+// checking if the mounts have changed with g_unix_mounts_changed_since().
+func UnixMountsGet(timeRead *uint64) *glib.List
+
+// ActionEntry: this struct defines a single action. It is for use with
+// g_action_map_add_action_entries().
+//
+// The order of the items in the structure are intended to reflect frequency of
+// use. It is permissible to use an incomplete initialiser in order to leave
+// some of the later values as nil. All values after @name are optional.
+// Additional optional fields may be added in the future.
+//
+// See g_action_map_add_action_entries() for an example.
+type ActionEntry struct {
+	// Name: the name of the action
+	Name string
+
+	// ParameterType: the type of the parameter that must be passed to the
+	// activate function for this action, given as a single GVariant type string
+	// (or nil for no parameter)
+	ParameterType string
+	// State: the initial state for this action, given in [GVariant text
+	// format][gvariant-text]. The state is parsed with no extra type
+	// information, so type tags must be added to the string if they are
+	// necessary. Stateless actions should give nil here.
+	State string
+
+	native *C.GActionEntry
+}
+
+// DBusAnnotationInfo: information about an annotation.
+type DBusAnnotationInfo struct {
+	// RefCount: the reference count or -1 if statically allocated.
+	RefCount int
+	// Key: the name of the annotation, e.g. "org.freedesktop.DBus.Deprecated".
+	Key string
+	// Value: the value of the annotation.
+	Value string
+	// Annotations: a pointer to a nil-terminated array of pointers to
+	// BusAnnotationInfo structures or nil if there are no annotations.
+	Annotations []*DBusAnnotationInfo
+}
+
+// DBusArgInfo: information about an argument for a method or a signal.
+type DBusArgInfo struct {
+	// RefCount: the reference count or -1 if statically allocated.
+	RefCount int
+	// Name: name of the argument, e.g. @unix_user_id.
+	Name string
+	// Signature: d-Bus signature of the argument (a single complete type).
+	Signature string
+	// Annotations: a pointer to a nil-terminated array of pointers to
+	// BusAnnotationInfo structures or nil if there are no annotations.
+	Annotations []*DBusAnnotationInfo
+}
+
+// DBusErrorEntry: struct used in g_dbus_error_register_error_domain().
+type DBusErrorEntry struct {
+	// ErrorCode: an error code.
+	ErrorCode int
+	// DbusErrorName: the D-Bus error name to associate with @error_code.
+	DbusErrorName string
+}
+
+// DBusInterfaceInfo: information about a D-Bus interface.
+type DBusInterfaceInfo struct {
+	// RefCount: the reference count or -1 if statically allocated.
+	RefCount int
+	// Name: the name of the D-Bus interface, e.g.
+	// "org.freedesktop.DBus.Properties".
+	Name string
+	// Methods: a pointer to a nil-terminated array of pointers to BusMethodInfo
+	// structures or nil if there are no methods.
+	Methods []*DBusMethodInfo
+	// Signals: a pointer to a nil-terminated array of pointers to BusSignalInfo
+	// structures or nil if there are no signals.
+	Signals []*DBusSignalInfo
+	// Properties: a pointer to a nil-terminated array of pointers to
+	// BusPropertyInfo structures or nil if there are no properties.
+	Properties []*DBusPropertyInfo
+	// Annotations: a pointer to a nil-terminated array of pointers to
+	// BusAnnotationInfo structures or nil if there are no annotations.
+	Annotations []*DBusAnnotationInfo
+}
+
+// DBusInterfaceVTable: virtual table for handling properties and method calls
+// for a D-Bus interface.
+//
+// Since 2.38, if you want to handle getting/setting D-Bus properties
+// asynchronously, give nil as your get_property() or set_property() function.
+// The D-Bus call will be directed to your @method_call function, with the
+// provided @interface_name set to "org.freedesktop.DBus.Properties".
+//
+// Ownership of the BusMethodInvocation object passed to the method_call()
+// function is transferred to your handler; you must call one of the methods of
+// BusMethodInvocation to return a reply (possibly empty), or an error. These
+// functions also take ownership of the passed-in invocation object, so unless
+// the invocation object has otherwise been referenced, it will be then be
+// freed. Calling one of these functions may be done within your method_call()
+// implementation but it also can be done at a later point to handle the method
+// asynchronously.
+//
+// The usual checks on the validity of the calls is performed. For `Get` calls,
+// an error is automatically returned if the property does not exist or the
+// permissions do not allow access. The same checks are performed for `Set`
+// calls, and the provided value is also checked for being the correct type.
+//
+// For both `Get` and `Set` calls, the BusMethodInvocation passed to the
+// @method_call handler can be queried with
+// g_dbus_method_invocation_get_property_info() to get a pointer to the
+// BusPropertyInfo of the property.
+//
+// If you have readable properties specified in your interface info, you must
+// ensure that you either provide a non-nil @get_property() function or provide
+// implementations of both the `Get` and `GetAll` methods on
+// org.freedesktop.DBus.Properties interface in your @method_call function. Note
+// that the required return type of the `Get` call is `(v)`, not the type of the
+// property. `GetAll` expects a return value of type `a{sv}`.
+//
+// If you have writable properties specified in your interface info, you must
+// ensure that you either provide a non-nil @set_property() function or provide
+// an implementation of the `Set` call. If implementing the call, you must
+// return the value of type G_VARIANT_TYPE_UNIT.
+type DBusInterfaceVTable struct {
+	// MethodCall: function for handling incoming method calls.
+	MethodCall DBusInterfaceMethodCallFunc
+	// GetProperty: function for getting a property.
+	GetProperty DBusInterfaceGetPropertyFunc
+	// SetProperty: function for setting a property.
+	SetProperty DBusInterfaceSetPropertyFunc
+
+	native *C.GDBusInterfaceVTable
+}
+
+// DBusMethodInfo: information about a method on an D-Bus interface.
+type DBusMethodInfo struct {
+	// RefCount: the reference count or -1 if statically allocated.
+	RefCount int
+	// Name: the name of the D-Bus method, e.g. @RequestName.
+	Name string
+	// InArgs: a pointer to a nil-terminated array of pointers to BusArgInfo
+	// structures or nil if there are no in arguments.
+	InArgs []*DBusArgInfo
+	// OutArgs: a pointer to a nil-terminated array of pointers to BusArgInfo
+	// structures or nil if there are no out arguments.
+	OutArgs []*DBusArgInfo
+	// Annotations: a pointer to a nil-terminated array of pointers to
+	// BusAnnotationInfo structures or nil if there are no annotations.
+	Annotations []*DBusAnnotationInfo
+}
+
+// DBusNodeInfo: information about nodes in a remote object hierarchy.
+type DBusNodeInfo struct {
+	// RefCount: the reference count or -1 if statically allocated.
+	RefCount int
+	// Path: the path of the node or nil if omitted. Note that this may be a
+	// relative path. See the D-Bus specification for more details.
+	Path string
+	// Interfaces: a pointer to a nil-terminated array of pointers to
+	// BusInterfaceInfo structures or nil if there are no interfaces.
+	Interfaces []*DBusInterfaceInfo
+	// Nodes: a pointer to a nil-terminated array of pointers to BusNodeInfo
+	// structures or nil if there are no nodes.
+	Nodes []*DBusNodeInfo
+	// Annotations: a pointer to a nil-terminated array of pointers to
+	// BusAnnotationInfo structures or nil if there are no annotations.
+	Annotations []*DBusAnnotationInfo
+}
+
+// DBusPropertyInfo: information about a D-Bus property on a D-Bus interface.
+type DBusPropertyInfo struct {
+	// RefCount: the reference count or -1 if statically allocated.
+	RefCount int
+	// Name: the name of the D-Bus property, e.g. "SupportedFilesystems".
+	Name string
+	// Signature: the D-Bus signature of the property (a single complete type).
+	Signature string
+	// Flags: access control flags for the property.
+	Flags DBusPropertyInfoFlags
+	// Annotations: a pointer to a nil-terminated array of pointers to
+	// BusAnnotationInfo structures or nil if there are no annotations.
+	Annotations []*DBusAnnotationInfo
+}
+
+// DBusSignalInfo: information about a signal on a D-Bus interface.
+type DBusSignalInfo struct {
+	// RefCount: the reference count or -1 if statically allocated.
+	RefCount int
+	// Name: the name of the D-Bus signal, e.g. "NameOwnerChanged".
+	Name string
+	// Args: a pointer to a nil-terminated array of pointers to BusArgInfo
+	// structures or nil if there are no arguments.
+	Args []*DBusArgInfo
+	// Annotations: a pointer to a nil-terminated array of pointers to
+	// BusAnnotationInfo structures or nil if there are no annotations.
+	Annotations []*DBusAnnotationInfo
+}
+
+// DBusSubtreeVTable: virtual table for handling subtrees registered with
+// g_dbus_connection_register_subtree().
+type DBusSubtreeVTable struct {
+	// Enumerate: function for enumerating child nodes.
+	Enumerate DBusSubtreeEnumerateFunc
+	// Introspect: function for introspecting a child node.
+	Introspect DBusSubtreeIntrospectFunc
+	// Dispatch: function for dispatching a remote call on a child node.
+	Dispatch DBusSubtreeDispatchFunc
+
+	native *C.GDBusSubtreeVTable
+}
+
+// FileAttributeInfo: information about a specific attribute.
+type FileAttributeInfo struct {
+	// Name: the name of the attribute.
+	Name string
+	// Type: the AttributeType type of the attribute.
+	Type FileAttributeType
+	// Flags: a set of AttributeInfoFlags.
+	Flags FileAttributeInfoFlags
+}
+
+// FileAttributeInfoList: acts as a lightweight registry for possible valid file
+// attributes. The registry stores Key-Value pair formats as AttributeInfos.
+type FileAttributeInfoList struct {
+	// Infos: an array of AttributeInfos.
+	Infos *FileAttributeInfo
+	// NInfos: the number of values in the array.
+	NInfos int
+}
+
+// FileAttributeMatcher: determines if a string matches a file attribute.
+type FileAttributeMatcher struct {
+	native *C.GFileAttributeMatcher
+}
+
+// InputMessage: structure used for scatter/gather data input when receiving
+// multiple messages or packets in one go. You generally pass in an array of
+// empty Vectors and the operation will use all the buffers as if they were one
+// buffer, and will set @bytes_received to the total number of bytes received
+// across all Vectors.
+//
+// This structure closely mirrors `struct mmsghdr` and `struct msghdr` from the
+// POSIX sockets API (see `man 2 recvmmsg`).
+//
+// If @address is non-nil then it is set to the source address the message was
+// received from, and the caller must free it afterwards.
+//
+// If @control_messages is non-nil then it is set to an array of control
+// messages received with the message (if any), and the caller must free it
+// afterwards. @num_control_messages is set to the number of elements in this
+// array, which may be zero.
+//
+// Flags relevant to this message will be returned in @flags. For example,
+// `MSG_EOR` or `MSG_TRUNC`.
+type InputMessage struct {
+	// Address: return location for a Address, or nil
+	Address **SocketAddress
+	// Vectors: pointer to an array of input vectors
+	Vectors []InputVector
+	// NumVectors: the number of input vectors pointed to by @vectors
+	NumVectors uint
+	// BytesReceived: will be set to the number of bytes that have been received
+	BytesReceived uint
+	// Flags: collection of MsgFlags for the received message, outputted by the
+	// call
+	Flags int
+	// ControlMessages: return location for a caller-allocated array of
+	// ControlMessages, or nil
+	ControlMessages []**SocketControlMessage
+	// NumControlMessages: return location for the number of elements in
+	// @control_messages
+	NumControlMessages *uint
+}
+
+// InputVector: structure used for scatter/gather data input. You generally pass
+// in an array of Vectors and the operation will store the read data starting in
+// the first buffer, switching to the next as needed.
+type InputVector struct {
+	// Buffer: pointer to a buffer where data will be written.
+	Buffer unsafe.Pointer
+	// Size: the available size in @buffer.
+	Size uint
+}
+
+// OutputMessage: structure used for scatter/gather data output when sending
+// multiple messages or packets in one go. You generally pass in an array of
+// Vectors and the operation will use all the buffers as if they were one
+// buffer.
+//
+// If @address is nil then the message is sent to the default receiver (as
+// previously set by g_socket_connect()).
+type OutputMessage struct {
+	// Address: a Address, or nil
+	Address *SocketAddress
+	// Vectors: pointer to an array of output vectors
+	Vectors *OutputVector
+	// NumVectors: the number of output vectors pointed to by @vectors.
+	NumVectors uint
+	// BytesSent: initialize to 0. Will be set to the number of bytes that have
+	// been sent
+	BytesSent uint
+	// ControlMessages: a pointer to an array of ControlMessages, or nil.
+	ControlMessages []*SocketControlMessage
+	// NumControlMessages: number of elements in @control_messages.
+	NumControlMessages uint
+}
+
+// OutputVector: structure used for scatter/gather data output. You generally
+// pass in an array of Vectors and the operation will use all the buffers as if
+// they were one buffer.
+type OutputVector struct {
+	// Buffer: pointer to a buffer of data to read.
+	Buffer unsafe.Pointer
+	// Size: the size of @buffer.
+	Size uint
+}
+
+// Resource: applications and libraries often contain binary or textual data
+// that is really part of the application, rather than user data. For instance
+// Builder .ui files, splashscreen images, GMenu markup XML, CSS files, icons,
+// etc. These are often shipped as files in `$datadir/appname`, or manually
+// included as literal strings in the code.
+//
+// The #GResource API and the [glib-compile-resources][glib-compile-resources]
+// program provide a convenient and efficient alternative to this which has some
+// nice properties. You maintain the files as normal files, so its easy to edit
+// them, but during the build the files are combined into a binary bundle that
+// is linked into the executable. This means that loading the resource files are
+// efficient (as they are already in memory, shared with other instances) and
+// simple (no need to check for things like I/O errors or locate the files in
+// the filesystem). It also makes it easier to create relocatable applications.
+//
+// Resource files can also be marked as compressed. Such files will be included
+// in the resource bundle in a compressed form, but will be automatically
+// uncompressed when the resource is used. This is very useful e.g. for larger
+// text files that are parsed once (or rarely) and then thrown away.
+//
+// Resource files can also be marked to be preprocessed, by setting the value of
+// the `preprocess` attribute to a comma-separated list of preprocessing
+// options. The only options currently supported are:
+//
+// `xml-stripblanks` which will use the xmllint command to strip ignorable
+// whitespace from the XML file. For this to work, the `XMLLINT` environment
+// variable must be set to the full path to the xmllint executable, or xmllint
+// must be in the `PATH`; otherwise the preprocessing step is skipped.
+//
+// `to-pixdata` which will use the gdk-pixbuf-pixdata command to convert images
+// to the GdkPixdata format, which allows you to create pixbufs directly using
+// the data inside the resource file, rather than an (uncompressed) copy of it.
+// For this, the gdk-pixbuf-pixdata program must be in the PATH, or the
+// `GDK_PIXBUF_PIXDATA` environment variable must be set to the full path to the
+// gdk-pixbuf-pixdata executable; otherwise the resource compiler will abort.
+//
+// `json-stripblanks` which will use the `json-glib-format` command to strip
+// ignorable whitespace from the JSON file. For this to work, the
+// `JSON_GLIB_FORMAT` environment variable must be set to the full path to the
+// `json-glib-format` executable, or it must be in the `PATH`; otherwise the
+// preprocessing step is skipped. In addition, at least version 1.6 of
+// `json-glib-format` is required.
+//
+// Resource files will be exported in the GResource namespace using the
+// combination of the given `prefix` and the filename from the `file` element.
+// The `alias` attribute can be used to alter the filename to expose them at a
+// different location in the resource namespace. Typically, this is used to
+// include files from a different source directory without exposing the source
+// directory in the resource namespace, as in the example below.
+//
+// Resource bundles are created by the
+// [glib-compile-resources][glib-compile-resources] program which takes an XML
+// file that describes the bundle, and a set of files that the XML references.
+// These are combined into a binary resource bundle.
+//
+//
+//    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+//    &lt;gresources&gt;
+//      &lt;gresource prefix="/org/gtk/Example"&gt;
+//        &lt;file&gt;data/splashscreen.png&lt;/file&gt;
+//        &lt;file compressed="true"&gt;dialog.ui&lt;/file&gt;
+//        &lt;file preprocess="xml-stripblanks"&gt;menumarkup.xml&lt;/file&gt;
+//        &lt;file alias="example.css"&gt;data/example.css&lt;/file&gt;
+//      &lt;/gresource&gt;
+//    &lt;/gresources&gt;
+//
+//
+//    /org/gtk/Example/data/splashscreen.png
+//    /org/gtk/Example/dialog.ui
+//    /org/gtk/Example/menumarkup.xml
+//    /org/gtk/Example/example.css
+//
+// Note that all resources in the process share the same namespace, so use
+// Java-style path prefixes (like in the above example) to avoid conflicts.
+//
+// You can then use [glib-compile-resources][glib-compile-resources] to compile
+// the XML to a binary bundle that you can load with g_resource_load(). However,
+// its more common to use the --generate-source and --generate-header arguments
+// to create a source file and header to link directly into your application.
+// This will generate `get_resource()`, `register_resource()` and
+// `unregister_resource()` functions, prefixed by the `--c-name` argument passed
+// to [glib-compile-resources][glib-compile-resources]. `get_resource()` returns
+// the generated #GResource object. The register and unregister functions
+// register the resource so its files can be accessed using
+// g_resources_lookup_data().
+//
+// Once a #GResource has been created and registered all the data in it can be
+// accessed globally in the process by using API calls like
+// g_resources_open_stream() to stream the data or g_resources_lookup_data() to
+// get a direct pointer to the data. You can also use URIs like
+// "resource:///org/gtk/Example/data/splashscreen.png" with #GFile to access the
+// resource data.
+//
+// Some higher-level APIs, such as Application, will automatically load
+// resources from certain well-known paths in the resource namespace as a
+// convenience. See the documentation for those APIs for details.
+//
+// There are two forms of the generated source, the default version uses the
+// compiler support for constructor and destructor functions (where available)
+// to automatically create and register the #GResource on startup or library
+// load time. If you pass `--manual-register`, two functions to
+// register/unregister the resource are created instead. This requires an
+// explicit initialization call in your application/library, but it works on all
+// platforms, even on the minor ones where constructors are not supported.
+// (Constructor support is available for at least Win32, Mac OS and Linux.)
+//
+// Note that resource data can point directly into the data segment of e.g. a
+// library, so if you are unloading libraries during runtime you need to be very
+// careful with keeping around pointers to data from a resource, as this goes
+// away when the library is unloaded. However, in practice this is not generally
+// a problem, since most resource accesses are for your own resources, and
+// resource data is often used once, during parsing, and then released.
+//
+// When debugging a program or testing a change to an installed version, it is
+// often useful to be able to replace resources in the program or library,
+// without recompiling, for debugging or quick hacking and testing purposes.
+// Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment
+// variable to selectively overlay resources with replacements from the
+// filesystem. It is a G_SEARCHPATH_SEPARATOR-separated list of substitutions to
+// perform during resource lookups.
+//
+// A substitution has the form
+//
+//
+//       /org/gtk/libgtk=/home/desrt/gtk-overlay
+//
+// The part before the `=` is the resource subpath for which the overlay
+// applies. The part after is a filesystem path which contains files and
+// subdirectories as you would like to be loaded as resources with the
+// equivalent names.
+//
+// In the example above, if an application tried to load a resource with the
+// resource path `/org/gtk/libgtk/ui/gtkdialog.ui` then GResource would check
+// the filesystem path `/home/desrt/gtk-overlay/ui/gtkdialog.ui`. If a file was
+// found there, it would be used instead. This is an overlay, not an outright
+// replacement, which means that if a file is not found at that path, the
+// built-in version will be used instead. Whiteouts are not currently supported.
+//
+// Substitutions must start with a slash, and must not contain a trailing slash
+// before the '='. The path after the slash should ideally be absolute, but this
+// is not strictly required. It is possible to overlay the location of a single
+// resource with an individual file.
+type Resource struct {
+	native *C.GResource
+}
+
+// SettingsSchema: the SchemaSource and Schema APIs provide a mechanism for
+// advanced control over the loading of schemas and a mechanism for
+// introspecting their content.
+//
+// Plugin loading systems that wish to provide plugins a way to access settings
+// face the problem of how to make the schemas for these settings visible to
+// GSettings. Typically, a plugin will want to ship the schema along with itself
+// and it won't be installed into the standard system directories for schemas.
+//
+// SchemaSource provides a mechanism for dealing with this by allowing the
+// creation of a new 'schema source' from which schemas can be acquired. This
+// schema source can then become part of the metadata associated with the plugin
+// and queried whenever the plugin requires access to some settings.
+//
+// Consider the following example:
+//
+//    typedef struct
+//    {
+//       ...
+//       GSettingsSchemaSource *schema_source;
+//       ...
+//    } Plugin;
+//
+//    Plugin *
+//    initialise_plugin (const gchar *dir)
+//    {
+//      Plugin *plugin;
+//
+//      ...
+//
+//      plugin-&gt;schema_source =
+//        g_settings_schema_source_new_from_directory (dir,
+//          g_settings_schema_source_get_default (), FALSE, NULL);
+//
+//      ...
+//
+//      return plugin;
+//    }
+//
+//    ...
+//
+//    GSettings *
+//    plugin_get_settings (Plugin      *plugin,
+//                         const gchar *schema_id)
+//    {
+//      GSettingsSchema *schema;
+//
+//      if (schema_id == NULL)
+//        schema_id = plugin-&gt;identifier;
+//
+//      schema = g_settings_schema_source_lookup (plugin-&gt;schema_source,
+//                                                schema_id, FALSE);
+//
+//      if (schema == NULL)
+//        {
+//          ... disable the plugin or abort, etc ...
+//        }
+//
+//      return g_settings_new_full (schema, NULL, NULL);
+//    }
+//
+//
+// The code above shows how hooks should be added to the code that initialises
+// (or enables) the plugin to create the schema source and how an API can be
+// added to the plugin system to provide a convenient way for the plugin to
+// access its settings, using the schemas that it ships.
+//
+// From the standpoint of the plugin, it would need to ensure that it ships a
+// gschemas.compiled file as part of itself, and then simply do the following:
+//
+//    {
+//      GSettings *settings;
+//      gint some_value;
+//
+//      settings = plugin_get_settings (self, NULL);
+//      some_value = g_settings_get_int (settings, "some-value");
+//      ...
+//    }
+//
+//
+// It's also possible that the plugin system expects the schema source files
+// (ie: .gschema.xml files) instead of a gschemas.compiled file. In that case,
+// the plugin loading system must compile the schemas for itself before
+// attempting to create the settings source.
+type SettingsSchema struct {
+	native *C.GSettingsSchema
+}
+
+// SettingsSchemaKey: GSettingsSchemaKey is an opaque data structure and can
+// only be accessed using the following functions.
+type SettingsSchemaKey struct {
+	native *C.GSettingsSchemaKey
+}
+
+// SettingsSchemaSource: this is an opaque structure type. You may not access it
+// directly.
+type SettingsSchemaSource struct {
+	native *C.GSettingsSchemaSource
+}
+
+// SrvTarget: SRV (service) records are used by some network protocols to
+// provide service-specific aliasing and load-balancing. For example, XMPP
+// (Jabber) uses SRV records to locate the XMPP server for a domain; rather than
+// connecting directly to "example.com" or assuming a specific server hostname
+// like "xmpp.example.com", an XMPP client would look up the "xmpp-client" SRV
+// record for "example.com", and then connect to whatever host was pointed to by
+// that record.
+//
+// You can use g_resolver_lookup_service() or g_resolver_lookup_service_async()
+// to find the Targets for a given service. However, if you are simply planning
+// to connect to the remote service, you can use Service's Connectable interface
+// and not need to worry about Target at all.
+type SrvTarget struct {
+	native *C.GSrvTarget
+}
+
+// StaticResource: GStaticResource is an opaque data structure and can only be
+// accessed using the following functions.
+type StaticResource struct {
+	native *C.GStaticResource
+}
+
+// UnixMountEntry: defines a Unix mount entry (e.g.
+// &lt;filename&gt;/media/cdrom&lt;/filename&gt;). This corresponds roughly to a
+// mtab entry.
+type UnixMountEntry struct {
+	native *C.GUnixMountEntry
+}
+
+// UnixMountPoint: defines a Unix mount point (e.g.
+// &lt;filename&gt;/dev&lt;/filename&gt;). This corresponds roughly to a fstab
+// entry.
+type UnixMountPoint struct {
+	native *C.GUnixMountPoint
 }

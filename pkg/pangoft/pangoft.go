@@ -3,10 +3,12 @@
 package pangoft
 
 import (
+	"github.com/diamondburned/gotk4/freetype"
+	"github.com/diamondburned/gotk4/pango"
 	"github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango pangoft2
+// #cgo pkg-config: pangoft2
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangoft2.h>
 import "C"
@@ -17,3 +19,65 @@ func init() {
 		// Objects/Classes
 	})
 }
+
+// FontGetCoverage: gets the Coverage for a `PangoFT2Font`. Use
+// pango_font_get_coverage() instead.
+func FontGetCoverage(font *pango.Font, language *pango.Language) *pango.Coverage
+
+// FontGetFace: returns the native FreeType2 `FT_Face` structure used for this
+// Font. This may be useful if you want to use FreeType2 functions directly.
+//
+// Use pango_fc_font_lock_face() instead; when you are done with a face from
+// pango_fc_font_lock_face() you must call pango_fc_font_unlock_face().
+func FontGetFace(font *pango.Font) freetype.Face
+
+// FontGetKerning: retrieves kerning information for a combination of two
+// glyphs.
+//
+// Use pango_fc_font_kern_glyphs() instead.
+func FontGetKerning(font *pango.Font, left pango.Glyph, right pango.Glyph) int
+
+// GetContext: retrieves a `PangoContext` for the default PangoFT2 fontmap (see
+// pango_ft2_font_map_for_display()) and sets the resolution for the default
+// fontmap to @dpi_x by @dpi_y.
+func GetContext(dpiX float64, dpiY float64) *pango.Context
+
+// GetUnknownGlyph: return the index of a glyph suitable for drawing unknown
+// characters with @font, or PANGO_GLYPH_EMPTY if no suitable glyph found.
+//
+// If you want to draw an unknown-box for a character that is not covered by the
+// font, use PANGO_GET_UNKNOWN_GLYPH() instead.
+func GetUnknownGlyph(font *pango.Font) pango.Glyph
+
+// Render: renders a GlyphString onto a FreeType2 bitmap.
+func Render(bitmap *freetype.Bitmap, font *pango.Font, glyphs *pango.GlyphString, x int, y int)
+
+// RenderLayout: render a Layout onto a FreeType2 bitmap
+func RenderLayout(bitmap *freetype.Bitmap, layout *pango.Layout, x int, y int)
+
+// RenderLayoutLine: render a LayoutLine onto a FreeType2 bitmap
+func RenderLayoutLine(bitmap *freetype.Bitmap, line *pango.LayoutLine, x int, y int)
+
+// RenderLayoutLineSubpixel: render a LayoutLine onto a FreeType2 bitmap, with
+// he location specified in fixed-point Pango units rather than pixels. (Using
+// this will avoid extra inaccuracies from rounding to integer pixels multiple
+// times, even if the final glyph positions are integers.)
+func RenderLayoutLineSubpixel(bitmap *freetype.Bitmap, line *pango.LayoutLine, x int, y int)
+
+// RenderLayoutSubpixel: render a Layout onto a FreeType2 bitmap, with he
+// location specified in fixed-point Pango units rather than pixels. (Using this
+// will avoid extra inaccuracies from rounding to integer pixels multiple times,
+// even if the final glyph positions are integers.)
+func RenderLayoutSubpixel(bitmap *freetype.Bitmap, layout *pango.Layout, x int, y int)
+
+// RenderTransformed: renders a GlyphString onto a FreeType2 bitmap, possibly
+// transforming the layed-out coordinates through a transformation matrix. Note
+// that the transformation matrix for @font is not changed, so to produce
+// correct rendering results, the @font must have been loaded using a Context
+// with an identical transformation matrix to that passed in to this function.
+func RenderTransformed(bitmap *freetype.Bitmap, matrix *pango.Matrix, font *pango.Font, glyphs *pango.GlyphString, x int, y int)
+
+// ShutdownDisplay: free the global fontmap. (See
+// pango_ft2_font_map_for_display()) Use of the global PangoFT2 fontmap is
+// deprecated.
+func ShutdownDisplay()

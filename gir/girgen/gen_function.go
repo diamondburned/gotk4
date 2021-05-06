@@ -1,11 +1,16 @@
 package girgen
 
-import "github.com/diamondburned/gotk4/gir"
+import (
+	"strings"
+
+	"github.com/diamondburned/gotk4/gir"
+)
 
 var functionTmpl = newGoTemplate(`
-	{{ $name := (SnakeToGo .Name) }}
+	{{ $name := .GoName }}
 
-	func {{ $name }}()
+	{{ GoDoc .Doc 0 $name }}
+	func {{ $name }}({{ .Args }}) {{ .Return }}
 `)
 
 type functionGenerator struct {
@@ -13,8 +18,16 @@ type functionGenerator struct {
 	Ng *NamespaceGenerator
 }
 
-func (fg *functionGenerator) args() string {
+func (fg functionGenerator) GoName() string {
+	return SnakeToGo(true, fg.Name)
+}
+
+func (fg functionGenerator) Args() string {
 	return fg.Ng.fnArgs(fg.Parameters)
+}
+
+func (fg functionGenerator) Return() string {
+	return fg.Ng.fnReturns(fg.ReturnValue)
 }
 
 func (ng *NamespaceGenerator) fnArgs(params *gir.Parameters) string {
@@ -22,9 +35,28 @@ func (ng *NamespaceGenerator) fnArgs(params *gir.Parameters) string {
 		return ""
 	}
 
-	// goArgs := make([]string, 0, len(params.Parameters))
+	goArgs := make([]string, 0, len(params.Parameters))
 
-	return ""
+	for _, param := range params.Parameters {
+		resolved := ng.resolveType(param.Type)
+		if resolved == nil {
+			continue
+		}
+
+		goName := SnakeToGo(false, param.Name)
+		goArgs = append(goArgs, goName+" "+resolved.GoType)
+	}
+
+	return strings.Join(goArgs, ", ")
+}
+
+func (ng *NamespaceGenerator) fnReturns(rets *gir.ReturnValue) string {
+	if rets == nil {
+		return ""
+	}
+
+	// TODO: arrays
+	return ng.resolveAnyType(rets.AnyType)
 }
 
 func (ng *NamespaceGenerator) generateFuncs() {

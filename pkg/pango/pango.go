@@ -5,10 +5,11 @@ package pango
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/glib"
 	"github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pango pango
+// #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pango.h>
 import "C"
@@ -39,6 +40,32 @@ func init() {
 	})
 }
 
+// Glyph: a `PangoGlyph` represents a single glyph in the output form of a
+// string.
+type Glyph uint32
+
+// GlyphUnit: the `PangoGlyphUnit` type is used to store dimensions within
+// Pango.
+//
+// Dimensions are stored in 1/PANGO_SCALE of a device unit. (A device unit might
+// be a pixel for screen display, or a point on a printer.) PANGO_SCALE is
+// currently 1024, and may change in the future (unlikely though), but you
+// should not depend on its exact value. The PANGO_PIXELS() macro can be used to
+// convert from glyph units into device units with correct rounding.
+type GlyphUnit int32
+
+// LayoutRun: a `PangoLayoutRun` represents a single run within a
+// `PangoLayoutLine`.
+//
+// It is simply an alternate name for [struct@Pango.GlyphItem]. See the
+// [struct@Pango.GlyphItem] docs for details on the fields.
+type LayoutRun GlyphItem
+
+// Alignment: `PangoAlignment` describes how to align the lines of a
+// `PangoLayout` within the available space.
+//
+// If the `PangoLayout` is set to justify using
+// [method@Pango.Layout.set_justify], this only has effect for partial lines.
 type Alignment int
 
 const (
@@ -54,6 +81,13 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 	return Alignment(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// AttrType: the `PangoAttrType` distinguishes between different types of
+// attributes.
+//
+// Along with the predefined values, it is possible to allocate additional
+// values for custom attributes using [type_func@attr_type_register]. The
+// predefined values are given below. The type of structure used to store the
+// attribute is listed in parentheses after the description.
 type AttrType int
 
 const (
@@ -139,6 +173,10 @@ func marshalAttrType(p uintptr) (interface{}, error) {
 	return AttrType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// BidiType: `PangoBidiType` represents the bidirectional character type of a
+// Unicode character as specified by the &lt;ulink
+// url="http://www.unicode.org/reports/tr9/"&gt;Unicode bidirectional
+// algorithm&lt;/ulink&gt;.
 type BidiType int
 
 const (
@@ -186,6 +224,11 @@ func marshalBidiType(p uintptr) (interface{}, error) {
 	return BidiType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// CoverageLevel: `PangoCoverageLevel` is used to indicate how well a font can
+// represent a particular Unicode character for a particular script.
+//
+// Since 1.44, only PANGO_COVERAGE_NONE and PANGO_COVERAGE_EXACT will be
+// returned.
 type CoverageLevel int
 
 const (
@@ -209,6 +252,24 @@ func marshalCoverageLevel(p uintptr) (interface{}, error) {
 	return CoverageLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Direction: `PangoDirection` represents a direction in the Unicode
+// bidirectional algorithm.
+//
+// Not every value in this enumeration makes sense for every usage of
+// `PangoDirection`; for example, the return value of [func@unichar_direction]
+// and [func@find_base_dir] cannot be PANGO_DIRECTION_WEAK_LTR or
+// PANGO_DIRECTION_WEAK_RTL, since every character is either neutral or has a
+// strong direction; on the other hand PANGO_DIRECTION_NEUTRAL doesn't make
+// sense to pass to [func@itemize_with_base_dir].
+//
+// The PANGO_DIRECTION_TTB_LTR, PANGO_DIRECTION_TTB_RTL values come from an
+// earlier interpretation of this enumeration as the writing direction of a
+// block of text and are no longer used; See `PangoGravity` for how vertical
+// text is handled in Pango.
+//
+// If you are interested in text direction, you should really use fribidi
+// directly. `PangoDirection` is only retained because it is used in some public
+// apis.
 type Direction int
 
 const (
@@ -234,6 +295,11 @@ func marshalDirection(p uintptr) (interface{}, error) {
 	return Direction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// EllipsizeMode: `PangoEllipsizeMode` describes what sort of ellipsization
+// should be applied to text.
+//
+// In the ellipsization process characters are removed from the text in order to
+// make it fit to a given width and replaced with an ellipsis.
 type EllipsizeMode int
 
 const (
@@ -251,6 +317,19 @@ func marshalEllipsizeMode(p uintptr) (interface{}, error) {
 	return EllipsizeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Gravity: `PangoGravity` represents the orientation of glyphs in a segment of
+// text.
+//
+// This is useful when rendering vertical text layouts. In those situations, the
+// layout is rotated using a non-identity [struct@Pango.Matrix], and then glyph
+// orientation is controlled using `PangoGravity`.
+//
+// Not every value in this enumeration makes sense for every usage of
+// `PangoGravity`; for example, PANGO_GRAVITY_AUTO only can be passed to
+// [method@Pango.Context.set_base_gravity] and can only be returned by
+// [method@Pango.Context.get_base_gravity].
+//
+// See also: [enum@Pango.GravityHint]
 type Gravity int
 
 const (
@@ -270,6 +349,12 @@ func marshalGravity(p uintptr) (interface{}, error) {
 	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// GravityHint: `PangoGravityHint` defines how horizontal scripts should behave
+// in a vertical context.
+//
+// That is, English excerpts in a vertical paragraph for example.
+//
+// See also [enum@Pango.Gravity]
 type GravityHint int
 
 const (
@@ -290,6 +375,8 @@ func marshalGravityHint(p uintptr) (interface{}, error) {
 	return GravityHint(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Overline: the `PangoOverline` enumeration is used to specify whether text
+// should be overlined, and if so, the type of line.
 type Overline int
 
 const (
@@ -304,6 +391,8 @@ func marshalOverline(p uintptr) (interface{}, error) {
 	return Overline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// RenderPart: pangoRenderPart defines different items to render for such
+// purposes as setting colors.
 type RenderPart int
 
 const (
@@ -323,6 +412,16 @@ func marshalRenderPart(p uintptr) (interface{}, error) {
 	return RenderPart(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Script: the `PangoScript` enumeration identifies different writing systems.
+//
+// The values correspond to the names as defined in the Unicode standard. See
+// [Unicode Standard Annex 24: Script
+// names](http://www.unicode.org/reports/tr24/)
+//
+// Note that this enumeration is deprecated and will not be updated to include
+// values in newer versions of the Unicode standard. Applications should use the
+// `GUnicodeScript` enumeration instead, whose values are interchangeable with
+// `PangoScript`.
 type Script int
 
 const (
@@ -569,6 +668,8 @@ func marshalScript(p uintptr) (interface{}, error) {
 	return Script(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Stretch: an enumeration specifying the width of the font relative to other
+// designs within a family.
 type Stretch int
 
 const (
@@ -596,6 +697,8 @@ func marshalStretch(p uintptr) (interface{}, error) {
 	return Stretch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Style: an enumeration specifying the various slant styles possible for a
+// font.
 type Style int
 
 const (
@@ -611,6 +714,8 @@ func marshalStyle(p uintptr) (interface{}, error) {
 	return Style(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TabAlign: `PangoTabAlign` specifies where a tab stop appears relative to the
+// text.
 type TabAlign int
 
 const (
@@ -622,6 +727,8 @@ func marshalTabAlign(p uintptr) (interface{}, error) {
 	return TabAlign(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Underline: the `PangoUnderline` enumeration is used to specify whether text
+// should be underlined, and if so, the type of underlining.
 type Underline int
 
 const (
@@ -659,6 +766,7 @@ func marshalUnderline(p uintptr) (interface{}, error) {
 	return Underline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Variant: an enumeration specifying capitalization variant of the font.
 type Variant int
 
 const (
@@ -673,6 +781,10 @@ func marshalVariant(p uintptr) (interface{}, error) {
 	return Variant(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Weight: an enumeration specifying the weight (boldness) of a font.
+//
+// This is a numerical value ranging from 100 to 1000, but there are some
+// predefined values.
 type Weight int
 
 const (
@@ -706,6 +818,8 @@ func marshalWeight(p uintptr) (interface{}, error) {
 	return Weight(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// WrapMode: `PangoWrapMode` describes how to wrap the lines of a `PangoLayout`
+// to the desired width.
 type WrapMode int
 
 const (
@@ -720,4 +834,1160 @@ const (
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
 	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// AttrAllowBreaksNew: create a new allow-breaks attribute.
+//
+// If breaks are disabled, the range will be kept in a single run, as far as
+// possible.
+func AttrAllowBreaksNew(allowBreaks bool) *Attribute
+
+// AttrBackgroundAlphaNew: create a new background alpha attribute.
+func AttrBackgroundAlphaNew(alpha uint16) *Attribute
+
+// AttrBackgroundNew: create a new background color attribute.
+func AttrBackgroundNew(red uint16, green uint16, blue uint16) *Attribute
+
+// AttrFallbackNew: create a new font fallback attribute.
+//
+// If fallback is disabled, characters will only be used from the closest
+// matching font on the system. No fallback will be done to other fonts on the
+// system that might contain the characters in the text.
+func AttrFallbackNew(enableFallback bool) *Attribute
+
+// AttrFamilyNew: create a new font family attribute.
+func AttrFamilyNew(family string) *Attribute
+
+// AttrFontDescNew: create a new font description attribute.
+//
+// This attribute allows setting family, style, weight, variant, stretch, and
+// size simultaneously.
+func AttrFontDescNew(desc *FontDescription) *Attribute
+
+// AttrFontFeaturesNew: create a new font features tag attribute.
+func AttrFontFeaturesNew(features string) *Attribute
+
+// AttrForegroundAlphaNew: create a new foreground alpha attribute.
+func AttrForegroundAlphaNew(alpha uint16) *Attribute
+
+// AttrForegroundNew: create a new foreground color attribute.
+func AttrForegroundNew(red uint16, green uint16, blue uint16) *Attribute
+
+// AttrGravityHintNew: create a new gravity hint attribute.
+func AttrGravityHintNew(hint GravityHint) *Attribute
+
+// AttrGravityNew: create a new gravity attribute.
+func AttrGravityNew(gravity Gravity) *Attribute
+
+// AttrInsertHyphensNew: create a new insert-hyphens attribute.
+//
+// Pango will insert hyphens when breaking lines in the middle of a word. This
+// attribute can be used to suppress the hyphen.
+func AttrInsertHyphensNew(insertHyphens bool) *Attribute
+
+// AttrLanguageNew: create a new language tag attribute.
+func AttrLanguageNew(language *Language) *Attribute
+
+// AttrLetterSpacingNew: create a new letter-spacing attribute.
+func AttrLetterSpacingNew(letterSpacing int) *Attribute
+
+// AttrOverlineColorNew: create a new overline color attribute.
+//
+// This attribute modifies the color of overlines. If not set, overlines will
+// use the foreground color.
+func AttrOverlineColorNew(red uint16, green uint16, blue uint16) *Attribute
+
+// AttrOverlineNew: create a new overline-style attribute.
+func AttrOverlineNew(overline Overline) *Attribute
+
+// AttrRiseNew: create a new baseline displacement attribute.
+func AttrRiseNew(rise int) *Attribute
+
+// AttrScaleNew: create a new font size scale attribute.
+//
+// The base font for the affected text will have its size multiplied by
+// @scale_factor.
+func AttrScaleNew(scaleFactor float64) *Attribute
+
+// AttrShapeNew: create a new shape attribute.
+//
+// A shape is used to impose a particular ink and logical rectangle on the
+// result of shaping a particular glyph. This might be used, for instance, for
+// embedding a picture or a widget inside a `PangoLayout`.
+func AttrShapeNew(inkRect *Rectangle, logicalRect *Rectangle) *Attribute
+
+// AttrShapeNewWithData: creates a new shape attribute.
+//
+// Like pango_attr_shape_new(), but a user data pointer is also provided; this
+// pointer can be accessed when later rendering the glyph.
+func AttrShapeNewWithData(inkRect *Rectangle, logicalRect *Rectangle, data unsafe.Pointer, copyFunc AttrDataCopyFunc, destroyFunc unsafe.Pointer) *Attribute
+
+// AttrShowNew: create a new attribute that influences how invisible characters
+// are rendered.
+func AttrShowNew(flags ShowFlags) *Attribute
+
+// AttrSizeNew: create a new font-size attribute in fractional points.
+func AttrSizeNew(size int) *Attribute
+
+// AttrSizeNewAbsolute: create a new font-size attribute in device units.
+func AttrSizeNewAbsolute(size int) *Attribute
+
+// AttrStretchNew: create a new font stretch attribute.
+func AttrStretchNew(stretch Stretch) *Attribute
+
+// AttrStrikethroughColorNew: create a new strikethrough color attribute.
+//
+// This attribute modifies the color of strikethrough lines. If not set,
+// strikethrough lines will use the foreground color.
+func AttrStrikethroughColorNew(red uint16, green uint16, blue uint16) *Attribute
+
+// AttrStrikethroughNew: create a new strike-through attribute.
+func AttrStrikethroughNew(strikethrough bool) *Attribute
+
+// AttrStyleNew: create a new font slant style attribute.
+func AttrStyleNew(style Style) *Attribute
+
+// AttrTypeGetName: fetches the attribute type name.
+//
+// The attribute type name is the string passed in when registering the type
+// using [type_func@attr_type_register].
+//
+// The returned value is an interned string (see g_intern_string() for what that
+// means) that should not be modified or freed.
+func AttrTypeGetName(_type AttrType) string
+
+// AttrTypeRegister: allocate a new attribute type ID.
+//
+// The attribute type name can be accessed later by using
+// [type_func@Pango.AttrType.get_name].
+func AttrTypeRegister(name string) AttrType
+
+// AttrUnderlineColorNew: create a new underline color attribute.
+//
+// This attribute modifies the color of underlines. If not set, underlines will
+// use the foreground color.
+func AttrUnderlineColorNew(red uint16, green uint16, blue uint16) *Attribute
+
+// AttrUnderlineNew: create a new underline-style attribute.
+func AttrUnderlineNew(underline Underline) *Attribute
+
+// AttrVariantNew: create a new font variant attribute (normal or small caps).
+func AttrVariantNew(variant Variant) *Attribute
+
+// AttrWeightNew: create a new font weight attribute.
+func AttrWeightNew(weight Weight) *Attribute
+
+// BidiTypeForUnichar: determines the bidirectional type of a character.
+//
+// The bidirectional type is specified in the Unicode Character Database.
+//
+// A simplified version of this function is available as
+// [func@unichar_direction].
+func BidiTypeForUnichar(ch uint32) BidiType
+
+// Break: determines possible line, word, and character breaks for a string of
+// Unicode text with a single analysis.
+//
+// For most purposes you may want to use pango_get_log_attrs().
+func Break(text string, length int, analysis *Analysis, attrsLen int)
+
+// DefaultBreak: this is the default break algorithm.
+//
+// It applies Unicode rules without language-specific tailoring, therefore the
+// @analyis argument is unused and can be nil.
+//
+// See pango_tailor_break() for language-specific breaks.
+func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int)
+
+// ExtentsToPixels: converts extents from Pango units to device units.
+//
+// The conversion is done by dividing by the PANGO_SCALE factor and performing
+// rounding.
+//
+// The @inclusive rectangle is converted by flooring the x/y coordinates and
+// extending width/height, such that the final rectangle completely includes the
+// original rectangle.
+//
+// The @nearest rectangle is converted by rounding the coordinates of the
+// rectangle to the nearest device unit (pixel).
+//
+// The rule to which argument to use is: if you want the resulting device-space
+// rectangle to completely contain the original rectangle, pass it in as
+// @inclusive. If you want two touching-but-not-overlapping rectangles stay
+// touching-but-not-overlapping after rounding to device units, pass them in as
+// @nearest.
+func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle)
+
+// FindBaseDir: searches a string the first character that has a strong
+// direction, according to the Unicode bidirectional algorithm.
+func FindBaseDir(text string, length int) Direction
+
+// FindParagraphBoundary: locates a paragraph boundary in @text.
+//
+// A boundary is caused by delimiter characters, such as a newline, carriage
+// return, carriage return-newline pair, or Unicode paragraph separator
+// character. The index of the run of delimiters is returned in
+// @paragraph_delimiter_index. The index of the start of the paragrap (index
+// after all delimiters) is stored in @next_paragraph_start.
+//
+// If no delimiters are found, both @paragraph_delimiter_index and
+// @next_paragraph_start are filled with the length of @text (an index one off
+// the end).
+func FindParagraphBoundary(text string, length int, paragraphDelimiterIndex *int, nextParagraphStart *int)
+
+// FontDescriptionFromString: creates a new font description from a string
+// representation.
+//
+//
+// The string must have the form
+//
+// "\[FAMILY-LIST] \[STYLE-OPTIONS] \[SIZE] \[VARIATIONS]",
+//
+// where FAMILY-LIST is a comma-separated list of families optionally terminated
+// by a comma, STYLE_OPTIONS is a whitespace-separated list of words where each
+// word describes one of style, variant, weight, stretch, or gravity, and SIZE
+// is a decimal number (size in points) or optionally followed by the unit
+// modifier "px" for absolute size. VARIATIONS is a comma-separated list of font
+// variation specifications of the form "\@axis=value" (the = sign is optional).
+//
+// The following words are understood as styles: "Normal", "Roman", "Oblique",
+// "Italic".
+//
+// The following words are understood as variants: "Small-Caps".
+//
+// The following words are understood as weights: "Thin", "Ultra-Light",
+// "Extra-Light", "Light", "Semi-Light", "Demi-Light", "Book", "Regular",
+// "Medium", "Semi-Bold", "Demi-Bold", "Bold", "Ultra-Bold", "Extra-Bold",
+// "Heavy", "Black", "Ultra-Black", "Extra-Black".
+//
+// The following words are understood as stretch values: "Ultra-Condensed",
+// "Extra-Condensed", "Condensed", "Semi-Condensed", "Semi-Expanded",
+// "Expanded", "Extra-Expanded", "Ultra-Expanded".
+//
+// The following words are understood as gravity values: "Not-Rotated", "South",
+// "Upside-Down", "North", "Rotated-Left", "East", "Rotated-Right", "West".
+//
+// Any one of the options may be absent. If FAMILY-LIST is absent, then the
+// family_name field of the resulting font description will be initialized to
+// nil. If STYLE-OPTIONS is missing, then all style options will be set to the
+// default values. If SIZE is missing, the size in the resulting font
+// description will be set to 0.
+//
+// A typical example:
+//
+// "Cantarell Italic Light 15 \@wght=200"
+func FontDescriptionFromString(str string) *FontDescription
+
+// GetLogAttrs: computes a `PangoLogAttr` for each character in @text.
+//
+// The @log_attrs array must have one `PangoLogAttr` for each position in @text;
+// if @text contains N characters, it has N+1 positions, including the last
+// position at the end of the text. @text should be an entire paragraph; logical
+// attributes can't be computed without context (for example you need to see
+// spaces on either side of a word to know the word is a word).
+func GetLogAttrs(text string, length int, level int, language *Language, attrsLen int)
+
+// GetMirrorChar: returns the mirrored character of a Unicode character.
+//
+// Mirror characters are determined by the Unicode mirrored property.
+//
+// Use g_unichar_get_mirror_char() instead; the docs for that function provide
+// full details.
+func GetMirrorChar(ch uint32, mirroredCh *uint32) bool
+
+// GravityGetForMatrix: finds the gravity that best matches the rotation
+// component in a `PangoMatrix`.
+func GravityGetForMatrix(matrix *Matrix) Gravity
+
+// GravityGetForScript: returns the gravity to use in laying out a `PangoItem`.
+//
+// The gravity is determined based on the script, base gravity, and hint.
+//
+// If @base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
+// preferred gravity of @script. To get the preferred gravity of a script, pass
+// PANGO_GRAVITY_AUTO and PANGO_GRAVITY_HINT_STRONG in.
+func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) Gravity
+
+// GravityGetForScriptAndWidth: returns the gravity to use in laying out a
+// single character or `PangoItem`.
+//
+// The gravity is determined based on the script, East Asian width, base
+// gravity, and hint,
+//
+// This function is similar to [type_func@Pango.Gravity.get_for_script] except
+// that this function makes a distinction between narrow/half-width and
+// wide/full-width characters also. Wide/full-width characters always stand
+// *upright*, that is, they always take the base gravity, whereas
+// narrow/full-width characters are always rotated in vertical context.
+//
+// If @base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
+// preferred gravity of @script.
+func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) Gravity
+
+// GravityToRotation: converts a Gravity value to its natural rotation in
+// radians.
+//
+// Note that [method@Pango.Matrix.rotate] takes angle in degrees, not radians.
+// So, to call [method@Pango.Matrix,rotate] with the output of this function you
+// should multiply it by (180. / G_PI).
+func GravityToRotation(gravity Gravity) float64
+
+// IsZeroWidth: checks if a character that should not be normally rendered.
+//
+// This includes all Unicode characters with "ZERO WIDTH" in their name, as well
+// as *bidi* formatting characters, and a few other ones. This is totally
+// different from g_unichar_iszerowidth() and is at best misnamed.
+func IsZeroWidth(ch uint32) bool
+
+// Itemize: breaks a piece of text into segments with consistent directional
+// level and font.
+//
+// Each byte of @text will be contained in exactly one of the items in the
+// returned list; the generated list of items will be in logical order (the
+// start offsets of the items are ascending).
+//
+// @cached_iter should be an iterator over @attrs currently positioned at a
+// range before or containing @start_index; @cached_iter will be advanced to the
+// range covering the position just after @start_index + @length. (i.e. if
+// itemizing in a loop, just keep passing in the same @cached_iter).
+func Itemize(context *Context, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *glib.List
+
+// ItemizeWithBaseDir: like `pango_itemize()`, but with an explicitly specified
+// base direction.
+//
+// The base direction is used when computing bidirectional levels. (see
+// [method@Pango.Context.set_base_dir]). [func@itemize] gets the base direction
+// from the `PangoContext`.
+func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *glib.List
+
+// LanguageFromString: convert a language tag to a `PangoLanguage`.
+//
+// The language tag must be in a RFC-3066 format. `PangoLanguage` pointers can
+// be efficiently copied (copy the pointer) and compared with other language
+// tags (compare the pointer.)
+//
+// This function first canonicalizes the string by converting it to lowercase,
+// mapping '_' to '-', and stripping all characters other than letters and '-'.
+//
+// Use [type_func@Pango.Language.get_default] if you want to get the
+// `PangoLanguage` for the current locale of the process.
+func LanguageFromString(language string) *Language
+
+// LanguageGetDefault: returns the `PangoLanguage` for the current locale of the
+// process.
+//
+// On Unix systems, this is the return value is derived from `setlocale
+// (LC_CTYPE, NULL)`, and the user can affect this through the environment
+// variables LC_ALL, LC_CTYPE or LANG (checked in that order). The locale string
+// typically is in the form lang_COUNTRY, where lang is an ISO-639 language
+// code, and COUNTRY is an ISO-3166 country code. For instance, sv_FI for
+// Swedish as written in Finland or pt_BR for Portuguese as written in Brazil.
+//
+// On Windows, the C library does not use any such environment variables, and
+// setting them won't affect the behavior of functions like ctime(). The user
+// sets the locale through the Regional Options in the Control Panel. The C
+// library (in the setlocale() function) does not use country and language
+// codes, but country and language names spelled out in English. However, this
+// function does check the above environment variables, and does return a
+// Unix-style locale string based on either said environment variables or the
+// thread's current locale.
+//
+// Your application should call `setlocale(LC_ALL, "")` for the user settings to
+// take effect. GTK does this in its initialization functions automatically (by
+// calling gtk_set_locale()). See the setlocale() manpage for more details.
+//
+// Note that the default language can change over the life of an application.
+func LanguageGetDefault() *Language
+
+// LanguageGetPreferred: returns the list of languages that the user prefers.
+//
+// The list is specified by the `PANGO_LANGUAGE` or `LANGUAGE` environment
+// variables, in order of preference. Note that this list does not necessarily
+// include the language returned by [type_func@Pango.Language.get_default].
+//
+// When choosing language-specific resources, such as the sample text returned
+// by [method@Pango.Language.get_sample_string], you should first try the
+// default language, followed by the languages returned by this function.
+func LanguageGetPreferred() **Language
+
+// Log2VisGetEmbeddingLevels: return the bidirectional embedding levels of the
+// input paragraph.
+//
+// The bidirectional embedding levels are defined by the Unicode Bidirectional
+// Algorithm available at:
+//
+// http://www.unicode.org/reports/tr9/
+//
+// If the input base direction is a weak direction, the direction of the
+// characters in the text will determine the final resolved direction.
+func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *uint8
+
+// MarkupParserFinish: finishes parsing markup.
+//
+// After feeding a Pango markup parser some data with
+// g_markup_parse_context_parse(), use this function to get the list of
+// attributes and text out of the markup. This function will not free @context,
+// use g_markup_parse_context_free() to do so.
+func MarkupParserFinish(context *glib.MarkupParseContext, attrList **AttrList, text *string, accelChar *uint32) bool
+
+// MarkupParserNew: incrementally parses marked-up text to create a plain-text
+// string and an attribute list.
+//
+// See the [Pango Markup](pango_markup.html) docs for details about the
+// supported markup.
+//
+// If @accel_marker is nonzero, the given character will mark the character
+// following it as an accelerator. For example, @accel_marker might be an
+// ampersand or underscore. All characters marked as an accelerator will receive
+// a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
+// returned in @accel_char, when calling [func@markup_parser_finish]. Two
+// @accel_marker characters following each other produce a single literal
+// @accel_marker character.
+//
+// To feed markup to the parser, use g_markup_parse_context_parse() on the
+// returned `GMarkupParseContext`. When done with feeding markup to the parser,
+// use [func@markup_parser_finish] to get the data out of it, and then use
+// g_markup_parse_context_free() to free it.
+//
+// This function is designed for applications that read Pango markup from
+// streams. To simply parse a string containing Pango markup, the
+// [func@parse_markup] API is recommended instead.
+func MarkupParserNew(accelMarker uint32) *glib.MarkupParseContext
+
+// ParseEnum: parses an enum type and stores the result in @value.
+//
+// If @str does not match the nick name of any of the possible values for the
+// enum and is not an integer, false is returned, a warning is issued if @warn
+// is true, and a string representing the list of possible values is stored in
+// @possible_values. The list is slash-separated, eg. "none/start/middle/end".
+// If failed and @possible_values is not nil, returned string should be freed
+// using g_free().
+func ParseEnum(_type glib.Type, str string, value *int, warn bool, possibleValues *string) bool
+
+// ParseMarkup: parses marked-up text to create a plain-text string and an
+// attribute list.
+//
+// See the [Pango Markup](pango_markup.html) docs for details about the
+// supported markup.
+//
+// If @accel_marker is nonzero, the given character will mark the character
+// following it as an accelerator. For example, @accel_marker might be an
+// ampersand or underscore. All characters marked as an accelerator will receive
+// a PANGO_UNDERLINE_LOW attribute, and the first character so marked will be
+// returned in @accel_char. Two @accel_marker characters following each other
+// produce a single literal @accel_marker character.
+//
+// To parse a stream of pango markup incrementally, use
+// [func@markup_parser_new].
+//
+// If any error happens, none of the output arguments are touched except for
+// @error.
+func ParseMarkup(markupText string, length int, accelMarker uint32, attrList **AttrList, text *string, accelChar *uint32) bool
+
+// ParseStretch: parses a font stretch.
+//
+// The allowed values are "ultra_condensed", "extra_condensed", "condensed",
+// "semi_condensed", "normal", "semi_expanded", "expanded", "extra_expanded" and
+// "ultra_expanded". Case variations are ignored and the '_' characters may be
+// omitted.
+func ParseStretch(str string, stretch *Stretch, warn bool) bool
+
+// ParseStyle: parses a font style.
+//
+// The allowed values are "normal", "italic" and "oblique", case variations
+// being ignored.
+func ParseStyle(str string, style *Style, warn bool) bool
+
+// ParseVariant: parses a font variant.
+//
+// The allowed values are "normal" and "smallcaps" or "small_caps", case
+// variations being ignored.
+func ParseVariant(str string, variant *Variant, warn bool) bool
+
+// ParseWeight: parses a font weight.
+//
+// The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
+// "ultraleight" and integers. Case variations are ignored.
+func ParseWeight(str string, weight *Weight, warn bool) bool
+
+// QuantizeLineGeometry: quantizes the thickness and position of a line to whole
+// device pixels.
+//
+// This is typically used for underline or strikethrough. The purpose of this
+// function is to avoid such lines looking blurry.
+//
+// Care is taken to make sure @thickness is at least one pixel when this
+// function returns, but returned @position may become zero as a result of
+// rounding.
+func QuantizeLineGeometry(thickness *int, position *int)
+
+// ReadLine: reads an entire line from a file into a buffer.
+//
+// Lines may be delimited with '\n', '\r', '\n\r', or '\r\n'. The delimiter is
+// not written into the buffer. Text after a '#' character is treated as a
+// comment and skipped. '\' can be used to escape a # character. '\' proceeding
+// a line delimiter combines adjacent lines. A '\' proceeding any other
+// character is ignored and written into the output buffer unmodified.
+func ReadLine(stream *unsafe.Pointer, str *glib.String) int
+
+// ReorderItems: reorder items from logical order to visual order.
+//
+// The visual order is determined from the associated directional levels of the
+// items. The original list is unmodified.
+func ReorderItems(logicalItems *glib.List) *glib.List
+
+// ScanInt: scans an integer.
+//
+// Leading white space is skipped.
+func ScanInt(pos *string, out *int) bool
+
+// ScanString: scans a string into a #GString buffer.
+//
+// The string may either be a sequence of non-white-space characters, or a
+// quoted string with '"'. Instead a quoted string, '\"' represents a literal
+// quote. Leading white space outside of quotes is skipped.
+func ScanString(pos *string, out *glib.String) bool
+
+// ScanWord: scans a word into a #GString buffer.
+//
+// A word consists of [A-Za-z_] followed by zero or more [A-Za-z_0-9]. Leading
+// white space is skipped.
+func ScanWord(pos *string, out *glib.String) bool
+
+// ScriptForUnichar: looks up the script for a particular character.
+//
+// The script of a character is defined by Unicode Standard Annex \#24. No check
+// is made for @ch being a valid Unicode character; if you pass in invalid
+// character, the result is undefined.
+//
+// Note that while the return type of this function is declared as
+// `PangoScript`, as of Pango 1.18, this function simply returns the return
+// value of g_unichar_get_script(). Callers must be prepared to handle unknown
+// values.
+func ScriptForUnichar(ch uint32) Script
+
+// ScriptGetSampleLanguage: finds a language tag that is reasonably
+// representative of @script.
+//
+// The language will usually be the most widely spoken or used language written
+// in that script: for instance, the sample language for PANGO_SCRIPT_CYRILLIC
+// is ru (Russian), the sample language for PANGO_SCRIPT_ARABIC is ar.
+//
+// For some scripts, no sample language will be returned because there is no
+// language that is sufficiently representative. The best example of this is
+// PANGO_SCRIPT_HAN, where various different variants of written Chinese,
+// Japanese, and Korean all use significantly different sets of Han characters
+// and forms of shared characters. No sample language can be provided for many
+// historical scripts as well.
+//
+// As of 1.18, this function checks the environment variables `PANGO_LANGUAGE`
+// and `LANGUAGE` (checked in that order) first. If one of them is set, it is
+// parsed as a list of language tags separated by colons or other separators.
+// This function will return the first language in the parsed list that Pango
+// believes may use @script for writing. This last predicate is tested using
+// [method@Pango.Language.includes_script]. This can be used to control Pango's
+// font selection for non-primary languages. For example, a `PANGO_LANGUAGE`
+// enviroment variable set to "en:fa" makes Pango choose fonts suitable for
+// Persian (fa) instead of Arabic (ar) when a segment of Arabic text is found in
+// an otherwise non-Arabic text. The same trick can be used to choose a default
+// language for PANGO_SCRIPT_HAN when setting context language is not feasible.
+func ScriptGetSampleLanguage(script Script) *Language
+
+// Shape: convert the characters in @text into glyphs.
+//
+// Given a segment of text and the corresponding `PangoAnalysis` structure
+// returned from [func@itemize], convert the characters into glyphs. You may
+// also pass in only a substring of the item from [func@itemize].
+//
+// It is recommended that you use [func@shape_full] instead, since that API
+// allows for shaping interaction happening across text item boundaries.
+//
+// Note that the extra attributes in the @analyis that is returned from
+// [func@itemize] have indices that are relative to the entire paragraph, so you
+// need to subtract the item offset from their indices before calling
+// [func@shape].
+func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString)
+
+// ShapeFull: convert the characters in @text into glyphs.
+//
+// Given a segment of text and the corresponding `PangoAnalysis` structure
+// returned from [func@itemize], convert the characters into glyphs. You may
+// also pass in only a substring of the item from [func@itemize].
+//
+// This is similar to [func@shape], except it also can optionally take the full
+// paragraph text as input, which will then be used to perform certain
+// cross-item shaping interactions. If you have access to the broader text of
+// which @item_text is part of, provide the broader text as @paragraph_text. If
+// @paragraph_text is nil, item text is used instead.
+//
+// Note that the extra attributes in the @analyis that is returned from
+// [func@itemize] have indices that are relative to the entire paragraph, so you
+// do not pass the full paragraph text as @paragraph_text, you need to subtract
+// the item offset from their indices before calling [func@shape_full].
+func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString)
+
+// ShapeWithFlags: convert the characters in @text into glyphs.
+//
+// Given a segment of text and the corresponding `PangoAnalysis` structure
+// returned from [func@itemize], convert the characters into glyphs. You may
+// also pass in only a substring of the item from [func@itemize].
+//
+// This is similar to [func@shape_full], except it also takes flags that can
+// influence the shaping process.
+//
+// Note that the extra attributes in the @analyis that is returned from
+// [func@itemize] have indices that are relative to the entire paragraph, so you
+// do not pass the full paragraph text as @paragraph_text, you need to subtract
+// the item offset from their indices before calling [func@shape_with_flags].
+func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags)
+
+// SkipSpace: skips 0 or more characters of white space.
+func SkipSpace(pos *string) bool
+
+// SplitFileList: splits a G_SEARCHPATH_SEPARATOR-separated list of files,
+// stripping white space and substituting ~/ with $HOME/.
+func SplitFileList(str string) []string
+
+// TailorBreak: apply language-specific tailoring to the breaks in @log_attrs.
+//
+// The line breaks are assumed to have been produced by [func@default_break].
+//
+// If @offset is not -1, it is used to apply attributes from @analysis that are
+// relevant to line breaking.
+func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrsLen int)
+
+// TrimString: trims leading and trailing whitespace from a string.
+func TrimString(str string) string
+
+// UnicharDirection: determines the inherent direction of a character.
+//
+// The inherent direction is either PANGO_DIRECTION_LTR, PANGO_DIRECTION_RTL, or
+// PANGO_DIRECTION_NEUTRAL.
+//
+// This function is useful to categorize characters into left-to-right letters,
+// right-to-left letters, and everything else. If full Unicode bidirectional
+// type of a character is needed, [type_func@Pango.BidiType.for_unichar] can be
+// used instead.
+func UnicharDirection(ch uint32) Direction
+
+// UnitsFromDouble: converts a floating-point number to Pango units.
+//
+// The conversion is done by multiplying @d by PANGO_SCALE and rounding the
+// result to nearest integer.
+func UnitsFromDouble(d float64) int
+
+// UnitsToDouble: converts a number in Pango units to floating-point.
+//
+// The conversion is done by dividing @i by PANGO_SCALE.
+func UnitsToDouble(i int) float64
+
+// Version: returns the encoded version of Pango available at run-time.
+//
+// This is similar to the macro PANGO_VERSION except that the macro returns the
+// encoded version available at compile-time. A version number can be encoded
+// into an integer using PANGO_VERSION_ENCODE().
+func Version() int
+
+// VersionCheck: checks that the Pango library in use is compatible with the
+// given version.
+//
+// Generally you would pass in the constants PANGO_VERSION_MAJOR,
+// PANGO_VERSION_MINOR, PANGO_VERSION_MICRO as the three arguments to this
+// function; that produces a check that the library in use at run-time is
+// compatible with the version of Pango the application or module was compiled
+// against.
+//
+// Compatibility is defined by two things: first the version of the running
+// library is newer than the version
+// @required_major.required_minor.@required_micro. Second the running library
+// must be binary compatible with the version
+// @required_major.required_minor.@required_micro (same major version.)
+//
+// For compile-time version checking use PANGO_VERSION_CHECK().
+func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) string
+
+// VersionString: returns the version of Pango available at run-time.
+//
+// This is similar to the macro PANGO_VERSION_STRING except that the macro
+// returns the version available at compile-time.
+func VersionString() string
+
+// Analysis: the `PangoAnalysis` structure stores information about the
+// properties of a segment of text.
+type Analysis struct {
+	// ShapeEngine: unused
+	ShapeEngine unsafe.Pointer
+	// LangEngine: unused
+	LangEngine unsafe.Pointer
+	// Font: the font for this segment.
+	Font *Font
+	// Level: the bidirectional level for this segment.
+	Level uint8
+	// Gravity: the glyph orientation for this segment (A `PangoGravity`).
+	Gravity uint8
+	// Flags: boolean flags for this segment (Since: 1.16).
+	Flags uint8
+	// Script: the detected script for this segment (A `PangoScript`) (Since:
+	// 1.18).
+	Script uint8
+	// Language: the detected language for this segment.
+	Language *Language
+	// ExtraAttrs: extra attributes for this segment.
+	ExtraAttrs *glib.SList
+}
+
+// AttrColor: the `PangoAttrColor` structure is used to represent attributes
+// that are colors.
+type AttrColor struct {
+	// Attr: the common portion of the attribute
+	Attr Attribute
+	// Color: the `PangoColor` which is the value of the attribute
+	Color Color
+}
+
+// AttrFloat: the `PangoAttrFloat` structure is used to represent attributes
+// with a float or double value.
+type AttrFloat struct {
+	// Attr: the common portion of the attribute
+	Attr Attribute
+	// Value: the value of the attribute
+	Value float64
+}
+
+// AttrFontDesc: the `PangoAttrFontDesc` structure is used to store an attribute
+// that sets all aspects of the font description at once.
+type AttrFontDesc struct {
+	// Attr: the common portion of the attribute
+	Attr Attribute
+	// Desc: the font description which is the value of this attribute
+	Desc *FontDescription
+}
+
+// AttrFontFeatures: the `PangoAttrFontFeatures` structure is used to represent
+// OpenType font features as an attribute.
+type AttrFontFeatures struct {
+	// Attr: the common portion of the attribute
+	Attr Attribute
+	// Features: the featues, as a string in CSS syntax
+	Features string
+}
+
+// AttrInt: the `PangoAttrInt` structure is used to represent attributes with an
+// integer or enumeration value.
+type AttrInt struct {
+	// Attr: the common portion of the attribute
+	Attr Attribute
+	// Value: the value of the attribute
+	Value int
+}
+
+// AttrIterator: a `PangoAttrIterator` is used to iterate through a
+// `PangoAttrList`.
+//
+// A new iterator is created with [method@Pango.AttrList.get_iterator]. Once the
+// iterator is created, it can be advanced through the style changes in the text
+// using [method@Pango.AttrIterator.next]. At each style change, the range of
+// the current style segment and the attributes currently in effect can be
+// queried.
+type AttrIterator struct {
+	native *C.PangoAttrIterator
+}
+
+// AttrLanguage: the `PangoAttrLanguage` structure is used to represent
+// attributes that are languages.
+type AttrLanguage struct {
+	// Attr: the common portion of the attribute
+	Attr Attribute
+	// Value: the `PangoLanguage` which is the value of the attribute
+	Value *Language
+}
+
+// AttrList: a `PangoAttrList` represents a list of attributes that apply to a
+// section of text.
+//
+// The attributes in a `PangoAttrList` are, in general, allowed to overlap in an
+// arbitrary fashion. However, if the attributes are manipulated only through
+// [method@Pango.AttrList.change], the overlap between properties will meet
+// stricter criteria.
+//
+// Since the `PangoAttrList` structure is stored as a linear list, it is not
+// suitable for storing attributes for large amounts of text. In general, you
+// should not use a single `PangoAttrList` for more than one paragraph of text.
+type AttrList struct {
+	native *C.PangoAttrList
+}
+
+// AttrShape: the `PangoAttrShape` structure is used to represent attributes
+// which impose shape restrictions.
+type AttrShape struct {
+	// Attr: the common portion of the attribute
+	Attr Attribute
+	// InkRect: the ink rectangle to restrict to
+	InkRect Rectangle
+	// LogicalRect: the logical rectangle to restrict to
+	LogicalRect Rectangle
+	// Data: user data set (see [type_func@Pango.AttrShape.new_with_data])
+	Data unsafe.Pointer
+	// CopyFunc: copy function for the user data
+	CopyFunc AttrDataCopyFunc
+	// DestroyFunc: destroy function for the user data
+	DestroyFunc unsafe.Pointer
+}
+
+// AttrSize: the `PangoAttrSize` structure is used to represent attributes which
+// set font size.
+type AttrSize struct {
+	// Attr: the common portion of the attribute
+	Attr Attribute
+	// Size: size of font, in units of 1/PANGO_SCALE of a point (for
+	// PANGO_ATTR_SIZE) or of a device unit (for PANGO_ATTR_ABSOLUTE_SIZE)
+	Size int
+	// Absolute: whether the font size is in device units or points. This field
+	// is only present for compatibility with Pango-1.8.0
+	// (PANGO_ATTR_ABSOLUTE_SIZE was added in 1.8.1); and always will be false
+	// for PANGO_ATTR_SIZE and true for PANGO_ATTR_ABSOLUTE_SIZE.
+	Absolute uint
+}
+
+// AttrString: the `PangoAttrString` structure is used to represent attributes
+// with a string value.
+type AttrString struct {
+	// Attr: the common portion of the attribute
+	Attr Attribute
+	// Value: the string which is the value of the attribute
+	Value string
+}
+
+// Attribute: the `PangoAttribute` structure represents the common portions of
+// all attributes.
+//
+// Particular types of attributes include this structure as their initial
+// portion. The common portion of the attribute holds the range to which the
+// value in the type-specific part of the attribute applies and should be
+// initialized using [method@Pango.Attribute.init]. By default, an attribute
+// will have an all-inclusive range of [0,G_MAXUINT].
+type Attribute struct {
+	// Klass: the class structure holding information about the type of the
+	// attribute
+	Klass *AttrClass
+	// StartIndex: the start index of the range (in bytes).
+	StartIndex uint
+	// EndIndex: end index of the range (in bytes). The character at this index
+	// is not included in the range.
+	EndIndex uint
+}
+
+// Color: the `PangoColor` structure is used to represent a color in an
+// uncalibrated RGB color-space.
+type Color struct {
+	// Red: value of red component
+	Red uint16
+	// Green: value of green component
+	Green uint16
+	// Blue: value of blue component
+	Blue uint16
+}
+
+// FontDescription: a `PangoFontDescription` describes a font in an
+// implementation-independent manner.
+//
+// `PangoFontDescription` structures are used both to list what fonts are
+// available on the system and also for specifying the characteristics of a font
+// to load.
+type FontDescription struct {
+	native *C.PangoFontDescription
+}
+
+// FontMetrics: a `PangoFontMetrics` structure holds the overall metric
+// information for a font.
+//
+// The information in a `PangoFontMetrics` structure may be restricted to a
+// script. The fields of this structure are private to implementations of a font
+// backend. See the documentation of the corresponding getters for documentation
+// of their meaning.
+type FontMetrics struct {
+	native *C.PangoFontMetrics
+}
+
+// GlyphGeometry: the `PangoGlyphGeometry` structure contains width and
+// positioning information for a single glyph.
+type GlyphGeometry struct {
+	// Width: the logical width to use for the the character.
+	Width GlyphUnit
+	// XOffset: horizontal offset from nominal character position.
+	XOffset GlyphUnit
+	// YOffset: vertical offset from nominal character position.
+	YOffset GlyphUnit
+}
+
+// GlyphInfo: a `PangoGlyphInfo` structure represents a single glyph with
+// positioning information and visual attributes.
+type GlyphInfo struct {
+	// Glyph: the glyph itself.
+	Glyph Glyph
+	// Geometry: the positional information about the glyph.
+	Geometry GlyphGeometry
+	// Attr: the visual attributes of the glyph.
+	Attr GlyphVisAttr
+}
+
+// GlyphItem: a `PangoGlyphItem` is a pair of a `PangoItem` and the glyphs
+// resulting from shaping the items text.
+//
+// As an example of the usage of `PangoGlyphItem`, the results of shaping text
+// with `PangoLayout` is a list of `PangoLayoutLine`, each of which contains a
+// list of `PangoGlyphItem`.
+type GlyphItem struct {
+	// Item: corresponding `PangoItem`
+	Item *Item
+	// Glyphs: corresponding `PangoGlyphString`
+	Glyphs *GlyphString
+}
+
+// GlyphItemIter: a `PangoGlyphItemIter` is an iterator over the clusters in a
+// `PangoGlyphItem`.
+//
+// The *forward direction* of the iterator is the logical direction of text.
+// That is, with increasing @start_index and @start_char values. If @glyph_item
+// is right-to-left (that is, if `glyph_item-&gt;item-&gt;analysis.level` is
+// odd), then @start_glyph decreases as the iterator moves forward. Moreover, in
+// right-to-left cases, @start_glyph is greater than @end_glyph.
+//
+// An iterator should be initialized using either
+// pango_glyph_item_iter_init_start() or pango_glyph_item_iter_init_end(), for
+// forward and backward iteration respectively, and walked over using any
+// desired mixture of pango_glyph_item_iter_next_cluster() and
+// pango_glyph_item_iter_prev_cluster().
+//
+// A common idiom for doing a forward iteration over the clusters is:
+//
+// “` PangoGlyphItemIter cluster_iter; gboolean have_cluster;
+//
+// for (have_cluster = pango_glyph_item_iter_init_start (&amp;cluster_iter,
+// glyph_item, text); have_cluster; have_cluster =
+// pango_glyph_item_iter_next_cluster (&amp;cluster_iter)) { ... } “`
+//
+// Note that @text is the start of the text for layout, which is then indexed by
+// `glyph_item-&gt;item-&gt;offset` to get to the text of @glyph_item. The
+// @start_index and @end_index values can directly index into @text. The
+// @start_glyph, @end_glyph, @start_char, and @end_char values however are
+// zero-based for the @glyph_item. For each cluster, the item pointed at by the
+// start variables is included in the cluster while the one pointed at by end
+// variables is not.
+//
+// None of the members of a `PangoGlyphItemIter` should be modified manually.
+type GlyphItemIter struct {
+	GlyphItem *GlyphItem
+
+	Text string
+
+	StartGlyph int
+
+	StartIndex int
+
+	StartChar int
+
+	EndGlyph int
+
+	EndIndex int
+
+	EndChar int
+}
+
+// GlyphString: a `PangoGlyphString` is used to store strings of glyphs with
+// geometry and visual attribute information.
+//
+// The storage for the glyph information is owned by the structure which
+// simplifies memory management.
+type GlyphString struct {
+	// NumGlyphs: number of the glyphs in this glyph string.
+	NumGlyphs int
+	// Glyphs: array of glyph information for the glyph string.
+	Glyphs []GlyphInfo
+	// LogClusters: logical cluster info, indexed by the byte index within the
+	// text corresponding to the glyph string.
+	LogClusters *int
+
+	native *C.PangoGlyphString
+}
+
+// GlyphVisAttr: a `PangoGlyphVisAttr` structure communicates information
+// between the shaping and rendering phases.
+//
+// Currently, it contains only cluster start information. yMore attributes may
+// be added in the future.
+type GlyphVisAttr struct {
+	// IsClusterStart: set for the first logical glyph in each cluster.
+	// (Clusters are stored in visual order, within the cluster, glyphs are
+	// always ordered in logical order, since visual order is meaningless; that
+	// is, in Arabic text, accent glyphs follow the glyphs for the base
+	// character.)
+	IsClusterStart uint
+}
+
+// Item: the `PangoItem` structure stores information about a segment of text.
+//
+// You typically obtain `PangoItems` by itemizing a piece of text with
+// [func@itemize].
+type Item struct {
+	// Offset: byte offset of the start of this item in text.
+	Offset int
+	// Length: length of this item in bytes.
+	Length int
+	// NumChars: number of Unicode characters in the item.
+	NumChars int
+	// Analysis: analysis results for the item.
+	Analysis Analysis
+}
+
+// Language: the `PangoLanguage` structure is used to represent a language.
+//
+// `PangoLanguage` pointers can be efficiently copied and compared with each
+// other.
+type Language struct {
+	native *C.PangoLanguage
+}
+
+// LayoutIter: a `PangoLayoutIter` can be used to iterate over the visual
+// extents of a `PangoLayout`.
+//
+// To obtain a `PangoLayoutIter`, use [method@Pango.Layout.get_iter].
+//
+// The `PangoLayoutIter` structure is opaque, and has no user-visible fields.
+type LayoutIter struct {
+	native *C.PangoLayoutIter
+}
+
+// LayoutLine: a `PangoLayoutLine` represents one of the lines resulting from
+// laying out a paragraph via `PangoLayout`.
+//
+// `PangoLayoutLine` structures are obtained by calling
+// [method@Pango.Layout.get_line] and are only valid until the text, attributes,
+// or settings of the parent `PangoLayout` are modified.
+type LayoutLine struct {
+	// Layout: the layout this line belongs to, might be nil
+	Layout *Layout
+	// StartIndex: start of line as byte index into layout-&gt;text
+	StartIndex int
+	// Length: length of line in bytes
+	Length int
+	// Runs: list of runs in the line, from left to right
+	Runs *glib.SList
+	// IsParagraphStart: TRUE if this is the first line of the paragraph
+	IsParagraphStart uint
+	// ResolvedDir: resolved PangoDirection of line
+	ResolvedDir uint
+}
+
+// LogAttr: the `PangoLogAttr` structure stores information about the attributes
+// of a single character.
+type LogAttr struct {
+	// IsLineBreak: if set, can break line in front of character
+	IsLineBreak uint
+	// IsMandatoryBreak: if set, must break line in front of character
+	IsMandatoryBreak uint
+	// IsCharBreak: if set, can break here when doing character wrapping
+	IsCharBreak uint
+	// IsWhite: is whitespace character
+	IsWhite uint
+	// IsCursorPosition: if set, cursor can appear in front of character. i.e.
+	// this is a grapheme boundary, or the first character in the text. This
+	// flag implements Unicode's [Grapheme Cluster
+	// Boundaries](http://www.unicode.org/reports/tr29/) semantics.
+	IsCursorPosition uint
+	// IsWordStart: is first character in a word
+	IsWordStart uint
+	// IsWordEnd: is first non-word char after a word Note that in degenerate
+	// cases, you could have both @is_word_start and @is_word_end set for some
+	// character.
+	IsWordEnd uint
+	// IsSentenceBoundary: is a sentence boundary. There are two ways to divide
+	// sentences. The first assigns all inter-sentence whitespace/control/format
+	// chars to some sentence, so all chars are in some sentence;
+	// @is_sentence_boundary denotes the boundaries there. The second way
+	// doesn't assign between-sentence spaces, etc. to any sentence, so
+	// @is_sentence_start/@is_sentence_end mark the boundaries of those
+	// sentences.
+	IsSentenceBoundary uint
+	// IsSentenceStart: is first character in a sentence
+	IsSentenceStart uint
+	// IsSentenceEnd: is first char after a sentence. Note that in degenerate
+	// cases, you could have both @is_sentence_start and @is_sentence_end set
+	// for some character. (e.g. no space after a period, so the next sentence
+	// starts right away)
+	IsSentenceEnd uint
+	// BackspaceDeletesCharacter: if set, backspace deletes one character rather
+	// than the entire grapheme cluster. This field is only meaningful on
+	// grapheme boundaries (where @is_cursor_position is set). In some
+	// languages, the full grapheme (e.g. letter + diacritics) is considered a
+	// unit, while in others, each decomposed character in the grapheme is a
+	// unit. In the default implementation of [func@break], this bit is set on
+	// all grapheme boundaries except those following Latin, Cyrillic or Greek
+	// base characters.
+	BackspaceDeletesCharacter uint
+	// IsExpandableSpace: is a whitespace character that can possibly be
+	// expanded for justification purposes. (Since: 1.18)
+	IsExpandableSpace uint
+	// IsWordBoundary: is a word boundary, as defined by UAX#29. More
+	// specifically, means that this is not a position in the middle of a word.
+	// For example, both sides of a punctuation mark are considered word
+	// boundaries. This flag is particularly useful when selecting text
+	// word-by-word. This flag implements Unicode's [Word
+	// Boundaries](http://www.unicode.org/reports/tr29/) semantics. (Since:
+	// 1.22)
+	IsWordBoundary uint
+}
+
+// Matrix: a `PangoMatrix` specifies a transformation between user-space and
+// device coordinates.
+//
+//
+// The transformation is given by
+//
+// “` x_device = x_user * matrix-&gt;xx + y_user * matrix-&gt;xy +
+// matrix-&gt;x0; y_device = x_user * matrix-&gt;yx + y_user * matrix-&gt;yy +
+// matrix-&gt;y0; “`
+type Matrix struct {
+	// XX: 1st component of the transformation matrix
+	XX float64
+	// XY: 2nd component of the transformation matrix
+	XY float64
+	// YX: 3rd component of the transformation matrix
+	YX float64
+	// YY: 4th component of the transformation matrix
+	YY float64
+	// X0: x translation
+	X0 float64
+	// Y0: y translation
+	Y0 float64
+}
+
+// Rectangle: the `PangoRectangle` structure represents a rectangle.
+//
+// `PangoRectangle` is frequently used to represent the logical or ink extents
+// of a single glyph or section of text. (See, for instance,
+// [method@Pango.Font.get_glyph_extents].)
+type Rectangle struct {
+	// X: x coordinate of the left side of the rectangle.
+	X int
+	// Y: y coordinate of the the top side of the rectangle.
+	Y int
+	// Width: width of the rectangle.
+	Width int
+	// Height: height of the rectangle.
+	Height int
+}
+
+// ScriptIter: a `PangoScriptIter` is used to iterate through a string and
+// identify ranges in different scripts.
+type ScriptIter struct {
+	native *C.PangoScriptIter
+}
+
+// TabArray: a `PangoTabArray` contains an array of tab stops.
+//
+// `PangoTabArray` can be used to set tab stops in a `PangoLayout`. Each tab
+// stop has an alignment and a position.
+type TabArray struct {
+	native *C.PangoTabArray
 }

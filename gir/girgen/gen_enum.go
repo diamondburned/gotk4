@@ -7,12 +7,13 @@ import (
 var enumTmpl = newGoTemplate(`
 	{{ $type := (PascalToGo .Name) }}
 
+	{{ GoDoc .Doc 0 $type }}
 	type {{ $type }} int
 
 	const (
-		{{ range .Members }}
+		{{ range .Members -}}
 		{{- $name := ($.FormatMember .Name) -}}
-		{{- GoDoc .Doc 1 $name -}}
+		{{ with (GoDoc .Doc 1 $name) }} {{- . -}} {{ end }}
 		{{ $name }} {{ $type }} = {{ .Value }}
 		{{ end -}}
 	)

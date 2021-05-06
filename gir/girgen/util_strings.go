@@ -15,19 +15,23 @@ var (
 		"Uri",
 		"Url",
 		"Css",
+		"Dpi",
 		"Ltr",
 		"Rtl",
 		"Gtk",
 		"Nul",
 		"Eof",
 		"Md5",
+		"Dmy",
 		"Nfc",
 		"Nfd",
 		"Nfkc",
 		"Nfkd",
+		"Simd",
 		`Sha(\d+)?`,
 		`Utf(\d+)?`,
 		`[XY][^aiueo]`,
+		`(|S|R)[XYZxyz]{3}`,
 	}
 	pascalRegex *regexp.Regexp
 )
@@ -48,9 +52,38 @@ func init() {
 
 	// Must account for the next character being either EOF or a capitalized
 	// letter to avoid cases like "IDentifier".
-	fullRegex.WriteString("([A-Z]|$)")
+	fullRegex.WriteString("([A-Z0-9]|$)")
 
 	pascalRegex = regexp.MustCompile(fullRegex.String())
+}
+
+// See Go specs, section Keywords.
+var goKeywords = map[string]struct{}{
+	"break":       {},
+	"default":     {},
+	"func":        {},
+	"interface":   {},
+	"select":      {},
+	"case":        {},
+	"defer":       {},
+	"go":          {},
+	"map":         {},
+	"struct":      {},
+	"chan":        {},
+	"else":        {},
+	"goto":        {},
+	"package":     {},
+	"switch":      {},
+	"const":       {},
+	"fallthrough": {},
+	"if":          {},
+	"range":       {},
+	"type":        {},
+	"continue":    {},
+	"for":         {},
+	"import":      {},
+	"return":      {},
+	"var":         {},
 }
 
 // PascalToGo converts regular Pascal case to Go.
@@ -73,7 +106,17 @@ func SnakeToGo(pascal bool, snakeString string) string {
 		},
 	)
 
-	return PascalToGo(snakeString)
+	snakeString = PascalToGo(snakeString)
+
+	if !pascal {
+		// Special cases.
+		_, isKeyword := goKeywords[snakeString]
+		if isKeyword {
+			snakeString = "_" + snakeString
+		}
+	}
+
+	return snakeString
 }
 
 // FirstChar returns the first character.

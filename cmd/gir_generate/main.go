@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sync"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -46,8 +47,14 @@ type Package struct {
 // xrandr version 1.3
 
 var packages = []Package{
-	{"gobject-introspection-1.0", []string{"GLib", "Gio", "Vulkan", "cairo"}},
+	{"gobject-introspection-1.0", []string{
+		"GLib", "Gio", "Vulkan", "cairo", "xft", "xlib", "freetype2",
+	}},
 	{"pango", nil},
+	{"gdk-pixbuf-2.0", nil},
+	{"gdk-wayland-3.0", nil},
+	{"gdk-x11-3.0", nil},
+	{"graphene-1.0", nil},
 	{"gtk4", nil},
 }
 
@@ -69,6 +76,8 @@ func main() {
 
 	var wg sync.WaitGroup
 
+	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
+
 	gen := girgen.NewGenerator(repos)
 	gen.WithLogger(log.New(os.Stderr, "[girgen]", log.LstdFlags))
 
@@ -77,14 +86,23 @@ func main() {
 			ng := gen.UseNamespace(namespace.Name)
 
 			wg.Add(1)
+			sema <- struct{}{}
+
 			go func() {
 				writeNamespace(ng)
+
+				<-sema
 				wg.Done()
 			}()
 		}
 	}
 
 	wg.Wait()
+
+	if err := goimports.Dir(output); err != nil {
+		log.Println("failed to run goimports on "+output+":", err)
+		return
+	}
 }
 
 func writeNamespace(ng *girgen.NamespaceGenerator) {
@@ -113,11 +131,6 @@ func writeNamespace(ng *girgen.NamespaceGenerator) {
 
 	if err := f.Close(); err != nil {
 		log.Println("failed to close file:", err)
-		return
-	}
-
-	if err := goimports.File(out); err != nil {
-		log.Println("failed to run goimports on output:", err)
 		return
 	}
 

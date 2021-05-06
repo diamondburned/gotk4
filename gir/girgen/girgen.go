@@ -102,7 +102,10 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
 	ng.generateInit()
+	ng.generateAliases()
 	ng.generateEnums()
+	ng.generateFuncs()
+	ng.generateRecords()
 
 	if err := ng.pen.Flush(); err != nil {
 		return err
@@ -124,7 +127,7 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 		pen.Line()
 	}
 
-	pkgs := []string{"// #cgo pkg-config:", ng.current.Repository.Pkg}
+	pkgs := []string{"// #cgo pkg-config:"}
 	for _, pkg := range ng.current.Repository.Packages {
 		pkgs = append(pkgs, pkg.Name)
 	}
@@ -171,71 +174,75 @@ func (ng *NamespaceGenerator) addImport(pkgPath string) {
 	ng.imports[pkgPath] = struct{}{}
 }
 
-func (ng *NamespaceGenerator) findType(girType string) *gir.TypeFindResult {
-	return ng.gen.Repos.FindType(ng.current.Namespace.Name, ng.current.Namespace.Version, girType)
-}
-
 // resolveType resolves the given type from the GIR type field. It returns nil
-// if the type is not known.
-func (ng *NamespaceGenerator) resolveType(girType string) *resolvedType {
-	typ := ng._resolveType(girType)
-	if typ.Import != "" {
-		ng.addImport(typ.Import)
+// if the type is not known. It does not recursively traverse the type.
+func (ng *NamespaceGenerator) resolveType(typ gir.Type) *resolvedType {
+	resolved := ng._resolveType(typ)
+	if resolved != nil && resolved.Import != "" {
+		ng.addImport(resolved.Import)
 	}
 
-	return typ
+	return resolved
 }
 
-func (ng *NamespaceGenerator) _resolveType(girType string) *resolvedType {
+func (ng *NamespaceGenerator) _resolveType(typ gir.Type) *resolvedType {
 	// Resolve the unknown namespace that is GLib and primitive types.
-	switch girType {
-	case "void", "none":
-		return voidType
+	switch typ.Name {
+	case "none":
+		return &resolvedType{}
 	case "gboolean":
-		return builtinType("bool")
+		return builtinType("bool", typ)
 	case "gfloat":
-		return builtinType("float32")
+		return builtinType("float32", typ)
 	case "gdouble":
-		return builtinType("float64")
-	case "gint":
-		return builtinType("int")
-	case "gint8":
-		return builtinType("int8")
-	case "gint16":
-		return builtinType("int16")
-	case "gint32":
-		return builtinType("int32")
+		return builtinType("float64", typ)
+	case "long double": // pain
+		return builtinType("float64", typ)
+	case "gint", "gssize":
+		return builtinType("int", typ)
+	case "gint8", "gchar": // nightmarenightmarenightmarenightmarenightmarenightmare
+		return builtinType("int8", typ)
+	case "gint16", "gshort":
+		return builtinType("int16", typ)
+	case "gint32", "glong":
+		return builtinType("int32", typ)
 	case "gint64":
-		return builtinType("int64")
-	case "guint":
-		return builtinType("uint")
+		return builtinType("int64", typ)
+	case "guint", "gsize":
+		return builtinType("uint", typ)
+	case "guchar":
+		return builtinType("byte", typ)
 	case "guint8":
-		return builtinType("uint8")
-	case "guint16":
-		return builtinType("uint16")
-	case "guint32":
-		return builtinType("uint32")
+		return builtinType("uint8", typ)
+	case "guint16", "gushort":
+		return builtinType("uint16", typ)
+	case "guint32", "gulong", "gunichar": // pain pain pain pain
+		return builtinType("uint32", typ)
 	case "guint64":
-		return builtinType("uint64")
-	case "utf8":
-		return builtinType("string")
+		return builtinType("uint64", typ)
+	case "utf8", "filename": // filename is probably UTF-16 hybrid ???
+		return builtinType("string", typ)
 	case "gpointer":
 		// TODO: ignore field
 		// TODO: aaaaaaaaaaaaaaaaaaaaaaa
-		return builtinType("unsafe.Pointer")
+		return builtinType("unsafe.Pointer", typ)
 	case "GLib.DestroyNotify": // This should be handled externally.
-		return builtinType("unsafe.Pointer")
+		return builtinType("unsafe.Pointer", typ)
 	case "GType":
-		return builtinType("glib.Type")
-	case "GObject.GValue":
-		return builtinType("*glib.Value")
+		return builtinType("glib.Type", typ)
+	case "GObject.GValue", "GObject.Value": // inconsistency???
+		return builtinType("*glib.Value", typ)
 	case "GObject.Object":
-		return builtinType("*glib.Object")
+		return builtinType("*glib.Object", typ)
+	case "GObject.Closure":
+		return builtinType("*glib.Closure", typ)
 	case "GObject.GInitiallyUnowned":
-		return builtinType("glib.InitiallyUnowned")
+		return builtinType("glib.InitiallyUnowned", typ)
 
 	// We don't know what these types translates to.
-	case "GObject.EnumValue": // TODO: Find a way to map EnumValue type.
+	// TODO: Find a way to map EnumValue type.
+	// TODO: Add _full function support.
+	case "GObject.EnumValue", "DestroyNotify":
 		return nil
 	}
 
@@ -243,56 +250,69 @@ func (ng *NamespaceGenerator) _resolveType(girType string) *resolvedType {
 	// types that must be in the switch tree, so them not being in there is a
 	// bug.
 	for _, check := range ng.gen.KnownTypes {
-		if check(girType) {
-			log.Fatalf("missing gir type %s in the type tree\n", girType)
+		if check(typ.Name) {
+			log.Fatalf("missing gir type %s in the type tree\n", typ.Name)
 		}
 	}
 
-	result := ng.findType(girType)
+	result := ng.gen.Repos.FindType(
+		ng.current.Namespace.Name,
+		ng.current.Namespace.Version,
+		typ.Name,
+	)
 	if result == nil {
-		ng.gen.debugln("unknown gir type", girType)
+		ng.gen.debugln("unknown gir type", typ.Name)
 		return nil
 	}
 
-	return typeFromResult(result)
+	return typeFromResult(typ, result)
 }
 
 type resolvedType struct {
 	GoType string
-	Import string              // optional
-	Result *gir.TypeFindResult // known types (inside gir) only
+	Type   gir.Type
+	Import string // optional
 }
 
-// voidType is an empty type.
-var voidType = &resolvedType{}
-
 // builtinType is a convenient function to make a new resolvedType.
-func builtinType(typ string) *resolvedType {
-	return &resolvedType{GoType: typ}
+func builtinType(goType string, typ gir.Type) *resolvedType {
+	resolved := &resolvedType{GoType: goType, Type: typ}
+	resolved.setPtr(nil)
+	return resolved
 }
 
 // typeFromResult creates a resolved type from the given type result.
-func typeFromResult(result *gir.TypeFindResult) *resolvedType {
+func typeFromResult(typ gir.Type, result *gir.TypeFindResult) *resolvedType {
 	name, _ := result.Info()
 
 	// same namespace, no package qual required.
 	if result.SameNamespace {
-		typ := &resolvedType{name, "", result}
-		typ.setPtr()
-		return typ
+		resolved := &resolvedType{name, typ, ""}
+		resolved.setPtr(result)
+		return resolved
 	}
 
 	// different namespace.
 	pkg := gir.GoNamespace(result.Namespace)
 	path := gir.ImportPath(pkg)
 
-	typ := &resolvedType{pkg + "." + name, path, nil}
-	typ.setPtr()
-	return typ
+	resolved := &resolvedType{pkg + "." + name, typ, path}
+	resolved.setPtr(result)
+	return resolved
 }
 
-func (typ *resolvedType) setPtr() {
-	if typ.Result != nil && typ.Result.IsPtr() {
-		typ.GoType = strings.Repeat("*", typ.Result.Ptr())
+func (typ *resolvedType) setPtr(result *gir.TypeFindResult) {
+	ptr := strings.Count(typ.Type.CType, "*")
+
+	// Edge case: interfaces must not be pointers. We should still sometimes
+	// allow for pointers to interfaces, if needed, but this likely won't work.
+	if result != nil && result.Interface != nil && ptr > 0 {
+		ptr--
 	}
+	// Edge case: a string is a gchar*, so we don't need a pointer.
+	if typ.Type.Name == "utf8" && ptr > 0 {
+		ptr--
+	}
+
+	typ.GoType = strings.Repeat("*", ptr) + typ.GoType
 }

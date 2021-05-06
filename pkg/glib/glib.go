@@ -3,10 +3,13 @@
 package glib
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/glib"
 	"github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-introspection-1.0 glib-2.0
+// #cgo pkg-config: glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
 import "C"
@@ -57,6 +60,82 @@ func init() {
 	})
 }
 
+// DateDay: integer representing a day of the month; between 1 and 31.
+// DATE_BAD_DAY represents an invalid day of the month.
+type DateDay uint8
+
+// DateYear: integer representing a year; DATE_BAD_YEAR is the invalid value.
+// The year must be 1 or higher; negative (BC) years are not allowed. The year
+// is represented with four digits.
+type DateYear uint16
+
+// MainContextPusher: opaque type. See g_main_context_pusher_new() for details.
+type MainContextPusher struct{}
+
+// MutexLocker: opaque type. See g_mutex_locker_new() for details.
+type MutexLocker struct{}
+
+// Pid: a type which is used to hold a process identification.
+//
+// On UNIX, processes are identified by a process id (an integer), while Windows
+// uses process handles (which are pointers).
+//
+// GPid is used in GLib only for descendant processes spawned with the g_spawn
+// functions.
+type Pid int
+
+// Quark: a GQuark is a non-zero integer which uniquely identifies a particular
+// string. A GQuark value of zero is associated to nil.
+type Quark uint32
+
+// RWLockReaderLocker: opaque type. See g_rw_lock_reader_locker_new() for
+// details.
+type RWLockReaderLocker struct{}
+
+// RWLockWriterLocker: opaque type. See g_rw_lock_writer_locker_new() for
+// details.
+type RWLockWriterLocker struct{}
+
+// RecMutexLocker: opaque type. See g_rec_mutex_locker_new() for details.
+type RecMutexLocker struct{}
+
+// RefString: a typedef for a reference-counted string. A pointer to a String
+// can be treated like a standard `char*` array by all code, but can
+// additionally have `g_ref_string_*()` methods called on it. `g_ref_string_*()`
+// methods cannot be called on `char*` arrays not allocated using
+// g_ref_string_new().
+//
+// If using String with autocleanups, g_autoptr() must be used rather than
+// g_autofree(), so that the reference counting metadata is also freed.
+type RefString int8
+
+// Strv: a typedef alias for gchar**. This is mostly useful when used together
+// with g_auto().
+type Strv *string
+
+// Time: simply a replacement for `time_t`. It has been deprecated since it is
+// not equivalent to `time_t` on 64-bit platforms with a 64-bit `time_t`.
+// Unrelated to #GTimer.
+//
+// Note that #GTime is defined to always be a 32-bit integer, unlike `time_t`
+// which may be 64-bit on some systems. Therefore, #GTime will overflow in the
+// year 2038, and you cannot use the address of a #GTime variable as argument to
+// the UNIX time() function.
+//
+// Instead, do the following: |[&lt;!-- language="C" --&gt; time_t ttime; GTime
+// gtime;
+//
+//    time (&amp;ttime);
+//    gtime = (GTime)ttime;
+//
+type Time int32
+
+// TimeSpan: a value representing an interval of time, in microseconds.
+type TimeSpan int64
+
+type Type uint
+
+// BookmarkFileError: error codes returned by bookmark file parsing.
 type BookmarkFileError int
 
 const (
@@ -80,6 +159,11 @@ const (
 	BookmarkFileErrorFileNotFound BookmarkFileError = 7
 )
 
+// ChecksumType: the hashing algorithm to be used by #GChecksum when performing
+// the digest of some data.
+//
+// Note that the Type enumeration may be extended at a later date to include new
+// hashing algorithm types.
 type ChecksumType int
 
 const (
@@ -95,6 +179,7 @@ const (
 	ChecksumTypeSHA384 ChecksumType = 4
 )
 
+// ConvertError: error codes returned by character set conversion routines.
 type ConvertError int
 
 const (
@@ -120,6 +205,8 @@ const (
 	ConvertErrorEmbeddedNUL ConvertError = 7
 )
 
+// DateDMY: this enumeration isn't used in the API, but may be useful if you
+// need to mark a number as a day, month, or year.
 type DateDMY int
 
 const (
@@ -131,6 +218,8 @@ const (
 	DateDMYYear DateDMY = 2
 )
 
+// DateMonth: enumeration representing a month; values are DATE_JANUARY,
+// DATE_FEBRUARY, etc. DATE_BAD_MONTH is the invalid value.
 type DateMonth int
 
 const (
@@ -162,6 +251,8 @@ const (
 	DateMonthDecember DateMonth = 12
 )
 
+// DateWeekday: enumeration representing a day of the week; DATE_MONDAY,
+// DATE_TUESDAY, etc. DATE_BAD_WEEKDAY is an invalid weekday.
 type DateWeekday int
 
 const (
@@ -183,6 +274,8 @@ const (
 	DateWeekdaySunday DateWeekday = 7
 )
 
+// ErrorType: the possible errors, used in the @v_error field of Value, when the
+// token is a G_TOKEN_ERROR.
 type ErrorType int
 
 const (
@@ -204,6 +297,17 @@ const (
 	ErrorTypeFloatMalformed ErrorType = 7
 )
 
+// FileError: values corresponding to @errno codes returned from file operations
+// on UNIX. Unlike @errno codes, GFileError values are available on all systems,
+// even Windows. The exact meaning of each code depends on what sort of file
+// operation you were performing; the UNIX documentation gives more details. The
+// following error code descriptions come from the GNU C Library manual, and are
+// under the copyright of that manual.
+//
+// It's not very portable to make detailed assumptions about exactly which
+// errors will be returned from a given operation. Some errors don't occur on
+// some systems, etc., sometimes there are subtle differences in when a system
+// will report a given error, etc.
 type FileError int
 
 const (
@@ -295,6 +399,7 @@ const (
 	FileErrorFailed FileError = 24
 )
 
+// IOChannelError: error codes returned by OChannel operations.
 type IOChannelError int
 
 const (
@@ -318,6 +423,8 @@ const (
 	IOChannelErrorFailed IOChannelError = 8
 )
 
+// IOError: GIOError is only used by the deprecated functions
+// g_io_channel_read(), g_io_channel_write(), and g_io_channel_seek().
 type IOError int
 
 const (
@@ -331,6 +438,7 @@ const (
 	IOErrorUnknown IOError = 3
 )
 
+// IOStatus: statuses returned by most of the OFuncs functions.
 type IOStatus int
 
 const (
@@ -344,6 +452,7 @@ const (
 	IOStatusAgain IOStatus = 3
 )
 
+// KeyFileError: error codes returned by key file parsing.
 type KeyFileError int
 
 const (
@@ -362,6 +471,11 @@ const (
 	KeyFileErrorInvalidValue KeyFileError = 5
 )
 
+// LogWriterOutput: return values from WriterFuncs to indicate whether the given
+// log entry was successfully handled by the writer, or whether there was an
+// error in handling it (and hence a fallback writer should be used).
+//
+// If a WriterFunc ignores a log entry, it should return G_LOG_WRITER_HANDLED.
 type LogWriterOutput int
 
 const (
@@ -371,6 +485,7 @@ const (
 	LogWriterOutputUnhandled LogWriterOutput = 0
 )
 
+// MarkupError: error codes returned by markup parsing.
 type MarkupError int
 
 const (
@@ -394,6 +509,11 @@ const (
 	MarkupErrorMissingAttribute MarkupError = 6
 )
 
+// NormalizeMode: defines how a Unicode string is transformed in a canonical
+// form, standardizing such issues as whether a character with an accent is
+// represented as a base character and combining accent or as a single
+// precomposed character. Unicode strings should generally be normalized before
+// comparing them.
 type NormalizeMode int
 
 const (
@@ -422,6 +542,8 @@ const (
 	NormalizeModeNFKC NormalizeMode = 3
 )
 
+// NumberParserError: error codes returned by functions converting a string to a
+// number.
 type NumberParserError int
 
 const (
@@ -431,6 +553,8 @@ const (
 	NumberParserErrorOutOfBounds NumberParserError = 1
 )
 
+// OnceStatus: the possible statuses of a one-time initialization function
+// controlled by a #GOnce struct.
 type OnceStatus int
 
 const (
@@ -442,6 +566,10 @@ const (
 	OnceStatusReady OnceStatus = 2
 )
 
+// OptionArg: the Arg enum values determine which type of extra argument the
+// options expect to find. If an option expects an extra argument, it can be
+// specified in several ways; with a short option: `-x arg`, with a long option:
+// `--name arg` or combined in a single argument: `--name=arg`.
 type OptionArg int
 
 const (
@@ -473,6 +601,7 @@ const (
 	OptionArgInt64 OptionArg = 8
 )
 
+// OptionError: error codes returned by option parsing.
 type OptionError int
 
 const (
@@ -487,6 +616,7 @@ const (
 	OptionErrorFailed OptionError = 2
 )
 
+// RegexError: error codes returned by regular expressions functions.
 type RegexError int
 
 const (
@@ -649,6 +779,8 @@ const (
 	RegexErrorCharacterValueTooLarge RegexError = 176
 )
 
+// SeekType: an enumeration specifying the base position for a
+// g_io_channel_seek_position() operation.
 type SeekType int
 
 const (
@@ -660,6 +792,7 @@ const (
 	SeekTypeEnd SeekType = 2
 )
 
+// ShellError: error codes returned by shell functions.
 type ShellError int
 
 const (
@@ -674,14 +807,20 @@ const (
 type SliceConfig int
 
 const (
-	SliceConfigAlwaysMalloc      SliceConfig = 1
-	SliceConfigBypassMagazines   SliceConfig = 2
-	SliceConfigWorkingSetMsecs   SliceConfig = 3
-	SliceConfigColorIncrement    SliceConfig = 4
-	SliceConfigChunkSizes        SliceConfig = 5
+	SliceConfigAlwaysMalloc SliceConfig = 1
+
+	SliceConfigBypassMagazines SliceConfig = 2
+
+	SliceConfigWorkingSetMsecs SliceConfig = 3
+
+	SliceConfigColorIncrement SliceConfig = 4
+
+	SliceConfigChunkSizes SliceConfig = 5
+
 	SliceConfigContentionCounter SliceConfig = 6
 )
 
+// SpawnError: error codes returned by spawning processes.
 type SpawnError int
 
 const (
@@ -731,6 +870,20 @@ const (
 	SpawnErrorFailed SpawnError = 19
 )
 
+// TestFileType: the type of file to return the filename for, when used with
+// g_test_build_filename().
+//
+// These two options correspond rather directly to the 'dist' and 'built'
+// terminology that automake uses and are explicitly used to distinguish between
+// the 'srcdir' and 'builddir' being separate. All files in your project should
+// either be dist (in the `EXTRA_DIST` or `dist_schema_DATA` sense, in which
+// case they will always be in the srcdir) or built (in the `BUILT_SOURCES`
+// sense, in which case they will always be in the builddir).
+//
+// Note: as a general rule of automake, files that are generated only as part of
+// the build-from-git process (but then are distributed with the tarball) always
+// go in srcdir (even if doing a srcdir != builddir build from git) and are
+// considered as distributed files.
 type TestFileType int
 
 const (
@@ -743,29 +896,44 @@ const (
 type TestLogType int
 
 const (
-	TestLogTypeNone        TestLogType = 0
-	TestLogTypeError       TestLogType = 1
+	TestLogTypeNone TestLogType = 0
+
+	TestLogTypeError TestLogType = 1
+
 	TestLogTypeStartBinary TestLogType = 2
-	TestLogTypeListCase    TestLogType = 3
-	TestLogTypeSkipCase    TestLogType = 4
-	TestLogTypeStartCase   TestLogType = 5
-	TestLogTypeStopCase    TestLogType = 6
-	TestLogTypeMinResult   TestLogType = 7
-	TestLogTypeMaxResult   TestLogType = 8
-	TestLogTypeMessage     TestLogType = 9
-	TestLogTypeStartSuite  TestLogType = 10
-	TestLogTypeStopSuite   TestLogType = 11
+
+	TestLogTypeListCase TestLogType = 3
+
+	TestLogTypeSkipCase TestLogType = 4
+
+	TestLogTypeStartCase TestLogType = 5
+
+	TestLogTypeStopCase TestLogType = 6
+
+	TestLogTypeMinResult TestLogType = 7
+
+	TestLogTypeMaxResult TestLogType = 8
+
+	TestLogTypeMessage TestLogType = 9
+
+	TestLogTypeStartSuite TestLogType = 10
+
+	TestLogTypeStopSuite TestLogType = 11
 )
 
 type TestResult int
 
 const (
-	TestResultSuccess    TestResult = 0
-	TestResultSkipped    TestResult = 1
-	TestResultFailure    TestResult = 2
+	TestResultSuccess TestResult = 0
+
+	TestResultSkipped TestResult = 1
+
+	TestResultFailure TestResult = 2
+
 	TestResultIncomplete TestResult = 3
 )
 
+// ThreadError: possible errors of thread related functions.
 type ThreadError int
 
 const (
@@ -774,6 +942,13 @@ const (
 	ThreadErrorThreadErrorAgain ThreadError = 0
 )
 
+// TimeType: disambiguates a given time in two ways.
+//
+// First, specifies if the given time is in universal or local time.
+//
+// Second, if the time is in local time, specifies if it is local standard time
+// or local daylight time. This is important for the case where the same local
+// time occurs twice (during daylight savings time transitions, for example).
 type TimeType int
 
 const (
@@ -785,6 +960,8 @@ const (
 	TimeTypeUniversal TimeType = 2
 )
 
+// TokenType: the possible types of token returned from each
+// g_scanner_get_next_token() call.
 type TokenType int
 
 const (
@@ -836,6 +1013,13 @@ const (
 	TokenTypeCommentMulti TokenType = 269
 )
 
+// TraverseType: specifies the type of traversal performed by g_tree_traverse(),
+// g_node_traverse() and g_node_find(). The different orders are illustrated
+// here: - In order: A, B, C, D, E, F, G, H, I
+// ![](Sorted_binary_tree_inorder.svg) - Pre order: F, B, A, D, C, E, G, I, H
+// ![](Sorted_binary_tree_preorder.svg) - Post order: A, C, E, D, B, H, I, G, F
+// ![](Sorted_binary_tree_postorder.svg) - Level order: F, B, G, A, D, I, C, E,
+// H ![](Sorted_binary_tree_breadth-first_traversal.svg)
 type TraverseType int
 
 const (
@@ -854,6 +1038,14 @@ const (
 	TraverseTypeLevelOrder TraverseType = 3
 )
 
+// UnicodeBreakType: these are the possible line break classifications.
+//
+// Since new unicode versions may add new types here, applications should be
+// ready to handle unknown values. They may be regarded as
+// G_UNICODE_BREAK_UNKNOWN.
+//
+// See [Unicode Line Breaking
+// Algorithm](http://www.unicode.org/unicode/reports/tr14/).
 type UnicodeBreakType int
 
 const (
@@ -949,6 +1141,13 @@ const (
 	UnicodeBreakTypeZeroWidthJoiner UnicodeBreakType = 42
 )
 
+// UnicodeScript: the Script enumeration identifies different writing systems.
+// The values correspond to the names as defined in the Unicode standard. The
+// enumeration has been added in GLib 2.14, and is interchangeable with Script.
+//
+// Note that new types may be added in the future. Applications should be ready
+// to handle unknown values. See [Unicode Standard Annex #24: Script
+// names](http://www.unicode.org/reports/tr24/).
 type UnicodeScript int
 
 const (
@@ -1272,6 +1471,9 @@ const (
 	UnicodeScriptYezidi UnicodeScript = 156
 )
 
+// UnicodeType: these are the possible character classifications from the
+// Unicode specification. See [Unicode Character
+// Database](http://www.unicode.org/reports/tr44/Category_Values).
 type UnicodeType int
 
 const (
@@ -1341,6 +1543,7 @@ const (
 	UnicodeTypeSpaceSeparator UnicodeType = 29
 )
 
+// URIError: error codes returned by #GUri methods.
 type URIError int
 
 const (
@@ -1368,6 +1571,13 @@ const (
 	URIErrorBadFragment URIError = 9
 )
 
+// UserDirectory: these are logical ids for special directories which are
+// defined depending on the platform used. You should use
+// g_get_user_special_dir() to retrieve the full path associated to the logical
+// id.
+//
+// The Directory enumeration can be extended at later date. Not every platform
+// has a directory for every logical id in this enumeration.
 type UserDirectory int
 
 const (
@@ -1391,6 +1601,7 @@ const (
 	UserDirectoryNDirectories UserDirectory = 8
 )
 
+// VariantClass: the range of possible top-level types of #GVariant instances.
 type VariantClass int
 
 const (
@@ -1433,6 +1644,7 @@ const (
 	VariantClassDictEntry VariantClass = 123
 )
 
+// VariantParseError: error codes returned by parsing text-format GVariants.
 type VariantParseError int
 
 const (
@@ -1482,3 +1694,7557 @@ const (
 	// only guaranteed to handle nesting up to 64 levels (Since: 2.64)
 	VariantParseErrorRecursion VariantParseError = 18
 )
+
+// Access: a wrapper for the POSIX access() function. This function is used to
+// test a pathname for one or several of read, write or execute permissions, or
+// just existence.
+//
+// On Windows, the file protection mechanism is not at all POSIX-like, and the
+// underlying function in the C library only checks the FAT-style READONLY
+// attribute, and does not look at the ACL of a file at all. This function is
+// this in practise almost useless on Windows. Software that needs to handle
+// file permissions on Windows more exactly should use the Win32 API.
+//
+// See your C library manual for more details about access().
+func Access(filename *string, mode int) int
+
+// AsciiDigitValue: determines the numeric value of a character as a decimal
+// digit. Differs from g_unichar_digit_value() because it takes a char, so
+// there's no worry about sign extension if characters are signed.
+func AsciiDigitValue(c int8) int
+
+// AsciiDtostr: converts a #gdouble to a string, using the '.' as decimal point.
+//
+// This function generates enough precision that converting the string back
+// using g_ascii_strtod() gives the same machine-number (on machines with IEEE
+// compatible 64bit doubles). It is guaranteed that the size of the resulting
+// string will never be larger than @G_ASCII_DTOSTR_BUF_SIZE bytes, including
+// the terminating nul character, which is always added.
+func AsciiDtostr(buffer string, bufLen int, d float64) string
+
+// AsciiFormatd: converts a #gdouble to a string, using the '.' as decimal
+// point. To format the number you pass in a printf()-style format string.
+// Allowed conversion specifiers are 'e', 'E', 'f', 'F', 'g' and 'G'.
+//
+// The returned buffer is guaranteed to be nul-terminated.
+//
+// If you just want to want to serialize the value into a string, use
+// g_ascii_dtostr().
+func AsciiFormatd(buffer string, bufLen int, format string, d float64) string
+
+// AsciiStrcasecmp: compare two strings, ignoring the case of ASCII characters.
+//
+// Unlike the BSD strcasecmp() function, this only recognizes standard ASCII
+// letters and ignores the locale, treating all non-ASCII bytes as if they are
+// not letters.
+//
+// This function should be used only on strings that are known to be in
+// encodings where the bytes corresponding to ASCII letters always represent
+// themselves. This includes UTF-8 and the ISO-8859-* charsets, but not for
+// instance double-byte encodings like the Windows Codepage 932, where the
+// trailing bytes of double-byte characters include all ASCII letters. If you
+// compare two CP932 strings using this function, you will get false matches.
+//
+// Both @s1 and @s2 must be non-nil.
+func AsciiStrcasecmp(s1 string, s2 string) int
+
+// AsciiStrdown: converts all upper case ASCII letters to lower case ASCII
+// letters.
+func AsciiStrdown(str string, len int) string
+
+// AsciiStringToSigned: a convenience function for converting a string to a
+// signed number.
+//
+// This function assumes that @str contains only a number of the given @base
+// that is within inclusive bounds limited by @min and @max. If this is true,
+// then the converted number is stored in @out_num. An empty string is not a
+// valid input. A string with leading or trailing whitespace is also an invalid
+// input.
+//
+// @base can be between 2 and 36 inclusive. Hexadecimal numbers must not be
+// prefixed with "0x" or "0X". Such a problem does not exist for octal numbers,
+// since they were usually prefixed with a zero which does not change the value
+// of the parsed number.
+//
+// Parsing failures result in an error with the G_NUMBER_PARSER_ERROR domain. If
+// the input is invalid, the error code will be G_NUMBER_PARSER_ERROR_INVALID.
+// If the parsed number is out of bounds - G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS.
+//
+// See g_ascii_strtoll() if you have more complex needs such as parsing a string
+// which starts with a number, but then has other characters.
+func AsciiStringToSigned(str string, base uint, min int64, max int64, outNum *int64) bool
+
+// AsciiStringToUnsigned: a convenience function for converting a string to an
+// unsigned number.
+//
+// This function assumes that @str contains only a number of the given @base
+// that is within inclusive bounds limited by @min and @max. If this is true,
+// then the converted number is stored in @out_num. An empty string is not a
+// valid input. A string with leading or trailing whitespace is also an invalid
+// input. A string with a leading sign (`-` or `+`) is not a valid input for the
+// unsigned parser.
+//
+// @base can be between 2 and 36 inclusive. Hexadecimal numbers must not be
+// prefixed with "0x" or "0X". Such a problem does not exist for octal numbers,
+// since they were usually prefixed with a zero which does not change the value
+// of the parsed number.
+//
+// Parsing failures result in an error with the G_NUMBER_PARSER_ERROR domain. If
+// the input is invalid, the error code will be G_NUMBER_PARSER_ERROR_INVALID.
+// If the parsed number is out of bounds - G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS.
+//
+// See g_ascii_strtoull() if you have more complex needs such as parsing a
+// string which starts with a number, but then has other characters.
+func AsciiStringToUnsigned(str string, base uint, min uint64, max uint64, outNum *uint64) bool
+
+// AsciiStrncasecmp: compare @s1 and @s2, ignoring the case of ASCII characters
+// and any characters after the first @n in each string.
+//
+// Unlike the BSD strcasecmp() function, this only recognizes standard ASCII
+// letters and ignores the locale, treating all non-ASCII characters as if they
+// are not letters.
+//
+// The same warning as in g_ascii_strcasecmp() applies: Use this function only
+// on strings known to be in encodings where bytes corresponding to ASCII
+// letters always represent themselves.
+func AsciiStrncasecmp(s1 string, s2 string, n uint) int
+
+// AsciiStrtod: converts a string to a #gdouble value.
+//
+// This function behaves like the standard strtod() function does in the C
+// locale. It does this without actually changing the current locale, since that
+// would not be thread-safe. A limitation of the implementation is that this
+// function will still accept localized versions of infinities and NANs.
+//
+// This function is typically used when reading configuration files or other
+// non-user input that should be locale independent. To handle input from the
+// user you should normally use the locale-sensitive system strtod() function.
+//
+// To convert from a #gdouble to a string in a locale-insensitive way, use
+// g_ascii_dtostr().
+//
+// If the correct value would cause overflow, plus or minus HUGE_VAL is returned
+// (according to the sign of the value), and ERANGE is stored in errno. If the
+// correct value would cause underflow, zero is returned and ERANGE is stored in
+// errno.
+//
+// This function resets errno before calling strtod() so that you can reliably
+// detect overflow and underflow.
+func AsciiStrtod(nptr string, endptr *string) float64
+
+// AsciiStrtoll: converts a string to a #gint64 value. This function behaves
+// like the standard strtoll() function does in the C locale. It does this
+// without actually changing the current locale, since that would not be
+// thread-safe.
+//
+// This function is typically used when reading configuration files or other
+// non-user input that should be locale independent. To handle input from the
+// user you should normally use the locale-sensitive system strtoll() function.
+//
+// If the correct value would cause overflow, G_MAXINT64 or G_MININT64 is
+// returned, and `ERANGE` is stored in `errno`. If the base is outside the valid
+// range, zero is returned, and `EINVAL` is stored in `errno`. If the string
+// conversion fails, zero is returned, and @endptr returns @nptr (if @endptr is
+// non-nil).
+func AsciiStrtoll(nptr string, endptr *string, base uint) int64
+
+// AsciiStrtoull: converts a string to a #guint64 value. This function behaves
+// like the standard strtoull() function does in the C locale. It does this
+// without actually changing the current locale, since that would not be
+// thread-safe.
+//
+// Note that input with a leading minus sign (`-`) is accepted, and will return
+// the negation of the parsed number, unless that would overflow a #guint64.
+// Critically, this means you cannot assume that a short fixed length input will
+// never result in a low return value, as the input could have a leading `-`.
+//
+// This function is typically used when reading configuration files or other
+// non-user input that should be locale independent. To handle input from the
+// user you should normally use the locale-sensitive system strtoull() function.
+//
+// If the correct value would cause overflow, G_MAXUINT64 is returned, and
+// `ERANGE` is stored in `errno`. If the base is outside the valid range, zero
+// is returned, and `EINVAL` is stored in `errno`. If the string conversion
+// fails, zero is returned, and @endptr returns @nptr (if @endptr is non-nil).
+func AsciiStrtoull(nptr string, endptr *string, base uint) uint64
+
+// AsciiStrup: converts all lower case ASCII letters to upper case ASCII
+// letters.
+func AsciiStrup(str string, len int) string
+
+// AsciiTolower: convert a character to ASCII lower case.
+//
+// Unlike the standard C library tolower() function, this only recognizes
+// standard ASCII letters and ignores the locale, returning all non-ASCII
+// characters unchanged, even if they are lower case letters in a particular
+// character set. Also unlike the standard library function, this takes and
+// returns a char, not an int, so don't call it on EOF but no need to worry
+// about casting to #guchar before passing a possibly non-ASCII character in.
+func AsciiTolower(c int8) int8
+
+// AsciiToupper: convert a character to ASCII upper case.
+//
+// Unlike the standard C library toupper() function, this only recognizes
+// standard ASCII letters and ignores the locale, returning all non-ASCII
+// characters unchanged, even if they are upper case letters in a particular
+// character set. Also unlike the standard library function, this takes and
+// returns a char, not an int, so don't call it on EOF but no need to worry
+// about casting to #guchar before passing a possibly non-ASCII character in.
+func AsciiToupper(c int8) int8
+
+// AsciiXdigitValue: determines the numeric value of a character as a
+// hexadecimal digit. Differs from g_unichar_xdigit_value() because it takes a
+// char, so there's no worry about sign extension if characters are signed.
+func AsciiXdigitValue(c int8) int
+
+func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string)
+
+func AssertionMessage(domain string, file string, line int, _func string, message string)
+
+func AssertionMessageCmpnum(domain string, file string, line int, _func string, expr string, arg1 float64, cmp string, arg2 float64, numtype int8)
+
+func AssertionMessageCmpstr(domain string, file string, line int, _func string, expr string, arg1 string, cmp string, arg2 string)
+
+func AssertionMessageError(domain string, file string, line int, _func string, expr string, error *Error, errorDomain Quark, errorCode int)
+
+// AssertionMessageExpr: internal function used to print messages from the
+// public g_assert() and g_assert_not_reached() macros.
+func AssertionMessageExpr(domain string, file string, line int, _func string, expr string)
+
+// Atexit: specifies a function to be called at normal program termination.
+//
+// Since GLib 2.8.2, on Windows g_atexit() actually is a preprocessor macro that
+// maps to a call to the atexit() function in the C library. This means that in
+// case the code that calls g_atexit(), i.e. atexit(), is in a DLL, the function
+// will be called when the DLL is detached from the program. This typically
+// makes more sense than that the function is called when the GLib DLL is
+// detached, which happened earlier when g_atexit() was a function in the GLib
+// DLL.
+//
+// The behaviour of atexit() in the context of dynamically loaded modules is not
+// formally specified and varies wildly.
+//
+// On POSIX systems, calling g_atexit() (or atexit()) in a dynamically loaded
+// module which is unloaded before the program terminates might well cause a
+// crash at program exit.
+//
+// Some POSIX systems implement atexit() like Windows, and have each dynamically
+// loaded module maintain an own atexit chain that is called when the module is
+// unloaded.
+//
+// On other POSIX systems, before a dynamically loaded module is unloaded, the
+// registered atexit functions (if any) residing in that module are called,
+// regardless where the code that registered them resided. This is presumably
+// the most robust approach.
+//
+// As can be seen from the above, for portability it's best to avoid calling
+// g_atexit() (or atexit()) except in the main executable of a program.
+func Atexit(_func VoidFunc)
+
+// AtomicIntAdd: atomically adds @val to the value of @atomic.
+//
+// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic +=
+// val; return tmp; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+//
+// Before version 2.30, this function did not return a value (but
+// g_atomic_int_exchange_and_add() did, and had the same meaning).
+func AtomicIntAdd(atomic *int, val int) int
+
+// AtomicIntAnd: performs an atomic bitwise 'and' of the value of @atomic and
+// @val, storing the result back in @atomic.
+//
+// This call acts as a full compiler and hardware memory barrier.
+//
+// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic
+// &amp;= val; return tmp; }`.
+func AtomicIntAnd(atomic *uint, val uint) uint
+
+// AtomicIntCompareAndExchange: compares @atomic to @oldval and, if equal, sets
+// it to @newval. If @atomic was not equal to @oldval then no change occurs.
+//
+// This compare and exchange is done atomically.
+//
+// Think of this operation as an atomic version of `{ if (*atomic == oldval) {
+// *atomic = newval; return TRUE; } else return FALSE; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicIntCompareAndExchange(atomic *int, oldval int, newval int) bool
+
+// AtomicIntDecAndTest: decrements the value of @atomic by 1.
+//
+// Think of this operation as an atomic version of `{ *atomic -= 1; return
+// (*atomic == 0); }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicIntDecAndTest(atomic *int) bool
+
+// AtomicIntExchangeAndAdd: this function existed before g_atomic_int_add()
+// returned the prior value of the integer (which it now does). It is retained
+// only for compatibility reasons. Don't use this function in new code.
+func AtomicIntExchangeAndAdd(atomic *int, val int) int
+
+// AtomicIntGet: gets the current value of @atomic.
+//
+// This call acts as a full compiler and hardware memory barrier (before the
+// get).
+func AtomicIntGet(atomic *int) int
+
+// AtomicIntInc: increments the value of @atomic by 1.
+//
+// Think of this operation as an atomic version of `{ *atomic += 1; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicIntInc(atomic *int)
+
+// AtomicIntOr: performs an atomic bitwise 'or' of the value of @atomic and
+// @val, storing the result back in @atomic.
+//
+// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic |=
+// val; return tmp; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicIntOr(atomic *uint, val uint) uint
+
+// AtomicIntSet: sets the value of @atomic to @newval.
+//
+// This call acts as a full compiler and hardware memory barrier (after the
+// set).
+func AtomicIntSet(atomic *int, newval int)
+
+// AtomicIntXor: performs an atomic bitwise 'xor' of the value of @atomic and
+// @val, storing the result back in @atomic.
+//
+// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic ^=
+// val; return tmp; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicIntXor(atomic *uint, val uint) uint
+
+// AtomicPointerAdd: atomically adds @val to the value of @atomic.
+//
+// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic +=
+// val; return tmp; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicPointerAdd(atomic *unsafe.Pointer, val int) int
+
+// AtomicPointerAnd: performs an atomic bitwise 'and' of the value of @atomic
+// and @val, storing the result back in @atomic.
+//
+// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic
+// &amp;= val; return tmp; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicPointerAnd(atomic *unsafe.Pointer, val uint) uint
+
+// AtomicPointerCompareAndExchange: compares @atomic to @oldval and, if equal,
+// sets it to @newval. If @atomic was not equal to @oldval then no change
+// occurs.
+//
+// This compare and exchange is done atomically.
+//
+// Think of this operation as an atomic version of `{ if (*atomic == oldval) {
+// *atomic = newval; return TRUE; } else return FALSE; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicPointerCompareAndExchange(atomic *unsafe.Pointer, oldval unsafe.Pointer, newval unsafe.Pointer) bool
+
+// AtomicPointerGet: gets the current value of @atomic.
+//
+// This call acts as a full compiler and hardware memory barrier (before the
+// get).
+func AtomicPointerGet(atomic *unsafe.Pointer) unsafe.Pointer
+
+// AtomicPointerOr: performs an atomic bitwise 'or' of the value of @atomic and
+// @val, storing the result back in @atomic.
+//
+// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic |=
+// val; return tmp; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicPointerOr(atomic *unsafe.Pointer, val uint) uint
+
+// AtomicPointerSet: sets the value of @atomic to @newval.
+//
+// This call acts as a full compiler and hardware memory barrier (after the
+// set).
+func AtomicPointerSet(atomic *unsafe.Pointer, newval unsafe.Pointer)
+
+// AtomicPointerXor: performs an atomic bitwise 'xor' of the value of @atomic
+// and @val, storing the result back in @atomic.
+//
+// Think of this operation as an atomic version of `{ tmp = *atomic; *atomic ^=
+// val; return tmp; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicPointerXor(atomic *unsafe.Pointer, val uint) uint
+
+// AtomicRcBoxAcquire: atomically acquires a reference on the data pointed by
+// @mem_block.
+func AtomicRcBoxAcquire(memBlock unsafe.Pointer) unsafe.Pointer
+
+// AtomicRcBoxAlloc: allocates @block_size bytes of memory, and adds atomic
+// reference counting semantics to it.
+//
+// The data will be freed when its reference count drops to zero.
+//
+// The allocated data is guaranteed to be suitably aligned for any built-in
+// type.
+func AtomicRcBoxAlloc(blockSize uint) unsafe.Pointer
+
+// AtomicRcBoxAlloc0: allocates @block_size bytes of memory, and adds atomic
+// reference counting semantics to it.
+//
+// The contents of the returned data is set to zero.
+//
+// The data will be freed when its reference count drops to zero.
+//
+// The allocated data is guaranteed to be suitably aligned for any built-in
+// type.
+func AtomicRcBoxAlloc0(blockSize uint) unsafe.Pointer
+
+// AtomicRcBoxDup: allocates a new block of data with atomic reference counting
+// semantics, and copies @block_size bytes of @mem_block into it.
+func AtomicRcBoxDup(blockSize uint, memBlock unsafe.Pointer) unsafe.Pointer
+
+// AtomicRcBoxGetSize: retrieves the size of the reference counted data pointed
+// by @mem_block.
+func AtomicRcBoxGetSize(memBlock unsafe.Pointer) uint
+
+// AtomicRcBoxRelease: atomically releases a reference on the data pointed by
+// @mem_block.
+//
+// If the reference was the last one, it will free the resources allocated for
+// @mem_block.
+func AtomicRcBoxRelease(memBlock unsafe.Pointer)
+
+// AtomicRcBoxReleaseFull: atomically releases a reference on the data pointed
+// by @mem_block.
+//
+// If the reference was the last one, it will call @clear_func to clear the
+// contents of @mem_block, and then will free the resources allocated for
+// @mem_block.
+func AtomicRcBoxReleaseFull(memBlock unsafe.Pointer)
+
+// AtomicRefCountCompare: atomically compares the current value of @arc with
+// @val.
+func AtomicRefCountCompare(arc *int, val int) bool
+
+// AtomicRefCountDec: atomically decreases the reference count.
+func AtomicRefCountDec(arc *int) bool
+
+// AtomicRefCountInc: atomically increases the reference count.
+func AtomicRefCountInc(arc *int)
+
+// AtomicRefCountInit: initializes a reference count variable.
+func AtomicRefCountInit(arc *int)
+
+// Base64Decode: decode a sequence of Base-64 encoded text into binary data.
+// Note that the returned binary data is not necessarily zero-terminated, so it
+// should not be used as a character string.
+func Base64Decode(text string, outLen *uint) []uint8
+
+// Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
+// data by overwriting the input data.
+func Base64DecodeInplace(outLen *uint) *uint8
+
+// Base64DecodeStep: incrementally decode a sequence of binary data from its
+// Base-64 stringified representation. By calling this function multiple times
+// you can convert data in chunks to avoid having to have the full encoded data
+// in memory.
+//
+// The output buffer must be large enough to fit all the data that will be
+// written to it. Since base64 encodes 3 bytes in 4 chars you need at least:
+// (@len / 4) * 3 + 3 bytes (+ 3 may be needed in case of non-zero state).
+func Base64DecodeStep(len uint, state *int, save *uint) uint
+
+// Base64Encode: encode a sequence of binary data into its Base-64 stringified
+// representation.
+func Base64Encode(len uint) string
+
+// Base64EncodeClose: flush the status from a sequence of calls to
+// g_base64_encode_step().
+//
+// The output buffer must be large enough to fit all the data that will be
+// written to it. It will need up to 4 bytes, or up to 5 bytes if line-breaking
+// is enabled.
+//
+// The @out array will not be automatically nul-terminated.
+func Base64EncodeClose(breakLines bool, state *int, save *int) uint
+
+// Base64EncodeStep: incrementally encode a sequence of binary data into its
+// Base-64 stringified representation. By calling this function multiple times
+// you can convert data in chunks to avoid having to have the full encoded data
+// in memory.
+//
+// When all of the data has been converted you must call g_base64_encode_close()
+// to flush the saved state.
+//
+// The output buffer must be large enough to fit all the data that will be
+// written to it. Due to the way base64 encodes you will need at least: (@len /
+// 3 + 1) * 4 + 4 bytes (+ 4 may be needed in case of non-zero state). If you
+// enable line-breaking you will need at least: ((@len / 3 + 1) * 4 + 4) / 76 +
+// 1 bytes of extra space.
+//
+// @break_lines is typically used when putting base64-encoded data in emails. It
+// breaks the lines at 76 columns instead of putting all of the text on the same
+// line. This avoids problems with long lines in the email system. Note however
+// that it breaks the lines with `LF` characters, not `CR LF` sequences, so the
+// result cannot be passed directly to SMTP or certain other protocols.
+func Base64EncodeStep(len uint, breakLines bool, state *int, save *int) uint
+
+// Basename: gets the name of the file without any leading directory components.
+// It returns a pointer into the given file name string.
+func Basename(fileName *string) *string
+
+// BitLock: sets the indicated @lock_bit in @address. If the bit is already set,
+// this call will block until g_bit_unlock() unsets the corresponding bit.
+//
+// Attempting to lock on two different bits within the same integer is not
+// supported and will very probably cause deadlocks.
+//
+// The value of the bit that is set is (1u &lt;&lt; @bit). If @bit is not
+// between 0 and 31 then the result is undefined.
+//
+// This function accesses @address atomically. All other accesses to @address
+// must be atomic in order for this function to work reliably.
+func BitLock(address *int, lockBit int)
+
+// BitNthLsf: find the position of the first bit set in @mask, searching from
+// (but not including) @nth_bit upwards. Bits are numbered from 0 (least
+// significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
+// searching from the 0th bit, set @nth_bit to -1.
+func BitNthLsf(mask uint32, nthBit int) int
+
+// BitNthMsf: find the position of the first bit set in @mask, searching from
+// (but not including) @nth_bit downwards. Bits are numbered from 0 (least
+// significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
+// searching from the last bit, set @nth_bit to -1 or GLIB_SIZEOF_LONG * 8.
+func BitNthMsf(mask uint32, nthBit int) int
+
+// BitStorage: gets the number of bits used to hold @number, e.g. if @number is
+// 4, 3 bits are needed.
+func BitStorage(number uint32) uint
+
+// BitTrylock: sets the indicated @lock_bit in @address, returning true if
+// successful. If the bit is already set, returns false immediately.
+//
+// Attempting to lock on two different bits within the same integer is not
+// supported.
+//
+// The value of the bit that is set is (1u &lt;&lt; @bit). If @bit is not
+// between 0 and 31 then the result is undefined.
+//
+// This function accesses @address atomically. All other accesses to @address
+// must be atomic in order for this function to work reliably.
+func BitTrylock(address *int, lockBit int) bool
+
+// BitUnlock: clears the indicated @lock_bit in @address. If another thread is
+// currently blocked in g_bit_lock() on this same bit then it will be woken up.
+//
+// This function accesses @address atomically. All other accesses to @address
+// must be atomic in order for this function to work reliably.
+func BitUnlock(address *int, lockBit int)
+
+func BookmarkFileErrorQuark() Quark
+
+// BuildFilename: creates a filename from a series of elements using the correct
+// separator for filenames.
+//
+// On Unix, this function behaves identically to `g_build_path
+// (G_DIR_SEPARATOR_S, first_element, ....)`.
+//
+// On Windows, it takes into account that either the backslash (`\` or slash
+// (`/`) can be used as separator in filenames, but otherwise behaves as on
+// UNIX. When file pathname separators need to be inserted, the one that last
+// previously occurred in the parameters (reading from left to right) is used.
+//
+// No attempt is made to force the resulting filename to be an absolute path. If
+// the first element is a relative path, the result will be a relative path.
+func BuildFilename(firstElement *string) *string
+
+// BuildFilenameValist: behaves exactly like g_build_filename(), but takes the
+// path elements as a va_list. This function is mainly meant for language
+// bindings.
+func BuildFilenameValist(firstElement *string) *string
+
+// BuildFilenamev: behaves exactly like g_build_filename(), but takes the path
+// elements as a string array, instead of varargs. This function is mainly meant
+// for language bindings.
+func BuildFilenamev() *string
+
+// BuildPath: creates a path from a series of elements using @separator as the
+// separator between elements. At the boundary between two elements, any
+// trailing occurrences of separator in the first element, or leading
+// occurrences of separator in the second element are removed and exactly one
+// copy of the separator is inserted.
+//
+// Empty elements are ignored.
+//
+// The number of leading copies of the separator on the result is the same as
+// the number of leading copies of the separator on the first non-empty element.
+//
+// The number of trailing copies of the separator on the result is the same as
+// the number of trailing copies of the separator on the last non-empty element.
+// (Determination of the number of trailing copies is done without stripping
+// leading copies, so if the separator is `ABA`, then `ABABA` has 1 trailing
+// copy.)
+//
+// However, if there is only a single non-empty element, and there are no
+// characters in that element not part of the leading or trailing separators,
+// then the result is exactly the original value of that element.
+//
+// Other than for determination of the number of leading and trailing copies of
+// the separator, elements consisting only of copies of the separator are
+// ignored.
+func BuildPath(separator *string, firstElement *string) *string
+
+// BuildPathv: behaves exactly like g_build_path(), but takes the path elements
+// as a string array, instead of varargs. This function is mainly meant for
+// language bindings.
+func BuildPathv(separator string) *string
+
+// ByteArrayFree: frees the memory allocated by the Array. If @free_segment is
+// true it frees the actual byte data. If the reference count of @array is
+// greater than one, the Array wrapper is preserved but the size of @array will
+// be set to zero.
+func ByteArrayFree(freeSegment bool) *uint8
+
+// ByteArrayFreeToBytes: transfers the data from the Array into a new immutable
+// #GBytes.
+//
+// The Array is freed unless the reference count of @array is greater than one,
+// the Array wrapper is preserved but the size of @array will be set to zero.
+//
+// This is identical to using g_bytes_new_take() and g_byte_array_free()
+// together.
+func ByteArrayFreeToBytes() *Bytes
+
+// ByteArrayNew: creates a new Array with a reference count of 1.
+func ByteArrayNew() []uint8
+
+// ByteArrayNewTake: create byte array containing the data. The data will be
+// owned by the array and will be freed with g_free(), i.e. it could be
+// allocated using g_strdup().
+func ByteArrayNewTake(len uint) []uint8
+
+// ByteArraySteal: frees the data in the array and resets the size to zero,
+// while the underlying array is preserved for use elsewhere and returned to the
+// caller.
+func ByteArraySteal(len *uint) *uint8
+
+// ByteArrayUnref: atomically decrements the reference count of @array by one.
+// If the reference count drops to 0, all memory allocated by the array is
+// released. This function is thread-safe and may be called from any thread.
+func ByteArrayUnref()
+
+// CanonicalizeFilename: gets the canonical file name from @filename. All triple
+// slashes are turned into single slashes, and all `..` and `.`s resolved
+// against @relative_to.
+//
+// Symlinks are not followed, and the returned path is guaranteed to be
+// absolute.
+//
+// If @filename is an absolute path, @relative_to is ignored. Otherwise,
+// @relative_to will be prepended to @filename to make it absolute. @relative_to
+// must be an absolute path, or nil. If @relative_to is nil, it'll fallback to
+// g_get_current_dir().
+//
+// This function never fails, and will canonicalize file paths even if they
+// don't exist.
+//
+// No file system I/O is done.
+func CanonicalizeFilename(filename *string, relativeTo *string) *string
+
+// Chdir: a wrapper for the POSIX chdir() function. The function changes the
+// current directory of the process to @path.
+//
+// See your C library manual for more details about chdir().
+func Chdir(path *string) int
+
+// CheckVersion: checks that the GLib library in use is compatible with the
+// given version. Generally you would pass in the constants IB_MAJOR_VERSION,
+// IB_MINOR_VERSION, IB_MICRO_VERSION as the three arguments to this function;
+// that produces a check that the library in use is compatible with the version
+// of GLib the application or module was compiled against.
+//
+// Compatibility is defined by two things: first the version of the running
+// library is newer than the version
+// @required_major.required_minor.@required_micro. Second the running library
+// must be binary compatible with the version
+// @required_major.required_minor.@required_micro (same major version.)
+func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string
+
+// ChecksumTypeGetLength: gets the length in bytes of digests of type
+// @checksum_type
+func ChecksumTypeGetLength(checksumType ChecksumType) int
+
+// ChildWatchAdd: sets a function to be called when the child indicated by @pid
+// exits, at a default priority, PRIORITY_DEFAULT.
+//
+// If you obtain @pid from g_spawn_async() or g_spawn_async_with_pipes() you
+// will need to pass SPAWN_DO_NOT_REAP_CHILD as flag to the spawn function for
+// the child watching to work.
+//
+// Note that on platforms where #GPid must be explicitly closed (see
+// g_spawn_close_pid()) @pid must not be closed while the source is still
+// active. Typically, you will want to call g_spawn_close_pid() in the callback
+// function for the source.
+//
+// GLib supports only a single callback per process id. On POSIX platforms, the
+// same restrictions mentioned for g_child_watch_source_new() apply to this
+// function.
+//
+// This internally creates a main loop source using g_child_watch_source_new()
+// and attaches it to the main loop context using g_source_attach(). You can do
+// these steps manually if you need greater control.
+func ChildWatchAdd(pid Pid, function ChildWatchFunc, data unsafe.Pointer) uint
+
+// ChildWatchAddFull: sets a function to be called when the child indicated by
+// @pid exits, at the priority @priority.
+//
+// If you obtain @pid from g_spawn_async() or g_spawn_async_with_pipes() you
+// will need to pass SPAWN_DO_NOT_REAP_CHILD as flag to the spawn function for
+// the child watching to work.
+//
+// In many programs, you will want to call g_spawn_check_exit_status() in the
+// callback to determine whether or not the child exited successfully.
+//
+// Also, note that on platforms where #GPid must be explicitly closed (see
+// g_spawn_close_pid()) @pid must not be closed while the source is still
+// active. Typically, you should invoke g_spawn_close_pid() in the callback
+// function for the source.
+//
+// GLib supports only a single callback per process id. On POSIX platforms, the
+// same restrictions mentioned for g_child_watch_source_new() apply to this
+// function.
+//
+// This internally creates a main loop source using g_child_watch_source_new()
+// and attaches it to the main loop context using g_source_attach(). You can do
+// these steps manually if you need greater control.
+func ChildWatchAddFull(priority int, pid Pid, function ChildWatchFunc, data unsafe.Pointer) uint
+
+// ChildWatchSourceNew: creates a new child_watch source.
+//
+// The source will not initially be associated with any Context and must be
+// added to one with g_source_attach() before it will be executed.
+//
+// Note that child watch sources can only be used in conjunction with
+// `g_spawn...` when the G_SPAWN_DO_NOT_REAP_CHILD flag is used.
+//
+// Note that on platforms where #GPid must be explicitly closed (see
+// g_spawn_close_pid()) @pid must not be closed while the source is still
+// active. Typically, you will want to call g_spawn_close_pid() in the callback
+// function for the source.
+//
+// On POSIX platforms, the following restrictions apply to this API due to
+// limitations in POSIX process interfaces:
+//
+// * @pid must be a child of this process * @pid must be positive * the
+// application must not call `waitpid` with a non-positive first argument, for
+// instance in another thread * the application must not wait for @pid to exit
+// by any other mechanism, including `waitpid(pid, ...)` or a second child-watch
+// source for the same @pid * the application must not ignore SIGCHILD
+//
+// If any of those conditions are not met, this and related APIs will not work
+// correctly. This can often be diagnosed via a GLib warning stating that
+// `ECHILD` was received by `waitpid`.
+//
+// Calling `waitpid` for specific processes other than @pid remains a valid
+// thing to do.
+func ChildWatchSourceNew(pid Pid) *Source
+
+// ClearError: if @err or *@err is nil, does nothing. Otherwise, calls
+// g_error_free() on *@err and sets *@err to nil.
+func ClearError()
+
+// ClearHandleID: clears a numeric handler, such as a #GSource ID.
+//
+// @tag_ptr must be a valid pointer to the variable holding the handler.
+//
+// If the ID is zero then this function does nothing. Otherwise, clear_func() is
+// called with the ID as a parameter, and the tag is set to zero.
+//
+// A macro is also included that allows this function to be used without pointer
+// casts.
+func ClearHandleID(tagPtr *uint, clearFunc ClearHandleFunc)
+
+// ClearList: clears a pointer to a #GList, freeing it and, optionally, freeing
+// its elements using @destroy.
+//
+// @list_ptr must be a valid pointer. If @list_ptr points to a null #GList, this
+// does nothing.
+func ClearList(listPtr **glib.List)
+
+// ClearPointer: clears a reference to a variable.
+//
+// @pp must not be nil.
+//
+// If the reference is nil then this function does nothing. Otherwise, the
+// variable is destroyed using @destroy and the pointer is set to nil.
+//
+// A macro is also included that allows this function to be used without pointer
+// casts. This will mask any warnings about incompatible function types or
+// calling conventions, so you must ensure that your @destroy function is
+// compatible with being called as `GDestroyNotify` using the standard calling
+// convention for the platform that GLib was compiled for; otherwise the program
+// will experience undefined behaviour.
+func ClearPointer(pp *unsafe.Pointer)
+
+// ClearSlist: clears a pointer to a List, freeing it and, optionally, freeing
+// its elements using @destroy.
+//
+// @slist_ptr must be a valid pointer. If @slist_ptr points to a null List, this
+// does nothing.
+func ClearSlist(slistPtr **glib.SList)
+
+// Close: this wraps the close() call; in case of error, errno will be
+// preserved, but the error will also be stored as a #GError in @error.
+//
+// Besides using #GError, there is another major reason to prefer this function
+// over the call provided by the system; on Unix, it will attempt to correctly
+// handle EINTR, which has platform-specific semantics.
+func Close(fd int) bool
+
+// ComputeChecksumForBytes: computes the checksum for a binary @data. This is a
+// convenience wrapper for g_checksum_new(), g_checksum_get_string() and
+// g_checksum_free().
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string
+
+// ComputeChecksumForData: computes the checksum for a binary @data of @length.
+// This is a convenience wrapper for g_checksum_new(), g_checksum_get_string()
+// and g_checksum_free().
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeChecksumForData(checksumType ChecksumType, length uint) string
+
+// ComputeChecksumForString: computes the checksum of a string.
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeChecksumForString(checksumType ChecksumType, str string, length int) string
+
+// ComputeHmacForBytes: computes the HMAC for a binary @data. This is a
+// convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeHmacForBytes(digestType ChecksumType, key *Bytes, data *Bytes) string
+
+// ComputeHmacForData: computes the HMAC for a binary @data of @length. This is
+// a convenience wrapper for g_hmac_new(), g_hmac_get_string() and
+// g_hmac_unref().
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeHmacForData(digestType ChecksumType, keyLen uint, length uint) string
+
+// ComputeHmacForString: computes the HMAC for a string.
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeHmacForString(digestType ChecksumType, keyLen uint, str string, length int) string
+
+// Convert: converts a string from one character set to another.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that @bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+//
+// Using extensions such as "//TRANSLIT" may not work (or may not work well) on
+// many platforms. Consider using g_str_to_ascii() instead.
+func Convert(len int, toCodeset string, fromCodeset string, bytesRead *uint, bytesWritten *uint) []uint8
+
+func ConvertErrorQuark() Quark
+
+// ConvertWithFallback: converts a string from one character set to another,
+// possibly including fallback sequences for characters not representable in the
+// output. Note that it is not guaranteed that the specification for the
+// fallback sequences in @fallback will be honored. Some systems may do an
+// approximate conversion from @from_codeset to @to_codeset in their iconv()
+// functions, in which case GLib will simply return that approximate conversion.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that @bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+func ConvertWithFallback(len int, toCodeset string, fromCodeset string, fallback string, bytesRead *uint, bytesWritten *uint) []uint8
+
+// ConvertWithIconv: converts a string from one character set to another.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that @bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+//
+// Characters which are valid in the input character set, but which have no
+// representation in the output character set will result in a
+// G_CONVERT_ERROR_ILLEGAL_SEQUENCE error. This is in contrast to the iconv()
+// specification, which leaves this behaviour implementation defined. Note that
+// this is the same error code as is returned for an invalid byte sequence in
+// the input character set. To get defined behaviour for conversion of
+// unrepresentable characters, use g_convert_with_fallback().
+func ConvertWithIconv(len int, converter IConv, bytesRead *uint, bytesWritten *uint) []uint8
+
+// DatalistClear: frees all the data elements of the datalist. The data
+// elements' destroy functions are called if they have been set.
+func DatalistClear(datalist **Data)
+
+// DatalistForeach: calls the given function for each data element of the
+// datalist. The function is called with each data element's #GQuark id and
+// data, together with the given @user_data parameter. Note that this function
+// is NOT thread-safe. So unless @datalist can be protected from any
+// modifications during invocation of this function, it should not be called.
+//
+// @func can make changes to @datalist, but the iteration will not reflect
+// changes made during the g_datalist_foreach() call, other than skipping over
+// elements that are removed.
+func DatalistForeach(datalist **Data, _func DataForeachFunc, userData unsafe.Pointer)
+
+// DatalistGetData: gets a data element, using its string identifier. This is
+// slower than g_datalist_id_get_data() because it compares strings.
+func DatalistGetData(datalist **Data, key string) unsafe.Pointer
+
+// DatalistGetFlags: gets flags values packed in together with the datalist. See
+// g_datalist_set_flags().
+func DatalistGetFlags(datalist **Data) uint
+
+// DatalistIDDupData: this is a variant of g_datalist_id_get_data() which
+// returns a 'duplicate' of the value. @dup_func defines the meaning of
+// 'duplicate' in this context, it could e.g. take a reference on a ref-counted
+// object.
+//
+// If the @key_id is not set in the datalist then @dup_func will be called with
+// a nil argument.
+//
+// Note that @dup_func is called while the datalist is locked, so it is not
+// allowed to read or modify the datalist.
+//
+// This function can be useful to avoid races when multiple threads are using
+// the same datalist and the same key.
+func DatalistIDDupData(datalist **Data, keyID Quark, dupFunc DuplicateFunc, userData unsafe.Pointer) unsafe.Pointer
+
+// DatalistIDGetData: retrieves the data element corresponding to @key_id.
+func DatalistIDGetData(datalist **Data, keyID Quark) unsafe.Pointer
+
+// DatalistIDRemoveNoNotify: removes an element, without calling its destroy
+// notification function.
+func DatalistIDRemoveNoNotify(datalist **Data, keyID Quark) unsafe.Pointer
+
+// DatalistIDReplaceData: compares the member that is associated with @key_id in
+// @datalist to @oldval, and if they are the same, replace @oldval with @newval.
+//
+// This is like a typical atomic compare-and-exchange operation, for a member of
+// @datalist.
+//
+// If the previous value was replaced then ownership of the old value (@oldval)
+// is passed to the caller, including the registered destroy notify for it
+// (passed out in @old_destroy). Its up to the caller to free this as he wishes,
+// which may or may not include using @old_destroy as sometimes replacement
+// should not destroy the object in the normal way.
+func DatalistIDReplaceData(datalist **Data, keyID Quark, oldval unsafe.Pointer, newval unsafe.Pointer) bool
+
+// DatalistIDSetDataFull: sets the data corresponding to the given #GQuark id,
+// and the function to be called when the element is removed from the datalist.
+// Any previous data with the same key is removed, and its destroy function is
+// called.
+func DatalistIDSetDataFull(datalist **Data, keyID Quark, data unsafe.Pointer)
+
+// DatalistInit: resets the datalist to nil. It does not free any memory or call
+// any destroy functions.
+func DatalistInit(datalist **Data)
+
+// DatalistSetFlags: turns on flag values for a data list. This function is used
+// to keep a small number of boolean flags in an object with a data list without
+// using any additional space. It is not generally useful except in
+// circumstances where space is very tight. (It is used in the base #GObject
+// type, for example.)
+func DatalistSetFlags(datalist **Data, flags uint)
+
+// DatalistUnsetFlags: turns off flag values for a data list. See
+// g_datalist_unset_flags()
+func DatalistUnsetFlags(datalist **Data, flags uint)
+
+// DatasetDestroy: destroys the dataset, freeing all memory allocated, and
+// calling any destroy functions set for data elements.
+func DatasetDestroy(datasetLocation unsafe.Pointer)
+
+// DatasetForeach: calls the given function for each data element which is
+// associated with the given location. Note that this function is NOT
+// thread-safe. So unless @dataset_location can be protected from any
+// modifications during invocation of this function, it should not be called.
+//
+// @func can make changes to the dataset, but the iteration will not reflect
+// changes made during the g_dataset_foreach() call, other than skipping over
+// elements that are removed.
+func DatasetForeach(datasetLocation unsafe.Pointer, _func DataForeachFunc, userData unsafe.Pointer)
+
+// DatasetIDGetData: gets the data element corresponding to a #GQuark.
+func DatasetIDGetData(datasetLocation unsafe.Pointer, keyID Quark) unsafe.Pointer
+
+// DatasetIDRemoveNoNotify: removes an element, without calling its destroy
+// notification function.
+func DatasetIDRemoveNoNotify(datasetLocation unsafe.Pointer, keyID Quark) unsafe.Pointer
+
+// DatasetIDSetDataFull: sets the data element associated with the given #GQuark
+// id, and also the function to call when the data element is destroyed. Any
+// previous data with the same key is removed, and its destroy function is
+// called.
+func DatasetIDSetDataFull(datasetLocation unsafe.Pointer, keyID Quark, data unsafe.Pointer)
+
+// DateGetDaysInMonth: returns the number of days in a month, taking leap years
+// into account.
+func DateGetDaysInMonth(month DateMonth, year DateYear) uint8
+
+// DateGetMondayWeeksInYear: returns the number of weeks in the year, where
+// weeks are taken to start on Monday. Will be 52 or 53. The date must be valid.
+// (Years always have 52 7-day periods, plus 1 or 2 extra days depending on
+// whether it's a leap year. This function is basically telling you how many
+// Mondays are in the year, i.e. there are 53 Mondays if one of the extra days
+// happens to be a Monday.)
+func DateGetMondayWeeksInYear(year DateYear) uint8
+
+// DateGetSundayWeeksInYear: returns the number of weeks in the year, where
+// weeks are taken to start on Sunday. Will be 52 or 53. The date must be valid.
+// (Years always have 52 7-day periods, plus 1 or 2 extra days depending on
+// whether it's a leap year. This function is basically telling you how many
+// Sundays are in the year, i.e. there are 53 Sundays if one of the extra days
+// happens to be a Sunday.)
+func DateGetSundayWeeksInYear(year DateYear) uint8
+
+// DateIsLeapYear: returns true if the year is a leap year.
+//
+// For the purposes of this function, leap year is every year divisible by 4
+// unless that year is divisible by 100. If it is divisible by 100 it would be a
+// leap year only if that year is also divisible by 400.
+func DateIsLeapYear(year DateYear) bool
+
+// DateStrftime: generates a printed representation of the date, in a
+// [locale][setlocale]-specific way. Works just like the platform's C library
+// strftime() function, but only accepts date-related formats; time-related
+// formats give undefined results. Date must be valid. Unlike strftime() (which
+// uses the locale encoding), works on a UTF-8 format string and stores a UTF-8
+// result.
+//
+// This function does not provide any conversion specifiers in addition to those
+// implemented by the platform's C library. For example, don't expect that using
+// g_date_strftime() would make the \F provided by the C99 strftime() work on
+// Windows where the C library only complies to C89.
+func DateStrftime(s string, slen uint, format string, date *Date) uint
+
+// DateTimeCompare: a comparison function for Times that is suitable as a Func.
+// Both Times must be non-nil.
+func DateTimeCompare(dt1 unsafe.Pointer, dt2 unsafe.Pointer) int
+
+// DateTimeEqual: checks to see if @dt1 and @dt2 are equal.
+//
+// Equal here means that they represent the same moment after converting them to
+// the same time zone.
+func DateTimeEqual(dt1 unsafe.Pointer, dt2 unsafe.Pointer) bool
+
+// DateTimeHash: hashes @datetime into a #guint, suitable for use within Table.
+func DateTimeHash(datetime unsafe.Pointer) uint
+
+// DateValidDay: returns true if the day of the month is valid (a day is valid
+// if it's between 1 and 31 inclusive).
+func DateValidDay(day DateDay) bool
+
+// DateValidDMY: returns true if the day-month-year triplet forms a valid,
+// existing day in the range of days #GDate understands (Year 1 or later, no
+// more than a few thousand years in the future).
+func DateValidDMY(day DateDay, month DateMonth, year DateYear) bool
+
+// DateValidJulian: returns true if the Julian day is valid. Anything greater
+// than zero is basically a valid Julian, though there is a 32-bit limit.
+func DateValidJulian(julianDate uint32) bool
+
+// DateValidMonth: returns true if the month value is valid. The 12 Month
+// enumeration values are the only valid months.
+func DateValidMonth(month DateMonth) bool
+
+// DateValidWeekday: returns true if the weekday is valid. The seven Weekday
+// enumeration values are the only valid weekdays.
+func DateValidWeekday(weekday DateWeekday) bool
+
+// DateValidYear: returns true if the year is valid. Any year greater than 0 is
+// valid, though there is a 16-bit limit to what #GDate will understand.
+func DateValidYear(year DateYear) bool
+
+// Dcgettext: this is a variant of g_dgettext() that allows specifying a locale
+// category instead of always using `LC_MESSAGES`. See g_dgettext() for more
+// information about how this functions differs from calling dcgettext()
+// directly.
+func Dcgettext(domain string, msgid string, category int) string
+
+// Dgettext: this function is a wrapper of dgettext() which does not translate
+// the message if the default domain as set with textdomain() has no
+// translations for the current locale.
+//
+// The advantage of using this function over dgettext() proper is that libraries
+// using this function (like GTK+) will not use translations if the application
+// using the library does not have translations for the current locale. This
+// results in a consistent English-only interface instead of one having partial
+// translations. For this feature to work, the call to textdomain() and
+// setlocale() should precede any g_dgettext() invocations. For GTK+, it means
+// calling textdomain() before gtk_init or its variants.
+//
+// This function disables translations if and only if upon its first call all
+// the following conditions hold:
+//
+// - @domain is not nil
+//
+// - textdomain() has been called to set a default text domain
+//
+// - there is no translations available for the default text domain and the
+// current locale
+//
+// - current locale is not "C" or any English locales (those starting with
+// "en_")
+//
+// Note that this behavior may not be desired for example if an application has
+// its untranslated messages in a language other than English. In those cases
+// the application should call textdomain() after initializing GTK+.
+//
+// Applications should normally not use this function directly, but use the _()
+// macro for translations.
+func Dgettext(domain string, msgid string) string
+
+// DirMakeTmp: creates a subdirectory in the preferred directory for temporary
+// files (as returned by g_get_tmp_dir()).
+//
+// @tmpl should be a string in the GLib file name encoding containing a sequence
+// of six 'X' characters, as the parameter to g_mkstemp(). However, unlike these
+// functions, the template should only be a basename, no directory components
+// are allowed. If template is nil, a default template is used.
+//
+// Note that in contrast to g_mkdtemp() (and mkdtemp()) @tmpl is not modified,
+// and might thus be a read-only literal string.
+func DirMakeTmp(tmpl *string) *string
+
+// DirectEqual: compares two #gpointer arguments and returns true if they are
+// equal. It can be passed to g_hash_table_new() as the @key_equal_func
+// parameter, when using opaque pointers compared by pointer value as keys in a
+// Table.
+//
+// This equality function is also appropriate for keys that are integers stored
+// in pointers, such as `GINT_TO_POINTER (n)`.
+func DirectEqual(v1 unsafe.Pointer, v2 unsafe.Pointer) bool
+
+// DirectHash: converts a gpointer to a hash value. It can be passed to
+// g_hash_table_new() as the @hash_func parameter, when using opaque pointers
+// compared by pointer value as keys in a Table.
+//
+// This hash function is also appropriate for keys that are integers stored in
+// pointers, such as `GINT_TO_POINTER (n)`.
+func DirectHash(v unsafe.Pointer) uint
+
+// Dngettext: this function is a wrapper of dngettext() which does not translate
+// the message if the default domain as set with textdomain() has no
+// translations for the current locale.
+//
+// See g_dgettext() for details of how this differs from dngettext() proper.
+func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
+
+// DoubleEqual: compares the two #gdouble values being pointed to and returns
+// true if they are equal. It can be passed to g_hash_table_new() as the
+// @key_equal_func parameter, when using non-nil pointers to doubles as keys in
+// a Table.
+func DoubleEqual(v1 unsafe.Pointer, v2 unsafe.Pointer) bool
+
+// DoubleHash: converts a pointer to a #gdouble to a hash value. It can be
+// passed to g_hash_table_new() as the @hash_func parameter, It can be passed to
+// g_hash_table_new() as the @hash_func parameter, when using non-nil pointers
+// to doubles as keys in a Table.
+func DoubleHash(v unsafe.Pointer) uint
+
+// Dpgettext: this function is a variant of g_dgettext() which supports a
+// disambiguating message context. GNU gettext uses the '\004' character to
+// separate the message context and message id in @msgctxtid. If 0 is passed as
+// @msgidoffset, this function will fall back to trying to use the deprecated
+// convention of using "|" as a separation character.
+//
+// This uses g_dgettext() internally. See that functions for differences with
+// dgettext() proper.
+//
+// Applications should normally not use this function directly, but use the C_()
+// macro for translations with context.
+func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string
+
+// Dpgettext2: this function is a variant of g_dgettext() which supports a
+// disambiguating message context. GNU gettext uses the '\004' character to
+// separate the message context and message id in @msgctxtid.
+//
+// This uses g_dgettext() internally. See that functions for differences with
+// dgettext() proper.
+//
+// This function differs from C_() in that it is not a macro and thus you may
+// use non-string-literals as context and msgid arguments.
+func Dpgettext2(domain string, context string, msgid string) string
+
+// EnvironGetenv: returns the value of the environment variable @variable in the
+// provided list @envp.
+func EnvironGetenv(variable *string) *string
+
+// EnvironSetenv: sets the environment variable @variable in the provided list
+// @envp to @value.
+func EnvironSetenv(variable *string, value *string, overwrite bool) []string
+
+// EnvironUnsetenv: removes the environment variable @variable from the provided
+// environment @envp.
+func EnvironUnsetenv(variable *string) []string
+
+// FileErrorFromErrno: gets a Error constant based on the passed-in @err_no. For
+// example, if you pass in `EEXIST` this function returns FILE_ERROR_EXIST.
+// Unlike `errno` values, you can portably assume that all Error values will
+// exist.
+//
+// Normally a Error value goes into a #GError returned from a function that
+// manipulates files. So you would use g_file_error_from_errno() when
+// constructing a #GError.
+func FileErrorFromErrno(errNo int) FileError
+
+func FileErrorQuark() Quark
+
+// FileGetContents: reads an entire file into allocated memory, with good error
+// checking.
+//
+// If the call was successful, it returns true and sets @contents to the file
+// contents and @length to the length of the file contents in bytes. The string
+// stored in @contents will be nul-terminated, so for text files you can pass
+// nil for the @length argument. If the call was not successful, it returns
+// false and sets @error. The error domain is FILE_ERROR. Possible error codes
+// are those in the Error enumeration. In the error case, @contents is set to
+// nil and @length is set to zero.
+func FileGetContents(filename *string, length *uint) bool
+
+// FileOpenTmp: opens a file for writing in the preferred directory for
+// temporary files (as returned by g_get_tmp_dir()).
+//
+// @tmpl should be a string in the GLib file name encoding containing a sequence
+// of six 'X' characters, as the parameter to g_mkstemp(). However, unlike these
+// functions, the template should only be a basename, no directory components
+// are allowed. If template is nil, a default template is used.
+//
+// Note that in contrast to g_mkstemp() (and mkstemp()) @tmpl is not modified,
+// and might thus be a read-only literal string.
+//
+// Upon success, and if @name_used is non-nil, the actual name used is returned
+// in @name_used. This string should be freed with g_free() when not needed any
+// longer. The returned name is in the GLib file name encoding.
+func FileOpenTmp(tmpl *string, nameUsed **string) int
+
+// FileReadLink: reads the contents of the symbolic link @filename like the
+// POSIX readlink() function. The returned string is in the encoding used for
+// filenames. Use g_filename_to_utf8() to convert it to UTF-8.
+func FileReadLink(filename *string) *string
+
+// FileSetContents: writes all of @contents to a file named @filename. This is a
+// convenience wrapper around calling g_file_set_contents() with `flags` set to
+// `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING` and
+// `mode` set to `0666`.
+func FileSetContents(filename *string, length int) bool
+
+// FileSetContentsFull: writes all of @contents to a file named @filename, with
+// good error checking. If a file called @filename already exists it will be
+// overwritten.
+//
+// @flags control the properties of the write operation: whether it’s atomic,
+// and what the tradeoff is between returning quickly or being resilient to
+// system crashes.
+//
+// As this function performs file I/O, it is recommended to not call it anywhere
+// where blocking would cause problems, such as in the main loop of a graphical
+// application. In particular, if @flags has any value other than
+// G_FILE_SET_CONTENTS_NONE then this function may call `fsync()`.
+//
+// If G_FILE_SET_CONTENTS_CONSISTENT is set in @flags, the operation is atomic
+// in the sense that it is first written to a temporary file which is then
+// renamed to the final name.
+//
+// Notes:
+//
+// - On UNIX, if @filename already exists hard links to @filename will break.
+// Also since the file is recreated, existing permissions, access control lists,
+// metadata etc. may be lost. If @filename is a symbolic link, the link itself
+// will be replaced, not the linked file.
+//
+// - On UNIX, if @filename already exists and is non-empty, and if the system
+// supports it (via a journalling filesystem or equivalent), and if
+// G_FILE_SET_CONTENTS_CONSISTENT is set in @flags, the `fsync()` call (or
+// equivalent) will be used to ensure atomic replacement: @filename will contain
+// either its old contents or @contents, even in the face of system power loss,
+// the disk being unsafely removed, etc.
+//
+// - On UNIX, if @filename does not already exist or is empty, there is a
+// possibility that system power loss etc. after calling this function will
+// leave @filename empty or full of NUL bytes, depending on the underlying
+// filesystem, unless G_FILE_SET_CONTENTS_DURABLE and
+// G_FILE_SET_CONTENTS_CONSISTENT are set in @flags.
+//
+// - On Windows renaming a file will not remove an existing file with the new
+// name, so on Windows there is a race condition between the existing file being
+// removed and the temporary file being renamed.
+//
+// - On Windows there is no way to remove a file that is open to some process,
+// or mapped into memory. Thus, this function will fail if @filename already
+// exists and is open.
+//
+// If the call was successful, it returns true. If the call was not successful,
+// it returns false and sets @error. The error domain is FILE_ERROR. Possible
+// error codes are those in the Error enumeration.
+//
+// Note that the name for the temporary file is constructed by appending up to 7
+// characters to @filename.
+//
+// If the file didn’t exist before and is created, it will be given the
+// permissions from @mode. Otherwise, the permissions of the existing file may
+// be changed to @mode depending on @flags, or they may remain unchanged.
+func FileSetContentsFull(filename *string, length int, flags FileSetContentsFlags, mode int) bool
+
+// FileTest: returns true if any of the tests in the bitfield @test are true.
+// For example, `(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)` will return true if
+// the file exists; the check whether it's a directory doesn't matter since the
+// existence test is true. With the current set of available tests, there's no
+// point passing in more than one test at a time.
+//
+// Apart from G_FILE_TEST_IS_SYMLINK all tests follow symbolic links, so for a
+// symbolic link to a regular file g_file_test() will return true for both
+// G_FILE_TEST_IS_SYMLINK and G_FILE_TEST_IS_REGULAR.
+//
+// Note, that for a dangling symbolic link g_file_test() will return true for
+// G_FILE_TEST_IS_SYMLINK and false for all other flags.
+//
+//    // DON'T DO THIS
+//    if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK))
+//      {
+//        fd = g_open (filename, O_WRONLY);
+//        // write to fd
+//      }
+//
+// Another thing to note is that G_FILE_TEST_EXISTS and
+// G_FILE_TEST_IS_EXECUTABLE are implemented using the access() system call.
+// This usually doesn't matter, but if your program is setuid or setgid it means
+// that these tests will give you the answer for the real user ID and group ID,
+// rather than the effective user ID and group ID.
+//
+// On Windows, there are no symlinks, so testing for G_FILE_TEST_IS_SYMLINK will
+// always return false. Testing for G_FILE_TEST_IS_EXECUTABLE will just check
+// that the file exists and its name indicates that it is executable, checking
+// for well-known extensions and those listed in the `PATHEXT` environment
+// variable.
+func FileTest(filename *string, test FileTest) bool
+
+// FilenameDisplayBasename: returns the display basename for the particular
+// filename, guaranteed to be valid UTF-8. The display name might not be
+// identical to the filename, for instance there might be problems converting it
+// to UTF-8, and some files can be translated in the display.
+//
+// If GLib cannot make sense of the encoding of @filename, as a last resort it
+// replaces unknown characters with U+FFFD, the Unicode replacement character.
+// You can search the result for the UTF-8 encoding of this character (which is
+// "\357\277\275" in octal notation) to find out if @filename was in an invalid
+// encoding.
+//
+// You must pass the whole absolute pathname to this functions so that
+// translation of well known locations can be done.
+//
+// This function is preferred over g_filename_display_name() if you know the
+// whole path, as it allows translation.
+func FilenameDisplayBasename(filename *string) string
+
+// FilenameDisplayName: converts a filename into a valid UTF-8 string. The
+// conversion is not necessarily reversible, so you should keep the original
+// around and use the return value of this function only for display purposes.
+// Unlike g_filename_to_utf8(), the result is guaranteed to be non-nil even if
+// the filename actually isn't in the GLib file name encoding.
+//
+// If GLib cannot make sense of the encoding of @filename, as a last resort it
+// replaces unknown characters with U+FFFD, the Unicode replacement character.
+// You can search the result for the UTF-8 encoding of this character (which is
+// "\357\277\275" in octal notation) to find out if @filename was in an invalid
+// encoding.
+//
+// If you know the whole pathname of the file you should use
+// g_filename_display_basename(), since that allows location-based translation
+// of filenames.
+func FilenameDisplayName(filename *string) string
+
+// FilenameFromURI: converts an escaped ASCII-encoded URI to a local filename in
+// the encoding used for filenames.
+func FilenameFromURI(uri string, hostname *string) *string
+
+// FilenameFromUTF8: converts a string from UTF-8 to the encoding GLib uses for
+// filenames. Note that on Windows GLib uses UTF-8 for filenames; on other
+// platforms, this function indirectly depends on the [current
+// locale][setlocale].
+//
+// The input string shall not contain nul characters even if the @len argument
+// is positive. A nul character found inside the string will result in error
+// G_CONVERT_ERROR_ILLEGAL_SEQUENCE. If the filename encoding is not UTF-8 and
+// the conversion output contains a nul character, the error
+// G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil.
+func FilenameFromUTF8(utf8String string, len int, bytesRead *uint, bytesWritten *uint) *string
+
+// FilenameToURI: converts an absolute filename to an escaped ASCII-encoded URI,
+// with the path component following Section 3.3. of RFC 2396.
+func FilenameToURI(filename *string, hostname string) string
+
+// FilenameToUTF8: converts a string which is in the encoding used by GLib for
+// filenames into a UTF-8 string. Note that on Windows GLib uses UTF-8 for
+// filenames; on other platforms, this function indirectly depends on the
+// [current locale][setlocale].
+//
+// The input string shall not contain nul characters even if the @len argument
+// is positive. A nul character found inside the string will result in error
+// G_CONVERT_ERROR_ILLEGAL_SEQUENCE. If the source encoding is not UTF-8 and the
+// conversion output contains a nul character, the error
+// G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil. Use
+// g_convert() to produce output that may contain embedded nul characters.
+func FilenameToUTF8(opsysstring *string, len int, bytesRead *uint, bytesWritten *uint) string
+
+// FindProgramInPath: locates the first executable named @program in the user's
+// path, in the same way that execvp() would locate it. Returns an allocated
+// string with the absolute path name, or nil if the program is not found in the
+// path. If @program is already an absolute path, returns a copy of @program if
+// @program exists and is executable, and nil otherwise. On Windows, if @program
+// does not have a file type suffix, tries with the suffixes .exe, .cmd, .bat
+// and .com, and the suffixes in the `PATHEXT` environment variable.
+//
+// On Windows, it looks for the file in the same way as CreateProcess() would.
+// This means first in the directory where the executing program was loaded
+// from, then in the current directory, then in the Windows 32-bit system
+// directory, then in the Windows directory, and finally in the directories in
+// the `PATH` environment variable. If the program is found, the return value
+// contains the full name including the type suffix.
+func FindProgramInPath(program *string) *string
+
+// FormatSize: formats a size (for example the size of a file) into a human
+// readable string. Sizes are rounded to the nearest size prefix (kB, MB, GB)
+// and are displayed rounded to the nearest tenth. E.g. the file size 3292528
+// bytes will be converted into the string "3.2 MB". The returned string is
+// UTF-8, and may use a non-breaking space to separate the number and units, to
+// ensure they aren’t separated when line wrapped.
+//
+// The prefix units base is 1000 (i.e. 1 kB is 1000 bytes).
+//
+// This string should be freed with g_free() when not needed any longer.
+//
+// See g_format_size_full() for more options about how the size might be
+// formatted.
+func FormatSize(size uint64) string
+
+// FormatSizeForDisplay: formats a size (for example the size of a file) into a
+// human readable string. Sizes are rounded to the nearest size prefix (KB, MB,
+// GB) and are displayed rounded to the nearest tenth. E.g. the file size
+// 3292528 bytes will be converted into the string "3.1 MB".
+//
+// The prefix units base is 1024 (i.e. 1 KB is 1024 bytes).
+//
+// This string should be freed with g_free() when not needed any longer.
+func FormatSizeForDisplay(size int64) string
+
+// FormatSizeFull: formats a size.
+//
+// This function is similar to g_format_size() but allows for flags that modify
+// the output. See SizeFlags.
+func FormatSizeFull(size uint64, flags FormatSizeFlags) string
+
+// Fprintf: an implementation of the standard fprintf() function which supports
+// positional parameters, as specified in the Single Unix Specification.
+//
+// `glib/gprintf.h` must be explicitly included in order to use this function.
+func Fprintf(file *unsafe.Pointer, format string) int
+
+// Free: frees the memory pointed to by @mem.
+//
+// If @mem is nil it simply returns, so there is no need to check @mem against
+// nil before calling this function.
+func Free(mem unsafe.Pointer)
+
+// GetApplicationName: gets a human-readable name for the application, as set by
+// g_set_application_name(). This name should be localized if possible, and is
+// intended for display to the user. Contrast with g_get_prgname(), which gets a
+// non-localized name. If g_set_application_name() has not been called, returns
+// the result of g_get_prgname() (which may be nil if g_set_prgname() has also
+// not been called).
+func GetApplicationName() string
+
+// GetCharset: obtains the character set for the [current locale][setlocale];
+// you might use this character set as an argument to g_convert(), to convert
+// from the current locale's encoding to some other encoding. (Frequently
+// g_locale_to_utf8() and g_locale_from_utf8() are nice shortcuts, though.)
+//
+// On Windows the character set returned by this function is the so-called
+// system default ANSI code-page. That is the character set used by the "narrow"
+// versions of C library and Win32 functions that handle file names. It might be
+// different from the character set used by the C library's current locale.
+//
+// On Linux, the character set is found by consulting nl_langinfo() if
+// available. If not, the environment variables `LC_ALL`, `LC_CTYPE`, `LANG` and
+// `CHARSET` are queried in order.
+//
+// The return value is true if the locale's encoding is UTF-8, in that case you
+// can perhaps avoid calling g_convert().
+//
+// The string returned in @charset is not allocated, and should not be freed.
+func GetCharset(charset *string) bool
+
+// GetCodeset: gets the character set for the current locale.
+func GetCodeset() string
+
+// GetConsoleCharset: obtains the character set used by the console attached to
+// the process, which is suitable for printing output to the terminal.
+//
+// Usually this matches the result returned by g_get_charset(), but in
+// environments where the locale's character set does not match the encoding of
+// the console this function tries to guess a more suitable value instead.
+//
+// On Windows the character set returned by this function is the output code
+// page used by the console associated with the calling process. If the codepage
+// can't be determined (for example because there is no console attached) UTF-8
+// is assumed.
+//
+// The return value is true if the locale's encoding is UTF-8, in that case you
+// can perhaps avoid calling g_convert().
+//
+// The string returned in @charset is not allocated, and should not be freed.
+func GetConsoleCharset(charset *string) bool
+
+// GetCurrentDir: gets the current directory.
+//
+// The returned string should be freed when no longer needed. The encoding of
+// the returned string is system defined. On Windows, it is always UTF-8.
+//
+// Since GLib 2.40, this function will return the value of the "PWD" environment
+// variable if it is set and it happens to be the same as the current directory.
+// This can make a difference in the case that the current directory is the
+// target of a symbolic link.
+func GetCurrentDir() *string
+
+// GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
+//
+// You may find g_get_real_time() to be more convenient.
+func GetCurrentTime(result *TimeVal)
+
+// GetEnviron: gets the list of environment variables for the current process.
+//
+// The list is nil terminated and each item in the list is of the form
+// 'NAME=VALUE'.
+//
+// This is equivalent to direct access to the 'environ' global variable, except
+// portable.
+//
+// The return value is freshly allocated and it should be freed with
+// g_strfreev() when it is no longer needed.
+func GetEnviron() []string
+
+// GetFilenameCharsets: determines the preferred character sets used for
+// filenames. The first character set from the @charsets is the filename
+// encoding, the subsequent character sets are used when trying to generate a
+// displayable representation of a filename, see g_filename_display_name().
+//
+// On Unix, the character sets are determined by consulting the environment
+// variables `G_FILENAME_ENCODING` and `G_BROKEN_FILENAMES`. On Windows, the
+// character set used in the GLib API is always UTF-8 and said environment
+// variables have no effect.
+//
+// `G_FILENAME_ENCODING` may be set to a comma-separated list of character set
+// names. The special token "\@locale" is taken to mean the character set for
+// the [current locale][setlocale]. If `G_FILENAME_ENCODING` is not set, but
+// `G_BROKEN_FILENAMES` is, the character set of the current locale is taken as
+// the filename encoding. If neither environment variable is set, UTF-8 is taken
+// as the filename encoding, but the character set of the current locale is also
+// put in the list of encodings.
+//
+// The returned @charsets belong to GLib and must not be freed.
+//
+// Note that on Unix, regardless of the locale character set or
+// `G_FILENAME_ENCODING` value, the actual file names present on a system might
+// be in any random encoding or just gibberish.
+func GetFilenameCharsets() bool
+
+// GetHomeDir: gets the current user's home directory.
+//
+// As with most UNIX tools, this function will return the value of the `HOME`
+// environment variable if it is set to an existing absolute path name, falling
+// back to the `passwd` file in the case that it is unset.
+//
+// If the path given in `HOME` is non-absolute, does not exist, or is not a
+// directory, the result is undefined.
+//
+// Before version 2.36 this function would ignore the `HOME` environment
+// variable, taking the value from the `passwd` database instead. This was
+// changed to increase the compatibility of GLib with other programs (and the
+// XDG basedir specification) and to increase testability of programs based on
+// GLib (by making it easier to run them from test frameworks).
+//
+// If your program has a strong requirement for either the new or the old
+// behaviour (and if you don't wish to increase your GLib dependency to ensure
+// that the new behaviour is in effect) then you should either directly check
+// the `HOME` environment variable yourself or unset it before calling any
+// functions in GLib.
+func GetHomeDir() *string
+
+// GetHostName: return a name for the machine.
+//
+// The returned name is not necessarily a fully-qualified domain name, or even
+// present in DNS or some other name service at all. It need not even be unique
+// on your local network or site, but usually it is. Callers should not rely on
+// the return value having any specific properties like uniqueness for security
+// purposes. Even if the name of the machine is changed while an application is
+// running, the return value from this function does not change. The returned
+// string is owned by GLib and should not be modified or freed. If no name can
+// be determined, a default fixed string "localhost" is returned.
+//
+// The encoding of the returned string is UTF-8.
+func GetHostName() string
+
+// GetLanguageNames: computes a list of applicable locale names, which can be
+// used to e.g. construct locale-dependent filenames or search paths. The
+// returned list is sorted from most desirable to least desirable and always
+// contains the default locale "C".
+//
+// For example, if LANGUAGE=de:en_US, then the returned list is "de", "en_US",
+// "en", "C".
+//
+// This function consults the environment variables `LANGUAGE`, `LC_ALL`,
+// `LC_MESSAGES` and `LANG` to find the list of locales specified by the user.
+func GetLanguageNames() []string
+
+// GetLanguageNamesWithCategory: computes a list of applicable locale names with
+// a locale category name, which can be used to construct the fallback
+// locale-dependent filenames or search paths. The returned list is sorted from
+// most desirable to least desirable and always contains the default locale "C".
+//
+// This function consults the environment variables `LANGUAGE`, `LC_ALL`,
+// @category_name, and `LANG` to find the list of locales specified by the user.
+//
+// g_get_language_names() returns
+// g_get_language_names_with_category("LC_MESSAGES").
+func GetLanguageNamesWithCategory(categoryName string) []string
+
+// GetLocaleVariants: returns a list of derived variants of @locale, which can
+// be used to e.g. construct locale-dependent filenames or search paths. The
+// returned list is sorted from most desirable to least desirable. This function
+// handles territory, charset and extra locale modifiers. See
+// [`setlocale(3)`](man:setlocale) for information about locales and their
+// format.
+//
+// @locale itself is guaranteed to be returned in the output.
+//
+// For example, if @locale is `fr_BE`, then the returned list is `fr_BE`, `fr`.
+// If @locale is `en_GB.UTF-8@euro`, then the returned list is
+// `en_GB.UTF-8@euro`, `en_GB.UTF-8`, `en_GB@euro`, `en_GB`, `en.UTF-8@euro`,
+// `en.UTF-8`, `en@euro`, `en`.
+//
+// If you need the list of variants for the current locale, use
+// g_get_language_names().
+func GetLocaleVariants(locale string) []string
+
+// GetMonotonicTime: queries the system monotonic time.
+//
+// The monotonic clock will always increase and doesn't suffer discontinuities
+// when the user (or NTP) changes the system time. It may or may not continue to
+// tick during times where the machine is suspended.
+//
+// We try to use the clock that corresponds as closely as possible to the
+// passage of time as measured by system calls such as poll() but it may not
+// always be possible to do this.
+func GetMonotonicTime() int64
+
+// GetNumProcessors: determine the approximate number of threads that the system
+// will schedule simultaneously for this process. This is intended to be used as
+// a parameter to g_thread_pool_new() for CPU bound tasks and similar cases.
+func GetNumProcessors() uint
+
+// GetOsInfo: get information about the operating system.
+//
+// On Linux this comes from the `/etc/os-release` file. On other systems, it may
+// come from a variety of sources. You can either use the standard key names
+// like G_OS_INFO_KEY_NAME or pass any UTF-8 string key name. For example,
+// `/etc/os-release` provides a number of other less commonly used values that
+// may be useful. No key is guaranteed to be provided, so the caller should
+// always check if the result is nil.
+func GetOsInfo(keyName string) string
+
+// GetPrgname: gets the name of the program. This name should not be localized,
+// in contrast to g_get_application_name().
+//
+// If you are using #GApplication the program name is set in
+// g_application_run(). In case of GDK or GTK+ it is set in gdk_init(), which is
+// called by gtk_init() and the Application::startup handler. The program name
+// is found by taking the last component of @argv[0].
+func GetPrgname() string
+
+// GetRealName: gets the real name of the user. This usually comes from the
+// user's entry in the `passwd` file. The encoding of the returned string is
+// system-defined. (On Windows, it is, however, always UTF-8.) If the real user
+// name cannot be determined, the string "Unknown" is returned.
+func GetRealName() *string
+
+// GetRealTime: queries the system wall-clock time.
+//
+// This call is functionally equivalent to g_get_current_time() except that the
+// return value is often more convenient than dealing with a Val.
+//
+// You should only use this call if you are actually interested in the real
+// wall-clock time. g_get_monotonic_time() is probably more useful for measuring
+// intervals.
+func GetRealTime() int64
+
+// GetSystemConfigDirs: returns an ordered list of base directories in which to
+// access system-wide configuration information.
+//
+// On UNIX platforms this is determined using the mechanisms described in the
+// [XDG Base Directory
+// Specification](http://www.freedesktop.org/Standards/basedir-spec). In this
+// case the list of directories retrieved will be `XDG_CONFIG_DIRS`.
+//
+// On Windows it follows XDG Base Directory Specification if `XDG_CONFIG_DIRS`
+// is defined. If `XDG_CONFIG_DIRS` is undefined, the directory that contains
+// application data for all users is used instead. A typical path is
+// `C:\Documents and Settings\All Users\Application Data`. This folder is used
+// for application data that is not user specific. For example, an application
+// can store a spell-check dictionary, a database of clip art, or a log file in
+// the CSIDL_COMMON_APPDATA folder. This information will not roam and is
+// available to anyone using the computer.
+func GetSystemConfigDirs() []string
+
+// GetSystemDataDirs: returns an ordered list of base directories in which to
+// access system-wide application data.
+//
+// On UNIX platforms this is determined using the mechanisms described in the
+// [XDG Base Directory
+// Specification](http://www.freedesktop.org/Standards/basedir-spec) In this
+// case the list of directories retrieved will be `XDG_DATA_DIRS`.
+//
+// On Windows it follows XDG Base Directory Specification if `XDG_DATA_DIRS` is
+// defined. If `XDG_DATA_DIRS` is undefined, the first elements in the list are
+// the Application Data and Documents folders for All Users. (These can be
+// determined only on Windows 2000 or later and are not present in the list on
+// other Windows versions.) See documentation for CSIDL_COMMON_APPDATA and
+// CSIDL_COMMON_DOCUMENTS.
+//
+// Then follows the "share" subfolder in the installation folder for the package
+// containing the DLL that calls this function, if it can be determined.
+//
+// Finally the list contains the "share" subfolder in the installation folder
+// for GLib, and in the installation folder for the package the application's
+// .exe file belongs to.
+//
+// The installation folders above are determined by looking up the folder where
+// the module (DLL or EXE) in question is located. If the folder's name is
+// "bin", its parent is used, otherwise the folder itself.
+//
+// Note that on Windows the returned list can vary depending on where this
+// function is called.
+func GetSystemDataDirs() []string
+
+// GetTmpDir: gets the directory to use for temporary files.
+//
+// On UNIX, this is taken from the `TMPDIR` environment variable. If the
+// variable is not set, `P_tmpdir` is used, as defined by the system C library.
+// Failing that, a hard-coded default of "/tmp" is returned.
+//
+// On Windows, the `TEMP` environment variable is used, with the root directory
+// of the Windows installation (eg: "C:\") used as a default.
+//
+// The encoding of the returned string is system-defined. On Windows, it is
+// always UTF-8. The return value is never nil or the empty string.
+func GetTmpDir() *string
+
+// GetUserCacheDir: returns a base directory in which to store non-essential,
+// cached data specific to particular user.
+//
+// On UNIX platforms this is determined using the mechanisms described in the
+// [XDG Base Directory
+// Specification](http://www.freedesktop.org/Standards/basedir-spec). In this
+// case the directory retrieved will be `XDG_CACHE_HOME`.
+//
+// On Windows it follows XDG Base Directory Specification if `XDG_CACHE_HOME` is
+// defined. If `XDG_CACHE_HOME` is undefined, the directory that serves as a
+// common repository for temporary Internet files is used instead. A typical
+// path is `C:\Documents and Settings\username\Local Settings\Temporary Internet
+// Files`. See the [documentation for
+// `CSIDL_INTERNET_CACHE`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_internet_cache).
+func GetUserCacheDir() *string
+
+// GetUserConfigDir: returns a base directory in which to store user-specific
+// application configuration information such as user preferences and settings.
+//
+// On UNIX platforms this is determined using the mechanisms described in the
+// [XDG Base Directory
+// Specification](http://www.freedesktop.org/Standards/basedir-spec). In this
+// case the directory retrieved will be `XDG_CONFIG_HOME`.
+//
+// On Windows it follows XDG Base Directory Specification if `XDG_CONFIG_HOME`
+// is defined. If `XDG_CONFIG_HOME` is undefined, the folder to use for local
+// (as opposed to roaming) application data is used instead. See the
+// [documentation for
+// `CSIDL_LOCAL_APPDATA`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_local_appdata).
+// Note that in this case on Windows it will be the same as what
+// g_get_user_data_dir() returns.
+func GetUserConfigDir() *string
+
+// GetUserDataDir: returns a base directory in which to access application data
+// such as icons that is customized for a particular user.
+//
+// On UNIX platforms this is determined using the mechanisms described in the
+// [XDG Base Directory
+// Specification](http://www.freedesktop.org/Standards/basedir-spec). In this
+// case the directory retrieved will be `XDG_DATA_HOME`.
+//
+// On Windows it follows XDG Base Directory Specification if `XDG_DATA_HOME` is
+// defined. If `XDG_DATA_HOME` is undefined, the folder to use for local (as
+// opposed to roaming) application data is used instead. See the [documentation
+// for
+// `CSIDL_LOCAL_APPDATA`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_local_appdata).
+// Note that in this case on Windows it will be the same as what
+// g_get_user_config_dir() returns.
+func GetUserDataDir() *string
+
+// GetUserName: gets the user name of the current user. The encoding of the
+// returned string is system-defined. On UNIX, it might be the preferred file
+// name encoding, or something else, and there is no guarantee that it is even
+// consistent on a machine. On Windows, it is always UTF-8.
+func GetUserName() *string
+
+// GetUserRuntimeDir: returns a directory that is unique to the current user on
+// the local system.
+//
+// This is determined using the mechanisms described in the [XDG Base Directory
+// Specification](http://www.freedesktop.org/Standards/basedir-spec). This is
+// the directory specified in the `XDG_RUNTIME_DIR` environment variable. In the
+// case that this variable is not set, we return the value of
+// g_get_user_cache_dir(), after verifying that it exists.
+func GetUserRuntimeDir() *string
+
+// GetUserSpecialDir: returns the full path of a special directory using its
+// logical id.
+//
+// On UNIX this is done using the XDG special user directories. For
+// compatibility with existing practise, G_USER_DIRECTORY_DESKTOP falls back to
+// `$HOME/Desktop` when XDG special user directories have not been set up.
+//
+// Depending on the platform, the user might be able to change the path of the
+// special directory without requiring the session to restart; GLib will not
+// reflect any change once the special directories are loaded.
+func GetUserSpecialDir(directory UserDirectory) *string
+
+// Getenv: returns the value of an environment variable.
+//
+// On UNIX, the name and value are byte strings which might or might not be in
+// some consistent character set and encoding. On Windows, they are in UTF-8. On
+// Windows, in case the environment variable's value contains references to
+// other environment variables, they are expanded.
+func Getenv(variable *string) *string
+
+// HashTableAdd: this is a convenience function for using a Table as a set. It
+// is equivalent to calling g_hash_table_replace() with @key as both the key and
+// the value.
+//
+// In particular, this means that if @key already exists in the hash table, then
+// the old copy of @key in the hash table is freed and @key replaces it in the
+// table.
+//
+// When a hash table only ever contains keys that have themselves as the
+// corresponding value it is able to be stored more efficiently. See the
+// discussion in the section description.
+//
+// Starting from GLib 2.40, this function returns a boolean value to indicate
+// whether the newly added value was already in the hash table or not.
+func HashTableAdd(hashTable *glib.HashTable, key unsafe.Pointer) bool
+
+// HashTableContains: checks if @key is in @hash_table.
+func HashTableContains(hashTable *glib.HashTable, key unsafe.Pointer) bool
+
+// HashTableDestroy: destroys all keys and values in the Table and decrements
+// its reference count by 1. If keys and/or values are dynamically allocated,
+// you should either free them first or create the Table with destroy notifiers
+// using g_hash_table_new_full(). In the latter case the destroy functions you
+// supplied will be called on all keys and values during the destruction phase.
+func HashTableDestroy(hashTable *glib.HashTable)
+
+// HashTableInsert: inserts a new key and value into a Table.
+//
+// If the key already exists in the Table its current value is replaced with the
+// new value. If you supplied a @value_destroy_func when creating the Table, the
+// old value is freed using that function. If you supplied a @key_destroy_func
+// when creating the Table, the passed key is freed using that function.
+//
+// Starting from GLib 2.40, this function returns a boolean value to indicate
+// whether the newly added value was already in the hash table or not.
+func HashTableInsert(hashTable *glib.HashTable, key unsafe.Pointer, value unsafe.Pointer) bool
+
+// HashTableLookup: looks up a key in a Table. Note that this function cannot
+// distinguish between a key that is not present and one which is present and
+// has the value nil. If you need this distinction, use
+// g_hash_table_lookup_extended().
+func HashTableLookup(hashTable *glib.HashTable, key unsafe.Pointer) unsafe.Pointer
+
+// HashTableLookupExtended: looks up a key in the Table, returning the original
+// key and the associated value and a #gboolean which is true if the key was
+// found. This is useful if you need to free the memory allocated for the
+// original key, for example before calling g_hash_table_remove().
+//
+// You can actually pass nil for @lookup_key to test whether the nil key exists,
+// provided the hash and equal functions of @hash_table are nil-safe.
+func HashTableLookupExtended(hashTable *glib.HashTable, lookupKey unsafe.Pointer, origKey *unsafe.Pointer, value *unsafe.Pointer) bool
+
+// HashTableRemove: removes a key and its associated value from a Table.
+//
+// If the Table was created using g_hash_table_new_full(), the key and value are
+// freed using the supplied destroy functions, otherwise you have to make sure
+// that any dynamically allocated values are freed yourself.
+func HashTableRemove(hashTable *glib.HashTable, key unsafe.Pointer) bool
+
+// HashTableRemoveAll: removes all keys and their associated values from a
+// Table.
+//
+// If the Table was created using g_hash_table_new_full(), the keys and values
+// are freed using the supplied destroy functions, otherwise you have to make
+// sure that any dynamically allocated values are freed yourself.
+func HashTableRemoveAll(hashTable *glib.HashTable)
+
+// HashTableReplace: inserts a new key and value into a Table similar to
+// g_hash_table_insert(). The difference is that if the key already exists in
+// the Table, it gets replaced by the new key. If you supplied a
+// @value_destroy_func when creating the Table, the old value is freed using
+// that function. If you supplied a @key_destroy_func when creating the Table,
+// the old key is freed using that function.
+//
+// Starting from GLib 2.40, this function returns a boolean value to indicate
+// whether the newly added value was already in the hash table or not.
+func HashTableReplace(hashTable *glib.HashTable, key unsafe.Pointer, value unsafe.Pointer) bool
+
+// HashTableSize: returns the number of elements contained in the Table.
+func HashTableSize(hashTable *glib.HashTable) uint
+
+// HashTableSteal: removes a key and its associated value from a Table without
+// calling the key and value destroy functions.
+func HashTableSteal(hashTable *glib.HashTable, key unsafe.Pointer) bool
+
+// HashTableStealAll: removes all keys and their associated values from a Table
+// without calling the key and value destroy functions.
+func HashTableStealAll(hashTable *glib.HashTable)
+
+// HashTableStealExtended: looks up a key in the Table, stealing the original
+// key and the associated value and returning true if the key was found. If the
+// key was not found, false is returned.
+//
+// If found, the stolen key and value are removed from the hash table without
+// calling the key and value destroy functions, and ownership is transferred to
+// the caller of this method; as with g_hash_table_steal().
+//
+// You can pass nil for @lookup_key, provided the hash and equal functions of
+// @hash_table are nil-safe.
+func HashTableStealExtended(hashTable *glib.HashTable, lookupKey unsafe.Pointer, stolenKey *unsafe.Pointer, stolenValue *unsafe.Pointer) bool
+
+// HashTableUnref: atomically decrements the reference count of @hash_table by
+// one. If the reference count drops to 0, all keys and values will be
+// destroyed, and all memory allocated by the hash table is released. This
+// function is MT-safe and may be called from any thread.
+func HashTableUnref(hashTable *glib.HashTable)
+
+// HookDestroy: destroys a #GHook, given its ID.
+func HookDestroy(hookList *HookList, hookID uint32) bool
+
+// HookDestroyLink: removes one #GHook from a List, marking it inactive and
+// calling g_hook_unref() on it.
+func HookDestroyLink(hookList *HookList, hook *Hook)
+
+// HookFree: calls the List @finalize_hook function if it exists, and frees the
+// memory allocated for the #GHook.
+func HookFree(hookList *HookList, hook *Hook)
+
+// HookInsertBefore: inserts a #GHook into a List, before a given #GHook.
+func HookInsertBefore(hookList *HookList, sibling *Hook, hook *Hook)
+
+// HookPrepend: prepends a #GHook on the start of a List.
+func HookPrepend(hookList *HookList, hook *Hook)
+
+// HookUnref: decrements the reference count of a #GHook. If the reference count
+// falls to 0, the #GHook is removed from the List and g_hook_free() is called
+// to free it.
+func HookUnref(hookList *HookList, hook *Hook)
+
+// HostnameIsAsciiEncoded: tests if @hostname contains segments with an
+// ASCII-compatible encoding of an Internationalized Domain Name. If this
+// returns true, you should decode the hostname with g_hostname_to_unicode()
+// before displaying it to the user.
+//
+// Note that a hostname might contain a mix of encoded and unencoded segments,
+// and so it is possible for g_hostname_is_non_ascii() and
+// g_hostname_is_ascii_encoded() to both return true for a name.
+func HostnameIsAsciiEncoded(hostname string) bool
+
+// HostnameIsIpAddress: tests if @hostname is the string form of an IPv4 or IPv6
+// address. (Eg, "192.168.0.1".)
+//
+// Since 2.66, IPv6 addresses with a zone-id are accepted (RFC6874).
+func HostnameIsIpAddress(hostname string) bool
+
+// HostnameIsNonAscii: tests if @hostname contains Unicode characters. If this
+// returns true, you need to encode the hostname with g_hostname_to_ascii()
+// before using it in non-IDN-aware contexts.
+//
+// Note that a hostname might contain a mix of encoded and unencoded segments,
+// and so it is possible for g_hostname_is_non_ascii() and
+// g_hostname_is_ascii_encoded() to both return true for a name.
+func HostnameIsNonAscii(hostname string) bool
+
+// HostnameToAscii: converts @hostname to its canonical ASCII form; an
+// ASCII-only string containing no uppercase letters and not ending with a
+// trailing dot.
+func HostnameToAscii(hostname string) string
+
+// HostnameToUnicode: converts @hostname to its canonical presentation form; a
+// UTF-8 string in Unicode normalization form C, containing no uppercase
+// letters, no forbidden characters, and no ASCII-encoded segments, and not
+// ending with a trailing dot.
+//
+// Of course if @hostname is not an internationalized hostname, then the
+// canonical presentation form will be entirely ASCII.
+func HostnameToUnicode(hostname string) string
+
+// Iconv: same as the standard UNIX routine iconv(), but may be implemented via
+// libiconv on UNIX flavors that lack a native implementation.
+//
+// GLib provides g_convert() and g_locale_to_utf8() which are likely more
+// convenient than the raw iconv wrappers.
+//
+// Note that the behaviour of iconv() for characters which are valid in the
+// input character set, but which have no representation in the output character
+// set, is implementation defined. This function may return success (with a
+// positive number of non-reversible conversions as replacement characters were
+// used), or it may return -1 and set an error such as EILSEQ, in such a
+// situation.
+func Iconv(converter IConv, inbuf *string, inbytesLeft *uint, outbuf *string, outbytesLeft *uint) uint
+
+// IconvOpen: same as the standard UNIX routine iconv_open(), but may be
+// implemented via libiconv on UNIX flavors that lack a native implementation.
+//
+// GLib provides g_convert() and g_locale_to_utf8() which are likely more
+// convenient than the raw iconv wrappers.
+func IconvOpen(toCodeset string, fromCodeset string) IConv
+
+// IdleAdd: adds a function to be called whenever there are no higher priority
+// events pending to the default main loop. The function is given the default
+// idle priority, PRIORITY_DEFAULT_IDLE. If the function returns false it is
+// automatically removed from the list of event sources and will not be called
+// again.
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle the return value and memory management of @data.
+//
+// This internally creates a main loop source using g_idle_source_new() and
+// attaches it to the global Context using g_source_attach(), so the callback
+// will be invoked in whichever thread is running that main context. You can do
+// these steps manually if you need greater control or to use a custom main
+// context.
+func IdleAdd(function SourceFunc, data unsafe.Pointer) uint
+
+// IdleAddFull: adds a function to be called whenever there are no higher
+// priority events pending. If the function returns false it is automatically
+// removed from the list of event sources and will not be called again.
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle the return value and memory management of @data.
+//
+// This internally creates a main loop source using g_idle_source_new() and
+// attaches it to the global Context using g_source_attach(), so the callback
+// will be invoked in whichever thread is running that main context. You can do
+// these steps manually if you need greater control or to use a custom main
+// context.
+func IdleAddFull(priority int, function SourceFunc, data unsafe.Pointer) uint
+
+// IdleRemoveByData: removes the idle function with the given data.
+func IdleRemoveByData(data unsafe.Pointer) bool
+
+// IdleSourceNew: creates a new idle source.
+//
+// The source will not initially be associated with any Context and must be
+// added to one with g_source_attach() before it will be executed. Note that the
+// default priority for idle sources is G_PRIORITY_DEFAULT_IDLE, as compared to
+// other sources which have a default priority of G_PRIORITY_DEFAULT.
+func IdleSourceNew() *Source
+
+// Int64Equal: compares the two #gint64 values being pointed to and returns true
+// if they are equal. It can be passed to g_hash_table_new() as the
+// @key_equal_func parameter, when using non-nil pointers to 64-bit integers as
+// keys in a Table.
+func Int64Equal(v1 unsafe.Pointer, v2 unsafe.Pointer) bool
+
+// Int64Hash: converts a pointer to a #gint64 to a hash value.
+//
+// It can be passed to g_hash_table_new() as the @hash_func parameter, when
+// using non-nil pointers to 64-bit integer values as keys in a Table.
+func Int64Hash(v unsafe.Pointer) uint
+
+// IntEqual: compares the two #gint values being pointed to and returns true if
+// they are equal. It can be passed to g_hash_table_new() as the @key_equal_func
+// parameter, when using non-nil pointers to integers as keys in a Table.
+//
+// Note that this function acts on pointers to #gint, not on #gint directly: if
+// your hash table's keys are of the form `GINT_TO_POINTER (n)`, use
+// g_direct_equal() instead.
+func IntEqual(v1 unsafe.Pointer, v2 unsafe.Pointer) bool
+
+// IntHash: converts a pointer to a #gint to a hash value. It can be passed to
+// g_hash_table_new() as the @hash_func parameter, when using non-nil pointers
+// to integer values as keys in a Table.
+//
+// Note that this function acts on pointers to #gint, not on #gint directly: if
+// your hash table's keys are of the form `GINT_TO_POINTER (n)`, use
+// g_direct_hash() instead.
+func IntHash(v unsafe.Pointer) uint
+
+// InternStaticString: returns a canonical representation for @string. Interned
+// strings can be compared for equality by comparing the pointers, instead of
+// using strcmp(). g_intern_static_string() does not copy the string, therefore
+// @string must not be freed or modified.
+//
+// This function must not be used before library constructors have finished
+// running. In particular, this means it cannot be used to initialize global
+// variables in C++.
+func InternStaticString(string string) string
+
+// InternString: returns a canonical representation for @string. Interned
+// strings can be compared for equality by comparing the pointers, instead of
+// using strcmp().
+//
+// This function must not be used before library constructors have finished
+// running. In particular, this means it cannot be used to initialize global
+// variables in C++.
+func InternString(string string) string
+
+// IOAddWatch: adds the OChannel into the default main loop context with the
+// default priority.
+func IOAddWatch(channel *IOChannel, condition IOCondition, _func IOFunc, userData unsafe.Pointer) uint
+
+// IOAddWatchFull: adds the OChannel into the default main loop context with the
+// given priority.
+//
+// This internally creates a main loop source using g_io_create_watch() and
+// attaches it to the main loop context with g_source_attach(). You can do these
+// steps manually if you need greater control.
+func IOAddWatchFull(channel *IOChannel, priority int, condition IOCondition, _func IOFunc, userData unsafe.Pointer) uint
+
+// IOChannelErrorFromErrno: converts an `errno` error number to a OChannelError.
+func IOChannelErrorFromErrno(en int) IOChannelError
+
+func IOChannelErrorQuark() Quark
+
+// IOCreateWatch: creates a #GSource that's dispatched when @condition is met
+// for the given @channel. For example, if condition is IO_IN, the source will
+// be dispatched when there's data available for reading.
+//
+// The callback function invoked by the #GSource should be added with
+// g_source_set_callback(), but it has type OFunc (not Func).
+//
+// g_io_add_watch() is a simpler interface to this same functionality, for the
+// case where you want to add the source to the default main loop context at the
+// default priority.
+//
+// On Windows, polling a #GSource created to watch a channel for a socket puts
+// the socket in non-blocking mode. This is a side-effect of the implementation
+// and unavoidable.
+func IOCreateWatch(channel *IOChannel, condition IOCondition) *Source
+
+func KeyFileErrorQuark() Quark
+
+// Listenv: gets the names of all variables set in the environment.
+//
+// Programs that want to be portable to Windows should typically use this
+// function and g_getenv() instead of using the environ array from the C library
+// directly. On Windows, the strings in the environ array are in system codepage
+// encoding, while in most of the typical use cases for environment variables in
+// GLib-using programs you want the UTF-8 encoding that this function and
+// g_getenv() provide.
+func Listenv() []string
+
+// LocaleFromUTF8: converts a string from UTF-8 to the encoding used for strings
+// by the C runtime (usually the same as that used by the operating system) in
+// the [current locale][setlocale]. On Windows this means the system codepage.
+//
+// The input string shall not contain nul characters even if the @len argument
+// is positive. A nul character found inside the string will result in error
+// G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Use g_convert() to convert input that may
+// contain embedded nul characters.
+func LocaleFromUTF8(utf8String string, len int, bytesRead *uint, bytesWritten *uint) []uint8
+
+// LocaleToUTF8: converts a string which is in the encoding used for strings by
+// the C runtime (usually the same as that used by the operating system) in the
+// [current locale][setlocale] into a UTF-8 string.
+//
+// If the source encoding is not UTF-8 and the conversion output contains a nul
+// character, the error G_CONVERT_ERROR_EMBEDDED_NUL is set and the function
+// returns nil. If the source encoding is UTF-8, an embedded nul character is
+// treated with the G_CONVERT_ERROR_ILLEGAL_SEQUENCE error for backward
+// compatibility with earlier versions of this library. Use g_convert() to
+// produce output that may contain embedded nul characters.
+func LocaleToUTF8(len int, bytesRead *uint, bytesWritten *uint) string
+
+// Log: logs an error or debugging message.
+//
+// If the log level has been set as fatal, G_BREAKPOINT() is called to terminate
+// the program. See the documentation for G_BREAKPOINT() for details of the
+// debugging options this provides.
+//
+// If g_log_default_handler() is used as the log handler function, a new-line
+// character will automatically be appended to @..., and need not be entered
+// manually.
+//
+// If [structured logging is enabled][using-structured-logging] this will output
+// via the structured log writer function (see g_log_set_writer_func()).
+func Log(logDomain string, logLevel LogLevelFlags, format string)
+
+// LogDefaultHandler: the default log handler set up by GLib;
+// g_log_set_default_handler() allows to install an alternate default log
+// handler. This is used if no log handler has been set for the particular log
+// domain and log level combination. It outputs the message to stderr or stdout
+// and if the log level is fatal it calls G_BREAKPOINT(). It automatically
+// prints a new-line character after the message, so one does not need to be
+// manually included in @message.
+//
+// The behavior of this log handler can be influenced by a number of environment
+// variables:
+//
+// - `G_MESSAGES_PREFIXED`: A :-separated list of log levels for which messages
+// should be prefixed by the program name and PID of the application.
+//
+// - `G_MESSAGES_DEBUG`: A space-separated list of log domains for which debug
+// and informational messages are printed. By default these messages are not
+// printed.
+//
+// stderr is used for levels G_LOG_LEVEL_ERROR, G_LOG_LEVEL_CRITICAL,
+// G_LOG_LEVEL_WARNING and G_LOG_LEVEL_MESSAGE. stdout is used for the rest.
+//
+// This has no effect if structured logging is enabled; see [Using Structured
+// Logging][using-structured-logging].
+func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string, unusedData unsafe.Pointer)
+
+// LogRemoveHandler: removes the log handler.
+//
+// This has no effect if structured logging is enabled; see [Using Structured
+// Logging][using-structured-logging].
+func LogRemoveHandler(logDomain string, handlerID uint)
+
+// LogSetAlwaysFatal: sets the message levels which are always fatal, in any log
+// domain. When a message with any of these levels is logged the program
+// terminates. You can only set the levels defined by GLib to be fatal.
+// G_LOG_LEVEL_ERROR is always fatal.
+//
+// You can also make some message levels fatal at runtime by setting the
+// `G_DEBUG` environment variable (see [Running GLib
+// Applications](glib-running.html)).
+//
+// Libraries should not call this function, as it affects all messages logged by
+// a process, including those from other libraries.
+//
+// Structured log messages (using g_log_structured() and
+// g_log_structured_array()) are fatal only if the default log writer is used;
+// otherwise it is up to the writer function to determine which log messages are
+// fatal. See [Using Structured Logging][using-structured-logging].
+func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags
+
+// LogSetDefaultHandler: installs a default log handler which is used if no log
+// handler has been set for the particular log domain and log level combination.
+// By default, GLib uses g_log_default_handler() as default log handler.
+//
+// This has no effect if structured logging is enabled; see [Using Structured
+// Logging][using-structured-logging].
+func LogSetDefaultHandler(logFunc LogFunc, userData unsafe.Pointer) LogFunc
+
+// LogSetFatalMask: sets the log levels which are fatal in the given domain.
+// G_LOG_LEVEL_ERROR is always fatal.
+//
+// This has no effect on structured log messages (using g_log_structured() or
+// g_log_structured_array()). To change the fatal behaviour for specific log
+// messages, programs must install a custom log writer function using
+// g_log_set_writer_func(). See [Using Structured
+// Logging][using-structured-logging].
+//
+// This function is mostly intended to be used with G_LOG_LEVEL_CRITICAL. You
+// should typically not set G_LOG_LEVEL_WARNING, G_LOG_LEVEL_MESSAGE,
+// G_LOG_LEVEL_INFO or G_LOG_LEVEL_DEBUG as fatal except inside of test
+// programs.
+func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags
+
+// LogSetHandler: sets the log handler for a domain and a set of log levels. To
+// handle fatal and recursive messages the @log_levels parameter must be
+// combined with the LOG_FLAG_FATAL and LOG_FLAG_RECURSION bit flags.
+//
+// Note that since the LOG_LEVEL_ERROR log level is always fatal, if you want to
+// set a handler for this log level you must combine it with LOG_FLAG_FATAL.
+//
+// This has no effect if structured logging is enabled; see [Using Structured
+// Logging][using-structured-logging].
+//
+//    g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
+//                       | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
+//
+//    g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL | G_LOG_FLAG_FATAL
+//                       | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
+//
+//    g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
+//                       | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
+func LogSetHandler(logDomain string, logLevels LogLevelFlags, logFunc LogFunc, userData unsafe.Pointer) uint
+
+// LogSetHandlerFull: like g_log_set_handler(), but takes a destroy notify for
+// the @user_data.
+//
+// This has no effect if structured logging is enabled; see [Using Structured
+// Logging][using-structured-logging].
+func LogSetHandlerFull(logDomain string, logLevels LogLevelFlags, logFunc LogFunc, userData unsafe.Pointer) uint
+
+// LogSetWriterFunc: set a writer function which will be called to format and
+// write out each log message. Each program should set a writer function, or the
+// default writer (g_log_writer_default()) will be used.
+//
+// Libraries **must not** call this function — only programs are allowed to
+// install a writer function, as there must be a single, central point where log
+// messages are formatted and outputted.
+//
+// There can only be one writer function. It is an error to set more than one.
+func LogSetWriterFunc(_func LogWriterFunc, userData unsafe.Pointer)
+
+// LogStructured: log a message with structured data. The message will be passed
+// through to the log writer set by the application using
+// g_log_set_writer_func(). If the message is fatal (i.e. its log level is
+// G_LOG_LEVEL_ERROR), the program will be aborted by calling G_BREAKPOINT() at
+// the end of this function. If the log writer returns G_LOG_WRITER_UNHANDLED
+// (failure), no other fallback writers will be tried. See the documentation for
+// WriterFunc for information on chaining writers.
+//
+// The structured data is provided as key–value pairs, where keys are UTF-8
+// strings, and values are arbitrary pointers — typically pointing to UTF-8
+// strings, but that is not a requirement. To pass binary (non-nul-terminated)
+// structured data, use g_log_structured_array(). The keys for structured data
+// should follow the [systemd journal
+// fields](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html)
+// specification. It is suggested that custom keys are namespaced according to
+// the code which sets them. For example, custom keys from GLib all have a
+// `GLIB_` prefix.
+//
+// The @log_domain will be converted into a `GLIB_DOMAIN` field. @log_level will
+// be converted into a
+// [`PRIORITY`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.htmlIORITY=)
+// field. The format string will have its placeholders substituted for the
+// provided values and be converted into a
+// [`MESSAGE`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.htmlSSAGE=)
+// field.
+//
+// Other fields you may commonly want to pass into this function:
+//
+// *
+// [`MESSAGE_ID`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.htmlSSAGE_ID=)
+// *
+// [`CODE_FILE`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.htmlDE_FILE=)
+// *
+// [`CODE_LINE`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.htmlDE_LINE=)
+// *
+// [`CODE_FUNC`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.htmlDE_FUNC=)
+// *
+// [`ERRNO`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.htmlRNO=)
+//
+// Note that `CODE_FILE`, `CODE_LINE` and `CODE_FUNC` are automatically set by
+// the logging macros, G_DEBUG_HERE(), g_message(), g_warning(), g_critical(),
+// g_error(), etc, if the symbols `G_LOG_USE_STRUCTURED` is defined before
+// including glib.h.
+//
+//    g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,
+//                      "MESSAGE_ID", "06d4df59e6c24647bfe69d2c27ef0b4e",
+//                      "MY_APPLICATION_CUSTOM_FIELD", "some debug string",
+//                      "MESSAGE", "This is a debug message about pointer p and integer u.",
+//                      some_pointer, some_integer);
+//
+// Note that each `MESSAGE_ID` must be [uniquely and randomly
+// generated](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.htmlSSAGE_ID=).
+// If adding a `MESSAGE_ID`, consider shipping a [message
+// catalog](https://www.freedesktop.org/wiki/Software/systemd/catalog/) with
+// your software.
+//
+// To pass a user data pointer to the log writer function which is specific to
+// this logging call, you must use g_log_structured_array() and pass the pointer
+// as a field with Field.length set to zero, otherwise it will be interpreted as
+// a string.
+//
+//    const GLogField fields[] = {
+//      { "MESSAGE", "This is a debug message.", -1 },
+//      { "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893", -1 },
+//      { "MY_APPLICATION_CUSTOM_FIELD", "some debug string", -1 },
+//      { "MY_APPLICATION_STATE", state_object, 0 },
+//    };
+//    g_log_structured_array (G_LOG_LEVEL_DEBUG, fields, G_N_ELEMENTS (fields));
+//
+// Note also that, even if no other structured fields are specified, there must
+// always be a `MESSAGE` key before the format string. The `MESSAGE`-format pair
+// has to be the last of the key-value pairs, and `MESSAGE` is the only field
+// for which printf()-style formatting is supported.
+//
+// The default writer function for `stdout` and `stderr` will automatically
+// append a new-line character after the message, so you should not add one
+// manually to the format string.
+func LogStructured(logDomain string, logLevel LogLevelFlags)
+
+// LogStructuredArray: log a message with structured data. The message will be
+// passed through to the log writer set by the application using
+// g_log_set_writer_func(). If the message is fatal (i.e. its log level is
+// G_LOG_LEVEL_ERROR), the program will be aborted at the end of this function.
+//
+// See g_log_structured() for more documentation.
+//
+// This assumes that @log_level is already present in @fields (typically as the
+// `PRIORITY` field).
+func LogStructuredArray(logLevel LogLevelFlags, nFields uint)
+
+func LogStructuredStandard(logDomain string, logLevel LogLevelFlags, file string, line string, _func string, messageFormat string)
+
+// LogVariant: log a message with structured data, accepting the data within a
+// #GVariant. This version is especially useful for use in other languages, via
+// introspection.
+//
+// The only mandatory item in the @fields dictionary is the "MESSAGE" which must
+// contain the text shown to the user.
+//
+// The values in the @fields dictionary are likely to be of type String
+// (VARIANT_TYPE_STRING). Array of bytes (VARIANT_TYPE_BYTESTRING) is also
+// supported. In this case the message is handled as binary and will be
+// forwarded to the log writer as such. The size of the array should not be
+// higher than G_MAXSSIZE. Otherwise it will be truncated to this size. For
+// other types g_variant_print() will be used to convert the value into a
+// string.
+//
+// For more details on its usage and about the parameters, see
+// g_log_structured().
+func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant)
+
+// LogWriterDefault: format a structured log message and output it to the
+// default log destination for the platform. On Linux, this is typically the
+// systemd journal, falling back to `stdout` or `stderr` if running from the
+// terminal or if output is being redirected to a file.
+//
+// Support for other platform-specific logging mechanisms may be added in
+// future. Distributors of GLib may modify this function to impose their own
+// (documented) platform-specific log writing policies.
+//
+// This is suitable for use as a WriterFunc, and is the default writer used if
+// no other is set using g_log_set_writer_func().
+//
+// As with g_log_default_handler(), this function drops debug and informational
+// messages unless their log domain (or `all`) is listed in the space-separated
+// `G_MESSAGES_DEBUG` environment variable.
+func LogWriterDefault(logLevel LogLevelFlags, nFields uint, userData unsafe.Pointer) LogWriterOutput
+
+// LogWriterFormatFields: format a structured log message as a string suitable
+// for outputting to the terminal (or elsewhere). This will include the values
+// of all fields it knows how to interpret, which includes `MESSAGE` and
+// `GLIB_DOMAIN` (see the documentation for g_log_structured()). It does not
+// include values from unknown fields.
+//
+// The returned string does **not** have a trailing new-line character. It is
+// encoded in the character set of the current locale, which is not necessarily
+// UTF-8.
+func LogWriterFormatFields(logLevel LogLevelFlags, nFields uint, useColor bool) string
+
+// LogWriterIsJournald: check whether the given @output_fd file descriptor is a
+// connection to the systemd journal, or something else (like a log file or
+// `stdout` or `stderr`).
+//
+//    is_journald = g_log_writer_is_journald (fileno (stderr));
+func LogWriterIsJournald(outputFd int) bool
+
+// LogWriterJournald: format a structured log message and send it to the systemd
+// journal as a set of key–value pairs. All fields are sent to the journal, but
+// if a field has length zero (indicating program-specific data) then only its
+// key will be sent.
+//
+// This is suitable for use as a WriterFunc.
+//
+// If GLib has been compiled without systemd support, this function is still
+// defined, but will always return G_LOG_WRITER_UNHANDLED.
+func LogWriterJournald(logLevel LogLevelFlags, nFields uint, userData unsafe.Pointer) LogWriterOutput
+
+// LogWriterStandardStreams: format a structured log message and print it to
+// either `stdout` or `stderr`, depending on its log level. G_LOG_LEVEL_INFO and
+// G_LOG_LEVEL_DEBUG messages are sent to `stdout`; all other log levels are
+// sent to `stderr`. Only fields which are understood by this function are
+// included in the formatted string which is printed.
+//
+// If the output stream supports ANSI color escape sequences, they will be used
+// in the output.
+//
+// A trailing new-line character is added to the log message when it is printed.
+//
+// This is suitable for use as a WriterFunc.
+func LogWriterStandardStreams(logLevel LogLevelFlags, nFields uint, userData unsafe.Pointer) LogWriterOutput
+
+// LogWriterSupportsColor: check whether the given @output_fd file descriptor
+// supports ANSI color escape sequences. If so, they can safely be used when
+// formatting log messages.
+func LogWriterSupportsColor(outputFd int) bool
+
+// Logv: logs an error or debugging message.
+//
+// If the log level has been set as fatal, G_BREAKPOINT() is called to terminate
+// the program. See the documentation for G_BREAKPOINT() for details of the
+// debugging options this provides.
+//
+// If g_log_default_handler() is used as the log handler function, a new-line
+// character will automatically be appended to @..., and need not be entered
+// manually.
+//
+// If [structured logging is enabled][using-structured-logging] this will output
+// via the structured log writer function (see g_log_set_writer_func()).
+func Logv(logDomain string, logLevel LogLevelFlags, format string)
+
+// MainContextDefault: returns the global default main context. This is the main
+// context used for main loop functions when a main loop is not explicitly
+// specified, and corresponds to the "main" main loop. See also
+// g_main_context_get_thread_default().
+func MainContextDefault() *MainContext
+
+// MainContextGetThreadDefault: gets the thread-default Context for this thread.
+// Asynchronous operations that want to be able to be run in contexts other than
+// the default one should call this method or
+// g_main_context_ref_thread_default() to get a Context to add their #GSources
+// to. (Note that even in single-threaded programs applications may sometimes
+// want to temporarily push a non-default context, so it is not safe to assume
+// that this will always return nil if you are running in the default thread.)
+//
+// If you need to hold a reference on the context, use
+// g_main_context_ref_thread_default() instead.
+func MainContextGetThreadDefault() *MainContext
+
+// MainContextRefThreadDefault: gets the thread-default Context for this thread,
+// as with g_main_context_get_thread_default(), but also adds a reference to it
+// with g_main_context_ref(). In addition, unlike
+// g_main_context_get_thread_default(), if the thread-default context is the
+// global default context, this will return that Context (with a ref added to
+// it) rather than returning nil.
+func MainContextRefThreadDefault() *MainContext
+
+// MainCurrentSource: returns the currently firing source for this thread.
+func MainCurrentSource() *Source
+
+// MainDepth: returns the depth of the stack of calls to
+// g_main_context_dispatch() on any Context in the current thread. That is, when
+// called from the toplevel, it gives 0. When called from within a callback from
+// g_main_context_iteration() (or g_main_loop_run(), etc.) it returns 1. When
+// called from within a callback to a recursive call to
+// g_main_context_iteration(), it returns 2. And so forth.
+//
+// This function is useful in a situation like the following: Imagine an
+// extremely simple "garbage collected" system.
+//
+//    static GList *free_list;
+//
+//    gpointer
+//    allocate_memory (gsize size)
+//    {
+//      gpointer result = g_malloc (size);
+//      free_list = g_list_prepend (free_list, result);
+//      return result;
+//    }
+//
+//    void
+//    free_allocated_memory (void)
+//    {
+//      GList *l;
+//      for (l = free_list; l; l = l-&gt;next);
+//        g_free (l-&gt;data);
+//      g_list_free (free_list);
+//      free_list = NULL;
+//     }
+//
+//    [...]
+//
+//    while (TRUE);
+//     {
+//       g_main_context_iteration (NULL, TRUE);
+//       free_allocated_memory();
+//      }
+//
+//
+// This works from an application, however, if you want to do the same thing
+// from a library, it gets more difficult, since you no longer control the main
+// loop. You might think you can simply use an idle function to make the call to
+// free_allocated_memory(), but that doesn't work, since the idle function could
+// be called from a recursive callback. This can be fixed by using
+// g_main_depth()
+//
+//    gpointer
+//    allocate_memory (gsize size)
+//    {
+//      FreeListBlock *block = g_new (FreeListBlock, 1);
+//      block-&gt;mem = g_malloc (size);
+//      block-&gt;depth = g_main_depth ();
+//      free_list = g_list_prepend (free_list, block);
+//      return block-&gt;mem;
+//    }
+//
+//    void
+//    free_allocated_memory (void)
+//    {
+//      GList *l;
+//
+//      int depth = g_main_depth ();
+//      for (l = free_list; l; );
+//        {
+//          GList *next = l-&gt;next;
+//          FreeListBlock *block = l-&gt;data;
+//          if (block-&gt;depth &gt; depth)
+//            {
+//              g_free (block-&gt;mem);
+//              g_free (block);
+//              free_list = g_list_delete_link (free_list, l);
+//            }
+//
+//          l = next;
+//        }
+//      }
+//
+//
+// There is a temptation to use g_main_depth() to solve problems with
+// reentrancy. For instance, while waiting for data to be received from the
+// network in response to a menu item, the menu item might be selected again. It
+// might seem that one could make the menu item's callback return immediately
+// and do nothing if g_main_depth() returns a value greater than 1. However,
+// this should be avoided since the user then sees selecting the menu item do
+// nothing. Furthermore, you'll find yourself adding these checks all over your
+// code, since there are doubtless many, many things that the user could do.
+// Instead, you can use the following techniques:
+//
+// 1. Use gtk_widget_set_sensitive() or modal dialogs to prevent the user from
+// interacting with elements while the main loop is recursing.
+//
+// 2. Avoid main loop recursion in situations where you can't handle arbitrary
+// callbacks. Instead, structure your code so that you simply return to the main
+// loop and then get called again when there is more work to do.
+func MainDepth() int
+
+// Malloc: allocates @n_bytes bytes of memory. If @n_bytes is 0 it returns nil.
+func Malloc(nBytes uint) unsafe.Pointer
+
+// Malloc0: allocates @n_bytes bytes of memory, initialized to 0's. If @n_bytes
+// is 0 it returns nil.
+func Malloc0(nBytes uint) unsafe.Pointer
+
+// Malloc0N: this function is similar to g_malloc0(), allocating (@n_blocks *
+// @n_block_bytes) bytes, but care is taken to detect possible overflow during
+// multiplication.
+func Malloc0N(nBlocks uint, nBlockBytes uint) unsafe.Pointer
+
+// MallocN: this function is similar to g_malloc(), allocating (@n_blocks *
+// @n_block_bytes) bytes, but care is taken to detect possible overflow during
+// multiplication.
+func MallocN(nBlocks uint, nBlockBytes uint) unsafe.Pointer
+
+// MarkupCollectAttributes: collects the attributes of the element from the data
+// passed to the Parser start_element function, dealing with common error
+// conditions and supporting boolean values.
+//
+// This utility function is not required to write a parser but can save a lot of
+// typing.
+//
+// The @element_name, @attribute_names, @attribute_values and @error parameters
+// passed to the start_element callback should be passed unmodified to this
+// function.
+//
+// Following these arguments is a list of "supported" attributes to collect. It
+// is an error to specify multiple attributes with the same name. If any
+// attribute not in the list appears in the @attribute_names array then an
+// unknown attribute error will result.
+//
+// The CollectType field allows specifying the type of collection to perform and
+// if a given attribute must appear or is optional.
+//
+// The attribute name is simply the name of the attribute to collect.
+//
+// The pointer should be of the appropriate type (see the descriptions under
+// CollectType) and may be nil in case a particular attribute is to be allowed
+// but ignored.
+//
+// This function deals with issuing errors for missing attributes (of type
+// G_MARKUP_ERROR_MISSING_ATTRIBUTE), unknown attributes (of type
+// G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE) and duplicate attributes (of type
+// G_MARKUP_ERROR_INVALID_CONTENT) as well as parse errors for boolean-valued
+// attributes (again of type G_MARKUP_ERROR_INVALID_CONTENT). In all of these
+// cases false will be returned and @error will be set as appropriate.
+func MarkupCollectAttributes(elementName string, attributeNames *string, attributeValues *string, error **Error, firstType MarkupCollectType, firstAttr string) bool
+
+func MarkupErrorQuark() Quark
+
+// MarkupEscapeText: escapes text so that the markup parser will parse it
+// verbatim. Less than, greater than, ampersand, etc. are replaced with the
+// corresponding entities. This function would typically be used when writing
+// out a file to be parsed with the markup parser.
+//
+// Note that this function doesn't protect whitespace and line endings from
+// being processed according to the XML rules for normalization of line endings
+// and attribute values.
+//
+// Note also that this function will produce character references in the range
+// of &amp;#x1; ... &amp;#x1f; for all control sequences except for tabstop,
+// newline and carriage return. The character references in this range are not
+// valid XML 1.0, but they are valid XML 1.1 and will be accepted by the GMarkup
+// parser.
+func MarkupEscapeText(text string, length int) string
+
+// MarkupPrintfEscaped: formats arguments according to @format, escaping all
+// string and character arguments in the fashion of g_markup_escape_text(). This
+// is useful when you want to insert literal strings into XML-style markup
+// output, without having to worry that the strings might themselves contain
+// markup.
+//
+//    const char *store = "Fortnum &amp; Mason";
+//    const char *item = "Tea";
+//    char *output;
+//
+//    output = g_markup_printf_escaped ("&lt;purchase&gt;"
+//                                      "&lt;store&gt;s&lt;/store&gt;"
+//                                      "&lt;item&gt;s&lt;/item&gt;"
+//                                      "&lt;/purchase&gt;",
+//                                      store, item);
+//
+func MarkupPrintfEscaped(format string) string
+
+// MarkupVprintfEscaped: formats the data in @args according to @format,
+// escaping all string and character arguments in the fashion of
+// g_markup_escape_text(). See g_markup_printf_escaped().
+func MarkupVprintfEscaped(format string) string
+
+// MemIsSystemMalloc: checks whether the allocator used by g_malloc() is the
+// system's malloc implementation. If it returns true memory allocated with
+// malloc() can be used interchangeably with memory allocated using g_malloc().
+// This function is useful for avoiding an extra copy of allocated memory
+// returned by a non-GLib-based API.
+func MemIsSystemMalloc() bool
+
+// MemProfile: GLib used to support some tools for memory profiling, but this no
+// longer works. There are many other useful tools for memory profiling these
+// days which can be used instead.
+func MemProfile()
+
+// MemSetVtable: this function used to let you override the memory allocation
+// function. However, its use was incompatible with the use of global
+// constructors in GLib and GIO, because those use the GLib allocators before
+// main is reached. Therefore this function is now deprecated and is just a
+// stub.
+func MemSetVtable(vtable *MemVTable)
+
+// Memdup: allocates @byte_size bytes of memory, and copies @byte_size bytes
+// into it from @mem. If @mem is nil it returns nil.
+func Memdup(mem unsafe.Pointer, byteSize uint) unsafe.Pointer
+
+// MkdirWithParents: create a directory if it doesn't already exist. Create
+// intermediate parent directories as needed, too.
+func MkdirWithParents(pathname *string, mode int) int
+
+// Mkdtemp: creates a temporary directory. See the mkdtemp() documentation on
+// most UNIX-like systems.
+//
+// The parameter is a string that should follow the rules for mkdtemp()
+// templates, i.e. contain the string "XXXXXX". g_mkdtemp() is slightly more
+// flexible than mkdtemp() in that the sequence does not have to occur at the
+// very end of the template. The X string will be modified to form the name of a
+// directory that didn't exist. The string should be in the GLib file name
+// encoding. Most importantly, on Windows it should be in UTF-8.
+//
+// If you are going to be creating a temporary directory inside the directory
+// returned by g_get_tmp_dir(), you might want to use g_dir_make_tmp() instead.
+func Mkdtemp(tmpl *string) *string
+
+// MkdtempFull: creates a temporary directory. See the mkdtemp() documentation
+// on most UNIX-like systems.
+//
+// The parameter is a string that should follow the rules for mkdtemp()
+// templates, i.e. contain the string "XXXXXX". g_mkdtemp_full() is slightly
+// more flexible than mkdtemp() in that the sequence does not have to occur at
+// the very end of the template and you can pass a @mode. The X string will be
+// modified to form the name of a directory that didn't exist. The string should
+// be in the GLib file name encoding. Most importantly, on Windows it should be
+// in UTF-8.
+//
+// If you are going to be creating a temporary directory inside the directory
+// returned by g_get_tmp_dir(), you might want to use g_dir_make_tmp() instead.
+func MkdtempFull(tmpl *string, mode int) *string
+
+// Mkstemp: opens a temporary file. See the mkstemp() documentation on most
+// UNIX-like systems.
+//
+// The parameter is a string that should follow the rules for mkstemp()
+// templates, i.e. contain the string "XXXXXX". g_mkstemp() is slightly more
+// flexible than mkstemp() in that the sequence does not have to occur at the
+// very end of the template. The X string will be modified to form the name of a
+// file that didn't exist. The string should be in the GLib file name encoding.
+// Most importantly, on Windows it should be in UTF-8.
+func Mkstemp(tmpl *string) int
+
+// MkstempFull: opens a temporary file. See the mkstemp() documentation on most
+// UNIX-like systems.
+//
+// The parameter is a string that should follow the rules for mkstemp()
+// templates, i.e. contain the string "XXXXXX". g_mkstemp_full() is slightly
+// more flexible than mkstemp() in that the sequence does not have to occur at
+// the very end of the template and you can pass a @mode and additional @flags.
+// The X string will be modified to form the name of a file that didn't exist.
+// The string should be in the GLib file name encoding. Most importantly, on
+// Windows it should be in UTF-8.
+func MkstempFull(tmpl *string, flags int, mode int) int
+
+// NullifyPointer: set the pointer at the specified location to nil.
+func NullifyPointer(nullifyLocation *unsafe.Pointer)
+
+func NumberParserErrorQuark() Quark
+
+// OnErrorQuery: prompts the user with `[E]xit, [H]alt, show [S]tack trace or
+// [P]roceed`. This function is intended to be used for debugging use only. The
+// following example shows how it can be used together with the g_log()
+// functions.
+//
+//    #include &lt;glib.h&gt;
+//
+//    static void
+//    log_handler (const gchar   *log_domain,
+//                 GLogLevelFlags log_level,
+//                 const gchar   *message,
+//                 gpointer       user_data)
+//    {
+//      g_log_default_handler (log_domain, log_level, message, user_data);
+//
+//      g_on_error_query (MY_PROGRAM_NAME);
+//    }
+//
+//    int
+//    main (int argc, char *argv[])
+//    {
+//      g_log_set_handler (MY_LOG_DOMAIN,
+//                         G_LOG_LEVEL_WARNING |
+//                         G_LOG_LEVEL_ERROR |
+//                         G_LOG_LEVEL_CRITICAL,
+//                         log_handler,
+//                         NULL);
+//      ...
+//
+//
+// If "[E]xit" is selected, the application terminates with a call to _exit(0).
+//
+// If "[S]tack" trace is selected, g_on_error_stack_trace() is called. This
+// invokes gdb, which attaches to the current process and shows a stack trace.
+// The prompt is then shown again.
+//
+// If "[P]roceed" is selected, the function returns.
+//
+// This function may cause different actions on non-UNIX platforms.
+//
+// On Windows consider using the `G_DEBUGGER` environment variable (see [Running
+// GLib Applications](glib-running.html)) and calling g_on_error_stack_trace()
+// instead.
+func OnErrorQuery(prgName string)
+
+// OnErrorStackTrace: invokes gdb, which attaches to the current process and
+// shows a stack trace. Called by g_on_error_query() when the "[S]tack trace"
+// option is selected. You can get the current process's program name with
+// g_get_prgname(), assuming that you have called gtk_init() or gdk_init().
+//
+// This function may cause different actions on non-UNIX platforms.
+//
+// When running on Windows, this function is *not* called by g_on_error_query().
+// If called directly, it will raise an exception, which will crash the program.
+// If the `G_DEBUGGER` environment variable is set, a debugger will be invoked
+// to attach and handle that exception (see [Running GLib
+// Applications](glib-running.html)).
+func OnErrorStackTrace(prgName string)
+
+// OnceInitEnter: function to be called when starting a critical initialization
+// section. The argument @location must point to a static 0-initialized variable
+// that will be set to a value other than 0 at the end of the initialization
+// section. In combination with g_once_init_leave() and the unique address
+// @value_location, it can be ensured that an initialization section will be
+// executed only once during a program's life time, and that concurrent threads
+// are blocked until initialization completed. To be used in constructs like
+// this:
+//
+//      static gsize initialization_value = 0;
+//
+//      if (g_once_init_enter (&amp;initialization_value))
+//        {
+//          gsize setup_value = 42; // initialization code here
+//
+//          g_once_init_leave (&amp;initialization_value, setup_value);
+//        }
+//
+//      // use initialization_value here
+//
+func OnceInitEnter(location *unsafe.Pointer) bool
+
+// OnceInitLeave: counterpart to g_once_init_enter(). Expects a location of a
+// static 0-initialized initialization variable, and an initialization value
+// other than 0. Sets the variable to the initialization value, and releases
+// concurrent threads blocking in g_once_init_enter() on this initialization
+// variable.
+func OnceInitLeave(location *unsafe.Pointer, result uint)
+
+func OptionErrorQuark() Quark
+
+// ParseDebugString: parses a string containing debugging options into a guint
+// containing bit flags. This is used within GDK and GTK+ to parse the debug
+// options passed on the command line or through environment variables.
+//
+// If @string is equal to "all", all flags are set. Any flags specified along
+// with "all" in @string are inverted; thus, "all,foo,bar" or "foo,bar,all" sets
+// all flags except those corresponding to "foo" and "bar".
+//
+// If @string is equal to "help", all the available keys in @keys are printed
+// out to standard error.
+func ParseDebugString(string string, nkeys uint) uint
+
+// PathGetBasename: gets the last component of the filename.
+//
+// If @file_name ends with a directory separator it gets the component before
+// the last slash. If @file_name consists only of directory separators (and on
+// Windows, possibly a drive letter), a single separator is returned. If
+// @file_name is empty, it gets ".".
+func PathGetBasename(fileName *string) *string
+
+// PathGetDirname: gets the directory components of a file name. For example,
+// the directory component of `/usr/bin/test` is `/usr/bin`. The directory
+// component of `/` is `/`.
+//
+// If the file name has no directory components "." is returned. The returned
+// string should be freed when no longer needed.
+func PathGetDirname(fileName *string) *string
+
+// PathIsAbsolute: returns true if the given @file_name is an absolute file
+// name. Note that this is a somewhat vague concept on Windows.
+//
+// On POSIX systems, an absolute file name is well-defined. It always starts
+// from the single root directory. For example "/usr/local".
+//
+// On Windows, the concepts of current drive and drive-specific current
+// directory introduce vagueness. This function interprets as an absolute file
+// name one that either begins with a directory separator such as "\Users\tml"
+// or begins with the root on a drive, for example "C:\Windows". The first case
+// also includes UNC paths such as "\\\\myserver\docs\foo". In all cases, either
+// slashes or backslashes are accepted.
+//
+// Note that a file name relative to the current drive root does not truly
+// specify a file uniquely over time and across processes, as the current drive
+// is a per-process value and can be changed.
+//
+// File names relative the current directory on some specific drive, such as
+// "D:foo/bar", are not interpreted as absolute by this function, but they
+// obviously are not relative to the normal current directory as returned by
+// getcwd() or g_get_current_dir() either. Such paths should be avoided, or need
+// to be handled using Windows-specific code.
+func PathIsAbsolute(fileName *string) bool
+
+// PathSkipRoot: returns a pointer into @file_name after the root component,
+// i.e. after the "/" in UNIX or "C:\" under Windows. If @file_name is not an
+// absolute path it returns nil.
+func PathSkipRoot(fileName *string) *string
+
+// PatternMatch: matches a string against a compiled pattern. Passing the
+// correct length of the string given is mandatory. The reversed string can be
+// omitted by passing nil, this is more efficient if the reversed version of the
+// string to be matched is not at hand, as g_pattern_match() will only construct
+// it if the compiled pattern requires reverse matches.
+//
+// Note that, if the user code will (possibly) match a string against a
+// multitude of patterns containing wildcards, chances are high that some
+// patterns will require a reversed string. In this case, it's more efficient to
+// provide the reversed string to avoid multiple constructions thereof in the
+// various calls to g_pattern_match().
+//
+// Note also that the reverse of a UTF-8 encoded string can in general not be
+// obtained by g_strreverse(). This works only if the string does not contain
+// any multibyte characters. GLib offers the g_utf8_strreverse() function to
+// reverse UTF-8 encoded strings.
+func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringReversed string) bool
+
+// PatternMatchSimple: matches a string against a pattern given as a string. If
+// this function is to be called in a loop, it's more efficient to compile the
+// pattern once with g_pattern_spec_new() and call g_pattern_match_string()
+// repeatedly.
+func PatternMatchSimple(pattern string, string string) bool
+
+// PatternMatchString: matches a string against a compiled pattern. If the
+// string is to be matched against more than one pattern, consider using
+// g_pattern_match() instead while supplying the reversed string.
+func PatternMatchString(pspec *PatternSpec, string string) bool
+
+// PointerBitLock: this is equivalent to g_bit_lock, but working on pointers (or
+// other pointer-sized values).
+//
+// For portability reasons, you may only lock on the bottom 32 bits of the
+// pointer.
+func PointerBitLock(address *unsafe.Pointer, lockBit int)
+
+// PointerBitTrylock: this is equivalent to g_bit_trylock, but working on
+// pointers (or other pointer-sized values).
+//
+// For portability reasons, you may only lock on the bottom 32 bits of the
+// pointer.
+func PointerBitTrylock(address *unsafe.Pointer, lockBit int) bool
+
+// PointerBitUnlock: this is equivalent to g_bit_unlock, but working on pointers
+// (or other pointer-sized values).
+//
+// For portability reasons, you may only lock on the bottom 32 bits of the
+// pointer.
+func PointerBitUnlock(address *unsafe.Pointer, lockBit int)
+
+// Poll: polls @fds, as with the poll() system call, but portably. (On systems
+// that don't have poll(), it is emulated using select().) This is used
+// internally by Context, but it can be called directly if you need to block
+// until a file descriptor is ready, but don't want to run the full main loop.
+//
+// Each element of @fds is a FD describing a single file descriptor to poll. The
+// @fd field indicates the file descriptor, and the @events field indicates the
+// events to poll for. On return, the @revents fields will be filled with the
+// events that actually occurred.
+//
+// On POSIX systems, the file descriptors in @fds can be any sort of file
+// descriptor, but the situation is much more complicated on Windows. If you
+// need to use g_poll() in code that has to run on Windows, the easiest solution
+// is to construct all of your FDs with g_io_channel_win32_make_pollfd().
+func Poll(fds *PollFD, nfds uint, timeout int) int
+
+// PrefixError: formats a string according to @format and prefix it to an
+// existing error message. If @err is nil (ie: no error variable) then do
+// nothing.
+//
+// If *@err is nil (ie: an error variable is present but there is no error
+// condition) then also do nothing.
+func PrefixError(err **Error, format string)
+
+// Print: outputs a formatted message via the print handler. The default print
+// handler simply outputs the message to stdout, without appending a trailing
+// new-line character. Typically, @format should end with its own new-line
+// character.
+//
+// g_print() should not be used from within libraries for debugging messages,
+// since it may be redirected by applications to special purpose message windows
+// or even files. Instead, libraries should use g_log(), g_log_structured(), or
+// the convenience macros g_message(), g_warning() and g_error().
+func Print(format string)
+
+// Printerr: outputs a formatted message via the error message handler. The
+// default handler simply outputs the message to stderr, without appending a
+// trailing new-line character. Typically, @format should end with its own
+// new-line character.
+//
+// g_printerr() should not be used from within libraries. Instead g_log() or
+// g_log_structured() should be used, or the convenience macros g_message(),
+// g_warning() and g_error().
+func Printerr(format string)
+
+// Printf: an implementation of the standard printf() function which supports
+// positional parameters, as specified in the Single Unix Specification.
+//
+// As with the standard printf(), this does not automatically append a trailing
+// new-line character to the message, so typically @format should end with its
+// own new-line character.
+//
+// `glib/gprintf.h` must be explicitly included in order to use this function.
+func Printf(format string) int
+
+// PrintfStringUpperBound: calculates the maximum space needed to store the
+// output of the sprintf() function.
+func PrintfStringUpperBound(format string) uint
+
+// PropagateError: if @dest is nil, free @src; otherwise, moves @src into
+// *@dest. The error variable @dest points to must be nil.
+//
+// @src must be non-nil.
+//
+// Note that @src is no longer valid after this call. If you want to keep using
+// the same GError*, you need to set it to nil after calling this function on
+// it.
+func PropagateError(dest **Error, src *Error)
+
+// PropagatePrefixedError: if @dest is nil, free @src; otherwise, moves @src
+// into *@dest. *@dest must be nil. After the move, add a prefix as with
+// g_prefix_error().
+func PropagatePrefixedError(dest **Error, src *Error, format string)
+
+// PtrArrayFind: checks whether @needle exists in @haystack. If the element is
+// found, true is returned and the element’s index is returned in @index_ (if
+// non-nil). Otherwise, false is returned and @index_ is undefined. If @needle
+// exists multiple times in @haystack, the index of the first instance is
+// returned.
+//
+// This does pointer comparisons only. If you want to use more complex equality
+// checks, such as string comparisons, use g_ptr_array_find_with_equal_func().
+func PtrArrayFind(needle unsafe.Pointer, index_ *uint) bool
+
+// PtrArrayFindWithEqualFunc: checks whether @needle exists in @haystack, using
+// the given @equal_func. If the element is found, true is returned and the
+// element’s index is returned in @index_ (if non-nil). Otherwise, false is
+// returned and @index_ is undefined. If @needle exists multiple times in
+// @haystack, the index of the first instance is returned.
+//
+// @equal_func is called with the element from the array as its first parameter,
+// and @needle as its second parameter. If @equal_func is nil, pointer equality
+// is used.
+func PtrArrayFindWithEqualFunc(needle unsafe.Pointer, equalFunc EqualFunc, index_ *uint) bool
+
+// QsortWithData: this is just like the standard C qsort() function, but the
+// comparison routine accepts a user data argument.
+//
+// This is guaranteed to be a stable sort since version 2.32.
+func QsortWithData(pbase unsafe.Pointer, totalElems int, size uint, compareFunc CompareDataFunc, userData unsafe.Pointer)
+
+// QuarkFromStaticString: gets the #GQuark identifying the given (static)
+// string. If the string does not currently have an associated #GQuark, a new
+// #GQuark is created, linked to the given string.
+//
+// Note that this function is identical to g_quark_from_string() except that if
+// a new #GQuark is created the string itself is used rather than a copy. This
+// saves memory, but can only be used if the string will continue to exist until
+// the program terminates. It can be used with statically allocated strings in
+// the main program, but not with statically allocated memory in dynamically
+// loaded modules, if you expect to ever unload the module again (e.g. do not
+// use this function in GTK+ theme engines).
+//
+// This function must not be used before library constructors have finished
+// running. In particular, this means it cannot be used to initialize global
+// variables in C++.
+func QuarkFromStaticString(string string) Quark
+
+// QuarkFromString: gets the #GQuark identifying the given string. If the string
+// does not currently have an associated #GQuark, a new #GQuark is created,
+// using a copy of the string.
+//
+// This function must not be used before library constructors have finished
+// running. In particular, this means it cannot be used to initialize global
+// variables in C++.
+func QuarkFromString(string string) Quark
+
+// QuarkToString: gets the string associated with the given #GQuark.
+func QuarkToString(quark Quark) string
+
+// QuarkTryString: gets the #GQuark associated with the given string, or 0 if
+// string is nil or it has no associated #GQuark.
+//
+// If you want the GQuark to be created if it doesn't already exist, use
+// g_quark_from_string() or g_quark_from_static_string().
+//
+// This function must not be used before library constructors have finished
+// running.
+func QuarkTryString(string string) Quark
+
+// RandomDouble: returns a random #gdouble equally distributed over the range
+// [0..1).
+func RandomDouble() float64
+
+// RandomDoubleRange: returns a random #gdouble equally distributed over the
+// range [@begin..@end).
+func RandomDoubleRange(begin float64, end float64) float64
+
+// RandomInt: return a random #guint32 equally distributed over the range
+// [0..2^32-1].
+func RandomInt() uint32
+
+// RandomIntRange: returns a random #gint32 equally distributed over the range
+// [@begin..@end-1].
+func RandomIntRange(begin int32, end int32) int32
+
+// RandomSetSeed: sets the seed for the global random number generator, which is
+// used by the g_random_* functions, to @seed.
+func RandomSetSeed(seed uint32)
+
+// RcBoxAcquire: acquires a reference on the data pointed by @mem_block.
+func RcBoxAcquire(memBlock unsafe.Pointer) unsafe.Pointer
+
+// RcBoxAlloc: allocates @block_size bytes of memory, and adds reference
+// counting semantics to it.
+//
+// The data will be freed when its reference count drops to zero.
+//
+// The allocated data is guaranteed to be suitably aligned for any built-in
+// type.
+func RcBoxAlloc(blockSize uint) unsafe.Pointer
+
+// RcBoxAlloc0: allocates @block_size bytes of memory, and adds reference
+// counting semantics to it.
+//
+// The contents of the returned data is set to zero.
+//
+// The data will be freed when its reference count drops to zero.
+//
+// The allocated data is guaranteed to be suitably aligned for any built-in
+// type.
+func RcBoxAlloc0(blockSize uint) unsafe.Pointer
+
+// RcBoxDup: allocates a new block of data with reference counting semantics,
+// and copies @block_size bytes of @mem_block into it.
+func RcBoxDup(blockSize uint, memBlock unsafe.Pointer) unsafe.Pointer
+
+// RcBoxGetSize: retrieves the size of the reference counted data pointed by
+// @mem_block.
+func RcBoxGetSize(memBlock unsafe.Pointer) uint
+
+// RcBoxRelease: releases a reference on the data pointed by @mem_block.
+//
+// If the reference was the last one, it will free the resources allocated for
+// @mem_block.
+func RcBoxRelease(memBlock unsafe.Pointer)
+
+// RcBoxReleaseFull: releases a reference on the data pointed by @mem_block.
+//
+// If the reference was the last one, it will call @clear_func to clear the
+// contents of @mem_block, and then will free the resources allocated for
+// @mem_block.
+func RcBoxReleaseFull(memBlock unsafe.Pointer)
+
+// Realloc: reallocates the memory pointed to by @mem, so that it now has space
+// for @n_bytes bytes of memory. It returns the new address of the memory, which
+// may have been moved. @mem may be nil, in which case it's considered to have
+// zero-length. @n_bytes may be 0, in which case nil will be returned and @mem
+// will be freed unless it is nil.
+func Realloc(mem unsafe.Pointer, nBytes uint) unsafe.Pointer
+
+// ReallocN: this function is similar to g_realloc(), allocating (@n_blocks *
+// @n_block_bytes) bytes, but care is taken to detect possible overflow during
+// multiplication.
+func ReallocN(mem unsafe.Pointer, nBlocks uint, nBlockBytes uint) unsafe.Pointer
+
+// RefCountCompare: compares the current value of @rc with @val.
+func RefCountCompare(rc *int, val int) bool
+
+// RefCountDec: decreases the reference count.
+func RefCountDec(rc *int) bool
+
+// RefCountInc: increases the reference count.
+func RefCountInc(rc *int)
+
+// RefCountInit: initializes a reference count variable.
+func RefCountInit(rc *int)
+
+// RefStringAcquire: acquires a reference on a string.
+func RefStringAcquire(str string) string
+
+// RefStringLength: retrieves the length of @str.
+func RefStringLength(str string) uint
+
+// RefStringNew: creates a new reference counted string and copies the contents
+// of @str into it.
+func RefStringNew(str string) string
+
+// RefStringNewIntern: creates a new reference counted string and copies the
+// content of @str into it.
+//
+// If you call this function multiple times with the same @str, or with the same
+// contents of @str, it will return a new reference, instead of creating a new
+// string.
+func RefStringNewIntern(str string) string
+
+// RefStringNewLen: creates a new reference counted string and copies the
+// contents of @str into it, up to @len bytes.
+//
+// Since this function does not stop at nul bytes, it is the caller's
+// responsibility to ensure that @str has at least @len addressable bytes.
+func RefStringNewLen(str string, len int) string
+
+// RefStringRelease: releases a reference on a string; if it was the last
+// reference, the resources allocated by the string are freed as well.
+func RefStringRelease(str string)
+
+// RegexCheckReplacement: checks whether @replacement is a valid replacement
+// string (see g_regex_replace()), i.e. that all escape sequences in it are
+// valid.
+//
+// If @has_references is not nil then @replacement is checked for pattern
+// references. For instance, replacement text 'foo\n' does not contain
+// references and may be evaluated without information about actual match, but
+// '\0\1' (whole match followed by first subpattern) requires valid Info object.
+func RegexCheckReplacement(replacement string, hasReferences *bool) bool
+
+func RegexErrorQuark() Quark
+
+// RegexEscapeNUL: escapes the nul characters in @string to "\x00". It can be
+// used to compile a regex with embedded nul characters.
+//
+// For completeness, @length can be -1 for a nul-terminated string. In this case
+// the output string will be of course equal to @string.
+func RegexEscapeNUL(string string, length int) string
+
+// RegexEscapeString: escapes the special characters used for regular
+// expressions in @string, for instance "a.b*c" becomes "a\.b\*c". This function
+// is useful to dynamically generate regular expressions.
+//
+// @string can contain nul characters that are replaced with "\0", in this case
+// remember to specify the correct length of @string in @length.
+func RegexEscapeString(length int) string
+
+// RegexMatchSimple: scans for a match in @string for @pattern.
+//
+// This function is equivalent to g_regex_match() but it does not require to
+// compile the pattern with g_regex_new(), avoiding some lines of code when you
+// need just to do a match without extracting substrings, capture counts, and so
+// on.
+//
+// If this function is to be called on the same @pattern more than once, it's
+// more efficient to compile the pattern once with g_regex_new() and then use
+// g_regex_match().
+func RegexMatchSimple(pattern string, string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) bool
+
+// RegexSplitSimple: breaks the string on the pattern, and returns an array of
+// the tokens. If the pattern contains capturing parentheses, then the text for
+// each of the substrings will also be returned. If the pattern does not match
+// anywhere in the string, then the whole string is returned as the first token.
+//
+// This function is equivalent to g_regex_split() but it does not require to
+// compile the pattern with g_regex_new(), avoiding some lines of code when you
+// need just to do a split without extracting substrings, capture counts, and so
+// on.
+//
+// If this function is to be called on the same @pattern more than once, it's
+// more efficient to compile the pattern once with g_regex_new() and then use
+// g_regex_split().
+//
+// As a special case, the result of splitting the empty string "" is an empty
+// vector, not a vector containing a single string. The reason for this special
+// case is that being able to represent an empty vector is typically more useful
+// than consistent handling of empty elements. If you do need to represent empty
+// elements, you'll need to check for the empty string before calling this
+// function.
+//
+// A pattern that can match empty strings splits @string into separate
+// characters wherever it matches the empty string between characters. For
+// example splitting "ab c" using as a separator "\s*", you will get "a", "b"
+// and "c".
+func RegexSplitSimple(pattern string, string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) []string
+
+// ReloadUserSpecialDirsCache: resets the cache used for
+// g_get_user_special_dir(), so that the latest on-disk version is used. Call
+// this only if you just changed the data on disk yourself.
+//
+// Due to thread safety issues this may cause leaking of strings that were
+// previously returned from g_get_user_special_dir() that can't be freed. We
+// ensure to only leak the data for the directories that actually changed value
+// though.
+func ReloadUserSpecialDirsCache()
+
+// ReturnIfFailWarning: internal function used to print messages from the public
+// g_return_if_fail() and g_return_val_if_fail() macros.
+func ReturnIfFailWarning(logDomain string, prettyFunction string, expression string)
+
+// Rmdir: a wrapper for the POSIX rmdir() function. The rmdir() function deletes
+// a directory from the filesystem.
+//
+// See your C library manual for more details about how rmdir() works on your
+// system.
+func Rmdir(filename *string) int
+
+// SequenceGet: returns the data that @iter points to.
+func SequenceGet(iter *SequenceIter) unsafe.Pointer
+
+// SequenceInsertBefore: inserts a new item just before the item pointed to by
+// @iter.
+func SequenceInsertBefore(iter *SequenceIter, data unsafe.Pointer) *SequenceIter
+
+// SequenceMove: moves the item pointed to by @src to the position indicated by
+// @dest. After calling this function @dest will point to the position
+// immediately after @src. It is allowed for @src and @dest to point into
+// different sequences.
+func SequenceMove(src *SequenceIter, dest *SequenceIter)
+
+// SequenceMoveRange: inserts the (@begin, @end) range at the destination
+// pointed to by @dest. The @begin and @end iters must point into the same
+// sequence. It is allowed for @dest to point to a different sequence than the
+// one pointed into by @begin and @end.
+//
+// If @dest is nil, the range indicated by @begin and @end is removed from the
+// sequence. If @dest points to a place within the (@begin, @end) range, the
+// range does not move.
+func SequenceMoveRange(dest *SequenceIter, begin *SequenceIter, end *SequenceIter)
+
+// SequenceRangeGetMidpoint: finds an iterator somewhere in the range (@begin,
+// @end). This iterator will be close to the middle of the range, but is not
+// guaranteed to be exactly in the middle.
+//
+// The @begin and @end iterators must both point to the same sequence and @begin
+// must come before or be equal to @end in the sequence.
+func SequenceRangeGetMidpoint(begin *SequenceIter, end *SequenceIter) *SequenceIter
+
+// SequenceRemove: removes the item pointed to by @iter. It is an error to pass
+// the end iterator to this function.
+//
+// If the sequence has a data destroy function associated with it, this function
+// is called on the data for the removed item.
+func SequenceRemove(iter *SequenceIter)
+
+// SequenceRemoveRange: removes all items in the (@begin, @end) range.
+//
+// If the sequence has a data destroy function associated with it, this function
+// is called on the data for the removed items.
+func SequenceRemoveRange(begin *SequenceIter, end *SequenceIter)
+
+// SequenceSet: changes the data for the item pointed to by @iter to be @data.
+// If the sequence has a data destroy function associated with it, that function
+// is called on the existing data that @iter pointed to.
+func SequenceSet(iter *SequenceIter, data unsafe.Pointer)
+
+// SequenceSwap: swaps the items pointed to by @a and @b. It is allowed for @a
+// and @b to point into difference sequences.
+func SequenceSwap(a *SequenceIter, b *SequenceIter)
+
+// SetApplicationName: sets a human-readable name for the application. This name
+// should be localized if possible, and is intended for display to the user.
+// Contrast with g_set_prgname(), which sets a non-localized name.
+// g_set_prgname() will be called automatically by gtk_init(), but
+// g_set_application_name() will not.
+//
+// Note that for thread safety reasons, this function can only be called once.
+//
+// The application name will be used in contexts such as error messages, or when
+// displaying an application's name in the task list.
+func SetApplicationName(applicationName string)
+
+// SetError: does nothing if @err is nil; if @err is non-nil, then *@err must be
+// nil. A new #GError is created and assigned to *@err.
+func SetError(err **Error, domain Quark, code int, format string)
+
+// SetErrorLiteral: does nothing if @err is nil; if @err is non-nil, then *@err
+// must be nil. A new #GError is created and assigned to *@err. Unlike
+// g_set_error(), @message is not a printf()-style format string. Use this
+// function if @message contains text you don't have control over, that could
+// include printf() escape sequences.
+func SetErrorLiteral(err **Error, domain Quark, code int, message string)
+
+// SetPrgname: sets the name of the program. This name should not be localized,
+// in contrast to g_set_application_name().
+//
+// If you are using #GApplication the program name is set in
+// g_application_run(). In case of GDK or GTK+ it is set in gdk_init(), which is
+// called by gtk_init() and the Application::startup handler. The program name
+// is found by taking the last component of @argv[0].
+//
+// Note that for thread-safety reasons this function can only be called once.
+func SetPrgname(prgname string)
+
+// SetPrintHandler: sets the print handler.
+//
+// Any messages passed to g_print() will be output via the new handler. The
+// default handler simply outputs the message to stdout. By providing your own
+// handler you can redirect the output, to a GTK+ widget or a log file for
+// example.
+func SetPrintHandler(_func PrintFunc) PrintFunc
+
+// SetPrinterrHandler: sets the handler for printing error messages.
+//
+// Any messages passed to g_printerr() will be output via the new handler. The
+// default handler simply outputs the message to stderr. By providing your own
+// handler you can redirect the output, to a GTK+ widget or a log file for
+// example.
+func SetPrinterrHandler(_func PrintFunc) PrintFunc
+
+// Setenv: sets an environment variable. On UNIX, both the variable's name and
+// value can be arbitrary byte strings, except that the variable's name cannot
+// contain '='. On Windows, they should be in UTF-8.
+//
+// Note that on some systems, when variables are overwritten, the memory used
+// for the previous variables and its value isn't reclaimed.
+//
+// You should be mindful of the fact that environment variable handling in UNIX
+// is not thread-safe, and your program may crash if one thread calls g_setenv()
+// while another thread is calling getenv(). (And note that many functions, such
+// as gettext(), call getenv() internally.) This function is only safe to use at
+// the very start of your program, before creating any other threads (or
+// creating objects that create worker threads of their own).
+//
+// If you need to set up the environment for a child process, you can use
+// g_get_environ() to get an environment array, modify that with
+// g_environ_setenv() and g_environ_unsetenv(), and then pass that array
+// directly to execvpe(), g_spawn_async(), or the like.
+func Setenv(variable *string, value *string, overwrite bool) bool
+
+func ShellErrorQuark() Quark
+
+// ShellParseArgv: parses a command line into an argument vector, in much the
+// same way the shell would, but without many of the expansions the shell would
+// perform (variable expansion, globs, operators, filename expansion, etc. are
+// not supported). The results are defined to be the same as those you would get
+// from a UNIX98 /bin/sh, as long as the input contains none of the unsupported
+// shell expansions. If the input does contain such expansions, they are passed
+// through literally. Possible errors are those from the SHELL_ERROR domain.
+// Free the returned vector with g_strfreev().
+func ShellParseArgv(commandLine *string, argcp *int) bool
+
+// ShellQuote: quotes a string so that the shell (/bin/sh) will interpret the
+// quoted string to mean @unquoted_string. If you pass a filename to the shell,
+// for example, you should first quote it with this function. The return value
+// must be freed with g_free(). The quoting style used is undefined (single or
+// double quotes may be used).
+func ShellQuote(unquotedString *string) *string
+
+// ShellUnquote: unquotes a string as the shell (/bin/sh) would. Only handles
+// quotes; if a string contains file globs, arithmetic operators, variables,
+// backticks, redirections, or other special-to-the-shell features, the result
+// will be different from the result a real shell would produce (the variables,
+// backticks, etc. will be passed through literally instead of being expanded).
+// This function is guaranteed to succeed if applied to the result of
+// g_shell_quote(). If it fails, it returns nil and sets the error. The
+// @quoted_string need not actually contain quoted or escaped text;
+// g_shell_unquote() simply goes through the string and unquotes/unescapes
+// anything that the shell would. Both single and double quotes are handled, as
+// are escapes including escaped newlines. The return value must be freed with
+// g_free(). Possible errors are in the SHELL_ERROR domain.
+//
+// Shell quoting rules are a bit strange. Single quotes preserve the literal
+// string exactly. escape sequences are not allowed; not even \' - if you want a
+// ' in the quoted text, you have to do something like 'foo'\”bar'. Double
+// quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
+// double quotes preserve things literally.
+func ShellUnquote(quotedString *string) *string
+
+// SliceAlloc: allocates a block of memory from the slice allocator. The block
+// address handed out can be expected to be aligned to at least 1 * sizeof
+// (void*), though in general slices are 2 * sizeof (void*) bytes aligned, if a
+// malloc() fallback implementation is used instead, the alignment may be
+// reduced in a libc dependent fashion. Note that the underlying slice
+// allocation mechanism can be changed with the
+// [`G_SLICE=always-malloc`][G_SLICE] environment variable.
+func SliceAlloc(blockSize uint) unsafe.Pointer
+
+// SliceAlloc0: allocates a block of memory via g_slice_alloc() and initializes
+// the returned memory to 0. Note that the underlying slice allocation mechanism
+// can be changed with the [`G_SLICE=always-malloc`][G_SLICE] environment
+// variable.
+func SliceAlloc0(blockSize uint) unsafe.Pointer
+
+// SliceCopy: allocates a block of memory from the slice allocator and copies
+// @block_size bytes into it from @mem_block.
+//
+// @mem_block must be non-nil if @block_size is non-zero.
+func SliceCopy(blockSize uint, memBlock unsafe.Pointer) unsafe.Pointer
+
+// SliceFree1: frees a block of memory.
+//
+// The memory must have been allocated via g_slice_alloc() or g_slice_alloc0()
+// and the @block_size has to match the size specified upon allocation. Note
+// that the exact release behaviour can be changed with the
+// [`G_DEBUG=gc-friendly`][G_DEBUG] environment variable, also see
+// [`G_SLICE`][G_SLICE] for related debugging options.
+//
+// If @mem_block is nil, this function does nothing.
+func SliceFree1(blockSize uint, memBlock unsafe.Pointer)
+
+// SliceFreeChainWithOffset: frees a linked list of memory blocks of structure
+// type @type.
+//
+// The memory blocks must be equal-sized, allocated via g_slice_alloc() or
+// g_slice_alloc0() and linked together by a @next pointer (similar to List).
+// The offset of the @next field in each block is passed as third argument. Note
+// that the exact release behaviour can be changed with the
+// [`G_DEBUG=gc-friendly`][G_DEBUG] environment variable, also see
+// [`G_SLICE`][G_SLICE] for related debugging options.
+//
+// If @mem_chain is nil, this function does nothing.
+func SliceFreeChainWithOffset(blockSize uint, memChain unsafe.Pointer, nextOffset uint)
+
+func SliceGetConfig(ckey SliceConfig) int64
+
+func SliceGetConfigState(ckey SliceConfig, address int64, nValues *uint) *int64
+
+func SliceSetConfig(ckey SliceConfig, value int64)
+
+// Snprintf: a safer form of the standard sprintf() function. The output is
+// guaranteed to not exceed @n characters (including the terminating nul
+// character), so it is easy to ensure that a buffer overflow cannot occur.
+//
+// See also g_strdup_printf().
+//
+// In versions of GLib prior to 1.2.3, this function may return -1 if the output
+// was truncated, and the truncated string may not be nul-terminated. In
+// versions prior to 1.3.12, this function returns the length of the output
+// string.
+//
+// The return value of g_snprintf() conforms to the snprintf() function as
+// standardized in ISO C99. Note that this is different from traditional
+// snprintf(), which returns the length of the output string.
+//
+// The format string may contain positional parameters, as specified in the
+// Single Unix Specification.
+func Snprintf(string string, n uint32, format string) int
+
+// SourceRemove: removes the source with the given ID from the default main
+// context. You must use g_source_destroy() for sources added to a non-default
+// main context.
+//
+// The ID of a #GSource is given by g_source_get_id(), or will be returned by
+// the functions g_source_attach(), g_idle_add(), g_idle_add_full(),
+// g_timeout_add(), g_timeout_add_full(), g_child_watch_add(),
+// g_child_watch_add_full(), g_io_add_watch(), and g_io_add_watch_full().
+//
+// It is a programmer error to attempt to remove a non-existent source.
+//
+// More specifically: source IDs can be reissued after a source has been
+// destroyed and therefore it is never valid to use this function with a source
+// ID which may have already been removed. An example is when scheduling an idle
+// to run in another thread with g_idle_add(): the idle may already have run and
+// been removed by the time this function is called on its (now invalid) source
+// ID. This source ID may have been reissued, leading to the operation being
+// performed against the wrong source.
+func SourceRemove(tag uint) bool
+
+// SourceRemoveByFuncsUserData: removes a source from the default main loop
+// context given the source functions and user data. If multiple sources exist
+// with the same source functions and user data, only one will be destroyed.
+func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData unsafe.Pointer) bool
+
+// SourceRemoveByUserData: removes a source from the default main loop context
+// given the user data for the callback. If multiple sources exist with the same
+// user data, only one will be destroyed.
+func SourceRemoveByUserData(userData unsafe.Pointer) bool
+
+// SourceSetNameByID: sets the name of a source using its ID.
+//
+// This is a convenience utility to set source names from the return value of
+// g_idle_add(), g_timeout_add(), etc.
+//
+// It is a programmer error to attempt to set the name of a non-existent source.
+//
+// More specifically: source IDs can be reissued after a source has been
+// destroyed and therefore it is never valid to use this function with a source
+// ID which may have already been removed. An example is when scheduling an idle
+// to run in another thread with g_idle_add(): the idle may already have run and
+// been removed by the time this function is called on its (now invalid) source
+// ID. This source ID may have been reissued, leading to the operation being
+// performed against the wrong source.
+func SourceSetNameByID(tag uint, name string)
+
+// SpacedPrimesClosest: gets the smallest prime number from a built-in array of
+// primes which is larger than @num. This is used within GLib to calculate the
+// optimum size of a Table.
+//
+// The built-in array of primes ranges from 11 to 13845163 such that each prime
+// is approximately 1.5-2 times the previous prime.
+func SpacedPrimesClosest(num uint) uint
+
+// SpawnAsync: see g_spawn_async_with_pipes() for a full description; this
+// function simply calls the g_spawn_async_with_pipes() without any pipes.
+//
+// You should call g_spawn_close_pid() on the returned child process reference
+// when you don't need it any more.
+//
+// If you are writing a GTK+ application, and the program you are spawning is a
+// graphical application too, then to ensure that the spawned program opens its
+// windows on the right screen, you may want to use AppLaunchContext,
+// LaunchContext, or set the DISPLAY environment variable.
+//
+// Note that the returned @child_pid on Windows is a handle to the child process
+// and not its identifier. Process handles and process identifiers are different
+// concepts on Windows.
+func SpawnAsync(workingDirectory *string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, childPid *Pid) bool
+
+// SpawnAsyncWithFds: identical to g_spawn_async_with_pipes() but instead of
+// creating pipes for the stdin/stdout/stderr, you can pass existing file
+// descriptors into this function through the @stdin_fd, @stdout_fd and
+// @stderr_fd parameters. The following @flags also have their behaviour
+// slightly tweaked as a result:
+//
+// G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output will be
+// discarded, instead of going to the same location as the parent's standard
+// output. If you use this flag, @standard_output must be -1.
+// G_SPAWN_STDERR_TO_DEV_NULL means that the child's standard error will be
+// discarded, instead of going to the same location as the parent's standard
+// error. If you use this flag, @standard_error must be -1.
+// G_SPAWN_CHILD_INHERITS_STDIN means that the child will inherit the parent's
+// standard input (by default, the child's standard input is attached to
+// /dev/null). If you use this flag, @standard_input must be -1.
+//
+// It is valid to pass the same fd in multiple parameters (e.g. you can pass a
+// single fd for both stdout and stderr).
+func SpawnAsyncWithFds(workingDirectory *string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, childPid *Pid, stdinFd int, stdoutFd int, stderrFd int) bool
+
+// SpawnAsyncWithPipes: executes a child program asynchronously (your program
+// will not block waiting for the child to exit). The child program is specified
+// by the only argument that must be provided, @argv. @argv should be a
+// nil-terminated array of strings, to be passed as the argument vector for the
+// child. The first string in @argv is of course the name of the program to
+// execute. By default, the name of the program must be a full path. If @flags
+// contains the G_SPAWN_SEARCH_PATH flag, the `PATH` environment variable is
+// used to search for the executable. If @flags contains the
+// G_SPAWN_SEARCH_PATH_FROM_ENVP flag, the `PATH` variable from @envp is used to
+// search for the executable. If both the G_SPAWN_SEARCH_PATH and
+// G_SPAWN_SEARCH_PATH_FROM_ENVP flags are set, the `PATH` variable from @envp
+// takes precedence over the environment variable.
+//
+// If the program name is not a full path and G_SPAWN_SEARCH_PATH flag is not
+// used, then the program will be run from the current directory (or
+// @working_directory, if specified); this might be unexpected or even dangerous
+// in some cases when the current directory is world-writable.
+//
+// On Windows, note that all the string or string vector arguments to this
+// function and the other g_spawn*() functions are in UTF-8, the GLib file name
+// encoding. Unicode characters that are not part of the system codepage passed
+// in these arguments will be correctly available in the spawned program only if
+// it uses wide character API to retrieve its command line. For C programs built
+// with Microsoft's tools it is enough to make the program have a wmain()
+// instead of main(). wmain() has a wide character argument vector as parameter.
+//
+// At least currently, mingw doesn't support wmain(), so if you use mingw to
+// develop the spawned program, it should call g_win32_get_command_line() to get
+// arguments in UTF-8.
+//
+// On Windows the low-level child process creation API CreateProcess() doesn't
+// use argument vectors, but a command line. The C runtime library's spawn*()
+// family of functions (which g_spawn_async_with_pipes() eventually calls) paste
+// the argument vector elements together into a command line, and the C runtime
+// startup code does a corresponding reconstruction of an argument vector from
+// the command line, to be passed to main(). Complications arise when you have
+// argument vector elements that contain spaces or double quotes. The `spawn*()`
+// functions don't do any quoting or escaping, but on the other hand the startup
+// code does do unquoting and unescaping in order to enable receiving arguments
+// with embedded spaces or double quotes. To work around this asymmetry,
+// g_spawn_async_with_pipes() will do quoting and escaping on argument vector
+// elements that need it before calling the C runtime spawn() function.
+//
+// The returned @child_pid on Windows is a handle to the child process, not its
+// identifier. Process handles and process identifiers are different concepts on
+// Windows.
+//
+// @envp is a nil-terminated array of strings, where each string has the form
+// `KEY=VALUE`. This will become the child's environment. If @envp is nil, the
+// child inherits its parent's environment.
+//
+// @flags should be the bitwise OR of any flags you want to affect the
+// function's behaviour. The G_SPAWN_DO_NOT_REAP_CHILD means that the child will
+// not automatically be reaped; you must use a child watch (g_child_watch_add())
+// to be notified about the death of the child process, otherwise it will stay
+// around as a zombie process until this process exits. Eventually you must call
+// g_spawn_close_pid() on the @child_pid, in order to free resources which may
+// be associated with the child process. (On Unix, using a child watch is
+// equivalent to calling waitpid() or handling the SIGCHLD signal manually. On
+// Windows, calling g_spawn_close_pid() is equivalent to calling CloseHandle()
+// on the process handle returned in @child_pid). See g_child_watch_add().
+//
+// Open UNIX file descriptors marked as `FD_CLOEXEC` will be automatically
+// closed in the child process. G_SPAWN_LEAVE_DESCRIPTORS_OPEN means that other
+// open file descriptors will be inherited by the child; otherwise all
+// descriptors except stdin/stdout/stderr will be closed before calling exec()
+// in the child. G_SPAWN_SEARCH_PATH means that @argv[0] need not be an absolute
+// path, it will be looked for in the `PATH` environment variable.
+// G_SPAWN_SEARCH_PATH_FROM_ENVP means need not be an absolute path, it will be
+// looked for in the `PATH` variable from @envp. If both G_SPAWN_SEARCH_PATH and
+// G_SPAWN_SEARCH_PATH_FROM_ENVP are used, the value from @envp takes precedence
+// over the environment. G_SPAWN_STDOUT_TO_DEV_NULL means that the child's
+// standard output will be discarded, instead of going to the same location as
+// the parent's standard output. If you use this flag, @standard_output must be
+// nil. G_SPAWN_STDERR_TO_DEV_NULL means that the child's standard error will be
+// discarded, instead of going to the same location as the parent's standard
+// error. If you use this flag, @standard_error must be nil.
+// G_SPAWN_CHILD_INHERITS_STDIN means that the child will inherit the parent's
+// standard input (by default, the child's standard input is attached to
+// `/dev/null`). If you use this flag, @standard_input must be nil.
+// G_SPAWN_FILE_AND_ARGV_ZERO means that the first element of @argv is the file
+// to execute, while the remaining elements are the actual argument vector to
+// pass to the file. Normally g_spawn_async_with_pipes() uses @argv[0] as the
+// file to execute, and passes all of @argv to the child.
+//
+// @child_setup and @user_data are a function and user data. On POSIX platforms,
+// the function is called in the child after GLib has performed all the setup it
+// plans to perform (including creating pipes, closing file descriptors, etc.)
+// but before calling exec(). That is, @child_setup is called just before
+// calling exec() in the child. Obviously actions taken in this function will
+// only affect the child, not the parent.
+//
+// On Windows, there is no separate fork() and exec() functionality. Child
+// processes are created and run with a single API call, CreateProcess(). There
+// is no sensible thing @child_setup could be used for on Windows so it is
+// ignored and not called.
+//
+// If non-nil, @child_pid will on Unix be filled with the child's process ID.
+// You can use the process ID to send signals to the child, or to use
+// g_child_watch_add() (or waitpid()) if you specified the
+// G_SPAWN_DO_NOT_REAP_CHILD flag. On Windows, @child_pid will be filled with a
+// handle to the child process only if you specified the
+// G_SPAWN_DO_NOT_REAP_CHILD flag. You can then access the child process using
+// the Win32 API, for example wait for its termination with the WaitFor*()
+// functions, or examine its exit code with GetExitCodeProcess(). You should
+// close the handle with CloseHandle() or g_spawn_close_pid() when you no longer
+// need it.
+//
+// If non-nil, the @standard_input, @standard_output, @standard_error locations
+// will be filled with file descriptors for writing to the child's standard
+// input or reading from its standard output or standard error. The caller of
+// g_spawn_async_with_pipes() must close these file descriptors when they are no
+// longer in use. If these parameters are nil, the corresponding pipe won't be
+// created.
+//
+// If @standard_input is nil, the child's standard input is attached to
+// `/dev/null` unless G_SPAWN_CHILD_INHERITS_STDIN is set.
+//
+// If @standard_error is NULL, the child's standard error goes to the same
+// location as the parent's standard error unless G_SPAWN_STDERR_TO_DEV_NULL is
+// set.
+//
+// If @standard_output is NULL, the child's standard output goes to the same
+// location as the parent's standard output unless G_SPAWN_STDOUT_TO_DEV_NULL is
+// set.
+//
+// @error can be nil to ignore errors, or non-nil to report errors. If an error
+// is set, the function returns false. Errors are reported even if they occur in
+// the child (for example if the executable in @argv[0] is not found). Typically
+// the `message` field of returned errors should be displayed to users. Possible
+// errors are those from the SPAWN_ERROR domain.
+//
+// If an error occurs, @child_pid, @standard_input, @standard_output, and
+// @standard_error will not be filled with valid values.
+//
+// If @child_pid is not nil and an error does not occur then the returned
+// process reference must be closed using g_spawn_close_pid().
+//
+// On modern UNIX platforms, GLib can use an efficient process launching
+// codepath driven internally by posix_spawn(). This has the advantage of
+// avoiding the fork-time performance costs of cloning the parent process
+// address space, and avoiding associated memory overcommit checks that are not
+// relevant in the context of immediately executing a distinct process. This
+// optimized codepath will be used provided that the following conditions are
+// met:
+//
+// 1. G_SPAWN_DO_NOT_REAP_CHILD is set 2. G_SPAWN_LEAVE_DESCRIPTORS_OPEN is set
+// 3. G_SPAWN_SEARCH_PATH_FROM_ENVP is not set 4. @working_directory is nil 5.
+// @child_setup is nil 6. The program is of a recognised binary format, or has a
+// shebang. Otherwise, GLib will have to execute the program through the shell,
+// which is not done using the optimized codepath.
+//
+// If you are writing a GTK+ application, and the program you are spawning is a
+// graphical application too, then to ensure that the spawned program opens its
+// windows on the right screen, you may want to use AppLaunchContext,
+// LaunchContext, or set the DISPLAY environment variable.
+func SpawnAsyncWithPipes(workingDirectory *string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, childPid *Pid, standardInput *int, standardOutput *int, standardError *int) bool
+
+// SpawnCheckExitStatus: set @error if @exit_status indicates the child exited
+// abnormally (e.g. with a nonzero exit code, or via a fatal signal).
+//
+// The g_spawn_sync() and g_child_watch_add() family of APIs return an exit
+// status for subprocesses encoded in a platform-specific way. On Unix, this is
+// guaranteed to be in the same format waitpid() returns, and on Windows it is
+// guaranteed to be the result of GetExitCodeProcess().
+//
+// Prior to the introduction of this function in GLib 2.34, interpreting
+// @exit_status required use of platform-specific APIs, which is problematic for
+// software using GLib as a cross-platform layer.
+//
+// Additionally, many programs simply want to determine whether or not the child
+// exited successfully, and either propagate a #GError or print a message to
+// standard error. In that common case, this function can be used. Note that the
+// error message in @error will contain human-readable information about the
+// exit status.
+//
+// The @domain and @code of @error have special semantics in the case where the
+// process has an "exit code", as opposed to being killed by a signal. On Unix,
+// this happens if WIFEXITED() would be true of @exit_status. On Windows, it is
+// always the case.
+//
+// The special semantics are that the actual exit code will be the code set in
+// @error, and the domain will be G_SPAWN_EXIT_ERROR. This allows you to
+// differentiate between different exit codes.
+//
+// If the process was terminated by some means other than an exit status, the
+// domain will be G_SPAWN_ERROR, and the code will be G_SPAWN_ERROR_FAILED.
+//
+// This function just offers convenience; you can of course also check the
+// available platform via a macro such as G_OS_UNIX, and use WIFEXITED() and
+// WEXITSTATUS() on @exit_status directly. Do not attempt to scan or parse the
+// error message string; it may be translated and/or change in future versions
+// of GLib.
+func SpawnCheckExitStatus(exitStatus int) bool
+
+// SpawnClosePid: on some platforms, notably Windows, the #GPid type represents
+// a resource which must be closed to prevent resource leaking.
+// g_spawn_close_pid() is provided for this purpose. It should be used on all
+// platforms, even though it doesn't do anything under UNIX.
+func SpawnClosePid(pid Pid)
+
+// SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
+// command line with g_shell_parse_argv() and passes it to g_spawn_async(). Runs
+// a command line in the background. Unlike g_spawn_async(), the
+// G_SPAWN_SEARCH_PATH flag is enabled, other flags are not. Note that
+// G_SPAWN_SEARCH_PATH can have security implications, so consider using
+// g_spawn_async() directly if appropriate. Possible errors are those from
+// g_shell_parse_argv() and g_spawn_async().
+//
+// The same concerns on Windows apply as for g_spawn_command_line_sync().
+func SpawnCommandLineAsync(commandLine *string) bool
+
+// SpawnCommandLineSync: a simple version of g_spawn_sync() with little-used
+// parameters removed, taking a command line instead of an argument vector. See
+// g_spawn_sync() for full details. @command_line will be parsed by
+// g_shell_parse_argv(). Unlike g_spawn_sync(), the G_SPAWN_SEARCH_PATH flag is
+// enabled. Note that G_SPAWN_SEARCH_PATH can have security implications, so
+// consider using g_spawn_sync() directly if appropriate. Possible errors are
+// those from g_spawn_sync() and those from g_shell_parse_argv().
+//
+// If @exit_status is non-nil, the platform-specific exit status of the child is
+// stored there; see the documentation of g_spawn_check_exit_status() for how to
+// use and interpret this.
+//
+// On Windows, please note the implications of g_shell_parse_argv() parsing
+// @command_line. Parsing is done according to Unix shell rules, not Windows
+// command interpreter rules. Space is a separator, and backslashes are special.
+// Thus you cannot simply pass a @command_line containing canonical Windows
+// paths, like "c:\\program files\\app\\app.exe", as the backslashes will be
+// eaten, and the space will act as a separator. You need to enclose such paths
+// with single quotes, like "'c:\\program files\\app\\app.exe'
+// 'e:\\folder\\argument.txt'".
+func SpawnCommandLineSync(commandLine *string, exitStatus *int) bool
+
+func SpawnErrorQuark() Quark
+
+func SpawnExitErrorQuark() Quark
+
+// SpawnSync: executes a child synchronously (waits for the child to exit before
+// returning). All output from the child is stored in @standard_output and
+// @standard_error, if those parameters are non-nil. Note that you must set the
+// G_SPAWN_STDOUT_TO_DEV_NULL and G_SPAWN_STDERR_TO_DEV_NULL flags when passing
+// nil for @standard_output and @standard_error.
+//
+// If @exit_status is non-nil, the platform-specific exit status of the child is
+// stored there; see the documentation of g_spawn_check_exit_status() for how to
+// use and interpret this. Note that it is invalid to pass
+// G_SPAWN_DO_NOT_REAP_CHILD in @flags, and on POSIX platforms, the same
+// restrictions as for g_child_watch_source_new() apply.
+//
+// If an error occurs, no data is returned in @standard_output, @standard_error,
+// or @exit_status.
+//
+// This function calls g_spawn_async_with_pipes() internally; see that function
+// for full details on the other parameters and details on how these functions
+// work on Windows.
+func SpawnSync(workingDirectory *string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, exitStatus *int) bool
+
+// Sprintf: an implementation of the standard sprintf() function which supports
+// positional parameters, as specified in the Single Unix Specification.
+//
+// Note that it is usually better to use g_snprintf(), to avoid the risk of
+// buffer overflow.
+//
+// `glib/gprintf.h` must be explicitly included in order to use this function.
+//
+// See also g_strdup_printf().
+func Sprintf(string string, format string) int
+
+// Stpcpy: copies a nul-terminated string into the dest buffer, include the
+// trailing nul, and return a pointer to the trailing nul byte. This is useful
+// for concatenating multiple strings together without having to repeatedly scan
+// for the end.
+func Stpcpy(dest string, src string) string
+
+// StrEqual: compares two strings for byte-by-byte equality and returns true if
+// they are equal. It can be passed to g_hash_table_new() as the @key_equal_func
+// parameter, when using non-nil strings as keys in a Table.
+//
+// This function is typically used for hash table comparisons, but can be used
+// for general purpose comparisons of non-nil strings. For a nil-safe string
+// comparison function, see g_strcmp0().
+func StrEqual(v1 unsafe.Pointer, v2 unsafe.Pointer) bool
+
+// StrHasPrefix: looks whether the string @str begins with @prefix.
+func StrHasPrefix(str string, prefix string) bool
+
+// StrHasSuffix: looks whether the string @str ends with @suffix.
+func StrHasSuffix(str string, suffix string) bool
+
+// StrHash: converts a string to a hash value.
+//
+// This function implements the widely used "djb" hash apparently posted by
+// Daniel Bernstein to comp.lang.c some time ago. The 32 bit unsigned hash value
+// starts at 5381 and for each byte 'c' in the string, is updated: `hash = hash
+// * 33 + c`. This function uses the signed value of each byte.
+//
+// It can be passed to g_hash_table_new() as the @hash_func parameter, when
+// using non-nil strings as keys in a Table.
+//
+// Note that this function may not be a perfect fit for all use cases. For
+// example, it produces some hash collisions with strings as short as 2.
+func StrHash(v unsafe.Pointer) uint
+
+// StrIsAscii: determines if a string is pure ASCII. A string is pure ASCII if
+// it contains no bytes with the high bit set.
+func StrIsAscii(str string) bool
+
+// StrMatchString: checks if a search conducted for @search_term should match
+// @potential_hit.
+//
+// This function calls g_str_tokenize_and_fold() on both @search_term and
+// @potential_hit. ASCII alternates are never taken for @search_term but will be
+// taken for @potential_hit according to the value of @accept_alternates.
+//
+// A hit occurs when each folded token in @search_term is a prefix of a folded
+// token from @potential_hit.
+//
+// Depending on how you're performing the search, it will typically be faster to
+// call g_str_tokenize_and_fold() on each string in your corpus and build an
+// index on the returned folded tokens, then call g_str_tokenize_and_fold() on
+// the search term and perform lookups into that index.
+//
+// As some examples, searching for ‘fred’ would match the potential hit ‘Smith,
+// Fred’ and also ‘Frédéric’. Searching for ‘Fréd’ would match ‘Frédéric’ but
+// not ‘Frederic’ (due to the one-directional nature of accent matching).
+// Searching ‘fo’ would match ‘Foo’ and ‘Bar Foo Baz’, but not ‘SFO’ (because no
+// word has ‘fo’ as a prefix).
+func StrMatchString(searchTerm string, potentialHit string, acceptAlternates bool) bool
+
+// StrToAscii: transliterate @str to plain ASCII.
+//
+// For best results, @str should be in composed normalised form.
+//
+// This function performs a reasonably good set of character replacements. The
+// particular set of replacements that is done may change by version or even by
+// runtime environment.
+//
+// If the source language of @str is known, it can used to improve the accuracy
+// of the translation by passing it as @from_locale. It should be a valid POSIX
+// locale string (of the form `language[_territory][.codeset][@modifier]`).
+//
+// If @from_locale is nil then the current locale is used.
+//
+// If you want to do translation for no specific locale, and you want it to be
+// done independently of the currently locale, specify `"C"` for @from_locale.
+func StrToAscii(str string, fromLocale string) string
+
+// StrTokenizeAndFold: tokenises @string and performs folding on each token.
+//
+// A token is a non-empty sequence of alphanumeric characters in the source
+// string, separated by non-alphanumeric characters. An "alphanumeric" character
+// for this purpose is one that matches g_unichar_isalnum() or
+// g_unichar_ismark().
+//
+// Each token is then (Unicode) normalised and case-folded. If @ascii_alternates
+// is non-nil and some of the returned tokens contain non-ASCII characters,
+// ASCII alternatives will be generated.
+//
+// The number of ASCII alternatives that are generated and the method for doing
+// so is unspecified, but @translit_locale (if specified) may improve the
+// transliteration if the language of the source string is known.
+func StrTokenizeAndFold(string string, translitLocale string) []string
+
+// g_ascii_strup (g_strcanon (str, "abc", '?'))
+//
+// reformatted = g_strcanon (g_strdup (const_str), "abc", '?'); ... g_free
+// (reformatted);
+func Strcanon(string string, validChars string, substitutor int8) string
+
+// Strcasecmp: a case-insensitive string comparison, corresponding to the
+// standard strcasecmp() function on platforms which support it.
+func Strcasecmp(s1 string, s2 string) int
+
+// Strchomp: removes trailing whitespace from a string.
+//
+// This function doesn't allocate or reallocate any memory; it modifies @string
+// in place. Therefore, it cannot be used on statically allocated strings.
+//
+// The pointer to @string is returned to allow the nesting of functions.
+//
+// Also see g_strchug() and g_strstrip().
+func Strchomp(string string) string
+
+// Strchug: removes leading whitespace from a string, by moving the rest of the
+// characters forward.
+//
+// This function doesn't allocate or reallocate any memory; it modifies @string
+// in place. Therefore, it cannot be used on statically allocated strings.
+//
+// The pointer to @string is returned to allow the nesting of functions.
+//
+// Also see g_strchomp() and g_strstrip().
+func Strchug(string string) string
+
+// Strcmp0: compares @str1 and @str2 like strcmp(). Handles nil gracefully by
+// sorting it before non-nil strings. Comparing two nil pointers returns 0.
+func Strcmp0(str1 string, str2 string) int
+
+// Strcompress: replaces all escaped characters with their one byte equivalent.
+//
+// This function does the reverse conversion of g_strescape().
+func Strcompress(source string) string
+
+// Strconcat: concatenates all of the given strings into one long string. The
+// returned string should be freed with g_free() when no longer needed.
+//
+// The variable argument list must end with nil. If you forget the nil,
+// g_strconcat() will start appending random memory junk to your string.
+//
+// Note that this function is usually not the right function to use to assemble
+// a translated message from pieces, since proper translation often requires the
+// pieces to be reordered.
+func Strconcat(string1 string) string
+
+// g_ascii_strup (g_strdelimit (str, "abc", '?'))
+//
+// reformatted = g_strdelimit (g_strdup (const_str), "abc", '?'); ... g_free
+// (reformatted);
+func Strdelimit(string string, delimiters string, newDelimiter int8) string
+
+// Strdown: converts a string to lower case.
+func Strdown(string string) string
+
+// Strdup: duplicates a string. If @str is nil it returns nil. The returned
+// string should be freed with g_free() when no longer needed.
+func Strdup(str string) string
+
+// StrdupPrintf: similar to the standard C sprintf() function but safer, since
+// it calculates the maximum space required and allocates memory to hold the
+// result. The returned string should be freed with g_free() when no longer
+// needed.
+//
+// The returned string is guaranteed to be non-NULL, unless @format contains
+// `lc` or `ls` conversions, which can fail if no multibyte representation is
+// available for the given character.
+func StrdupPrintf(format string) string
+
+// StrdupVprintf: similar to the standard C vsprintf() function but safer, since
+// it calculates the maximum space required and allocates memory to hold the
+// result. The returned string should be freed with g_free() when no longer
+// needed.
+//
+// The returned string is guaranteed to be non-NULL, unless @format contains
+// `lc` or `ls` conversions, which can fail if no multibyte representation is
+// available for the given character.
+//
+// See also g_vasprintf(), which offers the same functionality, but additionally
+// returns the length of the allocated string.
+func StrdupVprintf(format string) string
+
+// Strdupv: copies nil-terminated array of strings. The copy is a deep copy; the
+// new array should be freed by first freeing each string, then the array
+// itself. g_strfreev() does this for you. If called on a nil value, g_strdupv()
+// simply returns nil.
+func Strdupv(strArray *string) []string
+
+// Strerror: returns a string corresponding to the given error code, e.g. "no
+// such process". Unlike strerror(), this always returns a string in UTF-8
+// encoding, and the pointer is guaranteed to remain valid for the lifetime of
+// the process.
+//
+// Note that the string may be translated according to the current locale.
+//
+// The value of errno will not be changed by this function. However, it may be
+// changed by intermediate function calls, so you should save its value as soon
+// as the call returns: |[ int saved_errno;
+//
+// ret = read (blah); saved_errno = errno;
+//
+//      g_strerror (saved_errno);
+//
+func Strerror(errnum int) string
+
+// Strescape: escapes the special characters '\b', '\f', '\n', '\r', '\t', '\v',
+// '\' and '"' in the string @source by inserting a '\' before them.
+// Additionally all characters in the range 0x01-0x1F (everything below SPACE)
+// and in the range 0x7F-0xFF (all non-ASCII chars) are replaced with a '\'
+// followed by their octal representation. Characters supplied in @exceptions
+// are not escaped.
+//
+// g_strcompress() does the reverse conversion.
+func Strescape(source string, exceptions string) string
+
+// Strfreev: frees a nil-terminated array of strings, as well as each string it
+// contains.
+//
+// If @str_array is nil, this function simply returns.
+func Strfreev(strArray *string)
+
+// StringNew: creates a new #GString, initialized with the given string.
+func StringNew(init string) *String
+
+// StringNewLen: creates a new #GString with @len bytes of the @init buffer.
+// Because a length is provided, @init need not be nul-terminated, and can
+// contain embedded nul bytes.
+//
+// Since this function does not stop at nul bytes, it is the caller's
+// responsibility to ensure that @init has at least @len addressable bytes.
+func StringNewLen(init string, len int) *String
+
+// StringSizedNew: creates a new #GString, with enough space for @dfl_size
+// bytes. This is useful if you are going to add a lot of text to the string and
+// don't want it to be reallocated too often.
+func StringSizedNew(dflSize uint) *String
+
+// StripContext: an auxiliary function for gettext() support (see Q_()).
+func StripContext(msgid string, msgval string) string
+
+// Strjoin: joins a number of strings together to form one long string, with the
+// optional @separator inserted between each of them. The returned string should
+// be freed with g_free().
+func Strjoin(separator string) string
+
+// Strjoinv: joins a number of strings together to form one long string, with
+// the optional @separator inserted between each of them. The returned string
+// should be freed with g_free().
+//
+// If @str_array has no items, the return value will be an empty string. If
+// @str_array contains a single item, @separator will not appear in the
+// resulting string.
+func Strjoinv(separator string, strArray *string) string
+
+// Strlcat: portability wrapper that calls strlcat() on systems which have it,
+// and emulates it otherwise. Appends nul-terminated @src string to @dest,
+// guaranteeing nul-termination for @dest. The total size of @dest won't exceed
+// @dest_size.
+//
+// At most @dest_size - 1 characters will be copied. Unlike strncat(),
+// @dest_size is the full size of dest, not the space left over. This function
+// does not allocate memory. It always nul-terminates (unless @dest_size == 0 or
+// there were no nul characters in the @dest_size characters of dest to start
+// with).
+//
+// Caveat: this is supposedly a more secure alternative to strcat() or
+// strncat(), but for real security g_strconcat() is harder to mess up.
+func Strlcat(dest string, src string, destSize uint) uint
+
+// Strlcpy: portability wrapper that calls strlcpy() on systems which have it,
+// and emulates strlcpy() otherwise. Copies @src to @dest; @dest is guaranteed
+// to be nul-terminated; @src must be nul-terminated; @dest_size is the buffer
+// size, not the number of bytes to copy.
+//
+// At most @dest_size - 1 characters will be copied. Always nul-terminates
+// (unless @dest_size is 0). This function does not allocate memory. Unlike
+// strncpy(), this function doesn't pad @dest (so it's often faster). It returns
+// the size of the attempted result, strlen (src), so if @retval &gt;=
+// @dest_size, truncation occurred.
+//
+// Caveat: strlcpy() is supposedly more secure than strcpy() or strncpy(), but
+// if you really want to avoid screwups, g_strdup() is an even better idea.
+func Strlcpy(dest string, src string, destSize uint) uint
+
+// Strncasecmp: a case-insensitive string comparison, corresponding to the
+// standard strncasecmp() function on platforms which support it. It is similar
+// to g_strcasecmp() except it only compares the first @n characters of the
+// strings.
+func Strncasecmp(s1 string, s2 string, n uint) int
+
+// Strndup: duplicates the first @n bytes of a string, returning a
+// newly-allocated buffer @n + 1 bytes long which will always be nul-terminated.
+// If @str is less than @n bytes long the buffer is padded with nuls. If @str is
+// nil it returns nil. The returned value should be freed when no longer needed.
+//
+// To copy a number of characters from a UTF-8 encoded string, use
+// g_utf8_strncpy() instead.
+func Strndup(str string, n uint) string
+
+// Strnfill: creates a new string @length bytes long filled with @fill_char. The
+// returned string should be freed when no longer needed.
+func Strnfill(length uint, fillChar int8) string
+
+// Strreverse: reverses all of the bytes in a string. For example, `g_strreverse
+// ("abcdef")` will result in "fedcba".
+//
+// Note that g_strreverse() doesn't work on UTF-8 strings containing multibyte
+// characters. For that purpose, use g_utf8_strreverse().
+func Strreverse(string string) string
+
+// Strrstr: searches the string @haystack for the last occurrence of the string
+// @needle.
+func Strrstr(haystack string, needle string) string
+
+// StrrstrLen: searches the string @haystack for the last occurrence of the
+// string @needle, limiting the length of the search to @haystack_len.
+func StrrstrLen(haystack string, haystackLen int, needle string) string
+
+// Strsignal: returns a string describing the given signal, e.g. "Segmentation
+// fault". You should use this function in preference to strsignal(), because it
+// returns a string in UTF-8 encoding, and since not all platforms support the
+// strsignal() function.
+func Strsignal(signum int) string
+
+// Strsplit: splits a string into a maximum of @max_tokens pieces, using the
+// given @delimiter. If @max_tokens is reached, the remainder of @string is
+// appended to the last token.
+//
+// As an example, the result of g_strsplit (":a:bc::d:", ":", -1) is a
+// nil-terminated vector containing the six strings "", "a", "bc", "", "d" and
+// "".
+//
+// As a special case, the result of splitting the empty string "" is an empty
+// vector, not a vector containing a single string. The reason for this special
+// case is that being able to represent an empty vector is typically more useful
+// than consistent handling of empty elements. If you do need to represent empty
+// elements, you'll need to check for the empty string before calling
+// g_strsplit().
+func Strsplit(string string, delimiter string, maxTokens int) []string
+
+// StrsplitSet: splits @string into a number of tokens not containing any of the
+// characters in @delimiter. A token is the (possibly empty) longest string that
+// does not contain any of the characters in @delimiters. If @max_tokens is
+// reached, the remainder is appended to the last token.
+//
+// For example the result of g_strsplit_set ("abc:def/ghi", ":/", -1) is a
+// nil-terminated vector containing the three strings "abc", "def", and "ghi".
+//
+// The result of g_strsplit_set (":def/ghi:", ":/", -1) is a nil-terminated
+// vector containing the four strings "", "def", "ghi", and "".
+//
+// As a special case, the result of splitting the empty string "" is an empty
+// vector, not a vector containing a single string. The reason for this special
+// case is that being able to represent an empty vector is typically more useful
+// than consistent handling of empty elements. If you do need to represent empty
+// elements, you'll need to check for the empty string before calling
+// g_strsplit_set().
+//
+// Note that this function works on bytes not characters, so it can't be used to
+// delimit UTF-8 strings for anything but ASCII characters.
+func StrsplitSet(string string, delimiters string, maxTokens int) []string
+
+// StrstrLen: searches the string @haystack for the first occurrence of the
+// string @needle, limiting the length of the search to @haystack_len.
+func StrstrLen(haystack string, haystackLen int, needle string) string
+
+// Strtod: converts a string to a #gdouble value. It calls the standard strtod()
+// function to handle the conversion, but if the string is not completely
+// converted it attempts the conversion again with g_ascii_strtod(), and returns
+// the best match.
+//
+// This function should seldom be used. The normal situation when reading
+// numbers not for human consumption is to use g_ascii_strtod(). Only when you
+// know that you must expect both locale formatted and C formatted numbers
+// should you use this. Make sure that you don't pass strings such as comma
+// separated lists of values, since the commas may be interpreted as a decimal
+// point in some locales, causing unexpected results.
+func Strtod(nptr string, endptr *string) float64
+
+// Strup: converts a string to upper case.
+func Strup(string string) string
+
+// StrvContains: checks if @strv contains @str. @strv must not be nil.
+func StrvContains(strv *string, str string) bool
+
+// StrvEqual: checks if @strv1 and @strv2 contain exactly the same elements in
+// exactly the same order. Elements are compared using g_str_equal(). To match
+// independently of order, sort the arrays first (using g_qsort_with_data() or
+// similar).
+//
+// Two empty arrays are considered equal. Neither @strv1 not @strv2 may be nil.
+func StrvEqual(strv1 *string, strv2 *string) bool
+
+func StrvGetType() glib.Type
+
+// StrvLength: returns the length of the given nil-terminated string array
+// @str_array. @str_array must not be nil.
+func StrvLength(strArray *string) uint
+
+// TestAddDataFunc: create a new test case, similar to g_test_create_case().
+// However the test is assumed to use no fixture, and test suites are
+// automatically created on the fly and added to the root fixture, based on the
+// slash-separated portions of @testpath. The @test_data argument will be passed
+// as first argument to @test_func.
+//
+// If @testpath includes the component "subprocess" anywhere in it, the test
+// will be skipped by default, and only run if explicitly required via the `-p`
+// command-line option or g_test_trap_subprocess().
+//
+// No component of @testpath may start with a dot (`.`) if the
+// G_TEST_OPTION_ISOLATE_DIRS option is being used; and it is recommended to do
+// so even if it isn’t.
+func TestAddDataFunc(testpath string, testData unsafe.Pointer, testFunc TestDataFunc)
+
+// TestAddDataFuncFull: create a new test case, as with g_test_add_data_func(),
+// but freeing @test_data after the test run is complete.
+func TestAddDataFuncFull(testpath string, testData unsafe.Pointer, testFunc TestDataFunc)
+
+// TestAddFunc: create a new test case, similar to g_test_create_case(). However
+// the test is assumed to use no fixture, and test suites are automatically
+// created on the fly and added to the root fixture, based on the
+// slash-separated portions of @testpath.
+//
+// If @testpath includes the component "subprocess" anywhere in it, the test
+// will be skipped by default, and only run if explicitly required via the `-p`
+// command-line option or g_test_trap_subprocess().
+//
+// No component of @testpath may start with a dot (`.`) if the
+// G_TEST_OPTION_ISOLATE_DIRS option is being used; and it is recommended to do
+// so even if it isn’t.
+func TestAddFunc(testpath string, testFunc TestFunc)
+
+func TestAddVtable(testpath string, dataSize uint, testData unsafe.Pointer, dataSetup TestFixtureFunc, dataTest TestFixtureFunc, dataTeardown TestFixtureFunc)
+
+func TestAssertExpectedMessagesInternal(domain string, file string, line int, _func string)
+
+// TestBug: this function adds a message to test reports that associates a bug
+// URI with a test case. Bug URIs are constructed from a base URI set with
+// g_test_bug_base() and @bug_uri_snippet. If g_test_bug_base() has not been
+// called, it is assumed to be the empty string, so a full URI can be provided
+// to g_test_bug() instead.
+func TestBug(bugURISnippet string)
+
+// TestBugBase: specify the base URI for bug reports.
+//
+// The base URI is used to construct bug report messages for g_test_message()
+// when g_test_bug() is called. Calling this function outside of a test case
+// sets the default base URI for all test cases. Calling it from within a test
+// case changes the base URI for the scope of the test case only. Bug URIs are
+// constructed by appending a bug specific URI portion to @uri_pattern, or by
+// replacing the special string '\s' within @uri_pattern if that is present.
+//
+// If g_test_bug_base() is not called, bug URIs are formed solely from the value
+// provided by g_test_bug().
+func TestBugBase(uriPattern string)
+
+// TestBuildFilename: creates the pathname to a data file that is required for a
+// test.
+//
+// This function is conceptually similar to g_build_filename() except that the
+// first argument has been replaced with a FileType argument.
+//
+// The data file should either have been distributed with the module containing
+// the test (G_TEST_DIST) or built as part of the build system of that module
+// (G_TEST_BUILT).
+//
+// In order for this function to work in srcdir != builddir situations, the
+// G_TEST_SRCDIR and G_TEST_BUILDDIR environment variables need to have been
+// defined. As of 2.38, this is done by the glib.mk included in GLib. Please
+// ensure that your copy is up to date before using this function.
+//
+// In case neither variable is set, this function will fall back to using the
+// dirname portion of argv[0], possibly removing ".libs". This allows for casual
+// running of tests directly from the commandline in the srcdir == builddir case
+// and should also support running of installed tests, assuming the data files
+// have been installed in the same relative path as the test binary.
+func TestBuildFilename(fileType TestFileType, firstPath string) string
+
+// TestCreateCase: create a new Case, named @test_name.
+//
+// This API is fairly low level, and calling g_test_add() or g_test_add_func()
+// is preferable.
+//
+// When this test is executed, a fixture structure of size @data_size will be
+// automatically allocated and filled with zeros. Then @data_setup is called to
+// initialize the fixture. After fixture setup, the actual test function
+// @data_test is called. Once the test run completes, the fixture structure is
+// torn down by calling @data_teardown and after that the memory is
+// automatically released by the test framework.
+//
+// Splitting up a test run into fixture setup, test function and fixture
+// teardown is most useful if the same fixture type is used for multiple tests.
+// In this cases, g_test_create_case() will be called with the same type of
+// fixture (the @data_size argument), but varying @test_name and @data_test
+// arguments.
+func TestCreateCase(testName string, dataSize uint, testData unsafe.Pointer, dataSetup TestFixtureFunc, dataTest TestFixtureFunc, dataTeardown TestFixtureFunc) *TestCase
+
+// TestCreateSuite: create a new test suite with the name @suite_name.
+func TestCreateSuite(suiteName string) *TestSuite
+
+// TestExpectMessage: indicates that a message with the given @log_domain and
+// @log_level, with text matching @pattern, is expected to be logged. When this
+// message is logged, it will not be printed, and the test case will not abort.
+//
+// This API may only be used with the old logging API (g_log() without
+// G_LOG_USE_STRUCTURED defined). It will not work with the structured logging
+// API. See [Testing for Messages][testing-for-messages].
+//
+// Use g_test_assert_expected_messages() to assert that all previously-expected
+// messages have been seen and suppressed.
+//
+// You can call this multiple times in a row, if multiple messages are expected
+// as a result of a single call. (The messages must appear in the same order as
+// the calls to g_test_expect_message().)
+//
+// For example:
+//
+//    // g_main_context_push_thread_default() should fail if the
+//    // context is already owned by another thread.
+//    g_test_expect_message (G_LOG_DOMAIN,
+//                           G_LOG_LEVEL_CRITICAL,
+//                           "assertion*acquired_context*failed");
+//    g_main_context_push_thread_default (bad_context);
+//    g_test_assert_expected_messages ();
+//
+// Note that you cannot use this to test g_error() messages, since g_error()
+// intentionally never returns even if the program doesn't abort; use
+// g_test_trap_subprocess() in this case.
+//
+// If messages at G_LOG_LEVEL_DEBUG are emitted, but not explicitly expected via
+// g_test_expect_message() then they will be ignored.
+func TestExpectMessage(logDomain string, logLevel LogLevelFlags, pattern string)
+
+// TestFail: indicates that a test failed. This function can be called multiple
+// times from the same test. You can use this function if your test failed in a
+// recoverable way.
+//
+// Do not use this function if the failure of a test could cause other tests to
+// malfunction.
+//
+// Calling this function will not stop the test from running, you need to return
+// from the test function yourself. So you can produce additional diagnostic
+// messages or even continue running the test.
+//
+// If not called from inside a test, this function does nothing.
+func TestFail()
+
+// TestFailed: returns whether a test has already failed. This will be the case
+// when g_test_fail(), g_test_incomplete() or g_test_skip() have been called,
+// but also if an assertion has failed.
+//
+// This can be useful to return early from a test if continuing after a failed
+// assertion might be harmful.
+//
+// The return value of this function is only meaningful if it is called from
+// inside a test function.
+func TestFailed() bool
+
+// TestGetDir: gets the pathname of the directory containing test files of the
+// type specified by @file_type.
+//
+// This is approximately the same as calling g_test_build_filename("."), but you
+// don't need to free the return value.
+func TestGetDir(fileType TestFileType) *string
+
+// TestGetFilename: gets the pathname to a data file that is required for a
+// test.
+//
+// This is the same as g_test_build_filename() with two differences. The first
+// difference is that must only use this function from within a testcase
+// function. The second difference is that you need not free the return value --
+// it will be automatically freed when the testcase finishes running.
+//
+// It is safe to use this function from a thread inside of a testcase but you
+// must ensure that all such uses occur before the main testcase function
+// returns (ie: it is best to ensure that all threads have been joined).
+func TestGetFilename(fileType TestFileType, firstPath string) string
+
+// TestGetRoot: get the toplevel test suite for the test path API.
+func TestGetRoot() *TestSuite
+
+// TestIncomplete: indicates that a test failed because of some incomplete
+// functionality. This function can be called multiple times from the same test.
+//
+// Calling this function will not stop the test from running, you need to return
+// from the test function yourself. So you can produce additional diagnostic
+// messages or even continue running the test.
+//
+// If not called from inside a test, this function does nothing.
+func TestIncomplete(msg string)
+
+// TestInit: initialize the GLib testing framework, e.g. by seeding the test
+// random number generator, the name for g_get_prgname() and parsing test
+// related command line args.
+//
+// So far, the following arguments are understood:
+//
+// - `-l`: List test cases available in a test executable. - `--seed=SEED`:
+// Provide a random seed to reproduce test runs using random numbers. -
+// `--verbose`: Run tests verbosely. - `-q`, `--quiet`: Run tests quietly. - `-p
+// PATH`: Execute all tests matching the given path. - `-s PATH`: Skip all tests
+// matching the given path. This can also be used to force a test to run that
+// would otherwise be skipped (ie, a test whose name contains "/subprocess"). -
+// `-m {perf|slow|thorough|quick|undefined|no-undefined}`: Execute tests
+// according to these test modes:
+//
+// `perf`: Performance tests, may take long and report results (off by default).
+//
+// `slow`, `thorough`: Slow and thorough tests, may take quite long and maximize
+// coverage (off by default).
+//
+// `quick`: Quick tests, should run really quickly and give good coverage (the
+// default).
+//
+// `undefined`: Tests for undefined behaviour, may provoke programming errors
+// under g_test_trap_subprocess() or g_test_expect_message() to check that
+// appropriate assertions or warnings are given (the default).
+//
+// `no-undefined`: Avoid tests for undefined behaviour
+//
+// - `--debug-log`: Debug test logging output.
+//
+// Options which can be passed to @... are:
+//
+// - `"no_g_set_prgname"`: Causes g_test_init() to not call g_set_prgname(). -
+// G_TEST_OPTION_ISOLATE_DIRS: Creates a unique temporary directory for each
+// unit test and uses g_set_user_dirs() to set XDG directories to point into
+// that temporary directory for the duration of the unit test. See the
+// documentation for G_TEST_OPTION_ISOLATE_DIRS.
+//
+// Since 2.58, if tests are compiled with `G_DISABLE_ASSERT` defined,
+// g_test_init() will print an error and exit. This is to prevent no-op tests
+// from being executed, as g_assert() is commonly (erroneously) used in unit
+// tests, and is a no-op when compiled with `G_DISABLE_ASSERT`. Ensure your
+// tests are compiled without `G_DISABLE_ASSERT` defined.
+func TestInit(argc *int, argv **string)
+
+// TestLogSetFatalHandler: installs a non-error fatal log handler which can be
+// used to decide whether log messages which are counted as fatal abort the
+// program.
+//
+// The use case here is that you are running a test case that depends on
+// particular libraries or circumstances and cannot prevent certain known
+// critical or warning messages. So you install a handler that compares the
+// domain and message to precisely not abort in such a case.
+//
+// Note that the handler is reset at the beginning of any test case, so you have
+// to set it inside each test function which needs the special behavior.
+//
+// This handler has no effect on g_error messages.
+//
+// This handler also has no effect on structured log messages (using
+// g_log_structured() or g_log_structured_array()). To change the fatal
+// behaviour for specific log messages, programs must install a custom log
+// writer function using g_log_set_writer_func().See [Using Structured
+// Logging][using-structured-logging].
+func TestLogSetFatalHandler(logFunc TestLogFatalFunc, userData unsafe.Pointer)
+
+func TestLogTypeName(logType TestLogType) string
+
+// TestMaximizedResult: report the result of a performance or measurement test.
+// The test should generally strive to maximize the reported quantities (larger
+// values are better than smaller ones), this and @maximized_quantity can
+// determine sorting order for test result reports.
+func TestMaximizedResult(maximizedQuantity float64, format string)
+
+// TestMessage: add a message to the test report.
+func TestMessage(format string)
+
+// TestMinimizedResult: report the result of a performance or measurement test.
+// The test should generally strive to minimize the reported quantities (smaller
+// values are better than larger ones), this and @minimized_quantity can
+// determine sorting order for test result reports.
+func TestMinimizedResult(minimizedQuantity float64, format string)
+
+// TestQueueDestroy: this function enqueus a callback @destroy_func to be
+// executed during the next test case teardown phase. This is most useful to
+// auto destruct allocated test resources at the end of a test run. Resources
+// are released in reverse queue order, that means enqueueing callback A before
+// callback B will cause B() to be called before A() during teardown.
+func TestQueueDestroy(destroyData unsafe.Pointer)
+
+// TestQueueFree: enqueue a pointer to be released with g_free() during the next
+// teardown phase. This is equivalent to calling g_test_queue_destroy() with a
+// destroy callback of g_free().
+func TestQueueFree(gfreePointer unsafe.Pointer)
+
+// TestRandDouble: get a reproducible random floating point number, see
+// g_test_rand_int() for details on test case random numbers.
+func TestRandDouble() float64
+
+// TestRandDoubleRange: get a reproducible random floating pointer number out of
+// a specified range, see g_test_rand_int() for details on test case random
+// numbers.
+func TestRandDoubleRange(rangeStart float64, rangeEnd float64) float64
+
+// TestRandInt: get a reproducible random integer number.
+//
+// The random numbers generated by the g_test_rand_*() family of functions
+// change with every new test program start, unless the --seed option is given
+// when starting test programs.
+//
+// For individual test cases however, the random number generator is reseeded,
+// to avoid dependencies between tests and to make --seed effective for all test
+// cases.
+func TestRandInt() int32
+
+// TestRandIntRange: get a reproducible random integer number out of a specified
+// range, see g_test_rand_int() for details on test case random numbers.
+func TestRandIntRange(begin int32, end int32) int32
+
+// TestRun: runs all tests under the toplevel suite which can be retrieved with
+// g_test_get_root(). Similar to g_test_run_suite(), the test cases to be run
+// are filtered according to test path arguments (`-p testpath` and `-s
+// testpath`) as parsed by g_test_init(). g_test_run_suite() or g_test_run() may
+// only be called once in a program.
+//
+// In general, the tests and sub-suites within each suite are run in the order
+// in which they are defined. However, note that prior to GLib 2.36, there was a
+// bug in the `g_test_add_*` functions which caused them to create multiple
+// suites with the same name, meaning that if you created tests "/foo/simple",
+// "/bar/simple", and "/foo/using-bar" in that order, they would get run in that
+// order (since g_test_run() would run the first "/foo" suite, then the "/bar"
+// suite, then the second "/foo" suite). As of 2.36, this bug is fixed, and
+// adding the tests in that order would result in a running order of
+// "/foo/simple", "/foo/using-bar", "/bar/simple". If this new ordering is
+// sub-optimal (because it puts more-complicated tests before simpler ones,
+// making it harder to figure out exactly what has failed), you can fix it by
+// changing the test paths to group tests by suite in a way that will result in
+// the desired running order. Eg, "/simple/foo", "/simple/bar",
+// "/complex/foo-using-bar".
+//
+// However, you should never make the actual result of a test depend on the
+// order that tests are run in. If you need to ensure that some particular code
+// runs before or after a given test case, use g_test_add(), which lets you
+// specify setup and teardown functions.
+//
+// If all tests are skipped or marked as incomplete (expected failures), this
+// function will return 0 if producing TAP output, or 77 (treated as "skip test"
+// by Automake) otherwise.
+func TestRun() int
+
+// TestRunSuite: execute the tests within @suite and all nested Suites. The test
+// suites to be executed are filtered according to test path arguments (`-p
+// testpath` and `-s testpath`) as parsed by g_test_init(). See the g_test_run()
+// documentation for more information on the order that tests are run in.
+//
+// g_test_run_suite() or g_test_run() may only be called once in a program.
+func TestRunSuite(suite *TestSuite) int
+
+// TestSetNonfatalAssertions: changes the behaviour of the various
+// `g_assert_*()` macros, g_test_assert_expected_messages() and the various
+// `g_test_trap_assert_*()` macros to not abort to program, but instead call
+// g_test_fail() and continue. (This also changes the behavior of g_test_fail()
+// so that it will not cause the test program to abort after completing the
+// failed test.)
+//
+// Note that the g_assert_not_reached() and g_assert() macros are not affected
+// by this.
+//
+// This function can only be called after g_test_init().
+func TestSetNonfatalAssertions()
+
+// TestSkip: indicates that a test was skipped.
+//
+// Calling this function will not stop the test from running, you need to return
+// from the test function yourself. So you can produce additional diagnostic
+// messages or even continue running the test.
+//
+// If not called from inside a test, this function does nothing.
+func TestSkip(msg string)
+
+// TestSubprocess: returns true (after g_test_init() has been called) if the
+// test program is running under g_test_trap_subprocess().
+func TestSubprocess() bool
+
+// TestSummary: set the summary for a test, which describes what the test
+// checks, and how it goes about checking it. This may be included in test
+// report output, and is useful documentation for anyone reading the source code
+// or modifying a test in future. It must be a single line.
+//
+// This should be called at the top of a test function.
+//
+// For example: |[&lt;!-- language="C" --&gt; static void test_array_sort (void)
+// { g_test_summary ("Test my_array_sort() sorts the array correctly and stably,
+// " "including testing zero length and one-element arrays.");
+//
+//      …
+//    }
+//
+func TestSummary(summary string)
+
+// TestTimerElapsed: get the time since the last start of the timer with
+// g_test_timer_start().
+func TestTimerElapsed() float64
+
+// TestTimerLast: report the last result of g_test_timer_elapsed().
+func TestTimerLast() float64
+
+// TestTimerStart: start a timing test. Call g_test_timer_elapsed() when the
+// task is supposed to be done. Call this function again to restart the timer.
+func TestTimerStart()
+
+func TestTrapAssertions(domain string, file string, line int, _func string, assertionFlags uint64, pattern string)
+
+// TestTrapFork: fork the current test program to execute a test case that might
+// not return or that might abort.
+//
+// If @usec_timeout is non-0, the forked test case is aborted and considered
+// failing if its run time exceeds it.
+//
+// The forking behavior can be configured with the TrapFlags flags.
+//
+// In the following example, the test code forks, the forked child process
+// produces some sample output and exits successfully. The forking parent
+// process then asserts successful child program termination and validates child
+// program outputs.
+//
+//    static void
+//    test_fork_patterns (void)
+//    {
+//      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
+//        {
+//          g_print ("some stdout text: somagic17\n");
+//          g_printerr ("some stderr text: semagic43\n");
+//          exit (0); // successful test run
+//        }
+//      g_test_trap_assert_passed ();
+//      g_test_trap_assert_stdout ("*somagic17*");
+//      g_test_trap_assert_stderr ("*semagic43*");
+//    }
+func TestTrapFork(usecTimeout uint64, testTrapFlags TestTrapFlags) bool
+
+// TestTrapHasPassed: check the result of the last g_test_trap_subprocess()
+// call.
+func TestTrapHasPassed() bool
+
+// TestTrapReachedTimeout: check the result of the last g_test_trap_subprocess()
+// call.
+func TestTrapReachedTimeout() bool
+
+// TestTrapSubprocess: respawns the test program to run only @test_path in a
+// subprocess. This can be used for a test case that might not return, or that
+// might abort.
+//
+// If @test_path is nil then the same test is re-run in a subprocess. You can
+// use g_test_subprocess() to determine whether the test is in a subprocess or
+// not.
+//
+// @test_path can also be the name of the parent test, followed by
+// "`/subprocess/`" and then a name for the specific subtest (or just ending
+// with "`/subprocess`" if the test only has one child test); tests with names
+// of this form will automatically be skipped in the parent process.
+//
+// If @usec_timeout is non-0, the test subprocess is aborted and considered
+// failing if its run time exceeds it.
+//
+// The subprocess behavior can be configured with the SubprocessFlags flags.
+//
+// You can use methods such as g_test_trap_assert_passed(),
+// g_test_trap_assert_failed(), and g_test_trap_assert_stderr() to check the
+// results of the subprocess. (But note that g_test_trap_assert_stdout() and
+// g_test_trap_assert_stderr() cannot be used if @test_flags specifies that the
+// child should inherit the parent stdout/stderr.)
+//
+// If your `main ()` needs to behave differently in the subprocess, you can call
+// g_test_subprocess() (after calling g_test_init()) to see whether you are in a
+// subprocess.
+//
+// The following example tests that calling `my_object_new(1000000)` will abort
+// with an error message.
+//
+//      static void
+//      test_create_large_object (void)
+//      {
+//        if (g_test_subprocess ())
+//          {
+//            my_object_new (1000000);
+//            return;
+//          }
+//
+//        // Reruns this same test in a subprocess
+//        g_test_trap_subprocess (NULL, 0, 0);
+//        g_test_trap_assert_failed ();
+//        g_test_trap_assert_stderr ("*ERROR*too large*");
+//      }
+//
+//      int
+//      main (int argc, char **argv)
+//      {
+//        g_test_init (&amp;argc, &amp;argv, NULL);
+//
+//        g_test_add_func ("/myobject/create_large_object",
+//                         test_create_large_object);
+//        return g_test_run ();
+//      }
+//
+func TestTrapSubprocess(testPath string, usecTimeout uint64, testFlags TestSubprocessFlags)
+
+func ThreadErrorQuark() Quark
+
+// ThreadExit: terminates the current thread.
+//
+// If another thread is waiting for us using g_thread_join() then the waiting
+// thread will be woken up and get @retval as the return value of
+// g_thread_join().
+//
+// Calling g_thread_exit() with a parameter @retval is equivalent to returning
+// @retval from the function @func, as given to g_thread_new().
+//
+// You must only call g_thread_exit() from a thread that you created yourself
+// with g_thread_new() or related APIs. You must not call this function from a
+// thread created with another threading library or or from within a Pool.
+func ThreadExit(retval unsafe.Pointer)
+
+// ThreadPoolGetMaxIdleTime: this function will return the maximum @interval
+// that a thread will wait in the thread pool for new tasks before being
+// stopped.
+//
+// If this function returns 0, threads waiting in the thread pool for new work
+// are not stopped.
+func ThreadPoolGetMaxIdleTime() uint
+
+// ThreadPoolGetMaxUnusedThreads: returns the maximal allowed number of unused
+// threads.
+func ThreadPoolGetMaxUnusedThreads() int
+
+// ThreadPoolGetNumUnusedThreads: returns the number of currently unused
+// threads.
+func ThreadPoolGetNumUnusedThreads() uint
+
+// ThreadPoolSetMaxIdleTime: this function will set the maximum @interval that a
+// thread waiting in the pool for new tasks can be idle for before being
+// stopped. This function is similar to calling
+// g_thread_pool_stop_unused_threads() on a regular timeout, except this is done
+// on a per thread basis.
+//
+// By setting @interval to 0, idle threads will not be stopped.
+//
+// The default value is 15000 (15 seconds).
+func ThreadPoolSetMaxIdleTime(interval uint)
+
+// ThreadPoolSetMaxUnusedThreads: sets the maximal number of unused threads to
+// @max_threads. If @max_threads is -1, no limit is imposed on the number of
+// unused threads.
+//
+// The default value is 2.
+func ThreadPoolSetMaxUnusedThreads(maxThreads int)
+
+// ThreadPoolStopUnusedThreads: stops all currently unused threads. This does
+// not change the maximal number of unused threads. This function can be used to
+// regularly stop all unused threads e.g. from g_timeout_add().
+func ThreadPoolStopUnusedThreads()
+
+// ThreadSelf: this function returns the #GThread corresponding to the current
+// thread. Note that this function does not increase the reference count of the
+// returned struct.
+//
+// This function will return a #GThread even for threads that were not created
+// by GLib (i.e. those created by other threading APIs). This may be useful for
+// thread identification purposes (i.e. comparisons) but you must not use GLib
+// functions (such as g_thread_join()) on these threads.
+func ThreadSelf() *Thread
+
+// ThreadYield: causes the calling thread to voluntarily relinquish the CPU, so
+// that other threads can run.
+//
+// This function is often used as a method to make busy wait less evil.
+func ThreadYield()
+
+// TimeValFromIso8601: converts a string containing an ISO 8601 encoded date and
+// time to a Val and puts it into @time_.
+//
+// @iso_date must include year, month, day, hours, minutes, and seconds. It can
+// optionally include fractions of a second and a time zone indicator. (In the
+// absence of any time zone indication, the timestamp is assumed to be in local
+// time.)
+//
+// Any leading or trailing space in @iso_date is ignored.
+//
+//
+//    GDateTime *dt = g_date_time_new_from_iso8601 (iso8601_string, NULL);
+//    gint64 time_val = g_date_time_to_unix (dt);
+//    g_date_time_unref (dt);
+func TimeValFromIso8601(isoDate string, time_ *TimeVal) bool
+
+// TimeoutAdd: sets a function to be called at regular intervals, with the
+// default priority, PRIORITY_DEFAULT. The function is called repeatedly until
+// it returns false, at which point the timeout is automatically destroyed and
+// the function will not be called again. The first call to the function will be
+// at the end of the first @interval.
+//
+// Note that timeout functions may be delayed, due to the processing of other
+// event sources. Thus they should not be relied on for precise timing. After
+// each call to the timeout function, the time of the next timeout is
+// recalculated based on the current time and the given interval (it does not
+// try to 'catch up' time lost in delays).
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle the return value and memory management of @data.
+//
+// If you want to have a timer in the "seconds" range and do not care about the
+// exact time of the first call of the timer, use the g_timeout_add_seconds()
+// function; this function allows for more optimizations and more efficient
+// system power usage.
+//
+// This internally creates a main loop source using g_timeout_source_new() and
+// attaches it to the global Context using g_source_attach(), so the callback
+// will be invoked in whichever thread is running that main context. You can do
+// these steps manually if you need greater control or to use a custom main
+// context.
+//
+// It is safe to call this function from any thread.
+//
+// The interval given is in terms of monotonic time, not wall clock time. See
+// g_get_monotonic_time().
+func TimeoutAdd(interval uint, function SourceFunc, data unsafe.Pointer) uint
+
+// TimeoutAddFull: sets a function to be called at regular intervals, with the
+// given priority. The function is called repeatedly until it returns false, at
+// which point the timeout is automatically destroyed and the function will not
+// be called again. The @notify function is called when the timeout is
+// destroyed. The first call to the function will be at the end of the first
+// @interval.
+//
+// Note that timeout functions may be delayed, due to the processing of other
+// event sources. Thus they should not be relied on for precise timing. After
+// each call to the timeout function, the time of the next timeout is
+// recalculated based on the current time and the given interval (it does not
+// try to 'catch up' time lost in delays).
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle the return value and memory management of @data.
+//
+// This internally creates a main loop source using g_timeout_source_new() and
+// attaches it to the global Context using g_source_attach(), so the callback
+// will be invoked in whichever thread is running that main context. You can do
+// these steps manually if you need greater control or to use a custom main
+// context.
+//
+// The interval given is in terms of monotonic time, not wall clock time. See
+// g_get_monotonic_time().
+func TimeoutAddFull(priority int, interval uint, function SourceFunc, data unsafe.Pointer) uint
+
+// TimeoutAddSeconds: sets a function to be called at regular intervals with the
+// default priority, PRIORITY_DEFAULT. The function is called repeatedly until
+// it returns false, at which point the timeout is automatically destroyed and
+// the function will not be called again.
+//
+// This internally creates a main loop source using
+// g_timeout_source_new_seconds() and attaches it to the main loop context using
+// g_source_attach(). You can do these steps manually if you need greater
+// control. Also see g_timeout_add_seconds_full().
+//
+// It is safe to call this function from any thread.
+//
+// Note that the first call of the timer may not be precise for timeouts of one
+// second. If you need finer precision and have such a timeout, you may want to
+// use g_timeout_add() instead.
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle the return value and memory management of @data.
+//
+// The interval given is in terms of monotonic time, not wall clock time. See
+// g_get_monotonic_time().
+func TimeoutAddSeconds(interval uint, function SourceFunc, data unsafe.Pointer) uint
+
+// TimeoutAddSecondsFull: sets a function to be called at regular intervals,
+// with @priority. The function is called repeatedly until it returns false, at
+// which point the timeout is automatically destroyed and the function will not
+// be called again.
+//
+// Unlike g_timeout_add(), this function operates at whole second granularity.
+// The initial starting point of the timer is determined by the implementation
+// and the implementation is expected to group multiple timers together so that
+// they fire all at the same time. To allow this grouping, the @interval to the
+// first timer is rounded and can deviate up to one second from the specified
+// interval. Subsequent timer iterations will generally run at the specified
+// interval.
+//
+// Note that timeout functions may be delayed, due to the processing of other
+// event sources. Thus they should not be relied on for precise timing. After
+// each call to the timeout function, the time of the next timeout is
+// recalculated based on the current time and the given @interval
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle the return value and memory management of @data.
+//
+// If you want timing more precise than whole seconds, use g_timeout_add()
+// instead.
+//
+// The grouping of timers to fire at the same time results in a more power and
+// CPU efficient behavior so if your timer is in multiples of seconds and you
+// don't require the first timer exactly one second from now, the use of
+// g_timeout_add_seconds() is preferred over g_timeout_add().
+//
+// This internally creates a main loop source using
+// g_timeout_source_new_seconds() and attaches it to the main loop context using
+// g_source_attach(). You can do these steps manually if you need greater
+// control.
+//
+// It is safe to call this function from any thread.
+//
+// The interval given is in terms of monotonic time, not wall clock time. See
+// g_get_monotonic_time().
+func TimeoutAddSecondsFull(priority int, interval uint, function SourceFunc, data unsafe.Pointer) uint
+
+// TimeoutSourceNew: creates a new timeout source.
+//
+// The source will not initially be associated with any Context and must be
+// added to one with g_source_attach() before it will be executed.
+//
+// The interval given is in terms of monotonic time, not wall clock time. See
+// g_get_monotonic_time().
+func TimeoutSourceNew(interval uint) *Source
+
+// TimeoutSourceNewSeconds: creates a new timeout source.
+//
+// The source will not initially be associated with any Context and must be
+// added to one with g_source_attach() before it will be executed.
+//
+// The scheduling granularity/accuracy of this timeout source will be in
+// seconds.
+//
+// The interval given is in terms of monotonic time, not wall clock time. See
+// g_get_monotonic_time().
+func TimeoutSourceNewSeconds(interval uint) *Source
+
+// TrashStackHeight: returns the height of a Stack.
+//
+// Note that execution of this function is of O(N) complexity where N denotes
+// the number of items on the stack.
+func TrashStackHeight(stackP **TrashStack) uint
+
+// TrashStackPeek: returns the element at the top of a Stack which may be nil.
+func TrashStackPeek(stackP **TrashStack) unsafe.Pointer
+
+// TrashStackPop: pops a piece of memory off a Stack.
+func TrashStackPop(stackP **TrashStack) unsafe.Pointer
+
+// TrashStackPush: pushes a piece of memory onto a Stack.
+func TrashStackPush(stackP **TrashStack, dataP unsafe.Pointer)
+
+// TryMalloc: attempts to allocate @n_bytes, and returns nil on failure.
+// Contrast with g_malloc(), which aborts the program on failure.
+func TryMalloc(nBytes uint) unsafe.Pointer
+
+// TryMalloc0: attempts to allocate @n_bytes, initialized to 0's, and returns
+// nil on failure. Contrast with g_malloc0(), which aborts the program on
+// failure.
+func TryMalloc0(nBytes uint) unsafe.Pointer
+
+// TryMalloc0N: this function is similar to g_try_malloc0(), allocating
+// (@n_blocks * @n_block_bytes) bytes, but care is taken to detect possible
+// overflow during multiplication.
+func TryMalloc0N(nBlocks uint, nBlockBytes uint) unsafe.Pointer
+
+// TryMallocN: this function is similar to g_try_malloc(), allocating (@n_blocks
+// * @n_block_bytes) bytes, but care is taken to detect possible overflow during
+// multiplication.
+func TryMallocN(nBlocks uint, nBlockBytes uint) unsafe.Pointer
+
+// TryRealloc: attempts to realloc @mem to a new size, @n_bytes, and returns nil
+// on failure. Contrast with g_realloc(), which aborts the program on failure.
+//
+// If @mem is nil, behaves the same as g_try_malloc().
+func TryRealloc(mem unsafe.Pointer, nBytes uint) unsafe.Pointer
+
+// TryReallocN: this function is similar to g_try_realloc(), allocating
+// (@n_blocks * @n_block_bytes) bytes, but care is taken to detect possible
+// overflow during multiplication.
+func TryReallocN(mem unsafe.Pointer, nBlocks uint, nBlockBytes uint) unsafe.Pointer
+
+// Ucs4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
+// added to the result after the converted text.
+func Ucs4ToUTF16(str *uint32, len int32, itemsRead *int32, itemsWritten *int32) *uint16
+
+// Ucs4ToUTF8: convert a string from a 32-bit fixed width representation as
+// UCS-4. to UTF-8. The result will be terminated with a 0 byte.
+func Ucs4ToUTF8(str *uint32, len int32, itemsRead *int32, itemsWritten *int32) string
+
+// UnicharBreakType: determines the break type of @c. @c should be a Unicode
+// character (to derive a character from UTF-8 encoded text, use
+// g_utf8_get_char()). The break type is used to find word and line breaks
+// ("text boundaries"), Pango implements the Unicode boundary resolution
+// algorithms and normally you would use a function such as pango_break()
+// instead of caring about break types yourself.
+func UnicharBreakType(c uint32) UnicodeBreakType
+
+// UnicharCombiningClass: determines the canonical combining class of a Unicode
+// character.
+func UnicharCombiningClass(uc uint32) int
+
+// UnicharCompose: performs a single composition step of the Unicode canonical
+// composition algorithm.
+//
+// This function includes algorithmic Hangul Jamo composition, but it is not
+// exactly the inverse of g_unichar_decompose(). No composition can have either
+// of @a or @b equal to zero. To be precise, this function composes if and only
+// if there exists a Primary Composite P which is canonically equivalent to the
+// sequence &lt;@a,@b&gt;. See the Unicode Standard for the definition of
+// Primary Composite.
+//
+// If @a and @b do not compose a new character, @ch is set to zero.
+//
+// See [UAX#15](http://unicode.org/reports/tr15/) for details.
+func UnicharCompose(a uint32, b uint32, ch *uint32) bool
+
+// UnicharDecompose: performs a single decomposition step of the Unicode
+// canonical decomposition algorithm.
+//
+// This function does not include compatibility decompositions. It does,
+// however, include algorithmic Hangul Jamo decomposition, as well as
+// 'singleton' decompositions which replace a character by a single other
+// character. In the case of singletons *@b will be set to zero.
+//
+// If @ch is not decomposable, *@a is set to @ch and *@b is set to zero.
+//
+// Note that the way Unicode decomposition pairs are defined, it is guaranteed
+// that @b would not decompose further, but @a may itself decompose. To get the
+// full canonical decomposition for @ch, one would need to recursively call this
+// function on @a. Or use g_unichar_fully_decompose().
+//
+// See [UAX#15](http://unicode.org/reports/tr15/) for details.
+func UnicharDecompose(ch uint32, a *uint32, b *uint32) bool
+
+// UnicharDigitValue: determines the numeric value of a character as a decimal
+// digit.
+func UnicharDigitValue(c uint32) int
+
+// UnicharFullyDecompose: computes the canonical or compatibility decomposition
+// of a Unicode character. For compatibility decomposition, pass true for
+// @compat; for canonical decomposition pass false for @compat.
+//
+// The decomposed sequence is placed in @result. Only up to @result_len
+// characters are written into @result. The length of the full decomposition
+// (irrespective of @result_len) is returned by the function. For canonical
+// decomposition, currently all decompositions are of length at most 4, but this
+// may change in the future (very unlikely though). At any rate, Unicode does
+// guarantee that a buffer of length 18 is always enough for both compatibility
+// and canonical decompositions, so that is the size recommended. This is
+// provided as G_UNICHAR_MAX_DECOMPOSITION_LENGTH.
+//
+// See [UAX#15](http://unicode.org/reports/tr15/) for details.
+func UnicharFullyDecompose(ch uint32, compat bool, result *uint32, resultLen uint) uint
+
+// UnicharGetMirrorChar: in Unicode, some characters are "mirrored". This means
+// that their images are mirrored horizontally in text that is laid out from
+// right to left. For instance, "(" would become its mirror image, ")", in
+// right-to-left text.
+//
+// If @ch has the Unicode mirrored property and there is another unicode
+// character that typically has a glyph that is the mirror image of @ch's glyph
+// and @mirrored_ch is set, it puts that character in the address pointed to by
+// @mirrored_ch. Otherwise the original character is put.
+func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool
+
+// UnicharGetScript: looks up the Script for a particular character (as defined
+// by Unicode Standard Annex \#24). No check is made for @ch being a valid
+// Unicode character; if you pass in invalid character, the result is undefined.
+//
+// This function is equivalent to pango_script_for_unichar() and the two are
+// interchangeable.
+func UnicharGetScript(ch uint32) UnicodeScript
+
+// UnicharIsalnum: determines whether a character is alphanumeric. Given some
+// UTF-8 text, obtain a character value with g_utf8_get_char().
+func UnicharIsalnum(c uint32) bool
+
+// UnicharIsalpha: determines whether a character is alphabetic (i.e. a letter).
+// Given some UTF-8 text, obtain a character value with g_utf8_get_char().
+func UnicharIsalpha(c uint32) bool
+
+// UnicharIscntrl: determines whether a character is a control character. Given
+// some UTF-8 text, obtain a character value with g_utf8_get_char().
+func UnicharIscntrl(c uint32) bool
+
+// UnicharIsdefined: determines if a given character is assigned in the Unicode
+// standard.
+func UnicharIsdefined(c uint32) bool
+
+// UnicharIsdigit: determines whether a character is numeric (i.e. a digit).
+// This covers ASCII 0-9 and also digits in other languages/scripts. Given some
+// UTF-8 text, obtain a character value with g_utf8_get_char().
+func UnicharIsdigit(c uint32) bool
+
+// UnicharIsgraph: determines whether a character is printable and not a space
+// (returns false for control characters, format characters, and spaces).
+// g_unichar_isprint() is similar, but returns true for spaces. Given some UTF-8
+// text, obtain a character value with g_utf8_get_char().
+func UnicharIsgraph(c uint32) bool
+
+// UnicharIslower: determines whether a character is a lowercase letter. Given
+// some UTF-8 text, obtain a character value with g_utf8_get_char().
+func UnicharIslower(c uint32) bool
+
+// UnicharIsmark: determines whether a character is a mark (non-spacing mark,
+// combining mark, or enclosing mark in Unicode speak). Given some UTF-8 text,
+// obtain a character value with g_utf8_get_char().
+//
+// Note: in most cases where isalpha characters are allowed, ismark characters
+// should be allowed to as they are essential for writing most European
+// languages as well as many non-Latin scripts.
+func UnicharIsmark(c uint32) bool
+
+// UnicharIsprint: determines whether a character is printable. Unlike
+// g_unichar_isgraph(), returns true for spaces. Given some UTF-8 text, obtain a
+// character value with g_utf8_get_char().
+func UnicharIsprint(c uint32) bool
+
+// UnicharIspunct: determines whether a character is punctuation or a symbol.
+// Given some UTF-8 text, obtain a character value with g_utf8_get_char().
+func UnicharIspunct(c uint32) bool
+
+// UnicharIsspace: determines whether a character is a space, tab, or line
+// separator (newline, carriage return, etc.). Given some UTF-8 text, obtain a
+// character value with g_utf8_get_char().
+//
+// (Note: don't use this to do word breaking; you have to use Pango or
+// equivalent to get word breaking right, the algorithm is fairly complex.)
+func UnicharIsspace(c uint32) bool
+
+// UnicharIstitle: determines if a character is titlecase. Some characters in
+// Unicode which are composites, such as the DZ digraph have three case variants
+// instead of just two. The titlecase form is used at the beginning of a word
+// where only the first letter is capitalized. The titlecase form of the DZ
+// digraph is U+01F2 LATIN CAPITAL LETTTER D WITH SMALL LETTER Z.
+func UnicharIstitle(c uint32) bool
+
+// UnicharIsupper: determines if a character is uppercase.
+func UnicharIsupper(c uint32) bool
+
+// UnicharIswide: determines if a character is typically rendered in a
+// double-width cell.
+func UnicharIswide(c uint32) bool
+
+// UnicharIswideCjk: determines if a character is typically rendered in a
+// double-width cell under legacy East Asian locales. If a character is wide
+// according to g_unichar_iswide(), then it is also reported wide with this
+// function, but the converse is not necessarily true. See the [Unicode Standard
+// Annex #11](http://www.unicode.org/reports/tr11/) for details.
+//
+// If a character passes the g_unichar_iswide() test then it will also pass this
+// test, but not the other way around. Note that some characters may pass both
+// this test and g_unichar_iszerowidth().
+func UnicharIswideCjk(c uint32) bool
+
+// UnicharIsxdigit: determines if a character is a hexadecimal digit.
+func UnicharIsxdigit(c uint32) bool
+
+// UnicharIszerowidth: determines if a given character typically takes zero
+// width when rendered. The return value is true for all non-spacing and
+// enclosing marks (e.g., combining accents), format characters, zero-width
+// space, but not U+00AD SOFT HYPHEN.
+//
+// A typical use of this function is with one of g_unichar_iswide() or
+// g_unichar_iswide_cjk() to determine the number of cells a string occupies
+// when displayed on a grid display (terminals). However, note that not all
+// terminals support zero-width rendering of zero-width marks.
+func UnicharIszerowidth(c uint32) bool
+
+// UnicharToUTF8: converts a single character to UTF-8.
+func UnicharToUTF8(c uint32, outbuf string) int
+
+// UnicharTolower: converts a character to lower case.
+func UnicharTolower(c uint32) uint32
+
+// UnicharTotitle: converts a character to the titlecase.
+func UnicharTotitle(c uint32) uint32
+
+// UnicharToupper: converts a character to uppercase.
+func UnicharToupper(c uint32) uint32
+
+// UnicharType: classifies a Unicode character by type.
+func UnicharType(c uint32) UnicodeType
+
+// UnicharValidate: checks whether @ch is a valid Unicode character. Some
+// possible integer values of @ch will not be valid. 0 is considered a valid
+// character, though it's normally a string terminator.
+func UnicharValidate(ch uint32) bool
+
+// UnicharXdigitValue: determines the numeric value of a character as a
+// hexadecimal digit.
+func UnicharXdigitValue(c uint32) int
+
+// UnicodeCanonicalDecomposition: computes the canonical decomposition of a
+// Unicode character.
+func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32
+
+// UnicodeCanonicalOrdering: computes the canonical ordering of a string
+// in-place. This rearranges decomposed characters in the string according to
+// their combining classes. See the Unicode manual for more information.
+func UnicodeCanonicalOrdering(string *uint32, len uint)
+
+// UnicodeScriptFromIso15924: looks up the Unicode script for @iso15924. ISO
+// 15924 assigns four-letter codes to scripts. For example, the code for Arabic
+// is 'Arab'. This function accepts four letter codes encoded as a @guint32 in a
+// big-endian fashion. That is, the code expected for Arabic is 0x41726162 (0x41
+// is ASCII code for 'A', 0x72 is ASCII code for 'r', etc).
+//
+// See [Codes for the representation of names of
+// scripts](http://unicode.org/iso15924/codelists.html) for details.
+func UnicodeScriptFromIso15924(iso15924 uint32) UnicodeScript
+
+// UnicodeScriptToIso15924: looks up the ISO 15924 code for @script. ISO 15924
+// assigns four-letter codes to scripts. For example, the code for Arabic is
+// 'Arab'. The four letter codes are encoded as a @guint32 by this function in a
+// big-endian fashion. That is, the code returned for Arabic is 0x41726162 (0x41
+// is ASCII code for 'A', 0x72 is ASCII code for 'r', etc).
+//
+// See [Codes for the representation of names of
+// scripts](http://unicode.org/iso15924/codelists.html) for details.
+func UnicodeScriptToIso15924(script UnicodeScript) uint32
+
+func UnixErrorQuark() Quark
+
+// UnixFdAdd: sets a function to be called when the IO condition, as specified
+// by @condition becomes true for @fd.
+//
+// @function will be called when the specified IO condition becomes true. The
+// function is expected to clear whatever event caused the IO condition to
+// become true and return true in order to be notified when it happens again. If
+// @function returns false then the watch will be cancelled.
+//
+// The return value of this function can be passed to g_source_remove() to
+// cancel the watch at any time that it exists.
+//
+// The source will never close the fd -- you must do it yourself.
+func UnixFdAdd(fd int, condition IOCondition, function UnixFDSourceFunc, userData unsafe.Pointer) uint
+
+// UnixFdAddFull: sets a function to be called when the IO condition, as
+// specified by @condition becomes true for @fd.
+//
+// This is the same as g_unix_fd_add(), except that it allows you to specify a
+// non-default priority and a provide a Notify for @user_data.
+func UnixFdAddFull(priority int, fd int, condition IOCondition, function UnixFDSourceFunc, userData unsafe.Pointer) uint
+
+// UnixFdSourceNew: creates a #GSource to watch for a particular IO condition on
+// a file descriptor.
+//
+// The source will never close the fd -- you must do it yourself.
+func UnixFdSourceNew(fd int, condition IOCondition) *Source
+
+// UnixGetPasswdEntry: get the `passwd` file entry for the given @user_name
+// using `getpwnam_r()`. This can fail if the given @user_name doesn’t exist.
+//
+// The returned `struct passwd` has been allocated using g_malloc() and should
+// be freed using g_free(). The strings referenced by the returned struct are
+// included in the same allocation, so are valid until the `struct passwd` is
+// freed.
+//
+// This function is safe to call from multiple threads concurrently.
+//
+// You will need to include `pwd.h` to get the definition of `struct passwd`.
+func UnixGetPasswdEntry(userName string) *unsafe.Pointer
+
+// UnixOpenPipe: similar to the UNIX pipe() call, but on modern systems like
+// Linux uses the pipe2() system call, which atomically creates a pipe with the
+// configured flags. The only supported flag currently is FD_CLOEXEC. If for
+// example you want to configure O_NONBLOCK, that must still be done separately
+// with fcntl().
+//
+// This function does not take O_CLOEXEC, it takes FD_CLOEXEC as if for fcntl();
+// these are different on Linux/glibc.
+func UnixOpenPipe(fds *int, flags int) bool
+
+// UnixSetFdNonblocking: control the non-blocking state of the given file
+// descriptor, according to @nonblock. On most systems this uses O_NONBLOCK, but
+// on some older ones may use O_NDELAY.
+func UnixSetFdNonblocking(fd int, nonblock bool) bool
+
+// UnixSignalAdd: a convenience function for g_unix_signal_source_new(), which
+// attaches to the default Context. You can remove the watch using
+// g_source_remove().
+func UnixSignalAdd(signum int, handler SourceFunc, userData unsafe.Pointer) uint
+
+// UnixSignalAddFull: a convenience function for g_unix_signal_source_new(),
+// which attaches to the default Context. You can remove the watch using
+// g_source_remove().
+func UnixSignalAddFull(priority int, signum int, handler SourceFunc, userData unsafe.Pointer) uint
+
+// UnixSignalSourceNew: create a #GSource that will be dispatched upon delivery
+// of the UNIX signal @signum. In GLib versions before 2.36, only `SIGHUP`,
+// `SIGINT`, `SIGTERM` can be monitored. In GLib 2.36, `SIGUSR1` and `SIGUSR2`
+// were added. In GLib 2.54, `SIGWINCH` was added.
+//
+// Note that unlike the UNIX default, all sources which have created a watch
+// will be dispatched, regardless of which underlying thread invoked
+// g_unix_signal_source_new().
+//
+// For example, an effective use of this function is to handle `SIGTERM`
+// cleanly; flushing any outstanding files, and then calling g_main_loop_quit
+// (). It is not safe to do any of this a regular UNIX signal handler; your
+// handler may be invoked while malloc() or another library function is running,
+// causing reentrancy if you attempt to use it from the handler. None of the
+// GLib/GObject API is safe against this kind of reentrancy.
+//
+// The interaction of this source when combined with native UNIX functions like
+// sigprocmask() is not defined.
+//
+// The source will not initially be associated with any Context and must be
+// added to one with g_source_attach() before it will be executed.
+func UnixSignalSourceNew(signum int) *Source
+
+// Unlink: a wrapper for the POSIX unlink() function. The unlink() function
+// deletes a name from the filesystem. If this was the last link to the file and
+// no processes have it opened, the diskspace occupied by the file is freed.
+//
+// See your C library manual for more details about unlink(). Note that on
+// Windows, it is in general not possible to delete files that are open to some
+// process, or mapped into memory.
+func Unlink(filename *string) int
+
+// Unsetenv: removes an environment variable from the environment.
+//
+// Note that on some systems, when variables are overwritten, the memory used
+// for the previous variables and its value isn't reclaimed.
+//
+// You should be mindful of the fact that environment variable handling in UNIX
+// is not thread-safe, and your program may crash if one thread calls
+// g_unsetenv() while another thread is calling getenv(). (And note that many
+// functions, such as gettext(), call getenv() internally.) This function is
+// only safe to use at the very start of your program, before creating any other
+// threads (or creating objects that create worker threads of their own).
+//
+// If you need to set up the environment for a child process, you can use
+// g_get_environ() to get an environment array, modify that with
+// g_environ_setenv() and g_environ_unsetenv(), and then pass that array
+// directly to execvpe(), g_spawn_async(), or the like.
+func Unsetenv(variable *string)
+
+// URIBuild: creates a new #GUri from the given components according to @flags.
+//
+// See also g_uri_build_with_user(), which allows specifying the components of
+// the "userinfo" separately.
+func URIBuild(flags UriFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) *Uri
+
+// URIBuildWithUser: creates a new #GUri from the given components according to
+// @flags (G_URI_FLAGS_HAS_PASSWORD is added unconditionally). The @flags must
+// be coherent with the passed values, in particular use `%`-encoded values with
+// G_URI_FLAGS_ENCODED.
+//
+// In contrast to g_uri_build(), this allows specifying the components of the
+// ‘userinfo’ field separately. Note that @user must be non-nil if either
+// @password or @auth_params is non-nil.
+func URIBuildWithUser(flags UriFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) *Uri
+
+func URIErrorQuark() Quark
+
+// URIEscapeBytes: escapes arbitrary data for use in a URI.
+//
+// Normally all characters that are not ‘unreserved’ (i.e. ASCII alphanumerical
+// characters plus dash, dot, underscore and tilde) are escaped. But if you
+// specify characters in @reserved_chars_allowed they are not escaped. This is
+// useful for the ‘reserved’ characters in the URI specification, since those
+// are allowed unescaped in some portions of a URI.
+//
+// Though technically incorrect, this will also allow escaping nul bytes as
+// `%“00`.
+func URIEscapeBytes(length uint, reservedCharsAllowed string) string
+
+// URIEscapeString: escapes a string for use in a URI.
+//
+// Normally all characters that are not "unreserved" (i.e. ASCII alphanumerical
+// characters plus dash, dot, underscore and tilde) are escaped. But if you
+// specify characters in @reserved_chars_allowed they are not escaped. This is
+// useful for the "reserved" characters in the URI specification, since those
+// are allowed unescaped in some portions of a URI.
+func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUTF8 bool) string
+
+// URIIsValid: parses @uri_string according to @flags, to determine whether it
+// is a valid [absolute URI][relative-absolute-uris], i.e. it does not need to
+// be resolved relative to another URI using g_uri_parse_relative().
+//
+// If it’s not a valid URI, an error is returned explaining how it’s invalid.
+//
+// See g_uri_split(), and the definition of Flags, for more information on the
+// effect of @flags.
+func URIIsValid(uriString string, flags UriFlags) bool
+
+// URIJoin: joins the given components together according to @flags to create an
+// absolute URI string. @path may not be nil (though it may be the empty
+// string).
+//
+// When @host is present, @path must either be empty or begin with a slash (`/`)
+// character. When @host is not present, @path cannot begin with two slash
+// characters (`//`). See [RFC 3986, section
+// 3](https://tools.ietf.org/html/rfc3986#section-3).
+//
+// See also g_uri_join_with_user(), which allows specifying the components of
+// the ‘userinfo’ separately.
+//
+// G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
+// in @flags.
+func URIJoin(flags UriFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) string
+
+// URIJoinWithUser: joins the given components together according to @flags to
+// create an absolute URI string. @path may not be nil (though it may be the
+// empty string).
+//
+// In contrast to g_uri_join(), this allows specifying the components of the
+// ‘userinfo’ separately. It otherwise behaves the same.
+//
+// G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
+// in @flags.
+func URIJoinWithUser(flags UriFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) string
+
+// URIListExtractUris: splits an URI list conforming to the text/uri-list mime
+// type defined in RFC 2483 into individual URIs, discarding any comments. The
+// URIs are not validated.
+func URIListExtractUris(uriList string) []string
+
+// URIParse: parses @uri_string according to @flags. If the result is not a
+// valid [absolute URI][relative-absolute-uris], it will be discarded, and an
+// error returned.
+func URIParse(uriString string, flags UriFlags) *Uri
+
+// URIParseParams: many URI schemes include one or more attribute/value pairs as
+// part of the URI value. This method can be used to parse them into a hash
+// table. When an attribute has multiple occurrences, the last value is the
+// final returned value. If you need to handle repeated attributes differently,
+// use ParamsIter.
+//
+// The @params string is assumed to still be `%`-encoded, but the returned
+// values will be fully decoded. (Thus it is possible that the returned values
+// may contain `=` or @separators, if the value was encoded in the input.)
+// Invalid `%`-encoding is treated as with the G_URI_FLAGS_PARSE_RELAXED rules
+// for g_uri_parse(). (However, if @params is the path or query string from a
+// #GUri that was parsed without G_URI_FLAGS_PARSE_RELAXED and
+// G_URI_FLAGS_ENCODED, then you already know that it does not contain any
+// invalid encoding.)
+//
+// G_URI_PARAMS_WWW_FORM is handled as documented for g_uri_params_iter_init().
+//
+// If G_URI_PARAMS_CASE_INSENSITIVE is passed to @flags, attributes will be
+// compared case-insensitively, so a params string `attr=123&amp;Attr=456` will
+// only return a single attribute–value pair, `Attr=456`. Case will be preserved
+// in the returned attributes.
+//
+// If @params cannot be parsed (for example, it contains two @separators
+// characters in a row), then @error is set and nil is returned.
+func URIParseParams(params string, length int, separators string, flags UriParamsFlags) *glib.HashTable
+
+// URIParseScheme: gets the scheme portion of a URI string. [RFC
+// 3986](https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme as:
+// |[ URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ] ]| Common
+// schemes include `file`, `https`, `svn+ssh`, etc.
+func URIParseScheme(uri string) string
+
+// URIPeekScheme: gets the scheme portion of a URI string. [RFC
+// 3986](https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme as:
+// |[ URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ] ]| Common
+// schemes include `file`, `https`, `svn+ssh`, etc.
+//
+// Unlike g_uri_parse_scheme(), the returned scheme is normalized to
+// all-lowercase and does not need to be freed.
+func URIPeekScheme(uri string) string
+
+// URIResolveRelative: parses @uri_ref according to @flags and, if it is a
+// [relative URI][relative-absolute-uris], resolves it relative to
+// @base_uri_string. If the result is not a valid absolute URI, it will be
+// discarded, and an error returned.
+//
+// (If @base_uri_string is nil, this just returns @uri_ref, or nil if @uri_ref
+// is invalid or not absolute.)
+func URIResolveRelative(baseURIString string, uriRef string, flags UriFlags) string
+
+// URISplit: parses @uri_ref (which can be an [absolute or relative
+// URI][relative-absolute-uris]) according to @flags, and returns the pieces.
+// Any component that doesn't appear in @uri_ref will be returned as nil (but
+// note that all URIs always have a path component, though it may be the empty
+// string).
+//
+// If @flags contains G_URI_FLAGS_ENCODED, then `%`-encoded characters in
+// @uri_ref will remain encoded in the output strings. (If not, then all such
+// characters will be decoded.) Note that decoding will only work if the URI
+// components are ASCII or UTF-8, so you will need to use G_URI_FLAGS_ENCODED if
+// they are not.
+//
+// Note that the G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS @flags
+// are ignored by g_uri_split(), since it always returns only the full userinfo;
+// use g_uri_split_with_user() if you want it split up.
+func URISplit(uriRef string, flags UriFlags, scheme *string, userinfo *string, host *string, port *int, path *string, query *string, fragment *string) bool
+
+// URISplitNetwork: parses @uri_string (which must be an [absolute
+// URI][relative-absolute-uris]) according to @flags, and returns the pieces
+// relevant to connecting to a host. See the documentation for g_uri_split() for
+// more details; this is mostly a wrapper around that function with simpler
+// arguments. However, it will return an error if @uri_string is a relative URI,
+// or does not contain a hostname component.
+func URISplitNetwork(uriString string, flags UriFlags, scheme *string, host *string, port *int) bool
+
+// URISplitWithUser: parses @uri_ref (which can be an [absolute or relative
+// URI][relative-absolute-uris]) according to @flags, and returns the pieces.
+// Any component that doesn't appear in @uri_ref will be returned as nil (but
+// note that all URIs always have a path component, though it may be the empty
+// string).
+//
+// See g_uri_split(), and the definition of Flags, for more information on the
+// effect of @flags. Note that @password will only be parsed out if @flags
+// contains G_URI_FLAGS_HAS_PASSWORD, and @auth_params will only be parsed out
+// if @flags contains G_URI_FLAGS_HAS_AUTH_PARAMS.
+func URISplitWithUser(uriRef string, flags UriFlags, scheme *string, user *string, password *string, authParams *string, host *string, port *int, path *string, query *string, fragment *string) bool
+
+// URIUnescapeBytes: unescapes a segment of an escaped string as binary data.
+//
+// Note that in contrast to g_uri_unescape_string(), this does allow nul bytes
+// to appear in the output.
+//
+// If any of the characters in @illegal_characters appears as an escaped
+// character in @escaped_string, then that is an error and nil will be returned.
+// This is useful if you want to avoid for instance having a slash being
+// expanded in an escaped path element, which might confuse pathname handling.
+func URIUnescapeBytes(escapedString string, length int, illegalCharacters string) *Bytes
+
+// URIUnescapeSegment: unescapes a segment of an escaped string.
+//
+// If any of the characters in @illegal_characters or the NUL character appears
+// as an escaped character in @escaped_string, then that is an error and nil
+// will be returned. This is useful if you want to avoid for instance having a
+// slash being expanded in an escaped path element, which might confuse pathname
+// handling.
+//
+// Note: `NUL` byte is not accepted in the output, in contrast to
+// g_uri_unescape_bytes().
+func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCharacters string) string
+
+// URIUnescapeString: unescapes a whole escaped string.
+//
+// If any of the characters in @illegal_characters or the NUL character appears
+// as an escaped character in @escaped_string, then that is an error and nil
+// will be returned. This is useful if you want to avoid for instance having a
+// slash being expanded in an escaped path element, which might confuse pathname
+// handling.
+func URIUnescapeString(escapedString string, illegalCharacters string) string
+
+// Usleep: pauses the current thread for the given number of microseconds.
+//
+// There are 1 million microseconds per second (represented by the USEC_PER_SEC
+// macro). g_usleep() may have limited precision, depending on hardware and
+// operating system; don't rely on the exact length of the sleep.
+func Usleep(microseconds uint32)
+
+// UTF16ToUcs4: convert a string from UTF-16 to UCS-4. The result will be
+// nul-terminated.
+func UTF16ToUcs4(str *uint16, len int32, itemsRead *int32, itemsWritten *int32) *uint32
+
+// UTF16ToUTF8: convert a string from UTF-16 to UTF-8. The result will be
+// terminated with a 0 byte.
+//
+// Note that the input is expected to be already in native endianness, an
+// initial byte-order-mark character is not handled specially. g_convert() can
+// be used to convert a byte buffer of UTF-16 data of ambiguous endianness.
+//
+// Further note that this function does not validate the result string; it may
+// e.g. include embedded NUL characters. The only validation done by this
+// function is to ensure that the input can be correctly interpreted as UTF-16,
+// i.e. it doesn't contain unpaired surrogates or partial character sequences.
+func UTF16ToUTF8(str *uint16, len int32, itemsRead *int32, itemsWritten *int32) string
+
+// UTF8Casefold: converts a string into a form that is independent of case. The
+// result will not correspond to any particular case, but can be compared for
+// equality or ordered with the results of calling g_utf8_casefold() on other
+// strings.
+//
+// Note that calling g_utf8_casefold() followed by g_utf8_collate() is only an
+// approximation to the correct linguistic case insensitive ordering, though it
+// is a fairly good one. Getting this exactly right would require a more
+// sophisticated collation function that takes case sensitivity into account.
+// GLib does not currently provide such a function.
+func UTF8Casefold(str string, len int) string
+
+// UTF8Collate: compares two strings for ordering using the linguistically
+// correct rules for the [current locale][setlocale]. When sorting a large
+// number of strings, it will be significantly faster to obtain collation keys
+// with g_utf8_collate_key() and compare the keys with strcmp() when sorting
+// instead of sorting the original strings.
+func UTF8Collate(str1 string, str2 string) int
+
+// UTF8CollateKey: converts a string into a collation key that can be compared
+// with other collation keys produced by the same function using strcmp().
+//
+// The results of comparing the collation keys of two strings with strcmp() will
+// always be the same as comparing the two original keys with g_utf8_collate().
+//
+// Note that this function depends on the [current locale][setlocale].
+func UTF8CollateKey(str string, len int) string
+
+// UTF8CollateKeyForFilename: converts a string into a collation key that can be
+// compared with other collation keys produced by the same function using
+// strcmp().
+//
+// In order to sort filenames correctly, this function treats the dot '.' as a
+// special case. Most dictionary orderings seem to consider it insignificant,
+// thus producing the ordering "event.c" "eventgenerator.c" "event.h" instead of
+// "event.c" "event.h" "eventgenerator.c". Also, we would like to treat numbers
+// intelligently so that "file1" "file10" "file5" is sorted as "file1" "file5"
+// "file10".
+//
+// Note that this function depends on the [current locale][setlocale].
+func UTF8CollateKeyForFilename(str string, len int) string
+
+// UTF8FindNextChar: finds the start of the next UTF-8 character in the string
+// after @p.
+//
+// @p does not have to be at the beginning of a UTF-8 character. No check is
+// made to see if the character found is actually valid other than it starts
+// with an appropriate byte.
+//
+// If @end is nil, the return value will never be nil: if the end of the string
+// is reached, a pointer to the terminating nul byte is returned. If @end is
+// non-nil, the return value will be nil if the end of the string is reached.
+func UTF8FindNextChar(p string, end string) string
+
+// UTF8FindPrevChar: given a position @p with a UTF-8 encoded string @str, find
+// the start of the previous UTF-8 character starting before @p. Returns nil if
+// no UTF-8 characters are present in @str before @p.
+//
+// @p does not have to be at the beginning of a UTF-8 character. No check is
+// made to see if the character found is actually valid other than it starts
+// with an appropriate byte.
+func UTF8FindPrevChar(str string, p string) string
+
+// UTF8GetChar: converts a sequence of bytes encoded as UTF-8 to a Unicode
+// character.
+//
+// If @p does not point to a valid UTF-8 encoded character, results are
+// undefined. If you are not sure that the bytes are complete valid Unicode
+// characters, you should use g_utf8_get_char_validated() instead.
+func UTF8GetChar(p string) uint32
+
+// UTF8GetCharValidated: convert a sequence of bytes encoded as UTF-8 to a
+// Unicode character. This function checks for incomplete characters, for
+// invalid characters such as characters that are out of the range of Unicode,
+// and for overlong encodings of valid characters.
+//
+// Note that g_utf8_get_char_validated() returns (gunichar)-2 if @max_len is
+// positive and any of the bytes in the first UTF-8 character sequence are nul.
+func UTF8GetCharValidated(p string, maxLen int) uint32
+
+// UTF8MakeValid: if the provided string is valid UTF-8, return a copy of it. If
+// not, return a copy in which bytes that could not be interpreted as valid
+// Unicode are replaced with the Unicode replacement character (U+FFFD).
+//
+// For example, this is an appropriate function to use if you have received a
+// string that was incorrectly declared to be UTF-8, and you need a valid UTF-8
+// version of it that can be logged or displayed to the user, with the
+// assumption that it is close enough to ASCII or UTF-8 to be mostly readable
+// as-is.
+func UTF8MakeValid(str string, len int) string
+
+// UTF8Normalize: converts a string into canonical form, standardizing such
+// issues as whether a character with an accent is represented as a base
+// character and combining accent or as a single precomposed character. The
+// string has to be valid UTF-8, otherwise nil is returned. You should generally
+// call g_utf8_normalize() before comparing two Unicode strings.
+//
+// The normalization mode G_NORMALIZE_DEFAULT only standardizes differences that
+// do not affect the text content, such as the above-mentioned accent
+// representation. G_NORMALIZE_ALL also standardizes the "compatibility"
+// characters in Unicode, such as SUPERSCRIPT THREE to the standard forms (in
+// this case DIGIT THREE). Formatting information may be lost but for most text
+// operations such characters should be considered the same.
+//
+// G_NORMALIZE_DEFAULT_COMPOSE and G_NORMALIZE_ALL_COMPOSE are like
+// G_NORMALIZE_DEFAULT and G_NORMALIZE_ALL, but returned a result with composed
+// forms rather than a maximally decomposed form. This is often useful if you
+// intend to convert the string to a legacy encoding or pass it to a system with
+// less capable Unicode handling.
+func UTF8Normalize(str string, len int, mode NormalizeMode) string
+
+// UTF8OffsetToPointer: converts from an integer character offset to a pointer
+// to a position within the string.
+//
+// Since 2.10, this function allows to pass a negative @offset to step
+// backwards. It is usually worth stepping backwards from the end instead of
+// forwards if @offset is in the last fourth of the string, since moving forward
+// is about 3 times faster than moving backward.
+//
+// Note that this function doesn't abort when reaching the end of @str.
+// Therefore you should be sure that @offset is within string boundaries before
+// calling that function. Call g_utf8_strlen() when unsure. This limitation
+// exists as this function is called frequently during text rendering and
+// therefore has to be as fast as possible.
+func UTF8OffsetToPointer(str string, offset int32) string
+
+// UTF8PointerToOffset: converts from a pointer to position within a string to
+// an integer character offset.
+//
+// Since 2.10, this function allows @pos to be before @str, and returns a
+// negative offset in this case.
+func UTF8PointerToOffset(str string, pos string) int32
+
+// UTF8PrevChar: finds the previous UTF-8 character in the string before @p.
+//
+// @p does not have to be at the beginning of a UTF-8 character. No check is
+// made to see if the character found is actually valid other than it starts
+// with an appropriate byte. If @p might be the first character of the string,
+// you must use g_utf8_find_prev_char() instead.
+func UTF8PrevChar(p string) string
+
+// UTF8Strchr: finds the leftmost occurrence of the given Unicode character in a
+// UTF-8 encoded string, while limiting the search to @len bytes. If @len is -1,
+// allow unbounded search.
+func UTF8Strchr(p string, len int, c uint32) string
+
+// UTF8Strdown: converts all Unicode characters in the string that have a case
+// to lowercase. The exact manner that this is done depends on the current
+// locale, and may result in the number of characters in the string changing.
+func UTF8Strdown(str string, len int) string
+
+// UTF8Strlen: computes the length of the string in characters, not including
+// the terminating nul character. If the @max'th byte falls in the middle of a
+// character, the last (partial) character is not counted.
+func UTF8Strlen(p string, max int) int32
+
+// UTF8Strncpy: like the standard C strncpy() function, but copies a given
+// number of characters instead of a given number of bytes. The @src string must
+// be valid UTF-8 encoded text. (Use g_utf8_validate() on all text before trying
+// to use UTF-8 utility functions with it.)
+//
+// Note you must ensure @dest is at least 4 * @n to fit the largest possible
+// UTF-8 characters
+func UTF8Strncpy(dest string, src string, n uint) string
+
+// UTF8Strrchr: find the rightmost occurrence of the given Unicode character in
+// a UTF-8 encoded string, while limiting the search to @len bytes. If @len is
+// -1, allow unbounded search.
+func UTF8Strrchr(p string, len int, c uint32) string
+
+// UTF8Strreverse: reverses a UTF-8 string. @str must be valid UTF-8 encoded
+// text. (Use g_utf8_validate() on all text before trying to use UTF-8 utility
+// functions with it.)
+//
+// This function is intended for programmatic uses of reversed strings. It pays
+// no attention to decomposed characters, combining marks, byte order marks,
+// directional indicators (LRM, LRO, etc) and similar characters which might
+// need special handling when reversing a string for display purposes.
+//
+// Note that unlike g_strreverse(), this function returns newly-allocated
+// memory, which should be freed with g_free() when no longer needed.
+func UTF8Strreverse(str string, len int) string
+
+// UTF8Strup: converts all Unicode characters in the string that have a case to
+// uppercase. The exact manner that this is done depends on the current locale,
+// and may result in the number of characters in the string increasing. (For
+// instance, the German ess-zet will be changed to SS.)
+func UTF8Strup(str string, len int) string
+
+// UTF8Substring: copies a substring out of a UTF-8 encoded string. The
+// substring will contain @end_pos - @start_pos characters.
+func UTF8Substring(str string, startPos int32, endPos int32) string
+
+// UTF8ToUcs4: convert a string from UTF-8 to a 32-bit fixed width
+// representation as UCS-4. A trailing 0 character will be added to the string
+// after the converted text.
+func UTF8ToUcs4(str string, len int32, itemsRead *int32, itemsWritten *int32) *uint32
+
+// UTF8ToUcs4Fast: convert a string from UTF-8 to a 32-bit fixed width
+// representation as UCS-4, assuming valid UTF-8 input. This function is roughly
+// twice as fast as g_utf8_to_ucs4() but does no error checking on the input. A
+// trailing 0 character will be added to the string after the converted text.
+func UTF8ToUcs4Fast(str string, len int32, itemsWritten *int32) *uint32
+
+// UTF8ToUTF16: convert a string from UTF-8 to UTF-16. A 0 character will be
+// added to the result after the converted text.
+func UTF8ToUTF16(str string, len int32, itemsRead *int32, itemsWritten *int32) *uint16
+
+// UTF8Validate: validates UTF-8 encoded text. @str is the text to validate; if
+// @str is nul-terminated, then @max_len can be -1, otherwise @max_len should be
+// the number of bytes to validate. If @end is non-nil, then the end of the
+// valid range will be stored there (i.e. the start of the first invalid
+// character if some bytes were invalid, or the end of the text being validated
+// otherwise).
+//
+// Note that g_utf8_validate() returns false if @max_len is positive and any of
+// the @max_len bytes are nul.
+//
+// Returns true if all of @str was valid. Many GLib and GTK+ routines require
+// valid UTF-8 as input; so data read from a file or the network should be
+// checked with g_utf8_validate() before doing anything else with it.
+func UTF8Validate(maxLen int, end *string) bool
+
+// UTF8ValidateLen: validates UTF-8 encoded text.
+//
+// As with g_utf8_validate(), but @max_len must be set, and hence this function
+// will always return false if any of the bytes of @str are nul.
+func UTF8ValidateLen(maxLen uint, end *string) bool
+
+// UuidStringIsValid: parses the string @str and verify if it is a UUID.
+//
+// The function accepts the following syntax:
+//
+// - simple forms (e.g. `f81d4fae-7dec-11d0-a765-00a0c91e6bf6`)
+//
+// Note that hyphens are required within the UUID string itself, as per the
+// aforementioned RFC.
+func UuidStringIsValid(str string) bool
+
+// UuidStringRandom: generates a random UUID (RFC 4122 version 4) as a string.
+// It has the same randomness guarantees as #GRand, so must not be used for
+// cryptographic purposes such as key generation, nonces, salts or one-time
+// pads.
+func UuidStringRandom() string
+
+func VariantGetGtype() glib.Type
+
+// VariantIsObjectPath: determines if a given string is a valid D-Bus object
+// path. You should ensure that a string is a valid D-Bus object path before
+// passing it to g_variant_new_object_path().
+//
+// A valid object path starts with `/` followed by zero or more sequences of
+// characters separated by `/` characters. Each sequence must contain only the
+// characters `[A-Z][a-z][0-9]_`. No sequence (including the one following the
+// final `/` character) may be empty.
+func VariantIsObjectPath(string string) bool
+
+// VariantIsSignature: determines if a given string is a valid D-Bus type
+// signature. You should ensure that a string is a valid D-Bus type signature
+// before passing it to g_variant_new_signature().
+//
+// D-Bus type signatures consist of zero or more definite Type strings in
+// sequence.
+func VariantIsSignature(string string) bool
+
+// VariantParse: parses a #GVariant from a text representation.
+//
+// A single #GVariant is parsed from the content of @text.
+//
+// The format is described [here][gvariant-text].
+//
+// The memory at @limit will never be accessed and the parser behaves as if the
+// character at @limit is the nul terminator. This has the effect of bounding
+// @text.
+//
+// If @endptr is non-nil then @text is permitted to contain data following the
+// value that this function parses and @endptr will be updated to point to the
+// first character past the end of the text parsed by this function. If @endptr
+// is nil and there is extra data then an error is returned.
+//
+// If @type is non-nil then the value will be parsed to have that type. This may
+// result in additional parse errors (in the case that the parsed value doesn't
+// fit the type) but may also result in fewer errors (in the case that the type
+// would have been ambiguous, such as with empty arrays).
+//
+// In the event that the parsing is successful, the resulting #GVariant is
+// returned. It is never floating, and must be freed with g_variant_unref().
+//
+// In case of any error, nil will be returned. If @error is non-nil then it will
+// be set to reflect the error that occurred.
+//
+// Officially, the language understood by the parser is "any string produced by
+// g_variant_print()".
+//
+// There may be implementation specific restrictions on deeply nested values,
+// which would result in a G_VARIANT_PARSE_ERROR_RECURSION error. #GVariant is
+// guaranteed to handle nesting up to at least 64 levels.
+func VariantParse(_type *VariantType, text string, limit string, endptr *string) *Variant
+
+// VariantParseErrorPrintContext: pretty-prints a message showing the context of
+// a #GVariant parse error within the string for which parsing was attempted.
+//
+// The resulting string is suitable for output to the console or other monospace
+// media where newlines are treated in the usual way.
+//
+// The message will typically look something like one of the following:
+//
+//
+//    unterminated string constant:
+//      (1, 2, 3, 'abc
+//                ^^^^
+//
+// or
+//
+//
+//    unable to find a common type:
+//      [1, 2, 3, 'str']
+//       ^        ^^^^^
+//
+// The format of the message may change in a future version.
+//
+// @error must have come from a failed attempt to g_variant_parse() and
+// @source_str must be exactly the same string that caused the error. If
+// @source_str was not nul-terminated when you passed it to g_variant_parse()
+// then you must add nul termination before using this function.
+func VariantParseErrorPrintContext(error *Error, sourceStr string) string
+
+func VariantParseErrorQuark() Quark
+
+// VariantParserGetErrorQuark: same as g_variant_error_quark().
+func VariantParserGetErrorQuark() Quark
+
+func VariantTypeChecked_(arg0 string) *VariantType
+
+func VariantTypeStringGetDepth_(typeString string) uint
+
+// VariantTypeStringIsValid: checks if @type_string is a valid GVariant type
+// string. This call is equivalent to calling g_variant_type_string_scan() and
+// confirming that the following character is a nul terminator.
+func VariantTypeStringIsValid(typeString string) bool
+
+// VariantTypeStringScan: scan for a single complete and valid GVariant type
+// string in @string. The memory pointed to by @limit (or bytes beyond it) is
+// never accessed.
+//
+// If a valid type string is found, @endptr is updated to point to the first
+// character past the end of the string that was found and true is returned.
+//
+// If there is no valid type string starting at @string, or if the type string
+// does not end before @limit then false is returned.
+//
+// For the simple case of checking if a string is a valid type string, see
+// g_variant_type_string_is_valid().
+func VariantTypeStringScan(string string, limit string, endptr *string) bool
+
+// Vasprintf: an implementation of the GNU vasprintf() function which supports
+// positional parameters, as specified in the Single Unix Specification. This
+// function is similar to g_vsprintf(), except that it allocates a string to
+// hold the output, instead of putting the output in a buffer you allocate in
+// advance.
+//
+// The returned value in @string is guaranteed to be non-NULL, unless @format
+// contains `lc` or `ls` conversions, which can fail if no multibyte
+// representation is available for the given character.
+//
+// `glib/gprintf.h` must be explicitly included in order to use this function.
+func Vasprintf(string *string, format string) int
+
+// Vfprintf: an implementation of the standard fprintf() function which supports
+// positional parameters, as specified in the Single Unix Specification.
+//
+// `glib/gprintf.h` must be explicitly included in order to use this function.
+func Vfprintf(file *unsafe.Pointer, format string) int
+
+// Vprintf: an implementation of the standard vprintf() function which supports
+// positional parameters, as specified in the Single Unix Specification.
+//
+// `glib/gprintf.h` must be explicitly included in order to use this function.
+func Vprintf(format string) int
+
+// Vsnprintf: a safer form of the standard vsprintf() function. The output is
+// guaranteed to not exceed @n characters (including the terminating nul
+// character), so it is easy to ensure that a buffer overflow cannot occur.
+//
+// See also g_strdup_vprintf().
+//
+// In versions of GLib prior to 1.2.3, this function may return -1 if the output
+// was truncated, and the truncated string may not be nul-terminated. In
+// versions prior to 1.3.12, this function returns the length of the output
+// string.
+//
+// The return value of g_vsnprintf() conforms to the vsnprintf() function as
+// standardized in ISO C99. Note that this is different from traditional
+// vsnprintf(), which returns the length of the output string.
+//
+// The format string may contain positional parameters, as specified in the
+// Single Unix Specification.
+func Vsnprintf(string string, n uint32, format string) int
+
+// Vsprintf: an implementation of the standard vsprintf() function which
+// supports positional parameters, as specified in the Single Unix
+// Specification.
+//
+// `glib/gprintf.h` must be explicitly included in order to use this function.
+func Vsprintf(string string, format string) int
+
+// WarnMessage: internal function used to print messages from the public
+// g_warn_if_reached() and g_warn_if_fail() macros.
+func WarnMessage(domain string, file string, line int, _func string, warnexpr string)
+
+// Array: contains the public fields of a GArray.
+type Array struct {
+	// Data: a pointer to the element data. The data may be moved as elements
+	// are added to the #GArray.
+	Data string
+	// Len: the number of elements in the #GArray not including the possible
+	// terminating zero element.
+	Len uint
+}
+
+// ByteArray: contains the public fields of a GByteArray.
+type ByteArray struct {
+	// Data: a pointer to the element data. The data may be moved as elements
+	// are added to the Array
+	Data *uint8
+	// Len: the number of elements in the Array
+	Len uint
+}
+
+// Bytes: a simple refcounted data type representing an immutable sequence of
+// zero or more bytes from an unspecified origin.
+//
+// The purpose of a #GBytes is to keep the memory region that it holds alive for
+// as long as anyone holds a reference to the bytes. When the last reference
+// count is dropped, the memory is released. Multiple unrelated callers can use
+// byte data in the #GBytes without coordinating their activities, resting
+// assured that the byte data will not change or move while they hold a
+// reference.
+//
+// A #GBytes can come from many different origins that may have different
+// procedures for freeing the memory region. Examples are memory from
+// g_malloc(), from memory slices, from a File or memory from other allocators.
+//
+// #GBytes work well as keys in Table. Use g_bytes_equal() and g_bytes_hash() as
+// parameters to g_hash_table_new() or g_hash_table_new_full(). #GBytes can also
+// be used as keys in a #GTree by passing the g_bytes_compare() function to
+// g_tree_new()
+//
+// The data pointed to by this bytes must not be modified. For a mutable array
+// of bytes see Array. Use g_bytes_unref_to_array() to create a mutable array
+// for a #GBytes sequence. To create an immutable #GBytes from a mutable Array,
+// use the g_byte_array_free_to_bytes() function.
+type Bytes struct {
+	native *C.GBytes
+}
+
+// Checksum: an opaque structure representing a checksumming operation. To
+// create a new GChecksum, use g_checksum_new(). To free a GChecksum, use
+// g_checksum_free().
+type Checksum struct {
+	native *C.GChecksum
+}
+
+// Cond: the #GCond struct is an opaque data structure that represents a
+// condition. Threads can block on a #GCond if they find a certain condition to
+// be false. If other threads change the state of this condition they signal the
+// #GCond, and that causes the waiting threads to be woken up.
+//
+// Consider the following example of a shared variable. One or more threads can
+// wait for data to be published to the variable and when another thread
+// publishes the data, it can signal one of the waiting threads to wake up to
+// collect the data.
+//
+// Here is an example for using GCond to block a thread until a condition is
+// satisfied: |[&lt;!-- language="C" --&gt; gpointer current_data = NULL; GMutex
+// data_mutex; GCond data_cond;
+//
+// void push_data (gpointer data) { g_mutex_lock (&amp;data_mutex); current_data
+// = data; g_cond_signal (&amp;data_cond); g_mutex_unlock (&amp;data_mutex); }
+//
+// gpointer pop_data (void) { gpointer data;
+//
+// g_mutex_lock (&amp;data_mutex); while (!current_data) g_cond_wait
+// (&amp;data_cond, &amp;data_mutex); data = current_data; current_data = NULL;
+// g_mutex_unlock (&amp;data_mutex);
+//
+// return data; } ]| Whenever a thread calls pop_data() now, it will wait until
+// current_data is non-nil, i.e. until some other thread has called push_data().
+//
+// The example shows that use of a condition variable must always be paired with
+// a mutex. Without the use of a mutex, there would be a race between the check
+// of @current_data by the while loop in pop_data() and waiting. Specifically,
+// another thread could set @current_data after the check, and signal the cond
+// (with nobody waiting on it) before the first thread goes to sleep. #GCond is
+// specifically useful for its ability to release the mutex and go to sleep
+// atomically.
+//
+// It is also important to use the g_cond_wait() and g_cond_wait_until()
+// functions only inside a loop which checks for the condition to be true. See
+// g_cond_wait() for an explanation of why the condition may not be true even
+// after it returns.
+//
+// If a #GCond is allocated in static storage then it can be used without
+// initialisation. Otherwise, you should call g_cond_init() on it and
+// g_cond_clear() when done.
+//
+// A #GCond should only be accessed via the g_cond_ functions.
+type Cond struct {
+	native *C.GCond
+}
+
+// Date: represents a day between January 1, Year 1 and a few thousand years in
+// the future. None of its members should be accessed directly.
+//
+// If the #GDate-struct is obtained from g_date_new(), it will be safe to mutate
+// but invalid and thus not safe for calendrical computations.
+//
+// If it's declared on the stack, it will contain garbage so must be initialized
+// with g_date_clear(). g_date_clear() makes the date invalid but safe. An
+// invalid date doesn't represent a day, it's "empty." A date becomes valid
+// after you set it to a Julian day or you set a day, month, and year.
+type Date struct {
+	// JulianDays: the Julian representation of the date
+	JulianDays uint
+	// Julian: bit is set if @julian_days is valid
+	Julian uint
+	// DMY: is set if @day, @month and @year are valid
+	DMY uint
+	// Day: the day of the day-month-year representation of the date, as a
+	// number between 1 and 31
+	Day uint
+	// Month: the day of the day-month-year representation of the date, as a
+	// number between 1 and 12
+	Month uint
+	// Year: the day of the day-month-year representation of the date
+	Year uint
+}
+
+// DateTime: `GDateTime` is an opaque structure whose members cannot be accessed
+// directly.
+type DateTime struct {
+	native *C.GDateTime
+}
+
+// DebugKey: associates a string with a bit flag. Used in
+// g_parse_debug_string().
+type DebugKey struct {
+	// Key: the string
+	Key string
+	// Value: the flag
+	Value uint
+}
+
+// Error: the `GError` structure contains information about an error that has
+// occurred.
+type Error struct {
+	// Domain: error domain, e.g. FILE_ERROR
+	Domain Quark
+	// Code: error code, e.g. G_FILE_ERROR_NOENT
+	Code int
+	// Message: human-readable informative error message
+	Message string
+}
+
+// HashTable: the Table struct is an opaque data structure to represent a [Hash
+// Table][glib-Hash-Tables]. It should only be accessed via the following
+// functions.
+type HashTable struct {
+	native *C.GHashTable
+}
+
+// HashTableIter: a GHashTableIter structure represents an iterator that can be
+// used to iterate over the elements of a Table. GHashTableIter structures are
+// typically allocated on the stack and then initialized with
+// g_hash_table_iter_init().
+//
+// The iteration order of a TableIter over the keys/values in a hash table is
+// not defined.
+type HashTableIter struct {
+	native *C.GHashTableIter
+}
+
+// Hook: the #GHook struct represents a single hook function in a List.
+type Hook struct {
+	// Data: data which is passed to func when this hook is invoked
+	Data unsafe.Pointer
+	// Next: pointer to the next hook in the list
+	Next *Hook
+	// Prev: pointer to the previous hook in the list
+	Prev *Hook
+	// RefCount: the reference count of this hook
+	RefCount uint
+	// HookID: the id of this hook, which is unique within its list
+	HookID uint32
+	// Flags: flags which are set for this hook. See FlagMask for predefined
+	// flags
+	Flags uint
+	// Func: the function to call when this hook is invoked. The possible
+	// signatures for this function are Func and CheckFunc
+	Func unsafe.Pointer
+}
+
+// HookList: the List struct represents a list of hook functions.
+type HookList struct {
+	// SeqID: the next free #GHook id
+	SeqID uint32
+	// HookSize: the size of the List elements, in bytes
+	HookSize uint
+	// IsSetup: 1 if the List has been initialized
+	IsSetup uint
+	// Hooks: the first #GHook element in the list
+	Hooks *Hook
+	// Dummy3: unused
+	Dummy3 unsafe.Pointer
+	// FinalizeHook: the function to call to finalize a #GHook element. The
+	// default behaviour is to call the hooks @destroy function
+	FinalizeHook HookFinalizeFunc
+	// Dummy: unused
+	Dummy [2]unsafe.Pointer
+}
+
+// IOChannel: a data structure representing an IO Channel. The fields should be
+// considered private and should only be accessed with the following functions.
+type IOChannel struct {
+	native *C.GIOChannel
+}
+
+// IOFuncs: a table of functions used to handle different types of OChannel in a
+// generic way.
+type IOFuncs struct {
+}
+
+// KeyFile: the GKeyFile struct contains only private data and should not be
+// accessed directly.
+type KeyFile struct {
+	native *C.GKeyFile
+}
+
+// List: the #GList struct is used for each element in a doubly-linked list.
+type List struct {
+	// Data: holds the element's data, which can be a pointer to any kind of
+	// data, or any integer value using the [Type Conversion
+	// Macros][glib-Type-Conversion-Macros]
+	Data unsafe.Pointer
+	// Next: contains the link to the next element in the list
+	Next *glib.List
+	// Prev: contains the link to the previous element in the list
+	Prev *glib.List
+}
+
+// LogField: structure representing a single field in a structured log entry.
+// See g_log_structured() for details.
+//
+// Log fields may contain arbitrary values, including binary with embedded nul
+// bytes. If the field contains a string, the string must be UTF-8 encoded and
+// have a trailing nul byte. Otherwise, @length must be set to a non-negative
+// value.
+type LogField struct {
+	// Key: field name (UTF-8 string)
+	Key string
+	// Value: field value (arbitrary bytes)
+	Value unsafe.Pointer
+	// Length: length of @value, in bytes, or -1 if it is nul-terminated
+	Length int
+}
+
+// MainContext: the `GMainContext` struct is an opaque data type representing a
+// set of sources to be handled in a main loop.
+type MainContext struct {
+	native *C.GMainContext
+}
+
+// MainLoop: the `GMainLoop` struct is an opaque data type representing the main
+// event loop of a GLib or GTK+ application.
+type MainLoop struct {
+	native *C.GMainLoop
+}
+
+// MappedFile: the File represents a file mapping created with
+// g_mapped_file_new(). It has only private members and should not be accessed
+// directly.
+type MappedFile struct {
+	native *C.GMappedFile
+}
+
+// MarkupParseContext: a parse context is used to parse a stream of bytes that
+// you expect to contain marked-up text.
+//
+// See g_markup_parse_context_new(), Parser, and so on for more details.
+type MarkupParseContext struct {
+	native *C.GMarkupParseContext
+}
+
+// MarkupParser: any of the fields in Parser can be nil, in which case they will
+// be ignored. Except for the @error function, any of these callbacks can set an
+// error; in particular the G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+// G_MARKUP_ERROR_UNKNOWN_ATTRIBUTE, and G_MARKUP_ERROR_INVALID_CONTENT errors
+// are intended to be set from these callbacks. If you set an error from a
+// callback, g_markup_parse_context_parse() will report that error back to its
+// caller.
+type MarkupParser struct {
+}
+
+// MatchInfo: a GMatchInfo is an opaque struct used to return information about
+// matches.
+type MatchInfo struct {
+	native *C.GMatchInfo
+}
+
+// MemVTable: a set of functions used to perform memory allocation. The same
+// VTable must be used for all allocations in the same program; a call to
+// g_mem_set_vtable(), if it exists, should be prior to any use of GLib.
+//
+// This functions related to this has been deprecated in 2.46, and no longer
+// work.
+type MemVTable struct {
+}
+
+// Node: the #GNode struct represents one node in a [n-ary
+// tree][glib-N-ary-Trees].
+type Node struct {
+	// Data: contains the actual data of the node.
+	Data unsafe.Pointer
+	// Next: points to the node's next sibling (a sibling is another #GNode with
+	// the same parent).
+	Next *Node
+	// Prev: points to the node's previous sibling.
+	Prev *Node
+	// Parent: points to the parent of the #GNode, or is nil if the #GNode is
+	// the root of the tree.
+	Parent *Node
+	// Children: points to the first child of the #GNode. The other children are
+	// accessed by using the @next pointer of each child.
+	Children *Node
+}
+
+// Once: a #GOnce struct controls a one-time initialization function. Any
+// one-time initialization function must have its own unique #GOnce struct.
+type Once struct {
+	// Status: the status of the #GOnce
+	Status OnceStatus
+	// Retval: the value returned by the call to the function, if @status is
+	// G_ONCE_STATUS_READY
+	Retval unsafe.Pointer
+}
+
+// OptionEntry: a GOptionEntry struct defines a single option. To have an
+// effect, they must be added to a Group with
+// g_option_context_add_main_entries() or g_option_group_add_entries().
+type OptionEntry struct {
+	// LongName: the long name of an option can be used to specify it in a
+	// commandline as `--long_name`. Every option must have a long name. To
+	// resolve conflicts if multiple option groups contain the same long name,
+	// it is also possible to specify the option as `--groupname-long_name`.
+	LongName string
+	// ShortName: if an option has a short name, it can be specified
+	// `-short_name` in a commandline. @short_name must be a printable ASCII
+	// character different from '-', or zero if the option has no short name.
+	ShortName int8
+	// Flags: flags from Flags
+	Flags int
+	// Arg: the type of the option, as a Arg
+	Arg OptionArg
+	// ArgData: if the @arg type is G_OPTION_ARG_CALLBACK, then @arg_data must
+	// point to a ArgFunc callback function, which will be called to handle the
+	// extra argument. Otherwise, @arg_data is a pointer to a location to store
+	// the value, the required type of the location depends on the @arg type: -
+	// G_OPTION_ARG_NONE: gboolean - G_OPTION_ARG_STRING: gchar* -
+	// G_OPTION_ARG_INT: gint - G_OPTION_ARG_FILENAME: gchar* -
+	// G_OPTION_ARG_STRING_ARRAY: gchar** - G_OPTION_ARG_FILENAME_ARRAY: gchar**
+	// - G_OPTION_ARG_DOUBLE: gdouble If @arg type is G_OPTION_ARG_STRING or
+	// G_OPTION_ARG_FILENAME, the location will contain a newly allocated string
+	// if the option was given. That string needs to be freed by the callee
+	// using g_free(). Likewise if @arg type is G_OPTION_ARG_STRING_ARRAY or
+	// G_OPTION_ARG_FILENAME_ARRAY, the data should be freed using g_strfreev().
+	ArgData unsafe.Pointer
+	// Description: the description for the option in `--help` output. The
+	// @description is translated using the @translate_func of the group, see
+	// g_option_group_set_translation_domain().
+	Description string
+	// ArgDescription: the placeholder to use for the extra argument parsed by
+	// the option in `--help` output. The @arg_description is translated using
+	// the @translate_func of the group, see
+	// g_option_group_set_translation_domain().
+	ArgDescription string
+}
+
+// OptionGroup: a `GOptionGroup` struct defines the options in a single group.
+// The struct has only private fields and should not be directly accessed.
+//
+// All options in a group share the same translation function. Libraries which
+// need to parse commandline options are expected to provide a function for
+// getting a `GOptionGroup` holding their options, which the application can
+// then add to its Context.
+type OptionGroup struct {
+	native *C.GOptionGroup
+}
+
+// PollFD: represents a file descriptor, which events to poll for, and which
+// events occurred.
+type PollFD struct {
+	// Fd: the file descriptor to poll (or a HANDLE on Win32)
+	Fd int
+	// Events: a bitwise combination from OCondition, specifying which events
+	// should be polled for. Typically for reading from a file descriptor you
+	// would use G_IO_IN | G_IO_HUP | G_IO_ERR, and for writing you would use
+	// G_IO_OUT | G_IO_ERR.
+	Events uint16
+	// Revents: a bitwise combination of flags from OCondition, returned from
+	// the poll() function to indicate which events occurred.
+	Revents uint16
+}
+
+// Private: the #GPrivate struct is an opaque data structure to represent a
+// thread-local data key. It is approximately equivalent to the
+// pthread_setspecific()/pthread_getspecific() APIs on POSIX and to
+// TlsSetValue()/TlsGetValue() on Windows.
+//
+// If you don't already know why you might want this functionality, then you
+// probably don't need it.
+//
+// #GPrivate is a very limited resource (as far as 128 per program, shared
+// between all libraries). It is also not possible to destroy a #GPrivate after
+// it has been used. As such, it is only ever acceptable to use #GPrivate in
+// static scope, and even then sparingly so
+//
+// See G_PRIVATE_INIT() for a couple of examples.
+//
+// The #GPrivate structure should be considered opaque. It should only be
+// accessed via the g_private_ functions.
+type Private struct {
+	native *C.GPrivate
+}
+
+// PtrArray: contains the public fields of a pointer array.
+type PtrArray struct {
+	// Pdata: points to the array of pointers, which may be moved when the array
+	// grows
+	Pdata *unsafe.Pointer
+	// Len: number of pointers in the array
+	Len uint
+}
+
+// Queue: contains the public fields of a [Queue][glib-Double-ended-Queues].
+type Queue struct {
+	// Head: a pointer to the first element of the queue
+	Head *glib.List
+	// Tail: a pointer to the last element of the queue
+	Tail *glib.List
+	// Length: the number of elements in the queue
+	Length uint
+}
+
+// RWLock: the GRWLock struct is an opaque data structure to represent a
+// reader-writer lock. It is similar to a #GMutex in that it allows multiple
+// threads to coordinate access to a shared resource.
+//
+// The difference to a mutex is that a reader-writer lock discriminates between
+// read-only ('reader') and full ('writer') access. While only one thread at a
+// time is allowed write access (by holding the 'writer' lock via
+// g_rw_lock_writer_lock()), multiple threads can gain simultaneous read-only
+// access (by holding the 'reader' lock via g_rw_lock_reader_lock()).
+//
+// It is unspecified whether readers or writers have priority in acquiring the
+// lock when a reader already holds the lock and a writer is queued to acquire
+// it.
+//
+// Here is an example for an array with access functions: |[&lt;!-- language="C"
+// --&gt; GRWLock lock; GPtrArray *array;
+//
+// gpointer my_array_get (guint index) { gpointer retval = NULL;
+//
+// if (!array) return NULL;
+//
+// g_rw_lock_reader_lock (&amp;lock); if (index &lt; array-&gt;len) retval =
+// g_ptr_array_index (array, index); g_rw_lock_reader_unlock (&amp;lock);
+//
+// return retval; }
+//
+// void my_array_set (guint index, gpointer data) { g_rw_lock_writer_lock
+// (&amp;lock);
+//
+// if (!array) array = g_ptr_array_new ();
+//
+// if (index &gt;= array-&gt;len) g_ptr_array_set_size (array, index+1);
+// g_ptr_array_index (array, index) = data;
+//
+// g_rw_lock_writer_unlock (&amp;lock); } ]| This example shows an array which
+// can be accessed by many readers (the my_array_get() function) simultaneously,
+// whereas the writers (the my_array_set() function) will only be allowed one at
+// a time and only if no readers currently access the array. This is because of
+// the potentially dangerous resizing of the array. Using these functions is
+// fully multi-thread safe now.
+//
+// If a WLock is allocated in static storage then it can be used without
+// initialisation. Otherwise, you should call g_rw_lock_init() on it and
+// g_rw_lock_clear() when done.
+//
+// A GRWLock should only be accessed with the g_rw_lock_ functions.
+type RWLock struct {
+	native *C.GRWLock
+}
+
+// RecMutex: the GRecMutex struct is an opaque data structure to represent a
+// recursive mutex. It is similar to a #GMutex with the difference that it is
+// possible to lock a GRecMutex multiple times in the same thread without
+// deadlock. When doing so, care has to be taken to unlock the recursive mutex
+// as often as it has been locked.
+//
+// If a Mutex is allocated in static storage then it can be used without
+// initialisation. Otherwise, you should call g_rec_mutex_init() on it and
+// g_rec_mutex_clear() when done.
+//
+// A GRecMutex should only be accessed with the g_rec_mutex_ functions.
+type RecMutex struct {
+	native *C.GRecMutex
+}
+
+// Regex: the g_regex_*() functions implement regular expression pattern
+// matching using syntax and semantics similar to Perl regular expression.
+//
+// Some functions accept a @start_position argument, setting it differs from
+// just passing over a shortened string and setting REGEX_MATCH_NOTBOL in the
+// case of a pattern that begins with any kind of lookbehind assertion. For
+// example, consider the pattern "\Biss\B" which finds occurrences of "iss" in
+// the middle of words. ("\B" matches only if the current position in the
+// subject is not a word boundary.) When applied to the string "Mississipi" from
+// the fourth byte, namely "issipi", it does not match, because "\B" is always
+// false at the start of the subject, which is deemed to be a word boundary.
+// However, if the entire string is passed , but with @start_position set to 4,
+// it finds the second occurrence of "iss" because it is able to look behind the
+// starting point to discover that it is preceded by a letter.
+//
+// Note that, unless you set the REGEX_RAW flag, all the strings passed to these
+// functions must be encoded in UTF-8. The lengths and the positions inside the
+// strings are in bytes and not in characters, so, for instance, "\xc3\xa0"
+// (i.e. "à") is two bytes long but it is treated as a single character. If you
+// set REGEX_RAW the strings can be non-valid UTF-8 strings and a byte is
+// treated as a character, so "\xc3\xa0" is two bytes and two characters long.
+//
+// When matching a pattern, "\n" matches only against a "\n" character in the
+// string, and "\r" matches only a "\r" character. To match any newline sequence
+// use "\R". This particular group matches either the two-character sequence CR
+// + LF ("\r\n"), or one of the single characters LF (linefeed, U+000A, "\n"),
+// VT vertical tab, U+000B, "\v"), FF (formfeed, U+000C, "\f"), CR (carriage
+// return, U+000D, "\r"), NEL (next line, U+0085), LS (line separator, U+2028),
+// or PS (paragraph separator, U+2029).
+//
+// The behaviour of the dot, circumflex, and dollar metacharacters are affected
+// by newline characters, the default is to recognize any newline character (the
+// same characters recognized by "\R"). This can be changed with
+// REGEX_NEWLINE_CR, REGEX_NEWLINE_LF and REGEX_NEWLINE_CRLF compile options,
+// and with REGEX_MATCH_NEWLINE_ANY, REGEX_MATCH_NEWLINE_CR,
+// REGEX_MATCH_NEWLINE_LF and REGEX_MATCH_NEWLINE_CRLF match options. These
+// settings are also relevant when compiling a pattern if REGEX_EXTENDED is set,
+// and an unescaped "#" outside a character class is encountered. This indicates
+// a comment that lasts until after the next newline.
+//
+// When setting the G_REGEX_JAVASCRIPT_COMPAT flag, pattern syntax and pattern
+// matching is changed to be compatible with the way that regular expressions
+// work in JavaScript. More precisely, a lonely ']' character in the pattern is
+// a syntax error; the '\x' escape only allows 0 to 2 hexadecimal digits, and
+// you must use the '\u' escape sequence with 4 hex digits to specify a unicode
+// codepoint instead of '\x' or 'x{....}'. If '\x' or '\u' are not followed by
+// the specified number of hex digits, they match 'x' and 'u' literally; also
+// '\U' always matches 'U' instead of being an error in the pattern. Finally,
+// pattern matching is modified so that back references to an unset subpattern
+// group produces a match with the empty string instead of an error. See
+// pcreapi(3) for more information.
+//
+// Creating and manipulating the same #GRegex structure from different threads
+// is not a problem as #GRegex does not modify its internal state between
+// creation and destruction, on the other hand Info is not threadsafe.
+//
+// The regular expressions low-level functionalities are obtained through the
+// excellent [PCRE](http://www.pcre.org/) library written by Philip Hazel.
+type Regex struct {
+	native *C.GRegex
+}
+
+// SList: the List struct is used for each element in the singly-linked list.
+type SList struct {
+	// Data: holds the element's data, which can be a pointer to any kind of
+	// data, or any integer value using the [Type Conversion
+	// Macros][glib-Type-Conversion-Macros]
+	Data unsafe.Pointer
+	// Next: contains the link to the next element in the list.
+	Next *glib.SList
+}
+
+// Scanner: the data structure representing a lexical scanner.
+//
+// You should set @input_name after creating the scanner, since it is used by
+// the default message handler when displaying warnings and errors. If you are
+// scanning a file, the filename would be a good choice.
+//
+// The @user_data and @max_parse_errors fields are not used. If you need to
+// associate extra data with the scanner you can place them here.
+//
+// If you want to use your own message handler you can set the @msg_handler
+// field. The type of the message handler function is declared by MsgFunc.
+type Scanner struct {
+	// UserData: unused
+	UserData unsafe.Pointer
+	// MaxParseErrors: unused
+	MaxParseErrors uint
+	// ParseErrors: g_scanner_error() increments this field
+	ParseErrors uint
+	// InputName: name of input stream, featured by the default message handler
+	InputName string
+	// Qdata: quarked data
+	Qdata *Data
+	// Config: link into the scanner configuration
+	Config *ScannerConfig
+	// Token: token parsed by the last g_scanner_get_next_token()
+	Token TokenType
+	// Value: value of the last token from g_scanner_get_next_token()
+	Value TokenValue
+	// Line: line number of the last token from g_scanner_get_next_token()
+	Line uint
+	// Position: char number of the last token from g_scanner_get_next_token()
+	Position uint
+	// NextToken: token parsed by the last g_scanner_peek_next_token()
+	NextToken TokenType
+	// NextValue: value of the last token from g_scanner_peek_next_token()
+	NextValue TokenValue
+	// NextLine: line number of the last token from g_scanner_peek_next_token()
+	NextLine uint
+	// NextPosition: char number of the last token from
+	// g_scanner_peek_next_token()
+	NextPosition uint
+
+	// MsgHandler: handler function for _warn and _error
+	MsgHandler ScannerMsgFunc
+	native     *C.GScanner
+}
+
+// ScannerConfig: specifies the #GScanner parser configuration. Most settings
+// can be changed during the parsing phase and will affect the lexical parsing
+// of the next unpeeked token.
+type ScannerConfig struct {
+	// CsetSkipCharacters: specifies which characters should be skipped by the
+	// scanner (the default is the whitespace characters: space, tab,
+	// carriage-return and line-feed).
+	CsetSkipCharacters string
+	// CsetIdentifierFirst: specifies the characters which can start identifiers
+	// (the default is CSET_a_2_z, "_", and CSET_A_2_Z).
+	CsetIdentifierFirst string
+	// CsetIdentifierNth: specifies the characters which can be used in
+	// identifiers, after the first character (the default is CSET_a_2_z,
+	// "_0123456789", CSET_A_2_Z, CSET_LATINS, CSET_LATINC).
+	CsetIdentifierNth string
+	// CpairCommentSingle: specifies the characters at the start and end of
+	// single-line comments. The default is "#\n" which means that single-line
+	// comments start with a '#' and continue until a '\n' (end of line).
+	CpairCommentSingle string
+	// CaseSensitive: specifies if symbols are case sensitive (the default is
+	// false).
+	CaseSensitive uint
+	// SkipCommentMulti: specifies if multi-line comments are skipped and not
+	// returned as tokens (the default is true).
+	SkipCommentMulti uint
+	// SkipCommentSingle: specifies if single-line comments are skipped and not
+	// returned as tokens (the default is true).
+	SkipCommentSingle uint
+	// ScanCommentMulti: specifies if multi-line comments are recognized (the
+	// default is true).
+	ScanCommentMulti uint
+	// ScanIdentifier: specifies if identifiers are recognized (the default is
+	// true).
+	ScanIdentifier uint
+	// ScanIdentifier1Char: specifies if single-character identifiers are
+	// recognized (the default is false).
+	ScanIdentifier1Char uint
+	// ScanIdentifierNULL: specifies if nil is reported as
+	// G_TOKEN_IDENTIFIER_NULL (the default is false).
+	ScanIdentifierNULL uint
+	// ScanSymbols: specifies if symbols are recognized (the default is true).
+	ScanSymbols uint
+	// ScanBinary: specifies if binary numbers are recognized (the default is
+	// false).
+	ScanBinary uint
+	// ScanOctal: specifies if octal numbers are recognized (the default is
+	// true).
+	ScanOctal uint
+	// ScanFloat: specifies if floating point numbers are recognized (the
+	// default is true).
+	ScanFloat uint
+	// ScanHex: specifies if hexadecimal numbers are recognized (the default is
+	// true).
+	ScanHex uint
+	// ScanHexDollar: specifies if '$' is recognized as a prefix for hexadecimal
+	// numbers (the default is false).
+	ScanHexDollar uint
+	// ScanStringSq: specifies if strings can be enclosed in single quotes (the
+	// default is true).
+	ScanStringSq uint
+	// ScanStringDq: specifies if strings can be enclosed in double quotes (the
+	// default is true).
+	ScanStringDq uint
+	// Numbers2Int: specifies if binary, octal and hexadecimal numbers are
+	// reported as TOKEN_INT (the default is true).
+	Numbers2Int uint
+	// Int2Float: specifies if all numbers are reported as G_TOKEN_FLOAT (the
+	// default is false).
+	Int2Float uint
+	// Identifier2String: specifies if identifiers are reported as strings (the
+	// default is false).
+	Identifier2String uint
+	// Char2Token: specifies if characters are reported by setting `token = ch`
+	// or as G_TOKEN_CHAR (the default is true).
+	Char2Token uint
+	// Symbol2Token: specifies if symbols are reported by setting `token =
+	// v_symbol` or as G_TOKEN_SYMBOL (the default is false).
+	Symbol2Token uint
+	// Scope0Fallback: specifies if a symbol is searched for in the default
+	// scope in addition to the current scope (the default is false).
+	Scope0Fallback uint
+	// StoreInt64: use value.v_int64 rather than v_int
+	StoreInt64 uint
+
+	native *C.GScannerConfig
+}
+
+// Source: the `GSource` struct is an opaque data type representing an event
+// source.
+type Source struct {
+	native *C.GSource
+}
+
+// SourceCallbackFuncs: the `GSourceCallbackFuncs` struct contains functions for
+// managing callback objects.
+type SourceCallbackFuncs struct {
+}
+
+// SourceFuncs: the `GSourceFuncs` struct contains a table of functions used to
+// handle event sources in a generic manner.
+//
+// For idle sources, the prepare and check functions always return true to
+// indicate that the source is always ready to be processed. The prepare
+// function also returns a timeout value of 0 to ensure that the poll() call
+// doesn't block (since that would be time wasted which could have been spent
+// running the idle function).
+//
+// For timeout sources, the prepare and check functions both return true if the
+// timeout interval has expired. The prepare function also returns a timeout
+// value to ensure that the poll() call doesn't block too long and miss the next
+// timeout.
+//
+// For file descriptor sources, the prepare function typically returns false,
+// since it must wait until poll() has been called before it knows whether any
+// events need to be processed. It sets the returned timeout to -1 to indicate
+// that it doesn't mind how long the poll() call blocks. In the check function,
+// it tests the results of the poll() call to see if the required condition has
+// been met, and returns true if so.
+type SourceFuncs struct {
+	native *C.GSourceFuncs
+}
+
+// String: the GString struct contains the public fields of a GString.
+type String struct {
+	// Str: points to the character data. It may move as text is added. The @str
+	// field is null-terminated and so can be used as an ordinary C string.
+	Str string
+	// Len: contains the length of the string, not including the terminating nul
+	// byte.
+	Len uint
+	// AllocatedLen: the number of bytes that can be stored in the string before
+	// it needs to be reallocated. May be larger than @len.
+	AllocatedLen uint
+}
+
+type TestConfig struct {
+	TestInitialized bool
+
+	TestQuick bool
+
+	TestPerf bool
+
+	TestVerbose bool
+
+	TestQuiet bool
+
+	TestUndefined bool
+}
+
+type TestLogBuffer struct {
+	native *C.GTestLogBuffer
+}
+
+type TestLogMsg struct {
+	LogType TestLogType
+
+	NStrings uint
+
+	Strings *string
+
+	NNums uint
+
+	Nums *float64
+}
+
+// Thread: the #GThread struct represents a running thread. This struct is
+// returned by g_thread_new() or g_thread_try_new(). You can obtain the #GThread
+// struct representing the current thread by calling g_thread_self().
+//
+// GThread is refcounted, see g_thread_ref() and g_thread_unref(). The thread
+// represented by it holds a reference while it is running, and g_thread_join()
+// consumes the reference that it is given, so it is normally not necessary to
+// manage GThread references explicitly.
+//
+// The structure is opaque -- none of its fields may be directly accessed.
+type Thread struct {
+	native *C.GThread
+}
+
+// ThreadPool: the Pool struct represents a thread pool. It has three public
+// read-only members, but the underlying struct is bigger, so you must not copy
+// this struct.
+type ThreadPool struct {
+	// Func: the function to execute in the threads of this pool
+	Func Func
+	// UserData: the user data for the threads of this pool
+	UserData unsafe.Pointer
+	// Exclusive: are all threads exclusive to this pool
+	Exclusive bool
+}
+
+// TimeVal: represents a precise time, with seconds and microseconds. Similar to
+// the struct timeval returned by the gettimeofday() UNIX system call.
+//
+// GLib is attempting to unify around the use of 64-bit integers to represent
+// microsecond-precision time. As such, this type will be removed from a future
+// version of GLib. A consequence of using `glong` for `tv_sec` is that on
+// 32-bit systems `GTimeVal` is subject to the year 2038 problem.
+type TimeVal struct {
+	// TvSec: seconds
+	TvSec int32
+	// TvUsec: microseconds
+	TvUsec int32
+}
+
+// TimeZone: GTimeZone is an opaque structure whose members cannot be accessed
+// directly.
+type TimeZone struct {
+	native *C.GTimeZone
+}
+
+// TrashStack: each piece of memory that is pushed onto the stack is cast to a
+// GTrashStack*.
+type TrashStack struct {
+	// Next: pointer to the previous element of the stack, gets stored in the
+	// first `sizeof (gpointer)` bytes of the element
+	Next *TrashStack
+}
+
+// URI: the #GUri type and related functions can be used to parse URIs into
+// their components, and build valid URIs from individual components.
+//
+// Note that #GUri scope is to help manipulate URIs in various applications,
+// following [RFC 3986](https://tools.ietf.org/html/rfc3986). In particular, it
+// doesn't intend to cover web browser needs, and doesn't implement the [WHATWG
+// URL](https://url.spec.whatwg.org/) standard. No APIs are provided to help
+// prevent [homograph
+// attacks](https://en.wikipedia.org/wiki/IDN_homograph_attack), so #GUri is not
+// suitable for formatting URIs for display to the user for making
+// security-sensitive decisions.
+//
+// Relative and absolute URIs {#relative-absolute-uris}
+//
+// As defined in [RFC 3986](https://tools.ietf.org/html/rfc3986#section-4), the
+// hierarchical nature of URIs means that they can either be ‘relative
+// references’ (sometimes referred to as ‘relative URIs’) or ‘URIs’ (for
+// clarity, ‘URIs’ are referred to in this documentation as ‘absolute URIs’ —
+// although [in constrast to RFC
+// 3986](https://tools.ietf.org/html/rfc3986#section-4.3), fragment identifiers
+// are always allowed).
+//
+// Relative references have one or more components of the URI missing. In
+// particular, they have no scheme. Any other component, such as hostname,
+// query, etc. may be missing, apart from a path, which has to be specified (but
+// may be empty). The path may be relative, starting with `./` rather than `/`.
+//
+// For example, a valid relative reference is `./path?query`, `/?query#fragment`
+// or `//example.com`.
+//
+// Absolute URIs have a scheme specified. Any other components of the URI which
+// are missing are specified as explicitly unset in the URI, rather than being
+// resolved relative to a base URI using g_uri_parse_relative().
+//
+// For example, a valid absolute URI is `file:///home/bob` or
+// `https://search.com?query=string`.
+//
+// A #GUri instance is always an absolute URI. A string may be an absolute URI
+// or a relative reference; see the documentation for individual functions as to
+// what forms they accept.
+//
+//
+// Parsing URIs
+//
+// The most minimalist APIs for parsing URIs are g_uri_split() and
+// g_uri_split_with_user(). These split a URI into its component parts, and
+// return the parts; the difference between the two is that g_uri_split() treats
+// the ‘userinfo’ component of the URI as a single element, while
+// g_uri_split_with_user() can (depending on the Flags you pass) treat it as
+// containing a username, password, and authentication parameters.
+// Alternatively, g_uri_split_network() can be used when you are only interested
+// in the components that are needed to initiate a network connection to the
+// service (scheme, host, and port).
+//
+// g_uri_parse() is similar to g_uri_split(), but instead of returning
+// individual strings, it returns a #GUri structure (and it requires that the
+// URI be an absolute URI).
+//
+// g_uri_resolve_relative() and g_uri_parse_relative() allow you to resolve a
+// relative URI relative to a base URI. g_uri_resolve_relative() takes two
+// strings and returns a string, and g_uri_parse_relative() takes a #GUri and a
+// string and returns a #GUri.
+//
+// All of the parsing functions take a Flags argument describing exactly how to
+// parse the URI; see the documentation for that type for more details on the
+// specific flags that you can pass. If you need to choose different flags based
+// on the type of URI, you can use g_uri_peek_scheme() on the URI string to
+// check the scheme first, and use that to decide what flags to parse it with.
+//
+// For example, you might want to use G_URI_PARAMS_WWW_FORM when parsing the
+// params for a web URI, so compare the result of g_uri_peek_scheme() against
+// `http` and `https`.
+//
+//
+// Building URIs
+//
+// g_uri_join() and g_uri_join_with_user() can be used to construct valid URI
+// strings from a set of component strings. They are the inverse of
+// g_uri_split() and g_uri_split_with_user().
+//
+// Similarly, g_uri_build() and g_uri_build_with_user() can be used to construct
+// a #GUri from a set of component strings.
+//
+// As with the parsing functions, the building functions take a Flags argument.
+// In particular, it is important to keep in mind whether the URI components you
+// are using are already `%`-encoded. If so, you must pass the
+// G_URI_FLAGS_ENCODED flag.
+//
+// `file://` URIs
+//
+// Note that Windows and Unix both define special rules for parsing `file://`
+// URIs (involving non-UTF-8 character sets on Unix, and the interpretation of
+// path separators on Windows). #GUri does not implement these rules. Use
+// g_filename_from_uri() and g_filename_to_uri() if you want to properly convert
+// between `file://` URIs and local filenames.
+//
+//
+// URI Equality
+//
+// Note that there is no `g_uri_equal ()` function, because comparing URIs
+// usefully requires scheme-specific knowledge that #GUri does not have. For
+// example, `http://example.com/` and `http://EXAMPLE.COM:80` have exactly the
+// same meaning according to the HTTP specification, and `data:,foo` and
+// `data:;base64,Zm9v` resolve to the same thing according to the `data:` URI
+// specification.
+type URI struct {
+	native *C.GUri
+}
+
+// URIParamsIter: many URI schemes include one or more attribute/value pairs as
+// part of the URI value. For example
+// `scheme://server/path?query=string&amp;is=there` has two attributes –
+// `query=string` and `is=there` – in its query part.
+//
+// A ParamsIter structure represents an iterator that can be used to iterate
+// over the attribute/value pairs of a URI query string. ParamsIter structures
+// are typically allocated on the stack and then initialized with
+// g_uri_params_iter_init(). See the documentation for g_uri_params_iter_init()
+// for a usage example.
+type URIParamsIter struct {
+	native *C.GUriParamsIter
+}
+
+// Variant: GVariant is a variant datatype; it can contain one or more values
+// along with information about the type of the values.
+//
+// A #GVariant may contain simple types, like an integer, or a boolean value; or
+// complex types, like an array of two strings, or a dictionary of key value
+// pairs. A #GVariant is also immutable: once it's been created neither its type
+// nor its content can be modified further.
+//
+// GVariant is useful whenever data needs to be serialized, for example when
+// sending method parameters in DBus, or when saving settings using GSettings.
+//
+// When creating a new #GVariant, you pass the data you want to store in it
+// along with a string representing the type of data you wish to pass to it.
+//
+// For instance, if you want to create a #GVariant holding an integer value you
+// can use:
+//
+//    GVariant *v = g_variant_new ("u", 40);
+//
+// The string "u" in the first argument tells #GVariant that the data passed to
+// the constructor (40) is going to be an unsigned integer.
+//
+// More advanced examples of #GVariant in use can be found in documentation for
+// [GVariant format strings][gvariant-format-strings-pointers].
+//
+// The range of possible values is determined by the type.
+//
+// The type system used by #GVariant is Type.
+//
+// #GVariant instances always have a type and a value (which are given at
+// construction time). The type and value of a #GVariant instance can never
+// change other than by the #GVariant itself being destroyed. A #GVariant cannot
+// contain a pointer
+//
+// #GVariant is reference counted using g_variant_ref() and g_variant_unref().
+// #GVariant also has floating reference counts -- see g_variant_ref_sink()
+//
+// #GVariant is completely threadsafe. A #GVariant instance can be concurrently
+// accessed in any way from any number of threads without problems
+//
+// #GVariant is heavily optimised for dealing with data in serialised form. It
+// works particularly well with data located in memory-mapped files. It can
+// perform nearly all deserialisation operations in a small constant time,
+// usually touching only a single memory page. Serialised #GVariant data can
+// also be sent over the network
+//
+// #GVariant is largely compatible with D-Bus. Almost all types of #GVariant
+// instances can be sent over D-Bus. See Type for exceptions. (However,
+// #GVariant's serialisation format is not the same as the serialisation format
+// of a D-Bus message body: use BusMessage, in the gio library, for those.)
+//
+// For space-efficiency, the #GVariant serialisation format does not
+// automatically include the variant's length, type or endianness, which must
+// either be implied from context (such as knowledge that a particular file
+// format always contains a little-endian G_VARIANT_TYPE_VARIANT which occupies
+// the whole length of the file) or supplied out-of-band (for instance, a
+// length, type and/or endianness indicator could be placed at the beginning of
+// a file, network message or network stream).
+//
+// A #GVariant's size is limited mainly by any lower level operating system
+// constraints, such as the number of bits in #gsize. For example, it is
+// reasonable to have a 2GB file mapped into memory with File, and call
+// g_variant_new_from_data() on it.
+//
+// For convenience to C programmers, #GVariant features powerful varargs-based
+// value construction and destruction. This feature is designed to be embedded
+// in other libraries.
+//
+// There is a Python-inspired text language for describing #GVariant values.
+// #GVariant includes a printer for this language and a parser with type
+// inferencing.
+//
+//
+// Memory Use
+//
+// #GVariant tries to be quite efficient with respect to memory use. This
+// section gives a rough idea of how much memory is used by the current
+// implementation. The information here is subject to change in the future
+//
+// The memory allocated by #GVariant can be grouped into 4 broad purposes:
+// memory for serialised data, memory for the type information cache, buffer
+// management memory and memory for the #GVariant structure itself.
+//
+//
+// Serialised Data Memory
+//
+// This is the memory that is used for storing GVariant data in serialised form.
+// This is what would be sent over the network or what would end up on disk, not
+// counting any indicator of the endianness, or of the length or type of the
+// top-level variant.
+//
+// The amount of memory required to store a boolean is 1 byte. 16, 32 and 64 bit
+// integers and double precision floating point numbers use their "natural"
+// size. Strings (including object path and signature strings) are stored with a
+// nul terminator, and as such use the length of the string plus 1 byte.
+//
+// Maybe types use no space at all to represent the null value and use the same
+// amount of space (sometimes plus one byte) as the equivalent non-maybe-typed
+// value to represent the non-null case.
+//
+// Arrays use the amount of space required to store each of their members,
+// concatenated. Additionally, if the items stored in an array are not of a
+// fixed-size (ie: strings, other arrays, etc) then an additional framing offset
+// is stored for each item. The size of this offset is either 1, 2 or 4 bytes
+// depending on the overall size of the container. Additionally, extra padding
+// bytes are added as required for alignment of child values.
+//
+// Tuples (including dictionary entries) use the amount of space required to
+// store each of their members, concatenated, plus one framing offset (as per
+// arrays) for each non-fixed-sized item in the tuple, except for the last one.
+// Additionally, extra padding bytes are added as required for alignment of
+// child values.
+//
+// Variants use the same amount of space as the item inside of the variant, plus
+// 1 byte, plus the length of the type string for the item inside the variant.
+//
+// As an example, consider a dictionary mapping strings to variants. In the case
+// that the dictionary is empty, 0 bytes are required for the serialisation.
+//
+// If we add an item "width" that maps to the int32 value of 500 then we will
+// use 4 byte to store the int32 (so 6 for the variant containing it) and 6
+// bytes for the string. The variant must be aligned to 8 after the 6 bytes of
+// the string, so that's 2 extra bytes. 6 (string) + 2 (padding) + 6 (variant)
+// is 14 bytes used for the dictionary entry. An additional 1 byte is added to
+// the array as a framing offset making a total of 15 bytes.
+//
+// If we add another entry, "title" that maps to a nullable string that happens
+// to have a value of null, then we use 0 bytes for the null value (and 3 bytes
+// for the variant to contain it along with its type string) plus 6 bytes for
+// the string. Again, we need 2 padding bytes. That makes a total of 6 + 2 + 3 =
+// 11 bytes.
+//
+// We now require extra padding between the two items in the array. After the 14
+// bytes of the first item, that's 2 bytes required. We now require 2 framing
+// offsets for an extra two bytes. 14 + 2 + 11 + 2 = 29 bytes to encode the
+// entire two-item dictionary.
+//
+//
+// Type Information Cache
+//
+// For each GVariant type that currently exists in the program a type
+// information structure is kept in the type information cache. The type
+// information structure is required for rapid deserialisation.
+//
+// Continuing with the above example, if a #GVariant exists with the type
+// "a{sv}" then a type information struct will exist for "a{sv}", "{sv}", "s",
+// and "v". Multiple uses of the same type will share the same type information.
+// Additionally, all single-digit types are stored in read-only static memory
+// and do not contribute to the writable memory footprint of a program using
+// #GVariant.
+//
+// Aside from the type information structures stored in read-only memory, there
+// are two forms of type information. One is used for container types where
+// there is a single element type: arrays and maybe types. The other is used for
+// container types where there are multiple element types: tuples and dictionary
+// entries.
+//
+// Array type info structures are 6 * sizeof (void *), plus the memory required
+// to store the type string itself. This means that on 32-bit systems, the cache
+// entry for "a{sv}" would require 30 bytes of memory (plus malloc overhead).
+//
+// Tuple type info structures are 6 * sizeof (void *), plus 4 * sizeof (void *)
+// for each item in the tuple, plus the memory required to store the type string
+// itself. A 2-item tuple, for example, would have a type information structure
+// that consumed writable memory in the size of 14 * sizeof (void *) (plus type
+// string) This means that on 32-bit systems, the cache entry for "{sv}" would
+// require 61 bytes of memory (plus malloc overhead).
+//
+// This means that in total, for our "a{sv}" example, 91 bytes of type
+// information would be allocated.
+//
+// The type information cache, additionally, uses a Table to store and look up
+// the cached items and stores a pointer to this hash table in static storage.
+// The hash table is freed when there are zero items in the type cache.
+//
+// Although these sizes may seem large it is important to remember that a
+// program will probably only have a very small number of different types of
+// values in it and that only one type information structure is required for
+// many different values of the same type.
+//
+//
+// Buffer Management Memory
+//
+// #GVariant uses an internal buffer management structure to deal with the
+// various different possible sources of serialised data that it uses. The
+// buffer is responsible for ensuring that the correct call is made when the
+// data is no longer in use by #GVariant. This may involve a g_free() or a
+// g_slice_free() or even g_mapped_file_unref()
+//
+// One buffer management structure is used for each chunk of serialised data.
+// The size of the buffer management structure is 4 * (void *). On 32-bit
+// systems, that's 16 bytes.
+//
+//
+// GVariant structure
+//
+// The size of a #GVariant structure is 6 * (void *). On 32-bit systems, that's
+// 24 bytes.
+//
+// #GVariant structures only exist if they are explicitly created with API
+// calls. For example, if a #GVariant is constructed out of serialised data for
+// the example given above (with the dictionary) then although there are 9
+// individual values that comprise the entire dictionary (two keys, two values,
+// two variants containing the values, two dictionary entries, plus the
+// dictionary itself), only 1 #GVariant instance exists -- the one referring to
+// the dictionary
+//
+// If calls are made to start accessing the other values then #GVariant
+// instances will exist for those values only for as long as they are in use
+// (ie: until you call g_variant_unref()). The type information is shared. The
+// serialised data and the buffer management structure for that serialised data
+// is shared by the child.
+//
+//
+// Summary
+//
+// To put the entire example together, for our dictionary mapping strings to
+// variants (with two entries, as given above), we are using 91 bytes of memory
+// for type information, 29 bytes of memory for the serialised data, 16 bytes
+// for buffer management and 24 bytes for the #GVariant instance, or a total of
+// 160 bytes, plus malloc overhead. If we were to use
+// g_variant_get_child_value() to access the two dictionary entries, we would
+// use an additional 48 bytes. If we were to have other dictionaries of the same
+// type, we would use more memory for the serialised data and buffer management
+// for those dictionaries, but the type information would be shared.
+type Variant struct {
+	native *C.GVariant
+}
+
+// VariantBuilder: a utility type for constructing container-type #GVariant
+// instances.
+//
+// This is an opaque structure and may only be accessed using the following
+// functions.
+//
+// Builder is not threadsafe in any way. Do not attempt to access it from more
+// than one thread.
+type VariantBuilder struct {
+	native *C.GVariantBuilder
+}
+
+// VariantDict: GVariantDict is a mutable interface to #GVariant dictionaries.
+//
+// It can be used for doing a sequence of dictionary lookups in an efficient way
+// on an existing #GVariant dictionary or it can be used to construct new
+// dictionaries with a hashtable-like interface. It can also be used for taking
+// existing dictionaries and modifying them in order to create new ones.
+//
+// Dict can only be used with G_VARIANT_TYPE_VARDICT dictionaries.
+//
+// It is possible to use Dict allocated on the stack or on the heap. When using
+// a stack-allocated Dict, you begin with a call to g_variant_dict_init() and
+// free the resources with a call to g_variant_dict_clear().
+//
+// Heap-allocated Dict follows normal refcounting rules: you allocate it with
+// g_variant_dict_new() and use g_variant_dict_ref() and g_variant_dict_unref().
+//
+// g_variant_dict_end() is used to convert the Dict back into a dictionary-type
+// #GVariant. When used with stack-allocated instances, this also implicitly
+// frees all associated memory, but for heap-allocated instances, you must still
+// call g_variant_dict_unref() afterwards.
+//
+// You will typically want to use a heap-allocated Dict when you expose it as
+// part of an API. For most other uses, the stack-allocated form will be more
+// convenient.
+//
+// Consider the following two examples that do the same thing in each style:
+// take an existing dictionary and look up the "count" uint32 key, adding 1 to
+// it if it is found, or returning an error if the key is not found. Each
+// returns the new dictionary as a floating #GVariant.
+//
+// Using a stack-allocated GVariantDict
+//
+//      GVariant *
+//      add_to_count (GVariant  *orig,
+//                    GError   **error)
+//      {
+//        GVariantDict dict;
+//        guint32 count;
+//
+//        g_variant_dict_init (&amp;dict, orig);
+//        if (!g_variant_dict_lookup (&amp;dict, "count", "u", &amp;count))
+//          {
+//            g_set_error (...);
+//            g_variant_dict_clear (&amp;dict);
+//            return NULL;
+//          }
+//
+//        g_variant_dict_insert (&amp;dict, "count", "u", count + 1);
+//
+//        return g_variant_dict_end (&amp;dict);
+//      }
+//
+//
+// Using heap-allocated GVariantDict
+//
+//      GVariant *
+//      add_to_count (GVariant  *orig,
+//                    GError   **error)
+//      {
+//        GVariantDict *dict;
+//        GVariant *result;
+//        guint32 count;
+//
+//        dict = g_variant_dict_new (orig);
+//
+//        if (g_variant_dict_lookup (dict, "count", "u", &amp;count))
+//          {
+//            g_variant_dict_insert (dict, "count", "u", count + 1);
+//            result = g_variant_dict_end (dict);
+//          }
+//        else
+//          {
+//            g_set_error (...);
+//            result = NULL;
+//          }
+//
+//        g_variant_dict_unref (dict);
+//
+//        return result;
+//      }
+//
+type VariantDict struct {
+	native *C.GVariantDict
+}
+
+// VariantIter: GVariantIter is an opaque data structure and can only be
+// accessed using the following functions.
+type VariantIter struct {
+	native *C.GVariantIter
+}
+
+// VariantType: this section introduces the GVariant type system. It is based,
+// in large part, on the D-Bus type system, with two major changes and some
+// minor lifting of restrictions. The [D-Bus
+// specification](http://dbus.freedesktop.org/doc/dbus-specification.html),
+// therefore, provides a significant amount of information that is useful when
+// working with GVariant.
+//
+// The first major change with respect to the D-Bus type system is the
+// introduction of maybe (or "nullable") types. Any type in GVariant can be
+// converted to a maybe type, in which case, "nothing" (or "null") becomes a
+// valid value. Maybe types have been added by introducing the character "m" to
+// type strings.
+//
+// The second major change is that the GVariant type system supports the concept
+// of "indefinite types" -- types that are less specific than the normal types
+// found in D-Bus. For example, it is possible to speak of "an array of any
+// type" in GVariant, where the D-Bus type system would require you to speak of
+// "an array of integers" or "an array of strings". Indefinite types have been
+// added by introducing the characters "*", "?" and "r" to type strings.
+//
+// Finally, all arbitrary restrictions relating to the complexity of types are
+// lifted along with the restriction that dictionary entries may only appear
+// nested inside of arrays.
+//
+// Just as in D-Bus, GVariant types are described with strings ("type strings").
+// Subject to the differences mentioned above, these strings are of the same
+// form as those found in DBus. Note, however: D-Bus always works in terms of
+// messages and therefore individual type strings appear nowhere in its
+// interface. Instead, "signatures" are a concatenation of the strings of the
+// type of each argument in a message. GVariant deals with single values
+// directly so GVariant type strings always describe the type of exactly one
+// value. This means that a D-Bus signature string is generally not a valid
+// GVariant type string -- except in the case that it is the signature of a
+// message containing exactly one argument.
+//
+// An indefinite type is similar in spirit to what may be called an abstract
+// type in other type systems. No value can exist that has an indefinite type as
+// its type, but values can exist that have types that are subtypes of
+// indefinite types. That is to say, g_variant_get_type() will never return an
+// indefinite type, but calling g_variant_is_of_type() with an indefinite type
+// may return true. For example, you cannot have a value that represents "an
+// array of no particular type", but you can have an "array of integers" which
+// certainly matches the type of "an array of no particular type", since "array
+// of integers" is a subtype of "array of no particular type".
+//
+// This is similar to how instances of abstract classes may not directly exist
+// in other type systems, but instances of their non-abstract subtypes may. For
+// example, in GTK, no object that has the type of Bin can exist (since Bin is
+// an abstract class), but a Window can certainly be instantiated, and you would
+// say that the Window is a Bin (since Window is a subclass of Bin).
+//
+//
+// GVariant Type Strings
+//
+// A GVariant type string can be any of the following:
+//
+// - any basic type string (listed below)
+//
+// - "v", "r" or "*"
+//
+// - one of the characters 'a' or 'm', followed by another type string
+//
+// - the character '(', followed by a concatenation of zero or more other type
+// strings, followed by the character ')'
+//
+// - the character '{', followed by a basic type string (see below), followed by
+// another type string, followed by the character '}'
+//
+// A basic type string describes a basic type (as per g_variant_type_is_basic())
+// and is always a single character in length. The valid basic type strings are
+// "b", "y", "n", "q", "i", "u", "x", "t", "h", "d", "s", "o", "g" and "?".
+//
+// The above definition is recursive to arbitrary depth. "aaaaai" and
+// "(ui(nq((y)))s)" are both valid type strings, as is "a(aa(ui)(qna{ya(yd)}))".
+// In order to not hit memory limits, #GVariant imposes a limit on recursion
+// depth of 65 nested containers. This is the limit in the D-Bus specification
+// (64) plus one to allow a BusMessage to be nested in a top-level tuple.
+//
+// The meaning of each of the characters is as follows: - `b`: the type string
+// of G_VARIANT_TYPE_BOOLEAN; a boolean value. - `y`: the type string of
+// G_VARIANT_TYPE_BYTE; a byte. - `n`: the type string of G_VARIANT_TYPE_INT16;
+// a signed 16 bit integer. - `q`: the type string of G_VARIANT_TYPE_UINT16; an
+// unsigned 16 bit integer. - `i`: the type string of G_VARIANT_TYPE_INT32; a
+// signed 32 bit integer. - `u`: the type string of G_VARIANT_TYPE_UINT32; an
+// unsigned 32 bit integer. - `x`: the type string of G_VARIANT_TYPE_INT64; a
+// signed 64 bit integer. - `t`: the type string of G_VARIANT_TYPE_UINT64; an
+// unsigned 64 bit integer. - `h`: the type string of G_VARIANT_TYPE_HANDLE; a
+// signed 32 bit value that, by convention, is used as an index into an array of
+// file descriptors that are sent alongside a D-Bus message. - `d`: the type
+// string of G_VARIANT_TYPE_DOUBLE; a double precision floating point value. -
+// `s`: the type string of G_VARIANT_TYPE_STRING; a string. - `o`: the type
+// string of G_VARIANT_TYPE_OBJECT_PATH; a string in the form of a D-Bus object
+// path. - `g`: the type string of G_VARIANT_TYPE_SIGNATURE; a string in the
+// form of a D-Bus type signature. - `?`: the type string of
+// G_VARIANT_TYPE_BASIC; an indefinite type that is a supertype of any of the
+// basic types. - `v`: the type string of G_VARIANT_TYPE_VARIANT; a container
+// type that contain any other type of value. - `a`: used as a prefix on another
+// type string to mean an array of that type; the type string "ai", for example,
+// is the type of an array of signed 32-bit integers. - `m`: used as a prefix on
+// another type string to mean a "maybe", or "nullable", version of that type;
+// the type string "ms", for example, is the type of a value that maybe contains
+// a string, or maybe contains nothing. - `()`: used to enclose zero or more
+// other concatenated type strings to create a tuple type; the type string
+// "(is)", for example, is the type of a pair of an integer and a string. - `r`:
+// the type string of G_VARIANT_TYPE_TUPLE; an indefinite type that is a
+// supertype of any tuple type, regardless of the number of items. - `{}`: used
+// to enclose a basic type string concatenated with another type string to
+// create a dictionary entry type, which usually appears inside of an array to
+// form a dictionary; the type string "a{sd}", for example, is the type of a
+// dictionary that maps strings to double precision floating point values.
+//
+// The first type (the basic type) is the key type and the second type is the
+// value type. The reason that the first type is restricted to being a basic
+// type is so that it can easily be hashed. - `*`: the type string of
+// G_VARIANT_TYPE_ANY; the indefinite type that is a supertype of all types.
+// Note that, as with all type strings, this character represents exactly one
+// type. It cannot be used inside of tuples to mean "any number of items".
+//
+// Any type string of a container that contains an indefinite type is, itself,
+// an indefinite type. For example, the type string "a*" (corresponding to
+// G_VARIANT_TYPE_ARRAY) is an indefinite type that is a supertype of every
+// array type. "(*s)" is a supertype of all tuples that contain exactly two
+// items where the second item is a string.
+//
+// "a{?*}" is an indefinite type that is a supertype of all arrays containing
+// dictionary entries where the key is any basic type and the value is any type
+// at all. This is, by definition, a dictionary, so this type string corresponds
+// to G_VARIANT_TYPE_DICTIONARY. Note that, due to the restriction that the key
+// of a dictionary entry must be a basic type, "{**}" is not a valid type
+// string.
+type VariantType struct {
+	native *C.GVariantType
+}

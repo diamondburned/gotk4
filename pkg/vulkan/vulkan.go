@@ -6,7 +6,7 @@ import (
 	"github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-introspection-1.0
+// #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 import "C"
 
@@ -15,4 +15,3160 @@ func init() {
 
 		// Objects/Classes
 	})
+}
+
+type Flags struct {
+	native *C.VkFlags
+}
+
+type Bool32 struct {
+	native *C.VkBool32
+}
+
+type DeviceSize struct {
+	native *C.VkDeviceSize
+}
+
+type SampleMask struct {
+	native *C.VkSampleMask
+}
+
+type Instance struct {
+	native *C.VkInstance
+}
+
+type PhysicalDevice struct {
+	native *C.VkPhysicalDevice
+}
+
+type Device struct {
+	native *C.VkDevice
+}
+
+type Queue struct {
+	native *C.VkQueue
+}
+
+type Semaphore struct {
+	native *C.VkSemaphore
+}
+
+type CommandBuffer struct {
+	native *C.VkCommandBuffer
+}
+
+type Fence struct {
+	native *C.VkFence
+}
+
+type DeviceMemory struct {
+	native *C.VkDeviceMemory
+}
+
+type Buffer struct {
+	native *C.VkBuffer
+}
+
+type Image struct {
+	native *C.VkImage
+}
+
+type Event struct {
+	native *C.VkEvent
+}
+
+type QueryPool struct {
+	native *C.VkQueryPool
+}
+
+type BufferView struct {
+	native *C.VkBufferView
+}
+
+type ImageView struct {
+	native *C.VkImageView
+}
+
+type ShaderModule struct {
+	native *C.VkShaderModule
+}
+
+type PipelineCache struct {
+	native *C.VkPipelineCache
+}
+
+type PipelineLayout struct {
+	native *C.VkPipelineLayout
+}
+
+type RenderPass struct {
+	native *C.VkRenderPass
+}
+
+type Pipeline struct {
+	native *C.VkPipeline
+}
+
+type DescriptorSetLayout struct {
+	native *C.VkDescriptorSetLayout
+}
+
+type Sampler struct {
+	native *C.VkSampler
+}
+
+type DescriptorPool struct {
+	native *C.VkDescriptorPool
+}
+
+type DescriptorSet struct {
+	native *C.VkDescriptorSet
+}
+
+type Framebuffer struct {
+	native *C.VkFramebuffer
+}
+
+type CommandPool struct {
+	native *C.VkCommandPool
+}
+
+type PipelineCacheHeaderVersion struct {
+	native *C.VkPipelineCacheHeaderVersion
+}
+
+type Result struct {
+	native *C.VkResult
+}
+
+type StructureType struct {
+	native *C.VkStructureType
+}
+
+type SystemAllocationScope struct {
+	native *C.VkSystemAllocationScope
+}
+
+type InternalAllocationType struct {
+	native *C.VkInternalAllocationType
+}
+
+type Format struct {
+	native *C.VkFormat
+}
+
+type ImageType struct {
+	native *C.VkImageType
+}
+
+type ImageTiling struct {
+	native *C.VkImageTiling
+}
+
+type PhysicalDeviceType struct {
+	native *C.VkPhysicalDeviceType
+}
+
+type QueryType struct {
+	native *C.VkQueryType
+}
+
+type SharingMode struct {
+	native *C.VkSharingMode
+}
+
+type ImageLayout struct {
+	native *C.VkImageLayout
+}
+
+type ImageViewType struct {
+	native *C.VkImageViewType
+}
+
+type ComponentSwizzle struct {
+	native *C.VkComponentSwizzle
+}
+
+type VertexInputRate struct {
+	native *C.VkVertexInputRate
+}
+
+type PrimitiveTopology struct {
+	native *C.VkPrimitiveTopology
+}
+
+type PolygonMode struct {
+	native *C.VkPolygonMode
+}
+
+type FrontFace struct {
+	native *C.VkFrontFace
+}
+
+type CompareOp struct {
+	native *C.VkCompareOp
+}
+
+type StencilOp struct {
+	native *C.VkStencilOp
+}
+
+type LogicOp struct {
+	native *C.VkLogicOp
+}
+
+type BlendFactor struct {
+	native *C.VkBlendFactor
+}
+
+type BlendOp struct {
+	native *C.VkBlendOp
+}
+
+type DynamicState struct {
+	native *C.VkDynamicState
+}
+
+type Filter struct {
+	native *C.VkFilter
+}
+
+type SamplerMipmapMode struct {
+	native *C.VkSamplerMipmapMode
+}
+
+type SamplerAddressMode struct {
+	native *C.VkSamplerAddressMode
+}
+
+type BorderColor struct {
+	native *C.VkBorderColor
+}
+
+type DescriptorType struct {
+	native *C.VkDescriptorType
+}
+
+type AttachmentLoadOp struct {
+	native *C.VkAttachmentLoadOp
+}
+
+type AttachmentStoreOp struct {
+	native *C.VkAttachmentStoreOp
+}
+
+type PipelineBindPoint struct {
+	native *C.VkPipelineBindPoint
+}
+
+type CommandBufferLevel struct {
+	native *C.VkCommandBufferLevel
+}
+
+type IndexType struct {
+	native *C.VkIndexType
+}
+
+type SubpassContents struct {
+	native *C.VkSubpassContents
+}
+
+type ObjectType struct {
+	native *C.VkObjectType
+}
+
+type VendorID struct {
+	native *C.VkVendorId
+}
+
+type InstanceCreateFlags struct {
+	native *C.VkInstanceCreateFlags
+}
+
+type FormatFeatureFlagBits struct {
+	native *C.VkFormatFeatureFlagBits
+}
+
+type FormatFeatureFlags struct {
+	native *C.VkFormatFeatureFlags
+}
+
+type ImageUsageFlagBits struct {
+	native *C.VkImageUsageFlagBits
+}
+
+type ImageUsageFlags struct {
+	native *C.VkImageUsageFlags
+}
+
+type ImageCreateFlagBits struct {
+	native *C.VkImageCreateFlagBits
+}
+
+type ImageCreateFlags struct {
+	native *C.VkImageCreateFlags
+}
+
+type SampleCountFlagBits struct {
+	native *C.VkSampleCountFlagBits
+}
+
+type SampleCountFlags struct {
+	native *C.VkSampleCountFlags
+}
+
+type QueueFlagBits struct {
+	native *C.VkQueueFlagBits
+}
+
+type QueueFlags struct {
+	native *C.VkQueueFlags
+}
+
+type MemoryPropertyFlagBits struct {
+	native *C.VkMemoryPropertyFlagBits
+}
+
+type MemoryPropertyFlags struct {
+	native *C.VkMemoryPropertyFlags
+}
+
+type MemoryHeapFlagBits struct {
+	native *C.VkMemoryHeapFlagBits
+}
+
+type MemoryHeapFlags struct {
+	native *C.VkMemoryHeapFlags
+}
+
+type DeviceCreateFlags struct {
+	native *C.VkDeviceCreateFlags
+}
+
+type DeviceQueueCreateFlagBits struct {
+	native *C.VkDeviceQueueCreateFlagBits
+}
+
+type DeviceQueueCreateFlags struct {
+	native *C.VkDeviceQueueCreateFlags
+}
+
+type PipelineStageFlagBits struct {
+	native *C.VkPipelineStageFlagBits
+}
+
+type PipelineStageFlags struct {
+	native *C.VkPipelineStageFlags
+}
+
+type MemoryMapFlags struct {
+	native *C.VkMemoryMapFlags
+}
+
+type ImageAspectFlagBits struct {
+	native *C.VkImageAspectFlagBits
+}
+
+type ImageAspectFlags struct {
+	native *C.VkImageAspectFlags
+}
+
+type SparseImageFormatFlagBits struct {
+	native *C.VkSparseImageFormatFlagBits
+}
+
+type SparseImageFormatFlags struct {
+	native *C.VkSparseImageFormatFlags
+}
+
+type SparseMemoryBindFlagBits struct {
+	native *C.VkSparseMemoryBindFlagBits
+}
+
+type SparseMemoryBindFlags struct {
+	native *C.VkSparseMemoryBindFlags
+}
+
+type FenceCreateFlagBits struct {
+	native *C.VkFenceCreateFlagBits
+}
+
+type FenceCreateFlags struct {
+	native *C.VkFenceCreateFlags
+}
+
+type SemaphoreCreateFlags struct {
+	native *C.VkSemaphoreCreateFlags
+}
+
+type EventCreateFlags struct {
+	native *C.VkEventCreateFlags
+}
+
+type QueryPoolCreateFlags struct {
+	native *C.VkQueryPoolCreateFlags
+}
+
+type QueryPipelineStatisticFlagBits struct {
+	native *C.VkQueryPipelineStatisticFlagBits
+}
+
+type QueryPipelineStatisticFlags struct {
+	native *C.VkQueryPipelineStatisticFlags
+}
+
+type QueryResultFlagBits struct {
+	native *C.VkQueryResultFlagBits
+}
+
+type QueryResultFlags struct {
+	native *C.VkQueryResultFlags
+}
+
+type BufferCreateFlagBits struct {
+	native *C.VkBufferCreateFlagBits
+}
+
+type BufferCreateFlags struct {
+	native *C.VkBufferCreateFlags
+}
+
+type BufferUsageFlagBits struct {
+	native *C.VkBufferUsageFlagBits
+}
+
+type BufferUsageFlags struct {
+	native *C.VkBufferUsageFlags
+}
+
+type BufferViewCreateFlags struct {
+	native *C.VkBufferViewCreateFlags
+}
+
+type ImageViewCreateFlagBits struct {
+	native *C.VkImageViewCreateFlagBits
+}
+
+type ImageViewCreateFlags struct {
+	native *C.VkImageViewCreateFlags
+}
+
+type ShaderModuleCreateFlags struct {
+	native *C.VkShaderModuleCreateFlags
+}
+
+type PipelineCacheCreateFlags struct {
+	native *C.VkPipelineCacheCreateFlags
+}
+
+type PipelineCreateFlagBits struct {
+	native *C.VkPipelineCreateFlagBits
+}
+
+type PipelineCreateFlags struct {
+	native *C.VkPipelineCreateFlags
+}
+
+type PipelineShaderStageCreateFlags struct {
+	native *C.VkPipelineShaderStageCreateFlags
+}
+
+type ShaderStageFlagBits struct {
+	native *C.VkShaderStageFlagBits
+}
+
+type PipelineVertexInputStateCreateFlags struct {
+	native *C.VkPipelineVertexInputStateCreateFlags
+}
+
+type PipelineInputAssemblyStateCreateFlags struct {
+	native *C.VkPipelineInputAssemblyStateCreateFlags
+}
+
+type PipelineTessellationStateCreateFlags struct {
+	native *C.VkPipelineTessellationStateCreateFlags
+}
+
+type PipelineViewportStateCreateFlags struct {
+	native *C.VkPipelineViewportStateCreateFlags
+}
+
+type PipelineRasterizationStateCreateFlags struct {
+	native *C.VkPipelineRasterizationStateCreateFlags
+}
+
+type CullModeFlagBits struct {
+	native *C.VkCullModeFlagBits
+}
+
+type CullModeFlags struct {
+	native *C.VkCullModeFlags
+}
+
+type PipelineMultisampleStateCreateFlags struct {
+	native *C.VkPipelineMultisampleStateCreateFlags
+}
+
+type PipelineDepthStencilStateCreateFlags struct {
+	native *C.VkPipelineDepthStencilStateCreateFlags
+}
+
+type PipelineColorBlendStateCreateFlags struct {
+	native *C.VkPipelineColorBlendStateCreateFlags
+}
+
+type ColorComponentFlagBits struct {
+	native *C.VkColorComponentFlagBits
+}
+
+type ColorComponentFlags struct {
+	native *C.VkColorComponentFlags
+}
+
+type PipelineDynamicStateCreateFlags struct {
+	native *C.VkPipelineDynamicStateCreateFlags
+}
+
+type PipelineLayoutCreateFlags struct {
+	native *C.VkPipelineLayoutCreateFlags
+}
+
+type ShaderStageFlags struct {
+	native *C.VkShaderStageFlags
+}
+
+type SamplerCreateFlagBits struct {
+	native *C.VkSamplerCreateFlagBits
+}
+
+type SamplerCreateFlags struct {
+	native *C.VkSamplerCreateFlags
+}
+
+type DescriptorSetLayoutCreateFlagBits struct {
+	native *C.VkDescriptorSetLayoutCreateFlagBits
+}
+
+type DescriptorSetLayoutCreateFlags struct {
+	native *C.VkDescriptorSetLayoutCreateFlags
+}
+
+type DescriptorPoolCreateFlagBits struct {
+	native *C.VkDescriptorPoolCreateFlagBits
+}
+
+type DescriptorPoolCreateFlags struct {
+	native *C.VkDescriptorPoolCreateFlags
+}
+
+type DescriptorPoolResetFlags struct {
+	native *C.VkDescriptorPoolResetFlags
+}
+
+type FramebufferCreateFlags struct {
+	native *C.VkFramebufferCreateFlags
+}
+
+type RenderPassCreateFlags struct {
+	native *C.VkRenderPassCreateFlags
+}
+
+type AttachmentDescriptionFlagBits struct {
+	native *C.VkAttachmentDescriptionFlagBits
+}
+
+type AttachmentDescriptionFlags struct {
+	native *C.VkAttachmentDescriptionFlags
+}
+
+type SubpassDescriptionFlagBits struct {
+	native *C.VkSubpassDescriptionFlagBits
+}
+
+type SubpassDescriptionFlags struct {
+	native *C.VkSubpassDescriptionFlags
+}
+
+type AccessFlagBits struct {
+	native *C.VkAccessFlagBits
+}
+
+type AccessFlags struct {
+	native *C.VkAccessFlags
+}
+
+type DependencyFlagBits struct {
+	native *C.VkDependencyFlagBits
+}
+
+type DependencyFlags struct {
+	native *C.VkDependencyFlags
+}
+
+type CommandPoolCreateFlagBits struct {
+	native *C.VkCommandPoolCreateFlagBits
+}
+
+type CommandPoolCreateFlags struct {
+	native *C.VkCommandPoolCreateFlags
+}
+
+type CommandPoolResetFlagBits struct {
+	native *C.VkCommandPoolResetFlagBits
+}
+
+type CommandPoolResetFlags struct {
+	native *C.VkCommandPoolResetFlags
+}
+
+type CommandBufferUsageFlagBits struct {
+	native *C.VkCommandBufferUsageFlagBits
+}
+
+type CommandBufferUsageFlags struct {
+	native *C.VkCommandBufferUsageFlags
+}
+
+type QueryControlFlagBits struct {
+	native *C.VkQueryControlFlagBits
+}
+
+type QueryControlFlags struct {
+	native *C.VkQueryControlFlags
+}
+
+type CommandBufferResetFlagBits struct {
+	native *C.VkCommandBufferResetFlagBits
+}
+
+type CommandBufferResetFlags struct {
+	native *C.VkCommandBufferResetFlags
+}
+
+type StencilFaceFlagBits struct {
+	native *C.VkStencilFaceFlagBits
+}
+
+type StencilFaceFlags struct {
+	native *C.VkStencilFaceFlags
+}
+
+type ApplicationInfo struct {
+	native *C.VkApplicationInfo
+}
+
+type InstanceCreateInfo struct {
+	native *C.VkInstanceCreateInfo
+}
+
+type AllocationCallbacks struct {
+	native *C.VkAllocationCallbacks
+}
+
+type PhysicalDeviceFeatures struct {
+	native *C.VkPhysicalDeviceFeatures
+}
+
+type FormatProperties struct {
+	native *C.VkFormatProperties
+}
+
+type Extent3D struct {
+	native *C.VkExtent3D
+}
+
+type ImageFormatProperties struct {
+	native *C.VkImageFormatProperties
+}
+
+type PhysicalDeviceLimits struct {
+	native *C.VkPhysicalDeviceLimits
+}
+
+type PhysicalDeviceSparseProperties struct {
+	native *C.VkPhysicalDeviceSparseProperties
+}
+
+type PhysicalDeviceProperties struct {
+	native *C.VkPhysicalDeviceProperties
+}
+
+type QueueFamilyProperties struct {
+	native *C.VkQueueFamilyProperties
+}
+
+type MemoryType struct {
+	native *C.VkMemoryType
+}
+
+type MemoryHeap struct {
+	native *C.VkMemoryHeap
+}
+
+type PhysicalDeviceMemoryProperties struct {
+	native *C.VkPhysicalDeviceMemoryProperties
+}
+
+type DeviceQueueCreateInfo struct {
+	native *C.VkDeviceQueueCreateInfo
+}
+
+type DeviceCreateInfo struct {
+	native *C.VkDeviceCreateInfo
+}
+
+type ExtensionProperties struct {
+	native *C.VkExtensionProperties
+}
+
+type LayerProperties struct {
+	native *C.VkLayerProperties
+}
+
+type SubmitInfo struct {
+	native *C.VkSubmitInfo
+}
+
+type MemoryAllocateInfo struct {
+	native *C.VkMemoryAllocateInfo
+}
+
+type MappedMemoryRange struct {
+	native *C.VkMappedMemoryRange
+}
+
+type MemoryRequirements struct {
+	native *C.VkMemoryRequirements
+}
+
+type SparseImageFormatProperties struct {
+	native *C.VkSparseImageFormatProperties
+}
+
+type SparseImageMemoryRequirements struct {
+	native *C.VkSparseImageMemoryRequirements
+}
+
+type SparseMemoryBind struct {
+	native *C.VkSparseMemoryBind
+}
+
+type SparseBufferMemoryBindInfo struct {
+	native *C.VkSparseBufferMemoryBindInfo
+}
+
+type SparseImageOpaqueMemoryBindInfo struct {
+	native *C.VkSparseImageOpaqueMemoryBindInfo
+}
+
+type ImageSubresource struct {
+	native *C.VkImageSubresource
+}
+
+type Offset3D struct {
+	native *C.VkOffset3D
+}
+
+type SparseImageMemoryBind struct {
+	native *C.VkSparseImageMemoryBind
+}
+
+type SparseImageMemoryBindInfo struct {
+	native *C.VkSparseImageMemoryBindInfo
+}
+
+type BindSparseInfo struct {
+	native *C.VkBindSparseInfo
+}
+
+type FenceCreateInfo struct {
+	native *C.VkFenceCreateInfo
+}
+
+type SemaphoreCreateInfo struct {
+	native *C.VkSemaphoreCreateInfo
+}
+
+type EventCreateInfo struct {
+	native *C.VkEventCreateInfo
+}
+
+type QueryPoolCreateInfo struct {
+	native *C.VkQueryPoolCreateInfo
+}
+
+type BufferCreateInfo struct {
+	native *C.VkBufferCreateInfo
+}
+
+type BufferViewCreateInfo struct {
+	native *C.VkBufferViewCreateInfo
+}
+
+type ImageCreateInfo struct {
+	native *C.VkImageCreateInfo
+}
+
+type SubresourceLayout struct {
+	native *C.VkSubresourceLayout
+}
+
+type ComponentMapping struct {
+	native *C.VkComponentMapping
+}
+
+type ImageSubresourceRange struct {
+	native *C.VkImageSubresourceRange
+}
+
+type ImageViewCreateInfo struct {
+	native *C.VkImageViewCreateInfo
+}
+
+type ShaderModuleCreateInfo struct {
+	native *C.VkShaderModuleCreateInfo
+}
+
+type PipelineCacheCreateInfo struct {
+	native *C.VkPipelineCacheCreateInfo
+}
+
+type SpecializationMapEntry struct {
+	native *C.VkSpecializationMapEntry
+}
+
+type SpecializationInfo struct {
+	native *C.VkSpecializationInfo
+}
+
+type PipelineShaderStageCreateInfo struct {
+	native *C.VkPipelineShaderStageCreateInfo
+}
+
+type VertexInputBindingDescription struct {
+	native *C.VkVertexInputBindingDescription
+}
+
+type VertexInputAttributeDescription struct {
+	native *C.VkVertexInputAttributeDescription
+}
+
+type PipelineVertexInputStateCreateInfo struct {
+	native *C.VkPipelineVertexInputStateCreateInfo
+}
+
+type PipelineInputAssemblyStateCreateInfo struct {
+	native *C.VkPipelineInputAssemblyStateCreateInfo
+}
+
+type PipelineTessellationStateCreateInfo struct {
+	native *C.VkPipelineTessellationStateCreateInfo
+}
+
+type Viewport struct {
+	native *C.VkViewport
+}
+
+type Offset2D struct {
+	native *C.VkOffset2D
+}
+
+type Extent2D struct {
+	native *C.VkExtent2D
+}
+
+type Rect2D struct {
+	native *C.VkRect2D
+}
+
+type PipelineViewportStateCreateInfo struct {
+	native *C.VkPipelineViewportStateCreateInfo
+}
+
+type PipelineRasterizationStateCreateInfo struct {
+	native *C.VkPipelineRasterizationStateCreateInfo
+}
+
+type PipelineMultisampleStateCreateInfo struct {
+	native *C.VkPipelineMultisampleStateCreateInfo
+}
+
+type StencilOpState struct {
+	native *C.VkStencilOpState
+}
+
+type PipelineDepthStencilStateCreateInfo struct {
+	native *C.VkPipelineDepthStencilStateCreateInfo
+}
+
+type PipelineColorBlendAttachmentState struct {
+	native *C.VkPipelineColorBlendAttachmentState
+}
+
+type PipelineColorBlendStateCreateInfo struct {
+	native *C.VkPipelineColorBlendStateCreateInfo
+}
+
+type PipelineDynamicStateCreateInfo struct {
+	native *C.VkPipelineDynamicStateCreateInfo
+}
+
+type GraphicsPipelineCreateInfo struct {
+	native *C.VkGraphicsPipelineCreateInfo
+}
+
+type ComputePipelineCreateInfo struct {
+	native *C.VkComputePipelineCreateInfo
+}
+
+type PushConstantRange struct {
+	native *C.VkPushConstantRange
+}
+
+type PipelineLayoutCreateInfo struct {
+	native *C.VkPipelineLayoutCreateInfo
+}
+
+type SamplerCreateInfo struct {
+	native *C.VkSamplerCreateInfo
+}
+
+type DescriptorSetLayoutBinding struct {
+	native *C.VkDescriptorSetLayoutBinding
+}
+
+type DescriptorSetLayoutCreateInfo struct {
+	native *C.VkDescriptorSetLayoutCreateInfo
+}
+
+type DescriptorPoolSize struct {
+	native *C.VkDescriptorPoolSize
+}
+
+type DescriptorPoolCreateInfo struct {
+	native *C.VkDescriptorPoolCreateInfo
+}
+
+type DescriptorSetAllocateInfo struct {
+	native *C.VkDescriptorSetAllocateInfo
+}
+
+type DescriptorImageInfo struct {
+	native *C.VkDescriptorImageInfo
+}
+
+type DescriptorBufferInfo struct {
+	native *C.VkDescriptorBufferInfo
+}
+
+type WriteDescriptorSet struct {
+	native *C.VkWriteDescriptorSet
+}
+
+type CopyDescriptorSet struct {
+	native *C.VkCopyDescriptorSet
+}
+
+type FramebufferCreateInfo struct {
+	native *C.VkFramebufferCreateInfo
+}
+
+type AttachmentDescription struct {
+	native *C.VkAttachmentDescription
+}
+
+type AttachmentReference struct {
+	native *C.VkAttachmentReference
+}
+
+type SubpassDescription struct {
+	native *C.VkSubpassDescription
+}
+
+type SubpassDependency struct {
+	native *C.VkSubpassDependency
+}
+
+type RenderPassCreateInfo struct {
+	native *C.VkRenderPassCreateInfo
+}
+
+type CommandPoolCreateInfo struct {
+	native *C.VkCommandPoolCreateInfo
+}
+
+type CommandBufferAllocateInfo struct {
+	native *C.VkCommandBufferAllocateInfo
+}
+
+type CommandBufferInheritanceInfo struct {
+	native *C.VkCommandBufferInheritanceInfo
+}
+
+type CommandBufferBeginInfo struct {
+	native *C.VkCommandBufferBeginInfo
+}
+
+type BufferCopy struct {
+	native *C.VkBufferCopy
+}
+
+type ImageSubresourceLayers struct {
+	native *C.VkImageSubresourceLayers
+}
+
+type ImageCopy struct {
+	native *C.VkImageCopy
+}
+
+type ImageBlit struct {
+	native *C.VkImageBlit
+}
+
+type BufferImageCopy struct {
+	native *C.VkBufferImageCopy
+}
+
+type ClearColorValue struct {
+	native *C.VkClearColorValue
+}
+
+type ClearDepthStencilValue struct {
+	native *C.VkClearDepthStencilValue
+}
+
+type ClearValue struct {
+	native *C.VkClearValue
+}
+
+type ClearAttachment struct {
+	native *C.VkClearAttachment
+}
+
+type ClearRect struct {
+	native *C.VkClearRect
+}
+
+type ImageResolve struct {
+	native *C.VkImageResolve
+}
+
+type MemoryBarrier struct {
+	native *C.VkMemoryBarrier
+}
+
+type BufferMemoryBarrier struct {
+	native *C.VkBufferMemoryBarrier
+}
+
+type ImageMemoryBarrier struct {
+	native *C.VkImageMemoryBarrier
+}
+
+type RenderPassBeginInfo struct {
+	native *C.VkRenderPassBeginInfo
+}
+
+type DispatchIndirectCommand struct {
+	native *C.VkDispatchIndirectCommand
+}
+
+type DrawIndexedIndirectCommand struct {
+	native *C.VkDrawIndexedIndirectCommand
+}
+
+type DrawIndirectCommand struct {
+	native *C.VkDrawIndirectCommand
+}
+
+type BaseOutStructure struct {
+	native *C.VkBaseOutStructure
+}
+
+type BaseInStructure struct {
+	native *C.VkBaseInStructure
+}
+
+type SamplerYcbcrConversion struct {
+	native *C.VkSamplerYcbcrConversion
+}
+
+type DescriptorUpdateTemplate struct {
+	native *C.VkDescriptorUpdateTemplate
+}
+
+type PointClippingBehavior struct {
+	native *C.VkPointClippingBehavior
+}
+
+type TessellationDomainOrigin struct {
+	native *C.VkTessellationDomainOrigin
+}
+
+type SamplerYcbcrModelConversion struct {
+	native *C.VkSamplerYcbcrModelConversion
+}
+
+type SamplerYcbcrRange struct {
+	native *C.VkSamplerYcbcrRange
+}
+
+type ChromaLocation struct {
+	native *C.VkChromaLocation
+}
+
+type DescriptorUpdateTemplateType struct {
+	native *C.VkDescriptorUpdateTemplateType
+}
+
+type SubgroupFeatureFlagBits struct {
+	native *C.VkSubgroupFeatureFlagBits
+}
+
+type SubgroupFeatureFlags struct {
+	native *C.VkSubgroupFeatureFlags
+}
+
+type PeerMemoryFeatureFlagBits struct {
+	native *C.VkPeerMemoryFeatureFlagBits
+}
+
+type PeerMemoryFeatureFlags struct {
+	native *C.VkPeerMemoryFeatureFlags
+}
+
+type MemoryAllocateFlagBits struct {
+	native *C.VkMemoryAllocateFlagBits
+}
+
+type MemoryAllocateFlags struct {
+	native *C.VkMemoryAllocateFlags
+}
+
+type CommandPoolTrimFlags struct {
+	native *C.VkCommandPoolTrimFlags
+}
+
+type DescriptorUpdateTemplateCreateFlags struct {
+	native *C.VkDescriptorUpdateTemplateCreateFlags
+}
+
+type ExternalMemoryHandleTypeFlagBits struct {
+	native *C.VkExternalMemoryHandleTypeFlagBits
+}
+
+type ExternalMemoryHandleTypeFlags struct {
+	native *C.VkExternalMemoryHandleTypeFlags
+}
+
+type ExternalMemoryFeatureFlagBits struct {
+	native *C.VkExternalMemoryFeatureFlagBits
+}
+
+type ExternalMemoryFeatureFlags struct {
+	native *C.VkExternalMemoryFeatureFlags
+}
+
+type ExternalFenceHandleTypeFlagBits struct {
+	native *C.VkExternalFenceHandleTypeFlagBits
+}
+
+type ExternalFenceHandleTypeFlags struct {
+	native *C.VkExternalFenceHandleTypeFlags
+}
+
+type ExternalFenceFeatureFlagBits struct {
+	native *C.VkExternalFenceFeatureFlagBits
+}
+
+type ExternalFenceFeatureFlags struct {
+	native *C.VkExternalFenceFeatureFlags
+}
+
+type FenceImportFlagBits struct {
+	native *C.VkFenceImportFlagBits
+}
+
+type FenceImportFlags struct {
+	native *C.VkFenceImportFlags
+}
+
+type SemaphoreImportFlagBits struct {
+	native *C.VkSemaphoreImportFlagBits
+}
+
+type SemaphoreImportFlags struct {
+	native *C.VkSemaphoreImportFlags
+}
+
+type ExternalSemaphoreHandleTypeFlagBits struct {
+	native *C.VkExternalSemaphoreHandleTypeFlagBits
+}
+
+type ExternalSemaphoreHandleTypeFlags struct {
+	native *C.VkExternalSemaphoreHandleTypeFlags
+}
+
+type ExternalSemaphoreFeatureFlagBits struct {
+	native *C.VkExternalSemaphoreFeatureFlagBits
+}
+
+type ExternalSemaphoreFeatureFlags struct {
+	native *C.VkExternalSemaphoreFeatureFlags
+}
+
+type PhysicalDeviceSubgroupProperties struct {
+	native *C.VkPhysicalDeviceSubgroupProperties
+}
+
+type BindBufferMemoryInfo struct {
+	native *C.VkBindBufferMemoryInfo
+}
+
+type BindImageMemoryInfo struct {
+	native *C.VkBindImageMemoryInfo
+}
+
+type PhysicalDevice16BitStorageFeatures struct {
+	native *C.VkPhysicalDevice16BitStorageFeatures
+}
+
+type MemoryDedicatedRequirements struct {
+	native *C.VkMemoryDedicatedRequirements
+}
+
+type MemoryDedicatedAllocateInfo struct {
+	native *C.VkMemoryDedicatedAllocateInfo
+}
+
+type MemoryAllocateFlagsInfo struct {
+	native *C.VkMemoryAllocateFlagsInfo
+}
+
+type DeviceGroupRenderPassBeginInfo struct {
+	native *C.VkDeviceGroupRenderPassBeginInfo
+}
+
+type DeviceGroupCommandBufferBeginInfo struct {
+	native *C.VkDeviceGroupCommandBufferBeginInfo
+}
+
+type DeviceGroupSubmitInfo struct {
+	native *C.VkDeviceGroupSubmitInfo
+}
+
+type DeviceGroupBindSparseInfo struct {
+	native *C.VkDeviceGroupBindSparseInfo
+}
+
+type BindBufferMemoryDeviceGroupInfo struct {
+	native *C.VkBindBufferMemoryDeviceGroupInfo
+}
+
+type BindImageMemoryDeviceGroupInfo struct {
+	native *C.VkBindImageMemoryDeviceGroupInfo
+}
+
+type PhysicalDeviceGroupProperties struct {
+	native *C.VkPhysicalDeviceGroupProperties
+}
+
+type DeviceGroupDeviceCreateInfo struct {
+	native *C.VkDeviceGroupDeviceCreateInfo
+}
+
+type BufferMemoryRequirementsInfo2 struct {
+	native *C.VkBufferMemoryRequirementsInfo2
+}
+
+type ImageMemoryRequirementsInfo2 struct {
+	native *C.VkImageMemoryRequirementsInfo2
+}
+
+type ImageSparseMemoryRequirementsInfo2 struct {
+	native *C.VkImageSparseMemoryRequirementsInfo2
+}
+
+type MemoryRequirements2 struct {
+	native *C.VkMemoryRequirements2
+}
+
+type MemoryRequirements2KHR struct {
+	native *C.VkMemoryRequirements2KHR
+}
+
+type SparseImageMemoryRequirements2 struct {
+	native *C.VkSparseImageMemoryRequirements2
+}
+
+type PhysicalDeviceFeatures2 struct {
+	native *C.VkPhysicalDeviceFeatures2
+}
+
+type PhysicalDeviceProperties2 struct {
+	native *C.VkPhysicalDeviceProperties2
+}
+
+type FormatProperties2 struct {
+	native *C.VkFormatProperties2
+}
+
+type ImageFormatProperties2 struct {
+	native *C.VkImageFormatProperties2
+}
+
+type PhysicalDeviceImageFormatInfo2 struct {
+	native *C.VkPhysicalDeviceImageFormatInfo2
+}
+
+type QueueFamilyProperties2 struct {
+	native *C.VkQueueFamilyProperties2
+}
+
+type PhysicalDeviceMemoryProperties2 struct {
+	native *C.VkPhysicalDeviceMemoryProperties2
+}
+
+type SparseImageFormatProperties2 struct {
+	native *C.VkSparseImageFormatProperties2
+}
+
+type PhysicalDeviceSparseImageFormatInfo2 struct {
+	native *C.VkPhysicalDeviceSparseImageFormatInfo2
+}
+
+type PhysicalDevicePointClippingProperties struct {
+	native *C.VkPhysicalDevicePointClippingProperties
+}
+
+type InputAttachmentAspectReference struct {
+	native *C.VkInputAttachmentAspectReference
+}
+
+type RenderPassInputAttachmentAspectCreateInfo struct {
+	native *C.VkRenderPassInputAttachmentAspectCreateInfo
+}
+
+type ImageViewUsageCreateInfo struct {
+	native *C.VkImageViewUsageCreateInfo
+}
+
+type PipelineTessellationDomainOriginStateCreateInfo struct {
+	native *C.VkPipelineTessellationDomainOriginStateCreateInfo
+}
+
+type RenderPassMultiviewCreateInfo struct {
+	native *C.VkRenderPassMultiviewCreateInfo
+}
+
+type PhysicalDeviceMultiviewFeatures struct {
+	native *C.VkPhysicalDeviceMultiviewFeatures
+}
+
+type PhysicalDeviceMultiviewProperties struct {
+	native *C.VkPhysicalDeviceMultiviewProperties
+}
+
+type PhysicalDeviceVariablePointersFeatures struct {
+	native *C.VkPhysicalDeviceVariablePointersFeatures
+}
+
+type PhysicalDeviceVariablePointerFeatures struct {
+	native *C.VkPhysicalDeviceVariablePointerFeatures
+}
+
+type PhysicalDeviceProtectedMemoryFeatures struct {
+	native *C.VkPhysicalDeviceProtectedMemoryFeatures
+}
+
+type PhysicalDeviceProtectedMemoryProperties struct {
+	native *C.VkPhysicalDeviceProtectedMemoryProperties
+}
+
+type DeviceQueueInfo2 struct {
+	native *C.VkDeviceQueueInfo2
+}
+
+type ProtectedSubmitInfo struct {
+	native *C.VkProtectedSubmitInfo
+}
+
+type SamplerYcbcrConversionCreateInfo struct {
+	native *C.VkSamplerYcbcrConversionCreateInfo
+}
+
+type SamplerYcbcrConversionInfo struct {
+	native *C.VkSamplerYcbcrConversionInfo
+}
+
+type BindImagePlaneMemoryInfo struct {
+	native *C.VkBindImagePlaneMemoryInfo
+}
+
+type ImagePlaneMemoryRequirementsInfo struct {
+	native *C.VkImagePlaneMemoryRequirementsInfo
+}
+
+type PhysicalDeviceSamplerYcbcrConversionFeatures struct {
+	native *C.VkPhysicalDeviceSamplerYcbcrConversionFeatures
+}
+
+type SamplerYcbcrConversionImageFormatProperties struct {
+	native *C.VkSamplerYcbcrConversionImageFormatProperties
+}
+
+type DescriptorUpdateTemplateEntry struct {
+	native *C.VkDescriptorUpdateTemplateEntry
+}
+
+type DescriptorUpdateTemplateCreateInfo struct {
+	native *C.VkDescriptorUpdateTemplateCreateInfo
+}
+
+type ExternalMemoryProperties struct {
+	native *C.VkExternalMemoryProperties
+}
+
+type PhysicalDeviceExternalImageFormatInfo struct {
+	native *C.VkPhysicalDeviceExternalImageFormatInfo
+}
+
+type ExternalImageFormatProperties struct {
+	native *C.VkExternalImageFormatProperties
+}
+
+type PhysicalDeviceExternalBufferInfo struct {
+	native *C.VkPhysicalDeviceExternalBufferInfo
+}
+
+type ExternalBufferProperties struct {
+	native *C.VkExternalBufferProperties
+}
+
+type PhysicalDeviceIDProperties struct {
+	native *C.VkPhysicalDeviceIDProperties
+}
+
+type ExternalMemoryImageCreateInfo struct {
+	native *C.VkExternalMemoryImageCreateInfo
+}
+
+type ExternalMemoryBufferCreateInfo struct {
+	native *C.VkExternalMemoryBufferCreateInfo
+}
+
+type ExportMemoryAllocateInfo struct {
+	native *C.VkExportMemoryAllocateInfo
+}
+
+type PhysicalDeviceExternalFenceInfo struct {
+	native *C.VkPhysicalDeviceExternalFenceInfo
+}
+
+type ExternalFenceProperties struct {
+	native *C.VkExternalFenceProperties
+}
+
+type ExportFenceCreateInfo struct {
+	native *C.VkExportFenceCreateInfo
+}
+
+type ExportSemaphoreCreateInfo struct {
+	native *C.VkExportSemaphoreCreateInfo
+}
+
+type PhysicalDeviceExternalSemaphoreInfo struct {
+	native *C.VkPhysicalDeviceExternalSemaphoreInfo
+}
+
+type ExternalSemaphoreProperties struct {
+	native *C.VkExternalSemaphoreProperties
+}
+
+type PhysicalDeviceMaintenance3Properties struct {
+	native *C.VkPhysicalDeviceMaintenance3Properties
+}
+
+type DescriptorSetLayoutSupport struct {
+	native *C.VkDescriptorSetLayoutSupport
+}
+
+type PhysicalDeviceShaderDrawParametersFeatures struct {
+	native *C.VkPhysicalDeviceShaderDrawParametersFeatures
+}
+
+type PhysicalDeviceShaderDrawParameterFeatures struct {
+	native *C.VkPhysicalDeviceShaderDrawParameterFeatures
+}
+
+type SurfaceKHR struct {
+	native *C.VkSurfaceKHR
+}
+
+type ColorSpaceKHR struct {
+	native *C.VkColorSpaceKHR
+}
+
+type PresentModeKHR struct {
+	native *C.VkPresentModeKHR
+}
+
+type SurfaceTransformFlagBitsKHR struct {
+	native *C.VkSurfaceTransformFlagBitsKHR
+}
+
+type SurfaceTransformFlagsKHR struct {
+	native *C.VkSurfaceTransformFlagsKHR
+}
+
+type CompositeAlphaFlagBitsKHR struct {
+	native *C.VkCompositeAlphaFlagBitsKHR
+}
+
+type CompositeAlphaFlagsKHR struct {
+	native *C.VkCompositeAlphaFlagsKHR
+}
+
+type SurfaceCapabilitiesKHR struct {
+	native *C.VkSurfaceCapabilitiesKHR
+}
+
+type SurfaceFormatKHR struct {
+	native *C.VkSurfaceFormatKHR
+}
+
+type SwapchainKHR struct {
+	native *C.VkSwapchainKHR
+}
+
+type SwapchainCreateFlagBitsKHR struct {
+	native *C.VkSwapchainCreateFlagBitsKHR
+}
+
+type SwapchainCreateFlagsKHR struct {
+	native *C.VkSwapchainCreateFlagsKHR
+}
+
+type DeviceGroupPresentModeFlagBitsKHR struct {
+	native *C.VkDeviceGroupPresentModeFlagBitsKHR
+}
+
+type DeviceGroupPresentModeFlagsKHR struct {
+	native *C.VkDeviceGroupPresentModeFlagsKHR
+}
+
+type SwapchainCreateInfoKHR struct {
+	native *C.VkSwapchainCreateInfoKHR
+}
+
+type PresentInfoKHR struct {
+	native *C.VkPresentInfoKHR
+}
+
+type ImageSwapchainCreateInfoKHR struct {
+	native *C.VkImageSwapchainCreateInfoKHR
+}
+
+type BindImageMemorySwapchainInfoKHR struct {
+	native *C.VkBindImageMemorySwapchainInfoKHR
+}
+
+type AcquireNextImageInfoKHR struct {
+	native *C.VkAcquireNextImageInfoKHR
+}
+
+type DeviceGroupPresentCapabilitiesKHR struct {
+	native *C.VkDeviceGroupPresentCapabilitiesKHR
+}
+
+type DeviceGroupPresentInfoKHR struct {
+	native *C.VkDeviceGroupPresentInfoKHR
+}
+
+type DeviceGroupSwapchainCreateInfoKHR struct {
+	native *C.VkDeviceGroupSwapchainCreateInfoKHR
+}
+
+type DisplayKHR struct {
+	native *C.VkDisplayKHR
+}
+
+type DisplayModeKHR struct {
+	native *C.VkDisplayModeKHR
+}
+
+type DisplayPlaneAlphaFlagBitsKHR struct {
+	native *C.VkDisplayPlaneAlphaFlagBitsKHR
+}
+
+type DisplayPlaneAlphaFlagsKHR struct {
+	native *C.VkDisplayPlaneAlphaFlagsKHR
+}
+
+type DisplayModeCreateFlagsKHR struct {
+	native *C.VkDisplayModeCreateFlagsKHR
+}
+
+type DisplaySurfaceCreateFlagsKHR struct {
+	native *C.VkDisplaySurfaceCreateFlagsKHR
+}
+
+type DisplayPropertiesKHR struct {
+	native *C.VkDisplayPropertiesKHR
+}
+
+type DisplayModeParametersKHR struct {
+	native *C.VkDisplayModeParametersKHR
+}
+
+type DisplayModePropertiesKHR struct {
+	native *C.VkDisplayModePropertiesKHR
+}
+
+type DisplayModeCreateInfoKHR struct {
+	native *C.VkDisplayModeCreateInfoKHR
+}
+
+type DisplayPlaneCapabilitiesKHR struct {
+	native *C.VkDisplayPlaneCapabilitiesKHR
+}
+
+type DisplayPlanePropertiesKHR struct {
+	native *C.VkDisplayPlanePropertiesKHR
+}
+
+type DisplaySurfaceCreateInfoKHR struct {
+	native *C.VkDisplaySurfaceCreateInfoKHR
+}
+
+type DisplayPresentInfoKHR struct {
+	native *C.VkDisplayPresentInfoKHR
+}
+
+type RenderPassMultiviewCreateInfoKHR struct {
+	native *C.VkRenderPassMultiviewCreateInfoKHR
+}
+
+type PhysicalDeviceMultiviewFeaturesKHR struct {
+	native *C.VkPhysicalDeviceMultiviewFeaturesKHR
+}
+
+type PhysicalDeviceMultiviewPropertiesKHR struct {
+	native *C.VkPhysicalDeviceMultiviewPropertiesKHR
+}
+
+type PhysicalDeviceFeatures2KHR struct {
+	native *C.VkPhysicalDeviceFeatures2KHR
+}
+
+type PhysicalDeviceProperties2KHR struct {
+	native *C.VkPhysicalDeviceProperties2KHR
+}
+
+type FormatProperties2KHR struct {
+	native *C.VkFormatProperties2KHR
+}
+
+type ImageFormatProperties2KHR struct {
+	native *C.VkImageFormatProperties2KHR
+}
+
+type PhysicalDeviceImageFormatInfo2KHR struct {
+	native *C.VkPhysicalDeviceImageFormatInfo2KHR
+}
+
+type QueueFamilyProperties2KHR struct {
+	native *C.VkQueueFamilyProperties2KHR
+}
+
+type PhysicalDeviceMemoryProperties2KHR struct {
+	native *C.VkPhysicalDeviceMemoryProperties2KHR
+}
+
+type SparseImageFormatProperties2KHR struct {
+	native *C.VkSparseImageFormatProperties2KHR
+}
+
+type PhysicalDeviceSparseImageFormatInfo2KHR struct {
+	native *C.VkPhysicalDeviceSparseImageFormatInfo2KHR
+}
+
+type PeerMemoryFeatureFlagsKHR struct {
+	native *C.VkPeerMemoryFeatureFlagsKHR
+}
+
+type PeerMemoryFeatureFlagBitsKHR struct {
+	native *C.VkPeerMemoryFeatureFlagBitsKHR
+}
+
+type MemoryAllocateFlagsKHR struct {
+	native *C.VkMemoryAllocateFlagsKHR
+}
+
+type MemoryAllocateFlagBitsKHR struct {
+	native *C.VkMemoryAllocateFlagBitsKHR
+}
+
+type MemoryAllocateFlagsInfoKHR struct {
+	native *C.VkMemoryAllocateFlagsInfoKHR
+}
+
+type DeviceGroupRenderPassBeginInfoKHR struct {
+	native *C.VkDeviceGroupRenderPassBeginInfoKHR
+}
+
+type DeviceGroupCommandBufferBeginInfoKHR struct {
+	native *C.VkDeviceGroupCommandBufferBeginInfoKHR
+}
+
+type DeviceGroupSubmitInfoKHR struct {
+	native *C.VkDeviceGroupSubmitInfoKHR
+}
+
+type DeviceGroupBindSparseInfoKHR struct {
+	native *C.VkDeviceGroupBindSparseInfoKHR
+}
+
+type BindBufferMemoryDeviceGroupInfoKHR struct {
+	native *C.VkBindBufferMemoryDeviceGroupInfoKHR
+}
+
+type BindImageMemoryDeviceGroupInfoKHR struct {
+	native *C.VkBindImageMemoryDeviceGroupInfoKHR
+}
+
+type CommandPoolTrimFlagsKHR struct {
+	native *C.VkCommandPoolTrimFlagsKHR
+}
+
+type PhysicalDeviceGroupPropertiesKHR struct {
+	native *C.VkPhysicalDeviceGroupPropertiesKHR
+}
+
+type DeviceGroupDeviceCreateInfoKHR struct {
+	native *C.VkDeviceGroupDeviceCreateInfoKHR
+}
+
+type ExternalMemoryHandleTypeFlagsKHR struct {
+	native *C.VkExternalMemoryHandleTypeFlagsKHR
+}
+
+type ExternalMemoryHandleTypeFlagBitsKHR struct {
+	native *C.VkExternalMemoryHandleTypeFlagBitsKHR
+}
+
+type ExternalMemoryFeatureFlagsKHR struct {
+	native *C.VkExternalMemoryFeatureFlagsKHR
+}
+
+type ExternalMemoryFeatureFlagBitsKHR struct {
+	native *C.VkExternalMemoryFeatureFlagBitsKHR
+}
+
+type ExternalMemoryPropertiesKHR struct {
+	native *C.VkExternalMemoryPropertiesKHR
+}
+
+type PhysicalDeviceExternalImageFormatInfoKHR struct {
+	native *C.VkPhysicalDeviceExternalImageFormatInfoKHR
+}
+
+type ExternalImageFormatPropertiesKHR struct {
+	native *C.VkExternalImageFormatPropertiesKHR
+}
+
+type PhysicalDeviceExternalBufferInfoKHR struct {
+	native *C.VkPhysicalDeviceExternalBufferInfoKHR
+}
+
+type ExternalBufferPropertiesKHR struct {
+	native *C.VkExternalBufferPropertiesKHR
+}
+
+type PhysicalDeviceIDPropertiesKHR struct {
+	native *C.VkPhysicalDeviceIDPropertiesKHR
+}
+
+type ExternalMemoryImageCreateInfoKHR struct {
+	native *C.VkExternalMemoryImageCreateInfoKHR
+}
+
+type ExternalMemoryBufferCreateInfoKHR struct {
+	native *C.VkExternalMemoryBufferCreateInfoKHR
+}
+
+type ExportMemoryAllocateInfoKHR struct {
+	native *C.VkExportMemoryAllocateInfoKHR
+}
+
+type ImportMemoryFdInfoKHR struct {
+	native *C.VkImportMemoryFdInfoKHR
+}
+
+type MemoryFdPropertiesKHR struct {
+	native *C.VkMemoryFdPropertiesKHR
+}
+
+type MemoryGetFdInfoKHR struct {
+	native *C.VkMemoryGetFdInfoKHR
+}
+
+type ExternalSemaphoreHandleTypeFlagsKHR struct {
+	native *C.VkExternalSemaphoreHandleTypeFlagsKHR
+}
+
+type ExternalSemaphoreHandleTypeFlagBitsKHR struct {
+	native *C.VkExternalSemaphoreHandleTypeFlagBitsKHR
+}
+
+type ExternalSemaphoreFeatureFlagsKHR struct {
+	native *C.VkExternalSemaphoreFeatureFlagsKHR
+}
+
+type ExternalSemaphoreFeatureFlagBitsKHR struct {
+	native *C.VkExternalSemaphoreFeatureFlagBitsKHR
+}
+
+type PhysicalDeviceExternalSemaphoreInfoKHR struct {
+	native *C.VkPhysicalDeviceExternalSemaphoreInfoKHR
+}
+
+type ExternalSemaphorePropertiesKHR struct {
+	native *C.VkExternalSemaphorePropertiesKHR
+}
+
+type SemaphoreImportFlagsKHR struct {
+	native *C.VkSemaphoreImportFlagsKHR
+}
+
+type SemaphoreImportFlagBitsKHR struct {
+	native *C.VkSemaphoreImportFlagBitsKHR
+}
+
+type ExportSemaphoreCreateInfoKHR struct {
+	native *C.VkExportSemaphoreCreateInfoKHR
+}
+
+type ImportSemaphoreFdInfoKHR struct {
+	native *C.VkImportSemaphoreFdInfoKHR
+}
+
+type SemaphoreGetFdInfoKHR struct {
+	native *C.VkSemaphoreGetFdInfoKHR
+}
+
+type PhysicalDevicePushDescriptorPropertiesKHR struct {
+	native *C.VkPhysicalDevicePushDescriptorPropertiesKHR
+}
+
+type PhysicalDeviceFloat16Int8FeaturesKHR struct {
+	native *C.VkPhysicalDeviceFloat16Int8FeaturesKHR
+}
+
+type PhysicalDevice16BitStorageFeaturesKHR struct {
+	native *C.VkPhysicalDevice16BitStorageFeaturesKHR
+}
+
+type RectLayerKHR struct {
+	native *C.VkRectLayerKHR
+}
+
+type PresentRegionKHR struct {
+	native *C.VkPresentRegionKHR
+}
+
+type PresentRegionsKHR struct {
+	native *C.VkPresentRegionsKHR
+}
+
+type DescriptorUpdateTemplateKHR struct {
+	native *C.VkDescriptorUpdateTemplateKHR
+}
+
+type DescriptorUpdateTemplateTypeKHR struct {
+	native *C.VkDescriptorUpdateTemplateTypeKHR
+}
+
+type DescriptorUpdateTemplateCreateFlagsKHR struct {
+	native *C.VkDescriptorUpdateTemplateCreateFlagsKHR
+}
+
+type DescriptorUpdateTemplateEntryKHR struct {
+	native *C.VkDescriptorUpdateTemplateEntryKHR
+}
+
+type DescriptorUpdateTemplateCreateInfoKHR struct {
+	native *C.VkDescriptorUpdateTemplateCreateInfoKHR
+}
+
+type AttachmentDescription2KHR struct {
+	native *C.VkAttachmentDescription2KHR
+}
+
+type AttachmentReference2KHR struct {
+	native *C.VkAttachmentReference2KHR
+}
+
+type SubpassDescription2KHR struct {
+	native *C.VkSubpassDescription2KHR
+}
+
+type SubpassDependency2KHR struct {
+	native *C.VkSubpassDependency2KHR
+}
+
+type RenderPassCreateInfo2KHR struct {
+	native *C.VkRenderPassCreateInfo2KHR
+}
+
+type SubpassBeginInfoKHR struct {
+	native *C.VkSubpassBeginInfoKHR
+}
+
+type SubpassEndInfoKHR struct {
+	native *C.VkSubpassEndInfoKHR
+}
+
+type SharedPresentSurfaceCapabilitiesKHR struct {
+	native *C.VkSharedPresentSurfaceCapabilitiesKHR
+}
+
+type ExternalFenceHandleTypeFlagsKHR struct {
+	native *C.VkExternalFenceHandleTypeFlagsKHR
+}
+
+type ExternalFenceHandleTypeFlagBitsKHR struct {
+	native *C.VkExternalFenceHandleTypeFlagBitsKHR
+}
+
+type ExternalFenceFeatureFlagsKHR struct {
+	native *C.VkExternalFenceFeatureFlagsKHR
+}
+
+type ExternalFenceFeatureFlagBitsKHR struct {
+	native *C.VkExternalFenceFeatureFlagBitsKHR
+}
+
+type PhysicalDeviceExternalFenceInfoKHR struct {
+	native *C.VkPhysicalDeviceExternalFenceInfoKHR
+}
+
+type ExternalFencePropertiesKHR struct {
+	native *C.VkExternalFencePropertiesKHR
+}
+
+type FenceImportFlagsKHR struct {
+	native *C.VkFenceImportFlagsKHR
+}
+
+type FenceImportFlagBitsKHR struct {
+	native *C.VkFenceImportFlagBitsKHR
+}
+
+type ExportFenceCreateInfoKHR struct {
+	native *C.VkExportFenceCreateInfoKHR
+}
+
+type ImportFenceFdInfoKHR struct {
+	native *C.VkImportFenceFdInfoKHR
+}
+
+type FenceGetFdInfoKHR struct {
+	native *C.VkFenceGetFdInfoKHR
+}
+
+type PointClippingBehaviorKHR struct {
+	native *C.VkPointClippingBehaviorKHR
+}
+
+type TessellationDomainOriginKHR struct {
+	native *C.VkTessellationDomainOriginKHR
+}
+
+type PhysicalDevicePointClippingPropertiesKHR struct {
+	native *C.VkPhysicalDevicePointClippingPropertiesKHR
+}
+
+type RenderPassInputAttachmentAspectCreateInfoKHR struct {
+	native *C.VkRenderPassInputAttachmentAspectCreateInfoKHR
+}
+
+type InputAttachmentAspectReferenceKHR struct {
+	native *C.VkInputAttachmentAspectReferenceKHR
+}
+
+type ImageViewUsageCreateInfoKHR struct {
+	native *C.VkImageViewUsageCreateInfoKHR
+}
+
+type PipelineTessellationDomainOriginStateCreateInfoKHR struct {
+	native *C.VkPipelineTessellationDomainOriginStateCreateInfoKHR
+}
+
+type PhysicalDeviceSurfaceInfo2KHR struct {
+	native *C.VkPhysicalDeviceSurfaceInfo2KHR
+}
+
+type SurfaceCapabilities2KHR struct {
+	native *C.VkSurfaceCapabilities2KHR
+}
+
+type SurfaceFormat2KHR struct {
+	native *C.VkSurfaceFormat2KHR
+}
+
+type PhysicalDeviceVariablePointerFeaturesKHR struct {
+	native *C.VkPhysicalDeviceVariablePointerFeaturesKHR
+}
+
+type PhysicalDeviceVariablePointersFeaturesKHR struct {
+	native *C.VkPhysicalDeviceVariablePointersFeaturesKHR
+}
+
+type DisplayProperties2KHR struct {
+	native *C.VkDisplayProperties2KHR
+}
+
+type DisplayPlaneProperties2KHR struct {
+	native *C.VkDisplayPlaneProperties2KHR
+}
+
+type DisplayModeProperties2KHR struct {
+	native *C.VkDisplayModeProperties2KHR
+}
+
+type DisplayPlaneInfo2KHR struct {
+	native *C.VkDisplayPlaneInfo2KHR
+}
+
+type DisplayPlaneCapabilities2KHR struct {
+	native *C.VkDisplayPlaneCapabilities2KHR
+}
+
+type MemoryDedicatedRequirementsKHR struct {
+	native *C.VkMemoryDedicatedRequirementsKHR
+}
+
+type MemoryDedicatedAllocateInfoKHR struct {
+	native *C.VkMemoryDedicatedAllocateInfoKHR
+}
+
+type BufferMemoryRequirementsInfo2KHR struct {
+	native *C.VkBufferMemoryRequirementsInfo2KHR
+}
+
+type ImageMemoryRequirementsInfo2KHR struct {
+	native *C.VkImageMemoryRequirementsInfo2KHR
+}
+
+type ImageSparseMemoryRequirementsInfo2KHR struct {
+	native *C.VkImageSparseMemoryRequirementsInfo2KHR
+}
+
+type SparseImageMemoryRequirements2KHR struct {
+	native *C.VkSparseImageMemoryRequirements2KHR
+}
+
+type ImageFormatListCreateInfoKHR struct {
+	native *C.VkImageFormatListCreateInfoKHR
+}
+
+type SamplerYcbcrConversionKHR struct {
+	native *C.VkSamplerYcbcrConversionKHR
+}
+
+type SamplerYcbcrModelConversionKHR struct {
+	native *C.VkSamplerYcbcrModelConversionKHR
+}
+
+type SamplerYcbcrRangeKHR struct {
+	native *C.VkSamplerYcbcrRangeKHR
+}
+
+type ChromaLocationKHR struct {
+	native *C.VkChromaLocationKHR
+}
+
+type SamplerYcbcrConversionCreateInfoKHR struct {
+	native *C.VkSamplerYcbcrConversionCreateInfoKHR
+}
+
+type SamplerYcbcrConversionInfoKHR struct {
+	native *C.VkSamplerYcbcrConversionInfoKHR
+}
+
+type BindImagePlaneMemoryInfoKHR struct {
+	native *C.VkBindImagePlaneMemoryInfoKHR
+}
+
+type ImagePlaneMemoryRequirementsInfoKHR struct {
+	native *C.VkImagePlaneMemoryRequirementsInfoKHR
+}
+
+type PhysicalDeviceSamplerYcbcrConversionFeaturesKHR struct {
+	native *C.VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR
+}
+
+type SamplerYcbcrConversionImageFormatPropertiesKHR struct {
+	native *C.VkSamplerYcbcrConversionImageFormatPropertiesKHR
+}
+
+type BindBufferMemoryInfoKHR struct {
+	native *C.VkBindBufferMemoryInfoKHR
+}
+
+type BindImageMemoryInfoKHR struct {
+	native *C.VkBindImageMemoryInfoKHR
+}
+
+type PhysicalDeviceMaintenance3PropertiesKHR struct {
+	native *C.VkPhysicalDeviceMaintenance3PropertiesKHR
+}
+
+type DescriptorSetLayoutSupportKHR struct {
+	native *C.VkDescriptorSetLayoutSupportKHR
+}
+
+type PhysicalDevice8BitStorageFeaturesKHR struct {
+	native *C.VkPhysicalDevice8BitStorageFeaturesKHR
+}
+
+type PhysicalDeviceShaderAtomicInt64FeaturesKHR struct {
+	native *C.VkPhysicalDeviceShaderAtomicInt64FeaturesKHR
+}
+
+type DriverIDKHR struct {
+	native *C.VkDriverIdKHR
+}
+
+type ConformanceVersionKHR struct {
+	native *C.VkConformanceVersionKHR
+}
+
+type PhysicalDeviceDriverPropertiesKHR struct {
+	native *C.VkPhysicalDeviceDriverPropertiesKHR
+}
+
+type PhysicalDeviceFloatControlsPropertiesKHR struct {
+	native *C.VkPhysicalDeviceFloatControlsPropertiesKHR
+}
+
+type ResolveModeFlagBitsKHR struct {
+	native *C.VkResolveModeFlagBitsKHR
+}
+
+type ResolveModeFlagsKHR struct {
+	native *C.VkResolveModeFlagsKHR
+}
+
+type SubpassDescriptionDepthStencilResolveKHR struct {
+	native *C.VkSubpassDescriptionDepthStencilResolveKHR
+}
+
+type PhysicalDeviceDepthStencilResolvePropertiesKHR struct {
+	native *C.VkPhysicalDeviceDepthStencilResolvePropertiesKHR
+}
+
+type PhysicalDeviceVulkanMemoryModelFeaturesKHR struct {
+	native *C.VkPhysicalDeviceVulkanMemoryModelFeaturesKHR
+}
+
+type SurfaceProtectedCapabilitiesKHR struct {
+	native *C.VkSurfaceProtectedCapabilitiesKHR
+}
+
+type PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR struct {
+	native *C.VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR
+}
+
+type DebugReportCallbackEXT struct {
+	native *C.VkDebugReportCallbackEXT
+}
+
+type DebugReportObjectTypeEXT struct {
+	native *C.VkDebugReportObjectTypeEXT
+}
+
+type DebugReportFlagBitsEXT struct {
+	native *C.VkDebugReportFlagBitsEXT
+}
+
+type DebugReportFlagsEXT struct {
+	native *C.VkDebugReportFlagsEXT
+}
+
+type DebugReportCallbackCreateInfoEXT struct {
+	native *C.VkDebugReportCallbackCreateInfoEXT
+}
+
+type RasterizationOrderAMD struct {
+	native *C.VkRasterizationOrderAMD
+}
+
+type PipelineRasterizationStateRasterizationOrderAMD struct {
+	native *C.VkPipelineRasterizationStateRasterizationOrderAMD
+}
+
+type DebugMarkerObjectNameInfoEXT struct {
+	native *C.VkDebugMarkerObjectNameInfoEXT
+}
+
+type DebugMarkerObjectTagInfoEXT struct {
+	native *C.VkDebugMarkerObjectTagInfoEXT
+}
+
+type DebugMarkerMarkerInfoEXT struct {
+	native *C.VkDebugMarkerMarkerInfoEXT
+}
+
+type DedicatedAllocationImageCreateInfoNV struct {
+	native *C.VkDedicatedAllocationImageCreateInfoNV
+}
+
+type DedicatedAllocationBufferCreateInfoNV struct {
+	native *C.VkDedicatedAllocationBufferCreateInfoNV
+}
+
+type DedicatedAllocationMemoryAllocateInfoNV struct {
+	native *C.VkDedicatedAllocationMemoryAllocateInfoNV
+}
+
+type PipelineRasterizationStateStreamCreateFlagsEXT struct {
+	native *C.VkPipelineRasterizationStateStreamCreateFlagsEXT
+}
+
+type PhysicalDeviceTransformFeedbackFeaturesEXT struct {
+	native *C.VkPhysicalDeviceTransformFeedbackFeaturesEXT
+}
+
+type PhysicalDeviceTransformFeedbackPropertiesEXT struct {
+	native *C.VkPhysicalDeviceTransformFeedbackPropertiesEXT
+}
+
+type PipelineRasterizationStateStreamCreateInfoEXT struct {
+	native *C.VkPipelineRasterizationStateStreamCreateInfoEXT
+}
+
+type ImageViewHandleInfoNVX struct {
+	native *C.VkImageViewHandleInfoNVX
+}
+
+type TextureLODGatherFormatPropertiesAMD struct {
+	native *C.VkTextureLODGatherFormatPropertiesAMD
+}
+
+type ShaderInfoTypeAMD struct {
+	native *C.VkShaderInfoTypeAMD
+}
+
+type ShaderResourceUsageAMD struct {
+	native *C.VkShaderResourceUsageAMD
+}
+
+type ShaderStatisticsInfoAMD struct {
+	native *C.VkShaderStatisticsInfoAMD
+}
+
+type PhysicalDeviceCornerSampledImageFeaturesNV struct {
+	native *C.VkPhysicalDeviceCornerSampledImageFeaturesNV
+}
+
+type ExternalMemoryHandleTypeFlagBitsNV struct {
+	native *C.VkExternalMemoryHandleTypeFlagBitsNV
+}
+
+type ExternalMemoryHandleTypeFlagsNV struct {
+	native *C.VkExternalMemoryHandleTypeFlagsNV
+}
+
+type ExternalMemoryFeatureFlagBitsNV struct {
+	native *C.VkExternalMemoryFeatureFlagBitsNV
+}
+
+type ExternalMemoryFeatureFlagsNV struct {
+	native *C.VkExternalMemoryFeatureFlagsNV
+}
+
+type ExternalImageFormatPropertiesNV struct {
+	native *C.VkExternalImageFormatPropertiesNV
+}
+
+type ExternalMemoryImageCreateInfoNV struct {
+	native *C.VkExternalMemoryImageCreateInfoNV
+}
+
+type ExportMemoryAllocateInfoNV struct {
+	native *C.VkExportMemoryAllocateInfoNV
+}
+
+type ValidationCheckEXT struct {
+	native *C.VkValidationCheckEXT
+}
+
+type ValidationFlagsEXT struct {
+	native *C.VkValidationFlagsEXT
+}
+
+type ImageViewASTCDecodeModeEXT struct {
+	native *C.VkImageViewASTCDecodeModeEXT
+}
+
+type PhysicalDeviceASTCDecodeFeaturesEXT struct {
+	native *C.VkPhysicalDeviceASTCDecodeFeaturesEXT
+}
+
+type ConditionalRenderingFlagBitsEXT struct {
+	native *C.VkConditionalRenderingFlagBitsEXT
+}
+
+type ConditionalRenderingFlagsEXT struct {
+	native *C.VkConditionalRenderingFlagsEXT
+}
+
+type ConditionalRenderingBeginInfoEXT struct {
+	native *C.VkConditionalRenderingBeginInfoEXT
+}
+
+type PhysicalDeviceConditionalRenderingFeaturesEXT struct {
+	native *C.VkPhysicalDeviceConditionalRenderingFeaturesEXT
+}
+
+type CommandBufferInheritanceConditionalRenderingInfoEXT struct {
+	native *C.VkCommandBufferInheritanceConditionalRenderingInfoEXT
+}
+
+type ObjectTableNVX struct {
+	native *C.VkObjectTableNVX
+}
+
+type IndirectCommandsLayoutNVX struct {
+	native *C.VkIndirectCommandsLayoutNVX
+}
+
+type IndirectCommandsTokenTypeNVX struct {
+	native *C.VkIndirectCommandsTokenTypeNVX
+}
+
+type ObjectEntryTypeNVX struct {
+	native *C.VkObjectEntryTypeNVX
+}
+
+type IndirectCommandsLayoutUsageFlagBitsNVX struct {
+	native *C.VkIndirectCommandsLayoutUsageFlagBitsNVX
+}
+
+type IndirectCommandsLayoutUsageFlagsNVX struct {
+	native *C.VkIndirectCommandsLayoutUsageFlagsNVX
+}
+
+type ObjectEntryUsageFlagBitsNVX struct {
+	native *C.VkObjectEntryUsageFlagBitsNVX
+}
+
+type ObjectEntryUsageFlagsNVX struct {
+	native *C.VkObjectEntryUsageFlagsNVX
+}
+
+type DeviceGeneratedCommandsFeaturesNVX struct {
+	native *C.VkDeviceGeneratedCommandsFeaturesNVX
+}
+
+type DeviceGeneratedCommandsLimitsNVX struct {
+	native *C.VkDeviceGeneratedCommandsLimitsNVX
+}
+
+type IndirectCommandsTokenNVX struct {
+	native *C.VkIndirectCommandsTokenNVX
+}
+
+type IndirectCommandsLayoutTokenNVX struct {
+	native *C.VkIndirectCommandsLayoutTokenNVX
+}
+
+type IndirectCommandsLayoutCreateInfoNVX struct {
+	native *C.VkIndirectCommandsLayoutCreateInfoNVX
+}
+
+type CmdProcessCommandsInfoNVX struct {
+	native *C.VkCmdProcessCommandsInfoNVX
+}
+
+type CmdReserveSpaceForCommandsInfoNVX struct {
+	native *C.VkCmdReserveSpaceForCommandsInfoNVX
+}
+
+type ObjectTableCreateInfoNVX struct {
+	native *C.VkObjectTableCreateInfoNVX
+}
+
+type ObjectTableEntryNVX struct {
+	native *C.VkObjectTableEntryNVX
+}
+
+type ObjectTablePipelineEntryNVX struct {
+	native *C.VkObjectTablePipelineEntryNVX
+}
+
+type ObjectTableDescriptorSetEntryNVX struct {
+	native *C.VkObjectTableDescriptorSetEntryNVX
+}
+
+type ObjectTableVertexBufferEntryNVX struct {
+	native *C.VkObjectTableVertexBufferEntryNVX
+}
+
+type ObjectTableIndexBufferEntryNVX struct {
+	native *C.VkObjectTableIndexBufferEntryNVX
+}
+
+type ObjectTablePushConstantEntryNVX struct {
+	native *C.VkObjectTablePushConstantEntryNVX
+}
+
+type ViewportWScalingNV struct {
+	native *C.VkViewportWScalingNV
+}
+
+type PipelineViewportWScalingStateCreateInfoNV struct {
+	native *C.VkPipelineViewportWScalingStateCreateInfoNV
+}
+
+type SurfaceCounterFlagBitsEXT struct {
+	native *C.VkSurfaceCounterFlagBitsEXT
+}
+
+type SurfaceCounterFlagsEXT struct {
+	native *C.VkSurfaceCounterFlagsEXT
+}
+
+type SurfaceCapabilities2EXT struct {
+	native *C.VkSurfaceCapabilities2EXT
+}
+
+type DisplayPowerStateEXT struct {
+	native *C.VkDisplayPowerStateEXT
+}
+
+type DeviceEventTypeEXT struct {
+	native *C.VkDeviceEventTypeEXT
+}
+
+type DisplayEventTypeEXT struct {
+	native *C.VkDisplayEventTypeEXT
+}
+
+type DisplayPowerInfoEXT struct {
+	native *C.VkDisplayPowerInfoEXT
+}
+
+type DeviceEventInfoEXT struct {
+	native *C.VkDeviceEventInfoEXT
+}
+
+type DisplayEventInfoEXT struct {
+	native *C.VkDisplayEventInfoEXT
+}
+
+type SwapchainCounterCreateInfoEXT struct {
+	native *C.VkSwapchainCounterCreateInfoEXT
+}
+
+type RefreshCycleDurationGOOGLE struct {
+	native *C.VkRefreshCycleDurationGOOGLE
+}
+
+type PastPresentationTimingGOOGLE struct {
+	native *C.VkPastPresentationTimingGOOGLE
+}
+
+type PresentTimeGOOGLE struct {
+	native *C.VkPresentTimeGOOGLE
+}
+
+type PresentTimesInfoGOOGLE struct {
+	native *C.VkPresentTimesInfoGOOGLE
+}
+
+type PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX struct {
+	native *C.VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX
+}
+
+type ViewportCoordinateSwizzleNV struct {
+	native *C.VkViewportCoordinateSwizzleNV
+}
+
+type PipelineViewportSwizzleStateCreateFlagsNV struct {
+	native *C.VkPipelineViewportSwizzleStateCreateFlagsNV
+}
+
+type ViewportSwizzleNV struct {
+	native *C.VkViewportSwizzleNV
+}
+
+type PipelineViewportSwizzleStateCreateInfoNV struct {
+	native *C.VkPipelineViewportSwizzleStateCreateInfoNV
+}
+
+type DiscardRectangleModeEXT struct {
+	native *C.VkDiscardRectangleModeEXT
+}
+
+type PipelineDiscardRectangleStateCreateFlagsEXT struct {
+	native *C.VkPipelineDiscardRectangleStateCreateFlagsEXT
+}
+
+type PhysicalDeviceDiscardRectanglePropertiesEXT struct {
+	native *C.VkPhysicalDeviceDiscardRectanglePropertiesEXT
+}
+
+type PipelineDiscardRectangleStateCreateInfoEXT struct {
+	native *C.VkPipelineDiscardRectangleStateCreateInfoEXT
+}
+
+type ConservativeRasterizationModeEXT struct {
+	native *C.VkConservativeRasterizationModeEXT
+}
+
+type PipelineRasterizationConservativeStateCreateFlagsEXT struct {
+	native *C.VkPipelineRasterizationConservativeStateCreateFlagsEXT
+}
+
+type PhysicalDeviceConservativeRasterizationPropertiesEXT struct {
+	native *C.VkPhysicalDeviceConservativeRasterizationPropertiesEXT
+}
+
+type PipelineRasterizationConservativeStateCreateInfoEXT struct {
+	native *C.VkPipelineRasterizationConservativeStateCreateInfoEXT
+}
+
+type PipelineRasterizationDepthClipStateCreateFlagsEXT struct {
+	native *C.VkPipelineRasterizationDepthClipStateCreateFlagsEXT
+}
+
+type PhysicalDeviceDepthClipEnableFeaturesEXT struct {
+	native *C.VkPhysicalDeviceDepthClipEnableFeaturesEXT
+}
+
+type PipelineRasterizationDepthClipStateCreateInfoEXT struct {
+	native *C.VkPipelineRasterizationDepthClipStateCreateInfoEXT
+}
+
+type XYColorEXT struct {
+	native *C.VkXYColorEXT
+}
+
+type HdrMetadataEXT struct {
+	native *C.VkHdrMetadataEXT
+}
+
+type DebugUtilsMessengerEXT struct {
+	native *C.VkDebugUtilsMessengerEXT
+}
+
+type DebugUtilsMessengerCallbackDataFlagsEXT struct {
+	native *C.VkDebugUtilsMessengerCallbackDataFlagsEXT
+}
+
+type DebugUtilsMessengerCreateFlagsEXT struct {
+	native *C.VkDebugUtilsMessengerCreateFlagsEXT
+}
+
+type DebugUtilsMessageSeverityFlagBitsEXT struct {
+	native *C.VkDebugUtilsMessageSeverityFlagBitsEXT
+}
+
+type DebugUtilsMessageSeverityFlagsEXT struct {
+	native *C.VkDebugUtilsMessageSeverityFlagsEXT
+}
+
+type DebugUtilsMessageTypeFlagBitsEXT struct {
+	native *C.VkDebugUtilsMessageTypeFlagBitsEXT
+}
+
+type DebugUtilsMessageTypeFlagsEXT struct {
+	native *C.VkDebugUtilsMessageTypeFlagsEXT
+}
+
+type DebugUtilsObjectNameInfoEXT struct {
+	native *C.VkDebugUtilsObjectNameInfoEXT
+}
+
+type DebugUtilsObjectTagInfoEXT struct {
+	native *C.VkDebugUtilsObjectTagInfoEXT
+}
+
+type DebugUtilsLabelEXT struct {
+	native *C.VkDebugUtilsLabelEXT
+}
+
+type DebugUtilsMessengerCallbackDataEXT struct {
+	native *C.VkDebugUtilsMessengerCallbackDataEXT
+}
+
+type DebugUtilsMessengerCreateInfoEXT struct {
+	native *C.VkDebugUtilsMessengerCreateInfoEXT
+}
+
+type SamplerReductionModeEXT struct {
+	native *C.VkSamplerReductionModeEXT
+}
+
+type SamplerReductionModeCreateInfoEXT struct {
+	native *C.VkSamplerReductionModeCreateInfoEXT
+}
+
+type PhysicalDeviceSamplerFilterMinmaxPropertiesEXT struct {
+	native *C.VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT
+}
+
+type PhysicalDeviceInlineUniformBlockFeaturesEXT struct {
+	native *C.VkPhysicalDeviceInlineUniformBlockFeaturesEXT
+}
+
+type PhysicalDeviceInlineUniformBlockPropertiesEXT struct {
+	native *C.VkPhysicalDeviceInlineUniformBlockPropertiesEXT
+}
+
+type WriteDescriptorSetInlineUniformBlockEXT struct {
+	native *C.VkWriteDescriptorSetInlineUniformBlockEXT
+}
+
+type DescriptorPoolInlineUniformBlockCreateInfoEXT struct {
+	native *C.VkDescriptorPoolInlineUniformBlockCreateInfoEXT
+}
+
+type SampleLocationEXT struct {
+	native *C.VkSampleLocationEXT
+}
+
+type SampleLocationsInfoEXT struct {
+	native *C.VkSampleLocationsInfoEXT
+}
+
+type AttachmentSampleLocationsEXT struct {
+	native *C.VkAttachmentSampleLocationsEXT
+}
+
+type SubpassSampleLocationsEXT struct {
+	native *C.VkSubpassSampleLocationsEXT
+}
+
+type RenderPassSampleLocationsBeginInfoEXT struct {
+	native *C.VkRenderPassSampleLocationsBeginInfoEXT
+}
+
+type PipelineSampleLocationsStateCreateInfoEXT struct {
+	native *C.VkPipelineSampleLocationsStateCreateInfoEXT
+}
+
+type PhysicalDeviceSampleLocationsPropertiesEXT struct {
+	native *C.VkPhysicalDeviceSampleLocationsPropertiesEXT
+}
+
+type MultisamplePropertiesEXT struct {
+	native *C.VkMultisamplePropertiesEXT
+}
+
+type BlendOverlapEXT struct {
+	native *C.VkBlendOverlapEXT
+}
+
+type PhysicalDeviceBlendOperationAdvancedFeaturesEXT struct {
+	native *C.VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT
+}
+
+type PhysicalDeviceBlendOperationAdvancedPropertiesEXT struct {
+	native *C.VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT
+}
+
+type PipelineColorBlendAdvancedStateCreateInfoEXT struct {
+	native *C.VkPipelineColorBlendAdvancedStateCreateInfoEXT
+}
+
+type PipelineCoverageToColorStateCreateFlagsNV struct {
+	native *C.VkPipelineCoverageToColorStateCreateFlagsNV
+}
+
+type PipelineCoverageToColorStateCreateInfoNV struct {
+	native *C.VkPipelineCoverageToColorStateCreateInfoNV
+}
+
+type CoverageModulationModeNV struct {
+	native *C.VkCoverageModulationModeNV
+}
+
+type PipelineCoverageModulationStateCreateFlagsNV struct {
+	native *C.VkPipelineCoverageModulationStateCreateFlagsNV
+}
+
+type PipelineCoverageModulationStateCreateInfoNV struct {
+	native *C.VkPipelineCoverageModulationStateCreateInfoNV
+}
+
+type DrmFormatModifierPropertiesEXT struct {
+	native *C.VkDrmFormatModifierPropertiesEXT
+}
+
+type DrmFormatModifierPropertiesListEXT struct {
+	native *C.VkDrmFormatModifierPropertiesListEXT
+}
+
+type PhysicalDeviceImageDrmFormatModifierInfoEXT struct {
+	native *C.VkPhysicalDeviceImageDrmFormatModifierInfoEXT
+}
+
+type ImageDrmFormatModifierListCreateInfoEXT struct {
+	native *C.VkImageDrmFormatModifierListCreateInfoEXT
+}
+
+type ImageDrmFormatModifierExplicitCreateInfoEXT struct {
+	native *C.VkImageDrmFormatModifierExplicitCreateInfoEXT
+}
+
+type ImageDrmFormatModifierPropertiesEXT struct {
+	native *C.VkImageDrmFormatModifierPropertiesEXT
+}
+
+type ValidationCacheEXT struct {
+	native *C.VkValidationCacheEXT
+}
+
+type ValidationCacheHeaderVersionEXT struct {
+	native *C.VkValidationCacheHeaderVersionEXT
+}
+
+type ValidationCacheCreateFlagsEXT struct {
+	native *C.VkValidationCacheCreateFlagsEXT
+}
+
+type ValidationCacheCreateInfoEXT struct {
+	native *C.VkValidationCacheCreateInfoEXT
+}
+
+type ShaderModuleValidationCacheCreateInfoEXT struct {
+	native *C.VkShaderModuleValidationCacheCreateInfoEXT
+}
+
+type DescriptorBindingFlagBitsEXT struct {
+	native *C.VkDescriptorBindingFlagBitsEXT
+}
+
+type DescriptorBindingFlagsEXT struct {
+	native *C.VkDescriptorBindingFlagsEXT
+}
+
+type DescriptorSetLayoutBindingFlagsCreateInfoEXT struct {
+	native *C.VkDescriptorSetLayoutBindingFlagsCreateInfoEXT
+}
+
+type PhysicalDeviceDescriptorIndexingFeaturesEXT struct {
+	native *C.VkPhysicalDeviceDescriptorIndexingFeaturesEXT
+}
+
+type PhysicalDeviceDescriptorIndexingPropertiesEXT struct {
+	native *C.VkPhysicalDeviceDescriptorIndexingPropertiesEXT
+}
+
+type DescriptorSetVariableDescriptorCountAllocateInfoEXT struct {
+	native *C.VkDescriptorSetVariableDescriptorCountAllocateInfoEXT
+}
+
+type DescriptorSetVariableDescriptorCountLayoutSupportEXT struct {
+	native *C.VkDescriptorSetVariableDescriptorCountLayoutSupportEXT
+}
+
+type ShadingRatePaletteEntryNV struct {
+	native *C.VkShadingRatePaletteEntryNV
+}
+
+type CoarseSampleOrderTypeNV struct {
+	native *C.VkCoarseSampleOrderTypeNV
+}
+
+type ShadingRatePaletteNV struct {
+	native *C.VkShadingRatePaletteNV
+}
+
+type PipelineViewportShadingRateImageStateCreateInfoNV struct {
+	native *C.VkPipelineViewportShadingRateImageStateCreateInfoNV
+}
+
+type PhysicalDeviceShadingRateImageFeaturesNV struct {
+	native *C.VkPhysicalDeviceShadingRateImageFeaturesNV
+}
+
+type PhysicalDeviceShadingRateImagePropertiesNV struct {
+	native *C.VkPhysicalDeviceShadingRateImagePropertiesNV
+}
+
+type CoarseSampleLocationNV struct {
+	native *C.VkCoarseSampleLocationNV
+}
+
+type CoarseSampleOrderCustomNV struct {
+	native *C.VkCoarseSampleOrderCustomNV
+}
+
+type PipelineViewportCoarseSampleOrderStateCreateInfoNV struct {
+	native *C.VkPipelineViewportCoarseSampleOrderStateCreateInfoNV
+}
+
+type AccelerationStructureNV struct {
+	native *C.VkAccelerationStructureNV
+}
+
+type RayTracingShaderGroupTypeNV struct {
+	native *C.VkRayTracingShaderGroupTypeNV
+}
+
+type GeometryTypeNV struct {
+	native *C.VkGeometryTypeNV
+}
+
+type AccelerationStructureTypeNV struct {
+	native *C.VkAccelerationStructureTypeNV
+}
+
+type CopyAccelerationStructureModeNV struct {
+	native *C.VkCopyAccelerationStructureModeNV
+}
+
+type AccelerationStructureMemoryRequirementsTypeNV struct {
+	native *C.VkAccelerationStructureMemoryRequirementsTypeNV
+}
+
+type GeometryFlagBitsNV struct {
+	native *C.VkGeometryFlagBitsNV
+}
+
+type GeometryFlagsNV struct {
+	native *C.VkGeometryFlagsNV
+}
+
+type GeometryInstanceFlagBitsNV struct {
+	native *C.VkGeometryInstanceFlagBitsNV
+}
+
+type GeometryInstanceFlagsNV struct {
+	native *C.VkGeometryInstanceFlagsNV
+}
+
+type BuildAccelerationStructureFlagBitsNV struct {
+	native *C.VkBuildAccelerationStructureFlagBitsNV
+}
+
+type BuildAccelerationStructureFlagsNV struct {
+	native *C.VkBuildAccelerationStructureFlagsNV
+}
+
+type RayTracingShaderGroupCreateInfoNV struct {
+	native *C.VkRayTracingShaderGroupCreateInfoNV
+}
+
+type RayTracingPipelineCreateInfoNV struct {
+	native *C.VkRayTracingPipelineCreateInfoNV
+}
+
+type GeometryTrianglesNV struct {
+	native *C.VkGeometryTrianglesNV
+}
+
+type GeometryAABBNV struct {
+	native *C.VkGeometryAABBNV
+}
+
+type GeometryDataNV struct {
+	native *C.VkGeometryDataNV
+}
+
+type GeometryNV struct {
+	native *C.VkGeometryNV
+}
+
+type AccelerationStructureInfoNV struct {
+	native *C.VkAccelerationStructureInfoNV
+}
+
+type AccelerationStructureCreateInfoNV struct {
+	native *C.VkAccelerationStructureCreateInfoNV
+}
+
+type BindAccelerationStructureMemoryInfoNV struct {
+	native *C.VkBindAccelerationStructureMemoryInfoNV
+}
+
+type WriteDescriptorSetAccelerationStructureNV struct {
+	native *C.VkWriteDescriptorSetAccelerationStructureNV
+}
+
+type AccelerationStructureMemoryRequirementsInfoNV struct {
+	native *C.VkAccelerationStructureMemoryRequirementsInfoNV
+}
+
+type PhysicalDeviceRayTracingPropertiesNV struct {
+	native *C.VkPhysicalDeviceRayTracingPropertiesNV
+}
+
+type PhysicalDeviceRepresentativeFragmentTestFeaturesNV struct {
+	native *C.VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV
+}
+
+type PipelineRepresentativeFragmentTestStateCreateInfoNV struct {
+	native *C.VkPipelineRepresentativeFragmentTestStateCreateInfoNV
+}
+
+type PhysicalDeviceImageViewImageFormatInfoEXT struct {
+	native *C.VkPhysicalDeviceImageViewImageFormatInfoEXT
+}
+
+type FilterCubicImageViewImageFormatPropertiesEXT struct {
+	native *C.VkFilterCubicImageViewImageFormatPropertiesEXT
+}
+
+type QueueGlobalPriorityEXT struct {
+	native *C.VkQueueGlobalPriorityEXT
+}
+
+type DeviceQueueGlobalPriorityCreateInfoEXT struct {
+	native *C.VkDeviceQueueGlobalPriorityCreateInfoEXT
+}
+
+type ImportMemoryHostPointerInfoEXT struct {
+	native *C.VkImportMemoryHostPointerInfoEXT
+}
+
+type MemoryHostPointerPropertiesEXT struct {
+	native *C.VkMemoryHostPointerPropertiesEXT
+}
+
+type PhysicalDeviceExternalMemoryHostPropertiesEXT struct {
+	native *C.VkPhysicalDeviceExternalMemoryHostPropertiesEXT
+}
+
+type TimeDomainEXT struct {
+	native *C.VkTimeDomainEXT
+}
+
+type CalibratedTimestampInfoEXT struct {
+	native *C.VkCalibratedTimestampInfoEXT
+}
+
+type PhysicalDeviceShaderCorePropertiesAMD struct {
+	native *C.VkPhysicalDeviceShaderCorePropertiesAMD
+}
+
+type MemoryOverallocationBehaviorAMD struct {
+	native *C.VkMemoryOverallocationBehaviorAMD
+}
+
+type DeviceMemoryOverallocationCreateInfoAMD struct {
+	native *C.VkDeviceMemoryOverallocationCreateInfoAMD
+}
+
+type PhysicalDeviceVertexAttributeDivisorPropertiesEXT struct {
+	native *C.VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT
+}
+
+type VertexInputBindingDivisorDescriptionEXT struct {
+	native *C.VkVertexInputBindingDivisorDescriptionEXT
+}
+
+type PipelineVertexInputDivisorStateCreateInfoEXT struct {
+	native *C.VkPipelineVertexInputDivisorStateCreateInfoEXT
+}
+
+type PhysicalDeviceVertexAttributeDivisorFeaturesEXT struct {
+	native *C.VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT
+}
+
+type PipelineCreationFeedbackFlagBitsEXT struct {
+	native *C.VkPipelineCreationFeedbackFlagBitsEXT
+}
+
+type PipelineCreationFeedbackFlagsEXT struct {
+	native *C.VkPipelineCreationFeedbackFlagsEXT
+}
+
+type PipelineCreationFeedbackEXT struct {
+	native *C.VkPipelineCreationFeedbackEXT
+}
+
+type PipelineCreationFeedbackCreateInfoEXT struct {
+	native *C.VkPipelineCreationFeedbackCreateInfoEXT
+}
+
+type PhysicalDeviceComputeShaderDerivativesFeaturesNV struct {
+	native *C.VkPhysicalDeviceComputeShaderDerivativesFeaturesNV
+}
+
+type PhysicalDeviceMeshShaderFeaturesNV struct {
+	native *C.VkPhysicalDeviceMeshShaderFeaturesNV
+}
+
+type PhysicalDeviceMeshShaderPropertiesNV struct {
+	native *C.VkPhysicalDeviceMeshShaderPropertiesNV
+}
+
+type DrawMeshTasksIndirectCommandNV struct {
+	native *C.VkDrawMeshTasksIndirectCommandNV
+}
+
+type PhysicalDeviceFragmentShaderBarycentricFeaturesNV struct {
+	native *C.VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV
+}
+
+type PhysicalDeviceShaderImageFootprintFeaturesNV struct {
+	native *C.VkPhysicalDeviceShaderImageFootprintFeaturesNV
+}
+
+type PipelineViewportExclusiveScissorStateCreateInfoNV struct {
+	native *C.VkPipelineViewportExclusiveScissorStateCreateInfoNV
+}
+
+type PhysicalDeviceExclusiveScissorFeaturesNV struct {
+	native *C.VkPhysicalDeviceExclusiveScissorFeaturesNV
+}
+
+type QueueFamilyCheckpointPropertiesNV struct {
+	native *C.VkQueueFamilyCheckpointPropertiesNV
+}
+
+type CheckpointDataNV struct {
+	native *C.VkCheckpointDataNV
+}
+
+type PhysicalDevicePCIBusInfoPropertiesEXT struct {
+	native *C.VkPhysicalDevicePCIBusInfoPropertiesEXT
+}
+
+type DisplayNativeHdrSurfaceCapabilitiesAMD struct {
+	native *C.VkDisplayNativeHdrSurfaceCapabilitiesAMD
+}
+
+type SwapchainDisplayNativeHdrCreateInfoAMD struct {
+	native *C.VkSwapchainDisplayNativeHdrCreateInfoAMD
+}
+
+type PhysicalDeviceFragmentDensityMapFeaturesEXT struct {
+	native *C.VkPhysicalDeviceFragmentDensityMapFeaturesEXT
+}
+
+type PhysicalDeviceFragmentDensityMapPropertiesEXT struct {
+	native *C.VkPhysicalDeviceFragmentDensityMapPropertiesEXT
+}
+
+type RenderPassFragmentDensityMapCreateInfoEXT struct {
+	native *C.VkRenderPassFragmentDensityMapCreateInfoEXT
+}
+
+type PhysicalDeviceScalarBlockLayoutFeaturesEXT struct {
+	native *C.VkPhysicalDeviceScalarBlockLayoutFeaturesEXT
+}
+
+type PhysicalDeviceMemoryBudgetPropertiesEXT struct {
+	native *C.VkPhysicalDeviceMemoryBudgetPropertiesEXT
+}
+
+type PhysicalDeviceMemoryPriorityFeaturesEXT struct {
+	native *C.VkPhysicalDeviceMemoryPriorityFeaturesEXT
+}
+
+type MemoryPriorityAllocateInfoEXT struct {
+	native *C.VkMemoryPriorityAllocateInfoEXT
+}
+
+type PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV struct {
+	native *C.VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV
+}
+
+type DeviceAddress struct {
+	native *C.VkDeviceAddress
+}
+
+type PhysicalDeviceBufferDeviceAddressFeaturesEXT struct {
+	native *C.VkPhysicalDeviceBufferDeviceAddressFeaturesEXT
+}
+
+type PhysicalDeviceBufferAddressFeaturesEXT struct {
+	native *C.VkPhysicalDeviceBufferAddressFeaturesEXT
+}
+
+type BufferDeviceAddressInfoEXT struct {
+	native *C.VkBufferDeviceAddressInfoEXT
+}
+
+type BufferDeviceAddressCreateInfoEXT struct {
+	native *C.VkBufferDeviceAddressCreateInfoEXT
+}
+
+type ImageStencilUsageCreateInfoEXT struct {
+	native *C.VkImageStencilUsageCreateInfoEXT
+}
+
+type ValidationFeatureEnableEXT struct {
+	native *C.VkValidationFeatureEnableEXT
+}
+
+type ValidationFeatureDisableEXT struct {
+	native *C.VkValidationFeatureDisableEXT
+}
+
+type ValidationFeaturesEXT struct {
+	native *C.VkValidationFeaturesEXT
+}
+
+type ComponentTypeNV struct {
+	native *C.VkComponentTypeNV
+}
+
+type ScopeNV struct {
+	native *C.VkScopeNV
+}
+
+type CooperativeMatrixPropertiesNV struct {
+	native *C.VkCooperativeMatrixPropertiesNV
+}
+
+type PhysicalDeviceCooperativeMatrixFeaturesNV struct {
+	native *C.VkPhysicalDeviceCooperativeMatrixFeaturesNV
+}
+
+type PhysicalDeviceCooperativeMatrixPropertiesNV struct {
+	native *C.VkPhysicalDeviceCooperativeMatrixPropertiesNV
+}
+
+type CoverageReductionModeNV struct {
+	native *C.VkCoverageReductionModeNV
+}
+
+type PipelineCoverageReductionStateCreateFlagsNV struct {
+	native *C.VkPipelineCoverageReductionStateCreateFlagsNV
+}
+
+type PhysicalDeviceCoverageReductionModeFeaturesNV struct {
+	native *C.VkPhysicalDeviceCoverageReductionModeFeaturesNV
+}
+
+type PipelineCoverageReductionStateCreateInfoNV struct {
+	native *C.VkPipelineCoverageReductionStateCreateInfoNV
+}
+
+type FramebufferMixedSamplesCombinationNV struct {
+	native *C.VkFramebufferMixedSamplesCombinationNV
+}
+
+type PhysicalDeviceYcbcrImageArraysFeaturesEXT struct {
+	native *C.VkPhysicalDeviceYcbcrImageArraysFeaturesEXT
+}
+
+type HeadlessSurfaceCreateFlagsEXT struct {
+	native *C.VkHeadlessSurfaceCreateFlagsEXT
+}
+
+type HeadlessSurfaceCreateInfoEXT struct {
+	native *C.VkHeadlessSurfaceCreateInfoEXT
+}
+
+type PhysicalDeviceHostQueryResetFeaturesEXT struct {
+	native *C.VkPhysicalDeviceHostQueryResetFeaturesEXT
 }

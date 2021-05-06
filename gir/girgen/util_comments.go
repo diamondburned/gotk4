@@ -42,6 +42,7 @@ func GoDoc(doc *gir.Doc, indentLvl int, self string) string {
 func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 	// Trim the word "this" away to make the sentence gramatically correct.
 	cmt = strings.TrimPrefix(cmt, "this ")
+	cmt = strings.TrimPrefix(cmt, "#")
 
 	// Wipe the namespace.
 	cmt = cmtNamespaceRegex.ReplaceAllStringFunc(cmt, func(str string) string {
@@ -87,11 +88,13 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 	})
 
 	// Split into paragraphs and parse each of them.
-	var paragraphs = strings.Split(cmt, "\n\n")
-	var codeblock = false
+	paragraphs := strings.Split(cmt, "\n\n")
+	codeblock := false
 
 	for i, paragraph := range paragraphs {
-		switch codeblockChange := openOrCloseCodeblock(paragraph); {
+		codeblockChange := openOrCloseCodeblock(paragraph)
+
+		switch {
 		// Codeblock:
 		case codeblock || codeblockChange:
 			// Toggle codeblock state.
@@ -108,14 +111,21 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 				lines = strings.Split(paragraph, "\n")
 			}
 
+			// Edge case w/ GVariant's comment.
+			if len(lines) > 0 && lines[len(lines)-1] == "]|" {
+				lines = lines[:len(lines)-1]
+				codeblock = false
+			}
+
 			// Render the codeblock in GoDoc markup.
 			for i, line := range lines {
-				lines[i] = "     " + line
+				lines[i] = "  " + line
 			}
+
 			paragraphs[i] = strings.Join(lines, "\n")
 
-		// Headings;
-		case strings.HasPrefix(paragraph, "#"):
+		// Headings, but account for any number of hashes.
+		case strings.HasPrefix(strings.SplitN(paragraph, " ", 2)[0], "#"):
 			// Go's heading syntax doesn't require the hash.
 			paragraph = cmtMdHeadingRegex.ReplaceAllString(paragraph, "")
 			// Ensure there's no period.
@@ -135,20 +145,31 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 		}
 	}
 
-	cmt = strings.Join(paragraphs, "\n\n")
-
 	// Account for the indentation in the column limit.
 	col := CommentsColumnLimit - (CommentsTabWidth * indentLvl)
-	cmt = makeComment(cmt, indentLvl, col)
 
-	return cmt
+	cmt = strings.Join(paragraphs, "\n\n")
+	cmt = docText(cmt, col)
+
+	ident := strings.Repeat("\t", indentLvl)
+	lines := strings.Split(cmt, "\n")
+	if len(lines) > 0 && lines[len(lines)-1] == "" {
+		// Trim the trailing empty line, if any.
+		lines = lines[:len(lines)-1]
+	}
+
+	for i, line := range lines {
+		lines[i] = ident + "// " + line
+	}
+
+	return strings.Join(lines, "\n")
 }
 
-func makeComment(p string, ident, col int) string {
+func docText(p string, col int) string {
 	builder := strings.Builder{}
 	builder.Grow(len(p) + 64)
 
-	doc.ToText(&builder, p, strings.Repeat("\t", ident)+"// ", "    ", col)
+	doc.ToText(&builder, p, "", "   ", col)
 	return builder.String()
 }
 

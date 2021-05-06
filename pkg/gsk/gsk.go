@@ -5,10 +5,13 @@ package gsk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/gdk"
+	"github.com/diamondburned/gotk4/glib"
+	"github.com/diamondburned/gotk4/graphene"
 	"github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 gtk4
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gsk/gsk.h>
 import "C"
@@ -28,6 +31,12 @@ func init() {
 	})
 }
 
+// BlendMode: the blend modes available for render nodes.
+//
+// The implementation of each blend mode is deferred to the rendering pipeline.
+//
+// See https://www.w3.org/TR/compositing-1/#blending for more information on
+// blending and blend modes.
 type BlendMode int
 
 const (
@@ -83,6 +92,7 @@ func marshalBlendMode(p uintptr) (interface{}, error) {
 	return BlendMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Corner: the corner indices used by RoundedRect.
 type Corner int
 
 const (
@@ -100,6 +110,9 @@ func marshalCorner(p uintptr) (interface{}, error) {
 	return Corner(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// GLUniformType: this defines the types of the uniforms that GLShaders declare.
+// It defines both what the type is called in the GLSL shader code, and what the
+// corresponding C type is on the Gtk side.
 type GLUniformType int
 
 const (
@@ -125,6 +138,7 @@ func marshalGLUniformType(p uintptr) (interface{}, error) {
 	return GLUniformType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// RenderNodeType: the type of a node determines what the node is rendering.
 type RenderNodeType int
 
 const (
@@ -194,6 +208,10 @@ func marshalRenderNodeType(p uintptr) (interface{}, error) {
 	return RenderNodeType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ScalingFilter: the filters used when scaling texture data.
+//
+// The actual implementation of each filter is deferred to the rendering
+// pipeline.
 type ScalingFilter int
 
 const (
@@ -210,6 +228,7 @@ func marshalScalingFilter(p uintptr) (interface{}, error) {
 	return ScalingFilter(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SerializationError: errors that can happen during (de)serialization.
 type SerializationError int
 
 const (
@@ -227,6 +246,15 @@ func marshalSerializationError(p uintptr) (interface{}, error) {
 	return SerializationError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TransformCategory: the categories of matrices relevant for GSK and GTK. Note
+// that any category includes matrices of all later categories. So if you want
+// to for example check if a matrix is a 2D matrix, `category &gt;=
+// GSK_TRANSFORM_CATEGORY_2D` is the way to do this.
+//
+// Also keep in mind that rounding errors may cause matrices to not conform to
+// their categories. Otherwise, matrix operations done via mutliplication will
+// not worsen categories. So for the matrix multiplication `C = A * B`,
+// `category(C) = MIN (category(A), category(B))`.
 type TransformCategory int
 
 const (
@@ -255,4 +283,73 @@ const (
 
 func marshalTransformCategory(p uintptr) (interface{}, error) {
 	return TransformCategory(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+func SerializationErrorQuark() glib.Quark
+
+// TransformParse: parses the given @string into a transform and puts it in
+// @out_transform. Strings printed via gsk_transform_to_string() can be read in
+// again successfully using this function.
+//
+// If @string does not describe a valid transform, false is returned and nil is
+// put in @out_transform.
+func TransformParse(string string, outTransform **Transform) bool
+
+// ColorStop: a color stop in a gradient node.
+type ColorStop struct {
+	// Offset: the offset of the color stop
+	Offset float32
+	// Color: the color at the given offset
+	Color gdk.RGBA
+}
+
+// ParseLocation: a location in a parse buffer.
+type ParseLocation struct {
+	// Bytes: the offset of the location in the parse buffer, as bytes
+	Bytes uint
+	// Chars: the offset of the location in the parse buffer, as characters
+	Chars uint
+	// Lines: the line of the location in the parse buffer
+	Lines uint
+	// LineBytes: the position in the line, as bytes
+	LineBytes uint
+	// LineChars: the position in the line, as characters
+	LineChars uint
+}
+
+// RoundedRect: a rectangular region with rounded corners.
+//
+// Application code should normalize rectangles using
+// gsk_rounded_rect_normalize(); this function will ensure that the bounds of
+// the rectangle are normalized and ensure that the corner values are positive
+// and the corners do not overlap. All functions taking a RoundedRect as an
+// argument will internally operate on a normalized copy; all functions
+// returning a RoundedRect will always return a normalized one.
+type RoundedRect struct {
+	// Bounds: the bounds of the rectangle
+	Bounds graphene.Rect
+	// Corner: the size of the 4 rounded corners
+	Corner [4]graphene.Size
+}
+
+// ShaderArgsBuilder: an object to build the uniforms data for a GLShader.
+type ShaderArgsBuilder struct {
+	native *C.GskShaderArgsBuilder
+}
+
+// Shadow: the shadow parameters in a shadow node.
+type Shadow struct {
+	// Color: the color of the shadow
+	Color gdk.RGBA
+	// Dx: the horizontal offset of the shadow
+	Dx float32
+	// Dy: the vertical offset of the shadow
+	Dy float32
+	// Radius: the radius of the shadow
+	Radius float32
+}
+
+// Transform: the `GskTransform` structure contains only private data.
+type Transform struct {
+	native *C.GskTransform
 }

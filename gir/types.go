@@ -34,7 +34,7 @@ type Array struct {
 	Introspectable bool     `xml:"introspectable,attr"`
 	Length         int      `xml:"length,attr"`
 	CType          string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-	Type           AnyType
+	AnyType
 }
 
 type Bitfield struct {
@@ -133,8 +133,9 @@ type Enum struct {
 type Field struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 field"`
 	Name    string   `xml:"name,attr"`
-	Type    Type
-	Doc     *Doc
+	Private bool     `xml:"private,attr"`
+	AnyType
+	Doc *Doc
 }
 
 type Function struct {

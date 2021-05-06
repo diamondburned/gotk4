@@ -5,50 +5,51 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/cairo"
+	"github.com/diamondburned/gotk4/gdk"
+	"github.com/diamondburned/gotk4/gdkpixbuf"
+	"github.com/diamondburned/gotk4/gio"
+	"github.com/diamondburned/gotk4/glib"
+	"github.com/diamondburned/gotk4/pango"
 	"github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4 gtk4
+// #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
+// #include <gtk/gtkx.h>
 import "C"
 
 func init() {
 	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
 		// Enums
-		{T: glib.Type(C.gtk_accessible_autocomplete_get_type()), F: marshalAccessibleAutocomplete},
-		{T: glib.Type(C.gtk_accessible_invalid_state_get_type()), F: marshalAccessibleInvalidState},
-		{T: glib.Type(C.gtk_accessible_property_get_type()), F: marshalAccessibleProperty},
-		{T: glib.Type(C.gtk_accessible_relation_get_type()), F: marshalAccessibleRelation},
-		{T: glib.Type(C.gtk_accessible_role_get_type()), F: marshalAccessibleRole},
-		{T: glib.Type(C.gtk_accessible_sort_get_type()), F: marshalAccessibleSort},
-		{T: glib.Type(C.gtk_accessible_state_get_type()), F: marshalAccessibleState},
-		{T: glib.Type(C.gtk_accessible_tristate_get_type()), F: marshalAccessibleTristate},
 		{T: glib.Type(C.gtk_align_get_type()), F: marshalAlign},
+		{T: glib.Type(C.gtk_arrow_placement_get_type()), F: marshalArrowPlacement},
 		{T: glib.Type(C.gtk_arrow_type_get_type()), F: marshalArrowType},
 		{T: glib.Type(C.gtk_assistant_page_type_get_type()), F: marshalAssistantPageType},
 		{T: glib.Type(C.gtk_baseline_position_get_type()), F: marshalBaselinePosition},
 		{T: glib.Type(C.gtk_border_style_get_type()), F: marshalBorderStyle},
 		{T: glib.Type(C.gtk_builder_error_get_type()), F: marshalBuilderError},
+		{T: glib.Type(C.gtk_button_box_style_get_type()), F: marshalButtonBoxStyle},
+		{T: glib.Type(C.gtk_button_role_get_type()), F: marshalButtonRole},
 		{T: glib.Type(C.gtk_buttons_type_get_type()), F: marshalButtonsType},
 		{T: glib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
 		{T: glib.Type(C.gtk_cell_renderer_mode_get_type()), F: marshalCellRendererMode},
-		{T: glib.Type(C.gtk_constraint_attribute_get_type()), F: marshalConstraintAttribute},
-		{T: glib.Type(C.gtk_constraint_relation_get_type()), F: marshalConstraintRelation},
-		{T: glib.Type(C.gtk_constraint_strength_get_type()), F: marshalConstraintStrength},
-		{T: glib.Type(C.gtk_constraint_vfl_parser_error_get_type()), F: marshalConstraintVflParserError},
 		{T: glib.Type(C.gtk_corner_type_get_type()), F: marshalCornerType},
-		// Skipped CssParserError.
-		// Skipped CssParserWarning.
+		{T: glib.Type(C.gtk_css_provider_error_get_type()), F: marshalCssProviderError},
+		{T: glib.Type(C.gtk_css_section_type_get_type()), F: marshalCssSectionType},
 		{T: glib.Type(C.gtk_delete_type_get_type()), F: marshalDeleteType},
 		{T: glib.Type(C.gtk_direction_type_get_type()), F: marshalDirectionType},
-		{T: glib.Type(C.gtk_editable_properties_get_type()), F: marshalEditableProperties},
+		{T: glib.Type(C.gtk_drag_result_get_type()), F: marshalDragResult},
 		{T: glib.Type(C.gtk_entry_icon_position_get_type()), F: marshalEntryIconPosition},
 		{T: glib.Type(C.gtk_event_sequence_state_get_type()), F: marshalEventSequenceState},
+		{T: glib.Type(C.gtk_expander_style_get_type()), F: marshalExpanderStyle},
 		{T: glib.Type(C.gtk_file_chooser_action_get_type()), F: marshalFileChooserAction},
+		{T: glib.Type(C.gtk_file_chooser_confirmation_get_type()), F: marshalFileChooserConfirmation},
 		{T: glib.Type(C.gtk_file_chooser_error_get_type()), F: marshalFileChooserError},
-		{T: glib.Type(C.gtk_filter_change_get_type()), F: marshalFilterChange},
-		{T: glib.Type(C.gtk_filter_match_get_type()), F: marshalFilterMatch},
+		{T: glib.Type(C.gtk_im_preedit_style_get_type()), F: marshalIMPreeditStyle},
+		{T: glib.Type(C.gtk_im_status_style_get_type()), F: marshalIMStatusStyle},
 		{T: glib.Type(C.gtk_icon_size_get_type()), F: marshalIconSize},
 		{T: glib.Type(C.gtk_icon_theme_error_get_type()), F: marshalIconThemeError},
 		{T: glib.Type(C.gtk_icon_view_drop_position_get_type()), F: marshalIconViewDropPosition},
@@ -57,19 +58,22 @@ func init() {
 		{T: glib.Type(C.gtk_justification_get_type()), F: marshalJustification},
 		{T: glib.Type(C.gtk_level_bar_mode_get_type()), F: marshalLevelBarMode},
 		{T: glib.Type(C.gtk_license_get_type()), F: marshalLicense},
+		{T: glib.Type(C.gtk_menu_direction_type_get_type()), F: marshalMenuDirectionType},
 		{T: glib.Type(C.gtk_message_type_get_type()), F: marshalMessageType},
 		{T: glib.Type(C.gtk_movement_step_get_type()), F: marshalMovementStep},
 		{T: glib.Type(C.gtk_notebook_tab_get_type()), F: marshalNotebookTab},
 		{T: glib.Type(C.gtk_number_up_layout_get_type()), F: marshalNumberUpLayout},
-		{T: glib.Type(C.gtk_ordering_get_type()), F: marshalOrdering},
 		{T: glib.Type(C.gtk_orientation_get_type()), F: marshalOrientation},
-		{T: glib.Type(C.gtk_overflow_get_type()), F: marshalOverflow},
+		{T: glib.Type(C.gtk_pack_direction_get_type()), F: marshalPackDirection},
 		{T: glib.Type(C.gtk_pack_type_get_type()), F: marshalPackType},
 		{T: glib.Type(C.gtk_pad_action_type_get_type()), F: marshalPadActionType},
 		{T: glib.Type(C.gtk_page_orientation_get_type()), F: marshalPageOrientation},
 		{T: glib.Type(C.gtk_page_set_get_type()), F: marshalPageSet},
 		{T: glib.Type(C.gtk_pan_direction_get_type()), F: marshalPanDirection},
+		{T: glib.Type(C.gtk_path_priority_type_get_type()), F: marshalPathPriorityType},
+		{T: glib.Type(C.gtk_path_type_get_type()), F: marshalPathType},
 		{T: glib.Type(C.gtk_policy_type_get_type()), F: marshalPolicyType},
+		{T: glib.Type(C.gtk_popover_constraint_get_type()), F: marshalPopoverConstraint},
 		{T: glib.Type(C.gtk_position_type_get_type()), F: marshalPositionType},
 		{T: glib.Type(C.gtk_print_duplex_get_type()), F: marshalPrintDuplex},
 		{T: glib.Type(C.gtk_print_error_get_type()), F: marshalPrintError},
@@ -78,9 +82,13 @@ func init() {
 		{T: glib.Type(C.gtk_print_pages_get_type()), F: marshalPrintPages},
 		{T: glib.Type(C.gtk_print_quality_get_type()), F: marshalPrintQuality},
 		{T: glib.Type(C.gtk_print_status_get_type()), F: marshalPrintStatus},
-		{T: glib.Type(C.gtk_propagation_limit_get_type()), F: marshalPropagationLimit},
 		{T: glib.Type(C.gtk_propagation_phase_get_type()), F: marshalPropagationPhase},
+		{T: glib.Type(C.gtk_rc_token_type_get_type()), F: marshalRcTokenType},
+		{T: glib.Type(C.gtk_recent_chooser_error_get_type()), F: marshalRecentChooserError},
 		{T: glib.Type(C.gtk_recent_manager_error_get_type()), F: marshalRecentManagerError},
+		{T: glib.Type(C.gtk_recent_sort_type_get_type()), F: marshalRecentSortType},
+		{T: glib.Type(C.gtk_relief_style_get_type()), F: marshalReliefStyle},
+		{T: glib.Type(C.gtk_resize_mode_get_type()), F: marshalResizeMode},
 		{T: glib.Type(C.gtk_response_type_get_type()), F: marshalResponseType},
 		{T: glib.Type(C.gtk_revealer_transition_type_get_type()), F: marshalRevealerTransitionType},
 		{T: glib.Type(C.gtk_scroll_step_get_type()), F: marshalScrollStep},
@@ -88,482 +96,58 @@ func init() {
 		{T: glib.Type(C.gtk_scrollable_policy_get_type()), F: marshalScrollablePolicy},
 		{T: glib.Type(C.gtk_selection_mode_get_type()), F: marshalSelectionMode},
 		{T: glib.Type(C.gtk_sensitivity_type_get_type()), F: marshalSensitivityType},
-		{T: glib.Type(C.gtk_shortcut_scope_get_type()), F: marshalShortcutScope},
+		{T: glib.Type(C.gtk_shadow_type_get_type()), F: marshalShadowType},
 		{T: glib.Type(C.gtk_shortcut_type_get_type()), F: marshalShortcutType},
 		{T: glib.Type(C.gtk_size_group_mode_get_type()), F: marshalSizeGroupMode},
 		{T: glib.Type(C.gtk_size_request_mode_get_type()), F: marshalSizeRequestMode},
 		{T: glib.Type(C.gtk_sort_type_get_type()), F: marshalSortType},
-		{T: glib.Type(C.gtk_sorter_change_get_type()), F: marshalSorterChange},
-		{T: glib.Type(C.gtk_sorter_order_get_type()), F: marshalSorterOrder},
 		{T: glib.Type(C.gtk_spin_button_update_policy_get_type()), F: marshalSpinButtonUpdatePolicy},
 		{T: glib.Type(C.gtk_spin_type_get_type()), F: marshalSpinType},
 		{T: glib.Type(C.gtk_stack_transition_type_get_type()), F: marshalStackTransitionType},
-		{T: glib.Type(C.gtk_string_filter_match_mode_get_type()), F: marshalStringFilterMatchMode},
-		{T: glib.Type(C.gtk_system_setting_get_type()), F: marshalSystemSetting},
+		{T: glib.Type(C.gtk_state_type_get_type()), F: marshalStateType},
+		{T: glib.Type(C.gtk_text_buffer_target_info_get_type()), F: marshalTextBufferTargetInfo},
 		{T: glib.Type(C.gtk_text_direction_get_type()), F: marshalTextDirection},
 		{T: glib.Type(C.gtk_text_extend_selection_get_type()), F: marshalTextExtendSelection},
 		{T: glib.Type(C.gtk_text_view_layer_get_type()), F: marshalTextViewLayer},
 		{T: glib.Type(C.gtk_text_window_type_get_type()), F: marshalTextWindowType},
+		{T: glib.Type(C.gtk_toolbar_space_style_get_type()), F: marshalToolbarSpaceStyle},
+		{T: glib.Type(C.gtk_toolbar_style_get_type()), F: marshalToolbarStyle},
 		{T: glib.Type(C.gtk_tree_view_column_sizing_get_type()), F: marshalTreeViewColumnSizing},
 		{T: glib.Type(C.gtk_tree_view_drop_position_get_type()), F: marshalTreeViewDropPosition},
 		{T: glib.Type(C.gtk_tree_view_grid_lines_get_type()), F: marshalTreeViewGridLines},
 		{T: glib.Type(C.gtk_unit_get_type()), F: marshalUnit},
+		{T: glib.Type(C.gtk_widget_help_type_get_type()), F: marshalWidgetHelpType},
+		{T: glib.Type(C.gtk_window_position_get_type()), F: marshalWindowPosition},
+		{T: glib.Type(C.gtk_window_type_get_type()), F: marshalWindowType},
 		{T: glib.Type(C.gtk_wrap_mode_get_type()), F: marshalWrapMode},
 
 		// Objects/Classes
 	})
 }
 
-type AccessibleAutocomplete int
+// Allocation: a Allocation-struct of a widget represents region which has been
+// allocated to the widget by its parent. It is a subregion of its parents
+// allocation. See [GtkWidget’s geometry management
+// section][geometry-management] for more information.
+type Allocation gdk.Rectangle
 
-const (
-	// AccessibleAutocompleteNone: automatic suggestions are not displayed.
-	AccessibleAutocompleteNone AccessibleAutocomplete = 0
-	// AccessibleAutocompleteInline: when a user is providing input, text
-	// suggesting one way to complete the provided input may be dynamically
-	// inserted after the caret.
-	AccessibleAutocompleteInline AccessibleAutocomplete = 1
-	// AccessibleAutocompleteList: when a user is providing input, an element
-	// containing a collection of values that could complete the provided input
-	// may be displayed.
-	AccessibleAutocompleteList AccessibleAutocomplete = 2
-	// AccessibleAutocompleteBoth: when a user is providing input, an element
-	// containing a collection of values that could complete the provided input
-	// may be displayed. If displayed, one value in the collection is
-	// automatically selected, and the text needed to complete the automatically
-	// selected value appears after the caret in the input.
-	AccessibleAutocompleteBoth AccessibleAutocomplete = 3
-)
+type Stock string
 
-func marshalAccessibleAutocomplete(p uintptr) (interface{}, error) {
-	return AccessibleAutocomplete(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type AccessibleInvalidState int
-
-const (
-	// AccessibleInvalidStateFalse: there are no detected errors in the value
-	AccessibleInvalidStateFalse AccessibleInvalidState = 0
-	// AccessibleInvalidStateTrue: the value entered by the user has failed
-	// validation
-	AccessibleInvalidStateTrue AccessibleInvalidState = 1
-	// AccessibleInvalidStateGrammar: a grammatical error was detected
-	AccessibleInvalidStateGrammar AccessibleInvalidState = 2
-	// AccessibleInvalidStateSpelling: a spelling error was detected
-	AccessibleInvalidStateSpelling AccessibleInvalidState = 3
-)
-
-func marshalAccessibleInvalidState(p uintptr) (interface{}, error) {
-	return AccessibleInvalidState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type AccessibleProperty int
-
-const (
-	// AccessiblePropertyAutocomplete: indicates whether inputting text could
-	// trigger display of one or more predictions of the user's intended value
-	// for a combobox, searchbox, or textbox and specifies how predictions would
-	// be presented if they were made. Value type: AccessibleAutocomplete
-	AccessiblePropertyAutocomplete AccessibleProperty = 0
-	// AccessiblePropertyDescription: defines a string value that describes or
-	// annotates the current element. Value type: string
-	AccessiblePropertyDescription AccessibleProperty = 1
-	// AccessiblePropertyHasPopup: indicates the availability and type of
-	// interactive popup element, such as menu or dialog, that can be triggered
-	// by an element.
-	AccessiblePropertyHasPopup AccessibleProperty = 2
-	// AccessiblePropertyKeyShortcuts: indicates keyboard shortcuts that an
-	// author has implemented to activate or give focus to an element. Value
-	// type: string
-	AccessiblePropertyKeyShortcuts AccessibleProperty = 3
-	// AccessiblePropertyLabel: defines a string value that labels the current
-	// element. Value type: string
-	AccessiblePropertyLabel AccessibleProperty = 4
-	// AccessiblePropertyLevel: defines the hierarchical level of an element
-	// within a structure. Value type: integer
-	AccessiblePropertyLevel AccessibleProperty = 5
-	// AccessiblePropertyModal: indicates whether an element is modal when
-	// displayed. Value type: boolean
-	AccessiblePropertyModal AccessibleProperty = 6
-	// AccessiblePropertyMultiLine: indicates whether a text box accepts
-	// multiple lines of input or only a single line. Value type: boolean
-	AccessiblePropertyMultiLine AccessibleProperty = 7
-	// AccessiblePropertyMultiSelectable: indicates that the user may select
-	// more than one item from the current selectable descendants. Value type:
-	// boolean
-	AccessiblePropertyMultiSelectable AccessibleProperty = 8
-	// AccessiblePropertyOrientation: indicates whether the element's
-	// orientation is horizontal, vertical, or unknown/ambiguous. Value type:
-	// Orientation
-	AccessiblePropertyOrientation AccessibleProperty = 9
-	// AccessiblePropertyPlaceholder: defines a short hint (a word or short
-	// phrase) intended to aid the user with data entry when the control has no
-	// value. A hint could be a sample value or a brief description of the
-	// expected format. Value type: string
-	AccessiblePropertyPlaceholder AccessibleProperty = 10
-	// AccessiblePropertyReadOnly: indicates that the element is not editable,
-	// but is otherwise operable. Value type: boolean
-	AccessiblePropertyReadOnly AccessibleProperty = 11
-	// AccessiblePropertyRequired: indicates that user input is required on the
-	// element before a form may be submitted. Value type: boolean
-	AccessiblePropertyRequired AccessibleProperty = 12
-	// AccessiblePropertyRoleDescription: defines a human-readable,
-	// author-localized description for the role of an element. Value type:
-	// string
-	AccessiblePropertyRoleDescription AccessibleProperty = 13
-	// AccessiblePropertySort: indicates if items in a table or grid are sorted
-	// in ascending or descending order. Possible property values are in the
-	// AccessibleSort enumeration. Value type: AccessibleSort
-	AccessiblePropertySort AccessibleProperty = 14
-	// AccessiblePropertyValueMax: defines the maximum allowed value for a range
-	// widget. Value type: double
-	AccessiblePropertyValueMax AccessibleProperty = 15
-	// AccessiblePropertyValueMin: defines the minimum allowed value for a range
-	// widget. Value type: double
-	AccessiblePropertyValueMin AccessibleProperty = 16
-	// AccessiblePropertyValueNow: defines the current value for a range widget.
-	// Value type: double
-	AccessiblePropertyValueNow AccessibleProperty = 17
-	// AccessiblePropertyValueText: defines the human readable text alternative
-	// of aria-valuenow for a range widget. Value type: string
-	AccessiblePropertyValueText AccessibleProperty = 18
-)
-
-func marshalAccessibleProperty(p uintptr) (interface{}, error) {
-	return AccessibleProperty(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type AccessibleRelation int
-
-const (
-	// AccessibleRelationActiveDescendant: identifies the currently active
-	// element when focus is on a composite widget, combobox, textbox, group, or
-	// application. Value type: reference
-	AccessibleRelationActiveDescendant AccessibleRelation = 0
-	// AccessibleRelationColCount: defines the total number of columns in a
-	// table, grid, or treegrid. Value type: integer
-	AccessibleRelationColCount AccessibleRelation = 1
-	// AccessibleRelationColIndex: defines an element's column index or position
-	// with respect to the total number of columns within a table, grid, or
-	// treegrid. Value type: integer
-	AccessibleRelationColIndex AccessibleRelation = 2
-	// AccessibleRelationColIndexText: defines a human readable text alternative
-	// of GTK_ACCESSIBLE_RELATION_COL_INDEX. Value type: string
-	AccessibleRelationColIndexText AccessibleRelation = 3
-	// AccessibleRelationColSpan: defines the number of columns spanned by a
-	// cell or gridcell within a table, grid, or treegrid. Value type: integer
-	AccessibleRelationColSpan AccessibleRelation = 4
-	// AccessibleRelationControls: identifies the element (or elements) whose
-	// contents or presence are controlled by the current element. Value type:
-	// reference
-	AccessibleRelationControls AccessibleRelation = 5
-	// AccessibleRelationDescribedBy: identifies the element (or elements) that
-	// describes the object. Value type: reference
-	AccessibleRelationDescribedBy AccessibleRelation = 6
-	// AccessibleRelationDetails: identifies the element (or elements) that
-	// provide additional information related to the object. Value type:
-	// reference
-	AccessibleRelationDetails AccessibleRelation = 7
-	// AccessibleRelationErrorMessage: identifies the element that provides an
-	// error message for an object. Value type: reference
-	AccessibleRelationErrorMessage AccessibleRelation = 8
-	// AccessibleRelationFlowTo: identifies the next element (or elements) in an
-	// alternate reading order of content which, at the user's discretion,
-	// allows assistive technology to override the general default of reading in
-	// document source order. Value type: reference
-	AccessibleRelationFlowTo AccessibleRelation = 9
-	// AccessibleRelationLabelledBy: identifies the element (or elements) that
-	// labels the current element. Value type: reference
-	AccessibleRelationLabelledBy AccessibleRelation = 10
-	// AccessibleRelationOwns: identifies an element (or elements) in order to
-	// define a visual, functional, or contextual parent/child relationship
-	// between elements where the widget hierarchy cannot be used to represent
-	// the relationship. Value type: reference
-	AccessibleRelationOwns AccessibleRelation = 11
-	// AccessibleRelationPosInSet: defines an element's number or position in
-	// the current set of listitems or treeitems. Value type: integer
-	AccessibleRelationPosInSet AccessibleRelation = 12
-	// AccessibleRelationRowCount: defines the total number of rows in a table,
-	// grid, or treegrid. Value type: integer
-	AccessibleRelationRowCount AccessibleRelation = 13
-	// AccessibleRelationRowIndex: defines an element's row index or position
-	// with respect to the total number of rows within a table, grid, or
-	// treegrid. Value type: integer
-	AccessibleRelationRowIndex AccessibleRelation = 14
-	// AccessibleRelationRowIndexText: defines a human readable text alternative
-	// of aria-rowindex. Value type: string
-	AccessibleRelationRowIndexText AccessibleRelation = 15
-	// AccessibleRelationRowSpan: defines the number of rows spanned by a cell
-	// or gridcell within a table, grid, or treegrid. Value type: integer
-	AccessibleRelationRowSpan AccessibleRelation = 16
-	// AccessibleRelationSetSize: defines the number of items in the current set
-	// of listitems or treeitems. Value type: integer
-	AccessibleRelationSetSize AccessibleRelation = 17
-)
-
-func marshalAccessibleRelation(p uintptr) (interface{}, error) {
-	return AccessibleRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type AccessibleRole int
-
-const (
-	// AccessibleRoleAlert: an element with important, and usually
-	// time-sensitive, information
-	AccessibleRoleAlert AccessibleRole = 0
-	// AccessibleRoleAlertDialog: a type of dialog that contains an alert
-	// message
-	AccessibleRoleAlertDialog AccessibleRole = 1
-	// AccessibleRoleBanner: unused
-	AccessibleRoleBanner AccessibleRole = 2
-	// AccessibleRoleButton: an input element that allows for user-triggered
-	// actions when clicked or pressed
-	AccessibleRoleButton AccessibleRole = 3
-	// AccessibleRoleCaption: unused
-	AccessibleRoleCaption AccessibleRole = 4
-	// AccessibleRoleCell: unused
-	AccessibleRoleCell AccessibleRole = 5
-	// AccessibleRoleCheckbox: a checkable input element that has three possible
-	// values: `true`, `false`, or `mixed`
-	AccessibleRoleCheckbox AccessibleRole = 6
-	// AccessibleRoleColumnHeader: a header in a columned list.
-	AccessibleRoleColumnHeader AccessibleRole = 7
-	// AccessibleRoleComboBox: an input that controls another element, such as a
-	// list or a grid, that can dynamically pop up to help the user set the
-	// value of the input
-	AccessibleRoleComboBox AccessibleRole = 8
-	// AccessibleRoleCommand: abstract role.
-	AccessibleRoleCommand AccessibleRole = 9
-	// AccessibleRoleComposite: abstract role.
-	AccessibleRoleComposite AccessibleRole = 10
-	// AccessibleRoleDialog: a dialog is a window that is designed to interrupt
-	// the current processing of an application in order to prompt the user to
-	// enter information or require a response.
-	AccessibleRoleDialog AccessibleRole = 11
-	// AccessibleRoleDocument: unused
-	AccessibleRoleDocument AccessibleRole = 12
-	// AccessibleRoleFeed: unused
-	AccessibleRoleFeed AccessibleRole = 13
-	// AccessibleRoleForm: unused
-	AccessibleRoleForm AccessibleRole = 14
-	// AccessibleRoleGeneric: unused
-	AccessibleRoleGeneric AccessibleRole = 15
-	// AccessibleRoleGrid: a grid of items.
-	AccessibleRoleGrid AccessibleRole = 16
-	// AccessibleRoleGridCell: an item in a grid or tree grid.
-	AccessibleRoleGridCell AccessibleRole = 17
-	// AccessibleRoleGroup: an element that groups multiple widgets. GTK uses
-	// this role for various containers, like Box, Viewport, and HeaderBar.
-	AccessibleRoleGroup AccessibleRole = 18
-	// AccessibleRoleHeading: unused
-	AccessibleRoleHeading AccessibleRole = 19
-	// AccessibleRoleImg: an image.
-	AccessibleRoleImg AccessibleRole = 20
-	// AccessibleRoleInput: abstract role.
-	AccessibleRoleInput AccessibleRole = 21
-	// AccessibleRoleLabel: a visible name or caption for a user interface
-	// component.
-	AccessibleRoleLabel AccessibleRole = 22
-	// AccessibleRoleLandmark: abstract role.
-	AccessibleRoleLandmark AccessibleRole = 23
-	// AccessibleRoleLegend: unused
-	AccessibleRoleLegend AccessibleRole = 24
-	// AccessibleRoleLink: a clickable link.
-	AccessibleRoleLink AccessibleRole = 25
-	// AccessibleRoleList: a list of items.
-	AccessibleRoleList AccessibleRole = 26
-	// AccessibleRoleListBox: unused.
-	AccessibleRoleListBox AccessibleRole = 27
-	// AccessibleRoleListItem: an item in a list.
-	AccessibleRoleListItem AccessibleRole = 28
-	// AccessibleRoleLog: unused
-	AccessibleRoleLog AccessibleRole = 29
-	// AccessibleRoleMain: unused
-	AccessibleRoleMain AccessibleRole = 30
-	// AccessibleRoleMarquee: unused
-	AccessibleRoleMarquee AccessibleRole = 31
-	// AccessibleRoleMath: unused
-	AccessibleRoleMath AccessibleRole = 32
-	// AccessibleRoleMeter: an element that represents a value within a known
-	// range.
-	AccessibleRoleMeter AccessibleRole = 33
-	// AccessibleRoleMenu: a menu.
-	AccessibleRoleMenu AccessibleRole = 34
-	// AccessibleRoleMenuBar: a menubar.
-	AccessibleRoleMenuBar AccessibleRole = 35
-	// AccessibleRoleMenuItem: an item in a menu.
-	AccessibleRoleMenuItem AccessibleRole = 36
-	// AccessibleRoleMenuItemCheckbox: a check item in a menu.
-	AccessibleRoleMenuItemCheckbox AccessibleRole = 37
-	// AccessibleRoleMenuItemRadio: a radio item in a menu.
-	AccessibleRoleMenuItemRadio AccessibleRole = 38
-	// AccessibleRoleNavigation: unused
-	AccessibleRoleNavigation AccessibleRole = 39
-	// AccessibleRoleNone: an element that is not represented to accessibility
-	// technologies.
-	AccessibleRoleNone AccessibleRole = 40
-	// AccessibleRoleNote: unused
-	AccessibleRoleNote AccessibleRole = 41
-	// AccessibleRoleOption: unused
-	AccessibleRoleOption AccessibleRole = 42
-	// AccessibleRolePresentation: an element that is not represented to
-	// accessibility technologies.
-	AccessibleRolePresentation AccessibleRole = 43
-	// AccessibleRoleProgressBar: an element that displays the progress status
-	// for tasks that take a long time.
-	AccessibleRoleProgressBar AccessibleRole = 44
-	// AccessibleRoleRadio: a checkable input in a group of radio roles, only
-	// one of which can be checked at a time.
-	AccessibleRoleRadio AccessibleRole = 45
-	// AccessibleRoleRadioGroup: unused
-	AccessibleRoleRadioGroup AccessibleRole = 46
-	// AccessibleRoleRange: abstract role.
-	AccessibleRoleRange AccessibleRole = 47
-	// AccessibleRoleRegion: unused
-	AccessibleRoleRegion AccessibleRole = 48
-	// AccessibleRoleRow: a row in a columned list.
-	AccessibleRoleRow AccessibleRole = 49
-	// AccessibleRoleRowGroup: unused
-	AccessibleRoleRowGroup AccessibleRole = 50
-	// AccessibleRoleRowHeader: unused
-	AccessibleRoleRowHeader AccessibleRole = 51
-	// AccessibleRoleScrollbar: a graphical object that controls the scrolling
-	// of content within a viewing area, regardless of whether the content is
-	// fully displayed within the viewing area.
-	AccessibleRoleScrollbar AccessibleRole = 52
-	// AccessibleRoleSearch: unused
-	AccessibleRoleSearch AccessibleRole = 53
-	// AccessibleRoleSearchBox: a type of textbox intended for specifying search
-	// criteria.
-	AccessibleRoleSearchBox AccessibleRole = 54
-	// AccessibleRoleSection: abstract role.
-	AccessibleRoleSection AccessibleRole = 55
-	// AccessibleRoleSectionHead: abstract role.
-	AccessibleRoleSectionHead AccessibleRole = 56
-	// AccessibleRoleSelect: abstract role.
-	AccessibleRoleSelect AccessibleRole = 57
-	// AccessibleRoleSeparator: a divider that separates and distinguishes
-	// sections of content or groups of menuitems.
-	AccessibleRoleSeparator AccessibleRole = 58
-	// AccessibleRoleSlider: a user input where the user selects a value from
-	// within a given range.
-	AccessibleRoleSlider AccessibleRole = 59
-	// AccessibleRoleSpinButton: a form of range that expects the user to select
-	// from among discrete choices.
-	AccessibleRoleSpinButton AccessibleRole = 60
-	// AccessibleRoleStatus: unused
-	AccessibleRoleStatus AccessibleRole = 61
-	// AccessibleRoleStructure: abstract role.
-	AccessibleRoleStructure AccessibleRole = 62
-	// AccessibleRoleSwitch: a type of checkbox that represents on/off values,
-	// as opposed to checked/unchecked values.
-	AccessibleRoleSwitch AccessibleRole = 63
-	// AccessibleRoleTab: an item in a list of tab used for switching pages.
-	AccessibleRoleTab AccessibleRole = 64
-	// AccessibleRoleTable: unused
-	AccessibleRoleTable AccessibleRole = 65
-	// AccessibleRoleTabList: a list of tabs for switching pages.
-	AccessibleRoleTabList AccessibleRole = 66
-	// AccessibleRoleTabPanel: a page in a notebook or stack.
-	AccessibleRoleTabPanel AccessibleRole = 67
-	// AccessibleRoleTextBox: a type of input that allows free-form text as its
-	// value.
-	AccessibleRoleTextBox AccessibleRole = 68
-	// AccessibleRoleTime: unused
-	AccessibleRoleTime AccessibleRole = 69
-	// AccessibleRoleTimer: unused
-	AccessibleRoleTimer AccessibleRole = 70
-	// AccessibleRoleToolbar: unused
-	AccessibleRoleToolbar AccessibleRole = 71
-	// AccessibleRoleTooltip: unused
-	AccessibleRoleTooltip AccessibleRole = 72
-	// AccessibleRoleTree: unused
-	AccessibleRoleTree AccessibleRole = 73
-	// AccessibleRoleTreeGrid: a treeview-like, columned list.
-	AccessibleRoleTreeGrid AccessibleRole = 74
-	// AccessibleRoleTreeItem: unused
-	AccessibleRoleTreeItem AccessibleRole = 75
-	// AccessibleRoleWidget: an interactive component of a graphical user
-	// interface. This is the role that GTK uses by default for widgets.
-	AccessibleRoleWidget AccessibleRole = 76
-	// AccessibleRoleWindow: an application window.
-	AccessibleRoleWindow AccessibleRole = 77
-)
-
-func marshalAccessibleRole(p uintptr) (interface{}, error) {
-	return AccessibleRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type AccessibleSort int
-
-const (
-	// AccessibleSortNone: there is no defined sort applied to the column.
-	AccessibleSortNone AccessibleSort = 0
-	// AccessibleSortAscending: items are sorted in ascending order by this
-	// column.
-	AccessibleSortAscending AccessibleSort = 1
-	// AccessibleSortDescending: items are sorted in descending order by this
-	// column.
-	AccessibleSortDescending AccessibleSort = 2
-	// AccessibleSortOther: a sort algorithm other than ascending or descending
-	// has been applied.
-	AccessibleSortOther AccessibleSort = 3
-)
-
-func marshalAccessibleSort(p uintptr) (interface{}, error) {
-	return AccessibleSort(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type AccessibleState int
-
-const (
-	// AccessibleStateBusy: a “busy” state. This state has boolean values
-	AccessibleStateBusy AccessibleState = 0
-	// AccessibleStateChecked: a “checked” state; indicates the current state of
-	// a CheckButton. Value type: AccessibleTristate
-	AccessibleStateChecked AccessibleState = 1
-	// AccessibleStateDisabled: a “disabled” state; corresponds to the
-	// Widget:sensitive property on Widget. It indicates a UI element that is
-	// perceivable, but not editable or operable. Value type: boolean
-	AccessibleStateDisabled AccessibleState = 2
-	// AccessibleStateExpanded: an “expanded” state; corresponds to the
-	// Expander:expanded property on Expander. Value type: boolean or undefined
-	AccessibleStateExpanded AccessibleState = 3
-	// AccessibleStateHidden: a “hidden” state; corresponds to the
-	// Widget:visible property on Widget. You can use this state explicitly on
-	// UI elements that should not be exposed to an assistive technology. Value
-	// type: boolean See also: GTK_ACCESSIBLE_STATE_DISABLED
-	AccessibleStateHidden AccessibleState = 4
-	// AccessibleStateInvalid: an “invalid” state; set when a widget is showing
-	// an error. Value type: AccessibleInvalidState
-	AccessibleStateInvalid AccessibleState = 5
-	// AccessibleStatePressed: a “pressed” state; indicates the current state of
-	// a ToggleButton. Value type: AccessibleTristate enumeration
-	AccessibleStatePressed AccessibleState = 6
-	// AccessibleStateSelected: a “selected” state; set when a widget is
-	// selected. Value type: boolean or undefined
-	AccessibleStateSelected AccessibleState = 7
-)
-
-func marshalAccessibleState(p uintptr) (interface{}, error) {
-	return AccessibleState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type AccessibleTristate int
-
-const (
-	// AccessibleTristateFalse: the state is `false`
-	AccessibleTristateFalse AccessibleTristate = 0
-	// AccessibleTristateTrue: the state is `true`
-	AccessibleTristateTrue AccessibleTristate = 1
-	// AccessibleTristateMixed: the state is `mixed`
-	AccessibleTristateMixed AccessibleTristate = 2
-)
-
-func marshalAccessibleTristate(p uintptr) (interface{}, error) {
-	return AccessibleTristate(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
+// Align: controls how a widget deals with extra space in a single (x or y)
+// dimension.
+//
+// Alignment only matters if the widget receives a “too large” allocation, for
+// example if you packed the widget with the Widget:expand flag inside a Box,
+// then the widget might get extra space. If you have for example a 16x16 icon
+// inside a 32x32 space, the icon could be scaled and stretched, it could be
+// centered, or it could be positioned to one side of the space.
+//
+// Note that in horizontal context @GTK_ALIGN_START and @GTK_ALIGN_END are
+// interpreted relative to text direction.
+//
+// GTK_ALIGN_BASELINE support for it is optional for containers and widgets, and
+// it is only supported for vertical alignment. When its not supported by a
+// child or a container it is treated as @GTK_ALIGN_FILL.
 type Align int
 
 const (
@@ -576,7 +160,7 @@ const (
 	AlignEnd Align = 2
 	// AlignCenter: center natural width of widget inside the allocation
 	AlignCenter Align = 3
-	// AlignBaseline: align the widget according to the baseline. See Widget
+	// AlignBaseline: align the widget according to the baseline. Since 3.10.
 	AlignBaseline Align = 4
 )
 
@@ -584,6 +168,24 @@ func marshalAlign(p uintptr) (interface{}, error) {
 	return Align(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ArrowPlacement: used to specify the placement of scroll arrows in scrolling
+// menus.
+type ArrowPlacement int
+
+const (
+	// ArrowPlacementBoth: place one arrow on each end of the menu.
+	ArrowPlacementBoth ArrowPlacement = 0
+	// ArrowPlacementStart: place both arrows at the top of the menu.
+	ArrowPlacementStart ArrowPlacement = 1
+	// ArrowPlacementEnd: place both arrows at the bottom of the menu.
+	ArrowPlacementEnd ArrowPlacement = 2
+)
+
+func marshalArrowPlacement(p uintptr) (interface{}, error) {
+	return ArrowPlacement(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ArrowType: used to indicate the direction in which an arrow should point.
 type ArrowType int
 
 const (
@@ -595,7 +197,7 @@ const (
 	ArrowTypeLeft ArrowType = 2
 	// ArrowTypeRight: represents a right pointing arrow.
 	ArrowTypeRight ArrowType = 3
-	// ArrowTypeNone: no arrow.
+	// ArrowTypeNone: no arrow. Since 2.10.
 	ArrowTypeNone ArrowType = 4
 )
 
@@ -603,6 +205,15 @@ func marshalArrowType(p uintptr) (interface{}, error) {
 	return ArrowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// AssistantPageType: an enum for determining the page role inside the
+// Assistant. It's used to handle buttons sensitivity and visibility.
+//
+// Note that an assistant needs to end its page flow with a page of type
+// GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_SUMMARY or
+// GTK_ASSISTANT_PAGE_PROGRESS to be correct.
+//
+// The Cancel button will only be shown if the page isn’t “committed”. See
+// gtk_assistant_commit() for details.
 type AssistantPageType int
 
 const (
@@ -633,6 +244,11 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 	return AssistantPageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// BaselinePosition: whenever a container has some form of natural row it may
+// align children in that row along a common typographical baseline. If the
+// amount of verical space in the row is taller than the total requested height
+// of the baseline-aligned children then it can use a BaselinePosition to select
+// where to put the baseline inside the extra availible space.
 type BaselinePosition int
 
 const (
@@ -648,19 +264,20 @@ func marshalBaselinePosition(p uintptr) (interface{}, error) {
 	return BaselinePosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// BorderStyle: describes how the border of a UI element should be rendered.
 type BorderStyle int
 
 const (
 	// BorderStyleNone: no visible border
 	BorderStyleNone BorderStyle = 0
-	// BorderStyleHidden: same as GTK_BORDER_STYLE_NONE
-	BorderStyleHidden BorderStyle = 1
 	// BorderStyleSolid: a single line segment
-	BorderStyleSolid BorderStyle = 2
+	BorderStyleSolid BorderStyle = 1
 	// BorderStyleInset: looks as if the content is sunken into the canvas
-	BorderStyleInset BorderStyle = 3
+	BorderStyleInset BorderStyle = 2
 	// BorderStyleOutset: looks as if the content is coming out of the canvas
-	BorderStyleOutset BorderStyle = 4
+	BorderStyleOutset BorderStyle = 3
+	// BorderStyleHidden: same as @GTK_BORDER_STYLE_NONE
+	BorderStyleHidden BorderStyle = 4
 	// BorderStyleDotted: a series of round dots
 	BorderStyleDotted BorderStyle = 5
 	// BorderStyleDashed: a series of square-ended dashes
@@ -677,6 +294,8 @@ func marshalBorderStyle(p uintptr) (interface{}, error) {
 	return BorderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// BuilderError: error codes that identify various errors that can occur while
+// using Builder.
 type BuilderError int
 
 const (
@@ -689,17 +308,18 @@ const (
 	// BuilderErrorMissingAttribute: an attribute that is required by Builder
 	// was missing.
 	BuilderErrorMissingAttribute BuilderError = 2
-	// BuilderErrorInvalidAttribute: builder found an attribute that it doesn’t
-	// understand.
+	// BuilderErrorInvalidAttribute: gtkBuilder found an attribute that it
+	// doesn’t understand.
 	BuilderErrorInvalidAttribute BuilderError = 3
-	// BuilderErrorInvalidTag: builder found a tag that it doesn’t understand.
+	// BuilderErrorInvalidTag: gtkBuilder found a tag that it doesn’t
+	// understand.
 	BuilderErrorInvalidTag BuilderError = 4
 	// BuilderErrorMissingPropertyValue: a required property value was missing.
 	BuilderErrorMissingPropertyValue BuilderError = 5
-	// BuilderErrorInvalidValue: builder couldn’t parse some attribute value.
+	// BuilderErrorInvalidValue: gtkBuilder couldn’t parse some attribute value.
 	BuilderErrorInvalidValue BuilderError = 6
 	// BuilderErrorVersionMismatch: the input file requires a newer version of
-	// GTK.
+	// GTK+.
 	BuilderErrorVersionMismatch BuilderError = 7
 	// BuilderErrorDuplicateID: an object id occurred twice.
 	BuilderErrorDuplicateID BuilderError = 8
@@ -716,19 +336,65 @@ const (
 	// BuilderErrorInvalidSignal: the specified signal is unknown for the object
 	// class.
 	BuilderErrorInvalidSignal BuilderError = 12
-	// BuilderErrorInvalidID: an object id is unknown.
+	// BuilderErrorInvalidID: an object id is unknown
 	BuilderErrorInvalidID BuilderError = 13
-	// BuilderErrorInvalidFunction: a function could not be found. This often
-	// happens when symbols are set to be kept private. Compiling code with
-	// -rdynamic or using the `gmodule-export-2.0` pkgconfig module can fix this
-	// problem.
-	BuilderErrorInvalidFunction BuilderError = 14
 )
 
 func marshalBuilderError(p uintptr) (interface{}, error) {
 	return BuilderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ButtonBoxStyle: used to dictate the style that a ButtonBox uses to layout the
+// buttons it contains.
+type ButtonBoxStyle int
+
+const (
+	// ButtonBoxStyleSpread: buttons are evenly spread across the box.
+	ButtonBoxStyleSpread ButtonBoxStyle = 1
+	// ButtonBoxStyleEdge: buttons are placed at the edges of the box.
+	ButtonBoxStyleEdge ButtonBoxStyle = 2
+	// ButtonBoxStyleStart: buttons are grouped towards the start of the box,
+	// (on the left for a HBox, or the top for a VBox).
+	ButtonBoxStyleStart ButtonBoxStyle = 3
+	// ButtonBoxStyleEnd: buttons are grouped towards the end of the box, (on
+	// the right for a HBox, or the bottom for a VBox).
+	ButtonBoxStyleEnd ButtonBoxStyle = 4
+	// ButtonBoxStyleCenter: buttons are centered in the box. Since 2.12.
+	ButtonBoxStyleCenter ButtonBoxStyle = 5
+	// ButtonBoxStyleExpand: buttons expand to fill the box. This entails giving
+	// buttons a "linked" appearance, making button sizes homogeneous, and
+	// setting spacing to 0 (same as calling gtk_box_set_homogeneous() and
+	// gtk_box_set_spacing() manually). Since 3.12.
+	ButtonBoxStyleExpand ButtonBoxStyle = 6
+)
+
+func marshalButtonBoxStyle(p uintptr) (interface{}, error) {
+	return ButtonBoxStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ButtonRole: the role specifies the desired appearance of a ModelButton.
+type ButtonRole int
+
+const (
+	// ButtonRoleNormal: a plain button
+	ButtonRoleNormal ButtonRole = 0
+	// ButtonRoleCheck: a check button
+	ButtonRoleCheck ButtonRole = 1
+	// ButtonRoleRadio: a radio button
+	ButtonRoleRadio ButtonRole = 2
+)
+
+func marshalButtonRole(p uintptr) (interface{}, error) {
+	return ButtonRole(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ButtonsType: prebuilt sets of buttons for the dialog. If none of these
+// choices are appropriate, simply use GTK_BUTTONS_NONE then call
+// gtk_dialog_add_buttons().
+//
+// &gt; Please note that GTK_BUTTONS_OK, GTK_BUTTONS_YES_NO &gt; and
+// GTK_BUTTONS_OK_CANCEL are discouraged by the &gt; [GNOME Human Interface
+// Guidelines](http://library.gnome.org/devel/hig-book/stable/).
 type ButtonsType int
 
 const (
@@ -750,10 +416,14 @@ func marshalButtonsType(p uintptr) (interface{}, error) {
 	return ButtonsType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// CellRendererAccelMode: determines if the edited accelerators are GTK+
+// accelerators. If they are, consumed modifiers are suppressed, only
+// accelerators accepted by GTK+ are allowed, and the accelerators are rendered
+// in the same way as they are in menus.
 type CellRendererAccelMode int
 
 const (
-	// CellRendererAccelModeGTK: GTK accelerators mode
+	// CellRendererAccelModeGTK: GTK+ accelerators mode
 	CellRendererAccelModeGTK CellRendererAccelMode = 0
 	// CellRendererAccelModeOther: other accelerator mode
 	CellRendererAccelModeOther CellRendererAccelMode = 1
@@ -763,6 +433,8 @@ func marshalCellRendererAccelMode(p uintptr) (interface{}, error) {
 	return CellRendererAccelMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// CellRendererMode: identifies how the user can interact with a particular
+// cell.
 type CellRendererMode int
 
 const (
@@ -781,100 +453,9 @@ func marshalCellRendererMode(p uintptr) (interface{}, error) {
 	return CellRendererMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type ConstraintAttribute int
-
-const (
-	// ConstraintAttributeNone: no attribute, used for constant relations
-	ConstraintAttributeNone ConstraintAttribute = 0
-	// ConstraintAttributeLeft: the left edge of a widget, regardless of text
-	// direction
-	ConstraintAttributeLeft ConstraintAttribute = 1
-	// ConstraintAttributeRight: the right edge of a widget, regardless of text
-	// direction
-	ConstraintAttributeRight ConstraintAttribute = 2
-	// ConstraintAttributeTop: the top edge of a widget
-	ConstraintAttributeTop ConstraintAttribute = 3
-	// ConstraintAttributeBottom: the bottom edge of a widget
-	ConstraintAttributeBottom ConstraintAttribute = 4
-	// ConstraintAttributeStart: the leading edge of a widget, depending on text
-	// direction; equivalent to GTK_CONSTRAINT_ATTRIBUTE_LEFT for LTR languages,
-	// and GTK_CONSTRAINT_ATTRIBUTE_RIGHT for RTL ones
-	ConstraintAttributeStart ConstraintAttribute = 5
-	// ConstraintAttributeEnd: the trailing edge of a widget, depending on text
-	// direction; equivalent to GTK_CONSTRAINT_ATTRIBUTE_RIGHT for LTR
-	// languages, and GTK_CONSTRAINT_ATTRIBUTE_LEFT for RTL ones
-	ConstraintAttributeEnd ConstraintAttribute = 6
-	// ConstraintAttributeWidth: the width of a widget
-	ConstraintAttributeWidth ConstraintAttribute = 7
-	// ConstraintAttributeHeight: the height of a widget
-	ConstraintAttributeHeight ConstraintAttribute = 8
-	// ConstraintAttributeCenterX: the center of a widget, on the horizontal
-	// axis
-	ConstraintAttributeCenterX ConstraintAttribute = 9
-	// ConstraintAttributeCenterY: the center of a widget, on the vertical axis
-	ConstraintAttributeCenterY ConstraintAttribute = 10
-	// ConstraintAttributeBaseline: the baseline of a widget
-	ConstraintAttributeBaseline ConstraintAttribute = 11
-)
-
-func marshalConstraintAttribute(p uintptr) (interface{}, error) {
-	return ConstraintAttribute(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type ConstraintRelation int
-
-const (
-	// ConstraintRelationLe: less than, or equal
-	ConstraintRelationLe ConstraintRelation = -1
-	// ConstraintRelationEq: equal
-	ConstraintRelationEq ConstraintRelation = 0
-	// ConstraintRelationGe: greater than, or equal
-	ConstraintRelationGe ConstraintRelation = 1
-)
-
-func marshalConstraintRelation(p uintptr) (interface{}, error) {
-	return ConstraintRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type ConstraintStrength int
-
-const (
-	// ConstraintStrengthRequired: the constraint is required towards solving
-	// the layout
-	ConstraintStrengthRequired ConstraintStrength = 1001001000
-	// ConstraintStrengthStrong: a strong constraint
-	ConstraintStrengthStrong ConstraintStrength = 1000000000
-	// ConstraintStrengthMedium: a medium constraint
-	ConstraintStrengthMedium ConstraintStrength = 1000
-	// ConstraintStrengthWeak: a weak constraint
-	ConstraintStrengthWeak ConstraintStrength = 1
-)
-
-func marshalConstraintStrength(p uintptr) (interface{}, error) {
-	return ConstraintStrength(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type ConstraintVflParserError int
-
-const (
-	// ConstraintVflParserErrorSymbol: invalid or unknown symbol
-	ConstraintVflParserErrorSymbol ConstraintVflParserError = 0
-	// ConstraintVflParserErrorAttribute: invalid or unknown attribute
-	ConstraintVflParserErrorAttribute ConstraintVflParserError = 1
-	// ConstraintVflParserErrorView: invalid or unknown view
-	ConstraintVflParserErrorView ConstraintVflParserError = 2
-	// ConstraintVflParserErrorMetric: invalid or unknown metric
-	ConstraintVflParserErrorMetric ConstraintVflParserError = 3
-	// ConstraintVflParserErrorPriority: invalid or unknown priority
-	ConstraintVflParserErrorPriority ConstraintVflParserError = 4
-	// ConstraintVflParserErrorRelation: invalid or unknown relation
-	ConstraintVflParserErrorRelation ConstraintVflParserError = 5
-)
-
-func marshalConstraintVflParserError(p uintptr) (interface{}, error) {
-	return ConstraintVflParserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
+// CornerType: specifies which corner a child widget should be placed in when
+// packed into a ScrolledWindow. This is effectively the opposite of where the
+// scroll bars are placed.
 type CornerType int
 
 const (
@@ -896,34 +477,70 @@ func marshalCornerType(p uintptr) (interface{}, error) {
 	return CornerType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type CSSParserError int
+// CSSProviderError: error codes for GTK_CSS_PROVIDER_ERROR.
+type CSSProviderError int
 
 const (
-	// CSSParserErrorFailed: unknown failure.
-	CSSParserErrorFailed CSSParserError = 0
-	// CSSParserErrorSyntax: the given text does not form valid syntax
-	CSSParserErrorSyntax CSSParserError = 1
-	// CSSParserErrorImport: failed to import a resource
-	CSSParserErrorImport CSSParserError = 2
-	// CSSParserErrorName: the given name has not been defined
-	CSSParserErrorName CSSParserError = 3
-	// CSSParserErrorUnknownValue: the given value is not correct
-	CSSParserErrorUnknownValue CSSParserError = 4
+	// CSSProviderErrorFailed: failed.
+	CSSProviderErrorFailed CSSProviderError = 0
+	// CSSProviderErrorSyntax: syntax error.
+	CSSProviderErrorSyntax CSSProviderError = 1
+	// CSSProviderErrorImport: import error.
+	CSSProviderErrorImport CSSProviderError = 2
+	// CSSProviderErrorName: name error.
+	CSSProviderErrorName CSSProviderError = 3
+	// CSSProviderErrorDeprecated: deprecation error.
+	CSSProviderErrorDeprecated CSSProviderError = 4
+	// CSSProviderErrorUnknownValue: unknown value.
+	CSSProviderErrorUnknownValue CSSProviderError = 5
 )
 
-type CSSParserWarning int
+func marshalCSSProviderError(p uintptr) (interface{}, error) {
+	return CSSProviderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// CSSSectionType: the different types of sections indicate parts of a CSS
+// document as parsed by GTK’s CSS parser. They are oriented towards the [CSS
+// Grammar](http://www.w3.org/TR/CSS21/grammar.html), but may contain
+// extensions.
+//
+// More types might be added in the future as the parser incorporates more
+// features.
+type CSSSectionType int
 
 const (
-	// CSSParserWarningDeprecated: the given construct is deprecated and will be
-	// removed in a future version
-	CSSParserWarningDeprecated CSSParserWarning = 0
-	// CSSParserWarningSyntax: a syntax construct was used that should be
-	// avoided
-	CSSParserWarningSyntax CSSParserWarning = 1
-	// CSSParserWarningUnimplemented: a feature is not implemented
-	CSSParserWarningUnimplemented CSSParserWarning = 2
+	// CSSSectionTypeDocument: the section describes a complete document. This
+	// section time is the only one where gtk_css_section_get_parent() might
+	// return nil.
+	CSSSectionTypeDocument CSSSectionType = 0
+	// CSSSectionTypeImport: the section defines an import rule.
+	CSSSectionTypeImport CSSSectionType = 1
+	// CSSSectionTypeColorDefinition: the section defines a color. This is a GTK
+	// extension to CSS.
+	CSSSectionTypeColorDefinition CSSSectionType = 2
+	// CSSSectionTypeBindingSet: the section defines a binding set. This is a
+	// GTK extension to CSS.
+	CSSSectionTypeBindingSet CSSSectionType = 3
+	// CSSSectionTypeRuleset: the section defines a CSS ruleset.
+	CSSSectionTypeRuleset CSSSectionType = 4
+	// CSSSectionTypeSelector: the section defines a CSS selector.
+	CSSSectionTypeSelector CSSSectionType = 5
+	// CSSSectionTypeDeclaration: the section defines the declaration of a CSS
+	// variable.
+	CSSSectionTypeDeclaration CSSSectionType = 6
+	// CSSSectionTypeValue: the section defines the value of a CSS declaration.
+	CSSSectionTypeValue CSSSectionType = 7
+	// CSSSectionTypeKeyframes: the section defines keyframes. See [CSS
+	// Animations](http://dev.w3.org/csswg/css3-animations/#keyframes) for
+	// details. Since 3.6
+	CSSSectionTypeKeyframes CSSSectionType = 8
 )
 
+func marshalCSSSectionType(p uintptr) (interface{}, error) {
+	return CSSSectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DeleteType: see also: Entry::delete-from-cursor.
 type DeleteType int
 
 const (
@@ -935,7 +552,7 @@ const (
 	// DeleteTypeWords: delete words.
 	DeleteTypeWords DeleteType = 2
 	// DeleteTypeDisplayLines: delete display-lines. Display-lines refers to the
-	// visible lines, with respect to the current line breaks. As opposed to
+	// visible lines, with respect to to the current line breaks. As opposed to
 	// paragraphs, which are defined by line breaks in the input.
 	DeleteTypeDisplayLines DeleteType = 3
 	// DeleteTypeDisplayLineEnds: delete only the portion of the display-line to
@@ -954,6 +571,7 @@ func marshalDeleteType(p uintptr) (interface{}, error) {
 	return DeleteType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// DirectionType: focus movement types.
 type DirectionType int
 
 const (
@@ -975,24 +593,32 @@ func marshalDirectionType(p uintptr) (interface{}, error) {
 	return DirectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type EditableProperties int
+// DragResult: gives an indication why a drag operation failed. The value can by
+// obtained by connecting to the Widget::drag-failed signal.
+type DragResult int
 
 const (
-	EditablePropertiesPropText           EditableProperties = 0
-	EditablePropertiesPropCursorPosition EditableProperties = 1
-	EditablePropertiesPropSelectionBound EditableProperties = 2
-	EditablePropertiesPropEditable       EditableProperties = 3
-	EditablePropertiesPropWidthChars     EditableProperties = 4
-	EditablePropertiesPropMaxWidthChars  EditableProperties = 5
-	EditablePropertiesPropXalign         EditableProperties = 6
-	EditablePropertiesPropEnableUndo     EditableProperties = 7
-	EditablePropertiesNumProperties      EditableProperties = 8
+	// DragResultSuccess: the drag operation was successful.
+	DragResultSuccess DragResult = 0
+	// DragResultNoTarget: no suitable drag target.
+	DragResultNoTarget DragResult = 1
+	// DragResultUserCancelled: the user cancelled the drag operation.
+	DragResultUserCancelled DragResult = 2
+	// DragResultTimeoutExpired: the drag operation timed out.
+	DragResultTimeoutExpired DragResult = 3
+	// DragResultGrabBroken: the pointer or keyboard grab used for the drag
+	// operation was broken.
+	DragResultGrabBroken DragResult = 4
+	// DragResultError: the drag operation failed due to some unspecified error.
+	DragResultError DragResult = 5
 )
 
-func marshalEditableProperties(p uintptr) (interface{}, error) {
-	return EditableProperties(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalDragResult(p uintptr) (interface{}, error) {
+	return DragResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// EntryIconPosition: specifies the side of the entry at which an icon is
+// placed.
 type EntryIconPosition int
 
 const (
@@ -1008,6 +634,7 @@ func marshalEntryIconPosition(p uintptr) (interface{}, error) {
 	return EntryIconPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// EventSequenceState: describes the state of a EventSequence in a Gesture.
 type EventSequenceState int
 
 const (
@@ -1023,6 +650,27 @@ func marshalEventSequenceState(p uintptr) (interface{}, error) {
 	return EventSequenceState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ExpanderStyle: used to specify the style of the expanders drawn by a
+// TreeView.
+type ExpanderStyle int
+
+const (
+	// ExpanderStyleCollapsed: the style used for a collapsed subtree.
+	ExpanderStyleCollapsed ExpanderStyle = 0
+	// ExpanderStyleSemiCollapsed: intermediate style used during animation.
+	ExpanderStyleSemiCollapsed ExpanderStyle = 1
+	// ExpanderStyleSemiExpanded: intermediate style used during animation.
+	ExpanderStyleSemiExpanded ExpanderStyle = 2
+	// ExpanderStyleExpanded: the style used for an expanded subtree.
+	ExpanderStyleExpanded ExpanderStyle = 3
+)
+
+func marshalExpanderStyle(p uintptr) (interface{}, error) {
+	return ExpanderStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FileChooserAction: describes whether a FileChooser is being used to open
+// existing files or to save to a possibly new file.
 type FileChooserAction int
 
 const (
@@ -1035,12 +683,40 @@ const (
 	// FileChooserActionSelectFolder: indicates an Open mode for selecting
 	// folders. The file chooser will let the user pick an existing folder.
 	FileChooserActionSelectFolder FileChooserAction = 2
+	// FileChooserActionCreateFolder: indicates a mode for creating a new
+	// folder. The file chooser will let the user name an existing or new
+	// folder.
+	FileChooserActionCreateFolder FileChooserAction = 3
 )
 
 func marshalFileChooserAction(p uintptr) (interface{}, error) {
 	return FileChooserAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// FileChooserConfirmation: used as a return value of handlers for the
+// FileChooser::confirm-overwrite signal of a FileChooser. This value determines
+// whether the file chooser will present the stock confirmation dialog, accept
+// the user’s choice of a filename, or let the user choose another filename.
+type FileChooserConfirmation int
+
+const (
+	// FileChooserConfirmationConfirm: the file chooser will present its stock
+	// dialog to confirm about overwriting an existing file.
+	FileChooserConfirmationConfirm FileChooserConfirmation = 0
+	// FileChooserConfirmationAcceptFilename: the file chooser will terminate
+	// and accept the user’s choice of a file name.
+	FileChooserConfirmationAcceptFilename FileChooserConfirmation = 1
+	// FileChooserConfirmationSelectAgain: the file chooser will continue
+	// running, so as to let the user select another file name.
+	FileChooserConfirmationSelectAgain FileChooserConfirmation = 2
+)
+
+func marshalFileChooserConfirmation(p uintptr) (interface{}, error) {
+	return FileChooserConfirmation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FileChooserError: these identify the various errors that can occur while
+// calling FileChooser functions.
 type FileChooserError int
 
 const (
@@ -1060,59 +736,65 @@ func marshalFileChooserError(p uintptr) (interface{}, error) {
 	return FileChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type FilterChange int
+// IMPreeditStyle: style for input method preedit. See also
+// Settings:gtk-im-preedit-style
+type IMPreeditStyle int
 
 const (
-	// FilterChangeDifferent: the filter change cannot be described with any of
-	// the other enumeration values.
-	FilterChangeDifferent FilterChange = 0
-	// FilterChangeLessStrict: the filter is less strict than it was before: All
-	// items that it used to return true for still return true, others now may,
-	// too.
-	FilterChangeLessStrict FilterChange = 1
-	// FilterChangeMoreStrict: the filter is more strict than it was before: All
-	// items that it used to return false for still return false, others now
-	// may, too.
-	FilterChangeMoreStrict FilterChange = 2
+	// IMPreeditStyleNothing: deprecated
+	IMPreeditStyleNothing IMPreeditStyle = 0
+	// IMPreeditStyleCallback: deprecated
+	IMPreeditStyleCallback IMPreeditStyle = 1
+	// IMPreeditStyleNone: deprecated
+	IMPreeditStyleNone IMPreeditStyle = 2
 )
 
-func marshalFilterChange(p uintptr) (interface{}, error) {
-	return FilterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalIMPreeditStyle(p uintptr) (interface{}, error) {
+	return IMPreeditStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type FilterMatch int
+// IMStatusStyle: style for input method status. See also
+// Settings:gtk-im-status-style
+type IMStatusStyle int
 
 const (
-	// FilterMatchSome: the filter matches some items, gtk_filter_match() may
-	// return true or false
-	FilterMatchSome FilterMatch = 0
-	// FilterMatchNone: the filter does not match any item, gtk_filter_match()
-	// will always return false.
-	FilterMatchNone FilterMatch = 1
-	// FilterMatchAll: the filter matches all items, gtk_filter_match() will
-	// alays return true.
-	FilterMatchAll FilterMatch = 2
+	// IMStatusStyleNothing: deprecated
+	IMStatusStyleNothing IMStatusStyle = 0
+	// IMStatusStyleCallback: deprecated
+	IMStatusStyleCallback IMStatusStyle = 1
+	// IMStatusStyleNone: deprecated
+	IMStatusStyleNone IMStatusStyle = 2
 )
 
-func marshalFilterMatch(p uintptr) (interface{}, error) {
-	return FilterMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalIMStatusStyle(p uintptr) (interface{}, error) {
+	return IMStatusStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// IconSize: built-in stock icon sizes.
 type IconSize int
 
 const (
-	// IconSizeInherit: keep the size of the parent element
-	IconSizeInherit IconSize = 0
-	// IconSizeNormal: size similar to text size
-	IconSizeNormal IconSize = 1
-	// IconSizeLarge: large size, for example in an icon view
-	IconSizeLarge IconSize = 2
+	// IconSizeInvalid: invalid size.
+	IconSizeInvalid IconSize = 0
+	// IconSizeMenu: size appropriate for menus (16px).
+	IconSizeMenu IconSize = 1
+	// IconSizeSmallToolbar: size appropriate for small toolbars (16px).
+	IconSizeSmallToolbar IconSize = 2
+	// IconSizeLargeToolbar: size appropriate for large toolbars (24px)
+	IconSizeLargeToolbar IconSize = 3
+	// IconSizeButton: size appropriate for buttons (16px)
+	IconSizeButton IconSize = 4
+	// IconSizeDnd: size appropriate for drag and drop (32px)
+	IconSizeDnd IconSize = 5
+	// IconSizeDialog: size appropriate for dialogs (48px)
+	IconSizeDialog IconSize = 6
 )
 
 func marshalIconSize(p uintptr) (interface{}, error) {
 	return IconSize(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// IconThemeError: error codes for GtkIconTheme operations.
 type IconThemeError int
 
 const (
@@ -1126,6 +808,7 @@ func marshalIconThemeError(p uintptr) (interface{}, error) {
 	return IconThemeError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// IconViewDropPosition: an enum for determining where a dropped item goes.
 type IconViewDropPosition int
 
 const (
@@ -1133,7 +816,7 @@ const (
 	IconViewDropPositionNoDrop IconViewDropPosition = 0
 	// IconViewDropPositionDropInto: dropped item replaces the item
 	IconViewDropPositionDropInto IconViewDropPosition = 1
-	// IconViewDropPositionDropLeft: dropped item is inserted to the left
+	// IconViewDropPositionDropLeft: droppped item is inserted to the left
 	IconViewDropPositionDropLeft IconViewDropPosition = 2
 	// IconViewDropPositionDropRight: dropped item is inserted to the right
 	IconViewDropPositionDropRight IconViewDropPosition = 3
@@ -1147,23 +830,57 @@ func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
 	return IconViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ImageType: describes the image data representation used by a Image. If you
+// want to get the image from the widget, you can only get the currently-stored
+// representation. e.g. if the gtk_image_get_storage_type() returns
+// K_IMAGE_PIXBUF, then you can call gtk_image_get_pixbuf() but not
+// gtk_image_get_stock(). For empty images, you can request any storage type
+// (call any of the "get" functions), but they will all return nil values.
 type ImageType int
 
 const (
 	// ImageTypeEmpty: there is no image displayed by the widget
 	ImageTypeEmpty ImageType = 0
-	// ImageTypeIconName: the widget contains a named icon
-	ImageTypeIconName ImageType = 1
-	// ImageTypeGicon: the widget contains a #GIcon
-	ImageTypeGicon ImageType = 2
-	// ImageTypePaintable: the widget contains a Paintable
-	ImageTypePaintable ImageType = 3
+	// ImageTypePixbuf: the widget contains a Pixbuf
+	ImageTypePixbuf ImageType = 1
+	// ImageTypeStock: the widget contains a [stock item name][gtkstock]
+	ImageTypeStock ImageType = 2
+	// ImageTypeIconSet: the widget contains a IconSet
+	ImageTypeIconSet ImageType = 3
+	// ImageTypeAnimation: the widget contains a PixbufAnimation
+	ImageTypeAnimation ImageType = 4
+	// ImageTypeIconName: the widget contains a named icon. This image type was
+	// added in GTK+ 2.6
+	ImageTypeIconName ImageType = 5
+	// ImageTypeGicon: the widget contains a #GIcon. This image type was added
+	// in GTK+ 2.14
+	ImageTypeGicon ImageType = 6
+	// ImageTypeSurface: the widget contains a #cairo_surface_t. This image type
+	// was added in GTK+ 3.10
+	ImageTypeSurface ImageType = 7
 )
 
 func marshalImageType(p uintptr) (interface{}, error) {
 	return ImageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// InputPurpose: describes primary purpose of the input widget. This information
+// is useful for on-screen keyboards and similar input methods to decide which
+// keys should be presented to the user.
+//
+// Note that the purpose is not meant to impose a totally strict rule about
+// allowed characters, and does not replace input validation. It is fine for an
+// on-screen keyboard to let the user override the character set restriction
+// that is expressed by the purpose. The application is expected to validate the
+// entry contents, even if it specified a purpose.
+//
+// The difference between @GTK_INPUT_PURPOSE_DIGITS and
+// @GTK_INPUT_PURPOSE_NUMBER is that the former accepts only digits while the
+// latter also some punctuation (like commas or points, plus, minus) and “e” or
+// “E” as in 3.14E+000.
+//
+// This enumeration may be extended in the future; input methods should
+// interpret unknown values as “free form”.
 type InputPurpose int
 
 const (
@@ -1183,10 +900,11 @@ const (
 	InputPurposeEmail InputPurpose = 6
 	// InputPurposeName: edited field expects the name of a person
 	InputPurposeName InputPurpose = 7
-	// InputPurposePassword: like GTK_INPUT_PURPOSE_FREE_FORM, but characters
+	// InputPurposePassword: like @GTK_INPUT_PURPOSE_FREE_FORM, but characters
 	// are hidden
 	InputPurposePassword InputPurpose = 8
-	// InputPurposePin: like GTK_INPUT_PURPOSE_DIGITS, but characters are hidden
+	// InputPurposePin: like @GTK_INPUT_PURPOSE_DIGITS, but characters are
+	// hidden
 	InputPurposePin InputPurpose = 9
 	// InputPurposeTerminal: allow any character, in addition to control codes
 	InputPurposeTerminal InputPurpose = 10
@@ -1196,6 +914,8 @@ func marshalInputPurpose(p uintptr) (interface{}, error) {
 	return InputPurpose(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Justification: used for justifying the text inside a Label widget. (See also
+// Alignment).
 type Justification int
 
 const (
@@ -1213,6 +933,8 @@ func marshalJustification(p uintptr) (interface{}, error) {
 	return Justification(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// LevelBarMode: describes how LevelBar contents should be rendered. Note that
+// this enumeration could be extended with additional modes in the future.
 type LevelBarMode int
 
 const (
@@ -1226,6 +948,9 @@ func marshalLevelBarMode(p uintptr) (interface{}, error) {
 	return LevelBarMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// License: the type of license for an application.
+//
+// This enumeration can be expanded at later date.
 type License int
 
 const (
@@ -1249,27 +974,29 @@ const (
 	LicenseMitX11 License = 7
 	// LicenseArtistic: the Artistic License, version 2.0
 	LicenseArtistic License = 8
-	// LicenseGpl20Only: the GNU General Public License, version 2.0 only
+	// LicenseGpl20Only: the GNU General Public License, version 2.0 only. Since
+	// 3.12.
 	LicenseGpl20Only License = 9
-	// LicenseGpl30Only: the GNU General Public License, version 3.0 only
+	// LicenseGpl30Only: the GNU General Public License, version 3.0 only. Since
+	// 3.12.
 	LicenseGpl30Only License = 10
 	// LicenseLgpl21Only: the GNU Lesser General Public License, version 2.1
-	// only
+	// only. Since 3.12.
 	LicenseLgpl21Only License = 11
 	// LicenseLgpl30Only: the GNU Lesser General Public License, version 3.0
-	// only
+	// only. Since 3.12.
 	LicenseLgpl30Only License = 12
 	// LicenseAgpl30: the GNU Affero General Public License, version 3.0 or
-	// later
+	// later. Since: 3.22.
 	LicenseAgpl30 License = 13
 	// LicenseAgpl30Only: the GNU Affero General Public License, version 3.0
-	// only
+	// only. Since: 3.22.27.
 	LicenseAgpl30Only License = 14
-	// LicenseBsd3: the 3-clause BSD licence
+	// LicenseBsd3: the 3-clause BSD licence. Since: 3.24.20.
 	LicenseBsd3 License = 15
-	// LicenseApache20: the Apache License, version 2.0
+	// LicenseApache20: the Apache License, version 2.0. Since: 3.24.20.
 	LicenseApache20 License = 16
-	// LicenseMpl20: the Mozilla Public License, version 2.0
+	// LicenseMpl20: the Mozilla Public License, version 2.0. Since: 3.24.20.
 	LicenseMpl20 License = 17
 )
 
@@ -1277,6 +1004,26 @@ func marshalLicense(p uintptr) (interface{}, error) {
 	return License(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// MenuDirectionType: an enumeration representing directional movements within a
+// menu.
+type MenuDirectionType int
+
+const (
+	// MenuDirectionTypeParent: to the parent menu shell
+	MenuDirectionTypeParent MenuDirectionType = 0
+	// MenuDirectionTypeChild: to the submenu, if any, associated with the item
+	MenuDirectionTypeChild MenuDirectionType = 1
+	// MenuDirectionTypeNext: to the next menu item
+	MenuDirectionTypeNext MenuDirectionType = 2
+	// MenuDirectionTypePrev: to the previous menu item
+	MenuDirectionTypePrev MenuDirectionType = 3
+)
+
+func marshalMenuDirectionType(p uintptr) (interface{}, error) {
+	return MenuDirectionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// MessageType: the type of message being displayed in the dialog.
 type MessageType int
 
 const (
@@ -1328,9 +1075,8 @@ func marshalMovementStep(p uintptr) (interface{}, error) {
 type NotebookTab int
 
 const (
-	// NotebookTabFirst: the first tab in the notebook
 	NotebookTabFirst NotebookTab = 0
-	// NotebookTabLast: the last tab in the notebook
+
 	NotebookTabLast NotebookTab = 1
 )
 
@@ -1338,6 +1084,8 @@ func marshalNotebookTab(p uintptr) (interface{}, error) {
 	return NotebookTab(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// NumberUpLayout: used to determine the layout of pages on a sheet when
+// printing multiple pages per sheet.
 type NumberUpLayout int
 
 const (
@@ -1363,21 +1111,9 @@ func marshalNumberUpLayout(p uintptr) (interface{}, error) {
 	return NumberUpLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type Ordering int
-
-const (
-	// OrderingSmaller: the first value is smaller than the second
-	OrderingSmaller Ordering = -1
-	// OrderingEqual: the two values are equal
-	OrderingEqual Ordering = 0
-	// OrderingLarger: the first value is larger than the second
-	OrderingLarger Ordering = 1
-)
-
-func marshalOrdering(p uintptr) (interface{}, error) {
-	return Ordering(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
+// Orientation: represents the orientation of widgets and other objects which
+// can be switched between horizontal and vertical orientation on the fly, like
+// Toolbar or GesturePan.
 type Orientation int
 
 const (
@@ -1391,27 +1127,33 @@ func marshalOrientation(p uintptr) (interface{}, error) {
 	return Orientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type Overflow int
+// PackDirection: determines how widgets should be packed inside menubars and
+// menuitems contained in menubars.
+type PackDirection int
 
 const (
-	// OverflowVisible: no change is applied. Content is drawn at the specified
-	// position.
-	OverflowVisible Overflow = 0
-	// OverflowHidden: content is clipped to the bounds of the area. Content
-	// outside the area is not drawn and cannot be interacted with.
-	OverflowHidden Overflow = 1
+	// PackDirectionLTR: widgets are packed left-to-right
+	PackDirectionLTR PackDirection = 0
+	// PackDirectionRTL: widgets are packed right-to-left
+	PackDirectionRTL PackDirection = 1
+	// PackDirectionTtb: widgets are packed top-to-bottom
+	PackDirectionTtb PackDirection = 2
+	// PackDirectionBtt: widgets are packed bottom-to-top
+	PackDirectionBtt PackDirection = 3
 )
 
-func marshalOverflow(p uintptr) (interface{}, error) {
-	return Overflow(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalPackDirection(p uintptr) (interface{}, error) {
+	return PackDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PackType: represents the packing location Box children. (See: VBox, HBox, and
+// ButtonBox).
 type PackType int
 
 const (
-	// PackTypeStart: the child is packed into the start of the widget
+	// PackTypeStart: the child is packed into the start of the box
 	PackTypeStart PackType = 0
-	// PackTypeEnd: the child is packed into the end of the widget
+	// PackTypeEnd: the child is packed into the end of the box
 	PackTypeEnd PackType = 1
 )
 
@@ -1419,6 +1161,7 @@ func marshalPackType(p uintptr) (interface{}, error) {
 	return PackType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PadActionType: the type of a pad action.
 type PadActionType int
 
 const (
@@ -1434,6 +1177,7 @@ func marshalPadActionType(p uintptr) (interface{}, error) {
 	return PadActionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PageOrientation: see also gtk_print_settings_set_orientation().
 type PageOrientation int
 
 const (
@@ -1451,6 +1195,7 @@ func marshalPageOrientation(p uintptr) (interface{}, error) {
 	return PageOrientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PageSet: see also gtk_print_job_set_page_set().
 type PageSet int
 
 const (
@@ -1466,6 +1211,7 @@ func marshalPageSet(p uintptr) (interface{}, error) {
 	return PageSet(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PanDirection: describes the panning direction of a GesturePan
 type PanDirection int
 
 const (
@@ -1483,6 +1229,47 @@ func marshalPanDirection(p uintptr) (interface{}, error) {
 	return PanDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PathPriorityType: priorities for path lookups. See also
+// gtk_binding_set_add_path().
+type PathPriorityType int
+
+const (
+	// PathPriorityTypeLowest: deprecated
+	PathPriorityTypeLowest PathPriorityType = 0
+	// PathPriorityTypeGTK: deprecated
+	PathPriorityTypeGTK PathPriorityType = 4
+	// PathPriorityTypeApplication: deprecated
+	PathPriorityTypeApplication PathPriorityType = 8
+	// PathPriorityTypeTheme: deprecated
+	PathPriorityTypeTheme PathPriorityType = 10
+	// PathPriorityTypeRc: deprecated
+	PathPriorityTypeRc PathPriorityType = 12
+	// PathPriorityTypeHighest: deprecated
+	PathPriorityTypeHighest PathPriorityType = 15
+)
+
+func marshalPathPriorityType(p uintptr) (interface{}, error) {
+	return PathPriorityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PathType: widget path types. See also gtk_binding_set_add_path().
+type PathType int
+
+const (
+	// PathTypeWidget: deprecated
+	PathTypeWidget PathType = 0
+	// PathTypeWidgetClass: deprecated
+	PathTypeWidgetClass PathType = 1
+	// PathTypeClass: deprecated
+	PathTypeClass PathType = 2
+)
+
+func marshalPathType(p uintptr) (interface{}, error) {
+	return PathType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PolicyType: determines how the size should be computed to achieve the one of
+// the visibility mode for the scrollbars.
 type PolicyType int
 
 const (
@@ -1497,7 +1284,7 @@ const (
 	PolicyTypeNever PolicyType = 2
 	// PolicyTypeExternal: don't show a scrollbar, but don't force the size to
 	// follow the content. This can be used e.g. to make multiple scrolled
-	// windows share a scrollbar.
+	// windows share a scrollbar. Since: 3.16
 	PolicyTypeExternal PolicyType = 3
 )
 
@@ -1505,6 +1292,26 @@ func marshalPolicyType(p uintptr) (interface{}, error) {
 	return PolicyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PopoverConstraint: describes constraints to positioning of popovers. More
+// values may be added to this enumeration in the future.
+type PopoverConstraint int
+
+const (
+	// PopoverConstraintNone: don't constrain the popover position beyond what
+	// is imposed by the implementation
+	PopoverConstraintNone PopoverConstraint = 0
+	// PopoverConstraintWindow: constrain the popover to the boundaries of the
+	// window that it is attached to
+	PopoverConstraintWindow PopoverConstraint = 1
+)
+
+func marshalPopoverConstraint(p uintptr) (interface{}, error) {
+	return PopoverConstraint(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PositionType: describes which edge of a widget a certain feature is
+// positioned at, e.g. the tabs of a Notebook, the handle of a HandleBox or the
+// label of a Scale.
 type PositionType int
 
 const (
@@ -1522,6 +1329,7 @@ func marshalPositionType(p uintptr) (interface{}, error) {
 	return PositionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PrintDuplex: see also gtk_print_settings_set_duplex().
 type PrintDuplex int
 
 const (
@@ -1537,6 +1345,8 @@ func marshalPrintDuplex(p uintptr) (interface{}, error) {
 	return PrintDuplex(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PrintError: error codes that identify various errors that can occur while
+// using the GTK+ printing support.
 type PrintError int
 
 const (
@@ -1555,6 +1365,8 @@ func marshalPrintError(p uintptr) (interface{}, error) {
 	return PrintError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PrintOperationAction: the @action parameter to gtk_print_operation_run()
+// determines what action the print operation should perform.
 type PrintOperationAction int
 
 const (
@@ -1574,6 +1386,8 @@ func marshalPrintOperationAction(p uintptr) (interface{}, error) {
 	return PrintOperationAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PrintOperationResult: a value of this type is returned by
+// gtk_print_operation_run().
 type PrintOperationResult int
 
 const (
@@ -1593,6 +1407,7 @@ func marshalPrintOperationResult(p uintptr) (interface{}, error) {
 	return PrintOperationResult(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PrintPages: see also gtk_print_job_set_pages()
 type PrintPages int
 
 const (
@@ -1610,6 +1425,7 @@ func marshalPrintPages(p uintptr) (interface{}, error) {
 	return PrintPages(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PrintQuality: see also gtk_print_settings_set_quality().
 type PrintQuality int
 
 const (
@@ -1627,6 +1443,8 @@ func marshalPrintQuality(p uintptr) (interface{}, error) {
 	return PrintQuality(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// PrintStatus: the status gives a rough indication of the completion of a
+// running print operation.
 type PrintStatus int
 
 const (
@@ -1659,26 +1477,15 @@ func marshalPrintStatus(p uintptr) (interface{}, error) {
 	return PrintStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type PropagationLimit int
-
-const (
-	// PropagationLimitNone: events are handled regardless of what their target
-	// is.
-	PropagationLimitNone PropagationLimit = 0
-	// PropagationLimitSameNative: events are only handled if their target is in
-	// the same Native as the event controllers widget. Note that some event
-	// types have two targets (origin and destination).
-	PropagationLimitSameNative PropagationLimit = 1
-)
-
-func marshalPropagationLimit(p uintptr) (interface{}, error) {
-	return PropagationLimit(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
+// PropagationPhase: describes the stage at which events are fed into a
+// EventController.
 type PropagationPhase int
 
 const (
-	// PropagationPhaseNone: events are not delivered.
+	// PropagationPhaseNone: events are not delivered automatically. Those can
+	// be manually fed through gtk_event_controller_handle_event(). This should
+	// only be used when full control about when, or whether the controller
+	// handles the event is needed.
 	PropagationPhaseNone PropagationPhase = 0
 	// PropagationPhaseCapture: events are delivered in the capture phase. The
 	// capture phase happens before the bubble phase, runs from the toplevel
@@ -1701,6 +1508,114 @@ func marshalPropagationPhase(p uintptr) (interface{}, error) {
 	return PropagationPhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// RcTokenType: the RcTokenType enumeration represents the tokens in the RC
+// file. It is exposed so that theme engines can reuse these tokens when parsing
+// the theme-engine specific portions of a RC file.
+type RcTokenType int
+
+const (
+	// RcTokenTypeInvalid: deprecated
+	RcTokenTypeInvalid RcTokenType = 270
+	// RcTokenTypeInclude: deprecated
+	RcTokenTypeInclude RcTokenType = 271
+	// RcTokenTypeNormal: deprecated
+	RcTokenTypeNormal RcTokenType = 272
+	// RcTokenTypeActive: deprecated
+	RcTokenTypeActive RcTokenType = 273
+	// RcTokenTypePrelight: deprecated
+	RcTokenTypePrelight RcTokenType = 274
+	// RcTokenTypeSelected: deprecated
+	RcTokenTypeSelected RcTokenType = 275
+	// RcTokenTypeInsensitive: deprecated
+	RcTokenTypeInsensitive RcTokenType = 276
+	// RcTokenTypeFg: deprecated
+	RcTokenTypeFg RcTokenType = 277
+	// RcTokenTypeBg: deprecated
+	RcTokenTypeBg RcTokenType = 278
+	// RcTokenTypeText: deprecated
+	RcTokenTypeText RcTokenType = 279
+	// RcTokenTypeBase: deprecated
+	RcTokenTypeBase RcTokenType = 280
+	// RcTokenTypeXthickness: deprecated
+	RcTokenTypeXthickness RcTokenType = 281
+	// RcTokenTypeYthickness: deprecated
+	RcTokenTypeYthickness RcTokenType = 282
+	// RcTokenTypeFont: deprecated
+	RcTokenTypeFont RcTokenType = 283
+	// RcTokenTypeFontset: deprecated
+	RcTokenTypeFontset RcTokenType = 284
+	// RcTokenTypeFontName: deprecated
+	RcTokenTypeFontName RcTokenType = 285
+	// RcTokenTypeBgPixmap: deprecated
+	RcTokenTypeBgPixmap RcTokenType = 286
+	// RcTokenTypePixmapPath: deprecated
+	RcTokenTypePixmapPath RcTokenType = 287
+	// RcTokenTypeStyle: deprecated
+	RcTokenTypeStyle RcTokenType = 288
+	// RcTokenTypeBinding: deprecated
+	RcTokenTypeBinding RcTokenType = 289
+	// RcTokenTypeBind: deprecated
+	RcTokenTypeBind RcTokenType = 290
+	// RcTokenTypeWidget: deprecated
+	RcTokenTypeWidget RcTokenType = 291
+	// RcTokenTypeWidgetClass: deprecated
+	RcTokenTypeWidgetClass RcTokenType = 292
+	// RcTokenTypeClass: deprecated
+	RcTokenTypeClass RcTokenType = 293
+	// RcTokenTypeLowest: deprecated
+	RcTokenTypeLowest RcTokenType = 294
+	// RcTokenTypeGTK: deprecated
+	RcTokenTypeGTK RcTokenType = 295
+	// RcTokenTypeApplication: deprecated
+	RcTokenTypeApplication RcTokenType = 296
+	// RcTokenTypeTheme: deprecated
+	RcTokenTypeTheme RcTokenType = 297
+	// RcTokenTypeRc: deprecated
+	RcTokenTypeRc RcTokenType = 298
+	// RcTokenTypeHighest: deprecated
+	RcTokenTypeHighest RcTokenType = 299
+	// RcTokenTypeEngine: deprecated
+	RcTokenTypeEngine RcTokenType = 300
+	// RcTokenTypeModulePath: deprecated
+	RcTokenTypeModulePath RcTokenType = 301
+	// RcTokenTypeImModulePath: deprecated
+	RcTokenTypeImModulePath RcTokenType = 302
+	// RcTokenTypeImModuleFile: deprecated
+	RcTokenTypeImModuleFile RcTokenType = 303
+	// RcTokenTypeStock: deprecated
+	RcTokenTypeStock RcTokenType = 304
+	// RcTokenTypeLTR: deprecated
+	RcTokenTypeLTR RcTokenType = 305
+	// RcTokenTypeRTL: deprecated
+	RcTokenTypeRTL RcTokenType = 306
+	// RcTokenTypeColor: deprecated
+	RcTokenTypeColor RcTokenType = 307
+	// RcTokenTypeUnbind: deprecated
+	RcTokenTypeUnbind RcTokenType = 308
+	// RcTokenTypeLast: deprecated
+	RcTokenTypeLast RcTokenType = 309
+)
+
+func marshalRcTokenType(p uintptr) (interface{}, error) {
+	return RcTokenType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// RecentChooserError: these identify the various errors that can occur while
+// calling RecentChooser functions.
+type RecentChooserError int
+
+const (
+	// RecentChooserErrorNotFound: indicates that a file does not exist
+	RecentChooserErrorNotFound RecentChooserError = 0
+	// RecentChooserErrorInvalidURI: indicates a malformed URI
+	RecentChooserErrorInvalidURI RecentChooserError = 1
+)
+
+func marshalRecentChooserError(p uintptr) (interface{}, error) {
+	return RecentChooserError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// RecentManagerError: error codes for RecentManager operations
 type RecentManagerError int
 
 const (
@@ -1729,31 +1644,89 @@ func marshalRecentManagerError(p uintptr) (interface{}, error) {
 	return RecentManagerError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// RecentSortType: used to specify the sorting method to be applyed to the
+// recently used resource list.
+type RecentSortType int
+
+const (
+	// RecentSortTypeNone: do not sort the returned list of recently used
+	// resources.
+	RecentSortTypeNone RecentSortType = 0
+	// RecentSortTypeMru: sort the returned list with the most recently used
+	// items first.
+	RecentSortTypeMru RecentSortType = 1
+	// RecentSortTypeLru: sort the returned list with the least recently used
+	// items first.
+	RecentSortTypeLru RecentSortType = 2
+	// RecentSortTypeCustom: sort the returned list using a custom sorting
+	// function passed using gtk_recent_chooser_set_sort_func().
+	RecentSortTypeCustom RecentSortType = 3
+)
+
+func marshalRecentSortType(p uintptr) (interface{}, error) {
+	return RecentSortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ReliefStyle: indicated the relief to be drawn around a Button.
+type ReliefStyle int
+
+const (
+	// ReliefStyleNormal: draw a normal relief.
+	ReliefStyleNormal ReliefStyle = 0
+	// ReliefStyleHalf: a half relief. Deprecated in 3.14, does the same as
+	// @GTK_RELIEF_NORMAL
+	ReliefStyleHalf ReliefStyle = 1
+	// ReliefStyleNone: no relief.
+	ReliefStyleNone ReliefStyle = 2
+)
+
+func marshalReliefStyle(p uintptr) (interface{}, error) {
+	return ReliefStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+type ResizeMode int
+
+const (
+	// ResizeModeParent: pass resize request to the parent
+	ResizeModeParent ResizeMode = 0
+	// ResizeModeQueue: queue resizes on this widget
+	ResizeModeQueue ResizeMode = 1
+	// ResizeModeImmediate: resize immediately. Deprecated.
+	ResizeModeImmediate ResizeMode = 2
+)
+
+func marshalResizeMode(p uintptr) (interface{}, error) {
+	return ResizeMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ResponseType: predefined values for use as response ids in
+// gtk_dialog_add_button(). All predefined values are negative; GTK+ leaves
+// values of 0 or greater for application-defined response ids.
 type ResponseType int
 
 const (
 	// ResponseTypeNone: returned if an action widget has no response id, or if
 	// the dialog gets programmatically hidden or destroyed
 	ResponseTypeNone ResponseType = -1
-	// ResponseTypeReject: generic response id, not used by GTK dialogs
+	// ResponseTypeReject: generic response id, not used by GTK+ dialogs
 	ResponseTypeReject ResponseType = -2
-	// ResponseTypeAccept: generic response id, not used by GTK dialogs
+	// ResponseTypeAccept: generic response id, not used by GTK+ dialogs
 	ResponseTypeAccept ResponseType = -3
 	// ResponseTypeDeleteEvent: returned if the dialog is deleted
 	ResponseTypeDeleteEvent ResponseType = -4
-	// ResponseTypeOk: returned by OK buttons in GTK dialogs
+	// ResponseTypeOk: returned by OK buttons in GTK+ dialogs
 	ResponseTypeOk ResponseType = -5
-	// ResponseTypeCancel: returned by Cancel buttons in GTK dialogs
+	// ResponseTypeCancel: returned by Cancel buttons in GTK+ dialogs
 	ResponseTypeCancel ResponseType = -6
-	// ResponseTypeClose: returned by Close buttons in GTK dialogs
+	// ResponseTypeClose: returned by Close buttons in GTK+ dialogs
 	ResponseTypeClose ResponseType = -7
-	// ResponseTypeYes: returned by Yes buttons in GTK dialogs
+	// ResponseTypeYes: returned by Yes buttons in GTK+ dialogs
 	ResponseTypeYes ResponseType = -8
-	// ResponseTypeNo: returned by No buttons in GTK dialogs
+	// ResponseTypeNo: returned by No buttons in GTK+ dialogs
 	ResponseTypeNo ResponseType = -9
-	// ResponseTypeApply: returned by Apply buttons in GTK dialogs
+	// ResponseTypeApply: returned by Apply buttons in GTK+ dialogs
 	ResponseTypeApply ResponseType = -10
-	// ResponseTypeHelp: returned by Help buttons in GTK dialogs
+	// ResponseTypeHelp: returned by Help buttons in GTK+ dialogs
 	ResponseTypeHelp ResponseType = -11
 )
 
@@ -1761,6 +1734,8 @@ func marshalResponseType(p uintptr) (interface{}, error) {
 	return ResponseType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// RevealerTransitionType: these enumeration values describe the possible
+// transitions when the child of a Revealer widget is shown or hidden.
 type RevealerTransitionType int
 
 const (
@@ -1776,14 +1751,6 @@ const (
 	RevealerTransitionTypeSlideUp RevealerTransitionType = 4
 	// RevealerTransitionTypeSlideDown: slide in from the top
 	RevealerTransitionTypeSlideDown RevealerTransitionType = 5
-	// RevealerTransitionTypeSwingRight: floop in from the left
-	RevealerTransitionTypeSwingRight RevealerTransitionType = 6
-	// RevealerTransitionTypeSwingLeft: floop in from the right
-	RevealerTransitionTypeSwingLeft RevealerTransitionType = 7
-	// RevealerTransitionTypeSwingUp: floop in from the bottom
-	RevealerTransitionTypeSwingUp RevealerTransitionType = 8
-	// RevealerTransitionTypeSwingDown: floop in from the top
-	RevealerTransitionTypeSwingDown RevealerTransitionType = 9
 )
 
 func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
@@ -1811,6 +1778,7 @@ func marshalScrollStep(p uintptr) (interface{}, error) {
 	return ScrollStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ScrollType: scrolling types.
 type ScrollType int
 
 const (
@@ -1852,6 +1820,8 @@ func marshalScrollType(p uintptr) (interface{}, error) {
 	return ScrollType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ScrollablePolicy: defines the policy to be used in a scrollable widget when
+// updating the scrolled window adjustments in a given orientation.
 type ScrollablePolicy int
 
 const (
@@ -1867,6 +1837,7 @@ func marshalScrollablePolicy(p uintptr) (interface{}, error) {
 	return ScrollablePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SelectionMode: used to control what selections users are allowed to make.
 type SelectionMode int
 
 const (
@@ -1891,15 +1862,17 @@ func marshalSelectionMode(p uintptr) (interface{}, error) {
 	return SelectionMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SensitivityType: determines how GTK+ handles the sensitivity of stepper
+// arrows at the end of range widgets.
 type SensitivityType int
 
 const (
-	// SensitivityTypeAuto: the control is made insensitive if no action can be
-	// triggered
+	// SensitivityTypeAuto: the arrow is made insensitive if the thumb is at the
+	// end
 	SensitivityTypeAuto SensitivityType = 0
-	// SensitivityTypeOn: the control is always sensitive
+	// SensitivityTypeOn: the arrow is always sensitive
 	SensitivityTypeOn SensitivityType = 1
-	// SensitivityTypeOff: the control is always insensitive
+	// SensitivityTypeOff: the arrow is always insensitive
 	SensitivityTypeOff SensitivityType = 2
 )
 
@@ -1907,23 +1880,33 @@ func marshalSensitivityType(p uintptr) (interface{}, error) {
 	return SensitivityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type ShortcutScope int
+// ShadowType: used to change the appearance of an outline typically provided by
+// a Frame.
+//
+// Note that many themes do not differentiate the appearance of the various
+// shadow types: Either their is no visible shadow (@GTK_SHADOW_NONE), or there
+// is (any other value).
+type ShadowType int
 
 const (
-	// ShortcutScopeLocal: shortcuts are handled inside the widget the
-	// controller belongs to.
-	ShortcutScopeLocal ShortcutScope = 0
-	// ShortcutScopeManaged: shortcuts are handled by the first ancestor that is
-	// a ShortcutManager
-	ShortcutScopeManaged ShortcutScope = 1
-	// ShortcutScopeGlobal: shortcuts are handled by the root widget.
-	ShortcutScopeGlobal ShortcutScope = 2
+	// ShadowTypeNone: no outline.
+	ShadowTypeNone ShadowType = 0
+	// ShadowTypeIn: the outline is bevelled inwards.
+	ShadowTypeIn ShadowType = 1
+	// ShadowTypeOut: the outline is bevelled outwards like a button.
+	ShadowTypeOut ShadowType = 2
+	// ShadowTypeEtchedIn: the outline has a sunken 3d appearance.
+	ShadowTypeEtchedIn ShadowType = 3
+	// ShadowTypeEtchedOut: the outline has a raised 3d appearance.
+	ShadowTypeEtchedOut ShadowType = 4
 )
 
-func marshalShortcutScope(p uintptr) (interface{}, error) {
-	return ShortcutScope(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalShadowType(p uintptr) (interface{}, error) {
+	return ShadowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ShortcutType: gtkShortcutType specifies the kind of shortcut that is being
+// described. More values may be added to this enumeration over time.
 type ShortcutType int
 
 const (
@@ -1951,18 +1934,14 @@ const (
 	// ShortcutTypeGesture: the shortcut is a gesture. The
 	// ShortcutsShortcut:icon property will be used.
 	ShortcutTypeGesture ShortcutType = 7
-	// ShortcutTypeGestureSwipeLeft: the shortcut is a swipe gesture. GTK+
-	// provides an icon and subtitle.
-	ShortcutTypeGestureSwipeLeft ShortcutType = 8
-	// ShortcutTypeGestureSwipeRight: the shortcut is a swipe gesture. GTK+
-	// provides an icon and subtitle.
-	ShortcutTypeGestureSwipeRight ShortcutType = 9
 )
 
 func marshalShortcutType(p uintptr) (interface{}, error) {
 	return ShortcutType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SizeGroupMode: the mode of the size group determines the directions in which
+// the size group affects the requested sizes of its component widgets.
 type SizeGroupMode int
 
 const (
@@ -1980,6 +1959,8 @@ func marshalSizeGroupMode(p uintptr) (interface{}, error) {
 	return SizeGroupMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SizeRequestMode: specifies a preference for height-for-width or
+// width-for-height geometry management.
 type SizeRequestMode int
 
 const (
@@ -1998,6 +1979,7 @@ func marshalSizeRequestMode(p uintptr) (interface{}, error) {
 	return SizeRequestMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SortType: determines the direction of a sort.
 type SortType int
 
 const (
@@ -2011,46 +1993,9 @@ func marshalSortType(p uintptr) (interface{}, error) {
 	return SortType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type SorterChange int
-
-const (
-	// SorterChangeDifferent: the sorter change cannot be described by any of
-	// the other enumeration values
-	SorterChangeDifferent SorterChange = 0
-	// SorterChangeInverted: the sort order was inverted. Comparisons that
-	// returned GTK_ORDERING_SMALLER now return GTK_ORDERING_LARGER and vice
-	// versa. Other comparisons return the same values as before.
-	SorterChangeInverted SorterChange = 1
-	// SorterChangeLessStrict: the sorter is less strict: Comparisons may now
-	// return GTK_ORDERING_EQUAL that did not do so before.
-	SorterChangeLessStrict SorterChange = 2
-	// SorterChangeMoreStrict: the sorter is more strict: Comparisons that did
-	// return GTK_ORDERING_EQUAL may not do so anymore.
-	SorterChangeMoreStrict SorterChange = 3
-)
-
-func marshalSorterChange(p uintptr) (interface{}, error) {
-	return SorterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type SorterOrder int
-
-const (
-	// SorterOrderPartial: a partial order. Any Ordering is possible.
-	SorterOrderPartial SorterOrder = 0
-	// SorterOrderNone: no order, all elements are considered equal.
-	// gtk_sorter_compare() will only return GTK_ORDERING_EQUAL.
-	SorterOrderNone SorterOrder = 1
-	// SorterOrderTotal: a total order. gtk_sorter_compare() will only return
-	// GTK_ORDERING_EQUAL if an item is compared with itself. Two different
-	// items will never cause this value to be returned.
-	SorterOrderTotal SorterOrder = 2
-)
-
-func marshalSorterOrder(p uintptr) (interface{}, error) {
-	return SorterOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
+// SpinButtonUpdatePolicy: the spin button update policy determines whether the
+// spin button displays values even if they are outside the bounds of its
+// adjustment. See gtk_spin_button_set_update_policy().
 type SpinButtonUpdatePolicy int
 
 const (
@@ -2067,6 +2012,8 @@ func marshalSpinButtonUpdatePolicy(p uintptr) (interface{}, error) {
 	return SpinButtonUpdatePolicy(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SpinType: the values of the GtkSpinType enumeration are used to specify the
+// change to make in gtk_spin_button_spin().
 type SpinType int
 
 const (
@@ -2090,6 +2037,10 @@ func marshalSpinType(p uintptr) (interface{}, error) {
 	return SpinType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// StackTransitionType: these enumeration values describe the possible
+// transitions between pages in a Stack widget.
+//
+// New values may be added to this enumeration over time.
 type StackTransitionType int
 
 const (
@@ -2111,91 +2062,102 @@ const (
 	// StackTransitionTypeSlideUpDown: slide from top down or bottom up
 	// according to the order
 	StackTransitionTypeSlideUpDown StackTransitionType = 7
-	// StackTransitionTypeOverUp: cover the old page by sliding up
+	// StackTransitionTypeOverUp: cover the old page by sliding up. Since 3.12
 	StackTransitionTypeOverUp StackTransitionType = 8
-	// StackTransitionTypeOverDown: cover the old page by sliding down
+	// StackTransitionTypeOverDown: cover the old page by sliding down. Since:
+	// 3.12
 	StackTransitionTypeOverDown StackTransitionType = 9
-	// StackTransitionTypeOverLeft: cover the old page by sliding to the left
+	// StackTransitionTypeOverLeft: cover the old page by sliding to the left.
+	// Since: 3.12
 	StackTransitionTypeOverLeft StackTransitionType = 10
-	// StackTransitionTypeOverRight: cover the old page by sliding to the right
+	// StackTransitionTypeOverRight: cover the old page by sliding to the right.
+	// Since: 3.12
 	StackTransitionTypeOverRight StackTransitionType = 11
-	// StackTransitionTypeUnderUp: uncover the new page by sliding up
+	// StackTransitionTypeUnderUp: uncover the new page by sliding up. Since
+	// 3.12
 	StackTransitionTypeUnderUp StackTransitionType = 12
-	// StackTransitionTypeUnderDown: uncover the new page by sliding down
+	// StackTransitionTypeUnderDown: uncover the new page by sliding down.
+	// Since: 3.12
 	StackTransitionTypeUnderDown StackTransitionType = 13
-	// StackTransitionTypeUnderLeft: uncover the new page by sliding to the left
+	// StackTransitionTypeUnderLeft: uncover the new page by sliding to the
+	// left. Since: 3.12
 	StackTransitionTypeUnderLeft StackTransitionType = 14
 	// StackTransitionTypeUnderRight: uncover the new page by sliding to the
-	// right
+	// right. Since: 3.12
 	StackTransitionTypeUnderRight StackTransitionType = 15
 	// StackTransitionTypeOverUpDown: cover the old page sliding up or uncover
-	// the new page sliding down, according to order
+	// the new page sliding down, according to order. Since: 3.12
 	StackTransitionTypeOverUpDown StackTransitionType = 16
 	// StackTransitionTypeOverDownUp: cover the old page sliding down or uncover
-	// the new page sliding up, according to order
+	// the new page sliding up, according to order. Since: 3.14
 	StackTransitionTypeOverDownUp StackTransitionType = 17
 	// StackTransitionTypeOverLeftRight: cover the old page sliding left or
-	// uncover the new page sliding right, according to order
+	// uncover the new page sliding right, according to order. Since: 3.14
 	StackTransitionTypeOverLeftRight StackTransitionType = 18
 	// StackTransitionTypeOverRightLeft: cover the old page sliding right or
-	// uncover the new page sliding left, according to order
+	// uncover the new page sliding left, according to order. Since: 3.14
 	StackTransitionTypeOverRightLeft StackTransitionType = 19
-	// StackTransitionTypeRotateLeft: pretend the pages are sides of a cube and
-	// rotate that cube to the left
-	StackTransitionTypeRotateLeft StackTransitionType = 20
-	// StackTransitionTypeRotateRight: pretend the pages are sides of a cube and
-	// rotate that cube to the right
-	StackTransitionTypeRotateRight StackTransitionType = 21
-	// StackTransitionTypeRotateLeftRight: pretend the pages are sides of a cube
-	// and rotate that cube to the left or right according to the children order
-	StackTransitionTypeRotateLeftRight StackTransitionType = 22
 )
 
 func marshalStackTransitionType(p uintptr) (interface{}, error) {
 	return StackTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type StringFilterMatchMode int
+// StateType: this type indicates the current state of a widget; the state
+// determines how the widget is drawn. The StateType enumeration is also used to
+// identify different colors in a Style for drawing, so states can be used for
+// subparts of a widget as well as entire widgets.
+type StateType int
 
 const (
-	// StringFilterMatchModeExact: the search string and text must match
-	// exactly.
-	StringFilterMatchModeExact StringFilterMatchMode = 0
-	// StringFilterMatchModeSubstring: the search string must be contained as a
-	// substring inside the text.
-	StringFilterMatchModeSubstring StringFilterMatchMode = 1
-	// StringFilterMatchModePrefix: the text must begin with the search string.
-	StringFilterMatchModePrefix StringFilterMatchMode = 2
+	// StateTypeNormal: state during normal operation.
+	StateTypeNormal StateType = 0
+	// StateTypeActive: state of a currently active widget, such as a depressed
+	// button.
+	StateTypeActive StateType = 1
+	// StateTypePrelight: state indicating that the mouse pointer is over the
+	// widget and the widget will respond to mouse clicks.
+	StateTypePrelight StateType = 2
+	// StateTypeSelected: state of a selected item, such the selected row in a
+	// list.
+	StateTypeSelected StateType = 3
+	// StateTypeInsensitive: state indicating that the widget is unresponsive to
+	// user actions.
+	StateTypeInsensitive StateType = 4
+	// StateTypeInconsistent: the widget is inconsistent, such as checkbuttons
+	// or radiobuttons that aren’t either set to true nor false, or buttons
+	// requiring the user attention.
+	StateTypeInconsistent StateType = 5
+	// StateTypeFocused: the widget has the keyboard focus.
+	StateTypeFocused StateType = 6
 )
 
-func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
-	return StringFilterMatchMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalStateType(p uintptr) (interface{}, error) {
+	return StateType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-type SystemSetting int
+// TextBufferTargetInfo: these values are used as “info” for the targets
+// contained in the lists returned by gtk_text_buffer_get_copy_target_list() and
+// gtk_text_buffer_get_paste_target_list().
+//
+// The values counts down from `-1` to avoid clashes with application added drag
+// destinations which usually start at 0.
+type TextBufferTargetInfo int
 
 const (
-	// SystemSettingDpi: the Settings:gtk-xft-dpi setting has changed
-	SystemSettingDpi SystemSetting = 0
-	// SystemSettingFontName: the Settings:gtk-font-name setting has changed
-	SystemSettingFontName SystemSetting = 1
-	// SystemSettingFontConfig: the font configuration has changed in a way that
-	// requires text to be redrawn. This can be any of the
-	// Settings:gtk-xft-antialias, Settings:gtk-xft-hinting,
-	// Settings:gtk-xft-hintstyle, Settings:gtk-xft-rgba or
-	// Settings:gtk-fontconfig-timestamp settings
-	SystemSettingFontConfig SystemSetting = 2
-	// SystemSettingDisplay: the display has changed
-	SystemSettingDisplay SystemSetting = 3
-	// SystemSettingIconTheme: the icon theme has changed in a way that requires
-	// icons to be looked up again
-	SystemSettingIconTheme SystemSetting = 4
+	// TextBufferTargetInfoBufferContents: buffer contents
+	TextBufferTargetInfoBufferContents TextBufferTargetInfo = -1
+	// TextBufferTargetInfoRichText: rich text
+	TextBufferTargetInfoRichText TextBufferTargetInfo = -2
+	// TextBufferTargetInfoText: text
+	TextBufferTargetInfoText TextBufferTargetInfo = -3
 )
 
-func marshalSystemSetting(p uintptr) (interface{}, error) {
-	return SystemSetting(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalTextBufferTargetInfo(p uintptr) (interface{}, error) {
+	return TextBufferTargetInfo(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TextDirection: reading directions for text.
 type TextDirection int
 
 const (
@@ -2211,6 +2173,8 @@ func marshalTextDirection(p uintptr) (interface{}, error) {
 	return TextDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TextExtendSelection: granularity types that extend the text selection. Use
+// the TextView::extend-selection signal to customize the selection.
 type TextExtendSelection int
 
 const (
@@ -2226,23 +2190,34 @@ func marshalTextExtendSelection(p uintptr) (interface{}, error) {
 	return TextExtendSelection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TextViewLayer: used to reference the layers of TextView for the purpose of
+// customized drawing with the ::draw_layer vfunc.
 type TextViewLayer int
 
 const (
+	// TextViewLayerBelow: old deprecated layer, use
+	// GTK_TEXT_VIEW_LAYER_BELOW_TEXT instead
+	TextViewLayerBelow TextViewLayer = 0
+	// TextViewLayerAbove: old deprecated layer, use
+	// GTK_TEXT_VIEW_LAYER_ABOVE_TEXT instead
+	TextViewLayerAbove TextViewLayer = 1
 	// TextViewLayerBelowText: the layer rendered below the text (but above the
-	// background).
-	TextViewLayerBelowText TextViewLayer = 0
-	// TextViewLayerAboveText: the layer rendered above the text.
-	TextViewLayerAboveText TextViewLayer = 1
+	// background). Since: 3.20
+	TextViewLayerBelowText TextViewLayer = 2
+	// TextViewLayerAboveText: the layer rendered above the text. Since: 3.20
+	TextViewLayerAboveText TextViewLayer = 3
 )
 
 func marshalTextViewLayer(p uintptr) (interface{}, error) {
 	return TextViewLayer(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TextWindowType: used to reference the parts of TextView.
 type TextWindowType int
 
 const (
+	// TextWindowTypePrivate: invalid value, used as a marker
+	TextWindowTypePrivate TextWindowType = 0
 	// TextWindowTypeWidget: window that floats over scrolling areas.
 	TextWindowTypeWidget TextWindowType = 1
 	// TextWindowTypeText: scrollable text window.
@@ -2261,14 +2236,53 @@ func marshalTextWindowType(p uintptr) (interface{}, error) {
 	return TextWindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ToolbarSpaceStyle: whether spacers are vertical lines or just blank.
+type ToolbarSpaceStyle int
+
+const (
+	// ToolbarSpaceStyleEmpty: use blank spacers.
+	ToolbarSpaceStyleEmpty ToolbarSpaceStyle = 0
+	// ToolbarSpaceStyleLine: use vertical lines for spacers.
+	ToolbarSpaceStyleLine ToolbarSpaceStyle = 1
+)
+
+func marshalToolbarSpaceStyle(p uintptr) (interface{}, error) {
+	return ToolbarSpaceStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ToolbarStyle: used to customize the appearance of a Toolbar. Note that
+// setting the toolbar style overrides the user’s preferences for the default
+// toolbar style. Note that if the button has only a label set and
+// GTK_TOOLBAR_ICONS is used, the label will be visible, and vice versa.
+type ToolbarStyle int
+
+const (
+	// ToolbarStyleIcons: buttons display only icons in the toolbar.
+	ToolbarStyleIcons ToolbarStyle = 0
+	// ToolbarStyleText: buttons display only text labels in the toolbar.
+	ToolbarStyleText ToolbarStyle = 1
+	// ToolbarStyleBoth: buttons display text and icons in the toolbar.
+	ToolbarStyleBoth ToolbarStyle = 2
+	// ToolbarStyleBothHoriz: buttons display icons and text alongside each
+	// other, rather than vertically stacked
+	ToolbarStyleBothHoriz ToolbarStyle = 3
+)
+
+func marshalToolbarStyle(p uintptr) (interface{}, error) {
+	return ToolbarStyle(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TreeViewColumnSizing: the sizing method the column uses to determine its
+// width. Please note that @GTK_TREE_VIEW_COLUMN_AUTOSIZE are inefficient for
+// large views, and can make columns appear choppy.
 type TreeViewColumnSizing int
 
 const (
 	// TreeViewColumnSizingGrowOnly: columns only get bigger in reaction to
 	// changes in the model
 	TreeViewColumnSizingGrowOnly TreeViewColumnSizing = 0
-	// TreeViewColumnSizingAutosize: columns resize to be the optimal size every
-	// time the model changes.
+	// TreeViewColumnSizingAutosize: columns resize to be the optimal size
+	// everytime the model changes.
 	TreeViewColumnSizingAutosize TreeViewColumnSizing = 1
 	// TreeViewColumnSizingFixed: columns are a fixed numbers of pixels wide.
 	TreeViewColumnSizingFixed TreeViewColumnSizing = 2
@@ -2278,6 +2292,7 @@ func marshalTreeViewColumnSizing(p uintptr) (interface{}, error) {
 	return TreeViewColumnSizing(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TreeViewDropPosition: an enum for determining where a dropped row goes.
 type TreeViewDropPosition int
 
 const (
@@ -2297,6 +2312,7 @@ func marshalTreeViewDropPosition(p uintptr) (interface{}, error) {
 	return TreeViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// TreeViewGridLines: used to indicate which grid lines to draw in a tree view.
 type TreeViewGridLines int
 
 const (
@@ -2314,6 +2330,7 @@ func marshalTreeViewGridLines(p uintptr) (interface{}, error) {
 	return TreeViewGridLines(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// Unit: see also gtk_print_settings_set_paper_width().
 type Unit int
 
 const (
@@ -2331,6 +2348,72 @@ func marshalUnit(p uintptr) (interface{}, error) {
 	return Unit(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// WidgetHelpType: kinds of widget-specific help. Used by the ::show-help
+// signal.
+type WidgetHelpType int
+
+const (
+	// WidgetHelpTypeTooltip: tooltip.
+	WidgetHelpTypeTooltip WidgetHelpType = 0
+	// WidgetHelpTypeWhatsThis: what’s this.
+	WidgetHelpTypeWhatsThis WidgetHelpType = 1
+)
+
+func marshalWidgetHelpType(p uintptr) (interface{}, error) {
+	return WidgetHelpType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WindowPosition: window placement can be influenced using this enumeration.
+// Note that using K_WIN_POS_CENTER_ALWAYS is almost always a bad idea. It won’t
+// necessarily work well with all window managers or on all windowing systems.
+type WindowPosition int
+
+const (
+	// WindowPositionNone: no influence is made on placement.
+	WindowPositionNone WindowPosition = 0
+	// WindowPositionCenter: windows should be placed in the center of the
+	// screen.
+	WindowPositionCenter WindowPosition = 1
+	// WindowPositionMouse: windows should be placed at the current mouse
+	// position.
+	WindowPositionMouse WindowPosition = 2
+	// WindowPositionCenterAlways: keep window centered as it changes size, etc.
+	WindowPositionCenterAlways WindowPosition = 3
+	// WindowPositionCenterOnParent: center the window on its transient parent
+	// (see gtk_window_set_transient_for()).
+	WindowPositionCenterOnParent WindowPosition = 4
+)
+
+func marshalWindowPosition(p uintptr) (interface{}, error) {
+	return WindowPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WindowType: a Window can be one of these types. Most things you’d consider a
+// “window” should have type K_WINDOW_TOPLEVEL; windows with this type are
+// managed by the window manager and have a frame by default (call
+// gtk_window_set_decorated() to toggle the frame). Windows with type
+// K_WINDOW_POPUP are ignored by the window manager; window manager keybindings
+// won’t work on them, the window manager won’t decorate the window with a
+// frame, many GTK+ features that rely on the window manager will not work (e.g.
+// resize grips and maximization/minimization). K_WINDOW_POPUP is used to
+// implement widgets such as Menu or tooltips that you normally don’t think of
+// as windows per se. Nearly all windows should be K_WINDOW_TOPLEVEL. In
+// particular, do not use K_WINDOW_POPUP just to turn off the window borders;
+// use gtk_window_set_decorated() for that.
+type WindowType int
+
+const (
+	// WindowTypeToplevel: a regular window, such as a dialog.
+	WindowTypeToplevel WindowType = 0
+	// WindowTypePopup: a special window such as a tooltip.
+	WindowTypePopup WindowType = 1
+)
+
+func marshalWindowType(p uintptr) (interface{}, error) {
+	return WindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// WrapMode: describes a type of line wrapping.
 type WrapMode int
 
 const (
@@ -2349,4 +2432,1981 @@ const (
 
 func marshalWrapMode(p uintptr) (interface{}, error) {
 	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// AccelGroupsActivate: finds the first accelerator in any AccelGroup attached
+// to @object that matches @accel_key and @accel_mods, and activates that
+// accelerator.
+func AccelGroupsActivate(object **glib.Object, accelKey uint, accelMods gdk.ModifierType) bool
+
+// AccelGroupsFromObject: gets a list of all accel groups which are attached to
+// @object.
+func AccelGroupsFromObject(object **glib.Object) *glib.SList
+
+// AcceleratorGetDefaultModMask: gets the modifier mask.
+//
+// The modifier mask determines which modifiers are considered significant for
+// keyboard accelerators. See gtk_accelerator_set_default_mod_mask().
+func AcceleratorGetDefaultModMask() gdk.ModifierType
+
+// AcceleratorGetLabel: converts an accelerator keyval and modifier mask into a
+// string which can be used to represent the accelerator to the user.
+func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) string
+
+// AcceleratorGetLabelWithKeycode: converts an accelerator keyval and modifier
+// mask into a (possibly translated) string that can be displayed to a user,
+// similarly to gtk_accelerator_get_label(), but handling keycodes.
+//
+// This is only useful for system-level components, applications should use
+// gtk_accelerator_parse() instead.
+func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
+
+// AcceleratorName: converts an accelerator keyval and modifier mask into a
+// string parseable by gtk_accelerator_parse(). For example, if you pass in
+// K_KEY_q and K_CONTROL_MASK, this function returns “&lt;Control&gt;q”.
+//
+// If you need to display accelerators in the user interface, see
+// gtk_accelerator_get_label().
+func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) string
+
+// AcceleratorNameWithKeycode: converts an accelerator keyval and modifier mask
+// into a string parseable by gtk_accelerator_parse_with_keycode(), similarly to
+// gtk_accelerator_name() but handling keycodes. This is only useful for
+// system-level components, applications should use gtk_accelerator_parse()
+// instead.
+func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
+
+// AcceleratorParse: parses a string representing an accelerator. The format
+// looks like “&lt;Control&gt;a” or “&lt;Shift&gt;&lt;Alt&gt;F1” or
+// “&lt;Release&gt;z” (the last one is for key release).
+//
+// The parser is fairly liberal and allows lower or upper case, and also
+// abbreviations such as “&lt;Ctl&gt;” and “&lt;Ctrl&gt;”. Key names are parsed
+// using gdk_keyval_from_name(). For character keys the name is not the symbol,
+// but the lowercase name, e.g. one would use “&lt;Ctrl&gt;minus” instead of
+// “&lt;Ctrl&gt;-”.
+//
+// If the parse fails, @accelerator_key and @accelerator_mods will be set to 0
+// (zero).
+func AcceleratorParse(accelerator string, acceleratorKey *uint, acceleratorMods *gdk.ModifierType)
+
+// AcceleratorParseWithKeycode: parses a string representing an accelerator,
+// similarly to gtk_accelerator_parse() but handles keycodes as well. This is
+// only useful for system-level components, applications should use
+// gtk_accelerator_parse() instead.
+//
+// If @accelerator_codes is given and the result stored in it is non-nil, the
+// result must be freed with g_free().
+//
+// If a keycode is present in the accelerator and no @accelerator_codes is
+// given, the parse will fail.
+//
+// If the parse fails, @accelerator_key, @accelerator_mods and
+// @accelerator_codes will be set to 0 (zero).
+func AcceleratorParseWithKeycode(accelerator string, acceleratorKey *uint, acceleratorMods *gdk.ModifierType)
+
+// AcceleratorSetDefaultModMask: sets the modifiers that will be considered
+// significant for keyboard accelerators. The default mod mask depends on the
+// GDK backend in use, but will typically include K_CONTROL_MASK | K_SHIFT_MASK
+// | K_MOD1_MASK | K_SUPER_MASK | K_HYPER_MASK | K_META_MASK. In other words,
+// Control, Shift, Alt, Super, Hyper and Meta. Other modifiers will by default
+// be ignored by AccelGroup.
+//
+// You must include at least the three modifiers Control, Shift and Alt in any
+// value you pass to this function.
+//
+// The default mod mask should be changed on application startup, before using
+// any accelerator groups.
+func AcceleratorSetDefaultModMask(defaultModMask gdk.ModifierType)
+
+// AcceleratorValid: determines whether a given keyval and modifier mask
+// constitute a valid keyboard accelerator. For example, the K_KEY_a keyval plus
+// K_CONTROL_MASK is valid - this is a “Ctrl+a” accelerator. But, you can't, for
+// instance, use the K_KEY_Control_L keyval as an accelerator.
+func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool
+
+// AlternativeDialogButtonOrder: returns true if dialogs are expected to use an
+// alternative button order on the screen @screen. See
+// gtk_dialog_set_alternative_button_order() for more details about alternative
+// button order.
+//
+// If you need to use this function, you should probably connect to the
+// ::notify:gtk-alternative-button-order signal on the Settings object
+// associated to @screen, in order to be notified if the button order setting
+// changes.
+func AlternativeDialogButtonOrder(screen *gdk.Screen) bool
+
+// BindingEntryAddSignalFromString: parses a signal description from
+// @signal_desc and incorporates it into @binding_set.
+//
+//
+//      bind "key" {
+//        "signalname" (param, ...)
+//        ...
+//      }
+//
+//
+//      unbind "key"
+//
+// Key combinations must be in a format that can be parsed by
+// gtk_accelerator_parse().
+func BindingEntryAddSignalFromString(bindingSet *BindingSet, signalDesc string) glib.TokenType
+
+// BindingEntryAddSignall: override or install a new key binding for @keyval
+// with @modifiers on @binding_set.
+func BindingEntryAddSignall(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType, signalName string, bindingArgs *glib.SList)
+
+// BindingEntryRemove: remove a binding previously installed via
+// gtk_binding_entry_add_signal() on @binding_set.
+func BindingEntryRemove(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType)
+
+// BindingEntrySkip: install a binding on @binding_set which causes key lookups
+// to be aborted, to prevent bindings from lower priority sets to be activated.
+func BindingEntrySkip(bindingSet *BindingSet, keyval uint, modifiers gdk.ModifierType)
+
+// BindingSetByClass: this function returns the binding set named after the type
+// name of the passed in class structure. New binding sets are created on demand
+// by this function.
+func BindingSetByClass(objectClass unsafe.Pointer) *BindingSet
+
+// BindingSetFind: find a binding set by its globally unique name.
+//
+// The @set_name can either be a name used for gtk_binding_set_new() or the type
+// name of a class used in gtk_binding_set_by_class().
+func BindingSetFind(setName string) *BindingSet
+
+// BindingSetNew: GTK+ maintains a global list of binding sets. Each binding set
+// has a unique name which needs to be specified upon creation.
+func BindingSetNew(setName string) *BindingSet
+
+// BindingsActivate: find a key binding matching @keyval and @modifiers and
+// activate the binding on @object.
+func BindingsActivate(object **glib.Object, keyval uint, modifiers gdk.ModifierType) bool
+
+// BindingsActivateEvent: looks up key bindings for @object to find one matching
+// @event, and if one was found, activate it.
+func BindingsActivateEvent(object **glib.Object, event *gdk.EventKey) bool
+
+func BuilderErrorQuark() glib.Quark
+
+// CairoShouldDrawWindow: this function is supposed to be called in Widget::draw
+// implementations for widgets that support multiple windows. @cr must be
+// untransformed from invoking of the draw function. This function will return
+// true if the contents of the given @window are supposed to be drawn and false
+// otherwise. Note that when the drawing was not initiated by the windowing
+// system this function will return true for all windows, so you need to draw
+// the bottommost window first. Also, do not use “else if” statements to check
+// which window should be drawn.
+func CairoShouldDrawWindow(cr *cairo.Context, window *gdk.Window) bool
+
+// CairoTransformToWindow: transforms the given cairo context @cr that from
+// @widget-relative coordinates to @window-relative coordinates. If the
+// @widget’s window is not an ancestor of @window, no modification will be
+// applied.
+//
+// This is the inverse to the transformation GTK applies when preparing an
+// expose event to be emitted with the Widget::draw signal. It is intended to
+// help porting multiwindow widgets from GTK+ 2 to the rendering architecture of
+// GTK+ 3.
+func CairoTransformToWindow(cr *cairo.Context, widget *Widget, window *gdk.Window)
+
+// CheckVersion: checks that the GTK+ library in use is compatible with the
+// given version. Generally you would pass in the constants K_MAJOR_VERSION,
+// K_MINOR_VERSION, K_MICRO_VERSION as the three arguments to this function;
+// that produces a check that the library in use is compatible with the version
+// of GTK+ the application or module was compiled against.
+//
+// Compatibility is defined by two things: first the version of the running
+// library is newer than the version
+// @required_major.required_minor.@required_micro. Second the running library
+// must be binary compatible with the version
+// @required_major.required_minor.@required_micro (same major version.)
+//
+// This function is primarily for GTK+ modules; the module can call this
+// function to check that it wasn’t loaded into an incompatible version of GTK+.
+// However, such a check isn’t completely reliable, since the module may be
+// linked against an old version of GTK+ and calling the old version of
+// gtk_check_version(), but still get loaded into an application using a newer
+// version of GTK+.
+func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string
+
+func CSSProviderErrorQuark() glib.Quark
+
+// DeviceGrabAdd: adds a GTK+ grab on @device, so all the events on @device and
+// its associated pointer or keyboard (if any) are delivered to @widget. If the
+// @block_others parameter is true, any other devices will be unable to interact
+// with @widget during the grab.
+func DeviceGrabAdd(widget *Widget, device *gdk.Device, blockOthers bool)
+
+// DeviceGrabRemove: removes a device grab from the given widget.
+//
+// You have to pair calls to gtk_device_grab_add() and gtk_device_grab_remove().
+func DeviceGrabRemove(widget *Widget, device *gdk.Device)
+
+// DisableSetlocale: prevents gtk_init(), gtk_init_check(), gtk_init_with_args()
+// and gtk_parse_args() from automatically calling `setlocale (LC_ALL, "")`. You
+// would want to use this function if you wanted to set the locale for your
+// program to something other than the user’s locale, or if you wanted to set
+// different values for different locale categories.
+//
+// Most programs should not need to call this function.
+func DisableSetlocale()
+
+// DistributeNaturalAllocation: distributes @extra_space to child @sizes by
+// bringing smaller children up to natural size first.
+//
+// The remaining space will be added to the @minimum_size member of the
+// GtkRequestedSize struct. If all sizes reach their natural size then the
+// remaining space is returned.
+func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) int
+
+// DragCancel: cancels an ongoing drag operation on the source side.
+//
+// If you want to be able to cancel a drag operation in this way, you need to
+// keep a pointer to the drag context, either from an explicit call to
+// gtk_drag_begin_with_coordinates(), or by connecting to Widget::drag-begin.
+//
+// If @context does not refer to an ongoing drag operation, this function does
+// nothing.
+//
+// If a drag is cancelled in this way, the @result argument of
+// Widget::drag-failed is set to @GTK_DRAG_RESULT_ERROR.
+func DragCancel(context *gdk.DragContext)
+
+// DragFinish: informs the drag source that the drop is finished, and that the
+// data of the drag will no longer be required.
+func DragFinish(context *gdk.DragContext, success bool, del bool, time_ uint32)
+
+// DragGetSourceWidget: determines the source widget for a drag.
+func DragGetSourceWidget(context *gdk.DragContext) *Widget
+
+// DragSetIconDefault: sets the icon for a particular drag to the default icon.
+func DragSetIconDefault(context *gdk.DragContext)
+
+// DragSetIconGicon: sets the icon for a given drag from the given @icon. See
+// the documentation for gtk_drag_set_icon_name() for more details about using
+// icons in drag and drop.
+func DragSetIconGicon(context *gdk.DragContext, icon gio.Icon, hotX int, hotY int)
+
+// DragSetIconName: sets the icon for a given drag from a named themed icon. See
+// the docs for IconTheme for more details. Note that the size of the icon
+// depends on the icon theme (the icon is loaded at the symbolic size
+// K_ICON_SIZE_DND), thus @hot_x and @hot_y have to be used with care.
+func DragSetIconName(context *gdk.DragContext, iconName string, hotX int, hotY int)
+
+// DragSetIconPixbuf: sets @pixbuf as the icon for a given drag.
+func DragSetIconPixbuf(context *gdk.DragContext, pixbuf *gdkpixbuf.Pixbuf, hotX int, hotY int)
+
+// DragSetIconStock: sets the icon for a given drag from a stock ID.
+func DragSetIconStock(context *gdk.DragContext, stockID string, hotX int, hotY int)
+
+// DragSetIconSurface: sets @surface as the icon for a given drag. GTK+ retains
+// references for the arguments, and will release them when they are no longer
+// needed.
+//
+// To position the surface relative to the mouse, use
+// cairo_surface_set_device_offset() on @surface. The mouse cursor will be
+// positioned at the (0,0) coordinate of the surface.
+func DragSetIconSurface(context *gdk.DragContext, surface *cairo.Surface)
+
+// DragSetIconWidget: changes the icon for drag operation to a given widget.
+// GTK+ will not destroy the widget, so if you don’t want it to persist, you
+// should connect to the “drag-end” signal and destroy it yourself.
+func DragSetIconWidget(context *gdk.DragContext, widget *Widget, hotX int, hotY int)
+
+// DrawInsertionCursor: draws a text caret on @cr at @location. This is not a
+// style function but merely a convenience function for drawing the standard
+// cursor shape.
+func DrawInsertionCursor(widget *Widget, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool)
+
+// EventsPending: checks if any events are pending.
+//
+// This can be used to update the UI and invoke timeouts etc. while doing some
+// time intensive computation.
+//
+// Updating the UI during a long computation
+//
+//     // computation going on...
+//
+//     while (gtk_events_pending ())
+//       gtk_main_iteration ();
+//
+//     // ...computation continued
+//
+func EventsPending() bool
+
+// False: analogical to gtk_true(), this function does nothing but always
+// returns false.
+func False() bool
+
+// FileChooserErrorQuark: registers an error quark for FileChooser if necessary.
+func FileChooserErrorQuark() glib.Quark
+
+// GetBinaryAge: returns the binary age as passed to `libtool` when building the
+// GTK+ library the process is running against. If `libtool` means nothing to
+// you, don't worry about it.
+func GetBinaryAge() uint
+
+// GetCurrentEvent: obtains a copy of the event currently being processed by
+// GTK+.
+//
+// For example, if you are handling a Button::clicked signal, the current event
+// will be the EventButton that triggered the ::clicked signal.
+func GetCurrentEvent() *gdk.Event
+
+// GetCurrentEventDevice: if there is a current event and it has a device,
+// return that device, otherwise return nil.
+func GetCurrentEventDevice() *gdk.Device
+
+// GetCurrentEventState: if there is a current event and it has a state field,
+// place that state field in @state and return true, otherwise return false.
+func GetCurrentEventState(state *gdk.ModifierType) bool
+
+// GetCurrentEventTime: if there is a current event and it has a timestamp,
+// return that timestamp, otherwise return GDK_CURRENT_TIME.
+func GetCurrentEventTime() uint32
+
+// GetDebugFlags: returns the GTK+ debug flags.
+//
+// This function is intended for GTK+ modules that want to adjust their debug
+// output based on GTK+ debug flags.
+func GetDebugFlags() uint
+
+// GetDefaultLanguage: returns the Language for the default language currently
+// in effect. (Note that this can change over the life of an application.) The
+// default language is derived from the current locale. It determines, for
+// example, whether GTK+ uses the right-to-left or left-to-right text direction.
+//
+// This function is equivalent to pango_language_get_default(). See that
+// function for details.
+func GetDefaultLanguage() *pango.Language
+
+// GetEventWidget: if @event is nil or the event was not associated with any
+// widget, returns nil, otherwise returns the widget that received the event
+// originally.
+func GetEventWidget(event *gdk.Event) *Widget
+
+// GetInterfaceAge: returns the interface age as passed to `libtool` when
+// building the GTK+ library the process is running against. If `libtool` means
+// nothing to you, don't worry about it.
+func GetInterfaceAge() uint
+
+// GetLocaleDirection: get the direction of the current locale. This is the
+// expected reading direction for text and UI.
+//
+// This function depends on the current locale being set with setlocale() and
+// will default to setting the GTK_TEXT_DIR_LTR direction otherwise.
+// GTK_TEXT_DIR_NONE will never be returned.
+//
+// GTK+ sets the default text direction according to the locale during
+// gtk_init(), and you should normally use gtk_widget_get_direction() or
+// gtk_widget_get_default_direction() to obtain the current direcion.
+//
+// This function is only needed rare cases when the locale is changed after GTK+
+// has already been initialized. In this case, you can use it to update the
+// default text direction as follows:
+//
+//    setlocale (LC_ALL, new_locale);
+//    direction = gtk_get_locale_direction ();
+//    gtk_widget_set_default_direction (direction);
+func GetLocaleDirection() TextDirection
+
+// GetMajorVersion: returns the major version number of the GTK+ library. (e.g.
+// in GTK+ version 3.1.5 this is 3.)
+//
+// This function is in the library, so it represents the GTK+ library your code
+// is running against. Contrast with the K_MAJOR_VERSION macro, which represents
+// the major version of the GTK+ headers you have included when compiling your
+// code.
+func GetMajorVersion() uint
+
+// GetMicroVersion: returns the micro version number of the GTK+ library. (e.g.
+// in GTK+ version 3.1.5 this is 5.)
+//
+// This function is in the library, so it represents the GTK+ library your code
+// is are running against. Contrast with the K_MICRO_VERSION macro, which
+// represents the micro version of the GTK+ headers you have included when
+// compiling your code.
+func GetMicroVersion() uint
+
+// GetMinorVersion: returns the minor version number of the GTK+ library. (e.g.
+// in GTK+ version 3.1.5 this is 1.)
+//
+// This function is in the library, so it represents the GTK+ library your code
+// is are running against. Contrast with the K_MINOR_VERSION macro, which
+// represents the minor version of the GTK+ headers you have included when
+// compiling your code.
+func GetMinorVersion() uint
+
+// GetOptionGroup: returns a Group for the commandline arguments recognized by
+// GTK+ and GDK.
+//
+// You should add this group to your Context with g_option_context_add_group(),
+// if you are using g_option_context_parse() to parse your commandline
+// arguments.
+func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup
+
+// GrabGetCurrent: queries the current grab of the default window group.
+func GrabGetCurrent() *Widget
+
+// IconSizeFromName: looks up the icon size associated with @name.
+func IconSizeFromName(name string) int
+
+// IconSizeGetName: gets the canonical name of the given icon size. The returned
+// string is statically allocated and should not be freed.
+func IconSizeGetName(size int) string
+
+// IconSizeLookup: obtains the pixel size of a semantic icon size @size:
+// K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t normally
+// needed, gtk_icon_theme_load_icon() is the usual way to get an icon for
+// rendering, then just look at the size of the rendered pixbuf. The rendered
+// pixbuf may not even correspond to the width/height returned by
+// gtk_icon_size_lookup(), because themes are free to render the pixbuf however
+// they like, including changing the usual size.
+func IconSizeLookup(size int, width *int, height *int) bool
+
+// IconSizeLookupForSettings: obtains the pixel size of a semantic icon size,
+// possibly modified by user preferences for a particular Settings. Normally
+// @size would be K_ICON_SIZE_MENU, K_ICON_SIZE_BUTTON, etc. This function isn’t
+// normally needed, gtk_widget_render_icon_pixbuf() is the usual way to get an
+// icon for rendering, then just look at the size of the rendered pixbuf. The
+// rendered pixbuf may not even correspond to the width/height returned by
+// gtk_icon_size_lookup(), because themes are free to render the pixbuf however
+// they like, including changing the usual size.
+func IconSizeLookupForSettings(settings *Settings, size int, width *int, height *int) bool
+
+// IconSizeRegister: registers a new icon size, along the same lines as
+// K_ICON_SIZE_MENU, etc. Returns the integer value for the size.
+func IconSizeRegister(name string, width int, height int) int
+
+// IconSizeRegisterAlias: registers @alias as another name for @target. So
+// calling gtk_icon_size_from_name() with @alias as argument will return
+// @target.
+func IconSizeRegisterAlias(alias string, target int)
+
+func IconThemeErrorQuark() glib.Quark
+
+// Init: call this function before using any other GTK+ functions in your GUI
+// applications. It will initialize everything needed to operate the toolkit and
+// parses some standard command line options.
+//
+// Although you are expected to pass the @argc, @argv parameters from main() to
+// this function, it is possible to pass nil if @argv is not available or
+// commandline handling is not required.
+//
+// @argc and @argv are adjusted accordingly so your own code will never see
+// those standard arguments.
+//
+// Note that there are some alternative ways to initialize GTK+: if you are
+// calling gtk_parse_args(), gtk_init_check(), gtk_init_with_args() or
+// g_option_context_parse() with the option group returned by
+// gtk_get_option_group(), you don’t have to call gtk_init().
+//
+// And if you are using Application, you don't have to call any of the
+// initialization functions either; the Application::startup handler does it for
+// you.
+//
+// This function will terminate your program if it was unable to initialize the
+// windowing system for some reason. If you want your program to fall back to a
+// textual interface you want to call gtk_init_check() instead.
+//
+// Since 2.18, GTK+ calls `signal (SIGPIPE, SIG_IGN)` during initialization, to
+// ignore SIGPIPE signals, since these are almost never wanted in graphical
+// applications. If you do need to handle SIGPIPE for some reason, reset the
+// handler after gtk_init(), but notice that other libraries (e.g. libdbus or
+// gvfs) might do similar things.
+func Init(argc *int)
+
+// InitCheck: this function does the same work as gtk_init() with only a single
+// change: It does not terminate the program if the commandline arguments
+// couldn’t be parsed or the windowing system can’t be initialized. Instead it
+// returns false on failure.
+//
+// This way the application can fall back to some other means of communication
+// with the user - for example a curses or command line interface.
+//
+// Note that calling any GTK function or instantiating any GTK type after this
+// function returns false results in undefined behavior.
+func InitCheck(argc *int) bool
+
+// InitWithArgs: this function does the same work as gtk_init_check().
+// Additionally, it allows you to add your own commandline options, and it
+// automatically generates nicely formatted `--help` output. Note that your
+// program will be terminated after writing out the help output.
+func InitWithArgs(argc *int, parameterString string, translationDomain string) bool
+
+// KeySnooperInstall: installs a key snooper function, which will get called on
+// all key events before delivering them normally.
+func KeySnooperInstall(snooper KeySnoopFunc, funcData unsafe.Pointer) uint
+
+// KeySnooperRemove: removes the key snooper function with the given id.
+func KeySnooperRemove(snooperHandlerID uint)
+
+// Main: runs the main loop until gtk_main_quit() is called.
+//
+// You can nest calls to gtk_main(). In that case gtk_main_quit() will make the
+// innermost invocation of the main loop return.
+func Main()
+
+// MainDoEvent: processes a single GDK event.
+//
+// This is public only to allow filtering of events between GDK and GTK+. You
+// will not usually need to call this function directly.
+//
+// While you should not call this function directly, you might want to know how
+// exactly events are handled. So here is what this function does with the
+// event:
+//
+// 1. Compress enter/leave notify events. If the event passed build an
+// enter/leave pair together with the next event (peeked from GDK), both events
+// are thrown away. This is to avoid a backlog of (de-)highlighting widgets
+// crossed by the pointer.
+//
+// 2. Find the widget which got the event. If the widget can’t be determined the
+// event is thrown away unless it belongs to a INCR transaction.
+//
+// 3. Then the event is pushed onto a stack so you can query the currently
+// handled event with gtk_get_current_event().
+//
+// 4. The event is sent to a widget. If a grab is active all events for widgets
+// that are not in the contained in the grab widget are sent to the latter with
+// a few exceptions: - Deletion and destruction events are still sent to the
+// event widget for obvious reasons. - Events which directly relate to the
+// visual representation of the event widget. - Leave events are delivered to
+// the event widget if there was an enter event delivered to it before without
+// the paired leave event. - Drag events are not redirected because it is
+// unclear what the semantics of that would be. Another point of interest might
+// be that all key events are first passed through the key snooper functions if
+// there are any. Read the description of gtk_key_snooper_install() if you need
+// this feature.
+//
+// 5. After finishing the delivery the event is popped from the event stack.
+func MainDoEvent(event *gdk.Event)
+
+// MainIteration: runs a single iteration of the mainloop.
+//
+// If no events are waiting to be processed GTK+ will block until the next event
+// is noticed. If you don’t want to block look at gtk_main_iteration_do() or
+// check if any events are pending with gtk_events_pending() first.
+func MainIteration() bool
+
+// MainIterationDo: runs a single iteration of the mainloop. If no events are
+// available either return or block depending on the value of @blocking.
+func MainIterationDo(blocking bool) bool
+
+// MainLevel: asks for the current nesting level of the main loop.
+func MainLevel() uint
+
+// MainQuit: makes the innermost invocation of the main loop return when it
+// regains control.
+func MainQuit()
+
+// PaintArrow: draws an arrow in the given rectangle on @cr using the given
+// parameters. @arrow_type determines the direction of the arrow.
+func PaintArrow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, arrowType ArrowType, fill bool, x int, y int, width int, height int)
+
+// PaintBox: draws a box on @cr with the given parameters.
+func PaintBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int)
+
+// PaintBoxGap: draws a box in @cr using the given style and state and shadow
+// type, leaving a gap in one side.
+func PaintBoxGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int)
+
+// PaintCheck: draws a check button indicator in the given rectangle on @cr with
+// the given parameters.
+func PaintCheck(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int)
+
+// PaintDiamond: draws a diamond in the given rectangle on @window using the
+// given parameters.
+func PaintDiamond(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int)
+
+// PaintExpander: draws an expander as used in TreeView. @x and @y specify the
+// center the expander. The size of the expander is determined by the
+// “expander-size” style property of @widget. (If widget is not specified or
+// doesn’t have an “expander-size” property, an unspecified default size will be
+// used, since the caller doesn't have sufficient information to position the
+// expander, this is likely not useful.) The expander is expander_size pixels
+// tall in the collapsed position and expander_size pixels wide in the expanded
+// position.
+func PaintExpander(style *Style, cr *cairo.Context, stateType StateType, widget *Widget, detail string, x int, y int, expanderStyle ExpanderStyle)
+
+// PaintExtension: draws an extension, i.e. a notebook tab.
+func PaintExtension(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int, gapSide PositionType)
+
+// PaintFlatBox: draws a flat box on @cr with the given parameters.
+func PaintFlatBox(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int)
+
+// PaintFocus: draws a focus indicator around the given rectangle on @cr using
+// the given style.
+func PaintFocus(style *Style, cr *cairo.Context, stateType StateType, widget *Widget, detail string, x int, y int, width int, height int)
+
+// PaintHandle: draws a handle as used in HandleBox and Paned.
+func PaintHandle(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int, orientation Orientation)
+
+// PaintHline: draws a horizontal line from (@x1, @y) to (@x2, @y) in @cr using
+// the given style and state.
+func PaintHline(style *Style, cr *cairo.Context, stateType StateType, widget *Widget, detail string, x1 int, x2 int, y int)
+
+// PaintLayout: draws a layout on @cr using the given parameters.
+func PaintLayout(style *Style, cr *cairo.Context, stateType StateType, useText bool, widget *Widget, detail string, x int, y int, layout *pango.Layout)
+
+// PaintOption: draws a radio button indicator in the given rectangle on @cr
+// with the given parameters.
+func PaintOption(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int)
+
+// PaintResizeGrip: draws a resize grip in the given rectangle on @cr using the
+// given parameters.
+func PaintResizeGrip(style *Style, cr *cairo.Context, stateType StateType, widget *Widget, detail string, edge gdk.WindowEdge, x int, y int, width int, height int)
+
+// PaintShadow: draws a shadow around the given rectangle in @cr using the given
+// style and state and shadow type.
+func PaintShadow(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int)
+
+// PaintShadowGap: draws a shadow around the given rectangle in @cr using the
+// given style and state and shadow type, leaving a gap in one side.
+func PaintShadowGap(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int, gapSide PositionType, gapX int, gapWidth int)
+
+// PaintSlider: draws a slider in the given rectangle on @cr using the given
+// style and orientation.
+func PaintSlider(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int, orientation Orientation)
+
+// PaintSpinner: draws a spinner on @window using the given parameters.
+func PaintSpinner(style *Style, cr *cairo.Context, stateType StateType, widget *Widget, detail string, step uint, x int, y int, width int, height int)
+
+// PaintTab: draws an option menu tab (i.e. the up and down pointing arrows) in
+// the given rectangle on @cr using the given parameters.
+func PaintTab(style *Style, cr *cairo.Context, stateType StateType, shadowType ShadowType, widget *Widget, detail string, x int, y int, width int, height int)
+
+// PaintVline: draws a vertical line from (@x, @y1_) to (@x, @y2_) in @cr using
+// the given style and state.
+func PaintVline(style *Style, cr *cairo.Context, stateType StateType, widget *Widget, detail string, y1 int, y2 int, x int)
+
+// PaperSizeGetDefault: returns the name of the default paper size, which
+// depends on the current locale.
+func PaperSizeGetDefault() string
+
+// PaperSizeGetPaperSizes: creates a list of known paper sizes.
+func PaperSizeGetPaperSizes(includeCustom bool) *glib.List
+
+// ParseArgs: parses command line arguments, and initializes global attributes
+// of GTK+, but does not actually open a connection to a display. (See
+// gdk_display_open(), gdk_get_display_arg_name())
+//
+// Any arguments used by GTK+ or GDK are removed from the array and @argc and
+// @argv are updated accordingly.
+//
+// There is no need to call this function explicitly if you are using
+// gtk_init(), or gtk_init_check().
+//
+// Note that many aspects of GTK+ require a display connection to function, so
+// this way of initializing GTK+ is really only useful for specialized use
+// cases.
+func ParseArgs(argc *int) bool
+
+// PrintErrorQuark: registers an error quark for PrintOperation if necessary.
+func PrintErrorQuark() glib.Quark
+
+// PrintRunPageSetupDialog: runs a page setup dialog, letting the user modify
+// the values from @page_setup. If the user cancels the dialog, the returned
+// PageSetup is identical to the passed in @page_setup, otherwise it contains
+// the modifications done in the dialog.
+//
+// Note that this function may use a recursive mainloop to show the page setup
+// dialog. See gtk_print_run_page_setup_dialog_async() if this is a problem.
+func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *PrintSettings) *PageSetup
+
+// PrintRunPageSetupDialogAsync: runs a page setup dialog, letting the user
+// modify the values from @page_setup.
+//
+// In contrast to gtk_print_run_page_setup_dialog(), this function returns after
+// showing the page setup dialog on platforms that support this, and calls
+// @done_cb from a signal handler for the ::response signal of the dialog.
+func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings *PrintSettings, doneCb PageSetupDoneFunc, data unsafe.Pointer)
+
+// PropagateEvent: sends an event to a widget, propagating the event to parent
+// widgets if the event remains unhandled.
+//
+// Events received by GTK+ from GDK normally begin in gtk_main_do_event().
+// Depending on the type of event, existence of modal dialogs, grabs, etc., the
+// event may be propagated; if so, this function is used.
+//
+// gtk_propagate_event() calls gtk_widget_event() on each widget it decides to
+// send the event to. So gtk_widget_event() is the lowest-level function; it
+// simply emits the Widget::event and possibly an event-specific signal on a
+// widget. gtk_propagate_event() is a bit higher-level, and gtk_main_do_event()
+// is the highest level.
+//
+// All that said, you most likely don’t want to use any of these functions;
+// synthesizing events is rarely needed. There are almost certainly better ways
+// to achieve your goals. For example, use gdk_window_invalidate_rect() or
+// gtk_widget_queue_draw() instead of making up expose events.
+func PropagateEvent(widget *Widget, event *gdk.Event)
+
+// RcAddDefaultFile: adds a file to the list of files to be parsed at the end of
+// gtk_init().
+func RcAddDefaultFile(filename *string)
+
+// RcFindModuleInPath: searches for a theme engine in the GTK+ search path. This
+// function is not useful for applications and should not be used.
+func RcFindModuleInPath(moduleFile string) *string
+
+// RcFindPixmapInPath: looks up a file in pixmap path for the specified
+// Settings. If the file is not found, it outputs a warning message using
+// g_warning() and returns nil.
+func RcFindPixmapInPath(settings *Settings, scanner *glib.Scanner, pixmapFile string) *string
+
+// RcGetDefaultFiles: retrieves the current list of RC files that will be parsed
+// at the end of gtk_init().
+func RcGetDefaultFiles() []string
+
+// RcGetImModuleFile: obtains the path to the IM modules file. See the
+// documentation of the `GTK_IM_MODULE_FILE` environment variable for more
+// details.
+func RcGetImModuleFile() *string
+
+// RcGetImModulePath: obtains the path in which to look for IM modules. See the
+// documentation of the `GTK_PATH` environment variable for more details about
+// looking up modules. This function is useful solely for utilities supplied
+// with GTK+ and should not be used by applications under normal circumstances.
+func RcGetImModulePath() *string
+
+// RcGetModuleDir: returns a directory in which GTK+ looks for theme engines.
+// For full information about the search for theme engines, see the docs for
+// `GTK_PATH` in [Running GTK+ Applications][gtk-running].
+func RcGetModuleDir() *string
+
+// RcGetStyle: finds all matching RC styles for a given widget, composites them
+// together, and then creates a Style representing the composite appearance.
+// (GTK+ actually keeps a cache of previously created styles, so a new style may
+// not be created.)
+func RcGetStyle(widget *Widget) *Style
+
+// RcGetStyleByPaths: creates up a Style from styles defined in a RC file by
+// providing the raw components used in matching. This function may be useful
+// when creating pseudo-widgets that should be themed like widgets but don’t
+// actually have corresponding GTK+ widgets. An example of this would be items
+// inside a GNOME canvas widget.
+//
+//    gtk_widget_path (widget, NULL, &amp;path, NULL);
+//    gtk_widget_class_path (widget, NULL, &amp;class_path, NULL);
+//    gtk_rc_get_style_by_paths (gtk_widget_get_settings (widget),
+//                               path, class_path,
+//                               G_OBJECT_TYPE (widget));
+func RcGetStyleByPaths(settings *Settings, widgetPath string, classPath string, _type glib.Type) *Style
+
+// RcGetThemeDir: returns the standard directory in which themes should be
+// installed. (GTK+ does not actually use this directory itself.)
+func RcGetThemeDir() string
+
+// RcParse: parses a given resource file.
+func RcParse(filename string)
+
+// RcParseColor: parses a color in the format expected in a RC file.
+//
+// Note that theme engines should use gtk_rc_parse_color_full() in order to
+// support symbolic colors.
+func RcParseColor(scanner *glib.Scanner, color *gdk.Color) uint
+
+// RcParseColorFull: parses a color in the format expected in a RC file. If
+// @style is not nil, it will be consulted to resolve references to symbolic
+// colors.
+func RcParseColorFull(scanner *glib.Scanner, style *RcStyle, color *gdk.Color) uint
+
+// RcParsePriority: parses a PathPriorityType variable from the format expected
+// in a RC file.
+func RcParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint
+
+// RcParseState: parses a StateType variable from the format expected in a RC
+// file.
+func RcParseState(scanner *glib.Scanner, state *StateType) uint
+
+// RcParseString: parses resource information directly from a string.
+func RcParseString(rcString string)
+
+// RcPropertyParseBorder: a RcPropertyParser for use with
+// gtk_settings_install_property_parser() or
+// gtk_widget_class_install_style_property_parser() which parses borders in the
+// form `"{ left, right, top, bottom }"` for integers left, right, top and
+// bottom.
+func RcPropertyParseBorder(gstring *glib.String, propertyValue **glib.Value) bool
+
+// RcPropertyParseColor: a RcPropertyParser for use with
+// gtk_settings_install_property_parser() or
+// gtk_widget_class_install_style_property_parser() which parses a color given
+// either by its name or in the form `{ red, green, blue }` where red, green and
+// blue are integers between 0 and 65535 or floating-point numbers between 0 and
+// 1.
+func RcPropertyParseColor(gstring *glib.String, propertyValue **glib.Value) bool
+
+// RcPropertyParseEnum: a RcPropertyParser for use with
+// gtk_settings_install_property_parser() or
+// gtk_widget_class_install_style_property_parser() which parses a single
+// enumeration value.
+//
+// The enumeration value can be specified by its name, its nickname or its
+// numeric value. For consistency with flags parsing, the value may be
+// surrounded by parentheses.
+func RcPropertyParseEnum(gstring *glib.String, propertyValue **glib.Value) bool
+
+// RcPropertyParseFlags: a RcPropertyParser for use with
+// gtk_settings_install_property_parser() or
+// gtk_widget_class_install_style_property_parser() which parses flags.
+//
+// Flags can be specified by their name, their nickname or numerically. Multiple
+// flags can be specified in the form `"( flag1 | flag2 | ... )"`.
+func RcPropertyParseFlags(gstring *glib.String, propertyValue **glib.Value) bool
+
+// RcPropertyParseRequisition: a RcPropertyParser for use with
+// gtk_settings_install_property_parser() or
+// gtk_widget_class_install_style_property_parser() which parses a requisition
+// in the form `"{ width, height }"` for integers width and height.
+func RcPropertyParseRequisition(gstring *glib.String, propertyValue **glib.Value) bool
+
+// RcReparseAll: if the modification time on any previously read file for the
+// default Settings has changed, discard all style information and then reread
+// all previously read RC files.
+func RcReparseAll() bool
+
+// RcReparseAllForSettings: if the modification time on any previously read file
+// for the given Settings has changed, discard all style information and then
+// reread all previously read RC files.
+func RcReparseAllForSettings(settings *Settings, forceLoad bool) bool
+
+// RcResetStyles: this function recomputes the styles for all widgets that use a
+// particular Settings object. (There is one Settings object per Screen, see
+// gtk_settings_get_for_screen()); It is useful when some global parameter has
+// changed that affects the appearance of all widgets, because when a widget
+// gets a new style, it will both redraw and recompute any cached information
+// about its appearance. As an example, it is used when the default font size
+// set by the operating system changes. Note that this function doesn’t affect
+// widgets that have a style set explicitly on them with gtk_widget_set_style().
+func RcResetStyles(settings *Settings)
+
+func RcScannerNew() *glib.Scanner
+
+// RcSetDefaultFiles: sets the list of files that GTK+ will read at the end of
+// gtk_init().
+func RcSetDefaultFiles()
+
+func RecentChooserErrorQuark() glib.Quark
+
+func RecentManagerErrorQuark() glib.Quark
+
+// RenderActivity: renders an activity indicator (such as in Spinner). The state
+// GTK_STATE_FLAG_CHECKED determines whether there is activity going on.
+func RenderActivity(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderArrow: renders an arrow pointing to @angle.
+//
+// Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
+//
+// ![](arrows.png)
+func RenderArrow(context *StyleContext, cr *cairo.Context, angle float64, x float64, y float64, size float64)
+
+// RenderBackground: renders the background of an element.
+//
+// Typical background rendering, showing the effect of `background-image`,
+// `border-width` and `border-radius`:
+//
+// ![](background.png)
+func RenderBackground(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderBackgroundGetClip: returns the area that will be affected (i.e. drawn
+// to) when calling gtk_render_background() for the given @context and
+// rectangle.
+func RenderBackgroundGetClip(context *StyleContext, x float64, y float64, width float64, height float64, outClip *gdk.Rectangle)
+
+// RenderCheck: renders a checkmark (as in a CheckButton).
+//
+// The GTK_STATE_FLAG_CHECKED state determines whether the check is on or off,
+// and GTK_STATE_FLAG_INCONSISTENT determines whether it should be marked as
+// undefined.
+//
+// Typical checkmark rendering:
+//
+// ![](checks.png)
+func RenderCheck(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderExpander: renders an expander (as used in TreeView and Expander) in the
+// area defined by @x, @y, @width, @height. The state GTK_STATE_FLAG_CHECKED
+// determines whether the expander is collapsed or expanded.
+//
+// Typical expander rendering:
+//
+// ![](expanders.png)
+func RenderExpander(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderExtension: renders a extension (as in a Notebook tab) in the rectangle
+// defined by @x, @y, @width, @height. The side where the extension connects to
+// is defined by @gap_side.
+//
+// Typical extension rendering:
+//
+// ![](extensions.png)
+func RenderExtension(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType)
+
+// RenderFocus: renders a focus indicator on the rectangle determined by @x, @y,
+// @width, @height.
+//
+// Typical focus rendering:
+//
+// ![](focus.png)
+func RenderFocus(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderFrame: renders a frame around the rectangle defined by @x, @y, @width,
+// @height.
+//
+// Examples of frame rendering, showing the effect of `border-image`,
+// `border-color`, `border-width`, `border-radius` and junctions:
+//
+// ![](frames.png)
+func RenderFrame(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderFrameGap: renders a frame around the rectangle defined by (@x, @y,
+// @width, @height), leaving a gap on one side. @xy0_gap and @xy1_gap will mean
+// X coordinates for GTK_POS_TOP and GTK_POS_BOTTOM gap sides, and Y coordinates
+// for GTK_POS_LEFT and GTK_POS_RIGHT.
+//
+// Typical rendering of a frame with a gap:
+//
+// ![](frame-gap.png)
+func RenderFrameGap(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xy0Gap float64, xy1Gap float64)
+
+// RenderHandle: renders a handle (as in HandleBox, Paned and Window’s resize
+// grip), in the rectangle determined by @x, @y, @width, @height.
+//
+// Handles rendered for the paned and grip classes:
+//
+// ![](handles.png)
+func RenderHandle(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderIcon: renders the icon in @pixbuf at the specified @x and @y
+// coordinates.
+//
+// This function will render the icon in @pixbuf at exactly its size, regardless
+// of scaling factors, which may not be appropriate when drawing on displays
+// with high pixel densities.
+//
+// You probably want to use gtk_render_icon_surface() instead, if you already
+// have a Cairo surface.
+func RenderIcon(context *StyleContext, cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x float64, y float64)
+
+// RenderIconPixbuf: renders the icon specified by @source at the given @size,
+// returning the result in a pixbuf.
+func RenderIconPixbuf(context *StyleContext, source *IconSource, size int) *gdkpixbuf.Pixbuf
+
+// RenderIconSurface: renders the icon in @surface at the specified @x and @y
+// coordinates.
+func RenderIconSurface(context *StyleContext, cr *cairo.Context, surface *cairo.Surface, x float64, y float64)
+
+// RenderInsertionCursor: draws a text caret on @cr at the specified index of
+// @layout.
+func RenderInsertionCursor(context *StyleContext, cr *cairo.Context, x float64, y float64, layout *pango.Layout, index int, direction pango.Direction)
+
+// RenderLayout: renders @layout on the coordinates @x, @y
+func RenderLayout(context *StyleContext, cr *cairo.Context, x float64, y float64, layout *pango.Layout)
+
+// RenderLine: renders a line from (x0, y0) to (x1, y1).
+func RenderLine(context *StyleContext, cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64)
+
+// RenderOption: renders an option mark (as in a RadioButton), the
+// GTK_STATE_FLAG_CHECKED state will determine whether the option is on or off,
+// and GTK_STATE_FLAG_INCONSISTENT whether it should be marked as undefined.
+//
+// Typical option mark rendering:
+//
+// ![](options.png)
+func RenderOption(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderSlider: renders a slider (as in Scale) in the rectangle defined by @x,
+// @y, @width, @height. @orientation defines whether the slider is vertical or
+// horizontal.
+//
+// Typical slider rendering:
+//
+// ![](sliders.png)
+func RenderSlider(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64, orientation Orientation)
+
+// RgbToHsv: converts a color from RGB space to HSV.
+//
+// Input values must be in the [0.0, 1.0] range; output values will be in the
+// same range.
+func RgbToHsv(r float64, g float64, b float64, h *float64, s *float64, v *float64)
+
+// SelectionAddTarget: appends a specified target to the list of supported
+// targets for a given widget and selection.
+func SelectionAddTarget(widget *Widget, selection gdk.Atom, target gdk.Atom, info uint)
+
+// SelectionAddTargets: prepends a table of targets to the list of supported
+// targets for a given widget and selection.
+func SelectionAddTargets(widget *Widget, selection gdk.Atom, ntargets uint)
+
+// SelectionClearTargets: remove all targets registered for the given selection
+// for the widget.
+func SelectionClearTargets(widget *Widget, selection gdk.Atom)
+
+// SelectionConvert: requests the contents of a selection. When received, a
+// “selection-received” signal will be generated.
+func SelectionConvert(widget *Widget, selection gdk.Atom, target gdk.Atom, time_ uint32) bool
+
+// SelectionOwnerSet: claims ownership of a given selection for a particular
+// widget, or, if @widget is nil, release ownership of the selection.
+func SelectionOwnerSet(widget *Widget, selection gdk.Atom, time_ uint32) bool
+
+// SelectionOwnerSetForDisplay: claim ownership of a given selection for a
+// particular widget, or, if @widget is nil, release ownership of the selection.
+func SelectionOwnerSetForDisplay(display *gdk.Display, widget *Widget, selection gdk.Atom, time_ uint32) bool
+
+// SelectionRemoveAll: removes all handlers and unsets ownership of all
+// selections for a widget. Called when widget is being destroyed. This function
+// will not generally be called by applications.
+func SelectionRemoveAll(widget *Widget)
+
+// SetDebugFlags: sets the GTK+ debug flags.
+func SetDebugFlags(flags uint)
+
+// ShowAboutDialog: this is a convenience function for showing an application’s
+// about box. The constructed dialog is associated with the parent window and
+// reused for future invocations of this function.
+func ShowAboutDialog(parent *Window, firstPropertyName string)
+
+// ShowURI: a convenience function for launching the default application to show
+// the uri. Like gtk_show_uri_on_window(), but takes a screen as transient
+// parent instead of a window.
+//
+// Note that this function is deprecated as it does not pass the necessary
+// information for helpers to parent their dialog properly, when run from
+// sandboxed applications for example.
+func ShowURI(screen *gdk.Screen, uri string, timestamp uint32) bool
+
+// ShowURIOnWindow: this is a convenience function for launching the default
+// application to show the uri. The uri must be of a form understood by GIO
+// (i.e. you need to install gvfs to get support for uri schemes such as http://
+// or ftp://, as only local files are handled by GIO itself). Typical examples
+// are - `file:///home/gnome/pict.jpg` - `http://www.gnome.org` -
+// `mailto:me@gnome.org`
+//
+// Ideally the timestamp is taken from the event triggering the gtk_show_uri()
+// call. If timestamp is not known you can take GDK_CURRENT_TIME.
+//
+// This is the recommended call to be used as it passes information necessary
+// for sandbox helpers to parent their dialogs properly.
+func ShowURIOnWindow(parent *Window, uri string, timestamp uint32) bool
+
+// StockAdd: registers each of the stock items in @items. If an item already
+// exists with the same stock ID as one of the @items, the old item gets
+// replaced. The stock items are copied, so GTK+ does not hold any pointer into
+// @items and @items can be freed. Use gtk_stock_add_static() if @items is
+// persistent and GTK+ need not copy the array.
+func StockAdd(nItems uint)
+
+// StockAddStatic: same as gtk_stock_add(), but doesn’t copy @items, so @items
+// must persist until application exit.
+func StockAddStatic(nItems uint)
+
+// StockListIds: retrieves a list of all known stock IDs added to a IconFactory
+// or registered with gtk_stock_add(). The list must be freed with
+// g_slist_free(), and each string in the list must be freed with g_free().
+func StockListIds() *glib.SList
+
+// StockLookup: fills @item with the registered values for @stock_id, returning
+// true if @stock_id was known.
+func StockLookup(stockID string, item *StockItem) bool
+
+// StockSetTranslateFunc: sets a function to be used for translating the @label
+// of a stock item.
+//
+// If no function is registered for a translation domain, g_dgettext() is used.
+//
+// The function is used for all stock items whose @translation_domain matches
+// @domain. Note that it is possible to use strings different from the actual
+// gettext translation domain of your application for this, as long as your
+// TranslateFunc uses the correct domain when calling dgettext(). This can be
+// useful, e.g. when dealing with message contexts:
+//
+//    GtkStockItem items[] = {
+//     { MY_ITEM1, NC_("odd items", "Item 1"), 0, 0, "odd-item-domain" },
+//     { MY_ITEM2, NC_("even items", "Item 2"), 0, 0, "even-item-domain" },
+//    };
+//
+//    gchar *
+//    my_translate_func (const gchar *msgid,
+//                       gpointer     data)
+//    {
+//      gchar *msgctxt = data;
+//
+//      return (gchar*)g_dpgettext2 (GETTEXT_PACKAGE, msgctxt, msgid);
+//    }
+//
+//    ...
+//
+//    gtk_stock_add (items, G_N_ELEMENTS (items));
+//    gtk_stock_set_translate_func ("odd-item-domain", my_translate_func, "odd items");
+//    gtk_stock_set_translate_func ("even-item-domain", my_translate_func, "even items");
+//
+func StockSetTranslateFunc(domain string, _func TranslateFunc, data unsafe.Pointer, notify unsafe.Pointer)
+
+// TargetTableFree: this function frees a target table as returned by
+// gtk_target_table_new_from_list()
+func TargetTableFree(nTargets int)
+
+// TargetTableNewFromList: this function creates an TargetEntry array that
+// contains the same targets as the passed list. The returned table is newly
+// allocated and should be freed using gtk_target_table_free() when no longer
+// needed.
+func TargetTableNewFromList(list *TargetList, nTargets *int) []TargetEntry
+
+// TargetsIncludeImage: determines if any of the targets in @targets can be used
+// to provide a Pixbuf.
+func TargetsIncludeImage(nTargets int, writable bool) bool
+
+// TargetsIncludeRichText: determines if any of the targets in @targets can be
+// used to provide rich text.
+func TargetsIncludeRichText(nTargets int, buffer *TextBuffer) bool
+
+// TargetsIncludeText: determines if any of the targets in @targets can be used
+// to provide text.
+func TargetsIncludeText(nTargets int) bool
+
+// TargetsIncludeURI: determines if any of the targets in @targets can be used
+// to provide an uri list.
+func TargetsIncludeURI(nTargets int) bool
+
+// TestCreateSimpleWindow: create a simple window with window title
+// @window_title and text contents @dialog_text. The window will quit any
+// running gtk_main()-loop when destroyed, and it will automatically be
+// destroyed upon test function teardown.
+func TestCreateSimpleWindow(windowTitle string, dialogText string) *Widget
+
+// TestCreateWidget: this function wraps g_object_new() for widget types. It’ll
+// automatically show all created non window widgets, also g_object_ref_sink()
+// them (to keep them alive across a running test) and set them up for
+// destruction during the next test teardown phase.
+func TestCreateWidget(widgetType glib.Type, firstPropertyName string) *Widget
+
+// TestDisplayButtonWindow: create a window with window title @window_title,
+// text contents @dialog_text, and a number of buttons, according to the paired
+// argument list given as @... parameters. Each button is created with a @label
+// and a ::clicked signal handler that incremrents the integer stored in @nump.
+// The window will be automatically shown with gtk_widget_show_now() after
+// creation, so when this function returns it has already been mapped, resized
+// and positioned on screen. The window will quit any running gtk_main()-loop
+// when destroyed, and it will automatically be destroyed upon test function
+// teardown.
+func TestDisplayButtonWindow(windowTitle string, dialogText string) *Widget
+
+// TestFindLabel: this function will search @widget and all its descendants for
+// a GtkLabel widget with a text string matching @label_pattern. The
+// @label_pattern may contain asterisks “*” and question marks “?” as
+// placeholders, g_pattern_match() is used for the matching. Note that locales
+// other than "C“ tend to alter (translate” label strings, so this function is
+// genrally only useful in test programs with predetermined locales, see
+// gtk_test_init() for more details.
+func TestFindLabel(widget *Widget, labelPattern string) *Widget
+
+// TestFindSibling: this function will search siblings of @base_widget and
+// siblings of its ancestors for all widgets matching @widget_type. Of the
+// matching widgets, the one that is geometrically closest to @base_widget will
+// be returned. The general purpose of this function is to find the most likely
+// “action” widget, relative to another labeling widget. Such as finding a
+// button or text entry widget, given its corresponding label widget.
+func TestFindSibling(baseWidget *Widget, widgetType glib.Type) *Widget
+
+// TestFindWidget: this function will search the descendants of @widget for a
+// widget of type @widget_type that has a label matching @label_pattern next to
+// it. This is most useful for automated GUI testing, e.g. to find the “OK”
+// button in a dialog and synthesize clicks on it. However see
+// gtk_test_find_label(), gtk_test_find_sibling() and gtk_test_widget_click()
+// for possible caveats involving the search of such widgets and synthesizing
+// widget events.
+func TestFindWidget(widget *Widget, labelPattern string, widgetType glib.Type) *Widget
+
+// TestInit: this function is used to initialize a GTK+ test program.
+//
+// It will in turn call g_test_init() and gtk_init() to properly initialize the
+// testing framework and graphical toolkit. It’ll also set the program’s locale
+// to “C” and prevent loading of rc files and Gtk+ modules. This is done to make
+// tets program environments as deterministic as possible.
+//
+// Like gtk_init() and g_test_init(), any known arguments will be processed and
+// stripped from @argc and @argv.
+func TestInit(argcp *int)
+
+// TestListAllTypes: return the type ids that have been registered after calling
+// gtk_test_register_all_types().
+func TestListAllTypes(nTypes *uint) []glib.Type
+
+// TestRegisterAllTypes: force registration of all core Gtk+ and Gdk object
+// types. This allowes to refer to any of those object types via
+// g_type_from_name() after calling this function.
+func TestRegisterAllTypes()
+
+// TestSliderGetValue: retrive the literal adjustment value for GtkRange based
+// widgets and spin buttons. Note that the value returned by this function is
+// anything between the lower and upper bounds of the adjustment belonging to
+// @widget, and is not a percentage as passed in to gtk_test_slider_set_perc().
+func TestSliderGetValue(widget *Widget) float64
+
+// TestSliderSetPerc: this function will adjust the slider position of all
+// GtkRange based widgets, such as scrollbars or scales, it’ll also adjust spin
+// buttons. The adjustment value of these widgets is set to a value between the
+// lower and upper limits, according to the @percentage argument.
+func TestSliderSetPerc(widget *Widget, percentage float64)
+
+// TestSpinButtonClick: this function will generate a @button click in the
+// upwards or downwards spin button arrow areas, usually leading to an increase
+// or decrease of spin button’s value.
+func TestSpinButtonClick(spinner *SpinButton, button uint, upwards bool) bool
+
+// TestTextGet: retrive the text string of @widget if it is a GtkLabel,
+// GtkEditable (entry and text widgets) or GtkTextView.
+func TestTextGet(widget *Widget) string
+
+// TestTextSet: set the text string of @widget to @string if it is a GtkLabel,
+// GtkEditable (entry and text widgets) or GtkTextView.
+func TestTextSet(widget *Widget, string string)
+
+// TestWidgetClick: this function will generate a @button click (button press
+// and button release event) in the middle of the first GdkWindow found that
+// belongs to @widget. For windowless widgets like Button (which returns false
+// from gtk_widget_get_has_window()), this will often be an input-only event
+// window. For other widgets, this is usually widget-&gt;window. Certain caveats
+// should be considered when using this function, in particular because the
+// mouse pointer is warped to the button click location, see
+// gdk_test_simulate_button() for details.
+func TestWidgetClick(widget *Widget, button uint, modifiers gdk.ModifierType) bool
+
+// TestWidgetSendKey: this function will generate keyboard press and release
+// events in the middle of the first GdkWindow found that belongs to @widget.
+// For windowless widgets like Button (which returns false from
+// gtk_widget_get_has_window()), this will often be an input-only event window.
+// For other widgets, this is usually widget-&gt;window. Certain caveats should
+// be considered when using this function, in particular because the mouse
+// pointer is warped to the key press location, see gdk_test_simulate_key() for
+// details.
+func TestWidgetSendKey(widget *Widget, keyval uint, modifiers gdk.ModifierType) bool
+
+// TestWidgetWaitForDraw: enters the main loop and waits for @widget to be
+// “drawn”. In this context that means it waits for the frame clock of @widget
+// to have run a full styling, layout and drawing cycle.
+//
+// This function is intended to be used for syncing with actions that depend on
+// @widget relayouting or on interaction with the display server.
+func TestWidgetWaitForDraw(widget *Widget)
+
+// TreeGetRowDragData: obtains a @tree_model and @path from selection data of
+// target type GTK_TREE_MODEL_ROW. Normally called from a drag_data_received
+// handler. This function can only be used if @selection_data originates from
+// the same process that’s calling this function, because a pointer to the tree
+// model is being passed around. If you aren’t in the same process, then you'll
+// get memory corruption. In the TreeDragDest drag_data_received handler, you
+// can assume that selection data of type GTK_TREE_MODEL_ROW is in from the
+// current process. The returned path must be freed with gtk_tree_path_free().
+func TreeGetRowDragData(selectionData *SelectionData, treeModel *TreeModel, path **TreePath) bool
+
+// TreeRowReferenceDeleted: lets a set of row reference created by
+// gtk_tree_row_reference_new_proxy() know that the model emitted the
+// TreeModel::row-deleted signal.
+func TreeRowReferenceDeleted(proxy **glib.Object, path *TreePath)
+
+// TreeRowReferenceInserted: lets a set of row reference created by
+// gtk_tree_row_reference_new_proxy() know that the model emitted the
+// TreeModel::row-inserted signal.
+func TreeRowReferenceInserted(proxy **glib.Object, path *TreePath)
+
+// TreeRowReferenceReordered: lets a set of row reference created by
+// gtk_tree_row_reference_new_proxy() know that the model emitted the
+// TreeModel::rows-reordered signal.
+func TreeRowReferenceReordered(proxy **glib.Object, path *TreePath, iter *TreeIter)
+
+// TreeSetRowDragData: sets selection data of target type GTK_TREE_MODEL_ROW.
+// Normally used in a drag_data_get handler.
+func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path *TreePath) bool
+
+// True: all this function does it to return true.
+//
+// This can be useful for example if you want to inhibit the deletion of a
+// window. Of course you should not do this as the user expects a reaction from
+// clicking the close icon of the window...
+//
+// A persistent window
+//
+//    #include &lt;gtk/gtk.h&gt;
+//
+//    int
+//    main (int argc, char **argv)
+//    {
+//      GtkWidget *win, *but;
+//      const char *text = "Close yourself. I mean it!";
+//
+//      gtk_init (&amp;argc, &amp;argv);
+//
+//      win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+//      g_signal_connect (win,
+//                        "delete-event",
+//                        G_CALLBACK (gtk_true),
+//                        NULL);
+//      g_signal_connect (win, "destroy",
+//                        G_CALLBACK (gtk_main_quit),
+//                        NULL);
+//
+//      but = gtk_button_new_with_label (text);
+//      g_signal_connect_swapped (but, "clicked",
+//                                G_CALLBACK (gtk_object_destroy),
+//                                win);
+//      gtk_container_add (GTK_CONTAINER (win), but);
+//
+//      gtk_widget_show_all (win);
+//
+//      gtk_main ();
+//
+//      return 0;
+//    }
+//
+func True() bool
+
+type AccelGroupEntry struct {
+	Key AccelKey
+
+	Closure **glib.Closure
+
+	AccelPathQuark glib.Quark
+}
+
+type AccelKey struct {
+	// AccelKey: the accelerator keyval
+	AccelKey uint
+	// AccelMods: the accelerator modifiers
+	AccelMods gdk.ModifierType
+	// AccelFlags: the accelerator flags
+	AccelFlags uint
+}
+
+// ActionEntry: gtkActionEntry structs are used with
+// gtk_action_group_add_actions() to construct actions.
+type ActionEntry struct {
+	// Name: the name of the action.
+	Name string
+	// StockID: the stock id for the action, or the name of an icon from the
+	// icon theme.
+	StockID string
+	// Label: the label for the action. This field should typically be marked
+	// for translation, see gtk_action_group_set_translation_domain(). If @label
+	// is nil, the label of the stock item with id @stock_id is used.
+	Label string
+	// Accelerator: the accelerator for the action, in the format understood by
+	// gtk_accelerator_parse().
+	Accelerator string
+	// Tooltip: the tooltip for the action. This field should typically be
+	// marked for translation, see gtk_action_group_set_translation_domain().
+	Tooltip string
+}
+
+// BindingArg: a BindingArg holds the data associated with an argument for a key
+// binding signal emission as stored in BindingSignal.
+type BindingArg struct {
+	// ArgType: implementation detail
+	ArgType glib.Type
+}
+
+// BindingEntry: each key binding element of a binding sets binding list is
+// represented by a GtkBindingEntry.
+type BindingEntry struct {
+	// Keyval: key value to match
+	Keyval uint
+	// Modifiers: key modifiers to match
+	Modifiers gdk.ModifierType
+	// BindingSet: binding set this entry belongs to
+	BindingSet *BindingSet
+	// Destroyed: implementation detail
+	Destroyed uint
+	// InEmission: implementation detail
+	InEmission uint
+	// MarksUnbound: implementation detail
+	MarksUnbound uint
+	// SetNext: linked list of entries maintained by binding set
+	SetNext *BindingEntry
+	// HashNext: implementation detail
+	HashNext *BindingEntry
+	// Signals: action signals of this entry
+	Signals *BindingSignal
+}
+
+// BindingSet: a binding set maintains a list of activatable key bindings. A
+// single binding set can match multiple types of widgets. Similar to style
+// contexts, can be matched by any information contained in a widgets
+// WidgetPath. When a binding within a set is matched upon activation, an action
+// signal is emitted on the target widget to carry out the actual activation.
+type BindingSet struct {
+	// SetName: unique name of this binding set
+	SetName string
+	// Priority: unused
+	Priority int
+	// WidgetPathPspecs: unused
+	WidgetPathPspecs *glib.SList
+	// WidgetClassPspecs: unused
+	WidgetClassPspecs *glib.SList
+	// ClassBranchPspecs: unused
+	ClassBranchPspecs *glib.SList
+	// Entries: the key binding entries in this binding set
+	Entries *BindingEntry
+	// Current: implementation detail
+	Current *BindingEntry
+	// Parsed: whether this binding set stems from a CSS file and is reset upon
+	// theme changes
+	Parsed uint
+}
+
+// BindingSignal: a GtkBindingSignal stores the necessary information to
+// activate a widget in response to a key press via a signal emission.
+type BindingSignal struct {
+	// Next: implementation detail
+	Next *BindingSignal
+	// SignalName: the action signal to be emitted
+	SignalName string
+	// NArgs: number of arguments specified for the signal
+	NArgs uint
+	// Args: the arguments specified for the signal
+	Args []BindingArg
+}
+
+// Border: a struct that specifies a border around a rectangular area that can
+// be of different width on each side.
+type Border struct {
+	// Left: the width of the left border
+	Left int16
+	// Right: the width of the right border
+	Right int16
+	// Top: the width of the top border
+	Top int16
+	// Bottom: the width of the bottom border
+	Bottom int16
+}
+
+// CSSSection: defines a part of a CSS document. Because sections are nested
+// into one another, you can use gtk_css_section_get_parent() to get the
+// containing region.
+type CSSSection struct {
+	native *C.GtkCssSection
+}
+
+// FileFilterInfo: a FileFilterInfo-struct is used to pass information about the
+// tested file to gtk_file_filter_filter().
+type FileFilterInfo struct {
+	// Contains: flags indicating which of the following fields need are filled
+	Contains FileFilterFlags
+	// Filename: the filename of the file being tested
+	Filename string
+	// URI: the URI for the file being tested
+	URI string
+	// DisplayName: the string that will be used to display the file in the file
+	// chooser
+	DisplayName string
+	// MimeType: the mime type of the file
+	MimeType string
+}
+
+type FixedChild struct {
+	Widget *Widget
+
+	X int
+
+	Y int
+}
+
+// Gradient: gtkGradient is a boxed type that represents a gradient. It is the
+// result of parsing a [gradient expression][gtkcssprovider-gradients]. To
+// obtain the gradient represented by a GtkGradient, it has to be resolved with
+// gtk_gradient_resolve(), which replaces all symbolic color references by the
+// colors they refer to (in a given context) and constructs a #cairo_pattern_t
+// value.
+//
+// It is not normally necessary to deal directly with Gradients, since they are
+// mostly used behind the scenes by StyleContext and CssProvider.
+//
+// Gradient is deprecated. It was used internally by GTK’s CSS engine to
+// represent gradients. As its handling is not conforming to modern web
+// standards, it is not used anymore. If you want to use gradients in your own
+// code, please use Cairo directly.
+type Gradient struct {
+	native *C.GtkGradient
+}
+
+// IMContextInfo: bookkeeping information about a loadable input method.
+type IMContextInfo struct {
+	// ContextID: the unique identification string of the input method.
+	ContextID string
+	// ContextName: the human-readable name of the input method.
+	ContextName string
+	// Domain: translation domain to be used with dgettext()
+	Domain string
+	// DomainDirname: name of locale directory for use with bindtextdomain()
+	DomainDirname string
+	// DefaultLocales: a colon-separated list of locales where this input method
+	// should be the default. The asterisk “*” sets the default for all locales.
+	DefaultLocales string
+}
+
+type IconSet struct {
+	native *C.GtkIconSet
+}
+
+type IconSource struct {
+	native *C.GtkIconSource
+}
+
+// PadActionEntry: struct defining a pad action entry.
+type PadActionEntry struct {
+	// Type: the type of pad feature that will trigger this action entry.
+	Type PadActionType
+	// Index: the 0-indexed button/ring/strip number that will trigger this
+	// action entry.
+	Index int
+	// Mode: the mode that will trigger this action entry, or -1 for all modes.
+	Mode int
+	// Label: human readable description of this action entry, this string
+	// should be deemed user-visible.
+	Label string
+	// ActionName: action name that will be activated in the Group.
+	ActionName string
+}
+
+// PageRange: see also gtk_print_settings_set_page_ranges().
+type PageRange struct {
+	// Start: start of page range.
+	Start int
+	// End: end of page range.
+	End int
+}
+
+// PaperSize: gtkPaperSize handles paper sizes. It uses the standard called [PWG
+// 5101.1-2002 PWG: Standard for Media Standardized
+// Names](http://www.pwg.org/standards.html) to name the paper sizes (and to get
+// the data for the page sizes). In addition to standard paper sizes,
+// GtkPaperSize allows to construct custom paper sizes with arbitrary
+// dimensions.
+//
+// The PaperSize object stores not only the dimensions (width and height) of a
+// paper size and its name, it also provides default [print
+// margins][print-margins].
+//
+// Printing support has been added in GTK+ 2.10.
+type PaperSize struct {
+	native *C.GtkPaperSize
+}
+
+// RadioActionEntry: gtkRadioActionEntry structs are used with
+// gtk_action_group_add_radio_actions() to construct groups of radio actions.
+type RadioActionEntry struct {
+	// Name: the name of the action.
+	Name string
+	// StockID: the stock id for the action, or the name of an icon from the
+	// icon theme.
+	StockID string
+	// Label: the label for the action. This field should typically be marked
+	// for translation, see gtk_action_group_set_translation_domain().
+	Label string
+	// Accelerator: the accelerator for the action, in the format understood by
+	// gtk_accelerator_parse().
+	Accelerator string
+	// Tooltip: the tooltip for the action. This field should typically be
+	// marked for translation, see gtk_action_group_set_translation_domain().
+	Tooltip string
+	// Value: the value to set on the radio action. See
+	// gtk_radio_action_get_current_value().
+	Value int
+}
+
+// RcProperty: deprecated
+type RcProperty struct {
+	// TypeName: quark-ified type identifier
+	TypeName glib.Quark
+	// PropertyName: quark-ified property identifier like
+	// “GtkScrollbar::spacing”
+	PropertyName glib.Quark
+	// Origin: field similar to one found in SettingsValue
+	Origin string
+	// Value: field similar to one found in SettingsValue
+	Value *glib.Value
+}
+
+// RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
+// registering a recently used resource.
+type RecentData struct {
+	// DisplayName: a UTF-8 encoded string, containing the name of the recently
+	// used resource to be displayed, or nil;
+	DisplayName string
+	// Description: a UTF-8 encoded string, containing a short description of
+	// the resource, or nil;
+	Description string
+	// MimeType: the MIME type of the resource;
+	MimeType string
+	// AppName: the name of the application that is registering this recently
+	// used resource;
+	AppName string
+	// AppExec: command line used to launch this resource; may contain the “\f”
+	// and “\u” escape characters which will be expanded to the resource file
+	// path and URI respectively when the command line is retrieved;
+	AppExec string
+	// Groups: a vector of strings containing groups names;
+	Groups []string
+	// IsPrivate: whether this resource should be displayed only by the
+	// applications that have registered it or not.
+	IsPrivate bool
+}
+
+// RecentFilterInfo: a GtkRecentFilterInfo struct is used to pass information
+// about the tested file to gtk_recent_filter_filter().
+type RecentFilterInfo struct {
+	// Contains: gtkRecentFilterFlags to indicate which fields are set.
+	Contains RecentFilterFlags
+	// URI: the URI of the file being tested.
+	URI string
+	// DisplayName: the string that will be used to display the file in the
+	// recent chooser.
+	DisplayName string
+	// MimeType: MIME type of the file.
+	MimeType string
+	// Applications: the list of applications that have registered the file.
+	Applications []string
+	// Groups: the groups to which the file belongs to.
+	Groups []string
+	// Age: the number of days elapsed since the file has been registered.
+	Age int
+}
+
+// RecentInfo: gtkRecentInfo-struct contains private data only, and should be
+// accessed using the provided API.
+//
+// RecentInfo constains all the meta-data associated with an entry in the
+// recently used files list.
+type RecentInfo struct {
+	native *C.GtkRecentInfo
+}
+
+// RequestedSize: represents a request of a screen object in a given
+// orientation. These are primarily used in container implementations when
+// allocating a natural size for children calling. See
+// gtk_distribute_natural_allocation().
+type RequestedSize struct {
+	// Data: a client pointer
+	Data unsafe.Pointer
+	// MinimumSize: the minimum size needed for allocation in a given
+	// orientation
+	MinimumSize int
+	// NaturalSize: the natural size for allocation in a given orientation
+	NaturalSize int
+}
+
+// Requisition: a Requisition-struct represents the desired size of a widget.
+// See [GtkWidget’s geometry management section][geometry-management] for more
+// information.
+type Requisition struct {
+	// Width: the widget’s desired width
+	Width int
+	// Height: the widget’s desired height
+	Height int
+}
+
+type SelectionData struct {
+	native *C.GtkSelectionData
+}
+
+type SettingsValue struct {
+	// Origin: origin should be something like “filename:linenumber” for rc
+	// files, or e.g. “XProperty” for other sources.
+	Origin string
+	// Value: valid types are LONG, DOUBLE and STRING corresponding to the token
+	// parsed, or a GSTRING holding an unparsed statement
+	Value *glib.Value
+}
+
+type StockItem struct {
+	// StockID: identifier.
+	StockID string
+	// Label: user visible label.
+	Label string
+	// Modifier: modifier type for keyboard accelerator
+	Modifier gdk.ModifierType
+	// Keyval: keyboard accelerator
+	Keyval uint
+	// TranslationDomain: translation domain of the menu or toolbar item
+	TranslationDomain string
+}
+
+// SymbolicColor: gtkSymbolicColor is a boxed type that represents a symbolic
+// color. It is the result of parsing a [color
+// expression][gtkcssprovider-symbolic-colors]. To obtain the color represented
+// by a GtkSymbolicColor, it has to be resolved with
+// gtk_symbolic_color_resolve(), which replaces all symbolic color references by
+// the colors they refer to (in a given context) and evaluates mix, shade and
+// other expressions, resulting in a RGBA value.
+//
+// It is not normally necessary to deal directly with SymbolicColors, since they
+// are mostly used behind the scenes by StyleContext and CssProvider.
+//
+// SymbolicColor is deprecated. Symbolic colors are considered an implementation
+// detail of GTK+.
+type SymbolicColor struct {
+	native *C.GtkSymbolicColor
+}
+
+type TableChild struct {
+	Widget *Widget
+
+	LeftAttach uint16
+
+	RightAttach uint16
+
+	TopAttach uint16
+
+	BottomAttach uint16
+
+	Xpadding uint16
+
+	Ypadding uint16
+
+	Xexpand uint
+
+	Yexpand uint
+
+	Xshrink uint
+
+	Yshrink uint
+
+	Xfill uint
+
+	Yfill uint
+}
+
+type TableRowCol struct {
+	Requisition uint16
+
+	Allocation uint16
+
+	Spacing uint16
+
+	NeedExpand uint
+
+	NeedShrink uint
+
+	Expand uint
+
+	Shrink uint
+
+	Empty uint
+}
+
+// TargetEntry: a TargetEntry represents a single type of data than can be
+// supplied for by a widget for a selection or for supplied or received during
+// drag-and-drop.
+type TargetEntry struct {
+	// Target: a string representation of the target type
+	Target string
+	// Flags: gtkTargetFlags for DND
+	Flags uint
+	// Info: an application-assigned integer ID which will get passed as a
+	// parameter to e.g the Widget::selection-get signal. It allows the
+	// application to identify the target type without extensive string
+	// compares.
+	Info uint
+}
+
+// TargetList: a TargetList-struct is a reference counted list of TargetPair and
+// should be treated as opaque.
+type TargetList struct {
+	native *C.GtkTargetList
+}
+
+// TargetPair: a TargetPair is used to represent the same information as a table
+// of TargetEntry, but in an efficient form.
+type TargetPair struct {
+	// Target: gdkAtom representation of the target type
+	Target gdk.Atom
+	// Flags: gtkTargetFlags for DND
+	Flags uint
+	// Info: an application-assigned integer ID which will get passed as a
+	// parameter to e.g the Widget::selection-get signal. It allows the
+	// application to identify the target type without extensive string
+	// compares.
+	Info uint
+}
+
+type TextAppearance struct {
+	// BgColor: background Color.
+	BgColor gdk.Color
+	// FgColor: foreground Color.
+	FgColor gdk.Color
+	// Rise: super/subscript rise, can be negative.
+	Rise int
+	// Underline: pangoUnderline
+	Underline uint
+	// Strikethrough: strikethrough style
+	Strikethrough uint
+	// DrawBg: whether to use background-related values; this is irrelevant for
+	// the values struct when in a tag, but is used for the composite values
+	// struct; it’s true if any of the tags being composited had background
+	// stuff set.
+	DrawBg uint
+	// InsideSelection: this are only used when we are actually laying out and
+	// rendering a paragraph; not when a TextAppearance is part of a
+	// TextAttributes.
+	InsideSelection uint
+	// IsText: this are only used when we are actually laying out and rendering
+	// a paragraph; not when a TextAppearance is part of a TextAttributes.
+	IsText uint
+}
+
+// TextAttributes: using TextAttributes directly should rarely be necessary.
+// It’s primarily useful with gtk_text_iter_get_attributes(). As with most GTK+
+// structs, the fields in this struct should only be read, never modified
+// directly.
+type TextAttributes struct {
+
+	// Appearance: gtkTextAppearance for text.
+	Appearance TextAppearance
+	// Justification: gtkJustification for text.
+	Justification Justification
+	// Direction: gtkTextDirection for text.
+	Direction TextDirection
+	// Font: pangoFontDescription for text.
+	Font *pango.FontDescription
+	// FontScale: font scale factor.
+	FontScale float64
+	// LeftMargin: width of the left margin in pixels.
+	LeftMargin int
+	// RightMargin: width of the right margin in pixels.
+	RightMargin int
+	// Indent: amount to indent the paragraph, in pixels.
+	Indent int
+	// PixelsAboveLines: pixels of blank space above paragraphs.
+	PixelsAboveLines int
+	// PixelsBelowLines: pixels of blank space below paragraphs.
+	PixelsBelowLines int
+	// PixelsInsideWrap: pixels of blank space between wrapped lines in a
+	// paragraph.
+	PixelsInsideWrap int
+	// Tabs: custom TabArray for this text.
+	Tabs *pango.TabArray
+	// WrapMode: gtkWrapMode for text.
+	WrapMode WrapMode
+	// Language: pangoLanguage for text.
+	Language *pango.Language
+
+	// Invisible: hide the text.
+	Invisible uint
+	// BgFullHeight: background is fit to full line height rather than baseline
+	// +/- ascent/descent (font height).
+	BgFullHeight uint
+	// Editable: can edit this text.
+	Editable uint
+	// NoFallback: whether to disable font fallback.
+	NoFallback uint
+
+	// LetterSpacing: extra space to insert between graphemes, in Pango units
+	LetterSpacing int
+	native        *C.GtkTextAttributes
+}
+
+// TextIter: you may wish to begin by reading the [text widget conceptual
+// overview][TextWidget] which gives an overview of all the objects and data
+// types related to the text widget and how they work together.
+type TextIter struct {
+	native *C.GtkTextIter
+}
+
+// ToggleActionEntry: gtkToggleActionEntry structs are used with
+// gtk_action_group_add_toggle_actions() to construct toggle actions.
+type ToggleActionEntry struct {
+	// Name: the name of the action.
+	Name string
+	// StockID: the stock id for the action, or the name of an icon from the
+	// icon theme.
+	StockID string
+	// Label: the label for the action. This field should typically be marked
+	// for translation, see gtk_action_group_set_translation_domain().
+	Label string
+	// Accelerator: the accelerator for the action, in the format understood by
+	// gtk_accelerator_parse().
+	Accelerator string
+	// Tooltip: the tooltip for the action. This field should typically be
+	// marked for translation, see gtk_action_group_set_translation_domain().
+	Tooltip string
+
+	// IsActive: the initial state of the toggle action.
+	IsActive bool
+}
+
+// TreeIter: the TreeIter is the primary structure for accessing a TreeModel.
+// Models are expected to put a unique integer in the @stamp member, and put
+// model-specific data in the three @user_data members.
+type TreeIter struct {
+	// Stamp: a unique stamp to catch invalid iterators
+	Stamp int
+	// UserData: model-specific data
+	UserData unsafe.Pointer
+	// UserData2: model-specific data
+	UserData2 unsafe.Pointer
+	// UserData3: model-specific data
+	UserData3 unsafe.Pointer
+}
+
+type TreePath struct {
+	native *C.GtkTreePath
+}
+
+// TreeRowReference: a GtkTreeRowReference tracks model changes so that it
+// always refers to the same row (a TreePath refers to a position, not a fixed
+// row). Create a new GtkTreeRowReference with gtk_tree_row_reference_new().
+type TreeRowReference struct {
+	native *C.GtkTreeRowReference
+}
+
+// WidgetPath: gtkWidgetPath is a boxed type that represents a widget hierarchy
+// from the topmost widget, typically a toplevel, to any child. This widget path
+// abstraction is used in StyleContext on behalf of the real widget in order to
+// query style information.
+//
+// If you are using GTK+ widgets, you probably will not need to use this API
+// directly, as there is gtk_widget_get_path(), and the style context returned
+// by gtk_widget_get_style_context() will be automatically updated on widget
+// hierarchy changes.
+//
+// The widget path generation is generally simple:
+//
+// Defining a button within a window
+//
+//    {
+//      GtkWidgetPath *path;
+//
+//      path = gtk_widget_path_new ();
+//      gtk_widget_path_append_type (path, GTK_TYPE_WINDOW);
+//      gtk_widget_path_append_type (path, GTK_TYPE_BUTTON);
+//    }
+//
+//
+// Although more complex information, such as widget names, or different classes
+// (property that may be used by other widget types) and intermediate regions
+// may be included:
+//
+// Defining the first tab widget in a notebook
+//
+//    {
+//      GtkWidgetPath *path;
+//      guint pos;
+//
+//      path = gtk_widget_path_new ();
+//
+//      pos = gtk_widget_path_append_type (path, GTK_TYPE_NOTEBOOK);
+//      gtk_widget_path_iter_add_region (path, pos, "tab", GTK_REGION_EVEN | GTK_REGION_FIRST);
+//
+//      pos = gtk_widget_path_append_type (path, GTK_TYPE_LABEL);
+//      gtk_widget_path_iter_set_name (path, pos, "first tab label");
+//    }
+//
+//
+// All this information will be used to match the style information that applies
+// to the described widget.
+type WidgetPath struct {
+	native *C.GtkWidgetPath
 }

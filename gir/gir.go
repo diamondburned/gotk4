@@ -169,52 +169,46 @@ type TypeFindResult struct {
 	SameNamespace bool
 
 	// Only one of these fields are not nil. They should also be read-only.
+	Alias     *Alias
 	Class     *Class
+	Interface *Interface
+	Record    *Record
 	Enum      *Enum
 	Function  *Function
+	Union     *Union
+	Bitfield  *Bitfield
 	Callback  *Callback
-	Interface *Interface
 
+	// TODO: Constant, Annotations, Boxed
 	// TODO: Methods
 	// TODO: Enum Members
-}
-
-// IsPtr returns true if the resulting type is a pointer.
-func (res *TypeFindResult) IsPtr() bool {
-	return res.Ptr() > 0
-}
-
-// Ptr returns the level of nested pointers.
-func (res *TypeFindResult) Ptr() int {
-	_, ctype := res.Info()
-	ptr := strings.Count(ctype, "*")
-
-	// Edge case: interfaces must not be pointers. We should still sometimes
-	// allow for pointers to interfaces, if needed, but this likely won't work.
-	if ptr > 0 && res.Interface != nil {
-		ptr--
-	}
-
-	return ptr
 }
 
 // Info gets the name and C type of the resulting type. The name returned is in
 // camel case.
 func (res *TypeFindResult) Info() (name, ctype string) {
 	switch {
+	case res.Alias != nil:
+		return res.Alias.Name, res.Alias.CType
 	case res.Class != nil:
 		return res.Class.Name, res.Class.CType
+	case res.Interface != nil:
+		return res.Interface.Name, res.Interface.CType
+	case res.Record != nil:
+		return res.Record.Name, res.Record.CType
 	case res.Enum != nil:
 		return res.Enum.Name, res.Enum.CType
 	case res.Function != nil:
 		return res.Function.Name, res.Function.CType
+	case res.Union != nil:
+		return res.Union.Name, res.Union.CType
+	case res.Bitfield != nil:
+		return res.Bitfield.Name, res.Bitfield.CType
 	case res.Callback != nil:
 		return res.Callback.Name, res.Callback.CType
-	case res.Interface != nil:
-		return res.Interface.Name, res.Interface.CType
 	}
 
-	panic("TypeFindResult has all 5 fields nil")
+	panic("TypeFindResult has all fields nil")
 }
 
 // FindType finds a type in the repositories from the given current namespace
@@ -248,6 +242,13 @@ func (repos *Repositories) FindType(nspName, nspVersion, typ string) *TypeFindRe
 		return nil
 	}
 
+	for _, alias := range r.Namespace.Aliases {
+		if alias.Name == typ {
+			r.Alias = &alias
+			return &r
+		}
+	}
+
 	for _, class := range r.Namespace.Classes {
 		if class.Name == typ {
 			r.Class = &class
@@ -262,9 +263,30 @@ func (repos *Repositories) FindType(nspName, nspVersion, typ string) *TypeFindRe
 		}
 	}
 
+	for _, record := range r.Namespace.Records {
+		if record.Name == typ {
+			r.Record = &record
+			return &r
+		}
+	}
+
 	for _, function := range r.Namespace.Functions {
 		if function.Name == typ {
 			r.Function = &function
+			return &r
+		}
+	}
+
+	for _, union := range r.Namespace.Unions {
+		if union.Name == typ {
+			r.Union = &union
+			return &r
+		}
+	}
+
+	for _, bitfield := range r.Namespace.Bitfields {
+		if bitfield.Name == typ {
+			r.Bitfield = &bitfield
 			return &r
 		}
 	}
@@ -286,58 +308,58 @@ func (repos *Repositories) FindType(nspName, nspVersion, typ string) *TypeFindRe
 	return nil
 }
 
-// FindCType works like FindType but for C types.
-func (repos *Repositories) FindCType(cTyp string) *TypeFindResult {
-	r := TypeFindResult{
-		NamespaceFindResult: &NamespaceFindResult{},
-	}
+// // FindCType works like FindType but for C types.
+// func (repos *Repositories) FindCType(cTyp string) *TypeFindResult {
+// 	r := TypeFindResult{
+// 		NamespaceFindResult: &NamespaceFindResult{},
+// 	}
 
-	for _, r.Repository = range *repos {
-		for _, r.Namespace = range r.Repository.Namespaces {
-			// Avoid searching the whole namespace by verifying the prefix.
-			if !strings.HasPrefix(cTyp, r.Namespace.CIdentifierPrefixes) {
-				continue
-			}
+// 	for _, r.Repository = range *repos {
+// 		for _, r.Namespace = range r.Repository.Namespaces {
+// 			// Avoid searching the whole namespace by verifying the prefix.
+// 			if !strings.HasPrefix(cTyp, r.Namespace.CIdentifierPrefixes) {
+// 				continue
+// 			}
 
-			for _, class := range r.Namespace.Classes {
-				if class.Name == cTyp {
-					r.Class = &class
-					return &r
-				}
-			}
+// 			for _, class := range r.Namespace.Classes {
+// 				if class.Name == cTyp {
+// 					r.Class = &class
+// 					return &r
+// 				}
+// 			}
 
-			for _, enum := range r.Namespace.Enums {
-				if enum.Name == cTyp {
-					r.Enum = &enum
-					return &r
-				}
-			}
+// 			for _, enum := range r.Namespace.Enums {
+// 				if enum.Name == cTyp {
+// 					r.Enum = &enum
+// 					return &r
+// 				}
+// 			}
 
-			for _, function := range r.Namespace.Functions {
-				if function.Name == cTyp {
-					r.Function = &function
-					return &r
-				}
-			}
+// 			for _, function := range r.Namespace.Functions {
+// 				if function.Name == cTyp {
+// 					r.Function = &function
+// 					return &r
+// 				}
+// 			}
 
-			for _, callback := range r.Namespace.Callbacks {
-				if callback.Name == cTyp {
-					r.Callback = &callback
-					return &r
-				}
-			}
+// 			for _, callback := range r.Namespace.Callbacks {
+// 				if callback.Name == cTyp {
+// 					r.Callback = &callback
+// 					return &r
+// 				}
+// 			}
 
-			for _, iface := range r.Namespace.Interfaces {
-				if iface.Name == cTyp {
-					r.Interface = &iface
-					return &r
-				}
-			}
-		}
-	}
+// 			for _, iface := range r.Namespace.Interfaces {
+// 				if iface.Name == cTyp {
+// 					r.Interface = &iface
+// 					return &r
+// 				}
+// 			}
+// 		}
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
 // PkgRepository wraps a Repository to add additional information.
 type PkgRepository struct {

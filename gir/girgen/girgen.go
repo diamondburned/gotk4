@@ -200,17 +200,17 @@ func (ng *NamespaceGenerator) _resolveType(typ gir.Type) *resolvedType {
 		return builtinType("float64", typ)
 	case "gint", "gssize":
 		return builtinType("int", typ)
-	case "gint8", "gchar": // nightmarenightmarenightmarenightmarenightmarenightmare
+	case "gint8":
 		return builtinType("int8", typ)
 	case "gint16", "gshort":
 		return builtinType("int16", typ)
-	case "gint32", "glong":
+	case "gint32", "glong", "int32":
 		return builtinType("int32", typ)
 	case "gint64":
 		return builtinType("int64", typ)
 	case "guint", "gsize":
 		return builtinType("uint", typ)
-	case "guchar":
+	case "guchar", "gchar":
 		return builtinType("byte", typ)
 	case "guint8":
 		return builtinType("uint8", typ)

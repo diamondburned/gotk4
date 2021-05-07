@@ -74,7 +74,7 @@ type Buffer struct {
 // char array instead of a OTTag for convenience.
 type FeatureMap struct {
 	// FeatureName: feature tag in represented as four-letter ASCII string.
-	FeatureName [5]int8
+	FeatureName [5]byte
 	// PropertyBit: the property bit to use for this feature. See
 	// pango_ot_ruleset_add_feature() for details.
 	PropertyBit uint32

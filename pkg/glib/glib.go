@@ -107,7 +107,7 @@ type RecMutexLocker struct{}
 //
 // If using String with autocleanups, g_autoptr() must be used rather than
 // g_autofree(), so that the reference counting metadata is also freed.
-type RefString int8
+type RefString byte
 
 // Strv: a typedef alias for gchar**. This is mostly useful when used together
 // with g_auto().
@@ -1710,7 +1710,7 @@ func Access(filename *string, mode int) int
 // AsciiDigitValue: determines the numeric value of a character as a decimal
 // digit. Differs from g_unichar_digit_value() because it takes a char, so
 // there's no worry about sign extension if characters are signed.
-func AsciiDigitValue(c int8) int
+func AsciiDigitValue(c byte) int
 
 // AsciiDtostr: converts a #gdouble to a string, using the '.' as decimal point.
 //
@@ -1879,7 +1879,7 @@ func AsciiStrup(str string, len int) string
 // character set. Also unlike the standard library function, this takes and
 // returns a char, not an int, so don't call it on EOF but no need to worry
 // about casting to #guchar before passing a possibly non-ASCII character in.
-func AsciiTolower(c int8) int8
+func AsciiTolower(c byte) byte
 
 // AsciiToupper: convert a character to ASCII upper case.
 //
@@ -1889,18 +1889,18 @@ func AsciiTolower(c int8) int8
 // character set. Also unlike the standard library function, this takes and
 // returns a char, not an int, so don't call it on EOF but no need to worry
 // about casting to #guchar before passing a possibly non-ASCII character in.
-func AsciiToupper(c int8) int8
+func AsciiToupper(c byte) byte
 
 // AsciiXdigitValue: determines the numeric value of a character as a
 // hexadecimal digit. Differs from g_unichar_xdigit_value() because it takes a
 // char, so there's no worry about sign extension if characters are signed.
-func AsciiXdigitValue(c int8) int
+func AsciiXdigitValue(c byte) int
 
 func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string)
 
 func AssertionMessage(domain string, file string, line int, _func string, message string)
 
-func AssertionMessageCmpnum(domain string, file string, line int, _func string, expr string, arg1 float64, cmp string, arg2 float64, numtype int8)
+func AssertionMessageCmpnum(domain string, file string, line int, _func string, expr string, arg1 float64, cmp string, arg2 float64, numtype byte)
 
 func AssertionMessageCmpstr(domain string, file string, line int, _func string, expr string, arg1 string, cmp string, arg2 string)
 
@@ -5741,7 +5741,7 @@ func StrTokenizeAndFold(string string, translitLocale string) []string
 //
 // reformatted = g_strcanon (g_strdup (const_str), "abc", '?'); ... g_free
 // (reformatted);
-func Strcanon(string string, validChars string, substitutor int8) string
+func Strcanon(string string, validChars string, substitutor byte) string
 
 // Strcasecmp: a case-insensitive string comparison, corresponding to the
 // standard strcasecmp() function on platforms which support it.
@@ -5792,7 +5792,7 @@ func Strconcat(string1 string) string
 //
 // reformatted = g_strdelimit (g_strdup (const_str), "abc", '?'); ... g_free
 // (reformatted);
-func Strdelimit(string string, delimiters string, newDelimiter int8) string
+func Strdelimit(string string, delimiters string, newDelimiter byte) string
 
 // Strdown: converts a string to lower case.
 func Strdown(string string) string
@@ -5943,7 +5943,7 @@ func Strndup(str string, n uint) string
 
 // Strnfill: creates a new string @length bytes long filled with @fill_char. The
 // returned string should be freed when no longer needed.
-func Strnfill(length uint, fillChar int8) string
+func Strnfill(length uint, fillChar byte) string
 
 // Strreverse: reverses all of the bytes in a string. For example, `g_strreverse
 // ("abcdef")` will result in "fedcba".
@@ -8160,7 +8160,7 @@ type OptionEntry struct {
 	// ShortName: if an option has a short name, it can be specified
 	// `-short_name` in a commandline. @short_name must be a printable ASCII
 	// character different from '-', or zero if the option has no short name.
-	ShortName int8
+	ShortName byte
 	// Flags: flags from Flags
 	Flags int
 	// Arg: the type of the option, as a Arg

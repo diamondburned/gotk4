@@ -23,7 +23,9 @@ var recordIgnoreSuffixes = []string{
 }
 
 func ignoreRecord(rec gir.Record) bool {
-	if rec.Disguised || strings.HasPrefix(rec.Name, "_") {
+	// GLibIsGTypeStructFor seems to be records used in addition to classes due
+	// to C? Not sure, but we likely don't need it.
+	if rec.Disguised || rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
 		return true
 	}
 

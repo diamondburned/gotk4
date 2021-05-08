@@ -19,6 +19,8 @@ func init() {
 
 type Int32 int32
 
+func LibraryVersion()
+
 type Bitmap struct {
 	native *C.FT_Bitmap
 }

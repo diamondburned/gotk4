@@ -5,6 +5,7 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/cairo"
 	"github.com/diamondburned/gotk4/gdk"
 	"github.com/diamondburned/gotk4/gio"
 	"github.com/diamondburned/gotk4/glib"
@@ -2676,6 +2677,12 @@ func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display, accel
 // instance, use the K_KEY_Control_L keyval as an accelerator.
 func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool
 
+func AccessiblePropertyInitValue(property AccessibleProperty, value **glib.Value)
+
+func AccessibleRelationInitValue(relation AccessibleRelation, value **glib.Value)
+
+func AccessibleStateInitValue(state AccessibleState, value **glib.Value)
+
 // BitsetIterInitAt: initializes @iter to point to @target. If @target is not
 // found, finds the next value after it. If no value >= @target exists in @set,
 // this function returns false.
@@ -2717,6 +2724,15 @@ func ConstraintVflParserErrorQuark() glib.Quark
 func CSSParserErrorQuark() glib.Quark
 
 func CSSParserWarningQuark() glib.Quark
+
+// DisableSetlocale: prevents gtk_init(), gtk_init_check() and gtk_parse_args()
+// from automatically calling `setlocale (LC_ALL, "")`. You would want to use
+// this function if you wanted to set the locale for your program to something
+// other than the user’s locale, or if you wanted to set different values for
+// different locale categories.
+//
+// Most programs should not need to call this function.
+func DisableSetlocale()
 
 // DistributeNaturalAllocation: distributes @extra_space to child @sizes by
 // bringing smaller children up to natural size first.
@@ -2801,7 +2817,33 @@ func GetMicroVersion() uint
 // compiling your code.
 func GetMinorVersion() uint
 
+// HsvToRgb: converts a color from HSV space to RGB.
+//
+// Input values must be in the [0.0, 1.0] range; output values will be in the
+// same range.
+func HsvToRgb(h float32, s float32, v float32, r *float32, g *float32, b *float32)
+
 func IconThemeErrorQuark() glib.Quark
+
+func ImModulesInit()
+
+// Init: call this function before using any other GTK functions in your GUI
+// applications. It will initialize everything needed to operate the toolkit and
+// parses some standard command line options.
+//
+// If you are using Application, you don't have to call gtk_init() or
+// gtk_init_check(); the #GApplication::startup handler does it for you.
+//
+// This function will terminate your program if it was unable to initialize the
+// windowing system for some reason. If you want your program to fall back to a
+// textual interface you want to call gtk_init_check() instead.
+//
+// GTK calls `signal (SIGPIPE, SIG_IGN)` during initialization, to ignore
+// SIGPIPE signals, since these are almost never wanted in graphical
+// applications. If you do need to handle SIGPIPE for some reason, reset the
+// handler after gtk_init(), but notice that other libraries (e.g. libdbus or
+// gvfs) might do similar things.
+func Init()
 
 // InitCheck: this function does the same work as gtk_init() with only a single
 // change: It does not terminate the program if the windowing system can’t be
@@ -2834,11 +2876,123 @@ func PrintErrorQuark() glib.Quark
 // dialog. See gtk_print_run_page_setup_dialog_async() if this is a problem.
 func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *PrintSettings) *PageSetup
 
+// PrintRunPageSetupDialogAsync: runs a page setup dialog, letting the user
+// modify the values from @page_setup.
+//
+// In contrast to gtk_print_run_page_setup_dialog(), this function returns after
+// showing the page setup dialog on platforms that support this, and calls
+// @done_cb from a signal handler for the ::response signal of the dialog.
+func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings *PrintSettings, doneCb PageSetupDoneFunc, data unsafe.Pointer)
+
 func RecentManagerErrorQuark() glib.Quark
+
+// RenderActivity: renders an activity indicator (such as in Spinner). The state
+// GTK_STATE_FLAG_CHECKED determines whether there is activity going on.
+func RenderActivity(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderArrow: renders an arrow pointing to @angle.
+//
+// Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
+//
+// ![](arrows.png)
+func RenderArrow(context *StyleContext, cr *cairo.Context, angle float64, x float64, y float64, size float64)
+
+// RenderBackground: renders the background of an element.
+//
+// Typical background rendering, showing the effect of `background-image`,
+// `border-width` and `border-radius`:
+//
+// ![](background.png)
+func RenderBackground(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderCheck: renders a checkmark (as in a CheckButton).
+//
+// The GTK_STATE_FLAG_CHECKED state determines whether the check is on or off,
+// and GTK_STATE_FLAG_INCONSISTENT determines whether it should be marked as
+// undefined.
+//
+// Typical checkmark rendering:
+//
+// ![](checks.png)
+func RenderCheck(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderExpander: renders an expander (as used in TreeView and Expander) in the
+// area defined by @x, @y, @width, @height. The state GTK_STATE_FLAG_CHECKED
+// determines whether the expander is collapsed or expanded.
+//
+// Typical expander rendering:
+//
+// ![](expanders.png)
+func RenderExpander(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderFocus: renders a focus indicator on the rectangle determined by @x, @y,
+// @width, @height.
+//
+// Typical focus rendering:
+//
+// ![](focus.png)
+func RenderFocus(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderFrame: renders a frame around the rectangle defined by @x, @y, @width,
+// @height.
+//
+// Examples of frame rendering, showing the effect of `border-image`,
+// `border-color`, `border-width`, `border-radius` and junctions:
+//
+// ![](frames.png)
+func RenderFrame(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderHandle: renders a handle (as in Paned and Window’s resize grip), in the
+// rectangle determined by @x, @y, @width, @height.
+//
+// Handles rendered for the paned and grip classes:
+//
+// ![](handles.png)
+func RenderHandle(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RenderLayout: renders @layout on the coordinates @x, @y
+func RenderLayout(context *StyleContext, cr *cairo.Context, x float64, y float64, layout *pango.Layout)
+
+// RenderLine: renders a line from (x0, y0) to (x1, y1).
+func RenderLine(context *StyleContext, cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64)
+
+// RenderOption: renders an option mark (as in a radio button), the
+// GTK_STATE_FLAG_CHECKED state will determine whether the option is on or off,
+// and GTK_STATE_FLAG_INCONSISTENT whether it should be marked as undefined.
+//
+// Typical option mark rendering:
+//
+// ![](options.png)
+func RenderOption(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+
+// RgbToHsv: converts a color from RGB space to HSV.
+//
+// Input values must be in the [0.0, 1.0] range; output values will be in the
+// same range.
+func RgbToHsv(r float32, g float32, b float32, h *float32, s *float32, v *float32)
+
+// SetDebugFlags: sets the GTK debug flags.
+func SetDebugFlags(flags DebugFlags)
+
+// ShowURI: this function launches the default application for showing a given
+// uri, or shows an error dialog if that fails.
+func ShowURI(parent *Window, uri string, timestamp uint32)
+
+// ShowURIFull: this function launches the default application for showing a
+// given uri.
+//
+// The @callback will be called when the launch is completed. It should call
+// gtk_show_uri_full_finish() to obtain the result.
+//
+// This is the recommended call to be used as it passes information necessary
+// for sandbox helpers to parent their dialogs properly.
+func ShowURIFull(parent *Window, uri string, timestamp uint32, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
 
 // ShowURIFullFinish: finishes the gtk_show_uri() call and returns the result of
 // the operation.
 func ShowURIFullFinish(parent *Window, result gio.AsyncResult) bool
+
+func TestAccessibleAssertionMessageRole(domain string, file string, line int, _func string, expr string, accessible Accessible, expectedRole AccessibleRole, actualRole AccessibleRole)
 
 // TestAccessibleHasProperty: checks whether the Accessible has @property set.
 func TestAccessibleHasProperty(accessible Accessible, property AccessibleProperty) bool
@@ -2857,11 +3011,40 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool
 // gtk_test_register_all_types().
 func TestListAllTypes(nTypes *uint) []glib.Type
 
+// TestRegisterAllTypes: force registration of all core GTK object types.
+//
+// This allowes to refer to any of those object types via g_type_from_name()
+// after calling this function.
+func TestRegisterAllTypes()
+
+// TestWidgetWaitForDraw: enters the main loop and waits for @widget to be
+// “drawn”. In this context that means it waits for the frame clock of @widget
+// to have run a full styling, layout and drawing cycle.
+//
+// This function is intended to be used for syncing with actions that depend on
+// @widget relayouting or on interaction with the display server.
+func TestWidgetWaitForDraw(widget *Widget)
+
 // TreeGetRowDragData: obtains a @tree_model and @path from value of target type
 // GTK_TYPE_TREE_ROW_DATA.
 //
 // The returned path must be freed with gtk_tree_path_free().
 func TreeGetRowDragData(value **glib.Value, treeModel *TreeModel, path **TreePath) bool
+
+// TreeRowReferenceDeleted: lets a set of row reference created by
+// gtk_tree_row_reference_new_proxy() know that the model emitted the
+// TreeModel::row-deleted signal.
+func TreeRowReferenceDeleted(proxy **glib.Object, path *TreePath)
+
+// TreeRowReferenceInserted: lets a set of row reference created by
+// gtk_tree_row_reference_new_proxy() know that the model emitted the
+// TreeModel::row-inserted signal.
+func TreeRowReferenceInserted(proxy **glib.Object, path *TreePath)
+
+// TreeRowReferenceReordered: lets a set of row reference created by
+// gtk_tree_row_reference_new_proxy() know that the model emitted the
+// TreeModel::rows-reordered signal.
+func TreeRowReferenceReordered(proxy **glib.Object, path *TreePath, iter *TreeIter, newOrder []int)
 
 // ValueDupExpression: retrieves the Expression stored inside the given @value,
 // and acquires a reference to it.
@@ -2869,6 +3052,16 @@ func ValueDupExpression(value **glib.Value) *Expression
 
 // ValueGetExpression: retrieves the Expression stored inside the given @value.
 func ValueGetExpression(value **glib.Value) *Expression
+
+// ValueSetExpression: stores the given Expression inside @value.
+//
+// The #GValue will acquire a reference to the @expression.
+func ValueSetExpression(value **glib.Value, expression *Expression)
+
+// ValueTakeExpression: stores the given Expression inside @value.
+//
+// This function transfers the ownership of the @expression to the #GValue.
+func ValueTakeExpression(value **glib.Value, expression *Expression)
 
 // Bitset: gtkBitset is a data structure for representing a set of unsigned
 // integers. Another name for this data structure is "bitmap".

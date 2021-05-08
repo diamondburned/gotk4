@@ -1194,6 +1194,10 @@ func marshalWindowWindowClass(p uintptr) (interface{}, error) {
 	return WindowWindowClass(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// AddOptionEntriesLibgtkOnly: appends gdk option entries to the passed in
+// option group. This is not public API and must not be used by applications.
+func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup)
+
 // AtomIntern: finds or creates an atom corresponding to a given string.
 func AtomIntern(atomName string, onlyIfExists bool) Atom
 
@@ -1208,6 +1212,9 @@ func AtomIntern(atomName string, onlyIfExists bool) Atom
 // ever unload the module again (e.g. do not use this function in GTK+ theme
 // engines).
 func AtomInternStaticString(atomName string) Atom
+
+// Beep: emits a short beep on the default display.
+func Beep()
 
 // CairoCreate: creates a Cairo context for drawing to @window.
 //
@@ -1224,6 +1231,24 @@ func AtomInternStaticString(atomName string) Atom
 // this for you when drawing a widget.
 func CairoCreate(window *Window) *cairo.Context
 
+// CairoDrawFromGl: this is the main way to draw GL content in GTK+. It takes a
+// render buffer ID (@source_type == RENDERBUFFER) or a texture id (@source_type
+// == TEXTURE) and draws it onto @cr with an OVER operation, respecting the
+// current clip. The top left corner of the rectangle specified by @x, @y,
+// @width and @height will be drawn at the current (0,0) position of the
+// cairo_t.
+//
+// This will work for *all* cairo_t, as long as @window is realized, but the
+// fallback implementation that reads back the pixels from the buffer may be
+// used in the general case. In the case of direct drawing to a window with no
+// special effects applied to @cr it will however use a more efficient approach.
+//
+// For RENDERBUFFER the code will always fall back to software for buffers with
+// alpha components, so make sure you use TEXTURE if using alpha.
+//
+// Calling this may change the current GL context.
+func CairoDrawFromGl(cr *cairo.Context, window *Window, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
+
 // CairoGetClipRectangle: this is a convenience function around
 // cairo_clip_extents(). It rounds the clip extents to integer coordinates and
 // returns a boolean indicating if a clip area exists.
@@ -1233,12 +1258,40 @@ func CairoGetClipRectangle(cr *cairo.Context, rect *Rectangle) bool
 // context @cr.
 func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext
 
+// CairoRectangle: adds the given rectangle to the current path of @cr.
+func CairoRectangle(cr *cairo.Context, rectangle *Rectangle)
+
+// CairoRegion: adds the given region to the current path of @cr.
+func CairoRegion(cr *cairo.Context, region *cairo.Region)
+
 // CairoRegionCreateFromSurface: creates region that describes covers the area
 // where the given @surface is more than 50% opaque.
 //
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region
+
+// CairoSetSourceColor: sets the specified Color as the source color of @cr.
+func CairoSetSourceColor(cr *cairo.Context, color *Color)
+
+// CairoSetSourcePixbuf: sets the given pixbuf as the source pattern for @cr.
+//
+// The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
+// the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
+func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64)
+
+// CairoSetSourceRgba: sets the specified RGBA as the source color of @cr.
+func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA)
+
+// CairoSetSourceWindow: sets the given window as the source pattern for @cr.
+//
+// The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
+// the origin of @window is @x, @y. The window contains all its subwindows when
+// rendering.
+//
+// Note that the contents of @window are undefined outside of the visible part
+// of @window, so use this function with care.
+func CairoSetSourceWindow(cr *cairo.Context, window *Window, x float64, y float64)
 
 // CairoSurfaceCreateFromPixbuf: creates an image surface with the same contents
 // as the pixbuf.
@@ -1254,6 +1307,24 @@ func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow
 // (White in the four forms is “\#fff”, “\#ffffff”, “\#fffffffff” and
 // “\#ffffffffffff”).
 func ColorParse(spec string, color *Color) bool
+
+// DisableMultidevice: disables multidevice support in GDK. This call must
+// happen prior to gdk_display_open(), gtk_init(), gtk_init_with_args() or
+// gtk_init_check() in order to take effect.
+//
+// Most common GTK+ applications won’t ever need to call this. Only applications
+// that do mixed GDK/Xlib calls could want to disable multidevice support if
+// such Xlib code deals with input devices in any way and doesn’t observe the
+// presence of XInput 2.
+func DisableMultidevice()
+
+// DragAbort: aborts a drag without dropping.
+//
+// This function is called by the drag source.
+//
+// This function does not need to be called in managed drag and drop operations.
+// See gdk_drag_context_manage_dnd() for more information.
+func DragAbort(context *DragContext, time_ uint32)
 
 // DragBegin: starts a drag and creates a new drag context for it. This function
 // assumes that the drag is controlled by the client pointer device, use
@@ -1272,10 +1343,36 @@ func DragBeginForDevice(window *Window, device *Device, targets *glib.List) *Dra
 // This function is called by the drag source.
 func DragBeginFromPoint(window *Window, device *Device, targets *glib.List, xRoot int, yRoot int) *DragContext
 
+// DragDrop: drops on the current destination.
+//
+// This function is called by the drag source.
+//
+// This function does not need to be called in managed drag and drop operations.
+// See gdk_drag_context_manage_dnd() for more information.
+func DragDrop(context *DragContext, time_ uint32)
+
+// DragDropDone: inform GDK if the drop ended successfully. Passing false for
+// @success may trigger a drag cancellation animation.
+//
+// This function is called by the drag source, and should be the last call
+// before dropping the reference to the @context.
+//
+// The DragContext will only take the first gdk_drag_drop_done() call as
+// effective, if this function is called multiple times, all subsequent calls
+// will be ignored.
+func DragDropDone(context *DragContext, success bool)
+
 // DragDropSucceeded: returns whether the dropped data has been successfully
 // transferred. This function is intended to be used while handling a
 // GDK_DROP_FINISHED event, its return value is meaningless at other times.
 func DragDropSucceeded(context *DragContext) bool
+
+// DragFindWindowForScreen: finds the destination window and DND protocol to use
+// at the given pointer position.
+//
+// This function is called by the drag source to obtain the @dest_window and
+// @protocol parameters for gdk_drag_motion().
+func DragFindWindowForScreen(context *DragContext, dragWindow *Window, screen *Screen, xRoot int, yRoot int, destWindow **Window, protocol *DragProtocol)
 
 // DragGetSelection: returns the selection atom for the current source window.
 func DragGetSelection(context *DragContext) Atom
@@ -1289,6 +1386,23 @@ func DragGetSelection(context *DragContext) Atom
 // See gdk_drag_context_manage_dnd() for more information.
 func DragMotion(context *DragContext, destWindow *Window, protocol DragProtocol, xRoot int, yRoot int, suggestedAction DragAction, possibleActions DragAction, time_ uint32) bool
 
+// DragStatus: selects one of the actions offered by the drag source.
+//
+// This function is called by the drag destination in response to
+// gdk_drag_motion() called by the drag source.
+func DragStatus(context *DragContext, action DragAction, time_ uint32)
+
+// DropFinish: ends the drag operation after a drop.
+//
+// This function is called by the drag destination.
+func DropFinish(context *DragContext, success bool, time_ uint32)
+
+// DropReply: accepts or rejects a drop.
+//
+// This function is called by the drag destination in response to a drop
+// initiated by the drag source.
+func DropReply(context *DragContext, accepted bool, time_ uint32)
+
 // ErrorTrapPop: removes an error trap pushed with gdk_error_trap_push(). May
 // block until an error has been definitively received or not received from the
 // X server. gdk_error_trap_pop_ignored() is preferred if you don’t need to know
@@ -1299,14 +1413,73 @@ func DragMotion(context *DragContext, destWindow *Window, protocol DragProtocol,
 // had to gdk_flush() if your last call to Xlib was not a blocking round trip.
 func ErrorTrapPop() int
 
+// ErrorTrapPopIgnored: removes an error trap pushed with gdk_error_trap_push(),
+// but without bothering to wait and see whether an error occurred. If an error
+// arrives later asynchronously that was triggered while the trap was pushed,
+// that error will be ignored.
+func ErrorTrapPopIgnored()
+
+// ErrorTrapPush: this function allows X errors to be trapped instead of the
+// normal behavior of exiting the application. It should only be used if it is
+// not possible to avoid the X error in any other way. Errors are ignored on all
+// Display currently known to the DisplayManager. If you don’t care which error
+// happens and just want to ignore everything, pop with
+// gdk_error_trap_pop_ignored(). If you need the error code, use
+// gdk_error_trap_pop() which may have to block and wait for the error to arrive
+// from the X server.
+//
+// This API exists on all platforms but only does anything on X.
+//
+// You can use gdk_x11_display_error_trap_push() to ignore errors on only a
+// single display.
+//
+// Trapping an X error
+//
+//    gdk_error_trap_push ();
+//
+//     // ... Call the X function which may cause an error here ...
+//
+//
+//    if (gdk_error_trap_pop ())
+//     {
+//       // ... Handle the error here ...
+//     }
+//
+func ErrorTrapPush()
+
 // EventGet: checks all open displays for a Event to process,to be processed on,
 // fetching events from the windowing system if necessary. See
 // gdk_display_get_event().
 func EventGet() *Event
 
+// EventHandlerSet: sets the function to call to handle all events from GDK.
+//
+// Note that GTK+ uses this to install its own event handler, so it is usually
+// not useful for GTK+ applications. (Although an application can call this
+// function then call gtk_main_do_event() to pass events to GTK+.)
+func EventHandlerSet(_func EventFunc, data unsafe.Pointer, notify unsafe.Pointer)
+
 // EventPeek: if there is an event waiting in the event queue of some open
 // display, returns a copy of it. See gdk_display_peek_event().
 func EventPeek() *Event
+
+// EventRequestMotions: request more motion notifies if @event is a motion
+// notify hint event.
+//
+// This function should be used instead of gdk_window_get_pointer() to request
+// further motion notifies, because it also works for extension events where
+// motion notifies are provided for devices other than the core pointer.
+// Coordinate extraction, processing and requesting more motion events from a
+// GDK_MOTION_NOTIFY event usually works like this:
+//
+//    {
+//      // motion_event handler
+//      x = motion_event->x;
+//      y = motion_event->y;
+//      // handle (x,y) motion
+//      gdk_event_request_motions (motion_event); // handles is_hint events
+//    }
+func EventRequestMotions(event *EventMotion)
 
 // EventsGetAngle: if both events contain X/Y information, this function will
 // return true and return in @angle the relative angle from @event1 to @event2.
@@ -1326,6 +1499,10 @@ func EventsGetDistance(event1 *Event, event2 *Event, distance *float64) bool
 // EventsPending: checks if any events are ready to be processed for any
 // display.
 func EventsPending() bool
+
+// Flush: flushes the output buffers of all display connections and waits until
+// all requests have been processed. This is rarely needed by applications.
+func Flush()
 
 // GetDefaultRootWindow: obtains the root window (parent all other windows are
 // inside) for the default display and screen.
@@ -1350,6 +1527,17 @@ func GetShowEvents() bool
 
 func GlErrorQuark() glib.Quark
 
+// Init: initializes the GDK library and connects to the windowing system. If
+// initialization fails, a warning message is output and the application
+// terminates with a call to `exit(1)`.
+//
+// Any arguments used by GDK are removed from the array and @argc and @argv are
+// updated accordingly.
+//
+// GTK+ initializes GDK in gtk_init() and so this function is not usually needed
+// by GTK+ applications.
+func Init(argc *int, argv []*string)
+
 // InitCheck: initializes the GDK library and connects to the windowing system,
 // returning true on success.
 //
@@ -1368,6 +1556,14 @@ func InitCheck(argc *int, argv []*string) bool
 // up when the grab ends, you should handle the EventGrabBroken events that are
 // emitted when the grab ends unvoluntarily.
 func KeyboardGrab(window *Window, ownerEvents bool, time_ uint32) GrabStatus
+
+// KeyboardUngrab: ungrabs the keyboard on the default display, if it is grabbed
+// by this application.
+func KeyboardUngrab(time_ uint32)
+
+// KeyvalConvertCase: obtains the upper- and lower-case versions of the keyval
+// @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
+func KeyvalConvertCase(symbol uint, lower *uint, upper *uint)
 
 // KeyvalFromName: converts a key name to a key value.
 //
@@ -1405,6 +1601,23 @@ func KeyvalToUpper(keyval uint) uint
 // Call g_list_free() on the return value when you’re finished with it.
 func ListVisuals() *glib.List
 
+// NotifyStartupComplete: indicates to the GUI environment that the application
+// has finished loading. If the applications opens windows, this function is
+// normally called after opening the application’s initial set of windows.
+//
+// GTK+ will call this function automatically after opening the first Window
+// unless gtk_window_set_auto_startup_notification() is called to disable that
+// feature.
+func NotifyStartupComplete()
+
+// NotifyStartupCompleteWithID: indicates to the GUI environment that the
+// application has finished loading, using a given identifier.
+//
+// GTK+ will call this function automatically for Window with custom
+// startup-notification identifier unless
+// gtk_window_set_auto_startup_notification() is called to disable that feature.
+func NotifyStartupCompleteWithID(startupID string)
+
 // OffscreenWindowGetEmbedder: gets the window that @window is embedded in.
 func OffscreenWindowGetEmbedder(window *Window) *Window
 
@@ -1412,6 +1625,14 @@ func OffscreenWindowGetEmbedder(window *Window) *Window
 // window renders into. If you need to keep this around over window resizes, you
 // need to add a reference to it.
 func OffscreenWindowGetSurface(window *Window) *cairo.Surface
+
+// OffscreenWindowSetEmbedder: sets @window to be embedded in @embedder.
+//
+// To fully embed an offscreen window, in addition to calling this function, it
+// is also necessary to handle the Window::pick-embedded-child signal on the
+// @embedder and the Window::to-embedder and Window::from-embedder signals on
+// @window.
+func OffscreenWindowSetEmbedder(window *Window, embedder *Window)
 
 // PangoContextGet: creates a Context for the default GDK screen.
 //
@@ -1484,6 +1705,16 @@ func PangoLayoutGetClipRegion(layout *pango.Layout, xOrigin int, yOrigin int, in
 // text, such as when text is selected.
 func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin int, indexRanges []int, nRanges int) *cairo.Region
 
+// ParseArgs: parse command line arguments, and store for future use by calls to
+// gdk_display_open().
+//
+// Any arguments used by GDK are removed from the array and @argc and @argv are
+// updated accordingly.
+//
+// You shouldn’t call this function explicitly if you are using gtk_init(),
+// gtk_init_check(), gdk_init(), or gdk_init_check().
+func ParseArgs(argc *int, argv []*string)
+
 // PixbufGetFromSurface: transfers image data from a #cairo_surface_t and
 // converts it to an RGB(A) representation inside a Pixbuf. This allows you to
 // efficiently read individual pixels from cairo surfaces. For Windows, use
@@ -1550,6 +1781,20 @@ func PointerGrab(window *Window, ownerEvents bool, eventMask EventMask, confineT
 // into account.
 func PointerIsGrabbed() bool
 
+// PointerUngrab: ungrabs the pointer on the default display, if it is grabbed
+// by this application.
+func PointerUngrab(time_ uint32)
+
+// PreParseLibgtkOnly: prepare for parsing command line arguments for GDK. This
+// is not public API and should not be used in application code.
+func PreParseLibgtkOnly()
+
+// PropertyChange: changes the contents of a property on a window.
+func PropertyChange(window *Window, property Atom, _type Atom, format int, mode PropMode, data *uint8, nelements int)
+
+// PropertyDelete: deletes a property from a window.
+func PropertyDelete(window *Window, property Atom)
+
 // PropertyGet: retrieves a portion of the contents of a property. If the
 // property does not exist, then the function returns false, and GDK_NONE will
 // be stored in @actual_property_type.
@@ -1562,6 +1807,23 @@ func PointerIsGrabbed() bool
 // XGetWindowProperty() directly until a replacement function for
 // gdk_property_get() is provided.
 func PropertyGet(window *Window, property Atom, _type Atom, offset uint32, length uint32, pdelete int, actualPropertyType *Atom, actualFormat *int, actualLength *int, data []*uint8) bool
+
+// QueryDepths: this function returns the available bit depths for the default
+// screen. It’s equivalent to listing the visuals (gdk_list_visuals()) and then
+// looking at the depth field in each visual, removing duplicates.
+//
+// The array returned by this function should not be freed.
+func QueryDepths(depths []*int, count *int)
+
+// QueryVisualTypes: this function returns the available visual types for the
+// default screen. It’s equivalent to listing the visuals (gdk_list_visuals())
+// and then looking at the type field in each visual, removing duplicates.
+//
+// The array returned by this function should not be freed.
+func QueryVisualTypes(visualTypes []*VisualType, count *int)
+
+// SelectionConvert: retrieves the contents of a selection in a given form.
+func SelectionConvert(requestor *Window, selection Atom, target Atom, time_ uint32)
 
 // SelectionOwnerGet: determines the owner of the given selection.
 func SelectionOwnerGet(selection Atom) *Window
@@ -1586,9 +1848,65 @@ func SelectionOwnerSetForDisplay(display *Display, owner *Window, selection Atom
 // instead.
 func SelectionPropertyGet(requestor *Window, data **uint8, propType *Atom, propFormat *int) int
 
+// SelectionSendNotify: sends a response to SelectionRequest event.
+func SelectionSendNotify(requestor *Window, selection Atom, target Atom, property Atom, time_ uint32)
+
+// SelectionSendNotifyForDisplay: send a response to SelectionRequest event.
+func SelectionSendNotifyForDisplay(display *Display, requestor *Window, selection Atom, target Atom, property Atom, time_ uint32)
+
+// SetAllowedBackends: sets a list of backends that GDK should try to use.
+//
+// This can be be useful if your application does not work with certain GDK
+// backends.
+//
+// By default, GDK tries all included backends.
+//
+// For example, |[<!-- language="C" --> gdk_set_allowed_backends
+// ("wayland,quartz,*"); ]| instructs GDK to try the Wayland backend first,
+// followed by the Quartz backend, and then all others.
+//
+// If the `GDK_BACKEND` environment variable is set, it determines what backends
+// are tried in what order, while still respecting the set of allowed backends
+// that are specified by this function.
+//
+// The possible backend names are x11, win32, quartz, broadway, wayland. You can
+// also include a * in the list to try all remaining backends.
+//
+// This call must happen prior to gdk_display_open(), gtk_init(),
+// gtk_init_with_args() or gtk_init_check() in order to take effect.
+func SetAllowedBackends(backends string)
+
+// SetDoubleClickTime: set the double click time for the default display. See
+// gdk_display_set_double_click_time(). See also
+// gdk_display_set_double_click_distance(). Applications should not set this, it
+// is a global user-configured setting.
+func SetDoubleClickTime(msec uint)
+
+// SetProgramClass: sets the program class. The X11 backend uses the program
+// class to set the class name part of the `WM_CLASS` property on toplevel
+// windows; see the ICCCM.
+//
+// The program class can still be overridden with the --class command line
+// option.
+func SetProgramClass(programClass string)
+
+// SetShowEvents: sets whether a trace of received events is output. Note that
+// GTK+ must be compiled with debugging (that is, configured using the
+// `--enable-debug` option) to use this option.
+func SetShowEvents(showEvents bool)
+
 // SettingGet: obtains a desktop-wide setting, such as the double-click time,
 // for the default screen. See gdk_screen_get_setting().
 func SettingGet(name string, value **glib.Value) bool
+
+func SynthesizeWindowState(window *Window, unsetFlags WindowState, setFlags WindowState)
+
+// TestRenderSync: retrieves a pixel from @window to force the windowing system
+// to carry out any pending rendering commands.
+//
+// This function is intended to be used to synchronize with rendering pipelines,
+// to benchmark windowing system rendering operations.
+func TestRenderSync(window *Window)
 
 // TestSimulateButton: this function is intended to be used in GTK+ test
 // programs. It will warp the mouse pointer to the given (@x,@y) coordinates
@@ -1732,6 +2050,42 @@ func ThreadsAddTimeoutSeconds(interval uint, function glib.SourceFunc, data unsa
 // why it is a good idea to use this function if you don’t need finer
 // granularity.
 func ThreadsAddTimeoutSecondsFull(priority int, interval uint, function glib.SourceFunc, data unsafe.Pointer, notify unsafe.Pointer) uint
+
+// ThreadsEnter: this function marks the beginning of a critical section in
+// which GDK and GTK+ functions can be called safely and without causing race
+// conditions. Only one thread at a time can be in such a critial section.
+func ThreadsEnter()
+
+// ThreadsInit: initializes GDK so that it can be used from multiple threads in
+// conjunction with gdk_threads_enter() and gdk_threads_leave().
+//
+// This call must be made before any use of the main loop from GTK+; to be safe,
+// call it before gtk_init().
+func ThreadsInit()
+
+// ThreadsLeave: leaves a critical region begun with gdk_threads_enter().
+func ThreadsLeave()
+
+// ThreadsSetLockFunctions: allows the application to replace the standard
+// method that GDK uses to protect its data structures. Normally, GDK creates a
+// single #GMutex that is locked by gdk_threads_enter(), and released by
+// gdk_threads_leave(); using this function an application provides, instead, a
+// function @enter_fn that is called by gdk_threads_enter() and a function
+// @leave_fn that is called by gdk_threads_leave().
+//
+// The functions must provide at least same locking functionality as the default
+// implementation, but can also do extra application specific processing.
+//
+// As an example, consider an application that has its own recursive lock that
+// when held, holds the GTK+ lock as well. When GTK+ unlocks the GTK+ lock when
+// entering a recursive main loop, the application must temporarily release its
+// lock as well.
+//
+// Most threaded GTK+ apps won’t need to use this method.
+//
+// This method must be called before gdk_threads_init(), and cannot be called
+// multiple times.
+func ThreadsSetLockFunctions(enterFn interface{}, leaveFn interface{})
 
 // UnicodeToKeyval: convert from a ISO10646 character to a key symbol.
 func UnicodeToKeyval(wc uint32) uint

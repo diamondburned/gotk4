@@ -73,8 +73,8 @@ func (rg recordGenerator) Field(field gir.Field) string {
 		return ""
 	}
 
-	typ := rg.Ng.resolveAnyType(field.AnyType)
-	if typ == "" {
+	typ, ok := rg.Ng.resolveAnyType(field.AnyType)
+	if !ok {
 		return ""
 	}
 

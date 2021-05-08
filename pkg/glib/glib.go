@@ -1896,6 +1896,50 @@ func ASCIIToupper(c byte) byte
 // char, so there's no worry about sign extension if characters are signed.
 func ASCIIXdigitValue(c byte) int
 
+func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string)
+
+func AssertionMessage(domain string, file string, line int, _func string, message string)
+
+func AssertionMessageCmpnum(domain string, file string, line int, _func string, expr string, arg1 float64, cmp string, arg2 float64, numtype byte)
+
+func AssertionMessageCmpstr(domain string, file string, line int, _func string, expr string, arg1 string, cmp string, arg2 string)
+
+func AssertionMessageError(domain string, file string, line int, _func string, expr string, error *Error, errorDomain Quark, errorCode int)
+
+// AssertionMessageExpr: internal function used to print messages from the
+// public g_assert() and g_assert_not_reached() macros.
+func AssertionMessageExpr(domain string, file string, line int, _func string, expr string)
+
+// Atexit: specifies a function to be called at normal program termination.
+//
+// Since GLib 2.8.2, on Windows g_atexit() actually is a preprocessor macro that
+// maps to a call to the atexit() function in the C library. This means that in
+// case the code that calls g_atexit(), i.e. atexit(), is in a DLL, the function
+// will be called when the DLL is detached from the program. This typically
+// makes more sense than that the function is called when the GLib DLL is
+// detached, which happened earlier when g_atexit() was a function in the GLib
+// DLL.
+//
+// The behaviour of atexit() in the context of dynamically loaded modules is not
+// formally specified and varies wildly.
+//
+// On POSIX systems, calling g_atexit() (or atexit()) in a dynamically loaded
+// module which is unloaded before the program terminates might well cause a
+// crash at program exit.
+//
+// Some POSIX systems implement atexit() like Windows, and have each dynamically
+// loaded module maintain an own atexit chain that is called when the module is
+// unloaded.
+//
+// On other POSIX systems, before a dynamically loaded module is unloaded, the
+// registered atexit functions (if any) residing in that module are called,
+// regardless where the code that registered them resided. This is presumably
+// the most robust approach.
+//
+// As can be seen from the above, for portability it's best to avoid calling
+// g_atexit() (or atexit()) except in the main executable of a program.
+func Atexit(_func VoidFunc)
+
 // AtomicIntAdd: atomically adds @val to the value of @atomic.
 //
 // Think of this operation as an atomic version of `{ tmp = *atomic; *atomic +=
@@ -1946,6 +1990,13 @@ func AtomicIntExchangeAndAdd(atomic *int, val int) int
 // get).
 func AtomicIntGet(atomic *int) int
 
+// AtomicIntInc: increments the value of @atomic by 1.
+//
+// Think of this operation as an atomic version of `{ *atomic += 1; }`.
+//
+// This call acts as a full compiler and hardware memory barrier.
+func AtomicIntInc(atomic *int)
+
 // AtomicIntOr: performs an atomic bitwise 'or' of the value of @atomic and
 // @val, storing the result back in @atomic.
 //
@@ -1954,6 +2005,12 @@ func AtomicIntGet(atomic *int) int
 //
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicIntOr(atomic *uint, val uint) uint
+
+// AtomicIntSet: sets the value of @atomic to @newval.
+//
+// This call acts as a full compiler and hardware memory barrier (after the
+// set).
+func AtomicIntSet(atomic *int, newval int)
 
 // AtomicIntXor: performs an atomic bitwise 'xor' of the value of @atomic and
 // @val, storing the result back in @atomic.
@@ -2008,6 +2065,12 @@ func AtomicPointerGet(atomic *unsafe.Pointer) unsafe.Pointer
 // This call acts as a full compiler and hardware memory barrier.
 func AtomicPointerOr(atomic *unsafe.Pointer, val uint) uint
 
+// AtomicPointerSet: sets the value of @atomic to @newval.
+//
+// This call acts as a full compiler and hardware memory barrier (after the
+// set).
+func AtomicPointerSet(atomic *unsafe.Pointer, newval unsafe.Pointer)
+
 // AtomicPointerXor: performs an atomic bitwise 'xor' of the value of @atomic
 // and @val, storing the result back in @atomic.
 //
@@ -2049,12 +2112,25 @@ func AtomicRcBoxDup(blockSize uint, memBlock unsafe.Pointer) unsafe.Pointer
 // by @mem_block.
 func AtomicRcBoxGetSize(memBlock unsafe.Pointer) uint
 
+// AtomicRcBoxRelease: atomically releases a reference on the data pointed by
+// @mem_block.
+//
+// If the reference was the last one, it will free the resources allocated for
+// @mem_block.
+func AtomicRcBoxRelease(memBlock unsafe.Pointer)
+
 // AtomicRefCountCompare: atomically compares the current value of @arc with
 // @val.
 func AtomicRefCountCompare(arc *int, val int) bool
 
 // AtomicRefCountDec: atomically decreases the reference count.
 func AtomicRefCountDec(arc *int) bool
+
+// AtomicRefCountInc: atomically increases the reference count.
+func AtomicRefCountInc(arc *int)
+
+// AtomicRefCountInit: initializes a reference count variable.
+func AtomicRefCountInit(arc *int)
 
 // Base64Decode: decode a sequence of Base-64 encoded text into binary data.
 // Note that the returned binary data is not necessarily zero-terminated, so it
@@ -2114,6 +2190,19 @@ func Base64EncodeStep(in []uint8, len uint, breakLines bool, out []uint8, state 
 // It returns a pointer into the given file name string.
 func Basename(fileName *string) *string
 
+// BitLock: sets the indicated @lock_bit in @address. If the bit is already set,
+// this call will block until g_bit_unlock() unsets the corresponding bit.
+//
+// Attempting to lock on two different bits within the same integer is not
+// supported and will very probably cause deadlocks.
+//
+// The value of the bit that is set is (1u << @bit). If @bit is not between 0
+// and 31 then the result is undefined.
+//
+// This function accesses @address atomically. All other accesses to @address
+// must be atomic in order for this function to work reliably.
+func BitLock(address *int, lockBit int)
+
 // BitNthLsf: find the position of the first bit set in @mask, searching from
 // (but not including) @nth_bit upwards. Bits are numbered from 0 (least
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
@@ -2142,6 +2231,13 @@ func BitStorage(number uint32) uint
 // This function accesses @address atomically. All other accesses to @address
 // must be atomic in order for this function to work reliably.
 func BitTrylock(address *int, lockBit int) bool
+
+// BitUnlock: clears the indicated @lock_bit in @address. If another thread is
+// currently blocked in g_bit_lock() on this same bit then it will be woken up.
+//
+// This function accesses @address atomically. All other accesses to @address
+// must be atomic in order for this function to work reliably.
+func BitUnlock(address *int, lockBit int)
 
 func BookmarkFileErrorQuark() Quark
 
@@ -2183,6 +2279,11 @@ func ByteArrayNewTake(data []uint8, len uint) []uint8
 // while the underlying array is preserved for use elsewhere and returned to the
 // caller.
 func ByteArraySteal(array []uint8, len *uint) *uint8
+
+// ByteArrayUnref: atomically decrements the reference count of @array by one.
+// If the reference count drops to 0, all memory allocated by the array is
+// released. This function is thread-safe and may be called from any thread.
+func ByteArrayUnref(array []uint8)
 
 // CanonicalizeFilename: gets the canonical file name from @filename. All triple
 // slashes are turned into single slashes, and all `..` and `.`s resolved
@@ -2275,6 +2376,21 @@ func ChildWatchAdd(pid Pid, function ChildWatchFunc, data unsafe.Pointer) uint
 // Calling `waitpid` for specific processes other than @pid remains a valid
 // thing to do.
 func NewChildWatchSource(pid Pid) *Source
+
+// ClearError: if @err or *@err is nil, does nothing. Otherwise, calls
+// g_error_free() on *@err and sets *@err to nil.
+func ClearError()
+
+// ClearHandleID: clears a numeric handler, such as a #GSource ID.
+//
+// @tag_ptr must be a valid pointer to the variable holding the handler.
+//
+// If the ID is zero then this function does nothing. Otherwise, clear_func() is
+// called with the ID as a parameter, and the tag is set to zero.
+//
+// A macro is also included that allows this function to be used without pointer
+// casts.
+func ClearHandleID(tagPtr *uint, clearFunc ClearHandleFunc)
 
 // Close: this wraps the close() call; in case of error, errno will be
 // preserved, but the error will also be stored as a #GError in @error.
@@ -2375,6 +2491,21 @@ func ConvertWithFallback(str []uint8, len int, toCodeset string, fromCodeset str
 // unrepresentable characters, use g_convert_with_fallback().
 func ConvertWithIconv(str []uint8, len int, converter IConv, bytesRead *uint, bytesWritten *uint) []uint8
 
+// DatalistClear: frees all the data elements of the datalist. The data
+// elements' destroy functions are called if they have been set.
+func DatalistClear(datalist **Data)
+
+// DatalistForeach: calls the given function for each data element of the
+// datalist. The function is called with each data element's #GQuark id and
+// data, together with the given @user_data parameter. Note that this function
+// is NOT thread-safe. So unless @datalist can be protected from any
+// modifications during invocation of this function, it should not be called.
+//
+// @func can make changes to @datalist, but the iteration will not reflect
+// changes made during the g_datalist_foreach() call, other than skipping over
+// elements that are removed.
+func DatalistForeach(datalist **Data, _func DataForeachFunc, userData unsafe.Pointer)
+
 // DatalistGetData: gets a data element, using its string identifier. This is
 // slower than g_datalist_id_get_data() because it compares strings.
 func DatalistGetData(datalist **Data, key string) unsafe.Pointer
@@ -2404,6 +2535,35 @@ func DatalistIDGetData(datalist **Data, keyID Quark) unsafe.Pointer
 // DatalistIDRemoveNoNotify: removes an element, without calling its destroy
 // notification function.
 func DatalistIDRemoveNoNotify(datalist **Data, keyID Quark) unsafe.Pointer
+
+// DatalistInit: resets the datalist to nil. It does not free any memory or call
+// any destroy functions.
+func DatalistInit(datalist **Data)
+
+// DatalistSetFlags: turns on flag values for a data list. This function is used
+// to keep a small number of boolean flags in an object with a data list without
+// using any additional space. It is not generally useful except in
+// circumstances where space is very tight. (It is used in the base #GObject
+// type, for example.)
+func DatalistSetFlags(datalist **Data, flags uint)
+
+// DatalistUnsetFlags: turns off flag values for a data list. See
+// g_datalist_unset_flags()
+func DatalistUnsetFlags(datalist **Data, flags uint)
+
+// DatasetDestroy: destroys the dataset, freeing all memory allocated, and
+// calling any destroy functions set for data elements.
+func DatasetDestroy(datasetLocation unsafe.Pointer)
+
+// DatasetForeach: calls the given function for each data element which is
+// associated with the given location. Note that this function is NOT
+// thread-safe. So unless @dataset_location can be protected from any
+// modifications during invocation of this function, it should not be called.
+//
+// @func can make changes to the dataset, but the iteration will not reflect
+// changes made during the g_dataset_foreach() call, other than skipping over
+// elements that are removed.
+func DatasetForeach(datasetLocation unsafe.Pointer, _func DataForeachFunc, userData unsafe.Pointer)
 
 // DatasetIDGetData: gets the data element corresponding to a #GQuark.
 func DatasetIDGetData(datasetLocation unsafe.Pointer, keyID Quark) unsafe.Pointer
@@ -2869,6 +3029,12 @@ func FormatSizeForDisplay(size int64) string
 // the output. See SizeFlags.
 func FormatSizeFull(size uint64, flags FormatSizeFlags) string
 
+// Free: frees the memory pointed to by @mem.
+//
+// If @mem is nil it simply returns, so there is no need to check @mem against
+// nil before calling this function.
+func Free(mem unsafe.Pointer)
+
 // GetApplicationName: gets a human-readable name for the application, as set by
 // g_set_application_name(). This name should be localized if possible, and is
 // intended for display to the user. Contrast with g_get_prgname(), which gets a
@@ -2928,6 +3094,11 @@ func GetConsoleCharset(charset *string) bool
 // This can make a difference in the case that the current directory is the
 // target of a symbolic link.
 func GetCurrentDir() *string
+
+// GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
+//
+// You may find g_get_real_time() to be more convenient.
+func GetCurrentTime(result *TimeVal)
 
 // GetEnviron: gets the list of environment variables for the current process.
 //
@@ -3261,6 +3432,13 @@ func HashTableAdd(hashTable *glib.HashTable, key unsafe.Pointer) bool
 // HashTableContains: checks if @key is in @hash_table.
 func HashTableContains(hashTable *glib.HashTable, key unsafe.Pointer) bool
 
+// HashTableDestroy: destroys all keys and values in the Table and decrements
+// its reference count by 1. If keys and/or values are dynamically allocated,
+// you should either free them first or create the Table with destroy notifiers
+// using g_hash_table_new_full(). In the latter case the destroy functions you
+// supplied will be called on all keys and values during the destruction phase.
+func HashTableDestroy(hashTable *glib.HashTable)
+
 // HashTableInsert: inserts a new key and value into a Table.
 //
 // If the key already exists in the Table its current value is replaced with the
@@ -3294,6 +3472,14 @@ func HashTableLookupExtended(hashTable *glib.HashTable, lookupKey unsafe.Pointer
 // that any dynamically allocated values are freed yourself.
 func HashTableRemove(hashTable *glib.HashTable, key unsafe.Pointer) bool
 
+// HashTableRemoveAll: removes all keys and their associated values from a
+// Table.
+//
+// If the Table was created using g_hash_table_new_full(), the keys and values
+// are freed using the supplied destroy functions, otherwise you have to make
+// sure that any dynamically allocated values are freed yourself.
+func HashTableRemoveAll(hashTable *glib.HashTable)
+
 // HashTableReplace: inserts a new key and value into a Table similar to
 // g_hash_table_insert(). The difference is that if the key already exists in
 // the Table, it gets replaced by the new key. If you supplied a
@@ -3312,6 +3498,10 @@ func HashTableSize(hashTable *glib.HashTable) uint
 // calling the key and value destroy functions.
 func HashTableSteal(hashTable *glib.HashTable, key unsafe.Pointer) bool
 
+// HashTableStealAll: removes all keys and their associated values from a Table
+// without calling the key and value destroy functions.
+func HashTableStealAll(hashTable *glib.HashTable)
+
 // HashTableStealExtended: looks up a key in the Table, stealing the original
 // key and the associated value and returning true if the key was found. If the
 // key was not found, false is returned.
@@ -3324,8 +3514,33 @@ func HashTableSteal(hashTable *glib.HashTable, key unsafe.Pointer) bool
 // @hash_table are nil-safe.
 func HashTableStealExtended(hashTable *glib.HashTable, lookupKey unsafe.Pointer, stolenKey *unsafe.Pointer, stolenValue *unsafe.Pointer) bool
 
+// HashTableUnref: atomically decrements the reference count of @hash_table by
+// one. If the reference count drops to 0, all keys and values will be
+// destroyed, and all memory allocated by the hash table is released. This
+// function is MT-safe and may be called from any thread.
+func HashTableUnref(hashTable *glib.HashTable)
+
 // HookDestroy: destroys a #GHook, given its ID.
 func HookDestroy(hookList *HookList, hookID uint32) bool
+
+// HookDestroyLink: removes one #GHook from a List, marking it inactive and
+// calling g_hook_unref() on it.
+func HookDestroyLink(hookList *HookList, hook *Hook)
+
+// HookFree: calls the List @finalize_hook function if it exists, and frees the
+// memory allocated for the #GHook.
+func HookFree(hookList *HookList, hook *Hook)
+
+// HookInsertBefore: inserts a #GHook into a List, before a given #GHook.
+func HookInsertBefore(hookList *HookList, sibling *Hook, hook *Hook)
+
+// HookPrepend: prepends a #GHook on the start of a List.
+func HookPrepend(hookList *HookList, hook *Hook)
+
+// HookUnref: decrements the reference count of a #GHook. If the reference count
+// falls to 0, the #GHook is removed from the List and g_hook_free() is called
+// to free it.
+func HookUnref(hookList *HookList, hook *Hook)
 
 // HostnameIsASCIIEncoded: tests if @hostname contains segments with an
 // ASCII-compatible encoding of an Internationalized Domain Name. If this
@@ -3522,6 +3737,37 @@ func LocaleFromUTF8(utf8String string, len int, bytesRead *uint, bytesWritten *u
 // produce output that may contain embedded nul characters.
 func LocaleToUTF8(opsysstring []uint8, len int, bytesRead *uint, bytesWritten *uint) string
 
+// LogDefaultHandler: the default log handler set up by GLib;
+// g_log_set_default_handler() allows to install an alternate default log
+// handler. This is used if no log handler has been set for the particular log
+// domain and log level combination. It outputs the message to stderr or stdout
+// and if the log level is fatal it calls G_BREAKPOINT(). It automatically
+// prints a new-line character after the message, so one does not need to be
+// manually included in @message.
+//
+// The behavior of this log handler can be influenced by a number of environment
+// variables:
+//
+// - `G_MESSAGES_PREFIXED`: A :-separated list of log levels for which messages
+// should be prefixed by the program name and PID of the application.
+//
+// - `G_MESSAGES_DEBUG`: A space-separated list of log domains for which debug
+// and informational messages are printed. By default these messages are not
+// printed.
+//
+// stderr is used for levels G_LOG_LEVEL_ERROR, G_LOG_LEVEL_CRITICAL,
+// G_LOG_LEVEL_WARNING and G_LOG_LEVEL_MESSAGE. stdout is used for the rest.
+//
+// This has no effect if structured logging is enabled; see [Using Structured
+// Logging][using-structured-logging].
+func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string, unusedData unsafe.Pointer)
+
+// LogRemoveHandler: removes the log handler.
+//
+// This has no effect if structured logging is enabled; see [Using Structured
+// Logging][using-structured-logging].
+func LogRemoveHandler(logDomain string, handlerID uint)
+
 // LogSetAlwaysFatal: sets the message levels which are always fatal, in any log
 // domain. When a message with any of these levels is logged the program
 // terminates. You can only set the levels defined by GLib to be fatal.
@@ -3582,6 +3828,36 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags
 //    g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
 //                       | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
 func LogSetHandler(logDomain string, logLevels LogLevelFlags, logFunc LogFunc, userData unsafe.Pointer) uint
+
+// LogStructuredArray: log a message with structured data. The message will be
+// passed through to the log writer set by the application using
+// g_log_set_writer_func(). If the message is fatal (i.e. its log level is
+// G_LOG_LEVEL_ERROR), the program will be aborted at the end of this function.
+//
+// See g_log_structured() for more documentation.
+//
+// This assumes that @log_level is already present in @fields (typically as the
+// `PRIORITY` field).
+func LogStructuredArray(logLevel LogLevelFlags, fields []LogField, nFields uint)
+
+// LogVariant: log a message with structured data, accepting the data within a
+// #GVariant. This version is especially useful for use in other languages, via
+// introspection.
+//
+// The only mandatory item in the @fields dictionary is the "MESSAGE" which must
+// contain the text shown to the user.
+//
+// The values in the @fields dictionary are likely to be of type String
+// (VARIANT_TYPE_STRING). Array of bytes (VARIANT_TYPE_BYTESTRING) is also
+// supported. In this case the message is handled as binary and will be
+// forwarded to the log writer as such. The size of the array should not be
+// higher than G_MAXSSIZE. Otherwise it will be truncated to this size. For
+// other types g_variant_print() will be used to convert the value into a
+// string.
+//
+// For more details on its usage and about the parameters, see
+// g_log_structured().
+func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant)
 
 // LogWriterDefault: format a structured log message and output it to the
 // default log destination for the platform. On Linux, this is typically the
@@ -3814,6 +4090,18 @@ func MarkupEscapeText(text string, length int) string
 // returned by a non-GLib-based API.
 func MemIsSystemMalloc() bool
 
+// MemProfile: GLib used to support some tools for memory profiling, but this no
+// longer works. There are many other useful tools for memory profiling these
+// days which can be used instead.
+func MemProfile()
+
+// MemSetVtable: this function used to let you override the memory allocation
+// function. However, its use was incompatible with the use of global
+// constructors in GLib and GIO, because those use the GLib allocators before
+// main is reached. Therefore this function is now deprecated and is just a
+// stub.
+func MemSetVtable(vtable *MemVTable)
+
 // Memdup: allocates @byte_size bytes of memory, and copies @byte_size bytes
 // into it from @mem. If @mem is nil it returns nil.
 func Memdup(mem unsafe.Pointer, byteSize uint) unsafe.Pointer
@@ -3874,7 +4162,69 @@ func Mkstemp(tmpl *string) int
 // Windows it should be in UTF-8.
 func MkstempFull(tmpl *string, flags int, mode int) int
 
+// NullifyPointer: set the pointer at the specified location to nil.
+func NullifyPointer(nullifyLocation *unsafe.Pointer)
+
 func NumberParserErrorQuark() Quark
+
+// OnErrorQuery: prompts the user with `[E]xit, [H]alt, show [S]tack trace or
+// [P]roceed`. This function is intended to be used for debugging use only. The
+// following example shows how it can be used together with the g_log()
+// functions.
+//
+//    #include <glib.h>
+//
+//    static void
+//    log_handler (const gchar   *log_domain,
+//                 GLogLevelFlags log_level,
+//                 const gchar   *message,
+//                 gpointer       user_data)
+//    {
+//      g_log_default_handler (log_domain, log_level, message, user_data);
+//
+//      g_on_error_query (MY_PROGRAM_NAME);
+//    }
+//
+//    int
+//    main (int argc, char *argv[])
+//    {
+//      g_log_set_handler (MY_LOG_DOMAIN,
+//                         G_LOG_LEVEL_WARNING |
+//                         G_LOG_LEVEL_ERROR |
+//                         G_LOG_LEVEL_CRITICAL,
+//                         log_handler,
+//                         NULL);
+//      ...
+//
+//
+// If "[E]xit" is selected, the application terminates with a call to _exit(0).
+//
+// If "[S]tack" trace is selected, g_on_error_stack_trace() is called. This
+// invokes gdb, which attaches to the current process and shows a stack trace.
+// The prompt is then shown again.
+//
+// If "[P]roceed" is selected, the function returns.
+//
+// This function may cause different actions on non-UNIX platforms.
+//
+// On Windows consider using the `G_DEBUGGER` environment variable (see [Running
+// GLib Applications](glib-running.html)) and calling g_on_error_stack_trace()
+// instead.
+func OnErrorQuery(prgName string)
+
+// OnErrorStackTrace: invokes gdb, which attaches to the current process and
+// shows a stack trace. Called by g_on_error_query() when the "[S]tack trace"
+// option is selected. You can get the current process's program name with
+// g_get_prgname(), assuming that you have called gtk_init() or gdk_init().
+//
+// This function may cause different actions on non-UNIX platforms.
+//
+// When running on Windows, this function is *not* called by g_on_error_query().
+// If called directly, it will raise an exception, which will crash the program.
+// If the `G_DEBUGGER` environment variable is set, a debugger will be invoked
+// to attach and handle that exception (see [Running GLib
+// Applications](glib-running.html)).
+func OnErrorStackTrace(prgName string)
 
 // OnceInitEnter: function to be called when starting a critical initialization
 // section. The argument @location must point to a static 0-initialized variable
@@ -3897,6 +4247,13 @@ func NumberParserErrorQuark() Quark
 //      // use initialization_value here
 //
 func OnceInitEnter(location *unsafe.Pointer) bool
+
+// OnceInitLeave: counterpart to g_once_init_enter(). Expects a location of a
+// static 0-initialized initialization variable, and an initialization value
+// other than 0. Sets the variable to the initialization value, and releases
+// concurrent threads blocking in g_once_init_enter() on this initialization
+// variable.
+func OnceInitLeave(location *unsafe.Pointer, result uint)
 
 func OptionErrorQuark() Quark
 
@@ -3986,12 +4343,26 @@ func PatternMatchSimple(pattern string, string string) bool
 // g_pattern_match() instead while supplying the reversed string.
 func PatternMatchString(pspec *PatternSpec, string string) bool
 
+// PointerBitLock: this is equivalent to g_bit_lock, but working on pointers (or
+// other pointer-sized values).
+//
+// For portability reasons, you may only lock on the bottom 32 bits of the
+// pointer.
+func PointerBitLock(address *unsafe.Pointer, lockBit int)
+
 // PointerBitTrylock: this is equivalent to g_bit_trylock, but working on
 // pointers (or other pointer-sized values).
 //
 // For portability reasons, you may only lock on the bottom 32 bits of the
 // pointer.
 func PointerBitTrylock(address *unsafe.Pointer, lockBit int) bool
+
+// PointerBitUnlock: this is equivalent to g_bit_unlock, but working on pointers
+// (or other pointer-sized values).
+//
+// For portability reasons, you may only lock on the bottom 32 bits of the
+// pointer.
+func PointerBitUnlock(address *unsafe.Pointer, lockBit int)
 
 // Poll: polls @fds, as with the poll() system call, but portably. (On systems
 // that don't have poll(), it is emulated using select().) This is used
@@ -4008,6 +4379,16 @@ func PointerBitTrylock(address *unsafe.Pointer, lockBit int) bool
 // need to use g_poll() in code that has to run on Windows, the easiest solution
 // is to construct all of your FDs with g_io_channel_win32_make_pollfd().
 func Poll(fds *PollFD, nfds uint, timeout int) int
+
+// PropagateError: if @dest is nil, free @src; otherwise, moves @src into
+// *@dest. The error variable @dest points to must be nil.
+//
+// @src must be non-nil.
+//
+// Note that @src is no longer valid after this call. If you want to keep using
+// the same GError*, you need to set it to nil after calling this function on
+// it.
+func PropagateError(dest **Error, src *Error)
 
 // PtrArrayFind: checks whether @needle exists in @haystack. If the element is
 // found, true is returned and the element’s index is returned in @index_ (if
@@ -4029,6 +4410,12 @@ func PtrArrayFind(haystack []unsafe.Pointer, needle unsafe.Pointer, index_ *uint
 // and @needle as its second parameter. If @equal_func is nil, pointer equality
 // is used.
 func PtrArrayFindWithEqualFunc(haystack []unsafe.Pointer, needle unsafe.Pointer, equalFunc EqualFunc, index_ *uint) bool
+
+// QsortWithData: this is just like the standard C qsort() function, but the
+// comparison routine accepts a user data argument.
+//
+// This is guaranteed to be a stable sort since version 2.32.
+func QsortWithData(pbase unsafe.Pointer, totalElems int, size uint, compareFunc CompareDataFunc, userData unsafe.Pointer)
 
 // QuarkFromStaticString: gets the #GQuark identifying the given (static)
 // string. If the string does not currently have an associated #GQuark, a new
@@ -4085,6 +4472,10 @@ func RandomInt() uint32
 // [@begin..@end-1].
 func RandomIntRange(begin int32, end int32) int32
 
+// RandomSetSeed: sets the seed for the global random number generator, which is
+// used by the g_random_* functions, to @seed.
+func RandomSetSeed(seed uint32)
+
 // RcBoxAcquire: acquires a reference on the data pointed by @mem_block.
 func RcBoxAcquire(memBlock unsafe.Pointer) unsafe.Pointer
 
@@ -4116,6 +4507,12 @@ func RcBoxDup(blockSize uint, memBlock unsafe.Pointer) unsafe.Pointer
 // @mem_block.
 func RcBoxGetSize(memBlock unsafe.Pointer) uint
 
+// RcBoxRelease: releases a reference on the data pointed by @mem_block.
+//
+// If the reference was the last one, it will free the resources allocated for
+// @mem_block.
+func RcBoxRelease(memBlock unsafe.Pointer)
+
 // Realloc: reallocates the memory pointed to by @mem, so that it now has space
 // for @n_bytes bytes of memory. It returns the new address of the memory, which
 // may have been moved. @mem may be nil, in which case it's considered to have
@@ -4133,6 +4530,12 @@ func RefCountCompare(rc *int, val int) bool
 
 // RefCountDec: decreases the reference count.
 func RefCountDec(rc *int) bool
+
+// RefCountInc: increases the reference count.
+func RefCountInc(rc *int)
+
+// RefCountInit: initializes a reference count variable.
+func RefCountInit(rc *int)
 
 // RefStringAcquire: acquires a reference on a string.
 func RefStringAcquire(str string) string
@@ -4158,6 +4561,10 @@ func RefStringNewIntern(str string) string
 // Since this function does not stop at nul bytes, it is the caller's
 // responsibility to ensure that @str has at least @len addressable bytes.
 func RefStringNewLen(str string, len int) string
+
+// RefStringRelease: releases a reference on a string; if it was the last
+// reference, the resources allocated by the string are freed as well.
+func RefStringRelease(str string)
 
 // RegexCheckReplacement: checks whether @replacement is a valid replacement
 // string (see g_regex_replace()), i.e. that all escape sequences in it are
@@ -4225,6 +4632,20 @@ func RegexMatchSimple(pattern string, string string, compileOptions RegexCompile
 // and "c".
 func RegexSplitSimple(pattern string, string string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) []string
 
+// ReloadUserSpecialDirsCache: resets the cache used for
+// g_get_user_special_dir(), so that the latest on-disk version is used. Call
+// this only if you just changed the data on disk yourself.
+//
+// Due to thread safety issues this may cause leaking of strings that were
+// previously returned from g_get_user_special_dir() that can't be freed. We
+// ensure to only leak the data for the directories that actually changed value
+// though.
+func ReloadUserSpecialDirsCache()
+
+// ReturnIfFailWarning: internal function used to print messages from the public
+// g_return_if_fail() and g_return_val_if_fail() macros.
+func ReturnIfFailWarning(logDomain string, prettyFunction string, expression string)
+
 // Rmdir: a wrapper for the POSIX rmdir() function. The rmdir() function deletes
 // a directory from the filesystem.
 //
@@ -4239,6 +4660,22 @@ func SequenceGet(iter *SequenceIter) unsafe.Pointer
 // @iter.
 func SequenceInsertBefore(iter *SequenceIter, data unsafe.Pointer) *SequenceIter
 
+// SequenceMove: moves the item pointed to by @src to the position indicated by
+// @dest. After calling this function @dest will point to the position
+// immediately after @src. It is allowed for @src and @dest to point into
+// different sequences.
+func SequenceMove(src *SequenceIter, dest *SequenceIter)
+
+// SequenceMoveRange: inserts the (@begin, @end) range at the destination
+// pointed to by @dest. The @begin and @end iters must point into the same
+// sequence. It is allowed for @dest to point to a different sequence than the
+// one pointed into by @begin and @end.
+//
+// If @dest is nil, the range indicated by @begin and @end is removed from the
+// sequence. If @dest points to a place within the (@begin, @end) range, the
+// range does not move.
+func SequenceMoveRange(dest *SequenceIter, begin *SequenceIter, end *SequenceIter)
+
 // SequenceRangeGetMidpoint: finds an iterator somewhere in the range (@begin,
 // @end). This iterator will be close to the middle of the range, but is not
 // guaranteed to be exactly in the middle.
@@ -4246,6 +4683,58 @@ func SequenceInsertBefore(iter *SequenceIter, data unsafe.Pointer) *SequenceIter
 // The @begin and @end iterators must both point to the same sequence and @begin
 // must come before or be equal to @end in the sequence.
 func SequenceRangeGetMidpoint(begin *SequenceIter, end *SequenceIter) *SequenceIter
+
+// SequenceRemove: removes the item pointed to by @iter. It is an error to pass
+// the end iterator to this function.
+//
+// If the sequence has a data destroy function associated with it, this function
+// is called on the data for the removed item.
+func SequenceRemove(iter *SequenceIter)
+
+// SequenceRemoveRange: removes all items in the (@begin, @end) range.
+//
+// If the sequence has a data destroy function associated with it, this function
+// is called on the data for the removed items.
+func SequenceRemoveRange(begin *SequenceIter, end *SequenceIter)
+
+// SequenceSet: changes the data for the item pointed to by @iter to be @data.
+// If the sequence has a data destroy function associated with it, that function
+// is called on the existing data that @iter pointed to.
+func SequenceSet(iter *SequenceIter, data unsafe.Pointer)
+
+// SequenceSwap: swaps the items pointed to by @a and @b. It is allowed for @a
+// and @b to point into difference sequences.
+func SequenceSwap(a *SequenceIter, b *SequenceIter)
+
+// SetApplicationName: sets a human-readable name for the application. This name
+// should be localized if possible, and is intended for display to the user.
+// Contrast with g_set_prgname(), which sets a non-localized name.
+// g_set_prgname() will be called automatically by gtk_init(), but
+// g_set_application_name() will not.
+//
+// Note that for thread safety reasons, this function can only be called once.
+//
+// The application name will be used in contexts such as error messages, or when
+// displaying an application's name in the task list.
+func SetApplicationName(applicationName string)
+
+// SetErrorLiteral: does nothing if @err is nil; if @err is non-nil, then *@err
+// must be nil. A new #GError is created and assigned to *@err. Unlike
+// g_set_error(), @message is not a printf()-style format string. Use this
+// function if @message contains text you don't have control over, that could
+// include printf() escape sequences.
+func SetErrorLiteral(err **Error, domain Quark, code int, message string)
+
+// SetPrgname: sets the name of the program. This name should not be localized,
+// in contrast to g_set_application_name().
+//
+// If you are using #GApplication the program name is set in
+// g_application_run(). In case of GDK or GTK+ it is set in gdk_init(), which is
+// called by gtk_init() and the Application::startup handler. The program name
+// is found by taking the last component of @argv[0].
+//
+// Note that for thread-safety reasons this function can only be called once.
+func SetPrgname(prgname string)
 
 // SetPrintHandler: sets the print handler.
 //
@@ -4343,9 +4832,35 @@ func SliceAlloc0(blockSize uint) unsafe.Pointer
 // @mem_block must be non-nil if @block_size is non-zero.
 func SliceCopy(blockSize uint, memBlock unsafe.Pointer) unsafe.Pointer
 
+// SliceFree1: frees a block of memory.
+//
+// The memory must have been allocated via g_slice_alloc() or g_slice_alloc0()
+// and the @block_size has to match the size specified upon allocation. Note
+// that the exact release behaviour can be changed with the
+// [`G_DEBUG=gc-friendly`][G_DEBUG] environment variable, also see
+// [`G_SLICE`][G_SLICE] for related debugging options.
+//
+// If @mem_block is nil, this function does nothing.
+func SliceFree1(blockSize uint, memBlock unsafe.Pointer)
+
+// SliceFreeChainWithOffset: frees a linked list of memory blocks of structure
+// type @type.
+//
+// The memory blocks must be equal-sized, allocated via g_slice_alloc() or
+// g_slice_alloc0() and linked together by a @next pointer (similar to List).
+// The offset of the @next field in each block is passed as third argument. Note
+// that the exact release behaviour can be changed with the
+// [`G_DEBUG=gc-friendly`][G_DEBUG] environment variable, also see
+// [`G_SLICE`][G_SLICE] for related debugging options.
+//
+// If @mem_chain is nil, this function does nothing.
+func SliceFreeChainWithOffset(blockSize uint, memChain unsafe.Pointer, nextOffset uint)
+
 func SliceGetConfig(ckey SliceConfig) int64
 
 func SliceGetConfigState(ckey SliceConfig, address int64, nValues *uint) *int64
+
+func SliceSetConfig(ckey SliceConfig, value int64)
 
 // SourceRemove: removes the source with the given ID from the default main
 // context. You must use g_source_destroy() for sources added to a non-default
@@ -4376,6 +4891,22 @@ func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData unsafe.Pointer) bo
 // given the user data for the callback. If multiple sources exist with the same
 // user data, only one will be destroyed.
 func SourceRemoveByUserData(userData unsafe.Pointer) bool
+
+// SourceSetNameByID: sets the name of a source using its ID.
+//
+// This is a convenience utility to set source names from the return value of
+// g_idle_add(), g_timeout_add(), etc.
+//
+// It is a programmer error to attempt to set the name of a non-existent source.
+//
+// More specifically: source IDs can be reissued after a source has been
+// destroyed and therefore it is never valid to use this function with a source
+// ID which may have already been removed. An example is when scheduling an idle
+// to run in another thread with g_idle_add(): the idle may already have run and
+// been removed by the time this function is called on its (now invalid) source
+// ID. This source ID may have been reissued, leading to the operation being
+// performed against the wrong source.
+func SourceSetNameByID(tag uint, name string)
 
 // SpacedPrimesClosest: gets the smallest prime number from a built-in array of
 // primes which is larger than @num. This is used within GLib to calculate the
@@ -4616,6 +5147,12 @@ func SpawnAsyncWithPipes(workingDirectory *string, argv []string, envp []string,
 // of GLib.
 func SpawnCheckExitStatus(exitStatus int) bool
 
+// SpawnClosePid: on some platforms, notably Windows, the #GPid type represents
+// a resource which must be closed to prevent resource leaking.
+// g_spawn_close_pid() is provided for this purpose. It should be used on all
+// platforms, even though it doesn't do anything under UNIX.
+func SpawnClosePid(pid Pid)
+
 // SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
 // command line with g_shell_parse_argv() and passes it to g_spawn_async(). Runs
 // a command line in the background. Unlike g_spawn_async(), the
@@ -4854,6 +5391,12 @@ func Strerror(errnum int) string
 // g_strcompress() does the reverse conversion.
 func Strescape(source string, exceptions string) string
 
+// Strfreev: frees a nil-terminated array of strings, as well as each string it
+// contains.
+//
+// If @str_array is nil, this function simply returns.
+func Strfreev(strArray *string)
+
 // NewString: creates a new #GString, initialized with the given string.
 func NewString(init string) *String
 
@@ -5027,6 +5570,59 @@ func StrvGetType() glib.Type
 // @str_array. @str_array must not be nil.
 func StrvLength(strArray *string) uint
 
+// TestAddDataFunc: create a new test case, similar to g_test_create_case().
+// However the test is assumed to use no fixture, and test suites are
+// automatically created on the fly and added to the root fixture, based on the
+// slash-separated portions of @testpath. The @test_data argument will be passed
+// as first argument to @test_func.
+//
+// If @testpath includes the component "subprocess" anywhere in it, the test
+// will be skipped by default, and only run if explicitly required via the `-p`
+// command-line option or g_test_trap_subprocess().
+//
+// No component of @testpath may start with a dot (`.`) if the
+// G_TEST_OPTION_ISOLATE_DIRS option is being used; and it is recommended to do
+// so even if it isn’t.
+func TestAddDataFunc(testpath string, testData unsafe.Pointer, testFunc TestDataFunc)
+
+// TestAddFunc: create a new test case, similar to g_test_create_case(). However
+// the test is assumed to use no fixture, and test suites are automatically
+// created on the fly and added to the root fixture, based on the
+// slash-separated portions of @testpath.
+//
+// If @testpath includes the component "subprocess" anywhere in it, the test
+// will be skipped by default, and only run if explicitly required via the `-p`
+// command-line option or g_test_trap_subprocess().
+//
+// No component of @testpath may start with a dot (`.`) if the
+// G_TEST_OPTION_ISOLATE_DIRS option is being used; and it is recommended to do
+// so even if it isn’t.
+func TestAddFunc(testpath string, testFunc TestFunc)
+
+func TestAddVtable(testpath string, dataSize uint, testData unsafe.Pointer, dataSetup TestFixtureFunc, dataTest TestFixtureFunc, dataTeardown TestFixtureFunc)
+
+func TestAssertExpectedMessagesInternal(domain string, file string, line int, _func string)
+
+// TestBug: this function adds a message to test reports that associates a bug
+// URI with a test case. Bug URIs are constructed from a base URI set with
+// g_test_bug_base() and @bug_uri_snippet. If g_test_bug_base() has not been
+// called, it is assumed to be the empty string, so a full URI can be provided
+// to g_test_bug() instead.
+func TestBug(bugURISnippet string)
+
+// TestBugBase: specify the base URI for bug reports.
+//
+// The base URI is used to construct bug report messages for g_test_message()
+// when g_test_bug() is called. Calling this function outside of a test case
+// sets the default base URI for all test cases. Calling it from within a test
+// case changes the base URI for the scope of the test case only. Bug URIs are
+// constructed by appending a bug specific URI portion to @uri_pattern, or by
+// replacing the special string '\s' within @uri_pattern if that is present.
+//
+// If g_test_bug_base() is not called, bug URIs are formed solely from the value
+// provided by g_test_bug().
+func TestBugBase(uriPattern string)
+
 // TestCreateCase: create a new Case, named @test_name.
 //
 // This API is fairly low level, and calling g_test_add() or g_test_add_func()
@@ -5049,6 +5645,53 @@ func TestCreateCase(testName string, dataSize uint, testData unsafe.Pointer, dat
 // TestCreateSuite: create a new test suite with the name @suite_name.
 func TestCreateSuite(suiteName string) *TestSuite
 
+// TestExpectMessage: indicates that a message with the given @log_domain and
+// @log_level, with text matching @pattern, is expected to be logged. When this
+// message is logged, it will not be printed, and the test case will not abort.
+//
+// This API may only be used with the old logging API (g_log() without
+// G_LOG_USE_STRUCTURED defined). It will not work with the structured logging
+// API. See [Testing for Messages][testing-for-messages].
+//
+// Use g_test_assert_expected_messages() to assert that all previously-expected
+// messages have been seen and suppressed.
+//
+// You can call this multiple times in a row, if multiple messages are expected
+// as a result of a single call. (The messages must appear in the same order as
+// the calls to g_test_expect_message().)
+//
+// For example:
+//
+//    // g_main_context_push_thread_default() should fail if the
+//    // context is already owned by another thread.
+//    g_test_expect_message (G_LOG_DOMAIN,
+//                           G_LOG_LEVEL_CRITICAL,
+//                           "assertion*acquired_context*failed");
+//    g_main_context_push_thread_default (bad_context);
+//    g_test_assert_expected_messages ();
+//
+// Note that you cannot use this to test g_error() messages, since g_error()
+// intentionally never returns even if the program doesn't abort; use
+// g_test_trap_subprocess() in this case.
+//
+// If messages at G_LOG_LEVEL_DEBUG are emitted, but not explicitly expected via
+// g_test_expect_message() then they will be ignored.
+func TestExpectMessage(logDomain string, logLevel LogLevelFlags, pattern string)
+
+// TestFail: indicates that a test failed. This function can be called multiple
+// times from the same test. You can use this function if your test failed in a
+// recoverable way.
+//
+// Do not use this function if the failure of a test could cause other tests to
+// malfunction.
+//
+// Calling this function will not stop the test from running, you need to return
+// from the test function yourself. So you can produce additional diagnostic
+// messages or even continue running the test.
+//
+// If not called from inside a test, this function does nothing.
+func TestFail()
+
 // TestFailed: returns whether a test has already failed. This will be the case
 // when g_test_fail(), g_test_incomplete() or g_test_skip() have been called,
 // but also if an assertion has failed.
@@ -5070,7 +5713,43 @@ func TestGetDir(fileType TestFileType) *string
 // TestGetRoot: get the toplevel test suite for the test path API.
 func TestGetRoot() *TestSuite
 
+// TestIncomplete: indicates that a test failed because of some incomplete
+// functionality. This function can be called multiple times from the same test.
+//
+// Calling this function will not stop the test from running, you need to return
+// from the test function yourself. So you can produce additional diagnostic
+// messages or even continue running the test.
+//
+// If not called from inside a test, this function does nothing.
+func TestIncomplete(msg string)
+
+// TestLogSetFatalHandler: installs a non-error fatal log handler which can be
+// used to decide whether log messages which are counted as fatal abort the
+// program.
+//
+// The use case here is that you are running a test case that depends on
+// particular libraries or circumstances and cannot prevent certain known
+// critical or warning messages. So you install a handler that compares the
+// domain and message to precisely not abort in such a case.
+//
+// Note that the handler is reset at the beginning of any test case, so you have
+// to set it inside each test function which needs the special behavior.
+//
+// This handler has no effect on g_error messages.
+//
+// This handler also has no effect on structured log messages (using
+// g_log_structured() or g_log_structured_array()). To change the fatal
+// behaviour for specific log messages, programs must install a custom log
+// writer function using g_log_set_writer_func().See [Using Structured
+// Logging][using-structured-logging].
+func TestLogSetFatalHandler(logFunc TestLogFatalFunc, userData unsafe.Pointer)
+
 func TestLogTypeName(logType TestLogType) string
+
+// TestQueueFree: enqueue a pointer to be released with g_free() during the next
+// teardown phase. This is equivalent to calling g_test_queue_destroy() with a
+// destroy callback of g_free().
+func TestQueueFree(gfreePointer unsafe.Pointer)
 
 // TestRandDouble: get a reproducible random floating point number, see
 // g_test_rand_int() for details on test case random numbers.
@@ -5135,9 +5814,47 @@ func TestRun() int
 // g_test_run_suite() or g_test_run() may only be called once in a program.
 func TestRunSuite(suite *TestSuite) int
 
+// TestSetNonfatalAssertions: changes the behaviour of the various
+// `g_assert_*()` macros, g_test_assert_expected_messages() and the various
+// `g_test_trap_assert_*()` macros to not abort to program, but instead call
+// g_test_fail() and continue. (This also changes the behavior of g_test_fail()
+// so that it will not cause the test program to abort after completing the
+// failed test.)
+//
+// Note that the g_assert_not_reached() and g_assert() macros are not affected
+// by this.
+//
+// This function can only be called after g_test_init().
+func TestSetNonfatalAssertions()
+
+// TestSkip: indicates that a test was skipped.
+//
+// Calling this function will not stop the test from running, you need to return
+// from the test function yourself. So you can produce additional diagnostic
+// messages or even continue running the test.
+//
+// If not called from inside a test, this function does nothing.
+func TestSkip(msg string)
+
 // TestSubprocess: returns true (after g_test_init() has been called) if the
 // test program is running under g_test_trap_subprocess().
 func TestSubprocess() bool
+
+// TestSummary: set the summary for a test, which describes what the test
+// checks, and how it goes about checking it. This may be included in test
+// report output, and is useful documentation for anyone reading the source code
+// or modifying a test in future. It must be a single line.
+//
+// This should be called at the top of a test function.
+//
+// For example: |[<!-- language="C" --> static void test_array_sort (void) {
+// g_test_summary ("Test my_array_sort() sorts the array correctly and stably, "
+// "including testing zero length and one-element arrays.");
+//
+//      …
+//    }
+//
+func TestSummary(summary string)
 
 // TestTimerElapsed: get the time since the last start of the timer with
 // g_test_timer_start().
@@ -5145,6 +5862,12 @@ func TestTimerElapsed() float64
 
 // TestTimerLast: report the last result of g_test_timer_elapsed().
 func TestTimerLast() float64
+
+// TestTimerStart: start a timing test. Call g_test_timer_elapsed() when the
+// task is supposed to be done. Call this function again to restart the timer.
+func TestTimerStart()
+
+func TestTrapAssertions(domain string, file string, line int, _func string, assertionFlags uint64, pattern string)
 
 // TestTrapFork: fork the current test program to execute a test case that might
 // not return or that might abort.
@@ -5182,7 +5905,79 @@ func TestTrapHasPassed() bool
 // call.
 func TestTrapReachedTimeout() bool
 
+// TestTrapSubprocess: respawns the test program to run only @test_path in a
+// subprocess. This can be used for a test case that might not return, or that
+// might abort.
+//
+// If @test_path is nil then the same test is re-run in a subprocess. You can
+// use g_test_subprocess() to determine whether the test is in a subprocess or
+// not.
+//
+// @test_path can also be the name of the parent test, followed by
+// "`/subprocess/`" and then a name for the specific subtest (or just ending
+// with "`/subprocess`" if the test only has one child test); tests with names
+// of this form will automatically be skipped in the parent process.
+//
+// If @usec_timeout is non-0, the test subprocess is aborted and considered
+// failing if its run time exceeds it.
+//
+// The subprocess behavior can be configured with the SubprocessFlags flags.
+//
+// You can use methods such as g_test_trap_assert_passed(),
+// g_test_trap_assert_failed(), and g_test_trap_assert_stderr() to check the
+// results of the subprocess. (But note that g_test_trap_assert_stdout() and
+// g_test_trap_assert_stderr() cannot be used if @test_flags specifies that the
+// child should inherit the parent stdout/stderr.)
+//
+// If your `main ()` needs to behave differently in the subprocess, you can call
+// g_test_subprocess() (after calling g_test_init()) to see whether you are in a
+// subprocess.
+//
+// The following example tests that calling `my_object_new(1000000)` will abort
+// with an error message.
+//
+//      static void
+//      test_create_large_object (void)
+//      {
+//        if (g_test_subprocess ())
+//          {
+//            my_object_new (1000000);
+//            return;
+//          }
+//
+//        // Reruns this same test in a subprocess
+//        g_test_trap_subprocess (NULL, 0, 0);
+//        g_test_trap_assert_failed ();
+//        g_test_trap_assert_stderr ("*ERROR*too large*");
+//      }
+//
+//      int
+//      main (int argc, char **argv)
+//      {
+//        g_test_init (&argc, &argv, NULL);
+//
+//        g_test_add_func ("/myobject/create_large_object",
+//                         test_create_large_object);
+//        return g_test_run ();
+//      }
+//
+func TestTrapSubprocess(testPath string, usecTimeout uint64, testFlags TestSubprocessFlags)
+
 func ThreadErrorQuark() Quark
+
+// ThreadExit: terminates the current thread.
+//
+// If another thread is waiting for us using g_thread_join() then the waiting
+// thread will be woken up and get @retval as the return value of
+// g_thread_join().
+//
+// Calling g_thread_exit() with a parameter @retval is equivalent to returning
+// @retval from the function @func, as given to g_thread_new().
+//
+// You must only call g_thread_exit() from a thread that you created yourself
+// with g_thread_new() or related APIs. You must not call this function from a
+// thread created with another threading library or or from within a Pool.
+func ThreadExit(retval unsafe.Pointer)
 
 // ThreadPoolGetMaxIdleTime: this function will return the maximum @interval
 // that a thread will wait in the thread pool for new tasks before being
@@ -5200,6 +5995,29 @@ func ThreadPoolGetMaxUnusedThreads() int
 // threads.
 func ThreadPoolGetNumUnusedThreads() uint
 
+// ThreadPoolSetMaxIdleTime: this function will set the maximum @interval that a
+// thread waiting in the pool for new tasks can be idle for before being
+// stopped. This function is similar to calling
+// g_thread_pool_stop_unused_threads() on a regular timeout, except this is done
+// on a per thread basis.
+//
+// By setting @interval to 0, idle threads will not be stopped.
+//
+// The default value is 15000 (15 seconds).
+func ThreadPoolSetMaxIdleTime(interval uint)
+
+// ThreadPoolSetMaxUnusedThreads: sets the maximal number of unused threads to
+// @max_threads. If @max_threads is -1, no limit is imposed on the number of
+// unused threads.
+//
+// The default value is 2.
+func ThreadPoolSetMaxUnusedThreads(maxThreads int)
+
+// ThreadPoolStopUnusedThreads: stops all currently unused threads. This does
+// not change the maximal number of unused threads. This function can be used to
+// regularly stop all unused threads e.g. from g_timeout_add().
+func ThreadPoolStopUnusedThreads()
+
 // ThreadSelf: this function returns the #GThread corresponding to the current
 // thread. Note that this function does not increase the reference count of the
 // returned struct.
@@ -5209,6 +6027,12 @@ func ThreadPoolGetNumUnusedThreads() uint
 // thread identification purposes (i.e. comparisons) but you must not use GLib
 // functions (such as g_thread_join()) on these threads.
 func ThreadSelf() *Thread
+
+// ThreadYield: causes the calling thread to voluntarily relinquish the CPU, so
+// that other threads can run.
+//
+// This function is often used as a method to make busy wait less evil.
+func ThreadYield()
 
 // TimeValFromIso8601: converts a string containing an ISO 8601 encoded date and
 // time to a Val and puts it into @time_.
@@ -5313,6 +6137,9 @@ func TrashStackPeek(stackP **TrashStack) unsafe.Pointer
 
 // TrashStackPop: pops a piece of memory off a Stack.
 func TrashStackPop(stackP **TrashStack) unsafe.Pointer
+
+// TrashStackPush: pushes a piece of memory onto a Stack.
+func TrashStackPush(stackP **TrashStack, dataP unsafe.Pointer)
 
 // TryMalloc: attempts to allocate @n_bytes, and returns nil on failure.
 // Contrast with g_malloc(), which aborts the program on failure.
@@ -5560,6 +6387,11 @@ func UnicharXdigitValue(c uint32) int
 // Unicode character.
 func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32
 
+// UnicodeCanonicalOrdering: computes the canonical ordering of a string
+// in-place. This rearranges decomposed characters in the string according to
+// their combining classes. See the Unicode manual for more information.
+func UnicodeCanonicalOrdering(string *uint32, len uint)
+
 // UnicodeScriptFromIso15924: looks up the Unicode script for @iso15924. ISO
 // 15924 assigns four-letter codes to scripts. For example, the code for Arabic
 // is 'Arab'. This function accepts four letter codes encoded as a @guint32 in a
@@ -5666,6 +6498,24 @@ func NewUnixSignalSource(signum int) *Source
 // Windows, it is in general not possible to delete files that are open to some
 // process, or mapped into memory.
 func Unlink(filename *string) int
+
+// Unsetenv: removes an environment variable from the environment.
+//
+// Note that on some systems, when variables are overwritten, the memory used
+// for the previous variables and its value isn't reclaimed.
+//
+// You should be mindful of the fact that environment variable handling in UNIX
+// is not thread-safe, and your program may crash if one thread calls
+// g_unsetenv() while another thread is calling getenv(). (And note that many
+// functions, such as gettext(), call getenv() internally.) This function is
+// only safe to use at the very start of your program, before creating any other
+// threads (or creating objects that create worker threads of their own).
+//
+// If you need to set up the environment for a child process, you can use
+// g_get_environ() to get an environment array, modify that with
+// g_environ_setenv() and g_environ_unsetenv(), and then pass that array
+// directly to execvpe(), g_spawn_async(), or the like.
+func Unsetenv(variable *string)
 
 // URIBuild: creates a new #GUri from the given components according to @flags.
 //
@@ -5871,6 +6721,13 @@ func URIUnescapeSegment(escapedString string, escapedStringEnd string, illegalCh
 // slash being expanded in an escaped path element, which might confuse pathname
 // handling.
 func URIUnescapeString(escapedString string, illegalCharacters string) string
+
+// Usleep: pauses the current thread for the given number of microseconds.
+//
+// There are 1 million microseconds per second (represented by the USEC_PER_SEC
+// macro). g_usleep() may have limited precision, depending on hardware and
+// operating system; don't rely on the exact length of the sleep.
+func Usleep(microseconds uint32)
 
 // UTF16ToUcs4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
@@ -6243,6 +7100,10 @@ func VariantTypeStringIsValid(typeString string) bool
 // For the simple case of checking if a string is a valid type string, see
 // g_variant_type_string_is_valid().
 func VariantTypeStringScan(string string, limit string, endptr *string) bool
+
+// WarnMessage: internal function used to print messages from the public
+// g_warn_if_reached() and g_warn_if_fail() macros.
+func WarnMessage(domain string, file string, line int, _func string, warnexpr string)
 
 // Array: contains the public fields of a GArray.
 type Array struct {

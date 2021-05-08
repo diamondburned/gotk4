@@ -45,6 +45,8 @@ type XID uint32
 
 type Pixmap uint32
 
+func OpenDisplay()
+
 type Display struct {
 	native *C.Display
 }

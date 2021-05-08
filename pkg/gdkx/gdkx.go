@@ -41,6 +41,14 @@ func X11DeviceGetID(device *X11DeviceCore) int
 // X11DeviceManagerLookup: returns the Device that wraps the given device ID.
 func X11DeviceManagerLookup(deviceManager *X11DeviceManagerCore, deviceID int) *X11DeviceCore
 
+// X11FreeCompoundText: frees the data returned from
+// gdk_x11_display_string_to_compound_text().
+func X11FreeCompoundText(ctext *uint8)
+
+// X11FreeTextList: frees the array of strings created by
+// gdk_x11_display_text_property_to_text_list().
+func X11FreeTextList(list *string)
+
 // X11GetDefaultRootXwindow: gets the root window of the default screen (see
 // gdk_x11_get_default_screen()).
 func X11GetDefaultRootXwindow() xlib.Window
@@ -82,9 +90,41 @@ func X11GetXatomName(xatom xlib.Atom) string
 // XAtomName() and gdk_atom_name(), the result doesn’t need to be freed.
 func X11GetXatomNameForDisplay(display *X11Display, xatom xlib.Atom) string
 
+// X11GrabServer: call gdk_x11_display_grab() on the default display. To ungrab
+// the server again, use gdk_x11_ungrab_server().
+//
+// gdk_x11_grab_server()/gdk_x11_ungrab_server() calls can be nested.
+func X11GrabServer()
+
 // X11LookupXdisplay: find the Display corresponding to @xdisplay, if any
 // exists.
 func X11LookupXdisplay(xdisplay *xlib.Display) *X11Display
+
+// X11RegisterStandardEventType: registers interest in receiving extension
+// events with type codes between @event_base and `event_base + n_events - 1`.
+// The registered events must have the window field in the same place as core X
+// events (this is not the case for e.g. XKB extension events).
+//
+// If an event type is registered, events of this type will go through global
+// and window-specific filters (see gdk_window_add_filter()). Unregistered
+// events will only go through global filters. GDK may register the events of
+// some X extensions on its own.
+//
+// This function should only be needed in unusual circumstances, e.g. when
+// filtering XInput extension events on the root window.
+func X11RegisterStandardEventType(display *X11Display, eventBase int, nEvents int)
+
+// X11SetSmClientID: sets the `SM_CLIENT_ID` property on the application’s
+// leader window so that the window manager can save the application’s state
+// using the X11R6 ICCCM session management protocol.
+//
+// See the X Session Management Library documentation for more information on
+// session management and the Inter-Client Communication Conventions Manual
+func X11SetSmClientID(smClientID string)
+
+// X11UngrabServer: ungrab the default display after it has been grabbed with
+// gdk_x11_grab_server().
+func X11UngrabServer()
 
 // X11XatomToAtom: convert from an X atom for the default display to the
 // corresponding Atom.

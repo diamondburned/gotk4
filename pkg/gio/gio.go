@@ -1395,9 +1395,36 @@ func AppInfoGetRecommendedForType(contentType string) *glib.List
 // g_app_info_launch_default_for_uri_async() instead.
 func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) bool
 
+// AppInfoLaunchDefaultForURIAsync: async version of
+// g_app_info_launch_default_for_uri().
+//
+// This version is useful if you are interested in receiving error information
+// in the case where the application is sandboxed and the portal may present an
+// application chooser dialog to the user.
+//
+// This is also useful if you want to be sure that the D-Bus–activated
+// applications are really started before termination and if you are interested
+// in receiving error information from their activation.
+func AppInfoLaunchDefaultForURIAsync(uri string, context *AppLaunchContext, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+
 // AppInfoLaunchDefaultForURIFinish: finishes an asynchronous
 // launch-default-for-uri operation.
 func AppInfoLaunchDefaultForURIFinish(result AsyncResult) bool
+
+// AppInfoResetTypeAssociations: removes all changes to the type associations
+// done by g_app_info_set_as_default_for_type(),
+// g_app_info_set_as_default_for_extension(), g_app_info_add_supports_type() or
+// g_app_info_remove_supports_type().
+func AppInfoResetTypeAssociations(contentType string)
+
+// BusGet: asynchronously connects to the message bus specified by @bus_type.
+//
+// When the operation is finished, @callback will be invoked. You can then call
+// g_bus_get_finish() to get the result of the operation.
+//
+// This is an asynchronous failable function. See g_bus_get_sync() for the
+// synchronous version.
+func BusGet(busType BusType, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
 
 // BusGetFinish: finishes an operation started with g_bus_get().
 //
@@ -1489,6 +1516,25 @@ func BusOwnNameOnConnectionWithClosures(connection *DBusConnection, name string,
 // BusOwnNameWithClosures: version of g_bus_own_name() using closures instead of
 // callbacks for easier binding in other languages.
 func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredClosure **glib.Closure, nameAcquiredClosure **glib.Closure, nameLostClosure **glib.Closure) uint
+
+// BusUnownName: stops owning a name.
+//
+// Note that there may still be D-Bus traffic to process (relating to owning and
+// unowning the name) in the current thread-default Context after this function
+// has returned. You should continue to iterate the Context until the Notify
+// function passed to g_bus_own_name() is called, in order to avoid memory leaks
+// through callbacks queued on the Context after it’s stopped being iterated.
+func BusUnownName(ownerID uint)
+
+// BusUnwatchName: stops watching a name.
+//
+// Note that there may still be D-Bus traffic to process (relating to watching
+// and unwatching the name) in the current thread-default Context after this
+// function has returned. You should continue to iterate the Context until the
+// Notify function passed to g_bus_watch_name() is called, in order to avoid
+// memory leaks through callbacks queued on the Context after it’s stopped being
+// iterated.
+func BusUnwatchName(watcherID uint)
 
 // BusWatchName: starts watching @name on the bus specified by @bus_type and
 // calls @name_appeared_handler and @name_vanished_handler when the name is
@@ -1599,6 +1645,30 @@ func ContentTypeIsMimeType(_type string, mimeType string) bool
 // it is "*" and on OSX it is a dynamic type or octet-stream.
 func ContentTypeIsUnknown(_type string) bool
 
+// ContentTypeSetMimeDirs: set the list of directories used by GIO to load the
+// MIME database. If @dirs is nil, the directories used are the default:
+//
+// - the `mime` subdirectory of the directory in `$XDG_DATA_HOME` - the `mime`
+// subdirectory of every directory in `$XDG_DATA_DIRS`
+//
+// This function is intended to be used when writing tests that depend on
+// information stored in the MIME database, in order to control the data.
+//
+// Typically, in case your tests use G_TEST_OPTION_ISOLATE_DIRS, but they depend
+// on the system’s MIME database, you should call this function with @dirs set
+// to nil before calling g_test_init(), for instance:
+//
+//      // Load MIME data from the system
+//      g_content_type_set_mime_dirs (NULL);
+//      // Isolate the environment
+//      g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
+//
+//      …
+//
+//      return g_test_run ();
+//
+func ContentTypeSetMimeDirs(dirs []string)
+
 // ContentTypesGetRegistered: gets a list of strings containing all the
 // registered content types known to the system. The list and its data should be
 // freed using `g_list_free_full (list, g_free)`.
@@ -1619,6 +1689,19 @@ func DbusAddressEscapeValue(string string) string
 // The returned address will be in the [D-Bus address
 // format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 func DbusAddressGetForBusSync(busType BusType, cancellable *Cancellable) string
+
+// DbusAddressGetStream: asynchronously connects to an endpoint specified by
+// @address and sets up the connection so it is in a state to run the
+// client-side of the D-Bus authentication conversation. @address must be in the
+// [D-Bus address
+// format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// When the operation is finished, @callback will be invoked. You can then call
+// g_dbus_address_get_stream_finish() to get the result of the operation.
+//
+// This is an asynchronous failable function. See
+// g_dbus_address_get_stream_sync() for the synchronous version.
+func DbusAddressGetStream(address string, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
 
 // DbusAddressGetStreamFinish: finishes an operation started with
 // g_dbus_address_get_stream().
@@ -1701,6 +1784,10 @@ func DbusErrorQuark() glib.Quark
 // domain.
 func DbusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool
 
+// DbusErrorRegisterErrorDomain: helper function for associating a #GError error
+// domain with D-Bus error names.
+func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *uint, entries []DBusErrorEntry, numEntries uint)
+
 // DbusErrorStripRemoteError: looks for extra information in the error message
 // used to recover the D-Bus error name and strips it if found. If stripped, the
 // message field in @error will correspond exactly to what was received on the
@@ -1742,6 +1829,19 @@ func DbusGenerateGuid() string
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
 func DbusGvalueToGvariant(gvalue **glib.Value, _type *glib.VariantType) *glib.Variant
+
+// DbusGvariantToGvalue: converts a #GVariant to a #GValue. If @value is
+// floating, it is consumed.
+//
+// The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
+// this function is essentially its reverse form. So, a #GVariant containing any
+// basic or string array type will be converted to a #GValue containing a basic
+// value or string array. Any other #GVariant (handle, variant, tuple, dict
+// entry) will be converted to a #GValue containing that #GVariant.
+//
+// The conversion never fails - a valid #GValue is always returned in
+// @out_gvalue.
+func DbusGvariantToGvalue(value *glib.Variant, outGvalue **glib.Value)
 
 // DbusIsAddress: checks if @string is a [D-Bus
 // address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
@@ -1897,6 +1997,47 @@ func IOModulesLoadAllInDirectory(dirname *string) *glib.List
 // delayed/lazy loading of modules.
 func IOModulesLoadAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) *glib.List
 
+// IOModulesScanAllInDirectory: scans all the modules in the specified
+// directory, ensuring that any extension point implemented by a module is
+// registered.
+//
+// This may not actually load and initialize all the types in each module, some
+// modules may be lazily loaded and initialized when an extension point it
+// implements is used with e.g. g_io_extension_point_get_extensions() or
+// g_io_extension_point_get_extension_by_name().
+//
+// If you need to guarantee that all types are loaded in all the modules, use
+// g_io_modules_load_all_in_directory().
+func IOModulesScanAllInDirectory(dirname *string)
+
+// IOModulesScanAllInDirectoryWithScope: scans all the modules in the specified
+// directory, ensuring that any extension point implemented by a module is
+// registered.
+//
+// This may not actually load and initialize all the types in each module, some
+// modules may be lazily loaded and initialized when an extension point it
+// implements is used with e.g. g_io_extension_point_get_extensions() or
+// g_io_extension_point_get_extension_by_name().
+//
+// If you need to guarantee that all types are loaded in all the modules, use
+// g_io_modules_load_all_in_directory().
+func IOModulesScanAllInDirectoryWithScope(dirname *string, scope *IOModuleScope)
+
+// IOSchedulerCancelAllJobs: cancels all cancellable I/O jobs.
+//
+// A job is cancellable if a #GCancellable was passed into
+// g_io_scheduler_push_job().
+func IOSchedulerCancelAllJobs()
+
+// IOSchedulerPushJob: schedules the I/O job to run in another thread.
+//
+// @notify will be called on @user_data after @job_func has returned, regardless
+// whether the job was cancelled or has run to completion.
+//
+// If @cancellable is not nil, it can be used to cancel the I/O job by calling
+// g_cancellable_cancel() or by calling g_io_scheduler_cancel_all_jobs().
+func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, userData unsafe.Pointer, notify unsafe.Pointer, ioPriority int, cancellable *Cancellable)
+
 // NewKeyfileSettingsBackend: creates a keyfile-backed Backend.
 //
 // The filename of the keyfile to use is given by @filename.
@@ -1956,6 +2097,12 @@ func NewMemorySettingsBackend() *SettingsBackend
 
 // NetworkMonitorGetDefault: gets the default Monitor for the system.
 func NetworkMonitorGetDefault() NetworkMonitor
+
+// NetworkingInit: initializes the platform networking libraries (eg, on
+// Windows, this calls WSAStartup()). GLib will call this itself if it is
+// needed, so you only need to call it if you directly call system networking
+// functions (without calling any GLib networking functions first).
+func NetworkingInit()
 
 // NewNullSettingsBackend: creates a readonly Backend.
 //
@@ -2077,6 +2224,15 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Byt
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) *InputStream
 
+// ResourcesRegister: registers the resource with the process-global set of
+// resources. Once a resource is registered the files in it can be accessed with
+// the global resource lookup functions like g_resources_lookup_data().
+func ResourcesRegister(resource *Resource)
+
+// ResourcesUnregister: unregisters the resource from the process-global set of
+// resources.
+func ResourcesUnregister(resource *Resource)
+
 // SettingsSchemaSourceGetDefault: gets the default system schema source.
 //
 // This function is not required for normal uses of #GSettings but it may be
@@ -2090,6 +2246,17 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) *InputStr
 // `XDG_DATA_DIRS` and `GSETTINGS_SCHEMA_DIR`. For this reason, all lookups
 // performed against the default source should probably be done recursively.
 func SettingsSchemaSourceGetDefault() *SettingsSchemaSource
+
+// SimpleAsyncReportGerrorInIdle: reports an error in an idle function. Similar
+// to g_simple_async_report_error_in_idle(), but takes a #GError rather than
+// building a new one.
+func SimpleAsyncReportGerrorInIdle(object **glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
+
+// SimpleAsyncReportTakeGerrorInIdle: reports an error in an idle function.
+// Similar to g_simple_async_report_gerror_in_idle(), but takes over the
+// caller's ownership of @error, so the caller does not have to free it any
+// more.
+func SimpleAsyncReportTakeGerrorInIdle(object **glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
 
 // SrvTargetListSort: sorts @targets in place according to the algorithm in RFC
 // 2782.
@@ -2171,6 +2338,9 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry
 //
 // If more mounts have the same mount path, the last matching mount is returned.
 func UnixMountFor(filePath *string, timeRead *uint64) *UnixMountEntry
+
+// UnixMountFree: frees a unix mount.
+func UnixMountFree(mountEntry *UnixMountEntry)
 
 // UnixMountGetDevicePath: gets the device path for a unix mount.
 func UnixMountGetDevicePath(mountEntry *UnixMountEntry) *string

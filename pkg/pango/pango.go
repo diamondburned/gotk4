@@ -985,9 +985,55 @@ func NewAttrWeight(weight Weight) *Attribute
 // [func@unichar_direction].
 func BidiTypeForUnichar(ch uint32) BidiType
 
+// Break: determines possible line, word, and character breaks for a string of
+// Unicode text with a single analysis.
+//
+// For most purposes you may want to use pango_get_log_attrs().
+func Break(text string, length int, analysis *Analysis, attrs []LogAttr, attrsLen int)
+
+// DefaultBreak: this is the default break algorithm.
+//
+// It applies Unicode rules without language-specific tailoring, therefore the
+// @analyis argument is unused and can be nil.
+//
+// See pango_tailor_break() for language-specific breaks.
+func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int)
+
+// ExtentsToPixels: converts extents from Pango units to device units.
+//
+// The conversion is done by dividing by the PANGO_SCALE factor and performing
+// rounding.
+//
+// The @inclusive rectangle is converted by flooring the x/y coordinates and
+// extending width/height, such that the final rectangle completely includes the
+// original rectangle.
+//
+// The @nearest rectangle is converted by rounding the coordinates of the
+// rectangle to the nearest device unit (pixel).
+//
+// The rule to which argument to use is: if you want the resulting device-space
+// rectangle to completely contain the original rectangle, pass it in as
+// @inclusive. If you want two touching-but-not-overlapping rectangles stay
+// touching-but-not-overlapping after rounding to device units, pass them in as
+// @nearest.
+func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle)
+
 // FindBaseDir: searches a string the first character that has a strong
 // direction, according to the Unicode bidirectional algorithm.
 func FindBaseDir(text string, length int) Direction
+
+// FindParagraphBoundary: locates a paragraph boundary in @text.
+//
+// A boundary is caused by delimiter characters, such as a newline, carriage
+// return, carriage return-newline pair, or Unicode paragraph separator
+// character. The index of the run of delimiters is returned in
+// @paragraph_delimiter_index. The index of the start of the paragrap (index
+// after all delimiters) is stored in @next_paragraph_start.
+//
+// If no delimiters are found, both @paragraph_delimiter_index and
+// @next_paragraph_start are filled with the length of @text (an index one off
+// the end).
+func FindParagraphBoundary(text string, length int, paragraphDelimiterIndex *int, nextParagraphStart *int)
 
 // FontDescriptionFromString: creates a new font description from a string
 // representation.
@@ -1031,6 +1077,15 @@ func FindBaseDir(text string, length int) Direction
 //
 // "Cantarell Italic Light 15 \@wght=200"
 func FontDescriptionFromString(str string) *FontDescription
+
+// GetLogAttrs: computes a `PangoLogAttr` for each character in @text.
+//
+// The @log_attrs array must have one `PangoLogAttr` for each position in @text;
+// if @text contains N characters, it has N+1 positions, including the last
+// position at the end of the text. @text should be an entire paragraph; logical
+// attributes can't be computed without context (for example you need to see
+// spaces on either side of a word to know the word is a word).
+func GetLogAttrs(text string, length int, level int, language *Language, logAttrs []LogAttr, attrsLen int)
 
 // GetMirrorChar: returns the mirrored character of a Unicode character.
 //
@@ -1255,6 +1310,17 @@ func ParseVariant(str string, variant *Variant, warn bool) bool
 // "ultraleight" and integers. Case variations are ignored.
 func ParseWeight(str string, weight *Weight, warn bool) bool
 
+// QuantizeLineGeometry: quantizes the thickness and position of a line to whole
+// device pixels.
+//
+// This is typically used for underline or strikethrough. The purpose of this
+// function is to avoid such lines looking blurry.
+//
+// Care is taken to make sure @thickness is at least one pixel when this
+// function returns, but returned @position may become zero as a result of
+// rounding.
+func QuantizeLineGeometry(thickness *int, position *int)
+
 // ReadLine: reads an entire line from a file into a buffer.
 //
 // Lines may be delimited with '\n', '\r', '\n\r', or '\r\n'. The delimiter is
@@ -1327,12 +1393,68 @@ func ScriptForUnichar(ch uint32) Script
 // language for PANGO_SCRIPT_HAN when setting context language is not feasible.
 func ScriptGetSampleLanguage(script Script) *Language
 
+// Shape: convert the characters in @text into glyphs.
+//
+// Given a segment of text and the corresponding `PangoAnalysis` structure
+// returned from [func@itemize], convert the characters into glyphs. You may
+// also pass in only a substring of the item from [func@itemize].
+//
+// It is recommended that you use [func@shape_full] instead, since that API
+// allows for shaping interaction happening across text item boundaries.
+//
+// Note that the extra attributes in the @analyis that is returned from
+// [func@itemize] have indices that are relative to the entire paragraph, so you
+// need to subtract the item offset from their indices before calling
+// [func@shape].
+func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString)
+
+// ShapeFull: convert the characters in @text into glyphs.
+//
+// Given a segment of text and the corresponding `PangoAnalysis` structure
+// returned from [func@itemize], convert the characters into glyphs. You may
+// also pass in only a substring of the item from [func@itemize].
+//
+// This is similar to [func@shape], except it also can optionally take the full
+// paragraph text as input, which will then be used to perform certain
+// cross-item shaping interactions. If you have access to the broader text of
+// which @item_text is part of, provide the broader text as @paragraph_text. If
+// @paragraph_text is nil, item text is used instead.
+//
+// Note that the extra attributes in the @analyis that is returned from
+// [func@itemize] have indices that are relative to the entire paragraph, so you
+// do not pass the full paragraph text as @paragraph_text, you need to subtract
+// the item offset from their indices before calling [func@shape_full].
+func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString)
+
+// ShapeWithFlags: convert the characters in @text into glyphs.
+//
+// Given a segment of text and the corresponding `PangoAnalysis` structure
+// returned from [func@itemize], convert the characters into glyphs. You may
+// also pass in only a substring of the item from [func@itemize].
+//
+// This is similar to [func@shape_full], except it also takes flags that can
+// influence the shaping process.
+//
+// Note that the extra attributes in the @analyis that is returned from
+// [func@itemize] have indices that are relative to the entire paragraph, so you
+// do not pass the full paragraph text as @paragraph_text, you need to subtract
+// the item offset from their indices before calling [func@shape_with_flags].
+func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags)
+
 // SkipSpace: skips 0 or more characters of white space.
 func SkipSpace(pos *string) bool
 
 // SplitFileList: splits a G_SEARCHPATH_SEPARATOR-separated list of files,
 // stripping white space and substituting ~/ with $HOME/.
 func SplitFileList(str string) []string
+
+// TailorBreak: apply language-specific tailoring to the breaks in @log_attrs.
+//
+// The line breaks are assumed to have been produced by [func@default_break].
+//
+// If @offset is not -1, it is used to apply attributes from @analysis that are
+// relevant to line breaking.
+func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr, logAttrsLen int)
 
 // TrimString: trims leading and trailing whitespace from a string.
 func TrimString(str string) string

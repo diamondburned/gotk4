@@ -18,8 +18,12 @@ var (
 )
 
 func init() {
-	flag.StringVar(&output, "o", "./", "output directory to mkdir in")
+	flag.StringVar(&output, "o", "", "output directory to mkdir in")
 	flag.Parse()
+
+	if output == "" {
+		log.Fatalln("Missing -o output directory.")
+	}
 }
 
 type Package struct {
@@ -61,6 +65,11 @@ func main() {
 	gen := girgen.NewGenerator(repos)
 	gen.WithLogger(log.New(os.Stderr, "[girgen] ", log.LstdFlags|log.Lmsgprefix))
 
+	// Do a clean-up of the target directory.
+	if err := os.RemoveAll(output); err != nil {
+		log.Println("non-fatal: failed to rm -rf output dir:", err)
+	}
+
 	for _, repo := range repos {
 		for _, namespace := range repo.Namespaces {
 			ng := gen.UseNamespace(namespace.Name)
@@ -91,11 +100,9 @@ func writeNamespace(ng *girgen.NamespaceGenerator) {
 	dir := filepath.Join(output, pkg)
 	out := filepath.Join(dir, pkg+".go")
 
-	if err := os.Mkdir(dir, os.ModePerm|os.ModeDir); err != nil {
-		if !os.IsExist(err) {
-			log.Println("mkdir failed:", err)
-			return
-		}
+	if err := os.MkdirAll(dir, os.ModePerm|os.ModeDir); err != nil {
+		log.Println("mkdir -p failed:", err)
+		return
 	}
 
 	f, err := os.Create(out)

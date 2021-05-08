@@ -47,7 +47,7 @@ var recordTmpl = newGoTemplate(`
 		{{ $.Field . }}
 		{{ end -}}
 
-		{{ if .NeedsNative -}}
+		{{ if .NeedsNative }}
 		native *C.{{ .CType }}
 		{{ end -}}
 	}

@@ -1694,6 +1694,671 @@ const (
 	VariantParseErrorRecursion VariantParseError = 18
 )
 
+type ASCIIType int
+
+const (
+	ASCIITypeAlnum ASCIIType = 0b1
+
+	ASCIITypeAlpha ASCIIType = 0b10
+
+	ASCIITypeCntrl ASCIIType = 0b100
+
+	ASCIITypeDigit ASCIIType = 0b1000
+
+	ASCIITypeGraph ASCIIType = 0b10000
+
+	ASCIITypeLower ASCIIType = 0b100000
+
+	ASCIITypePrint ASCIIType = 0b1000000
+
+	ASCIITypePunct ASCIIType = 0b10000000
+
+	ASCIITypeSpace ASCIIType = 0b100000000
+
+	ASCIITypeUpper ASCIIType = 0b1000000000
+
+	ASCIITypeXdigit ASCIIType = 0b10000000000
+)
+
+// FileSetContentsFlags: flags to pass to g_file_set_contents_full() to affect
+// its safety and performance.
+type FileSetContentsFlags int
+
+const (
+	// FileSetContentsFlagsNone: no guarantees about file consistency or
+	// durability. The most dangerous setting, which is slightly faster than
+	// other settings.
+	FileSetContentsFlagsNone FileSetContentsFlags = 0b0
+	// FileSetContentsFlagsConsistent: guarantee file consistency: after a
+	// crash, either the old version of the file or the new version of the file
+	// will be available, but not a mixture. On Unix systems this equates to an
+	// `fsync()` on the file and use of an atomic `rename()` of the new version
+	// of the file over the old.
+	FileSetContentsFlagsConsistent FileSetContentsFlags = 0b1
+	// FileSetContentsFlagsDurable: guarantee file durability: after a crash,
+	// the new version of the file will be available. On Unix systems this
+	// equates to an `fsync()` on the file (if G_FILE_SET_CONTENTS_CONSISTENT is
+	// unset), or the effects of G_FILE_SET_CONTENTS_CONSISTENT plus an
+	// `fsync()` on the directory containing the file after calling `rename()`.
+	FileSetContentsFlagsDurable FileSetContentsFlags = 0b10
+	// FileSetContentsFlagsOnlyExisting: only apply consistency and durability
+	// guarantees if the file already exists. This may speed up file operations
+	// if the file doesn’t currently exist, but may result in a corrupted
+	// version of the new file if the system crashes while writing it.
+	FileSetContentsFlagsOnlyExisting FileSetContentsFlags = 0b100
+)
+
+// FileTest: a test to perform on a file using g_file_test().
+type FileTest int
+
+const (
+	// FileTestIsRegular: true if the file is a regular file (not a directory).
+	// Note that this test will also return true if the tested file is a symlink
+	// to a regular file.
+	FileTestIsRegular FileTest = 0b1
+	// FileTestIsSymlink: true if the file is a symlink.
+	FileTestIsSymlink FileTest = 0b10
+	// FileTestIsDir: true if the file is a directory.
+	FileTestIsDir FileTest = 0b100
+	// FileTestIsExecutable: true if the file is executable.
+	FileTestIsExecutable FileTest = 0b1000
+	// FileTestExists: true if the file exists. It may or may not be a regular
+	// file.
+	FileTestExists FileTest = 0b10000
+)
+
+// FormatSizeFlags: flags to modify the format of the string returned by
+// g_format_size_full().
+type FormatSizeFlags int
+
+const (
+	// FormatSizeFlagsDefault: behave the same as g_format_size()
+	FormatSizeFlagsDefault FormatSizeFlags = 0b0
+	// FormatSizeFlagsLongFormat: include the exact number of bytes as part of
+	// the returned string. For example, "45.6 kB (45,612 bytes)".
+	FormatSizeFlagsLongFormat FormatSizeFlags = 0b1
+	// FormatSizeFlagsIecUnits: use IEC (base 1024) units with "KiB"-style
+	// suffixes. IEC units should only be used for reporting things with a
+	// strong "power of 2" basis, like RAM sizes or RAID stripe sizes. Network
+	// and storage sizes should be reported in the normal SI units.
+	FormatSizeFlagsIecUnits FormatSizeFlags = 0b10
+	// FormatSizeFlagsBits: set the size as a quantity in bits, rather than
+	// bytes, and return units in bits. For example, ‘Mb’ rather than ‘MB’.
+	FormatSizeFlagsBits FormatSizeFlags = 0b100
+)
+
+// HookFlagMask: flags used internally in the #GHook implementation.
+type HookFlagMask int
+
+const (
+	// HookFlagMaskActive: set if the hook has not been destroyed
+	HookFlagMaskActive HookFlagMask = 0b1
+	// HookFlagMaskInCall: set if the hook is currently being run
+	HookFlagMaskInCall HookFlagMask = 0b10
+	// HookFlagMaskMask: a mask covering all bits reserved for hook flags; see
+	// G_HOOK_FLAG_USER_SHIFT
+	HookFlagMaskMask HookFlagMask = 0b1111
+)
+
+// IOCondition: a bitwise combination representing a condition to watch for on
+// an event source.
+type IOCondition int
+
+const (
+	// IOConditionIn: there is data to read.
+	IOConditionIn IOCondition = 0b1
+	// IOConditionOut: data can be written (without blocking).
+	IOConditionOut IOCondition = 0b100
+	// IOConditionPri: there is urgent data to read.
+	IOConditionPri IOCondition = 0b10
+	// IOConditionErr: error condition.
+	IOConditionErr IOCondition = 0b1000
+	// IOConditionHup: hung up (the connection has been broken, usually for
+	// pipes and sockets).
+	IOConditionHup IOCondition = 0b10000
+	// IOConditionNval: invalid request. The file descriptor is not open.
+	IOConditionNval IOCondition = 0b100000
+)
+
+func marshalIOCondition(p uintptr) (interface{}, error) {
+	return IOCondition(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// IOFlags: specifies properties of a OChannel. Some of the flags can only be
+// read with g_io_channel_get_flags(), but not changed with
+// g_io_channel_set_flags().
+type IOFlags int
+
+const (
+	// IOFlagsAppend: turns on append mode, corresponds to O_APPEND (see the
+	// documentation of the UNIX open() syscall)
+	IOFlagsAppend IOFlags = 0b1
+	// IOFlagsNonblock: turns on nonblocking mode, corresponds to
+	// O_NONBLOCK/O_NDELAY (see the documentation of the UNIX open() syscall)
+	IOFlagsNonblock IOFlags = 0b10
+	// IOFlagsIsReadable: indicates that the io channel is readable. This flag
+	// cannot be changed.
+	IOFlagsIsReadable IOFlags = 0b100
+	// IOFlagsIsWritable: indicates that the io channel is writable. This flag
+	// cannot be changed.
+	IOFlagsIsWritable IOFlags = 0b1000
+	// IOFlagsIsWriteable: a misspelled version of @G_IO_FLAG_IS_WRITABLE that
+	// existed before the spelling was fixed in GLib 2.30. It is kept here for
+	// compatibility reasons. Deprecated since 2.30
+	IOFlagsIsWriteable IOFlags = 0b1000
+	// IOFlagsIsSeekable: indicates that the io channel is seekable, i.e. that
+	// g_io_channel_seek_position() can be used on it. This flag cannot be
+	// changed.
+	IOFlagsIsSeekable IOFlags = 0b10000
+	// IOFlagsMask: the mask that specifies all the valid flags.
+	IOFlagsMask IOFlags = 0b11111
+	// IOFlagsGetMask: the mask of the flags that are returned from
+	// g_io_channel_get_flags()
+	IOFlagsGetMask IOFlags = 0b11111
+	// IOFlagsSetMask: the mask of the flags that the user can modify with
+	// g_io_channel_set_flags()
+	IOFlagsSetMask IOFlags = 0b11
+)
+
+// KeyFileFlags: flags which influence the parsing.
+type KeyFileFlags int
+
+const (
+	// KeyFileFlagsNone: no flags, default behaviour
+	KeyFileFlagsNone KeyFileFlags = 0b0
+	// KeyFileFlagsKeepComments: use this flag if you plan to write the
+	// (possibly modified) contents of the key file back to a file; otherwise
+	// all comments will be lost when the key file is written back.
+	KeyFileFlagsKeepComments KeyFileFlags = 0b1
+	// KeyFileFlagsKeepTranslations: use this flag if you plan to write the
+	// (possibly modified) contents of the key file back to a file; otherwise
+	// only the translations for the current language will be written back.
+	KeyFileFlagsKeepTranslations KeyFileFlags = 0b10
+)
+
+// LogLevelFlags: flags specifying the level of log messages.
+//
+// It is possible to change how GLib treats messages of the various levels using
+// g_log_set_handler() and g_log_set_fatal_mask().
+type LogLevelFlags int
+
+const (
+	// LogLevelFlagsFlagRecursion: internal flag
+	LogLevelFlagsFlagRecursion LogLevelFlags = 0b1
+	// LogLevelFlagsFlagFatal: internal flag
+	LogLevelFlagsFlagFatal LogLevelFlags = 0b10
+	// LogLevelFlagsLevelError: log level for errors, see g_error(). This level
+	// is also used for messages produced by g_assert().
+	LogLevelFlagsLevelError LogLevelFlags = 0b100
+	// LogLevelFlagsLevelCritical: log level for critical warning messages, see
+	// g_critical(). This level is also used for messages produced by
+	// g_return_if_fail() and g_return_val_if_fail().
+	LogLevelFlagsLevelCritical LogLevelFlags = 0b1000
+	// LogLevelFlagsLevelWarning: log level for warnings, see g_warning()
+	LogLevelFlagsLevelWarning LogLevelFlags = 0b10000
+	// LogLevelFlagsLevelMessage: log level for messages, see g_message()
+	LogLevelFlagsLevelMessage LogLevelFlags = 0b100000
+	// LogLevelFlagsLevelInfo: log level for informational messages, see
+	// g_info()
+	LogLevelFlagsLevelInfo LogLevelFlags = 0b1000000
+	// LogLevelFlagsLevelDebug: log level for debug messages, see g_debug()
+	LogLevelFlagsLevelDebug LogLevelFlags = 0b10000000
+	// LogLevelFlagsLevelMask: a mask including all log levels
+	LogLevelFlagsLevelMask LogLevelFlags = -4
+)
+
+// MarkupCollectType: a mixed enumerated type and flags field. You must specify
+// one type (string, strdup, boolean, tristate). Additionally, you may
+// optionally bitwise OR the type with the flag G_MARKUP_COLLECT_OPTIONAL.
+//
+// It is likely that this enum will be extended in the future to support other
+// types.
+type MarkupCollectType int
+
+const (
+	// MarkupCollectTypeInvalid: used to terminate the list of attributes to
+	// collect
+	MarkupCollectTypeInvalid MarkupCollectType = 0b0
+	// MarkupCollectTypeString: collect the string pointer directly from the
+	// attribute_values[] array. Expects a parameter of type (const char **). If
+	// G_MARKUP_COLLECT_OPTIONAL is specified and the attribute isn't present
+	// then the pointer will be set to nil
+	MarkupCollectTypeString MarkupCollectType = 0b1
+	// MarkupCollectTypeStrdup: as with G_MARKUP_COLLECT_STRING, but expects a
+	// parameter of type (char **) and g_strdup()s the returned pointer. The
+	// pointer must be freed with g_free()
+	MarkupCollectTypeStrdup MarkupCollectType = 0b10
+	// MarkupCollectTypeBoolean: expects a parameter of type (gboolean *) and
+	// parses the attribute value as a boolean. Sets false if the attribute
+	// isn't present. Valid boolean values consist of (case-insensitive)
+	// "false", "f", "no", "n", "0" and "true", "t", "yes", "y", "1"
+	MarkupCollectTypeBoolean MarkupCollectType = 0b11
+	// MarkupCollectTypeTristate: as with G_MARKUP_COLLECT_BOOLEAN, but in the
+	// case of a missing attribute a value is set that compares equal to neither
+	// false nor true G_MARKUP_COLLECT_OPTIONAL is implied
+	MarkupCollectTypeTristate MarkupCollectType = 0b100
+	// MarkupCollectTypeOptional: can be bitwise ORed with the other fields. If
+	// present, allows the attribute not to appear. A default value is set
+	// depending on what value type is used
+	MarkupCollectTypeOptional MarkupCollectType = 0b10000000000000000
+)
+
+// MarkupParseFlags: flags that affect the behaviour of the parser.
+type MarkupParseFlags int
+
+const (
+	// MarkupParseFlagsDoNotUseThisUnsupportedFlag: flag you should not use
+	MarkupParseFlagsDoNotUseThisUnsupportedFlag MarkupParseFlags = 0b1
+	// MarkupParseFlagsTreatCdataAsText: when this flag is set, CDATA marked
+	// sections are not passed literally to the @passthrough function of the
+	// parser. Instead, the content of the section (without the `<![CDATA[` and
+	// `]]>`) is passed to the @text function. This flag was added in GLib 2.12
+	MarkupParseFlagsTreatCdataAsText MarkupParseFlags = 0b10
+	// MarkupParseFlagsPrefixErrorPosition: normally errors caught by GMarkup
+	// itself have line/column information prefixed to them to let the caller
+	// know the location of the error. When this flag is set the location
+	// information is also prefixed to errors generated by the Parser
+	// implementation functions
+	MarkupParseFlagsPrefixErrorPosition MarkupParseFlags = 0b100
+	// MarkupParseFlagsIgnoreQualified: ignore (don't report) qualified
+	// attributes and tags, along with their contents. A qualified attribute or
+	// tag is one that contains ':' in its name (ie: is in another namespace).
+	// Since: 2.40.
+	MarkupParseFlagsIgnoreQualified MarkupParseFlags = 0b1000
+)
+
+// OptionFlags: flags which modify individual options.
+type OptionFlags int
+
+const (
+	// OptionFlagsNone: no flags. Since: 2.42.
+	OptionFlagsNone OptionFlags = 0b0
+	// OptionFlagsHidden: the option doesn't appear in `--help` output.
+	OptionFlagsHidden OptionFlags = 0b1
+	// OptionFlagsInMain: the option appears in the main section of the `--help`
+	// output, even if it is defined in a group.
+	OptionFlagsInMain OptionFlags = 0b10
+	// OptionFlagsReverse: for options of the G_OPTION_ARG_NONE kind, this flag
+	// indicates that the sense of the option is reversed.
+	OptionFlagsReverse OptionFlags = 0b100
+	// OptionFlagsNoArg: for options of the G_OPTION_ARG_CALLBACK kind, this
+	// flag indicates that the callback does not take any argument (like a
+	// G_OPTION_ARG_NONE option). Since 2.8
+	OptionFlagsNoArg OptionFlags = 0b1000
+	// OptionFlagsFilename: for options of the G_OPTION_ARG_CALLBACK kind, this
+	// flag indicates that the argument should be passed to the callback in the
+	// GLib filename encoding rather than UTF-8. Since 2.8
+	OptionFlagsFilename OptionFlags = 0b10000
+	// OptionFlagsOptionalArg: for options of the G_OPTION_ARG_CALLBACK kind,
+	// this flag indicates that the argument supply is optional. If no argument
+	// is given then data of GOptionParseFunc will be set to NULL. Since 2.8
+	OptionFlagsOptionalArg OptionFlags = 0b100000
+	// OptionFlagsNoalias: this flag turns off the automatic conflict resolution
+	// which prefixes long option names with `groupname-` if there is a
+	// conflict. This option should only be used in situations where aliasing is
+	// necessary to model some legacy commandline interface. It is not safe to
+	// use this option, unless all option groups are under your direct control.
+	// Since 2.8.
+	OptionFlagsNoalias OptionFlags = 0b1000000
+)
+
+// RegexCompileFlags: flags specifying compile-time options.
+type RegexCompileFlags int
+
+const (
+	// RegexCompileFlagsCaseless: letters in the pattern match both upper- and
+	// lowercase letters. This option can be changed within a pattern by a
+	// "(?i)" option setting.
+	RegexCompileFlagsCaseless RegexCompileFlags = 0b1
+	// RegexCompileFlagsMultiline: by default, GRegex treats the strings as
+	// consisting of a single line of characters (even if it actually contains
+	// newlines). The "start of line" metacharacter ("^") matches only at the
+	// start of the string, while the "end of line" metacharacter ("$") matches
+	// only at the end of the string, or before a terminating newline (unless
+	// REGEX_DOLLAR_ENDONLY is set). When REGEX_MULTILINE is set, the "start of
+	// line" and "end of line" constructs match immediately following or
+	// immediately before any newline in the string, respectively, as well as at
+	// the very start and end. This can be changed within a pattern by a "(?m)"
+	// option setting.
+	RegexCompileFlagsMultiline RegexCompileFlags = 0b10
+	// RegexCompileFlagsDotall: a dot metacharacter (".") in the pattern matches
+	// all characters, including newlines. Without it, newlines are excluded.
+	// This option can be changed within a pattern by a ("?s") option setting.
+	RegexCompileFlagsDotall RegexCompileFlags = 0b100
+	// RegexCompileFlagsExtended: whitespace data characters in the pattern are
+	// totally ignored except when escaped or inside a character class.
+	// Whitespace does not include the VT character (code 11). In addition,
+	// characters between an unescaped "#" outside a character class and the
+	// next newline character, inclusive, are also ignored. This can be changed
+	// within a pattern by a "(?x)" option setting.
+	RegexCompileFlagsExtended RegexCompileFlags = 0b1000
+	// RegexCompileFlagsAnchored: the pattern is forced to be "anchored", that
+	// is, it is constrained to match only at the first matching point in the
+	// string that is being searched. This effect can also be achieved by
+	// appropriate constructs in the pattern itself such as the "^"
+	// metacharacter.
+	RegexCompileFlagsAnchored RegexCompileFlags = 0b10000
+	// RegexCompileFlagsDollarEndonly: a dollar metacharacter ("$") in the
+	// pattern matches only at the end of the string. Without this option, a
+	// dollar also matches immediately before the final character if it is a
+	// newline (but not before any other newlines). This option is ignored if
+	// REGEX_MULTILINE is set.
+	RegexCompileFlagsDollarEndonly RegexCompileFlags = 0b100000
+	// RegexCompileFlagsUngreedy: inverts the "greediness" of the quantifiers so
+	// that they are not greedy by default, but become greedy if followed by
+	// "?". It can also be set by a "(?U)" option setting within the pattern.
+	RegexCompileFlagsUngreedy RegexCompileFlags = 0b1000000000
+	// RegexCompileFlagsRaw: usually strings must be valid UTF-8 strings, using
+	// this flag they are considered as a raw sequence of bytes.
+	RegexCompileFlagsRaw RegexCompileFlags = 0b100000000000
+	// RegexCompileFlagsNoAutoCapture: disables the use of numbered capturing
+	// parentheses in the pattern. Any opening parenthesis that is not followed
+	// by "?" behaves as if it were followed by "?:" but named parentheses can
+	// still be used for capturing (and they acquire numbers in the usual way).
+	RegexCompileFlagsNoAutoCapture RegexCompileFlags = 0b1000000000000
+	// RegexCompileFlagsOptimize: optimize the regular expression. If the
+	// pattern will be used many times, then it may be worth the effort to
+	// optimize it to improve the speed of matches.
+	RegexCompileFlagsOptimize RegexCompileFlags = 0b10000000000000
+	// RegexCompileFlagsFirstline: limits an unanchored pattern to match before
+	// (or at) the first newline. Since: 2.34
+	RegexCompileFlagsFirstline RegexCompileFlags = 0b1000000000000000000
+	// RegexCompileFlagsDupnames: names used to identify capturing subpatterns
+	// need not be unique. This can be helpful for certain types of pattern when
+	// it is known that only one instance of the named subpattern can ever be
+	// matched.
+	RegexCompileFlagsDupnames RegexCompileFlags = 0b10000000000000000000
+	// RegexCompileFlagsNewlineCr: usually any newline character or character
+	// sequence is recognized. If this option is set, the only recognized
+	// newline character is '\r'.
+	RegexCompileFlagsNewlineCr RegexCompileFlags = 0b100000000000000000000
+	// RegexCompileFlagsNewlineLf: usually any newline character or character
+	// sequence is recognized. If this option is set, the only recognized
+	// newline character is '\n'.
+	RegexCompileFlagsNewlineLf RegexCompileFlags = 0b1000000000000000000000
+	// RegexCompileFlagsNewlineCrlf: usually any newline character or character
+	// sequence is recognized. If this option is set, the only recognized
+	// newline character sequence is '\r\n'.
+	RegexCompileFlagsNewlineCrlf RegexCompileFlags = 0b1100000000000000000000
+	// RegexCompileFlagsNewlineAnycrlf: usually any newline character or
+	// character sequence is recognized. If this option is set, the only
+	// recognized newline character sequences are '\r', '\n', and '\r\n'. Since:
+	// 2.34
+	RegexCompileFlagsNewlineAnycrlf RegexCompileFlags = 0b10100000000000000000000
+	// RegexCompileFlagsBsrAnycrlf: usually any newline character or character
+	// sequence is recognised. If this option is set, then "\R" only recognizes
+	// the newline characters '\r', '\n' and '\r\n'. Since: 2.34
+	RegexCompileFlagsBsrAnycrlf RegexCompileFlags = 0b100000000000000000000000
+	// RegexCompileFlagsJavascriptCompat: changes behaviour so that it is
+	// compatible with JavaScript rather than PCRE. Since: 2.34
+	RegexCompileFlagsJavascriptCompat RegexCompileFlags = 0b10000000000000000000000000
+)
+
+// RegexMatchFlags: flags specifying match-time options.
+type RegexMatchFlags int
+
+const (
+	// RegexMatchFlagsAnchored: the pattern is forced to be "anchored", that is,
+	// it is constrained to match only at the first matching point in the string
+	// that is being searched. This effect can also be achieved by appropriate
+	// constructs in the pattern itself such as the "^" metacharacter.
+	RegexMatchFlagsAnchored RegexMatchFlags = 0b10000
+	// RegexMatchFlagsNotbol: specifies that first character of the string is
+	// not the beginning of a line, so the circumflex metacharacter should not
+	// match before it. Setting this without REGEX_MULTILINE (at compile time)
+	// causes circumflex never to match. This option affects only the behaviour
+	// of the circumflex metacharacter, it does not affect "\A".
+	RegexMatchFlagsNotbol RegexMatchFlags = 0b10000000
+	// RegexMatchFlagsNoteol: specifies that the end of the subject string is
+	// not the end of a line, so the dollar metacharacter should not match it
+	// nor (except in multiline mode) a newline immediately before it. Setting
+	// this without REGEX_MULTILINE (at compile time) causes dollar never to
+	// match. This option affects only the behaviour of the dollar
+	// metacharacter, it does not affect "\Z" or "\z".
+	RegexMatchFlagsNoteol RegexMatchFlags = 0b100000000
+	// RegexMatchFlagsNotempty: an empty string is not considered to be a valid
+	// match if this option is set. If there are alternatives in the pattern,
+	// they are tried. If all the alternatives match the empty string, the
+	// entire match fails. For example, if the pattern "a?b?" is applied to a
+	// string not beginning with "a" or "b", it matches the empty string at the
+	// start of the string. With this flag set, this match is not valid, so
+	// GRegex searches further into the string for occurrences of "a" or "b".
+	RegexMatchFlagsNotempty RegexMatchFlags = 0b10000000000
+	// RegexMatchFlagsPartial: turns on the partial matching feature, for more
+	// documentation on partial matching see g_match_info_is_partial_match().
+	RegexMatchFlagsPartial RegexMatchFlags = 0b1000000000000000
+	// RegexMatchFlagsNewlineCr: overrides the newline definition set when
+	// creating a new #GRegex, setting the '\r' character as line terminator.
+	RegexMatchFlagsNewlineCr RegexMatchFlags = 0b100000000000000000000
+	// RegexMatchFlagsNewlineLf: overrides the newline definition set when
+	// creating a new #GRegex, setting the '\n' character as line terminator.
+	RegexMatchFlagsNewlineLf RegexMatchFlags = 0b1000000000000000000000
+	// RegexMatchFlagsNewlineCrlf: overrides the newline definition set when
+	// creating a new #GRegex, setting the '\r\n' characters sequence as line
+	// terminator.
+	RegexMatchFlagsNewlineCrlf RegexMatchFlags = 0b1100000000000000000000
+	// RegexMatchFlagsNewlineAny: overrides the newline definition set when
+	// creating a new #GRegex, any Unicode newline sequence is recognised as a
+	// newline. These are '\r', '\n' and '\rn', and the single characters U+000B
+	// LINE TABULATION, U+000C FORM FEED (FF), U+0085 NEXT LINE (NEL), U+2028
+	// LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR.
+	RegexMatchFlagsNewlineAny RegexMatchFlags = 0b10000000000000000000000
+	// RegexMatchFlagsNewlineAnycrlf: overrides the newline definition set when
+	// creating a new #GRegex; any '\r', '\n', or '\r\n' character sequence is
+	// recognized as a newline. Since: 2.34
+	RegexMatchFlagsNewlineAnycrlf RegexMatchFlags = 0b10100000000000000000000
+	// RegexMatchFlagsBsrAnycrlf: overrides the newline definition for "\R" set
+	// when creating a new #GRegex; only '\r', '\n', or '\r\n' character
+	// sequences are recognized as a newline by "\R". Since: 2.34
+	RegexMatchFlagsBsrAnycrlf RegexMatchFlags = 0b100000000000000000000000
+	// RegexMatchFlagsBsrAny: overrides the newline definition for "\R" set when
+	// creating a new #GRegex; any Unicode newline character or character
+	// sequence are recognized as a newline by "\R". These are '\r', '\n' and
+	// '\rn', and the single characters U+000B LINE TABULATION, U+000C FORM FEED
+	// (FF), U+0085 NEXT LINE (NEL), U+2028 LINE SEPARATOR and U+2029 PARAGRAPH
+	// SEPARATOR. Since: 2.34
+	RegexMatchFlagsBsrAny RegexMatchFlags = 0b1000000000000000000000000
+	// RegexMatchFlagsPartialSoft: an alias for REGEX_MATCH_PARTIAL. Since: 2.34
+	RegexMatchFlagsPartialSoft RegexMatchFlags = 0b1000000000000000
+	// RegexMatchFlagsPartialHard: turns on the partial matching feature. In
+	// contrast to to REGEX_MATCH_PARTIAL_SOFT, this stops matching as soon as a
+	// partial match is found, without continuing to search for a possible
+	// complete match. See g_match_info_is_partial_match() for more information.
+	// Since: 2.34
+	RegexMatchFlagsPartialHard RegexMatchFlags = 0b1000000000000000000000000000
+	// RegexMatchFlagsNotemptyAtstart: like REGEX_MATCH_NOTEMPTY, but only
+	// applied to the start of the matched string. For anchored patterns this
+	// can only happen for pattern containing "\K". Since: 2.34
+	RegexMatchFlagsNotemptyAtstart RegexMatchFlags = 0b10000000000000000000000000000
+)
+
+// SpawnFlags: flags passed to g_spawn_sync(), g_spawn_async() and
+// g_spawn_async_with_pipes().
+type SpawnFlags int
+
+const (
+	// SpawnFlagsDefault: no flags, default behaviour
+	SpawnFlagsDefault SpawnFlags = 0b0
+	// SpawnFlagsLeaveDescriptorsOpen: the parent's open file descriptors will
+	// be inherited by the child; otherwise all descriptors except stdin, stdout
+	// and stderr will be closed before calling exec() in the child.
+	SpawnFlagsLeaveDescriptorsOpen SpawnFlags = 0b1
+	// SpawnFlagsDoNotReapChild: the child will not be automatically reaped; you
+	// must use g_child_watch_add() yourself (or call waitpid() or handle
+	// `SIGCHLD` yourself), or the child will become a zombie.
+	SpawnFlagsDoNotReapChild SpawnFlags = 0b10
+	// SpawnFlagsSearchPath: `argv[0]` need not be an absolute path, it will be
+	// looked for in the user's `PATH`.
+	SpawnFlagsSearchPath SpawnFlags = 0b100
+	// SpawnFlagsStdoutToDevNull: the child's standard output will be discarded,
+	// instead of going to the same location as the parent's standard output.
+	SpawnFlagsStdoutToDevNull SpawnFlags = 0b1000
+	// SpawnFlagsStderrToDevNull: the child's standard error will be discarded.
+	SpawnFlagsStderrToDevNull SpawnFlags = 0b10000
+	// SpawnFlagsChildInheritsStdin: the child will inherit the parent's
+	// standard input (by default, the child's standard input is attached to
+	// `/dev/null`).
+	SpawnFlagsChildInheritsStdin SpawnFlags = 0b100000
+	// SpawnFlagsFileAndArgvZero: the first element of `argv` is the file to
+	// execute, while the remaining elements are the actual argument vector to
+	// pass to the file. Normally g_spawn_async_with_pipes() uses `argv[0]` as
+	// the file to execute, and passes all of `argv` to the child.
+	SpawnFlagsFileAndArgvZero SpawnFlags = 0b1000000
+	// SpawnFlagsSearchPathFromEnvp: if `argv[0]` is not an absolute path, it
+	// will be looked for in the `PATH` from the passed child environment.
+	// Since: 2.34
+	SpawnFlagsSearchPathFromEnvp SpawnFlags = 0b10000000
+	// SpawnFlagsCloexecPipes: create all pipes with the `O_CLOEXEC` flag set.
+	// Since: 2.40
+	SpawnFlagsCloexecPipes SpawnFlags = 0b100000000
+)
+
+// TestSubprocessFlags: flags to pass to g_test_trap_subprocess() to control
+// input and output.
+//
+// Note that in contrast with g_test_trap_fork(), the default is to not show
+// stdout and stderr.
+type TestSubprocessFlags int
+
+const (
+	// TestSubprocessFlagsStdin: if this flag is given, the child process will
+	// inherit the parent's stdin. Otherwise, the child's stdin is redirected to
+	// `/dev/null`.
+	TestSubprocessFlagsStdin TestSubprocessFlags = 0b1
+	// TestSubprocessFlagsStdout: if this flag is given, the child process will
+	// inherit the parent's stdout. Otherwise, the child's stdout will not be
+	// visible, but it will be captured to allow later tests with
+	// g_test_trap_assert_stdout().
+	TestSubprocessFlagsStdout TestSubprocessFlags = 0b10
+	// TestSubprocessFlagsStderr: if this flag is given, the child process will
+	// inherit the parent's stderr. Otherwise, the child's stderr will not be
+	// visible, but it will be captured to allow later tests with
+	// g_test_trap_assert_stderr().
+	TestSubprocessFlagsStderr TestSubprocessFlags = 0b100
+)
+
+// TestTrapFlags: test traps are guards around forked tests. These flags
+// determine what traps to set.
+type TestTrapFlags int
+
+const (
+	// TestTrapFlagsSilenceStdout: redirect stdout of the test child to
+	// `/dev/null` so it cannot be observed on the console during test runs. The
+	// actual output is still captured though to allow later tests with
+	// g_test_trap_assert_stdout().
+	TestTrapFlagsSilenceStdout TestTrapFlags = 0b10000000
+	// TestTrapFlagsSilenceStderr: redirect stderr of the test child to
+	// `/dev/null` so it cannot be observed on the console during test runs. The
+	// actual output is still captured though to allow later tests with
+	// g_test_trap_assert_stderr().
+	TestTrapFlagsSilenceStderr TestTrapFlags = 0b100000000
+	// TestTrapFlagsInheritStdin: if this flag is given, stdin of the child
+	// process is shared with stdin of its parent process. It is redirected to
+	// `/dev/null` otherwise.
+	TestTrapFlagsInheritStdin TestTrapFlags = 0b1000000000
+)
+
+// TraverseFlags: specifies which nodes are visited during several of the tree
+// functions, including g_node_traverse() and g_node_find().
+type TraverseFlags int
+
+const (
+	// TraverseFlagsLeaves: only leaf nodes should be visited. This name has
+	// been introduced in 2.6, for older version use G_TRAVERSE_LEAFS.
+	TraverseFlagsLeaves TraverseFlags = 0b1
+	// TraverseFlagsNonLeaves: only non-leaf nodes should be visited. This name
+	// has been introduced in 2.6, for older version use G_TRAVERSE_NON_LEAFS.
+	TraverseFlagsNonLeaves TraverseFlags = 0b10
+	// TraverseFlagsAll: all nodes should be visited.
+	TraverseFlagsAll TraverseFlags = 0b11
+	// TraverseFlagsMask: a mask of all traverse flags.
+	TraverseFlagsMask TraverseFlags = 0b11
+	// TraverseFlagsLeafs: identical to G_TRAVERSE_LEAVES.
+	TraverseFlagsLeafs TraverseFlags = 0b1
+	// TraverseFlagsNonLeafs: identical to G_TRAVERSE_NON_LEAVES.
+	TraverseFlagsNonLeafs TraverseFlags = 0b10
+)
+
+// URIFlags: flags that describe a URI.
+//
+// When parsing a URI, if you need to choose different flags based on the type
+// of URI, you can use g_uri_peek_scheme() on the URI string to check the scheme
+// first, and use that to decide what flags to parse it with.
+type URIFlags int
+
+const (
+	// URIFlagsNone: no flags set.
+	URIFlagsNone URIFlags = 0b0
+	// URIFlagsParseRelaxed: parse the URI more relaxedly than the [RFC
+	// 3986](https://tools.ietf.org/html/rfc3986) grammar specifies, fixing up
+	// or ignoring common mistakes in URIs coming from external sources. This is
+	// also needed for some obscure URI schemes where `;` separates the host
+	// from the path. Don’t use this flag unless you need to.
+	URIFlagsParseRelaxed URIFlags = 0b1
+	// URIFlagsHasPassword: the userinfo field may contain a password, which
+	// will be separated from the username by `:`.
+	URIFlagsHasPassword URIFlags = 0b10
+	// URIFlagsHasAuthParams: the userinfo may contain additional
+	// authentication-related parameters, which will be separated from the
+	// username and/or password by `;`.
+	URIFlagsHasAuthParams URIFlags = 0b100
+	// URIFlagsEncoded: when parsing a URI, this indicates that `%`-encoded
+	// characters in the userinfo, path, query, and fragment fields should not
+	// be decoded. (And likewise the host field if G_URI_FLAGS_NON_DNS is also
+	// set.) When building a URI, it indicates that you have already `%`-encoded
+	// the components, and so #GUri should not do any encoding itself.
+	URIFlagsEncoded URIFlags = 0b1000
+	// URIFlagsNonDns: the host component should not be assumed to be a DNS
+	// hostname or IP address (for example, for `smb` URIs with NetBIOS
+	// hostnames).
+	URIFlagsNonDns URIFlags = 0b10000
+	// URIFlagsEncodedQuery: same as G_URI_FLAGS_ENCODED, for the query field
+	// only.
+	URIFlagsEncodedQuery URIFlags = 0b100000
+	// URIFlagsEncodedPath: same as G_URI_FLAGS_ENCODED, for the path only.
+	URIFlagsEncodedPath URIFlags = 0b1000000
+	// URIFlagsEncodedFragment: same as G_URI_FLAGS_ENCODED, for the fragment
+	// only.
+	URIFlagsEncodedFragment URIFlags = 0b10000000
+)
+
+// URIHideFlags: flags describing what parts of the URI to hide in
+// g_uri_to_string_partial(). Note that G_URI_HIDE_PASSWORD and
+// G_URI_HIDE_AUTH_PARAMS will only work if the #GUri was parsed with the
+// corresponding flags.
+type URIHideFlags int
+
+const (
+	// URIHideFlagsNone: no flags set.
+	URIHideFlagsNone URIHideFlags = 0b0
+	// URIHideFlagsUserinfo: hide the userinfo.
+	URIHideFlagsUserinfo URIHideFlags = 0b1
+	// URIHideFlagsPassword: hide the password.
+	URIHideFlagsPassword URIHideFlags = 0b10
+	// URIHideFlagsAuthParams: hide the auth_params.
+	URIHideFlagsAuthParams URIHideFlags = 0b100
+	// URIHideFlagsQuery: hide the query.
+	URIHideFlagsQuery URIHideFlags = 0b1000
+	// URIHideFlagsFragment: hide the fragment.
+	URIHideFlagsFragment URIHideFlags = 0b10000
+)
+
+// URIParamsFlags: flags modifying the way parameters are handled by
+// g_uri_parse_params() and ParamsIter.
+type URIParamsFlags int
+
+const (
+	// URIParamsFlagsNone: no flags set.
+	URIParamsFlagsNone URIParamsFlags = 0b0
+	// URIParamsFlagsCaseInsensitive: parameter names are case insensitive.
+	URIParamsFlagsCaseInsensitive URIParamsFlags = 0b1
+	// URIParamsFlagsWwwForm: replace `+` with space character. Only useful for
+	// URLs on the web, using the `https` or `http` schemas.
+	URIParamsFlagsWwwForm URIParamsFlags = 0b10
+	// URIParamsFlagsParseRelaxed: see G_URI_FLAGS_PARSE_RELAXED.
+	URIParamsFlagsParseRelaxed URIParamsFlags = 0b100
+)
+
 // Access: a wrapper for the POSIX access() function. This function is used to
 // test a pathname for one or several of read, write or execute permissions, or
 // just existence.
@@ -7729,7 +8394,8 @@ type Scanner struct {
 
 	// MsgHandler: handler function for _warn and _error
 	MsgHandler ScannerMsgFunc
-	native     *C.GScanner
+
+	native *C.GScanner
 }
 
 // ScannerConfig: specifies the #GScanner parser configuration. Most settings

@@ -1295,6 +1295,846 @@ func marshalZlibCompressorFormat(p uintptr) (interface{}, error) {
 	return ZlibCompressorFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// AppInfoCreateFlags: flags used when creating a Info.
+type AppInfoCreateFlags int
+
+const (
+	// AppInfoCreateFlagsNone: no flags.
+	AppInfoCreateFlagsNone AppInfoCreateFlags = 0b0
+	// AppInfoCreateFlagsNeedsTerminal: application opens in a terminal window.
+	AppInfoCreateFlagsNeedsTerminal AppInfoCreateFlags = 0b1
+	// AppInfoCreateFlagsSupportsUris: application supports URI arguments.
+	AppInfoCreateFlagsSupportsUris AppInfoCreateFlags = 0b10
+	// AppInfoCreateFlagsSupportsStartupNotification: application supports
+	// startup notification. Since 2.26
+	AppInfoCreateFlagsSupportsStartupNotification AppInfoCreateFlags = 0b100
+)
+
+func marshalAppInfoCreateFlags(p uintptr) (interface{}, error) {
+	return AppInfoCreateFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ApplicationFlags: flags used to define the behaviour of a #GApplication.
+type ApplicationFlags int
+
+const (
+	// ApplicationFlagsFlagsNone: default
+	ApplicationFlagsFlagsNone ApplicationFlags = 0b0
+	// ApplicationFlagsIsService: run as a service. In this mode, registration
+	// fails if the service is already running, and the application will
+	// initially wait up to 10 seconds for an initial activation message to
+	// arrive.
+	ApplicationFlagsIsService ApplicationFlags = 0b1
+	// ApplicationFlagsIsLauncher: don't try to become the primary instance.
+	ApplicationFlagsIsLauncher ApplicationFlags = 0b10
+	// ApplicationFlagsHandlesOpen: this application handles opening files (in
+	// the primary instance). Note that this flag only affects the default
+	// implementation of local_command_line(), and has no effect if
+	// G_APPLICATION_HANDLES_COMMAND_LINE is given. See g_application_run() for
+	// details.
+	ApplicationFlagsHandlesOpen ApplicationFlags = 0b100
+	// ApplicationFlagsHandlesCommandLine: this application handles command line
+	// arguments (in the primary instance). Note that this flag only affect the
+	// default implementation of local_command_line(). See g_application_run()
+	// for details.
+	ApplicationFlagsHandlesCommandLine ApplicationFlags = 0b1000
+	// ApplicationFlagsSendEnvironment: send the environment of the launching
+	// process to the primary instance. Set this flag if your application is
+	// expected to behave differently depending on certain environment
+	// variables. For instance, an editor might be expected to use the
+	// `GIT_COMMITTER_NAME` environment variable when editing a git commit
+	// message. The environment is available to the #GApplication::command-line
+	// signal handler, via g_application_command_line_getenv().
+	ApplicationFlagsSendEnvironment ApplicationFlags = 0b10000
+	// ApplicationFlagsNonUnique: make no attempts to do any of the typical
+	// single-instance application negotiation, even if the application ID is
+	// given. The application neither attempts to become the owner of the
+	// application ID nor does it check if an existing owner already exists.
+	// Everything occurs in the local process. Since: 2.30.
+	ApplicationFlagsNonUnique ApplicationFlags = 0b100000
+	// ApplicationFlagsCanOverrideAppID: allow users to override the application
+	// ID from the command line with `--gapplication-app-id`. Since: 2.48
+	ApplicationFlagsCanOverrideAppID ApplicationFlags = 0b1000000
+	// ApplicationFlagsAllowReplacement: allow another instance to take over the
+	// bus name. Since: 2.60
+	ApplicationFlagsAllowReplacement ApplicationFlags = 0b10000000
+	// ApplicationFlagsReplace: take over from another instance. This flag is
+	// usually set by passing `--gapplication-replace` on the commandline.
+	// Since: 2.60
+	ApplicationFlagsReplace ApplicationFlags = 0b100000000
+)
+
+func marshalApplicationFlags(p uintptr) (interface{}, error) {
+	return ApplicationFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// AskPasswordFlags: GAskPasswordFlags are used to request specific information
+// from the user, or to notify the user of their choices in an authentication
+// situation.
+type AskPasswordFlags int
+
+const (
+	// AskPasswordFlagsNeedPassword: operation requires a password.
+	AskPasswordFlagsNeedPassword AskPasswordFlags = 0b1
+	// AskPasswordFlagsNeedUsername: operation requires a username.
+	AskPasswordFlagsNeedUsername AskPasswordFlags = 0b10
+	// AskPasswordFlagsNeedDomain: operation requires a domain.
+	AskPasswordFlagsNeedDomain AskPasswordFlags = 0b100
+	// AskPasswordFlagsSavingSupported: operation supports saving settings.
+	AskPasswordFlagsSavingSupported AskPasswordFlags = 0b1000
+	// AskPasswordFlagsAnonymousSupported: operation supports anonymous users.
+	AskPasswordFlagsAnonymousSupported AskPasswordFlags = 0b10000
+	// AskPasswordFlagsTcrypt: operation takes TCRYPT parameters (Since: 2.58)
+	AskPasswordFlagsTcrypt AskPasswordFlags = 0b100000
+)
+
+func marshalAskPasswordFlags(p uintptr) (interface{}, error) {
+	return AskPasswordFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// BusNameOwnerFlags: flags used in g_bus_own_name().
+type BusNameOwnerFlags int
+
+const (
+	// BusNameOwnerFlagsNone: no flags set.
+	BusNameOwnerFlagsNone BusNameOwnerFlags = 0b0
+	// BusNameOwnerFlagsAllowReplacement: allow another message bus connection
+	// to claim the name.
+	BusNameOwnerFlagsAllowReplacement BusNameOwnerFlags = 0b1
+	// BusNameOwnerFlagsReplace: if another message bus connection owns the name
+	// and have specified BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT, then take the
+	// name from the other connection.
+	BusNameOwnerFlagsReplace BusNameOwnerFlags = 0b10
+	// BusNameOwnerFlagsDoNotQueue: if another message bus connection owns the
+	// name, immediately return an error from g_bus_own_name() rather than
+	// entering the waiting queue for that name. (Since 2.54)
+	BusNameOwnerFlagsDoNotQueue BusNameOwnerFlags = 0b100
+)
+
+func marshalBusNameOwnerFlags(p uintptr) (interface{}, error) {
+	return BusNameOwnerFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// BusNameWatcherFlags: flags used in g_bus_watch_name().
+type BusNameWatcherFlags int
+
+const (
+	// BusNameWatcherFlagsNone: no flags set.
+	BusNameWatcherFlagsNone BusNameWatcherFlags = 0b0
+	// BusNameWatcherFlagsAutoStart: if no-one owns the name when beginning to
+	// watch the name, ask the bus to launch an owner for the name.
+	BusNameWatcherFlagsAutoStart BusNameWatcherFlags = 0b1
+)
+
+func marshalBusNameWatcherFlags(p uintptr) (interface{}, error) {
+	return BusNameWatcherFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ConverterFlags: flags used when calling a g_converter_convert().
+type ConverterFlags int
+
+const (
+	// ConverterFlagsNone: no flags.
+	ConverterFlagsNone ConverterFlags = 0b0
+	// ConverterFlagsInputAtEnd: at end of input data
+	ConverterFlagsInputAtEnd ConverterFlags = 0b1
+	// ConverterFlagsFlush: flush data
+	ConverterFlagsFlush ConverterFlags = 0b10
+)
+
+func marshalConverterFlags(p uintptr) (interface{}, error) {
+	return ConverterFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusCallFlags: flags used in g_dbus_connection_call() and similar APIs.
+type DBusCallFlags int
+
+const (
+	// DBusCallFlagsNone: no flags set.
+	DBusCallFlagsNone DBusCallFlags = 0b0
+	// DBusCallFlagsNoAutoStart: the bus must not launch an owner for the
+	// destination name in response to this method invocation.
+	DBusCallFlagsNoAutoStart DBusCallFlags = 0b1
+	// DBusCallFlagsAllowInteractiveAuthorization: the caller is prepared to
+	// wait for interactive authorization. Since 2.46.
+	DBusCallFlagsAllowInteractiveAuthorization DBusCallFlags = 0b10
+)
+
+func marshalDBusCallFlags(p uintptr) (interface{}, error) {
+	return DBusCallFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusCapabilityFlags: capabilities negotiated with the remote peer.
+type DBusCapabilityFlags int
+
+const (
+	// DBusCapabilityFlagsNone: no flags set.
+	DBusCapabilityFlagsNone DBusCapabilityFlags = 0b0
+	// DBusCapabilityFlagsUnixFdPassing: the connection supports exchanging UNIX
+	// file descriptors with the remote peer.
+	DBusCapabilityFlagsUnixFdPassing DBusCapabilityFlags = 0b1
+)
+
+func marshalDBusCapabilityFlags(p uintptr) (interface{}, error) {
+	return DBusCapabilityFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusConnectionFlags: flags used when creating a new BusConnection.
+type DBusConnectionFlags int
+
+const (
+	// DBusConnectionFlagsNone: no flags set.
+	DBusConnectionFlagsNone DBusConnectionFlags = 0b0
+	// DBusConnectionFlagsAuthenticationClient: perform authentication against
+	// server.
+	DBusConnectionFlagsAuthenticationClient DBusConnectionFlags = 0b1
+	// DBusConnectionFlagsAuthenticationServer: perform authentication against
+	// client.
+	DBusConnectionFlagsAuthenticationServer DBusConnectionFlags = 0b10
+	// DBusConnectionFlagsAuthenticationAllowAnonymous: when authenticating as a
+	// server, allow the anonymous authentication method.
+	DBusConnectionFlagsAuthenticationAllowAnonymous DBusConnectionFlags = 0b100
+	// DBusConnectionFlagsMessageBusConnection: pass this flag if connecting to
+	// a peer that is a message bus. This means that the Hello() method will be
+	// invoked as part of the connection setup.
+	DBusConnectionFlagsMessageBusConnection DBusConnectionFlags = 0b1000
+	// DBusConnectionFlagsDelayMessageProcessing: if set, processing of D-Bus
+	// messages is delayed until g_dbus_connection_start_message_processing() is
+	// called.
+	DBusConnectionFlagsDelayMessageProcessing DBusConnectionFlags = 0b10000
+)
+
+func marshalDBusConnectionFlags(p uintptr) (interface{}, error) {
+	return DBusConnectionFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusInterfaceSkeletonFlags: flags describing the behavior of a
+// BusInterfaceSkeleton instance.
+type DBusInterfaceSkeletonFlags int
+
+const (
+	// DBusInterfaceSkeletonFlagsNone: no flags set.
+	DBusInterfaceSkeletonFlagsNone DBusInterfaceSkeletonFlags = 0b0
+	// DBusInterfaceSkeletonFlagsHandleMethodInvocationsInThread: each method
+	// invocation is handled in a thread dedicated to the invocation. This means
+	// that the method implementation can use blocking IO without blocking any
+	// other part of the process. It also means that the method implementation
+	// must use locking to access data structures used by other threads.
+	DBusInterfaceSkeletonFlagsHandleMethodInvocationsInThread DBusInterfaceSkeletonFlags = 0b1
+)
+
+func marshalDBusInterfaceSkeletonFlags(p uintptr) (interface{}, error) {
+	return DBusInterfaceSkeletonFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusMessageFlags: message flags used in BusMessage.
+type DBusMessageFlags int
+
+const (
+	// DBusMessageFlagsNone: no flags set.
+	DBusMessageFlagsNone DBusMessageFlags = 0b0
+	// DBusMessageFlagsNoReplyExpected: a reply is not expected.
+	DBusMessageFlagsNoReplyExpected DBusMessageFlags = 0b1
+	// DBusMessageFlagsNoAutoStart: the bus must not launch an owner for the
+	// destination name in response to this message.
+	DBusMessageFlagsNoAutoStart DBusMessageFlags = 0b10
+	// DBusMessageFlagsAllowInteractiveAuthorization: if set on a method call,
+	// this flag means that the caller is prepared to wait for interactive
+	// authorization. Since 2.46.
+	DBusMessageFlagsAllowInteractiveAuthorization DBusMessageFlags = 0b100
+)
+
+func marshalDBusMessageFlags(p uintptr) (interface{}, error) {
+	return DBusMessageFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusObjectManagerClientFlags: flags used when constructing a
+// BusObjectManagerClient.
+type DBusObjectManagerClientFlags int
+
+const (
+	// DBusObjectManagerClientFlagsNone: no flags set.
+	DBusObjectManagerClientFlagsNone DBusObjectManagerClientFlags = 0b0
+	// DBusObjectManagerClientFlagsDoNotAutoStart: if not set and the manager is
+	// for a well-known name, then request the bus to launch an owner for the
+	// name if no-one owns the name. This flag can only be used in managers for
+	// well-known names.
+	DBusObjectManagerClientFlagsDoNotAutoStart DBusObjectManagerClientFlags = 0b1
+)
+
+func marshalDBusObjectManagerClientFlags(p uintptr) (interface{}, error) {
+	return DBusObjectManagerClientFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusPropertyInfoFlags: flags describing the access control of a D-Bus
+// property.
+type DBusPropertyInfoFlags int
+
+const (
+	// DBusPropertyInfoFlagsNone: no flags set.
+	DBusPropertyInfoFlagsNone DBusPropertyInfoFlags = 0b0
+	// DBusPropertyInfoFlagsReadable: property is readable.
+	DBusPropertyInfoFlagsReadable DBusPropertyInfoFlags = 0b1
+	// DBusPropertyInfoFlagsWritable: property is writable.
+	DBusPropertyInfoFlagsWritable DBusPropertyInfoFlags = 0b10
+)
+
+func marshalDBusPropertyInfoFlags(p uintptr) (interface{}, error) {
+	return DBusPropertyInfoFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusProxyFlags: flags used when constructing an instance of a BusProxy
+// derived class.
+type DBusProxyFlags int
+
+const (
+	// DBusProxyFlagsNone: no flags set.
+	DBusProxyFlagsNone DBusProxyFlags = 0b0
+	// DBusProxyFlagsDoNotLoadProperties: don't load properties.
+	DBusProxyFlagsDoNotLoadProperties DBusProxyFlags = 0b1
+	// DBusProxyFlagsDoNotConnectSignals: don't connect to signals on the remote
+	// object.
+	DBusProxyFlagsDoNotConnectSignals DBusProxyFlags = 0b10
+	// DBusProxyFlagsDoNotAutoStart: if the proxy is for a well-known name, do
+	// not ask the bus to launch an owner during proxy initialization or a
+	// method call. This flag is only meaningful in proxies for well-known
+	// names.
+	DBusProxyFlagsDoNotAutoStart DBusProxyFlags = 0b100
+	// DBusProxyFlagsGetInvalidatedProperties: if set, the property value for
+	// any __invalidated property__ will be (asynchronously) retrieved upon
+	// receiving the
+	// [`PropertiesChanged`](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties)
+	// D-Bus signal and the property will not cause emission of the
+	// BusProxy::g-properties-changed signal. When the value is received the
+	// BusProxy::g-properties-changed signal is emitted for the property along
+	// with the retrieved value. Since 2.32.
+	DBusProxyFlagsGetInvalidatedProperties DBusProxyFlags = 0b1000
+	// DBusProxyFlagsDoNotAutoStartAtConstruction: if the proxy is for a
+	// well-known name, do not ask the bus to launch an owner during proxy
+	// initialization, but allow it to be autostarted by a method call. This
+	// flag is only meaningful in proxies for well-known names, and only if
+	// G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is not also specified.
+	DBusProxyFlagsDoNotAutoStartAtConstruction DBusProxyFlags = 0b10000
+)
+
+func marshalDBusProxyFlags(p uintptr) (interface{}, error) {
+	return DBusProxyFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusSendMessageFlags: flags used when sending BusMessages on a BusConnection.
+type DBusSendMessageFlags int
+
+const (
+	// DBusSendMessageFlagsNone: no flags set.
+	DBusSendMessageFlagsNone DBusSendMessageFlags = 0b0
+	// DBusSendMessageFlagsPreserveSerial: do not automatically assign a serial
+	// number from the BusConnection object when sending a message.
+	DBusSendMessageFlagsPreserveSerial DBusSendMessageFlags = 0b1
+)
+
+func marshalDBusSendMessageFlags(p uintptr) (interface{}, error) {
+	return DBusSendMessageFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusServerFlags: flags used when creating a BusServer.
+type DBusServerFlags int
+
+const (
+	// DBusServerFlagsNone: no flags set.
+	DBusServerFlagsNone DBusServerFlags = 0b0
+	// DBusServerFlagsRunInThread: all BusServer::new-connection signals will
+	// run in separated dedicated threads (see signal for details).
+	DBusServerFlagsRunInThread DBusServerFlags = 0b1
+	// DBusServerFlagsAuthenticationAllowAnonymous: allow the anonymous
+	// authentication method.
+	DBusServerFlagsAuthenticationAllowAnonymous DBusServerFlags = 0b10
+)
+
+func marshalDBusServerFlags(p uintptr) (interface{}, error) {
+	return DBusServerFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusSignalFlags: flags used when subscribing to signals via
+// g_dbus_connection_signal_subscribe().
+type DBusSignalFlags int
+
+const (
+	// DBusSignalFlagsNone: no flags set.
+	DBusSignalFlagsNone DBusSignalFlags = 0b0
+	// DBusSignalFlagsNoMatchRule: don't actually send the AddMatch D-Bus call
+	// for this signal subscription. This gives you more control over which
+	// match rules you add (but you must add them manually).
+	DBusSignalFlagsNoMatchRule DBusSignalFlags = 0b1
+	// DBusSignalFlagsMatchArg0Namespace: match first arguments that contain a
+	// bus or interface name with the given namespace.
+	DBusSignalFlagsMatchArg0Namespace DBusSignalFlags = 0b10
+	// DBusSignalFlagsMatchArg0Path: match first arguments that contain an
+	// object path that is either equivalent to the given path, or one of the
+	// paths is a subpath of the other.
+	DBusSignalFlagsMatchArg0Path DBusSignalFlags = 0b100
+)
+
+func marshalDBusSignalFlags(p uintptr) (interface{}, error) {
+	return DBusSignalFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DBusSubtreeFlags: flags passed to g_dbus_connection_register_subtree().
+type DBusSubtreeFlags int
+
+const (
+	// DBusSubtreeFlagsNone: no flags set.
+	DBusSubtreeFlagsNone DBusSubtreeFlags = 0b0
+	// DBusSubtreeFlagsDispatchToUnenumeratedNodes: method calls to objects not
+	// in the enumerated range will still be dispatched. This is useful if you
+	// want to dynamically spawn objects in the subtree.
+	DBusSubtreeFlagsDispatchToUnenumeratedNodes DBusSubtreeFlags = 0b1
+)
+
+func marshalDBusSubtreeFlags(p uintptr) (interface{}, error) {
+	return DBusSubtreeFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DriveStartFlags: flags used when starting a drive.
+type DriveStartFlags int
+
+const (
+	// DriveStartFlagsNone: no flags set.
+	DriveStartFlagsNone DriveStartFlags = 0b0
+)
+
+func marshalDriveStartFlags(p uintptr) (interface{}, error) {
+	return DriveStartFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FileAttributeInfoFlags: flags specifying the behaviour of an attribute.
+type FileAttributeInfoFlags int
+
+const (
+	// FileAttributeInfoFlagsNone: no flags set.
+	FileAttributeInfoFlagsNone FileAttributeInfoFlags = 0b0
+	// FileAttributeInfoFlagsCopyWithFile: copy the attribute values when the
+	// file is copied.
+	FileAttributeInfoFlagsCopyWithFile FileAttributeInfoFlags = 0b1
+	// FileAttributeInfoFlagsCopyWhenMoved: copy the attribute values when the
+	// file is moved.
+	FileAttributeInfoFlagsCopyWhenMoved FileAttributeInfoFlags = 0b10
+)
+
+func marshalFileAttributeInfoFlags(p uintptr) (interface{}, error) {
+	return FileAttributeInfoFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FileCopyFlags: flags used when copying or moving files.
+type FileCopyFlags int
+
+const (
+	// FileCopyFlagsNone: no flags set.
+	FileCopyFlagsNone FileCopyFlags = 0b0
+	// FileCopyFlagsOverwrite: overwrite any existing files
+	FileCopyFlagsOverwrite FileCopyFlags = 0b1
+	// FileCopyFlagsBackup: make a backup of any existing files.
+	FileCopyFlagsBackup FileCopyFlags = 0b10
+	// FileCopyFlagsNofollowSymlinks: don't follow symlinks.
+	FileCopyFlagsNofollowSymlinks FileCopyFlags = 0b100
+	// FileCopyFlagsAllMetadata: copy all file metadata instead of just default
+	// set used for copy (see Info).
+	FileCopyFlagsAllMetadata FileCopyFlags = 0b1000
+	// FileCopyFlagsNoFallbackForMove: don't use copy and delete fallback if
+	// native move not supported.
+	FileCopyFlagsNoFallbackForMove FileCopyFlags = 0b10000
+	// FileCopyFlagsTargetDefaultPerms: leaves target file with default perms,
+	// instead of setting the source file perms.
+	FileCopyFlagsTargetDefaultPerms FileCopyFlags = 0b100000
+)
+
+func marshalFileCopyFlags(p uintptr) (interface{}, error) {
+	return FileCopyFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FileCreateFlags: flags used when an operation may create a file.
+type FileCreateFlags int
+
+const (
+	// FileCreateFlagsNone: no flags set.
+	FileCreateFlagsNone FileCreateFlags = 0b0
+	// FileCreateFlagsPrivate: create a file that can only be accessed by the
+	// current user.
+	FileCreateFlagsPrivate FileCreateFlags = 0b1
+	// FileCreateFlagsReplaceDestination: replace the destination as if it
+	// didn't exist before. Don't try to keep any old permissions, replace
+	// instead of following links. This is generally useful if you're doing a
+	// "copy over" rather than a "save new version of" replace operation. You
+	// can think of it as "unlink destination" before writing to it, although
+	// the implementation may not be exactly like that. This flag can only be
+	// used with g_file_replace() and its variants, including
+	// g_file_replace_contents(). Since 2.20
+	FileCreateFlagsReplaceDestination FileCreateFlags = 0b10
+)
+
+func marshalFileCreateFlags(p uintptr) (interface{}, error) {
+	return FileCreateFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FileMeasureFlags: flags that can be used with g_file_measure_disk_usage().
+type FileMeasureFlags int
+
+const (
+	// FileMeasureFlagsNone: no flags set.
+	FileMeasureFlagsNone FileMeasureFlags = 0b0
+	// FileMeasureFlagsReportAnyError: report any error encountered while
+	// traversing the directory tree. Normally errors are only reported for the
+	// toplevel file.
+	FileMeasureFlagsReportAnyError FileMeasureFlags = 0b10
+	// FileMeasureFlagsApparentSize: tally usage based on apparent file sizes.
+	// Normally, the block-size is used, if available, as this is a more
+	// accurate representation of disk space used. Compare with `du
+	// --apparent-size`.
+	FileMeasureFlagsApparentSize FileMeasureFlags = 0b100
+	// FileMeasureFlagsNoXdev: do not cross mount point boundaries. Compare with
+	// `du -x`.
+	FileMeasureFlagsNoXdev FileMeasureFlags = 0b1000
+)
+
+func marshalFileMeasureFlags(p uintptr) (interface{}, error) {
+	return FileMeasureFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FileMonitorFlags: flags used to set what a Monitor will watch for.
+type FileMonitorFlags int
+
+const (
+	// FileMonitorFlagsNone: no flags set.
+	FileMonitorFlagsNone FileMonitorFlags = 0b0
+	// FileMonitorFlagsWatchMounts: watch for mount events.
+	FileMonitorFlagsWatchMounts FileMonitorFlags = 0b1
+	// FileMonitorFlagsSendMoved: pair DELETED and CREATED events caused by file
+	// renames (moves) and send a single G_FILE_MONITOR_EVENT_MOVED event
+	// instead (NB: not supported on all backends; the default behaviour
+	// -without specifying this flag- is to send single DELETED and CREATED
+	// events). Deprecated since 2.46: use G_FILE_MONITOR_WATCH_MOVES instead.
+	FileMonitorFlagsSendMoved FileMonitorFlags = 0b10
+	// FileMonitorFlagsWatchHardLinks: watch for changes to the file made via
+	// another hard link. Since 2.36.
+	FileMonitorFlagsWatchHardLinks FileMonitorFlags = 0b100
+	// FileMonitorFlagsWatchMoves: watch for rename operations on a monitored
+	// directory. This causes G_FILE_MONITOR_EVENT_RENAMED,
+	// G_FILE_MONITOR_EVENT_MOVED_IN and G_FILE_MONITOR_EVENT_MOVED_OUT events
+	// to be emitted when possible. Since: 2.46.
+	FileMonitorFlagsWatchMoves FileMonitorFlags = 0b1000
+)
+
+func marshalFileMonitorFlags(p uintptr) (interface{}, error) {
+	return FileMonitorFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FileQueryInfoFlags: flags used when querying a Info.
+type FileQueryInfoFlags int
+
+const (
+	// FileQueryInfoFlagsNone: no flags set.
+	FileQueryInfoFlagsNone FileQueryInfoFlags = 0b0
+	// FileQueryInfoFlagsNofollowSymlinks: don't follow symlinks.
+	FileQueryInfoFlagsNofollowSymlinks FileQueryInfoFlags = 0b1
+)
+
+func marshalFileQueryInfoFlags(p uintptr) (interface{}, error) {
+	return FileQueryInfoFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// IOStreamSpliceFlags: GIOStreamSpliceFlags determine how streams should be
+// spliced.
+type IOStreamSpliceFlags int
+
+const (
+	// IOStreamSpliceFlagsNone: do not close either stream.
+	IOStreamSpliceFlagsNone IOStreamSpliceFlags = 0b0
+	// IOStreamSpliceFlagsCloseStream1: close the first stream after the splice.
+	IOStreamSpliceFlagsCloseStream1 IOStreamSpliceFlags = 0b1
+	// IOStreamSpliceFlagsCloseStream2: close the second stream after the
+	// splice.
+	IOStreamSpliceFlagsCloseStream2 IOStreamSpliceFlags = 0b10
+	// IOStreamSpliceFlagsWaitForBoth: wait for both splice operations to finish
+	// before calling the callback.
+	IOStreamSpliceFlagsWaitForBoth IOStreamSpliceFlags = 0b100
+)
+
+func marshalIOStreamSpliceFlags(p uintptr) (interface{}, error) {
+	return IOStreamSpliceFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// MountMountFlags: flags used when mounting a mount.
+type MountMountFlags int
+
+const (
+	// MountMountFlagsNone: no flags set.
+	MountMountFlagsNone MountMountFlags = 0b0
+)
+
+func marshalMountMountFlags(p uintptr) (interface{}, error) {
+	return MountMountFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// MountUnmountFlags: flags used when an unmounting a mount.
+type MountUnmountFlags int
+
+const (
+	// MountUnmountFlagsNone: no flags set.
+	MountUnmountFlagsNone MountUnmountFlags = 0b0
+	// MountUnmountFlagsForce: unmount even if there are outstanding file
+	// operations on the mount.
+	MountUnmountFlagsForce MountUnmountFlags = 0b1
+)
+
+func marshalMountUnmountFlags(p uintptr) (interface{}, error) {
+	return MountUnmountFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// OutputStreamSpliceFlags: GOutputStreamSpliceFlags determine how streams
+// should be spliced.
+type OutputStreamSpliceFlags int
+
+const (
+	// OutputStreamSpliceFlagsNone: do not close either stream.
+	OutputStreamSpliceFlagsNone OutputStreamSpliceFlags = 0b0
+	// OutputStreamSpliceFlagsCloseSource: close the source stream after the
+	// splice.
+	OutputStreamSpliceFlagsCloseSource OutputStreamSpliceFlags = 0b1
+	// OutputStreamSpliceFlagsCloseTarget: close the target stream after the
+	// splice.
+	OutputStreamSpliceFlagsCloseTarget OutputStreamSpliceFlags = 0b10
+)
+
+func marshalOutputStreamSpliceFlags(p uintptr) (interface{}, error) {
+	return OutputStreamSpliceFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ResolverNameLookupFlags: flags to modify lookup behavior.
+type ResolverNameLookupFlags int
+
+const (
+	// ResolverNameLookupFlagsDefault: default behavior (same as
+	// g_resolver_lookup_by_name())
+	ResolverNameLookupFlagsDefault ResolverNameLookupFlags = 0b0
+	// ResolverNameLookupFlagsIpv4Only: only resolve ipv4 addresses
+	ResolverNameLookupFlagsIpv4Only ResolverNameLookupFlags = 0b1
+	// ResolverNameLookupFlagsIpv6Only: only resolve ipv6 addresses
+	ResolverNameLookupFlagsIpv6Only ResolverNameLookupFlags = 0b10
+)
+
+func marshalResolverNameLookupFlags(p uintptr) (interface{}, error) {
+	return ResolverNameLookupFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ResourceFlags: GResourceFlags give information about a particular file inside
+// a resource bundle.
+type ResourceFlags int
+
+const (
+	// ResourceFlagsNone: no flags set.
+	ResourceFlagsNone ResourceFlags = 0b0
+	// ResourceFlagsCompressed: the file is compressed.
+	ResourceFlagsCompressed ResourceFlags = 0b1
+)
+
+func marshalResourceFlags(p uintptr) (interface{}, error) {
+	return ResourceFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ResourceLookupFlags: GResourceLookupFlags determine how resource path lookups
+// are handled.
+type ResourceLookupFlags int
+
+const (
+	// ResourceLookupFlagsNone: no flags set.
+	ResourceLookupFlagsNone ResourceLookupFlags = 0b0
+)
+
+func marshalResourceLookupFlags(p uintptr) (interface{}, error) {
+	return ResourceLookupFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// SettingsBindFlags: flags used when creating a binding. These flags determine
+// in which direction the binding works. The default is to synchronize in both
+// directions.
+type SettingsBindFlags int
+
+const (
+	// SettingsBindFlagsDefault: equivalent to
+	// `G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET`
+	SettingsBindFlagsDefault SettingsBindFlags = 0b0
+	// SettingsBindFlagsGet: update the #GObject property when the setting
+	// changes. It is an error to use this flag if the property is not writable.
+	SettingsBindFlagsGet SettingsBindFlags = 0b1
+	// SettingsBindFlagsSet: update the setting when the #GObject property
+	// changes. It is an error to use this flag if the property is not readable.
+	SettingsBindFlagsSet SettingsBindFlags = 0b10
+	// SettingsBindFlagsNoSensitivity: do not try to bind a "sensitivity"
+	// property to the writability of the setting
+	SettingsBindFlagsNoSensitivity SettingsBindFlags = 0b100
+	// SettingsBindFlagsGetNoChanges: when set in addition to SETTINGS_BIND_GET,
+	// set the #GObject property value initially from the setting, but do not
+	// listen for changes of the setting
+	SettingsBindFlagsGetNoChanges SettingsBindFlags = 0b1000
+	// SettingsBindFlagsInvertBoolean: when passed to g_settings_bind(), uses a
+	// pair of mapping functions that invert the boolean value when mapping
+	// between the setting and the property. The setting and property must both
+	// be booleans. You cannot pass this flag to g_settings_bind_with_mapping().
+	SettingsBindFlagsInvertBoolean SettingsBindFlags = 0b10000
+)
+
+func marshalSettingsBindFlags(p uintptr) (interface{}, error) {
+	return SettingsBindFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// SocketMsgFlags: flags used in g_socket_receive_message() and
+// g_socket_send_message(). The flags listed in the enum are some commonly
+// available flags, but the values used for them are the same as on the
+// platform, and any other flags are passed in/out as is. So to use a platform
+// specific flag, just include the right system header and pass in the flag.
+type SocketMsgFlags int
+
+const (
+	// SocketMsgFlagsNone: no flags.
+	SocketMsgFlagsNone SocketMsgFlags = 0b0
+	// SocketMsgFlagsOob: request to send/receive out of band data.
+	SocketMsgFlagsOob SocketMsgFlags = 0b1
+	// SocketMsgFlagsPeek: read data from the socket without removing it from
+	// the queue.
+	SocketMsgFlagsPeek SocketMsgFlags = 0b10
+	// SocketMsgFlagsDontroute: don't use a gateway to send out the packet, only
+	// send to hosts on directly connected networks.
+	SocketMsgFlagsDontroute SocketMsgFlags = 0b100
+)
+
+func marshalSocketMsgFlags(p uintptr) (interface{}, error) {
+	return SocketMsgFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// SubprocessFlags: flags to define the behaviour of a #GSubprocess.
+//
+// Note that the default for stdin is to redirect from `/dev/null`. For stdout
+// and stderr the default are for them to inherit the corresponding descriptor
+// from the calling process.
+//
+// Note that it is a programmer error to mix 'incompatible' flags. For example,
+// you may not request both G_SUBPROCESS_FLAGS_STDOUT_PIPE and
+// G_SUBPROCESS_FLAGS_STDOUT_SILENCE.
+type SubprocessFlags int
+
+const (
+	// SubprocessFlagsNone: no flags.
+	SubprocessFlagsNone SubprocessFlags = 0b0
+	// SubprocessFlagsStdinPipe: create a pipe for the stdin of the spawned
+	// process that can be accessed with g_subprocess_get_stdin_pipe().
+	SubprocessFlagsStdinPipe SubprocessFlags = 0b1
+	// SubprocessFlagsStdinInherit: stdin is inherited from the calling process.
+	SubprocessFlagsStdinInherit SubprocessFlags = 0b10
+	// SubprocessFlagsStdoutPipe: create a pipe for the stdout of the spawned
+	// process that can be accessed with g_subprocess_get_stdout_pipe().
+	SubprocessFlagsStdoutPipe SubprocessFlags = 0b100
+	// SubprocessFlagsStdoutSilence: silence the stdout of the spawned process
+	// (ie: redirect to `/dev/null`).
+	SubprocessFlagsStdoutSilence SubprocessFlags = 0b1000
+	// SubprocessFlagsStderrPipe: create a pipe for the stderr of the spawned
+	// process that can be accessed with g_subprocess_get_stderr_pipe().
+	SubprocessFlagsStderrPipe SubprocessFlags = 0b10000
+	// SubprocessFlagsStderrSilence: silence the stderr of the spawned process
+	// (ie: redirect to `/dev/null`).
+	SubprocessFlagsStderrSilence SubprocessFlags = 0b100000
+	// SubprocessFlagsStderrMerge: merge the stderr of the spawned process with
+	// whatever the stdout happens to be. This is a good way of directing both
+	// streams to a common log file, for example.
+	SubprocessFlagsStderrMerge SubprocessFlags = 0b1000000
+	// SubprocessFlagsInheritFds: spawned processes will inherit the file
+	// descriptors of their parent, unless those descriptors have been
+	// explicitly marked as close-on-exec. This flag has no effect over the
+	// "standard" file descriptors (stdin, stdout, stderr).
+	SubprocessFlagsInheritFds SubprocessFlags = 0b10000000
+)
+
+func marshalSubprocessFlags(p uintptr) (interface{}, error) {
+	return SubprocessFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TestDBusFlags: flags to define future DBus behaviour.
+type TestDBusFlags int
+
+const (
+	// TestDBusFlagsNone: no flags.
+	TestDBusFlagsNone TestDBusFlags = 0b0
+)
+
+func marshalTestDBusFlags(p uintptr) (interface{}, error) {
+	return TestDBusFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TlsCertificateFlags: a set of flags describing TLS certification validation.
+// This can be used to set which validation steps to perform (eg, with
+// g_tls_client_connection_set_validation_flags()), or to describe why a
+// particular certificate was rejected (eg, in Connection::accept-certificate).
+type TlsCertificateFlags int
+
+const (
+	// TlsCertificateFlagsUnknownCa: the signing certificate authority is not
+	// known.
+	TlsCertificateFlagsUnknownCa TlsCertificateFlags = 0b1
+	// TlsCertificateFlagsBadIdentity: the certificate does not match the
+	// expected identity of the site that it was retrieved from.
+	TlsCertificateFlagsBadIdentity TlsCertificateFlags = 0b10
+	// TlsCertificateFlagsNotActivated: the certificate's activation time is
+	// still in the future
+	TlsCertificateFlagsNotActivated TlsCertificateFlags = 0b100
+	// TlsCertificateFlagsExpired: the certificate has expired
+	TlsCertificateFlagsExpired TlsCertificateFlags = 0b1000
+	// TlsCertificateFlagsRevoked: the certificate has been revoked according to
+	// the Connection's certificate revocation list.
+	TlsCertificateFlagsRevoked TlsCertificateFlags = 0b10000
+	// TlsCertificateFlagsInsecure: the certificate's algorithm is considered
+	// insecure.
+	TlsCertificateFlagsInsecure TlsCertificateFlags = 0b100000
+	// TlsCertificateFlagsGenericError: some other error occurred validating the
+	// certificate
+	TlsCertificateFlagsGenericError TlsCertificateFlags = 0b1000000
+	// TlsCertificateFlagsValidateAll: the combination of all of the above flags
+	TlsCertificateFlagsValidateAll TlsCertificateFlags = 0b1111111
+)
+
+func marshalTlsCertificateFlags(p uintptr) (interface{}, error) {
+	return TlsCertificateFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TlsDatabaseVerifyFlags: flags for g_tls_database_verify_chain().
+type TlsDatabaseVerifyFlags int
+
+const (
+	// TlsDatabaseVerifyFlagsNone: no verification flags
+	TlsDatabaseVerifyFlagsNone TlsDatabaseVerifyFlags = 0b0
+)
+
+func marshalTlsDatabaseVerifyFlags(p uintptr) (interface{}, error) {
+	return TlsDatabaseVerifyFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TlsPasswordFlags: various flags for the password.
+type TlsPasswordFlags int
+
+const (
+	// TlsPasswordFlagsNone: no flags
+	TlsPasswordFlagsNone TlsPasswordFlags = 0b0
+	// TlsPasswordFlagsRetry: the password was wrong, and the user should retry.
+	TlsPasswordFlagsRetry TlsPasswordFlags = 0b10
+	// TlsPasswordFlagsManyTries: hint to the user that the password has been
+	// wrong many times, and the user may not have many chances left.
+	TlsPasswordFlagsManyTries TlsPasswordFlags = 0b100
+	// TlsPasswordFlagsFinalTry: hint to the user that this is the last try to
+	// get this password right.
+	TlsPasswordFlagsFinalTry TlsPasswordFlags = 0b1000
+)
+
+func marshalTlsPasswordFlags(p uintptr) (interface{}, error) {
+	return TlsPasswordFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 // ActionNameIsValid: checks if @action_name is valid.
 //
 // @action_name is valid if it consists only of alphanumeric characters, plus

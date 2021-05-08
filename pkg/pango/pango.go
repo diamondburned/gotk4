@@ -836,6 +836,70 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// FontMask: the bits in a `PangoFontMask` correspond to the set fields in a
+// `PangoFontDescription`.
+type FontMask int
+
+const (
+	// FontMaskFamily: the font family is specified.
+	FontMaskFamily FontMask = 0b1
+	// FontMaskStyle: the font style is specified.
+	FontMaskStyle FontMask = 0b10
+	// FontMaskVariant: the font variant is specified.
+	FontMaskVariant FontMask = 0b100
+	// FontMaskWeight: the font weight is specified.
+	FontMaskWeight FontMask = 0b1000
+	// FontMaskStretch: the font stretch is specified.
+	FontMaskStretch FontMask = 0b10000
+	// FontMaskSize: the font size is specified.
+	FontMaskSize FontMask = 0b100000
+	// FontMaskGravity: the font gravity is specified (Since: 1.16.)
+	FontMaskGravity FontMask = 0b1000000
+	// FontMaskVariations: openType font variations are specified (Since: 1.42)
+	FontMaskVariations FontMask = 0b10000000
+)
+
+func marshalFontMask(p uintptr) (interface{}, error) {
+	return FontMask(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ShapeFlags: flags influencing the shaping process.
+//
+// `PangoShapeFlags` can be passed to pango_shape_with_flags().
+type ShapeFlags int
+
+const (
+	// ShapeFlagsNone: default value.
+	ShapeFlagsNone ShapeFlags = 0b0
+	// ShapeFlagsRoundPositions: round glyph positions and widths to whole
+	// device units. This option should be set if the target renderer can't do
+	// subpixel positioning of glyphs.
+	ShapeFlagsRoundPositions ShapeFlags = 0b1
+)
+
+func marshalShapeFlags(p uintptr) (interface{}, error) {
+	return ShapeFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ShowFlags: these flags affect how Pango treats characters that are normally
+// not visible in the output.
+type ShowFlags int
+
+const (
+	// ShowFlagsNone: no special treatment for invisible characters
+	ShowFlagsNone ShowFlags = 0b0
+	// ShowFlagsSpaces: render spaces, tabs and newlines visibly
+	ShowFlagsSpaces ShowFlags = 0b1
+	// ShowFlagsLineBreaks: render line breaks visibly
+	ShowFlagsLineBreaks ShowFlags = 0b10
+	// ShowFlagsIgnorables: render default-ignorable Unicode characters visibly
+	ShowFlagsIgnorables ShowFlags = 0b100
+)
+
+func marshalShowFlags(p uintptr) (interface{}, error) {
+	return ShowFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 // NewAttrAllowBreaks: create a new allow-breaks attribute.
 //
 // If breaks are disabled, the range will be kept in a single run, as far as

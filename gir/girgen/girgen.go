@@ -125,6 +125,7 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 	ng.generateInit()
 	ng.generateAliases()
 	ng.generateEnums()
+	ng.generateBitfields()
 	ng.generateFuncs()
 	ng.generateRecords()
 

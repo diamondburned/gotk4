@@ -2610,6 +2610,405 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ApplicationInhibitFlags: types of user actions that may be blocked by
+// gtk_application_inhibit().
+type ApplicationInhibitFlags int
+
+const (
+	// ApplicationInhibitFlagsLogout: inhibit ending the user session by logging
+	// out or by shutting down the computer
+	ApplicationInhibitFlagsLogout ApplicationInhibitFlags = 0b1
+	// ApplicationInhibitFlagsSwitch: inhibit user switching
+	ApplicationInhibitFlagsSwitch ApplicationInhibitFlags = 0b10
+	// ApplicationInhibitFlagsSuspend: inhibit suspending the session or
+	// computer
+	ApplicationInhibitFlagsSuspend ApplicationInhibitFlags = 0b100
+	// ApplicationInhibitFlagsIdle: inhibit the session being marked as idle
+	// (and possibly locked)
+	ApplicationInhibitFlagsIdle ApplicationInhibitFlags = 0b1000
+)
+
+func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
+	return ApplicationInhibitFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// BuilderClosureFlags: the list of flags that can be passed to
+// gtk_builder_create_closure(). New values may be added in the future for new
+// features, so external implementations of GtkBuilderScopeInterface should test
+// the flags for unknown values and raise a GTK_BUILDER_ERROR_INVALID_ATTRIBUTE
+// error when they encounter one.
+type BuilderClosureFlags int
+
+const (
+	// BuilderClosureFlagsSwapped: the closure should be created swapped. See
+	// g_cclosure_new_swap() for details.
+	BuilderClosureFlagsSwapped BuilderClosureFlags = 0b1
+)
+
+func marshalBuilderClosureFlags(p uintptr) (interface{}, error) {
+	return BuilderClosureFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// CellRendererState: tells how a cell is to be rendered.
+type CellRendererState int
+
+const (
+	// CellRendererStateSelected: the cell is currently selected, and probably
+	// has a selection colored background to render to.
+	CellRendererStateSelected CellRendererState = 0b1
+	// CellRendererStatePrelit: the mouse is hovering over the cell.
+	CellRendererStatePrelit CellRendererState = 0b10
+	// CellRendererStateInsensitive: the cell is drawn in an insensitive manner
+	CellRendererStateInsensitive CellRendererState = 0b100
+	// CellRendererStateSorted: the cell is in a sorted row
+	CellRendererStateSorted CellRendererState = 0b1000
+	// CellRendererStateFocused: the cell is in the focus row.
+	CellRendererStateFocused CellRendererState = 0b10000
+	// CellRendererStateExpandable: the cell is in a row that can be expanded
+	CellRendererStateExpandable CellRendererState = 0b100000
+	// CellRendererStateExpanded: the cell is in a row that is expanded
+	CellRendererStateExpanded CellRendererState = 0b1000000
+)
+
+func marshalCellRendererState(p uintptr) (interface{}, error) {
+	return CellRendererState(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+type DebugFlags int
+
+const (
+	DebugFlagsText DebugFlags = 0b1
+
+	DebugFlagsTree DebugFlags = 0b10
+
+	DebugFlagsKeybindings DebugFlags = 0b100
+
+	DebugFlagsModules DebugFlags = 0b1000
+
+	DebugFlagsGeometry DebugFlags = 0b10000
+
+	DebugFlagsIcontheme DebugFlags = 0b100000
+
+	DebugFlagsPrinting DebugFlags = 0b1000000
+
+	DebugFlagsBuilder DebugFlags = 0b10000000
+
+	DebugFlagsSizeRequest DebugFlags = 0b100000000
+
+	DebugFlagsNoCSSCache DebugFlags = 0b1000000000
+
+	DebugFlagsInteractive DebugFlags = 0b10000000000
+
+	DebugFlagsTouchscreen DebugFlags = 0b100000000000
+
+	DebugFlagsActions DebugFlags = 0b1000000000000
+
+	DebugFlagsLayout DebugFlags = 0b10000000000000
+
+	DebugFlagsSnapshot DebugFlags = 0b100000000000000
+
+	DebugFlagsConstraints DebugFlags = 0b1000000000000000
+
+	DebugFlagsBuilderObjects DebugFlags = 0b10000000000000000
+
+	DebugFlagsA11Y DebugFlags = 0b100000000000000000
+)
+
+func marshalDebugFlags(p uintptr) (interface{}, error) {
+	return DebugFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// DialogFlags: flags used to influence dialog construction.
+type DialogFlags int
+
+const (
+	// DialogFlagsModal: make the constructed dialog modal, see
+	// gtk_window_set_modal()
+	DialogFlagsModal DialogFlags = 0b1
+	// DialogFlagsDestroyWithParent: destroy the dialog when its parent is
+	// destroyed, see gtk_window_set_destroy_with_parent()
+	DialogFlagsDestroyWithParent DialogFlags = 0b10
+	// DialogFlagsUseHeaderBar: create dialog with actions in header bar instead
+	// of action area
+	DialogFlagsUseHeaderBar DialogFlags = 0b100
+)
+
+func marshalDialogFlags(p uintptr) (interface{}, error) {
+	return DialogFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// EventControllerScrollFlags: describes the behavior of a
+// EventControllerScroll.
+type EventControllerScrollFlags int
+
+const (
+	// EventControllerScrollFlagsNone: don't emit scroll.
+	EventControllerScrollFlagsNone EventControllerScrollFlags = 0b0
+	// EventControllerScrollFlagsVertical: emit scroll with vertical deltas.
+	EventControllerScrollFlagsVertical EventControllerScrollFlags = 0b1
+	// EventControllerScrollFlagsHorizontal: emit scroll with horizontal deltas.
+	EventControllerScrollFlagsHorizontal EventControllerScrollFlags = 0b10
+	// EventControllerScrollFlagsDiscrete: only emit deltas that are multiples
+	// of 1.
+	EventControllerScrollFlagsDiscrete EventControllerScrollFlags = 0b100
+	// EventControllerScrollFlagsKinetic: emit EventControllerScroll::decelerate
+	// after continuous scroll finishes.
+	EventControllerScrollFlagsKinetic EventControllerScrollFlags = 0b1000
+	// EventControllerScrollFlagsBothAxes: emit scroll on both axes.
+	EventControllerScrollFlagsBothAxes EventControllerScrollFlags = 0b11
+)
+
+func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
+	return EventControllerScrollFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// FontChooserLevel: this enumeration specifies the granularity of font
+// selection that is desired in a font chooser.
+//
+// This enumeration may be extended in the future; applications should ignore
+// unknown values.
+type FontChooserLevel int
+
+const (
+	// FontChooserLevelFamily: allow selecting a font family
+	FontChooserLevelFamily FontChooserLevel = 0b0
+	// FontChooserLevelStyle: allow selecting a specific font face
+	FontChooserLevelStyle FontChooserLevel = 0b1
+	// FontChooserLevelSize: allow selecting a specific font size
+	FontChooserLevelSize FontChooserLevel = 0b10
+	// FontChooserLevelVariations: allow changing OpenType font variation axes
+	FontChooserLevelVariations FontChooserLevel = 0b100
+	// FontChooserLevelFeatures: allow selecting specific OpenType font features
+	FontChooserLevelFeatures FontChooserLevel = 0b1000
+)
+
+func marshalFontChooserLevel(p uintptr) (interface{}, error) {
+	return FontChooserLevel(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon()
+type IconLookupFlags int
+
+const (
+	// IconLookupFlagsForceRegular: try to always load regular icons, even when
+	// symbolic icon names are given
+	IconLookupFlagsForceRegular IconLookupFlags = 0b1
+	// IconLookupFlagsForceSymbolic: try to always load symbolic icons, even
+	// when regular icon names are given
+	IconLookupFlagsForceSymbolic IconLookupFlags = 0b10
+	// IconLookupFlagsPreload: starts loading the texture in the background so
+	// it is ready when later needed.
+	IconLookupFlagsPreload IconLookupFlags = 0b100
+)
+
+func marshalIconLookupFlags(p uintptr) (interface{}, error) {
+	return IconLookupFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// InputHints: describes hints that might be taken into account by input methods
+// or applications. Note that input methods may already tailor their behaviour
+// according to the InputPurpose of the entry.
+//
+// Some common sense is expected when using these flags - mixing
+// GTK_INPUT_HINT_LOWERCASE with any of the uppercase hints makes no sense.
+//
+// This enumeration may be extended in the future; input methods should ignore
+// unknown values.
+type InputHints int
+
+const (
+	// InputHintsNone: no special behaviour suggested
+	InputHintsNone InputHints = 0b0
+	// InputHintsSpellcheck: suggest checking for typos
+	InputHintsSpellcheck InputHints = 0b1
+	// InputHintsNoSpellcheck: suggest not checking for typos
+	InputHintsNoSpellcheck InputHints = 0b10
+	// InputHintsWordCompletion: suggest word completion
+	InputHintsWordCompletion InputHints = 0b100
+	// InputHintsLowercase: suggest to convert all text to lowercase
+	InputHintsLowercase InputHints = 0b1000
+	// InputHintsUppercaseChars: suggest to capitalize all text
+	InputHintsUppercaseChars InputHints = 0b10000
+	// InputHintsUppercaseWords: suggest to capitalize the first character of
+	// each word
+	InputHintsUppercaseWords InputHints = 0b100000
+	// InputHintsUppercaseSentences: suggest to capitalize the first word of
+	// each sentence
+	InputHintsUppercaseSentences InputHints = 0b1000000
+	// InputHintsInhibitOsk: suggest to not show an onscreen keyboard (e.g for a
+	// calculator that already has all the keys).
+	InputHintsInhibitOsk InputHints = 0b10000000
+	// InputHintsVerticalWriting: the text is vertical
+	InputHintsVerticalWriting InputHints = 0b100000000
+	// InputHintsEmoji: suggest offering Emoji support
+	InputHintsEmoji InputHints = 0b1000000000
+	// InputHintsNoEmoji: suggest not offering Emoji support
+	InputHintsNoEmoji InputHints = 0b10000000000
+	// InputHintsPrivate: request that the input method should not update
+	// personalized data (like typing history)
+	InputHintsPrivate InputHints = 0b100000000000
+)
+
+func marshalInputHints(p uintptr) (interface{}, error) {
+	return InputHints(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PickFlags: flags that influence the behavior of gtk_widget_pick()
+type PickFlags int
+
+const (
+	// PickFlagsDefault: the default behavior, include widgets that are
+	// receiving events
+	PickFlagsDefault PickFlags = 0b0
+	// PickFlagsInsensitive: include widgets that are insensitive
+	PickFlagsInsensitive PickFlags = 0b1
+	// PickFlagsNonTargetable: include widgets that are marked as
+	// non-targetable. See Widget:can-target
+	PickFlagsNonTargetable PickFlags = 0b10
+)
+
+func marshalPickFlags(p uintptr) (interface{}, error) {
+	return PickFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PopoverMenuFlags: flags that affect how popover menus are created from a menu
+// model.
+type PopoverMenuFlags int
+
+const (
+	// PopoverMenuFlagsNested: create submenus as nested popovers. Without this
+	// flag, submenus are created as sliding pages that replace the main menu.
+	PopoverMenuFlagsNested PopoverMenuFlags = 0b1
+)
+
+func marshalPopoverMenuFlags(p uintptr) (interface{}, error) {
+	return PopoverMenuFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// ShortcutActionFlags: list of flags that can be passed to action activation.
+// More flags may be added in the future.
+type ShortcutActionFlags int
+
+const (
+	// ShortcutActionFlagsExclusive: the action is the only action that can be
+	// activated. If this flag is not set, a future activation may select a
+	// different action.
+	ShortcutActionFlagsExclusive ShortcutActionFlags = 0b1
+)
+
+func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
+	return ShortcutActionFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// StateFlags: describes a widget state. Widget states are used to match the
+// widget against CSS pseudo-classes. Note that GTK extends the regular CSS
+// classes and sometimes uses different names.
+type StateFlags int
+
+const (
+	// StateFlagsNormal: state during normal operation
+	StateFlagsNormal StateFlags = 0b0
+	// StateFlagsActive: widget is active
+	StateFlagsActive StateFlags = 0b1
+	// StateFlagsPrelight: widget has a mouse pointer over it
+	StateFlagsPrelight StateFlags = 0b10
+	// StateFlagsSelected: widget is selected
+	StateFlagsSelected StateFlags = 0b100
+	// StateFlagsInsensitive: widget is insensitive
+	StateFlagsInsensitive StateFlags = 0b1000
+	// StateFlagsInconsistent: widget is inconsistent
+	StateFlagsInconsistent StateFlags = 0b10000
+	// StateFlagsFocused: widget has the keyboard focus
+	StateFlagsFocused StateFlags = 0b100000
+	// StateFlagsBackdrop: widget is in a background toplevel window
+	StateFlagsBackdrop StateFlags = 0b1000000
+	// StateFlagsDirLTR: widget is in left-to-right text direction
+	StateFlagsDirLTR StateFlags = 0b10000000
+	// StateFlagsDirRTL: widget is in right-to-left text direction
+	StateFlagsDirRTL StateFlags = 0b100000000
+	// StateFlagsLink: widget is a link
+	StateFlagsLink StateFlags = 0b1000000000
+	// StateFlagsVisited: the location the widget points to has already been
+	// visited
+	StateFlagsVisited StateFlags = 0b10000000000
+	// StateFlagsChecked: widget is checked
+	StateFlagsChecked StateFlags = 0b100000000000
+	// StateFlagsDropActive: widget is highlighted as a drop target for DND
+	StateFlagsDropActive StateFlags = 0b1000000000000
+	// StateFlagsFocusVisible: widget has the visible focus
+	StateFlagsFocusVisible StateFlags = 0b10000000000000
+	// StateFlagsFocusWithin: widget contains the keyboard focus
+	StateFlagsFocusWithin StateFlags = 0b100000000000000
+)
+
+func marshalStateFlags(p uintptr) (interface{}, error) {
+	return StateFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// StyleContextPrintFlags: flags that modify the behavior of
+// gtk_style_context_to_string(). New values may be added to this enumeration.
+type StyleContextPrintFlags int
+
+const (
+	// StyleContextPrintFlagsNone: default value.
+	StyleContextPrintFlagsNone StyleContextPrintFlags = 0b0
+	// StyleContextPrintFlagsRecurse: print the entire tree of CSS nodes
+	// starting at the style context's node
+	StyleContextPrintFlagsRecurse StyleContextPrintFlags = 0b1
+	// StyleContextPrintFlagsShowStyle: show the values of the CSS properties
+	// for each node
+	StyleContextPrintFlagsShowStyle StyleContextPrintFlags = 0b10
+	// StyleContextPrintFlagsShowChange: show information about what changes
+	// affect the styles
+	StyleContextPrintFlagsShowChange StyleContextPrintFlags = 0b100
+)
+
+func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
+	return StyleContextPrintFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TextSearchFlags: flags affecting how a search is done.
+//
+// If neither K_TEXT_SEARCH_VISIBLE_ONLY nor K_TEXT_SEARCH_TEXT_ONLY are
+// enabled, the match must be exact; the special 0xFFFC character will match
+// embedded paintables or child widgets.
+type TextSearchFlags int
+
+const (
+	// TextSearchFlagsVisibleOnly: search only visible data. A search match may
+	// have invisible text interspersed.
+	TextSearchFlagsVisibleOnly TextSearchFlags = 0b1
+	// TextSearchFlagsTextOnly: search only text. A match may have paintables or
+	// child widgets mixed inside the matched range.
+	TextSearchFlagsTextOnly TextSearchFlags = 0b10
+	// TextSearchFlagsCaseInsensitive: the text will be matched regardless of
+	// what case it is in.
+	TextSearchFlagsCaseInsensitive TextSearchFlags = 0b100
+)
+
+func marshalTextSearchFlags(p uintptr) (interface{}, error) {
+	return TextSearchFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// TreeModelFlags: these flags indicate various properties of a TreeModel.
+//
+// They are returned by gtk_tree_model_get_flags(), and must be static for the
+// lifetime of the object. A more complete description of
+// K_TREE_MODEL_ITERS_PERSIST can be found in the overview of this section.
+type TreeModelFlags int
+
+const (
+	// TreeModelFlagsItersPersist: iterators survive all signals emitted by the
+	// tree
+	TreeModelFlagsItersPersist TreeModelFlags = 0b1
+	// TreeModelFlagsListOnly: the model is a list only, and never has children
+	TreeModelFlagsListOnly TreeModelFlags = 0b10
+)
+
+func marshalTreeModelFlags(p uintptr) (interface{}, error) {
+	return TreeModelFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 // AcceleratorGetDefaultModMask: gets the modifier mask.
 //
 // The modifier mask determines which modifiers are considered significant for

@@ -303,6 +303,20 @@ type ColorStop struct {
 	Color gdk.RGBA
 }
 
+func wrapColorStop(p *C.GskColorStop) *ColorStop {
+	var v ColorStop
+	v.Offset = float32(p.offset)
+
+	return &v
+}
+
+func marshalColorStop(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GskColorStop)(unsafe.Pointer(b))
+
+	return wrapColorStop(c)
+}
+
 // ParseLocation: a location in a parse buffer.
 type ParseLocation struct {
 	// Bytes: the offset of the location in the parse buffer, as bytes
@@ -315,6 +329,23 @@ type ParseLocation struct {
 	LineBytes uint
 	// LineChars: the position in the line, as characters
 	LineChars uint
+}
+
+func wrapParseLocation(p *C.GskParseLocation) *ParseLocation {
+	var v ParseLocation
+	v.Bytes = uint(p.bytes)
+	v.Chars = uint(p.chars)
+	v.Lines = uint(p.lines)
+	v.LineBytes = uint(p.line_bytes)
+	v.LineChars = uint(p.line_chars)
+	return &v
+}
+
+func marshalParseLocation(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GskParseLocation)(unsafe.Pointer(b))
+
+	return wrapParseLocation(c)
 }
 
 // RoundedRect: a rectangular region with rounded corners.
@@ -332,9 +363,37 @@ type RoundedRect struct {
 	Corner [4]graphene.Size
 }
 
+func wrapRoundedRect(p *C.GskRoundedRect) *RoundedRect {
+	var v RoundedRect
+
+	{
+		var a [4]graphene.Size
+	}
+	return &v
+}
+
+func marshalRoundedRect(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GskRoundedRect)(unsafe.Pointer(b))
+
+	return wrapRoundedRect(c)
+}
+
 // ShaderArgsBuilder: an object to build the uniforms data for a GLShader.
 type ShaderArgsBuilder struct {
 	native *C.GskShaderArgsBuilder
+}
+
+func wrapShaderArgsBuilder(p *C.GskShaderArgsBuilder) *ShaderArgsBuilder {
+	v := ShaderArgsBuilder{native: p}
+	return &v
+}
+
+func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
+
+	return wrapShaderArgsBuilder(c)
 }
 
 // Shadow: the shadow parameters in a shadow node.
@@ -349,7 +408,35 @@ type Shadow struct {
 	Radius float32
 }
 
+func wrapShadow(p *C.GskShadow) *Shadow {
+	var v Shadow
+
+	v.Dx = float32(p.dx)
+	v.Dy = float32(p.dy)
+	v.Radius = float32(p.radius)
+	return &v
+}
+
+func marshalShadow(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GskShadow)(unsafe.Pointer(b))
+
+	return wrapShadow(c)
+}
+
 // Transform: the `GskTransform` structure contains only private data.
 type Transform struct {
 	native *C.GskTransform
+}
+
+func wrapTransform(p *C.GskTransform) *Transform {
+	v := Transform{native: p}
+	return &v
+}
+
+func marshalTransform(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GskTransform)(unsafe.Pointer(b))
+
+	return wrapTransform(c)
 }

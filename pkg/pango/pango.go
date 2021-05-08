@@ -1600,6 +1600,26 @@ type Analysis struct {
 	ExtraAttrs *glib.SList
 }
 
+func wrapAnalysis(p *C.PangoAnalysis) *Analysis {
+	var v Analysis
+	v.ShapeEngine = unsafe.Pointer(p.shape_engine)
+	v.LangEngine = unsafe.Pointer(p.lang_engine)
+
+	v.Level = uint8(p.level)
+	v.Gravity = uint8(p.gravity)
+	v.Flags = uint8(p.flags)
+	v.Script = uint8(p.script)
+
+	return &v
+}
+
+func marshalAnalysis(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAnalysis)(unsafe.Pointer(b))
+
+	return wrapAnalysis(c)
+}
+
 // AttrColor: the `PangoAttrColor` structure is used to represent attributes
 // that are colors.
 type AttrColor struct {
@@ -1607,6 +1627,19 @@ type AttrColor struct {
 	Attr Attribute
 	// Color: the `PangoColor` which is the value of the attribute
 	Color Color
+}
+
+func wrapAttrColor(p *C.PangoAttrColor) *AttrColor {
+	var v AttrColor
+
+	return &v
+}
+
+func marshalAttrColor(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrColor)(unsafe.Pointer(b))
+
+	return wrapAttrColor(c)
 }
 
 // AttrFloat: the `PangoAttrFloat` structure is used to represent attributes
@@ -1618,6 +1651,20 @@ type AttrFloat struct {
 	Value float64
 }
 
+func wrapAttrFloat(p *C.PangoAttrFloat) *AttrFloat {
+	var v AttrFloat
+
+	v.Value = float64(p.value)
+	return &v
+}
+
+func marshalAttrFloat(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrFloat)(unsafe.Pointer(b))
+
+	return wrapAttrFloat(c)
+}
+
 // AttrFontDesc: the `PangoAttrFontDesc` structure is used to store an attribute
 // that sets all aspects of the font description at once.
 type AttrFontDesc struct {
@@ -1625,6 +1672,19 @@ type AttrFontDesc struct {
 	Attr Attribute
 	// Desc: the font description which is the value of this attribute
 	Desc *FontDescription
+}
+
+func wrapAttrFontDesc(p *C.PangoAttrFontDesc) *AttrFontDesc {
+	var v AttrFontDesc
+
+	return &v
+}
+
+func marshalAttrFontDesc(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrFontDesc)(unsafe.Pointer(b))
+
+	return wrapAttrFontDesc(c)
 }
 
 // AttrFontFeatures: the `PangoAttrFontFeatures` structure is used to represent
@@ -1636,6 +1696,20 @@ type AttrFontFeatures struct {
 	Features string
 }
 
+func wrapAttrFontFeatures(p *C.PangoAttrFontFeatures) *AttrFontFeatures {
+	var v AttrFontFeatures
+
+	v.Features = C.GoString(p.features)
+	return &v
+}
+
+func marshalAttrFontFeatures(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrFontFeatures)(unsafe.Pointer(b))
+
+	return wrapAttrFontFeatures(c)
+}
+
 // AttrInt: the `PangoAttrInt` structure is used to represent attributes with an
 // integer or enumeration value.
 type AttrInt struct {
@@ -1643,6 +1717,20 @@ type AttrInt struct {
 	Attr Attribute
 	// Value: the value of the attribute
 	Value int
+}
+
+func wrapAttrInt(p *C.PangoAttrInt) *AttrInt {
+	var v AttrInt
+
+	v.Value = int(p.value)
+	return &v
+}
+
+func marshalAttrInt(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrInt)(unsafe.Pointer(b))
+
+	return wrapAttrInt(c)
 }
 
 // AttrIterator: a `PangoAttrIterator` is used to iterate through a
@@ -1657,6 +1745,18 @@ type AttrIterator struct {
 	native *C.PangoAttrIterator
 }
 
+func wrapAttrIterator(p *C.PangoAttrIterator) *AttrIterator {
+	v := AttrIterator{native: p}
+	return &v
+}
+
+func marshalAttrIterator(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrIterator)(unsafe.Pointer(b))
+
+	return wrapAttrIterator(c)
+}
+
 // AttrLanguage: the `PangoAttrLanguage` structure is used to represent
 // attributes that are languages.
 type AttrLanguage struct {
@@ -1664,6 +1764,19 @@ type AttrLanguage struct {
 	Attr Attribute
 	// Value: the `PangoLanguage` which is the value of the attribute
 	Value *Language
+}
+
+func wrapAttrLanguage(p *C.PangoAttrLanguage) *AttrLanguage {
+	var v AttrLanguage
+
+	return &v
+}
+
+func marshalAttrLanguage(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrLanguage)(unsafe.Pointer(b))
+
+	return wrapAttrLanguage(c)
 }
 
 // AttrList: a `PangoAttrList` represents a list of attributes that apply to a
@@ -1679,6 +1792,18 @@ type AttrLanguage struct {
 // should not use a single `PangoAttrList` for more than one paragraph of text.
 type AttrList struct {
 	native *C.PangoAttrList
+}
+
+func wrapAttrList(p *C.PangoAttrList) *AttrList {
+	v := AttrList{native: p}
+	return &v
+}
+
+func marshalAttrList(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrList)(unsafe.Pointer(b))
+
+	return wrapAttrList(c)
 }
 
 // AttrShape: the `PangoAttrShape` structure is used to represent attributes
@@ -1698,6 +1823,21 @@ type AttrShape struct {
 	DestroyFunc unsafe.Pointer
 }
 
+func wrapAttrShape(p *C.PangoAttrShape) *AttrShape {
+	var v AttrShape
+
+	v.Data = unsafe.Pointer(p.data)
+
+	return &v
+}
+
+func marshalAttrShape(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrShape)(unsafe.Pointer(b))
+
+	return wrapAttrShape(c)
+}
+
 // AttrSize: the `PangoAttrSize` structure is used to represent attributes which
 // set font size.
 type AttrSize struct {
@@ -1713,6 +1853,21 @@ type AttrSize struct {
 	Absolute uint
 }
 
+func wrapAttrSize(p *C.PangoAttrSize) *AttrSize {
+	var v AttrSize
+
+	v.Size = int(p.size)
+	v.Absolute = uint(p.absolute)
+	return &v
+}
+
+func marshalAttrSize(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrSize)(unsafe.Pointer(b))
+
+	return wrapAttrSize(c)
+}
+
 // AttrString: the `PangoAttrString` structure is used to represent attributes
 // with a string value.
 type AttrString struct {
@@ -1720,6 +1875,20 @@ type AttrString struct {
 	Attr Attribute
 	// Value: the string which is the value of the attribute
 	Value string
+}
+
+func wrapAttrString(p *C.PangoAttrString) *AttrString {
+	var v AttrString
+
+	v.Value = C.GoString(p.value)
+	return &v
+}
+
+func marshalAttrString(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttrString)(unsafe.Pointer(b))
+
+	return wrapAttrString(c)
 }
 
 // Attribute: the `PangoAttribute` structure represents the common portions of
@@ -1741,6 +1910,21 @@ type Attribute struct {
 	EndIndex uint
 }
 
+func wrapAttribute(p *C.PangoAttribute) *Attribute {
+	var v Attribute
+
+	v.StartIndex = uint(p.start_index)
+	v.EndIndex = uint(p.end_index)
+	return &v
+}
+
+func marshalAttribute(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoAttribute)(unsafe.Pointer(b))
+
+	return wrapAttribute(c)
+}
+
 // Color: the `PangoColor` structure is used to represent a color in an
 // uncalibrated RGB color-space.
 type Color struct {
@@ -1752,6 +1936,21 @@ type Color struct {
 	Blue uint16
 }
 
+func wrapColor(p *C.PangoColor) *Color {
+	var v Color
+	v.Red = uint16(p.red)
+	v.Green = uint16(p.green)
+	v.Blue = uint16(p.blue)
+	return &v
+}
+
+func marshalColor(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoColor)(unsafe.Pointer(b))
+
+	return wrapColor(c)
+}
+
 // FontDescription: a `PangoFontDescription` describes a font in an
 // implementation-independent manner.
 //
@@ -1760,6 +1959,18 @@ type Color struct {
 // to load.
 type FontDescription struct {
 	native *C.PangoFontDescription
+}
+
+func wrapFontDescription(p *C.PangoFontDescription) *FontDescription {
+	v := FontDescription{native: p}
+	return &v
+}
+
+func marshalFontDescription(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoFontDescription)(unsafe.Pointer(b))
+
+	return wrapFontDescription(c)
 }
 
 // FontMetrics: a `PangoFontMetrics` structure holds the overall metric
@@ -1773,6 +1984,18 @@ type FontMetrics struct {
 	native *C.PangoFontMetrics
 }
 
+func wrapFontMetrics(p *C.PangoFontMetrics) *FontMetrics {
+	v := FontMetrics{native: p}
+	return &v
+}
+
+func marshalFontMetrics(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoFontMetrics)(unsafe.Pointer(b))
+
+	return wrapFontMetrics(c)
+}
+
 // GlyphGeometry: the `PangoGlyphGeometry` structure contains width and
 // positioning information for a single glyph.
 type GlyphGeometry struct {
@@ -1782,6 +2005,19 @@ type GlyphGeometry struct {
 	XOffset GlyphUnit
 	// YOffset: vertical offset from nominal character position.
 	YOffset GlyphUnit
+}
+
+func wrapGlyphGeometry(p *C.PangoGlyphGeometry) *GlyphGeometry {
+	var v GlyphGeometry
+
+	return &v
+}
+
+func marshalGlyphGeometry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoGlyphGeometry)(unsafe.Pointer(b))
+
+	return wrapGlyphGeometry(c)
 }
 
 // GlyphInfo: a `PangoGlyphInfo` structure represents a single glyph with
@@ -1795,6 +2031,19 @@ type GlyphInfo struct {
 	Attr GlyphVisAttr
 }
 
+func wrapGlyphInfo(p *C.PangoGlyphInfo) *GlyphInfo {
+	var v GlyphInfo
+
+	return &v
+}
+
+func marshalGlyphInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoGlyphInfo)(unsafe.Pointer(b))
+
+	return wrapGlyphInfo(c)
+}
+
 // GlyphItem: a `PangoGlyphItem` is a pair of a `PangoItem` and the glyphs
 // resulting from shaping the items text.
 //
@@ -1806,6 +2055,19 @@ type GlyphItem struct {
 	Item *Item
 	// Glyphs: corresponding `PangoGlyphString`
 	Glyphs *GlyphString
+}
+
+func wrapGlyphItem(p *C.PangoGlyphItem) *GlyphItem {
+	var v GlyphItem
+
+	return &v
+}
+
+func marshalGlyphItem(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoGlyphItem)(unsafe.Pointer(b))
+
+	return wrapGlyphItem(c)
 }
 
 // GlyphItemIter: a `PangoGlyphItemIter` is an iterator over the clusters in a
@@ -1858,6 +2120,26 @@ type GlyphItemIter struct {
 	EndChar int
 }
 
+func wrapGlyphItemIter(p *C.PangoGlyphItemIter) *GlyphItemIter {
+	var v GlyphItemIter
+
+	v.Text = C.GoString(p.text)
+	v.StartGlyph = int(p.start_glyph)
+	v.StartIndex = int(p.start_index)
+	v.StartChar = int(p.start_char)
+	v.EndGlyph = int(p.end_glyph)
+	v.EndIndex = int(p.end_index)
+	v.EndChar = int(p.end_char)
+	return &v
+}
+
+func marshalGlyphItemIter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoGlyphItemIter)(unsafe.Pointer(b))
+
+	return wrapGlyphItemIter(c)
+}
+
 // GlyphString: a `PangoGlyphString` is used to store strings of glyphs with
 // geometry and visual attribute information.
 //
@@ -1875,6 +2157,23 @@ type GlyphString struct {
 	native *C.PangoGlyphString
 }
 
+func wrapGlyphString(p *C.PangoGlyphString) *GlyphString {
+	v := GlyphString{native: p}
+	v.NumGlyphs = int(p.num_glyphs)
+	{
+		a := make([]GlyphInfo, 0)
+	}
+	v.LogClusters = int(p.log_clusters)
+	return &v
+}
+
+func marshalGlyphString(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoGlyphString)(unsafe.Pointer(b))
+
+	return wrapGlyphString(c)
+}
+
 // GlyphVisAttr: a `PangoGlyphVisAttr` structure communicates information
 // between the shaping and rendering phases.
 //
@@ -1887,6 +2186,19 @@ type GlyphVisAttr struct {
 	// is, in Arabic text, accent glyphs follow the glyphs for the base
 	// character.)
 	IsClusterStart uint
+}
+
+func wrapGlyphVisAttr(p *C.PangoGlyphVisAttr) *GlyphVisAttr {
+	var v GlyphVisAttr
+	v.IsClusterStart = uint(p.is_cluster_start)
+	return &v
+}
+
+func marshalGlyphVisAttr(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoGlyphVisAttr)(unsafe.Pointer(b))
+
+	return wrapGlyphVisAttr(c)
 }
 
 // Item: the `PangoItem` structure stores information about a segment of text.
@@ -1904,12 +2216,40 @@ type Item struct {
 	Analysis Analysis
 }
 
+func wrapItem(p *C.PangoItem) *Item {
+	var v Item
+	v.Offset = int(p.offset)
+	v.Length = int(p.length)
+	v.NumChars = int(p.num_chars)
+
+	return &v
+}
+
+func marshalItem(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoItem)(unsafe.Pointer(b))
+
+	return wrapItem(c)
+}
+
 // Language: the `PangoLanguage` structure is used to represent a language.
 //
 // `PangoLanguage` pointers can be efficiently copied and compared with each
 // other.
 type Language struct {
 	native *C.PangoLanguage
+}
+
+func wrapLanguage(p *C.PangoLanguage) *Language {
+	v := Language{native: p}
+	return &v
+}
+
+func marshalLanguage(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoLanguage)(unsafe.Pointer(b))
+
+	return wrapLanguage(c)
 }
 
 // LayoutIter: a `PangoLayoutIter` can be used to iterate over the visual
@@ -1920,6 +2260,18 @@ type Language struct {
 // The `PangoLayoutIter` structure is opaque, and has no user-visible fields.
 type LayoutIter struct {
 	native *C.PangoLayoutIter
+}
+
+func wrapLayoutIter(p *C.PangoLayoutIter) *LayoutIter {
+	v := LayoutIter{native: p}
+	return &v
+}
+
+func marshalLayoutIter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoLayoutIter)(unsafe.Pointer(b))
+
+	return wrapLayoutIter(c)
 }
 
 // LayoutLine: a `PangoLayoutLine` represents one of the lines resulting from
@@ -1941,6 +2293,24 @@ type LayoutLine struct {
 	IsParagraphStart uint
 	// ResolvedDir: resolved PangoDirection of line
 	ResolvedDir uint
+}
+
+func wrapLayoutLine(p *C.PangoLayoutLine) *LayoutLine {
+	var v LayoutLine
+
+	v.StartIndex = int(p.start_index)
+	v.Length = int(p.length)
+
+	v.IsParagraphStart = uint(p.is_paragraph_start)
+	v.ResolvedDir = uint(p.resolved_dir)
+	return &v
+}
+
+func marshalLayoutLine(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoLayoutLine)(unsafe.Pointer(b))
+
+	return wrapLayoutLine(c)
 }
 
 // LogAttr: the `PangoLogAttr` structure stores information about the attributes
@@ -2002,6 +2372,31 @@ type LogAttr struct {
 	IsWordBoundary uint
 }
 
+func wrapLogAttr(p *C.PangoLogAttr) *LogAttr {
+	var v LogAttr
+	v.IsLineBreak = uint(p.is_line_break)
+	v.IsMandatoryBreak = uint(p.is_mandatory_break)
+	v.IsCharBreak = uint(p.is_char_break)
+	v.IsWhite = uint(p.is_white)
+	v.IsCursorPosition = uint(p.is_cursor_position)
+	v.IsWordStart = uint(p.is_word_start)
+	v.IsWordEnd = uint(p.is_word_end)
+	v.IsSentenceBoundary = uint(p.is_sentence_boundary)
+	v.IsSentenceStart = uint(p.is_sentence_start)
+	v.IsSentenceEnd = uint(p.is_sentence_end)
+	v.BackspaceDeletesCharacter = uint(p.backspace_deletes_character)
+	v.IsExpandableSpace = uint(p.is_expandable_space)
+	v.IsWordBoundary = uint(p.is_word_boundary)
+	return &v
+}
+
+func marshalLogAttr(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoLogAttr)(unsafe.Pointer(b))
+
+	return wrapLogAttr(c)
+}
+
 // Matrix: a `PangoMatrix` specifies a transformation between user-space and
 // device coordinates.
 //
@@ -2025,6 +2420,24 @@ type Matrix struct {
 	Y0 float64
 }
 
+func wrapMatrix(p *C.PangoMatrix) *Matrix {
+	var v Matrix
+	v.XX = float64(p.xx)
+	v.XY = float64(p.xy)
+	v.YX = float64(p.yx)
+	v.YY = float64(p.yy)
+	v.X0 = float64(p.x0)
+	v.Y0 = float64(p.y0)
+	return &v
+}
+
+func marshalMatrix(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoMatrix)(unsafe.Pointer(b))
+
+	return wrapMatrix(c)
+}
+
 // Rectangle: the `PangoRectangle` structure represents a rectangle.
 //
 // `PangoRectangle` is frequently used to represent the logical or ink extents
@@ -2041,10 +2454,38 @@ type Rectangle struct {
 	Height int
 }
 
+func wrapRectangle(p *C.PangoRectangle) *Rectangle {
+	var v Rectangle
+	v.X = int(p.x)
+	v.Y = int(p.y)
+	v.Width = int(p.width)
+	v.Height = int(p.height)
+	return &v
+}
+
+func marshalRectangle(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoRectangle)(unsafe.Pointer(b))
+
+	return wrapRectangle(c)
+}
+
 // ScriptIter: a `PangoScriptIter` is used to iterate through a string and
 // identify ranges in different scripts.
 type ScriptIter struct {
 	native *C.PangoScriptIter
+}
+
+func wrapScriptIter(p *C.PangoScriptIter) *ScriptIter {
+	v := ScriptIter{native: p}
+	return &v
+}
+
+func marshalScriptIter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoScriptIter)(unsafe.Pointer(b))
+
+	return wrapScriptIter(c)
 }
 
 // TabArray: a `PangoTabArray` contains an array of tab stops.
@@ -2053,4 +2494,16 @@ type ScriptIter struct {
 // stop has an alignment and a position.
 type TabArray struct {
 	native *C.PangoTabArray
+}
+
+func wrapTabArray(p *C.PangoTabArray) *TabArray {
+	v := TabArray{native: p}
+	return &v
+}
+
+func marshalTabArray(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoTabArray)(unsafe.Pointer(b))
+
+	return wrapTabArray(c)
 }

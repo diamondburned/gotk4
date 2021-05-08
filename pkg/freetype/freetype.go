@@ -3,6 +3,8 @@
 package freetype
 
 import (
+	"unsafe"
+
 	"github.com/gotk3/gotk3/glib"
 )
 
@@ -25,10 +27,46 @@ type Bitmap struct {
 	native *C.FT_Bitmap
 }
 
+func wrapBitmap(p *C.FT_Bitmap) *Bitmap {
+	v := Bitmap{native: p}
+	return &v
+}
+
+func marshalBitmap(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.FT_Bitmap)(unsafe.Pointer(b))
+
+	return wrapBitmap(c)
+}
+
 type Face struct {
 	native *C.FT_Face
 }
 
+func wrapFace(p *C.FT_Face) *Face {
+	v := Face{native: p}
+	return &v
+}
+
+func marshalFace(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.FT_Face)(unsafe.Pointer(b))
+
+	return wrapFace(c)
+}
+
 type Library struct {
 	native *C.FT_Library
+}
+
+func wrapLibrary(p *C.FT_Library) *Library {
+	v := Library{native: p}
+	return &v
+}
+
+func marshalLibrary(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.FT_Library)(unsafe.Pointer(b))
+
+	return wrapLibrary(c)
 }

@@ -3481,12 +3481,36 @@ type Bitset struct {
 	native *C.GtkBitset
 }
 
+func wrapBitset(p *C.GtkBitset) *Bitset {
+	v := Bitset{native: p}
+	return &v
+}
+
+func marshalBitset(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkBitset)(unsafe.Pointer(b))
+
+	return wrapBitset(c)
+}
+
 // BitsetIter: an opaque, stack-allocated struct for iterating over the elements
 // of a Bitset. Before a GtkBitsetIter can be used, it needs to be initialized
 // with gtk_bitset_iter_init_first(), gtk_bitset_iter_init_last() or
 // gtk_bitset_iter_init_at().
 type BitsetIter struct {
 	native *C.GtkBitsetIter
+}
+
+func wrapBitsetIter(p *C.GtkBitsetIter) *BitsetIter {
+	v := BitsetIter{native: p}
+	return &v
+}
+
+func marshalBitsetIter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkBitsetIter)(unsafe.Pointer(b))
+
+	return wrapBitsetIter(c)
 }
 
 // Border: a struct that specifies a border around a rectangular area that can
@@ -3502,9 +3526,37 @@ type Border struct {
 	Bottom int16
 }
 
+func wrapBorder(p *C.GtkBorder) *Border {
+	var v Border
+	v.Left = int16(p.left)
+	v.Right = int16(p.right)
+	v.Top = int16(p.top)
+	v.Bottom = int16(p.bottom)
+	return &v
+}
+
+func marshalBorder(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkBorder)(unsafe.Pointer(b))
+
+	return wrapBorder(c)
+}
+
 // BuildableParser: a sub-parser for Buildable implementations.
 type BuildableParser struct {
 	native *C.GtkBuildableParser
+}
+
+func wrapBuildableParser(p *C.GtkBuildableParser) *BuildableParser {
+	v := BuildableParser{native: p}
+	return &v
+}
+
+func marshalBuildableParser(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkBuildableParser)(unsafe.Pointer(b))
+
+	return wrapBuildableParser(c)
 }
 
 // CSSLocation: gtkCssLocation is used to present a location in a file - or
@@ -3532,11 +3584,40 @@ type CSSLocation struct {
 	LineChars uint
 }
 
+func wrapCSSLocation(p *C.GtkCssLocation) *CSSLocation {
+	var v CSSLocation
+	v.Bytes = uint(p.bytes)
+	v.Chars = uint(p.chars)
+	v.Lines = uint(p.lines)
+	v.LineBytes = uint(p.line_bytes)
+	v.LineChars = uint(p.line_chars)
+	return &v
+}
+
+func marshalCSSLocation(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkCssLocation)(unsafe.Pointer(b))
+
+	return wrapCSSLocation(c)
+}
+
 // CSSSection: defines a part of a CSS document. Because sections are nested
 // into one another, you can use gtk_css_section_get_parent() to get the
 // containing region.
 type CSSSection struct {
 	native *C.GtkCssSection
+}
+
+func wrapCSSSection(p *C.GtkCssSection) *CSSSection {
+	v := CSSSection{native: p}
+	return &v
+}
+
+func marshalCSSSection(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkCssSection)(unsafe.Pointer(b))
+
+	return wrapCSSSection(c)
 }
 
 // PadActionEntry: struct defining a pad action entry.
@@ -3555,12 +3636,43 @@ type PadActionEntry struct {
 	ActionName string
 }
 
+func wrapPadActionEntry(p *C.GtkPadActionEntry) *PadActionEntry {
+	var v PadActionEntry
+	v.Type = PadActionType(p._type)
+	v.Index = int(p.index)
+	v.Mode = int(p.mode)
+	v.Label = C.GoString(p.label)
+	v.ActionName = C.GoString(p.action_name)
+	return &v
+}
+
+func marshalPadActionEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkPadActionEntry)(unsafe.Pointer(b))
+
+	return wrapPadActionEntry(c)
+}
+
 // PageRange: see also gtk_print_settings_set_page_ranges().
 type PageRange struct {
 	// Start: start of page range.
 	Start int
 	// End: end of page range.
 	End int
+}
+
+func wrapPageRange(p *C.GtkPageRange) *PageRange {
+	var v PageRange
+	v.Start = int(p.start)
+	v.End = int(p.end)
+	return &v
+}
+
+func marshalPageRange(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkPageRange)(unsafe.Pointer(b))
+
+	return wrapPageRange(c)
 }
 
 // PaperSize: gtkPaperSize handles paper sizes. It uses the standard called [PWG
@@ -3575,6 +3687,18 @@ type PageRange struct {
 // margins][print-margins].
 type PaperSize struct {
 	native *C.GtkPaperSize
+}
+
+func wrapPaperSize(p *C.GtkPaperSize) *PaperSize {
+	v := PaperSize{native: p}
+	return &v
+}
+
+func marshalPaperSize(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkPaperSize)(unsafe.Pointer(b))
+
+	return wrapPaperSize(c)
 }
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
@@ -3602,6 +3726,27 @@ type RecentData struct {
 	IsPrivate bool
 }
 
+func wrapRecentData(p *C.GtkRecentData) *RecentData {
+	var v RecentData
+	v.DisplayName = C.GoString(p.display_name)
+	v.Description = C.GoString(p.description)
+	v.MimeType = C.GoString(p.mime_type)
+	v.AppName = C.GoString(p.app_name)
+	v.AppExec = C.GoString(p.app_exec)
+	{
+		a := make([]string, 0)
+	}
+	v.IsPrivate = bool(p.is_private)
+	return &v
+}
+
+func marshalRecentData(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkRecentData)(unsafe.Pointer(b))
+
+	return wrapRecentData(c)
+}
+
 // RecentInfo: gtkRecentInfo contains private data only, and should be accessed
 // using the provided API.
 //
@@ -3609,6 +3754,18 @@ type RecentData struct {
 // recently used files list.
 type RecentInfo struct {
 	native *C.GtkRecentInfo
+}
+
+func wrapRecentInfo(p *C.GtkRecentInfo) *RecentInfo {
+	v := RecentInfo{native: p}
+	return &v
+}
+
+func marshalRecentInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkRecentInfo)(unsafe.Pointer(b))
+
+	return wrapRecentInfo(c)
 }
 
 // RequestedSize: represents a request of a screen object in a given
@@ -3625,6 +3782,21 @@ type RequestedSize struct {
 	NaturalSize int
 }
 
+func wrapRequestedSize(p *C.GtkRequestedSize) *RequestedSize {
+	var v RequestedSize
+	v.Data = unsafe.Pointer(p.data)
+	v.MinimumSize = int(p.minimum_size)
+	v.NaturalSize = int(p.natural_size)
+	return &v
+}
+
+func marshalRequestedSize(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkRequestedSize)(unsafe.Pointer(b))
+
+	return wrapRequestedSize(c)
+}
+
 // Requisition: a Requisition-struct represents the desired size of a widget.
 // See [GtkWidget’s geometry management section][geometry-management] for more
 // information.
@@ -3633,6 +3805,20 @@ type Requisition struct {
 	Width int
 	// Height: the widget’s desired height
 	Height int
+}
+
+func wrapRequisition(p *C.GtkRequisition) *Requisition {
+	var v Requisition
+	v.Width = int(p.width)
+	v.Height = int(p.height)
+	return &v
+}
+
+func marshalRequisition(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkRequisition)(unsafe.Pointer(b))
+
+	return wrapRequisition(c)
 }
 
 type SettingsValue struct {
@@ -3644,11 +3830,37 @@ type SettingsValue struct {
 	Value *glib.Value
 }
 
+func wrapSettingsValue(p *C.GtkSettingsValue) *SettingsValue {
+	var v SettingsValue
+	v.Origin = C.GoString(p.origin)
+
+	return &v
+}
+
+func marshalSettingsValue(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkSettingsValue)(unsafe.Pointer(b))
+
+	return wrapSettingsValue(c)
+}
+
 // TextIter: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
 type TextIter struct {
 	native *C.GtkTextIter
+}
+
+func wrapTextIter(p *C.GtkTextIter) *TextIter {
+	v := TextIter{native: p}
+	return &v
+}
+
+func marshalTextIter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkTextIter)(unsafe.Pointer(b))
+
+	return wrapTextIter(c)
 }
 
 // TreeIter: the TreeIter is the primary structure for accessing a TreeModel.
@@ -3665,8 +3877,36 @@ type TreeIter struct {
 	UserData3 unsafe.Pointer
 }
 
+func wrapTreeIter(p *C.GtkTreeIter) *TreeIter {
+	var v TreeIter
+	v.Stamp = int(p.stamp)
+	v.UserData = unsafe.Pointer(p.user_data)
+	v.UserData2 = unsafe.Pointer(p.user_data2)
+	v.UserData3 = unsafe.Pointer(p.user_data3)
+	return &v
+}
+
+func marshalTreeIter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkTreeIter)(unsafe.Pointer(b))
+
+	return wrapTreeIter(c)
+}
+
 type TreePath struct {
 	native *C.GtkTreePath
+}
+
+func wrapTreePath(p *C.GtkTreePath) *TreePath {
+	v := TreePath{native: p}
+	return &v
+}
+
+func marshalTreePath(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkTreePath)(unsafe.Pointer(b))
+
+	return wrapTreePath(c)
 }
 
 // TreeRowReference: a GtkTreeRowReference tracks model changes so that it
@@ -3674,4 +3914,16 @@ type TreePath struct {
 // row). Create a new GtkTreeRowReference with gtk_tree_row_reference_new().
 type TreeRowReference struct {
 	native *C.GtkTreeRowReference
+}
+
+func wrapTreeRowReference(p *C.GtkTreeRowReference) *TreeRowReference {
+	v := TreeRowReference{native: p}
+	return &v
+}
+
+func marshalTreeRowReference(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GtkTreeRowReference)(unsafe.Pointer(b))
+
+	return wrapTreeRowReference(c)
 }

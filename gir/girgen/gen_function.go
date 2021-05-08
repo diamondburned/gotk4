@@ -68,7 +68,7 @@ func (ng *NamespaceGenerator) fnArgs(params *gir.Parameters) (string, bool) {
 	goArgs := make([]string, 0, len(params.Parameters))
 
 	for _, param := range params.Parameters {
-		resolved, ok := ng.resolveAnyType(param.AnyType)
+		resolved, ok := ng.ResolveAnyType(param.AnyType)
 		if !ok {
 			return "", false
 		}
@@ -87,7 +87,7 @@ func (ng *NamespaceGenerator) fnReturns(rets *gir.ReturnValue) (string, bool) {
 		return "", true
 	}
 
-	typ, ok := ng.resolveAnyType(rets.AnyType)
+	typ, ok := ng.ResolveAnyType(rets.AnyType)
 	if !ok {
 		return "", false
 	}

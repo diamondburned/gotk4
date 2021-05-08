@@ -156,3 +156,15 @@ func PixbufErrorQuark() glib.Quark
 type PixbufFormat struct {
 	native *C.GdkPixbufFormat
 }
+
+func wrapPixbufFormat(p *C.GdkPixbufFormat) *PixbufFormat {
+	v := PixbufFormat{native: p}
+	return &v
+}
+
+func marshalPixbufFormat(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkPixbufFormat)(unsafe.Pointer(b))
+
+	return wrapPixbufFormat(c)
+}

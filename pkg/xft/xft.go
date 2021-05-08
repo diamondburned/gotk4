@@ -3,6 +3,8 @@
 package xft
 
 import (
+	"unsafe"
+
 	"github.com/gotk3/gotk3/glib"
 )
 
@@ -23,14 +25,62 @@ type Color struct {
 	native *C.XftColor
 }
 
+func wrapColor(p *C.XftColor) *Color {
+	v := Color{native: p}
+	return &v
+}
+
+func marshalColor(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.XftColor)(unsafe.Pointer(b))
+
+	return wrapColor(c)
+}
+
 type Draw struct {
 	native *C.XftDraw
+}
+
+func wrapDraw(p *C.XftDraw) *Draw {
+	v := Draw{native: p}
+	return &v
+}
+
+func marshalDraw(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.XftDraw)(unsafe.Pointer(b))
+
+	return wrapDraw(c)
 }
 
 type Font struct {
 	native *C.XftFont
 }
 
+func wrapFont(p *C.XftFont) *Font {
+	v := Font{native: p}
+	return &v
+}
+
+func marshalFont(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.XftFont)(unsafe.Pointer(b))
+
+	return wrapFont(c)
+}
+
 type GlyphSpec struct {
 	native *C.XftGlyphSpec
+}
+
+func wrapGlyphSpec(p *C.XftGlyphSpec) *GlyphSpec {
+	v := GlyphSpec{native: p}
+	return &v
+}
+
+func marshalGlyphSpec(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.XftGlyphSpec)(unsafe.Pointer(b))
+
+	return wrapGlyphSpec(c)
 }

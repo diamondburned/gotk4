@@ -3,6 +3,8 @@
 package graphene
 
 import (
+	"unsafe"
+
 	"github.com/gotk3/gotk3/glib"
 )
 
@@ -250,12 +252,36 @@ type Box struct {
 	native *C.graphene_box_t
 }
 
+func wrapBox(p *C.graphene_box_t) *Box {
+	v := Box{native: p}
+	return &v
+}
+
+func marshalBox(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_box_t)(unsafe.Pointer(b))
+
+	return wrapBox(c)
+}
+
 // Euler: describe a rotation using Euler angles.
 //
 // The contents of the #graphene_euler_t structure are private and should never
 // be accessed directly.
 type Euler struct {
 	native *C.graphene_euler_t
+}
+
+func wrapEuler(p *C.graphene_euler_t) *Euler {
+	v := Euler{native: p}
+	return &v
+}
+
+func marshalEuler(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_euler_t)(unsafe.Pointer(b))
+
+	return wrapEuler(c)
 }
 
 // Frustum: a 3D volume delimited by 2D clip planes.
@@ -266,12 +292,36 @@ type Frustum struct {
 	native *C.graphene_frustum_t
 }
 
+func wrapFrustum(p *C.graphene_frustum_t) *Frustum {
+	v := Frustum{native: p}
+	return &v
+}
+
+func marshalFrustum(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_frustum_t)(unsafe.Pointer(b))
+
+	return wrapFrustum(c)
+}
+
 // Matrix: a structure capable of holding a 4x4 matrix.
 //
 // The contents of the #graphene_matrix_t structure are private and should never
 // be accessed directly.
 type Matrix struct {
 	native *C.graphene_matrix_t
+}
+
+func wrapMatrix(p *C.graphene_matrix_t) *Matrix {
+	v := Matrix{native: p}
+	return &v
+}
+
+func marshalMatrix(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_matrix_t)(unsafe.Pointer(b))
+
+	return wrapMatrix(c)
 }
 
 // Plane: a 2D plane that extends infinitely in a 3D volume.
@@ -282,12 +332,38 @@ type Plane struct {
 	native *C.graphene_plane_t
 }
 
+func wrapPlane(p *C.graphene_plane_t) *Plane {
+	v := Plane{native: p}
+	return &v
+}
+
+func marshalPlane(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_plane_t)(unsafe.Pointer(b))
+
+	return wrapPlane(c)
+}
+
 // Point: a point with two coordinates.
 type Point struct {
 	// X: the X coordinate of the point
 	X float32
 	// Y: the Y coordinate of the point
 	Y float32
+}
+
+func wrapPoint(p *C.graphene_point_t) *Point {
+	var v Point
+	v.X = float32(p.x)
+	v.Y = float32(p.y)
+	return &v
+}
+
+func marshalPoint(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_point_t)(unsafe.Pointer(b))
+
+	return wrapPoint(c)
 }
 
 // Point3D: a point with three components: X, Y, and Z.
@@ -300,12 +376,39 @@ type Point3D struct {
 	Z float32
 }
 
+func wrapPoint3D(p *C.graphene_point3d_t) *Point3D {
+	var v Point3D
+	v.X = float32(p.x)
+	v.Y = float32(p.y)
+	v.Z = float32(p.z)
+	return &v
+}
+
+func marshalPoint3D(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_point3d_t)(unsafe.Pointer(b))
+
+	return wrapPoint3D(c)
+}
+
 // Quad: a 4 vertex quadrilateral, as represented by four #graphene_point_t.
 //
 // The contents of a #graphene_quad_t are private and should never be accessed
 // directly.
 type Quad struct {
 	native *C.graphene_quad_t
+}
+
+func wrapQuad(p *C.graphene_quad_t) *Quad {
+	v := Quad{native: p}
+	return &v
+}
+
+func marshalQuad(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_quad_t)(unsafe.Pointer(b))
+
+	return wrapQuad(c)
 }
 
 // Quaternion: a quaternion.
@@ -316,12 +419,36 @@ type Quaternion struct {
 	native *C.graphene_quaternion_t
 }
 
+func wrapQuaternion(p *C.graphene_quaternion_t) *Quaternion {
+	v := Quaternion{native: p}
+	return &v
+}
+
+func marshalQuaternion(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_quaternion_t)(unsafe.Pointer(b))
+
+	return wrapQuaternion(c)
+}
+
 // Ray: a ray emitted from an origin in a given direction.
 //
 // The contents of the `graphene_ray_t` structure are private, and should not be
 // modified directly.
 type Ray struct {
 	native *C.graphene_ray_t
+}
+
+func wrapRay(p *C.graphene_ray_t) *Ray {
+	v := Ray{native: p}
+	return &v
+}
+
+func marshalRay(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_ray_t)(unsafe.Pointer(b))
+
+	return wrapRay(c)
 }
 
 // Rect: the location and size of a rectangle region.
@@ -343,12 +470,49 @@ type Rect struct {
 	Size Size
 }
 
+func wrapRect(p *C.graphene_rect_t) *Rect {
+	var v Rect
+
+	return &v
+}
+
+func marshalRect(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_rect_t)(unsafe.Pointer(b))
+
+	return wrapRect(c)
+}
+
 type SIMD4F struct {
 	native *C.graphene_simd4f_t
 }
 
+func wrapSIMD4F(p *C.graphene_simd4f_t) *SIMD4F {
+	v := SIMD4F{native: p}
+	return &v
+}
+
+func marshalSIMD4F(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_simd4f_t)(unsafe.Pointer(b))
+
+	return wrapSIMD4F(c)
+}
+
 type SIMD4X4F struct {
 	native *C.graphene_simd4x4f_t
+}
+
+func wrapSIMD4X4F(p *C.graphene_simd4x4f_t) *SIMD4X4F {
+	v := SIMD4X4F{native: p}
+	return &v
+}
+
+func marshalSIMD4X4F(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_simd4x4f_t)(unsafe.Pointer(b))
+
+	return wrapSIMD4X4F(c)
 }
 
 // Size: a size.
@@ -359,14 +523,52 @@ type Size struct {
 	Height float32
 }
 
+func wrapSize(p *C.graphene_size_t) *Size {
+	var v Size
+	v.Width = float32(p.width)
+	v.Height = float32(p.height)
+	return &v
+}
+
+func marshalSize(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_size_t)(unsafe.Pointer(b))
+
+	return wrapSize(c)
+}
+
 // Sphere: a sphere, represented by its center and radius.
 type Sphere struct {
 	native *C.graphene_sphere_t
 }
 
+func wrapSphere(p *C.graphene_sphere_t) *Sphere {
+	v := Sphere{native: p}
+	return &v
+}
+
+func marshalSphere(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_sphere_t)(unsafe.Pointer(b))
+
+	return wrapSphere(c)
+}
+
 // Triangle: a triangle.
 type Triangle struct {
 	native *C.graphene_triangle_t
+}
+
+func wrapTriangle(p *C.graphene_triangle_t) *Triangle {
+	v := Triangle{native: p}
+	return &v
+}
+
+func marshalTriangle(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_triangle_t)(unsafe.Pointer(b))
+
+	return wrapTriangle(c)
 }
 
 // Vec2: a structure capable of holding a vector with two dimensions, x and y.
@@ -375,6 +577,18 @@ type Triangle struct {
 // be accessed directly.
 type Vec2 struct {
 	native *C.graphene_vec2_t
+}
+
+func wrapVec2(p *C.graphene_vec2_t) *Vec2 {
+	v := Vec2{native: p}
+	return &v
+}
+
+func marshalVec2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_vec2_t)(unsafe.Pointer(b))
+
+	return wrapVec2(c)
 }
 
 // Vec3: a structure capable of holding a vector with three dimensions: x, y,
@@ -386,6 +600,18 @@ type Vec3 struct {
 	native *C.graphene_vec3_t
 }
 
+func wrapVec3(p *C.graphene_vec3_t) *Vec3 {
+	v := Vec3{native: p}
+	return &v
+}
+
+func marshalVec3(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_vec3_t)(unsafe.Pointer(b))
+
+	return wrapVec3(c)
+}
+
 // Vec4: a structure capable of holding a vector with four dimensions: x, y, z,
 // and w.
 //
@@ -393,4 +619,16 @@ type Vec3 struct {
 // be accessed directly.
 type Vec4 struct {
 	native *C.graphene_vec4_t
+}
+
+func wrapVec4(p *C.graphene_vec4_t) *Vec4 {
+	v := Vec4{native: p}
+	return &v
+}
+
+func marshalVec4(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.graphene_vec4_t)(unsafe.Pointer(b))
+
+	return wrapVec4(c)
 }

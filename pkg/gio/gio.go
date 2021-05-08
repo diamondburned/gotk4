@@ -3272,7 +3272,6 @@ func UnixMountsGet(timeRead *uint64) *glib.List
 type ActionEntry struct {
 	// Name: the name of the action
 	Name string
-
 	// ParameterType: the type of the parameter that must be passed to the
 	// activate function for this action, given as a single GVariant type string
 	// (or nil for no parameter)
@@ -3284,6 +3283,21 @@ type ActionEntry struct {
 	State string
 
 	native *C.GActionEntry
+}
+
+func wrapActionEntry(p *C.GActionEntry) *ActionEntry {
+	v := ActionEntry{native: p}
+	v.Name = C.GoString(p.name)
+	v.ParameterType = C.GoString(p.parameter_type)
+	v.State = C.GoString(p.state)
+	return &v
+}
+
+func marshalActionEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GActionEntry)(unsafe.Pointer(b))
+
+	return wrapActionEntry(c)
 }
 
 // DBusAnnotationInfo: information about an annotation.
@@ -3299,6 +3313,24 @@ type DBusAnnotationInfo struct {
 	Annotations []*DBusAnnotationInfo
 }
 
+func wrapDBusAnnotationInfo(p *C.GDBusAnnotationInfo) *DBusAnnotationInfo {
+	var v DBusAnnotationInfo
+	v.RefCount = int(p.ref_count)
+	v.Key = C.GoString(p.key)
+	v.Value = C.GoString(p.value)
+	{
+		a := make([]*DBusAnnotationInfo, 0)
+	}
+	return &v
+}
+
+func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDBusAnnotationInfo)(unsafe.Pointer(b))
+
+	return wrapDBusAnnotationInfo(c)
+}
+
 // DBusArgInfo: information about an argument for a method or a signal.
 type DBusArgInfo struct {
 	// RefCount: the reference count or -1 if statically allocated.
@@ -3312,12 +3344,44 @@ type DBusArgInfo struct {
 	Annotations []*DBusAnnotationInfo
 }
 
+func wrapDBusArgInfo(p *C.GDBusArgInfo) *DBusArgInfo {
+	var v DBusArgInfo
+	v.RefCount = int(p.ref_count)
+	v.Name = C.GoString(p.name)
+	v.Signature = C.GoString(p.signature)
+	{
+		a := make([]*DBusAnnotationInfo, 0)
+	}
+	return &v
+}
+
+func marshalDBusArgInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDBusArgInfo)(unsafe.Pointer(b))
+
+	return wrapDBusArgInfo(c)
+}
+
 // DBusErrorEntry: struct used in g_dbus_error_register_error_domain().
 type DBusErrorEntry struct {
 	// ErrorCode: an error code.
 	ErrorCode int
 	// DbusErrorName: the D-Bus error name to associate with @error_code.
 	DbusErrorName string
+}
+
+func wrapDBusErrorEntry(p *C.GDBusErrorEntry) *DBusErrorEntry {
+	var v DBusErrorEntry
+	v.ErrorCode = int(p.error_code)
+	v.DbusErrorName = C.GoString(p.dbus_error_name)
+	return &v
+}
+
+func marshalDBusErrorEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDBusErrorEntry)(unsafe.Pointer(b))
+
+	return wrapDBusErrorEntry(c)
 }
 
 // DBusInterfaceInfo: information about a D-Bus interface.
@@ -3339,6 +3403,32 @@ type DBusInterfaceInfo struct {
 	// Annotations: a pointer to a nil-terminated array of pointers to
 	// BusAnnotationInfo structures or nil if there are no annotations.
 	Annotations []*DBusAnnotationInfo
+}
+
+func wrapDBusInterfaceInfo(p *C.GDBusInterfaceInfo) *DBusInterfaceInfo {
+	var v DBusInterfaceInfo
+	v.RefCount = int(p.ref_count)
+	v.Name = C.GoString(p.name)
+	{
+		a := make([]*DBusMethodInfo, 0)
+	}
+	{
+		a := make([]*DBusSignalInfo, 0)
+	}
+	{
+		a := make([]*DBusPropertyInfo, 0)
+	}
+	{
+		a := make([]*DBusAnnotationInfo, 0)
+	}
+	return &v
+}
+
+func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDBusInterfaceInfo)(unsafe.Pointer(b))
+
+	return wrapDBusInterfaceInfo(c)
 }
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls
@@ -3390,6 +3480,19 @@ type DBusInterfaceVTable struct {
 	native *C.GDBusInterfaceVTable
 }
 
+func wrapDBusInterfaceVTable(p *C.GDBusInterfaceVTable) *DBusInterfaceVTable {
+	v := DBusInterfaceVTable{native: p}
+
+	return &v
+}
+
+func marshalDBusInterfaceVTable(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDBusInterfaceVTable)(unsafe.Pointer(b))
+
+	return wrapDBusInterfaceVTable(c)
+}
+
 // DBusMethodInfo: information about a method on an D-Bus interface.
 type DBusMethodInfo struct {
 	// RefCount: the reference count or -1 if statically allocated.
@@ -3405,6 +3508,29 @@ type DBusMethodInfo struct {
 	// Annotations: a pointer to a nil-terminated array of pointers to
 	// BusAnnotationInfo structures or nil if there are no annotations.
 	Annotations []*DBusAnnotationInfo
+}
+
+func wrapDBusMethodInfo(p *C.GDBusMethodInfo) *DBusMethodInfo {
+	var v DBusMethodInfo
+	v.RefCount = int(p.ref_count)
+	v.Name = C.GoString(p.name)
+	{
+		a := make([]*DBusArgInfo, 0)
+	}
+	{
+		a := make([]*DBusArgInfo, 0)
+	}
+	{
+		a := make([]*DBusAnnotationInfo, 0)
+	}
+	return &v
+}
+
+func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDBusMethodInfo)(unsafe.Pointer(b))
+
+	return wrapDBusMethodInfo(c)
 }
 
 // DBusNodeInfo: information about nodes in a remote object hierarchy.
@@ -3425,6 +3551,29 @@ type DBusNodeInfo struct {
 	Annotations []*DBusAnnotationInfo
 }
 
+func wrapDBusNodeInfo(p *C.GDBusNodeInfo) *DBusNodeInfo {
+	var v DBusNodeInfo
+	v.RefCount = int(p.ref_count)
+	v.Path = C.GoString(p.path)
+	{
+		a := make([]*DBusInterfaceInfo, 0)
+	}
+	{
+		a := make([]*DBusNodeInfo, 0)
+	}
+	{
+		a := make([]*DBusAnnotationInfo, 0)
+	}
+	return &v
+}
+
+func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDBusNodeInfo)(unsafe.Pointer(b))
+
+	return wrapDBusNodeInfo(c)
+}
+
 // DBusPropertyInfo: information about a D-Bus property on a D-Bus interface.
 type DBusPropertyInfo struct {
 	// RefCount: the reference count or -1 if statically allocated.
@@ -3438,6 +3587,25 @@ type DBusPropertyInfo struct {
 	// Annotations: a pointer to a nil-terminated array of pointers to
 	// BusAnnotationInfo structures or nil if there are no annotations.
 	Annotations []*DBusAnnotationInfo
+}
+
+func wrapDBusPropertyInfo(p *C.GDBusPropertyInfo) *DBusPropertyInfo {
+	var v DBusPropertyInfo
+	v.RefCount = int(p.ref_count)
+	v.Name = C.GoString(p.name)
+	v.Signature = C.GoString(p.signature)
+	v.Flags = DBusPropertyInfoFlags(p.flags)
+	{
+		a := make([]*DBusAnnotationInfo, 0)
+	}
+	return &v
+}
+
+func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDBusPropertyInfo)(unsafe.Pointer(b))
+
+	return wrapDBusPropertyInfo(c)
 }
 
 // DBusSignalInfo: information about a signal on a D-Bus interface.
@@ -3454,6 +3622,26 @@ type DBusSignalInfo struct {
 	Annotations []*DBusAnnotationInfo
 }
 
+func wrapDBusSignalInfo(p *C.GDBusSignalInfo) *DBusSignalInfo {
+	var v DBusSignalInfo
+	v.RefCount = int(p.ref_count)
+	v.Name = C.GoString(p.name)
+	{
+		a := make([]*DBusArgInfo, 0)
+	}
+	{
+		a := make([]*DBusAnnotationInfo, 0)
+	}
+	return &v
+}
+
+func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDBusSignalInfo)(unsafe.Pointer(b))
+
+	return wrapDBusSignalInfo(c)
+}
+
 // DBusSubtreeVTable: virtual table for handling subtrees registered with
 // g_dbus_connection_register_subtree().
 type DBusSubtreeVTable struct {
@@ -3467,6 +3655,19 @@ type DBusSubtreeVTable struct {
 	native *C.GDBusSubtreeVTable
 }
 
+func wrapDBusSubtreeVTable(p *C.GDBusSubtreeVTable) *DBusSubtreeVTable {
+	v := DBusSubtreeVTable{native: p}
+
+	return &v
+}
+
+func marshalDBusSubtreeVTable(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDBusSubtreeVTable)(unsafe.Pointer(b))
+
+	return wrapDBusSubtreeVTable(c)
+}
+
 // FileAttributeInfo: information about a specific attribute.
 type FileAttributeInfo struct {
 	// Name: the name of the attribute.
@@ -3475,6 +3676,21 @@ type FileAttributeInfo struct {
 	Type FileAttributeType
 	// Flags: a set of AttributeInfoFlags.
 	Flags FileAttributeInfoFlags
+}
+
+func wrapFileAttributeInfo(p *C.GFileAttributeInfo) *FileAttributeInfo {
+	var v FileAttributeInfo
+	v.Name = C.GoString(p.name)
+	v.Type = FileAttributeType(p._type)
+	v.Flags = FileAttributeInfoFlags(p.flags)
+	return &v
+}
+
+func marshalFileAttributeInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GFileAttributeInfo)(unsafe.Pointer(b))
+
+	return wrapFileAttributeInfo(c)
 }
 
 // FileAttributeInfoList: acts as a lightweight registry for possible valid file
@@ -3486,9 +3702,35 @@ type FileAttributeInfoList struct {
 	NInfos int
 }
 
+func wrapFileAttributeInfoList(p *C.GFileAttributeInfoList) *FileAttributeInfoList {
+	var v FileAttributeInfoList
+
+	v.NInfos = int(p.n_infos)
+	return &v
+}
+
+func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GFileAttributeInfoList)(unsafe.Pointer(b))
+
+	return wrapFileAttributeInfoList(c)
+}
+
 // FileAttributeMatcher: determines if a string matches a file attribute.
 type FileAttributeMatcher struct {
 	native *C.GFileAttributeMatcher
+}
+
+func wrapFileAttributeMatcher(p *C.GFileAttributeMatcher) *FileAttributeMatcher {
+	v := FileAttributeMatcher{native: p}
+	return &v
+}
+
+func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GFileAttributeMatcher)(unsafe.Pointer(b))
+
+	return wrapFileAttributeMatcher(c)
 }
 
 // InputMessage: structure used for scatter/gather data input when receiving
@@ -3530,6 +3772,29 @@ type InputMessage struct {
 	NumControlMessages *uint
 }
 
+func wrapInputMessage(p *C.GInputMessage) *InputMessage {
+	var v InputMessage
+
+	{
+		a := make([]InputVector, 2)
+	}
+	v.NumVectors = uint(p.num_vectors)
+	v.BytesReceived = uint(p.bytes_received)
+	v.Flags = int(p.flags)
+	{
+		a := make([]**SocketControlMessage, 6)
+	}
+	v.NumControlMessages = uint(p.num_control_messages)
+	return &v
+}
+
+func marshalInputMessage(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GInputMessage)(unsafe.Pointer(b))
+
+	return wrapInputMessage(c)
+}
+
 // InputVector: structure used for scatter/gather data input. You generally pass
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
@@ -3538,6 +3803,20 @@ type InputVector struct {
 	Buffer unsafe.Pointer
 	// Size: the available size in @buffer.
 	Size uint
+}
+
+func wrapInputVector(p *C.GInputVector) *InputVector {
+	var v InputVector
+	v.Buffer = unsafe.Pointer(p.buffer)
+	v.Size = uint(p.size)
+	return &v
+}
+
+func marshalInputVector(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GInputVector)(unsafe.Pointer(b))
+
+	return wrapInputVector(c)
 }
 
 // OutputMessage: structure used for scatter/gather data output when sending
@@ -3563,6 +3842,25 @@ type OutputMessage struct {
 	NumControlMessages uint
 }
 
+func wrapOutputMessage(p *C.GOutputMessage) *OutputMessage {
+	var v OutputMessage
+
+	v.NumVectors = uint(p.num_vectors)
+	v.BytesSent = uint(p.bytes_sent)
+	{
+		a := make([]*SocketControlMessage, 5)
+	}
+	v.NumControlMessages = uint(p.num_control_messages)
+	return &v
+}
+
+func marshalOutputMessage(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GOutputMessage)(unsafe.Pointer(b))
+
+	return wrapOutputMessage(c)
+}
+
 // OutputVector: structure used for scatter/gather data output. You generally
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
@@ -3571,6 +3869,20 @@ type OutputVector struct {
 	Buffer unsafe.Pointer
 	// Size: the size of @buffer.
 	Size uint
+}
+
+func wrapOutputVector(p *C.GOutputVector) *OutputVector {
+	var v OutputVector
+	v.Buffer = unsafe.Pointer(p.buffer)
+	v.Size = uint(p.size)
+	return &v
+}
+
+func marshalOutputVector(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GOutputVector)(unsafe.Pointer(b))
+
+	return wrapOutputVector(c)
 }
 
 // Resource: applications and libraries often contain binary or textual data
@@ -3719,6 +4031,18 @@ type Resource struct {
 	native *C.GResource
 }
 
+func wrapResource(p *C.GResource) *Resource {
+	v := Resource{native: p}
+	return &v
+}
+
+func marshalResource(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GResource)(unsafe.Pointer(b))
+
+	return wrapResource(c)
+}
+
 // SettingsSchema: the SchemaSource and Schema APIs provide a mechanism for
 // advanced control over the loading of schemas and a mechanism for
 // introspecting their content.
@@ -3807,16 +4131,52 @@ type SettingsSchema struct {
 	native *C.GSettingsSchema
 }
 
+func wrapSettingsSchema(p *C.GSettingsSchema) *SettingsSchema {
+	v := SettingsSchema{native: p}
+	return &v
+}
+
+func marshalSettingsSchema(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GSettingsSchema)(unsafe.Pointer(b))
+
+	return wrapSettingsSchema(c)
+}
+
 // SettingsSchemaKey: GSettingsSchemaKey is an opaque data structure and can
 // only be accessed using the following functions.
 type SettingsSchemaKey struct {
 	native *C.GSettingsSchemaKey
 }
 
+func wrapSettingsSchemaKey(p *C.GSettingsSchemaKey) *SettingsSchemaKey {
+	v := SettingsSchemaKey{native: p}
+	return &v
+}
+
+func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GSettingsSchemaKey)(unsafe.Pointer(b))
+
+	return wrapSettingsSchemaKey(c)
+}
+
 // SettingsSchemaSource: this is an opaque structure type. You may not access it
 // directly.
 type SettingsSchemaSource struct {
 	native *C.GSettingsSchemaSource
+}
+
+func wrapSettingsSchemaSource(p *C.GSettingsSchemaSource) *SettingsSchemaSource {
+	v := SettingsSchemaSource{native: p}
+	return &v
+}
+
+func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GSettingsSchemaSource)(unsafe.Pointer(b))
+
+	return wrapSettingsSchemaSource(c)
 }
 
 // SrvTarget: SRV (service) records are used by some network protocols to
@@ -3835,10 +4195,34 @@ type SrvTarget struct {
 	native *C.GSrvTarget
 }
 
+func wrapSrvTarget(p *C.GSrvTarget) *SrvTarget {
+	v := SrvTarget{native: p}
+	return &v
+}
+
+func marshalSrvTarget(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GSrvTarget)(unsafe.Pointer(b))
+
+	return wrapSrvTarget(c)
+}
+
 // StaticResource: GStaticResource is an opaque data structure and can only be
 // accessed using the following functions.
 type StaticResource struct {
 	native *C.GStaticResource
+}
+
+func wrapStaticResource(p *C.GStaticResource) *StaticResource {
+	v := StaticResource{native: p}
+	return &v
+}
+
+func marshalStaticResource(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GStaticResource)(unsafe.Pointer(b))
+
+	return wrapStaticResource(c)
 }
 
 // UnixMountEntry: defines a Unix mount entry (e.g.
@@ -3847,8 +4231,32 @@ type UnixMountEntry struct {
 	native *C.GUnixMountEntry
 }
 
+func wrapUnixMountEntry(p *C.GUnixMountEntry) *UnixMountEntry {
+	v := UnixMountEntry{native: p}
+	return &v
+}
+
+func marshalUnixMountEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GUnixMountEntry)(unsafe.Pointer(b))
+
+	return wrapUnixMountEntry(c)
+}
+
 // UnixMountPoint: defines a Unix mount point (e.g. <filename>/dev</filename>).
 // This corresponds roughly to a fstab entry.
 type UnixMountPoint struct {
 	native *C.GUnixMountPoint
+}
+
+func wrapUnixMountPoint(p *C.GUnixMountPoint) *UnixMountPoint {
+	v := UnixMountPoint{native: p}
+	return &v
+}
+
+func marshalUnixMountPoint(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GUnixMountPoint)(unsafe.Pointer(b))
+
+	return wrapUnixMountPoint(c)
 }

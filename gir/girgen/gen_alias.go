@@ -15,7 +15,7 @@ type aliasData struct {
 
 func (ng *NamespaceGenerator) generateAliases() {
 	for _, alias := range ng.current.Namespace.Aliases {
-		resolved := ng.resolveType(alias.Type)
+		resolved := ng.ResolveType(alias.Type)
 		if resolved == nil {
 			continue
 		}

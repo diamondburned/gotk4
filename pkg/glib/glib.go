@@ -7780,6 +7780,20 @@ type Array struct {
 	Len uint
 }
 
+func wrapArray(p *C.GArray) *Array {
+	var v Array
+	v.Data = C.GoString(p.data)
+	v.Len = uint(p.len)
+	return &v
+}
+
+func marshalArray(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GArray)(unsafe.Pointer(b))
+
+	return wrapArray(c)
+}
+
 // ByteArray: contains the public fields of a GByteArray.
 type ByteArray struct {
 	// Data: a pointer to the element data. The data may be moved as elements
@@ -7787,6 +7801,20 @@ type ByteArray struct {
 	Data *uint8
 	// Len: the number of elements in the Array
 	Len uint
+}
+
+func wrapByteArray(p *C.GByteArray) *ByteArray {
+	var v ByteArray
+	v.Data = uint8(p.data)
+	v.Len = uint(p.len)
+	return &v
+}
+
+func marshalByteArray(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GByteArray)(unsafe.Pointer(b))
+
+	return wrapByteArray(c)
 }
 
 // Bytes: a simple refcounted data type representing an immutable sequence of
@@ -7816,11 +7844,35 @@ type Bytes struct {
 	native *C.GBytes
 }
 
+func wrapBytes(p *C.GBytes) *Bytes {
+	v := Bytes{native: p}
+	return &v
+}
+
+func marshalBytes(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GBytes)(unsafe.Pointer(b))
+
+	return wrapBytes(c)
+}
+
 // Checksum: an opaque structure representing a checksumming operation. To
 // create a new GChecksum, use g_checksum_new(). To free a GChecksum, use
 // g_checksum_free().
 type Checksum struct {
 	native *C.GChecksum
+}
+
+func wrapChecksum(p *C.GChecksum) *Checksum {
+	v := Checksum{native: p}
+	return &v
+}
+
+func marshalChecksum(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GChecksum)(unsafe.Pointer(b))
+
+	return wrapChecksum(c)
 }
 
 // Cond: the #GCond struct is an opaque data structure that represents a
@@ -7871,6 +7923,18 @@ type Cond struct {
 	native *C.GCond
 }
 
+func wrapCond(p *C.GCond) *Cond {
+	v := Cond{native: p}
+	return &v
+}
+
+func marshalCond(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GCond)(unsafe.Pointer(b))
+
+	return wrapCond(c)
+}
+
 // Date: represents a day between January 1, Year 1 and a few thousand years in
 // the future. None of its members should be accessed directly.
 //
@@ -7898,10 +7962,40 @@ type Date struct {
 	Year uint
 }
 
+func wrapDate(p *C.GDate) *Date {
+	var v Date
+	v.JulianDays = uint(p.julian_days)
+	v.Julian = uint(p.julian)
+	v.DMY = uint(p.dmy)
+	v.Day = uint(p.day)
+	v.Month = uint(p.month)
+	v.Year = uint(p.year)
+	return &v
+}
+
+func marshalDate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDate)(unsafe.Pointer(b))
+
+	return wrapDate(c)
+}
+
 // DateTime: `GDateTime` is an opaque structure whose members cannot be accessed
 // directly.
 type DateTime struct {
 	native *C.GDateTime
+}
+
+func wrapDateTime(p *C.GDateTime) *DateTime {
+	v := DateTime{native: p}
+	return &v
+}
+
+func marshalDateTime(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDateTime)(unsafe.Pointer(b))
+
+	return wrapDateTime(c)
 }
 
 // DebugKey: associates a string with a bit flag. Used in
@@ -7911,6 +8005,20 @@ type DebugKey struct {
 	Key string
 	// Value: the flag
 	Value uint
+}
+
+func wrapDebugKey(p *C.GDebugKey) *DebugKey {
+	var v DebugKey
+	v.Key = C.GoString(p.key)
+	v.Value = uint(p.value)
+	return &v
+}
+
+func marshalDebugKey(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GDebugKey)(unsafe.Pointer(b))
+
+	return wrapDebugKey(c)
 }
 
 // Error: the `GError` structure contains information about an error that has
@@ -7924,11 +8032,38 @@ type Error struct {
 	Message string
 }
 
+func wrapError(p *C.GError) *Error {
+	var v Error
+
+	v.Code = int(p.code)
+	v.Message = C.GoString(p.message)
+	return &v
+}
+
+func marshalError(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GError)(unsafe.Pointer(b))
+
+	return wrapError(c)
+}
+
 // HashTable: the Table struct is an opaque data structure to represent a [Hash
 // Table][glib-Hash-Tables]. It should only be accessed via the following
 // functions.
 type HashTable struct {
 	native *C.GHashTable
+}
+
+func wrapHashTable(p *C.GHashTable) *HashTable {
+	v := HashTable{native: p}
+	return &v
+}
+
+func marshalHashTable(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GHashTable)(unsafe.Pointer(b))
+
+	return wrapHashTable(c)
 }
 
 // HashTableIter: a GHashTableIter structure represents an iterator that can be
@@ -7940,6 +8075,18 @@ type HashTable struct {
 // not defined.
 type HashTableIter struct {
 	native *C.GHashTableIter
+}
+
+func wrapHashTableIter(p *C.GHashTableIter) *HashTableIter {
+	v := HashTableIter{native: p}
+	return &v
+}
+
+func marshalHashTableIter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GHashTableIter)(unsafe.Pointer(b))
+
+	return wrapHashTableIter(c)
 }
 
 // Hook: the #GHook struct represents a single hook function in a List.
@@ -7962,6 +8109,24 @@ type Hook struct {
 	Func unsafe.Pointer
 }
 
+func wrapHook(p *C.GHook) *Hook {
+	var v Hook
+	v.Data = unsafe.Pointer(p.data)
+
+	v.RefCount = uint(p.ref_count)
+	v.HookID = uint32(p.hook_id)
+	v.Flags = uint(p.flags)
+	v.Func = unsafe.Pointer(p._func)
+	return &v
+}
+
+func marshalHook(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GHook)(unsafe.Pointer(b))
+
+	return wrapHook(c)
+}
+
 // HookList: the List struct represents a list of hook functions.
 type HookList struct {
 	// SeqID: the next free #GHook id
@@ -7981,10 +8146,43 @@ type HookList struct {
 	Dummy [2]unsafe.Pointer
 }
 
+func wrapHookList(p *C.GHookList) *HookList {
+	var v HookList
+	v.SeqID = uint32(p.seq_id)
+	v.HookSize = uint(p.hook_size)
+	v.IsSetup = uint(p.is_setup)
+
+	v.Dummy3 = unsafe.Pointer(p.dummy3)
+
+	{
+		var a [2]unsafe.Pointer
+	}
+	return &v
+}
+
+func marshalHookList(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GHookList)(unsafe.Pointer(b))
+
+	return wrapHookList(c)
+}
+
 // IOChannel: a data structure representing an IO Channel. The fields should be
 // considered private and should only be accessed with the following functions.
 type IOChannel struct {
 	native *C.GIOChannel
+}
+
+func wrapIOChannel(p *C.GIOChannel) *IOChannel {
+	v := IOChannel{native: p}
+	return &v
+}
+
+func marshalIOChannel(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GIOChannel)(unsafe.Pointer(b))
+
+	return wrapIOChannel(c)
 }
 
 // IOFuncs: a table of functions used to handle different types of OChannel in a
@@ -7992,10 +8190,34 @@ type IOChannel struct {
 type IOFuncs struct {
 }
 
+func wrapIOFuncs(p *C.GIOFuncs) *IOFuncs {
+	var v IOFuncs
+	return &v
+}
+
+func marshalIOFuncs(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GIOFuncs)(unsafe.Pointer(b))
+
+	return wrapIOFuncs(c)
+}
+
 // KeyFile: the GKeyFile struct contains only private data and should not be
 // accessed directly.
 type KeyFile struct {
 	native *C.GKeyFile
+}
+
+func wrapKeyFile(p *C.GKeyFile) *KeyFile {
+	v := KeyFile{native: p}
+	return &v
+}
+
+func marshalKeyFile(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GKeyFile)(unsafe.Pointer(b))
+
+	return wrapKeyFile(c)
 }
 
 // List: the #GList struct is used for each element in a doubly-linked list.
@@ -8008,6 +8230,20 @@ type List struct {
 	Next *glib.List
 	// Prev: contains the link to the previous element in the list
 	Prev *glib.List
+}
+
+func wrapList(p *C.GList) *List {
+	var v List
+	v.Data = unsafe.Pointer(p.data)
+
+	return &v
+}
+
+func marshalList(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GList)(unsafe.Pointer(b))
+
+	return wrapList(c)
 }
 
 // LogField: structure representing a single field in a structured log entry.
@@ -8026,16 +8262,55 @@ type LogField struct {
 	Length int
 }
 
+func wrapLogField(p *C.GLogField) *LogField {
+	var v LogField
+	v.Key = C.GoString(p.key)
+	v.Value = unsafe.Pointer(p.value)
+	v.Length = int(p.length)
+	return &v
+}
+
+func marshalLogField(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GLogField)(unsafe.Pointer(b))
+
+	return wrapLogField(c)
+}
+
 // MainContext: the `GMainContext` struct is an opaque data type representing a
 // set of sources to be handled in a main loop.
 type MainContext struct {
 	native *C.GMainContext
 }
 
+func wrapMainContext(p *C.GMainContext) *MainContext {
+	v := MainContext{native: p}
+	return &v
+}
+
+func marshalMainContext(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GMainContext)(unsafe.Pointer(b))
+
+	return wrapMainContext(c)
+}
+
 // MainLoop: the `GMainLoop` struct is an opaque data type representing the main
 // event loop of a GLib or GTK+ application.
 type MainLoop struct {
 	native *C.GMainLoop
+}
+
+func wrapMainLoop(p *C.GMainLoop) *MainLoop {
+	v := MainLoop{native: p}
+	return &v
+}
+
+func marshalMainLoop(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GMainLoop)(unsafe.Pointer(b))
+
+	return wrapMainLoop(c)
 }
 
 // MappedFile: the File represents a file mapping created with
@@ -8045,12 +8320,36 @@ type MappedFile struct {
 	native *C.GMappedFile
 }
 
+func wrapMappedFile(p *C.GMappedFile) *MappedFile {
+	v := MappedFile{native: p}
+	return &v
+}
+
+func marshalMappedFile(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GMappedFile)(unsafe.Pointer(b))
+
+	return wrapMappedFile(c)
+}
+
 // MarkupParseContext: a parse context is used to parse a stream of bytes that
 // you expect to contain marked-up text.
 //
 // See g_markup_parse_context_new(), Parser, and so on for more details.
 type MarkupParseContext struct {
 	native *C.GMarkupParseContext
+}
+
+func wrapMarkupParseContext(p *C.GMarkupParseContext) *MarkupParseContext {
+	v := MarkupParseContext{native: p}
+	return &v
+}
+
+func marshalMarkupParseContext(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GMarkupParseContext)(unsafe.Pointer(b))
+
+	return wrapMarkupParseContext(c)
 }
 
 // MarkupParser: any of the fields in Parser can be nil, in which case they will
@@ -8063,10 +8362,34 @@ type MarkupParseContext struct {
 type MarkupParser struct {
 }
 
+func wrapMarkupParser(p *C.GMarkupParser) *MarkupParser {
+	var v MarkupParser
+	return &v
+}
+
+func marshalMarkupParser(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GMarkupParser)(unsafe.Pointer(b))
+
+	return wrapMarkupParser(c)
+}
+
 // MatchInfo: a GMatchInfo is an opaque struct used to return information about
 // matches.
 type MatchInfo struct {
 	native *C.GMatchInfo
+}
+
+func wrapMatchInfo(p *C.GMatchInfo) *MatchInfo {
+	v := MatchInfo{native: p}
+	return &v
+}
+
+func marshalMatchInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GMatchInfo)(unsafe.Pointer(b))
+
+	return wrapMatchInfo(c)
 }
 
 // MemVTable: a set of functions used to perform memory allocation. The same
@@ -8076,6 +8399,18 @@ type MatchInfo struct {
 // This functions related to this has been deprecated in 2.46, and no longer
 // work.
 type MemVTable struct {
+}
+
+func wrapMemVTable(p *C.GMemVTable) *MemVTable {
+	var v MemVTable
+	return &v
+}
+
+func marshalMemVTable(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GMemVTable)(unsafe.Pointer(b))
+
+	return wrapMemVTable(c)
 }
 
 // Node: the #GNode struct represents one node in a [n-ary
@@ -8096,6 +8431,20 @@ type Node struct {
 	Children *Node
 }
 
+func wrapNode(p *C.GNode) *Node {
+	var v Node
+	v.Data = unsafe.Pointer(p.data)
+
+	return &v
+}
+
+func marshalNode(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GNode)(unsafe.Pointer(b))
+
+	return wrapNode(c)
+}
+
 // Once: a #GOnce struct controls a one-time initialization function. Any
 // one-time initialization function must have its own unique #GOnce struct.
 type Once struct {
@@ -8104,6 +8453,20 @@ type Once struct {
 	// Retval: the value returned by the call to the function, if @status is
 	// G_ONCE_STATUS_READY
 	Retval unsafe.Pointer
+}
+
+func wrapOnce(p *C.GOnce) *Once {
+	var v Once
+	v.Status = OnceStatus(p.status)
+	v.Retval = unsafe.Pointer(p.retval)
+	return &v
+}
+
+func marshalOnce(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GOnce)(unsafe.Pointer(b))
+
+	return wrapOnce(c)
 }
 
 // OptionEntry: a GOptionEntry struct defines a single option. To have an
@@ -8147,6 +8510,25 @@ type OptionEntry struct {
 	ArgDescription string
 }
 
+func wrapOptionEntry(p *C.GOptionEntry) *OptionEntry {
+	var v OptionEntry
+	v.LongName = C.GoString(p.long_name)
+	v.ShortName = byte(p.short_name)
+	v.Flags = int(p.flags)
+	v.Arg = OptionArg(p.arg)
+	v.ArgData = unsafe.Pointer(p.arg_data)
+	v.Description = C.GoString(p.description)
+	v.ArgDescription = C.GoString(p.arg_description)
+	return &v
+}
+
+func marshalOptionEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GOptionEntry)(unsafe.Pointer(b))
+
+	return wrapOptionEntry(c)
+}
+
 // OptionGroup: a `GOptionGroup` struct defines the options in a single group.
 // The struct has only private fields and should not be directly accessed.
 //
@@ -8156,6 +8538,18 @@ type OptionEntry struct {
 // then add to its Context.
 type OptionGroup struct {
 	native *C.GOptionGroup
+}
+
+func wrapOptionGroup(p *C.GOptionGroup) *OptionGroup {
+	v := OptionGroup{native: p}
+	return &v
+}
+
+func marshalOptionGroup(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GOptionGroup)(unsafe.Pointer(b))
+
+	return wrapOptionGroup(c)
 }
 
 // PollFD: represents a file descriptor, which events to poll for, and which
@@ -8171,6 +8565,21 @@ type PollFD struct {
 	// Revents: a bitwise combination of flags from OCondition, returned from
 	// the poll() function to indicate which events occurred.
 	Revents uint16
+}
+
+func wrapPollFD(p *C.GPollFD) *PollFD {
+	var v PollFD
+	v.Fd = int(p.fd)
+	v.Events = uint16(p.events)
+	v.Revents = uint16(p.revents)
+	return &v
+}
+
+func marshalPollFD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GPollFD)(unsafe.Pointer(b))
+
+	return wrapPollFD(c)
 }
 
 // Private: the #GPrivate struct is an opaque data structure to represent a
@@ -8194,6 +8603,18 @@ type Private struct {
 	native *C.GPrivate
 }
 
+func wrapPrivate(p *C.GPrivate) *Private {
+	v := Private{native: p}
+	return &v
+}
+
+func marshalPrivate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GPrivate)(unsafe.Pointer(b))
+
+	return wrapPrivate(c)
+}
+
 // PtrArray: contains the public fields of a pointer array.
 type PtrArray struct {
 	// Pdata: points to the array of pointers, which may be moved when the array
@@ -8201,6 +8622,20 @@ type PtrArray struct {
 	Pdata *unsafe.Pointer
 	// Len: number of pointers in the array
 	Len uint
+}
+
+func wrapPtrArray(p *C.GPtrArray) *PtrArray {
+	var v PtrArray
+	v.Pdata = unsafe.Pointer(p.pdata)
+	v.Len = uint(p.len)
+	return &v
+}
+
+func marshalPtrArray(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GPtrArray)(unsafe.Pointer(b))
+
+	return wrapPtrArray(c)
 }
 
 // Queue: contains the public fields of a [Queue][glib-Double-ended-Queues].
@@ -8211,6 +8646,20 @@ type Queue struct {
 	Tail *glib.List
 	// Length: the number of elements in the queue
 	Length uint
+}
+
+func wrapQueue(p *C.GQueue) *Queue {
+	var v Queue
+
+	v.Length = uint(p.length)
+	return &v
+}
+
+func marshalQueue(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GQueue)(unsafe.Pointer(b))
+
+	return wrapQueue(c)
 }
 
 // RWLock: the GRWLock struct is an opaque data structure to represent a
@@ -8263,6 +8712,18 @@ type RWLock struct {
 	native *C.GRWLock
 }
 
+func wrapRWLock(p *C.GRWLock) *RWLock {
+	v := RWLock{native: p}
+	return &v
+}
+
+func marshalRWLock(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GRWLock)(unsafe.Pointer(b))
+
+	return wrapRWLock(c)
+}
+
 // RecMutex: the GRecMutex struct is an opaque data structure to represent a
 // recursive mutex. It is similar to a #GMutex with the difference that it is
 // possible to lock a GRecMutex multiple times in the same thread without
@@ -8276,6 +8737,18 @@ type RWLock struct {
 // A GRecMutex should only be accessed with the g_rec_mutex_ functions.
 type RecMutex struct {
 	native *C.GRecMutex
+}
+
+func wrapRecMutex(p *C.GRecMutex) *RecMutex {
+	v := RecMutex{native: p}
+	return &v
+}
+
+func marshalRecMutex(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GRecMutex)(unsafe.Pointer(b))
+
+	return wrapRecMutex(c)
 }
 
 // Regex: the g_regex_*() functions implement regular expression pattern
@@ -8340,6 +8813,18 @@ type Regex struct {
 	native *C.GRegex
 }
 
+func wrapRegex(p *C.GRegex) *Regex {
+	v := Regex{native: p}
+	return &v
+}
+
+func marshalRegex(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GRegex)(unsafe.Pointer(b))
+
+	return wrapRegex(c)
+}
+
 // SList: the List struct is used for each element in the singly-linked list.
 type SList struct {
 	// Data: holds the element's data, which can be a pointer to any kind of
@@ -8348,6 +8833,20 @@ type SList struct {
 	Data unsafe.Pointer
 	// Next: contains the link to the next element in the list.
 	Next *glib.SList
+}
+
+func wrapSList(p *C.GSList) *SList {
+	var v SList
+	v.Data = unsafe.Pointer(p.data)
+
+	return &v
+}
+
+func marshalSList(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GSList)(unsafe.Pointer(b))
+
+	return wrapSList(c)
 }
 
 // Scanner: the data structure representing a lexical scanner.
@@ -8391,11 +8890,36 @@ type Scanner struct {
 	// NextPosition: char number of the last token from
 	// g_scanner_peek_next_token()
 	NextPosition uint
-
 	// MsgHandler: handler function for _warn and _error
 	MsgHandler ScannerMsgFunc
 
 	native *C.GScanner
+}
+
+func wrapScanner(p *C.GScanner) *Scanner {
+	v := Scanner{native: p}
+	v.UserData = unsafe.Pointer(p.user_data)
+	v.MaxParseErrors = uint(p.max_parse_errors)
+	v.ParseErrors = uint(p.parse_errors)
+	v.InputName = C.GoString(p.input_name)
+
+	v.Token = TokenType(p.token)
+
+	v.Line = uint(p.line)
+	v.Position = uint(p.position)
+	v.NextToken = TokenType(p.next_token)
+
+	v.NextLine = uint(p.next_line)
+	v.NextPosition = uint(p.next_position)
+
+	return &v
+}
+
+func marshalScanner(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GScanner)(unsafe.Pointer(b))
+
+	return wrapScanner(c)
 }
 
 // ScannerConfig: specifies the #GScanner parser configuration. Most settings
@@ -8485,15 +9009,77 @@ type ScannerConfig struct {
 	native *C.GScannerConfig
 }
 
+func wrapScannerConfig(p *C.GScannerConfig) *ScannerConfig {
+	v := ScannerConfig{native: p}
+	v.CsetSkipCharacters = C.GoString(p.cset_skip_characters)
+	v.CsetIdentifierFirst = C.GoString(p.cset_identifier_first)
+	v.CsetIdentifierNth = C.GoString(p.cset_identifier_nth)
+	v.CpairCommentSingle = C.GoString(p.cpair_comment_single)
+	v.CaseSensitive = uint(p.case_sensitive)
+	v.SkipCommentMulti = uint(p.skip_comment_multi)
+	v.SkipCommentSingle = uint(p.skip_comment_single)
+	v.ScanCommentMulti = uint(p.scan_comment_multi)
+	v.ScanIdentifier = uint(p.scan_identifier)
+	v.ScanIdentifier1Char = uint(p.scan_identifier_1char)
+	v.ScanIdentifierNULL = uint(p.scan_identifier_NULL)
+	v.ScanSymbols = uint(p.scan_symbols)
+	v.ScanBinary = uint(p.scan_binary)
+	v.ScanOctal = uint(p.scan_octal)
+	v.ScanFloat = uint(p.scan_float)
+	v.ScanHex = uint(p.scan_hex)
+	v.ScanHexDollar = uint(p.scan_hex_dollar)
+	v.ScanStringSq = uint(p.scan_string_sq)
+	v.ScanStringDq = uint(p.scan_string_dq)
+	v.Numbers2Int = uint(p.numbers_2_int)
+	v.Int2Float = uint(p.int_2_float)
+	v.Identifier2String = uint(p.identifier_2_string)
+	v.Char2Token = uint(p.char_2_token)
+	v.Symbol2Token = uint(p.symbol_2_token)
+	v.Scope0Fallback = uint(p.scope_0_fallback)
+	v.StoreInt64 = uint(p.store_int64)
+	return &v
+}
+
+func marshalScannerConfig(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GScannerConfig)(unsafe.Pointer(b))
+
+	return wrapScannerConfig(c)
+}
+
 // Source: the `GSource` struct is an opaque data type representing an event
 // source.
 type Source struct {
 	native *C.GSource
 }
 
+func wrapSource(p *C.GSource) *Source {
+	v := Source{native: p}
+	return &v
+}
+
+func marshalSource(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GSource)(unsafe.Pointer(b))
+
+	return wrapSource(c)
+}
+
 // SourceCallbackFuncs: the `GSourceCallbackFuncs` struct contains functions for
 // managing callback objects.
 type SourceCallbackFuncs struct {
+}
+
+func wrapSourceCallbackFuncs(p *C.GSourceCallbackFuncs) *SourceCallbackFuncs {
+	var v SourceCallbackFuncs
+	return &v
+}
+
+func marshalSourceCallbackFuncs(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GSourceCallbackFuncs)(unsafe.Pointer(b))
+
+	return wrapSourceCallbackFuncs(c)
 }
 
 // SourceFuncs: the `GSourceFuncs` struct contains a table of functions used to
@@ -8520,6 +9106,18 @@ type SourceFuncs struct {
 	native *C.GSourceFuncs
 }
 
+func wrapSourceFuncs(p *C.GSourceFuncs) *SourceFuncs {
+	v := SourceFuncs{native: p}
+	return &v
+}
+
+func marshalSourceFuncs(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GSourceFuncs)(unsafe.Pointer(b))
+
+	return wrapSourceFuncs(c)
+}
+
 // String: the GString struct contains the public fields of a GString.
 type String struct {
 	// Str: points to the character data. It may move as text is added. The @str
@@ -8531,6 +9129,21 @@ type String struct {
 	// AllocatedLen: the number of bytes that can be stored in the string before
 	// it needs to be reallocated. May be larger than @len.
 	AllocatedLen uint
+}
+
+func wrapString(p *C.GString) *String {
+	var v String
+	v.Str = C.GoString(p.str)
+	v.Len = uint(p.len)
+	v.AllocatedLen = uint(p.allocated_len)
+	return &v
+}
+
+func marshalString(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GString)(unsafe.Pointer(b))
+
+	return wrapString(c)
 }
 
 type TestConfig struct {
@@ -8547,8 +9160,38 @@ type TestConfig struct {
 	TestUndefined bool
 }
 
+func wrapTestConfig(p *C.GTestConfig) *TestConfig {
+	var v TestConfig
+	v.TestInitialized = bool(p.test_initialized)
+	v.TestQuick = bool(p.test_quick)
+	v.TestPerf = bool(p.test_perf)
+	v.TestVerbose = bool(p.test_verbose)
+	v.TestQuiet = bool(p.test_quiet)
+	v.TestUndefined = bool(p.test_undefined)
+	return &v
+}
+
+func marshalTestConfig(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GTestConfig)(unsafe.Pointer(b))
+
+	return wrapTestConfig(c)
+}
+
 type TestLogBuffer struct {
 	native *C.GTestLogBuffer
+}
+
+func wrapTestLogBuffer(p *C.GTestLogBuffer) *TestLogBuffer {
+	v := TestLogBuffer{native: p}
+	return &v
+}
+
+func marshalTestLogBuffer(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GTestLogBuffer)(unsafe.Pointer(b))
+
+	return wrapTestLogBuffer(c)
 }
 
 type TestLogMsg struct {
@@ -8561,6 +9204,23 @@ type TestLogMsg struct {
 	NNums uint
 
 	Nums *float64
+}
+
+func wrapTestLogMsg(p *C.GTestLogMsg) *TestLogMsg {
+	var v TestLogMsg
+	v.LogType = TestLogType(p.log_type)
+	v.NStrings = uint(p.n_strings)
+	v.Strings = C.GoString(p.strings)
+	v.NNums = uint(p.n_nums)
+	v.Nums = float64(p.nums)
+	return &v
+}
+
+func marshalTestLogMsg(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GTestLogMsg)(unsafe.Pointer(b))
+
+	return wrapTestLogMsg(c)
 }
 
 // Thread: the #GThread struct represents a running thread. This struct is
@@ -8577,6 +9237,18 @@ type Thread struct {
 	native *C.GThread
 }
 
+func wrapThread(p *C.GThread) *Thread {
+	v := Thread{native: p}
+	return &v
+}
+
+func marshalThread(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GThread)(unsafe.Pointer(b))
+
+	return wrapThread(c)
+}
+
 // ThreadPool: the Pool struct represents a thread pool. It has three public
 // read-only members, but the underlying struct is bigger, so you must not copy
 // this struct.
@@ -8587,6 +9259,21 @@ type ThreadPool struct {
 	UserData unsafe.Pointer
 	// Exclusive: are all threads exclusive to this pool
 	Exclusive bool
+}
+
+func wrapThreadPool(p *C.GThreadPool) *ThreadPool {
+	var v ThreadPool
+
+	v.UserData = unsafe.Pointer(p.user_data)
+	v.Exclusive = bool(p.exclusive)
+	return &v
+}
+
+func marshalThreadPool(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GThreadPool)(unsafe.Pointer(b))
+
+	return wrapThreadPool(c)
 }
 
 // TimeVal: represents a precise time, with seconds and microseconds. Similar to
@@ -8603,10 +9290,36 @@ type TimeVal struct {
 	TvUsec int32
 }
 
+func wrapTimeVal(p *C.GTimeVal) *TimeVal {
+	var v TimeVal
+	v.TvSec = int32(p.tv_sec)
+	v.TvUsec = int32(p.tv_usec)
+	return &v
+}
+
+func marshalTimeVal(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GTimeVal)(unsafe.Pointer(b))
+
+	return wrapTimeVal(c)
+}
+
 // TimeZone: GTimeZone is an opaque structure whose members cannot be accessed
 // directly.
 type TimeZone struct {
 	native *C.GTimeZone
+}
+
+func wrapTimeZone(p *C.GTimeZone) *TimeZone {
+	v := TimeZone{native: p}
+	return &v
+}
+
+func marshalTimeZone(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GTimeZone)(unsafe.Pointer(b))
+
+	return wrapTimeZone(c)
 }
 
 // TrashStack: each piece of memory that is pushed onto the stack is cast to a
@@ -8615,6 +9328,19 @@ type TrashStack struct {
 	// Next: pointer to the previous element of the stack, gets stored in the
 	// first `sizeof (gpointer)` bytes of the element
 	Next *TrashStack
+}
+
+func wrapTrashStack(p *C.GTrashStack) *TrashStack {
+	var v TrashStack
+
+	return &v
+}
+
+func marshalTrashStack(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GTrashStack)(unsafe.Pointer(b))
+
+	return wrapTrashStack(c)
 }
 
 // URI: the #GUri type and related functions can be used to parse URIs into
@@ -8726,6 +9452,18 @@ type URI struct {
 	native *C.GUri
 }
 
+func wrapURI(p *C.GUri) *URI {
+	v := URI{native: p}
+	return &v
+}
+
+func marshalURI(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GUri)(unsafe.Pointer(b))
+
+	return wrapURI(c)
+}
+
 // URIParamsIter: many URI schemes include one or more attribute/value pairs as
 // part of the URI value. For example
 // `scheme://server/path?query=string&is=there` has two attributes –
@@ -8738,6 +9476,18 @@ type URI struct {
 // for a usage example.
 type URIParamsIter struct {
 	native *C.GUriParamsIter
+}
+
+func wrapURIParamsIter(p *C.GUriParamsIter) *URIParamsIter {
+	v := URIParamsIter{native: p}
+	return &v
+}
+
+func marshalURIParamsIter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GUriParamsIter)(unsafe.Pointer(b))
+
+	return wrapURIParamsIter(c)
 }
 
 // Variant: GVariant is a variant datatype; it can contain one or more values
@@ -8969,6 +9719,18 @@ type Variant struct {
 	native *C.GVariant
 }
 
+func wrapVariant(p *C.GVariant) *Variant {
+	v := Variant{native: p}
+	return &v
+}
+
+func marshalVariant(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GVariant)(unsafe.Pointer(b))
+
+	return wrapVariant(c)
+}
+
 // VariantBuilder: a utility type for constructing container-type #GVariant
 // instances.
 //
@@ -8979,6 +9741,18 @@ type Variant struct {
 // than one thread.
 type VariantBuilder struct {
 	native *C.GVariantBuilder
+}
+
+func wrapVariantBuilder(p *C.GVariantBuilder) *VariantBuilder {
+	v := VariantBuilder{native: p}
+	return &v
+}
+
+func marshalVariantBuilder(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GVariantBuilder)(unsafe.Pointer(b))
+
+	return wrapVariantBuilder(c)
 }
 
 // VariantDict: GVariantDict is a mutable interface to #GVariant dictionaries.
@@ -9066,10 +9840,34 @@ type VariantDict struct {
 	native *C.GVariantDict
 }
 
+func wrapVariantDict(p *C.GVariantDict) *VariantDict {
+	v := VariantDict{native: p}
+	return &v
+}
+
+func marshalVariantDict(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GVariantDict)(unsafe.Pointer(b))
+
+	return wrapVariantDict(c)
+}
+
 // VariantIter: GVariantIter is an opaque data structure and can only be
 // accessed using the following functions.
 type VariantIter struct {
 	native *C.GVariantIter
+}
+
+func wrapVariantIter(p *C.GVariantIter) *VariantIter {
+	v := VariantIter{native: p}
+	return &v
+}
+
+func marshalVariantIter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GVariantIter)(unsafe.Pointer(b))
+
+	return wrapVariantIter(c)
 }
 
 // VariantType: this section introduces the GVariant type system. It is based,
@@ -9204,4 +10002,16 @@ type VariantIter struct {
 // string.
 type VariantType struct {
 	native *C.GVariantType
+}
+
+func wrapVariantType(p *C.GVariantType) *VariantType {
+	v := VariantType{native: p}
+	return &v
+}
+
+func marshalVariantType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GVariantType)(unsafe.Pointer(b))
+
+	return wrapVariantType(c)
 }

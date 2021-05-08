@@ -573,40 +573,160 @@ type Context struct {
 	native *C.cairo_t
 }
 
+func wrapContext(p *C.cairo_t) *Context {
+	v := Context{native: p}
+	return &v
+}
+
+func marshalContext(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_t)(unsafe.Pointer(b))
+
+	return wrapContext(c)
+}
+
 type Device struct {
 	native *C.cairo_device_t
+}
+
+func wrapDevice(p *C.cairo_device_t) *Device {
+	v := Device{native: p}
+	return &v
+}
+
+func marshalDevice(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_device_t)(unsafe.Pointer(b))
+
+	return wrapDevice(c)
 }
 
 type Surface struct {
 	native *C.cairo_surface_t
 }
 
+func wrapSurface(p *C.cairo_surface_t) *Surface {
+	v := Surface{native: p}
+	return &v
+}
+
+func marshalSurface(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_surface_t)(unsafe.Pointer(b))
+
+	return wrapSurface(c)
+}
+
 type Matrix struct {
 	native *C.cairo_matrix_t
+}
+
+func wrapMatrix(p *C.cairo_matrix_t) *Matrix {
+	v := Matrix{native: p}
+	return &v
+}
+
+func marshalMatrix(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_matrix_t)(unsafe.Pointer(b))
+
+	return wrapMatrix(c)
 }
 
 type Pattern struct {
 	native *C.cairo_pattern_t
 }
 
+func wrapPattern(p *C.cairo_pattern_t) *Pattern {
+	v := Pattern{native: p}
+	return &v
+}
+
+func marshalPattern(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_pattern_t)(unsafe.Pointer(b))
+
+	return wrapPattern(c)
+}
+
 type Region struct {
 	native *C.cairo_region_t
+}
+
+func wrapRegion(p *C.cairo_region_t) *Region {
+	v := Region{native: p}
+	return &v
+}
+
+func marshalRegion(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_region_t)(unsafe.Pointer(b))
+
+	return wrapRegion(c)
 }
 
 type FontOptions struct {
 	native *C.cairo_font_options_t
 }
 
+func wrapFontOptions(p *C.cairo_font_options_t) *FontOptions {
+	v := FontOptions{native: p}
+	return &v
+}
+
+func marshalFontOptions(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_font_options_t)(unsafe.Pointer(b))
+
+	return wrapFontOptions(c)
+}
+
 type FontFace struct {
 	native *C.cairo_font_face_t
+}
+
+func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
+	v := FontFace{native: p}
+	return &v
+}
+
+func marshalFontFace(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_font_face_t)(unsafe.Pointer(b))
+
+	return wrapFontFace(c)
 }
 
 type ScaledFont struct {
 	native *C.cairo_scaled_font_t
 }
 
+func wrapScaledFont(p *C.cairo_scaled_font_t) *ScaledFont {
+	v := ScaledFont{native: p}
+	return &v
+}
+
+func marshalScaledFont(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_scaled_font_t)(unsafe.Pointer(b))
+
+	return wrapScaledFont(c)
+}
+
 type Path struct {
 	native *C.cairo_path_t
+}
+
+func wrapPath(p *C.cairo_path_t) *Path {
+	v := Path{native: p}
+	return &v
+}
+
+func marshalPath(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_path_t)(unsafe.Pointer(b))
+
+	return wrapPath(c)
 }
 
 type Rectangle struct {
@@ -619,6 +739,22 @@ type Rectangle struct {
 	Height float64
 }
 
+func wrapRectangle(p *C.cairo_rectangle_t) *Rectangle {
+	var v Rectangle
+	v.X = float64(p.x)
+	v.Y = float64(p.y)
+	v.Width = float64(p.width)
+	v.Height = float64(p.height)
+	return &v
+}
+
+func marshalRectangle(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_rectangle_t)(unsafe.Pointer(b))
+
+	return wrapRectangle(c)
+}
+
 type RectangleInt struct {
 	X int
 
@@ -627,4 +763,20 @@ type RectangleInt struct {
 	Width int
 
 	Height int
+}
+
+func wrapRectangleInt(p *C.cairo_rectangle_int_t) *RectangleInt {
+	var v RectangleInt
+	v.X = int(p.x)
+	v.Y = int(p.y)
+	v.Width = int(p.width)
+	v.Height = int(p.height)
+	return &v
+}
+
+func marshalRectangleInt(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.cairo_rectangle_int_t)(unsafe.Pointer(b))
+
+	return wrapRectangleInt(c)
 }

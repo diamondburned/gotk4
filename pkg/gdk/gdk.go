@@ -2636,6 +2636,22 @@ type Color struct {
 	Blue uint16
 }
 
+func wrapColor(p *C.GdkColor) *Color {
+	var v Color
+	v.Pixel = uint32(p.pixel)
+	v.Red = uint16(p.red)
+	v.Green = uint16(p.green)
+	v.Blue = uint16(p.blue)
+	return &v
+}
+
+func marshalColor(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkColor)(unsafe.Pointer(b))
+
+	return wrapColor(c)
+}
+
 // EventAny: contains the fields which are common to all event structs. Any
 // event pointer can safely be cast to a pointer to a EventAny to access these
 // fields.
@@ -2646,6 +2662,21 @@ type EventAny struct {
 	Window *Window
 	// SendEvent: true if the event was sent explicitly.
 	SendEvent int8
+}
+
+func wrapEventAny(p *C.GdkEventAny) *EventAny {
+	var v EventAny
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	return &v
+}
+
+func marshalEventAny(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventAny)(unsafe.Pointer(b))
+
+	return wrapEventAny(c)
 }
 
 // EventButton: used for button press and button release events. The @type field
@@ -2709,6 +2740,30 @@ type EventButton struct {
 	YRoot float64
 }
 
+func wrapEventButton(p *C.GdkEventButton) *EventButton {
+	var v EventButton
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Time = uint32(p.time)
+	v.X = float64(p.x)
+	v.Y = float64(p.y)
+	v.Axes = float64(p.axes)
+	v.State = ModifierType(p.state)
+	v.Button = uint(p.button)
+
+	v.XRoot = float64(p.x_root)
+	v.YRoot = float64(p.y_root)
+	return &v
+}
+
+func marshalEventButton(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventButton)(unsafe.Pointer(b))
+
+	return wrapEventButton(c)
+}
+
 // EventConfigure: generated when a window size or position has changed.
 type EventConfigure struct {
 	// Type: the type of the event (GDK_CONFIGURE).
@@ -2725,6 +2780,25 @@ type EventConfigure struct {
 	Width int
 	// Height: the new height of the window.
 	Height int
+}
+
+func wrapEventConfigure(p *C.GdkEventConfigure) *EventConfigure {
+	var v EventConfigure
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.X = int(p.x)
+	v.Y = int(p.y)
+	v.Width = int(p.width)
+	v.Height = int(p.height)
+	return &v
+}
+
+func marshalEventConfigure(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventConfigure)(unsafe.Pointer(b))
+
+	return wrapEventConfigure(c)
 }
 
 // EventCrossing: generated when the pointer enters or leaves a window.
@@ -2766,6 +2840,31 @@ type EventCrossing struct {
 	State ModifierType
 }
 
+func wrapEventCrossing(p *C.GdkEventCrossing) *EventCrossing {
+	var v EventCrossing
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+
+	v.Time = uint32(p.time)
+	v.X = float64(p.x)
+	v.Y = float64(p.y)
+	v.XRoot = float64(p.x_root)
+	v.YRoot = float64(p.y_root)
+	v.Mode = CrossingMode(p.mode)
+	v.Detail = NotifyType(p.detail)
+	v.Focus = bool(p.focus)
+	v.State = ModifierType(p.state)
+	return &v
+}
+
+func marshalEventCrossing(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventCrossing)(unsafe.Pointer(b))
+
+	return wrapEventCrossing(c)
+}
+
 // EventDND: generated during DND operations.
 type EventDND struct {
 	// Type: the type of the event (GDK_DRAG_ENTER, GDK_DRAG_LEAVE,
@@ -2785,6 +2884,25 @@ type EventDND struct {
 	// YRoot: the y coordinate of the pointer relative to the root of the
 	// screen, only set for GDK_DRAG_MOTION and GDK_DROP_START.
 	YRoot int16
+}
+
+func wrapEventDND(p *C.GdkEventDND) *EventDND {
+	var v EventDND
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+
+	v.Time = uint32(p.time)
+	v.XRoot = int16(p.x_root)
+	v.YRoot = int16(p.y_root)
+	return &v
+}
+
+func marshalEventDND(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventDND)(unsafe.Pointer(b))
+
+	return wrapEventDND(c)
 }
 
 // EventExpose: generated when all or part of a window becomes visible and needs
@@ -2807,6 +2925,23 @@ type EventExpose struct {
 	Count int
 }
 
+func wrapEventExpose(p *C.GdkEventExpose) *EventExpose {
+	var v EventExpose
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+
+	v.Count = int(p.count)
+	return &v
+}
+
+func marshalEventExpose(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventExpose)(unsafe.Pointer(b))
+
+	return wrapEventExpose(c)
+}
+
 // EventFocus: describes a change of keyboard focus.
 type EventFocus struct {
 	// Type: the type of the event (GDK_FOCUS_CHANGE).
@@ -2818,6 +2953,22 @@ type EventFocus struct {
 	// In: true if the window has gained the keyboard focus, false if it has
 	// lost the focus.
 	In int16
+}
+
+func wrapEventFocus(p *C.GdkEventFocus) *EventFocus {
+	var v EventFocus
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.In = int16(p.in)
+	return &v
+}
+
+func marshalEventFocus(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventFocus)(unsafe.Pointer(b))
+
+	return wrapEventFocus(c)
 }
 
 // EventGrabBroken: generated when a pointer or keyboard grab is broken. On X11,
@@ -2842,6 +2993,24 @@ type EventGrabBroken struct {
 	// application, @grab_window contains the new grab window. Otherwise
 	// @grab_window is nil.
 	GrabWindow *Window
+}
+
+func wrapEventGrabBroken(p *C.GdkEventGrabBroken) *EventGrabBroken {
+	var v EventGrabBroken
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Keyboard = bool(p.keyboard)
+	v.Implicit = bool(p.implicit)
+
+	return &v
+}
+
+func marshalEventGrabBroken(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventGrabBroken)(unsafe.Pointer(b))
+
+	return wrapEventGrabBroken(c)
 }
 
 // EventKey: describes a key press or key release event.
@@ -2882,6 +3051,29 @@ type EventKey struct {
 	IsModifier uint
 }
 
+func wrapEventKey(p *C.GdkEventKey) *EventKey {
+	var v EventKey
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Time = uint32(p.time)
+	v.State = ModifierType(p.state)
+	v.Keyval = uint(p.keyval)
+	v.Length = int(p.length)
+	v.String = C.GoString(p.string)
+	v.HardwareKeycode = uint16(p.hardware_keycode)
+	v.Group = uint8(p.group)
+	v.IsModifier = uint(p.is_modifier)
+	return &v
+}
+
+func marshalEventKey(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventKey)(unsafe.Pointer(b))
+
+	return wrapEventKey(c)
+}
+
 // EventMotion: generated when the pointer moves.
 type EventMotion struct {
 	// Type: the type of the event.
@@ -2916,6 +3108,30 @@ type EventMotion struct {
 	YRoot float64
 }
 
+func wrapEventMotion(p *C.GdkEventMotion) *EventMotion {
+	var v EventMotion
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Time = uint32(p.time)
+	v.X = float64(p.x)
+	v.Y = float64(p.y)
+	v.Axes = float64(p.axes)
+	v.State = ModifierType(p.state)
+	v.IsHint = int16(p.is_hint)
+
+	v.XRoot = float64(p.x_root)
+	v.YRoot = float64(p.y_root)
+	return &v
+}
+
+func marshalEventMotion(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventMotion)(unsafe.Pointer(b))
+
+	return wrapEventMotion(c)
+}
+
 // EventOwnerChange: generated when the owner of a selection changes. On X11,
 // this information is only available if the X server supports the XFIXES
 // extension.
@@ -2936,6 +3152,26 @@ type EventOwnerChange struct {
 	Time uint32
 	// SelectionTime: the time at which the selection ownership was taken over
 	SelectionTime uint32
+}
+
+func wrapEventOwnerChange(p *C.GdkEventOwnerChange) *EventOwnerChange {
+	var v EventOwnerChange
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+
+	v.Reason = OwnerChange(p.reason)
+
+	v.Time = uint32(p.time)
+	v.SelectionTime = uint32(p.selection_time)
+	return &v
+}
+
+func marshalEventOwnerChange(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventOwnerChange)(unsafe.Pointer(b))
+
+	return wrapEventOwnerChange(c)
 }
 
 // EventPadAxis: generated during GDK_SOURCE_TABLET_PAD interaction with tactile
@@ -2963,6 +3199,26 @@ type EventPadAxis struct {
 	Value float64
 }
 
+func wrapEventPadAxis(p *C.GdkEventPadAxis) *EventPadAxis {
+	var v EventPadAxis
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Time = uint32(p.time)
+	v.Group = uint(p.group)
+	v.Index = uint(p.index)
+	v.Mode = uint(p.mode)
+	v.Value = float64(p.value)
+	return &v
+}
+
+func marshalEventPadAxis(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventPadAxis)(unsafe.Pointer(b))
+
+	return wrapEventPadAxis(c)
+}
+
 // EventPadButton: generated during GDK_SOURCE_TABLET_PAD button presses and
 // releases.
 type EventPadButton struct {
@@ -2986,6 +3242,25 @@ type EventPadButton struct {
 	Mode uint
 }
 
+func wrapEventPadButton(p *C.GdkEventPadButton) *EventPadButton {
+	var v EventPadButton
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Time = uint32(p.time)
+	v.Group = uint(p.group)
+	v.Button = uint(p.button)
+	v.Mode = uint(p.mode)
+	return &v
+}
+
+func marshalEventPadButton(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventPadButton)(unsafe.Pointer(b))
+
+	return wrapEventPadButton(c)
+}
+
 // EventPadGroupMode: generated during GDK_SOURCE_TABLET_PAD mode switches in a
 // group.
 type EventPadGroupMode struct {
@@ -3006,6 +3281,24 @@ type EventPadGroupMode struct {
 	Mode uint
 }
 
+func wrapEventPadGroupMode(p *C.GdkEventPadGroupMode) *EventPadGroupMode {
+	var v EventPadGroupMode
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Time = uint32(p.time)
+	v.Group = uint(p.group)
+	v.Mode = uint(p.mode)
+	return &v
+}
+
+func marshalEventPadGroupMode(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventPadGroupMode)(unsafe.Pointer(b))
+
+	return wrapEventPadGroupMode(c)
+}
+
 // EventProperty: describes a property change on a window.
 type EventProperty struct {
 	// Type: the type of the event (GDK_PROPERTY_NOTIFY).
@@ -3021,6 +3314,24 @@ type EventProperty struct {
 	// State: whether the property was changed (GDK_PROPERTY_NEW_VALUE) or
 	// deleted (GDK_PROPERTY_DELETE).
 	State PropertyState
+}
+
+func wrapEventProperty(p *C.GdkEventProperty) *EventProperty {
+	var v EventProperty
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+
+	v.Time = uint32(p.time)
+	v.State = PropertyState(p.state)
+	return &v
+}
+
+func marshalEventProperty(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventProperty)(unsafe.Pointer(b))
+
+	return wrapEventProperty(c)
 }
 
 // EventProximity: proximity events are generated when using GDK’s wrapper for
@@ -3044,6 +3355,23 @@ type EventProximity struct {
 	// Device: the master device that the event originated from. Use
 	// gdk_event_get_source_device() to get the slave device.
 	Device *Device
+}
+
+func wrapEventProximity(p *C.GdkEventProximity) *EventProximity {
+	var v EventProximity
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Time = uint32(p.time)
+
+	return &v
+}
+
+func marshalEventProximity(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventProximity)(unsafe.Pointer(b))
+
+	return wrapEventProximity(c)
 }
 
 // EventScroll: generated from button presses for the buttons 4 to 7. Wheel mice
@@ -3089,6 +3417,32 @@ type EventScroll struct {
 	IsStop uint
 }
 
+func wrapEventScroll(p *C.GdkEventScroll) *EventScroll {
+	var v EventScroll
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Time = uint32(p.time)
+	v.X = float64(p.x)
+	v.Y = float64(p.y)
+	v.State = ModifierType(p.state)
+	v.Direction = ScrollDirection(p.direction)
+
+	v.XRoot = float64(p.x_root)
+	v.YRoot = float64(p.y_root)
+	v.DeltaX = float64(p.delta_x)
+	v.DeltaY = float64(p.delta_y)
+	v.IsStop = uint(p.is_stop)
+	return &v
+}
+
+func marshalEventScroll(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventScroll)(unsafe.Pointer(b))
+
+	return wrapEventScroll(c)
+}
+
 // EventSelection: generated when a selection is requested or ownership of a
 // selection is taken over by another client application.
 type EventSelection struct {
@@ -3111,8 +3465,38 @@ type EventSelection struct {
 	Requestor *Window
 }
 
+func wrapEventSelection(p *C.GdkEventSelection) *EventSelection {
+	var v EventSelection
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+
+	v.Time = uint32(p.time)
+
+	return &v
+}
+
+func marshalEventSelection(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventSelection)(unsafe.Pointer(b))
+
+	return wrapEventSelection(c)
+}
+
 type EventSequence struct {
 	native *C.GdkEventSequence
+}
+
+func wrapEventSequence(p *C.GdkEventSequence) *EventSequence {
+	v := EventSequence{native: p}
+	return &v
+}
+
+func marshalEventSequence(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventSequence)(unsafe.Pointer(b))
+
+	return wrapEventSequence(c)
 }
 
 // EventSetting: generated when a setting is modified.
@@ -3128,6 +3512,23 @@ type EventSetting struct {
 	Action SettingAction
 	// Name: the name of the setting.
 	Name string
+}
+
+func wrapEventSetting(p *C.GdkEventSetting) *EventSetting {
+	var v EventSetting
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Action = SettingAction(p.action)
+	v.Name = C.GoString(p.name)
+	return &v
+}
+
+func marshalEventSetting(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventSetting)(unsafe.Pointer(b))
+
+	return wrapEventSetting(c)
 }
 
 // EventTouch: used for touch events. @type field will be one of
@@ -3173,6 +3574,31 @@ type EventTouch struct {
 	YRoot float64
 }
 
+func wrapEventTouch(p *C.GdkEventTouch) *EventTouch {
+	var v EventTouch
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Time = uint32(p.time)
+	v.X = float64(p.x)
+	v.Y = float64(p.y)
+	v.Axes = float64(p.axes)
+	v.State = ModifierType(p.state)
+
+	v.EmulatingPointer = bool(p.emulating_pointer)
+
+	v.XRoot = float64(p.x_root)
+	v.YRoot = float64(p.y_root)
+	return &v
+}
+
+func marshalEventTouch(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventTouch)(unsafe.Pointer(b))
+
+	return wrapEventTouch(c)
+}
+
 // EventTouchpadPinch: generated during touchpad swipe gestures.
 type EventTouchpadPinch struct {
 	// Type: the type of the event (GDK_TOUCHPAD_PINCH)
@@ -3212,6 +3638,33 @@ type EventTouchpadPinch struct {
 	State ModifierType
 }
 
+func wrapEventTouchpadPinch(p *C.GdkEventTouchpadPinch) *EventTouchpadPinch {
+	var v EventTouchpadPinch
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Phase = int8(p.phase)
+	v.NFingers = int8(p.n_fingers)
+	v.Time = uint32(p.time)
+	v.X = float64(p.x)
+	v.Y = float64(p.y)
+	v.Dx = float64(p.dx)
+	v.Dy = float64(p.dy)
+	v.AngleDelta = float64(p.angle_delta)
+	v.Scale = float64(p.scale)
+	v.XRoot = float64(p.x_root)
+	v.YRoot = float64(p.y_root)
+	v.State = ModifierType(p.state)
+	return &v
+}
+
+func marshalEventTouchpadPinch(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventTouchpadPinch)(unsafe.Pointer(b))
+
+	return wrapEventTouchpadPinch(c)
+}
+
 // EventTouchpadSwipe: generated during touchpad swipe gestures.
 type EventTouchpadSwipe struct {
 	// Type: the type of the event (GDK_TOUCHPAD_SWIPE)
@@ -3245,6 +3698,31 @@ type EventTouchpadSwipe struct {
 	State ModifierType
 }
 
+func wrapEventTouchpadSwipe(p *C.GdkEventTouchpadSwipe) *EventTouchpadSwipe {
+	var v EventTouchpadSwipe
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.Phase = int8(p.phase)
+	v.NFingers = int8(p.n_fingers)
+	v.Time = uint32(p.time)
+	v.X = float64(p.x)
+	v.Y = float64(p.y)
+	v.Dx = float64(p.dx)
+	v.Dy = float64(p.dy)
+	v.XRoot = float64(p.x_root)
+	v.YRoot = float64(p.y_root)
+	v.State = ModifierType(p.state)
+	return &v
+}
+
+func marshalEventTouchpadSwipe(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventTouchpadSwipe)(unsafe.Pointer(b))
+
+	return wrapEventTouchpadSwipe(c)
+}
+
 // EventVisibility: generated when the window visibility status has changed.
 type EventVisibility struct {
 	// Type: the type of the event (GDK_VISIBILITY_NOTIFY).
@@ -3256,6 +3734,22 @@ type EventVisibility struct {
 	// State: the new visibility state (GDK_VISIBILITY_FULLY_OBSCURED,
 	// GDK_VISIBILITY_PARTIAL or GDK_VISIBILITY_UNOBSCURED).
 	State VisibilityState
+}
+
+func wrapEventVisibility(p *C.GdkEventVisibility) *EventVisibility {
+	var v EventVisibility
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.State = VisibilityState(p.state)
+	return &v
+}
+
+func marshalEventVisibility(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventVisibility)(unsafe.Pointer(b))
+
+	return wrapEventVisibility(c)
 }
 
 // EventWindowState: generated when the state of a toplevel window changes.
@@ -3272,6 +3766,23 @@ type EventWindowState struct {
 	NewWindowState WindowState
 }
 
+func wrapEventWindowState(p *C.GdkEventWindowState) *EventWindowState {
+	var v EventWindowState
+	v.Type = EventType(p._type)
+
+	v.SendEvent = int8(p.send_event)
+	v.ChangedMask = WindowState(p.changed_mask)
+	v.NewWindowState = WindowState(p.new_window_state)
+	return &v
+}
+
+func marshalEventWindowState(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkEventWindowState)(unsafe.Pointer(b))
+
+	return wrapEventWindowState(c)
+}
+
 // FrameTimings: a FrameTimings object holds timing information for a single
 // frame of the application’s displays. To retrieve FrameTimings objects, use
 // gdk_frame_clock_get_timings() or gdk_frame_clock_get_current_timings(). The
@@ -3280,6 +3791,18 @@ type EventWindowState struct {
 // application’s display, such as latency and jitter.
 type FrameTimings struct {
 	native *C.GdkFrameTimings
+}
+
+func wrapFrameTimings(p *C.GdkFrameTimings) *FrameTimings {
+	v := FrameTimings{native: p}
+	return &v
+}
+
+func marshalFrameTimings(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkFrameTimings)(unsafe.Pointer(b))
+
+	return wrapFrameTimings(c)
 }
 
 // Geometry: the Geometry struct gives the window manager information about a
@@ -3366,6 +3889,29 @@ type Geometry struct {
 	WinGravity Gravity
 }
 
+func wrapGeometry(p *C.GdkGeometry) *Geometry {
+	var v Geometry
+	v.MinWidth = int(p.min_width)
+	v.MinHeight = int(p.min_height)
+	v.MaxWidth = int(p.max_width)
+	v.MaxHeight = int(p.max_height)
+	v.BaseWidth = int(p.base_width)
+	v.BaseHeight = int(p.base_height)
+	v.WidthInc = int(p.width_inc)
+	v.HeightInc = int(p.height_inc)
+	v.MinAspect = float64(p.min_aspect)
+	v.MaxAspect = float64(p.max_aspect)
+	v.WinGravity = Gravity(p.win_gravity)
+	return &v
+}
+
+func marshalGeometry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkGeometry)(unsafe.Pointer(b))
+
+	return wrapGeometry(c)
+}
+
 // KeymapKey: a KeymapKey is a hardware key that can be mapped to a keyval.
 type KeymapKey struct {
 	// Keycode: the hardware keycode. This is an identifying number for a
@@ -3386,12 +3932,41 @@ type KeymapKey struct {
 	Level int
 }
 
+func wrapKeymapKey(p *C.GdkKeymapKey) *KeymapKey {
+	var v KeymapKey
+	v.Keycode = uint(p.keycode)
+	v.Group = int(p.group)
+	v.Level = int(p.level)
+	return &v
+}
+
+func marshalKeymapKey(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkKeymapKey)(unsafe.Pointer(b))
+
+	return wrapKeymapKey(c)
+}
+
 // Point: defines the x and y coordinates of a point.
 type Point struct {
 	// X: the x coordinate of the point.
 	X int
 	// Y: the y coordinate of the point.
 	Y int
+}
+
+func wrapPoint(p *C.GdkPoint) *Point {
+	var v Point
+	v.X = int(p.x)
+	v.Y = int(p.y)
+	return &v
+}
+
+func marshalPoint(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkPoint)(unsafe.Pointer(b))
+
+	return wrapPoint(c)
 }
 
 // RGBA: a RGBA is used to represent a (possibly translucent) color, in a way
@@ -3408,6 +3983,22 @@ type RGBA struct {
 	Alpha float64
 }
 
+func wrapRGBA(p *C.GdkRGBA) *RGBA {
+	var v RGBA
+	v.Red = float64(p.red)
+	v.Green = float64(p.green)
+	v.Blue = float64(p.blue)
+	v.Alpha = float64(p.alpha)
+	return &v
+}
+
+func marshalRGBA(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkRGBA)(unsafe.Pointer(b))
+
+	return wrapRGBA(c)
+}
+
 // Rectangle: defines the position and size of a rectangle. It is identical to
 // #cairo_rectangle_int_t.
 type Rectangle struct {
@@ -3420,12 +4011,44 @@ type Rectangle struct {
 	Height int
 }
 
+func wrapRectangle(p *C.GdkRectangle) *Rectangle {
+	var v Rectangle
+	v.X = int(p.x)
+	v.Y = int(p.y)
+	v.Width = int(p.width)
+	v.Height = int(p.height)
+	return &v
+}
+
+func marshalRectangle(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkRectangle)(unsafe.Pointer(b))
+
+	return wrapRectangle(c)
+}
+
 // TimeCoord: a TimeCoord stores a single event in a motion history.
 type TimeCoord struct {
 	// Time: the timestamp for this event.
 	Time uint32
 	// Axes: the values of the device’s axes.
 	Axes [128]float64
+}
+
+func wrapTimeCoord(p *C.GdkTimeCoord) *TimeCoord {
+	var v TimeCoord
+	v.Time = uint32(p.time)
+	{
+		var a [128]float64
+	}
+	return &v
+}
+
+func marshalTimeCoord(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkTimeCoord)(unsafe.Pointer(b))
+
+	return wrapTimeCoord(c)
 }
 
 // WindowAttr: attributes to use for a newly-created window.
@@ -3459,4 +4082,30 @@ type WindowAttr struct {
 	OverrideRedirect bool
 	// TypeHint: a hint of the function of the window
 	TypeHint WindowTypeHint
+}
+
+func wrapWindowAttr(p *C.GdkWindowAttr) *WindowAttr {
+	var v WindowAttr
+	v.Title = C.GoString(p.title)
+	v.EventMask = int(p.event_mask)
+	v.X = int(p.x)
+	v.Y = int(p.y)
+	v.Width = int(p.width)
+	v.Height = int(p.height)
+	v.Wclass = WindowWindowClass(p.wclass)
+
+	v.WindowType = WindowType(p.window_type)
+
+	v.WmclassName = C.GoString(p.wmclass_name)
+	v.WmclassClass = C.GoString(p.wmclass_class)
+	v.OverrideRedirect = bool(p.override_redirect)
+	v.TypeHint = WindowTypeHint(p.type_hint)
+	return &v
+}
+
+func marshalWindowAttr(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkWindowAttr)(unsafe.Pointer(b))
+
+	return wrapWindowAttr(c)
 }

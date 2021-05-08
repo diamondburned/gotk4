@@ -22,43 +22,81 @@ var recordIgnoreSuffixes = []string{
 	"Class",
 }
 
-func ignoreRecord(rec gir.Record) bool {
-	// GLibIsGTypeStructFor seems to be records used in addition to classes due
-	// to C? Not sure, but we likely don't need it.
-	if rec.Disguised || rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
-		return true
-	}
-
-	for _, suffix := range recordIgnoreSuffixes {
-		if strings.HasSuffix(rec.Name, suffix) {
-			return true
-		}
-	}
-
-	return false
-}
-
 var recordTmpl = newGoTemplate(`
-	{{ $type := (PascalToGo .Name) }}
-
-	{{ GoDoc .Doc 0 $type }}
-	type {{ $type }} struct {
-		{{ range .Fields -}}
-		{{ $.Field . }}
+	{{ GoDoc .Doc 0 .GoName }}
+	type {{ .GoName }} struct {
+		{{ range .PublicFields -}}
+		{{ GoDoc .Doc 1 .GoName }}
+		{{ .GoName }} {{ .GoType }}
 		{{ end -}}
 
 		{{ if .NeedsNative }}
 		native *C.{{ .CType }}
 		{{ end -}}
 	}
+
+	func wrap{{ .GoName }}(p *C.{{ .CType }}) *{{ .GoName }} {
+		{{ if .NeedsNative -}}
+		v := {{ .GoName }}{native: p}
+		{{ else -}}
+		var v {{ .GoName }}
+		{{ end -}}
+
+		{{ range .PublicFields -}}
+		{{ $.Ng.AnyTypeConverter (printf "p.%s" .Name) (printf "v.%s" .GoName) .AnyType }}
+		{{ end -}}
+
+		return &v
+	}
+
+	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
+		b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+		c := (*C.{{ .CType }})(unsafe.Pointer(b))
+
+		return wrap{{ .GoName }}(c)
+	}
 `)
 
 type recordGenerator struct {
 	gir.Record
+	GoName       string
+	NeedsNative  bool
+	PublicFields []recordField
+
 	Ng *NamespaceGenerator
 }
 
-func (rg recordGenerator) NeedsNative() bool {
+type recordField struct {
+	gir.Field
+	Name   string
+	GoName string
+	GoType string
+}
+
+func (rg *recordGenerator) Use(rec gir.Record) bool {
+	// GLibIsGTypeStructFor seems to be records used in addition to classes due
+	// to C? Not sure, but we likely don't need it.
+	if rec.Disguised || rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
+		return false
+	}
+
+	for _, suffix := range recordIgnoreSuffixes {
+		if strings.HasSuffix(rec.Name, suffix) {
+			return false
+		}
+	}
+
+	rg.Record = rec
+	rg.GoName = PascalToGo(rec.Name)
+	rg.NeedsNative = rg.needsNative()
+	rg.PublicFields = rg.publicFields()
+
+	return true
+}
+
+// needsNative returns true if the record needs a private C field for
+// referencing.
+func (rg *recordGenerator) needsNative() bool {
 	for _, field := range rg.Fields {
 		if field.Private {
 			return true
@@ -68,35 +106,38 @@ func (rg recordGenerator) NeedsNative() bool {
 	return len(rg.Fields) == 0
 }
 
-func (rg recordGenerator) Field(field gir.Field) string {
-	if field.Private {
-		return ""
-	}
+func (rg *recordGenerator) publicFields() []recordField {
+	fields := make([]recordField, 0, len(rg.Fields))
 
-	typ, ok := rg.Ng.resolveAnyType(field.AnyType)
-	if !ok {
-		return ""
-	}
-
-	name := SnakeToGo(true, field.Name)
-
-	return GoDoc(field.Doc, 1, name) + "\n" + name + " " + typ
-}
-
-func (rg recordGenerator) ResolveType(typ gir.Type) {
-}
-
-func (ng *NamespaceGenerator) generateRecords() {
-	_ = gir.Field{}
-
-	for _, record := range ng.current.Namespace.Records {
-		if ignoreRecord(record) {
+	for _, field := range rg.Fields {
+		if field.Private {
 			continue
 		}
 
-		ng.pen.BlockTmpl(recordTmpl, recordGenerator{
-			Record: record,
-			Ng:     ng,
+		typ, ok := rg.Ng.ResolveAnyType(field.AnyType)
+		if !ok {
+			continue
+		}
+
+		fields = append(fields, recordField{
+			Field:  field,
+			Name:   cgoField(field.Name),
+			GoName: SnakeToGo(true, field.Name),
+			GoType: typ,
 		})
+	}
+
+	return fields
+}
+
+func (ng *NamespaceGenerator) generateRecords() {
+	rg := recordGenerator{Ng: ng}
+
+	for _, record := range ng.current.Namespace.Records {
+		if !rg.Use(record) {
+			continue
+		}
+
+		ng.pen.BlockTmpl(recordTmpl, rg)
 	}
 }

@@ -3,6 +3,8 @@
 package vulkan
 
 import (
+	"unsafe"
+
 	"github.com/gotk3/gotk3/glib"
 )
 
@@ -21,3154 +23,12622 @@ type Flags struct {
 	native *C.VkFlags
 }
 
+func wrapFlags(p *C.VkFlags) *Flags {
+	v := Flags{native: p}
+	return &v
+}
+
+func marshalFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFlags)(unsafe.Pointer(b))
+
+	return wrapFlags(c)
+}
+
 type Bool32 struct {
 	native *C.VkBool32
+}
+
+func wrapBool32(p *C.VkBool32) *Bool32 {
+	v := Bool32{native: p}
+	return &v
+}
+
+func marshalBool32(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBool32)(unsafe.Pointer(b))
+
+	return wrapBool32(c)
 }
 
 type DeviceSize struct {
 	native *C.VkDeviceSize
 }
 
+func wrapDeviceSize(p *C.VkDeviceSize) *DeviceSize {
+	v := DeviceSize{native: p}
+	return &v
+}
+
+func marshalDeviceSize(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceSize)(unsafe.Pointer(b))
+
+	return wrapDeviceSize(c)
+}
+
 type SampleMask struct {
 	native *C.VkSampleMask
+}
+
+func wrapSampleMask(p *C.VkSampleMask) *SampleMask {
+	v := SampleMask{native: p}
+	return &v
+}
+
+func marshalSampleMask(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSampleMask)(unsafe.Pointer(b))
+
+	return wrapSampleMask(c)
 }
 
 type Instance struct {
 	native *C.VkInstance
 }
 
+func wrapInstance(p *C.VkInstance) *Instance {
+	v := Instance{native: p}
+	return &v
+}
+
+func marshalInstance(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkInstance)(unsafe.Pointer(b))
+
+	return wrapInstance(c)
+}
+
 type PhysicalDevice struct {
 	native *C.VkPhysicalDevice
+}
+
+func wrapPhysicalDevice(p *C.VkPhysicalDevice) *PhysicalDevice {
+	v := PhysicalDevice{native: p}
+	return &v
+}
+
+func marshalPhysicalDevice(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDevice)(unsafe.Pointer(b))
+
+	return wrapPhysicalDevice(c)
 }
 
 type Device struct {
 	native *C.VkDevice
 }
 
+func wrapDevice(p *C.VkDevice) *Device {
+	v := Device{native: p}
+	return &v
+}
+
+func marshalDevice(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDevice)(unsafe.Pointer(b))
+
+	return wrapDevice(c)
+}
+
 type Queue struct {
 	native *C.VkQueue
+}
+
+func wrapQueue(p *C.VkQueue) *Queue {
+	v := Queue{native: p}
+	return &v
+}
+
+func marshalQueue(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueue)(unsafe.Pointer(b))
+
+	return wrapQueue(c)
 }
 
 type Semaphore struct {
 	native *C.VkSemaphore
 }
 
+func wrapSemaphore(p *C.VkSemaphore) *Semaphore {
+	v := Semaphore{native: p}
+	return &v
+}
+
+func marshalSemaphore(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSemaphore)(unsafe.Pointer(b))
+
+	return wrapSemaphore(c)
+}
+
 type CommandBuffer struct {
 	native *C.VkCommandBuffer
+}
+
+func wrapCommandBuffer(p *C.VkCommandBuffer) *CommandBuffer {
+	v := CommandBuffer{native: p}
+	return &v
+}
+
+func marshalCommandBuffer(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandBuffer)(unsafe.Pointer(b))
+
+	return wrapCommandBuffer(c)
 }
 
 type Fence struct {
 	native *C.VkFence
 }
 
+func wrapFence(p *C.VkFence) *Fence {
+	v := Fence{native: p}
+	return &v
+}
+
+func marshalFence(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFence)(unsafe.Pointer(b))
+
+	return wrapFence(c)
+}
+
 type DeviceMemory struct {
 	native *C.VkDeviceMemory
+}
+
+func wrapDeviceMemory(p *C.VkDeviceMemory) *DeviceMemory {
+	v := DeviceMemory{native: p}
+	return &v
+}
+
+func marshalDeviceMemory(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceMemory)(unsafe.Pointer(b))
+
+	return wrapDeviceMemory(c)
 }
 
 type Buffer struct {
 	native *C.VkBuffer
 }
 
+func wrapBuffer(p *C.VkBuffer) *Buffer {
+	v := Buffer{native: p}
+	return &v
+}
+
+func marshalBuffer(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBuffer)(unsafe.Pointer(b))
+
+	return wrapBuffer(c)
+}
+
 type Image struct {
 	native *C.VkImage
+}
+
+func wrapImage(p *C.VkImage) *Image {
+	v := Image{native: p}
+	return &v
+}
+
+func marshalImage(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImage)(unsafe.Pointer(b))
+
+	return wrapImage(c)
 }
 
 type Event struct {
 	native *C.VkEvent
 }
 
+func wrapEvent(p *C.VkEvent) *Event {
+	v := Event{native: p}
+	return &v
+}
+
+func marshalEvent(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkEvent)(unsafe.Pointer(b))
+
+	return wrapEvent(c)
+}
+
 type QueryPool struct {
 	native *C.VkQueryPool
+}
+
+func wrapQueryPool(p *C.VkQueryPool) *QueryPool {
+	v := QueryPool{native: p}
+	return &v
+}
+
+func marshalQueryPool(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueryPool)(unsafe.Pointer(b))
+
+	return wrapQueryPool(c)
 }
 
 type BufferView struct {
 	native *C.VkBufferView
 }
 
+func wrapBufferView(p *C.VkBufferView) *BufferView {
+	v := BufferView{native: p}
+	return &v
+}
+
+func marshalBufferView(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferView)(unsafe.Pointer(b))
+
+	return wrapBufferView(c)
+}
+
 type ImageView struct {
 	native *C.VkImageView
+}
+
+func wrapImageView(p *C.VkImageView) *ImageView {
+	v := ImageView{native: p}
+	return &v
+}
+
+func marshalImageView(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageView)(unsafe.Pointer(b))
+
+	return wrapImageView(c)
 }
 
 type ShaderModule struct {
 	native *C.VkShaderModule
 }
 
+func wrapShaderModule(p *C.VkShaderModule) *ShaderModule {
+	v := ShaderModule{native: p}
+	return &v
+}
+
+func marshalShaderModule(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShaderModule)(unsafe.Pointer(b))
+
+	return wrapShaderModule(c)
+}
+
 type PipelineCache struct {
 	native *C.VkPipelineCache
+}
+
+func wrapPipelineCache(p *C.VkPipelineCache) *PipelineCache {
+	v := PipelineCache{native: p}
+	return &v
+}
+
+func marshalPipelineCache(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCache)(unsafe.Pointer(b))
+
+	return wrapPipelineCache(c)
 }
 
 type PipelineLayout struct {
 	native *C.VkPipelineLayout
 }
 
+func wrapPipelineLayout(p *C.VkPipelineLayout) *PipelineLayout {
+	v := PipelineLayout{native: p}
+	return &v
+}
+
+func marshalPipelineLayout(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineLayout)(unsafe.Pointer(b))
+
+	return wrapPipelineLayout(c)
+}
+
 type RenderPass struct {
 	native *C.VkRenderPass
+}
+
+func wrapRenderPass(p *C.VkRenderPass) *RenderPass {
+	v := RenderPass{native: p}
+	return &v
+}
+
+func marshalRenderPass(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPass)(unsafe.Pointer(b))
+
+	return wrapRenderPass(c)
 }
 
 type Pipeline struct {
 	native *C.VkPipeline
 }
 
+func wrapPipeline(p *C.VkPipeline) *Pipeline {
+	v := Pipeline{native: p}
+	return &v
+}
+
+func marshalPipeline(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipeline)(unsafe.Pointer(b))
+
+	return wrapPipeline(c)
+}
+
 type DescriptorSetLayout struct {
 	native *C.VkDescriptorSetLayout
+}
+
+func wrapDescriptorSetLayout(p *C.VkDescriptorSetLayout) *DescriptorSetLayout {
+	v := DescriptorSetLayout{native: p}
+	return &v
+}
+
+func marshalDescriptorSetLayout(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetLayout)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetLayout(c)
 }
 
 type Sampler struct {
 	native *C.VkSampler
 }
 
+func wrapSampler(p *C.VkSampler) *Sampler {
+	v := Sampler{native: p}
+	return &v
+}
+
+func marshalSampler(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSampler)(unsafe.Pointer(b))
+
+	return wrapSampler(c)
+}
+
 type DescriptorPool struct {
 	native *C.VkDescriptorPool
+}
+
+func wrapDescriptorPool(p *C.VkDescriptorPool) *DescriptorPool {
+	v := DescriptorPool{native: p}
+	return &v
+}
+
+func marshalDescriptorPool(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorPool)(unsafe.Pointer(b))
+
+	return wrapDescriptorPool(c)
 }
 
 type DescriptorSet struct {
 	native *C.VkDescriptorSet
 }
 
+func wrapDescriptorSet(p *C.VkDescriptorSet) *DescriptorSet {
+	v := DescriptorSet{native: p}
+	return &v
+}
+
+func marshalDescriptorSet(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSet)(unsafe.Pointer(b))
+
+	return wrapDescriptorSet(c)
+}
+
 type Framebuffer struct {
 	native *C.VkFramebuffer
+}
+
+func wrapFramebuffer(p *C.VkFramebuffer) *Framebuffer {
+	v := Framebuffer{native: p}
+	return &v
+}
+
+func marshalFramebuffer(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFramebuffer)(unsafe.Pointer(b))
+
+	return wrapFramebuffer(c)
 }
 
 type CommandPool struct {
 	native *C.VkCommandPool
 }
 
+func wrapCommandPool(p *C.VkCommandPool) *CommandPool {
+	v := CommandPool{native: p}
+	return &v
+}
+
+func marshalCommandPool(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandPool)(unsafe.Pointer(b))
+
+	return wrapCommandPool(c)
+}
+
 type PipelineCacheHeaderVersion struct {
 	native *C.VkPipelineCacheHeaderVersion
+}
+
+func wrapPipelineCacheHeaderVersion(p *C.VkPipelineCacheHeaderVersion) *PipelineCacheHeaderVersion {
+	v := PipelineCacheHeaderVersion{native: p}
+	return &v
+}
+
+func marshalPipelineCacheHeaderVersion(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCacheHeaderVersion)(unsafe.Pointer(b))
+
+	return wrapPipelineCacheHeaderVersion(c)
 }
 
 type Result struct {
 	native *C.VkResult
 }
 
+func wrapResult(p *C.VkResult) *Result {
+	v := Result{native: p}
+	return &v
+}
+
+func marshalResult(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkResult)(unsafe.Pointer(b))
+
+	return wrapResult(c)
+}
+
 type StructureType struct {
 	native *C.VkStructureType
+}
+
+func wrapStructureType(p *C.VkStructureType) *StructureType {
+	v := StructureType{native: p}
+	return &v
+}
+
+func marshalStructureType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkStructureType)(unsafe.Pointer(b))
+
+	return wrapStructureType(c)
 }
 
 type SystemAllocationScope struct {
 	native *C.VkSystemAllocationScope
 }
 
+func wrapSystemAllocationScope(p *C.VkSystemAllocationScope) *SystemAllocationScope {
+	v := SystemAllocationScope{native: p}
+	return &v
+}
+
+func marshalSystemAllocationScope(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSystemAllocationScope)(unsafe.Pointer(b))
+
+	return wrapSystemAllocationScope(c)
+}
+
 type InternalAllocationType struct {
 	native *C.VkInternalAllocationType
+}
+
+func wrapInternalAllocationType(p *C.VkInternalAllocationType) *InternalAllocationType {
+	v := InternalAllocationType{native: p}
+	return &v
+}
+
+func marshalInternalAllocationType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkInternalAllocationType)(unsafe.Pointer(b))
+
+	return wrapInternalAllocationType(c)
 }
 
 type Format struct {
 	native *C.VkFormat
 }
 
+func wrapFormat(p *C.VkFormat) *Format {
+	v := Format{native: p}
+	return &v
+}
+
+func marshalFormat(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFormat)(unsafe.Pointer(b))
+
+	return wrapFormat(c)
+}
+
 type ImageType struct {
 	native *C.VkImageType
+}
+
+func wrapImageType(p *C.VkImageType) *ImageType {
+	v := ImageType{native: p}
+	return &v
+}
+
+func marshalImageType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageType)(unsafe.Pointer(b))
+
+	return wrapImageType(c)
 }
 
 type ImageTiling struct {
 	native *C.VkImageTiling
 }
 
+func wrapImageTiling(p *C.VkImageTiling) *ImageTiling {
+	v := ImageTiling{native: p}
+	return &v
+}
+
+func marshalImageTiling(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageTiling)(unsafe.Pointer(b))
+
+	return wrapImageTiling(c)
+}
+
 type PhysicalDeviceType struct {
 	native *C.VkPhysicalDeviceType
+}
+
+func wrapPhysicalDeviceType(p *C.VkPhysicalDeviceType) *PhysicalDeviceType {
+	v := PhysicalDeviceType{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceType)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceType(c)
 }
 
 type QueryType struct {
 	native *C.VkQueryType
 }
 
+func wrapQueryType(p *C.VkQueryType) *QueryType {
+	v := QueryType{native: p}
+	return &v
+}
+
+func marshalQueryType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueryType)(unsafe.Pointer(b))
+
+	return wrapQueryType(c)
+}
+
 type SharingMode struct {
 	native *C.VkSharingMode
+}
+
+func wrapSharingMode(p *C.VkSharingMode) *SharingMode {
+	v := SharingMode{native: p}
+	return &v
+}
+
+func marshalSharingMode(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSharingMode)(unsafe.Pointer(b))
+
+	return wrapSharingMode(c)
 }
 
 type ImageLayout struct {
 	native *C.VkImageLayout
 }
 
+func wrapImageLayout(p *C.VkImageLayout) *ImageLayout {
+	v := ImageLayout{native: p}
+	return &v
+}
+
+func marshalImageLayout(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageLayout)(unsafe.Pointer(b))
+
+	return wrapImageLayout(c)
+}
+
 type ImageViewType struct {
 	native *C.VkImageViewType
+}
+
+func wrapImageViewType(p *C.VkImageViewType) *ImageViewType {
+	v := ImageViewType{native: p}
+	return &v
+}
+
+func marshalImageViewType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageViewType)(unsafe.Pointer(b))
+
+	return wrapImageViewType(c)
 }
 
 type ComponentSwizzle struct {
 	native *C.VkComponentSwizzle
 }
 
+func wrapComponentSwizzle(p *C.VkComponentSwizzle) *ComponentSwizzle {
+	v := ComponentSwizzle{native: p}
+	return &v
+}
+
+func marshalComponentSwizzle(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkComponentSwizzle)(unsafe.Pointer(b))
+
+	return wrapComponentSwizzle(c)
+}
+
 type VertexInputRate struct {
 	native *C.VkVertexInputRate
+}
+
+func wrapVertexInputRate(p *C.VkVertexInputRate) *VertexInputRate {
+	v := VertexInputRate{native: p}
+	return &v
+}
+
+func marshalVertexInputRate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkVertexInputRate)(unsafe.Pointer(b))
+
+	return wrapVertexInputRate(c)
 }
 
 type PrimitiveTopology struct {
 	native *C.VkPrimitiveTopology
 }
 
+func wrapPrimitiveTopology(p *C.VkPrimitiveTopology) *PrimitiveTopology {
+	v := PrimitiveTopology{native: p}
+	return &v
+}
+
+func marshalPrimitiveTopology(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPrimitiveTopology)(unsafe.Pointer(b))
+
+	return wrapPrimitiveTopology(c)
+}
+
 type PolygonMode struct {
 	native *C.VkPolygonMode
+}
+
+func wrapPolygonMode(p *C.VkPolygonMode) *PolygonMode {
+	v := PolygonMode{native: p}
+	return &v
+}
+
+func marshalPolygonMode(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPolygonMode)(unsafe.Pointer(b))
+
+	return wrapPolygonMode(c)
 }
 
 type FrontFace struct {
 	native *C.VkFrontFace
 }
 
+func wrapFrontFace(p *C.VkFrontFace) *FrontFace {
+	v := FrontFace{native: p}
+	return &v
+}
+
+func marshalFrontFace(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFrontFace)(unsafe.Pointer(b))
+
+	return wrapFrontFace(c)
+}
+
 type CompareOp struct {
 	native *C.VkCompareOp
+}
+
+func wrapCompareOp(p *C.VkCompareOp) *CompareOp {
+	v := CompareOp{native: p}
+	return &v
+}
+
+func marshalCompareOp(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCompareOp)(unsafe.Pointer(b))
+
+	return wrapCompareOp(c)
 }
 
 type StencilOp struct {
 	native *C.VkStencilOp
 }
 
+func wrapStencilOp(p *C.VkStencilOp) *StencilOp {
+	v := StencilOp{native: p}
+	return &v
+}
+
+func marshalStencilOp(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkStencilOp)(unsafe.Pointer(b))
+
+	return wrapStencilOp(c)
+}
+
 type LogicOp struct {
 	native *C.VkLogicOp
+}
+
+func wrapLogicOp(p *C.VkLogicOp) *LogicOp {
+	v := LogicOp{native: p}
+	return &v
+}
+
+func marshalLogicOp(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkLogicOp)(unsafe.Pointer(b))
+
+	return wrapLogicOp(c)
 }
 
 type BlendFactor struct {
 	native *C.VkBlendFactor
 }
 
+func wrapBlendFactor(p *C.VkBlendFactor) *BlendFactor {
+	v := BlendFactor{native: p}
+	return &v
+}
+
+func marshalBlendFactor(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBlendFactor)(unsafe.Pointer(b))
+
+	return wrapBlendFactor(c)
+}
+
 type BlendOp struct {
 	native *C.VkBlendOp
+}
+
+func wrapBlendOp(p *C.VkBlendOp) *BlendOp {
+	v := BlendOp{native: p}
+	return &v
+}
+
+func marshalBlendOp(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBlendOp)(unsafe.Pointer(b))
+
+	return wrapBlendOp(c)
 }
 
 type DynamicState struct {
 	native *C.VkDynamicState
 }
 
+func wrapDynamicState(p *C.VkDynamicState) *DynamicState {
+	v := DynamicState{native: p}
+	return &v
+}
+
+func marshalDynamicState(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDynamicState)(unsafe.Pointer(b))
+
+	return wrapDynamicState(c)
+}
+
 type Filter struct {
 	native *C.VkFilter
+}
+
+func wrapFilter(p *C.VkFilter) *Filter {
+	v := Filter{native: p}
+	return &v
+}
+
+func marshalFilter(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFilter)(unsafe.Pointer(b))
+
+	return wrapFilter(c)
 }
 
 type SamplerMipmapMode struct {
 	native *C.VkSamplerMipmapMode
 }
 
+func wrapSamplerMipmapMode(p *C.VkSamplerMipmapMode) *SamplerMipmapMode {
+	v := SamplerMipmapMode{native: p}
+	return &v
+}
+
+func marshalSamplerMipmapMode(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerMipmapMode)(unsafe.Pointer(b))
+
+	return wrapSamplerMipmapMode(c)
+}
+
 type SamplerAddressMode struct {
 	native *C.VkSamplerAddressMode
+}
+
+func wrapSamplerAddressMode(p *C.VkSamplerAddressMode) *SamplerAddressMode {
+	v := SamplerAddressMode{native: p}
+	return &v
+}
+
+func marshalSamplerAddressMode(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerAddressMode)(unsafe.Pointer(b))
+
+	return wrapSamplerAddressMode(c)
 }
 
 type BorderColor struct {
 	native *C.VkBorderColor
 }
 
+func wrapBorderColor(p *C.VkBorderColor) *BorderColor {
+	v := BorderColor{native: p}
+	return &v
+}
+
+func marshalBorderColor(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBorderColor)(unsafe.Pointer(b))
+
+	return wrapBorderColor(c)
+}
+
 type DescriptorType struct {
 	native *C.VkDescriptorType
+}
+
+func wrapDescriptorType(p *C.VkDescriptorType) *DescriptorType {
+	v := DescriptorType{native: p}
+	return &v
+}
+
+func marshalDescriptorType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorType)(unsafe.Pointer(b))
+
+	return wrapDescriptorType(c)
 }
 
 type AttachmentLoadOp struct {
 	native *C.VkAttachmentLoadOp
 }
 
+func wrapAttachmentLoadOp(p *C.VkAttachmentLoadOp) *AttachmentLoadOp {
+	v := AttachmentLoadOp{native: p}
+	return &v
+}
+
+func marshalAttachmentLoadOp(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAttachmentLoadOp)(unsafe.Pointer(b))
+
+	return wrapAttachmentLoadOp(c)
+}
+
 type AttachmentStoreOp struct {
 	native *C.VkAttachmentStoreOp
+}
+
+func wrapAttachmentStoreOp(p *C.VkAttachmentStoreOp) *AttachmentStoreOp {
+	v := AttachmentStoreOp{native: p}
+	return &v
+}
+
+func marshalAttachmentStoreOp(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAttachmentStoreOp)(unsafe.Pointer(b))
+
+	return wrapAttachmentStoreOp(c)
 }
 
 type PipelineBindPoint struct {
 	native *C.VkPipelineBindPoint
 }
 
+func wrapPipelineBindPoint(p *C.VkPipelineBindPoint) *PipelineBindPoint {
+	v := PipelineBindPoint{native: p}
+	return &v
+}
+
+func marshalPipelineBindPoint(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineBindPoint)(unsafe.Pointer(b))
+
+	return wrapPipelineBindPoint(c)
+}
+
 type CommandBufferLevel struct {
 	native *C.VkCommandBufferLevel
+}
+
+func wrapCommandBufferLevel(p *C.VkCommandBufferLevel) *CommandBufferLevel {
+	v := CommandBufferLevel{native: p}
+	return &v
+}
+
+func marshalCommandBufferLevel(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandBufferLevel)(unsafe.Pointer(b))
+
+	return wrapCommandBufferLevel(c)
 }
 
 type IndexType struct {
 	native *C.VkIndexType
 }
 
+func wrapIndexType(p *C.VkIndexType) *IndexType {
+	v := IndexType{native: p}
+	return &v
+}
+
+func marshalIndexType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkIndexType)(unsafe.Pointer(b))
+
+	return wrapIndexType(c)
+}
+
 type SubpassContents struct {
 	native *C.VkSubpassContents
+}
+
+func wrapSubpassContents(p *C.VkSubpassContents) *SubpassContents {
+	v := SubpassContents{native: p}
+	return &v
+}
+
+func marshalSubpassContents(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassContents)(unsafe.Pointer(b))
+
+	return wrapSubpassContents(c)
 }
 
 type ObjectType struct {
 	native *C.VkObjectType
 }
 
+func wrapObjectType(p *C.VkObjectType) *ObjectType {
+	v := ObjectType{native: p}
+	return &v
+}
+
+func marshalObjectType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectType)(unsafe.Pointer(b))
+
+	return wrapObjectType(c)
+}
+
 type VendorID struct {
 	native *C.VkVendorId
+}
+
+func wrapVendorID(p *C.VkVendorId) *VendorID {
+	v := VendorID{native: p}
+	return &v
+}
+
+func marshalVendorID(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkVendorId)(unsafe.Pointer(b))
+
+	return wrapVendorID(c)
 }
 
 type InstanceCreateFlags struct {
 	native *C.VkInstanceCreateFlags
 }
 
+func wrapInstanceCreateFlags(p *C.VkInstanceCreateFlags) *InstanceCreateFlags {
+	v := InstanceCreateFlags{native: p}
+	return &v
+}
+
+func marshalInstanceCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkInstanceCreateFlags)(unsafe.Pointer(b))
+
+	return wrapInstanceCreateFlags(c)
+}
+
 type FormatFeatureFlagBits struct {
 	native *C.VkFormatFeatureFlagBits
+}
+
+func wrapFormatFeatureFlagBits(p *C.VkFormatFeatureFlagBits) *FormatFeatureFlagBits {
+	v := FormatFeatureFlagBits{native: p}
+	return &v
+}
+
+func marshalFormatFeatureFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFormatFeatureFlagBits)(unsafe.Pointer(b))
+
+	return wrapFormatFeatureFlagBits(c)
 }
 
 type FormatFeatureFlags struct {
 	native *C.VkFormatFeatureFlags
 }
 
+func wrapFormatFeatureFlags(p *C.VkFormatFeatureFlags) *FormatFeatureFlags {
+	v := FormatFeatureFlags{native: p}
+	return &v
+}
+
+func marshalFormatFeatureFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFormatFeatureFlags)(unsafe.Pointer(b))
+
+	return wrapFormatFeatureFlags(c)
+}
+
 type ImageUsageFlagBits struct {
 	native *C.VkImageUsageFlagBits
+}
+
+func wrapImageUsageFlagBits(p *C.VkImageUsageFlagBits) *ImageUsageFlagBits {
+	v := ImageUsageFlagBits{native: p}
+	return &v
+}
+
+func marshalImageUsageFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageUsageFlagBits)(unsafe.Pointer(b))
+
+	return wrapImageUsageFlagBits(c)
 }
 
 type ImageUsageFlags struct {
 	native *C.VkImageUsageFlags
 }
 
+func wrapImageUsageFlags(p *C.VkImageUsageFlags) *ImageUsageFlags {
+	v := ImageUsageFlags{native: p}
+	return &v
+}
+
+func marshalImageUsageFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageUsageFlags)(unsafe.Pointer(b))
+
+	return wrapImageUsageFlags(c)
+}
+
 type ImageCreateFlagBits struct {
 	native *C.VkImageCreateFlagBits
+}
+
+func wrapImageCreateFlagBits(p *C.VkImageCreateFlagBits) *ImageCreateFlagBits {
+	v := ImageCreateFlagBits{native: p}
+	return &v
+}
+
+func marshalImageCreateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageCreateFlagBits)(unsafe.Pointer(b))
+
+	return wrapImageCreateFlagBits(c)
 }
 
 type ImageCreateFlags struct {
 	native *C.VkImageCreateFlags
 }
 
+func wrapImageCreateFlags(p *C.VkImageCreateFlags) *ImageCreateFlags {
+	v := ImageCreateFlags{native: p}
+	return &v
+}
+
+func marshalImageCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageCreateFlags)(unsafe.Pointer(b))
+
+	return wrapImageCreateFlags(c)
+}
+
 type SampleCountFlagBits struct {
 	native *C.VkSampleCountFlagBits
+}
+
+func wrapSampleCountFlagBits(p *C.VkSampleCountFlagBits) *SampleCountFlagBits {
+	v := SampleCountFlagBits{native: p}
+	return &v
+}
+
+func marshalSampleCountFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSampleCountFlagBits)(unsafe.Pointer(b))
+
+	return wrapSampleCountFlagBits(c)
 }
 
 type SampleCountFlags struct {
 	native *C.VkSampleCountFlags
 }
 
+func wrapSampleCountFlags(p *C.VkSampleCountFlags) *SampleCountFlags {
+	v := SampleCountFlags{native: p}
+	return &v
+}
+
+func marshalSampleCountFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSampleCountFlags)(unsafe.Pointer(b))
+
+	return wrapSampleCountFlags(c)
+}
+
 type QueueFlagBits struct {
 	native *C.VkQueueFlagBits
+}
+
+func wrapQueueFlagBits(p *C.VkQueueFlagBits) *QueueFlagBits {
+	v := QueueFlagBits{native: p}
+	return &v
+}
+
+func marshalQueueFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueueFlagBits)(unsafe.Pointer(b))
+
+	return wrapQueueFlagBits(c)
 }
 
 type QueueFlags struct {
 	native *C.VkQueueFlags
 }
 
+func wrapQueueFlags(p *C.VkQueueFlags) *QueueFlags {
+	v := QueueFlags{native: p}
+	return &v
+}
+
+func marshalQueueFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueueFlags)(unsafe.Pointer(b))
+
+	return wrapQueueFlags(c)
+}
+
 type MemoryPropertyFlagBits struct {
 	native *C.VkMemoryPropertyFlagBits
+}
+
+func wrapMemoryPropertyFlagBits(p *C.VkMemoryPropertyFlagBits) *MemoryPropertyFlagBits {
+	v := MemoryPropertyFlagBits{native: p}
+	return &v
+}
+
+func marshalMemoryPropertyFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryPropertyFlagBits)(unsafe.Pointer(b))
+
+	return wrapMemoryPropertyFlagBits(c)
 }
 
 type MemoryPropertyFlags struct {
 	native *C.VkMemoryPropertyFlags
 }
 
+func wrapMemoryPropertyFlags(p *C.VkMemoryPropertyFlags) *MemoryPropertyFlags {
+	v := MemoryPropertyFlags{native: p}
+	return &v
+}
+
+func marshalMemoryPropertyFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryPropertyFlags)(unsafe.Pointer(b))
+
+	return wrapMemoryPropertyFlags(c)
+}
+
 type MemoryHeapFlagBits struct {
 	native *C.VkMemoryHeapFlagBits
+}
+
+func wrapMemoryHeapFlagBits(p *C.VkMemoryHeapFlagBits) *MemoryHeapFlagBits {
+	v := MemoryHeapFlagBits{native: p}
+	return &v
+}
+
+func marshalMemoryHeapFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryHeapFlagBits)(unsafe.Pointer(b))
+
+	return wrapMemoryHeapFlagBits(c)
 }
 
 type MemoryHeapFlags struct {
 	native *C.VkMemoryHeapFlags
 }
 
+func wrapMemoryHeapFlags(p *C.VkMemoryHeapFlags) *MemoryHeapFlags {
+	v := MemoryHeapFlags{native: p}
+	return &v
+}
+
+func marshalMemoryHeapFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryHeapFlags)(unsafe.Pointer(b))
+
+	return wrapMemoryHeapFlags(c)
+}
+
 type DeviceCreateFlags struct {
 	native *C.VkDeviceCreateFlags
+}
+
+func wrapDeviceCreateFlags(p *C.VkDeviceCreateFlags) *DeviceCreateFlags {
+	v := DeviceCreateFlags{native: p}
+	return &v
+}
+
+func marshalDeviceCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceCreateFlags)(unsafe.Pointer(b))
+
+	return wrapDeviceCreateFlags(c)
 }
 
 type DeviceQueueCreateFlagBits struct {
 	native *C.VkDeviceQueueCreateFlagBits
 }
 
+func wrapDeviceQueueCreateFlagBits(p *C.VkDeviceQueueCreateFlagBits) *DeviceQueueCreateFlagBits {
+	v := DeviceQueueCreateFlagBits{native: p}
+	return &v
+}
+
+func marshalDeviceQueueCreateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceQueueCreateFlagBits)(unsafe.Pointer(b))
+
+	return wrapDeviceQueueCreateFlagBits(c)
+}
+
 type DeviceQueueCreateFlags struct {
 	native *C.VkDeviceQueueCreateFlags
+}
+
+func wrapDeviceQueueCreateFlags(p *C.VkDeviceQueueCreateFlags) *DeviceQueueCreateFlags {
+	v := DeviceQueueCreateFlags{native: p}
+	return &v
+}
+
+func marshalDeviceQueueCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceQueueCreateFlags)(unsafe.Pointer(b))
+
+	return wrapDeviceQueueCreateFlags(c)
 }
 
 type PipelineStageFlagBits struct {
 	native *C.VkPipelineStageFlagBits
 }
 
+func wrapPipelineStageFlagBits(p *C.VkPipelineStageFlagBits) *PipelineStageFlagBits {
+	v := PipelineStageFlagBits{native: p}
+	return &v
+}
+
+func marshalPipelineStageFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineStageFlagBits)(unsafe.Pointer(b))
+
+	return wrapPipelineStageFlagBits(c)
+}
+
 type PipelineStageFlags struct {
 	native *C.VkPipelineStageFlags
+}
+
+func wrapPipelineStageFlags(p *C.VkPipelineStageFlags) *PipelineStageFlags {
+	v := PipelineStageFlags{native: p}
+	return &v
+}
+
+func marshalPipelineStageFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineStageFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineStageFlags(c)
 }
 
 type MemoryMapFlags struct {
 	native *C.VkMemoryMapFlags
 }
 
+func wrapMemoryMapFlags(p *C.VkMemoryMapFlags) *MemoryMapFlags {
+	v := MemoryMapFlags{native: p}
+	return &v
+}
+
+func marshalMemoryMapFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryMapFlags)(unsafe.Pointer(b))
+
+	return wrapMemoryMapFlags(c)
+}
+
 type ImageAspectFlagBits struct {
 	native *C.VkImageAspectFlagBits
+}
+
+func wrapImageAspectFlagBits(p *C.VkImageAspectFlagBits) *ImageAspectFlagBits {
+	v := ImageAspectFlagBits{native: p}
+	return &v
+}
+
+func marshalImageAspectFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageAspectFlagBits)(unsafe.Pointer(b))
+
+	return wrapImageAspectFlagBits(c)
 }
 
 type ImageAspectFlags struct {
 	native *C.VkImageAspectFlags
 }
 
+func wrapImageAspectFlags(p *C.VkImageAspectFlags) *ImageAspectFlags {
+	v := ImageAspectFlags{native: p}
+	return &v
+}
+
+func marshalImageAspectFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageAspectFlags)(unsafe.Pointer(b))
+
+	return wrapImageAspectFlags(c)
+}
+
 type SparseImageFormatFlagBits struct {
 	native *C.VkSparseImageFormatFlagBits
+}
+
+func wrapSparseImageFormatFlagBits(p *C.VkSparseImageFormatFlagBits) *SparseImageFormatFlagBits {
+	v := SparseImageFormatFlagBits{native: p}
+	return &v
+}
+
+func marshalSparseImageFormatFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageFormatFlagBits)(unsafe.Pointer(b))
+
+	return wrapSparseImageFormatFlagBits(c)
 }
 
 type SparseImageFormatFlags struct {
 	native *C.VkSparseImageFormatFlags
 }
 
+func wrapSparseImageFormatFlags(p *C.VkSparseImageFormatFlags) *SparseImageFormatFlags {
+	v := SparseImageFormatFlags{native: p}
+	return &v
+}
+
+func marshalSparseImageFormatFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageFormatFlags)(unsafe.Pointer(b))
+
+	return wrapSparseImageFormatFlags(c)
+}
+
 type SparseMemoryBindFlagBits struct {
 	native *C.VkSparseMemoryBindFlagBits
+}
+
+func wrapSparseMemoryBindFlagBits(p *C.VkSparseMemoryBindFlagBits) *SparseMemoryBindFlagBits {
+	v := SparseMemoryBindFlagBits{native: p}
+	return &v
+}
+
+func marshalSparseMemoryBindFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseMemoryBindFlagBits)(unsafe.Pointer(b))
+
+	return wrapSparseMemoryBindFlagBits(c)
 }
 
 type SparseMemoryBindFlags struct {
 	native *C.VkSparseMemoryBindFlags
 }
 
+func wrapSparseMemoryBindFlags(p *C.VkSparseMemoryBindFlags) *SparseMemoryBindFlags {
+	v := SparseMemoryBindFlags{native: p}
+	return &v
+}
+
+func marshalSparseMemoryBindFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseMemoryBindFlags)(unsafe.Pointer(b))
+
+	return wrapSparseMemoryBindFlags(c)
+}
+
 type FenceCreateFlagBits struct {
 	native *C.VkFenceCreateFlagBits
+}
+
+func wrapFenceCreateFlagBits(p *C.VkFenceCreateFlagBits) *FenceCreateFlagBits {
+	v := FenceCreateFlagBits{native: p}
+	return &v
+}
+
+func marshalFenceCreateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFenceCreateFlagBits)(unsafe.Pointer(b))
+
+	return wrapFenceCreateFlagBits(c)
 }
 
 type FenceCreateFlags struct {
 	native *C.VkFenceCreateFlags
 }
 
+func wrapFenceCreateFlags(p *C.VkFenceCreateFlags) *FenceCreateFlags {
+	v := FenceCreateFlags{native: p}
+	return &v
+}
+
+func marshalFenceCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFenceCreateFlags)(unsafe.Pointer(b))
+
+	return wrapFenceCreateFlags(c)
+}
+
 type SemaphoreCreateFlags struct {
 	native *C.VkSemaphoreCreateFlags
+}
+
+func wrapSemaphoreCreateFlags(p *C.VkSemaphoreCreateFlags) *SemaphoreCreateFlags {
+	v := SemaphoreCreateFlags{native: p}
+	return &v
+}
+
+func marshalSemaphoreCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSemaphoreCreateFlags)(unsafe.Pointer(b))
+
+	return wrapSemaphoreCreateFlags(c)
 }
 
 type EventCreateFlags struct {
 	native *C.VkEventCreateFlags
 }
 
+func wrapEventCreateFlags(p *C.VkEventCreateFlags) *EventCreateFlags {
+	v := EventCreateFlags{native: p}
+	return &v
+}
+
+func marshalEventCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkEventCreateFlags)(unsafe.Pointer(b))
+
+	return wrapEventCreateFlags(c)
+}
+
 type QueryPoolCreateFlags struct {
 	native *C.VkQueryPoolCreateFlags
+}
+
+func wrapQueryPoolCreateFlags(p *C.VkQueryPoolCreateFlags) *QueryPoolCreateFlags {
+	v := QueryPoolCreateFlags{native: p}
+	return &v
+}
+
+func marshalQueryPoolCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueryPoolCreateFlags)(unsafe.Pointer(b))
+
+	return wrapQueryPoolCreateFlags(c)
 }
 
 type QueryPipelineStatisticFlagBits struct {
 	native *C.VkQueryPipelineStatisticFlagBits
 }
 
+func wrapQueryPipelineStatisticFlagBits(p *C.VkQueryPipelineStatisticFlagBits) *QueryPipelineStatisticFlagBits {
+	v := QueryPipelineStatisticFlagBits{native: p}
+	return &v
+}
+
+func marshalQueryPipelineStatisticFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueryPipelineStatisticFlagBits)(unsafe.Pointer(b))
+
+	return wrapQueryPipelineStatisticFlagBits(c)
+}
+
 type QueryPipelineStatisticFlags struct {
 	native *C.VkQueryPipelineStatisticFlags
+}
+
+func wrapQueryPipelineStatisticFlags(p *C.VkQueryPipelineStatisticFlags) *QueryPipelineStatisticFlags {
+	v := QueryPipelineStatisticFlags{native: p}
+	return &v
+}
+
+func marshalQueryPipelineStatisticFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueryPipelineStatisticFlags)(unsafe.Pointer(b))
+
+	return wrapQueryPipelineStatisticFlags(c)
 }
 
 type QueryResultFlagBits struct {
 	native *C.VkQueryResultFlagBits
 }
 
+func wrapQueryResultFlagBits(p *C.VkQueryResultFlagBits) *QueryResultFlagBits {
+	v := QueryResultFlagBits{native: p}
+	return &v
+}
+
+func marshalQueryResultFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueryResultFlagBits)(unsafe.Pointer(b))
+
+	return wrapQueryResultFlagBits(c)
+}
+
 type QueryResultFlags struct {
 	native *C.VkQueryResultFlags
+}
+
+func wrapQueryResultFlags(p *C.VkQueryResultFlags) *QueryResultFlags {
+	v := QueryResultFlags{native: p}
+	return &v
+}
+
+func marshalQueryResultFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueryResultFlags)(unsafe.Pointer(b))
+
+	return wrapQueryResultFlags(c)
 }
 
 type BufferCreateFlagBits struct {
 	native *C.VkBufferCreateFlagBits
 }
 
+func wrapBufferCreateFlagBits(p *C.VkBufferCreateFlagBits) *BufferCreateFlagBits {
+	v := BufferCreateFlagBits{native: p}
+	return &v
+}
+
+func marshalBufferCreateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferCreateFlagBits)(unsafe.Pointer(b))
+
+	return wrapBufferCreateFlagBits(c)
+}
+
 type BufferCreateFlags struct {
 	native *C.VkBufferCreateFlags
+}
+
+func wrapBufferCreateFlags(p *C.VkBufferCreateFlags) *BufferCreateFlags {
+	v := BufferCreateFlags{native: p}
+	return &v
+}
+
+func marshalBufferCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferCreateFlags)(unsafe.Pointer(b))
+
+	return wrapBufferCreateFlags(c)
 }
 
 type BufferUsageFlagBits struct {
 	native *C.VkBufferUsageFlagBits
 }
 
+func wrapBufferUsageFlagBits(p *C.VkBufferUsageFlagBits) *BufferUsageFlagBits {
+	v := BufferUsageFlagBits{native: p}
+	return &v
+}
+
+func marshalBufferUsageFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferUsageFlagBits)(unsafe.Pointer(b))
+
+	return wrapBufferUsageFlagBits(c)
+}
+
 type BufferUsageFlags struct {
 	native *C.VkBufferUsageFlags
+}
+
+func wrapBufferUsageFlags(p *C.VkBufferUsageFlags) *BufferUsageFlags {
+	v := BufferUsageFlags{native: p}
+	return &v
+}
+
+func marshalBufferUsageFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferUsageFlags)(unsafe.Pointer(b))
+
+	return wrapBufferUsageFlags(c)
 }
 
 type BufferViewCreateFlags struct {
 	native *C.VkBufferViewCreateFlags
 }
 
+func wrapBufferViewCreateFlags(p *C.VkBufferViewCreateFlags) *BufferViewCreateFlags {
+	v := BufferViewCreateFlags{native: p}
+	return &v
+}
+
+func marshalBufferViewCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferViewCreateFlags)(unsafe.Pointer(b))
+
+	return wrapBufferViewCreateFlags(c)
+}
+
 type ImageViewCreateFlagBits struct {
 	native *C.VkImageViewCreateFlagBits
+}
+
+func wrapImageViewCreateFlagBits(p *C.VkImageViewCreateFlagBits) *ImageViewCreateFlagBits {
+	v := ImageViewCreateFlagBits{native: p}
+	return &v
+}
+
+func marshalImageViewCreateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageViewCreateFlagBits)(unsafe.Pointer(b))
+
+	return wrapImageViewCreateFlagBits(c)
 }
 
 type ImageViewCreateFlags struct {
 	native *C.VkImageViewCreateFlags
 }
 
+func wrapImageViewCreateFlags(p *C.VkImageViewCreateFlags) *ImageViewCreateFlags {
+	v := ImageViewCreateFlags{native: p}
+	return &v
+}
+
+func marshalImageViewCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageViewCreateFlags)(unsafe.Pointer(b))
+
+	return wrapImageViewCreateFlags(c)
+}
+
 type ShaderModuleCreateFlags struct {
 	native *C.VkShaderModuleCreateFlags
+}
+
+func wrapShaderModuleCreateFlags(p *C.VkShaderModuleCreateFlags) *ShaderModuleCreateFlags {
+	v := ShaderModuleCreateFlags{native: p}
+	return &v
+}
+
+func marshalShaderModuleCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShaderModuleCreateFlags)(unsafe.Pointer(b))
+
+	return wrapShaderModuleCreateFlags(c)
 }
 
 type PipelineCacheCreateFlags struct {
 	native *C.VkPipelineCacheCreateFlags
 }
 
+func wrapPipelineCacheCreateFlags(p *C.VkPipelineCacheCreateFlags) *PipelineCacheCreateFlags {
+	v := PipelineCacheCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineCacheCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCacheCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineCacheCreateFlags(c)
+}
+
 type PipelineCreateFlagBits struct {
 	native *C.VkPipelineCreateFlagBits
+}
+
+func wrapPipelineCreateFlagBits(p *C.VkPipelineCreateFlagBits) *PipelineCreateFlagBits {
+	v := PipelineCreateFlagBits{native: p}
+	return &v
+}
+
+func marshalPipelineCreateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCreateFlagBits)(unsafe.Pointer(b))
+
+	return wrapPipelineCreateFlagBits(c)
 }
 
 type PipelineCreateFlags struct {
 	native *C.VkPipelineCreateFlags
 }
 
+func wrapPipelineCreateFlags(p *C.VkPipelineCreateFlags) *PipelineCreateFlags {
+	v := PipelineCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineCreateFlags(c)
+}
+
 type PipelineShaderStageCreateFlags struct {
 	native *C.VkPipelineShaderStageCreateFlags
+}
+
+func wrapPipelineShaderStageCreateFlags(p *C.VkPipelineShaderStageCreateFlags) *PipelineShaderStageCreateFlags {
+	v := PipelineShaderStageCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineShaderStageCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineShaderStageCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineShaderStageCreateFlags(c)
 }
 
 type ShaderStageFlagBits struct {
 	native *C.VkShaderStageFlagBits
 }
 
+func wrapShaderStageFlagBits(p *C.VkShaderStageFlagBits) *ShaderStageFlagBits {
+	v := ShaderStageFlagBits{native: p}
+	return &v
+}
+
+func marshalShaderStageFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShaderStageFlagBits)(unsafe.Pointer(b))
+
+	return wrapShaderStageFlagBits(c)
+}
+
 type PipelineVertexInputStateCreateFlags struct {
 	native *C.VkPipelineVertexInputStateCreateFlags
+}
+
+func wrapPipelineVertexInputStateCreateFlags(p *C.VkPipelineVertexInputStateCreateFlags) *PipelineVertexInputStateCreateFlags {
+	v := PipelineVertexInputStateCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineVertexInputStateCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineVertexInputStateCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineVertexInputStateCreateFlags(c)
 }
 
 type PipelineInputAssemblyStateCreateFlags struct {
 	native *C.VkPipelineInputAssemblyStateCreateFlags
 }
 
+func wrapPipelineInputAssemblyStateCreateFlags(p *C.VkPipelineInputAssemblyStateCreateFlags) *PipelineInputAssemblyStateCreateFlags {
+	v := PipelineInputAssemblyStateCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineInputAssemblyStateCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineInputAssemblyStateCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineInputAssemblyStateCreateFlags(c)
+}
+
 type PipelineTessellationStateCreateFlags struct {
 	native *C.VkPipelineTessellationStateCreateFlags
+}
+
+func wrapPipelineTessellationStateCreateFlags(p *C.VkPipelineTessellationStateCreateFlags) *PipelineTessellationStateCreateFlags {
+	v := PipelineTessellationStateCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineTessellationStateCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineTessellationStateCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineTessellationStateCreateFlags(c)
 }
 
 type PipelineViewportStateCreateFlags struct {
 	native *C.VkPipelineViewportStateCreateFlags
 }
 
+func wrapPipelineViewportStateCreateFlags(p *C.VkPipelineViewportStateCreateFlags) *PipelineViewportStateCreateFlags {
+	v := PipelineViewportStateCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineViewportStateCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineViewportStateCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineViewportStateCreateFlags(c)
+}
+
 type PipelineRasterizationStateCreateFlags struct {
 	native *C.VkPipelineRasterizationStateCreateFlags
+}
+
+func wrapPipelineRasterizationStateCreateFlags(p *C.VkPipelineRasterizationStateCreateFlags) *PipelineRasterizationStateCreateFlags {
+	v := PipelineRasterizationStateCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineRasterizationStateCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineRasterizationStateCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineRasterizationStateCreateFlags(c)
 }
 
 type CullModeFlagBits struct {
 	native *C.VkCullModeFlagBits
 }
 
+func wrapCullModeFlagBits(p *C.VkCullModeFlagBits) *CullModeFlagBits {
+	v := CullModeFlagBits{native: p}
+	return &v
+}
+
+func marshalCullModeFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCullModeFlagBits)(unsafe.Pointer(b))
+
+	return wrapCullModeFlagBits(c)
+}
+
 type CullModeFlags struct {
 	native *C.VkCullModeFlags
+}
+
+func wrapCullModeFlags(p *C.VkCullModeFlags) *CullModeFlags {
+	v := CullModeFlags{native: p}
+	return &v
+}
+
+func marshalCullModeFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCullModeFlags)(unsafe.Pointer(b))
+
+	return wrapCullModeFlags(c)
 }
 
 type PipelineMultisampleStateCreateFlags struct {
 	native *C.VkPipelineMultisampleStateCreateFlags
 }
 
+func wrapPipelineMultisampleStateCreateFlags(p *C.VkPipelineMultisampleStateCreateFlags) *PipelineMultisampleStateCreateFlags {
+	v := PipelineMultisampleStateCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineMultisampleStateCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineMultisampleStateCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineMultisampleStateCreateFlags(c)
+}
+
 type PipelineDepthStencilStateCreateFlags struct {
 	native *C.VkPipelineDepthStencilStateCreateFlags
+}
+
+func wrapPipelineDepthStencilStateCreateFlags(p *C.VkPipelineDepthStencilStateCreateFlags) *PipelineDepthStencilStateCreateFlags {
+	v := PipelineDepthStencilStateCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineDepthStencilStateCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineDepthStencilStateCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineDepthStencilStateCreateFlags(c)
 }
 
 type PipelineColorBlendStateCreateFlags struct {
 	native *C.VkPipelineColorBlendStateCreateFlags
 }
 
+func wrapPipelineColorBlendStateCreateFlags(p *C.VkPipelineColorBlendStateCreateFlags) *PipelineColorBlendStateCreateFlags {
+	v := PipelineColorBlendStateCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineColorBlendStateCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineColorBlendStateCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineColorBlendStateCreateFlags(c)
+}
+
 type ColorComponentFlagBits struct {
 	native *C.VkColorComponentFlagBits
+}
+
+func wrapColorComponentFlagBits(p *C.VkColorComponentFlagBits) *ColorComponentFlagBits {
+	v := ColorComponentFlagBits{native: p}
+	return &v
+}
+
+func marshalColorComponentFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkColorComponentFlagBits)(unsafe.Pointer(b))
+
+	return wrapColorComponentFlagBits(c)
 }
 
 type ColorComponentFlags struct {
 	native *C.VkColorComponentFlags
 }
 
+func wrapColorComponentFlags(p *C.VkColorComponentFlags) *ColorComponentFlags {
+	v := ColorComponentFlags{native: p}
+	return &v
+}
+
+func marshalColorComponentFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkColorComponentFlags)(unsafe.Pointer(b))
+
+	return wrapColorComponentFlags(c)
+}
+
 type PipelineDynamicStateCreateFlags struct {
 	native *C.VkPipelineDynamicStateCreateFlags
+}
+
+func wrapPipelineDynamicStateCreateFlags(p *C.VkPipelineDynamicStateCreateFlags) *PipelineDynamicStateCreateFlags {
+	v := PipelineDynamicStateCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineDynamicStateCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineDynamicStateCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineDynamicStateCreateFlags(c)
 }
 
 type PipelineLayoutCreateFlags struct {
 	native *C.VkPipelineLayoutCreateFlags
 }
 
+func wrapPipelineLayoutCreateFlags(p *C.VkPipelineLayoutCreateFlags) *PipelineLayoutCreateFlags {
+	v := PipelineLayoutCreateFlags{native: p}
+	return &v
+}
+
+func marshalPipelineLayoutCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineLayoutCreateFlags)(unsafe.Pointer(b))
+
+	return wrapPipelineLayoutCreateFlags(c)
+}
+
 type ShaderStageFlags struct {
 	native *C.VkShaderStageFlags
+}
+
+func wrapShaderStageFlags(p *C.VkShaderStageFlags) *ShaderStageFlags {
+	v := ShaderStageFlags{native: p}
+	return &v
+}
+
+func marshalShaderStageFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShaderStageFlags)(unsafe.Pointer(b))
+
+	return wrapShaderStageFlags(c)
 }
 
 type SamplerCreateFlagBits struct {
 	native *C.VkSamplerCreateFlagBits
 }
 
+func wrapSamplerCreateFlagBits(p *C.VkSamplerCreateFlagBits) *SamplerCreateFlagBits {
+	v := SamplerCreateFlagBits{native: p}
+	return &v
+}
+
+func marshalSamplerCreateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerCreateFlagBits)(unsafe.Pointer(b))
+
+	return wrapSamplerCreateFlagBits(c)
+}
+
 type SamplerCreateFlags struct {
 	native *C.VkSamplerCreateFlags
+}
+
+func wrapSamplerCreateFlags(p *C.VkSamplerCreateFlags) *SamplerCreateFlags {
+	v := SamplerCreateFlags{native: p}
+	return &v
+}
+
+func marshalSamplerCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerCreateFlags)(unsafe.Pointer(b))
+
+	return wrapSamplerCreateFlags(c)
 }
 
 type DescriptorSetLayoutCreateFlagBits struct {
 	native *C.VkDescriptorSetLayoutCreateFlagBits
 }
 
+func wrapDescriptorSetLayoutCreateFlagBits(p *C.VkDescriptorSetLayoutCreateFlagBits) *DescriptorSetLayoutCreateFlagBits {
+	v := DescriptorSetLayoutCreateFlagBits{native: p}
+	return &v
+}
+
+func marshalDescriptorSetLayoutCreateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetLayoutCreateFlagBits)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetLayoutCreateFlagBits(c)
+}
+
 type DescriptorSetLayoutCreateFlags struct {
 	native *C.VkDescriptorSetLayoutCreateFlags
+}
+
+func wrapDescriptorSetLayoutCreateFlags(p *C.VkDescriptorSetLayoutCreateFlags) *DescriptorSetLayoutCreateFlags {
+	v := DescriptorSetLayoutCreateFlags{native: p}
+	return &v
+}
+
+func marshalDescriptorSetLayoutCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetLayoutCreateFlags)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetLayoutCreateFlags(c)
 }
 
 type DescriptorPoolCreateFlagBits struct {
 	native *C.VkDescriptorPoolCreateFlagBits
 }
 
+func wrapDescriptorPoolCreateFlagBits(p *C.VkDescriptorPoolCreateFlagBits) *DescriptorPoolCreateFlagBits {
+	v := DescriptorPoolCreateFlagBits{native: p}
+	return &v
+}
+
+func marshalDescriptorPoolCreateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorPoolCreateFlagBits)(unsafe.Pointer(b))
+
+	return wrapDescriptorPoolCreateFlagBits(c)
+}
+
 type DescriptorPoolCreateFlags struct {
 	native *C.VkDescriptorPoolCreateFlags
+}
+
+func wrapDescriptorPoolCreateFlags(p *C.VkDescriptorPoolCreateFlags) *DescriptorPoolCreateFlags {
+	v := DescriptorPoolCreateFlags{native: p}
+	return &v
+}
+
+func marshalDescriptorPoolCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorPoolCreateFlags)(unsafe.Pointer(b))
+
+	return wrapDescriptorPoolCreateFlags(c)
 }
 
 type DescriptorPoolResetFlags struct {
 	native *C.VkDescriptorPoolResetFlags
 }
 
+func wrapDescriptorPoolResetFlags(p *C.VkDescriptorPoolResetFlags) *DescriptorPoolResetFlags {
+	v := DescriptorPoolResetFlags{native: p}
+	return &v
+}
+
+func marshalDescriptorPoolResetFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorPoolResetFlags)(unsafe.Pointer(b))
+
+	return wrapDescriptorPoolResetFlags(c)
+}
+
 type FramebufferCreateFlags struct {
 	native *C.VkFramebufferCreateFlags
+}
+
+func wrapFramebufferCreateFlags(p *C.VkFramebufferCreateFlags) *FramebufferCreateFlags {
+	v := FramebufferCreateFlags{native: p}
+	return &v
+}
+
+func marshalFramebufferCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFramebufferCreateFlags)(unsafe.Pointer(b))
+
+	return wrapFramebufferCreateFlags(c)
 }
 
 type RenderPassCreateFlags struct {
 	native *C.VkRenderPassCreateFlags
 }
 
+func wrapRenderPassCreateFlags(p *C.VkRenderPassCreateFlags) *RenderPassCreateFlags {
+	v := RenderPassCreateFlags{native: p}
+	return &v
+}
+
+func marshalRenderPassCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPassCreateFlags)(unsafe.Pointer(b))
+
+	return wrapRenderPassCreateFlags(c)
+}
+
 type AttachmentDescriptionFlagBits struct {
 	native *C.VkAttachmentDescriptionFlagBits
+}
+
+func wrapAttachmentDescriptionFlagBits(p *C.VkAttachmentDescriptionFlagBits) *AttachmentDescriptionFlagBits {
+	v := AttachmentDescriptionFlagBits{native: p}
+	return &v
+}
+
+func marshalAttachmentDescriptionFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAttachmentDescriptionFlagBits)(unsafe.Pointer(b))
+
+	return wrapAttachmentDescriptionFlagBits(c)
 }
 
 type AttachmentDescriptionFlags struct {
 	native *C.VkAttachmentDescriptionFlags
 }
 
+func wrapAttachmentDescriptionFlags(p *C.VkAttachmentDescriptionFlags) *AttachmentDescriptionFlags {
+	v := AttachmentDescriptionFlags{native: p}
+	return &v
+}
+
+func marshalAttachmentDescriptionFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAttachmentDescriptionFlags)(unsafe.Pointer(b))
+
+	return wrapAttachmentDescriptionFlags(c)
+}
+
 type SubpassDescriptionFlagBits struct {
 	native *C.VkSubpassDescriptionFlagBits
+}
+
+func wrapSubpassDescriptionFlagBits(p *C.VkSubpassDescriptionFlagBits) *SubpassDescriptionFlagBits {
+	v := SubpassDescriptionFlagBits{native: p}
+	return &v
+}
+
+func marshalSubpassDescriptionFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassDescriptionFlagBits)(unsafe.Pointer(b))
+
+	return wrapSubpassDescriptionFlagBits(c)
 }
 
 type SubpassDescriptionFlags struct {
 	native *C.VkSubpassDescriptionFlags
 }
 
+func wrapSubpassDescriptionFlags(p *C.VkSubpassDescriptionFlags) *SubpassDescriptionFlags {
+	v := SubpassDescriptionFlags{native: p}
+	return &v
+}
+
+func marshalSubpassDescriptionFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassDescriptionFlags)(unsafe.Pointer(b))
+
+	return wrapSubpassDescriptionFlags(c)
+}
+
 type AccessFlagBits struct {
 	native *C.VkAccessFlagBits
+}
+
+func wrapAccessFlagBits(p *C.VkAccessFlagBits) *AccessFlagBits {
+	v := AccessFlagBits{native: p}
+	return &v
+}
+
+func marshalAccessFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAccessFlagBits)(unsafe.Pointer(b))
+
+	return wrapAccessFlagBits(c)
 }
 
 type AccessFlags struct {
 	native *C.VkAccessFlags
 }
 
+func wrapAccessFlags(p *C.VkAccessFlags) *AccessFlags {
+	v := AccessFlags{native: p}
+	return &v
+}
+
+func marshalAccessFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAccessFlags)(unsafe.Pointer(b))
+
+	return wrapAccessFlags(c)
+}
+
 type DependencyFlagBits struct {
 	native *C.VkDependencyFlagBits
+}
+
+func wrapDependencyFlagBits(p *C.VkDependencyFlagBits) *DependencyFlagBits {
+	v := DependencyFlagBits{native: p}
+	return &v
+}
+
+func marshalDependencyFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDependencyFlagBits)(unsafe.Pointer(b))
+
+	return wrapDependencyFlagBits(c)
 }
 
 type DependencyFlags struct {
 	native *C.VkDependencyFlags
 }
 
+func wrapDependencyFlags(p *C.VkDependencyFlags) *DependencyFlags {
+	v := DependencyFlags{native: p}
+	return &v
+}
+
+func marshalDependencyFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDependencyFlags)(unsafe.Pointer(b))
+
+	return wrapDependencyFlags(c)
+}
+
 type CommandPoolCreateFlagBits struct {
 	native *C.VkCommandPoolCreateFlagBits
+}
+
+func wrapCommandPoolCreateFlagBits(p *C.VkCommandPoolCreateFlagBits) *CommandPoolCreateFlagBits {
+	v := CommandPoolCreateFlagBits{native: p}
+	return &v
+}
+
+func marshalCommandPoolCreateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandPoolCreateFlagBits)(unsafe.Pointer(b))
+
+	return wrapCommandPoolCreateFlagBits(c)
 }
 
 type CommandPoolCreateFlags struct {
 	native *C.VkCommandPoolCreateFlags
 }
 
+func wrapCommandPoolCreateFlags(p *C.VkCommandPoolCreateFlags) *CommandPoolCreateFlags {
+	v := CommandPoolCreateFlags{native: p}
+	return &v
+}
+
+func marshalCommandPoolCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandPoolCreateFlags)(unsafe.Pointer(b))
+
+	return wrapCommandPoolCreateFlags(c)
+}
+
 type CommandPoolResetFlagBits struct {
 	native *C.VkCommandPoolResetFlagBits
+}
+
+func wrapCommandPoolResetFlagBits(p *C.VkCommandPoolResetFlagBits) *CommandPoolResetFlagBits {
+	v := CommandPoolResetFlagBits{native: p}
+	return &v
+}
+
+func marshalCommandPoolResetFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandPoolResetFlagBits)(unsafe.Pointer(b))
+
+	return wrapCommandPoolResetFlagBits(c)
 }
 
 type CommandPoolResetFlags struct {
 	native *C.VkCommandPoolResetFlags
 }
 
+func wrapCommandPoolResetFlags(p *C.VkCommandPoolResetFlags) *CommandPoolResetFlags {
+	v := CommandPoolResetFlags{native: p}
+	return &v
+}
+
+func marshalCommandPoolResetFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandPoolResetFlags)(unsafe.Pointer(b))
+
+	return wrapCommandPoolResetFlags(c)
+}
+
 type CommandBufferUsageFlagBits struct {
 	native *C.VkCommandBufferUsageFlagBits
+}
+
+func wrapCommandBufferUsageFlagBits(p *C.VkCommandBufferUsageFlagBits) *CommandBufferUsageFlagBits {
+	v := CommandBufferUsageFlagBits{native: p}
+	return &v
+}
+
+func marshalCommandBufferUsageFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandBufferUsageFlagBits)(unsafe.Pointer(b))
+
+	return wrapCommandBufferUsageFlagBits(c)
 }
 
 type CommandBufferUsageFlags struct {
 	native *C.VkCommandBufferUsageFlags
 }
 
+func wrapCommandBufferUsageFlags(p *C.VkCommandBufferUsageFlags) *CommandBufferUsageFlags {
+	v := CommandBufferUsageFlags{native: p}
+	return &v
+}
+
+func marshalCommandBufferUsageFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandBufferUsageFlags)(unsafe.Pointer(b))
+
+	return wrapCommandBufferUsageFlags(c)
+}
+
 type QueryControlFlagBits struct {
 	native *C.VkQueryControlFlagBits
+}
+
+func wrapQueryControlFlagBits(p *C.VkQueryControlFlagBits) *QueryControlFlagBits {
+	v := QueryControlFlagBits{native: p}
+	return &v
+}
+
+func marshalQueryControlFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueryControlFlagBits)(unsafe.Pointer(b))
+
+	return wrapQueryControlFlagBits(c)
 }
 
 type QueryControlFlags struct {
 	native *C.VkQueryControlFlags
 }
 
+func wrapQueryControlFlags(p *C.VkQueryControlFlags) *QueryControlFlags {
+	v := QueryControlFlags{native: p}
+	return &v
+}
+
+func marshalQueryControlFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueryControlFlags)(unsafe.Pointer(b))
+
+	return wrapQueryControlFlags(c)
+}
+
 type CommandBufferResetFlagBits struct {
 	native *C.VkCommandBufferResetFlagBits
+}
+
+func wrapCommandBufferResetFlagBits(p *C.VkCommandBufferResetFlagBits) *CommandBufferResetFlagBits {
+	v := CommandBufferResetFlagBits{native: p}
+	return &v
+}
+
+func marshalCommandBufferResetFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandBufferResetFlagBits)(unsafe.Pointer(b))
+
+	return wrapCommandBufferResetFlagBits(c)
 }
 
 type CommandBufferResetFlags struct {
 	native *C.VkCommandBufferResetFlags
 }
 
+func wrapCommandBufferResetFlags(p *C.VkCommandBufferResetFlags) *CommandBufferResetFlags {
+	v := CommandBufferResetFlags{native: p}
+	return &v
+}
+
+func marshalCommandBufferResetFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandBufferResetFlags)(unsafe.Pointer(b))
+
+	return wrapCommandBufferResetFlags(c)
+}
+
 type StencilFaceFlagBits struct {
 	native *C.VkStencilFaceFlagBits
+}
+
+func wrapStencilFaceFlagBits(p *C.VkStencilFaceFlagBits) *StencilFaceFlagBits {
+	v := StencilFaceFlagBits{native: p}
+	return &v
+}
+
+func marshalStencilFaceFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkStencilFaceFlagBits)(unsafe.Pointer(b))
+
+	return wrapStencilFaceFlagBits(c)
 }
 
 type StencilFaceFlags struct {
 	native *C.VkStencilFaceFlags
 }
 
+func wrapStencilFaceFlags(p *C.VkStencilFaceFlags) *StencilFaceFlags {
+	v := StencilFaceFlags{native: p}
+	return &v
+}
+
+func marshalStencilFaceFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkStencilFaceFlags)(unsafe.Pointer(b))
+
+	return wrapStencilFaceFlags(c)
+}
+
 type ApplicationInfo struct {
 	native *C.VkApplicationInfo
+}
+
+func wrapApplicationInfo(p *C.VkApplicationInfo) *ApplicationInfo {
+	v := ApplicationInfo{native: p}
+	return &v
+}
+
+func marshalApplicationInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkApplicationInfo)(unsafe.Pointer(b))
+
+	return wrapApplicationInfo(c)
 }
 
 type InstanceCreateInfo struct {
 	native *C.VkInstanceCreateInfo
 }
 
+func wrapInstanceCreateInfo(p *C.VkInstanceCreateInfo) *InstanceCreateInfo {
+	v := InstanceCreateInfo{native: p}
+	return &v
+}
+
+func marshalInstanceCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkInstanceCreateInfo)(unsafe.Pointer(b))
+
+	return wrapInstanceCreateInfo(c)
+}
+
 type AllocationCallbacks struct {
 	native *C.VkAllocationCallbacks
+}
+
+func wrapAllocationCallbacks(p *C.VkAllocationCallbacks) *AllocationCallbacks {
+	v := AllocationCallbacks{native: p}
+	return &v
+}
+
+func marshalAllocationCallbacks(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAllocationCallbacks)(unsafe.Pointer(b))
+
+	return wrapAllocationCallbacks(c)
 }
 
 type PhysicalDeviceFeatures struct {
 	native *C.VkPhysicalDeviceFeatures
 }
 
+func wrapPhysicalDeviceFeatures(p *C.VkPhysicalDeviceFeatures) *PhysicalDeviceFeatures {
+	v := PhysicalDeviceFeatures{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceFeatures(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceFeatures)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceFeatures(c)
+}
+
 type FormatProperties struct {
 	native *C.VkFormatProperties
+}
+
+func wrapFormatProperties(p *C.VkFormatProperties) *FormatProperties {
+	v := FormatProperties{native: p}
+	return &v
+}
+
+func marshalFormatProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFormatProperties)(unsafe.Pointer(b))
+
+	return wrapFormatProperties(c)
 }
 
 type Extent3D struct {
 	native *C.VkExtent3D
 }
 
+func wrapExtent3D(p *C.VkExtent3D) *Extent3D {
+	v := Extent3D{native: p}
+	return &v
+}
+
+func marshalExtent3D(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExtent3D)(unsafe.Pointer(b))
+
+	return wrapExtent3D(c)
+}
+
 type ImageFormatProperties struct {
 	native *C.VkImageFormatProperties
+}
+
+func wrapImageFormatProperties(p *C.VkImageFormatProperties) *ImageFormatProperties {
+	v := ImageFormatProperties{native: p}
+	return &v
+}
+
+func marshalImageFormatProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageFormatProperties)(unsafe.Pointer(b))
+
+	return wrapImageFormatProperties(c)
 }
 
 type PhysicalDeviceLimits struct {
 	native *C.VkPhysicalDeviceLimits
 }
 
+func wrapPhysicalDeviceLimits(p *C.VkPhysicalDeviceLimits) *PhysicalDeviceLimits {
+	v := PhysicalDeviceLimits{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceLimits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceLimits)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceLimits(c)
+}
+
 type PhysicalDeviceSparseProperties struct {
 	native *C.VkPhysicalDeviceSparseProperties
+}
+
+func wrapPhysicalDeviceSparseProperties(p *C.VkPhysicalDeviceSparseProperties) *PhysicalDeviceSparseProperties {
+	v := PhysicalDeviceSparseProperties{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceSparseProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceSparseProperties)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceSparseProperties(c)
 }
 
 type PhysicalDeviceProperties struct {
 	native *C.VkPhysicalDeviceProperties
 }
 
+func wrapPhysicalDeviceProperties(p *C.VkPhysicalDeviceProperties) *PhysicalDeviceProperties {
+	v := PhysicalDeviceProperties{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceProperties)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceProperties(c)
+}
+
 type QueueFamilyProperties struct {
 	native *C.VkQueueFamilyProperties
+}
+
+func wrapQueueFamilyProperties(p *C.VkQueueFamilyProperties) *QueueFamilyProperties {
+	v := QueueFamilyProperties{native: p}
+	return &v
+}
+
+func marshalQueueFamilyProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueueFamilyProperties)(unsafe.Pointer(b))
+
+	return wrapQueueFamilyProperties(c)
 }
 
 type MemoryType struct {
 	native *C.VkMemoryType
 }
 
+func wrapMemoryType(p *C.VkMemoryType) *MemoryType {
+	v := MemoryType{native: p}
+	return &v
+}
+
+func marshalMemoryType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryType)(unsafe.Pointer(b))
+
+	return wrapMemoryType(c)
+}
+
 type MemoryHeap struct {
 	native *C.VkMemoryHeap
+}
+
+func wrapMemoryHeap(p *C.VkMemoryHeap) *MemoryHeap {
+	v := MemoryHeap{native: p}
+	return &v
+}
+
+func marshalMemoryHeap(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryHeap)(unsafe.Pointer(b))
+
+	return wrapMemoryHeap(c)
 }
 
 type PhysicalDeviceMemoryProperties struct {
 	native *C.VkPhysicalDeviceMemoryProperties
 }
 
+func wrapPhysicalDeviceMemoryProperties(p *C.VkPhysicalDeviceMemoryProperties) *PhysicalDeviceMemoryProperties {
+	v := PhysicalDeviceMemoryProperties{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMemoryProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMemoryProperties)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMemoryProperties(c)
+}
+
 type DeviceQueueCreateInfo struct {
 	native *C.VkDeviceQueueCreateInfo
+}
+
+func wrapDeviceQueueCreateInfo(p *C.VkDeviceQueueCreateInfo) *DeviceQueueCreateInfo {
+	v := DeviceQueueCreateInfo{native: p}
+	return &v
+}
+
+func marshalDeviceQueueCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceQueueCreateInfo)(unsafe.Pointer(b))
+
+	return wrapDeviceQueueCreateInfo(c)
 }
 
 type DeviceCreateInfo struct {
 	native *C.VkDeviceCreateInfo
 }
 
+func wrapDeviceCreateInfo(p *C.VkDeviceCreateInfo) *DeviceCreateInfo {
+	v := DeviceCreateInfo{native: p}
+	return &v
+}
+
+func marshalDeviceCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceCreateInfo)(unsafe.Pointer(b))
+
+	return wrapDeviceCreateInfo(c)
+}
+
 type ExtensionProperties struct {
 	native *C.VkExtensionProperties
+}
+
+func wrapExtensionProperties(p *C.VkExtensionProperties) *ExtensionProperties {
+	v := ExtensionProperties{native: p}
+	return &v
+}
+
+func marshalExtensionProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExtensionProperties)(unsafe.Pointer(b))
+
+	return wrapExtensionProperties(c)
 }
 
 type LayerProperties struct {
 	native *C.VkLayerProperties
 }
 
+func wrapLayerProperties(p *C.VkLayerProperties) *LayerProperties {
+	v := LayerProperties{native: p}
+	return &v
+}
+
+func marshalLayerProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkLayerProperties)(unsafe.Pointer(b))
+
+	return wrapLayerProperties(c)
+}
+
 type SubmitInfo struct {
 	native *C.VkSubmitInfo
+}
+
+func wrapSubmitInfo(p *C.VkSubmitInfo) *SubmitInfo {
+	v := SubmitInfo{native: p}
+	return &v
+}
+
+func marshalSubmitInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubmitInfo)(unsafe.Pointer(b))
+
+	return wrapSubmitInfo(c)
 }
 
 type MemoryAllocateInfo struct {
 	native *C.VkMemoryAllocateInfo
 }
 
+func wrapMemoryAllocateInfo(p *C.VkMemoryAllocateInfo) *MemoryAllocateInfo {
+	v := MemoryAllocateInfo{native: p}
+	return &v
+}
+
+func marshalMemoryAllocateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryAllocateInfo)(unsafe.Pointer(b))
+
+	return wrapMemoryAllocateInfo(c)
+}
+
 type MappedMemoryRange struct {
 	native *C.VkMappedMemoryRange
+}
+
+func wrapMappedMemoryRange(p *C.VkMappedMemoryRange) *MappedMemoryRange {
+	v := MappedMemoryRange{native: p}
+	return &v
+}
+
+func marshalMappedMemoryRange(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMappedMemoryRange)(unsafe.Pointer(b))
+
+	return wrapMappedMemoryRange(c)
 }
 
 type MemoryRequirements struct {
 	native *C.VkMemoryRequirements
 }
 
+func wrapMemoryRequirements(p *C.VkMemoryRequirements) *MemoryRequirements {
+	v := MemoryRequirements{native: p}
+	return &v
+}
+
+func marshalMemoryRequirements(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryRequirements)(unsafe.Pointer(b))
+
+	return wrapMemoryRequirements(c)
+}
+
 type SparseImageFormatProperties struct {
 	native *C.VkSparseImageFormatProperties
+}
+
+func wrapSparseImageFormatProperties(p *C.VkSparseImageFormatProperties) *SparseImageFormatProperties {
+	v := SparseImageFormatProperties{native: p}
+	return &v
+}
+
+func marshalSparseImageFormatProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageFormatProperties)(unsafe.Pointer(b))
+
+	return wrapSparseImageFormatProperties(c)
 }
 
 type SparseImageMemoryRequirements struct {
 	native *C.VkSparseImageMemoryRequirements
 }
 
+func wrapSparseImageMemoryRequirements(p *C.VkSparseImageMemoryRequirements) *SparseImageMemoryRequirements {
+	v := SparseImageMemoryRequirements{native: p}
+	return &v
+}
+
+func marshalSparseImageMemoryRequirements(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageMemoryRequirements)(unsafe.Pointer(b))
+
+	return wrapSparseImageMemoryRequirements(c)
+}
+
 type SparseMemoryBind struct {
 	native *C.VkSparseMemoryBind
+}
+
+func wrapSparseMemoryBind(p *C.VkSparseMemoryBind) *SparseMemoryBind {
+	v := SparseMemoryBind{native: p}
+	return &v
+}
+
+func marshalSparseMemoryBind(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseMemoryBind)(unsafe.Pointer(b))
+
+	return wrapSparseMemoryBind(c)
 }
 
 type SparseBufferMemoryBindInfo struct {
 	native *C.VkSparseBufferMemoryBindInfo
 }
 
+func wrapSparseBufferMemoryBindInfo(p *C.VkSparseBufferMemoryBindInfo) *SparseBufferMemoryBindInfo {
+	v := SparseBufferMemoryBindInfo{native: p}
+	return &v
+}
+
+func marshalSparseBufferMemoryBindInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseBufferMemoryBindInfo)(unsafe.Pointer(b))
+
+	return wrapSparseBufferMemoryBindInfo(c)
+}
+
 type SparseImageOpaqueMemoryBindInfo struct {
 	native *C.VkSparseImageOpaqueMemoryBindInfo
+}
+
+func wrapSparseImageOpaqueMemoryBindInfo(p *C.VkSparseImageOpaqueMemoryBindInfo) *SparseImageOpaqueMemoryBindInfo {
+	v := SparseImageOpaqueMemoryBindInfo{native: p}
+	return &v
+}
+
+func marshalSparseImageOpaqueMemoryBindInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageOpaqueMemoryBindInfo)(unsafe.Pointer(b))
+
+	return wrapSparseImageOpaqueMemoryBindInfo(c)
 }
 
 type ImageSubresource struct {
 	native *C.VkImageSubresource
 }
 
+func wrapImageSubresource(p *C.VkImageSubresource) *ImageSubresource {
+	v := ImageSubresource{native: p}
+	return &v
+}
+
+func marshalImageSubresource(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageSubresource)(unsafe.Pointer(b))
+
+	return wrapImageSubresource(c)
+}
+
 type Offset3D struct {
 	native *C.VkOffset3D
+}
+
+func wrapOffset3D(p *C.VkOffset3D) *Offset3D {
+	v := Offset3D{native: p}
+	return &v
+}
+
+func marshalOffset3D(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkOffset3D)(unsafe.Pointer(b))
+
+	return wrapOffset3D(c)
 }
 
 type SparseImageMemoryBind struct {
 	native *C.VkSparseImageMemoryBind
 }
 
+func wrapSparseImageMemoryBind(p *C.VkSparseImageMemoryBind) *SparseImageMemoryBind {
+	v := SparseImageMemoryBind{native: p}
+	return &v
+}
+
+func marshalSparseImageMemoryBind(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageMemoryBind)(unsafe.Pointer(b))
+
+	return wrapSparseImageMemoryBind(c)
+}
+
 type SparseImageMemoryBindInfo struct {
 	native *C.VkSparseImageMemoryBindInfo
+}
+
+func wrapSparseImageMemoryBindInfo(p *C.VkSparseImageMemoryBindInfo) *SparseImageMemoryBindInfo {
+	v := SparseImageMemoryBindInfo{native: p}
+	return &v
+}
+
+func marshalSparseImageMemoryBindInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageMemoryBindInfo)(unsafe.Pointer(b))
+
+	return wrapSparseImageMemoryBindInfo(c)
 }
 
 type BindSparseInfo struct {
 	native *C.VkBindSparseInfo
 }
 
+func wrapBindSparseInfo(p *C.VkBindSparseInfo) *BindSparseInfo {
+	v := BindSparseInfo{native: p}
+	return &v
+}
+
+func marshalBindSparseInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindSparseInfo)(unsafe.Pointer(b))
+
+	return wrapBindSparseInfo(c)
+}
+
 type FenceCreateInfo struct {
 	native *C.VkFenceCreateInfo
+}
+
+func wrapFenceCreateInfo(p *C.VkFenceCreateInfo) *FenceCreateInfo {
+	v := FenceCreateInfo{native: p}
+	return &v
+}
+
+func marshalFenceCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFenceCreateInfo)(unsafe.Pointer(b))
+
+	return wrapFenceCreateInfo(c)
 }
 
 type SemaphoreCreateInfo struct {
 	native *C.VkSemaphoreCreateInfo
 }
 
+func wrapSemaphoreCreateInfo(p *C.VkSemaphoreCreateInfo) *SemaphoreCreateInfo {
+	v := SemaphoreCreateInfo{native: p}
+	return &v
+}
+
+func marshalSemaphoreCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSemaphoreCreateInfo)(unsafe.Pointer(b))
+
+	return wrapSemaphoreCreateInfo(c)
+}
+
 type EventCreateInfo struct {
 	native *C.VkEventCreateInfo
+}
+
+func wrapEventCreateInfo(p *C.VkEventCreateInfo) *EventCreateInfo {
+	v := EventCreateInfo{native: p}
+	return &v
+}
+
+func marshalEventCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkEventCreateInfo)(unsafe.Pointer(b))
+
+	return wrapEventCreateInfo(c)
 }
 
 type QueryPoolCreateInfo struct {
 	native *C.VkQueryPoolCreateInfo
 }
 
+func wrapQueryPoolCreateInfo(p *C.VkQueryPoolCreateInfo) *QueryPoolCreateInfo {
+	v := QueryPoolCreateInfo{native: p}
+	return &v
+}
+
+func marshalQueryPoolCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueryPoolCreateInfo)(unsafe.Pointer(b))
+
+	return wrapQueryPoolCreateInfo(c)
+}
+
 type BufferCreateInfo struct {
 	native *C.VkBufferCreateInfo
+}
+
+func wrapBufferCreateInfo(p *C.VkBufferCreateInfo) *BufferCreateInfo {
+	v := BufferCreateInfo{native: p}
+	return &v
+}
+
+func marshalBufferCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferCreateInfo)(unsafe.Pointer(b))
+
+	return wrapBufferCreateInfo(c)
 }
 
 type BufferViewCreateInfo struct {
 	native *C.VkBufferViewCreateInfo
 }
 
+func wrapBufferViewCreateInfo(p *C.VkBufferViewCreateInfo) *BufferViewCreateInfo {
+	v := BufferViewCreateInfo{native: p}
+	return &v
+}
+
+func marshalBufferViewCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferViewCreateInfo)(unsafe.Pointer(b))
+
+	return wrapBufferViewCreateInfo(c)
+}
+
 type ImageCreateInfo struct {
 	native *C.VkImageCreateInfo
+}
+
+func wrapImageCreateInfo(p *C.VkImageCreateInfo) *ImageCreateInfo {
+	v := ImageCreateInfo{native: p}
+	return &v
+}
+
+func marshalImageCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageCreateInfo)(unsafe.Pointer(b))
+
+	return wrapImageCreateInfo(c)
 }
 
 type SubresourceLayout struct {
 	native *C.VkSubresourceLayout
 }
 
+func wrapSubresourceLayout(p *C.VkSubresourceLayout) *SubresourceLayout {
+	v := SubresourceLayout{native: p}
+	return &v
+}
+
+func marshalSubresourceLayout(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubresourceLayout)(unsafe.Pointer(b))
+
+	return wrapSubresourceLayout(c)
+}
+
 type ComponentMapping struct {
 	native *C.VkComponentMapping
+}
+
+func wrapComponentMapping(p *C.VkComponentMapping) *ComponentMapping {
+	v := ComponentMapping{native: p}
+	return &v
+}
+
+func marshalComponentMapping(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkComponentMapping)(unsafe.Pointer(b))
+
+	return wrapComponentMapping(c)
 }
 
 type ImageSubresourceRange struct {
 	native *C.VkImageSubresourceRange
 }
 
+func wrapImageSubresourceRange(p *C.VkImageSubresourceRange) *ImageSubresourceRange {
+	v := ImageSubresourceRange{native: p}
+	return &v
+}
+
+func marshalImageSubresourceRange(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageSubresourceRange)(unsafe.Pointer(b))
+
+	return wrapImageSubresourceRange(c)
+}
+
 type ImageViewCreateInfo struct {
 	native *C.VkImageViewCreateInfo
+}
+
+func wrapImageViewCreateInfo(p *C.VkImageViewCreateInfo) *ImageViewCreateInfo {
+	v := ImageViewCreateInfo{native: p}
+	return &v
+}
+
+func marshalImageViewCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageViewCreateInfo)(unsafe.Pointer(b))
+
+	return wrapImageViewCreateInfo(c)
 }
 
 type ShaderModuleCreateInfo struct {
 	native *C.VkShaderModuleCreateInfo
 }
 
+func wrapShaderModuleCreateInfo(p *C.VkShaderModuleCreateInfo) *ShaderModuleCreateInfo {
+	v := ShaderModuleCreateInfo{native: p}
+	return &v
+}
+
+func marshalShaderModuleCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShaderModuleCreateInfo)(unsafe.Pointer(b))
+
+	return wrapShaderModuleCreateInfo(c)
+}
+
 type PipelineCacheCreateInfo struct {
 	native *C.VkPipelineCacheCreateInfo
+}
+
+func wrapPipelineCacheCreateInfo(p *C.VkPipelineCacheCreateInfo) *PipelineCacheCreateInfo {
+	v := PipelineCacheCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineCacheCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCacheCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineCacheCreateInfo(c)
 }
 
 type SpecializationMapEntry struct {
 	native *C.VkSpecializationMapEntry
 }
 
+func wrapSpecializationMapEntry(p *C.VkSpecializationMapEntry) *SpecializationMapEntry {
+	v := SpecializationMapEntry{native: p}
+	return &v
+}
+
+func marshalSpecializationMapEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSpecializationMapEntry)(unsafe.Pointer(b))
+
+	return wrapSpecializationMapEntry(c)
+}
+
 type SpecializationInfo struct {
 	native *C.VkSpecializationInfo
+}
+
+func wrapSpecializationInfo(p *C.VkSpecializationInfo) *SpecializationInfo {
+	v := SpecializationInfo{native: p}
+	return &v
+}
+
+func marshalSpecializationInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSpecializationInfo)(unsafe.Pointer(b))
+
+	return wrapSpecializationInfo(c)
 }
 
 type PipelineShaderStageCreateInfo struct {
 	native *C.VkPipelineShaderStageCreateInfo
 }
 
+func wrapPipelineShaderStageCreateInfo(p *C.VkPipelineShaderStageCreateInfo) *PipelineShaderStageCreateInfo {
+	v := PipelineShaderStageCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineShaderStageCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineShaderStageCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineShaderStageCreateInfo(c)
+}
+
 type VertexInputBindingDescription struct {
 	native *C.VkVertexInputBindingDescription
+}
+
+func wrapVertexInputBindingDescription(p *C.VkVertexInputBindingDescription) *VertexInputBindingDescription {
+	v := VertexInputBindingDescription{native: p}
+	return &v
+}
+
+func marshalVertexInputBindingDescription(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkVertexInputBindingDescription)(unsafe.Pointer(b))
+
+	return wrapVertexInputBindingDescription(c)
 }
 
 type VertexInputAttributeDescription struct {
 	native *C.VkVertexInputAttributeDescription
 }
 
+func wrapVertexInputAttributeDescription(p *C.VkVertexInputAttributeDescription) *VertexInputAttributeDescription {
+	v := VertexInputAttributeDescription{native: p}
+	return &v
+}
+
+func marshalVertexInputAttributeDescription(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkVertexInputAttributeDescription)(unsafe.Pointer(b))
+
+	return wrapVertexInputAttributeDescription(c)
+}
+
 type PipelineVertexInputStateCreateInfo struct {
 	native *C.VkPipelineVertexInputStateCreateInfo
+}
+
+func wrapPipelineVertexInputStateCreateInfo(p *C.VkPipelineVertexInputStateCreateInfo) *PipelineVertexInputStateCreateInfo {
+	v := PipelineVertexInputStateCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineVertexInputStateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineVertexInputStateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineVertexInputStateCreateInfo(c)
 }
 
 type PipelineInputAssemblyStateCreateInfo struct {
 	native *C.VkPipelineInputAssemblyStateCreateInfo
 }
 
+func wrapPipelineInputAssemblyStateCreateInfo(p *C.VkPipelineInputAssemblyStateCreateInfo) *PipelineInputAssemblyStateCreateInfo {
+	v := PipelineInputAssemblyStateCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineInputAssemblyStateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineInputAssemblyStateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineInputAssemblyStateCreateInfo(c)
+}
+
 type PipelineTessellationStateCreateInfo struct {
 	native *C.VkPipelineTessellationStateCreateInfo
+}
+
+func wrapPipelineTessellationStateCreateInfo(p *C.VkPipelineTessellationStateCreateInfo) *PipelineTessellationStateCreateInfo {
+	v := PipelineTessellationStateCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineTessellationStateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineTessellationStateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineTessellationStateCreateInfo(c)
 }
 
 type Viewport struct {
 	native *C.VkViewport
 }
 
+func wrapViewport(p *C.VkViewport) *Viewport {
+	v := Viewport{native: p}
+	return &v
+}
+
+func marshalViewport(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkViewport)(unsafe.Pointer(b))
+
+	return wrapViewport(c)
+}
+
 type Offset2D struct {
 	native *C.VkOffset2D
+}
+
+func wrapOffset2D(p *C.VkOffset2D) *Offset2D {
+	v := Offset2D{native: p}
+	return &v
+}
+
+func marshalOffset2D(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkOffset2D)(unsafe.Pointer(b))
+
+	return wrapOffset2D(c)
 }
 
 type Extent2D struct {
 	native *C.VkExtent2D
 }
 
+func wrapExtent2D(p *C.VkExtent2D) *Extent2D {
+	v := Extent2D{native: p}
+	return &v
+}
+
+func marshalExtent2D(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExtent2D)(unsafe.Pointer(b))
+
+	return wrapExtent2D(c)
+}
+
 type Rect2D struct {
 	native *C.VkRect2D
+}
+
+func wrapRect2D(p *C.VkRect2D) *Rect2D {
+	v := Rect2D{native: p}
+	return &v
+}
+
+func marshalRect2D(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRect2D)(unsafe.Pointer(b))
+
+	return wrapRect2D(c)
 }
 
 type PipelineViewportStateCreateInfo struct {
 	native *C.VkPipelineViewportStateCreateInfo
 }
 
+func wrapPipelineViewportStateCreateInfo(p *C.VkPipelineViewportStateCreateInfo) *PipelineViewportStateCreateInfo {
+	v := PipelineViewportStateCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineViewportStateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineViewportStateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineViewportStateCreateInfo(c)
+}
+
 type PipelineRasterizationStateCreateInfo struct {
 	native *C.VkPipelineRasterizationStateCreateInfo
+}
+
+func wrapPipelineRasterizationStateCreateInfo(p *C.VkPipelineRasterizationStateCreateInfo) *PipelineRasterizationStateCreateInfo {
+	v := PipelineRasterizationStateCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineRasterizationStateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineRasterizationStateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineRasterizationStateCreateInfo(c)
 }
 
 type PipelineMultisampleStateCreateInfo struct {
 	native *C.VkPipelineMultisampleStateCreateInfo
 }
 
+func wrapPipelineMultisampleStateCreateInfo(p *C.VkPipelineMultisampleStateCreateInfo) *PipelineMultisampleStateCreateInfo {
+	v := PipelineMultisampleStateCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineMultisampleStateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineMultisampleStateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineMultisampleStateCreateInfo(c)
+}
+
 type StencilOpState struct {
 	native *C.VkStencilOpState
+}
+
+func wrapStencilOpState(p *C.VkStencilOpState) *StencilOpState {
+	v := StencilOpState{native: p}
+	return &v
+}
+
+func marshalStencilOpState(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkStencilOpState)(unsafe.Pointer(b))
+
+	return wrapStencilOpState(c)
 }
 
 type PipelineDepthStencilStateCreateInfo struct {
 	native *C.VkPipelineDepthStencilStateCreateInfo
 }
 
+func wrapPipelineDepthStencilStateCreateInfo(p *C.VkPipelineDepthStencilStateCreateInfo) *PipelineDepthStencilStateCreateInfo {
+	v := PipelineDepthStencilStateCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineDepthStencilStateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineDepthStencilStateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineDepthStencilStateCreateInfo(c)
+}
+
 type PipelineColorBlendAttachmentState struct {
 	native *C.VkPipelineColorBlendAttachmentState
+}
+
+func wrapPipelineColorBlendAttachmentState(p *C.VkPipelineColorBlendAttachmentState) *PipelineColorBlendAttachmentState {
+	v := PipelineColorBlendAttachmentState{native: p}
+	return &v
+}
+
+func marshalPipelineColorBlendAttachmentState(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineColorBlendAttachmentState)(unsafe.Pointer(b))
+
+	return wrapPipelineColorBlendAttachmentState(c)
 }
 
 type PipelineColorBlendStateCreateInfo struct {
 	native *C.VkPipelineColorBlendStateCreateInfo
 }
 
+func wrapPipelineColorBlendStateCreateInfo(p *C.VkPipelineColorBlendStateCreateInfo) *PipelineColorBlendStateCreateInfo {
+	v := PipelineColorBlendStateCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineColorBlendStateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineColorBlendStateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineColorBlendStateCreateInfo(c)
+}
+
 type PipelineDynamicStateCreateInfo struct {
 	native *C.VkPipelineDynamicStateCreateInfo
+}
+
+func wrapPipelineDynamicStateCreateInfo(p *C.VkPipelineDynamicStateCreateInfo) *PipelineDynamicStateCreateInfo {
+	v := PipelineDynamicStateCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineDynamicStateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineDynamicStateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineDynamicStateCreateInfo(c)
 }
 
 type GraphicsPipelineCreateInfo struct {
 	native *C.VkGraphicsPipelineCreateInfo
 }
 
+func wrapGraphicsPipelineCreateInfo(p *C.VkGraphicsPipelineCreateInfo) *GraphicsPipelineCreateInfo {
+	v := GraphicsPipelineCreateInfo{native: p}
+	return &v
+}
+
+func marshalGraphicsPipelineCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkGraphicsPipelineCreateInfo)(unsafe.Pointer(b))
+
+	return wrapGraphicsPipelineCreateInfo(c)
+}
+
 type ComputePipelineCreateInfo struct {
 	native *C.VkComputePipelineCreateInfo
+}
+
+func wrapComputePipelineCreateInfo(p *C.VkComputePipelineCreateInfo) *ComputePipelineCreateInfo {
+	v := ComputePipelineCreateInfo{native: p}
+	return &v
+}
+
+func marshalComputePipelineCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkComputePipelineCreateInfo)(unsafe.Pointer(b))
+
+	return wrapComputePipelineCreateInfo(c)
 }
 
 type PushConstantRange struct {
 	native *C.VkPushConstantRange
 }
 
+func wrapPushConstantRange(p *C.VkPushConstantRange) *PushConstantRange {
+	v := PushConstantRange{native: p}
+	return &v
+}
+
+func marshalPushConstantRange(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPushConstantRange)(unsafe.Pointer(b))
+
+	return wrapPushConstantRange(c)
+}
+
 type PipelineLayoutCreateInfo struct {
 	native *C.VkPipelineLayoutCreateInfo
+}
+
+func wrapPipelineLayoutCreateInfo(p *C.VkPipelineLayoutCreateInfo) *PipelineLayoutCreateInfo {
+	v := PipelineLayoutCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineLayoutCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineLayoutCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineLayoutCreateInfo(c)
 }
 
 type SamplerCreateInfo struct {
 	native *C.VkSamplerCreateInfo
 }
 
+func wrapSamplerCreateInfo(p *C.VkSamplerCreateInfo) *SamplerCreateInfo {
+	v := SamplerCreateInfo{native: p}
+	return &v
+}
+
+func marshalSamplerCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerCreateInfo)(unsafe.Pointer(b))
+
+	return wrapSamplerCreateInfo(c)
+}
+
 type DescriptorSetLayoutBinding struct {
 	native *C.VkDescriptorSetLayoutBinding
+}
+
+func wrapDescriptorSetLayoutBinding(p *C.VkDescriptorSetLayoutBinding) *DescriptorSetLayoutBinding {
+	v := DescriptorSetLayoutBinding{native: p}
+	return &v
+}
+
+func marshalDescriptorSetLayoutBinding(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetLayoutBinding)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetLayoutBinding(c)
 }
 
 type DescriptorSetLayoutCreateInfo struct {
 	native *C.VkDescriptorSetLayoutCreateInfo
 }
 
+func wrapDescriptorSetLayoutCreateInfo(p *C.VkDescriptorSetLayoutCreateInfo) *DescriptorSetLayoutCreateInfo {
+	v := DescriptorSetLayoutCreateInfo{native: p}
+	return &v
+}
+
+func marshalDescriptorSetLayoutCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetLayoutCreateInfo)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetLayoutCreateInfo(c)
+}
+
 type DescriptorPoolSize struct {
 	native *C.VkDescriptorPoolSize
+}
+
+func wrapDescriptorPoolSize(p *C.VkDescriptorPoolSize) *DescriptorPoolSize {
+	v := DescriptorPoolSize{native: p}
+	return &v
+}
+
+func marshalDescriptorPoolSize(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorPoolSize)(unsafe.Pointer(b))
+
+	return wrapDescriptorPoolSize(c)
 }
 
 type DescriptorPoolCreateInfo struct {
 	native *C.VkDescriptorPoolCreateInfo
 }
 
+func wrapDescriptorPoolCreateInfo(p *C.VkDescriptorPoolCreateInfo) *DescriptorPoolCreateInfo {
+	v := DescriptorPoolCreateInfo{native: p}
+	return &v
+}
+
+func marshalDescriptorPoolCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorPoolCreateInfo)(unsafe.Pointer(b))
+
+	return wrapDescriptorPoolCreateInfo(c)
+}
+
 type DescriptorSetAllocateInfo struct {
 	native *C.VkDescriptorSetAllocateInfo
+}
+
+func wrapDescriptorSetAllocateInfo(p *C.VkDescriptorSetAllocateInfo) *DescriptorSetAllocateInfo {
+	v := DescriptorSetAllocateInfo{native: p}
+	return &v
+}
+
+func marshalDescriptorSetAllocateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetAllocateInfo)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetAllocateInfo(c)
 }
 
 type DescriptorImageInfo struct {
 	native *C.VkDescriptorImageInfo
 }
 
+func wrapDescriptorImageInfo(p *C.VkDescriptorImageInfo) *DescriptorImageInfo {
+	v := DescriptorImageInfo{native: p}
+	return &v
+}
+
+func marshalDescriptorImageInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorImageInfo)(unsafe.Pointer(b))
+
+	return wrapDescriptorImageInfo(c)
+}
+
 type DescriptorBufferInfo struct {
 	native *C.VkDescriptorBufferInfo
+}
+
+func wrapDescriptorBufferInfo(p *C.VkDescriptorBufferInfo) *DescriptorBufferInfo {
+	v := DescriptorBufferInfo{native: p}
+	return &v
+}
+
+func marshalDescriptorBufferInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorBufferInfo)(unsafe.Pointer(b))
+
+	return wrapDescriptorBufferInfo(c)
 }
 
 type WriteDescriptorSet struct {
 	native *C.VkWriteDescriptorSet
 }
 
+func wrapWriteDescriptorSet(p *C.VkWriteDescriptorSet) *WriteDescriptorSet {
+	v := WriteDescriptorSet{native: p}
+	return &v
+}
+
+func marshalWriteDescriptorSet(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkWriteDescriptorSet)(unsafe.Pointer(b))
+
+	return wrapWriteDescriptorSet(c)
+}
+
 type CopyDescriptorSet struct {
 	native *C.VkCopyDescriptorSet
+}
+
+func wrapCopyDescriptorSet(p *C.VkCopyDescriptorSet) *CopyDescriptorSet {
+	v := CopyDescriptorSet{native: p}
+	return &v
+}
+
+func marshalCopyDescriptorSet(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCopyDescriptorSet)(unsafe.Pointer(b))
+
+	return wrapCopyDescriptorSet(c)
 }
 
 type FramebufferCreateInfo struct {
 	native *C.VkFramebufferCreateInfo
 }
 
+func wrapFramebufferCreateInfo(p *C.VkFramebufferCreateInfo) *FramebufferCreateInfo {
+	v := FramebufferCreateInfo{native: p}
+	return &v
+}
+
+func marshalFramebufferCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFramebufferCreateInfo)(unsafe.Pointer(b))
+
+	return wrapFramebufferCreateInfo(c)
+}
+
 type AttachmentDescription struct {
 	native *C.VkAttachmentDescription
+}
+
+func wrapAttachmentDescription(p *C.VkAttachmentDescription) *AttachmentDescription {
+	v := AttachmentDescription{native: p}
+	return &v
+}
+
+func marshalAttachmentDescription(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAttachmentDescription)(unsafe.Pointer(b))
+
+	return wrapAttachmentDescription(c)
 }
 
 type AttachmentReference struct {
 	native *C.VkAttachmentReference
 }
 
+func wrapAttachmentReference(p *C.VkAttachmentReference) *AttachmentReference {
+	v := AttachmentReference{native: p}
+	return &v
+}
+
+func marshalAttachmentReference(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAttachmentReference)(unsafe.Pointer(b))
+
+	return wrapAttachmentReference(c)
+}
+
 type SubpassDescription struct {
 	native *C.VkSubpassDescription
+}
+
+func wrapSubpassDescription(p *C.VkSubpassDescription) *SubpassDescription {
+	v := SubpassDescription{native: p}
+	return &v
+}
+
+func marshalSubpassDescription(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassDescription)(unsafe.Pointer(b))
+
+	return wrapSubpassDescription(c)
 }
 
 type SubpassDependency struct {
 	native *C.VkSubpassDependency
 }
 
+func wrapSubpassDependency(p *C.VkSubpassDependency) *SubpassDependency {
+	v := SubpassDependency{native: p}
+	return &v
+}
+
+func marshalSubpassDependency(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassDependency)(unsafe.Pointer(b))
+
+	return wrapSubpassDependency(c)
+}
+
 type RenderPassCreateInfo struct {
 	native *C.VkRenderPassCreateInfo
+}
+
+func wrapRenderPassCreateInfo(p *C.VkRenderPassCreateInfo) *RenderPassCreateInfo {
+	v := RenderPassCreateInfo{native: p}
+	return &v
+}
+
+func marshalRenderPassCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPassCreateInfo)(unsafe.Pointer(b))
+
+	return wrapRenderPassCreateInfo(c)
 }
 
 type CommandPoolCreateInfo struct {
 	native *C.VkCommandPoolCreateInfo
 }
 
+func wrapCommandPoolCreateInfo(p *C.VkCommandPoolCreateInfo) *CommandPoolCreateInfo {
+	v := CommandPoolCreateInfo{native: p}
+	return &v
+}
+
+func marshalCommandPoolCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandPoolCreateInfo)(unsafe.Pointer(b))
+
+	return wrapCommandPoolCreateInfo(c)
+}
+
 type CommandBufferAllocateInfo struct {
 	native *C.VkCommandBufferAllocateInfo
+}
+
+func wrapCommandBufferAllocateInfo(p *C.VkCommandBufferAllocateInfo) *CommandBufferAllocateInfo {
+	v := CommandBufferAllocateInfo{native: p}
+	return &v
+}
+
+func marshalCommandBufferAllocateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandBufferAllocateInfo)(unsafe.Pointer(b))
+
+	return wrapCommandBufferAllocateInfo(c)
 }
 
 type CommandBufferInheritanceInfo struct {
 	native *C.VkCommandBufferInheritanceInfo
 }
 
+func wrapCommandBufferInheritanceInfo(p *C.VkCommandBufferInheritanceInfo) *CommandBufferInheritanceInfo {
+	v := CommandBufferInheritanceInfo{native: p}
+	return &v
+}
+
+func marshalCommandBufferInheritanceInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandBufferInheritanceInfo)(unsafe.Pointer(b))
+
+	return wrapCommandBufferInheritanceInfo(c)
+}
+
 type CommandBufferBeginInfo struct {
 	native *C.VkCommandBufferBeginInfo
+}
+
+func wrapCommandBufferBeginInfo(p *C.VkCommandBufferBeginInfo) *CommandBufferBeginInfo {
+	v := CommandBufferBeginInfo{native: p}
+	return &v
+}
+
+func marshalCommandBufferBeginInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandBufferBeginInfo)(unsafe.Pointer(b))
+
+	return wrapCommandBufferBeginInfo(c)
 }
 
 type BufferCopy struct {
 	native *C.VkBufferCopy
 }
 
+func wrapBufferCopy(p *C.VkBufferCopy) *BufferCopy {
+	v := BufferCopy{native: p}
+	return &v
+}
+
+func marshalBufferCopy(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferCopy)(unsafe.Pointer(b))
+
+	return wrapBufferCopy(c)
+}
+
 type ImageSubresourceLayers struct {
 	native *C.VkImageSubresourceLayers
+}
+
+func wrapImageSubresourceLayers(p *C.VkImageSubresourceLayers) *ImageSubresourceLayers {
+	v := ImageSubresourceLayers{native: p}
+	return &v
+}
+
+func marshalImageSubresourceLayers(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageSubresourceLayers)(unsafe.Pointer(b))
+
+	return wrapImageSubresourceLayers(c)
 }
 
 type ImageCopy struct {
 	native *C.VkImageCopy
 }
 
+func wrapImageCopy(p *C.VkImageCopy) *ImageCopy {
+	v := ImageCopy{native: p}
+	return &v
+}
+
+func marshalImageCopy(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageCopy)(unsafe.Pointer(b))
+
+	return wrapImageCopy(c)
+}
+
 type ImageBlit struct {
 	native *C.VkImageBlit
+}
+
+func wrapImageBlit(p *C.VkImageBlit) *ImageBlit {
+	v := ImageBlit{native: p}
+	return &v
+}
+
+func marshalImageBlit(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageBlit)(unsafe.Pointer(b))
+
+	return wrapImageBlit(c)
 }
 
 type BufferImageCopy struct {
 	native *C.VkBufferImageCopy
 }
 
+func wrapBufferImageCopy(p *C.VkBufferImageCopy) *BufferImageCopy {
+	v := BufferImageCopy{native: p}
+	return &v
+}
+
+func marshalBufferImageCopy(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferImageCopy)(unsafe.Pointer(b))
+
+	return wrapBufferImageCopy(c)
+}
+
 type ClearColorValue struct {
 	native *C.VkClearColorValue
+}
+
+func wrapClearColorValue(p *C.VkClearColorValue) *ClearColorValue {
+	v := ClearColorValue{native: p}
+	return &v
+}
+
+func marshalClearColorValue(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkClearColorValue)(unsafe.Pointer(b))
+
+	return wrapClearColorValue(c)
 }
 
 type ClearDepthStencilValue struct {
 	native *C.VkClearDepthStencilValue
 }
 
+func wrapClearDepthStencilValue(p *C.VkClearDepthStencilValue) *ClearDepthStencilValue {
+	v := ClearDepthStencilValue{native: p}
+	return &v
+}
+
+func marshalClearDepthStencilValue(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkClearDepthStencilValue)(unsafe.Pointer(b))
+
+	return wrapClearDepthStencilValue(c)
+}
+
 type ClearValue struct {
 	native *C.VkClearValue
+}
+
+func wrapClearValue(p *C.VkClearValue) *ClearValue {
+	v := ClearValue{native: p}
+	return &v
+}
+
+func marshalClearValue(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkClearValue)(unsafe.Pointer(b))
+
+	return wrapClearValue(c)
 }
 
 type ClearAttachment struct {
 	native *C.VkClearAttachment
 }
 
+func wrapClearAttachment(p *C.VkClearAttachment) *ClearAttachment {
+	v := ClearAttachment{native: p}
+	return &v
+}
+
+func marshalClearAttachment(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkClearAttachment)(unsafe.Pointer(b))
+
+	return wrapClearAttachment(c)
+}
+
 type ClearRect struct {
 	native *C.VkClearRect
+}
+
+func wrapClearRect(p *C.VkClearRect) *ClearRect {
+	v := ClearRect{native: p}
+	return &v
+}
+
+func marshalClearRect(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkClearRect)(unsafe.Pointer(b))
+
+	return wrapClearRect(c)
 }
 
 type ImageResolve struct {
 	native *C.VkImageResolve
 }
 
+func wrapImageResolve(p *C.VkImageResolve) *ImageResolve {
+	v := ImageResolve{native: p}
+	return &v
+}
+
+func marshalImageResolve(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageResolve)(unsafe.Pointer(b))
+
+	return wrapImageResolve(c)
+}
+
 type MemoryBarrier struct {
 	native *C.VkMemoryBarrier
+}
+
+func wrapMemoryBarrier(p *C.VkMemoryBarrier) *MemoryBarrier {
+	v := MemoryBarrier{native: p}
+	return &v
+}
+
+func marshalMemoryBarrier(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryBarrier)(unsafe.Pointer(b))
+
+	return wrapMemoryBarrier(c)
 }
 
 type BufferMemoryBarrier struct {
 	native *C.VkBufferMemoryBarrier
 }
 
+func wrapBufferMemoryBarrier(p *C.VkBufferMemoryBarrier) *BufferMemoryBarrier {
+	v := BufferMemoryBarrier{native: p}
+	return &v
+}
+
+func marshalBufferMemoryBarrier(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferMemoryBarrier)(unsafe.Pointer(b))
+
+	return wrapBufferMemoryBarrier(c)
+}
+
 type ImageMemoryBarrier struct {
 	native *C.VkImageMemoryBarrier
+}
+
+func wrapImageMemoryBarrier(p *C.VkImageMemoryBarrier) *ImageMemoryBarrier {
+	v := ImageMemoryBarrier{native: p}
+	return &v
+}
+
+func marshalImageMemoryBarrier(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageMemoryBarrier)(unsafe.Pointer(b))
+
+	return wrapImageMemoryBarrier(c)
 }
 
 type RenderPassBeginInfo struct {
 	native *C.VkRenderPassBeginInfo
 }
 
+func wrapRenderPassBeginInfo(p *C.VkRenderPassBeginInfo) *RenderPassBeginInfo {
+	v := RenderPassBeginInfo{native: p}
+	return &v
+}
+
+func marshalRenderPassBeginInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPassBeginInfo)(unsafe.Pointer(b))
+
+	return wrapRenderPassBeginInfo(c)
+}
+
 type DispatchIndirectCommand struct {
 	native *C.VkDispatchIndirectCommand
+}
+
+func wrapDispatchIndirectCommand(p *C.VkDispatchIndirectCommand) *DispatchIndirectCommand {
+	v := DispatchIndirectCommand{native: p}
+	return &v
+}
+
+func marshalDispatchIndirectCommand(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDispatchIndirectCommand)(unsafe.Pointer(b))
+
+	return wrapDispatchIndirectCommand(c)
 }
 
 type DrawIndexedIndirectCommand struct {
 	native *C.VkDrawIndexedIndirectCommand
 }
 
+func wrapDrawIndexedIndirectCommand(p *C.VkDrawIndexedIndirectCommand) *DrawIndexedIndirectCommand {
+	v := DrawIndexedIndirectCommand{native: p}
+	return &v
+}
+
+func marshalDrawIndexedIndirectCommand(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDrawIndexedIndirectCommand)(unsafe.Pointer(b))
+
+	return wrapDrawIndexedIndirectCommand(c)
+}
+
 type DrawIndirectCommand struct {
 	native *C.VkDrawIndirectCommand
+}
+
+func wrapDrawIndirectCommand(p *C.VkDrawIndirectCommand) *DrawIndirectCommand {
+	v := DrawIndirectCommand{native: p}
+	return &v
+}
+
+func marshalDrawIndirectCommand(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDrawIndirectCommand)(unsafe.Pointer(b))
+
+	return wrapDrawIndirectCommand(c)
 }
 
 type BaseOutStructure struct {
 	native *C.VkBaseOutStructure
 }
 
+func wrapBaseOutStructure(p *C.VkBaseOutStructure) *BaseOutStructure {
+	v := BaseOutStructure{native: p}
+	return &v
+}
+
+func marshalBaseOutStructure(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBaseOutStructure)(unsafe.Pointer(b))
+
+	return wrapBaseOutStructure(c)
+}
+
 type BaseInStructure struct {
 	native *C.VkBaseInStructure
+}
+
+func wrapBaseInStructure(p *C.VkBaseInStructure) *BaseInStructure {
+	v := BaseInStructure{native: p}
+	return &v
+}
+
+func marshalBaseInStructure(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBaseInStructure)(unsafe.Pointer(b))
+
+	return wrapBaseInStructure(c)
 }
 
 type SamplerYcbcrConversion struct {
 	native *C.VkSamplerYcbcrConversion
 }
 
+func wrapSamplerYcbcrConversion(p *C.VkSamplerYcbcrConversion) *SamplerYcbcrConversion {
+	v := SamplerYcbcrConversion{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrConversion(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrConversion)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrConversion(c)
+}
+
 type DescriptorUpdateTemplate struct {
 	native *C.VkDescriptorUpdateTemplate
+}
+
+func wrapDescriptorUpdateTemplate(p *C.VkDescriptorUpdateTemplate) *DescriptorUpdateTemplate {
+	v := DescriptorUpdateTemplate{native: p}
+	return &v
+}
+
+func marshalDescriptorUpdateTemplate(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorUpdateTemplate)(unsafe.Pointer(b))
+
+	return wrapDescriptorUpdateTemplate(c)
 }
 
 type PointClippingBehavior struct {
 	native *C.VkPointClippingBehavior
 }
 
+func wrapPointClippingBehavior(p *C.VkPointClippingBehavior) *PointClippingBehavior {
+	v := PointClippingBehavior{native: p}
+	return &v
+}
+
+func marshalPointClippingBehavior(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPointClippingBehavior)(unsafe.Pointer(b))
+
+	return wrapPointClippingBehavior(c)
+}
+
 type TessellationDomainOrigin struct {
 	native *C.VkTessellationDomainOrigin
+}
+
+func wrapTessellationDomainOrigin(p *C.VkTessellationDomainOrigin) *TessellationDomainOrigin {
+	v := TessellationDomainOrigin{native: p}
+	return &v
+}
+
+func marshalTessellationDomainOrigin(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkTessellationDomainOrigin)(unsafe.Pointer(b))
+
+	return wrapTessellationDomainOrigin(c)
 }
 
 type SamplerYcbcrModelConversion struct {
 	native *C.VkSamplerYcbcrModelConversion
 }
 
+func wrapSamplerYcbcrModelConversion(p *C.VkSamplerYcbcrModelConversion) *SamplerYcbcrModelConversion {
+	v := SamplerYcbcrModelConversion{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrModelConversion(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrModelConversion)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrModelConversion(c)
+}
+
 type SamplerYcbcrRange struct {
 	native *C.VkSamplerYcbcrRange
+}
+
+func wrapSamplerYcbcrRange(p *C.VkSamplerYcbcrRange) *SamplerYcbcrRange {
+	v := SamplerYcbcrRange{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrRange(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrRange)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrRange(c)
 }
 
 type ChromaLocation struct {
 	native *C.VkChromaLocation
 }
 
+func wrapChromaLocation(p *C.VkChromaLocation) *ChromaLocation {
+	v := ChromaLocation{native: p}
+	return &v
+}
+
+func marshalChromaLocation(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkChromaLocation)(unsafe.Pointer(b))
+
+	return wrapChromaLocation(c)
+}
+
 type DescriptorUpdateTemplateType struct {
 	native *C.VkDescriptorUpdateTemplateType
+}
+
+func wrapDescriptorUpdateTemplateType(p *C.VkDescriptorUpdateTemplateType) *DescriptorUpdateTemplateType {
+	v := DescriptorUpdateTemplateType{native: p}
+	return &v
+}
+
+func marshalDescriptorUpdateTemplateType(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorUpdateTemplateType)(unsafe.Pointer(b))
+
+	return wrapDescriptorUpdateTemplateType(c)
 }
 
 type SubgroupFeatureFlagBits struct {
 	native *C.VkSubgroupFeatureFlagBits
 }
 
+func wrapSubgroupFeatureFlagBits(p *C.VkSubgroupFeatureFlagBits) *SubgroupFeatureFlagBits {
+	v := SubgroupFeatureFlagBits{native: p}
+	return &v
+}
+
+func marshalSubgroupFeatureFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubgroupFeatureFlagBits)(unsafe.Pointer(b))
+
+	return wrapSubgroupFeatureFlagBits(c)
+}
+
 type SubgroupFeatureFlags struct {
 	native *C.VkSubgroupFeatureFlags
+}
+
+func wrapSubgroupFeatureFlags(p *C.VkSubgroupFeatureFlags) *SubgroupFeatureFlags {
+	v := SubgroupFeatureFlags{native: p}
+	return &v
+}
+
+func marshalSubgroupFeatureFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubgroupFeatureFlags)(unsafe.Pointer(b))
+
+	return wrapSubgroupFeatureFlags(c)
 }
 
 type PeerMemoryFeatureFlagBits struct {
 	native *C.VkPeerMemoryFeatureFlagBits
 }
 
+func wrapPeerMemoryFeatureFlagBits(p *C.VkPeerMemoryFeatureFlagBits) *PeerMemoryFeatureFlagBits {
+	v := PeerMemoryFeatureFlagBits{native: p}
+	return &v
+}
+
+func marshalPeerMemoryFeatureFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPeerMemoryFeatureFlagBits)(unsafe.Pointer(b))
+
+	return wrapPeerMemoryFeatureFlagBits(c)
+}
+
 type PeerMemoryFeatureFlags struct {
 	native *C.VkPeerMemoryFeatureFlags
+}
+
+func wrapPeerMemoryFeatureFlags(p *C.VkPeerMemoryFeatureFlags) *PeerMemoryFeatureFlags {
+	v := PeerMemoryFeatureFlags{native: p}
+	return &v
+}
+
+func marshalPeerMemoryFeatureFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPeerMemoryFeatureFlags)(unsafe.Pointer(b))
+
+	return wrapPeerMemoryFeatureFlags(c)
 }
 
 type MemoryAllocateFlagBits struct {
 	native *C.VkMemoryAllocateFlagBits
 }
 
+func wrapMemoryAllocateFlagBits(p *C.VkMemoryAllocateFlagBits) *MemoryAllocateFlagBits {
+	v := MemoryAllocateFlagBits{native: p}
+	return &v
+}
+
+func marshalMemoryAllocateFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryAllocateFlagBits)(unsafe.Pointer(b))
+
+	return wrapMemoryAllocateFlagBits(c)
+}
+
 type MemoryAllocateFlags struct {
 	native *C.VkMemoryAllocateFlags
+}
+
+func wrapMemoryAllocateFlags(p *C.VkMemoryAllocateFlags) *MemoryAllocateFlags {
+	v := MemoryAllocateFlags{native: p}
+	return &v
+}
+
+func marshalMemoryAllocateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryAllocateFlags)(unsafe.Pointer(b))
+
+	return wrapMemoryAllocateFlags(c)
 }
 
 type CommandPoolTrimFlags struct {
 	native *C.VkCommandPoolTrimFlags
 }
 
+func wrapCommandPoolTrimFlags(p *C.VkCommandPoolTrimFlags) *CommandPoolTrimFlags {
+	v := CommandPoolTrimFlags{native: p}
+	return &v
+}
+
+func marshalCommandPoolTrimFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandPoolTrimFlags)(unsafe.Pointer(b))
+
+	return wrapCommandPoolTrimFlags(c)
+}
+
 type DescriptorUpdateTemplateCreateFlags struct {
 	native *C.VkDescriptorUpdateTemplateCreateFlags
+}
+
+func wrapDescriptorUpdateTemplateCreateFlags(p *C.VkDescriptorUpdateTemplateCreateFlags) *DescriptorUpdateTemplateCreateFlags {
+	v := DescriptorUpdateTemplateCreateFlags{native: p}
+	return &v
+}
+
+func marshalDescriptorUpdateTemplateCreateFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorUpdateTemplateCreateFlags)(unsafe.Pointer(b))
+
+	return wrapDescriptorUpdateTemplateCreateFlags(c)
 }
 
 type ExternalMemoryHandleTypeFlagBits struct {
 	native *C.VkExternalMemoryHandleTypeFlagBits
 }
 
+func wrapExternalMemoryHandleTypeFlagBits(p *C.VkExternalMemoryHandleTypeFlagBits) *ExternalMemoryHandleTypeFlagBits {
+	v := ExternalMemoryHandleTypeFlagBits{native: p}
+	return &v
+}
+
+func marshalExternalMemoryHandleTypeFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryHandleTypeFlagBits)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryHandleTypeFlagBits(c)
+}
+
 type ExternalMemoryHandleTypeFlags struct {
 	native *C.VkExternalMemoryHandleTypeFlags
+}
+
+func wrapExternalMemoryHandleTypeFlags(p *C.VkExternalMemoryHandleTypeFlags) *ExternalMemoryHandleTypeFlags {
+	v := ExternalMemoryHandleTypeFlags{native: p}
+	return &v
+}
+
+func marshalExternalMemoryHandleTypeFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryHandleTypeFlags)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryHandleTypeFlags(c)
 }
 
 type ExternalMemoryFeatureFlagBits struct {
 	native *C.VkExternalMemoryFeatureFlagBits
 }
 
+func wrapExternalMemoryFeatureFlagBits(p *C.VkExternalMemoryFeatureFlagBits) *ExternalMemoryFeatureFlagBits {
+	v := ExternalMemoryFeatureFlagBits{native: p}
+	return &v
+}
+
+func marshalExternalMemoryFeatureFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryFeatureFlagBits)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryFeatureFlagBits(c)
+}
+
 type ExternalMemoryFeatureFlags struct {
 	native *C.VkExternalMemoryFeatureFlags
+}
+
+func wrapExternalMemoryFeatureFlags(p *C.VkExternalMemoryFeatureFlags) *ExternalMemoryFeatureFlags {
+	v := ExternalMemoryFeatureFlags{native: p}
+	return &v
+}
+
+func marshalExternalMemoryFeatureFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryFeatureFlags)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryFeatureFlags(c)
 }
 
 type ExternalFenceHandleTypeFlagBits struct {
 	native *C.VkExternalFenceHandleTypeFlagBits
 }
 
+func wrapExternalFenceHandleTypeFlagBits(p *C.VkExternalFenceHandleTypeFlagBits) *ExternalFenceHandleTypeFlagBits {
+	v := ExternalFenceHandleTypeFlagBits{native: p}
+	return &v
+}
+
+func marshalExternalFenceHandleTypeFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalFenceHandleTypeFlagBits)(unsafe.Pointer(b))
+
+	return wrapExternalFenceHandleTypeFlagBits(c)
+}
+
 type ExternalFenceHandleTypeFlags struct {
 	native *C.VkExternalFenceHandleTypeFlags
+}
+
+func wrapExternalFenceHandleTypeFlags(p *C.VkExternalFenceHandleTypeFlags) *ExternalFenceHandleTypeFlags {
+	v := ExternalFenceHandleTypeFlags{native: p}
+	return &v
+}
+
+func marshalExternalFenceHandleTypeFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalFenceHandleTypeFlags)(unsafe.Pointer(b))
+
+	return wrapExternalFenceHandleTypeFlags(c)
 }
 
 type ExternalFenceFeatureFlagBits struct {
 	native *C.VkExternalFenceFeatureFlagBits
 }
 
+func wrapExternalFenceFeatureFlagBits(p *C.VkExternalFenceFeatureFlagBits) *ExternalFenceFeatureFlagBits {
+	v := ExternalFenceFeatureFlagBits{native: p}
+	return &v
+}
+
+func marshalExternalFenceFeatureFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalFenceFeatureFlagBits)(unsafe.Pointer(b))
+
+	return wrapExternalFenceFeatureFlagBits(c)
+}
+
 type ExternalFenceFeatureFlags struct {
 	native *C.VkExternalFenceFeatureFlags
+}
+
+func wrapExternalFenceFeatureFlags(p *C.VkExternalFenceFeatureFlags) *ExternalFenceFeatureFlags {
+	v := ExternalFenceFeatureFlags{native: p}
+	return &v
+}
+
+func marshalExternalFenceFeatureFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalFenceFeatureFlags)(unsafe.Pointer(b))
+
+	return wrapExternalFenceFeatureFlags(c)
 }
 
 type FenceImportFlagBits struct {
 	native *C.VkFenceImportFlagBits
 }
 
+func wrapFenceImportFlagBits(p *C.VkFenceImportFlagBits) *FenceImportFlagBits {
+	v := FenceImportFlagBits{native: p}
+	return &v
+}
+
+func marshalFenceImportFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFenceImportFlagBits)(unsafe.Pointer(b))
+
+	return wrapFenceImportFlagBits(c)
+}
+
 type FenceImportFlags struct {
 	native *C.VkFenceImportFlags
+}
+
+func wrapFenceImportFlags(p *C.VkFenceImportFlags) *FenceImportFlags {
+	v := FenceImportFlags{native: p}
+	return &v
+}
+
+func marshalFenceImportFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFenceImportFlags)(unsafe.Pointer(b))
+
+	return wrapFenceImportFlags(c)
 }
 
 type SemaphoreImportFlagBits struct {
 	native *C.VkSemaphoreImportFlagBits
 }
 
+func wrapSemaphoreImportFlagBits(p *C.VkSemaphoreImportFlagBits) *SemaphoreImportFlagBits {
+	v := SemaphoreImportFlagBits{native: p}
+	return &v
+}
+
+func marshalSemaphoreImportFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSemaphoreImportFlagBits)(unsafe.Pointer(b))
+
+	return wrapSemaphoreImportFlagBits(c)
+}
+
 type SemaphoreImportFlags struct {
 	native *C.VkSemaphoreImportFlags
+}
+
+func wrapSemaphoreImportFlags(p *C.VkSemaphoreImportFlags) *SemaphoreImportFlags {
+	v := SemaphoreImportFlags{native: p}
+	return &v
+}
+
+func marshalSemaphoreImportFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSemaphoreImportFlags)(unsafe.Pointer(b))
+
+	return wrapSemaphoreImportFlags(c)
 }
 
 type ExternalSemaphoreHandleTypeFlagBits struct {
 	native *C.VkExternalSemaphoreHandleTypeFlagBits
 }
 
+func wrapExternalSemaphoreHandleTypeFlagBits(p *C.VkExternalSemaphoreHandleTypeFlagBits) *ExternalSemaphoreHandleTypeFlagBits {
+	v := ExternalSemaphoreHandleTypeFlagBits{native: p}
+	return &v
+}
+
+func marshalExternalSemaphoreHandleTypeFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalSemaphoreHandleTypeFlagBits)(unsafe.Pointer(b))
+
+	return wrapExternalSemaphoreHandleTypeFlagBits(c)
+}
+
 type ExternalSemaphoreHandleTypeFlags struct {
 	native *C.VkExternalSemaphoreHandleTypeFlags
+}
+
+func wrapExternalSemaphoreHandleTypeFlags(p *C.VkExternalSemaphoreHandleTypeFlags) *ExternalSemaphoreHandleTypeFlags {
+	v := ExternalSemaphoreHandleTypeFlags{native: p}
+	return &v
+}
+
+func marshalExternalSemaphoreHandleTypeFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalSemaphoreHandleTypeFlags)(unsafe.Pointer(b))
+
+	return wrapExternalSemaphoreHandleTypeFlags(c)
 }
 
 type ExternalSemaphoreFeatureFlagBits struct {
 	native *C.VkExternalSemaphoreFeatureFlagBits
 }
 
+func wrapExternalSemaphoreFeatureFlagBits(p *C.VkExternalSemaphoreFeatureFlagBits) *ExternalSemaphoreFeatureFlagBits {
+	v := ExternalSemaphoreFeatureFlagBits{native: p}
+	return &v
+}
+
+func marshalExternalSemaphoreFeatureFlagBits(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalSemaphoreFeatureFlagBits)(unsafe.Pointer(b))
+
+	return wrapExternalSemaphoreFeatureFlagBits(c)
+}
+
 type ExternalSemaphoreFeatureFlags struct {
 	native *C.VkExternalSemaphoreFeatureFlags
+}
+
+func wrapExternalSemaphoreFeatureFlags(p *C.VkExternalSemaphoreFeatureFlags) *ExternalSemaphoreFeatureFlags {
+	v := ExternalSemaphoreFeatureFlags{native: p}
+	return &v
+}
+
+func marshalExternalSemaphoreFeatureFlags(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalSemaphoreFeatureFlags)(unsafe.Pointer(b))
+
+	return wrapExternalSemaphoreFeatureFlags(c)
 }
 
 type PhysicalDeviceSubgroupProperties struct {
 	native *C.VkPhysicalDeviceSubgroupProperties
 }
 
+func wrapPhysicalDeviceSubgroupProperties(p *C.VkPhysicalDeviceSubgroupProperties) *PhysicalDeviceSubgroupProperties {
+	v := PhysicalDeviceSubgroupProperties{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceSubgroupProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceSubgroupProperties)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceSubgroupProperties(c)
+}
+
 type BindBufferMemoryInfo struct {
 	native *C.VkBindBufferMemoryInfo
+}
+
+func wrapBindBufferMemoryInfo(p *C.VkBindBufferMemoryInfo) *BindBufferMemoryInfo {
+	v := BindBufferMemoryInfo{native: p}
+	return &v
+}
+
+func marshalBindBufferMemoryInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindBufferMemoryInfo)(unsafe.Pointer(b))
+
+	return wrapBindBufferMemoryInfo(c)
 }
 
 type BindImageMemoryInfo struct {
 	native *C.VkBindImageMemoryInfo
 }
 
+func wrapBindImageMemoryInfo(p *C.VkBindImageMemoryInfo) *BindImageMemoryInfo {
+	v := BindImageMemoryInfo{native: p}
+	return &v
+}
+
+func marshalBindImageMemoryInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindImageMemoryInfo)(unsafe.Pointer(b))
+
+	return wrapBindImageMemoryInfo(c)
+}
+
 type PhysicalDevice16BitStorageFeatures struct {
 	native *C.VkPhysicalDevice16BitStorageFeatures
+}
+
+func wrapPhysicalDevice16BitStorageFeatures(p *C.VkPhysicalDevice16BitStorageFeatures) *PhysicalDevice16BitStorageFeatures {
+	v := PhysicalDevice16BitStorageFeatures{native: p}
+	return &v
+}
+
+func marshalPhysicalDevice16BitStorageFeatures(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDevice16BitStorageFeatures)(unsafe.Pointer(b))
+
+	return wrapPhysicalDevice16BitStorageFeatures(c)
 }
 
 type MemoryDedicatedRequirements struct {
 	native *C.VkMemoryDedicatedRequirements
 }
 
+func wrapMemoryDedicatedRequirements(p *C.VkMemoryDedicatedRequirements) *MemoryDedicatedRequirements {
+	v := MemoryDedicatedRequirements{native: p}
+	return &v
+}
+
+func marshalMemoryDedicatedRequirements(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryDedicatedRequirements)(unsafe.Pointer(b))
+
+	return wrapMemoryDedicatedRequirements(c)
+}
+
 type MemoryDedicatedAllocateInfo struct {
 	native *C.VkMemoryDedicatedAllocateInfo
+}
+
+func wrapMemoryDedicatedAllocateInfo(p *C.VkMemoryDedicatedAllocateInfo) *MemoryDedicatedAllocateInfo {
+	v := MemoryDedicatedAllocateInfo{native: p}
+	return &v
+}
+
+func marshalMemoryDedicatedAllocateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryDedicatedAllocateInfo)(unsafe.Pointer(b))
+
+	return wrapMemoryDedicatedAllocateInfo(c)
 }
 
 type MemoryAllocateFlagsInfo struct {
 	native *C.VkMemoryAllocateFlagsInfo
 }
 
+func wrapMemoryAllocateFlagsInfo(p *C.VkMemoryAllocateFlagsInfo) *MemoryAllocateFlagsInfo {
+	v := MemoryAllocateFlagsInfo{native: p}
+	return &v
+}
+
+func marshalMemoryAllocateFlagsInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryAllocateFlagsInfo)(unsafe.Pointer(b))
+
+	return wrapMemoryAllocateFlagsInfo(c)
+}
+
 type DeviceGroupRenderPassBeginInfo struct {
 	native *C.VkDeviceGroupRenderPassBeginInfo
+}
+
+func wrapDeviceGroupRenderPassBeginInfo(p *C.VkDeviceGroupRenderPassBeginInfo) *DeviceGroupRenderPassBeginInfo {
+	v := DeviceGroupRenderPassBeginInfo{native: p}
+	return &v
+}
+
+func marshalDeviceGroupRenderPassBeginInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupRenderPassBeginInfo)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupRenderPassBeginInfo(c)
 }
 
 type DeviceGroupCommandBufferBeginInfo struct {
 	native *C.VkDeviceGroupCommandBufferBeginInfo
 }
 
+func wrapDeviceGroupCommandBufferBeginInfo(p *C.VkDeviceGroupCommandBufferBeginInfo) *DeviceGroupCommandBufferBeginInfo {
+	v := DeviceGroupCommandBufferBeginInfo{native: p}
+	return &v
+}
+
+func marshalDeviceGroupCommandBufferBeginInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupCommandBufferBeginInfo)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupCommandBufferBeginInfo(c)
+}
+
 type DeviceGroupSubmitInfo struct {
 	native *C.VkDeviceGroupSubmitInfo
+}
+
+func wrapDeviceGroupSubmitInfo(p *C.VkDeviceGroupSubmitInfo) *DeviceGroupSubmitInfo {
+	v := DeviceGroupSubmitInfo{native: p}
+	return &v
+}
+
+func marshalDeviceGroupSubmitInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupSubmitInfo)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupSubmitInfo(c)
 }
 
 type DeviceGroupBindSparseInfo struct {
 	native *C.VkDeviceGroupBindSparseInfo
 }
 
+func wrapDeviceGroupBindSparseInfo(p *C.VkDeviceGroupBindSparseInfo) *DeviceGroupBindSparseInfo {
+	v := DeviceGroupBindSparseInfo{native: p}
+	return &v
+}
+
+func marshalDeviceGroupBindSparseInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupBindSparseInfo)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupBindSparseInfo(c)
+}
+
 type BindBufferMemoryDeviceGroupInfo struct {
 	native *C.VkBindBufferMemoryDeviceGroupInfo
+}
+
+func wrapBindBufferMemoryDeviceGroupInfo(p *C.VkBindBufferMemoryDeviceGroupInfo) *BindBufferMemoryDeviceGroupInfo {
+	v := BindBufferMemoryDeviceGroupInfo{native: p}
+	return &v
+}
+
+func marshalBindBufferMemoryDeviceGroupInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindBufferMemoryDeviceGroupInfo)(unsafe.Pointer(b))
+
+	return wrapBindBufferMemoryDeviceGroupInfo(c)
 }
 
 type BindImageMemoryDeviceGroupInfo struct {
 	native *C.VkBindImageMemoryDeviceGroupInfo
 }
 
+func wrapBindImageMemoryDeviceGroupInfo(p *C.VkBindImageMemoryDeviceGroupInfo) *BindImageMemoryDeviceGroupInfo {
+	v := BindImageMemoryDeviceGroupInfo{native: p}
+	return &v
+}
+
+func marshalBindImageMemoryDeviceGroupInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindImageMemoryDeviceGroupInfo)(unsafe.Pointer(b))
+
+	return wrapBindImageMemoryDeviceGroupInfo(c)
+}
+
 type PhysicalDeviceGroupProperties struct {
 	native *C.VkPhysicalDeviceGroupProperties
+}
+
+func wrapPhysicalDeviceGroupProperties(p *C.VkPhysicalDeviceGroupProperties) *PhysicalDeviceGroupProperties {
+	v := PhysicalDeviceGroupProperties{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceGroupProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceGroupProperties)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceGroupProperties(c)
 }
 
 type DeviceGroupDeviceCreateInfo struct {
 	native *C.VkDeviceGroupDeviceCreateInfo
 }
 
+func wrapDeviceGroupDeviceCreateInfo(p *C.VkDeviceGroupDeviceCreateInfo) *DeviceGroupDeviceCreateInfo {
+	v := DeviceGroupDeviceCreateInfo{native: p}
+	return &v
+}
+
+func marshalDeviceGroupDeviceCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupDeviceCreateInfo)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupDeviceCreateInfo(c)
+}
+
 type BufferMemoryRequirementsInfo2 struct {
 	native *C.VkBufferMemoryRequirementsInfo2
+}
+
+func wrapBufferMemoryRequirementsInfo2(p *C.VkBufferMemoryRequirementsInfo2) *BufferMemoryRequirementsInfo2 {
+	v := BufferMemoryRequirementsInfo2{native: p}
+	return &v
+}
+
+func marshalBufferMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferMemoryRequirementsInfo2)(unsafe.Pointer(b))
+
+	return wrapBufferMemoryRequirementsInfo2(c)
 }
 
 type ImageMemoryRequirementsInfo2 struct {
 	native *C.VkImageMemoryRequirementsInfo2
 }
 
+func wrapImageMemoryRequirementsInfo2(p *C.VkImageMemoryRequirementsInfo2) *ImageMemoryRequirementsInfo2 {
+	v := ImageMemoryRequirementsInfo2{native: p}
+	return &v
+}
+
+func marshalImageMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageMemoryRequirementsInfo2)(unsafe.Pointer(b))
+
+	return wrapImageMemoryRequirementsInfo2(c)
+}
+
 type ImageSparseMemoryRequirementsInfo2 struct {
 	native *C.VkImageSparseMemoryRequirementsInfo2
+}
+
+func wrapImageSparseMemoryRequirementsInfo2(p *C.VkImageSparseMemoryRequirementsInfo2) *ImageSparseMemoryRequirementsInfo2 {
+	v := ImageSparseMemoryRequirementsInfo2{native: p}
+	return &v
+}
+
+func marshalImageSparseMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageSparseMemoryRequirementsInfo2)(unsafe.Pointer(b))
+
+	return wrapImageSparseMemoryRequirementsInfo2(c)
 }
 
 type MemoryRequirements2 struct {
 	native *C.VkMemoryRequirements2
 }
 
+func wrapMemoryRequirements2(p *C.VkMemoryRequirements2) *MemoryRequirements2 {
+	v := MemoryRequirements2{native: p}
+	return &v
+}
+
+func marshalMemoryRequirements2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryRequirements2)(unsafe.Pointer(b))
+
+	return wrapMemoryRequirements2(c)
+}
+
 type MemoryRequirements2KHR struct {
 	native *C.VkMemoryRequirements2KHR
+}
+
+func wrapMemoryRequirements2KHR(p *C.VkMemoryRequirements2KHR) *MemoryRequirements2KHR {
+	v := MemoryRequirements2KHR{native: p}
+	return &v
+}
+
+func marshalMemoryRequirements2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryRequirements2KHR)(unsafe.Pointer(b))
+
+	return wrapMemoryRequirements2KHR(c)
 }
 
 type SparseImageMemoryRequirements2 struct {
 	native *C.VkSparseImageMemoryRequirements2
 }
 
+func wrapSparseImageMemoryRequirements2(p *C.VkSparseImageMemoryRequirements2) *SparseImageMemoryRequirements2 {
+	v := SparseImageMemoryRequirements2{native: p}
+	return &v
+}
+
+func marshalSparseImageMemoryRequirements2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageMemoryRequirements2)(unsafe.Pointer(b))
+
+	return wrapSparseImageMemoryRequirements2(c)
+}
+
 type PhysicalDeviceFeatures2 struct {
 	native *C.VkPhysicalDeviceFeatures2
+}
+
+func wrapPhysicalDeviceFeatures2(p *C.VkPhysicalDeviceFeatures2) *PhysicalDeviceFeatures2 {
+	v := PhysicalDeviceFeatures2{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceFeatures2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceFeatures2)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceFeatures2(c)
 }
 
 type PhysicalDeviceProperties2 struct {
 	native *C.VkPhysicalDeviceProperties2
 }
 
+func wrapPhysicalDeviceProperties2(p *C.VkPhysicalDeviceProperties2) *PhysicalDeviceProperties2 {
+	v := PhysicalDeviceProperties2{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceProperties2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceProperties2)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceProperties2(c)
+}
+
 type FormatProperties2 struct {
 	native *C.VkFormatProperties2
+}
+
+func wrapFormatProperties2(p *C.VkFormatProperties2) *FormatProperties2 {
+	v := FormatProperties2{native: p}
+	return &v
+}
+
+func marshalFormatProperties2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFormatProperties2)(unsafe.Pointer(b))
+
+	return wrapFormatProperties2(c)
 }
 
 type ImageFormatProperties2 struct {
 	native *C.VkImageFormatProperties2
 }
 
+func wrapImageFormatProperties2(p *C.VkImageFormatProperties2) *ImageFormatProperties2 {
+	v := ImageFormatProperties2{native: p}
+	return &v
+}
+
+func marshalImageFormatProperties2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageFormatProperties2)(unsafe.Pointer(b))
+
+	return wrapImageFormatProperties2(c)
+}
+
 type PhysicalDeviceImageFormatInfo2 struct {
 	native *C.VkPhysicalDeviceImageFormatInfo2
+}
+
+func wrapPhysicalDeviceImageFormatInfo2(p *C.VkPhysicalDeviceImageFormatInfo2) *PhysicalDeviceImageFormatInfo2 {
+	v := PhysicalDeviceImageFormatInfo2{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceImageFormatInfo2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceImageFormatInfo2)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceImageFormatInfo2(c)
 }
 
 type QueueFamilyProperties2 struct {
 	native *C.VkQueueFamilyProperties2
 }
 
+func wrapQueueFamilyProperties2(p *C.VkQueueFamilyProperties2) *QueueFamilyProperties2 {
+	v := QueueFamilyProperties2{native: p}
+	return &v
+}
+
+func marshalQueueFamilyProperties2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueueFamilyProperties2)(unsafe.Pointer(b))
+
+	return wrapQueueFamilyProperties2(c)
+}
+
 type PhysicalDeviceMemoryProperties2 struct {
 	native *C.VkPhysicalDeviceMemoryProperties2
+}
+
+func wrapPhysicalDeviceMemoryProperties2(p *C.VkPhysicalDeviceMemoryProperties2) *PhysicalDeviceMemoryProperties2 {
+	v := PhysicalDeviceMemoryProperties2{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMemoryProperties2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMemoryProperties2)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMemoryProperties2(c)
 }
 
 type SparseImageFormatProperties2 struct {
 	native *C.VkSparseImageFormatProperties2
 }
 
+func wrapSparseImageFormatProperties2(p *C.VkSparseImageFormatProperties2) *SparseImageFormatProperties2 {
+	v := SparseImageFormatProperties2{native: p}
+	return &v
+}
+
+func marshalSparseImageFormatProperties2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageFormatProperties2)(unsafe.Pointer(b))
+
+	return wrapSparseImageFormatProperties2(c)
+}
+
 type PhysicalDeviceSparseImageFormatInfo2 struct {
 	native *C.VkPhysicalDeviceSparseImageFormatInfo2
+}
+
+func wrapPhysicalDeviceSparseImageFormatInfo2(p *C.VkPhysicalDeviceSparseImageFormatInfo2) *PhysicalDeviceSparseImageFormatInfo2 {
+	v := PhysicalDeviceSparseImageFormatInfo2{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceSparseImageFormatInfo2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceSparseImageFormatInfo2)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceSparseImageFormatInfo2(c)
 }
 
 type PhysicalDevicePointClippingProperties struct {
 	native *C.VkPhysicalDevicePointClippingProperties
 }
 
+func wrapPhysicalDevicePointClippingProperties(p *C.VkPhysicalDevicePointClippingProperties) *PhysicalDevicePointClippingProperties {
+	v := PhysicalDevicePointClippingProperties{native: p}
+	return &v
+}
+
+func marshalPhysicalDevicePointClippingProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDevicePointClippingProperties)(unsafe.Pointer(b))
+
+	return wrapPhysicalDevicePointClippingProperties(c)
+}
+
 type InputAttachmentAspectReference struct {
 	native *C.VkInputAttachmentAspectReference
+}
+
+func wrapInputAttachmentAspectReference(p *C.VkInputAttachmentAspectReference) *InputAttachmentAspectReference {
+	v := InputAttachmentAspectReference{native: p}
+	return &v
+}
+
+func marshalInputAttachmentAspectReference(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkInputAttachmentAspectReference)(unsafe.Pointer(b))
+
+	return wrapInputAttachmentAspectReference(c)
 }
 
 type RenderPassInputAttachmentAspectCreateInfo struct {
 	native *C.VkRenderPassInputAttachmentAspectCreateInfo
 }
 
+func wrapRenderPassInputAttachmentAspectCreateInfo(p *C.VkRenderPassInputAttachmentAspectCreateInfo) *RenderPassInputAttachmentAspectCreateInfo {
+	v := RenderPassInputAttachmentAspectCreateInfo{native: p}
+	return &v
+}
+
+func marshalRenderPassInputAttachmentAspectCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPassInputAttachmentAspectCreateInfo)(unsafe.Pointer(b))
+
+	return wrapRenderPassInputAttachmentAspectCreateInfo(c)
+}
+
 type ImageViewUsageCreateInfo struct {
 	native *C.VkImageViewUsageCreateInfo
+}
+
+func wrapImageViewUsageCreateInfo(p *C.VkImageViewUsageCreateInfo) *ImageViewUsageCreateInfo {
+	v := ImageViewUsageCreateInfo{native: p}
+	return &v
+}
+
+func marshalImageViewUsageCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageViewUsageCreateInfo)(unsafe.Pointer(b))
+
+	return wrapImageViewUsageCreateInfo(c)
 }
 
 type PipelineTessellationDomainOriginStateCreateInfo struct {
 	native *C.VkPipelineTessellationDomainOriginStateCreateInfo
 }
 
+func wrapPipelineTessellationDomainOriginStateCreateInfo(p *C.VkPipelineTessellationDomainOriginStateCreateInfo) *PipelineTessellationDomainOriginStateCreateInfo {
+	v := PipelineTessellationDomainOriginStateCreateInfo{native: p}
+	return &v
+}
+
+func marshalPipelineTessellationDomainOriginStateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineTessellationDomainOriginStateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapPipelineTessellationDomainOriginStateCreateInfo(c)
+}
+
 type RenderPassMultiviewCreateInfo struct {
 	native *C.VkRenderPassMultiviewCreateInfo
+}
+
+func wrapRenderPassMultiviewCreateInfo(p *C.VkRenderPassMultiviewCreateInfo) *RenderPassMultiviewCreateInfo {
+	v := RenderPassMultiviewCreateInfo{native: p}
+	return &v
+}
+
+func marshalRenderPassMultiviewCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPassMultiviewCreateInfo)(unsafe.Pointer(b))
+
+	return wrapRenderPassMultiviewCreateInfo(c)
 }
 
 type PhysicalDeviceMultiviewFeatures struct {
 	native *C.VkPhysicalDeviceMultiviewFeatures
 }
 
+func wrapPhysicalDeviceMultiviewFeatures(p *C.VkPhysicalDeviceMultiviewFeatures) *PhysicalDeviceMultiviewFeatures {
+	v := PhysicalDeviceMultiviewFeatures{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMultiviewFeatures(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMultiviewFeatures)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMultiviewFeatures(c)
+}
+
 type PhysicalDeviceMultiviewProperties struct {
 	native *C.VkPhysicalDeviceMultiviewProperties
+}
+
+func wrapPhysicalDeviceMultiviewProperties(p *C.VkPhysicalDeviceMultiviewProperties) *PhysicalDeviceMultiviewProperties {
+	v := PhysicalDeviceMultiviewProperties{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMultiviewProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMultiviewProperties)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMultiviewProperties(c)
 }
 
 type PhysicalDeviceVariablePointersFeatures struct {
 	native *C.VkPhysicalDeviceVariablePointersFeatures
 }
 
+func wrapPhysicalDeviceVariablePointersFeatures(p *C.VkPhysicalDeviceVariablePointersFeatures) *PhysicalDeviceVariablePointersFeatures {
+	v := PhysicalDeviceVariablePointersFeatures{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceVariablePointersFeatures(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceVariablePointersFeatures)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceVariablePointersFeatures(c)
+}
+
 type PhysicalDeviceVariablePointerFeatures struct {
 	native *C.VkPhysicalDeviceVariablePointerFeatures
+}
+
+func wrapPhysicalDeviceVariablePointerFeatures(p *C.VkPhysicalDeviceVariablePointerFeatures) *PhysicalDeviceVariablePointerFeatures {
+	v := PhysicalDeviceVariablePointerFeatures{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceVariablePointerFeatures(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceVariablePointerFeatures)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceVariablePointerFeatures(c)
 }
 
 type PhysicalDeviceProtectedMemoryFeatures struct {
 	native *C.VkPhysicalDeviceProtectedMemoryFeatures
 }
 
+func wrapPhysicalDeviceProtectedMemoryFeatures(p *C.VkPhysicalDeviceProtectedMemoryFeatures) *PhysicalDeviceProtectedMemoryFeatures {
+	v := PhysicalDeviceProtectedMemoryFeatures{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceProtectedMemoryFeatures(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceProtectedMemoryFeatures)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceProtectedMemoryFeatures(c)
+}
+
 type PhysicalDeviceProtectedMemoryProperties struct {
 	native *C.VkPhysicalDeviceProtectedMemoryProperties
+}
+
+func wrapPhysicalDeviceProtectedMemoryProperties(p *C.VkPhysicalDeviceProtectedMemoryProperties) *PhysicalDeviceProtectedMemoryProperties {
+	v := PhysicalDeviceProtectedMemoryProperties{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceProtectedMemoryProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceProtectedMemoryProperties)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceProtectedMemoryProperties(c)
 }
 
 type DeviceQueueInfo2 struct {
 	native *C.VkDeviceQueueInfo2
 }
 
+func wrapDeviceQueueInfo2(p *C.VkDeviceQueueInfo2) *DeviceQueueInfo2 {
+	v := DeviceQueueInfo2{native: p}
+	return &v
+}
+
+func marshalDeviceQueueInfo2(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceQueueInfo2)(unsafe.Pointer(b))
+
+	return wrapDeviceQueueInfo2(c)
+}
+
 type ProtectedSubmitInfo struct {
 	native *C.VkProtectedSubmitInfo
+}
+
+func wrapProtectedSubmitInfo(p *C.VkProtectedSubmitInfo) *ProtectedSubmitInfo {
+	v := ProtectedSubmitInfo{native: p}
+	return &v
+}
+
+func marshalProtectedSubmitInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkProtectedSubmitInfo)(unsafe.Pointer(b))
+
+	return wrapProtectedSubmitInfo(c)
 }
 
 type SamplerYcbcrConversionCreateInfo struct {
 	native *C.VkSamplerYcbcrConversionCreateInfo
 }
 
+func wrapSamplerYcbcrConversionCreateInfo(p *C.VkSamplerYcbcrConversionCreateInfo) *SamplerYcbcrConversionCreateInfo {
+	v := SamplerYcbcrConversionCreateInfo{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrConversionCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrConversionCreateInfo)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrConversionCreateInfo(c)
+}
+
 type SamplerYcbcrConversionInfo struct {
 	native *C.VkSamplerYcbcrConversionInfo
+}
+
+func wrapSamplerYcbcrConversionInfo(p *C.VkSamplerYcbcrConversionInfo) *SamplerYcbcrConversionInfo {
+	v := SamplerYcbcrConversionInfo{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrConversionInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrConversionInfo)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrConversionInfo(c)
 }
 
 type BindImagePlaneMemoryInfo struct {
 	native *C.VkBindImagePlaneMemoryInfo
 }
 
+func wrapBindImagePlaneMemoryInfo(p *C.VkBindImagePlaneMemoryInfo) *BindImagePlaneMemoryInfo {
+	v := BindImagePlaneMemoryInfo{native: p}
+	return &v
+}
+
+func marshalBindImagePlaneMemoryInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindImagePlaneMemoryInfo)(unsafe.Pointer(b))
+
+	return wrapBindImagePlaneMemoryInfo(c)
+}
+
 type ImagePlaneMemoryRequirementsInfo struct {
 	native *C.VkImagePlaneMemoryRequirementsInfo
+}
+
+func wrapImagePlaneMemoryRequirementsInfo(p *C.VkImagePlaneMemoryRequirementsInfo) *ImagePlaneMemoryRequirementsInfo {
+	v := ImagePlaneMemoryRequirementsInfo{native: p}
+	return &v
+}
+
+func marshalImagePlaneMemoryRequirementsInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImagePlaneMemoryRequirementsInfo)(unsafe.Pointer(b))
+
+	return wrapImagePlaneMemoryRequirementsInfo(c)
 }
 
 type PhysicalDeviceSamplerYcbcrConversionFeatures struct {
 	native *C.VkPhysicalDeviceSamplerYcbcrConversionFeatures
 }
 
+func wrapPhysicalDeviceSamplerYcbcrConversionFeatures(p *C.VkPhysicalDeviceSamplerYcbcrConversionFeatures) *PhysicalDeviceSamplerYcbcrConversionFeatures {
+	v := PhysicalDeviceSamplerYcbcrConversionFeatures{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceSamplerYcbcrConversionFeatures(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceSamplerYcbcrConversionFeatures)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceSamplerYcbcrConversionFeatures(c)
+}
+
 type SamplerYcbcrConversionImageFormatProperties struct {
 	native *C.VkSamplerYcbcrConversionImageFormatProperties
+}
+
+func wrapSamplerYcbcrConversionImageFormatProperties(p *C.VkSamplerYcbcrConversionImageFormatProperties) *SamplerYcbcrConversionImageFormatProperties {
+	v := SamplerYcbcrConversionImageFormatProperties{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrConversionImageFormatProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrConversionImageFormatProperties)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrConversionImageFormatProperties(c)
 }
 
 type DescriptorUpdateTemplateEntry struct {
 	native *C.VkDescriptorUpdateTemplateEntry
 }
 
+func wrapDescriptorUpdateTemplateEntry(p *C.VkDescriptorUpdateTemplateEntry) *DescriptorUpdateTemplateEntry {
+	v := DescriptorUpdateTemplateEntry{native: p}
+	return &v
+}
+
+func marshalDescriptorUpdateTemplateEntry(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorUpdateTemplateEntry)(unsafe.Pointer(b))
+
+	return wrapDescriptorUpdateTemplateEntry(c)
+}
+
 type DescriptorUpdateTemplateCreateInfo struct {
 	native *C.VkDescriptorUpdateTemplateCreateInfo
+}
+
+func wrapDescriptorUpdateTemplateCreateInfo(p *C.VkDescriptorUpdateTemplateCreateInfo) *DescriptorUpdateTemplateCreateInfo {
+	v := DescriptorUpdateTemplateCreateInfo{native: p}
+	return &v
+}
+
+func marshalDescriptorUpdateTemplateCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorUpdateTemplateCreateInfo)(unsafe.Pointer(b))
+
+	return wrapDescriptorUpdateTemplateCreateInfo(c)
 }
 
 type ExternalMemoryProperties struct {
 	native *C.VkExternalMemoryProperties
 }
 
+func wrapExternalMemoryProperties(p *C.VkExternalMemoryProperties) *ExternalMemoryProperties {
+	v := ExternalMemoryProperties{native: p}
+	return &v
+}
+
+func marshalExternalMemoryProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryProperties)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryProperties(c)
+}
+
 type PhysicalDeviceExternalImageFormatInfo struct {
 	native *C.VkPhysicalDeviceExternalImageFormatInfo
+}
+
+func wrapPhysicalDeviceExternalImageFormatInfo(p *C.VkPhysicalDeviceExternalImageFormatInfo) *PhysicalDeviceExternalImageFormatInfo {
+	v := PhysicalDeviceExternalImageFormatInfo{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceExternalImageFormatInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceExternalImageFormatInfo)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceExternalImageFormatInfo(c)
 }
 
 type ExternalImageFormatProperties struct {
 	native *C.VkExternalImageFormatProperties
 }
 
+func wrapExternalImageFormatProperties(p *C.VkExternalImageFormatProperties) *ExternalImageFormatProperties {
+	v := ExternalImageFormatProperties{native: p}
+	return &v
+}
+
+func marshalExternalImageFormatProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalImageFormatProperties)(unsafe.Pointer(b))
+
+	return wrapExternalImageFormatProperties(c)
+}
+
 type PhysicalDeviceExternalBufferInfo struct {
 	native *C.VkPhysicalDeviceExternalBufferInfo
+}
+
+func wrapPhysicalDeviceExternalBufferInfo(p *C.VkPhysicalDeviceExternalBufferInfo) *PhysicalDeviceExternalBufferInfo {
+	v := PhysicalDeviceExternalBufferInfo{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceExternalBufferInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceExternalBufferInfo)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceExternalBufferInfo(c)
 }
 
 type ExternalBufferProperties struct {
 	native *C.VkExternalBufferProperties
 }
 
+func wrapExternalBufferProperties(p *C.VkExternalBufferProperties) *ExternalBufferProperties {
+	v := ExternalBufferProperties{native: p}
+	return &v
+}
+
+func marshalExternalBufferProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalBufferProperties)(unsafe.Pointer(b))
+
+	return wrapExternalBufferProperties(c)
+}
+
 type PhysicalDeviceIDProperties struct {
 	native *C.VkPhysicalDeviceIDProperties
+}
+
+func wrapPhysicalDeviceIDProperties(p *C.VkPhysicalDeviceIDProperties) *PhysicalDeviceIDProperties {
+	v := PhysicalDeviceIDProperties{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceIDProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceIDProperties)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceIDProperties(c)
 }
 
 type ExternalMemoryImageCreateInfo struct {
 	native *C.VkExternalMemoryImageCreateInfo
 }
 
+func wrapExternalMemoryImageCreateInfo(p *C.VkExternalMemoryImageCreateInfo) *ExternalMemoryImageCreateInfo {
+	v := ExternalMemoryImageCreateInfo{native: p}
+	return &v
+}
+
+func marshalExternalMemoryImageCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryImageCreateInfo)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryImageCreateInfo(c)
+}
+
 type ExternalMemoryBufferCreateInfo struct {
 	native *C.VkExternalMemoryBufferCreateInfo
+}
+
+func wrapExternalMemoryBufferCreateInfo(p *C.VkExternalMemoryBufferCreateInfo) *ExternalMemoryBufferCreateInfo {
+	v := ExternalMemoryBufferCreateInfo{native: p}
+	return &v
+}
+
+func marshalExternalMemoryBufferCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryBufferCreateInfo)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryBufferCreateInfo(c)
 }
 
 type ExportMemoryAllocateInfo struct {
 	native *C.VkExportMemoryAllocateInfo
 }
 
+func wrapExportMemoryAllocateInfo(p *C.VkExportMemoryAllocateInfo) *ExportMemoryAllocateInfo {
+	v := ExportMemoryAllocateInfo{native: p}
+	return &v
+}
+
+func marshalExportMemoryAllocateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExportMemoryAllocateInfo)(unsafe.Pointer(b))
+
+	return wrapExportMemoryAllocateInfo(c)
+}
+
 type PhysicalDeviceExternalFenceInfo struct {
 	native *C.VkPhysicalDeviceExternalFenceInfo
+}
+
+func wrapPhysicalDeviceExternalFenceInfo(p *C.VkPhysicalDeviceExternalFenceInfo) *PhysicalDeviceExternalFenceInfo {
+	v := PhysicalDeviceExternalFenceInfo{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceExternalFenceInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceExternalFenceInfo)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceExternalFenceInfo(c)
 }
 
 type ExternalFenceProperties struct {
 	native *C.VkExternalFenceProperties
 }
 
+func wrapExternalFenceProperties(p *C.VkExternalFenceProperties) *ExternalFenceProperties {
+	v := ExternalFenceProperties{native: p}
+	return &v
+}
+
+func marshalExternalFenceProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalFenceProperties)(unsafe.Pointer(b))
+
+	return wrapExternalFenceProperties(c)
+}
+
 type ExportFenceCreateInfo struct {
 	native *C.VkExportFenceCreateInfo
+}
+
+func wrapExportFenceCreateInfo(p *C.VkExportFenceCreateInfo) *ExportFenceCreateInfo {
+	v := ExportFenceCreateInfo{native: p}
+	return &v
+}
+
+func marshalExportFenceCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExportFenceCreateInfo)(unsafe.Pointer(b))
+
+	return wrapExportFenceCreateInfo(c)
 }
 
 type ExportSemaphoreCreateInfo struct {
 	native *C.VkExportSemaphoreCreateInfo
 }
 
+func wrapExportSemaphoreCreateInfo(p *C.VkExportSemaphoreCreateInfo) *ExportSemaphoreCreateInfo {
+	v := ExportSemaphoreCreateInfo{native: p}
+	return &v
+}
+
+func marshalExportSemaphoreCreateInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExportSemaphoreCreateInfo)(unsafe.Pointer(b))
+
+	return wrapExportSemaphoreCreateInfo(c)
+}
+
 type PhysicalDeviceExternalSemaphoreInfo struct {
 	native *C.VkPhysicalDeviceExternalSemaphoreInfo
+}
+
+func wrapPhysicalDeviceExternalSemaphoreInfo(p *C.VkPhysicalDeviceExternalSemaphoreInfo) *PhysicalDeviceExternalSemaphoreInfo {
+	v := PhysicalDeviceExternalSemaphoreInfo{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceExternalSemaphoreInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceExternalSemaphoreInfo)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceExternalSemaphoreInfo(c)
 }
 
 type ExternalSemaphoreProperties struct {
 	native *C.VkExternalSemaphoreProperties
 }
 
+func wrapExternalSemaphoreProperties(p *C.VkExternalSemaphoreProperties) *ExternalSemaphoreProperties {
+	v := ExternalSemaphoreProperties{native: p}
+	return &v
+}
+
+func marshalExternalSemaphoreProperties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalSemaphoreProperties)(unsafe.Pointer(b))
+
+	return wrapExternalSemaphoreProperties(c)
+}
+
 type PhysicalDeviceMaintenance3Properties struct {
 	native *C.VkPhysicalDeviceMaintenance3Properties
+}
+
+func wrapPhysicalDeviceMaintenance3Properties(p *C.VkPhysicalDeviceMaintenance3Properties) *PhysicalDeviceMaintenance3Properties {
+	v := PhysicalDeviceMaintenance3Properties{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMaintenance3Properties(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMaintenance3Properties)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMaintenance3Properties(c)
 }
 
 type DescriptorSetLayoutSupport struct {
 	native *C.VkDescriptorSetLayoutSupport
 }
 
+func wrapDescriptorSetLayoutSupport(p *C.VkDescriptorSetLayoutSupport) *DescriptorSetLayoutSupport {
+	v := DescriptorSetLayoutSupport{native: p}
+	return &v
+}
+
+func marshalDescriptorSetLayoutSupport(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetLayoutSupport)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetLayoutSupport(c)
+}
+
 type PhysicalDeviceShaderDrawParametersFeatures struct {
 	native *C.VkPhysicalDeviceShaderDrawParametersFeatures
+}
+
+func wrapPhysicalDeviceShaderDrawParametersFeatures(p *C.VkPhysicalDeviceShaderDrawParametersFeatures) *PhysicalDeviceShaderDrawParametersFeatures {
+	v := PhysicalDeviceShaderDrawParametersFeatures{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceShaderDrawParametersFeatures(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceShaderDrawParametersFeatures)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceShaderDrawParametersFeatures(c)
 }
 
 type PhysicalDeviceShaderDrawParameterFeatures struct {
 	native *C.VkPhysicalDeviceShaderDrawParameterFeatures
 }
 
+func wrapPhysicalDeviceShaderDrawParameterFeatures(p *C.VkPhysicalDeviceShaderDrawParameterFeatures) *PhysicalDeviceShaderDrawParameterFeatures {
+	v := PhysicalDeviceShaderDrawParameterFeatures{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceShaderDrawParameterFeatures(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceShaderDrawParameterFeatures)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceShaderDrawParameterFeatures(c)
+}
+
 type SurfaceKHR struct {
 	native *C.VkSurfaceKHR
+}
+
+func wrapSurfaceKHR(p *C.VkSurfaceKHR) *SurfaceKHR {
+	v := SurfaceKHR{native: p}
+	return &v
+}
+
+func marshalSurfaceKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceKHR)(unsafe.Pointer(b))
+
+	return wrapSurfaceKHR(c)
 }
 
 type ColorSpaceKHR struct {
 	native *C.VkColorSpaceKHR
 }
 
+func wrapColorSpaceKHR(p *C.VkColorSpaceKHR) *ColorSpaceKHR {
+	v := ColorSpaceKHR{native: p}
+	return &v
+}
+
+func marshalColorSpaceKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkColorSpaceKHR)(unsafe.Pointer(b))
+
+	return wrapColorSpaceKHR(c)
+}
+
 type PresentModeKHR struct {
 	native *C.VkPresentModeKHR
+}
+
+func wrapPresentModeKHR(p *C.VkPresentModeKHR) *PresentModeKHR {
+	v := PresentModeKHR{native: p}
+	return &v
+}
+
+func marshalPresentModeKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPresentModeKHR)(unsafe.Pointer(b))
+
+	return wrapPresentModeKHR(c)
 }
 
 type SurfaceTransformFlagBitsKHR struct {
 	native *C.VkSurfaceTransformFlagBitsKHR
 }
 
+func wrapSurfaceTransformFlagBitsKHR(p *C.VkSurfaceTransformFlagBitsKHR) *SurfaceTransformFlagBitsKHR {
+	v := SurfaceTransformFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalSurfaceTransformFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceTransformFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapSurfaceTransformFlagBitsKHR(c)
+}
+
 type SurfaceTransformFlagsKHR struct {
 	native *C.VkSurfaceTransformFlagsKHR
+}
+
+func wrapSurfaceTransformFlagsKHR(p *C.VkSurfaceTransformFlagsKHR) *SurfaceTransformFlagsKHR {
+	v := SurfaceTransformFlagsKHR{native: p}
+	return &v
+}
+
+func marshalSurfaceTransformFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceTransformFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapSurfaceTransformFlagsKHR(c)
 }
 
 type CompositeAlphaFlagBitsKHR struct {
 	native *C.VkCompositeAlphaFlagBitsKHR
 }
 
+func wrapCompositeAlphaFlagBitsKHR(p *C.VkCompositeAlphaFlagBitsKHR) *CompositeAlphaFlagBitsKHR {
+	v := CompositeAlphaFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalCompositeAlphaFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCompositeAlphaFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapCompositeAlphaFlagBitsKHR(c)
+}
+
 type CompositeAlphaFlagsKHR struct {
 	native *C.VkCompositeAlphaFlagsKHR
+}
+
+func wrapCompositeAlphaFlagsKHR(p *C.VkCompositeAlphaFlagsKHR) *CompositeAlphaFlagsKHR {
+	v := CompositeAlphaFlagsKHR{native: p}
+	return &v
+}
+
+func marshalCompositeAlphaFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCompositeAlphaFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapCompositeAlphaFlagsKHR(c)
 }
 
 type SurfaceCapabilitiesKHR struct {
 	native *C.VkSurfaceCapabilitiesKHR
 }
 
+func wrapSurfaceCapabilitiesKHR(p *C.VkSurfaceCapabilitiesKHR) *SurfaceCapabilitiesKHR {
+	v := SurfaceCapabilitiesKHR{native: p}
+	return &v
+}
+
+func marshalSurfaceCapabilitiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceCapabilitiesKHR)(unsafe.Pointer(b))
+
+	return wrapSurfaceCapabilitiesKHR(c)
+}
+
 type SurfaceFormatKHR struct {
 	native *C.VkSurfaceFormatKHR
+}
+
+func wrapSurfaceFormatKHR(p *C.VkSurfaceFormatKHR) *SurfaceFormatKHR {
+	v := SurfaceFormatKHR{native: p}
+	return &v
+}
+
+func marshalSurfaceFormatKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceFormatKHR)(unsafe.Pointer(b))
+
+	return wrapSurfaceFormatKHR(c)
 }
 
 type SwapchainKHR struct {
 	native *C.VkSwapchainKHR
 }
 
+func wrapSwapchainKHR(p *C.VkSwapchainKHR) *SwapchainKHR {
+	v := SwapchainKHR{native: p}
+	return &v
+}
+
+func marshalSwapchainKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSwapchainKHR)(unsafe.Pointer(b))
+
+	return wrapSwapchainKHR(c)
+}
+
 type SwapchainCreateFlagBitsKHR struct {
 	native *C.VkSwapchainCreateFlagBitsKHR
+}
+
+func wrapSwapchainCreateFlagBitsKHR(p *C.VkSwapchainCreateFlagBitsKHR) *SwapchainCreateFlagBitsKHR {
+	v := SwapchainCreateFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalSwapchainCreateFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSwapchainCreateFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapSwapchainCreateFlagBitsKHR(c)
 }
 
 type SwapchainCreateFlagsKHR struct {
 	native *C.VkSwapchainCreateFlagsKHR
 }
 
+func wrapSwapchainCreateFlagsKHR(p *C.VkSwapchainCreateFlagsKHR) *SwapchainCreateFlagsKHR {
+	v := SwapchainCreateFlagsKHR{native: p}
+	return &v
+}
+
+func marshalSwapchainCreateFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSwapchainCreateFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapSwapchainCreateFlagsKHR(c)
+}
+
 type DeviceGroupPresentModeFlagBitsKHR struct {
 	native *C.VkDeviceGroupPresentModeFlagBitsKHR
+}
+
+func wrapDeviceGroupPresentModeFlagBitsKHR(p *C.VkDeviceGroupPresentModeFlagBitsKHR) *DeviceGroupPresentModeFlagBitsKHR {
+	v := DeviceGroupPresentModeFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalDeviceGroupPresentModeFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupPresentModeFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupPresentModeFlagBitsKHR(c)
 }
 
 type DeviceGroupPresentModeFlagsKHR struct {
 	native *C.VkDeviceGroupPresentModeFlagsKHR
 }
 
+func wrapDeviceGroupPresentModeFlagsKHR(p *C.VkDeviceGroupPresentModeFlagsKHR) *DeviceGroupPresentModeFlagsKHR {
+	v := DeviceGroupPresentModeFlagsKHR{native: p}
+	return &v
+}
+
+func marshalDeviceGroupPresentModeFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupPresentModeFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupPresentModeFlagsKHR(c)
+}
+
 type SwapchainCreateInfoKHR struct {
 	native *C.VkSwapchainCreateInfoKHR
+}
+
+func wrapSwapchainCreateInfoKHR(p *C.VkSwapchainCreateInfoKHR) *SwapchainCreateInfoKHR {
+	v := SwapchainCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSwapchainCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapSwapchainCreateInfoKHR(c)
 }
 
 type PresentInfoKHR struct {
 	native *C.VkPresentInfoKHR
 }
 
+func wrapPresentInfoKHR(p *C.VkPresentInfoKHR) *PresentInfoKHR {
+	v := PresentInfoKHR{native: p}
+	return &v
+}
+
+func marshalPresentInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPresentInfoKHR)(unsafe.Pointer(b))
+
+	return wrapPresentInfoKHR(c)
+}
+
 type ImageSwapchainCreateInfoKHR struct {
 	native *C.VkImageSwapchainCreateInfoKHR
+}
+
+func wrapImageSwapchainCreateInfoKHR(p *C.VkImageSwapchainCreateInfoKHR) *ImageSwapchainCreateInfoKHR {
+	v := ImageSwapchainCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalImageSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageSwapchainCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapImageSwapchainCreateInfoKHR(c)
 }
 
 type BindImageMemorySwapchainInfoKHR struct {
 	native *C.VkBindImageMemorySwapchainInfoKHR
 }
 
+func wrapBindImageMemorySwapchainInfoKHR(p *C.VkBindImageMemorySwapchainInfoKHR) *BindImageMemorySwapchainInfoKHR {
+	v := BindImageMemorySwapchainInfoKHR{native: p}
+	return &v
+}
+
+func marshalBindImageMemorySwapchainInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindImageMemorySwapchainInfoKHR)(unsafe.Pointer(b))
+
+	return wrapBindImageMemorySwapchainInfoKHR(c)
+}
+
 type AcquireNextImageInfoKHR struct {
 	native *C.VkAcquireNextImageInfoKHR
+}
+
+func wrapAcquireNextImageInfoKHR(p *C.VkAcquireNextImageInfoKHR) *AcquireNextImageInfoKHR {
+	v := AcquireNextImageInfoKHR{native: p}
+	return &v
+}
+
+func marshalAcquireNextImageInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAcquireNextImageInfoKHR)(unsafe.Pointer(b))
+
+	return wrapAcquireNextImageInfoKHR(c)
 }
 
 type DeviceGroupPresentCapabilitiesKHR struct {
 	native *C.VkDeviceGroupPresentCapabilitiesKHR
 }
 
+func wrapDeviceGroupPresentCapabilitiesKHR(p *C.VkDeviceGroupPresentCapabilitiesKHR) *DeviceGroupPresentCapabilitiesKHR {
+	v := DeviceGroupPresentCapabilitiesKHR{native: p}
+	return &v
+}
+
+func marshalDeviceGroupPresentCapabilitiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupPresentCapabilitiesKHR)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupPresentCapabilitiesKHR(c)
+}
+
 type DeviceGroupPresentInfoKHR struct {
 	native *C.VkDeviceGroupPresentInfoKHR
+}
+
+func wrapDeviceGroupPresentInfoKHR(p *C.VkDeviceGroupPresentInfoKHR) *DeviceGroupPresentInfoKHR {
+	v := DeviceGroupPresentInfoKHR{native: p}
+	return &v
+}
+
+func marshalDeviceGroupPresentInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupPresentInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupPresentInfoKHR(c)
 }
 
 type DeviceGroupSwapchainCreateInfoKHR struct {
 	native *C.VkDeviceGroupSwapchainCreateInfoKHR
 }
 
+func wrapDeviceGroupSwapchainCreateInfoKHR(p *C.VkDeviceGroupSwapchainCreateInfoKHR) *DeviceGroupSwapchainCreateInfoKHR {
+	v := DeviceGroupSwapchainCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalDeviceGroupSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupSwapchainCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupSwapchainCreateInfoKHR(c)
+}
+
 type DisplayKHR struct {
 	native *C.VkDisplayKHR
+}
+
+func wrapDisplayKHR(p *C.VkDisplayKHR) *DisplayKHR {
+	v := DisplayKHR{native: p}
+	return &v
+}
+
+func marshalDisplayKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayKHR(c)
 }
 
 type DisplayModeKHR struct {
 	native *C.VkDisplayModeKHR
 }
 
+func wrapDisplayModeKHR(p *C.VkDisplayModeKHR) *DisplayModeKHR {
+	v := DisplayModeKHR{native: p}
+	return &v
+}
+
+func marshalDisplayModeKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayModeKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayModeKHR(c)
+}
+
 type DisplayPlaneAlphaFlagBitsKHR struct {
 	native *C.VkDisplayPlaneAlphaFlagBitsKHR
+}
+
+func wrapDisplayPlaneAlphaFlagBitsKHR(p *C.VkDisplayPlaneAlphaFlagBitsKHR) *DisplayPlaneAlphaFlagBitsKHR {
+	v := DisplayPlaneAlphaFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalDisplayPlaneAlphaFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPlaneAlphaFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayPlaneAlphaFlagBitsKHR(c)
 }
 
 type DisplayPlaneAlphaFlagsKHR struct {
 	native *C.VkDisplayPlaneAlphaFlagsKHR
 }
 
+func wrapDisplayPlaneAlphaFlagsKHR(p *C.VkDisplayPlaneAlphaFlagsKHR) *DisplayPlaneAlphaFlagsKHR {
+	v := DisplayPlaneAlphaFlagsKHR{native: p}
+	return &v
+}
+
+func marshalDisplayPlaneAlphaFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPlaneAlphaFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayPlaneAlphaFlagsKHR(c)
+}
+
 type DisplayModeCreateFlagsKHR struct {
 	native *C.VkDisplayModeCreateFlagsKHR
+}
+
+func wrapDisplayModeCreateFlagsKHR(p *C.VkDisplayModeCreateFlagsKHR) *DisplayModeCreateFlagsKHR {
+	v := DisplayModeCreateFlagsKHR{native: p}
+	return &v
+}
+
+func marshalDisplayModeCreateFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayModeCreateFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayModeCreateFlagsKHR(c)
 }
 
 type DisplaySurfaceCreateFlagsKHR struct {
 	native *C.VkDisplaySurfaceCreateFlagsKHR
 }
 
+func wrapDisplaySurfaceCreateFlagsKHR(p *C.VkDisplaySurfaceCreateFlagsKHR) *DisplaySurfaceCreateFlagsKHR {
+	v := DisplaySurfaceCreateFlagsKHR{native: p}
+	return &v
+}
+
+func marshalDisplaySurfaceCreateFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplaySurfaceCreateFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapDisplaySurfaceCreateFlagsKHR(c)
+}
+
 type DisplayPropertiesKHR struct {
 	native *C.VkDisplayPropertiesKHR
+}
+
+func wrapDisplayPropertiesKHR(p *C.VkDisplayPropertiesKHR) *DisplayPropertiesKHR {
+	v := DisplayPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalDisplayPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayPropertiesKHR(c)
 }
 
 type DisplayModeParametersKHR struct {
 	native *C.VkDisplayModeParametersKHR
 }
 
+func wrapDisplayModeParametersKHR(p *C.VkDisplayModeParametersKHR) *DisplayModeParametersKHR {
+	v := DisplayModeParametersKHR{native: p}
+	return &v
+}
+
+func marshalDisplayModeParametersKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayModeParametersKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayModeParametersKHR(c)
+}
+
 type DisplayModePropertiesKHR struct {
 	native *C.VkDisplayModePropertiesKHR
+}
+
+func wrapDisplayModePropertiesKHR(p *C.VkDisplayModePropertiesKHR) *DisplayModePropertiesKHR {
+	v := DisplayModePropertiesKHR{native: p}
+	return &v
+}
+
+func marshalDisplayModePropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayModePropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayModePropertiesKHR(c)
 }
 
 type DisplayModeCreateInfoKHR struct {
 	native *C.VkDisplayModeCreateInfoKHR
 }
 
+func wrapDisplayModeCreateInfoKHR(p *C.VkDisplayModeCreateInfoKHR) *DisplayModeCreateInfoKHR {
+	v := DisplayModeCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalDisplayModeCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayModeCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayModeCreateInfoKHR(c)
+}
+
 type DisplayPlaneCapabilitiesKHR struct {
 	native *C.VkDisplayPlaneCapabilitiesKHR
+}
+
+func wrapDisplayPlaneCapabilitiesKHR(p *C.VkDisplayPlaneCapabilitiesKHR) *DisplayPlaneCapabilitiesKHR {
+	v := DisplayPlaneCapabilitiesKHR{native: p}
+	return &v
+}
+
+func marshalDisplayPlaneCapabilitiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPlaneCapabilitiesKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayPlaneCapabilitiesKHR(c)
 }
 
 type DisplayPlanePropertiesKHR struct {
 	native *C.VkDisplayPlanePropertiesKHR
 }
 
+func wrapDisplayPlanePropertiesKHR(p *C.VkDisplayPlanePropertiesKHR) *DisplayPlanePropertiesKHR {
+	v := DisplayPlanePropertiesKHR{native: p}
+	return &v
+}
+
+func marshalDisplayPlanePropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPlanePropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayPlanePropertiesKHR(c)
+}
+
 type DisplaySurfaceCreateInfoKHR struct {
 	native *C.VkDisplaySurfaceCreateInfoKHR
+}
+
+func wrapDisplaySurfaceCreateInfoKHR(p *C.VkDisplaySurfaceCreateInfoKHR) *DisplaySurfaceCreateInfoKHR {
+	v := DisplaySurfaceCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalDisplaySurfaceCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplaySurfaceCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDisplaySurfaceCreateInfoKHR(c)
 }
 
 type DisplayPresentInfoKHR struct {
 	native *C.VkDisplayPresentInfoKHR
 }
 
+func wrapDisplayPresentInfoKHR(p *C.VkDisplayPresentInfoKHR) *DisplayPresentInfoKHR {
+	v := DisplayPresentInfoKHR{native: p}
+	return &v
+}
+
+func marshalDisplayPresentInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPresentInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDisplayPresentInfoKHR(c)
+}
+
 type RenderPassMultiviewCreateInfoKHR struct {
 	native *C.VkRenderPassMultiviewCreateInfoKHR
+}
+
+func wrapRenderPassMultiviewCreateInfoKHR(p *C.VkRenderPassMultiviewCreateInfoKHR) *RenderPassMultiviewCreateInfoKHR {
+	v := RenderPassMultiviewCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalRenderPassMultiviewCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPassMultiviewCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapRenderPassMultiviewCreateInfoKHR(c)
 }
 
 type PhysicalDeviceMultiviewFeaturesKHR struct {
 	native *C.VkPhysicalDeviceMultiviewFeaturesKHR
 }
 
+func wrapPhysicalDeviceMultiviewFeaturesKHR(p *C.VkPhysicalDeviceMultiviewFeaturesKHR) *PhysicalDeviceMultiviewFeaturesKHR {
+	v := PhysicalDeviceMultiviewFeaturesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMultiviewFeaturesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMultiviewFeaturesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMultiviewFeaturesKHR(c)
+}
+
 type PhysicalDeviceMultiviewPropertiesKHR struct {
 	native *C.VkPhysicalDeviceMultiviewPropertiesKHR
+}
+
+func wrapPhysicalDeviceMultiviewPropertiesKHR(p *C.VkPhysicalDeviceMultiviewPropertiesKHR) *PhysicalDeviceMultiviewPropertiesKHR {
+	v := PhysicalDeviceMultiviewPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMultiviewPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMultiviewPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMultiviewPropertiesKHR(c)
 }
 
 type PhysicalDeviceFeatures2KHR struct {
 	native *C.VkPhysicalDeviceFeatures2KHR
 }
 
+func wrapPhysicalDeviceFeatures2KHR(p *C.VkPhysicalDeviceFeatures2KHR) *PhysicalDeviceFeatures2KHR {
+	v := PhysicalDeviceFeatures2KHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceFeatures2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceFeatures2KHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceFeatures2KHR(c)
+}
+
 type PhysicalDeviceProperties2KHR struct {
 	native *C.VkPhysicalDeviceProperties2KHR
+}
+
+func wrapPhysicalDeviceProperties2KHR(p *C.VkPhysicalDeviceProperties2KHR) *PhysicalDeviceProperties2KHR {
+	v := PhysicalDeviceProperties2KHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceProperties2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceProperties2KHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceProperties2KHR(c)
 }
 
 type FormatProperties2KHR struct {
 	native *C.VkFormatProperties2KHR
 }
 
+func wrapFormatProperties2KHR(p *C.VkFormatProperties2KHR) *FormatProperties2KHR {
+	v := FormatProperties2KHR{native: p}
+	return &v
+}
+
+func marshalFormatProperties2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFormatProperties2KHR)(unsafe.Pointer(b))
+
+	return wrapFormatProperties2KHR(c)
+}
+
 type ImageFormatProperties2KHR struct {
 	native *C.VkImageFormatProperties2KHR
+}
+
+func wrapImageFormatProperties2KHR(p *C.VkImageFormatProperties2KHR) *ImageFormatProperties2KHR {
+	v := ImageFormatProperties2KHR{native: p}
+	return &v
+}
+
+func marshalImageFormatProperties2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageFormatProperties2KHR)(unsafe.Pointer(b))
+
+	return wrapImageFormatProperties2KHR(c)
 }
 
 type PhysicalDeviceImageFormatInfo2KHR struct {
 	native *C.VkPhysicalDeviceImageFormatInfo2KHR
 }
 
+func wrapPhysicalDeviceImageFormatInfo2KHR(p *C.VkPhysicalDeviceImageFormatInfo2KHR) *PhysicalDeviceImageFormatInfo2KHR {
+	v := PhysicalDeviceImageFormatInfo2KHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceImageFormatInfo2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceImageFormatInfo2KHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceImageFormatInfo2KHR(c)
+}
+
 type QueueFamilyProperties2KHR struct {
 	native *C.VkQueueFamilyProperties2KHR
+}
+
+func wrapQueueFamilyProperties2KHR(p *C.VkQueueFamilyProperties2KHR) *QueueFamilyProperties2KHR {
+	v := QueueFamilyProperties2KHR{native: p}
+	return &v
+}
+
+func marshalQueueFamilyProperties2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueueFamilyProperties2KHR)(unsafe.Pointer(b))
+
+	return wrapQueueFamilyProperties2KHR(c)
 }
 
 type PhysicalDeviceMemoryProperties2KHR struct {
 	native *C.VkPhysicalDeviceMemoryProperties2KHR
 }
 
+func wrapPhysicalDeviceMemoryProperties2KHR(p *C.VkPhysicalDeviceMemoryProperties2KHR) *PhysicalDeviceMemoryProperties2KHR {
+	v := PhysicalDeviceMemoryProperties2KHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMemoryProperties2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMemoryProperties2KHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMemoryProperties2KHR(c)
+}
+
 type SparseImageFormatProperties2KHR struct {
 	native *C.VkSparseImageFormatProperties2KHR
+}
+
+func wrapSparseImageFormatProperties2KHR(p *C.VkSparseImageFormatProperties2KHR) *SparseImageFormatProperties2KHR {
+	v := SparseImageFormatProperties2KHR{native: p}
+	return &v
+}
+
+func marshalSparseImageFormatProperties2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageFormatProperties2KHR)(unsafe.Pointer(b))
+
+	return wrapSparseImageFormatProperties2KHR(c)
 }
 
 type PhysicalDeviceSparseImageFormatInfo2KHR struct {
 	native *C.VkPhysicalDeviceSparseImageFormatInfo2KHR
 }
 
+func wrapPhysicalDeviceSparseImageFormatInfo2KHR(p *C.VkPhysicalDeviceSparseImageFormatInfo2KHR) *PhysicalDeviceSparseImageFormatInfo2KHR {
+	v := PhysicalDeviceSparseImageFormatInfo2KHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceSparseImageFormatInfo2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceSparseImageFormatInfo2KHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceSparseImageFormatInfo2KHR(c)
+}
+
 type PeerMemoryFeatureFlagsKHR struct {
 	native *C.VkPeerMemoryFeatureFlagsKHR
+}
+
+func wrapPeerMemoryFeatureFlagsKHR(p *C.VkPeerMemoryFeatureFlagsKHR) *PeerMemoryFeatureFlagsKHR {
+	v := PeerMemoryFeatureFlagsKHR{native: p}
+	return &v
+}
+
+func marshalPeerMemoryFeatureFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPeerMemoryFeatureFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapPeerMemoryFeatureFlagsKHR(c)
 }
 
 type PeerMemoryFeatureFlagBitsKHR struct {
 	native *C.VkPeerMemoryFeatureFlagBitsKHR
 }
 
+func wrapPeerMemoryFeatureFlagBitsKHR(p *C.VkPeerMemoryFeatureFlagBitsKHR) *PeerMemoryFeatureFlagBitsKHR {
+	v := PeerMemoryFeatureFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalPeerMemoryFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPeerMemoryFeatureFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapPeerMemoryFeatureFlagBitsKHR(c)
+}
+
 type MemoryAllocateFlagsKHR struct {
 	native *C.VkMemoryAllocateFlagsKHR
+}
+
+func wrapMemoryAllocateFlagsKHR(p *C.VkMemoryAllocateFlagsKHR) *MemoryAllocateFlagsKHR {
+	v := MemoryAllocateFlagsKHR{native: p}
+	return &v
+}
+
+func marshalMemoryAllocateFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryAllocateFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapMemoryAllocateFlagsKHR(c)
 }
 
 type MemoryAllocateFlagBitsKHR struct {
 	native *C.VkMemoryAllocateFlagBitsKHR
 }
 
+func wrapMemoryAllocateFlagBitsKHR(p *C.VkMemoryAllocateFlagBitsKHR) *MemoryAllocateFlagBitsKHR {
+	v := MemoryAllocateFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalMemoryAllocateFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryAllocateFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapMemoryAllocateFlagBitsKHR(c)
+}
+
 type MemoryAllocateFlagsInfoKHR struct {
 	native *C.VkMemoryAllocateFlagsInfoKHR
+}
+
+func wrapMemoryAllocateFlagsInfoKHR(p *C.VkMemoryAllocateFlagsInfoKHR) *MemoryAllocateFlagsInfoKHR {
+	v := MemoryAllocateFlagsInfoKHR{native: p}
+	return &v
+}
+
+func marshalMemoryAllocateFlagsInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryAllocateFlagsInfoKHR)(unsafe.Pointer(b))
+
+	return wrapMemoryAllocateFlagsInfoKHR(c)
 }
 
 type DeviceGroupRenderPassBeginInfoKHR struct {
 	native *C.VkDeviceGroupRenderPassBeginInfoKHR
 }
 
+func wrapDeviceGroupRenderPassBeginInfoKHR(p *C.VkDeviceGroupRenderPassBeginInfoKHR) *DeviceGroupRenderPassBeginInfoKHR {
+	v := DeviceGroupRenderPassBeginInfoKHR{native: p}
+	return &v
+}
+
+func marshalDeviceGroupRenderPassBeginInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupRenderPassBeginInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupRenderPassBeginInfoKHR(c)
+}
+
 type DeviceGroupCommandBufferBeginInfoKHR struct {
 	native *C.VkDeviceGroupCommandBufferBeginInfoKHR
+}
+
+func wrapDeviceGroupCommandBufferBeginInfoKHR(p *C.VkDeviceGroupCommandBufferBeginInfoKHR) *DeviceGroupCommandBufferBeginInfoKHR {
+	v := DeviceGroupCommandBufferBeginInfoKHR{native: p}
+	return &v
+}
+
+func marshalDeviceGroupCommandBufferBeginInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupCommandBufferBeginInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupCommandBufferBeginInfoKHR(c)
 }
 
 type DeviceGroupSubmitInfoKHR struct {
 	native *C.VkDeviceGroupSubmitInfoKHR
 }
 
+func wrapDeviceGroupSubmitInfoKHR(p *C.VkDeviceGroupSubmitInfoKHR) *DeviceGroupSubmitInfoKHR {
+	v := DeviceGroupSubmitInfoKHR{native: p}
+	return &v
+}
+
+func marshalDeviceGroupSubmitInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupSubmitInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupSubmitInfoKHR(c)
+}
+
 type DeviceGroupBindSparseInfoKHR struct {
 	native *C.VkDeviceGroupBindSparseInfoKHR
+}
+
+func wrapDeviceGroupBindSparseInfoKHR(p *C.VkDeviceGroupBindSparseInfoKHR) *DeviceGroupBindSparseInfoKHR {
+	v := DeviceGroupBindSparseInfoKHR{native: p}
+	return &v
+}
+
+func marshalDeviceGroupBindSparseInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupBindSparseInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupBindSparseInfoKHR(c)
 }
 
 type BindBufferMemoryDeviceGroupInfoKHR struct {
 	native *C.VkBindBufferMemoryDeviceGroupInfoKHR
 }
 
+func wrapBindBufferMemoryDeviceGroupInfoKHR(p *C.VkBindBufferMemoryDeviceGroupInfoKHR) *BindBufferMemoryDeviceGroupInfoKHR {
+	v := BindBufferMemoryDeviceGroupInfoKHR{native: p}
+	return &v
+}
+
+func marshalBindBufferMemoryDeviceGroupInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindBufferMemoryDeviceGroupInfoKHR)(unsafe.Pointer(b))
+
+	return wrapBindBufferMemoryDeviceGroupInfoKHR(c)
+}
+
 type BindImageMemoryDeviceGroupInfoKHR struct {
 	native *C.VkBindImageMemoryDeviceGroupInfoKHR
+}
+
+func wrapBindImageMemoryDeviceGroupInfoKHR(p *C.VkBindImageMemoryDeviceGroupInfoKHR) *BindImageMemoryDeviceGroupInfoKHR {
+	v := BindImageMemoryDeviceGroupInfoKHR{native: p}
+	return &v
+}
+
+func marshalBindImageMemoryDeviceGroupInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindImageMemoryDeviceGroupInfoKHR)(unsafe.Pointer(b))
+
+	return wrapBindImageMemoryDeviceGroupInfoKHR(c)
 }
 
 type CommandPoolTrimFlagsKHR struct {
 	native *C.VkCommandPoolTrimFlagsKHR
 }
 
+func wrapCommandPoolTrimFlagsKHR(p *C.VkCommandPoolTrimFlagsKHR) *CommandPoolTrimFlagsKHR {
+	v := CommandPoolTrimFlagsKHR{native: p}
+	return &v
+}
+
+func marshalCommandPoolTrimFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandPoolTrimFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapCommandPoolTrimFlagsKHR(c)
+}
+
 type PhysicalDeviceGroupPropertiesKHR struct {
 	native *C.VkPhysicalDeviceGroupPropertiesKHR
+}
+
+func wrapPhysicalDeviceGroupPropertiesKHR(p *C.VkPhysicalDeviceGroupPropertiesKHR) *PhysicalDeviceGroupPropertiesKHR {
+	v := PhysicalDeviceGroupPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceGroupPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceGroupPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceGroupPropertiesKHR(c)
 }
 
 type DeviceGroupDeviceCreateInfoKHR struct {
 	native *C.VkDeviceGroupDeviceCreateInfoKHR
 }
 
+func wrapDeviceGroupDeviceCreateInfoKHR(p *C.VkDeviceGroupDeviceCreateInfoKHR) *DeviceGroupDeviceCreateInfoKHR {
+	v := DeviceGroupDeviceCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalDeviceGroupDeviceCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGroupDeviceCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDeviceGroupDeviceCreateInfoKHR(c)
+}
+
 type ExternalMemoryHandleTypeFlagsKHR struct {
 	native *C.VkExternalMemoryHandleTypeFlagsKHR
+}
+
+func wrapExternalMemoryHandleTypeFlagsKHR(p *C.VkExternalMemoryHandleTypeFlagsKHR) *ExternalMemoryHandleTypeFlagsKHR {
+	v := ExternalMemoryHandleTypeFlagsKHR{native: p}
+	return &v
+}
+
+func marshalExternalMemoryHandleTypeFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryHandleTypeFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryHandleTypeFlagsKHR(c)
 }
 
 type ExternalMemoryHandleTypeFlagBitsKHR struct {
 	native *C.VkExternalMemoryHandleTypeFlagBitsKHR
 }
 
+func wrapExternalMemoryHandleTypeFlagBitsKHR(p *C.VkExternalMemoryHandleTypeFlagBitsKHR) *ExternalMemoryHandleTypeFlagBitsKHR {
+	v := ExternalMemoryHandleTypeFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalExternalMemoryHandleTypeFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryHandleTypeFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryHandleTypeFlagBitsKHR(c)
+}
+
 type ExternalMemoryFeatureFlagsKHR struct {
 	native *C.VkExternalMemoryFeatureFlagsKHR
+}
+
+func wrapExternalMemoryFeatureFlagsKHR(p *C.VkExternalMemoryFeatureFlagsKHR) *ExternalMemoryFeatureFlagsKHR {
+	v := ExternalMemoryFeatureFlagsKHR{native: p}
+	return &v
+}
+
+func marshalExternalMemoryFeatureFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryFeatureFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryFeatureFlagsKHR(c)
 }
 
 type ExternalMemoryFeatureFlagBitsKHR struct {
 	native *C.VkExternalMemoryFeatureFlagBitsKHR
 }
 
+func wrapExternalMemoryFeatureFlagBitsKHR(p *C.VkExternalMemoryFeatureFlagBitsKHR) *ExternalMemoryFeatureFlagBitsKHR {
+	v := ExternalMemoryFeatureFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalExternalMemoryFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryFeatureFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryFeatureFlagBitsKHR(c)
+}
+
 type ExternalMemoryPropertiesKHR struct {
 	native *C.VkExternalMemoryPropertiesKHR
+}
+
+func wrapExternalMemoryPropertiesKHR(p *C.VkExternalMemoryPropertiesKHR) *ExternalMemoryPropertiesKHR {
+	v := ExternalMemoryPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalExternalMemoryPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryPropertiesKHR(c)
 }
 
 type PhysicalDeviceExternalImageFormatInfoKHR struct {
 	native *C.VkPhysicalDeviceExternalImageFormatInfoKHR
 }
 
+func wrapPhysicalDeviceExternalImageFormatInfoKHR(p *C.VkPhysicalDeviceExternalImageFormatInfoKHR) *PhysicalDeviceExternalImageFormatInfoKHR {
+	v := PhysicalDeviceExternalImageFormatInfoKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceExternalImageFormatInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceExternalImageFormatInfoKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceExternalImageFormatInfoKHR(c)
+}
+
 type ExternalImageFormatPropertiesKHR struct {
 	native *C.VkExternalImageFormatPropertiesKHR
+}
+
+func wrapExternalImageFormatPropertiesKHR(p *C.VkExternalImageFormatPropertiesKHR) *ExternalImageFormatPropertiesKHR {
+	v := ExternalImageFormatPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalExternalImageFormatPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalImageFormatPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapExternalImageFormatPropertiesKHR(c)
 }
 
 type PhysicalDeviceExternalBufferInfoKHR struct {
 	native *C.VkPhysicalDeviceExternalBufferInfoKHR
 }
 
+func wrapPhysicalDeviceExternalBufferInfoKHR(p *C.VkPhysicalDeviceExternalBufferInfoKHR) *PhysicalDeviceExternalBufferInfoKHR {
+	v := PhysicalDeviceExternalBufferInfoKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceExternalBufferInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceExternalBufferInfoKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceExternalBufferInfoKHR(c)
+}
+
 type ExternalBufferPropertiesKHR struct {
 	native *C.VkExternalBufferPropertiesKHR
+}
+
+func wrapExternalBufferPropertiesKHR(p *C.VkExternalBufferPropertiesKHR) *ExternalBufferPropertiesKHR {
+	v := ExternalBufferPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalExternalBufferPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalBufferPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapExternalBufferPropertiesKHR(c)
 }
 
 type PhysicalDeviceIDPropertiesKHR struct {
 	native *C.VkPhysicalDeviceIDPropertiesKHR
 }
 
+func wrapPhysicalDeviceIDPropertiesKHR(p *C.VkPhysicalDeviceIDPropertiesKHR) *PhysicalDeviceIDPropertiesKHR {
+	v := PhysicalDeviceIDPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceIDPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceIDPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceIDPropertiesKHR(c)
+}
+
 type ExternalMemoryImageCreateInfoKHR struct {
 	native *C.VkExternalMemoryImageCreateInfoKHR
+}
+
+func wrapExternalMemoryImageCreateInfoKHR(p *C.VkExternalMemoryImageCreateInfoKHR) *ExternalMemoryImageCreateInfoKHR {
+	v := ExternalMemoryImageCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalExternalMemoryImageCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryImageCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryImageCreateInfoKHR(c)
 }
 
 type ExternalMemoryBufferCreateInfoKHR struct {
 	native *C.VkExternalMemoryBufferCreateInfoKHR
 }
 
+func wrapExternalMemoryBufferCreateInfoKHR(p *C.VkExternalMemoryBufferCreateInfoKHR) *ExternalMemoryBufferCreateInfoKHR {
+	v := ExternalMemoryBufferCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalExternalMemoryBufferCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryBufferCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryBufferCreateInfoKHR(c)
+}
+
 type ExportMemoryAllocateInfoKHR struct {
 	native *C.VkExportMemoryAllocateInfoKHR
+}
+
+func wrapExportMemoryAllocateInfoKHR(p *C.VkExportMemoryAllocateInfoKHR) *ExportMemoryAllocateInfoKHR {
+	v := ExportMemoryAllocateInfoKHR{native: p}
+	return &v
+}
+
+func marshalExportMemoryAllocateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExportMemoryAllocateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapExportMemoryAllocateInfoKHR(c)
 }
 
 type ImportMemoryFdInfoKHR struct {
 	native *C.VkImportMemoryFdInfoKHR
 }
 
+func wrapImportMemoryFdInfoKHR(p *C.VkImportMemoryFdInfoKHR) *ImportMemoryFdInfoKHR {
+	v := ImportMemoryFdInfoKHR{native: p}
+	return &v
+}
+
+func marshalImportMemoryFdInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImportMemoryFdInfoKHR)(unsafe.Pointer(b))
+
+	return wrapImportMemoryFdInfoKHR(c)
+}
+
 type MemoryFdPropertiesKHR struct {
 	native *C.VkMemoryFdPropertiesKHR
+}
+
+func wrapMemoryFdPropertiesKHR(p *C.VkMemoryFdPropertiesKHR) *MemoryFdPropertiesKHR {
+	v := MemoryFdPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalMemoryFdPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryFdPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapMemoryFdPropertiesKHR(c)
 }
 
 type MemoryGetFdInfoKHR struct {
 	native *C.VkMemoryGetFdInfoKHR
 }
 
+func wrapMemoryGetFdInfoKHR(p *C.VkMemoryGetFdInfoKHR) *MemoryGetFdInfoKHR {
+	v := MemoryGetFdInfoKHR{native: p}
+	return &v
+}
+
+func marshalMemoryGetFdInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryGetFdInfoKHR)(unsafe.Pointer(b))
+
+	return wrapMemoryGetFdInfoKHR(c)
+}
+
 type ExternalSemaphoreHandleTypeFlagsKHR struct {
 	native *C.VkExternalSemaphoreHandleTypeFlagsKHR
+}
+
+func wrapExternalSemaphoreHandleTypeFlagsKHR(p *C.VkExternalSemaphoreHandleTypeFlagsKHR) *ExternalSemaphoreHandleTypeFlagsKHR {
+	v := ExternalSemaphoreHandleTypeFlagsKHR{native: p}
+	return &v
+}
+
+func marshalExternalSemaphoreHandleTypeFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalSemaphoreHandleTypeFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalSemaphoreHandleTypeFlagsKHR(c)
 }
 
 type ExternalSemaphoreHandleTypeFlagBitsKHR struct {
 	native *C.VkExternalSemaphoreHandleTypeFlagBitsKHR
 }
 
+func wrapExternalSemaphoreHandleTypeFlagBitsKHR(p *C.VkExternalSemaphoreHandleTypeFlagBitsKHR) *ExternalSemaphoreHandleTypeFlagBitsKHR {
+	v := ExternalSemaphoreHandleTypeFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalExternalSemaphoreHandleTypeFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalSemaphoreHandleTypeFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalSemaphoreHandleTypeFlagBitsKHR(c)
+}
+
 type ExternalSemaphoreFeatureFlagsKHR struct {
 	native *C.VkExternalSemaphoreFeatureFlagsKHR
+}
+
+func wrapExternalSemaphoreFeatureFlagsKHR(p *C.VkExternalSemaphoreFeatureFlagsKHR) *ExternalSemaphoreFeatureFlagsKHR {
+	v := ExternalSemaphoreFeatureFlagsKHR{native: p}
+	return &v
+}
+
+func marshalExternalSemaphoreFeatureFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalSemaphoreFeatureFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalSemaphoreFeatureFlagsKHR(c)
 }
 
 type ExternalSemaphoreFeatureFlagBitsKHR struct {
 	native *C.VkExternalSemaphoreFeatureFlagBitsKHR
 }
 
+func wrapExternalSemaphoreFeatureFlagBitsKHR(p *C.VkExternalSemaphoreFeatureFlagBitsKHR) *ExternalSemaphoreFeatureFlagBitsKHR {
+	v := ExternalSemaphoreFeatureFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalExternalSemaphoreFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalSemaphoreFeatureFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalSemaphoreFeatureFlagBitsKHR(c)
+}
+
 type PhysicalDeviceExternalSemaphoreInfoKHR struct {
 	native *C.VkPhysicalDeviceExternalSemaphoreInfoKHR
+}
+
+func wrapPhysicalDeviceExternalSemaphoreInfoKHR(p *C.VkPhysicalDeviceExternalSemaphoreInfoKHR) *PhysicalDeviceExternalSemaphoreInfoKHR {
+	v := PhysicalDeviceExternalSemaphoreInfoKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceExternalSemaphoreInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceExternalSemaphoreInfoKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceExternalSemaphoreInfoKHR(c)
 }
 
 type ExternalSemaphorePropertiesKHR struct {
 	native *C.VkExternalSemaphorePropertiesKHR
 }
 
+func wrapExternalSemaphorePropertiesKHR(p *C.VkExternalSemaphorePropertiesKHR) *ExternalSemaphorePropertiesKHR {
+	v := ExternalSemaphorePropertiesKHR{native: p}
+	return &v
+}
+
+func marshalExternalSemaphorePropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalSemaphorePropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapExternalSemaphorePropertiesKHR(c)
+}
+
 type SemaphoreImportFlagsKHR struct {
 	native *C.VkSemaphoreImportFlagsKHR
+}
+
+func wrapSemaphoreImportFlagsKHR(p *C.VkSemaphoreImportFlagsKHR) *SemaphoreImportFlagsKHR {
+	v := SemaphoreImportFlagsKHR{native: p}
+	return &v
+}
+
+func marshalSemaphoreImportFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSemaphoreImportFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapSemaphoreImportFlagsKHR(c)
 }
 
 type SemaphoreImportFlagBitsKHR struct {
 	native *C.VkSemaphoreImportFlagBitsKHR
 }
 
+func wrapSemaphoreImportFlagBitsKHR(p *C.VkSemaphoreImportFlagBitsKHR) *SemaphoreImportFlagBitsKHR {
+	v := SemaphoreImportFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalSemaphoreImportFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSemaphoreImportFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapSemaphoreImportFlagBitsKHR(c)
+}
+
 type ExportSemaphoreCreateInfoKHR struct {
 	native *C.VkExportSemaphoreCreateInfoKHR
+}
+
+func wrapExportSemaphoreCreateInfoKHR(p *C.VkExportSemaphoreCreateInfoKHR) *ExportSemaphoreCreateInfoKHR {
+	v := ExportSemaphoreCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalExportSemaphoreCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExportSemaphoreCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapExportSemaphoreCreateInfoKHR(c)
 }
 
 type ImportSemaphoreFdInfoKHR struct {
 	native *C.VkImportSemaphoreFdInfoKHR
 }
 
+func wrapImportSemaphoreFdInfoKHR(p *C.VkImportSemaphoreFdInfoKHR) *ImportSemaphoreFdInfoKHR {
+	v := ImportSemaphoreFdInfoKHR{native: p}
+	return &v
+}
+
+func marshalImportSemaphoreFdInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImportSemaphoreFdInfoKHR)(unsafe.Pointer(b))
+
+	return wrapImportSemaphoreFdInfoKHR(c)
+}
+
 type SemaphoreGetFdInfoKHR struct {
 	native *C.VkSemaphoreGetFdInfoKHR
+}
+
+func wrapSemaphoreGetFdInfoKHR(p *C.VkSemaphoreGetFdInfoKHR) *SemaphoreGetFdInfoKHR {
+	v := SemaphoreGetFdInfoKHR{native: p}
+	return &v
+}
+
+func marshalSemaphoreGetFdInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSemaphoreGetFdInfoKHR)(unsafe.Pointer(b))
+
+	return wrapSemaphoreGetFdInfoKHR(c)
 }
 
 type PhysicalDevicePushDescriptorPropertiesKHR struct {
 	native *C.VkPhysicalDevicePushDescriptorPropertiesKHR
 }
 
+func wrapPhysicalDevicePushDescriptorPropertiesKHR(p *C.VkPhysicalDevicePushDescriptorPropertiesKHR) *PhysicalDevicePushDescriptorPropertiesKHR {
+	v := PhysicalDevicePushDescriptorPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDevicePushDescriptorPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDevicePushDescriptorPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDevicePushDescriptorPropertiesKHR(c)
+}
+
 type PhysicalDeviceFloat16Int8FeaturesKHR struct {
 	native *C.VkPhysicalDeviceFloat16Int8FeaturesKHR
+}
+
+func wrapPhysicalDeviceFloat16Int8FeaturesKHR(p *C.VkPhysicalDeviceFloat16Int8FeaturesKHR) *PhysicalDeviceFloat16Int8FeaturesKHR {
+	v := PhysicalDeviceFloat16Int8FeaturesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceFloat16Int8FeaturesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceFloat16Int8FeaturesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceFloat16Int8FeaturesKHR(c)
 }
 
 type PhysicalDevice16BitStorageFeaturesKHR struct {
 	native *C.VkPhysicalDevice16BitStorageFeaturesKHR
 }
 
+func wrapPhysicalDevice16BitStorageFeaturesKHR(p *C.VkPhysicalDevice16BitStorageFeaturesKHR) *PhysicalDevice16BitStorageFeaturesKHR {
+	v := PhysicalDevice16BitStorageFeaturesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDevice16BitStorageFeaturesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDevice16BitStorageFeaturesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDevice16BitStorageFeaturesKHR(c)
+}
+
 type RectLayerKHR struct {
 	native *C.VkRectLayerKHR
+}
+
+func wrapRectLayerKHR(p *C.VkRectLayerKHR) *RectLayerKHR {
+	v := RectLayerKHR{native: p}
+	return &v
+}
+
+func marshalRectLayerKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRectLayerKHR)(unsafe.Pointer(b))
+
+	return wrapRectLayerKHR(c)
 }
 
 type PresentRegionKHR struct {
 	native *C.VkPresentRegionKHR
 }
 
+func wrapPresentRegionKHR(p *C.VkPresentRegionKHR) *PresentRegionKHR {
+	v := PresentRegionKHR{native: p}
+	return &v
+}
+
+func marshalPresentRegionKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPresentRegionKHR)(unsafe.Pointer(b))
+
+	return wrapPresentRegionKHR(c)
+}
+
 type PresentRegionsKHR struct {
 	native *C.VkPresentRegionsKHR
+}
+
+func wrapPresentRegionsKHR(p *C.VkPresentRegionsKHR) *PresentRegionsKHR {
+	v := PresentRegionsKHR{native: p}
+	return &v
+}
+
+func marshalPresentRegionsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPresentRegionsKHR)(unsafe.Pointer(b))
+
+	return wrapPresentRegionsKHR(c)
 }
 
 type DescriptorUpdateTemplateKHR struct {
 	native *C.VkDescriptorUpdateTemplateKHR
 }
 
+func wrapDescriptorUpdateTemplateKHR(p *C.VkDescriptorUpdateTemplateKHR) *DescriptorUpdateTemplateKHR {
+	v := DescriptorUpdateTemplateKHR{native: p}
+	return &v
+}
+
+func marshalDescriptorUpdateTemplateKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorUpdateTemplateKHR)(unsafe.Pointer(b))
+
+	return wrapDescriptorUpdateTemplateKHR(c)
+}
+
 type DescriptorUpdateTemplateTypeKHR struct {
 	native *C.VkDescriptorUpdateTemplateTypeKHR
+}
+
+func wrapDescriptorUpdateTemplateTypeKHR(p *C.VkDescriptorUpdateTemplateTypeKHR) *DescriptorUpdateTemplateTypeKHR {
+	v := DescriptorUpdateTemplateTypeKHR{native: p}
+	return &v
+}
+
+func marshalDescriptorUpdateTemplateTypeKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorUpdateTemplateTypeKHR)(unsafe.Pointer(b))
+
+	return wrapDescriptorUpdateTemplateTypeKHR(c)
 }
 
 type DescriptorUpdateTemplateCreateFlagsKHR struct {
 	native *C.VkDescriptorUpdateTemplateCreateFlagsKHR
 }
 
+func wrapDescriptorUpdateTemplateCreateFlagsKHR(p *C.VkDescriptorUpdateTemplateCreateFlagsKHR) *DescriptorUpdateTemplateCreateFlagsKHR {
+	v := DescriptorUpdateTemplateCreateFlagsKHR{native: p}
+	return &v
+}
+
+func marshalDescriptorUpdateTemplateCreateFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorUpdateTemplateCreateFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapDescriptorUpdateTemplateCreateFlagsKHR(c)
+}
+
 type DescriptorUpdateTemplateEntryKHR struct {
 	native *C.VkDescriptorUpdateTemplateEntryKHR
+}
+
+func wrapDescriptorUpdateTemplateEntryKHR(p *C.VkDescriptorUpdateTemplateEntryKHR) *DescriptorUpdateTemplateEntryKHR {
+	v := DescriptorUpdateTemplateEntryKHR{native: p}
+	return &v
+}
+
+func marshalDescriptorUpdateTemplateEntryKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorUpdateTemplateEntryKHR)(unsafe.Pointer(b))
+
+	return wrapDescriptorUpdateTemplateEntryKHR(c)
 }
 
 type DescriptorUpdateTemplateCreateInfoKHR struct {
 	native *C.VkDescriptorUpdateTemplateCreateInfoKHR
 }
 
+func wrapDescriptorUpdateTemplateCreateInfoKHR(p *C.VkDescriptorUpdateTemplateCreateInfoKHR) *DescriptorUpdateTemplateCreateInfoKHR {
+	v := DescriptorUpdateTemplateCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalDescriptorUpdateTemplateCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorUpdateTemplateCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapDescriptorUpdateTemplateCreateInfoKHR(c)
+}
+
 type AttachmentDescription2KHR struct {
 	native *C.VkAttachmentDescription2KHR
+}
+
+func wrapAttachmentDescription2KHR(p *C.VkAttachmentDescription2KHR) *AttachmentDescription2KHR {
+	v := AttachmentDescription2KHR{native: p}
+	return &v
+}
+
+func marshalAttachmentDescription2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAttachmentDescription2KHR)(unsafe.Pointer(b))
+
+	return wrapAttachmentDescription2KHR(c)
 }
 
 type AttachmentReference2KHR struct {
 	native *C.VkAttachmentReference2KHR
 }
 
+func wrapAttachmentReference2KHR(p *C.VkAttachmentReference2KHR) *AttachmentReference2KHR {
+	v := AttachmentReference2KHR{native: p}
+	return &v
+}
+
+func marshalAttachmentReference2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAttachmentReference2KHR)(unsafe.Pointer(b))
+
+	return wrapAttachmentReference2KHR(c)
+}
+
 type SubpassDescription2KHR struct {
 	native *C.VkSubpassDescription2KHR
+}
+
+func wrapSubpassDescription2KHR(p *C.VkSubpassDescription2KHR) *SubpassDescription2KHR {
+	v := SubpassDescription2KHR{native: p}
+	return &v
+}
+
+func marshalSubpassDescription2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassDescription2KHR)(unsafe.Pointer(b))
+
+	return wrapSubpassDescription2KHR(c)
 }
 
 type SubpassDependency2KHR struct {
 	native *C.VkSubpassDependency2KHR
 }
 
+func wrapSubpassDependency2KHR(p *C.VkSubpassDependency2KHR) *SubpassDependency2KHR {
+	v := SubpassDependency2KHR{native: p}
+	return &v
+}
+
+func marshalSubpassDependency2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassDependency2KHR)(unsafe.Pointer(b))
+
+	return wrapSubpassDependency2KHR(c)
+}
+
 type RenderPassCreateInfo2KHR struct {
 	native *C.VkRenderPassCreateInfo2KHR
+}
+
+func wrapRenderPassCreateInfo2KHR(p *C.VkRenderPassCreateInfo2KHR) *RenderPassCreateInfo2KHR {
+	v := RenderPassCreateInfo2KHR{native: p}
+	return &v
+}
+
+func marshalRenderPassCreateInfo2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPassCreateInfo2KHR)(unsafe.Pointer(b))
+
+	return wrapRenderPassCreateInfo2KHR(c)
 }
 
 type SubpassBeginInfoKHR struct {
 	native *C.VkSubpassBeginInfoKHR
 }
 
+func wrapSubpassBeginInfoKHR(p *C.VkSubpassBeginInfoKHR) *SubpassBeginInfoKHR {
+	v := SubpassBeginInfoKHR{native: p}
+	return &v
+}
+
+func marshalSubpassBeginInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassBeginInfoKHR)(unsafe.Pointer(b))
+
+	return wrapSubpassBeginInfoKHR(c)
+}
+
 type SubpassEndInfoKHR struct {
 	native *C.VkSubpassEndInfoKHR
+}
+
+func wrapSubpassEndInfoKHR(p *C.VkSubpassEndInfoKHR) *SubpassEndInfoKHR {
+	v := SubpassEndInfoKHR{native: p}
+	return &v
+}
+
+func marshalSubpassEndInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassEndInfoKHR)(unsafe.Pointer(b))
+
+	return wrapSubpassEndInfoKHR(c)
 }
 
 type SharedPresentSurfaceCapabilitiesKHR struct {
 	native *C.VkSharedPresentSurfaceCapabilitiesKHR
 }
 
+func wrapSharedPresentSurfaceCapabilitiesKHR(p *C.VkSharedPresentSurfaceCapabilitiesKHR) *SharedPresentSurfaceCapabilitiesKHR {
+	v := SharedPresentSurfaceCapabilitiesKHR{native: p}
+	return &v
+}
+
+func marshalSharedPresentSurfaceCapabilitiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSharedPresentSurfaceCapabilitiesKHR)(unsafe.Pointer(b))
+
+	return wrapSharedPresentSurfaceCapabilitiesKHR(c)
+}
+
 type ExternalFenceHandleTypeFlagsKHR struct {
 	native *C.VkExternalFenceHandleTypeFlagsKHR
+}
+
+func wrapExternalFenceHandleTypeFlagsKHR(p *C.VkExternalFenceHandleTypeFlagsKHR) *ExternalFenceHandleTypeFlagsKHR {
+	v := ExternalFenceHandleTypeFlagsKHR{native: p}
+	return &v
+}
+
+func marshalExternalFenceHandleTypeFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalFenceHandleTypeFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalFenceHandleTypeFlagsKHR(c)
 }
 
 type ExternalFenceHandleTypeFlagBitsKHR struct {
 	native *C.VkExternalFenceHandleTypeFlagBitsKHR
 }
 
+func wrapExternalFenceHandleTypeFlagBitsKHR(p *C.VkExternalFenceHandleTypeFlagBitsKHR) *ExternalFenceHandleTypeFlagBitsKHR {
+	v := ExternalFenceHandleTypeFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalExternalFenceHandleTypeFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalFenceHandleTypeFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalFenceHandleTypeFlagBitsKHR(c)
+}
+
 type ExternalFenceFeatureFlagsKHR struct {
 	native *C.VkExternalFenceFeatureFlagsKHR
+}
+
+func wrapExternalFenceFeatureFlagsKHR(p *C.VkExternalFenceFeatureFlagsKHR) *ExternalFenceFeatureFlagsKHR {
+	v := ExternalFenceFeatureFlagsKHR{native: p}
+	return &v
+}
+
+func marshalExternalFenceFeatureFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalFenceFeatureFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalFenceFeatureFlagsKHR(c)
 }
 
 type ExternalFenceFeatureFlagBitsKHR struct {
 	native *C.VkExternalFenceFeatureFlagBitsKHR
 }
 
+func wrapExternalFenceFeatureFlagBitsKHR(p *C.VkExternalFenceFeatureFlagBitsKHR) *ExternalFenceFeatureFlagBitsKHR {
+	v := ExternalFenceFeatureFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalExternalFenceFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalFenceFeatureFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapExternalFenceFeatureFlagBitsKHR(c)
+}
+
 type PhysicalDeviceExternalFenceInfoKHR struct {
 	native *C.VkPhysicalDeviceExternalFenceInfoKHR
+}
+
+func wrapPhysicalDeviceExternalFenceInfoKHR(p *C.VkPhysicalDeviceExternalFenceInfoKHR) *PhysicalDeviceExternalFenceInfoKHR {
+	v := PhysicalDeviceExternalFenceInfoKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceExternalFenceInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceExternalFenceInfoKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceExternalFenceInfoKHR(c)
 }
 
 type ExternalFencePropertiesKHR struct {
 	native *C.VkExternalFencePropertiesKHR
 }
 
+func wrapExternalFencePropertiesKHR(p *C.VkExternalFencePropertiesKHR) *ExternalFencePropertiesKHR {
+	v := ExternalFencePropertiesKHR{native: p}
+	return &v
+}
+
+func marshalExternalFencePropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalFencePropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapExternalFencePropertiesKHR(c)
+}
+
 type FenceImportFlagsKHR struct {
 	native *C.VkFenceImportFlagsKHR
+}
+
+func wrapFenceImportFlagsKHR(p *C.VkFenceImportFlagsKHR) *FenceImportFlagsKHR {
+	v := FenceImportFlagsKHR{native: p}
+	return &v
+}
+
+func marshalFenceImportFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFenceImportFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapFenceImportFlagsKHR(c)
 }
 
 type FenceImportFlagBitsKHR struct {
 	native *C.VkFenceImportFlagBitsKHR
 }
 
+func wrapFenceImportFlagBitsKHR(p *C.VkFenceImportFlagBitsKHR) *FenceImportFlagBitsKHR {
+	v := FenceImportFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalFenceImportFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFenceImportFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapFenceImportFlagBitsKHR(c)
+}
+
 type ExportFenceCreateInfoKHR struct {
 	native *C.VkExportFenceCreateInfoKHR
+}
+
+func wrapExportFenceCreateInfoKHR(p *C.VkExportFenceCreateInfoKHR) *ExportFenceCreateInfoKHR {
+	v := ExportFenceCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalExportFenceCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExportFenceCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapExportFenceCreateInfoKHR(c)
 }
 
 type ImportFenceFdInfoKHR struct {
 	native *C.VkImportFenceFdInfoKHR
 }
 
+func wrapImportFenceFdInfoKHR(p *C.VkImportFenceFdInfoKHR) *ImportFenceFdInfoKHR {
+	v := ImportFenceFdInfoKHR{native: p}
+	return &v
+}
+
+func marshalImportFenceFdInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImportFenceFdInfoKHR)(unsafe.Pointer(b))
+
+	return wrapImportFenceFdInfoKHR(c)
+}
+
 type FenceGetFdInfoKHR struct {
 	native *C.VkFenceGetFdInfoKHR
+}
+
+func wrapFenceGetFdInfoKHR(p *C.VkFenceGetFdInfoKHR) *FenceGetFdInfoKHR {
+	v := FenceGetFdInfoKHR{native: p}
+	return &v
+}
+
+func marshalFenceGetFdInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFenceGetFdInfoKHR)(unsafe.Pointer(b))
+
+	return wrapFenceGetFdInfoKHR(c)
 }
 
 type PointClippingBehaviorKHR struct {
 	native *C.VkPointClippingBehaviorKHR
 }
 
+func wrapPointClippingBehaviorKHR(p *C.VkPointClippingBehaviorKHR) *PointClippingBehaviorKHR {
+	v := PointClippingBehaviorKHR{native: p}
+	return &v
+}
+
+func marshalPointClippingBehaviorKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPointClippingBehaviorKHR)(unsafe.Pointer(b))
+
+	return wrapPointClippingBehaviorKHR(c)
+}
+
 type TessellationDomainOriginKHR struct {
 	native *C.VkTessellationDomainOriginKHR
+}
+
+func wrapTessellationDomainOriginKHR(p *C.VkTessellationDomainOriginKHR) *TessellationDomainOriginKHR {
+	v := TessellationDomainOriginKHR{native: p}
+	return &v
+}
+
+func marshalTessellationDomainOriginKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkTessellationDomainOriginKHR)(unsafe.Pointer(b))
+
+	return wrapTessellationDomainOriginKHR(c)
 }
 
 type PhysicalDevicePointClippingPropertiesKHR struct {
 	native *C.VkPhysicalDevicePointClippingPropertiesKHR
 }
 
+func wrapPhysicalDevicePointClippingPropertiesKHR(p *C.VkPhysicalDevicePointClippingPropertiesKHR) *PhysicalDevicePointClippingPropertiesKHR {
+	v := PhysicalDevicePointClippingPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDevicePointClippingPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDevicePointClippingPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDevicePointClippingPropertiesKHR(c)
+}
+
 type RenderPassInputAttachmentAspectCreateInfoKHR struct {
 	native *C.VkRenderPassInputAttachmentAspectCreateInfoKHR
+}
+
+func wrapRenderPassInputAttachmentAspectCreateInfoKHR(p *C.VkRenderPassInputAttachmentAspectCreateInfoKHR) *RenderPassInputAttachmentAspectCreateInfoKHR {
+	v := RenderPassInputAttachmentAspectCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalRenderPassInputAttachmentAspectCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPassInputAttachmentAspectCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapRenderPassInputAttachmentAspectCreateInfoKHR(c)
 }
 
 type InputAttachmentAspectReferenceKHR struct {
 	native *C.VkInputAttachmentAspectReferenceKHR
 }
 
+func wrapInputAttachmentAspectReferenceKHR(p *C.VkInputAttachmentAspectReferenceKHR) *InputAttachmentAspectReferenceKHR {
+	v := InputAttachmentAspectReferenceKHR{native: p}
+	return &v
+}
+
+func marshalInputAttachmentAspectReferenceKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkInputAttachmentAspectReferenceKHR)(unsafe.Pointer(b))
+
+	return wrapInputAttachmentAspectReferenceKHR(c)
+}
+
 type ImageViewUsageCreateInfoKHR struct {
 	native *C.VkImageViewUsageCreateInfoKHR
+}
+
+func wrapImageViewUsageCreateInfoKHR(p *C.VkImageViewUsageCreateInfoKHR) *ImageViewUsageCreateInfoKHR {
+	v := ImageViewUsageCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalImageViewUsageCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageViewUsageCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapImageViewUsageCreateInfoKHR(c)
 }
 
 type PipelineTessellationDomainOriginStateCreateInfoKHR struct {
 	native *C.VkPipelineTessellationDomainOriginStateCreateInfoKHR
 }
 
+func wrapPipelineTessellationDomainOriginStateCreateInfoKHR(p *C.VkPipelineTessellationDomainOriginStateCreateInfoKHR) *PipelineTessellationDomainOriginStateCreateInfoKHR {
+	v := PipelineTessellationDomainOriginStateCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalPipelineTessellationDomainOriginStateCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineTessellationDomainOriginStateCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapPipelineTessellationDomainOriginStateCreateInfoKHR(c)
+}
+
 type PhysicalDeviceSurfaceInfo2KHR struct {
 	native *C.VkPhysicalDeviceSurfaceInfo2KHR
+}
+
+func wrapPhysicalDeviceSurfaceInfo2KHR(p *C.VkPhysicalDeviceSurfaceInfo2KHR) *PhysicalDeviceSurfaceInfo2KHR {
+	v := PhysicalDeviceSurfaceInfo2KHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceSurfaceInfo2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceSurfaceInfo2KHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceSurfaceInfo2KHR(c)
 }
 
 type SurfaceCapabilities2KHR struct {
 	native *C.VkSurfaceCapabilities2KHR
 }
 
+func wrapSurfaceCapabilities2KHR(p *C.VkSurfaceCapabilities2KHR) *SurfaceCapabilities2KHR {
+	v := SurfaceCapabilities2KHR{native: p}
+	return &v
+}
+
+func marshalSurfaceCapabilities2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceCapabilities2KHR)(unsafe.Pointer(b))
+
+	return wrapSurfaceCapabilities2KHR(c)
+}
+
 type SurfaceFormat2KHR struct {
 	native *C.VkSurfaceFormat2KHR
+}
+
+func wrapSurfaceFormat2KHR(p *C.VkSurfaceFormat2KHR) *SurfaceFormat2KHR {
+	v := SurfaceFormat2KHR{native: p}
+	return &v
+}
+
+func marshalSurfaceFormat2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceFormat2KHR)(unsafe.Pointer(b))
+
+	return wrapSurfaceFormat2KHR(c)
 }
 
 type PhysicalDeviceVariablePointerFeaturesKHR struct {
 	native *C.VkPhysicalDeviceVariablePointerFeaturesKHR
 }
 
+func wrapPhysicalDeviceVariablePointerFeaturesKHR(p *C.VkPhysicalDeviceVariablePointerFeaturesKHR) *PhysicalDeviceVariablePointerFeaturesKHR {
+	v := PhysicalDeviceVariablePointerFeaturesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceVariablePointerFeaturesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceVariablePointerFeaturesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceVariablePointerFeaturesKHR(c)
+}
+
 type PhysicalDeviceVariablePointersFeaturesKHR struct {
 	native *C.VkPhysicalDeviceVariablePointersFeaturesKHR
+}
+
+func wrapPhysicalDeviceVariablePointersFeaturesKHR(p *C.VkPhysicalDeviceVariablePointersFeaturesKHR) *PhysicalDeviceVariablePointersFeaturesKHR {
+	v := PhysicalDeviceVariablePointersFeaturesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceVariablePointersFeaturesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceVariablePointersFeaturesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceVariablePointersFeaturesKHR(c)
 }
 
 type DisplayProperties2KHR struct {
 	native *C.VkDisplayProperties2KHR
 }
 
+func wrapDisplayProperties2KHR(p *C.VkDisplayProperties2KHR) *DisplayProperties2KHR {
+	v := DisplayProperties2KHR{native: p}
+	return &v
+}
+
+func marshalDisplayProperties2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayProperties2KHR)(unsafe.Pointer(b))
+
+	return wrapDisplayProperties2KHR(c)
+}
+
 type DisplayPlaneProperties2KHR struct {
 	native *C.VkDisplayPlaneProperties2KHR
+}
+
+func wrapDisplayPlaneProperties2KHR(p *C.VkDisplayPlaneProperties2KHR) *DisplayPlaneProperties2KHR {
+	v := DisplayPlaneProperties2KHR{native: p}
+	return &v
+}
+
+func marshalDisplayPlaneProperties2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPlaneProperties2KHR)(unsafe.Pointer(b))
+
+	return wrapDisplayPlaneProperties2KHR(c)
 }
 
 type DisplayModeProperties2KHR struct {
 	native *C.VkDisplayModeProperties2KHR
 }
 
+func wrapDisplayModeProperties2KHR(p *C.VkDisplayModeProperties2KHR) *DisplayModeProperties2KHR {
+	v := DisplayModeProperties2KHR{native: p}
+	return &v
+}
+
+func marshalDisplayModeProperties2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayModeProperties2KHR)(unsafe.Pointer(b))
+
+	return wrapDisplayModeProperties2KHR(c)
+}
+
 type DisplayPlaneInfo2KHR struct {
 	native *C.VkDisplayPlaneInfo2KHR
+}
+
+func wrapDisplayPlaneInfo2KHR(p *C.VkDisplayPlaneInfo2KHR) *DisplayPlaneInfo2KHR {
+	v := DisplayPlaneInfo2KHR{native: p}
+	return &v
+}
+
+func marshalDisplayPlaneInfo2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPlaneInfo2KHR)(unsafe.Pointer(b))
+
+	return wrapDisplayPlaneInfo2KHR(c)
 }
 
 type DisplayPlaneCapabilities2KHR struct {
 	native *C.VkDisplayPlaneCapabilities2KHR
 }
 
+func wrapDisplayPlaneCapabilities2KHR(p *C.VkDisplayPlaneCapabilities2KHR) *DisplayPlaneCapabilities2KHR {
+	v := DisplayPlaneCapabilities2KHR{native: p}
+	return &v
+}
+
+func marshalDisplayPlaneCapabilities2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPlaneCapabilities2KHR)(unsafe.Pointer(b))
+
+	return wrapDisplayPlaneCapabilities2KHR(c)
+}
+
 type MemoryDedicatedRequirementsKHR struct {
 	native *C.VkMemoryDedicatedRequirementsKHR
+}
+
+func wrapMemoryDedicatedRequirementsKHR(p *C.VkMemoryDedicatedRequirementsKHR) *MemoryDedicatedRequirementsKHR {
+	v := MemoryDedicatedRequirementsKHR{native: p}
+	return &v
+}
+
+func marshalMemoryDedicatedRequirementsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryDedicatedRequirementsKHR)(unsafe.Pointer(b))
+
+	return wrapMemoryDedicatedRequirementsKHR(c)
 }
 
 type MemoryDedicatedAllocateInfoKHR struct {
 	native *C.VkMemoryDedicatedAllocateInfoKHR
 }
 
+func wrapMemoryDedicatedAllocateInfoKHR(p *C.VkMemoryDedicatedAllocateInfoKHR) *MemoryDedicatedAllocateInfoKHR {
+	v := MemoryDedicatedAllocateInfoKHR{native: p}
+	return &v
+}
+
+func marshalMemoryDedicatedAllocateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryDedicatedAllocateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapMemoryDedicatedAllocateInfoKHR(c)
+}
+
 type BufferMemoryRequirementsInfo2KHR struct {
 	native *C.VkBufferMemoryRequirementsInfo2KHR
+}
+
+func wrapBufferMemoryRequirementsInfo2KHR(p *C.VkBufferMemoryRequirementsInfo2KHR) *BufferMemoryRequirementsInfo2KHR {
+	v := BufferMemoryRequirementsInfo2KHR{native: p}
+	return &v
+}
+
+func marshalBufferMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferMemoryRequirementsInfo2KHR)(unsafe.Pointer(b))
+
+	return wrapBufferMemoryRequirementsInfo2KHR(c)
 }
 
 type ImageMemoryRequirementsInfo2KHR struct {
 	native *C.VkImageMemoryRequirementsInfo2KHR
 }
 
+func wrapImageMemoryRequirementsInfo2KHR(p *C.VkImageMemoryRequirementsInfo2KHR) *ImageMemoryRequirementsInfo2KHR {
+	v := ImageMemoryRequirementsInfo2KHR{native: p}
+	return &v
+}
+
+func marshalImageMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageMemoryRequirementsInfo2KHR)(unsafe.Pointer(b))
+
+	return wrapImageMemoryRequirementsInfo2KHR(c)
+}
+
 type ImageSparseMemoryRequirementsInfo2KHR struct {
 	native *C.VkImageSparseMemoryRequirementsInfo2KHR
+}
+
+func wrapImageSparseMemoryRequirementsInfo2KHR(p *C.VkImageSparseMemoryRequirementsInfo2KHR) *ImageSparseMemoryRequirementsInfo2KHR {
+	v := ImageSparseMemoryRequirementsInfo2KHR{native: p}
+	return &v
+}
+
+func marshalImageSparseMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageSparseMemoryRequirementsInfo2KHR)(unsafe.Pointer(b))
+
+	return wrapImageSparseMemoryRequirementsInfo2KHR(c)
 }
 
 type SparseImageMemoryRequirements2KHR struct {
 	native *C.VkSparseImageMemoryRequirements2KHR
 }
 
+func wrapSparseImageMemoryRequirements2KHR(p *C.VkSparseImageMemoryRequirements2KHR) *SparseImageMemoryRequirements2KHR {
+	v := SparseImageMemoryRequirements2KHR{native: p}
+	return &v
+}
+
+func marshalSparseImageMemoryRequirements2KHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSparseImageMemoryRequirements2KHR)(unsafe.Pointer(b))
+
+	return wrapSparseImageMemoryRequirements2KHR(c)
+}
+
 type ImageFormatListCreateInfoKHR struct {
 	native *C.VkImageFormatListCreateInfoKHR
+}
+
+func wrapImageFormatListCreateInfoKHR(p *C.VkImageFormatListCreateInfoKHR) *ImageFormatListCreateInfoKHR {
+	v := ImageFormatListCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalImageFormatListCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageFormatListCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapImageFormatListCreateInfoKHR(c)
 }
 
 type SamplerYcbcrConversionKHR struct {
 	native *C.VkSamplerYcbcrConversionKHR
 }
 
+func wrapSamplerYcbcrConversionKHR(p *C.VkSamplerYcbcrConversionKHR) *SamplerYcbcrConversionKHR {
+	v := SamplerYcbcrConversionKHR{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrConversionKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrConversionKHR)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrConversionKHR(c)
+}
+
 type SamplerYcbcrModelConversionKHR struct {
 	native *C.VkSamplerYcbcrModelConversionKHR
+}
+
+func wrapSamplerYcbcrModelConversionKHR(p *C.VkSamplerYcbcrModelConversionKHR) *SamplerYcbcrModelConversionKHR {
+	v := SamplerYcbcrModelConversionKHR{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrModelConversionKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrModelConversionKHR)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrModelConversionKHR(c)
 }
 
 type SamplerYcbcrRangeKHR struct {
 	native *C.VkSamplerYcbcrRangeKHR
 }
 
+func wrapSamplerYcbcrRangeKHR(p *C.VkSamplerYcbcrRangeKHR) *SamplerYcbcrRangeKHR {
+	v := SamplerYcbcrRangeKHR{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrRangeKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrRangeKHR)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrRangeKHR(c)
+}
+
 type ChromaLocationKHR struct {
 	native *C.VkChromaLocationKHR
+}
+
+func wrapChromaLocationKHR(p *C.VkChromaLocationKHR) *ChromaLocationKHR {
+	v := ChromaLocationKHR{native: p}
+	return &v
+}
+
+func marshalChromaLocationKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkChromaLocationKHR)(unsafe.Pointer(b))
+
+	return wrapChromaLocationKHR(c)
 }
 
 type SamplerYcbcrConversionCreateInfoKHR struct {
 	native *C.VkSamplerYcbcrConversionCreateInfoKHR
 }
 
+func wrapSamplerYcbcrConversionCreateInfoKHR(p *C.VkSamplerYcbcrConversionCreateInfoKHR) *SamplerYcbcrConversionCreateInfoKHR {
+	v := SamplerYcbcrConversionCreateInfoKHR{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrConversionCreateInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrConversionCreateInfoKHR)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrConversionCreateInfoKHR(c)
+}
+
 type SamplerYcbcrConversionInfoKHR struct {
 	native *C.VkSamplerYcbcrConversionInfoKHR
+}
+
+func wrapSamplerYcbcrConversionInfoKHR(p *C.VkSamplerYcbcrConversionInfoKHR) *SamplerYcbcrConversionInfoKHR {
+	v := SamplerYcbcrConversionInfoKHR{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrConversionInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrConversionInfoKHR)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrConversionInfoKHR(c)
 }
 
 type BindImagePlaneMemoryInfoKHR struct {
 	native *C.VkBindImagePlaneMemoryInfoKHR
 }
 
+func wrapBindImagePlaneMemoryInfoKHR(p *C.VkBindImagePlaneMemoryInfoKHR) *BindImagePlaneMemoryInfoKHR {
+	v := BindImagePlaneMemoryInfoKHR{native: p}
+	return &v
+}
+
+func marshalBindImagePlaneMemoryInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindImagePlaneMemoryInfoKHR)(unsafe.Pointer(b))
+
+	return wrapBindImagePlaneMemoryInfoKHR(c)
+}
+
 type ImagePlaneMemoryRequirementsInfoKHR struct {
 	native *C.VkImagePlaneMemoryRequirementsInfoKHR
+}
+
+func wrapImagePlaneMemoryRequirementsInfoKHR(p *C.VkImagePlaneMemoryRequirementsInfoKHR) *ImagePlaneMemoryRequirementsInfoKHR {
+	v := ImagePlaneMemoryRequirementsInfoKHR{native: p}
+	return &v
+}
+
+func marshalImagePlaneMemoryRequirementsInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImagePlaneMemoryRequirementsInfoKHR)(unsafe.Pointer(b))
+
+	return wrapImagePlaneMemoryRequirementsInfoKHR(c)
 }
 
 type PhysicalDeviceSamplerYcbcrConversionFeaturesKHR struct {
 	native *C.VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR
 }
 
+func wrapPhysicalDeviceSamplerYcbcrConversionFeaturesKHR(p *C.VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR) *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR {
+	v := PhysicalDeviceSamplerYcbcrConversionFeaturesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceSamplerYcbcrConversionFeaturesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceSamplerYcbcrConversionFeaturesKHR(c)
+}
+
 type SamplerYcbcrConversionImageFormatPropertiesKHR struct {
 	native *C.VkSamplerYcbcrConversionImageFormatPropertiesKHR
+}
+
+func wrapSamplerYcbcrConversionImageFormatPropertiesKHR(p *C.VkSamplerYcbcrConversionImageFormatPropertiesKHR) *SamplerYcbcrConversionImageFormatPropertiesKHR {
+	v := SamplerYcbcrConversionImageFormatPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalSamplerYcbcrConversionImageFormatPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerYcbcrConversionImageFormatPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapSamplerYcbcrConversionImageFormatPropertiesKHR(c)
 }
 
 type BindBufferMemoryInfoKHR struct {
 	native *C.VkBindBufferMemoryInfoKHR
 }
 
+func wrapBindBufferMemoryInfoKHR(p *C.VkBindBufferMemoryInfoKHR) *BindBufferMemoryInfoKHR {
+	v := BindBufferMemoryInfoKHR{native: p}
+	return &v
+}
+
+func marshalBindBufferMemoryInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindBufferMemoryInfoKHR)(unsafe.Pointer(b))
+
+	return wrapBindBufferMemoryInfoKHR(c)
+}
+
 type BindImageMemoryInfoKHR struct {
 	native *C.VkBindImageMemoryInfoKHR
+}
+
+func wrapBindImageMemoryInfoKHR(p *C.VkBindImageMemoryInfoKHR) *BindImageMemoryInfoKHR {
+	v := BindImageMemoryInfoKHR{native: p}
+	return &v
+}
+
+func marshalBindImageMemoryInfoKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindImageMemoryInfoKHR)(unsafe.Pointer(b))
+
+	return wrapBindImageMemoryInfoKHR(c)
 }
 
 type PhysicalDeviceMaintenance3PropertiesKHR struct {
 	native *C.VkPhysicalDeviceMaintenance3PropertiesKHR
 }
 
+func wrapPhysicalDeviceMaintenance3PropertiesKHR(p *C.VkPhysicalDeviceMaintenance3PropertiesKHR) *PhysicalDeviceMaintenance3PropertiesKHR {
+	v := PhysicalDeviceMaintenance3PropertiesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMaintenance3PropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMaintenance3PropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMaintenance3PropertiesKHR(c)
+}
+
 type DescriptorSetLayoutSupportKHR struct {
 	native *C.VkDescriptorSetLayoutSupportKHR
+}
+
+func wrapDescriptorSetLayoutSupportKHR(p *C.VkDescriptorSetLayoutSupportKHR) *DescriptorSetLayoutSupportKHR {
+	v := DescriptorSetLayoutSupportKHR{native: p}
+	return &v
+}
+
+func marshalDescriptorSetLayoutSupportKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetLayoutSupportKHR)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetLayoutSupportKHR(c)
 }
 
 type PhysicalDevice8BitStorageFeaturesKHR struct {
 	native *C.VkPhysicalDevice8BitStorageFeaturesKHR
 }
 
+func wrapPhysicalDevice8BitStorageFeaturesKHR(p *C.VkPhysicalDevice8BitStorageFeaturesKHR) *PhysicalDevice8BitStorageFeaturesKHR {
+	v := PhysicalDevice8BitStorageFeaturesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDevice8BitStorageFeaturesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDevice8BitStorageFeaturesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDevice8BitStorageFeaturesKHR(c)
+}
+
 type PhysicalDeviceShaderAtomicInt64FeaturesKHR struct {
 	native *C.VkPhysicalDeviceShaderAtomicInt64FeaturesKHR
+}
+
+func wrapPhysicalDeviceShaderAtomicInt64FeaturesKHR(p *C.VkPhysicalDeviceShaderAtomicInt64FeaturesKHR) *PhysicalDeviceShaderAtomicInt64FeaturesKHR {
+	v := PhysicalDeviceShaderAtomicInt64FeaturesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceShaderAtomicInt64FeaturesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceShaderAtomicInt64FeaturesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceShaderAtomicInt64FeaturesKHR(c)
 }
 
 type DriverIDKHR struct {
 	native *C.VkDriverIdKHR
 }
 
+func wrapDriverIDKHR(p *C.VkDriverIdKHR) *DriverIDKHR {
+	v := DriverIDKHR{native: p}
+	return &v
+}
+
+func marshalDriverIDKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDriverIdKHR)(unsafe.Pointer(b))
+
+	return wrapDriverIDKHR(c)
+}
+
 type ConformanceVersionKHR struct {
 	native *C.VkConformanceVersionKHR
+}
+
+func wrapConformanceVersionKHR(p *C.VkConformanceVersionKHR) *ConformanceVersionKHR {
+	v := ConformanceVersionKHR{native: p}
+	return &v
+}
+
+func marshalConformanceVersionKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkConformanceVersionKHR)(unsafe.Pointer(b))
+
+	return wrapConformanceVersionKHR(c)
 }
 
 type PhysicalDeviceDriverPropertiesKHR struct {
 	native *C.VkPhysicalDeviceDriverPropertiesKHR
 }
 
+func wrapPhysicalDeviceDriverPropertiesKHR(p *C.VkPhysicalDeviceDriverPropertiesKHR) *PhysicalDeviceDriverPropertiesKHR {
+	v := PhysicalDeviceDriverPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceDriverPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceDriverPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceDriverPropertiesKHR(c)
+}
+
 type PhysicalDeviceFloatControlsPropertiesKHR struct {
 	native *C.VkPhysicalDeviceFloatControlsPropertiesKHR
+}
+
+func wrapPhysicalDeviceFloatControlsPropertiesKHR(p *C.VkPhysicalDeviceFloatControlsPropertiesKHR) *PhysicalDeviceFloatControlsPropertiesKHR {
+	v := PhysicalDeviceFloatControlsPropertiesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceFloatControlsPropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceFloatControlsPropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceFloatControlsPropertiesKHR(c)
 }
 
 type ResolveModeFlagBitsKHR struct {
 	native *C.VkResolveModeFlagBitsKHR
 }
 
+func wrapResolveModeFlagBitsKHR(p *C.VkResolveModeFlagBitsKHR) *ResolveModeFlagBitsKHR {
+	v := ResolveModeFlagBitsKHR{native: p}
+	return &v
+}
+
+func marshalResolveModeFlagBitsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkResolveModeFlagBitsKHR)(unsafe.Pointer(b))
+
+	return wrapResolveModeFlagBitsKHR(c)
+}
+
 type ResolveModeFlagsKHR struct {
 	native *C.VkResolveModeFlagsKHR
+}
+
+func wrapResolveModeFlagsKHR(p *C.VkResolveModeFlagsKHR) *ResolveModeFlagsKHR {
+	v := ResolveModeFlagsKHR{native: p}
+	return &v
+}
+
+func marshalResolveModeFlagsKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkResolveModeFlagsKHR)(unsafe.Pointer(b))
+
+	return wrapResolveModeFlagsKHR(c)
 }
 
 type SubpassDescriptionDepthStencilResolveKHR struct {
 	native *C.VkSubpassDescriptionDepthStencilResolveKHR
 }
 
+func wrapSubpassDescriptionDepthStencilResolveKHR(p *C.VkSubpassDescriptionDepthStencilResolveKHR) *SubpassDescriptionDepthStencilResolveKHR {
+	v := SubpassDescriptionDepthStencilResolveKHR{native: p}
+	return &v
+}
+
+func marshalSubpassDescriptionDepthStencilResolveKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassDescriptionDepthStencilResolveKHR)(unsafe.Pointer(b))
+
+	return wrapSubpassDescriptionDepthStencilResolveKHR(c)
+}
+
 type PhysicalDeviceDepthStencilResolvePropertiesKHR struct {
 	native *C.VkPhysicalDeviceDepthStencilResolvePropertiesKHR
+}
+
+func wrapPhysicalDeviceDepthStencilResolvePropertiesKHR(p *C.VkPhysicalDeviceDepthStencilResolvePropertiesKHR) *PhysicalDeviceDepthStencilResolvePropertiesKHR {
+	v := PhysicalDeviceDepthStencilResolvePropertiesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceDepthStencilResolvePropertiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceDepthStencilResolvePropertiesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceDepthStencilResolvePropertiesKHR(c)
 }
 
 type PhysicalDeviceVulkanMemoryModelFeaturesKHR struct {
 	native *C.VkPhysicalDeviceVulkanMemoryModelFeaturesKHR
 }
 
+func wrapPhysicalDeviceVulkanMemoryModelFeaturesKHR(p *C.VkPhysicalDeviceVulkanMemoryModelFeaturesKHR) *PhysicalDeviceVulkanMemoryModelFeaturesKHR {
+	v := PhysicalDeviceVulkanMemoryModelFeaturesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceVulkanMemoryModelFeaturesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceVulkanMemoryModelFeaturesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceVulkanMemoryModelFeaturesKHR(c)
+}
+
 type SurfaceProtectedCapabilitiesKHR struct {
 	native *C.VkSurfaceProtectedCapabilitiesKHR
+}
+
+func wrapSurfaceProtectedCapabilitiesKHR(p *C.VkSurfaceProtectedCapabilitiesKHR) *SurfaceProtectedCapabilitiesKHR {
+	v := SurfaceProtectedCapabilitiesKHR{native: p}
+	return &v
+}
+
+func marshalSurfaceProtectedCapabilitiesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceProtectedCapabilitiesKHR)(unsafe.Pointer(b))
+
+	return wrapSurfaceProtectedCapabilitiesKHR(c)
 }
 
 type PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR struct {
 	native *C.VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR
 }
 
+func wrapPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR(p *C.VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR {
+	v := PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR(c)
+}
+
 type DebugReportCallbackEXT struct {
 	native *C.VkDebugReportCallbackEXT
+}
+
+func wrapDebugReportCallbackEXT(p *C.VkDebugReportCallbackEXT) *DebugReportCallbackEXT {
+	v := DebugReportCallbackEXT{native: p}
+	return &v
+}
+
+func marshalDebugReportCallbackEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugReportCallbackEXT)(unsafe.Pointer(b))
+
+	return wrapDebugReportCallbackEXT(c)
 }
 
 type DebugReportObjectTypeEXT struct {
 	native *C.VkDebugReportObjectTypeEXT
 }
 
+func wrapDebugReportObjectTypeEXT(p *C.VkDebugReportObjectTypeEXT) *DebugReportObjectTypeEXT {
+	v := DebugReportObjectTypeEXT{native: p}
+	return &v
+}
+
+func marshalDebugReportObjectTypeEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugReportObjectTypeEXT)(unsafe.Pointer(b))
+
+	return wrapDebugReportObjectTypeEXT(c)
+}
+
 type DebugReportFlagBitsEXT struct {
 	native *C.VkDebugReportFlagBitsEXT
+}
+
+func wrapDebugReportFlagBitsEXT(p *C.VkDebugReportFlagBitsEXT) *DebugReportFlagBitsEXT {
+	v := DebugReportFlagBitsEXT{native: p}
+	return &v
+}
+
+func marshalDebugReportFlagBitsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugReportFlagBitsEXT)(unsafe.Pointer(b))
+
+	return wrapDebugReportFlagBitsEXT(c)
 }
 
 type DebugReportFlagsEXT struct {
 	native *C.VkDebugReportFlagsEXT
 }
 
+func wrapDebugReportFlagsEXT(p *C.VkDebugReportFlagsEXT) *DebugReportFlagsEXT {
+	v := DebugReportFlagsEXT{native: p}
+	return &v
+}
+
+func marshalDebugReportFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugReportFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapDebugReportFlagsEXT(c)
+}
+
 type DebugReportCallbackCreateInfoEXT struct {
 	native *C.VkDebugReportCallbackCreateInfoEXT
+}
+
+func wrapDebugReportCallbackCreateInfoEXT(p *C.VkDebugReportCallbackCreateInfoEXT) *DebugReportCallbackCreateInfoEXT {
+	v := DebugReportCallbackCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalDebugReportCallbackCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugReportCallbackCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDebugReportCallbackCreateInfoEXT(c)
 }
 
 type RasterizationOrderAMD struct {
 	native *C.VkRasterizationOrderAMD
 }
 
+func wrapRasterizationOrderAMD(p *C.VkRasterizationOrderAMD) *RasterizationOrderAMD {
+	v := RasterizationOrderAMD{native: p}
+	return &v
+}
+
+func marshalRasterizationOrderAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRasterizationOrderAMD)(unsafe.Pointer(b))
+
+	return wrapRasterizationOrderAMD(c)
+}
+
 type PipelineRasterizationStateRasterizationOrderAMD struct {
 	native *C.VkPipelineRasterizationStateRasterizationOrderAMD
+}
+
+func wrapPipelineRasterizationStateRasterizationOrderAMD(p *C.VkPipelineRasterizationStateRasterizationOrderAMD) *PipelineRasterizationStateRasterizationOrderAMD {
+	v := PipelineRasterizationStateRasterizationOrderAMD{native: p}
+	return &v
+}
+
+func marshalPipelineRasterizationStateRasterizationOrderAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineRasterizationStateRasterizationOrderAMD)(unsafe.Pointer(b))
+
+	return wrapPipelineRasterizationStateRasterizationOrderAMD(c)
 }
 
 type DebugMarkerObjectNameInfoEXT struct {
 	native *C.VkDebugMarkerObjectNameInfoEXT
 }
 
+func wrapDebugMarkerObjectNameInfoEXT(p *C.VkDebugMarkerObjectNameInfoEXT) *DebugMarkerObjectNameInfoEXT {
+	v := DebugMarkerObjectNameInfoEXT{native: p}
+	return &v
+}
+
+func marshalDebugMarkerObjectNameInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugMarkerObjectNameInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDebugMarkerObjectNameInfoEXT(c)
+}
+
 type DebugMarkerObjectTagInfoEXT struct {
 	native *C.VkDebugMarkerObjectTagInfoEXT
+}
+
+func wrapDebugMarkerObjectTagInfoEXT(p *C.VkDebugMarkerObjectTagInfoEXT) *DebugMarkerObjectTagInfoEXT {
+	v := DebugMarkerObjectTagInfoEXT{native: p}
+	return &v
+}
+
+func marshalDebugMarkerObjectTagInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugMarkerObjectTagInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDebugMarkerObjectTagInfoEXT(c)
 }
 
 type DebugMarkerMarkerInfoEXT struct {
 	native *C.VkDebugMarkerMarkerInfoEXT
 }
 
+func wrapDebugMarkerMarkerInfoEXT(p *C.VkDebugMarkerMarkerInfoEXT) *DebugMarkerMarkerInfoEXT {
+	v := DebugMarkerMarkerInfoEXT{native: p}
+	return &v
+}
+
+func marshalDebugMarkerMarkerInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugMarkerMarkerInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDebugMarkerMarkerInfoEXT(c)
+}
+
 type DedicatedAllocationImageCreateInfoNV struct {
 	native *C.VkDedicatedAllocationImageCreateInfoNV
+}
+
+func wrapDedicatedAllocationImageCreateInfoNV(p *C.VkDedicatedAllocationImageCreateInfoNV) *DedicatedAllocationImageCreateInfoNV {
+	v := DedicatedAllocationImageCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalDedicatedAllocationImageCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDedicatedAllocationImageCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapDedicatedAllocationImageCreateInfoNV(c)
 }
 
 type DedicatedAllocationBufferCreateInfoNV struct {
 	native *C.VkDedicatedAllocationBufferCreateInfoNV
 }
 
+func wrapDedicatedAllocationBufferCreateInfoNV(p *C.VkDedicatedAllocationBufferCreateInfoNV) *DedicatedAllocationBufferCreateInfoNV {
+	v := DedicatedAllocationBufferCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalDedicatedAllocationBufferCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDedicatedAllocationBufferCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapDedicatedAllocationBufferCreateInfoNV(c)
+}
+
 type DedicatedAllocationMemoryAllocateInfoNV struct {
 	native *C.VkDedicatedAllocationMemoryAllocateInfoNV
+}
+
+func wrapDedicatedAllocationMemoryAllocateInfoNV(p *C.VkDedicatedAllocationMemoryAllocateInfoNV) *DedicatedAllocationMemoryAllocateInfoNV {
+	v := DedicatedAllocationMemoryAllocateInfoNV{native: p}
+	return &v
+}
+
+func marshalDedicatedAllocationMemoryAllocateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDedicatedAllocationMemoryAllocateInfoNV)(unsafe.Pointer(b))
+
+	return wrapDedicatedAllocationMemoryAllocateInfoNV(c)
 }
 
 type PipelineRasterizationStateStreamCreateFlagsEXT struct {
 	native *C.VkPipelineRasterizationStateStreamCreateFlagsEXT
 }
 
+func wrapPipelineRasterizationStateStreamCreateFlagsEXT(p *C.VkPipelineRasterizationStateStreamCreateFlagsEXT) *PipelineRasterizationStateStreamCreateFlagsEXT {
+	v := PipelineRasterizationStateStreamCreateFlagsEXT{native: p}
+	return &v
+}
+
+func marshalPipelineRasterizationStateStreamCreateFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineRasterizationStateStreamCreateFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineRasterizationStateStreamCreateFlagsEXT(c)
+}
+
 type PhysicalDeviceTransformFeedbackFeaturesEXT struct {
 	native *C.VkPhysicalDeviceTransformFeedbackFeaturesEXT
+}
+
+func wrapPhysicalDeviceTransformFeedbackFeaturesEXT(p *C.VkPhysicalDeviceTransformFeedbackFeaturesEXT) *PhysicalDeviceTransformFeedbackFeaturesEXT {
+	v := PhysicalDeviceTransformFeedbackFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceTransformFeedbackFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceTransformFeedbackFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceTransformFeedbackFeaturesEXT(c)
 }
 
 type PhysicalDeviceTransformFeedbackPropertiesEXT struct {
 	native *C.VkPhysicalDeviceTransformFeedbackPropertiesEXT
 }
 
+func wrapPhysicalDeviceTransformFeedbackPropertiesEXT(p *C.VkPhysicalDeviceTransformFeedbackPropertiesEXT) *PhysicalDeviceTransformFeedbackPropertiesEXT {
+	v := PhysicalDeviceTransformFeedbackPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceTransformFeedbackPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceTransformFeedbackPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceTransformFeedbackPropertiesEXT(c)
+}
+
 type PipelineRasterizationStateStreamCreateInfoEXT struct {
 	native *C.VkPipelineRasterizationStateStreamCreateInfoEXT
+}
+
+func wrapPipelineRasterizationStateStreamCreateInfoEXT(p *C.VkPipelineRasterizationStateStreamCreateInfoEXT) *PipelineRasterizationStateStreamCreateInfoEXT {
+	v := PipelineRasterizationStateStreamCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalPipelineRasterizationStateStreamCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineRasterizationStateStreamCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineRasterizationStateStreamCreateInfoEXT(c)
 }
 
 type ImageViewHandleInfoNVX struct {
 	native *C.VkImageViewHandleInfoNVX
 }
 
+func wrapImageViewHandleInfoNVX(p *C.VkImageViewHandleInfoNVX) *ImageViewHandleInfoNVX {
+	v := ImageViewHandleInfoNVX{native: p}
+	return &v
+}
+
+func marshalImageViewHandleInfoNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageViewHandleInfoNVX)(unsafe.Pointer(b))
+
+	return wrapImageViewHandleInfoNVX(c)
+}
+
 type TextureLODGatherFormatPropertiesAMD struct {
 	native *C.VkTextureLODGatherFormatPropertiesAMD
+}
+
+func wrapTextureLODGatherFormatPropertiesAMD(p *C.VkTextureLODGatherFormatPropertiesAMD) *TextureLODGatherFormatPropertiesAMD {
+	v := TextureLODGatherFormatPropertiesAMD{native: p}
+	return &v
+}
+
+func marshalTextureLODGatherFormatPropertiesAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkTextureLODGatherFormatPropertiesAMD)(unsafe.Pointer(b))
+
+	return wrapTextureLODGatherFormatPropertiesAMD(c)
 }
 
 type ShaderInfoTypeAMD struct {
 	native *C.VkShaderInfoTypeAMD
 }
 
+func wrapShaderInfoTypeAMD(p *C.VkShaderInfoTypeAMD) *ShaderInfoTypeAMD {
+	v := ShaderInfoTypeAMD{native: p}
+	return &v
+}
+
+func marshalShaderInfoTypeAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShaderInfoTypeAMD)(unsafe.Pointer(b))
+
+	return wrapShaderInfoTypeAMD(c)
+}
+
 type ShaderResourceUsageAMD struct {
 	native *C.VkShaderResourceUsageAMD
+}
+
+func wrapShaderResourceUsageAMD(p *C.VkShaderResourceUsageAMD) *ShaderResourceUsageAMD {
+	v := ShaderResourceUsageAMD{native: p}
+	return &v
+}
+
+func marshalShaderResourceUsageAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShaderResourceUsageAMD)(unsafe.Pointer(b))
+
+	return wrapShaderResourceUsageAMD(c)
 }
 
 type ShaderStatisticsInfoAMD struct {
 	native *C.VkShaderStatisticsInfoAMD
 }
 
+func wrapShaderStatisticsInfoAMD(p *C.VkShaderStatisticsInfoAMD) *ShaderStatisticsInfoAMD {
+	v := ShaderStatisticsInfoAMD{native: p}
+	return &v
+}
+
+func marshalShaderStatisticsInfoAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShaderStatisticsInfoAMD)(unsafe.Pointer(b))
+
+	return wrapShaderStatisticsInfoAMD(c)
+}
+
 type PhysicalDeviceCornerSampledImageFeaturesNV struct {
 	native *C.VkPhysicalDeviceCornerSampledImageFeaturesNV
+}
+
+func wrapPhysicalDeviceCornerSampledImageFeaturesNV(p *C.VkPhysicalDeviceCornerSampledImageFeaturesNV) *PhysicalDeviceCornerSampledImageFeaturesNV {
+	v := PhysicalDeviceCornerSampledImageFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceCornerSampledImageFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceCornerSampledImageFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceCornerSampledImageFeaturesNV(c)
 }
 
 type ExternalMemoryHandleTypeFlagBitsNV struct {
 	native *C.VkExternalMemoryHandleTypeFlagBitsNV
 }
 
+func wrapExternalMemoryHandleTypeFlagBitsNV(p *C.VkExternalMemoryHandleTypeFlagBitsNV) *ExternalMemoryHandleTypeFlagBitsNV {
+	v := ExternalMemoryHandleTypeFlagBitsNV{native: p}
+	return &v
+}
+
+func marshalExternalMemoryHandleTypeFlagBitsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryHandleTypeFlagBitsNV)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryHandleTypeFlagBitsNV(c)
+}
+
 type ExternalMemoryHandleTypeFlagsNV struct {
 	native *C.VkExternalMemoryHandleTypeFlagsNV
+}
+
+func wrapExternalMemoryHandleTypeFlagsNV(p *C.VkExternalMemoryHandleTypeFlagsNV) *ExternalMemoryHandleTypeFlagsNV {
+	v := ExternalMemoryHandleTypeFlagsNV{native: p}
+	return &v
+}
+
+func marshalExternalMemoryHandleTypeFlagsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryHandleTypeFlagsNV)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryHandleTypeFlagsNV(c)
 }
 
 type ExternalMemoryFeatureFlagBitsNV struct {
 	native *C.VkExternalMemoryFeatureFlagBitsNV
 }
 
+func wrapExternalMemoryFeatureFlagBitsNV(p *C.VkExternalMemoryFeatureFlagBitsNV) *ExternalMemoryFeatureFlagBitsNV {
+	v := ExternalMemoryFeatureFlagBitsNV{native: p}
+	return &v
+}
+
+func marshalExternalMemoryFeatureFlagBitsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryFeatureFlagBitsNV)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryFeatureFlagBitsNV(c)
+}
+
 type ExternalMemoryFeatureFlagsNV struct {
 	native *C.VkExternalMemoryFeatureFlagsNV
+}
+
+func wrapExternalMemoryFeatureFlagsNV(p *C.VkExternalMemoryFeatureFlagsNV) *ExternalMemoryFeatureFlagsNV {
+	v := ExternalMemoryFeatureFlagsNV{native: p}
+	return &v
+}
+
+func marshalExternalMemoryFeatureFlagsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryFeatureFlagsNV)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryFeatureFlagsNV(c)
 }
 
 type ExternalImageFormatPropertiesNV struct {
 	native *C.VkExternalImageFormatPropertiesNV
 }
 
+func wrapExternalImageFormatPropertiesNV(p *C.VkExternalImageFormatPropertiesNV) *ExternalImageFormatPropertiesNV {
+	v := ExternalImageFormatPropertiesNV{native: p}
+	return &v
+}
+
+func marshalExternalImageFormatPropertiesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalImageFormatPropertiesNV)(unsafe.Pointer(b))
+
+	return wrapExternalImageFormatPropertiesNV(c)
+}
+
 type ExternalMemoryImageCreateInfoNV struct {
 	native *C.VkExternalMemoryImageCreateInfoNV
+}
+
+func wrapExternalMemoryImageCreateInfoNV(p *C.VkExternalMemoryImageCreateInfoNV) *ExternalMemoryImageCreateInfoNV {
+	v := ExternalMemoryImageCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalExternalMemoryImageCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExternalMemoryImageCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapExternalMemoryImageCreateInfoNV(c)
 }
 
 type ExportMemoryAllocateInfoNV struct {
 	native *C.VkExportMemoryAllocateInfoNV
 }
 
+func wrapExportMemoryAllocateInfoNV(p *C.VkExportMemoryAllocateInfoNV) *ExportMemoryAllocateInfoNV {
+	v := ExportMemoryAllocateInfoNV{native: p}
+	return &v
+}
+
+func marshalExportMemoryAllocateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkExportMemoryAllocateInfoNV)(unsafe.Pointer(b))
+
+	return wrapExportMemoryAllocateInfoNV(c)
+}
+
 type ValidationCheckEXT struct {
 	native *C.VkValidationCheckEXT
+}
+
+func wrapValidationCheckEXT(p *C.VkValidationCheckEXT) *ValidationCheckEXT {
+	v := ValidationCheckEXT{native: p}
+	return &v
+}
+
+func marshalValidationCheckEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkValidationCheckEXT)(unsafe.Pointer(b))
+
+	return wrapValidationCheckEXT(c)
 }
 
 type ValidationFlagsEXT struct {
 	native *C.VkValidationFlagsEXT
 }
 
+func wrapValidationFlagsEXT(p *C.VkValidationFlagsEXT) *ValidationFlagsEXT {
+	v := ValidationFlagsEXT{native: p}
+	return &v
+}
+
+func marshalValidationFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkValidationFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapValidationFlagsEXT(c)
+}
+
 type ImageViewASTCDecodeModeEXT struct {
 	native *C.VkImageViewASTCDecodeModeEXT
+}
+
+func wrapImageViewASTCDecodeModeEXT(p *C.VkImageViewASTCDecodeModeEXT) *ImageViewASTCDecodeModeEXT {
+	v := ImageViewASTCDecodeModeEXT{native: p}
+	return &v
+}
+
+func marshalImageViewASTCDecodeModeEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageViewASTCDecodeModeEXT)(unsafe.Pointer(b))
+
+	return wrapImageViewASTCDecodeModeEXT(c)
 }
 
 type PhysicalDeviceASTCDecodeFeaturesEXT struct {
 	native *C.VkPhysicalDeviceASTCDecodeFeaturesEXT
 }
 
+func wrapPhysicalDeviceASTCDecodeFeaturesEXT(p *C.VkPhysicalDeviceASTCDecodeFeaturesEXT) *PhysicalDeviceASTCDecodeFeaturesEXT {
+	v := PhysicalDeviceASTCDecodeFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceASTCDecodeFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceASTCDecodeFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceASTCDecodeFeaturesEXT(c)
+}
+
 type ConditionalRenderingFlagBitsEXT struct {
 	native *C.VkConditionalRenderingFlagBitsEXT
+}
+
+func wrapConditionalRenderingFlagBitsEXT(p *C.VkConditionalRenderingFlagBitsEXT) *ConditionalRenderingFlagBitsEXT {
+	v := ConditionalRenderingFlagBitsEXT{native: p}
+	return &v
+}
+
+func marshalConditionalRenderingFlagBitsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkConditionalRenderingFlagBitsEXT)(unsafe.Pointer(b))
+
+	return wrapConditionalRenderingFlagBitsEXT(c)
 }
 
 type ConditionalRenderingFlagsEXT struct {
 	native *C.VkConditionalRenderingFlagsEXT
 }
 
+func wrapConditionalRenderingFlagsEXT(p *C.VkConditionalRenderingFlagsEXT) *ConditionalRenderingFlagsEXT {
+	v := ConditionalRenderingFlagsEXT{native: p}
+	return &v
+}
+
+func marshalConditionalRenderingFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkConditionalRenderingFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapConditionalRenderingFlagsEXT(c)
+}
+
 type ConditionalRenderingBeginInfoEXT struct {
 	native *C.VkConditionalRenderingBeginInfoEXT
+}
+
+func wrapConditionalRenderingBeginInfoEXT(p *C.VkConditionalRenderingBeginInfoEXT) *ConditionalRenderingBeginInfoEXT {
+	v := ConditionalRenderingBeginInfoEXT{native: p}
+	return &v
+}
+
+func marshalConditionalRenderingBeginInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkConditionalRenderingBeginInfoEXT)(unsafe.Pointer(b))
+
+	return wrapConditionalRenderingBeginInfoEXT(c)
 }
 
 type PhysicalDeviceConditionalRenderingFeaturesEXT struct {
 	native *C.VkPhysicalDeviceConditionalRenderingFeaturesEXT
 }
 
+func wrapPhysicalDeviceConditionalRenderingFeaturesEXT(p *C.VkPhysicalDeviceConditionalRenderingFeaturesEXT) *PhysicalDeviceConditionalRenderingFeaturesEXT {
+	v := PhysicalDeviceConditionalRenderingFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceConditionalRenderingFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceConditionalRenderingFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceConditionalRenderingFeaturesEXT(c)
+}
+
 type CommandBufferInheritanceConditionalRenderingInfoEXT struct {
 	native *C.VkCommandBufferInheritanceConditionalRenderingInfoEXT
+}
+
+func wrapCommandBufferInheritanceConditionalRenderingInfoEXT(p *C.VkCommandBufferInheritanceConditionalRenderingInfoEXT) *CommandBufferInheritanceConditionalRenderingInfoEXT {
+	v := CommandBufferInheritanceConditionalRenderingInfoEXT{native: p}
+	return &v
+}
+
+func marshalCommandBufferInheritanceConditionalRenderingInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCommandBufferInheritanceConditionalRenderingInfoEXT)(unsafe.Pointer(b))
+
+	return wrapCommandBufferInheritanceConditionalRenderingInfoEXT(c)
 }
 
 type ObjectTableNVX struct {
 	native *C.VkObjectTableNVX
 }
 
+func wrapObjectTableNVX(p *C.VkObjectTableNVX) *ObjectTableNVX {
+	v := ObjectTableNVX{native: p}
+	return &v
+}
+
+func marshalObjectTableNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectTableNVX)(unsafe.Pointer(b))
+
+	return wrapObjectTableNVX(c)
+}
+
 type IndirectCommandsLayoutNVX struct {
 	native *C.VkIndirectCommandsLayoutNVX
+}
+
+func wrapIndirectCommandsLayoutNVX(p *C.VkIndirectCommandsLayoutNVX) *IndirectCommandsLayoutNVX {
+	v := IndirectCommandsLayoutNVX{native: p}
+	return &v
+}
+
+func marshalIndirectCommandsLayoutNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkIndirectCommandsLayoutNVX)(unsafe.Pointer(b))
+
+	return wrapIndirectCommandsLayoutNVX(c)
 }
 
 type IndirectCommandsTokenTypeNVX struct {
 	native *C.VkIndirectCommandsTokenTypeNVX
 }
 
+func wrapIndirectCommandsTokenTypeNVX(p *C.VkIndirectCommandsTokenTypeNVX) *IndirectCommandsTokenTypeNVX {
+	v := IndirectCommandsTokenTypeNVX{native: p}
+	return &v
+}
+
+func marshalIndirectCommandsTokenTypeNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkIndirectCommandsTokenTypeNVX)(unsafe.Pointer(b))
+
+	return wrapIndirectCommandsTokenTypeNVX(c)
+}
+
 type ObjectEntryTypeNVX struct {
 	native *C.VkObjectEntryTypeNVX
+}
+
+func wrapObjectEntryTypeNVX(p *C.VkObjectEntryTypeNVX) *ObjectEntryTypeNVX {
+	v := ObjectEntryTypeNVX{native: p}
+	return &v
+}
+
+func marshalObjectEntryTypeNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectEntryTypeNVX)(unsafe.Pointer(b))
+
+	return wrapObjectEntryTypeNVX(c)
 }
 
 type IndirectCommandsLayoutUsageFlagBitsNVX struct {
 	native *C.VkIndirectCommandsLayoutUsageFlagBitsNVX
 }
 
+func wrapIndirectCommandsLayoutUsageFlagBitsNVX(p *C.VkIndirectCommandsLayoutUsageFlagBitsNVX) *IndirectCommandsLayoutUsageFlagBitsNVX {
+	v := IndirectCommandsLayoutUsageFlagBitsNVX{native: p}
+	return &v
+}
+
+func marshalIndirectCommandsLayoutUsageFlagBitsNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkIndirectCommandsLayoutUsageFlagBitsNVX)(unsafe.Pointer(b))
+
+	return wrapIndirectCommandsLayoutUsageFlagBitsNVX(c)
+}
+
 type IndirectCommandsLayoutUsageFlagsNVX struct {
 	native *C.VkIndirectCommandsLayoutUsageFlagsNVX
+}
+
+func wrapIndirectCommandsLayoutUsageFlagsNVX(p *C.VkIndirectCommandsLayoutUsageFlagsNVX) *IndirectCommandsLayoutUsageFlagsNVX {
+	v := IndirectCommandsLayoutUsageFlagsNVX{native: p}
+	return &v
+}
+
+func marshalIndirectCommandsLayoutUsageFlagsNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkIndirectCommandsLayoutUsageFlagsNVX)(unsafe.Pointer(b))
+
+	return wrapIndirectCommandsLayoutUsageFlagsNVX(c)
 }
 
 type ObjectEntryUsageFlagBitsNVX struct {
 	native *C.VkObjectEntryUsageFlagBitsNVX
 }
 
+func wrapObjectEntryUsageFlagBitsNVX(p *C.VkObjectEntryUsageFlagBitsNVX) *ObjectEntryUsageFlagBitsNVX {
+	v := ObjectEntryUsageFlagBitsNVX{native: p}
+	return &v
+}
+
+func marshalObjectEntryUsageFlagBitsNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectEntryUsageFlagBitsNVX)(unsafe.Pointer(b))
+
+	return wrapObjectEntryUsageFlagBitsNVX(c)
+}
+
 type ObjectEntryUsageFlagsNVX struct {
 	native *C.VkObjectEntryUsageFlagsNVX
+}
+
+func wrapObjectEntryUsageFlagsNVX(p *C.VkObjectEntryUsageFlagsNVX) *ObjectEntryUsageFlagsNVX {
+	v := ObjectEntryUsageFlagsNVX{native: p}
+	return &v
+}
+
+func marshalObjectEntryUsageFlagsNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectEntryUsageFlagsNVX)(unsafe.Pointer(b))
+
+	return wrapObjectEntryUsageFlagsNVX(c)
 }
 
 type DeviceGeneratedCommandsFeaturesNVX struct {
 	native *C.VkDeviceGeneratedCommandsFeaturesNVX
 }
 
+func wrapDeviceGeneratedCommandsFeaturesNVX(p *C.VkDeviceGeneratedCommandsFeaturesNVX) *DeviceGeneratedCommandsFeaturesNVX {
+	v := DeviceGeneratedCommandsFeaturesNVX{native: p}
+	return &v
+}
+
+func marshalDeviceGeneratedCommandsFeaturesNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGeneratedCommandsFeaturesNVX)(unsafe.Pointer(b))
+
+	return wrapDeviceGeneratedCommandsFeaturesNVX(c)
+}
+
 type DeviceGeneratedCommandsLimitsNVX struct {
 	native *C.VkDeviceGeneratedCommandsLimitsNVX
+}
+
+func wrapDeviceGeneratedCommandsLimitsNVX(p *C.VkDeviceGeneratedCommandsLimitsNVX) *DeviceGeneratedCommandsLimitsNVX {
+	v := DeviceGeneratedCommandsLimitsNVX{native: p}
+	return &v
+}
+
+func marshalDeviceGeneratedCommandsLimitsNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceGeneratedCommandsLimitsNVX)(unsafe.Pointer(b))
+
+	return wrapDeviceGeneratedCommandsLimitsNVX(c)
 }
 
 type IndirectCommandsTokenNVX struct {
 	native *C.VkIndirectCommandsTokenNVX
 }
 
+func wrapIndirectCommandsTokenNVX(p *C.VkIndirectCommandsTokenNVX) *IndirectCommandsTokenNVX {
+	v := IndirectCommandsTokenNVX{native: p}
+	return &v
+}
+
+func marshalIndirectCommandsTokenNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkIndirectCommandsTokenNVX)(unsafe.Pointer(b))
+
+	return wrapIndirectCommandsTokenNVX(c)
+}
+
 type IndirectCommandsLayoutTokenNVX struct {
 	native *C.VkIndirectCommandsLayoutTokenNVX
+}
+
+func wrapIndirectCommandsLayoutTokenNVX(p *C.VkIndirectCommandsLayoutTokenNVX) *IndirectCommandsLayoutTokenNVX {
+	v := IndirectCommandsLayoutTokenNVX{native: p}
+	return &v
+}
+
+func marshalIndirectCommandsLayoutTokenNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkIndirectCommandsLayoutTokenNVX)(unsafe.Pointer(b))
+
+	return wrapIndirectCommandsLayoutTokenNVX(c)
 }
 
 type IndirectCommandsLayoutCreateInfoNVX struct {
 	native *C.VkIndirectCommandsLayoutCreateInfoNVX
 }
 
+func wrapIndirectCommandsLayoutCreateInfoNVX(p *C.VkIndirectCommandsLayoutCreateInfoNVX) *IndirectCommandsLayoutCreateInfoNVX {
+	v := IndirectCommandsLayoutCreateInfoNVX{native: p}
+	return &v
+}
+
+func marshalIndirectCommandsLayoutCreateInfoNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkIndirectCommandsLayoutCreateInfoNVX)(unsafe.Pointer(b))
+
+	return wrapIndirectCommandsLayoutCreateInfoNVX(c)
+}
+
 type CmdProcessCommandsInfoNVX struct {
 	native *C.VkCmdProcessCommandsInfoNVX
+}
+
+func wrapCmdProcessCommandsInfoNVX(p *C.VkCmdProcessCommandsInfoNVX) *CmdProcessCommandsInfoNVX {
+	v := CmdProcessCommandsInfoNVX{native: p}
+	return &v
+}
+
+func marshalCmdProcessCommandsInfoNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCmdProcessCommandsInfoNVX)(unsafe.Pointer(b))
+
+	return wrapCmdProcessCommandsInfoNVX(c)
 }
 
 type CmdReserveSpaceForCommandsInfoNVX struct {
 	native *C.VkCmdReserveSpaceForCommandsInfoNVX
 }
 
+func wrapCmdReserveSpaceForCommandsInfoNVX(p *C.VkCmdReserveSpaceForCommandsInfoNVX) *CmdReserveSpaceForCommandsInfoNVX {
+	v := CmdReserveSpaceForCommandsInfoNVX{native: p}
+	return &v
+}
+
+func marshalCmdReserveSpaceForCommandsInfoNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCmdReserveSpaceForCommandsInfoNVX)(unsafe.Pointer(b))
+
+	return wrapCmdReserveSpaceForCommandsInfoNVX(c)
+}
+
 type ObjectTableCreateInfoNVX struct {
 	native *C.VkObjectTableCreateInfoNVX
+}
+
+func wrapObjectTableCreateInfoNVX(p *C.VkObjectTableCreateInfoNVX) *ObjectTableCreateInfoNVX {
+	v := ObjectTableCreateInfoNVX{native: p}
+	return &v
+}
+
+func marshalObjectTableCreateInfoNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectTableCreateInfoNVX)(unsafe.Pointer(b))
+
+	return wrapObjectTableCreateInfoNVX(c)
 }
 
 type ObjectTableEntryNVX struct {
 	native *C.VkObjectTableEntryNVX
 }
 
+func wrapObjectTableEntryNVX(p *C.VkObjectTableEntryNVX) *ObjectTableEntryNVX {
+	v := ObjectTableEntryNVX{native: p}
+	return &v
+}
+
+func marshalObjectTableEntryNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectTableEntryNVX)(unsafe.Pointer(b))
+
+	return wrapObjectTableEntryNVX(c)
+}
+
 type ObjectTablePipelineEntryNVX struct {
 	native *C.VkObjectTablePipelineEntryNVX
+}
+
+func wrapObjectTablePipelineEntryNVX(p *C.VkObjectTablePipelineEntryNVX) *ObjectTablePipelineEntryNVX {
+	v := ObjectTablePipelineEntryNVX{native: p}
+	return &v
+}
+
+func marshalObjectTablePipelineEntryNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectTablePipelineEntryNVX)(unsafe.Pointer(b))
+
+	return wrapObjectTablePipelineEntryNVX(c)
 }
 
 type ObjectTableDescriptorSetEntryNVX struct {
 	native *C.VkObjectTableDescriptorSetEntryNVX
 }
 
+func wrapObjectTableDescriptorSetEntryNVX(p *C.VkObjectTableDescriptorSetEntryNVX) *ObjectTableDescriptorSetEntryNVX {
+	v := ObjectTableDescriptorSetEntryNVX{native: p}
+	return &v
+}
+
+func marshalObjectTableDescriptorSetEntryNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectTableDescriptorSetEntryNVX)(unsafe.Pointer(b))
+
+	return wrapObjectTableDescriptorSetEntryNVX(c)
+}
+
 type ObjectTableVertexBufferEntryNVX struct {
 	native *C.VkObjectTableVertexBufferEntryNVX
+}
+
+func wrapObjectTableVertexBufferEntryNVX(p *C.VkObjectTableVertexBufferEntryNVX) *ObjectTableVertexBufferEntryNVX {
+	v := ObjectTableVertexBufferEntryNVX{native: p}
+	return &v
+}
+
+func marshalObjectTableVertexBufferEntryNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectTableVertexBufferEntryNVX)(unsafe.Pointer(b))
+
+	return wrapObjectTableVertexBufferEntryNVX(c)
 }
 
 type ObjectTableIndexBufferEntryNVX struct {
 	native *C.VkObjectTableIndexBufferEntryNVX
 }
 
+func wrapObjectTableIndexBufferEntryNVX(p *C.VkObjectTableIndexBufferEntryNVX) *ObjectTableIndexBufferEntryNVX {
+	v := ObjectTableIndexBufferEntryNVX{native: p}
+	return &v
+}
+
+func marshalObjectTableIndexBufferEntryNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectTableIndexBufferEntryNVX)(unsafe.Pointer(b))
+
+	return wrapObjectTableIndexBufferEntryNVX(c)
+}
+
 type ObjectTablePushConstantEntryNVX struct {
 	native *C.VkObjectTablePushConstantEntryNVX
+}
+
+func wrapObjectTablePushConstantEntryNVX(p *C.VkObjectTablePushConstantEntryNVX) *ObjectTablePushConstantEntryNVX {
+	v := ObjectTablePushConstantEntryNVX{native: p}
+	return &v
+}
+
+func marshalObjectTablePushConstantEntryNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkObjectTablePushConstantEntryNVX)(unsafe.Pointer(b))
+
+	return wrapObjectTablePushConstantEntryNVX(c)
 }
 
 type ViewportWScalingNV struct {
 	native *C.VkViewportWScalingNV
 }
 
+func wrapViewportWScalingNV(p *C.VkViewportWScalingNV) *ViewportWScalingNV {
+	v := ViewportWScalingNV{native: p}
+	return &v
+}
+
+func marshalViewportWScalingNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkViewportWScalingNV)(unsafe.Pointer(b))
+
+	return wrapViewportWScalingNV(c)
+}
+
 type PipelineViewportWScalingStateCreateInfoNV struct {
 	native *C.VkPipelineViewportWScalingStateCreateInfoNV
+}
+
+func wrapPipelineViewportWScalingStateCreateInfoNV(p *C.VkPipelineViewportWScalingStateCreateInfoNV) *PipelineViewportWScalingStateCreateInfoNV {
+	v := PipelineViewportWScalingStateCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalPipelineViewportWScalingStateCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineViewportWScalingStateCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapPipelineViewportWScalingStateCreateInfoNV(c)
 }
 
 type SurfaceCounterFlagBitsEXT struct {
 	native *C.VkSurfaceCounterFlagBitsEXT
 }
 
+func wrapSurfaceCounterFlagBitsEXT(p *C.VkSurfaceCounterFlagBitsEXT) *SurfaceCounterFlagBitsEXT {
+	v := SurfaceCounterFlagBitsEXT{native: p}
+	return &v
+}
+
+func marshalSurfaceCounterFlagBitsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceCounterFlagBitsEXT)(unsafe.Pointer(b))
+
+	return wrapSurfaceCounterFlagBitsEXT(c)
+}
+
 type SurfaceCounterFlagsEXT struct {
 	native *C.VkSurfaceCounterFlagsEXT
+}
+
+func wrapSurfaceCounterFlagsEXT(p *C.VkSurfaceCounterFlagsEXT) *SurfaceCounterFlagsEXT {
+	v := SurfaceCounterFlagsEXT{native: p}
+	return &v
+}
+
+func marshalSurfaceCounterFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceCounterFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapSurfaceCounterFlagsEXT(c)
 }
 
 type SurfaceCapabilities2EXT struct {
 	native *C.VkSurfaceCapabilities2EXT
 }
 
+func wrapSurfaceCapabilities2EXT(p *C.VkSurfaceCapabilities2EXT) *SurfaceCapabilities2EXT {
+	v := SurfaceCapabilities2EXT{native: p}
+	return &v
+}
+
+func marshalSurfaceCapabilities2EXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSurfaceCapabilities2EXT)(unsafe.Pointer(b))
+
+	return wrapSurfaceCapabilities2EXT(c)
+}
+
 type DisplayPowerStateEXT struct {
 	native *C.VkDisplayPowerStateEXT
+}
+
+func wrapDisplayPowerStateEXT(p *C.VkDisplayPowerStateEXT) *DisplayPowerStateEXT {
+	v := DisplayPowerStateEXT{native: p}
+	return &v
+}
+
+func marshalDisplayPowerStateEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPowerStateEXT)(unsafe.Pointer(b))
+
+	return wrapDisplayPowerStateEXT(c)
 }
 
 type DeviceEventTypeEXT struct {
 	native *C.VkDeviceEventTypeEXT
 }
 
+func wrapDeviceEventTypeEXT(p *C.VkDeviceEventTypeEXT) *DeviceEventTypeEXT {
+	v := DeviceEventTypeEXT{native: p}
+	return &v
+}
+
+func marshalDeviceEventTypeEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceEventTypeEXT)(unsafe.Pointer(b))
+
+	return wrapDeviceEventTypeEXT(c)
+}
+
 type DisplayEventTypeEXT struct {
 	native *C.VkDisplayEventTypeEXT
+}
+
+func wrapDisplayEventTypeEXT(p *C.VkDisplayEventTypeEXT) *DisplayEventTypeEXT {
+	v := DisplayEventTypeEXT{native: p}
+	return &v
+}
+
+func marshalDisplayEventTypeEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayEventTypeEXT)(unsafe.Pointer(b))
+
+	return wrapDisplayEventTypeEXT(c)
 }
 
 type DisplayPowerInfoEXT struct {
 	native *C.VkDisplayPowerInfoEXT
 }
 
+func wrapDisplayPowerInfoEXT(p *C.VkDisplayPowerInfoEXT) *DisplayPowerInfoEXT {
+	v := DisplayPowerInfoEXT{native: p}
+	return &v
+}
+
+func marshalDisplayPowerInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayPowerInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDisplayPowerInfoEXT(c)
+}
+
 type DeviceEventInfoEXT struct {
 	native *C.VkDeviceEventInfoEXT
+}
+
+func wrapDeviceEventInfoEXT(p *C.VkDeviceEventInfoEXT) *DeviceEventInfoEXT {
+	v := DeviceEventInfoEXT{native: p}
+	return &v
+}
+
+func marshalDeviceEventInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceEventInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDeviceEventInfoEXT(c)
 }
 
 type DisplayEventInfoEXT struct {
 	native *C.VkDisplayEventInfoEXT
 }
 
+func wrapDisplayEventInfoEXT(p *C.VkDisplayEventInfoEXT) *DisplayEventInfoEXT {
+	v := DisplayEventInfoEXT{native: p}
+	return &v
+}
+
+func marshalDisplayEventInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayEventInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDisplayEventInfoEXT(c)
+}
+
 type SwapchainCounterCreateInfoEXT struct {
 	native *C.VkSwapchainCounterCreateInfoEXT
+}
+
+func wrapSwapchainCounterCreateInfoEXT(p *C.VkSwapchainCounterCreateInfoEXT) *SwapchainCounterCreateInfoEXT {
+	v := SwapchainCounterCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalSwapchainCounterCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSwapchainCounterCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapSwapchainCounterCreateInfoEXT(c)
 }
 
 type RefreshCycleDurationGOOGLE struct {
 	native *C.VkRefreshCycleDurationGOOGLE
 }
 
+func wrapRefreshCycleDurationGOOGLE(p *C.VkRefreshCycleDurationGOOGLE) *RefreshCycleDurationGOOGLE {
+	v := RefreshCycleDurationGOOGLE{native: p}
+	return &v
+}
+
+func marshalRefreshCycleDurationGOOGLE(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRefreshCycleDurationGOOGLE)(unsafe.Pointer(b))
+
+	return wrapRefreshCycleDurationGOOGLE(c)
+}
+
 type PastPresentationTimingGOOGLE struct {
 	native *C.VkPastPresentationTimingGOOGLE
+}
+
+func wrapPastPresentationTimingGOOGLE(p *C.VkPastPresentationTimingGOOGLE) *PastPresentationTimingGOOGLE {
+	v := PastPresentationTimingGOOGLE{native: p}
+	return &v
+}
+
+func marshalPastPresentationTimingGOOGLE(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPastPresentationTimingGOOGLE)(unsafe.Pointer(b))
+
+	return wrapPastPresentationTimingGOOGLE(c)
 }
 
 type PresentTimeGOOGLE struct {
 	native *C.VkPresentTimeGOOGLE
 }
 
+func wrapPresentTimeGOOGLE(p *C.VkPresentTimeGOOGLE) *PresentTimeGOOGLE {
+	v := PresentTimeGOOGLE{native: p}
+	return &v
+}
+
+func marshalPresentTimeGOOGLE(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPresentTimeGOOGLE)(unsafe.Pointer(b))
+
+	return wrapPresentTimeGOOGLE(c)
+}
+
 type PresentTimesInfoGOOGLE struct {
 	native *C.VkPresentTimesInfoGOOGLE
+}
+
+func wrapPresentTimesInfoGOOGLE(p *C.VkPresentTimesInfoGOOGLE) *PresentTimesInfoGOOGLE {
+	v := PresentTimesInfoGOOGLE{native: p}
+	return &v
+}
+
+func marshalPresentTimesInfoGOOGLE(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPresentTimesInfoGOOGLE)(unsafe.Pointer(b))
+
+	return wrapPresentTimesInfoGOOGLE(c)
 }
 
 type PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX struct {
 	native *C.VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX
 }
 
+func wrapPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(p *C.VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX {
+	v := PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(c)
+}
+
 type ViewportCoordinateSwizzleNV struct {
 	native *C.VkViewportCoordinateSwizzleNV
+}
+
+func wrapViewportCoordinateSwizzleNV(p *C.VkViewportCoordinateSwizzleNV) *ViewportCoordinateSwizzleNV {
+	v := ViewportCoordinateSwizzleNV{native: p}
+	return &v
+}
+
+func marshalViewportCoordinateSwizzleNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkViewportCoordinateSwizzleNV)(unsafe.Pointer(b))
+
+	return wrapViewportCoordinateSwizzleNV(c)
 }
 
 type PipelineViewportSwizzleStateCreateFlagsNV struct {
 	native *C.VkPipelineViewportSwizzleStateCreateFlagsNV
 }
 
+func wrapPipelineViewportSwizzleStateCreateFlagsNV(p *C.VkPipelineViewportSwizzleStateCreateFlagsNV) *PipelineViewportSwizzleStateCreateFlagsNV {
+	v := PipelineViewportSwizzleStateCreateFlagsNV{native: p}
+	return &v
+}
+
+func marshalPipelineViewportSwizzleStateCreateFlagsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineViewportSwizzleStateCreateFlagsNV)(unsafe.Pointer(b))
+
+	return wrapPipelineViewportSwizzleStateCreateFlagsNV(c)
+}
+
 type ViewportSwizzleNV struct {
 	native *C.VkViewportSwizzleNV
+}
+
+func wrapViewportSwizzleNV(p *C.VkViewportSwizzleNV) *ViewportSwizzleNV {
+	v := ViewportSwizzleNV{native: p}
+	return &v
+}
+
+func marshalViewportSwizzleNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkViewportSwizzleNV)(unsafe.Pointer(b))
+
+	return wrapViewportSwizzleNV(c)
 }
 
 type PipelineViewportSwizzleStateCreateInfoNV struct {
 	native *C.VkPipelineViewportSwizzleStateCreateInfoNV
 }
 
+func wrapPipelineViewportSwizzleStateCreateInfoNV(p *C.VkPipelineViewportSwizzleStateCreateInfoNV) *PipelineViewportSwizzleStateCreateInfoNV {
+	v := PipelineViewportSwizzleStateCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalPipelineViewportSwizzleStateCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineViewportSwizzleStateCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapPipelineViewportSwizzleStateCreateInfoNV(c)
+}
+
 type DiscardRectangleModeEXT struct {
 	native *C.VkDiscardRectangleModeEXT
+}
+
+func wrapDiscardRectangleModeEXT(p *C.VkDiscardRectangleModeEXT) *DiscardRectangleModeEXT {
+	v := DiscardRectangleModeEXT{native: p}
+	return &v
+}
+
+func marshalDiscardRectangleModeEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDiscardRectangleModeEXT)(unsafe.Pointer(b))
+
+	return wrapDiscardRectangleModeEXT(c)
 }
 
 type PipelineDiscardRectangleStateCreateFlagsEXT struct {
 	native *C.VkPipelineDiscardRectangleStateCreateFlagsEXT
 }
 
+func wrapPipelineDiscardRectangleStateCreateFlagsEXT(p *C.VkPipelineDiscardRectangleStateCreateFlagsEXT) *PipelineDiscardRectangleStateCreateFlagsEXT {
+	v := PipelineDiscardRectangleStateCreateFlagsEXT{native: p}
+	return &v
+}
+
+func marshalPipelineDiscardRectangleStateCreateFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineDiscardRectangleStateCreateFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineDiscardRectangleStateCreateFlagsEXT(c)
+}
+
 type PhysicalDeviceDiscardRectanglePropertiesEXT struct {
 	native *C.VkPhysicalDeviceDiscardRectanglePropertiesEXT
+}
+
+func wrapPhysicalDeviceDiscardRectanglePropertiesEXT(p *C.VkPhysicalDeviceDiscardRectanglePropertiesEXT) *PhysicalDeviceDiscardRectanglePropertiesEXT {
+	v := PhysicalDeviceDiscardRectanglePropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceDiscardRectanglePropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceDiscardRectanglePropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceDiscardRectanglePropertiesEXT(c)
 }
 
 type PipelineDiscardRectangleStateCreateInfoEXT struct {
 	native *C.VkPipelineDiscardRectangleStateCreateInfoEXT
 }
 
+func wrapPipelineDiscardRectangleStateCreateInfoEXT(p *C.VkPipelineDiscardRectangleStateCreateInfoEXT) *PipelineDiscardRectangleStateCreateInfoEXT {
+	v := PipelineDiscardRectangleStateCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalPipelineDiscardRectangleStateCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineDiscardRectangleStateCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineDiscardRectangleStateCreateInfoEXT(c)
+}
+
 type ConservativeRasterizationModeEXT struct {
 	native *C.VkConservativeRasterizationModeEXT
+}
+
+func wrapConservativeRasterizationModeEXT(p *C.VkConservativeRasterizationModeEXT) *ConservativeRasterizationModeEXT {
+	v := ConservativeRasterizationModeEXT{native: p}
+	return &v
+}
+
+func marshalConservativeRasterizationModeEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkConservativeRasterizationModeEXT)(unsafe.Pointer(b))
+
+	return wrapConservativeRasterizationModeEXT(c)
 }
 
 type PipelineRasterizationConservativeStateCreateFlagsEXT struct {
 	native *C.VkPipelineRasterizationConservativeStateCreateFlagsEXT
 }
 
+func wrapPipelineRasterizationConservativeStateCreateFlagsEXT(p *C.VkPipelineRasterizationConservativeStateCreateFlagsEXT) *PipelineRasterizationConservativeStateCreateFlagsEXT {
+	v := PipelineRasterizationConservativeStateCreateFlagsEXT{native: p}
+	return &v
+}
+
+func marshalPipelineRasterizationConservativeStateCreateFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineRasterizationConservativeStateCreateFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineRasterizationConservativeStateCreateFlagsEXT(c)
+}
+
 type PhysicalDeviceConservativeRasterizationPropertiesEXT struct {
 	native *C.VkPhysicalDeviceConservativeRasterizationPropertiesEXT
+}
+
+func wrapPhysicalDeviceConservativeRasterizationPropertiesEXT(p *C.VkPhysicalDeviceConservativeRasterizationPropertiesEXT) *PhysicalDeviceConservativeRasterizationPropertiesEXT {
+	v := PhysicalDeviceConservativeRasterizationPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceConservativeRasterizationPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceConservativeRasterizationPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceConservativeRasterizationPropertiesEXT(c)
 }
 
 type PipelineRasterizationConservativeStateCreateInfoEXT struct {
 	native *C.VkPipelineRasterizationConservativeStateCreateInfoEXT
 }
 
+func wrapPipelineRasterizationConservativeStateCreateInfoEXT(p *C.VkPipelineRasterizationConservativeStateCreateInfoEXT) *PipelineRasterizationConservativeStateCreateInfoEXT {
+	v := PipelineRasterizationConservativeStateCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalPipelineRasterizationConservativeStateCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineRasterizationConservativeStateCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineRasterizationConservativeStateCreateInfoEXT(c)
+}
+
 type PipelineRasterizationDepthClipStateCreateFlagsEXT struct {
 	native *C.VkPipelineRasterizationDepthClipStateCreateFlagsEXT
+}
+
+func wrapPipelineRasterizationDepthClipStateCreateFlagsEXT(p *C.VkPipelineRasterizationDepthClipStateCreateFlagsEXT) *PipelineRasterizationDepthClipStateCreateFlagsEXT {
+	v := PipelineRasterizationDepthClipStateCreateFlagsEXT{native: p}
+	return &v
+}
+
+func marshalPipelineRasterizationDepthClipStateCreateFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineRasterizationDepthClipStateCreateFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineRasterizationDepthClipStateCreateFlagsEXT(c)
 }
 
 type PhysicalDeviceDepthClipEnableFeaturesEXT struct {
 	native *C.VkPhysicalDeviceDepthClipEnableFeaturesEXT
 }
 
+func wrapPhysicalDeviceDepthClipEnableFeaturesEXT(p *C.VkPhysicalDeviceDepthClipEnableFeaturesEXT) *PhysicalDeviceDepthClipEnableFeaturesEXT {
+	v := PhysicalDeviceDepthClipEnableFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceDepthClipEnableFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceDepthClipEnableFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceDepthClipEnableFeaturesEXT(c)
+}
+
 type PipelineRasterizationDepthClipStateCreateInfoEXT struct {
 	native *C.VkPipelineRasterizationDepthClipStateCreateInfoEXT
+}
+
+func wrapPipelineRasterizationDepthClipStateCreateInfoEXT(p *C.VkPipelineRasterizationDepthClipStateCreateInfoEXT) *PipelineRasterizationDepthClipStateCreateInfoEXT {
+	v := PipelineRasterizationDepthClipStateCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalPipelineRasterizationDepthClipStateCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineRasterizationDepthClipStateCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineRasterizationDepthClipStateCreateInfoEXT(c)
 }
 
 type XYColorEXT struct {
 	native *C.VkXYColorEXT
 }
 
+func wrapXYColorEXT(p *C.VkXYColorEXT) *XYColorEXT {
+	v := XYColorEXT{native: p}
+	return &v
+}
+
+func marshalXYColorEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkXYColorEXT)(unsafe.Pointer(b))
+
+	return wrapXYColorEXT(c)
+}
+
 type HdrMetadataEXT struct {
 	native *C.VkHdrMetadataEXT
+}
+
+func wrapHdrMetadataEXT(p *C.VkHdrMetadataEXT) *HdrMetadataEXT {
+	v := HdrMetadataEXT{native: p}
+	return &v
+}
+
+func marshalHdrMetadataEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkHdrMetadataEXT)(unsafe.Pointer(b))
+
+	return wrapHdrMetadataEXT(c)
 }
 
 type DebugUtilsMessengerEXT struct {
 	native *C.VkDebugUtilsMessengerEXT
 }
 
+func wrapDebugUtilsMessengerEXT(p *C.VkDebugUtilsMessengerEXT) *DebugUtilsMessengerEXT {
+	v := DebugUtilsMessengerEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsMessengerEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsMessengerEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsMessengerEXT(c)
+}
+
 type DebugUtilsMessengerCallbackDataFlagsEXT struct {
 	native *C.VkDebugUtilsMessengerCallbackDataFlagsEXT
+}
+
+func wrapDebugUtilsMessengerCallbackDataFlagsEXT(p *C.VkDebugUtilsMessengerCallbackDataFlagsEXT) *DebugUtilsMessengerCallbackDataFlagsEXT {
+	v := DebugUtilsMessengerCallbackDataFlagsEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsMessengerCallbackDataFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsMessengerCallbackDataFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsMessengerCallbackDataFlagsEXT(c)
 }
 
 type DebugUtilsMessengerCreateFlagsEXT struct {
 	native *C.VkDebugUtilsMessengerCreateFlagsEXT
 }
 
+func wrapDebugUtilsMessengerCreateFlagsEXT(p *C.VkDebugUtilsMessengerCreateFlagsEXT) *DebugUtilsMessengerCreateFlagsEXT {
+	v := DebugUtilsMessengerCreateFlagsEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsMessengerCreateFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsMessengerCreateFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsMessengerCreateFlagsEXT(c)
+}
+
 type DebugUtilsMessageSeverityFlagBitsEXT struct {
 	native *C.VkDebugUtilsMessageSeverityFlagBitsEXT
+}
+
+func wrapDebugUtilsMessageSeverityFlagBitsEXT(p *C.VkDebugUtilsMessageSeverityFlagBitsEXT) *DebugUtilsMessageSeverityFlagBitsEXT {
+	v := DebugUtilsMessageSeverityFlagBitsEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsMessageSeverityFlagBitsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsMessageSeverityFlagBitsEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsMessageSeverityFlagBitsEXT(c)
 }
 
 type DebugUtilsMessageSeverityFlagsEXT struct {
 	native *C.VkDebugUtilsMessageSeverityFlagsEXT
 }
 
+func wrapDebugUtilsMessageSeverityFlagsEXT(p *C.VkDebugUtilsMessageSeverityFlagsEXT) *DebugUtilsMessageSeverityFlagsEXT {
+	v := DebugUtilsMessageSeverityFlagsEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsMessageSeverityFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsMessageSeverityFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsMessageSeverityFlagsEXT(c)
+}
+
 type DebugUtilsMessageTypeFlagBitsEXT struct {
 	native *C.VkDebugUtilsMessageTypeFlagBitsEXT
+}
+
+func wrapDebugUtilsMessageTypeFlagBitsEXT(p *C.VkDebugUtilsMessageTypeFlagBitsEXT) *DebugUtilsMessageTypeFlagBitsEXT {
+	v := DebugUtilsMessageTypeFlagBitsEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsMessageTypeFlagBitsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsMessageTypeFlagBitsEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsMessageTypeFlagBitsEXT(c)
 }
 
 type DebugUtilsMessageTypeFlagsEXT struct {
 	native *C.VkDebugUtilsMessageTypeFlagsEXT
 }
 
+func wrapDebugUtilsMessageTypeFlagsEXT(p *C.VkDebugUtilsMessageTypeFlagsEXT) *DebugUtilsMessageTypeFlagsEXT {
+	v := DebugUtilsMessageTypeFlagsEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsMessageTypeFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsMessageTypeFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsMessageTypeFlagsEXT(c)
+}
+
 type DebugUtilsObjectNameInfoEXT struct {
 	native *C.VkDebugUtilsObjectNameInfoEXT
+}
+
+func wrapDebugUtilsObjectNameInfoEXT(p *C.VkDebugUtilsObjectNameInfoEXT) *DebugUtilsObjectNameInfoEXT {
+	v := DebugUtilsObjectNameInfoEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsObjectNameInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsObjectNameInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsObjectNameInfoEXT(c)
 }
 
 type DebugUtilsObjectTagInfoEXT struct {
 	native *C.VkDebugUtilsObjectTagInfoEXT
 }
 
+func wrapDebugUtilsObjectTagInfoEXT(p *C.VkDebugUtilsObjectTagInfoEXT) *DebugUtilsObjectTagInfoEXT {
+	v := DebugUtilsObjectTagInfoEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsObjectTagInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsObjectTagInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsObjectTagInfoEXT(c)
+}
+
 type DebugUtilsLabelEXT struct {
 	native *C.VkDebugUtilsLabelEXT
+}
+
+func wrapDebugUtilsLabelEXT(p *C.VkDebugUtilsLabelEXT) *DebugUtilsLabelEXT {
+	v := DebugUtilsLabelEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsLabelEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsLabelEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsLabelEXT(c)
 }
 
 type DebugUtilsMessengerCallbackDataEXT struct {
 	native *C.VkDebugUtilsMessengerCallbackDataEXT
 }
 
+func wrapDebugUtilsMessengerCallbackDataEXT(p *C.VkDebugUtilsMessengerCallbackDataEXT) *DebugUtilsMessengerCallbackDataEXT {
+	v := DebugUtilsMessengerCallbackDataEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsMessengerCallbackDataEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsMessengerCallbackDataEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsMessengerCallbackDataEXT(c)
+}
+
 type DebugUtilsMessengerCreateInfoEXT struct {
 	native *C.VkDebugUtilsMessengerCreateInfoEXT
+}
+
+func wrapDebugUtilsMessengerCreateInfoEXT(p *C.VkDebugUtilsMessengerCreateInfoEXT) *DebugUtilsMessengerCreateInfoEXT {
+	v := DebugUtilsMessengerCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalDebugUtilsMessengerCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDebugUtilsMessengerCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDebugUtilsMessengerCreateInfoEXT(c)
 }
 
 type SamplerReductionModeEXT struct {
 	native *C.VkSamplerReductionModeEXT
 }
 
+func wrapSamplerReductionModeEXT(p *C.VkSamplerReductionModeEXT) *SamplerReductionModeEXT {
+	v := SamplerReductionModeEXT{native: p}
+	return &v
+}
+
+func marshalSamplerReductionModeEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerReductionModeEXT)(unsafe.Pointer(b))
+
+	return wrapSamplerReductionModeEXT(c)
+}
+
 type SamplerReductionModeCreateInfoEXT struct {
 	native *C.VkSamplerReductionModeCreateInfoEXT
+}
+
+func wrapSamplerReductionModeCreateInfoEXT(p *C.VkSamplerReductionModeCreateInfoEXT) *SamplerReductionModeCreateInfoEXT {
+	v := SamplerReductionModeCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalSamplerReductionModeCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSamplerReductionModeCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapSamplerReductionModeCreateInfoEXT(c)
 }
 
 type PhysicalDeviceSamplerFilterMinmaxPropertiesEXT struct {
 	native *C.VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT
 }
 
+func wrapPhysicalDeviceSamplerFilterMinmaxPropertiesEXT(p *C.VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT) *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT {
+	v := PhysicalDeviceSamplerFilterMinmaxPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceSamplerFilterMinmaxPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceSamplerFilterMinmaxPropertiesEXT(c)
+}
+
 type PhysicalDeviceInlineUniformBlockFeaturesEXT struct {
 	native *C.VkPhysicalDeviceInlineUniformBlockFeaturesEXT
+}
+
+func wrapPhysicalDeviceInlineUniformBlockFeaturesEXT(p *C.VkPhysicalDeviceInlineUniformBlockFeaturesEXT) *PhysicalDeviceInlineUniformBlockFeaturesEXT {
+	v := PhysicalDeviceInlineUniformBlockFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceInlineUniformBlockFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceInlineUniformBlockFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceInlineUniformBlockFeaturesEXT(c)
 }
 
 type PhysicalDeviceInlineUniformBlockPropertiesEXT struct {
 	native *C.VkPhysicalDeviceInlineUniformBlockPropertiesEXT
 }
 
+func wrapPhysicalDeviceInlineUniformBlockPropertiesEXT(p *C.VkPhysicalDeviceInlineUniformBlockPropertiesEXT) *PhysicalDeviceInlineUniformBlockPropertiesEXT {
+	v := PhysicalDeviceInlineUniformBlockPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceInlineUniformBlockPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceInlineUniformBlockPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceInlineUniformBlockPropertiesEXT(c)
+}
+
 type WriteDescriptorSetInlineUniformBlockEXT struct {
 	native *C.VkWriteDescriptorSetInlineUniformBlockEXT
+}
+
+func wrapWriteDescriptorSetInlineUniformBlockEXT(p *C.VkWriteDescriptorSetInlineUniformBlockEXT) *WriteDescriptorSetInlineUniformBlockEXT {
+	v := WriteDescriptorSetInlineUniformBlockEXT{native: p}
+	return &v
+}
+
+func marshalWriteDescriptorSetInlineUniformBlockEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkWriteDescriptorSetInlineUniformBlockEXT)(unsafe.Pointer(b))
+
+	return wrapWriteDescriptorSetInlineUniformBlockEXT(c)
 }
 
 type DescriptorPoolInlineUniformBlockCreateInfoEXT struct {
 	native *C.VkDescriptorPoolInlineUniformBlockCreateInfoEXT
 }
 
+func wrapDescriptorPoolInlineUniformBlockCreateInfoEXT(p *C.VkDescriptorPoolInlineUniformBlockCreateInfoEXT) *DescriptorPoolInlineUniformBlockCreateInfoEXT {
+	v := DescriptorPoolInlineUniformBlockCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalDescriptorPoolInlineUniformBlockCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorPoolInlineUniformBlockCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDescriptorPoolInlineUniformBlockCreateInfoEXT(c)
+}
+
 type SampleLocationEXT struct {
 	native *C.VkSampleLocationEXT
+}
+
+func wrapSampleLocationEXT(p *C.VkSampleLocationEXT) *SampleLocationEXT {
+	v := SampleLocationEXT{native: p}
+	return &v
+}
+
+func marshalSampleLocationEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSampleLocationEXT)(unsafe.Pointer(b))
+
+	return wrapSampleLocationEXT(c)
 }
 
 type SampleLocationsInfoEXT struct {
 	native *C.VkSampleLocationsInfoEXT
 }
 
+func wrapSampleLocationsInfoEXT(p *C.VkSampleLocationsInfoEXT) *SampleLocationsInfoEXT {
+	v := SampleLocationsInfoEXT{native: p}
+	return &v
+}
+
+func marshalSampleLocationsInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSampleLocationsInfoEXT)(unsafe.Pointer(b))
+
+	return wrapSampleLocationsInfoEXT(c)
+}
+
 type AttachmentSampleLocationsEXT struct {
 	native *C.VkAttachmentSampleLocationsEXT
+}
+
+func wrapAttachmentSampleLocationsEXT(p *C.VkAttachmentSampleLocationsEXT) *AttachmentSampleLocationsEXT {
+	v := AttachmentSampleLocationsEXT{native: p}
+	return &v
+}
+
+func marshalAttachmentSampleLocationsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAttachmentSampleLocationsEXT)(unsafe.Pointer(b))
+
+	return wrapAttachmentSampleLocationsEXT(c)
 }
 
 type SubpassSampleLocationsEXT struct {
 	native *C.VkSubpassSampleLocationsEXT
 }
 
+func wrapSubpassSampleLocationsEXT(p *C.VkSubpassSampleLocationsEXT) *SubpassSampleLocationsEXT {
+	v := SubpassSampleLocationsEXT{native: p}
+	return &v
+}
+
+func marshalSubpassSampleLocationsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSubpassSampleLocationsEXT)(unsafe.Pointer(b))
+
+	return wrapSubpassSampleLocationsEXT(c)
+}
+
 type RenderPassSampleLocationsBeginInfoEXT struct {
 	native *C.VkRenderPassSampleLocationsBeginInfoEXT
+}
+
+func wrapRenderPassSampleLocationsBeginInfoEXT(p *C.VkRenderPassSampleLocationsBeginInfoEXT) *RenderPassSampleLocationsBeginInfoEXT {
+	v := RenderPassSampleLocationsBeginInfoEXT{native: p}
+	return &v
+}
+
+func marshalRenderPassSampleLocationsBeginInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPassSampleLocationsBeginInfoEXT)(unsafe.Pointer(b))
+
+	return wrapRenderPassSampleLocationsBeginInfoEXT(c)
 }
 
 type PipelineSampleLocationsStateCreateInfoEXT struct {
 	native *C.VkPipelineSampleLocationsStateCreateInfoEXT
 }
 
+func wrapPipelineSampleLocationsStateCreateInfoEXT(p *C.VkPipelineSampleLocationsStateCreateInfoEXT) *PipelineSampleLocationsStateCreateInfoEXT {
+	v := PipelineSampleLocationsStateCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalPipelineSampleLocationsStateCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineSampleLocationsStateCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineSampleLocationsStateCreateInfoEXT(c)
+}
+
 type PhysicalDeviceSampleLocationsPropertiesEXT struct {
 	native *C.VkPhysicalDeviceSampleLocationsPropertiesEXT
+}
+
+func wrapPhysicalDeviceSampleLocationsPropertiesEXT(p *C.VkPhysicalDeviceSampleLocationsPropertiesEXT) *PhysicalDeviceSampleLocationsPropertiesEXT {
+	v := PhysicalDeviceSampleLocationsPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceSampleLocationsPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceSampleLocationsPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceSampleLocationsPropertiesEXT(c)
 }
 
 type MultisamplePropertiesEXT struct {
 	native *C.VkMultisamplePropertiesEXT
 }
 
+func wrapMultisamplePropertiesEXT(p *C.VkMultisamplePropertiesEXT) *MultisamplePropertiesEXT {
+	v := MultisamplePropertiesEXT{native: p}
+	return &v
+}
+
+func marshalMultisamplePropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMultisamplePropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapMultisamplePropertiesEXT(c)
+}
+
 type BlendOverlapEXT struct {
 	native *C.VkBlendOverlapEXT
+}
+
+func wrapBlendOverlapEXT(p *C.VkBlendOverlapEXT) *BlendOverlapEXT {
+	v := BlendOverlapEXT{native: p}
+	return &v
+}
+
+func marshalBlendOverlapEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBlendOverlapEXT)(unsafe.Pointer(b))
+
+	return wrapBlendOverlapEXT(c)
 }
 
 type PhysicalDeviceBlendOperationAdvancedFeaturesEXT struct {
 	native *C.VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT
 }
 
+func wrapPhysicalDeviceBlendOperationAdvancedFeaturesEXT(p *C.VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT) *PhysicalDeviceBlendOperationAdvancedFeaturesEXT {
+	v := PhysicalDeviceBlendOperationAdvancedFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceBlendOperationAdvancedFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceBlendOperationAdvancedFeaturesEXT(c)
+}
+
 type PhysicalDeviceBlendOperationAdvancedPropertiesEXT struct {
 	native *C.VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT
+}
+
+func wrapPhysicalDeviceBlendOperationAdvancedPropertiesEXT(p *C.VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT) *PhysicalDeviceBlendOperationAdvancedPropertiesEXT {
+	v := PhysicalDeviceBlendOperationAdvancedPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceBlendOperationAdvancedPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceBlendOperationAdvancedPropertiesEXT(c)
 }
 
 type PipelineColorBlendAdvancedStateCreateInfoEXT struct {
 	native *C.VkPipelineColorBlendAdvancedStateCreateInfoEXT
 }
 
+func wrapPipelineColorBlendAdvancedStateCreateInfoEXT(p *C.VkPipelineColorBlendAdvancedStateCreateInfoEXT) *PipelineColorBlendAdvancedStateCreateInfoEXT {
+	v := PipelineColorBlendAdvancedStateCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalPipelineColorBlendAdvancedStateCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineColorBlendAdvancedStateCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineColorBlendAdvancedStateCreateInfoEXT(c)
+}
+
 type PipelineCoverageToColorStateCreateFlagsNV struct {
 	native *C.VkPipelineCoverageToColorStateCreateFlagsNV
+}
+
+func wrapPipelineCoverageToColorStateCreateFlagsNV(p *C.VkPipelineCoverageToColorStateCreateFlagsNV) *PipelineCoverageToColorStateCreateFlagsNV {
+	v := PipelineCoverageToColorStateCreateFlagsNV{native: p}
+	return &v
+}
+
+func marshalPipelineCoverageToColorStateCreateFlagsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCoverageToColorStateCreateFlagsNV)(unsafe.Pointer(b))
+
+	return wrapPipelineCoverageToColorStateCreateFlagsNV(c)
 }
 
 type PipelineCoverageToColorStateCreateInfoNV struct {
 	native *C.VkPipelineCoverageToColorStateCreateInfoNV
 }
 
+func wrapPipelineCoverageToColorStateCreateInfoNV(p *C.VkPipelineCoverageToColorStateCreateInfoNV) *PipelineCoverageToColorStateCreateInfoNV {
+	v := PipelineCoverageToColorStateCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalPipelineCoverageToColorStateCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCoverageToColorStateCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapPipelineCoverageToColorStateCreateInfoNV(c)
+}
+
 type CoverageModulationModeNV struct {
 	native *C.VkCoverageModulationModeNV
+}
+
+func wrapCoverageModulationModeNV(p *C.VkCoverageModulationModeNV) *CoverageModulationModeNV {
+	v := CoverageModulationModeNV{native: p}
+	return &v
+}
+
+func marshalCoverageModulationModeNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCoverageModulationModeNV)(unsafe.Pointer(b))
+
+	return wrapCoverageModulationModeNV(c)
 }
 
 type PipelineCoverageModulationStateCreateFlagsNV struct {
 	native *C.VkPipelineCoverageModulationStateCreateFlagsNV
 }
 
+func wrapPipelineCoverageModulationStateCreateFlagsNV(p *C.VkPipelineCoverageModulationStateCreateFlagsNV) *PipelineCoverageModulationStateCreateFlagsNV {
+	v := PipelineCoverageModulationStateCreateFlagsNV{native: p}
+	return &v
+}
+
+func marshalPipelineCoverageModulationStateCreateFlagsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCoverageModulationStateCreateFlagsNV)(unsafe.Pointer(b))
+
+	return wrapPipelineCoverageModulationStateCreateFlagsNV(c)
+}
+
 type PipelineCoverageModulationStateCreateInfoNV struct {
 	native *C.VkPipelineCoverageModulationStateCreateInfoNV
+}
+
+func wrapPipelineCoverageModulationStateCreateInfoNV(p *C.VkPipelineCoverageModulationStateCreateInfoNV) *PipelineCoverageModulationStateCreateInfoNV {
+	v := PipelineCoverageModulationStateCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalPipelineCoverageModulationStateCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCoverageModulationStateCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapPipelineCoverageModulationStateCreateInfoNV(c)
 }
 
 type DrmFormatModifierPropertiesEXT struct {
 	native *C.VkDrmFormatModifierPropertiesEXT
 }
 
+func wrapDrmFormatModifierPropertiesEXT(p *C.VkDrmFormatModifierPropertiesEXT) *DrmFormatModifierPropertiesEXT {
+	v := DrmFormatModifierPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalDrmFormatModifierPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDrmFormatModifierPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapDrmFormatModifierPropertiesEXT(c)
+}
+
 type DrmFormatModifierPropertiesListEXT struct {
 	native *C.VkDrmFormatModifierPropertiesListEXT
+}
+
+func wrapDrmFormatModifierPropertiesListEXT(p *C.VkDrmFormatModifierPropertiesListEXT) *DrmFormatModifierPropertiesListEXT {
+	v := DrmFormatModifierPropertiesListEXT{native: p}
+	return &v
+}
+
+func marshalDrmFormatModifierPropertiesListEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDrmFormatModifierPropertiesListEXT)(unsafe.Pointer(b))
+
+	return wrapDrmFormatModifierPropertiesListEXT(c)
 }
 
 type PhysicalDeviceImageDrmFormatModifierInfoEXT struct {
 	native *C.VkPhysicalDeviceImageDrmFormatModifierInfoEXT
 }
 
+func wrapPhysicalDeviceImageDrmFormatModifierInfoEXT(p *C.VkPhysicalDeviceImageDrmFormatModifierInfoEXT) *PhysicalDeviceImageDrmFormatModifierInfoEXT {
+	v := PhysicalDeviceImageDrmFormatModifierInfoEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceImageDrmFormatModifierInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceImageDrmFormatModifierInfoEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceImageDrmFormatModifierInfoEXT(c)
+}
+
 type ImageDrmFormatModifierListCreateInfoEXT struct {
 	native *C.VkImageDrmFormatModifierListCreateInfoEXT
+}
+
+func wrapImageDrmFormatModifierListCreateInfoEXT(p *C.VkImageDrmFormatModifierListCreateInfoEXT) *ImageDrmFormatModifierListCreateInfoEXT {
+	v := ImageDrmFormatModifierListCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalImageDrmFormatModifierListCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageDrmFormatModifierListCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapImageDrmFormatModifierListCreateInfoEXT(c)
 }
 
 type ImageDrmFormatModifierExplicitCreateInfoEXT struct {
 	native *C.VkImageDrmFormatModifierExplicitCreateInfoEXT
 }
 
+func wrapImageDrmFormatModifierExplicitCreateInfoEXT(p *C.VkImageDrmFormatModifierExplicitCreateInfoEXT) *ImageDrmFormatModifierExplicitCreateInfoEXT {
+	v := ImageDrmFormatModifierExplicitCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalImageDrmFormatModifierExplicitCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageDrmFormatModifierExplicitCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapImageDrmFormatModifierExplicitCreateInfoEXT(c)
+}
+
 type ImageDrmFormatModifierPropertiesEXT struct {
 	native *C.VkImageDrmFormatModifierPropertiesEXT
+}
+
+func wrapImageDrmFormatModifierPropertiesEXT(p *C.VkImageDrmFormatModifierPropertiesEXT) *ImageDrmFormatModifierPropertiesEXT {
+	v := ImageDrmFormatModifierPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalImageDrmFormatModifierPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageDrmFormatModifierPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapImageDrmFormatModifierPropertiesEXT(c)
 }
 
 type ValidationCacheEXT struct {
 	native *C.VkValidationCacheEXT
 }
 
+func wrapValidationCacheEXT(p *C.VkValidationCacheEXT) *ValidationCacheEXT {
+	v := ValidationCacheEXT{native: p}
+	return &v
+}
+
+func marshalValidationCacheEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkValidationCacheEXT)(unsafe.Pointer(b))
+
+	return wrapValidationCacheEXT(c)
+}
+
 type ValidationCacheHeaderVersionEXT struct {
 	native *C.VkValidationCacheHeaderVersionEXT
+}
+
+func wrapValidationCacheHeaderVersionEXT(p *C.VkValidationCacheHeaderVersionEXT) *ValidationCacheHeaderVersionEXT {
+	v := ValidationCacheHeaderVersionEXT{native: p}
+	return &v
+}
+
+func marshalValidationCacheHeaderVersionEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkValidationCacheHeaderVersionEXT)(unsafe.Pointer(b))
+
+	return wrapValidationCacheHeaderVersionEXT(c)
 }
 
 type ValidationCacheCreateFlagsEXT struct {
 	native *C.VkValidationCacheCreateFlagsEXT
 }
 
+func wrapValidationCacheCreateFlagsEXT(p *C.VkValidationCacheCreateFlagsEXT) *ValidationCacheCreateFlagsEXT {
+	v := ValidationCacheCreateFlagsEXT{native: p}
+	return &v
+}
+
+func marshalValidationCacheCreateFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkValidationCacheCreateFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapValidationCacheCreateFlagsEXT(c)
+}
+
 type ValidationCacheCreateInfoEXT struct {
 	native *C.VkValidationCacheCreateInfoEXT
+}
+
+func wrapValidationCacheCreateInfoEXT(p *C.VkValidationCacheCreateInfoEXT) *ValidationCacheCreateInfoEXT {
+	v := ValidationCacheCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalValidationCacheCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkValidationCacheCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapValidationCacheCreateInfoEXT(c)
 }
 
 type ShaderModuleValidationCacheCreateInfoEXT struct {
 	native *C.VkShaderModuleValidationCacheCreateInfoEXT
 }
 
+func wrapShaderModuleValidationCacheCreateInfoEXT(p *C.VkShaderModuleValidationCacheCreateInfoEXT) *ShaderModuleValidationCacheCreateInfoEXT {
+	v := ShaderModuleValidationCacheCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalShaderModuleValidationCacheCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShaderModuleValidationCacheCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapShaderModuleValidationCacheCreateInfoEXT(c)
+}
+
 type DescriptorBindingFlagBitsEXT struct {
 	native *C.VkDescriptorBindingFlagBitsEXT
+}
+
+func wrapDescriptorBindingFlagBitsEXT(p *C.VkDescriptorBindingFlagBitsEXT) *DescriptorBindingFlagBitsEXT {
+	v := DescriptorBindingFlagBitsEXT{native: p}
+	return &v
+}
+
+func marshalDescriptorBindingFlagBitsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorBindingFlagBitsEXT)(unsafe.Pointer(b))
+
+	return wrapDescriptorBindingFlagBitsEXT(c)
 }
 
 type DescriptorBindingFlagsEXT struct {
 	native *C.VkDescriptorBindingFlagsEXT
 }
 
+func wrapDescriptorBindingFlagsEXT(p *C.VkDescriptorBindingFlagsEXT) *DescriptorBindingFlagsEXT {
+	v := DescriptorBindingFlagsEXT{native: p}
+	return &v
+}
+
+func marshalDescriptorBindingFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorBindingFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapDescriptorBindingFlagsEXT(c)
+}
+
 type DescriptorSetLayoutBindingFlagsCreateInfoEXT struct {
 	native *C.VkDescriptorSetLayoutBindingFlagsCreateInfoEXT
+}
+
+func wrapDescriptorSetLayoutBindingFlagsCreateInfoEXT(p *C.VkDescriptorSetLayoutBindingFlagsCreateInfoEXT) *DescriptorSetLayoutBindingFlagsCreateInfoEXT {
+	v := DescriptorSetLayoutBindingFlagsCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalDescriptorSetLayoutBindingFlagsCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetLayoutBindingFlagsCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetLayoutBindingFlagsCreateInfoEXT(c)
 }
 
 type PhysicalDeviceDescriptorIndexingFeaturesEXT struct {
 	native *C.VkPhysicalDeviceDescriptorIndexingFeaturesEXT
 }
 
+func wrapPhysicalDeviceDescriptorIndexingFeaturesEXT(p *C.VkPhysicalDeviceDescriptorIndexingFeaturesEXT) *PhysicalDeviceDescriptorIndexingFeaturesEXT {
+	v := PhysicalDeviceDescriptorIndexingFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceDescriptorIndexingFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceDescriptorIndexingFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceDescriptorIndexingFeaturesEXT(c)
+}
+
 type PhysicalDeviceDescriptorIndexingPropertiesEXT struct {
 	native *C.VkPhysicalDeviceDescriptorIndexingPropertiesEXT
+}
+
+func wrapPhysicalDeviceDescriptorIndexingPropertiesEXT(p *C.VkPhysicalDeviceDescriptorIndexingPropertiesEXT) *PhysicalDeviceDescriptorIndexingPropertiesEXT {
+	v := PhysicalDeviceDescriptorIndexingPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceDescriptorIndexingPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceDescriptorIndexingPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceDescriptorIndexingPropertiesEXT(c)
 }
 
 type DescriptorSetVariableDescriptorCountAllocateInfoEXT struct {
 	native *C.VkDescriptorSetVariableDescriptorCountAllocateInfoEXT
 }
 
+func wrapDescriptorSetVariableDescriptorCountAllocateInfoEXT(p *C.VkDescriptorSetVariableDescriptorCountAllocateInfoEXT) *DescriptorSetVariableDescriptorCountAllocateInfoEXT {
+	v := DescriptorSetVariableDescriptorCountAllocateInfoEXT{native: p}
+	return &v
+}
+
+func marshalDescriptorSetVariableDescriptorCountAllocateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetVariableDescriptorCountAllocateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetVariableDescriptorCountAllocateInfoEXT(c)
+}
+
 type DescriptorSetVariableDescriptorCountLayoutSupportEXT struct {
 	native *C.VkDescriptorSetVariableDescriptorCountLayoutSupportEXT
+}
+
+func wrapDescriptorSetVariableDescriptorCountLayoutSupportEXT(p *C.VkDescriptorSetVariableDescriptorCountLayoutSupportEXT) *DescriptorSetVariableDescriptorCountLayoutSupportEXT {
+	v := DescriptorSetVariableDescriptorCountLayoutSupportEXT{native: p}
+	return &v
+}
+
+func marshalDescriptorSetVariableDescriptorCountLayoutSupportEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDescriptorSetVariableDescriptorCountLayoutSupportEXT)(unsafe.Pointer(b))
+
+	return wrapDescriptorSetVariableDescriptorCountLayoutSupportEXT(c)
 }
 
 type ShadingRatePaletteEntryNV struct {
 	native *C.VkShadingRatePaletteEntryNV
 }
 
+func wrapShadingRatePaletteEntryNV(p *C.VkShadingRatePaletteEntryNV) *ShadingRatePaletteEntryNV {
+	v := ShadingRatePaletteEntryNV{native: p}
+	return &v
+}
+
+func marshalShadingRatePaletteEntryNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShadingRatePaletteEntryNV)(unsafe.Pointer(b))
+
+	return wrapShadingRatePaletteEntryNV(c)
+}
+
 type CoarseSampleOrderTypeNV struct {
 	native *C.VkCoarseSampleOrderTypeNV
+}
+
+func wrapCoarseSampleOrderTypeNV(p *C.VkCoarseSampleOrderTypeNV) *CoarseSampleOrderTypeNV {
+	v := CoarseSampleOrderTypeNV{native: p}
+	return &v
+}
+
+func marshalCoarseSampleOrderTypeNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCoarseSampleOrderTypeNV)(unsafe.Pointer(b))
+
+	return wrapCoarseSampleOrderTypeNV(c)
 }
 
 type ShadingRatePaletteNV struct {
 	native *C.VkShadingRatePaletteNV
 }
 
+func wrapShadingRatePaletteNV(p *C.VkShadingRatePaletteNV) *ShadingRatePaletteNV {
+	v := ShadingRatePaletteNV{native: p}
+	return &v
+}
+
+func marshalShadingRatePaletteNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkShadingRatePaletteNV)(unsafe.Pointer(b))
+
+	return wrapShadingRatePaletteNV(c)
+}
+
 type PipelineViewportShadingRateImageStateCreateInfoNV struct {
 	native *C.VkPipelineViewportShadingRateImageStateCreateInfoNV
+}
+
+func wrapPipelineViewportShadingRateImageStateCreateInfoNV(p *C.VkPipelineViewportShadingRateImageStateCreateInfoNV) *PipelineViewportShadingRateImageStateCreateInfoNV {
+	v := PipelineViewportShadingRateImageStateCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalPipelineViewportShadingRateImageStateCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineViewportShadingRateImageStateCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapPipelineViewportShadingRateImageStateCreateInfoNV(c)
 }
 
 type PhysicalDeviceShadingRateImageFeaturesNV struct {
 	native *C.VkPhysicalDeviceShadingRateImageFeaturesNV
 }
 
+func wrapPhysicalDeviceShadingRateImageFeaturesNV(p *C.VkPhysicalDeviceShadingRateImageFeaturesNV) *PhysicalDeviceShadingRateImageFeaturesNV {
+	v := PhysicalDeviceShadingRateImageFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceShadingRateImageFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceShadingRateImageFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceShadingRateImageFeaturesNV(c)
+}
+
 type PhysicalDeviceShadingRateImagePropertiesNV struct {
 	native *C.VkPhysicalDeviceShadingRateImagePropertiesNV
+}
+
+func wrapPhysicalDeviceShadingRateImagePropertiesNV(p *C.VkPhysicalDeviceShadingRateImagePropertiesNV) *PhysicalDeviceShadingRateImagePropertiesNV {
+	v := PhysicalDeviceShadingRateImagePropertiesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceShadingRateImagePropertiesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceShadingRateImagePropertiesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceShadingRateImagePropertiesNV(c)
 }
 
 type CoarseSampleLocationNV struct {
 	native *C.VkCoarseSampleLocationNV
 }
 
+func wrapCoarseSampleLocationNV(p *C.VkCoarseSampleLocationNV) *CoarseSampleLocationNV {
+	v := CoarseSampleLocationNV{native: p}
+	return &v
+}
+
+func marshalCoarseSampleLocationNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCoarseSampleLocationNV)(unsafe.Pointer(b))
+
+	return wrapCoarseSampleLocationNV(c)
+}
+
 type CoarseSampleOrderCustomNV struct {
 	native *C.VkCoarseSampleOrderCustomNV
+}
+
+func wrapCoarseSampleOrderCustomNV(p *C.VkCoarseSampleOrderCustomNV) *CoarseSampleOrderCustomNV {
+	v := CoarseSampleOrderCustomNV{native: p}
+	return &v
+}
+
+func marshalCoarseSampleOrderCustomNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCoarseSampleOrderCustomNV)(unsafe.Pointer(b))
+
+	return wrapCoarseSampleOrderCustomNV(c)
 }
 
 type PipelineViewportCoarseSampleOrderStateCreateInfoNV struct {
 	native *C.VkPipelineViewportCoarseSampleOrderStateCreateInfoNV
 }
 
+func wrapPipelineViewportCoarseSampleOrderStateCreateInfoNV(p *C.VkPipelineViewportCoarseSampleOrderStateCreateInfoNV) *PipelineViewportCoarseSampleOrderStateCreateInfoNV {
+	v := PipelineViewportCoarseSampleOrderStateCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalPipelineViewportCoarseSampleOrderStateCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineViewportCoarseSampleOrderStateCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapPipelineViewportCoarseSampleOrderStateCreateInfoNV(c)
+}
+
 type AccelerationStructureNV struct {
 	native *C.VkAccelerationStructureNV
+}
+
+func wrapAccelerationStructureNV(p *C.VkAccelerationStructureNV) *AccelerationStructureNV {
+	v := AccelerationStructureNV{native: p}
+	return &v
+}
+
+func marshalAccelerationStructureNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAccelerationStructureNV)(unsafe.Pointer(b))
+
+	return wrapAccelerationStructureNV(c)
 }
 
 type RayTracingShaderGroupTypeNV struct {
 	native *C.VkRayTracingShaderGroupTypeNV
 }
 
+func wrapRayTracingShaderGroupTypeNV(p *C.VkRayTracingShaderGroupTypeNV) *RayTracingShaderGroupTypeNV {
+	v := RayTracingShaderGroupTypeNV{native: p}
+	return &v
+}
+
+func marshalRayTracingShaderGroupTypeNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRayTracingShaderGroupTypeNV)(unsafe.Pointer(b))
+
+	return wrapRayTracingShaderGroupTypeNV(c)
+}
+
 type GeometryTypeNV struct {
 	native *C.VkGeometryTypeNV
+}
+
+func wrapGeometryTypeNV(p *C.VkGeometryTypeNV) *GeometryTypeNV {
+	v := GeometryTypeNV{native: p}
+	return &v
+}
+
+func marshalGeometryTypeNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkGeometryTypeNV)(unsafe.Pointer(b))
+
+	return wrapGeometryTypeNV(c)
 }
 
 type AccelerationStructureTypeNV struct {
 	native *C.VkAccelerationStructureTypeNV
 }
 
+func wrapAccelerationStructureTypeNV(p *C.VkAccelerationStructureTypeNV) *AccelerationStructureTypeNV {
+	v := AccelerationStructureTypeNV{native: p}
+	return &v
+}
+
+func marshalAccelerationStructureTypeNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAccelerationStructureTypeNV)(unsafe.Pointer(b))
+
+	return wrapAccelerationStructureTypeNV(c)
+}
+
 type CopyAccelerationStructureModeNV struct {
 	native *C.VkCopyAccelerationStructureModeNV
+}
+
+func wrapCopyAccelerationStructureModeNV(p *C.VkCopyAccelerationStructureModeNV) *CopyAccelerationStructureModeNV {
+	v := CopyAccelerationStructureModeNV{native: p}
+	return &v
+}
+
+func marshalCopyAccelerationStructureModeNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCopyAccelerationStructureModeNV)(unsafe.Pointer(b))
+
+	return wrapCopyAccelerationStructureModeNV(c)
 }
 
 type AccelerationStructureMemoryRequirementsTypeNV struct {
 	native *C.VkAccelerationStructureMemoryRequirementsTypeNV
 }
 
+func wrapAccelerationStructureMemoryRequirementsTypeNV(p *C.VkAccelerationStructureMemoryRequirementsTypeNV) *AccelerationStructureMemoryRequirementsTypeNV {
+	v := AccelerationStructureMemoryRequirementsTypeNV{native: p}
+	return &v
+}
+
+func marshalAccelerationStructureMemoryRequirementsTypeNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAccelerationStructureMemoryRequirementsTypeNV)(unsafe.Pointer(b))
+
+	return wrapAccelerationStructureMemoryRequirementsTypeNV(c)
+}
+
 type GeometryFlagBitsNV struct {
 	native *C.VkGeometryFlagBitsNV
+}
+
+func wrapGeometryFlagBitsNV(p *C.VkGeometryFlagBitsNV) *GeometryFlagBitsNV {
+	v := GeometryFlagBitsNV{native: p}
+	return &v
+}
+
+func marshalGeometryFlagBitsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkGeometryFlagBitsNV)(unsafe.Pointer(b))
+
+	return wrapGeometryFlagBitsNV(c)
 }
 
 type GeometryFlagsNV struct {
 	native *C.VkGeometryFlagsNV
 }
 
+func wrapGeometryFlagsNV(p *C.VkGeometryFlagsNV) *GeometryFlagsNV {
+	v := GeometryFlagsNV{native: p}
+	return &v
+}
+
+func marshalGeometryFlagsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkGeometryFlagsNV)(unsafe.Pointer(b))
+
+	return wrapGeometryFlagsNV(c)
+}
+
 type GeometryInstanceFlagBitsNV struct {
 	native *C.VkGeometryInstanceFlagBitsNV
+}
+
+func wrapGeometryInstanceFlagBitsNV(p *C.VkGeometryInstanceFlagBitsNV) *GeometryInstanceFlagBitsNV {
+	v := GeometryInstanceFlagBitsNV{native: p}
+	return &v
+}
+
+func marshalGeometryInstanceFlagBitsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkGeometryInstanceFlagBitsNV)(unsafe.Pointer(b))
+
+	return wrapGeometryInstanceFlagBitsNV(c)
 }
 
 type GeometryInstanceFlagsNV struct {
 	native *C.VkGeometryInstanceFlagsNV
 }
 
+func wrapGeometryInstanceFlagsNV(p *C.VkGeometryInstanceFlagsNV) *GeometryInstanceFlagsNV {
+	v := GeometryInstanceFlagsNV{native: p}
+	return &v
+}
+
+func marshalGeometryInstanceFlagsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkGeometryInstanceFlagsNV)(unsafe.Pointer(b))
+
+	return wrapGeometryInstanceFlagsNV(c)
+}
+
 type BuildAccelerationStructureFlagBitsNV struct {
 	native *C.VkBuildAccelerationStructureFlagBitsNV
+}
+
+func wrapBuildAccelerationStructureFlagBitsNV(p *C.VkBuildAccelerationStructureFlagBitsNV) *BuildAccelerationStructureFlagBitsNV {
+	v := BuildAccelerationStructureFlagBitsNV{native: p}
+	return &v
+}
+
+func marshalBuildAccelerationStructureFlagBitsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBuildAccelerationStructureFlagBitsNV)(unsafe.Pointer(b))
+
+	return wrapBuildAccelerationStructureFlagBitsNV(c)
 }
 
 type BuildAccelerationStructureFlagsNV struct {
 	native *C.VkBuildAccelerationStructureFlagsNV
 }
 
+func wrapBuildAccelerationStructureFlagsNV(p *C.VkBuildAccelerationStructureFlagsNV) *BuildAccelerationStructureFlagsNV {
+	v := BuildAccelerationStructureFlagsNV{native: p}
+	return &v
+}
+
+func marshalBuildAccelerationStructureFlagsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBuildAccelerationStructureFlagsNV)(unsafe.Pointer(b))
+
+	return wrapBuildAccelerationStructureFlagsNV(c)
+}
+
 type RayTracingShaderGroupCreateInfoNV struct {
 	native *C.VkRayTracingShaderGroupCreateInfoNV
+}
+
+func wrapRayTracingShaderGroupCreateInfoNV(p *C.VkRayTracingShaderGroupCreateInfoNV) *RayTracingShaderGroupCreateInfoNV {
+	v := RayTracingShaderGroupCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalRayTracingShaderGroupCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRayTracingShaderGroupCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapRayTracingShaderGroupCreateInfoNV(c)
 }
 
 type RayTracingPipelineCreateInfoNV struct {
 	native *C.VkRayTracingPipelineCreateInfoNV
 }
 
+func wrapRayTracingPipelineCreateInfoNV(p *C.VkRayTracingPipelineCreateInfoNV) *RayTracingPipelineCreateInfoNV {
+	v := RayTracingPipelineCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalRayTracingPipelineCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRayTracingPipelineCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapRayTracingPipelineCreateInfoNV(c)
+}
+
 type GeometryTrianglesNV struct {
 	native *C.VkGeometryTrianglesNV
+}
+
+func wrapGeometryTrianglesNV(p *C.VkGeometryTrianglesNV) *GeometryTrianglesNV {
+	v := GeometryTrianglesNV{native: p}
+	return &v
+}
+
+func marshalGeometryTrianglesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkGeometryTrianglesNV)(unsafe.Pointer(b))
+
+	return wrapGeometryTrianglesNV(c)
 }
 
 type GeometryAABBNV struct {
 	native *C.VkGeometryAABBNV
 }
 
+func wrapGeometryAABBNV(p *C.VkGeometryAABBNV) *GeometryAABBNV {
+	v := GeometryAABBNV{native: p}
+	return &v
+}
+
+func marshalGeometryAABBNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkGeometryAABBNV)(unsafe.Pointer(b))
+
+	return wrapGeometryAABBNV(c)
+}
+
 type GeometryDataNV struct {
 	native *C.VkGeometryDataNV
+}
+
+func wrapGeometryDataNV(p *C.VkGeometryDataNV) *GeometryDataNV {
+	v := GeometryDataNV{native: p}
+	return &v
+}
+
+func marshalGeometryDataNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkGeometryDataNV)(unsafe.Pointer(b))
+
+	return wrapGeometryDataNV(c)
 }
 
 type GeometryNV struct {
 	native *C.VkGeometryNV
 }
 
+func wrapGeometryNV(p *C.VkGeometryNV) *GeometryNV {
+	v := GeometryNV{native: p}
+	return &v
+}
+
+func marshalGeometryNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkGeometryNV)(unsafe.Pointer(b))
+
+	return wrapGeometryNV(c)
+}
+
 type AccelerationStructureInfoNV struct {
 	native *C.VkAccelerationStructureInfoNV
+}
+
+func wrapAccelerationStructureInfoNV(p *C.VkAccelerationStructureInfoNV) *AccelerationStructureInfoNV {
+	v := AccelerationStructureInfoNV{native: p}
+	return &v
+}
+
+func marshalAccelerationStructureInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAccelerationStructureInfoNV)(unsafe.Pointer(b))
+
+	return wrapAccelerationStructureInfoNV(c)
 }
 
 type AccelerationStructureCreateInfoNV struct {
 	native *C.VkAccelerationStructureCreateInfoNV
 }
 
+func wrapAccelerationStructureCreateInfoNV(p *C.VkAccelerationStructureCreateInfoNV) *AccelerationStructureCreateInfoNV {
+	v := AccelerationStructureCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalAccelerationStructureCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAccelerationStructureCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapAccelerationStructureCreateInfoNV(c)
+}
+
 type BindAccelerationStructureMemoryInfoNV struct {
 	native *C.VkBindAccelerationStructureMemoryInfoNV
+}
+
+func wrapBindAccelerationStructureMemoryInfoNV(p *C.VkBindAccelerationStructureMemoryInfoNV) *BindAccelerationStructureMemoryInfoNV {
+	v := BindAccelerationStructureMemoryInfoNV{native: p}
+	return &v
+}
+
+func marshalBindAccelerationStructureMemoryInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBindAccelerationStructureMemoryInfoNV)(unsafe.Pointer(b))
+
+	return wrapBindAccelerationStructureMemoryInfoNV(c)
 }
 
 type WriteDescriptorSetAccelerationStructureNV struct {
 	native *C.VkWriteDescriptorSetAccelerationStructureNV
 }
 
+func wrapWriteDescriptorSetAccelerationStructureNV(p *C.VkWriteDescriptorSetAccelerationStructureNV) *WriteDescriptorSetAccelerationStructureNV {
+	v := WriteDescriptorSetAccelerationStructureNV{native: p}
+	return &v
+}
+
+func marshalWriteDescriptorSetAccelerationStructureNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkWriteDescriptorSetAccelerationStructureNV)(unsafe.Pointer(b))
+
+	return wrapWriteDescriptorSetAccelerationStructureNV(c)
+}
+
 type AccelerationStructureMemoryRequirementsInfoNV struct {
 	native *C.VkAccelerationStructureMemoryRequirementsInfoNV
+}
+
+func wrapAccelerationStructureMemoryRequirementsInfoNV(p *C.VkAccelerationStructureMemoryRequirementsInfoNV) *AccelerationStructureMemoryRequirementsInfoNV {
+	v := AccelerationStructureMemoryRequirementsInfoNV{native: p}
+	return &v
+}
+
+func marshalAccelerationStructureMemoryRequirementsInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkAccelerationStructureMemoryRequirementsInfoNV)(unsafe.Pointer(b))
+
+	return wrapAccelerationStructureMemoryRequirementsInfoNV(c)
 }
 
 type PhysicalDeviceRayTracingPropertiesNV struct {
 	native *C.VkPhysicalDeviceRayTracingPropertiesNV
 }
 
+func wrapPhysicalDeviceRayTracingPropertiesNV(p *C.VkPhysicalDeviceRayTracingPropertiesNV) *PhysicalDeviceRayTracingPropertiesNV {
+	v := PhysicalDeviceRayTracingPropertiesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceRayTracingPropertiesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceRayTracingPropertiesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceRayTracingPropertiesNV(c)
+}
+
 type PhysicalDeviceRepresentativeFragmentTestFeaturesNV struct {
 	native *C.VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV
+}
+
+func wrapPhysicalDeviceRepresentativeFragmentTestFeaturesNV(p *C.VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV) *PhysicalDeviceRepresentativeFragmentTestFeaturesNV {
+	v := PhysicalDeviceRepresentativeFragmentTestFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceRepresentativeFragmentTestFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceRepresentativeFragmentTestFeaturesNV(c)
 }
 
 type PipelineRepresentativeFragmentTestStateCreateInfoNV struct {
 	native *C.VkPipelineRepresentativeFragmentTestStateCreateInfoNV
 }
 
+func wrapPipelineRepresentativeFragmentTestStateCreateInfoNV(p *C.VkPipelineRepresentativeFragmentTestStateCreateInfoNV) *PipelineRepresentativeFragmentTestStateCreateInfoNV {
+	v := PipelineRepresentativeFragmentTestStateCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalPipelineRepresentativeFragmentTestStateCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineRepresentativeFragmentTestStateCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapPipelineRepresentativeFragmentTestStateCreateInfoNV(c)
+}
+
 type PhysicalDeviceImageViewImageFormatInfoEXT struct {
 	native *C.VkPhysicalDeviceImageViewImageFormatInfoEXT
+}
+
+func wrapPhysicalDeviceImageViewImageFormatInfoEXT(p *C.VkPhysicalDeviceImageViewImageFormatInfoEXT) *PhysicalDeviceImageViewImageFormatInfoEXT {
+	v := PhysicalDeviceImageViewImageFormatInfoEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceImageViewImageFormatInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceImageViewImageFormatInfoEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceImageViewImageFormatInfoEXT(c)
 }
 
 type FilterCubicImageViewImageFormatPropertiesEXT struct {
 	native *C.VkFilterCubicImageViewImageFormatPropertiesEXT
 }
 
+func wrapFilterCubicImageViewImageFormatPropertiesEXT(p *C.VkFilterCubicImageViewImageFormatPropertiesEXT) *FilterCubicImageViewImageFormatPropertiesEXT {
+	v := FilterCubicImageViewImageFormatPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalFilterCubicImageViewImageFormatPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFilterCubicImageViewImageFormatPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapFilterCubicImageViewImageFormatPropertiesEXT(c)
+}
+
 type QueueGlobalPriorityEXT struct {
 	native *C.VkQueueGlobalPriorityEXT
+}
+
+func wrapQueueGlobalPriorityEXT(p *C.VkQueueGlobalPriorityEXT) *QueueGlobalPriorityEXT {
+	v := QueueGlobalPriorityEXT{native: p}
+	return &v
+}
+
+func marshalQueueGlobalPriorityEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueueGlobalPriorityEXT)(unsafe.Pointer(b))
+
+	return wrapQueueGlobalPriorityEXT(c)
 }
 
 type DeviceQueueGlobalPriorityCreateInfoEXT struct {
 	native *C.VkDeviceQueueGlobalPriorityCreateInfoEXT
 }
 
+func wrapDeviceQueueGlobalPriorityCreateInfoEXT(p *C.VkDeviceQueueGlobalPriorityCreateInfoEXT) *DeviceQueueGlobalPriorityCreateInfoEXT {
+	v := DeviceQueueGlobalPriorityCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalDeviceQueueGlobalPriorityCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceQueueGlobalPriorityCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapDeviceQueueGlobalPriorityCreateInfoEXT(c)
+}
+
 type ImportMemoryHostPointerInfoEXT struct {
 	native *C.VkImportMemoryHostPointerInfoEXT
+}
+
+func wrapImportMemoryHostPointerInfoEXT(p *C.VkImportMemoryHostPointerInfoEXT) *ImportMemoryHostPointerInfoEXT {
+	v := ImportMemoryHostPointerInfoEXT{native: p}
+	return &v
+}
+
+func marshalImportMemoryHostPointerInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImportMemoryHostPointerInfoEXT)(unsafe.Pointer(b))
+
+	return wrapImportMemoryHostPointerInfoEXT(c)
 }
 
 type MemoryHostPointerPropertiesEXT struct {
 	native *C.VkMemoryHostPointerPropertiesEXT
 }
 
+func wrapMemoryHostPointerPropertiesEXT(p *C.VkMemoryHostPointerPropertiesEXT) *MemoryHostPointerPropertiesEXT {
+	v := MemoryHostPointerPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalMemoryHostPointerPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryHostPointerPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapMemoryHostPointerPropertiesEXT(c)
+}
+
 type PhysicalDeviceExternalMemoryHostPropertiesEXT struct {
 	native *C.VkPhysicalDeviceExternalMemoryHostPropertiesEXT
+}
+
+func wrapPhysicalDeviceExternalMemoryHostPropertiesEXT(p *C.VkPhysicalDeviceExternalMemoryHostPropertiesEXT) *PhysicalDeviceExternalMemoryHostPropertiesEXT {
+	v := PhysicalDeviceExternalMemoryHostPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceExternalMemoryHostPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceExternalMemoryHostPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceExternalMemoryHostPropertiesEXT(c)
 }
 
 type TimeDomainEXT struct {
 	native *C.VkTimeDomainEXT
 }
 
+func wrapTimeDomainEXT(p *C.VkTimeDomainEXT) *TimeDomainEXT {
+	v := TimeDomainEXT{native: p}
+	return &v
+}
+
+func marshalTimeDomainEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkTimeDomainEXT)(unsafe.Pointer(b))
+
+	return wrapTimeDomainEXT(c)
+}
+
 type CalibratedTimestampInfoEXT struct {
 	native *C.VkCalibratedTimestampInfoEXT
+}
+
+func wrapCalibratedTimestampInfoEXT(p *C.VkCalibratedTimestampInfoEXT) *CalibratedTimestampInfoEXT {
+	v := CalibratedTimestampInfoEXT{native: p}
+	return &v
+}
+
+func marshalCalibratedTimestampInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCalibratedTimestampInfoEXT)(unsafe.Pointer(b))
+
+	return wrapCalibratedTimestampInfoEXT(c)
 }
 
 type PhysicalDeviceShaderCorePropertiesAMD struct {
 	native *C.VkPhysicalDeviceShaderCorePropertiesAMD
 }
 
+func wrapPhysicalDeviceShaderCorePropertiesAMD(p *C.VkPhysicalDeviceShaderCorePropertiesAMD) *PhysicalDeviceShaderCorePropertiesAMD {
+	v := PhysicalDeviceShaderCorePropertiesAMD{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceShaderCorePropertiesAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceShaderCorePropertiesAMD)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceShaderCorePropertiesAMD(c)
+}
+
 type MemoryOverallocationBehaviorAMD struct {
 	native *C.VkMemoryOverallocationBehaviorAMD
+}
+
+func wrapMemoryOverallocationBehaviorAMD(p *C.VkMemoryOverallocationBehaviorAMD) *MemoryOverallocationBehaviorAMD {
+	v := MemoryOverallocationBehaviorAMD{native: p}
+	return &v
+}
+
+func marshalMemoryOverallocationBehaviorAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryOverallocationBehaviorAMD)(unsafe.Pointer(b))
+
+	return wrapMemoryOverallocationBehaviorAMD(c)
 }
 
 type DeviceMemoryOverallocationCreateInfoAMD struct {
 	native *C.VkDeviceMemoryOverallocationCreateInfoAMD
 }
 
+func wrapDeviceMemoryOverallocationCreateInfoAMD(p *C.VkDeviceMemoryOverallocationCreateInfoAMD) *DeviceMemoryOverallocationCreateInfoAMD {
+	v := DeviceMemoryOverallocationCreateInfoAMD{native: p}
+	return &v
+}
+
+func marshalDeviceMemoryOverallocationCreateInfoAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceMemoryOverallocationCreateInfoAMD)(unsafe.Pointer(b))
+
+	return wrapDeviceMemoryOverallocationCreateInfoAMD(c)
+}
+
 type PhysicalDeviceVertexAttributeDivisorPropertiesEXT struct {
 	native *C.VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT
+}
+
+func wrapPhysicalDeviceVertexAttributeDivisorPropertiesEXT(p *C.VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT) *PhysicalDeviceVertexAttributeDivisorPropertiesEXT {
+	v := PhysicalDeviceVertexAttributeDivisorPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceVertexAttributeDivisorPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceVertexAttributeDivisorPropertiesEXT(c)
 }
 
 type VertexInputBindingDivisorDescriptionEXT struct {
 	native *C.VkVertexInputBindingDivisorDescriptionEXT
 }
 
+func wrapVertexInputBindingDivisorDescriptionEXT(p *C.VkVertexInputBindingDivisorDescriptionEXT) *VertexInputBindingDivisorDescriptionEXT {
+	v := VertexInputBindingDivisorDescriptionEXT{native: p}
+	return &v
+}
+
+func marshalVertexInputBindingDivisorDescriptionEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkVertexInputBindingDivisorDescriptionEXT)(unsafe.Pointer(b))
+
+	return wrapVertexInputBindingDivisorDescriptionEXT(c)
+}
+
 type PipelineVertexInputDivisorStateCreateInfoEXT struct {
 	native *C.VkPipelineVertexInputDivisorStateCreateInfoEXT
+}
+
+func wrapPipelineVertexInputDivisorStateCreateInfoEXT(p *C.VkPipelineVertexInputDivisorStateCreateInfoEXT) *PipelineVertexInputDivisorStateCreateInfoEXT {
+	v := PipelineVertexInputDivisorStateCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalPipelineVertexInputDivisorStateCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineVertexInputDivisorStateCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineVertexInputDivisorStateCreateInfoEXT(c)
 }
 
 type PhysicalDeviceVertexAttributeDivisorFeaturesEXT struct {
 	native *C.VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT
 }
 
+func wrapPhysicalDeviceVertexAttributeDivisorFeaturesEXT(p *C.VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT) *PhysicalDeviceVertexAttributeDivisorFeaturesEXT {
+	v := PhysicalDeviceVertexAttributeDivisorFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceVertexAttributeDivisorFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceVertexAttributeDivisorFeaturesEXT(c)
+}
+
 type PipelineCreationFeedbackFlagBitsEXT struct {
 	native *C.VkPipelineCreationFeedbackFlagBitsEXT
+}
+
+func wrapPipelineCreationFeedbackFlagBitsEXT(p *C.VkPipelineCreationFeedbackFlagBitsEXT) *PipelineCreationFeedbackFlagBitsEXT {
+	v := PipelineCreationFeedbackFlagBitsEXT{native: p}
+	return &v
+}
+
+func marshalPipelineCreationFeedbackFlagBitsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCreationFeedbackFlagBitsEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineCreationFeedbackFlagBitsEXT(c)
 }
 
 type PipelineCreationFeedbackFlagsEXT struct {
 	native *C.VkPipelineCreationFeedbackFlagsEXT
 }
 
+func wrapPipelineCreationFeedbackFlagsEXT(p *C.VkPipelineCreationFeedbackFlagsEXT) *PipelineCreationFeedbackFlagsEXT {
+	v := PipelineCreationFeedbackFlagsEXT{native: p}
+	return &v
+}
+
+func marshalPipelineCreationFeedbackFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCreationFeedbackFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineCreationFeedbackFlagsEXT(c)
+}
+
 type PipelineCreationFeedbackEXT struct {
 	native *C.VkPipelineCreationFeedbackEXT
+}
+
+func wrapPipelineCreationFeedbackEXT(p *C.VkPipelineCreationFeedbackEXT) *PipelineCreationFeedbackEXT {
+	v := PipelineCreationFeedbackEXT{native: p}
+	return &v
+}
+
+func marshalPipelineCreationFeedbackEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCreationFeedbackEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineCreationFeedbackEXT(c)
 }
 
 type PipelineCreationFeedbackCreateInfoEXT struct {
 	native *C.VkPipelineCreationFeedbackCreateInfoEXT
 }
 
+func wrapPipelineCreationFeedbackCreateInfoEXT(p *C.VkPipelineCreationFeedbackCreateInfoEXT) *PipelineCreationFeedbackCreateInfoEXT {
+	v := PipelineCreationFeedbackCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalPipelineCreationFeedbackCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCreationFeedbackCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapPipelineCreationFeedbackCreateInfoEXT(c)
+}
+
 type PhysicalDeviceComputeShaderDerivativesFeaturesNV struct {
 	native *C.VkPhysicalDeviceComputeShaderDerivativesFeaturesNV
+}
+
+func wrapPhysicalDeviceComputeShaderDerivativesFeaturesNV(p *C.VkPhysicalDeviceComputeShaderDerivativesFeaturesNV) *PhysicalDeviceComputeShaderDerivativesFeaturesNV {
+	v := PhysicalDeviceComputeShaderDerivativesFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceComputeShaderDerivativesFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceComputeShaderDerivativesFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceComputeShaderDerivativesFeaturesNV(c)
 }
 
 type PhysicalDeviceMeshShaderFeaturesNV struct {
 	native *C.VkPhysicalDeviceMeshShaderFeaturesNV
 }
 
+func wrapPhysicalDeviceMeshShaderFeaturesNV(p *C.VkPhysicalDeviceMeshShaderFeaturesNV) *PhysicalDeviceMeshShaderFeaturesNV {
+	v := PhysicalDeviceMeshShaderFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMeshShaderFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMeshShaderFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMeshShaderFeaturesNV(c)
+}
+
 type PhysicalDeviceMeshShaderPropertiesNV struct {
 	native *C.VkPhysicalDeviceMeshShaderPropertiesNV
+}
+
+func wrapPhysicalDeviceMeshShaderPropertiesNV(p *C.VkPhysicalDeviceMeshShaderPropertiesNV) *PhysicalDeviceMeshShaderPropertiesNV {
+	v := PhysicalDeviceMeshShaderPropertiesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMeshShaderPropertiesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMeshShaderPropertiesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMeshShaderPropertiesNV(c)
 }
 
 type DrawMeshTasksIndirectCommandNV struct {
 	native *C.VkDrawMeshTasksIndirectCommandNV
 }
 
+func wrapDrawMeshTasksIndirectCommandNV(p *C.VkDrawMeshTasksIndirectCommandNV) *DrawMeshTasksIndirectCommandNV {
+	v := DrawMeshTasksIndirectCommandNV{native: p}
+	return &v
+}
+
+func marshalDrawMeshTasksIndirectCommandNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDrawMeshTasksIndirectCommandNV)(unsafe.Pointer(b))
+
+	return wrapDrawMeshTasksIndirectCommandNV(c)
+}
+
 type PhysicalDeviceFragmentShaderBarycentricFeaturesNV struct {
 	native *C.VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV
+}
+
+func wrapPhysicalDeviceFragmentShaderBarycentricFeaturesNV(p *C.VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV) *PhysicalDeviceFragmentShaderBarycentricFeaturesNV {
+	v := PhysicalDeviceFragmentShaderBarycentricFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceFragmentShaderBarycentricFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceFragmentShaderBarycentricFeaturesNV(c)
 }
 
 type PhysicalDeviceShaderImageFootprintFeaturesNV struct {
 	native *C.VkPhysicalDeviceShaderImageFootprintFeaturesNV
 }
 
+func wrapPhysicalDeviceShaderImageFootprintFeaturesNV(p *C.VkPhysicalDeviceShaderImageFootprintFeaturesNV) *PhysicalDeviceShaderImageFootprintFeaturesNV {
+	v := PhysicalDeviceShaderImageFootprintFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceShaderImageFootprintFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceShaderImageFootprintFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceShaderImageFootprintFeaturesNV(c)
+}
+
 type PipelineViewportExclusiveScissorStateCreateInfoNV struct {
 	native *C.VkPipelineViewportExclusiveScissorStateCreateInfoNV
+}
+
+func wrapPipelineViewportExclusiveScissorStateCreateInfoNV(p *C.VkPipelineViewportExclusiveScissorStateCreateInfoNV) *PipelineViewportExclusiveScissorStateCreateInfoNV {
+	v := PipelineViewportExclusiveScissorStateCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalPipelineViewportExclusiveScissorStateCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineViewportExclusiveScissorStateCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapPipelineViewportExclusiveScissorStateCreateInfoNV(c)
 }
 
 type PhysicalDeviceExclusiveScissorFeaturesNV struct {
 	native *C.VkPhysicalDeviceExclusiveScissorFeaturesNV
 }
 
+func wrapPhysicalDeviceExclusiveScissorFeaturesNV(p *C.VkPhysicalDeviceExclusiveScissorFeaturesNV) *PhysicalDeviceExclusiveScissorFeaturesNV {
+	v := PhysicalDeviceExclusiveScissorFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceExclusiveScissorFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceExclusiveScissorFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceExclusiveScissorFeaturesNV(c)
+}
+
 type QueueFamilyCheckpointPropertiesNV struct {
 	native *C.VkQueueFamilyCheckpointPropertiesNV
+}
+
+func wrapQueueFamilyCheckpointPropertiesNV(p *C.VkQueueFamilyCheckpointPropertiesNV) *QueueFamilyCheckpointPropertiesNV {
+	v := QueueFamilyCheckpointPropertiesNV{native: p}
+	return &v
+}
+
+func marshalQueueFamilyCheckpointPropertiesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkQueueFamilyCheckpointPropertiesNV)(unsafe.Pointer(b))
+
+	return wrapQueueFamilyCheckpointPropertiesNV(c)
 }
 
 type CheckpointDataNV struct {
 	native *C.VkCheckpointDataNV
 }
 
+func wrapCheckpointDataNV(p *C.VkCheckpointDataNV) *CheckpointDataNV {
+	v := CheckpointDataNV{native: p}
+	return &v
+}
+
+func marshalCheckpointDataNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCheckpointDataNV)(unsafe.Pointer(b))
+
+	return wrapCheckpointDataNV(c)
+}
+
 type PhysicalDevicePCIBusInfoPropertiesEXT struct {
 	native *C.VkPhysicalDevicePCIBusInfoPropertiesEXT
+}
+
+func wrapPhysicalDevicePCIBusInfoPropertiesEXT(p *C.VkPhysicalDevicePCIBusInfoPropertiesEXT) *PhysicalDevicePCIBusInfoPropertiesEXT {
+	v := PhysicalDevicePCIBusInfoPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDevicePCIBusInfoPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDevicePCIBusInfoPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDevicePCIBusInfoPropertiesEXT(c)
 }
 
 type DisplayNativeHdrSurfaceCapabilitiesAMD struct {
 	native *C.VkDisplayNativeHdrSurfaceCapabilitiesAMD
 }
 
+func wrapDisplayNativeHdrSurfaceCapabilitiesAMD(p *C.VkDisplayNativeHdrSurfaceCapabilitiesAMD) *DisplayNativeHdrSurfaceCapabilitiesAMD {
+	v := DisplayNativeHdrSurfaceCapabilitiesAMD{native: p}
+	return &v
+}
+
+func marshalDisplayNativeHdrSurfaceCapabilitiesAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDisplayNativeHdrSurfaceCapabilitiesAMD)(unsafe.Pointer(b))
+
+	return wrapDisplayNativeHdrSurfaceCapabilitiesAMD(c)
+}
+
 type SwapchainDisplayNativeHdrCreateInfoAMD struct {
 	native *C.VkSwapchainDisplayNativeHdrCreateInfoAMD
+}
+
+func wrapSwapchainDisplayNativeHdrCreateInfoAMD(p *C.VkSwapchainDisplayNativeHdrCreateInfoAMD) *SwapchainDisplayNativeHdrCreateInfoAMD {
+	v := SwapchainDisplayNativeHdrCreateInfoAMD{native: p}
+	return &v
+}
+
+func marshalSwapchainDisplayNativeHdrCreateInfoAMD(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkSwapchainDisplayNativeHdrCreateInfoAMD)(unsafe.Pointer(b))
+
+	return wrapSwapchainDisplayNativeHdrCreateInfoAMD(c)
 }
 
 type PhysicalDeviceFragmentDensityMapFeaturesEXT struct {
 	native *C.VkPhysicalDeviceFragmentDensityMapFeaturesEXT
 }
 
+func wrapPhysicalDeviceFragmentDensityMapFeaturesEXT(p *C.VkPhysicalDeviceFragmentDensityMapFeaturesEXT) *PhysicalDeviceFragmentDensityMapFeaturesEXT {
+	v := PhysicalDeviceFragmentDensityMapFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceFragmentDensityMapFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceFragmentDensityMapFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceFragmentDensityMapFeaturesEXT(c)
+}
+
 type PhysicalDeviceFragmentDensityMapPropertiesEXT struct {
 	native *C.VkPhysicalDeviceFragmentDensityMapPropertiesEXT
+}
+
+func wrapPhysicalDeviceFragmentDensityMapPropertiesEXT(p *C.VkPhysicalDeviceFragmentDensityMapPropertiesEXT) *PhysicalDeviceFragmentDensityMapPropertiesEXT {
+	v := PhysicalDeviceFragmentDensityMapPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceFragmentDensityMapPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceFragmentDensityMapPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceFragmentDensityMapPropertiesEXT(c)
 }
 
 type RenderPassFragmentDensityMapCreateInfoEXT struct {
 	native *C.VkRenderPassFragmentDensityMapCreateInfoEXT
 }
 
+func wrapRenderPassFragmentDensityMapCreateInfoEXT(p *C.VkRenderPassFragmentDensityMapCreateInfoEXT) *RenderPassFragmentDensityMapCreateInfoEXT {
+	v := RenderPassFragmentDensityMapCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalRenderPassFragmentDensityMapCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkRenderPassFragmentDensityMapCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapRenderPassFragmentDensityMapCreateInfoEXT(c)
+}
+
 type PhysicalDeviceScalarBlockLayoutFeaturesEXT struct {
 	native *C.VkPhysicalDeviceScalarBlockLayoutFeaturesEXT
+}
+
+func wrapPhysicalDeviceScalarBlockLayoutFeaturesEXT(p *C.VkPhysicalDeviceScalarBlockLayoutFeaturesEXT) *PhysicalDeviceScalarBlockLayoutFeaturesEXT {
+	v := PhysicalDeviceScalarBlockLayoutFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceScalarBlockLayoutFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceScalarBlockLayoutFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceScalarBlockLayoutFeaturesEXT(c)
 }
 
 type PhysicalDeviceMemoryBudgetPropertiesEXT struct {
 	native *C.VkPhysicalDeviceMemoryBudgetPropertiesEXT
 }
 
+func wrapPhysicalDeviceMemoryBudgetPropertiesEXT(p *C.VkPhysicalDeviceMemoryBudgetPropertiesEXT) *PhysicalDeviceMemoryBudgetPropertiesEXT {
+	v := PhysicalDeviceMemoryBudgetPropertiesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMemoryBudgetPropertiesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMemoryBudgetPropertiesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMemoryBudgetPropertiesEXT(c)
+}
+
 type PhysicalDeviceMemoryPriorityFeaturesEXT struct {
 	native *C.VkPhysicalDeviceMemoryPriorityFeaturesEXT
+}
+
+func wrapPhysicalDeviceMemoryPriorityFeaturesEXT(p *C.VkPhysicalDeviceMemoryPriorityFeaturesEXT) *PhysicalDeviceMemoryPriorityFeaturesEXT {
+	v := PhysicalDeviceMemoryPriorityFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceMemoryPriorityFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceMemoryPriorityFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceMemoryPriorityFeaturesEXT(c)
 }
 
 type MemoryPriorityAllocateInfoEXT struct {
 	native *C.VkMemoryPriorityAllocateInfoEXT
 }
 
+func wrapMemoryPriorityAllocateInfoEXT(p *C.VkMemoryPriorityAllocateInfoEXT) *MemoryPriorityAllocateInfoEXT {
+	v := MemoryPriorityAllocateInfoEXT{native: p}
+	return &v
+}
+
+func marshalMemoryPriorityAllocateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkMemoryPriorityAllocateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapMemoryPriorityAllocateInfoEXT(c)
+}
+
 type PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV struct {
 	native *C.VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV
+}
+
+func wrapPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(p *C.VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV {
+	v := PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(c)
 }
 
 type DeviceAddress struct {
 	native *C.VkDeviceAddress
 }
 
+func wrapDeviceAddress(p *C.VkDeviceAddress) *DeviceAddress {
+	v := DeviceAddress{native: p}
+	return &v
+}
+
+func marshalDeviceAddress(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkDeviceAddress)(unsafe.Pointer(b))
+
+	return wrapDeviceAddress(c)
+}
+
 type PhysicalDeviceBufferDeviceAddressFeaturesEXT struct {
 	native *C.VkPhysicalDeviceBufferDeviceAddressFeaturesEXT
+}
+
+func wrapPhysicalDeviceBufferDeviceAddressFeaturesEXT(p *C.VkPhysicalDeviceBufferDeviceAddressFeaturesEXT) *PhysicalDeviceBufferDeviceAddressFeaturesEXT {
+	v := PhysicalDeviceBufferDeviceAddressFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceBufferDeviceAddressFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceBufferDeviceAddressFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceBufferDeviceAddressFeaturesEXT(c)
 }
 
 type PhysicalDeviceBufferAddressFeaturesEXT struct {
 	native *C.VkPhysicalDeviceBufferAddressFeaturesEXT
 }
 
+func wrapPhysicalDeviceBufferAddressFeaturesEXT(p *C.VkPhysicalDeviceBufferAddressFeaturesEXT) *PhysicalDeviceBufferAddressFeaturesEXT {
+	v := PhysicalDeviceBufferAddressFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceBufferAddressFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceBufferAddressFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceBufferAddressFeaturesEXT(c)
+}
+
 type BufferDeviceAddressInfoEXT struct {
 	native *C.VkBufferDeviceAddressInfoEXT
+}
+
+func wrapBufferDeviceAddressInfoEXT(p *C.VkBufferDeviceAddressInfoEXT) *BufferDeviceAddressInfoEXT {
+	v := BufferDeviceAddressInfoEXT{native: p}
+	return &v
+}
+
+func marshalBufferDeviceAddressInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferDeviceAddressInfoEXT)(unsafe.Pointer(b))
+
+	return wrapBufferDeviceAddressInfoEXT(c)
 }
 
 type BufferDeviceAddressCreateInfoEXT struct {
 	native *C.VkBufferDeviceAddressCreateInfoEXT
 }
 
+func wrapBufferDeviceAddressCreateInfoEXT(p *C.VkBufferDeviceAddressCreateInfoEXT) *BufferDeviceAddressCreateInfoEXT {
+	v := BufferDeviceAddressCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalBufferDeviceAddressCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkBufferDeviceAddressCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapBufferDeviceAddressCreateInfoEXT(c)
+}
+
 type ImageStencilUsageCreateInfoEXT struct {
 	native *C.VkImageStencilUsageCreateInfoEXT
+}
+
+func wrapImageStencilUsageCreateInfoEXT(p *C.VkImageStencilUsageCreateInfoEXT) *ImageStencilUsageCreateInfoEXT {
+	v := ImageStencilUsageCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalImageStencilUsageCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkImageStencilUsageCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapImageStencilUsageCreateInfoEXT(c)
 }
 
 type ValidationFeatureEnableEXT struct {
 	native *C.VkValidationFeatureEnableEXT
 }
 
+func wrapValidationFeatureEnableEXT(p *C.VkValidationFeatureEnableEXT) *ValidationFeatureEnableEXT {
+	v := ValidationFeatureEnableEXT{native: p}
+	return &v
+}
+
+func marshalValidationFeatureEnableEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkValidationFeatureEnableEXT)(unsafe.Pointer(b))
+
+	return wrapValidationFeatureEnableEXT(c)
+}
+
 type ValidationFeatureDisableEXT struct {
 	native *C.VkValidationFeatureDisableEXT
+}
+
+func wrapValidationFeatureDisableEXT(p *C.VkValidationFeatureDisableEXT) *ValidationFeatureDisableEXT {
+	v := ValidationFeatureDisableEXT{native: p}
+	return &v
+}
+
+func marshalValidationFeatureDisableEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkValidationFeatureDisableEXT)(unsafe.Pointer(b))
+
+	return wrapValidationFeatureDisableEXT(c)
 }
 
 type ValidationFeaturesEXT struct {
 	native *C.VkValidationFeaturesEXT
 }
 
+func wrapValidationFeaturesEXT(p *C.VkValidationFeaturesEXT) *ValidationFeaturesEXT {
+	v := ValidationFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalValidationFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkValidationFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapValidationFeaturesEXT(c)
+}
+
 type ComponentTypeNV struct {
 	native *C.VkComponentTypeNV
+}
+
+func wrapComponentTypeNV(p *C.VkComponentTypeNV) *ComponentTypeNV {
+	v := ComponentTypeNV{native: p}
+	return &v
+}
+
+func marshalComponentTypeNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkComponentTypeNV)(unsafe.Pointer(b))
+
+	return wrapComponentTypeNV(c)
 }
 
 type ScopeNV struct {
 	native *C.VkScopeNV
 }
 
+func wrapScopeNV(p *C.VkScopeNV) *ScopeNV {
+	v := ScopeNV{native: p}
+	return &v
+}
+
+func marshalScopeNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkScopeNV)(unsafe.Pointer(b))
+
+	return wrapScopeNV(c)
+}
+
 type CooperativeMatrixPropertiesNV struct {
 	native *C.VkCooperativeMatrixPropertiesNV
+}
+
+func wrapCooperativeMatrixPropertiesNV(p *C.VkCooperativeMatrixPropertiesNV) *CooperativeMatrixPropertiesNV {
+	v := CooperativeMatrixPropertiesNV{native: p}
+	return &v
+}
+
+func marshalCooperativeMatrixPropertiesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCooperativeMatrixPropertiesNV)(unsafe.Pointer(b))
+
+	return wrapCooperativeMatrixPropertiesNV(c)
 }
 
 type PhysicalDeviceCooperativeMatrixFeaturesNV struct {
 	native *C.VkPhysicalDeviceCooperativeMatrixFeaturesNV
 }
 
+func wrapPhysicalDeviceCooperativeMatrixFeaturesNV(p *C.VkPhysicalDeviceCooperativeMatrixFeaturesNV) *PhysicalDeviceCooperativeMatrixFeaturesNV {
+	v := PhysicalDeviceCooperativeMatrixFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceCooperativeMatrixFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceCooperativeMatrixFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceCooperativeMatrixFeaturesNV(c)
+}
+
 type PhysicalDeviceCooperativeMatrixPropertiesNV struct {
 	native *C.VkPhysicalDeviceCooperativeMatrixPropertiesNV
+}
+
+func wrapPhysicalDeviceCooperativeMatrixPropertiesNV(p *C.VkPhysicalDeviceCooperativeMatrixPropertiesNV) *PhysicalDeviceCooperativeMatrixPropertiesNV {
+	v := PhysicalDeviceCooperativeMatrixPropertiesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceCooperativeMatrixPropertiesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceCooperativeMatrixPropertiesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceCooperativeMatrixPropertiesNV(c)
 }
 
 type CoverageReductionModeNV struct {
 	native *C.VkCoverageReductionModeNV
 }
 
+func wrapCoverageReductionModeNV(p *C.VkCoverageReductionModeNV) *CoverageReductionModeNV {
+	v := CoverageReductionModeNV{native: p}
+	return &v
+}
+
+func marshalCoverageReductionModeNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkCoverageReductionModeNV)(unsafe.Pointer(b))
+
+	return wrapCoverageReductionModeNV(c)
+}
+
 type PipelineCoverageReductionStateCreateFlagsNV struct {
 	native *C.VkPipelineCoverageReductionStateCreateFlagsNV
+}
+
+func wrapPipelineCoverageReductionStateCreateFlagsNV(p *C.VkPipelineCoverageReductionStateCreateFlagsNV) *PipelineCoverageReductionStateCreateFlagsNV {
+	v := PipelineCoverageReductionStateCreateFlagsNV{native: p}
+	return &v
+}
+
+func marshalPipelineCoverageReductionStateCreateFlagsNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCoverageReductionStateCreateFlagsNV)(unsafe.Pointer(b))
+
+	return wrapPipelineCoverageReductionStateCreateFlagsNV(c)
 }
 
 type PhysicalDeviceCoverageReductionModeFeaturesNV struct {
 	native *C.VkPhysicalDeviceCoverageReductionModeFeaturesNV
 }
 
+func wrapPhysicalDeviceCoverageReductionModeFeaturesNV(p *C.VkPhysicalDeviceCoverageReductionModeFeaturesNV) *PhysicalDeviceCoverageReductionModeFeaturesNV {
+	v := PhysicalDeviceCoverageReductionModeFeaturesNV{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceCoverageReductionModeFeaturesNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceCoverageReductionModeFeaturesNV)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceCoverageReductionModeFeaturesNV(c)
+}
+
 type PipelineCoverageReductionStateCreateInfoNV struct {
 	native *C.VkPipelineCoverageReductionStateCreateInfoNV
+}
+
+func wrapPipelineCoverageReductionStateCreateInfoNV(p *C.VkPipelineCoverageReductionStateCreateInfoNV) *PipelineCoverageReductionStateCreateInfoNV {
+	v := PipelineCoverageReductionStateCreateInfoNV{native: p}
+	return &v
+}
+
+func marshalPipelineCoverageReductionStateCreateInfoNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPipelineCoverageReductionStateCreateInfoNV)(unsafe.Pointer(b))
+
+	return wrapPipelineCoverageReductionStateCreateInfoNV(c)
 }
 
 type FramebufferMixedSamplesCombinationNV struct {
 	native *C.VkFramebufferMixedSamplesCombinationNV
 }
 
+func wrapFramebufferMixedSamplesCombinationNV(p *C.VkFramebufferMixedSamplesCombinationNV) *FramebufferMixedSamplesCombinationNV {
+	v := FramebufferMixedSamplesCombinationNV{native: p}
+	return &v
+}
+
+func marshalFramebufferMixedSamplesCombinationNV(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkFramebufferMixedSamplesCombinationNV)(unsafe.Pointer(b))
+
+	return wrapFramebufferMixedSamplesCombinationNV(c)
+}
+
 type PhysicalDeviceYcbcrImageArraysFeaturesEXT struct {
 	native *C.VkPhysicalDeviceYcbcrImageArraysFeaturesEXT
+}
+
+func wrapPhysicalDeviceYcbcrImageArraysFeaturesEXT(p *C.VkPhysicalDeviceYcbcrImageArraysFeaturesEXT) *PhysicalDeviceYcbcrImageArraysFeaturesEXT {
+	v := PhysicalDeviceYcbcrImageArraysFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceYcbcrImageArraysFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceYcbcrImageArraysFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceYcbcrImageArraysFeaturesEXT(c)
 }
 
 type HeadlessSurfaceCreateFlagsEXT struct {
 	native *C.VkHeadlessSurfaceCreateFlagsEXT
 }
 
+func wrapHeadlessSurfaceCreateFlagsEXT(p *C.VkHeadlessSurfaceCreateFlagsEXT) *HeadlessSurfaceCreateFlagsEXT {
+	v := HeadlessSurfaceCreateFlagsEXT{native: p}
+	return &v
+}
+
+func marshalHeadlessSurfaceCreateFlagsEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkHeadlessSurfaceCreateFlagsEXT)(unsafe.Pointer(b))
+
+	return wrapHeadlessSurfaceCreateFlagsEXT(c)
+}
+
 type HeadlessSurfaceCreateInfoEXT struct {
 	native *C.VkHeadlessSurfaceCreateInfoEXT
 }
 
+func wrapHeadlessSurfaceCreateInfoEXT(p *C.VkHeadlessSurfaceCreateInfoEXT) *HeadlessSurfaceCreateInfoEXT {
+	v := HeadlessSurfaceCreateInfoEXT{native: p}
+	return &v
+}
+
+func marshalHeadlessSurfaceCreateInfoEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkHeadlessSurfaceCreateInfoEXT)(unsafe.Pointer(b))
+
+	return wrapHeadlessSurfaceCreateInfoEXT(c)
+}
+
 type PhysicalDeviceHostQueryResetFeaturesEXT struct {
 	native *C.VkPhysicalDeviceHostQueryResetFeaturesEXT
+}
+
+func wrapPhysicalDeviceHostQueryResetFeaturesEXT(p *C.VkPhysicalDeviceHostQueryResetFeaturesEXT) *PhysicalDeviceHostQueryResetFeaturesEXT {
+	v := PhysicalDeviceHostQueryResetFeaturesEXT{native: p}
+	return &v
+}
+
+func marshalPhysicalDeviceHostQueryResetFeaturesEXT(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.VkPhysicalDeviceHostQueryResetFeaturesEXT)(unsafe.Pointer(b))
+
+	return wrapPhysicalDeviceHostQueryResetFeaturesEXT(c)
 }

@@ -3,6 +3,8 @@
 package pangoot
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pango"
 	"github.com/gotk3/gotk3/glib"
 )
@@ -69,6 +71,18 @@ type Buffer struct {
 	native *C.PangoOTBuffer
 }
 
+func wrapBuffer(p *C.PangoOTBuffer) *Buffer {
+	v := Buffer{native: p}
+	return &v
+}
+
+func marshalBuffer(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoOTBuffer)(unsafe.Pointer(b))
+
+	return wrapBuffer(c)
+}
+
 // FeatureMap: the OTFeatureMap typedef is used to represent an OpenType feature
 // with the property bit associated with it. The feature tag is represented as a
 // char array instead of a OTTag for convenience.
@@ -78,6 +92,22 @@ type FeatureMap struct {
 	// PropertyBit: the property bit to use for this feature. See
 	// pango_ot_ruleset_add_feature() for details.
 	PropertyBit uint32
+}
+
+func wrapFeatureMap(p *C.PangoOTFeatureMap) *FeatureMap {
+	var v FeatureMap
+	{
+		var a [5]byte
+	}
+	v.PropertyBit = uint32(p.property_bit)
+	return &v
+}
+
+func marshalFeatureMap(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoOTFeatureMap)(unsafe.Pointer(b))
+
+	return wrapFeatureMap(c)
 }
 
 // Glyph: the OTGlyph structure represents a single glyph together with
@@ -97,6 +127,24 @@ type Glyph struct {
 	LigID uint16
 	// Internal: for Pango internal use
 	Internal uint
+}
+
+func wrapGlyph(p *C.PangoOTGlyph) *Glyph {
+	var v Glyph
+	v.Glyph = uint32(p.glyph)
+	v.Properties = uint(p.properties)
+	v.Cluster = uint(p.cluster)
+	v.Component = uint16(p.component)
+	v.LigID = uint16(p.ligID)
+	v.Internal = uint(p.internal)
+	return &v
+}
+
+func marshalGlyph(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoOTGlyph)(unsafe.Pointer(b))
+
+	return wrapGlyph(c)
 }
 
 // RulesetDescription: the OTRuleset structure holds all the information needed
@@ -124,4 +172,23 @@ type RulesetDescription struct {
 	OtherFeatures *FeatureMap
 	// NOtherFeatures: length of @other_features, or 0.
 	NOtherFeatures uint
+}
+
+func wrapRulesetDescription(p *C.PangoOTRulesetDescription) *RulesetDescription {
+	var v RulesetDescription
+	v.Script = pango.Script(p.script)
+
+	v.NStaticGsubFeatures = uint(p.n_static_gsub_features)
+
+	v.NStaticGposFeatures = uint(p.n_static_gpos_features)
+
+	v.NOtherFeatures = uint(p.n_other_features)
+	return &v
+}
+
+func marshalRulesetDescription(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.PangoOTRulesetDescription)(unsafe.Pointer(b))
+
+	return wrapRulesetDescription(c)
 }

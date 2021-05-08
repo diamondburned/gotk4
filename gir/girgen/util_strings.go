@@ -90,6 +90,16 @@ var goKeywords = map[string]struct{}{
 	"var":         {},
 }
 
+// cgoField formats the C field name to not be confused with a Go keyword.
+// See https://golang.org/cmd/cgo/#hdr-Go_references_to_C.
+func cgoField(field string) string {
+	_, keyword := goKeywords[field]
+	if keyword {
+		return "_" + field
+	}
+	return field
+}
+
 // PascalToGo converts regular Pascal case to Go.
 func PascalToGo(pascal string) string {
 	// Force constructors to have a New prefix instead of suffix.

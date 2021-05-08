@@ -3,6 +3,8 @@
 package gdkpixdata
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/gdkpixbuf"
 	"github.com/gotk3/gotk3/glib"
 )
@@ -111,4 +113,25 @@ type Pixdata struct {
 	// PixelData: @width x @height pixels, encoded according to @pixdata_type
 	// and @rowstride.
 	PixelData []uint8
+}
+
+func wrapPixdata(p *C.GdkPixdata) *Pixdata {
+	var v Pixdata
+	v.Magic = uint32(p.magic)
+	v.Length = int32(p.length)
+	v.PixdataType = uint32(p.pixdata_type)
+	v.Rowstride = uint32(p.rowstride)
+	v.Width = uint32(p.width)
+	v.Height = uint32(p.height)
+	{
+		a := make([]uint8, 0)
+	}
+	return &v
+}
+
+func marshalPixdata(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.GdkPixdata)(unsafe.Pointer(b))
+
+	return wrapPixdata(c)
 }

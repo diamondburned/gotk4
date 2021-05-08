@@ -51,34 +51,142 @@ type Display struct {
 	native *C.Display
 }
 
+func wrapDisplay(p *C.Display) *Display {
+	v := Display{native: p}
+	return &v
+}
+
+func marshalDisplay(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.Display)(unsafe.Pointer(b))
+
+	return wrapDisplay(c)
+}
+
 type Screen struct {
 	native *C.Screen
+}
+
+func wrapScreen(p *C.Screen) *Screen {
+	v := Screen{native: p}
+	return &v
+}
+
+func marshalScreen(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.Screen)(unsafe.Pointer(b))
+
+	return wrapScreen(c)
 }
 
 type Visual struct {
 	native *C.Visual
 }
 
+func wrapVisual(p *C.Visual) *Visual {
+	v := Visual{native: p}
+	return &v
+}
+
+func marshalVisual(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.Visual)(unsafe.Pointer(b))
+
+	return wrapVisual(c)
+}
+
 type XConfigureEvent struct {
 	native *C.XConfigureEvent
+}
+
+func wrapXConfigureEvent(p *C.XConfigureEvent) *XConfigureEvent {
+	v := XConfigureEvent{native: p}
+	return &v
+}
+
+func marshalXConfigureEvent(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.XConfigureEvent)(unsafe.Pointer(b))
+
+	return wrapXConfigureEvent(c)
 }
 
 type XImage struct {
 	native *C.XImage
 }
 
+func wrapXImage(p *C.XImage) *XImage {
+	v := XImage{native: p}
+	return &v
+}
+
+func marshalXImage(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.XImage)(unsafe.Pointer(b))
+
+	return wrapXImage(c)
+}
+
 type XFontStruct struct {
 	native *C.XFontStruct
+}
+
+func wrapXFontStruct(p *C.XFontStruct) *XFontStruct {
+	v := XFontStruct{native: p}
+	return &v
+}
+
+func marshalXFontStruct(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.XFontStruct)(unsafe.Pointer(b))
+
+	return wrapXFontStruct(c)
 }
 
 type XTrapezoid struct {
 	native *C.XTrapezoid
 }
 
+func wrapXTrapezoid(p *C.XTrapezoid) *XTrapezoid {
+	v := XTrapezoid{native: p}
+	return &v
+}
+
+func marshalXTrapezoid(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.XTrapezoid)(unsafe.Pointer(b))
+
+	return wrapXTrapezoid(c)
+}
+
 type XVisualInfo struct {
 	native *C.XVisualInfo
 }
 
+func wrapXVisualInfo(p *C.XVisualInfo) *XVisualInfo {
+	v := XVisualInfo{native: p}
+	return &v
+}
+
+func marshalXVisualInfo(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.XVisualInfo)(unsafe.Pointer(b))
+
+	return wrapXVisualInfo(c)
+}
+
 type XWindowAttributes struct {
 	native *C.XWindowAttributes
+}
+
+func wrapXWindowAttributes(p *C.XWindowAttributes) *XWindowAttributes {
+	v := XWindowAttributes{native: p}
+	return &v
+}
+
+func marshalXWindowAttributes(p uintptr) (interface{}, error) {
+	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
+	c := (*C.XWindowAttributes)(unsafe.Pointer(b))
+
+	return wrapXWindowAttributes(c)
 }

@@ -2784,6 +2784,14 @@ func AtomicRcBoxGetSize(memBlock unsafe.Pointer) uint
 // @mem_block.
 func AtomicRcBoxRelease(memBlock unsafe.Pointer)
 
+// AtomicRcBoxReleaseFull: atomically releases a reference on the data pointed
+// by @mem_block.
+//
+// If the reference was the last one, it will call @clear_func to clear the
+// contents of @mem_block, and then will free the resources allocated for
+// @mem_block.
+func AtomicRcBoxReleaseFull(memBlock unsafe.Pointer, clearFunc unsafe.Pointer)
+
 // AtomicRefCountCompare: atomically compares the current value of @arc with
 // @val.
 func AtomicRefCountCompare(arc *int, val int) bool
@@ -3012,6 +3020,30 @@ func ChecksumTypeGetLength(checksumType ChecksumType) int
 // these steps manually if you need greater control.
 func ChildWatchAdd(pid Pid, function ChildWatchFunc, data unsafe.Pointer) uint
 
+// ChildWatchAddFull: sets a function to be called when the child indicated by
+// @pid exits, at the priority @priority.
+//
+// If you obtain @pid from g_spawn_async() or g_spawn_async_with_pipes() you
+// will need to pass SPAWN_DO_NOT_REAP_CHILD as flag to the spawn function for
+// the child watching to work.
+//
+// In many programs, you will want to call g_spawn_check_exit_status() in the
+// callback to determine whether or not the child exited successfully.
+//
+// Also, note that on platforms where #GPid must be explicitly closed (see
+// g_spawn_close_pid()) @pid must not be closed while the source is still
+// active. Typically, you should invoke g_spawn_close_pid() in the callback
+// function for the source.
+//
+// GLib supports only a single callback per process id. On POSIX platforms, the
+// same restrictions mentioned for g_child_watch_source_new() apply to this
+// function.
+//
+// This internally creates a main loop source using g_child_watch_source_new()
+// and attaches it to the main loop context using g_source_attach(). You can do
+// these steps manually if you need greater control.
+func ChildWatchAddFull(priority int, pid Pid, function ChildWatchFunc, data unsafe.Pointer, notify unsafe.Pointer) uint
+
 // NewChildWatchSource: creates a new child_watch source.
 //
 // The source will not initially be associated with any Context and must be
@@ -3056,6 +3088,35 @@ func ClearError()
 // A macro is also included that allows this function to be used without pointer
 // casts.
 func ClearHandleID(tagPtr *uint, clearFunc ClearHandleFunc)
+
+// ClearList: clears a pointer to a #GList, freeing it and, optionally, freeing
+// its elements using @destroy.
+//
+// @list_ptr must be a valid pointer. If @list_ptr points to a null #GList, this
+// does nothing.
+func ClearList(listPtr **glib.List, destroy unsafe.Pointer)
+
+// ClearPointer: clears a reference to a variable.
+//
+// @pp must not be nil.
+//
+// If the reference is nil then this function does nothing. Otherwise, the
+// variable is destroyed using @destroy and the pointer is set to nil.
+//
+// A macro is also included that allows this function to be used without pointer
+// casts. This will mask any warnings about incompatible function types or
+// calling conventions, so you must ensure that your @destroy function is
+// compatible with being called as `GDestroyNotify` using the standard calling
+// convention for the platform that GLib was compiled for; otherwise the program
+// will experience undefined behaviour.
+func ClearPointer(pp *unsafe.Pointer, destroy unsafe.Pointer)
+
+// ClearSlist: clears a pointer to a List, freeing it and, optionally, freeing
+// its elements using @destroy.
+//
+// @slist_ptr must be a valid pointer. If @slist_ptr points to a null List, this
+// does nothing.
+func ClearSlist(slistPtr **glib.SList, destroy unsafe.Pointer)
 
 // Close: this wraps the close() call; in case of error, errno will be
 // preserved, but the error will also be stored as a #GError in @error.
@@ -3201,6 +3262,25 @@ func DatalistIDGetData(datalist **Data, keyID Quark) unsafe.Pointer
 // notification function.
 func DatalistIDRemoveNoNotify(datalist **Data, keyID Quark) unsafe.Pointer
 
+// DatalistIDReplaceData: compares the member that is associated with @key_id in
+// @datalist to @oldval, and if they are the same, replace @oldval with @newval.
+//
+// This is like a typical atomic compare-and-exchange operation, for a member of
+// @datalist.
+//
+// If the previous value was replaced then ownership of the old value (@oldval)
+// is passed to the caller, including the registered destroy notify for it
+// (passed out in @old_destroy). Its up to the caller to free this as he wishes,
+// which may or may not include using @old_destroy as sometimes replacement
+// should not destroy the object in the normal way.
+func DatalistIDReplaceData(datalist **Data, keyID Quark, oldval unsafe.Pointer, newval unsafe.Pointer, destroy unsafe.Pointer, oldDestroy *unsafe.Pointer) bool
+
+// DatalistIDSetDataFull: sets the data corresponding to the given #GQuark id,
+// and the function to be called when the element is removed from the datalist.
+// Any previous data with the same key is removed, and its destroy function is
+// called.
+func DatalistIDSetDataFull(datalist **Data, keyID Quark, data unsafe.Pointer, destroyFunc unsafe.Pointer)
+
 // DatalistInit: resets the datalist to nil. It does not free any memory or call
 // any destroy functions.
 func DatalistInit(datalist **Data)
@@ -3236,6 +3316,12 @@ func DatasetIDGetData(datasetLocation unsafe.Pointer, keyID Quark) unsafe.Pointe
 // DatasetIDRemoveNoNotify: removes an element, without calling its destroy
 // notification function.
 func DatasetIDRemoveNoNotify(datasetLocation unsafe.Pointer, keyID Quark) unsafe.Pointer
+
+// DatasetIDSetDataFull: sets the data element associated with the given #GQuark
+// id, and also the function to call when the data element is destroyed. Any
+// previous data with the same key is removed, and its destroy function is
+// called.
+func DatasetIDSetDataFull(datasetLocation unsafe.Pointer, keyID Quark, data unsafe.Pointer, destroyFunc unsafe.Pointer)
 
 // DateGetDaysInMonth: returns the number of days in a month, taking leap years
 // into account.
@@ -4283,6 +4369,20 @@ func IconvOpen(toCodeset string, fromCodeset string) IConv
 // context.
 func IdleAdd(function SourceFunc, data unsafe.Pointer) uint
 
+// IdleAddFull: adds a function to be called whenever there are no higher
+// priority events pending. If the function returns false it is automatically
+// removed from the list of event sources and will not be called again.
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle the return value and memory management of @data.
+//
+// This internally creates a main loop source using g_idle_source_new() and
+// attaches it to the global Context using g_source_attach(), so the callback
+// will be invoked in whichever thread is running that main context. You can do
+// these steps manually if you need greater control or to use a custom main
+// context.
+func IdleAddFull(priority int, function SourceFunc, data unsafe.Pointer, notify unsafe.Pointer) uint
+
 // IdleRemoveByData: removes the idle function with the given data.
 func IdleRemoveByData(data unsafe.Pointer) bool
 
@@ -4346,6 +4446,14 @@ func InternString(string string) string
 // IOAddWatch: adds the OChannel into the default main loop context with the
 // default priority.
 func IOAddWatch(channel *IOChannel, condition IOCondition, _func IOFunc, userData unsafe.Pointer) uint
+
+// IOAddWatchFull: adds the OChannel into the default main loop context with the
+// given priority.
+//
+// This internally creates a main loop source using g_io_create_watch() and
+// attaches it to the main loop context with g_source_attach(). You can do these
+// steps manually if you need greater control.
+func IOAddWatchFull(channel *IOChannel, priority int, condition IOCondition, _func IOFunc, userData unsafe.Pointer, notify unsafe.Pointer) uint
 
 // IOChannelErrorFromErrno: converts an `errno` error number to a OChannelError.
 func IOChannelErrorFromErrno(en int) IOChannelError
@@ -4493,6 +4601,24 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags
 //    g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
 //                       | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
 func LogSetHandler(logDomain string, logLevels LogLevelFlags, logFunc LogFunc, userData unsafe.Pointer) uint
+
+// LogSetHandlerFull: like g_log_set_handler(), but takes a destroy notify for
+// the @user_data.
+//
+// This has no effect if structured logging is enabled; see [Using Structured
+// Logging][using-structured-logging].
+func LogSetHandlerFull(logDomain string, logLevels LogLevelFlags, logFunc LogFunc, userData unsafe.Pointer, destroy unsafe.Pointer) uint
+
+// LogSetWriterFunc: set a writer function which will be called to format and
+// write out each log message. Each program should set a writer function, or the
+// default writer (g_log_writer_default()) will be used.
+//
+// Libraries **must not** call this function — only programs are allowed to
+// install a writer function, as there must be a single, central point where log
+// messages are formatted and outputted.
+//
+// There can only be one writer function. It is an error to set more than one.
+func LogSetWriterFunc(_func LogWriterFunc, userData unsafe.Pointer, userDataFree unsafe.Pointer)
 
 // LogStructuredArray: log a message with structured data. The message will be
 // passed through to the log writer set by the application using
@@ -5177,6 +5303,13 @@ func RcBoxGetSize(memBlock unsafe.Pointer) uint
 // If the reference was the last one, it will free the resources allocated for
 // @mem_block.
 func RcBoxRelease(memBlock unsafe.Pointer)
+
+// RcBoxReleaseFull: releases a reference on the data pointed by @mem_block.
+//
+// If the reference was the last one, it will call @clear_func to clear the
+// contents of @mem_block, and then will free the resources allocated for
+// @mem_block.
+func RcBoxReleaseFull(memBlock unsafe.Pointer, clearFunc unsafe.Pointer)
 
 // Realloc: reallocates the memory pointed to by @mem, so that it now has space
 // for @n_bytes bytes of memory. It returns the new address of the memory, which
@@ -6250,6 +6383,10 @@ func StrvLength(strArray *string) uint
 // so even if it isn’t.
 func TestAddDataFunc(testpath string, testData unsafe.Pointer, testFunc TestDataFunc)
 
+// TestAddDataFuncFull: create a new test case, as with g_test_add_data_func(),
+// but freeing @test_data after the test run is complete.
+func TestAddDataFuncFull(testpath string, testData unsafe.Pointer, testFunc TestDataFunc, dataFreeFunc unsafe.Pointer)
+
 // TestAddFunc: create a new test case, similar to g_test_create_case(). However
 // the test is assumed to use no fixture, and test suites are automatically
 // created on the fly and added to the root fixture, based on the
@@ -6410,6 +6547,13 @@ func TestIncomplete(msg string)
 func TestLogSetFatalHandler(logFunc TestLogFatalFunc, userData unsafe.Pointer)
 
 func TestLogTypeName(logType TestLogType) string
+
+// TestQueueDestroy: this function enqueus a callback @destroy_func to be
+// executed during the next test case teardown phase. This is most useful to
+// auto destruct allocated test resources at the end of a test run. Resources
+// are released in reverse queue order, that means enqueueing callback A before
+// callback B will cause B() to be called before A() during teardown.
+func TestQueueDestroy(destroyFunc unsafe.Pointer, destroyData unsafe.Pointer)
 
 // TestQueueFree: enqueue a pointer to be released with g_free() during the next
 // teardown phase. This is equivalent to calling g_test_queue_destroy() with a
@@ -6747,6 +6891,32 @@ func TimeValFromIso8601(isoDate string, time_ *TimeVal) bool
 // g_get_monotonic_time().
 func TimeoutAdd(interval uint, function SourceFunc, data unsafe.Pointer) uint
 
+// TimeoutAddFull: sets a function to be called at regular intervals, with the
+// given priority. The function is called repeatedly until it returns false, at
+// which point the timeout is automatically destroyed and the function will not
+// be called again. The @notify function is called when the timeout is
+// destroyed. The first call to the function will be at the end of the first
+// @interval.
+//
+// Note that timeout functions may be delayed, due to the processing of other
+// event sources. Thus they should not be relied on for precise timing. After
+// each call to the timeout function, the time of the next timeout is
+// recalculated based on the current time and the given interval (it does not
+// try to 'catch up' time lost in delays).
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle the return value and memory management of @data.
+//
+// This internally creates a main loop source using g_timeout_source_new() and
+// attaches it to the global Context using g_source_attach(), so the callback
+// will be invoked in whichever thread is running that main context. You can do
+// these steps manually if you need greater control or to use a custom main
+// context.
+//
+// The interval given is in terms of monotonic time, not wall clock time. See
+// g_get_monotonic_time().
+func TimeoutAddFull(priority int, interval uint, function SourceFunc, data unsafe.Pointer, notify unsafe.Pointer) uint
+
 // TimeoutAddSeconds: sets a function to be called at regular intervals with the
 // default priority, PRIORITY_DEFAULT. The function is called repeatedly until
 // it returns false, at which point the timeout is automatically destroyed and
@@ -6769,6 +6939,46 @@ func TimeoutAdd(interval uint, function SourceFunc, data unsafe.Pointer) uint
 // The interval given is in terms of monotonic time, not wall clock time. See
 // g_get_monotonic_time().
 func TimeoutAddSeconds(interval uint, function SourceFunc, data unsafe.Pointer) uint
+
+// TimeoutAddSecondsFull: sets a function to be called at regular intervals,
+// with @priority. The function is called repeatedly until it returns false, at
+// which point the timeout is automatically destroyed and the function will not
+// be called again.
+//
+// Unlike g_timeout_add(), this function operates at whole second granularity.
+// The initial starting point of the timer is determined by the implementation
+// and the implementation is expected to group multiple timers together so that
+// they fire all at the same time. To allow this grouping, the @interval to the
+// first timer is rounded and can deviate up to one second from the specified
+// interval. Subsequent timer iterations will generally run at the specified
+// interval.
+//
+// Note that timeout functions may be delayed, due to the processing of other
+// event sources. Thus they should not be relied on for precise timing. After
+// each call to the timeout function, the time of the next timeout is
+// recalculated based on the current time and the given @interval
+//
+// See [memory management of sources][mainloop-memory-management] for details on
+// how to handle the return value and memory management of @data.
+//
+// If you want timing more precise than whole seconds, use g_timeout_add()
+// instead.
+//
+// The grouping of timers to fire at the same time results in a more power and
+// CPU efficient behavior so if your timer is in multiples of seconds and you
+// don't require the first timer exactly one second from now, the use of
+// g_timeout_add_seconds() is preferred over g_timeout_add().
+//
+// This internally creates a main loop source using
+// g_timeout_source_new_seconds() and attaches it to the main loop context using
+// g_source_attach(). You can do these steps manually if you need greater
+// control.
+//
+// It is safe to call this function from any thread.
+//
+// The interval given is in terms of monotonic time, not wall clock time. See
+// g_get_monotonic_time().
+func TimeoutAddSecondsFull(priority int, interval uint, function SourceFunc, data unsafe.Pointer, notify unsafe.Pointer) uint
 
 // NewTimeoutSource: creates a new timeout source.
 //
@@ -7093,6 +7303,13 @@ func UnixErrorQuark() Quark
 // The source will never close the fd -- you must do it yourself.
 func UnixFdAdd(fd int, condition IOCondition, function UnixFDSourceFunc, userData unsafe.Pointer) uint
 
+// UnixFdAddFull: sets a function to be called when the IO condition, as
+// specified by @condition becomes true for @fd.
+//
+// This is the same as g_unix_fd_add(), except that it allows you to specify a
+// non-default priority and a provide a Notify for @user_data.
+func UnixFdAddFull(priority int, fd int, condition IOCondition, function UnixFDSourceFunc, userData unsafe.Pointer, notify unsafe.Pointer) uint
+
 // NewUnixFdSource: creates a #GSource to watch for a particular IO condition on
 // a file descriptor.
 //
@@ -7131,6 +7348,11 @@ func UnixSetFdNonblocking(fd int, nonblock bool) bool
 // attaches to the default Context. You can remove the watch using
 // g_source_remove().
 func UnixSignalAdd(signum int, handler SourceFunc, userData unsafe.Pointer) uint
+
+// UnixSignalAddFull: a convenience function for g_unix_signal_source_new(),
+// which attaches to the default Context. You can remove the watch using
+// g_source_remove().
+func UnixSignalAddFull(priority int, signum int, handler SourceFunc, userData unsafe.Pointer, notify unsafe.Pointer) uint
 
 // NewUnixSignalSource: create a #GSource that will be dispatched upon delivery
 // of the UNIX signal @signum. In GLib versions before 2.36, only `SIGHUP`,
@@ -8034,6 +8256,10 @@ type Error struct {
 
 func wrapError(p *C.GError) *Error {
 	var v Error
+	{
+		tmp := uint32(p.domain)
+		v.Domain = Quark(tmp)
+	}
 
 	v.Code = int(p.code)
 	v.Message = C.GoString(p.message)
@@ -8107,16 +8333,21 @@ type Hook struct {
 	// Func: the function to call when this hook is invoked. The possible
 	// signatures for this function are Func and CheckFunc
 	Func unsafe.Pointer
+	// Destroy: the default @finalize_hook function of a List calls this member
+	// of the hook that is being finalized
+	Destroy unsafe.Pointer
 }
 
 func wrapHook(p *C.GHook) *Hook {
 	var v Hook
 	v.Data = unsafe.Pointer(p.data)
-
+	v.Next = wrap * Hook(p.next)
+	v.Prev = wrap * Hook(p.prev)
 	v.RefCount = uint(p.ref_count)
 	v.HookID = uint32(p.hook_id)
 	v.Flags = uint(p.flags)
 	v.Func = unsafe.Pointer(p._func)
+
 	return &v
 }
 
@@ -8151,9 +8382,9 @@ func wrapHookList(p *C.GHookList) *HookList {
 	v.SeqID = uint32(p.seq_id)
 	v.HookSize = uint(p.hook_size)
 	v.IsSetup = uint(p.is_setup)
-
+	v.Hooks = wrap * Hook(p.hooks)
 	v.Dummy3 = unsafe.Pointer(p.dummy3)
-
+	v.FinalizeHook = wrapHookFinalizeFunc(p.finalize_hook)
 	{
 		var a [2]unsafe.Pointer
 	}
@@ -8235,7 +8466,8 @@ type List struct {
 func wrapList(p *C.GList) *List {
 	var v List
 	v.Data = unsafe.Pointer(p.data)
-
+	v.Next = wrap * glib.List(p.next)
+	v.Prev = wrap * glib.List(p.prev)
 	return &v
 }
 
@@ -8434,7 +8666,10 @@ type Node struct {
 func wrapNode(p *C.GNode) *Node {
 	var v Node
 	v.Data = unsafe.Pointer(p.data)
-
+	v.Next = wrap * Node(p.next)
+	v.Prev = wrap * Node(p.prev)
+	v.Parent = wrap * Node(p.parent)
+	v.Children = wrap * Node(p.children)
 	return &v
 }
 
@@ -8650,7 +8885,8 @@ type Queue struct {
 
 func wrapQueue(p *C.GQueue) *Queue {
 	var v Queue
-
+	v.Head = wrap * glib.List(p.head)
+	v.Tail = wrap * glib.List(p.tail)
 	v.Length = uint(p.length)
 	return &v
 }
@@ -8838,7 +9074,7 @@ type SList struct {
 func wrapSList(p *C.GSList) *SList {
 	var v SList
 	v.Data = unsafe.Pointer(p.data)
-
+	v.Next = wrap * glib.SList(p.next)
 	return &v
 }
 
@@ -8902,16 +9138,17 @@ func wrapScanner(p *C.GScanner) *Scanner {
 	v.MaxParseErrors = uint(p.max_parse_errors)
 	v.ParseErrors = uint(p.parse_errors)
 	v.InputName = C.GoString(p.input_name)
-
+	v.Qdata = wrap * Data(p.qdata)
+	v.Config = wrap * ScannerConfig(p.config)
 	v.Token = TokenType(p.token)
-
+	v.Value = wrapTokenValue(p.value)
 	v.Line = uint(p.line)
 	v.Position = uint(p.position)
 	v.NextToken = TokenType(p.next_token)
-
+	v.NextValue = wrapTokenValue(p.next_value)
 	v.NextLine = uint(p.next_line)
 	v.NextPosition = uint(p.next_position)
-
+	v.MsgHandler = wrapScannerMsgFunc(p.msg_handler)
 	return &v
 }
 
@@ -9263,7 +9500,7 @@ type ThreadPool struct {
 
 func wrapThreadPool(p *C.GThreadPool) *ThreadPool {
 	var v ThreadPool
-
+	v.Func = wrapFunc(p._func)
 	v.UserData = unsafe.Pointer(p.user_data)
 	v.Exclusive = bool(p.exclusive)
 	return &v
@@ -9332,7 +9569,7 @@ type TrashStack struct {
 
 func wrapTrashStack(p *C.GTrashStack) *TrashStack {
 	var v TrashStack
-
+	v.Next = wrap * TrashStack(p.next)
 	return &v
 }
 

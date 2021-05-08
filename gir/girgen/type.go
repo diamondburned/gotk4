@@ -86,8 +86,12 @@ func (ng *NamespaceGenerator) ResolveAnyType(any gir.AnyType) (string, bool) {
 			return r.GoType, true
 		}
 
+	case any.VarArgs != nil:
+		// CGo doesn't support variadic types.
+		return "", false
+
 	default:
-		ng.debugln("anyType missing both array and type")
+		ng.debugln("anyType empty")
 	}
 
 	return "", false
@@ -162,7 +166,7 @@ func (ng *NamespaceGenerator) resolveType(typ gir.Type) *resolvedType {
 
 	// Resolve the unknown namespace that is GLib and primitive types.
 	switch typ.Name {
-	case "GLib.DestroyNotify": // This should be handled externally.
+	case "GLib.DestroyNotify", "DestroyNotify": // This should be handled externally.
 		return builtinType("unsafe.Pointer", typ)
 	case "GType":
 		return builtinType("glib.Type", typ)
@@ -188,7 +192,7 @@ func (ng *NamespaceGenerator) resolveType(typ gir.Type) *resolvedType {
 	// We don't know what these types translates to.
 	// TODO: Find a way to map EnumValue type.
 	// TODO: Add _full function support.
-	case "GObject.EnumValue", "DestroyNotify":
+	case "GObject.EnumValue":
 		return nil
 	}
 
@@ -214,8 +218,11 @@ func (ng *NamespaceGenerator) resolveType(typ gir.Type) *resolvedType {
 	return typeFromResult(typ, result)
 }
 
-// AnyTypeConverter returns Go code that is the conversion from the given GIR
-// type to its respective Go type.
+// TODO: GoTypeConverter converts Go types to C with GIR type.
+
+// AnyTypeConverter returns Go code that is the conversion from the given C
+// value type to its respective Go value type. An empty string returned is
+// invalid.
 func (ng *NamespaceGenerator) AnyTypeConverter(value, target string, any gir.AnyType) string {
 	switch {
 	case any.Array != nil:
@@ -224,7 +231,17 @@ func (ng *NamespaceGenerator) AnyTypeConverter(value, target string, any gir.Any
 		return ng.typeConverter(value, target, *any.Type)
 	}
 
+	// Ignore VarArgs.
 	return ""
+}
+
+func directCallOrCreate(value, target, typ string, create bool) string {
+	var op = " = "
+	if create {
+		op = " := "
+	}
+
+	return target + op + typ + "(" + value + ")"
 }
 
 func (ng *NamespaceGenerator) arrayConverter(value, target string, array gir.Array) string {
@@ -246,32 +263,32 @@ func (ng *NamespaceGenerator) arrayConverter(value, target string, array gir.Arr
 	return b.String()
 }
 
-func directCall(value, target, typ string) string {
-	return target + " = " + typ + "(" + value + ")"
+func (ng *NamespaceGenerator) typeConverter(value, target string, typ gir.Type) string {
+	return ng._typeConverter(value, target, typ, false)
 }
 
-func (ng *NamespaceGenerator) typeConverter(value, target string, typ gir.Type) string {
+func (ng *NamespaceGenerator) _typeConverter(value, target string, typ gir.Type, create bool) string {
 	// Resolve primitive types.
 	if prim, ok := girPrimitiveGo(typ.Name); ok {
 		// Edge cases.
 		switch prim {
 		case "string":
-			return directCall(value, target, "C.GoString")
+			return directCallOrCreate(value, target, "C.GoString", create)
 		default:
-			return directCall(value, target, prim)
+			return directCallOrCreate(value, target, prim, create)
 		}
 	}
 
 	// Resolve special-case GLib types.
 	switch typ.Name {
-	case "GLib.DestroyNotify": // This should be handled externally.
+	case "GLib.DestroyNotify", "DestroyNotify":
 		return ""
 	case "GType":
 		return ""
 	case "GObject.GValue", "GObject.Value": // inconsistency???
 		return ""
 	case "GObject.Object":
-		return directCall(value, target, "glib.Take")
+		return directCallOrCreate(value, target, "glib.Take", create)
 	case "GObject.Closure":
 		return ""
 	case "GObject.GInitiallyUnowned":
@@ -283,7 +300,7 @@ func (ng *NamespaceGenerator) typeConverter(value, target string, typ gir.Type) 
 	case "va_list":
 		// CGo cannot handle variadic argument lists.
 		return ""
-	case "GObject.EnumValue", "DestroyNotify":
+	case "GObject.EnumValue":
 		// Refer to ResolveType.
 		return ""
 	}
@@ -298,15 +315,29 @@ func (ng *NamespaceGenerator) typeConverter(value, target string, typ gir.Type) 
 		return ""
 	}
 
+	resolved := typeFromResult(typ, result)
+
 	// Resolve alias.
 	if result.Alias != nil {
+		b := strings.Builder{}
+		b.WriteString("{\n")
+		b.WriteString(ng._typeConverter(value, "tmp", result.Alias.Type, true))
+		b.WriteString("\n")
+		b.WriteString(directCallOrCreate("tmp", target, resolved.GoType, false))
+		b.WriteString("}")
+		return b.String()
 	}
 
 	// Resolve castable number types.
 	if result.Enum != nil || result.Bitfield != nil {
-		resolved := typeFromResult(typ, result)
-		return directCall(value, target, resolved.GoType)
+		return directCallOrCreate(value, target, resolved.GoType, false)
 	}
 
-	return ""
+	// TODO: callbacks and functions are handled differently. Unsure if they're
+	// doable.
+	// TODO: handle unions.
+	// TODO: interfaces should be wrapped by an unexported type.
+
+	// Assume the wrap function. This so far works for classes and records.
+	return directCallOrCreate(value, target, "wrap"+resolved.GoType, false)
 }

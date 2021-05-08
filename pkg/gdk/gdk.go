@@ -2667,7 +2667,7 @@ type EventAny struct {
 func wrapEventAny(p *C.GdkEventAny) *EventAny {
 	var v EventAny
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	return &v
 }
@@ -2743,7 +2743,7 @@ type EventButton struct {
 func wrapEventButton(p *C.GdkEventButton) *EventButton {
 	var v EventButton
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Time = uint32(p.time)
 	v.X = float64(p.x)
@@ -2751,7 +2751,7 @@ func wrapEventButton(p *C.GdkEventButton) *EventButton {
 	v.Axes = float64(p.axes)
 	v.State = ModifierType(p.state)
 	v.Button = uint(p.button)
-
+	v.Device = wrap * Device(p.device)
 	v.XRoot = float64(p.x_root)
 	v.YRoot = float64(p.y_root)
 	return &v
@@ -2785,7 +2785,7 @@ type EventConfigure struct {
 func wrapEventConfigure(p *C.GdkEventConfigure) *EventConfigure {
 	var v EventConfigure
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.X = int(p.x)
 	v.Y = int(p.y)
@@ -2843,9 +2843,9 @@ type EventCrossing struct {
 func wrapEventCrossing(p *C.GdkEventCrossing) *EventCrossing {
 	var v EventCrossing
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
-
+	v.Subwindow = wrap * Window(p.subwindow)
 	v.Time = uint32(p.time)
 	v.X = float64(p.x)
 	v.Y = float64(p.y)
@@ -2889,9 +2889,9 @@ type EventDND struct {
 func wrapEventDND(p *C.GdkEventDND) *EventDND {
 	var v EventDND
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
-
+	v.Context = wrap * DragContext(p.context)
 	v.Time = uint32(p.time)
 	v.XRoot = int16(p.x_root)
 	v.YRoot = int16(p.y_root)
@@ -2928,9 +2928,10 @@ type EventExpose struct {
 func wrapEventExpose(p *C.GdkEventExpose) *EventExpose {
 	var v EventExpose
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
-
+	v.Area = wrapRectangle(p.area)
+	v.Region = wrap * cairo.Region(p.region)
 	v.Count = int(p.count)
 	return &v
 }
@@ -2958,7 +2959,7 @@ type EventFocus struct {
 func wrapEventFocus(p *C.GdkEventFocus) *EventFocus {
 	var v EventFocus
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.In = int16(p.in)
 	return &v
@@ -2998,11 +2999,11 @@ type EventGrabBroken struct {
 func wrapEventGrabBroken(p *C.GdkEventGrabBroken) *EventGrabBroken {
 	var v EventGrabBroken
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Keyboard = bool(p.keyboard)
 	v.Implicit = bool(p.implicit)
-
+	v.GrabWindow = wrap * Window(p.grab_window)
 	return &v
 }
 
@@ -3054,7 +3055,7 @@ type EventKey struct {
 func wrapEventKey(p *C.GdkEventKey) *EventKey {
 	var v EventKey
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Time = uint32(p.time)
 	v.State = ModifierType(p.state)
@@ -3111,7 +3112,7 @@ type EventMotion struct {
 func wrapEventMotion(p *C.GdkEventMotion) *EventMotion {
 	var v EventMotion
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Time = uint32(p.time)
 	v.X = float64(p.x)
@@ -3119,7 +3120,7 @@ func wrapEventMotion(p *C.GdkEventMotion) *EventMotion {
 	v.Axes = float64(p.axes)
 	v.State = ModifierType(p.state)
 	v.IsHint = int16(p.is_hint)
-
+	v.Device = wrap * Device(p.device)
 	v.XRoot = float64(p.x_root)
 	v.YRoot = float64(p.y_root)
 	return &v
@@ -3157,11 +3158,11 @@ type EventOwnerChange struct {
 func wrapEventOwnerChange(p *C.GdkEventOwnerChange) *EventOwnerChange {
 	var v EventOwnerChange
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
-
+	v.Owner = wrap * Window(p.owner)
 	v.Reason = OwnerChange(p.reason)
-
+	v.Selection = wrapAtom(p.selection)
 	v.Time = uint32(p.time)
 	v.SelectionTime = uint32(p.selection_time)
 	return &v
@@ -3202,7 +3203,7 @@ type EventPadAxis struct {
 func wrapEventPadAxis(p *C.GdkEventPadAxis) *EventPadAxis {
 	var v EventPadAxis
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Time = uint32(p.time)
 	v.Group = uint(p.group)
@@ -3245,7 +3246,7 @@ type EventPadButton struct {
 func wrapEventPadButton(p *C.GdkEventPadButton) *EventPadButton {
 	var v EventPadButton
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Time = uint32(p.time)
 	v.Group = uint(p.group)
@@ -3284,7 +3285,7 @@ type EventPadGroupMode struct {
 func wrapEventPadGroupMode(p *C.GdkEventPadGroupMode) *EventPadGroupMode {
 	var v EventPadGroupMode
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Time = uint32(p.time)
 	v.Group = uint(p.group)
@@ -3319,9 +3320,9 @@ type EventProperty struct {
 func wrapEventProperty(p *C.GdkEventProperty) *EventProperty {
 	var v EventProperty
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
-
+	v.Atom = wrapAtom(p.atom)
 	v.Time = uint32(p.time)
 	v.State = PropertyState(p.state)
 	return &v
@@ -3360,10 +3361,10 @@ type EventProximity struct {
 func wrapEventProximity(p *C.GdkEventProximity) *EventProximity {
 	var v EventProximity
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Time = uint32(p.time)
-
+	v.Device = wrap * Device(p.device)
 	return &v
 }
 
@@ -3420,14 +3421,14 @@ type EventScroll struct {
 func wrapEventScroll(p *C.GdkEventScroll) *EventScroll {
 	var v EventScroll
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Time = uint32(p.time)
 	v.X = float64(p.x)
 	v.Y = float64(p.y)
 	v.State = ModifierType(p.state)
 	v.Direction = ScrollDirection(p.direction)
-
+	v.Device = wrap * Device(p.device)
 	v.XRoot = float64(p.x_root)
 	v.YRoot = float64(p.y_root)
 	v.DeltaX = float64(p.delta_x)
@@ -3468,11 +3469,13 @@ type EventSelection struct {
 func wrapEventSelection(p *C.GdkEventSelection) *EventSelection {
 	var v EventSelection
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
-
+	v.Selection = wrapAtom(p.selection)
+	v.Target = wrapAtom(p.target)
+	v.Property = wrapAtom(p.property)
 	v.Time = uint32(p.time)
-
+	v.Requestor = wrap * Window(p.requestor)
 	return &v
 }
 
@@ -3517,7 +3520,7 @@ type EventSetting struct {
 func wrapEventSetting(p *C.GdkEventSetting) *EventSetting {
 	var v EventSetting
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Action = SettingAction(p.action)
 	v.Name = C.GoString(p.name)
@@ -3577,16 +3580,16 @@ type EventTouch struct {
 func wrapEventTouch(p *C.GdkEventTouch) *EventTouch {
 	var v EventTouch
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Time = uint32(p.time)
 	v.X = float64(p.x)
 	v.Y = float64(p.y)
 	v.Axes = float64(p.axes)
 	v.State = ModifierType(p.state)
-
+	v.Sequence = wrap * EventSequence(p.sequence)
 	v.EmulatingPointer = bool(p.emulating_pointer)
-
+	v.Device = wrap * Device(p.device)
 	v.XRoot = float64(p.x_root)
 	v.YRoot = float64(p.y_root)
 	return &v
@@ -3641,7 +3644,7 @@ type EventTouchpadPinch struct {
 func wrapEventTouchpadPinch(p *C.GdkEventTouchpadPinch) *EventTouchpadPinch {
 	var v EventTouchpadPinch
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Phase = int8(p.phase)
 	v.NFingers = int8(p.n_fingers)
@@ -3701,7 +3704,7 @@ type EventTouchpadSwipe struct {
 func wrapEventTouchpadSwipe(p *C.GdkEventTouchpadSwipe) *EventTouchpadSwipe {
 	var v EventTouchpadSwipe
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.Phase = int8(p.phase)
 	v.NFingers = int8(p.n_fingers)
@@ -3739,7 +3742,7 @@ type EventVisibility struct {
 func wrapEventVisibility(p *C.GdkEventVisibility) *EventVisibility {
 	var v EventVisibility
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.State = VisibilityState(p.state)
 	return &v
@@ -3769,7 +3772,7 @@ type EventWindowState struct {
 func wrapEventWindowState(p *C.GdkEventWindowState) *EventWindowState {
 	var v EventWindowState
 	v.Type = EventType(p._type)
-
+	v.Window = wrap * Window(p.window)
 	v.SendEvent = int8(p.send_event)
 	v.ChangedMask = WindowState(p.changed_mask)
 	v.NewWindowState = WindowState(p.new_window_state)
@@ -4093,9 +4096,9 @@ func wrapWindowAttr(p *C.GdkWindowAttr) *WindowAttr {
 	v.Width = int(p.width)
 	v.Height = int(p.height)
 	v.Wclass = WindowWindowClass(p.wclass)
-
+	v.Visual = wrap * Visual(p.visual)
 	v.WindowType = WindowType(p.window_type)
-
+	v.Cursor = wrap * Cursor(p.cursor)
 	v.WmclassName = C.GoString(p.wmclass_name)
 	v.WmclassClass = C.GoString(p.wmclass_class)
 	v.OverrideRedirect = bool(p.override_redirect)

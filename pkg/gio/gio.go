@@ -3482,7 +3482,9 @@ type DBusInterfaceVTable struct {
 
 func wrapDBusInterfaceVTable(p *C.GDBusInterfaceVTable) *DBusInterfaceVTable {
 	v := DBusInterfaceVTable{native: p}
-
+	v.MethodCall = wrapDBusInterfaceMethodCallFunc(p.method_call)
+	v.GetProperty = wrapDBusInterfaceGetPropertyFunc(p.get_property)
+	v.SetProperty = wrapDBusInterfaceSetPropertyFunc(p.set_property)
 	return &v
 }
 
@@ -3657,7 +3659,9 @@ type DBusSubtreeVTable struct {
 
 func wrapDBusSubtreeVTable(p *C.GDBusSubtreeVTable) *DBusSubtreeVTable {
 	v := DBusSubtreeVTable{native: p}
-
+	v.Enumerate = wrapDBusSubtreeEnumerateFunc(p.enumerate)
+	v.Introspect = wrapDBusSubtreeIntrospectFunc(p.introspect)
+	v.Dispatch = wrapDBusSubtreeDispatchFunc(p.dispatch)
 	return &v
 }
 
@@ -3704,7 +3708,7 @@ type FileAttributeInfoList struct {
 
 func wrapFileAttributeInfoList(p *C.GFileAttributeInfoList) *FileAttributeInfoList {
 	var v FileAttributeInfoList
-
+	v.Infos = wrap * FileAttributeInfo(p.infos)
 	v.NInfos = int(p.n_infos)
 	return &v
 }
@@ -3774,7 +3778,7 @@ type InputMessage struct {
 
 func wrapInputMessage(p *C.GInputMessage) *InputMessage {
 	var v InputMessage
-
+	v.Address = wrap * *SocketAddress(p.address)
 	{
 		a := make([]InputVector, 2)
 	}
@@ -3844,7 +3848,8 @@ type OutputMessage struct {
 
 func wrapOutputMessage(p *C.GOutputMessage) *OutputMessage {
 	var v OutputMessage
-
+	v.Address = wrap * SocketAddress(p.address)
+	v.Vectors = wrap * OutputVector(p.vectors)
 	v.NumVectors = uint(p.num_vectors)
 	v.BytesSent = uint(p.bytes_sent)
 	{

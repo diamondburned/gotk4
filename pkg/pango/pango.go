@@ -1604,12 +1604,13 @@ func wrapAnalysis(p *C.PangoAnalysis) *Analysis {
 	var v Analysis
 	v.ShapeEngine = unsafe.Pointer(p.shape_engine)
 	v.LangEngine = unsafe.Pointer(p.lang_engine)
-
+	v.Font = wrap * Font(p.font)
 	v.Level = uint8(p.level)
 	v.Gravity = uint8(p.gravity)
 	v.Flags = uint8(p.flags)
 	v.Script = uint8(p.script)
-
+	v.Language = wrap * Language(p.language)
+	v.ExtraAttrs = wrap * glib.SList(p.extra_attrs)
 	return &v
 }
 
@@ -1631,7 +1632,8 @@ type AttrColor struct {
 
 func wrapAttrColor(p *C.PangoAttrColor) *AttrColor {
 	var v AttrColor
-
+	v.Attr = wrapAttribute(p.attr)
+	v.Color = wrapColor(p.color)
 	return &v
 }
 
@@ -1653,7 +1655,7 @@ type AttrFloat struct {
 
 func wrapAttrFloat(p *C.PangoAttrFloat) *AttrFloat {
 	var v AttrFloat
-
+	v.Attr = wrapAttribute(p.attr)
 	v.Value = float64(p.value)
 	return &v
 }
@@ -1676,7 +1678,8 @@ type AttrFontDesc struct {
 
 func wrapAttrFontDesc(p *C.PangoAttrFontDesc) *AttrFontDesc {
 	var v AttrFontDesc
-
+	v.Attr = wrapAttribute(p.attr)
+	v.Desc = wrap * FontDescription(p.desc)
 	return &v
 }
 
@@ -1698,7 +1701,7 @@ type AttrFontFeatures struct {
 
 func wrapAttrFontFeatures(p *C.PangoAttrFontFeatures) *AttrFontFeatures {
 	var v AttrFontFeatures
-
+	v.Attr = wrapAttribute(p.attr)
 	v.Features = C.GoString(p.features)
 	return &v
 }
@@ -1721,7 +1724,7 @@ type AttrInt struct {
 
 func wrapAttrInt(p *C.PangoAttrInt) *AttrInt {
 	var v AttrInt
-
+	v.Attr = wrapAttribute(p.attr)
 	v.Value = int(p.value)
 	return &v
 }
@@ -1768,7 +1771,8 @@ type AttrLanguage struct {
 
 func wrapAttrLanguage(p *C.PangoAttrLanguage) *AttrLanguage {
 	var v AttrLanguage
-
+	v.Attr = wrapAttribute(p.attr)
+	v.Value = wrap * Language(p.value)
 	return &v
 }
 
@@ -1825,8 +1829,11 @@ type AttrShape struct {
 
 func wrapAttrShape(p *C.PangoAttrShape) *AttrShape {
 	var v AttrShape
-
+	v.Attr = wrapAttribute(p.attr)
+	v.InkRect = wrapRectangle(p.ink_rect)
+	v.LogicalRect = wrapRectangle(p.logical_rect)
 	v.Data = unsafe.Pointer(p.data)
+	v.CopyFunc = wrapAttrDataCopyFunc(p.copy_func)
 
 	return &v
 }
@@ -1855,7 +1862,7 @@ type AttrSize struct {
 
 func wrapAttrSize(p *C.PangoAttrSize) *AttrSize {
 	var v AttrSize
-
+	v.Attr = wrapAttribute(p.attr)
 	v.Size = int(p.size)
 	v.Absolute = uint(p.absolute)
 	return &v
@@ -1879,7 +1886,7 @@ type AttrString struct {
 
 func wrapAttrString(p *C.PangoAttrString) *AttrString {
 	var v AttrString
-
+	v.Attr = wrapAttribute(p.attr)
 	v.Value = C.GoString(p.value)
 	return &v
 }
@@ -1912,7 +1919,7 @@ type Attribute struct {
 
 func wrapAttribute(p *C.PangoAttribute) *Attribute {
 	var v Attribute
-
+	v.Klass = wrap * AttrClass(p.klass)
 	v.StartIndex = uint(p.start_index)
 	v.EndIndex = uint(p.end_index)
 	return &v
@@ -2009,6 +2016,20 @@ type GlyphGeometry struct {
 
 func wrapGlyphGeometry(p *C.PangoGlyphGeometry) *GlyphGeometry {
 	var v GlyphGeometry
+	{
+		tmp := int32(p.width)
+		v.Width = GlyphUnit(tmp)
+	}
+
+	{
+		tmp := int32(p.x_offset)
+		v.XOffset = GlyphUnit(tmp)
+	}
+
+	{
+		tmp := int32(p.y_offset)
+		v.YOffset = GlyphUnit(tmp)
+	}
 
 	return &v
 }
@@ -2033,7 +2054,13 @@ type GlyphInfo struct {
 
 func wrapGlyphInfo(p *C.PangoGlyphInfo) *GlyphInfo {
 	var v GlyphInfo
+	{
+		tmp := uint32(p.glyph)
+		v.Glyph = Glyph(tmp)
+	}
 
+	v.Geometry = wrapGlyphGeometry(p.geometry)
+	v.Attr = wrapGlyphVisAttr(p.attr)
 	return &v
 }
 
@@ -2059,7 +2086,8 @@ type GlyphItem struct {
 
 func wrapGlyphItem(p *C.PangoGlyphItem) *GlyphItem {
 	var v GlyphItem
-
+	v.Item = wrap * Item(p.item)
+	v.Glyphs = wrap * GlyphString(p.glyphs)
 	return &v
 }
 
@@ -2122,7 +2150,7 @@ type GlyphItemIter struct {
 
 func wrapGlyphItemIter(p *C.PangoGlyphItemIter) *GlyphItemIter {
 	var v GlyphItemIter
-
+	v.GlyphItem = wrap * GlyphItem(p.glyph_item)
 	v.Text = C.GoString(p.text)
 	v.StartGlyph = int(p.start_glyph)
 	v.StartIndex = int(p.start_index)
@@ -2221,7 +2249,7 @@ func wrapItem(p *C.PangoItem) *Item {
 	v.Offset = int(p.offset)
 	v.Length = int(p.length)
 	v.NumChars = int(p.num_chars)
-
+	v.Analysis = wrapAnalysis(p.analysis)
 	return &v
 }
 
@@ -2297,10 +2325,10 @@ type LayoutLine struct {
 
 func wrapLayoutLine(p *C.PangoLayoutLine) *LayoutLine {
 	var v LayoutLine
-
+	v.Layout = wrap * Layout(p.layout)
 	v.StartIndex = int(p.start_index)
 	v.Length = int(p.length)
-
+	v.Runs = wrap * glib.SList(p.runs)
 	v.IsParagraphStart = uint(p.is_paragraph_start)
 	v.ResolvedDir = uint(p.resolved_dir)
 	return &v

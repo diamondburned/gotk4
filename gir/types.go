@@ -16,8 +16,9 @@ type Alias struct {
 
 type AnyType struct {
 	// Possible variants.
-	Type  *Type  `xml:"http://www.gtk.org/introspection/core/1.0 type"`
-	Array *Array `xml:"http://www.gtk.org/introspection/core/1.0 array"`
+	Type    *Type    `xml:"http://www.gtk.org/introspection/core/1.0 type"`
+	Array   *Array   `xml:"http://www.gtk.org/introspection/core/1.0 array"`
+	VarArgs *VarArgs `xml:"http://www.gtk.org/introspection/core/1.0 varargs"`
 }
 
 type Annotation struct {
@@ -329,4 +330,8 @@ type Union struct {
 	Methods      []Method      `xml:"http://www.gtk.org/introspection/core/1.0 method"`
 	Functions    []Function    `xml:"http://www.gtk.org/introspection/core/1.0 function"`
 	Records      []Record      `xml:"http://www.gtk.org/introspection/core/1.0 record"`
+}
+
+type VarArgs struct {
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 varargs"`
 }

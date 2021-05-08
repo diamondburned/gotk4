@@ -472,7 +472,8 @@ type Rect struct {
 
 func wrapRect(p *C.graphene_rect_t) *Rect {
 	var v Rect
-
+	v.Origin = wrapPoint(p.origin)
+	v.Size = wrapSize(p.size)
 	return &v
 }
 

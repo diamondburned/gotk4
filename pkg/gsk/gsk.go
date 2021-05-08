@@ -306,7 +306,7 @@ type ColorStop struct {
 func wrapColorStop(p *C.GskColorStop) *ColorStop {
 	var v ColorStop
 	v.Offset = float32(p.offset)
-
+	v.Color = wrapgdk.RGBA(p.color)
 	return &v
 }
 
@@ -365,7 +365,7 @@ type RoundedRect struct {
 
 func wrapRoundedRect(p *C.GskRoundedRect) *RoundedRect {
 	var v RoundedRect
-
+	v.Bounds = wrapgraphene.Rect(p.bounds)
 	{
 		var a [4]graphene.Size
 	}
@@ -410,7 +410,7 @@ type Shadow struct {
 
 func wrapShadow(p *C.GskShadow) *Shadow {
 	var v Shadow
-
+	v.Color = wrapgdk.RGBA(p.color)
 	v.Dx = float32(p.dx)
 	v.Dy = float32(p.dy)
 	v.Radius = float32(p.radius)

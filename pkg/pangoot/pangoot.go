@@ -177,11 +177,12 @@ type RulesetDescription struct {
 func wrapRulesetDescription(p *C.PangoOTRulesetDescription) *RulesetDescription {
 	var v RulesetDescription
 	v.Script = pango.Script(p.script)
-
+	v.Language = wrap * pango.Language(p.language)
+	v.StaticGsubFeatures = wrap * FeatureMap(p.static_gsub_features)
 	v.NStaticGsubFeatures = uint(p.n_static_gsub_features)
-
+	v.StaticGposFeatures = wrap * FeatureMap(p.static_gpos_features)
 	v.NStaticGposFeatures = uint(p.n_static_gpos_features)
-
+	v.OtherFeatures = wrap * FeatureMap(p.other_features)
 	v.NOtherFeatures = uint(p.n_other_features)
 	return &v
 }

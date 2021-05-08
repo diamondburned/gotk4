@@ -52,8 +52,8 @@ func IncludeDirs(pkgs ...string) ([]string, error) {
 	return strings.Fields(string(out)), nil
 }
 
-// FindGirFiles finds gir files from the given list of pkgs.
-func FindGirFiles(pkgs ...string) ([]string, error) {
+// FindGIRFiles finds gir files from the given list of pkgs.
+func FindGIRFiles(pkgs ...string) ([]string, error) {
 	includeDirs, err := IncludeDirs(pkgs...)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to find include dirs")

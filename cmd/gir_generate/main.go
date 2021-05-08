@@ -23,37 +23,17 @@ func init() {
 }
 
 type Package struct {
-	Name       string
-	Namespaces []string
+	PkgName    string   // pkg-config name
+	Namespaces []string // refer to ./cmd/gir_namespaces
 }
-
-// DBus version 1.0
-// DBusGLib version 1.0
-// GIRepository version 2.0
-// GL version 1.0
-// GLib version 2.0
-// GModule version 2.0
-// GObject version 2.0
-// Gio version 2.0
-// Vulkan version 1.0
-// cairo version 1.0
-// fontconfig version 2.0
-// freetype2 version 2.0
-// libxml2 version 2.0
-// win32 version 1.0
-// xfixes version 4.0
-// xft version 2.0
-// xlib version 2.0
-// xrandr version 1.3
 
 var packages = []Package{
 	{"gobject-introspection-1.0", []string{
 		"GLib", "Gio", "Vulkan", "cairo", "xft", "xlib", "freetype2",
 	}},
 	{"pango", nil},
-	{"gdk-pixbuf-2.0", nil},
-	{"gdk-wayland-3.0", nil},
-	{"gdk-x11-3.0", nil},
+	{"gdk-pixbuf-2.0", []string{"GdkPixbuf", "GdkPixdata"}},
+	{"gdk-wayland-3.0", []string{"Gdk", "GdkX11"}},
 	{"graphene-1.0", nil},
 	{"gtk4", nil},
 }
@@ -64,9 +44,9 @@ func main() {
 
 	for _, pkg := range packages {
 		if pkg.Namespaces != nil {
-			err = repos.AddSelected(pkg.Name, pkg.Namespaces)
+			err = repos.AddSelected(pkg.PkgName, pkg.Namespaces)
 		} else {
-			err = repos.Add(pkg.Name)
+			err = repos.Add(pkg.PkgName)
 		}
 
 		if err != nil {
@@ -85,8 +65,8 @@ func main() {
 		for _, namespace := range repo.Namespaces {
 			ng := gen.UseNamespace(namespace.Name)
 
-			wg.Add(1)
 			sema <- struct{}{}
+			wg.Add(1)
 
 			go func() {
 				writeNamespace(ng)
@@ -101,11 +81,12 @@ func main() {
 
 	if err := goimports.Dir(output); err != nil {
 		log.Println("failed to run goimports on "+output+":", err)
-		return
 	}
 }
 
 func writeNamespace(ng *girgen.NamespaceGenerator) {
+	log.Println("generating", ng.PackageName(), "at", ng.Repository().Path)
+
 	pkg := ng.PackageName()
 	dir := filepath.Join(output, pkg)
 	out := filepath.Join(dir, pkg+".go")
@@ -134,5 +115,4 @@ func writeNamespace(ng *girgen.NamespaceGenerator) {
 		return
 	}
 
-	log.Println("Finished generating", ng.PackageName(), "at", ng.Repository().Path)
 }

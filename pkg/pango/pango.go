@@ -836,85 +836,85 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 	return WrapMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AttrAllowBreaksNew: create a new allow-breaks attribute.
+// NewAttrAllowBreaks: create a new allow-breaks attribute.
 //
 // If breaks are disabled, the range will be kept in a single run, as far as
 // possible.
-func AttrAllowBreaksNew(allowBreaks bool) *Attribute
+func NewAttrAllowBreaks(allowBreaks bool) *Attribute
 
-// AttrBackgroundAlphaNew: create a new background alpha attribute.
-func AttrBackgroundAlphaNew(alpha uint16) *Attribute
+// NewAttrBackgroundAlpha: create a new background alpha attribute.
+func NewAttrBackgroundAlpha(alpha uint16) *Attribute
 
-// AttrBackgroundNew: create a new background color attribute.
-func AttrBackgroundNew(red uint16, green uint16, blue uint16) *Attribute
+// NewAttrBackground: create a new background color attribute.
+func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute
 
-// AttrFallbackNew: create a new font fallback attribute.
+// NewAttrFallback: create a new font fallback attribute.
 //
 // If fallback is disabled, characters will only be used from the closest
 // matching font on the system. No fallback will be done to other fonts on the
 // system that might contain the characters in the text.
-func AttrFallbackNew(enableFallback bool) *Attribute
+func NewAttrFallback(enableFallback bool) *Attribute
 
-// AttrFamilyNew: create a new font family attribute.
-func AttrFamilyNew(family string) *Attribute
+// NewAttrFamily: create a new font family attribute.
+func NewAttrFamily(family string) *Attribute
 
-// AttrFontDescNew: create a new font description attribute.
+// NewAttrFontDesc: create a new font description attribute.
 //
 // This attribute allows setting family, style, weight, variant, stretch, and
 // size simultaneously.
-func AttrFontDescNew(desc *FontDescription) *Attribute
+func NewAttrFontDesc(desc *FontDescription) *Attribute
 
-// AttrFontFeaturesNew: create a new font features tag attribute.
-func AttrFontFeaturesNew(features string) *Attribute
+// NewAttrFontFeatures: create a new font features tag attribute.
+func NewAttrFontFeatures(features string) *Attribute
 
-// AttrForegroundAlphaNew: create a new foreground alpha attribute.
-func AttrForegroundAlphaNew(alpha uint16) *Attribute
+// NewAttrForegroundAlpha: create a new foreground alpha attribute.
+func NewAttrForegroundAlpha(alpha uint16) *Attribute
 
-// AttrForegroundNew: create a new foreground color attribute.
-func AttrForegroundNew(red uint16, green uint16, blue uint16) *Attribute
+// NewAttrForeground: create a new foreground color attribute.
+func NewAttrForeground(red uint16, green uint16, blue uint16) *Attribute
 
-// AttrGravityHintNew: create a new gravity hint attribute.
-func AttrGravityHintNew(hint GravityHint) *Attribute
+// NewAttrGravityHint: create a new gravity hint attribute.
+func NewAttrGravityHint(hint GravityHint) *Attribute
 
-// AttrGravityNew: create a new gravity attribute.
-func AttrGravityNew(gravity Gravity) *Attribute
+// NewAttrGravity: create a new gravity attribute.
+func NewAttrGravity(gravity Gravity) *Attribute
 
-// AttrInsertHyphensNew: create a new insert-hyphens attribute.
+// NewAttrInsertHyphens: create a new insert-hyphens attribute.
 //
 // Pango will insert hyphens when breaking lines in the middle of a word. This
 // attribute can be used to suppress the hyphen.
-func AttrInsertHyphensNew(insertHyphens bool) *Attribute
+func NewAttrInsertHyphens(insertHyphens bool) *Attribute
 
-// AttrLanguageNew: create a new language tag attribute.
-func AttrLanguageNew(language *Language) *Attribute
+// NewAttrLanguage: create a new language tag attribute.
+func NewAttrLanguage(language *Language) *Attribute
 
-// AttrLetterSpacingNew: create a new letter-spacing attribute.
-func AttrLetterSpacingNew(letterSpacing int) *Attribute
+// NewAttrLetterSpacing: create a new letter-spacing attribute.
+func NewAttrLetterSpacing(letterSpacing int) *Attribute
 
-// AttrOverlineColorNew: create a new overline color attribute.
+// NewAttrOverlineColor: create a new overline color attribute.
 //
 // This attribute modifies the color of overlines. If not set, overlines will
 // use the foreground color.
-func AttrOverlineColorNew(red uint16, green uint16, blue uint16) *Attribute
+func NewAttrOverlineColor(red uint16, green uint16, blue uint16) *Attribute
 
-// AttrOverlineNew: create a new overline-style attribute.
-func AttrOverlineNew(overline Overline) *Attribute
+// NewAttrOverline: create a new overline-style attribute.
+func NewAttrOverline(overline Overline) *Attribute
 
-// AttrRiseNew: create a new baseline displacement attribute.
-func AttrRiseNew(rise int) *Attribute
+// NewAttrRise: create a new baseline displacement attribute.
+func NewAttrRise(rise int) *Attribute
 
-// AttrScaleNew: create a new font size scale attribute.
+// NewAttrScale: create a new font size scale attribute.
 //
 // The base font for the affected text will have its size multiplied by
 // @scale_factor.
-func AttrScaleNew(scaleFactor float64) *Attribute
+func NewAttrScale(scaleFactor float64) *Attribute
 
-// AttrShapeNew: create a new shape attribute.
+// NewAttrShape: create a new shape attribute.
 //
 // A shape is used to impose a particular ink and logical rectangle on the
 // result of shaping a particular glyph. This might be used, for instance, for
 // embedding a picture or a widget inside a `PangoLayout`.
-func AttrShapeNew(inkRect *Rectangle, logicalRect *Rectangle) *Attribute
+func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) *Attribute
 
 // AttrShapeNewWithData: creates a new shape attribute.
 //
@@ -922,30 +922,30 @@ func AttrShapeNew(inkRect *Rectangle, logicalRect *Rectangle) *Attribute
 // pointer can be accessed when later rendering the glyph.
 func AttrShapeNewWithData(inkRect *Rectangle, logicalRect *Rectangle, data unsafe.Pointer, copyFunc AttrDataCopyFunc, destroyFunc unsafe.Pointer) *Attribute
 
-// AttrShowNew: create a new attribute that influences how invisible characters
+// NewAttrShow: create a new attribute that influences how invisible characters
 // are rendered.
-func AttrShowNew(flags ShowFlags) *Attribute
+func NewAttrShow(flags ShowFlags) *Attribute
 
-// AttrSizeNew: create a new font-size attribute in fractional points.
-func AttrSizeNew(size int) *Attribute
+// NewAttrSize: create a new font-size attribute in fractional points.
+func NewAttrSize(size int) *Attribute
 
 // AttrSizeNewAbsolute: create a new font-size attribute in device units.
 func AttrSizeNewAbsolute(size int) *Attribute
 
-// AttrStretchNew: create a new font stretch attribute.
-func AttrStretchNew(stretch Stretch) *Attribute
+// NewAttrStretch: create a new font stretch attribute.
+func NewAttrStretch(stretch Stretch) *Attribute
 
-// AttrStrikethroughColorNew: create a new strikethrough color attribute.
+// NewAttrStrikethroughColor: create a new strikethrough color attribute.
 //
 // This attribute modifies the color of strikethrough lines. If not set,
 // strikethrough lines will use the foreground color.
-func AttrStrikethroughColorNew(red uint16, green uint16, blue uint16) *Attribute
+func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute
 
-// AttrStrikethroughNew: create a new strike-through attribute.
-func AttrStrikethroughNew(strikethrough bool) *Attribute
+// NewAttrStrikethrough: create a new strike-through attribute.
+func NewAttrStrikethrough(strikethrough bool) *Attribute
 
-// AttrStyleNew: create a new font slant style attribute.
-func AttrStyleNew(style Style) *Attribute
+// NewAttrStyle: create a new font slant style attribute.
+func NewAttrStyle(style Style) *Attribute
 
 // AttrTypeGetName: fetches the attribute type name.
 //
@@ -962,20 +962,20 @@ func AttrTypeGetName(_type AttrType) string
 // [type_func@Pango.AttrType.get_name].
 func AttrTypeRegister(name string) AttrType
 
-// AttrUnderlineColorNew: create a new underline color attribute.
+// NewAttrUnderlineColor: create a new underline color attribute.
 //
 // This attribute modifies the color of underlines. If not set, underlines will
 // use the foreground color.
-func AttrUnderlineColorNew(red uint16, green uint16, blue uint16) *Attribute
+func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute
 
-// AttrUnderlineNew: create a new underline-style attribute.
-func AttrUnderlineNew(underline Underline) *Attribute
+// NewAttrUnderline: create a new underline-style attribute.
+func NewAttrUnderline(underline Underline) *Attribute
 
-// AttrVariantNew: create a new font variant attribute (normal or small caps).
-func AttrVariantNew(variant Variant) *Attribute
+// NewAttrVariant: create a new font variant attribute (normal or small caps).
+func NewAttrVariant(variant Variant) *Attribute
 
-// AttrWeightNew: create a new font weight attribute.
-func AttrWeightNew(weight Weight) *Attribute
+// NewAttrWeight: create a new font weight attribute.
+func NewAttrWeight(weight Weight) *Attribute
 
 // BidiTypeForUnichar: determines the bidirectional type of a character.
 //
@@ -985,55 +985,9 @@ func AttrWeightNew(weight Weight) *Attribute
 // [func@unichar_direction].
 func BidiTypeForUnichar(ch uint32) BidiType
 
-// Break: determines possible line, word, and character breaks for a string of
-// Unicode text with a single analysis.
-//
-// For most purposes you may want to use pango_get_log_attrs().
-func Break(text string, length int, analysis *Analysis, attrsLen int)
-
-// DefaultBreak: this is the default break algorithm.
-//
-// It applies Unicode rules without language-specific tailoring, therefore the
-// @analyis argument is unused and can be nil.
-//
-// See pango_tailor_break() for language-specific breaks.
-func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int)
-
-// ExtentsToPixels: converts extents from Pango units to device units.
-//
-// The conversion is done by dividing by the PANGO_SCALE factor and performing
-// rounding.
-//
-// The @inclusive rectangle is converted by flooring the x/y coordinates and
-// extending width/height, such that the final rectangle completely includes the
-// original rectangle.
-//
-// The @nearest rectangle is converted by rounding the coordinates of the
-// rectangle to the nearest device unit (pixel).
-//
-// The rule to which argument to use is: if you want the resulting device-space
-// rectangle to completely contain the original rectangle, pass it in as
-// @inclusive. If you want two touching-but-not-overlapping rectangles stay
-// touching-but-not-overlapping after rounding to device units, pass them in as
-// @nearest.
-func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle)
-
 // FindBaseDir: searches a string the first character that has a strong
 // direction, according to the Unicode bidirectional algorithm.
 func FindBaseDir(text string, length int) Direction
-
-// FindParagraphBoundary: locates a paragraph boundary in @text.
-//
-// A boundary is caused by delimiter characters, such as a newline, carriage
-// return, carriage return-newline pair, or Unicode paragraph separator
-// character. The index of the run of delimiters is returned in
-// @paragraph_delimiter_index. The index of the start of the paragrap (index
-// after all delimiters) is stored in @next_paragraph_start.
-//
-// If no delimiters are found, both @paragraph_delimiter_index and
-// @next_paragraph_start are filled with the length of @text (an index one off
-// the end).
-func FindParagraphBoundary(text string, length int, paragraphDelimiterIndex *int, nextParagraphStart *int)
 
 // FontDescriptionFromString: creates a new font description from a string
 // representation.
@@ -1077,15 +1031,6 @@ func FindParagraphBoundary(text string, length int, paragraphDelimiterIndex *int
 //
 // "Cantarell Italic Light 15 \@wght=200"
 func FontDescriptionFromString(str string) *FontDescription
-
-// GetLogAttrs: computes a `PangoLogAttr` for each character in @text.
-//
-// The @log_attrs array must have one `PangoLogAttr` for each position in @text;
-// if @text contains N characters, it has N+1 positions, including the last
-// position at the end of the text. @text should be an entire paragraph; logical
-// attributes can't be computed without context (for example you need to see
-// spaces on either side of a word to know the word is a word).
-func GetLogAttrs(text string, length int, level int, language *Language, attrsLen int)
 
 // GetMirrorChar: returns the mirrored character of a Unicode character.
 //
@@ -1230,7 +1175,7 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *ui
 // use g_markup_parse_context_free() to do so.
 func MarkupParserFinish(context *glib.MarkupParseContext, attrList **AttrList, text *string, accelChar *uint32) bool
 
-// MarkupParserNew: incrementally parses marked-up text to create a plain-text
+// NewMarkupParser: incrementally parses marked-up text to create a plain-text
 // string and an attribute list.
 //
 // See the [Pango Markup](pango_markup.html) docs for details about the
@@ -1252,7 +1197,7 @@ func MarkupParserFinish(context *glib.MarkupParseContext, attrList **AttrList, t
 // This function is designed for applications that read Pango markup from
 // streams. To simply parse a string containing Pango markup, the
 // [func@parse_markup] API is recommended instead.
-func MarkupParserNew(accelMarker uint32) *glib.MarkupParseContext
+func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext
 
 // ParseEnum: parses an enum type and stores the result in @value.
 //
@@ -1309,17 +1254,6 @@ func ParseVariant(str string, variant *Variant, warn bool) bool
 // The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
 // "ultraleight" and integers. Case variations are ignored.
 func ParseWeight(str string, weight *Weight, warn bool) bool
-
-// QuantizeLineGeometry: quantizes the thickness and position of a line to whole
-// device pixels.
-//
-// This is typically used for underline or strikethrough. The purpose of this
-// function is to avoid such lines looking blurry.
-//
-// Care is taken to make sure @thickness is at least one pixel when this
-// function returns, but returned @position may become zero as a result of
-// rounding.
-func QuantizeLineGeometry(thickness *int, position *int)
 
 // ReadLine: reads an entire line from a file into a buffer.
 //
@@ -1393,68 +1327,12 @@ func ScriptForUnichar(ch uint32) Script
 // language for PANGO_SCRIPT_HAN when setting context language is not feasible.
 func ScriptGetSampleLanguage(script Script) *Language
 
-// Shape: convert the characters in @text into glyphs.
-//
-// Given a segment of text and the corresponding `PangoAnalysis` structure
-// returned from [func@itemize], convert the characters into glyphs. You may
-// also pass in only a substring of the item from [func@itemize].
-//
-// It is recommended that you use [func@shape_full] instead, since that API
-// allows for shaping interaction happening across text item boundaries.
-//
-// Note that the extra attributes in the @analyis that is returned from
-// [func@itemize] have indices that are relative to the entire paragraph, so you
-// need to subtract the item offset from their indices before calling
-// [func@shape].
-func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString)
-
-// ShapeFull: convert the characters in @text into glyphs.
-//
-// Given a segment of text and the corresponding `PangoAnalysis` structure
-// returned from [func@itemize], convert the characters into glyphs. You may
-// also pass in only a substring of the item from [func@itemize].
-//
-// This is similar to [func@shape], except it also can optionally take the full
-// paragraph text as input, which will then be used to perform certain
-// cross-item shaping interactions. If you have access to the broader text of
-// which @item_text is part of, provide the broader text as @paragraph_text. If
-// @paragraph_text is nil, item text is used instead.
-//
-// Note that the extra attributes in the @analyis that is returned from
-// [func@itemize] have indices that are relative to the entire paragraph, so you
-// do not pass the full paragraph text as @paragraph_text, you need to subtract
-// the item offset from their indices before calling [func@shape_full].
-func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString)
-
-// ShapeWithFlags: convert the characters in @text into glyphs.
-//
-// Given a segment of text and the corresponding `PangoAnalysis` structure
-// returned from [func@itemize], convert the characters into glyphs. You may
-// also pass in only a substring of the item from [func@itemize].
-//
-// This is similar to [func@shape_full], except it also takes flags that can
-// influence the shaping process.
-//
-// Note that the extra attributes in the @analyis that is returned from
-// [func@itemize] have indices that are relative to the entire paragraph, so you
-// do not pass the full paragraph text as @paragraph_text, you need to subtract
-// the item offset from their indices before calling [func@shape_with_flags].
-func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags)
-
 // SkipSpace: skips 0 or more characters of white space.
 func SkipSpace(pos *string) bool
 
 // SplitFileList: splits a G_SEARCHPATH_SEPARATOR-separated list of files,
 // stripping white space and substituting ~/ with $HOME/.
 func SplitFileList(str string) []string
-
-// TailorBreak: apply language-specific tailoring to the breaks in @log_attrs.
-//
-// The line breaks are assumed to have been produced by [func@default_break].
-//
-// If @offset is not -1, it is used to apply attributes from @analysis that are
-// relevant to line breaking.
-func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrsLen int)
 
 // TrimString: trims leading and trailing whitespace from a string.
 func TrimString(str string) string

@@ -17,8 +17,6 @@ func init() {
 	})
 }
 
-func Init()
-
 type Color struct {
 	native *C.XftColor
 }

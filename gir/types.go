@@ -242,10 +242,10 @@ type Parameter struct {
 
 type ParameterAttrs struct {
 	Name      string `xml:"name,attr"`
-	AllowNone int    `xml:"allow-none,attr"` // 1 == true?
+	AllowNone bool   `xml:"allow-none,attr"`
 	TransferOwnership
-	Type Type
-	Doc  *Doc
+	AnyType
+	Doc *Doc
 }
 
 type Parameters struct {

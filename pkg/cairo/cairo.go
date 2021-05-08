@@ -567,8 +567,6 @@ func marshalRegionOverlap(p uintptr) (interface{}, error) {
 	return RegionOverlap(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-func ImageSurfaceCreate()
-
 type Context struct {
 	native *C.cairo_t
 }

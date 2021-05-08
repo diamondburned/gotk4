@@ -21,7 +21,8 @@ func (ng *NamespaceGenerator) resolveArrayType(array gir.Array) string {
 	return arrayPrefix + child
 }
 
-// anyType generates the Go type signature for the AnyType union.
+// anyType generates the Go type signature for the AnyType union. An empty
+// string returned is an invalid type.
 func (ng *NamespaceGenerator) resolveAnyType(any gir.AnyType) string {
 	switch {
 	case any.Array != nil:
@@ -34,7 +35,7 @@ func (ng *NamespaceGenerator) resolveAnyType(any gir.AnyType) string {
 		return ""
 
 	default:
-		ng.gen.debugln("anyType missing both array and type")
+		ng.debugln("anyType missing both array and type")
 		return ""
 	}
 }

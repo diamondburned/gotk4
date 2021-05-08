@@ -48,36 +48,3 @@ func GetContext(dpiX float64, dpiY float64) *pango.Context
 // If you want to draw an unknown-box for a character that is not covered by the
 // font, use PANGO_GET_UNKNOWN_GLYPH() instead.
 func GetUnknownGlyph(font *pango.Font) pango.Glyph
-
-// Render: renders a GlyphString onto a FreeType2 bitmap.
-func Render(bitmap *freetype.Bitmap, font *pango.Font, glyphs *pango.GlyphString, x int, y int)
-
-// RenderLayout: render a Layout onto a FreeType2 bitmap
-func RenderLayout(bitmap *freetype.Bitmap, layout *pango.Layout, x int, y int)
-
-// RenderLayoutLine: render a LayoutLine onto a FreeType2 bitmap
-func RenderLayoutLine(bitmap *freetype.Bitmap, line *pango.LayoutLine, x int, y int)
-
-// RenderLayoutLineSubpixel: render a LayoutLine onto a FreeType2 bitmap, with
-// he location specified in fixed-point Pango units rather than pixels. (Using
-// this will avoid extra inaccuracies from rounding to integer pixels multiple
-// times, even if the final glyph positions are integers.)
-func RenderLayoutLineSubpixel(bitmap *freetype.Bitmap, line *pango.LayoutLine, x int, y int)
-
-// RenderLayoutSubpixel: render a Layout onto a FreeType2 bitmap, with he
-// location specified in fixed-point Pango units rather than pixels. (Using this
-// will avoid extra inaccuracies from rounding to integer pixels multiple times,
-// even if the final glyph positions are integers.)
-func RenderLayoutSubpixel(bitmap *freetype.Bitmap, layout *pango.Layout, x int, y int)
-
-// RenderTransformed: renders a GlyphString onto a FreeType2 bitmap, possibly
-// transforming the layed-out coordinates through a transformation matrix. Note
-// that the transformation matrix for @font is not changed, so to produce
-// correct rendering results, the @font must have been loaded using a Context
-// with an identical transformation matrix to that passed in to this function.
-func RenderTransformed(bitmap *freetype.Bitmap, matrix *pango.Matrix, font *pango.Font, glyphs *pango.GlyphString, x int, y int)
-
-// ShutdownDisplay: free the global fontmap. (See
-// pango_ft2_font_map_for_display()) Use of the global PangoFT2 fontmap is
-// deprecated.
-func ShutdownDisplay()

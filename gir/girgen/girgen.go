@@ -7,6 +7,7 @@ import (
 	"log"
 	"strconv"
 	"strings"
+	"sync"
 	"text/template"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -36,15 +37,20 @@ type Generator struct {
 	// shouldn't have any marshalers.
 	NoMarshalPkgs []string
 
-	Repos   gir.Repositories
-	current gir.NamespaceFindResult
+	Repos gir.Repositories
 
 	logger *log.Logger
+
+	unknownTypes map[string]struct{}
+	uTypesMut    sync.Mutex
 }
 
 // NewGenerator creates a new generator with sane defaults.
 func NewGenerator(repos gir.Repositories) *Generator {
-	return &Generator{Repos: repos}
+	return &Generator{
+		Repos:        repos,
+		unknownTypes: map[string]struct{}{},
+	}
 }
 
 // WithLogger sets the generator's logger.
@@ -55,6 +61,21 @@ func (g *Generator) WithLogger(logger *log.Logger) {
 func (g *Generator) debugln(v ...interface{}) {
 	if g.logger != nil {
 		g.logger.Println(v...)
+	}
+}
+
+func (g *Generator) warnUnknownType(typ string) {
+	if g.logger != nil {
+		// g.uTypesMut.Lock()
+		// defer g.uTypesMut.Unlock()
+
+		// _, warned := g.unknownTypes[typ]
+		// if warned {
+		// 	return
+		// }
+
+		g.debugln("unknown gir type", typ)
+		// g.unknownTypes[typ] = struct{}{}
 	}
 }
 
@@ -165,6 +186,15 @@ func (ng *NamespaceGenerator) Repository() gir.PkgRepository {
 	return ng.current.Repository
 }
 
+func (ng *NamespaceGenerator) debugln(v ...interface{}) {
+	if ng.gen.logger != nil {
+		prefix := []interface{}{"package", ng.current.Namespace.Name + ":"}
+		prefix = append(prefix, v...)
+
+		ng.gen.debugln(prefix...)
+	}
+}
+
 func (ng *NamespaceGenerator) addImport(pkgPath string) {
 	_, ok := ng.imports[pkgPath]
 	if ok {
@@ -189,7 +219,7 @@ func (ng *NamespaceGenerator) _resolveType(typ gir.Type) *resolvedType {
 	// Resolve the unknown namespace that is GLib and primitive types.
 	switch typ.Name {
 	case "none":
-		return &resolvedType{}
+		return builtinType("", typ)
 	case "gboolean":
 		return builtinType("bool", typ)
 	case "gfloat":
@@ -239,6 +269,16 @@ func (ng *NamespaceGenerator) _resolveType(typ gir.Type) *resolvedType {
 	case "GObject.GInitiallyUnowned":
 		return builtinType("glib.InitiallyUnowned", typ)
 
+	case "GObject.Callback":
+		// Callback is a special func(Any) Any type, so we treat it as
+		// interface{} similarly to object.Connect(). We can use glib's Closure
+		// APIs to parse this interface{}.
+		return builtinType("interface{}", typ)
+
+	case "va_list":
+		// CGo cannot handle variadic argument lists.
+		return nil
+
 	// We don't know what these types translates to.
 	// TODO: Find a way to map EnumValue type.
 	// TODO: Add _full function support.
@@ -261,7 +301,7 @@ func (ng *NamespaceGenerator) _resolveType(typ gir.Type) *resolvedType {
 		typ.Name,
 	)
 	if result == nil {
-		ng.gen.debugln("unknown gir type", typ.Name)
+		ng.gen.warnUnknownType(typ.Name)
 		return nil
 	}
 

@@ -1395,45 +1395,9 @@ func AppInfoGetRecommendedForType(contentType string) *glib.List
 // g_app_info_launch_default_for_uri_async() instead.
 func AppInfoLaunchDefaultForURI(uri string, context *AppLaunchContext) bool
 
-// AppInfoLaunchDefaultForURIAsync: async version of
-// g_app_info_launch_default_for_uri().
-//
-// This version is useful if you are interested in receiving error information
-// in the case where the application is sandboxed and the portal may present an
-// application chooser dialog to the user.
-//
-// This is also useful if you want to be sure that the D-Bus–activated
-// applications are really started before termination and if you are interested
-// in receiving error information from their activation.
-func AppInfoLaunchDefaultForURIAsync(uri string, context *AppLaunchContext, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
-
 // AppInfoLaunchDefaultForURIFinish: finishes an asynchronous
 // launch-default-for-uri operation.
 func AppInfoLaunchDefaultForURIFinish(result AsyncResult) bool
-
-// AppInfoResetTypeAssociations: removes all changes to the type associations
-// done by g_app_info_set_as_default_for_type(),
-// g_app_info_set_as_default_for_extension(), g_app_info_add_supports_type() or
-// g_app_info_remove_supports_type().
-func AppInfoResetTypeAssociations(contentType string)
-
-// AsyncInitableNewvAsync: helper function for constructing Initable object.
-// This is similar to g_object_newv() but also initializes the object
-// asynchronously.
-//
-// When the initialization is finished, @callback will be called. You can then
-// call g_async_initable_new_finish() to get the new object and check for any
-// errors.
-func AsyncInitableNewvAsync(objectType glib.Type, nParameters uint, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
-
-// BusGet: asynchronously connects to the message bus specified by @bus_type.
-//
-// When the operation is finished, @callback will be invoked. You can then call
-// g_bus_get_finish() to get the result of the operation.
-//
-// This is an asynchronous failable function. See g_bus_get_sync() for the
-// synchronous version.
-func BusGet(busType BusType, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
 
 // BusGetFinish: finishes an operation started with g_bus_get().
 //
@@ -1526,25 +1490,6 @@ func BusOwnNameOnConnectionWithClosures(connection *DBusConnection, name string,
 // callbacks for easier binding in other languages.
 func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredClosure **glib.Closure, nameAcquiredClosure **glib.Closure, nameLostClosure **glib.Closure) uint
 
-// BusUnownName: stops owning a name.
-//
-// Note that there may still be D-Bus traffic to process (relating to owning and
-// unowning the name) in the current thread-default Context after this function
-// has returned. You should continue to iterate the Context until the Notify
-// function passed to g_bus_own_name() is called, in order to avoid memory leaks
-// through callbacks queued on the Context after it’s stopped being iterated.
-func BusUnownName(ownerID uint)
-
-// BusUnwatchName: stops watching a name.
-//
-// Note that there may still be D-Bus traffic to process (relating to watching
-// and unwatching the name) in the current thread-default Context after this
-// function has returned. You should continue to iterate the Context until the
-// Notify function passed to g_bus_watch_name() is called, in order to avoid
-// memory leaks through callbacks queued on the Context after it’s stopped being
-// iterated.
-func BusUnwatchName(watcherID uint)
-
 // BusWatchName: starts watching @name on the bus specified by @bus_type and
 // calls @name_appeared_handler and @name_vanished_handler when the name is
 // known to have an owner respectively known to lose its owner. Callbacks will
@@ -1627,7 +1572,7 @@ func ContentTypeGetSymbolicIcon(_type string) Icon
 // function is uncertain, @result_uncertain will be set to true. Either
 // @filename or @data may be nil, in which case the guess will be based solely
 // on the other argument.
-func ContentTypeGuess(filename string, dataSize uint, resultUncertain *bool) string
+func ContentTypeGuess(filename string, data []uint8, dataSize uint, resultUncertain *bool) string
 
 // ContentTypeGuessForTree: tries to guess the type of the tree with root @root,
 // by looking at the files it contains. The result is an array of content types,
@@ -1654,30 +1599,6 @@ func ContentTypeIsMimeType(_type string, mimeType string) bool
 // it is "*" and on OSX it is a dynamic type or octet-stream.
 func ContentTypeIsUnknown(_type string) bool
 
-// ContentTypeSetMimeDirs: set the list of directories used by GIO to load the
-// MIME database. If @dirs is nil, the directories used are the default:
-//
-// - the `mime` subdirectory of the directory in `$XDG_DATA_HOME` - the `mime`
-// subdirectory of every directory in `$XDG_DATA_DIRS`
-//
-// This function is intended to be used when writing tests that depend on
-// information stored in the MIME database, in order to control the data.
-//
-// Typically, in case your tests use G_TEST_OPTION_ISOLATE_DIRS, but they depend
-// on the system’s MIME database, you should call this function with @dirs set
-// to nil before calling g_test_init(), for instance:
-//
-//      // Load MIME data from the system
-//      g_content_type_set_mime_dirs (NULL);
-//      // Isolate the environment
-//      g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
-//
-//      …
-//
-//      return g_test_run ();
-//
-func ContentTypeSetMimeDirs()
-
 // ContentTypesGetRegistered: gets a list of strings containing all the
 // registered content types known to the system. The list and its data should be
 // freed using `g_list_free_full (list, g_free)`.
@@ -1699,19 +1620,6 @@ func DbusAddressEscapeValue(string string) string
 // format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 func DbusAddressGetForBusSync(busType BusType, cancellable *Cancellable) string
 
-// DbusAddressGetStream: asynchronously connects to an endpoint specified by
-// @address and sets up the connection so it is in a state to run the
-// client-side of the D-Bus authentication conversation. @address must be in the
-// [D-Bus address
-// format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-//
-// When the operation is finished, @callback will be invoked. You can then call
-// g_dbus_address_get_stream_finish() to get the result of the operation.
-//
-// This is an asynchronous failable function. See
-// g_dbus_address_get_stream_sync() for the synchronous version.
-func DbusAddressGetStream(address string, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
-
 // DbusAddressGetStreamFinish: finishes an operation started with
 // g_dbus_address_get_stream().
 func DbusAddressGetStreamFinish(res AsyncResult, outGuid *string) *IOStream
@@ -1729,7 +1637,7 @@ func DbusAddressGetStreamSync(address string, outGuid *string, cancellable *Canc
 // DbusAnnotationInfoLookup: looks up the value of an annotation.
 //
 // The cost of this function is O(n) in number of annotations.
-func DbusAnnotationInfoLookup(name string) string
+func DbusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string
 
 // DbusErrorEncodeGerror: creates a D-Bus error name to use for @error. If
 // @error matches a registered error (cf. g_dbus_error_register_error()), the
@@ -1793,10 +1701,6 @@ func DbusErrorQuark() glib.Quark
 // domain.
 func DbusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool
 
-// DbusErrorRegisterErrorDomain: helper function for associating a #GError error
-// domain with D-Bus error names.
-func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *uint, numEntries uint)
-
 // DbusErrorStripRemoteError: looks for extra information in the error message
 // used to recover the D-Bus error name and strips it if found. If stripped, the
 // message field in @error will correspond exactly to what was received on the
@@ -1839,19 +1743,6 @@ func DbusGenerateGuid() string
 // to a #GValue.
 func DbusGvalueToGvariant(gvalue **glib.Value, _type *glib.VariantType) *glib.Variant
 
-// DbusGvariantToGvalue: converts a #GVariant to a #GValue. If @value is
-// floating, it is consumed.
-//
-// The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
-// this function is essentially its reverse form. So, a #GVariant containing any
-// basic or string array type will be converted to a #GValue containing a basic
-// value or string array. Any other #GVariant (handle, variant, tuple, dict
-// entry) will be converted to a #GValue containing that #GVariant.
-//
-// The conversion never fails - a valid #GValue is always returned in
-// @out_gvalue.
-func DbusGvariantToGvalue(value *glib.Variant, outGvalue **glib.Value)
-
 // DbusIsAddress: checks if @string is a [D-Bus
 // address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
@@ -1885,14 +1776,14 @@ func DbusIsSupportedAddress(string string) bool
 // DbusIsUniqueName: checks if @string is a valid D-Bus unique bus name.
 func DbusIsUniqueName(string string) bool
 
-// DtlsClientConnectionNew: creates a new ClientConnection wrapping @base_socket
+// NewDtlsClientConnection: creates a new ClientConnection wrapping @base_socket
 // which is assumed to communicate with the server identified by
 // @server_identity.
-func DtlsClientConnectionNew(baseSocket DatagramBased, serverIdentity SocketConnectable) DtlsClientConnection
+func NewDtlsClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) DtlsClientConnection
 
-// DtlsServerConnectionNew: creates a new ServerConnection wrapping
+// NewDtlsServerConnection: creates a new ServerConnection wrapping
 // @base_socket.
-func DtlsServerConnectionNew(baseSocket DatagramBased, certificate *TlsCertificate) DtlsServerConnection
+func NewDtlsServerConnection(baseSocket DatagramBased, certificate *TlsCertificate) DtlsServerConnection
 
 // FileNewForCommandlineArg: creates a #GFile with the given argument from the
 // command line. The value of @arg can be either a URI, an absolute path or a
@@ -1965,11 +1856,6 @@ func IconHash(icon unsafe.Pointer) uint
 // to calling g_icon_new_for_string().
 func IconNewForString(str string) Icon
 
-// InitableNewv: helper function for constructing #GInitable object. This is
-// similar to g_object_newv() but also initializes the object and returns nil,
-// setting an error on failure.
-func InitableNewv(objectType glib.Type, nParameters uint, cancellable *Cancellable) *glib.Object
-
 // IOErrorFromErrno: converts errno.h error codes into GIO error codes. The
 // fallback value G_IO_ERROR_FAILED is returned for error codes not currently
 // handled (but note that future GLib releases may return a more specific value
@@ -2011,48 +1897,7 @@ func IOModulesLoadAllInDirectory(dirname *string) *glib.List
 // delayed/lazy loading of modules.
 func IOModulesLoadAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) *glib.List
 
-// IOModulesScanAllInDirectory: scans all the modules in the specified
-// directory, ensuring that any extension point implemented by a module is
-// registered.
-//
-// This may not actually load and initialize all the types in each module, some
-// modules may be lazily loaded and initialized when an extension point it
-// implements is used with e.g. g_io_extension_point_get_extensions() or
-// g_io_extension_point_get_extension_by_name().
-//
-// If you need to guarantee that all types are loaded in all the modules, use
-// g_io_modules_load_all_in_directory().
-func IOModulesScanAllInDirectory(dirname *string)
-
-// IOModulesScanAllInDirectoryWithScope: scans all the modules in the specified
-// directory, ensuring that any extension point implemented by a module is
-// registered.
-//
-// This may not actually load and initialize all the types in each module, some
-// modules may be lazily loaded and initialized when an extension point it
-// implements is used with e.g. g_io_extension_point_get_extensions() or
-// g_io_extension_point_get_extension_by_name().
-//
-// If you need to guarantee that all types are loaded in all the modules, use
-// g_io_modules_load_all_in_directory().
-func IOModulesScanAllInDirectoryWithScope(dirname *string, scope *IOModuleScope)
-
-// IOSchedulerCancelAllJobs: cancels all cancellable I/O jobs.
-//
-// A job is cancellable if a #GCancellable was passed into
-// g_io_scheduler_push_job().
-func IOSchedulerCancelAllJobs()
-
-// IOSchedulerPushJob: schedules the I/O job to run in another thread.
-//
-// @notify will be called on @user_data after @job_func has returned, regardless
-// whether the job was cancelled or has run to completion.
-//
-// If @cancellable is not nil, it can be used to cancel the I/O job by calling
-// g_cancellable_cancel() or by calling g_io_scheduler_cancel_all_jobs().
-func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, userData unsafe.Pointer, notify unsafe.Pointer, ioPriority int, cancellable *Cancellable)
-
-// KeyfileSettingsBackendNew: creates a keyfile-backed Backend.
+// NewKeyfileSettingsBackend: creates a keyfile-backed Backend.
 //
 // The filename of the keyfile to use is given by @filename.
 //
@@ -2096,40 +1941,34 @@ func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, userData unsafe.Pointer, not
 // The backend reads default values from a keyfile called `defaults` in the
 // directory specified by the SettingsBackend:defaults-dir property, and a list
 // of locked keys from a text file with the name `locks` in the same location.
-func KeyfileSettingsBackendNew(filename string, rootPath string, rootGroup string) *SettingsBackend
+func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup string) *SettingsBackend
 
 // MemoryMonitorDupDefault: gets a reference to the default Monitor for the
 // system.
 func MemoryMonitorDupDefault() MemoryMonitor
 
-// MemorySettingsBackendNew: creates a memory-backed Backend.
+// NewMemorySettingsBackend: creates a memory-backed Backend.
 //
 // This backend allows changes to settings, but does not write them to any
 // backing storage, so the next time you run your application, the memory
 // backend will start out with the default values again.
-func MemorySettingsBackendNew() *SettingsBackend
+func NewMemorySettingsBackend() *SettingsBackend
 
 // NetworkMonitorGetDefault: gets the default Monitor for the system.
 func NetworkMonitorGetDefault() NetworkMonitor
 
-// NetworkingInit: initializes the platform networking libraries (eg, on
-// Windows, this calls WSAStartup()). GLib will call this itself if it is
-// needed, so you only need to call it if you directly call system networking
-// functions (without calling any GLib networking functions first).
-func NetworkingInit()
-
-// NullSettingsBackendNew: creates a readonly Backend.
+// NewNullSettingsBackend: creates a readonly Backend.
 //
 // This backend does not allow changes to settings, so all settings will always
 // have their default values.
-func NullSettingsBackendNew() *SettingsBackend
+func NewNullSettingsBackend() *SettingsBackend
 
-// PollableSourceNew: utility method for InputStream and OutputStream
+// NewPollableSource: utility method for InputStream and OutputStream
 // implementations. Creates a new #GSource that expects a callback of type
 // SourceFunc. The new source does not actually do anything on its own; use
 // g_source_add_child_source() to add other sources to it to cause it to
 // trigger.
-func PollableSourceNew(pollableStream **glib.Object) *glib.Source
+func NewPollableSource(pollableStream **glib.Object) *glib.Source
 
 // PollableSourceNewFull: utility method for InputStream and OutputStream
 // implementations. Creates a new #GSource, as with g_pollable_source_new(), but
@@ -2146,7 +1985,7 @@ func PollableSourceNewFull(pollableStream *glib.Object, childSource *glib.Source
 // g_pollable_input_stream_can_poll() returns true, or else the behavior is
 // undefined. If @blocking is true, then @stream does not need to be a
 // InputStream.
-func PollableStreamRead(stream *InputStream, count uint, blocking bool, cancellable *Cancellable) int
+func PollableStreamRead(stream *InputStream, buffer []uint8, count uint, blocking bool, cancellable *Cancellable) int
 
 // PollableStreamWrite: tries to write to @stream, as with
 // g_output_stream_write() (if @blocking is true) or
@@ -2158,7 +1997,7 @@ func PollableStreamRead(stream *InputStream, count uint, blocking bool, cancella
 // g_pollable_output_stream_can_poll() returns true or else the behavior is
 // undefined. If @blocking is true, then @stream does not need to be a
 // OutputStream.
-func PollableStreamWrite(stream *OutputStream, count uint, blocking bool, cancellable *Cancellable) int
+func PollableStreamWrite(stream *OutputStream, buffer []uint8, count uint, blocking bool, cancellable *Cancellable) int
 
 // PollableStreamWriteAll: tries to write @count bytes to @stream, as with
 // g_output_stream_write_all(), but using g_pollable_stream_write() rather than
@@ -2176,7 +2015,7 @@ func PollableStreamWrite(stream *OutputStream, count uint, blocking bool, cancel
 // be a OutputStream for which g_pollable_output_stream_can_poll() returns true
 // or else the behavior is undefined. If @blocking is true, then @stream does
 // not need to be a OutputStream.
-func PollableStreamWriteAll(stream *OutputStream, count uint, blocking bool, bytesWritten *uint, cancellable *Cancellable) bool
+func PollableStreamWriteAll(stream *OutputStream, buffer []uint8, count uint, blocking bool, bytesWritten *uint, cancellable *Cancellable) bool
 
 // ProxyGetDefaultForProtocol: find the `gio-proxy` extension point for a proxy
 // implementation that supports the specified protocol.
@@ -2238,15 +2077,6 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Byt
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) *InputStream
 
-// ResourcesRegister: registers the resource with the process-global set of
-// resources. Once a resource is registered the files in it can be accessed with
-// the global resource lookup functions like g_resources_lookup_data().
-func ResourcesRegister(resource *Resource)
-
-// ResourcesUnregister: unregisters the resource from the process-global set of
-// resources.
-func ResourcesUnregister(resource *Resource)
-
 // SettingsSchemaSourceGetDefault: gets the default system schema source.
 //
 // This function is not required for normal uses of #GSettings but it may be
@@ -2261,22 +2091,6 @@ func ResourcesUnregister(resource *Resource)
 // performed against the default source should probably be done recursively.
 func SettingsSchemaSourceGetDefault() *SettingsSchemaSource
 
-// SimpleAsyncReportErrorInIdle: reports an error in an asynchronous function in
-// an idle function by directly setting the contents of the Result with the
-// given error information.
-func SimpleAsyncReportErrorInIdle(object **glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, domain glib.Quark, code int, format string)
-
-// SimpleAsyncReportGerrorInIdle: reports an error in an idle function. Similar
-// to g_simple_async_report_error_in_idle(), but takes a #GError rather than
-// building a new one.
-func SimpleAsyncReportGerrorInIdle(object **glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
-
-// SimpleAsyncReportTakeGerrorInIdle: reports an error in an idle function.
-// Similar to g_simple_async_report_gerror_in_idle(), but takes over the
-// caller's ownership of @error, so the caller does not have to free it any
-// more.
-func SimpleAsyncReportTakeGerrorInIdle(object **glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
-
 // SrvTargetListSort: sorts @targets in place according to the algorithm in RFC
 // 2782.
 func SrvTargetListSort(targets *glib.List) *glib.List
@@ -2287,31 +2101,31 @@ func TlsBackendGetDefault() TlsBackend
 // TlsChannelBindingErrorQuark: gets the TLS channel binding error quark.
 func TlsChannelBindingErrorQuark() glib.Quark
 
-// TlsClientConnectionNew: creates a new ClientConnection wrapping
+// NewTlsClientConnection: creates a new ClientConnection wrapping
 // @base_io_stream (which must have pollable input and output streams) which is
 // assumed to communicate with the server identified by @server_identity.
 //
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the @base_io_stream after this
 // function has returned.
-func TlsClientConnectionNew(baseIOStream *IOStream, serverIdentity SocketConnectable) TlsClientConnection
+func NewTlsClientConnection(baseIOStream *IOStream, serverIdentity SocketConnectable) TlsClientConnection
 
 // TlsErrorQuark: gets the TLS error quark.
 func TlsErrorQuark() glib.Quark
 
-// TlsFileDatabaseNew: creates a new FileDatabase which uses anchor certificate
+// NewTlsFileDatabase: creates a new FileDatabase which uses anchor certificate
 // authorities in @anchors to verify certificate chains.
 //
 // The certificates in @anchors must be PEM encoded.
-func TlsFileDatabaseNew(anchors *string) TlsFileDatabase
+func NewTlsFileDatabase(anchors *string) TlsFileDatabase
 
-// TlsServerConnectionNew: creates a new ServerConnection wrapping
+// NewTlsServerConnection: creates a new ServerConnection wrapping
 // @base_io_stream (which must have pollable input and output streams).
 //
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the @base_io_stream after this
 // function has returned.
-func TlsServerConnectionNew(baseIOStream *IOStream, certificate *TlsCertificate) TlsServerConnection
+func NewTlsServerConnection(baseIOStream *IOStream, certificate *TlsCertificate) TlsServerConnection
 
 // UnixIsMountPathSystemInternal: determines if @mount_path is considered an
 // implementation of the OS. This is primarily used for hiding mountable and
@@ -2357,9 +2171,6 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry
 //
 // If more mounts have the same mount path, the last matching mount is returned.
 func UnixMountFor(filePath *string, timeRead *uint64) *UnixMountEntry
-
-// UnixMountFree: frees a unix mount.
-func UnixMountFree(mountEntry *UnixMountEntry)
 
 // UnixMountGetDevicePath: gets the device path for a unix mount.
 func UnixMountGetDevicePath(mountEntry *UnixMountEntry) *string

@@ -71,7 +71,7 @@ func (repos *Repositories) AddSelected(pkg string, namespaces []string) error {
 		return len(r.Namespaces) > 0
 	}
 
-	girs, err := pkgconfig.FindGirFiles(pkg)
+	girs, err := pkgconfig.FindGIRFiles(pkg)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get gir files for %q", pkg)
 	}
@@ -103,7 +103,7 @@ func (repos *Repositories) AddSelected(pkg string, namespaces []string) error {
 // Add finds the given pkg name to be searched using pkg-config and added into
 // the list of repositories.
 func (repos *Repositories) Add(pkg string) error {
-	girs, err := pkgconfig.FindGirFiles(pkg)
+	girs, err := pkgconfig.FindGIRFiles(pkg)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get gir files for %q", pkg)
 	}

@@ -28,6 +28,10 @@ var (
 		"Nfkc",
 		"Nfkd",
 		"Simd",
+		"Hmac",
+		"Ascii",
+		"Toupper",
+		"Tolower",
 		`Sha(\d+)?`,
 		`Utf(\d+)?`,
 		`[XY][^aiueo]`,
@@ -88,6 +92,11 @@ var goKeywords = map[string]struct{}{
 
 // PascalToGo converts regular Pascal case to Go.
 func PascalToGo(pascal string) string {
+	// Force constructors to have a New prefix instead of suffix.
+	if strings.HasSuffix(pascal, "New") {
+		pascal = "New" + strings.TrimSuffix(pascal, "New")
+	}
+
 	return pascalRegex.ReplaceAllStringFunc(pascal, strings.ToUpper)
 }
 

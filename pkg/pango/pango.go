@@ -1097,7 +1097,7 @@ func FindBaseDir(text string, length int) Direction
 // If no delimiters are found, both @paragraph_delimiter_index and
 // @next_paragraph_start are filled with the length of @text (an index one off
 // the end).
-func FindParagraphBoundary(text string, length int, paragraphDelimiterIndex *int, nextParagraphStart *int)
+func FindParagraphBoundary(text string, length int) (int, int)
 
 // FontDescriptionFromString: creates a new font description from a string
 // representation.
@@ -1292,7 +1292,7 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *ui
 // g_markup_parse_context_parse(), use this function to get the list of
 // attributes and text out of the markup. This function will not free @context,
 // use g_markup_parse_context_free() to do so.
-func MarkupParserFinish(context *glib.MarkupParseContext, attrList **AttrList, text *string, accelChar *uint32) bool
+func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, bool)
 
 // NewMarkupParser: incrementally parses marked-up text to create a plain-text
 // string and an attribute list.
@@ -1326,7 +1326,7 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext
 // @possible_values. The list is slash-separated, eg. "none/start/middle/end".
 // If failed and @possible_values is not nil, returned string should be freed
 // using g_free().
-func ParseEnum(_type glib.Type, str string, value *int, warn bool, possibleValues *string) bool
+func ParseEnum(_type glib.Type, str string, warn bool) (int, string, bool)
 
 // ParseMarkup: parses marked-up text to create a plain-text string and an
 // attribute list.
@@ -1346,7 +1346,7 @@ func ParseEnum(_type glib.Type, str string, value *int, warn bool, possibleValue
 //
 // If any error happens, none of the output arguments are touched except for
 // @error.
-func ParseMarkup(markupText string, length int, accelMarker uint32, attrList **AttrList, text *string, accelChar *uint32) bool
+func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, bool)
 
 // ParseStretch: parses a font stretch.
 //
@@ -1354,25 +1354,25 @@ func ParseMarkup(markupText string, length int, accelMarker uint32, attrList **A
 // "semi_condensed", "normal", "semi_expanded", "expanded", "extra_expanded" and
 // "ultra_expanded". Case variations are ignored and the '_' characters may be
 // omitted.
-func ParseStretch(str string, stretch *Stretch, warn bool) bool
+func ParseStretch(str string, warn bool) (Stretch, bool)
 
 // ParseStyle: parses a font style.
 //
 // The allowed values are "normal", "italic" and "oblique", case variations
 // being ignored.
-func ParseStyle(str string, style *Style, warn bool) bool
+func ParseStyle(str string, warn bool) (Style, bool)
 
 // ParseVariant: parses a font variant.
 //
 // The allowed values are "normal" and "smallcaps" or "small_caps", case
 // variations being ignored.
-func ParseVariant(str string, variant *Variant, warn bool) bool
+func ParseVariant(str string, warn bool) (Variant, bool)
 
 // ParseWeight: parses a font weight.
 //
 // The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
 // "ultraleight" and integers. Case variations are ignored.
-func ParseWeight(str string, weight *Weight, warn bool) bool
+func ParseWeight(str string, warn bool) (Weight, bool)
 
 // QuantizeLineGeometry: quantizes the thickness and position of a line to whole
 // device pixels.
@@ -1403,7 +1403,7 @@ func ReorderItems(logicalItems *glib.List) *glib.List
 // ScanInt: scans an integer.
 //
 // Leading white space is skipped.
-func ScanInt(pos *string, out *int) bool
+func ScanInt(pos *string) (int, bool)
 
 // ScanString: scans a string into a #GString buffer.
 //
@@ -2020,17 +2020,14 @@ func wrapGlyphGeometry(p *C.PangoGlyphGeometry) *GlyphGeometry {
 		tmp := int32(p.width)
 		v.Width = GlyphUnit(tmp)
 	}
-
 	{
 		tmp := int32(p.x_offset)
 		v.XOffset = GlyphUnit(tmp)
 	}
-
 	{
 		tmp := int32(p.y_offset)
 		v.YOffset = GlyphUnit(tmp)
 	}
-
 	return &v
 }
 
@@ -2058,7 +2055,6 @@ func wrapGlyphInfo(p *C.PangoGlyphInfo) *GlyphInfo {
 		tmp := uint32(p.glyph)
 		v.Glyph = Glyph(tmp)
 	}
-
 	v.Geometry = wrapGlyphGeometry(p.geometry)
 	v.Attr = wrapGlyphVisAttr(p.attr)
 	return &v
@@ -2188,9 +2184,7 @@ type GlyphString struct {
 func wrapGlyphString(p *C.PangoGlyphString) *GlyphString {
 	v := GlyphString{native: p}
 	v.NumGlyphs = int(p.num_glyphs)
-	{
-		a := make([]GlyphInfo, 0)
-	}
+
 	v.LogClusters = int(p.log_clusters)
 	return &v
 }

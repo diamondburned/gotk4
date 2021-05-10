@@ -2167,7 +2167,7 @@ func ActionNameIsValid(actionName string) bool
 // "app.action('target')". For strings, this third format must be used if *
 // target value is empty or contains characters other than alphanumerics, '-'
 // and '.'.
-func ActionParseDetailedName(detailedName string, actionName *string, targetValue **glib.Variant) bool
+func ActionParseDetailedName(detailedName string) (string, *glib.Variant, bool)
 
 // ActionPrintDetailedName: formats a detailed action name from @action_name and
 // @target_value.
@@ -2458,7 +2458,7 @@ func ContentTypeGetSymbolicIcon(_type string) Icon
 // function is uncertain, @result_uncertain will be set to true. Either
 // @filename or @data may be nil, in which case the guess will be based solely
 // on the other argument.
-func ContentTypeGuess(filename string, data []uint8, dataSize uint, resultUncertain *bool) string
+func ContentTypeGuess(filename string, data []uint8, dataSize uint) (bool, string)
 
 // ContentTypeGuessForTree: tries to guess the type of the tree with root @root,
 // by looking at the files it contains. The result is an array of content types,
@@ -2545,7 +2545,7 @@ func DbusAddressGetStream(address string, cancellable *Cancellable, callback Asy
 
 // DbusAddressGetStreamFinish: finishes an operation started with
 // g_dbus_address_get_stream().
-func DbusAddressGetStreamFinish(res AsyncResult, outGuid *string) *IOStream
+func DbusAddressGetStreamFinish(res AsyncResult) (string, *IOStream)
 
 // DbusAddressGetStreamSync: synchronously connects to an endpoint specified by
 // @address and sets up the connection so it is in a state to run the
@@ -2555,7 +2555,7 @@ func DbusAddressGetStreamFinish(res AsyncResult, outGuid *string) *IOStream
 //
 // This is a synchronous failable function. See g_dbus_address_get_stream() for
 // the asynchronous version.
-func DbusAddressGetStreamSync(address string, outGuid *string, cancellable *Cancellable) *IOStream
+func DbusAddressGetStreamSync(address string, cancellable *Cancellable) (string, *IOStream)
 
 // DbusAnnotationInfoLookup: looks up the value of an annotation.
 //
@@ -2681,7 +2681,7 @@ func DbusGvalueToGvariant(gvalue **glib.Value, _type *glib.VariantType) *glib.Va
 //
 // The conversion never fails - a valid #GValue is always returned in
 // @out_gvalue.
-func DbusGvariantToGvalue(value *glib.Variant, outGvalue **glib.Value)
+func DbusGvariantToGvalue(value *glib.Variant) *glib.Value
 
 // DbusIsAddress: checks if @string is a [D-Bus
 // address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
@@ -2773,7 +2773,7 @@ func FileNewForURI(uri string) File
 //
 // Unlike the other #GFile constructors, this will return nil if a temporary
 // file could not be created.
-func FileNewTmp(tmpl *string, iostream **FileIOStream) File
+func FileNewTmp(tmpl *string) (*FileIOStream, File)
 
 // FileParseName: constructs a #GFile with the given @parse_name (i.e. something
 // given by g_file_get_parse_name()). This operation never fails, but the
@@ -3002,7 +3002,7 @@ func PollableStreamWrite(stream *OutputStream, buffer []uint8, count uint, block
 // be a OutputStream for which g_pollable_output_stream_can_poll() returns true
 // or else the behavior is undefined. If @blocking is true, then @stream does
 // not need to be a OutputStream.
-func PollableStreamWriteAll(stream *OutputStream, buffer []uint8, count uint, blocking bool, bytesWritten *uint, cancellable *Cancellable) bool
+func PollableStreamWriteAll(stream *OutputStream, buffer []uint8, count uint, blocking bool, cancellable *Cancellable) (uint, bool)
 
 // ProxyGetDefaultForProtocol: find the `gio-proxy` extension point for a proxy
 // implementation that supports the specified protocol.
@@ -3040,7 +3040,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []
 // globally registered resources and if found returns information about it.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags, size *uint, flags *uint32) bool
+func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint32, bool)
 
 // ResourcesLookupData: looks for a file at the specified @path in the set of
 // globally registered resources and returns a #GBytes that lets you directly
@@ -3164,7 +3164,7 @@ func UnixIsSystemFsType(fsType string) bool
 // changed since with g_unix_mounts_changed_since().
 //
 // If more mounts have the same mount path, the last matching mount is returned.
-func UnixMountAt(mountPath *string, timeRead *uint64) *UnixMountEntry
+func UnixMountAt(mountPath *string) (uint64, *UnixMountEntry)
 
 // UnixMountCompare: compares two unix mounts.
 func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int
@@ -3177,7 +3177,7 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry
 // changed since with g_unix_mounts_changed_since().
 //
 // If more mounts have the same mount path, the last matching mount is returned.
-func UnixMountFor(filePath *string, timeRead *uint64) *UnixMountEntry
+func UnixMountFor(filePath *string) (uint64, *UnixMountEntry)
 
 // UnixMountFree: frees a unix mount.
 func UnixMountFree(mountEntry *UnixMountEntry)
@@ -3239,7 +3239,7 @@ func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool
 //
 // If more mount points have the same mount path, the last matching mount point
 // is returned.
-func UnixMountPointAt(mountPath *string, timeRead *uint64) *UnixMountPoint
+func UnixMountPointAt(mountPath *string) (uint64, *UnixMountPoint)
 
 // UnixMountPointsChangedSince: checks if the unix mount points have changed
 // since a given unix time.
@@ -3249,7 +3249,7 @@ func UnixMountPointsChangedSince(time uint64) bool
 // points. If @time_read is set, it will be filled with the mount timestamp,
 // allowing for checking if the mounts have changed with
 // g_unix_mount_points_changed_since().
-func UnixMountPointsGet(timeRead *uint64) *glib.List
+func UnixMountPointsGet() (uint64, *glib.List)
 
 // UnixMountsChangedSince: checks if the unix mounts have changed since a given
 // unix time.
@@ -3258,7 +3258,7 @@ func UnixMountsChangedSince(time uint64) bool
 // UnixMountsGet: gets a #GList of MountEntry containing the unix mounts. If
 // @time_read is set, it will be filled with the mount timestamp, allowing for
 // checking if the mounts have changed with g_unix_mounts_changed_since().
-func UnixMountsGet(timeRead *uint64) *glib.List
+func UnixMountsGet() (uint64, *glib.List)
 
 // ActionEntry: this struct defines a single action. It is for use with
 // g_action_map_add_action_entries().
@@ -3318,9 +3318,7 @@ func wrapDBusAnnotationInfo(p *C.GDBusAnnotationInfo) *DBusAnnotationInfo {
 	v.RefCount = int(p.ref_count)
 	v.Key = C.GoString(p.key)
 	v.Value = C.GoString(p.value)
-	{
-		a := make([]*DBusAnnotationInfo, 0)
-	}
+
 	return &v
 }
 
@@ -3349,9 +3347,7 @@ func wrapDBusArgInfo(p *C.GDBusArgInfo) *DBusArgInfo {
 	v.RefCount = int(p.ref_count)
 	v.Name = C.GoString(p.name)
 	v.Signature = C.GoString(p.signature)
-	{
-		a := make([]*DBusAnnotationInfo, 0)
-	}
+
 	return &v
 }
 
@@ -3409,18 +3405,7 @@ func wrapDBusInterfaceInfo(p *C.GDBusInterfaceInfo) *DBusInterfaceInfo {
 	var v DBusInterfaceInfo
 	v.RefCount = int(p.ref_count)
 	v.Name = C.GoString(p.name)
-	{
-		a := make([]*DBusMethodInfo, 0)
-	}
-	{
-		a := make([]*DBusSignalInfo, 0)
-	}
-	{
-		a := make([]*DBusPropertyInfo, 0)
-	}
-	{
-		a := make([]*DBusAnnotationInfo, 0)
-	}
+
 	return &v
 }
 
@@ -3516,15 +3501,7 @@ func wrapDBusMethodInfo(p *C.GDBusMethodInfo) *DBusMethodInfo {
 	var v DBusMethodInfo
 	v.RefCount = int(p.ref_count)
 	v.Name = C.GoString(p.name)
-	{
-		a := make([]*DBusArgInfo, 0)
-	}
-	{
-		a := make([]*DBusArgInfo, 0)
-	}
-	{
-		a := make([]*DBusAnnotationInfo, 0)
-	}
+
 	return &v
 }
 
@@ -3557,15 +3534,7 @@ func wrapDBusNodeInfo(p *C.GDBusNodeInfo) *DBusNodeInfo {
 	var v DBusNodeInfo
 	v.RefCount = int(p.ref_count)
 	v.Path = C.GoString(p.path)
-	{
-		a := make([]*DBusInterfaceInfo, 0)
-	}
-	{
-		a := make([]*DBusNodeInfo, 0)
-	}
-	{
-		a := make([]*DBusAnnotationInfo, 0)
-	}
+
 	return &v
 }
 
@@ -3597,9 +3566,7 @@ func wrapDBusPropertyInfo(p *C.GDBusPropertyInfo) *DBusPropertyInfo {
 	v.Name = C.GoString(p.name)
 	v.Signature = C.GoString(p.signature)
 	v.Flags = DBusPropertyInfoFlags(p.flags)
-	{
-		a := make([]*DBusAnnotationInfo, 0)
-	}
+
 	return &v
 }
 
@@ -3628,12 +3595,7 @@ func wrapDBusSignalInfo(p *C.GDBusSignalInfo) *DBusSignalInfo {
 	var v DBusSignalInfo
 	v.RefCount = int(p.ref_count)
 	v.Name = C.GoString(p.name)
-	{
-		a := make([]*DBusArgInfo, 0)
-	}
-	{
-		a := make([]*DBusAnnotationInfo, 0)
-	}
+
 	return &v
 }
 
@@ -3779,15 +3741,11 @@ type InputMessage struct {
 func wrapInputMessage(p *C.GInputMessage) *InputMessage {
 	var v InputMessage
 	v.Address = wrap * *SocketAddress(p.address)
-	{
-		a := make([]InputVector, 2)
-	}
+
 	v.NumVectors = uint(p.num_vectors)
 	v.BytesReceived = uint(p.bytes_received)
 	v.Flags = int(p.flags)
-	{
-		a := make([]**SocketControlMessage, 6)
-	}
+
 	v.NumControlMessages = uint(p.num_control_messages)
 	return &v
 }
@@ -3852,9 +3810,7 @@ func wrapOutputMessage(p *C.GOutputMessage) *OutputMessage {
 	v.Vectors = wrap * OutputVector(p.vectors)
 	v.NumVectors = uint(p.num_vectors)
 	v.BytesSent = uint(p.bytes_sent)
-	{
-		a := make([]*SocketControlMessage, 5)
-	}
+
 	v.NumControlMessages = uint(p.num_control_messages)
 	return &v
 }

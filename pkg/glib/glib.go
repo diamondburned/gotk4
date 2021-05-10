@@ -2436,7 +2436,7 @@ func ASCIIStrdown(str string, len int) string
 //
 // See g_ascii_strtoll() if you have more complex needs such as parsing a string
 // which starts with a number, but then has other characters.
-func ASCIIStringToSigned(str string, base uint, min int64, max int64, outNum *int64) bool
+func ASCIIStringToSigned(str string, base uint, min int64, max int64) (int64, bool)
 
 // ASCIIStringToUnsigned: a convenience function for converting a string to an
 // unsigned number.
@@ -2459,7 +2459,7 @@ func ASCIIStringToSigned(str string, base uint, min int64, max int64, outNum *in
 //
 // See g_ascii_strtoull() if you have more complex needs such as parsing a
 // string which starts with a number, but then has other characters.
-func ASCIIStringToUnsigned(str string, base uint, min uint64, max uint64, outNum *uint64) bool
+func ASCIIStringToUnsigned(str string, base uint, min uint64, max uint64) (uint64, bool)
 
 // ASCIIStrncasecmp: compare @s1 and @s2, ignoring the case of ASCII characters
 // and any characters after the first @n in each string.
@@ -2494,7 +2494,7 @@ func ASCIIStrncasecmp(s1 string, s2 string, n uint) int
 //
 // This function resets errno before calling strtod() so that you can reliably
 // detect overflow and underflow.
-func ASCIIStrtod(nptr string, endptr *string) float64
+func ASCIIStrtod(nptr string) (string, float64)
 
 // ASCIIStrtoll: converts a string to a #gint64 value. This function behaves
 // like the standard strtoll() function does in the C locale. It does this
@@ -2510,7 +2510,7 @@ func ASCIIStrtod(nptr string, endptr *string) float64
 // range, zero is returned, and `EINVAL` is stored in `errno`. If the string
 // conversion fails, zero is returned, and @endptr returns @nptr (if @endptr is
 // non-nil).
-func ASCIIStrtoll(nptr string, endptr *string, base uint) int64
+func ASCIIStrtoll(nptr string, base uint) (string, int64)
 
 // ASCIIStrtoull: converts a string to a #guint64 value. This function behaves
 // like the standard strtoull() function does in the C locale. It does this
@@ -2530,7 +2530,7 @@ func ASCIIStrtoll(nptr string, endptr *string, base uint) int64
 // `ERANGE` is stored in `errno`. If the base is outside the valid range, zero
 // is returned, and `EINVAL` is stored in `errno`. If the string conversion
 // fails, zero is returned, and @endptr returns @nptr (if @endptr is non-nil).
-func ASCIIStrtoull(nptr string, endptr *string, base uint) uint64
+func ASCIIStrtoull(nptr string, base uint) (string, uint64)
 
 // ASCIIStrup: converts all lower case ASCII letters to upper case ASCII
 // letters.
@@ -2808,7 +2808,7 @@ func AtomicRefCountInit(arc *int)
 // Base64Decode: decode a sequence of Base-64 encoded text into binary data.
 // Note that the returned binary data is not necessarily zero-terminated, so it
 // should not be used as a character string.
-func Base64Decode(text string, outLen *uint) []uint8
+func Base64Decode(text string) (uint, []uint8)
 
 // Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
 // data by overwriting the input data.
@@ -2822,7 +2822,7 @@ func Base64DecodeInplace(text []uint8, outLen *uint) *uint8
 // The output buffer must be large enough to fit all the data that will be
 // written to it. Since base64 encodes 3 bytes in 4 chars you need at least:
 // (@len / 4) * 3 + 3 bytes (+ 3 may be needed in case of non-zero state).
-func Base64DecodeStep(in []uint8, len uint, out []uint8, state *int, save *uint) uint
+func Base64DecodeStep(in []uint8, len uint, state *int, save *uint) ([]uint8, uint)
 
 // Base64Encode: encode a sequence of binary data into its Base-64 stringified
 // representation.
@@ -2836,7 +2836,7 @@ func Base64Encode(data []uint8, len uint) string
 // is enabled.
 //
 // The @out array will not be automatically nul-terminated.
-func Base64EncodeClose(breakLines bool, out []uint8, state *int, save *int) uint
+func Base64EncodeClose(breakLines bool, state *int, save *int) ([]uint8, uint)
 
 // Base64EncodeStep: incrementally encode a sequence of binary data into its
 // Base-64 stringified representation. By calling this function multiple times
@@ -2857,7 +2857,7 @@ func Base64EncodeClose(breakLines bool, out []uint8, state *int, save *int) uint
 // line. This avoids problems with long lines in the email system. Note however
 // that it breaks the lines with `LF` characters, not `CR LF` sequences, so the
 // result cannot be passed directly to SMTP or certain other protocols.
-func Base64EncodeStep(in []uint8, len uint, breakLines bool, out []uint8, state *int, save *int) uint
+func Base64EncodeStep(in []uint8, len uint, breakLines bool, state *int, save *int) ([]uint8, uint)
 
 // Basename: gets the name of the file without any leading directory components.
 // It returns a pointer into the given file name string.
@@ -2951,7 +2951,7 @@ func ByteArrayNewTake(data []uint8, len uint) []uint8
 // ByteArraySteal: frees the data in the array and resets the size to zero,
 // while the underlying array is preserved for use elsewhere and returned to the
 // caller.
-func ByteArraySteal(array []uint8, len *uint) *uint8
+func ByteArraySteal(array []uint8) (uint, *uint8)
 
 // ByteArrayUnref: atomically decrements the reference count of @array by one.
 // If the reference count drops to 0, all memory allocated by the array is
@@ -3176,7 +3176,7 @@ func ComputeHMACForString(digestType ChecksumType, key []uint8, keyLen uint, str
 //
 // Using extensions such as "//TRANSLIT" may not work (or may not work well) on
 // many platforms. Consider using g_str_to_ascii() instead.
-func Convert(str []uint8, len int, toCodeset string, fromCodeset string, bytesRead *uint, bytesWritten *uint) []uint8
+func Convert(str []uint8, len int, toCodeset string, fromCodeset string) (uint, uint, []uint8)
 
 func ConvertErrorQuark() Quark
 
@@ -3195,7 +3195,7 @@ func ConvertErrorQuark() Quark
 // g_convert_with_fallback(). (An example of this is the GNU C converter for
 // CP1255 which does not emit a base character until it knows that the next
 // character is not a mark that could combine with the base character.)
-func ConvertWithFallback(str []uint8, len int, toCodeset string, fromCodeset string, fallback string, bytesRead *uint, bytesWritten *uint) []uint8
+func ConvertWithFallback(str []uint8, len int, toCodeset string, fromCodeset string, fallback string) (uint, uint, []uint8)
 
 // ConvertWithIconv: converts a string from one character set to another.
 //
@@ -3215,7 +3215,7 @@ func ConvertWithFallback(str []uint8, len int, toCodeset string, fromCodeset str
 // this is the same error code as is returned for an invalid byte sequence in
 // the input character set. To get defined behaviour for conversion of
 // unrepresentable characters, use g_convert_with_fallback().
-func ConvertWithIconv(str []uint8, len int, converter IConv, bytesRead *uint, bytesWritten *uint) []uint8
+func ConvertWithIconv(str []uint8, len int, converter IConv) (uint, uint, []uint8)
 
 // DatalistClear: frees all the data elements of the datalist. The data
 // elements' destroy functions are called if they have been set.
@@ -3273,7 +3273,7 @@ func DatalistIDRemoveNoNotify(datalist **Data, keyID Quark) unsafe.Pointer
 // (passed out in @old_destroy). Its up to the caller to free this as he wishes,
 // which may or may not include using @old_destroy as sometimes replacement
 // should not destroy the object in the normal way.
-func DatalistIDReplaceData(datalist **Data, keyID Quark, oldval unsafe.Pointer, newval unsafe.Pointer, destroy unsafe.Pointer, oldDestroy *unsafe.Pointer) bool
+func DatalistIDReplaceData(datalist **Data, keyID Quark, oldval unsafe.Pointer, newval unsafe.Pointer, destroy unsafe.Pointer) (unsafe.Pointer, bool)
 
 // DatalistIDSetDataFull: sets the data corresponding to the given #GQuark id,
 // and the function to be called when the element is removed from the datalist.
@@ -3546,7 +3546,7 @@ func FileErrorQuark() Quark
 // false and sets @error. The error domain is FILE_ERROR. Possible error codes
 // are those in the Error enumeration. In the error case, @contents is set to
 // nil and @length is set to zero.
-func FileGetContents(filename *string, contents []uint8, length *uint) bool
+func FileGetContents(filename *string) ([]uint8, uint, bool)
 
 // FileOpenTmp: opens a file for writing in the preferred directory for
 // temporary files (as returned by g_get_tmp_dir()).
@@ -3562,7 +3562,7 @@ func FileGetContents(filename *string, contents []uint8, length *uint) bool
 // Upon success, and if @name_used is non-nil, the actual name used is returned
 // in @name_used. This string should be freed with g_free() when not needed any
 // longer. The returned name is in the GLib file name encoding.
-func FileOpenTmp(tmpl *string, nameUsed **string) int
+func FileOpenTmp(tmpl *string) (*string, int)
 
 // FileReadLink: reads the contents of the symbolic link @filename like the
 // POSIX readlink() function. The returned string is in the encoding used for
@@ -3702,7 +3702,7 @@ func FilenameDisplayName(filename *string) string
 
 // FilenameFromURI: converts an escaped ASCII-encoded URI to a local filename in
 // the encoding used for filenames.
-func FilenameFromURI(uri string, hostname *string) *string
+func FilenameFromURI(uri string) (string, *string)
 
 // FilenameFromUTF8: converts a string from UTF-8 to the encoding GLib uses for
 // filenames. Note that on Windows GLib uses UTF-8 for filenames; on other
@@ -3714,7 +3714,7 @@ func FilenameFromURI(uri string, hostname *string) *string
 // G_CONVERT_ERROR_ILLEGAL_SEQUENCE. If the filename encoding is not UTF-8 and
 // the conversion output contains a nul character, the error
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil.
-func FilenameFromUTF8(utf8String string, len int, bytesRead *uint, bytesWritten *uint) *string
+func FilenameFromUTF8(utf8String string, len int) (uint, uint, *string)
 
 // FilenameToURI: converts an absolute filename to an escaped ASCII-encoded URI,
 // with the path component following Section 3.3. of RFC 2396.
@@ -3731,7 +3731,7 @@ func FilenameToURI(filename *string, hostname string) string
 // conversion output contains a nul character, the error
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil. Use
 // g_convert() to produce output that may contain embedded nul characters.
-func FilenameToUTF8(opsysstring *string, len int, bytesRead *uint, bytesWritten *uint) string
+func FilenameToUTF8(opsysstring *string, len int) (uint, uint, string)
 
 // FindProgramInPath: locates the first executable named @program in the user's
 // path, in the same way that execvp() would locate it. Returns an allocated
@@ -3812,7 +3812,7 @@ func GetApplicationName() string
 // can perhaps avoid calling g_convert().
 //
 // The string returned in @charset is not allocated, and should not be freed.
-func GetCharset(charset *string) bool
+func GetCharset() (string, bool)
 
 // GetCodeset: gets the character set for the current locale.
 func GetCodeset() string
@@ -3833,7 +3833,7 @@ func GetCodeset() string
 // can perhaps avoid calling g_convert().
 //
 // The string returned in @charset is not allocated, and should not be freed.
-func GetConsoleCharset(charset *string) bool
+func GetConsoleCharset() (string, bool)
 
 // GetCurrentDir: gets the current directory.
 //
@@ -3886,7 +3886,7 @@ func GetEnviron() []string
 // Note that on Unix, regardless of the locale character set or
 // `G_FILENAME_ENCODING` value, the actual file names present on a system might
 // be in any random encoding or just gibberish.
-func GetFilenameCharsets(filenameCharsets []*string) bool
+func GetFilenameCharsets() ([]*string, bool)
 
 // GetHomeDir: gets the current user's home directory.
 //
@@ -4214,7 +4214,7 @@ func HashTableLookup(hashTable *glib.HashTable, key unsafe.Pointer) unsafe.Point
 //
 // You can actually pass nil for @lookup_key to test whether the nil key exists,
 // provided the hash and equal functions of @hash_table are nil-safe.
-func HashTableLookupExtended(hashTable *glib.HashTable, lookupKey unsafe.Pointer, origKey *unsafe.Pointer, value *unsafe.Pointer) bool
+func HashTableLookupExtended(hashTable *glib.HashTable, lookupKey unsafe.Pointer) (unsafe.Pointer, unsafe.Pointer, bool)
 
 // HashTableRemove: removes a key and its associated value from a Table.
 //
@@ -4263,7 +4263,7 @@ func HashTableStealAll(hashTable *glib.HashTable)
 //
 // You can pass nil for @lookup_key, provided the hash and equal functions of
 // @hash_table are nil-safe.
-func HashTableStealExtended(hashTable *glib.HashTable, lookupKey unsafe.Pointer, stolenKey *unsafe.Pointer, stolenValue *unsafe.Pointer) bool
+func HashTableStealExtended(hashTable *glib.HashTable, lookupKey unsafe.Pointer) (unsafe.Pointer, unsafe.Pointer, bool)
 
 // HashTableUnref: atomically decrements the reference count of @hash_table by
 // one. If the reference count drops to 0, all keys and values will be
@@ -4496,7 +4496,7 @@ func Listenv() []string
 // is positive. A nul character found inside the string will result in error
 // G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Use g_convert() to convert input that may
 // contain embedded nul characters.
-func LocaleFromUTF8(utf8String string, len int, bytesRead *uint, bytesWritten *uint) []uint8
+func LocaleFromUTF8(utf8String string, len int) (uint, uint, []uint8)
 
 // LocaleToUTF8: converts a string which is in the encoding used for strings by
 // the C runtime (usually the same as that used by the operating system) in the
@@ -4508,7 +4508,7 @@ func LocaleFromUTF8(utf8String string, len int, bytesRead *uint, bytesWritten *u
 // treated with the G_CONVERT_ERROR_ILLEGAL_SEQUENCE error for backward
 // compatibility with earlier versions of this library. Use g_convert() to
 // produce output that may contain embedded nul characters.
-func LocaleToUTF8(opsysstring []uint8, len int, bytesRead *uint, bytesWritten *uint) string
+func LocaleToUTF8(opsysstring []uint8, len int) (uint, uint, string)
 
 // LogDefaultHandler: the default log handler set up by GLib;
 // g_log_set_default_handler() allows to install an alternate default log
@@ -5179,7 +5179,7 @@ func Poll(fds *PollFD, nfds uint, timeout int) int
 // Note that @src is no longer valid after this call. If you want to keep using
 // the same GError*, you need to set it to nil after calling this function on
 // it.
-func PropagateError(dest **Error, src *Error)
+func PropagateError(src *Error) *Error
 
 // PtrArrayFind: checks whether @needle exists in @haystack. If the element is
 // found, true is returned and the element’s index is returned in @index_ (if
@@ -5189,7 +5189,7 @@ func PropagateError(dest **Error, src *Error)
 //
 // This does pointer comparisons only. If you want to use more complex equality
 // checks, such as string comparisons, use g_ptr_array_find_with_equal_func().
-func PtrArrayFind(haystack []unsafe.Pointer, needle unsafe.Pointer, index_ *uint) bool
+func PtrArrayFind(haystack []unsafe.Pointer, needle unsafe.Pointer) (uint, bool)
 
 // PtrArrayFindWithEqualFunc: checks whether @needle exists in @haystack, using
 // the given @equal_func. If the element is found, true is returned and the
@@ -5200,7 +5200,7 @@ func PtrArrayFind(haystack []unsafe.Pointer, needle unsafe.Pointer, index_ *uint
 // @equal_func is called with the element from the array as its first parameter,
 // and @needle as its second parameter. If @equal_func is nil, pointer equality
 // is used.
-func PtrArrayFindWithEqualFunc(haystack []unsafe.Pointer, needle unsafe.Pointer, equalFunc EqualFunc, index_ *uint) bool
+func PtrArrayFindWithEqualFunc(haystack []unsafe.Pointer, needle unsafe.Pointer, equalFunc EqualFunc) (uint, bool)
 
 // QsortWithData: this is just like the standard C qsort() function, but the
 // comparison routine accepts a user data argument.
@@ -5372,7 +5372,7 @@ func RefStringRelease(str string)
 // references. For instance, replacement text 'foo\n' does not contain
 // references and may be evaluated without information about actual match, but
 // '\0\1' (whole match followed by first subpattern) requires valid Info object.
-func RegexCheckReplacement(replacement string, hasReferences *bool) bool
+func RegexCheckReplacement(replacement string) (bool, bool)
 
 func RegexErrorQuark() Quark
 
@@ -5521,7 +5521,7 @@ func SetApplicationName(applicationName string)
 // g_set_error(), @message is not a printf()-style format string. Use this
 // function if @message contains text you don't have control over, that could
 // include printf() escape sequences.
-func SetErrorLiteral(err **Error, domain Quark, code int, message string)
+func SetErrorLiteral(domain Quark, code int, message string) *Error
 
 // SetPrgname: sets the name of the program. This name should not be localized,
 // in contrast to g_set_application_name().
@@ -5580,7 +5580,7 @@ func ShellErrorQuark() Quark
 // shell expansions. If the input does contain such expansions, they are passed
 // through literally. Possible errors are those from the SHELL_ERROR domain.
 // Free the returned vector with g_strfreev().
-func ShellParseArgv(commandLine *string, argcp *int, argvp []string) bool
+func ShellParseArgv(commandLine *string) (int, []string, bool)
 
 // ShellQuote: quotes a string so that the shell (/bin/sh) will interpret the
 // quoted string to mean @unquoted_string. If you pass a filename to the shell,
@@ -5728,7 +5728,7 @@ func SpacedPrimesClosest(num uint) uint
 // Note that the returned @child_pid on Windows is a handle to the child process
 // and not its identifier. Process handles and process identifiers are different
 // concepts on Windows.
-func SpawnAsync(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, childPid *Pid) bool
+func SpawnAsync(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer) (Pid, bool)
 
 // SpawnAsyncWithFds: identical to g_spawn_async_with_pipes() but instead of
 // creating pipes for the stdin/stdout/stderr, you can pass existing file
@@ -5748,7 +5748,7 @@ func SpawnAsync(workingDirectory *string, argv []string, envp []string, flags Sp
 //
 // It is valid to pass the same fd in multiple parameters (e.g. you can pass a
 // single fd for both stdout and stderr).
-func SpawnAsyncWithFds(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, childPid *Pid, stdinFd int, stdoutFd int, stderrFd int) bool
+func SpawnAsyncWithFds(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, stdinFd int, stdoutFd int, stderrFd int) (Pid, bool)
 
 // SpawnAsyncWithPipes: executes a child program asynchronously (your program
 // will not block waiting for the child to exit). The child program is specified
@@ -5906,7 +5906,7 @@ func SpawnAsyncWithFds(workingDirectory *string, argv []string, envp []string, f
 // graphical application too, then to ensure that the spawned program opens its
 // windows on the right screen, you may want to use AppLaunchContext,
 // LaunchContext, or set the DISPLAY environment variable.
-func SpawnAsyncWithPipes(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, childPid *Pid, standardInput *int, standardOutput *int, standardError *int) bool
+func SpawnAsyncWithPipes(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer) (Pid, int, int, int, bool)
 
 // SpawnCheckExitStatus: set @error if @exit_status indicates the child exited
 // abnormally (e.g. with a nonzero exit code, or via a fatal signal).
@@ -5982,7 +5982,7 @@ func SpawnCommandLineAsync(commandLine *string) bool
 // eaten, and the space will act as a separator. You need to enclose such paths
 // with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
-func SpawnCommandLineSync(commandLine *string, standardOutput []uint8, standardError []uint8, exitStatus *int) bool
+func SpawnCommandLineSync(commandLine *string) ([]uint8, []uint8, int, bool)
 
 func SpawnErrorQuark() Quark
 
@@ -6006,7 +6006,7 @@ func SpawnExitErrorQuark() Quark
 // This function calls g_spawn_async_with_pipes() internally; see that function
 // for full details on the other parameters and details on how these functions
 // work on Windows.
-func SpawnSync(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, standardOutput []uint8, standardError []uint8, exitStatus *int) bool
+func SpawnSync(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer) ([]uint8, []uint8, int, bool)
 
 // Stpcpy: copies a nul-terminated string into the dest buffer, include the
 // trailing nul, and return a pointer to the trailing nul byte. This is useful
@@ -6101,7 +6101,7 @@ func StrToASCII(str string, fromLocale string) string
 // The number of ASCII alternatives that are generated and the method for doing
 // so is unspecified, but @translit_locale (if specified) may improve the
 // transliteration if the language of the source string is known.
-func StrTokenizeAndFold(string string, translitLocale string, asciiAlternates []*string) []string
+func StrTokenizeAndFold(string string, translitLocale string) ([]*string, []string)
 
 // g_ascii_strup (g_strcanon (str, "abc", '?'))
 //
@@ -6346,7 +6346,7 @@ func StrstrLen(haystack string, haystackLen int, needle string) string
 // should you use this. Make sure that you don't pass strings such as comma
 // separated lists of values, since the commas may be interpreted as a decimal
 // point in some locales, causing unexpected results.
-func Strtod(nptr string, endptr *string) float64
+func Strtod(nptr string) (string, float64)
 
 // Strup: converts a string to upper case.
 func Strup(string string) string
@@ -6857,7 +6857,7 @@ func ThreadYield()
 //    GDateTime *dt = g_date_time_new_from_iso8601 (iso8601_string, NULL);
 //    gint64 time_val = g_date_time_to_unix (dt);
 //    g_date_time_unref (dt);
-func TimeValFromIso8601(isoDate string, time_ *TimeVal) bool
+func TimeValFromIso8601(isoDate string) (TimeVal, bool)
 
 // TimeoutAdd: sets a function to be called at regular intervals, with the
 // default priority, PRIORITY_DEFAULT. The function is called repeatedly until
@@ -7048,11 +7048,11 @@ func TryReallocN(mem unsafe.Pointer, nBlocks uint, nBlockBytes uint) unsafe.Poin
 
 // Ucs4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func Ucs4ToUTF16(str *uint32, len int32, itemsRead *int32, itemsWritten *int32) *uint16
+func Ucs4ToUTF16(str *uint32, len int32) (int32, int32, *uint16)
 
 // Ucs4ToUTF8: convert a string from a 32-bit fixed width representation as
 // UCS-4. to UTF-8. The result will be terminated with a 0 byte.
-func Ucs4ToUTF8(str *uint32, len int32, itemsRead *int32, itemsWritten *int32) string
+func Ucs4ToUTF8(str *uint32, len int32) (int32, int32, string)
 
 // UnicharBreakType: determines the break type of @c. @c should be a Unicode
 // character (to derive a character from UTF-8 encoded text, use
@@ -7079,7 +7079,7 @@ func UnicharCombiningClass(uc uint32) int
 // If @a and @b do not compose a new character, @ch is set to zero.
 //
 // See [UAX#15](http://unicode.org/reports/tr15/) for details.
-func UnicharCompose(a uint32, b uint32, ch *uint32) bool
+func UnicharCompose(a uint32, b uint32) (uint32, bool)
 
 // UnicharDecompose: performs a single decomposition step of the Unicode
 // canonical decomposition algorithm.
@@ -7097,7 +7097,7 @@ func UnicharCompose(a uint32, b uint32, ch *uint32) bool
 // function on @a. Or use g_unichar_fully_decompose().
 //
 // See [UAX#15](http://unicode.org/reports/tr15/) for details.
-func UnicharDecompose(ch uint32, a *uint32, b *uint32) bool
+func UnicharDecompose(ch uint32) (uint32, uint32, bool)
 
 // UnicharDigitValue: determines the numeric value of a character as a decimal
 // digit.
@@ -7117,7 +7117,7 @@ func UnicharDigitValue(c uint32) int
 // provided as G_UNICHAR_MAX_DECOMPOSITION_LENGTH.
 //
 // See [UAX#15](http://unicode.org/reports/tr15/) for details.
-func UnicharFullyDecompose(ch uint32, compat bool, result *uint32, resultLen uint) uint
+func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint)
 
 // UnicharGetMirrorChar: in Unicode, some characters are "mirrored". This means
 // that their images are mirrored horizontally in text that is laid out from
@@ -7235,7 +7235,7 @@ func UnicharIsxdigit(c uint32) bool
 func UnicharIszerowidth(c uint32) bool
 
 // UnicharToUTF8: converts a single character to UTF-8.
-func UnicharToUTF8(c uint32, outbuf string) int
+func UnicharToUTF8(c uint32) (string, int)
 
 // UnicharTOLOWER: converts a character to lower case.
 func UnicharTOLOWER(c uint32) uint32
@@ -7555,7 +7555,7 @@ func URIResolveRelative(baseURIString string, uriRef string, flags UriFlags) str
 // Note that the G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS @flags
 // are ignored by g_uri_split(), since it always returns only the full userinfo;
 // use g_uri_split_with_user() if you want it split up.
-func URISplit(uriRef string, flags UriFlags, scheme *string, userinfo *string, host *string, port *int, path *string, query *string, fragment *string) bool
+func URISplit(uriRef string, flags UriFlags) (string, string, string, int, string, string, string, bool)
 
 // URISplitNetwork: parses @uri_string (which must be an [absolute
 // URI][relative-absolute-uris]) according to @flags, and returns the pieces
@@ -7563,7 +7563,7 @@ func URISplit(uriRef string, flags UriFlags, scheme *string, userinfo *string, h
 // more details; this is mostly a wrapper around that function with simpler
 // arguments. However, it will return an error if @uri_string is a relative URI,
 // or does not contain a hostname component.
-func URISplitNetwork(uriString string, flags UriFlags, scheme *string, host *string, port *int) bool
+func URISplitNetwork(uriString string, flags UriFlags) (string, string, int, bool)
 
 // URISplitWithUser: parses @uri_ref (which can be an [absolute or relative
 // URI][relative-absolute-uris]) according to @flags, and returns the pieces.
@@ -7575,7 +7575,7 @@ func URISplitNetwork(uriString string, flags UriFlags, scheme *string, host *str
 // effect of @flags. Note that @password will only be parsed out if @flags
 // contains G_URI_FLAGS_HAS_PASSWORD, and @auth_params will only be parsed out
 // if @flags contains G_URI_FLAGS_HAS_AUTH_PARAMS.
-func URISplitWithUser(uriRef string, flags UriFlags, scheme *string, user *string, password *string, authParams *string, host *string, port *int, path *string, query *string, fragment *string) bool
+func URISplitWithUser(uriRef string, flags UriFlags) (string, string, string, string, string, int, string, string, string, bool)
 
 // URIUnescapeBytes: unescapes a segment of an escaped string as binary data.
 //
@@ -7618,7 +7618,7 @@ func Usleep(microseconds uint32)
 
 // UTF16ToUcs4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
-func UTF16ToUcs4(str *uint16, len int32, itemsRead *int32, itemsWritten *int32) *uint32
+func UTF16ToUcs4(str *uint16, len int32) (int32, int32, *uint32)
 
 // UTF16ToUTF8: convert a string from UTF-16 to UTF-8. The result will be
 // terminated with a 0 byte.
@@ -7631,7 +7631,7 @@ func UTF16ToUcs4(str *uint16, len int32, itemsRead *int32, itemsWritten *int32) 
 // e.g. include embedded NUL characters. The only validation done by this
 // function is to ensure that the input can be correctly interpreted as UTF-16,
 // i.e. it doesn't contain unpaired surrogates or partial character sequences.
-func UTF16ToUTF8(str *uint16, len int32, itemsRead *int32, itemsWritten *int32) string
+func UTF16ToUTF8(str *uint16, len int32) (int32, int32, string)
 
 // UTF8Casefold: converts a string into a form that is independent of case. The
 // result will not correspond to any particular case, but can be compared for
@@ -7829,17 +7829,17 @@ func UTF8Substring(str string, startPos int32, endPos int32) string
 // UTF8ToUcs4: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4. A trailing 0 character will be added to the string
 // after the converted text.
-func UTF8ToUcs4(str string, len int32, itemsRead *int32, itemsWritten *int32) *uint32
+func UTF8ToUcs4(str string, len int32) (int32, int32, *uint32)
 
 // UTF8ToUcs4Fast: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4, assuming valid UTF-8 input. This function is roughly
 // twice as fast as g_utf8_to_ucs4() but does no error checking on the input. A
 // trailing 0 character will be added to the string after the converted text.
-func UTF8ToUcs4Fast(str string, len int32, itemsWritten *int32) *uint32
+func UTF8ToUcs4Fast(str string, len int32) (int32, *uint32)
 
 // UTF8ToUTF16: convert a string from UTF-8 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func UTF8ToUTF16(str string, len int32, itemsRead *int32, itemsWritten *int32) *uint16
+func UTF8ToUTF16(str string, len int32) (int32, int32, *uint16)
 
 // UTF8Validate: validates UTF-8 encoded text. @str is the text to validate; if
 // @str is nul-terminated, then @max_len can be -1, otherwise @max_len should be
@@ -7854,13 +7854,13 @@ func UTF8ToUTF16(str string, len int32, itemsRead *int32, itemsWritten *int32) *
 // Returns true if all of @str was valid. Many GLib and GTK+ routines require
 // valid UTF-8 as input; so data read from a file or the network should be
 // checked with g_utf8_validate() before doing anything else with it.
-func UTF8Validate(str []uint8, maxLen int, end *string) bool
+func UTF8Validate(str []uint8, maxLen int) (string, bool)
 
 // UTF8ValidateLen: validates UTF-8 encoded text.
 //
 // As with g_utf8_validate(), but @max_len must be set, and hence this function
 // will always return false if any of the bytes of @str are nul.
-func UTF8ValidateLen(str []uint8, maxLen uint, end *string) bool
+func UTF8ValidateLen(str []uint8, maxLen uint) (string, bool)
 
 // UuidStringIsValid: parses the string @str and verify if it is a UUID.
 //
@@ -7986,7 +7986,7 @@ func VariantTypeStringIsValid(typeString string) bool
 //
 // For the simple case of checking if a string is a valid type string, see
 // g_variant_type_string_is_valid().
-func VariantTypeStringScan(string string, limit string, endptr *string) bool
+func VariantTypeStringScan(string string, limit string) (string, bool)
 
 // WarnMessage: internal function used to print messages from the public
 // g_warn_if_reached() and g_warn_if_fail() macros.
@@ -8260,7 +8260,6 @@ func wrapError(p *C.GError) *Error {
 		tmp := uint32(p.domain)
 		v.Domain = Quark(tmp)
 	}
-
 	v.Code = int(p.code)
 	v.Message = C.GoString(p.message)
 	return &v
@@ -8385,9 +8384,7 @@ func wrapHookList(p *C.GHookList) *HookList {
 	v.Hooks = wrap * Hook(p.hooks)
 	v.Dummy3 = unsafe.Pointer(p.dummy3)
 	v.FinalizeHook = wrapHookFinalizeFunc(p.finalize_hook)
-	{
-		var a [2]unsafe.Pointer
-	}
+
 	return &v
 }
 

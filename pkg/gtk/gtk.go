@@ -3053,7 +3053,7 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey uint, keyco
 //
 // If the parse fails, @accelerator_key and @accelerator_mods will be set to 0
 // (zero).
-func AcceleratorParse(accelerator string, acceleratorKey *uint, acceleratorMods *gdk.ModifierType) bool
+func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool)
 
 // AcceleratorParseWithKeycode: parses a string representing an accelerator,
 // similarly to gtk_accelerator_parse() but handles keycodes as well. This is
@@ -3068,7 +3068,7 @@ func AcceleratorParse(accelerator string, acceleratorKey *uint, acceleratorMods 
 //
 // If the parse fails, @accelerator_key, @accelerator_mods and
 // @accelerator_codes will be set to 0 (zero).
-func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display, acceleratorKey *uint, acceleratorCodes []*uint, acceleratorMods *gdk.ModifierType) bool
+func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint, []*uint, gdk.ModifierType, bool)
 
 // AcceleratorValid: determines whether a given keyval and modifier mask
 // constitute a valid keyboard accelerator. For example, the K_KEY_a keyval plus
@@ -3085,16 +3085,16 @@ func AccessibleStateInitValue(state AccessibleState, value **glib.Value)
 // BitsetIterInitAt: initializes @iter to point to @target. If @target is not
 // found, finds the next value after it. If no value >= @target exists in @set,
 // this function returns false.
-func BitsetIterInitAt(iter *BitsetIter, set *Bitset, target uint, value *uint) bool
+func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool)
 
 // BitsetIterInitFirst: initializes an iterator for @set and points it to the
 // first value in @set. If @set is empty, false is returned and @value is set to
 // G_MAXUINT.
-func BitsetIterInitFirst(iter *BitsetIter, set *Bitset, value *uint) bool
+func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool)
 
 // BitsetIterInitLast: initializes an iterator for @set and points it to the
 // last value in @set. If @set is empty, false is returned.
-func BitsetIterInitLast(iter *BitsetIter, set *Bitset, value *uint) bool
+func BitsetIterInitLast(set *Bitset) (BitsetIter, uint, bool)
 
 func BuilderErrorQuark() glib.Quark
 
@@ -3220,7 +3220,7 @@ func GetMinorVersion() uint
 //
 // Input values must be in the [0.0, 1.0] range; output values will be in the
 // same range.
-func HsvToRgb(h float32, s float32, v float32, r *float32, g *float32, b *float32)
+func HsvToRgb(h float32, s float32, v float32) (float32, float32, float32)
 
 func IconThemeErrorQuark() glib.Quark
 
@@ -3368,7 +3368,7 @@ func RenderOption(context *StyleContext, cr *cairo.Context, x float64, y float64
 //
 // Input values must be in the [0.0, 1.0] range; output values will be in the
 // same range.
-func RgbToHsv(r float32, g float32, b float32, h *float32, s *float32, v *float32)
+func RgbToHsv(r float32, g float32, b float32) (float32, float32, float32)
 
 // SetDebugFlags: sets the GTK debug flags.
 func SetDebugFlags(flags DebugFlags)
@@ -3408,7 +3408,7 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool
 
 // TestListAllTypes: return the type ids that have been registered after calling
 // gtk_test_register_all_types().
-func TestListAllTypes(nTypes *uint) []glib.Type
+func TestListAllTypes() (uint, []glib.Type)
 
 // TestRegisterAllTypes: force registration of all core GTK object types.
 //
@@ -3428,7 +3428,7 @@ func TestWidgetWaitForDraw(widget *Widget)
 // GTK_TYPE_TREE_ROW_DATA.
 //
 // The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(value **glib.Value, treeModel *TreeModel, path **TreePath) bool
+func TreeGetRowDragData(value **glib.Value) (TreeModel, *TreePath, bool)
 
 // TreeRowReferenceDeleted: lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
@@ -3733,9 +3733,7 @@ func wrapRecentData(p *C.GtkRecentData) *RecentData {
 	v.MimeType = C.GoString(p.mime_type)
 	v.AppName = C.GoString(p.app_name)
 	v.AppExec = C.GoString(p.app_exec)
-	{
-		a := make([]string, 0)
-	}
+
 	v.IsPrivate = bool(p.is_private)
 	return &v
 }

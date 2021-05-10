@@ -96,9 +96,7 @@ type FeatureMap struct {
 
 func wrapFeatureMap(p *C.PangoOTFeatureMap) *FeatureMap {
 	var v FeatureMap
-	{
-		var a [5]byte
-	}
+
 	v.PropertyBit = uint32(p.property_bit)
 	return &v
 }

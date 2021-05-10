@@ -123,9 +123,7 @@ func wrapPixdata(p *C.GdkPixdata) *Pixdata {
 	v.Rowstride = uint32(p.rowstride)
 	v.Width = uint32(p.width)
 	v.Height = uint32(p.height)
-	{
-		a := make([]uint8, 0)
-	}
+
 	return &v
 }
 

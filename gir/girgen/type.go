@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/internal/pen"
 )
 
 type resolvedType struct {
@@ -55,6 +56,14 @@ func (typ *resolvedType) setPtr(result *gir.TypeFindResult) {
 	}
 
 	typ.GoType = strings.Repeat("*", ptr) + typ.GoType
+}
+
+// CGoType returns the CGo type.
+func (typ *resolvedType) CGoType() string {
+	ptr := strings.Count(typ.Type.CType, "*")
+	val := strings.TrimSuffix(typ.Type.CType, "*")
+
+	return strings.Repeat("*", ptr) + "C." + val
 }
 
 // arrayType generates the Go type signature for the given array.
@@ -245,21 +254,77 @@ func directCallOrCreate(value, target, typ string, create bool) string {
 }
 
 func (ng *NamespaceGenerator) arrayConverter(value, target string, array gir.Array) string {
-	b := strings.Builder{}
-	b.WriteByte('{')
-
-	innerType, ok := ng.ResolveAnyType(array.AnyType)
-	if !ok {
+	if array.Type != nil {
+		ng.gen.debugln("skipping nested array", array)
 		return ""
 	}
 
-	if array.FixedSize > 0 {
-		b.WriteString(fmt.Sprintf("var a [%d]%s", array.FixedSize, innerType))
-	} else {
-		b.WriteString(fmt.Sprintf("a := make([]%s, %d)", innerType, array.Length))
+	// Detect if the underlying is a compatible Go primitive type. If it is,
+	// then we can directly cast a fixed-size array.
+	if array.Type != nil {
+		if primitiveGo, isPrimitive := girPrimitiveGo(array.Type.Name); isPrimitive {
+			return fmt.Sprintf("%s = ([%d]%s)(%s)", target, array.FixedSize, primitiveGo, value)
+		}
 	}
 
-	b.WriteByte('}')
+	innerType := ng.ResolveType(*array.Type)
+	if innerType == nil {
+		return ""
+	}
+	innerCGoType := innerType.CGoType()
+
+	// Generate a type converter from "src" to "dst" variables.
+	innerConv := ng.typeConverter("src", "dst", *array.Type)
+	if innerConv == "" {
+		return ""
+	}
+
+	var b pen.Block
+
+	switch {
+	case array.FixedSize > 0:
+		b.Linef("var a [%d]%s", array.FixedSize, innerType)
+		// TODO: nested array support
+		b.Linef("cArray := ([%d]%s)(%s)", array.FixedSize, array.Type.CType, value)
+		b.EmptyLine()
+		b.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
+		b.Linef("  src := cArray[i]")
+		b.Linef("  dst := &a[i]")
+		b.Linef("  " + innerConv)
+		b.Linef("}")
+
+	case array.Length != nil:
+		return "" // TODO
+
+	case array.Name == "GLib.Array": // treat as Go array
+		b.Linef("var length uintptr")
+		b.Linef("p := C.g_array_steal(&%s, (*C.gsize)(&length))", value)
+		b.Linef("a := make([]%s, length)", innerType)
+		b.Linef("for i := 0; i < length; i++ {")
+		b.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))", innerCGoType)
+		b.Linef("  dst := &a[i]")
+		// TODO: nested array support
+		b.Linef("  " + innerConv)
+		b.Linef("}")
+
+	default: // null-terminated
+		// Scan for the length.
+		b.Linef("var length uint")
+		b.Linef("for p := unsafe.Pointer(%s); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {", value)
+		b.Linef("  length++")
+		b.Linef("}")
+
+		b.EmptyLine()
+
+		// Preallocate the slice.
+		b.Linef("a := make([]%s, length)", innerType)
+		b.Linef("for i := 0; i < length; i++ {")
+		b.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(%s)) + 1))", innerCGoType, value)
+		b.Linef("  dst := &a[i]")
+		b.Linef("  " + innerConv)
+		b.Linef("}")
+	}
+
 	return b.String()
 }
 

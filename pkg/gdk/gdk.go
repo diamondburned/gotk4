@@ -1777,7 +1777,7 @@ func CairoDrawFromGl(cr *cairo.Context, window *Window, source int, sourceType i
 // CairoGetClipRectangle: this is a convenience function around
 // cairo_clip_extents(). It rounds the clip extents to integer coordinates and
 // returns a boolean indicating if a clip area exists.
-func CairoGetClipRectangle(cr *cairo.Context, rect *Rectangle) bool
+func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool)
 
 // CairoGetDrawingContext: retrieves the DrawingContext that created the Cairo
 // context @cr.
@@ -1831,7 +1831,7 @@ func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow
 // digits of the red, green, and blue components of the color, respectively.
 // (White in the four forms is “\#fff”, “\#ffffff”, “\#fffffffff” and
 // “\#ffffffffffff”).
-func ColorParse(spec string, color *Color) bool
+func ColorParse(spec string) (Color, bool)
 
 // DisableMultidevice: disables multidevice support in GDK. This call must
 // happen prior to gdk_display_open(), gtk_init(), gtk_init_with_args() or
@@ -1897,7 +1897,7 @@ func DragDropSucceeded(context *DragContext) bool
 //
 // This function is called by the drag source to obtain the @dest_window and
 // @protocol parameters for gdk_drag_motion().
-func DragFindWindowForScreen(context *DragContext, dragWindow *Window, screen *Screen, xRoot int, yRoot int, destWindow **Window, protocol *DragProtocol)
+func DragFindWindowForScreen(context *DragContext, dragWindow *Window, screen *Screen, xRoot int, yRoot int) (*Window, DragProtocol)
 
 // DragGetSelection: returns the selection atom for the current source window.
 func DragGetSelection(context *DragContext) Atom
@@ -2010,16 +2010,16 @@ func EventRequestMotions(event *EventMotion)
 // return true and return in @angle the relative angle from @event1 to @event2.
 // The rotation direction for positive angles is from the positive X axis
 // towards the positive Y axis.
-func EventsGetAngle(event1 *Event, event2 *Event, angle *float64) bool
+func EventsGetAngle(event1 *Event, event2 *Event) (float64, bool)
 
 // EventsGetCenter: if both events contain X/Y information, the center of both
 // coordinates will be returned in @x and @y.
-func EventsGetCenter(event1 *Event, event2 *Event, x *float64, y *float64) bool
+func EventsGetCenter(event1 *Event, event2 *Event) (float64, float64, bool)
 
 // EventsGetDistance: if both events have X/Y information, the distance between
 // both coordinates (as in a straight line going from @event1 to @event2) will
 // be returned.
-func EventsGetDistance(event1 *Event, event2 *Event, distance *float64) bool
+func EventsGetDistance(event1 *Event, event2 *Event) (float64, bool)
 
 // EventsPending: checks if any events are ready to be processed for any
 // display.
@@ -2088,7 +2088,7 @@ func KeyboardUngrab(time_ uint32)
 
 // KeyvalConvertCase: obtains the upper- and lower-case versions of the keyval
 // @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
-func KeyvalConvertCase(symbol uint, lower *uint, upper *uint)
+func KeyvalConvertCase(symbol uint) (uint, uint)
 
 // KeyvalFromName: converts a key name to a key value.
 //
@@ -2331,21 +2331,21 @@ func PropertyDelete(window *Window, property Atom)
 // should return a useful error to the program. You are advised to use
 // XGetWindowProperty() directly until a replacement function for
 // gdk_property_get() is provided.
-func PropertyGet(window *Window, property Atom, _type Atom, offset uint32, length uint32, pdelete int, actualPropertyType *Atom, actualFormat *int, actualLength *int, data []*uint8) bool
+func PropertyGet(window *Window, property Atom, _type Atom, offset uint32, length uint32, pdelete int) (Atom, int, int, []*uint8, bool)
 
 // QueryDepths: this function returns the available bit depths for the default
 // screen. It’s equivalent to listing the visuals (gdk_list_visuals()) and then
 // looking at the depth field in each visual, removing duplicates.
 //
 // The array returned by this function should not be freed.
-func QueryDepths(depths []*int, count *int)
+func QueryDepths() ([]*int, int)
 
 // QueryVisualTypes: this function returns the available visual types for the
 // default screen. It’s equivalent to listing the visuals (gdk_list_visuals())
 // and then looking at the type field in each visual, removing duplicates.
 //
 // The array returned by this function should not be freed.
-func QueryVisualTypes(visualTypes []*VisualType, count *int)
+func QueryVisualTypes() ([]*VisualType, int)
 
 // SelectionConvert: retrieves the contents of a selection in a given form.
 func SelectionConvert(requestor *Window, selection Atom, target Atom, time_ uint32)
@@ -2464,7 +2464,7 @@ func TestSimulateKey(window *Window, x int, y int, keyval uint, modifiers Modifi
 
 // TextPropertyToUTF8ListForDisplay: converts a text property in the given
 // encoding to a list of UTF-8 strings.
-func TextPropertyToUTF8ListForDisplay(display *Display, encoding Atom, format int, text []uint8, length int, list []*string) int
+func TextPropertyToUTF8ListForDisplay(display *Display, encoding Atom, format int, text []uint8, length int) ([]*string, int)
 
 // ThreadsAddIdle: a wrapper for the common usage of gdk_threads_add_idle_full()
 // assigning the default priority, PRIORITY_DEFAULT_IDLE.
@@ -4041,9 +4041,7 @@ type TimeCoord struct {
 func wrapTimeCoord(p *C.GdkTimeCoord) *TimeCoord {
 	var v TimeCoord
 	v.Time = uint32(p.time)
-	{
-		var a [128]float64
-	}
+
 	return &v
 }
 

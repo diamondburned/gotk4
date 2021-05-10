@@ -33,7 +33,7 @@ type Array struct {
 	ZeroTerminated bool     `xml:"zero-terminated,attr"`
 	FixedSize      int      `xml:"fixed-size,attr"`
 	Introspectable bool     `xml:"introspectable,attr"`
-	Length         int      `xml:"length,attr"`
+	Length         *int     `xml:"length,attr"` // ix of .Parameters
 	CType          string   `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
 	AnyType
 }
@@ -244,6 +244,7 @@ type Parameter struct {
 type ParameterAttrs struct {
 	Name      string `xml:"name,attr"`
 	AllowNone bool   `xml:"allow-none,attr"`
+	Direction string `xml:"direction,attr"`
 	TransferOwnership
 	AnyType
 	Doc *Doc

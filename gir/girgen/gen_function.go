@@ -42,7 +42,7 @@ func (fg *functionGenerator) Use(fn gir.Function) bool {
 	var ok bool
 
 	if fn.ReturnValue != nil {
-		fg.Return, ok = fg.ng.fnReturns(fn.ReturnValue)
+		fg.Return, ok = fg.ng.fnReturns(fn.Parameters, fn.ReturnValue)
 		if !ok {
 			return false
 		}
@@ -68,6 +68,11 @@ func (ng *NamespaceGenerator) fnArgs(params *gir.Parameters) (string, bool) {
 	goArgs := make([]string, 0, len(params.Parameters))
 
 	for _, param := range params.Parameters {
+		// Skip output parameters.
+		if param.Direction == "out" {
+			continue
+		}
+
 		resolved, ok := ng.ResolveAnyType(param.AnyType)
 		if !ok {
 			return "", false
@@ -82,17 +87,45 @@ func (ng *NamespaceGenerator) fnArgs(params *gir.Parameters) (string, bool) {
 
 // fnReturns returns the function return type and true. It returns false if the
 // function's return type cannot be resolved.
-func (ng *NamespaceGenerator) fnReturns(rets *gir.ReturnValue) (string, bool) {
-	if rets == nil {
+func (ng *NamespaceGenerator) fnReturns(ps *gir.Parameters, rs *gir.ReturnValue) (string, bool) {
+	var returns []string
+
+	if ps != nil {
+		for _, param := range ps.Parameters {
+			if param.Direction != "out" {
+				continue
+			}
+
+			typ, ok := ng.ResolveAnyType(param.AnyType)
+			if !ok {
+				return "", false
+			}
+
+			// Hacky way to "dereference" a pointer once.
+			if strings.HasPrefix(typ, "*") {
+				typ = typ[1:]
+			}
+
+			returns = append(returns, typ)
+		}
+	}
+
+	if rs != nil {
+		typ, ok := ng.ResolveAnyType(rs.AnyType)
+		if !ok {
+			return "", false
+		}
+
+		returns = append(returns, typ)
+	}
+
+	if len(returns) == 0 {
 		return "", true
 	}
-
-	typ, ok := ng.ResolveAnyType(rets.AnyType)
-	if !ok {
-		return "", false
+	if len(returns) == 1 {
+		return returns[0], true
 	}
-
-	return typ, true
+	return "(" + strings.Join(returns, ", ") + ")", true
 }
 
 func (ng *NamespaceGenerator) generateFuncs() {
@@ -137,6 +170,7 @@ func cFunctionSig(fn gir.Function) string {
 	return b.String()
 }
 
+// resolveAnyCType resolves an AnyType and returns the C type signature.
 func resolveAnyCType(any gir.AnyType) string {
 	switch {
 	case any.Array != nil:

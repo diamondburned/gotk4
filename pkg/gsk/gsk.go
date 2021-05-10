@@ -293,7 +293,7 @@ func SerializationErrorQuark() glib.Quark
 //
 // If @string does not describe a valid transform, false is returned and nil is
 // put in @out_transform.
-func TransformParse(string string, outTransform **Transform) bool
+func TransformParse(string string) (*Transform, bool)
 
 // ColorStop: a color stop in a gradient node.
 type ColorStop struct {
@@ -366,9 +366,7 @@ type RoundedRect struct {
 func wrapRoundedRect(p *C.GskRoundedRect) *RoundedRect {
 	var v RoundedRect
 	v.Bounds = wrapgraphene.Rect(p.bounds)
-	{
-		var a [4]graphene.Size
-	}
+
 	return &v
 }
 

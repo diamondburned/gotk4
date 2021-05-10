@@ -1,11 +1,38 @@
+// Package pen contains helper functions to work with strings and code
+// generation.
 package pen
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"strings"
 	"text/template"
 )
+
+// Block writes a scoped Go block.
+type Block struct {
+	str strings.Builder
+}
+
+func (b *Block) EmptyLine() { b.Line("") }
+
+// Line writes a line.
+func (b *Block) Line(line string) {
+	b.str.WriteString(line)
+	b.str.WriteByte('\n')
+}
+
+// Linef writes a line using Printf.
+func (b *Block) Linef(f string, v ...interface{}) {
+	fmt.Fprintf(&b.str, f, v...)
+	b.str.WriteByte('\n')
+}
+
+// String returns the block.
+func (b *Block) String() string {
+	return "{\n" + b.str.String() + "\n}"
+}
 
 // Pen is an utility writer.
 type Pen struct {

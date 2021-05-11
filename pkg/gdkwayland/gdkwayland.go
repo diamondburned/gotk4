@@ -3,7 +3,7 @@
 package gdkwayland
 
 import (
-	"github.com/diamondburned/gotk4/gdk"
+	"github.com/diamondburned/gotk4/pkg/gdk"
 	"github.com/gotk3/gotk3/glib"
 )
 

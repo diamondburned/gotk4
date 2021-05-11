@@ -27,11 +27,6 @@ type ExternType struct {
 	Result  *gir.TypeFindResult
 }
 
-// Import returns the import path.
-func (exTyp *ExternType) Import() string {
-	return gir.ImportPath(exTyp.Package)
-}
-
 var (
 	typeCache  sync.Map
 	typeFlight singleflight.Group
@@ -206,7 +201,7 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 
 			// Add the import in the same singleflight callback.
 			if resolved.Extern != nil {
-				ng.addImport(resolved.Extern.Import())
+				ng.addImport(ng.gen.ImportPath(resolved.Extern.Package))
 			}
 		}
 

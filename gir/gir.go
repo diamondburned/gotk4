@@ -12,12 +12,9 @@ import (
 	"golang.org/x/sync/singleflight"
 )
 
-// PackageRoot is the root of the gotk4 (this) package.
-const PackageRoot = "github.com/diamondburned/gotk4"
-
 // ImportPath generates the full import path from the package root.
-func ImportPath(pkgPath string) string {
-	return path.Join(PackageRoot, pkgPath)
+func ImportPath(root, pkgPath string) string {
+	return path.Join(root, pkgPath)
 }
 
 // goPackageNameTrans describes the transformation checks to filter out runes.

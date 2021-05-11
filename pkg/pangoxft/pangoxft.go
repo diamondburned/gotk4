@@ -5,10 +5,10 @@ package pangoxft
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pango"
-	"github.com/diamondburned/gotk4/pangofc"
-	"github.com/diamondburned/gotk4/xft"
-	"github.com/diamondburned/gotk4/xlib"
+	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/pkg/pangofc"
+	"github.com/diamondburned/gotk4/pkg/xft"
+	"github.com/diamondburned/gotk4/pkg/xlib"
 	"github.com/gotk3/gotk3/glib"
 )
 

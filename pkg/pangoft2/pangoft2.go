@@ -3,9 +3,9 @@
 package pangoft2
 
 import (
-	"github.com/diamondburned/gotk4/freetype2"
-	"github.com/diamondburned/gotk4/pango"
-	"github.com/diamondburned/gotk4/pangofc"
+	"github.com/diamondburned/gotk4/pkg/freetype2"
+	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/pkg/pangofc"
 	"github.com/gotk3/gotk3/glib"
 )
 

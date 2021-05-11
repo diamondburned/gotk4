@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/gdk"
-	"github.com/diamondburned/gotk4/graphene"
+	"github.com/diamondburned/gotk4/pkg/gdk"
+	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/gotk3/gotk3/glib"
 )
 

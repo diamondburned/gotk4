@@ -5,7 +5,7 @@ package gdkpixdata
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/gdkpixbuf"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	"github.com/gotk3/gotk3/glib"
 )
 

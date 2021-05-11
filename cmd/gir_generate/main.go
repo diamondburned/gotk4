@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"runtime"
 	"sync"
@@ -15,10 +16,12 @@ import (
 
 var (
 	output string
+	module string
 )
 
 func init() {
 	flag.StringVar(&output, "o", "", "output directory to mkdir in")
+	flag.StringVar(&module, "m", "github.com/diamondburned/gotk4", "go module name")
 	flag.Parse()
 
 	if output == "" {
@@ -65,7 +68,7 @@ func main() {
 
 	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
 
-	gen := girgen.NewGenerator(repos)
+	gen := girgen.NewGenerator(repos, path.Join(module, output))
 	gen.WithLogger(log.New(os.Stderr, "[girgen] ", log.LstdFlags|log.Lmsgprefix))
 
 	// Do a clean-up of the target directory.

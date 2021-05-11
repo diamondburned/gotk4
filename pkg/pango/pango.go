@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/glib"
+	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/gotk3/gotk3/glib"
 )
 

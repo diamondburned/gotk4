@@ -36,7 +36,8 @@ type Generator struct {
 	// shouldn't have any marshalers.
 	NoMarshalPkgs []string
 
-	Repos gir.Repositories
+	Repos      gir.Repositories
+	RootModule string
 
 	logger *log.Logger
 
@@ -45,9 +46,10 @@ type Generator struct {
 }
 
 // NewGenerator creates a new generator with sane defaults.
-func NewGenerator(repos gir.Repositories) *Generator {
+func NewGenerator(repos gir.Repositories, root string) *Generator {
 	return &Generator{
 		Repos:        repos,
+		RootModule:   root,
 		unknownTypes: map[string]struct{}{},
 	}
 }
@@ -61,6 +63,10 @@ func (g *Generator) debugln(v ...interface{}) {
 	if g.logger != nil {
 		g.logger.Println(v...)
 	}
+}
+
+func (g *Generator) ImportPath(pkgPath string) string {
+	return gir.ImportPath(g.RootModule, pkgPath)
 }
 
 // UseNamespace creates a new namespace generator using the given namespace.

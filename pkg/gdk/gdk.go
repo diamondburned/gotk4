@@ -6,10 +6,9 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/cairo"
-	"github.com/diamondburned/gotk4/gdkpixbuf"
-	"github.com/diamondburned/gotk4/gio"
-	"github.com/diamondburned/gotk4/pkg/gdkx11"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
+	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/glib"
 )
@@ -846,7 +845,7 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGl(cr *cairo.Context, surface *gdkx11.X11Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
+func CairoDrawFromGl(cr *cairo.Context, surface *Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
 
 // CairoRectangle: adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle)

@@ -6,10 +6,10 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/gdk"
-	"github.com/diamondburned/gotk4/gio"
 	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdk"
 	"github.com/diamondburned/gotk4/pkg/gdkx11"
+	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/glib"
 )
@@ -3258,7 +3258,7 @@ func InitCheck() bool
 func IsInitialized() bool
 
 // NativeGetForSurface: finds the GtkNative associated with the surface.
-func NativeGetForSurface(surface *gdkx11.X11Surface) Native
+func NativeGetForSurface(surface *gdk.Surface) Native
 
 // PaperSizeGetDefault: returns the name of the default paper size, which
 // depends on the current locale.

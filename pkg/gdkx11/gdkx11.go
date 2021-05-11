@@ -3,8 +3,8 @@
 package gdkx11
 
 import (
-	"github.com/diamondburned/gotk4/gdk"
-	"github.com/diamondburned/gotk4/xlib"
+	"github.com/diamondburned/gotk4/pkg/gdk"
+	"github.com/diamondburned/gotk4/pkg/xlib"
 	"github.com/gotk3/gotk3/glib"
 )
 
@@ -47,7 +47,7 @@ func X11FreeCompoundText(ctext uint8)
 func X11FreeTextList(list string)
 
 // X11GetServerTime: routine to get the current X server time stamp.
-func X11GetServerTime(surface *X11Surface) uint32
+func X11GetServerTime(surface *gdk.Surface) uint32
 
 // X11GetXatomByNameForDisplay: returns the X atom for a Display corresponding
 // to @atom_name. This function caches the result, so if called repeatedly it is

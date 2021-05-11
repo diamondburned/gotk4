@@ -61,7 +61,13 @@ func main() {
 	}
 
 	for _, repo := range repos {
-		log.Println("Added from package", repo.Pkg, "file", repo.Path)
+		for _, namespace := range repo.Namespaces {
+			log.Println(
+				"added from package", repo.Pkg,
+				"namespace", namespace.Name,
+				"v"+namespace.Version, repo.Path,
+			)
+		}
 	}
 
 	var wg sync.WaitGroup
@@ -69,7 +75,7 @@ func main() {
 	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
 
 	gen := girgen.NewGenerator(repos, path.Join(module, output))
-	gen.WithLogger(log.New(os.Stderr, "[girgen] ", log.LstdFlags|log.Lmsgprefix))
+	gen.WithLogger(log.New(os.Stderr, "girgen: ", log.LstdFlags|log.Lmsgprefix), true)
 
 	// Do a clean-up of the target directory.
 	if err := os.RemoveAll(output); err != nil {
@@ -101,8 +107,6 @@ func main() {
 }
 
 func writeNamespace(ng *girgen.NamespaceGenerator) {
-	log.Println("generating", ng.PackageName(), "at", ng.Repository().Path)
-
 	pkg := ng.PackageName()
 	dir := filepath.Join(output, pkg)
 	out := filepath.Join(dir, pkg+".go")

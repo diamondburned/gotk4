@@ -3258,7 +3258,7 @@ func InitCheck() bool
 func IsInitialized() bool
 
 // NativeGetForSurface: finds the GtkNative associated with the surface.
-func NativeGetForSurface(surface *gdk.Surface) Native
+func NativeGetForSurface(surface *gdkx11.X11Surface) Native
 
 // PaperSizeGetDefault: returns the name of the default paper size, which
 // depends on the current locale.

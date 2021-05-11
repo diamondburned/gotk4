@@ -133,7 +133,7 @@ func (ng *NamespaceGenerator) generateFuncs() {
 
 	for _, function := range ng.current.Namespace.Functions {
 		if !fg.Use(function) {
-			ng.debugln("skipping function", cFunctionSig(function))
+			ng.logln(logInfo, "skipping function", cFunctionSig(function))
 			continue
 		}
 

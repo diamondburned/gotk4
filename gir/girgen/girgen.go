@@ -6,11 +6,11 @@ import (
 	"io"
 	"log"
 	"strconv"
-	"sync"
 	"text/template"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/internal/pen"
+	"github.com/fatih/color"
 )
 
 func newGoTemplate(block string) *template.Template {
@@ -40,29 +40,74 @@ type Generator struct {
 	RootModule string
 
 	logger *log.Logger
-
-	unknownTypes map[string]struct{}
-	uTypesMut    sync.Mutex
+	color  bool
 }
 
 // NewGenerator creates a new generator with sane defaults.
 func NewGenerator(repos gir.Repositories, root string) *Generator {
 	return &Generator{
-		Repos:        repos,
-		RootModule:   root,
-		unknownTypes: map[string]struct{}{},
+		Repos:      repos,
+		RootModule: root,
 	}
 }
 
 // WithLogger sets the generator's logger.
-func (g *Generator) WithLogger(logger *log.Logger) {
+func (g *Generator) WithLogger(logger *log.Logger, color bool) {
 	g.logger = logger
+	g.color = color
 }
 
-func (g *Generator) debugln(v ...interface{}) {
-	if g.logger != nil {
-		g.logger.Println(v...)
+type logLevel uint8
+
+const (
+	logInfo logLevel = iota
+	logSummary
+	logWarn
+	logError
+)
+
+func (lvl logLevel) prefix() string {
+	switch lvl {
+	case logInfo:
+		return "info:"
+	case logSummary:
+		return "summary:"
+	case logWarn:
+		return "warning:"
+	case logError:
+		return "error:"
+	default:
+		return ""
 	}
+}
+
+func (lvl logLevel) colorf(f string, v ...interface{}) string {
+	switch lvl {
+	case logInfo:
+		return color.HiBlueString(f, v...)
+	case logSummary:
+		return color.HiGreenString(f, v...)
+	case logWarn:
+		return color.HiYellowString(f, v...)
+	case logError:
+		return color.HiRedString(f, v...)
+	default:
+		return fmt.Sprintf(f, v...)
+	}
+}
+
+func (g *Generator) logln(level logLevel, v ...interface{}) {
+	if g.logger == nil {
+		return
+	}
+
+	prefix := level.prefix()
+	if g.color {
+		prefix = level.colorf(prefix)
+	}
+
+	v = append([]interface{}{prefix}, v...)
+	g.logger.Println(v...)
 }
 
 func (g *Generator) ImportPath(pkgPath string) string {
@@ -178,17 +223,15 @@ func (ng *NamespaceGenerator) Repository() *gir.PkgRepository {
 	return ng.current.Repository
 }
 
-func (ng *NamespaceGenerator) debugln(v ...interface{}) {
-	if ng.gen.logger != nil {
-		prefix := []interface{}{"package", ng.current.Namespace.Name + ":"}
-		prefix = append(prefix, v...)
+func (ng *NamespaceGenerator) logln(level logLevel, v ...interface{}) {
+	prefix := []interface{}{"package", ng.current.Namespace.Name + ":"}
+	prefix = append(prefix, v...)
 
-		ng.gen.debugln(prefix...)
-	}
+	ng.gen.logln(level, prefix...)
 }
 
 func (ng *NamespaceGenerator) warnUnknownType(typ string) {
-	ng.debugln("unknown gir type", strconv.Quote(typ))
+	ng.logln(logWarn, "unknown gir type", strconv.Quote(typ))
 }
 
 func (ng *NamespaceGenerator) addImport(pkgPath string) {

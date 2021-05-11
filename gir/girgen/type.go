@@ -141,7 +141,7 @@ func (ng *NamespaceGenerator) ResolveAnyType(any gir.AnyType) (string, bool) {
 		// CGo doesn't support variadic types.
 		return "", false
 	default:
-		ng.debugln("anyType empty")
+		ng.logln(logWarn, "anyType empty")
 	}
 
 	return "", false
@@ -249,7 +249,7 @@ var girPrimitiveGo = map[string]string{
 
 func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 	if typ.Name == "" {
-		ng.debugln("empty gir type", typ)
+		ng.logln(logWarn, "empty gir type", typ)
 		return nil
 	}
 
@@ -340,7 +340,7 @@ func directCallOrCreate(value, target, typ string, create bool) string {
 
 func (ng *NamespaceGenerator) arrayConverter(value, target string, array gir.Array) string {
 	if array.Type != nil {
-		ng.gen.debugln("skipping nested array", array)
+		ng.gen.logln(logWarn, "skipping nested array", array)
 		return ""
 	}
 

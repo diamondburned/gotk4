@@ -3,6 +3,7 @@
 package pangofc
 
 import (
+	"github.com/diamondburned/gotk4/pango"
 	"github.com/gotk3/gotk3/glib"
 )
 
@@ -16,4 +17,39 @@ func init() {
 
 		// Objects/Classes
 	})
+}
+
+// Decoder: `PangoFcDecoder` is a virtual base class that implementations will
+// inherit from.
+//
+// It's the interface that is used to define a custom encoding for a font. These
+// objects are created in your code from a function callback that was originally
+// registered with [method@PangoFc.FontMap.add_decoder_find_func]. Pango
+// requires information about the supported charset for a font as well as the
+// individual character to glyph conversions. Pango gets that information via
+// the #get_charset and #get_glyph callbacks into your object implementation.
+type Decoder struct {
+	*glib.Object
+}
+
+// Font: `PangoFcFont` is a base class for font implementations using the
+// Fontconfig and FreeType libraries.
+//
+// It is used in onjunction with [class@PangoFc.FontMap]. When deriving from
+// this class, you need to implement all of its virtual functions other than
+// shutdown() along with the get_glyph_extents() virtual function from
+// `PangoFont`.
+type Font struct {
+	pango.Font
+}
+
+// FontMap: `PangoFcFontMap` is a base class for font map implementations using
+// the Fontconfig and FreeType libraries.
+//
+// It is used in the Xft and FreeType backends shipped with Pango, but can also
+// be used when creating new backends. Any backend deriving from this base class
+// will take advantage of the wide range of shapers implemented using FreeType
+// that come with Pango.
+type FontMap struct {
+	pango.FontMap
 }

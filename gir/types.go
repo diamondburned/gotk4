@@ -91,6 +91,9 @@ type Class struct {
 	GLibGetType    string `xml:"http://www.gtk.org/introspection/glib/1.0 get-type,attr"`
 	GLibTypeStruct string `xml:"http://www.gtk.org/introspection/glib/1.0 type-struct,attr"`
 
+	InfoAttrs
+	InfoElements
+
 	Implements   []Implements  `xml:"http://www.gtk.org/introspection/core/1.0 implements"`
 	Constructors []Constructor `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
 	Methods      []Method      `xml:"http://www.gtk.org/introspection/core/1.0 method"`

@@ -4,46 +4,42 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"sync"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/internal/pen"
+	"golang.org/x/sync/singleflight"
 )
 
-type resolvedType struct {
-	GoType string
-	Type   gir.Type
-	Import string // optional
+// ResolvedType is a resolved type from a given gir.Type.
+type ResolvedType struct {
+	// either or
+	Extern  *ExternType // optional
+	Builtin *string     // optional
+
+	CType string
+	Ptr   uint8
 }
 
-// builtinType is a convenient function to make a new resolvedType.
-func builtinType(goType string, typ gir.Type) *resolvedType {
-	resolved := &resolvedType{GoType: goType, Type: typ}
-	resolved.setPtr(nil)
-	return resolved
+// ExternType is an externally resolved type.
+type ExternType struct {
+	Package string
+	Result  *gir.TypeFindResult
 }
 
-// typeFromResult creates a resolved type from the given type result.
-func typeFromResult(typ gir.Type, result *gir.TypeFindResult) *resolvedType {
-	name, _ := result.Info()
-
-	// same namespace, no package qual required.
-	if result.SameNamespace {
-		resolved := &resolvedType{name, typ, ""}
-		resolved.setPtr(result)
-		return resolved
-	}
-
-	// different namespace.
-	pkg := gir.GoNamespace(result.Namespace)
-	path := gir.ImportPath(pkg)
-
-	resolved := &resolvedType{pkg + "." + name, typ, path}
-	resolved.setPtr(result)
-	return resolved
+// Import returns the import path.
+func (exTyp *ExternType) Import() string {
+	return gir.ImportPath(exTyp.Package)
 }
 
-func (typ *resolvedType) setPtr(result *gir.TypeFindResult) {
-	ptr := strings.Count(typ.Type.CType, "*")
+var (
+	typeCache  sync.Map
+	typeFlight singleflight.Group
+)
+
+// countPtrs counts the number of nested pointers from the given gir.Type.
+func countPtrs(typ gir.Type, result *gir.TypeFindResult) uint8 {
+	ptr := uint8(strings.Count(typ.CType, "*"))
 
 	// Edge case: interfaces must not be pointers. We should still sometimes
 	// allow for pointers to interfaces, if needed, but this likely won't work.
@@ -51,17 +47,72 @@ func (typ *resolvedType) setPtr(result *gir.TypeFindResult) {
 		ptr--
 	}
 	// Edge case: a string is a gchar*, so we don't need a pointer.
-	if typ.Type.Name == "utf8" && ptr > 0 {
+	if typ.Name == "utf8" && ptr > 0 {
 		ptr--
 	}
 
-	typ.GoType = strings.Repeat("*", ptr) + typ.GoType
+	return ptr
+}
+
+// builtinType is a convenient function to make a new resolvedType.
+func builtinType(goType string, typ gir.Type) *ResolvedType {
+	return &ResolvedType{
+		Builtin: &goType,
+		CType:   typ.CType,
+		Ptr:     countPtrs(typ, nil),
+	}
+}
+
+// typeFromResult creates a resolved type from the given type result.
+func typeFromResult(typ gir.Type, result *gir.TypeFindResult) *ResolvedType {
+	return &ResolvedType{
+		Extern: &ExternType{
+			Package: gir.GoNamespace(result.Namespace),
+			Result:  result,
+		},
+		CType: typ.CType,
+		Ptr:   countPtrs(typ, result),
+	}
+}
+
+// NeedsNamespace returns true if the returned Go type needs a namespace to be
+// referenced properly.
+func (typ *ResolvedType) NeedsNamespace(current *gir.NamespaceFindResult) bool {
+	if typ.Extern == nil {
+		return false
+	}
+
+	// Fast path, in case the pointer matches from the cache.
+	if typ.Extern.Result.NamespaceFindResult == current {
+		return false
+	}
+
+	return false ||
+		typ.Extern.Result.Repository.Pkg != current.Repository.Pkg ||
+		typ.Extern.Result.Namespace.Name != current.Namespace.Name
+}
+
+// GoType formats the Go type.
+func (typ *ResolvedType) GoType(needsNamespace bool) string {
+	if typ.Builtin != nil {
+		return *typ.Builtin
+	}
+
+	name, _ := typ.Extern.Result.Info()
+	name = PascalToGo(name)
+
+	ptr := strings.Repeat("*", int(typ.Ptr))
+
+	if !needsNamespace {
+		return ptr + name
+	}
+	return ptr + typ.Extern.Package + "." + name
 }
 
 // CGoType returns the CGo type.
-func (typ *resolvedType) CGoType() string {
-	ptr := strings.Count(typ.Type.CType, "*")
-	val := strings.TrimSuffix(typ.Type.CType, "*")
+func (typ *ResolvedType) CGoType() string {
+	ptr := strings.Count(typ.CType, "*")
+	val := strings.TrimSuffix(typ.CType, "*")
 
 	return strings.Repeat("*", ptr) + "C." + val
 }
@@ -89,16 +140,11 @@ func (ng *NamespaceGenerator) ResolveAnyType(any gir.AnyType) (string, bool) {
 	switch {
 	case any.Array != nil:
 		return ng.resolveArrayType(*any.Array)
-
 	case any.Type != nil:
-		if r := ng.ResolveType(*any.Type); r != nil {
-			return r.GoType, true
-		}
-
+		return ng.ResolveToGoType(*any.Type)
 	case any.VarArgs != nil:
 		// CGo doesn't support variadic types.
 		return "", false
-
 	default:
 		ng.debugln("anyType empty")
 	}
@@ -106,70 +152,113 @@ func (ng *NamespaceGenerator) ResolveAnyType(any gir.AnyType) (string, bool) {
 	return "", false
 }
 
-// ResolveType resolves the given type from the GIR type field. It returns nil
-// if the type is not known. It does not recursively traverse the type.
-func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *resolvedType {
-	resolved := ng.resolveType(typ)
-	if resolved != nil && resolved.Import != "" {
-		ng.addImport(resolved.Import)
-	}
-
-	return resolved
-}
-
-// girPrimitiveGo converts the given GIR primitive type to a Go primitive type.
-// False is returend if girType is not a primitive type.
-func girPrimitiveGo(girType string) (string, bool) {
-	var goType string
-
-	switch girType {
-	case "none":
-		goType = ""
-	case "gboolean":
-		goType = "bool"
-	case "gfloat":
-		goType = "float32"
-	case "gdouble":
-		goType = "float64"
-	case "long double": // pain
-		goType = "float64"
-	case "gint", "gssize":
-		goType = "int"
-	case "gint8":
-		goType = "int8"
-	case "gint16", "gshort":
-		goType = "int16"
-	case "gint32", "glong", "int32":
-		goType = "int32"
-	case "gint64":
-		goType = "int64"
-	case "guint", "gsize":
-		goType = "uint"
-	case "guchar", "gchar":
-		goType = "byte"
-	case "guint8":
-		goType = "uint8"
-	case "guint16", "gushort":
-		goType = "uint16"
-	case "guint32", "gulong", "gunichar": // pain pain pain pain
-		goType = "uint32"
-	case "guint64":
-		goType = "uint64"
-	case "utf8", "filename": // filename is probably UTF-16 hybrid ???
-		goType = "string"
-	case "gpointer":
-		// TODO: ignore field
-		// TODO: aaaaaaaaaaaaaaaaaaaaaaa
-		goType = "unsafe.Pointer"
-	default:
+// ResolveToGoType is a convenient function that wraps around ResolveType and
+// returns the Go type.
+func (ng *NamespaceGenerator) ResolveToGoType(typ gir.Type) (string, bool) {
+	resolved := ng.ResolveType(typ)
+	if resolved == nil {
 		return "", false
 	}
 
-	return goType, true
+	return resolved.GoType(resolved.NeedsNamespace(ng.current)), true
 }
 
-func (ng *NamespaceGenerator) resolveType(typ gir.Type) *resolvedType {
-	if prim, ok := girPrimitiveGo(typ.Name); ok {
+// ResolveTypeName resolves the given GIR type name. The resolved type will
+// always have no pointer.
+func (ng *NamespaceGenerator) ResolveTypeName(girType string) *ResolvedType {
+	var cType string
+
+	// FindType is cached, so we can afford to do this.
+	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, girType)
+	if result != nil {
+		// Use the CType result ONLY. The returned Name from Info does NOT have
+		// the namespace prepended.
+		_, cType = result.Info()
+	}
+
+	return ng.ResolveType(gir.Type{
+		Name:  girType,
+		CType: cType,
+	})
+}
+
+// ResolveType resolves the given type from the GIR type field. It returns nil
+// if the type is not known. It does not recursively traverse the type.
+func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
+	if typ.CType == "" {
+		// Some aliases may not have a CType, for some reason. Create our own.
+		// Mutating typ here is fine, since it's a copy.
+		typ.CType = "gir_" + ng.current.Namespace.Name + "." + typ.Name
+	}
+
+	v, ok := typeCache.Load(typ.CType)
+	if ok {
+		return v.(*ResolvedType)
+	}
+
+	// Cache miss. Use singleflight to ensure we're not looking up multiple
+	// versions of the same type to prevent cache stampede.
+	v, _, _ = typeFlight.Do(typ.CType, func() (interface{}, error) {
+		resolved := ng.resolveTypeUncached(typ)
+		if resolved != nil {
+			// Save into the cache within the singleflight callback.
+			typeCache.Store(typ.CType, resolved)
+
+			// Add the import in the same singleflight callback.
+			if resolved.Extern != nil {
+				ng.addImport(resolved.Extern.Import())
+			}
+		}
+
+		return resolved, nil
+	})
+
+	// may be a non-nil interface to a nil pointer.
+	return v.(*ResolvedType)
+}
+
+// girPrimitiveGo maps the given GIR primitive type to a Go primitive type.
+var girPrimitiveGo = map[string]string{
+	"none":        "",
+	"gboolean":    "bool",
+	"gfloat":      "float32",
+	"gdouble":     "float64",
+	"long double": "float64",
+	"gint":        "int",
+	"gssize":      "int",
+	"gint8":       "int8",
+	"gint16":      "int16",
+	"gshort":      "int16",
+	"gint32":      "int32",
+	"glong":       "int32",
+	"int32":       "int32",
+	"gint64":      "int64",
+	"guint":       "uint",
+	"gsize":       "uint",
+	"guchar":      "byte",
+	"gchar":       "byte",
+	"guint8":      "uint8",
+	"guint16":     "uint16",
+	"gushort":     "uint16",
+	"guint32":     "uint32",
+	"gulong":      "uint32",
+	"gunichar":    "uint32",
+	"guint64":     "uint64",
+	"utf8":        "string",
+	"filename":    "string",
+
+	// TODO: ignore field
+	// TODO: aaaaaaaaaaaaaaaaaaaaaaa
+	"gpointer": "unsafe.Pointer",
+}
+
+func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
+	if typ.Name == "" {
+		ng.debugln("empty gir type", typ)
+		return nil
+	}
+
+	if prim, ok := girPrimitiveGo[typ.Name]; ok {
 		return builtinType(prim, typ)
 	}
 
@@ -185,9 +274,8 @@ func (ng *NamespaceGenerator) resolveType(typ gir.Type) *resolvedType {
 		return builtinType("*glib.Object", typ)
 	case "GObject.Closure":
 		return builtinType("*glib.Closure", typ)
-	case "GObject.GInitiallyUnowned":
+	case "GObject.InitiallyUnowned":
 		return builtinType("glib.InitiallyUnowned", typ)
-
 	case "GObject.Callback":
 		// Callback is a special func(Any) Any type, so we treat it as
 		// interface{} similarly to object.Connect(). We can use glib's Closure
@@ -199,6 +287,12 @@ func (ng *NamespaceGenerator) resolveType(typ gir.Type) *resolvedType {
 		return nil
 
 	// We don't know what these types translates to.
+	case "GObject.TypeModule":
+		return nil
+	case "GObject.ParamSpec": // this is deprecated
+		return nil
+	case "GObject.Parameter": // also deprecated I think
+		return nil
 	// TODO: Find a way to map EnumValue type.
 	// TODO: Add _full function support.
 	case "GObject.EnumValue":
@@ -214,13 +308,9 @@ func (ng *NamespaceGenerator) resolveType(typ gir.Type) *resolvedType {
 		}
 	}
 
-	result := ng.gen.Repos.FindType(
-		ng.current.Namespace.Name,
-		ng.current.Namespace.Version,
-		typ.Name,
-	)
+	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, typ.Name)
 	if result == nil {
-		ng.gen.warnUnknownType(typ.Name)
+		ng.warnUnknownType(typ.Name)
 		return nil
 	}
 
@@ -262,7 +352,7 @@ func (ng *NamespaceGenerator) arrayConverter(value, target string, array gir.Arr
 	// Detect if the underlying is a compatible Go primitive type. If it is,
 	// then we can directly cast a fixed-size array.
 	if array.Type != nil {
-		if primitiveGo, isPrimitive := girPrimitiveGo(array.Type.Name); isPrimitive {
+		if primitiveGo, ok := girPrimitiveGo[array.Type.Name]; ok {
 			return fmt.Sprintf("%s = ([%d]%s)(%s)", target, array.FixedSize, primitiveGo, value)
 		}
 	}
@@ -334,7 +424,7 @@ func (ng *NamespaceGenerator) typeConverter(value, target string, typ gir.Type) 
 
 func (ng *NamespaceGenerator) _typeConverter(value, target string, typ gir.Type, create bool) string {
 	// Resolve primitive types.
-	if prim, ok := girPrimitiveGo(typ.Name); ok {
+	if prim, ok := girPrimitiveGo[typ.Name]; ok {
 		// Edge cases.
 		switch prim {
 		case "string":
@@ -356,46 +446,40 @@ func (ng *NamespaceGenerator) _typeConverter(value, target string, typ gir.Type,
 		return directCallOrCreate(value, target, "glib.Take", create)
 	case "GObject.Closure":
 		return ""
-	case "GObject.GInitiallyUnowned":
+	case "GObject.InitiallyUnowned":
 		return ""
-
 	case "GObject.Callback":
 		// TODO: When is this ever needed? How do I even do this?
 		return ""
 	case "va_list":
 		// CGo cannot handle variadic argument lists.
 		return ""
-	case "GObject.EnumValue":
+	case "GObject.EnumValue", "GObject.TypeModule", "GObject.ParamSpec", "GObject.Parameter":
 		// Refer to ResolveType.
 		return ""
 	}
 
-	result := ng.gen.Repos.FindType(
-		ng.current.Namespace.Name,
-		ng.current.Namespace.Version,
-		typ.Name,
-	)
+	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, typ.Name)
 	if result == nil {
 		// Probably already warned.
 		return ""
 	}
 
 	resolved := typeFromResult(typ, result)
+	goType := resolved.GoType(false)
 
 	// Resolve alias.
 	if result.Alias != nil {
-		b := strings.Builder{}
-		b.WriteString("{\n")
-		b.WriteString(ng._typeConverter(value, "tmp", result.Alias.Type, true))
-		b.WriteString("\n")
-		b.WriteString(directCallOrCreate("tmp", target, resolved.GoType, false))
-		b.WriteString("}")
+		var b pen.Block
+		b.Line(ng._typeConverter(value, "tmp", result.Alias.Type, true))
+		b.EmptyLine()
+		b.Line(directCallOrCreate("tmp", target, goType, false))
 		return b.String()
 	}
 
 	// Resolve castable number types.
 	if result.Enum != nil || result.Bitfield != nil {
-		return directCallOrCreate(value, target, resolved.GoType, false)
+		return directCallOrCreate(value, target, goType, false)
 	}
 
 	// TODO: callbacks and functions are handled differently. Unsure if they're
@@ -404,5 +488,6 @@ func (ng *NamespaceGenerator) _typeConverter(value, target string, typ gir.Type,
 	// TODO: interfaces should be wrapped by an unexported type.
 
 	// Assume the wrap function. This so far works for classes and records.
-	return directCallOrCreate(value, target, "wrap"+resolved.GoType, false)
+	// TODO: handle wrap functions from another package.
+	return directCallOrCreate(value, target, "wrap"+goType, false)
 }

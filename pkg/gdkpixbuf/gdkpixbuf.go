@@ -3,6 +3,7 @@
 package gdkpixbuf
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/glib"
@@ -159,6 +160,10 @@ type PixbufFormat struct {
 
 func wrapPixbufFormat(p *C.GdkPixbufFormat) *PixbufFormat {
 	v := PixbufFormat{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PixbufFormat).free)
+
 	return &v
 }
 
@@ -167,4 +172,45 @@ func marshalPixbufFormat(p uintptr) (interface{}, error) {
 	c := (*C.GdkPixbufFormat)(unsafe.Pointer(b))
 
 	return wrapPixbufFormat(c)
+}
+
+func (p *PixbufFormat) free() {}
+
+// Native returns the pointer to *C.GdkPixbufFormat. The caller is expected to
+// cast.
+func (p *PixbufFormat) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
+// Pixbuf: this is the main structure in the gdk-pixbuf library. It is used to
+// represent images. It contains information about the image's pixel data, its
+// color space, bits per sample, width and height, and the rowstride (the number
+// of bytes between the start of one row and the start of the next).
+type Pixbuf struct {
+	*glib.Object
+}
+
+// PixbufAnimation: an opaque struct representing an animation.
+type PixbufAnimation struct {
+	*glib.Object
+}
+
+// PixbufAnimationIter: an opaque struct representing an iterator which points
+// to a certain position in an animation.
+type PixbufAnimationIter struct {
+	*glib.Object
+}
+
+// PixbufLoader: the GdkPixbufLoader struct contains only private fields.
+type PixbufLoader struct {
+	*glib.Object
+}
+
+// PixbufSimpleAnim: an opaque struct representing a simple animation.
+type PixbufSimpleAnim struct {
+	PixbufAnimation
+}
+
+type PixbufSimpleAnimIter struct {
+	PixbufAnimationIter
 }

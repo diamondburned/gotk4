@@ -63,24 +63,9 @@ func (g *Generator) debugln(v ...interface{}) {
 	}
 }
 
-func (g *Generator) warnUnknownType(typ string) {
-	if g.logger != nil {
-		// g.uTypesMut.Lock()
-		// defer g.uTypesMut.Unlock()
-
-		// _, warned := g.unknownTypes[typ]
-		// if warned {
-		// 	return
-		// }
-
-		g.debugln("unknown gir type", typ)
-		// g.unknownTypes[typ] = struct{}{}
-	}
-}
-
 // UseNamespace creates a new namespace generator using the given namespace.
 func (g *Generator) UseNamespace(namespace string) *NamespaceGenerator {
-	res := g.Repos.FindNamespace(namespace, "")
+	res := g.Repos.FindNamespace(namespace)
 	if res == nil {
 		return nil
 	}
@@ -127,6 +112,7 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 	ng.generateBitfields()
 	ng.generateFuncs()
 	ng.generateRecords()
+	ng.generateClasses()
 
 	if err := ng.pen.Flush(); err != nil {
 		return err
@@ -154,7 +140,7 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 	}
 
 	pen.Words(pkgs...)
-	pen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations") // opt to warn over comments
+	pen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
 	for _, cIncl := range ng.current.Repository.CIncludes {
 		pen.Words("// #include", fmt.Sprintf("<%s>", cIncl.Name))
 	}
@@ -177,12 +163,12 @@ func (ng *NamespaceGenerator) PackageName() string {
 }
 
 // Namespace returns the generator's namespace.
-func (ng *NamespaceGenerator) Namespace() gir.Namespace {
+func (ng *NamespaceGenerator) Namespace() *gir.Namespace {
 	return ng.current.Namespace
 }
 
 // Repository returns the generator's repository.
-func (ng *NamespaceGenerator) Repository() gir.PkgRepository {
+func (ng *NamespaceGenerator) Repository() *gir.PkgRepository {
 	return ng.current.Repository
 }
 
@@ -193,6 +179,10 @@ func (ng *NamespaceGenerator) debugln(v ...interface{}) {
 
 		ng.gen.debugln(prefix...)
 	}
+}
+
+func (ng *NamespaceGenerator) warnUnknownType(typ string) {
+	ng.debugln("unknown gir type", strconv.Quote(typ))
 }
 
 func (ng *NamespaceGenerator) addImport(pkgPath string) {

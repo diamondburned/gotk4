@@ -3,6 +3,7 @@
 package xlib
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/gotk3/gotk3/glib"
@@ -53,6 +54,10 @@ type Display struct {
 
 func wrapDisplay(p *C.Display) *Display {
 	v := Display{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Display).free)
+
 	return &v
 }
 
@@ -63,12 +68,24 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 	return wrapDisplay(c)
 }
 
+func (d *Display) free() {}
+
+// Native returns the pointer to *C.Display. The caller is expected to
+// cast.
+func (d *Display) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type Screen struct {
 	native *C.Screen
 }
 
 func wrapScreen(p *C.Screen) *Screen {
 	v := Screen{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Screen).free)
+
 	return &v
 }
 
@@ -79,12 +96,24 @@ func marshalScreen(p uintptr) (interface{}, error) {
 	return wrapScreen(c)
 }
 
+func (s *Screen) free() {}
+
+// Native returns the pointer to *C.Screen. The caller is expected to
+// cast.
+func (s *Screen) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type Visual struct {
 	native *C.Visual
 }
 
 func wrapVisual(p *C.Visual) *Visual {
 	v := Visual{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Visual).free)
+
 	return &v
 }
 
@@ -95,12 +124,24 @@ func marshalVisual(p uintptr) (interface{}, error) {
 	return wrapVisual(c)
 }
 
+func (v *Visual) free() {}
+
+// Native returns the pointer to *C.Visual. The caller is expected to
+// cast.
+func (v *Visual) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type XConfigureEvent struct {
 	native *C.XConfigureEvent
 }
 
 func wrapXConfigureEvent(p *C.XConfigureEvent) *XConfigureEvent {
 	v := XConfigureEvent{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*XConfigureEvent).free)
+
 	return &v
 }
 
@@ -111,12 +152,24 @@ func marshalXConfigureEvent(p uintptr) (interface{}, error) {
 	return wrapXConfigureEvent(c)
 }
 
+func (x *XConfigureEvent) free() {}
+
+// Native returns the pointer to *C.XConfigureEvent. The caller is expected to
+// cast.
+func (x *XConfigureEvent) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
+}
+
 type XImage struct {
 	native *C.XImage
 }
 
 func wrapXImage(p *C.XImage) *XImage {
 	v := XImage{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*XImage).free)
+
 	return &v
 }
 
@@ -127,12 +180,24 @@ func marshalXImage(p uintptr) (interface{}, error) {
 	return wrapXImage(c)
 }
 
+func (x *XImage) free() {}
+
+// Native returns the pointer to *C.XImage. The caller is expected to
+// cast.
+func (x *XImage) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
+}
+
 type XFontStruct struct {
 	native *C.XFontStruct
 }
 
 func wrapXFontStruct(p *C.XFontStruct) *XFontStruct {
 	v := XFontStruct{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*XFontStruct).free)
+
 	return &v
 }
 
@@ -143,12 +208,24 @@ func marshalXFontStruct(p uintptr) (interface{}, error) {
 	return wrapXFontStruct(c)
 }
 
+func (x *XFontStruct) free() {}
+
+// Native returns the pointer to *C.XFontStruct. The caller is expected to
+// cast.
+func (x *XFontStruct) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
+}
+
 type XTrapezoid struct {
 	native *C.XTrapezoid
 }
 
 func wrapXTrapezoid(p *C.XTrapezoid) *XTrapezoid {
 	v := XTrapezoid{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*XTrapezoid).free)
+
 	return &v
 }
 
@@ -159,12 +236,24 @@ func marshalXTrapezoid(p uintptr) (interface{}, error) {
 	return wrapXTrapezoid(c)
 }
 
+func (x *XTrapezoid) free() {}
+
+// Native returns the pointer to *C.XTrapezoid. The caller is expected to
+// cast.
+func (x *XTrapezoid) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
+}
+
 type XVisualInfo struct {
 	native *C.XVisualInfo
 }
 
 func wrapXVisualInfo(p *C.XVisualInfo) *XVisualInfo {
 	v := XVisualInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*XVisualInfo).free)
+
 	return &v
 }
 
@@ -175,12 +264,24 @@ func marshalXVisualInfo(p uintptr) (interface{}, error) {
 	return wrapXVisualInfo(c)
 }
 
+func (x *XVisualInfo) free() {}
+
+// Native returns the pointer to *C.XVisualInfo. The caller is expected to
+// cast.
+func (x *XVisualInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
+}
+
 type XWindowAttributes struct {
 	native *C.XWindowAttributes
 }
 
 func wrapXWindowAttributes(p *C.XWindowAttributes) *XWindowAttributes {
 	v := XWindowAttributes{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*XWindowAttributes).free)
+
 	return &v
 }
 
@@ -189,4 +290,12 @@ func marshalXWindowAttributes(p uintptr) (interface{}, error) {
 	c := (*C.XWindowAttributes)(unsafe.Pointer(b))
 
 	return wrapXWindowAttributes(c)
+}
+
+func (x *XWindowAttributes) free() {}
+
+// Native returns the pointer to *C.XWindowAttributes. The caller is expected to
+// cast.
+func (x *XWindowAttributes) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }

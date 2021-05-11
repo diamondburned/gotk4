@@ -28,7 +28,7 @@ type initGenerator struct {
 
 func (ng *NamespaceGenerator) generateInit() {
 	ng.pen.BlockTmpl(initTmpl, initGenerator{
-		Namespace: ng.current.Namespace,
+		Namespace: *ng.current.Namespace,
 		Ng:        ng,
 	})
 }

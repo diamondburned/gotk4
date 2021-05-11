@@ -25,14 +25,14 @@ var recordIgnoreSuffixes = []string{
 var recordTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .GoName }}
 	type {{ .GoName }} struct {
+		{{ if .PublicFields -}}
 		{{ range .PublicFields -}}
 		{{ GoDoc .Doc 1 .GoName }}
 		{{ .GoName }} {{ .GoType }}
-		{{ end -}}
+		{{ end }}
 
-		{{ if .NeedsNative }}
+		{{ end }}
 		native *C.{{ .CType }}
-		{{ end -}}
 	}
 
 	func wrap{{ .GoName }}(p *C.{{ .CType }}) *{{ .GoName }} {
@@ -40,12 +40,16 @@ var recordTmpl = newGoTemplate(`
 		v := {{ .GoName }}{native: p}
 		{{ else -}}
 		var v {{ .GoName }}
-		{{ end -}}
+		{{ end }}
 
 		{{ range .PublicFields -}}
 		{{ $.Ng.AnyTypeConverter (printf "p.%s" .Name) (printf "v.%s" .GoName) .AnyType }}
-		{{ end -}}
+		{{ end }}
 
+		{{ if .NeedsNative }}
+		runtime.SetFinalizer(v, nil)
+		runtime.SetFinalizer(v, (*{{ .GoName }}).free)
+		{{ end }}
 		return &v
 	}
 
@@ -54,6 +58,18 @@ var recordTmpl = newGoTemplate(`
 		c := (*C.{{ .CType }})(unsafe.Pointer(b))
 
 		return wrap{{ .GoName }}(c)
+	}
+
+	{{ $recv := (FirstChar .GoName) }}
+
+	{{ if .NeedsNative }}
+	func ({{ $recv }} *{{ .GoName }}) free() {}
+	{{ end }}
+
+	// Native returns the pointer to *C.{{ .CType }}. The caller is expected to
+	// cast.
+	func ({{ $recv }} *{{ .GoName }}) Native() unsafe.Pointer {
+		return unsafe.Pointer({{ $recv }}.native)
 	}
 `)
 
@@ -94,18 +110,6 @@ func (rg *recordGenerator) Use(rec gir.Record) bool {
 	return true
 }
 
-// needsNative returns true if the record needs a private C field for
-// referencing.
-func (rg *recordGenerator) needsNative() bool {
-	for _, field := range rg.Fields {
-		if field.Private {
-			return true
-		}
-	}
-
-	return len(rg.Fields) == 0
-}
-
 func (rg *recordGenerator) publicFields() []recordField {
 	fields := make([]recordField, 0, len(rg.Fields))
 
@@ -130,14 +134,39 @@ func (rg *recordGenerator) publicFields() []recordField {
 	return fields
 }
 
+// needsNative returns true if the record needs a private C field for
+// referencing.
+func (rg *recordGenerator) needsNative() bool {
+	for _, field := range rg.Fields {
+		if field.Private {
+			return true
+		}
+	}
+
+	return len(rg.Fields) == 0
+}
+
 func (ng *NamespaceGenerator) generateRecords() {
 	rg := recordGenerator{Ng: ng}
+	imported := false
 
 	for _, record := range ng.current.Namespace.Records {
 		if !rg.Use(record) {
 			continue
 		}
 
+		// Add the needed imports once.
+		if !imported {
+			rg.Ng.addImport("unsafe")
+			rg.Ng.addImport("runtime")
+			imported = true
+		}
+
 		ng.pen.BlockTmpl(recordTmpl, rg)
+
+		// TODO: record Native() uintptr
+		// TODO: record methods.
+		// TODO: handle transfer-ownership
+		// TODO: free method
 	}
 }

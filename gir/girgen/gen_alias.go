@@ -15,18 +15,19 @@ type aliasData struct {
 
 func (ng *NamespaceGenerator) generateAliases() {
 	for _, alias := range ng.current.Namespace.Aliases {
-		resolved := ng.ResolveType(alias.Type)
-		if resolved == nil {
+		goType, ok := ng.ResolveToGoType(alias.Type)
+		if !ok {
 			continue
 		}
-		if resolved.GoType == "" {
+
+		if goType == "" {
 			// TODO: fix this.
-			resolved.GoType = "struct{}"
+			goType = "struct{}"
 		}
 
 		ng.pen.BlockTmpl(aliasTmpl, aliasData{
 			Alias:  alias,
-			GoType: resolved.GoType,
+			GoType: goType,
 		})
 	}
 }

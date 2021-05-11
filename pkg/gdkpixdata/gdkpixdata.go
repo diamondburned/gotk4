@@ -113,10 +113,13 @@ type Pixdata struct {
 	// PixelData: @width x @height pixels, encoded according to @pixdata_type
 	// and @rowstride.
 	PixelData []uint8
+
+	native *C.GdkPixdata
 }
 
 func wrapPixdata(p *C.GdkPixdata) *Pixdata {
 	var v Pixdata
+
 	v.Magic = uint32(p.magic)
 	v.Length = int32(p.length)
 	v.PixdataType = uint32(p.pixdata_type)
@@ -132,4 +135,10 @@ func marshalPixdata(p uintptr) (interface{}, error) {
 	c := (*C.GdkPixdata)(unsafe.Pointer(b))
 
 	return wrapPixdata(c)
+}
+
+// Native returns the pointer to *C.GdkPixdata. The caller is expected to
+// cast.
+func (p *Pixdata) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }

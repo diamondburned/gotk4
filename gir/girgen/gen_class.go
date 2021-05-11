@@ -1,62 +1,75 @@
 package girgen
 
-// var classTmpl = newGoTemplate(`
-// 	{{ $type := (PascalToGo .Name) }}
+import (
+	"github.com/diamondburned/gotk4/gir"
+)
 
-// 	{{ GoDoc .Doc 0 $type }}
-// 	type {{ $type }} struct {
+var classTmpl = newGoTemplate(`
+	{{ GoDoc .Doc 0 .GoName }}
+	type {{ .GoName }} struct {
+		{{ index .TypeTree 0 }}
+	}
+`)
 
-// 	}
-// `)
+type classGenerator struct {
+	gir.Class
+	GoName   string
+	TypeTree []string
 
-// type classGenerator struct {
-// 	gir.Class
-// 	ParentGo string
+	ng *NamespaceGenerator
+}
 
-// 	ng *NamespaceGenerator
-// }
+func (cg *classGenerator) Use(class gir.Class) bool {
+	cg.TypeTree = cg.TypeTree[:0]
 
-// func (rg classGenerator) NeedsNative() bool {
-// 	for _, field := range rg.Fields {
-// 		if field.Private {
-// 			return true
-// 		}
-// 	}
+	// Loop to resolve the parent type, the parent type of that parent type, and
+	// so on.
+	if class.Parent != "" {
+		parent := class.Parent
+		for {
+			parentType := cg.ng.ResolveTypeName(parent)
+			if parentType == nil {
+				return false
+			}
 
-// 	return len(rg.Fields) == 0
-// }
+			goType := parentType.GoType(parentType.NeedsNamespace(cg.ng.current))
+			cg.TypeTree = append(cg.TypeTree, goType)
 
-// func (rg *classGenerator) Use(class gir.Class) bool {
-// 	// TODO: resolve parent type
-// 	// TODO: recursively resolve parent type until end of chain
-// }
+			// We've resolved as deep as we can, so bail. This check works
+			// because non-class types don't have parent classes.
+			if parentType.Extern == nil || parentType.Extern.Result.Class == nil {
+				break
+			}
 
-// func (rg classGenerator) Field(field gir.Field) string {
-// 	if field.Private {
-// 		return ""
-// 	}
+			// Use the parent class' parent type.
+			parent = parentType.Extern.Result.Class.Parent
+			if parent == "" {
+				break
+			}
+		}
+	} else {
+		// TODO: check what happens if a class has no parent. It should have a
+		// GObject parent, usually.
+		return false
+	}
 
-// 	typ, ok := rg.ng.ResolveAnyType(field.AnyType)
-// 	if !ok {
-// 		return ""
-// 	}
+	cg.Class = class
+	cg.GoName = PascalToGo(class.Name)
 
-// 	name := SnakeToGo(true, field.Name)
+	return true
+}
 
-// 	return GoDoc(field.Doc, 1, name) + "\n" + name + " " + typ
-// }
+func (ng *NamespaceGenerator) generateClasses() {
+	cg := classGenerator{
+		TypeTree: make([]string, 15),
+		ng:       ng,
+	}
 
-// func (ng *NamespaceGenerator) generateClasss() {
-// 	_ = gir.Field{}
+	for _, class := range ng.current.Namespace.Classes {
+		if !cg.Use(class) {
+			continue
+		}
 
-// 	for _, class := range ng.current.Namespace.Classes {
-// 		if ignoreClass(class) {
-// 			continue
-// 		}
-
-// 		ng.pen.BlockTmpl(classTmpl, classGenerator{
-// 			Class: class,
-// 			ng:    ng,
-// 		})
-// 	}
-// }
+		ng.pen.BlockTmpl(classTmpl, cg)
+	}
+}

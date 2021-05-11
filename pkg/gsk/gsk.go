@@ -3,10 +3,10 @@
 package gsk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/gdk"
-	"github.com/diamondburned/gotk4/glib"
 	"github.com/diamondburned/gotk4/graphene"
 	"github.com/gotk3/gotk3/glib"
 )
@@ -301,12 +301,16 @@ type ColorStop struct {
 	Offset float32
 	// Color: the color at the given offset
 	Color gdk.RGBA
+
+	native *C.GskColorStop
 }
 
 func wrapColorStop(p *C.GskColorStop) *ColorStop {
 	var v ColorStop
+
 	v.Offset = float32(p.offset)
-	v.Color = wrapgdk.RGBA(p.color)
+	v.Color = wrapRGBA(p.color)
+
 	return &v
 }
 
@@ -315,6 +319,12 @@ func marshalColorStop(p uintptr) (interface{}, error) {
 	c := (*C.GskColorStop)(unsafe.Pointer(b))
 
 	return wrapColorStop(c)
+}
+
+// Native returns the pointer to *C.GskColorStop. The caller is expected to
+// cast.
+func (c *ColorStop) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // ParseLocation: a location in a parse buffer.
@@ -329,15 +339,19 @@ type ParseLocation struct {
 	LineBytes uint
 	// LineChars: the position in the line, as characters
 	LineChars uint
+
+	native *C.GskParseLocation
 }
 
 func wrapParseLocation(p *C.GskParseLocation) *ParseLocation {
 	var v ParseLocation
+
 	v.Bytes = uint(p.bytes)
 	v.Chars = uint(p.chars)
 	v.Lines = uint(p.lines)
 	v.LineBytes = uint(p.line_bytes)
 	v.LineChars = uint(p.line_chars)
+
 	return &v
 }
 
@@ -346,6 +360,12 @@ func marshalParseLocation(p uintptr) (interface{}, error) {
 	c := (*C.GskParseLocation)(unsafe.Pointer(b))
 
 	return wrapParseLocation(c)
+}
+
+// Native returns the pointer to *C.GskParseLocation. The caller is expected to
+// cast.
+func (p *ParseLocation) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // RoundedRect: a rectangular region with rounded corners.
@@ -361,11 +381,14 @@ type RoundedRect struct {
 	Bounds graphene.Rect
 	// Corner: the size of the 4 rounded corners
 	Corner [4]graphene.Size
+
+	native *C.GskRoundedRect
 }
 
 func wrapRoundedRect(p *C.GskRoundedRect) *RoundedRect {
 	var v RoundedRect
-	v.Bounds = wrapgraphene.Rect(p.bounds)
+
+	v.Bounds = wrapRect(p.bounds)
 
 	return &v
 }
@@ -377,6 +400,12 @@ func marshalRoundedRect(p uintptr) (interface{}, error) {
 	return wrapRoundedRect(c)
 }
 
+// Native returns the pointer to *C.GskRoundedRect. The caller is expected to
+// cast.
+func (r *RoundedRect) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 // ShaderArgsBuilder: an object to build the uniforms data for a GLShader.
 type ShaderArgsBuilder struct {
 	native *C.GskShaderArgsBuilder
@@ -384,6 +413,10 @@ type ShaderArgsBuilder struct {
 
 func wrapShaderArgsBuilder(p *C.GskShaderArgsBuilder) *ShaderArgsBuilder {
 	v := ShaderArgsBuilder{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShaderArgsBuilder).free)
+
 	return &v
 }
 
@@ -392,6 +425,14 @@ func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 	c := (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
 
 	return wrapShaderArgsBuilder(c)
+}
+
+func (s *ShaderArgsBuilder) free() {}
+
+// Native returns the pointer to *C.GskShaderArgsBuilder. The caller is expected to
+// cast.
+func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Shadow: the shadow parameters in a shadow node.
@@ -404,14 +445,18 @@ type Shadow struct {
 	Dy float32
 	// Radius: the radius of the shadow
 	Radius float32
+
+	native *C.GskShadow
 }
 
 func wrapShadow(p *C.GskShadow) *Shadow {
 	var v Shadow
-	v.Color = wrapgdk.RGBA(p.color)
+
+	v.Color = wrapRGBA(p.color)
 	v.Dx = float32(p.dx)
 	v.Dy = float32(p.dy)
 	v.Radius = float32(p.radius)
+
 	return &v
 }
 
@@ -422,6 +467,12 @@ func marshalShadow(p uintptr) (interface{}, error) {
 	return wrapShadow(c)
 }
 
+// Native returns the pointer to *C.GskShadow. The caller is expected to
+// cast.
+func (s *Shadow) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 // Transform: the `GskTransform` structure contains only private data.
 type Transform struct {
 	native *C.GskTransform
@@ -429,6 +480,10 @@ type Transform struct {
 
 func wrapTransform(p *C.GskTransform) *Transform {
 	v := Transform{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Transform).free)
+
 	return &v
 }
 
@@ -437,4 +492,166 @@ func marshalTransform(p uintptr) (interface{}, error) {
 	c := (*C.GskTransform)(unsafe.Pointer(b))
 
 	return wrapTransform(c)
+}
+
+func (t *Transform) free() {}
+
+// Native returns the pointer to *C.GskTransform. The caller is expected to
+// cast.
+func (t *Transform) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
+// BlendNode: a render node applying a blending function between its two child
+// nodes.
+type BlendNode struct {
+	RenderNode
+}
+
+// BlurNode: a render node applying a blur effect to its single child.
+type BlurNode struct {
+	RenderNode
+}
+
+// BorderNode: a render node for a border.
+type BorderNode struct {
+	RenderNode
+}
+
+// CairoNode: a render node for a Cairo surface.
+type CairoNode struct {
+	RenderNode
+}
+
+type CairoRenderer struct {
+	Renderer
+}
+
+// ClipNode: a render node applying a rectangular clip to its single child node.
+type ClipNode struct {
+	RenderNode
+}
+
+// ColorMatrixNode: a render node controlling the color matrix of its single
+// child node.
+type ColorMatrixNode struct {
+	RenderNode
+}
+
+// ColorNode: a render node for a solid color.
+type ColorNode struct {
+	RenderNode
+}
+
+// ConicGradientNode: a render node for a conic gradient.
+type ConicGradientNode struct {
+	RenderNode
+}
+
+// ContainerNode: a render node that can contain other render nodes.
+type ContainerNode struct {
+	RenderNode
+}
+
+// CrossFadeNode: a render node cross fading between two child nodes.
+type CrossFadeNode struct {
+	RenderNode
+}
+
+// DebugNode: a render node that emits a debugging message when drawing its
+// child node.
+type DebugNode struct {
+	RenderNode
+}
+
+type GLRenderer struct {
+	Renderer
+}
+
+// GLShader: an object representing a GL shader program.
+type GLShader struct {
+	*glib.Object
+}
+
+// GLShaderNode: a render node using a GL shader when drawing its children
+// nodes.
+type GLShaderNode struct {
+	RenderNode
+}
+
+// InsetShadowNode: a render node for an inset shadow.
+type InsetShadowNode struct {
+	RenderNode
+}
+
+// LinearGradientNode: a render node for a linear gradient.
+type LinearGradientNode struct {
+	RenderNode
+}
+
+// OpacityNode: a render node controlling the opacity of its single child node.
+type OpacityNode struct {
+	RenderNode
+}
+
+// OutsetShadowNode: a render node for an outset shadow.
+type OutsetShadowNode struct {
+	RenderNode
+}
+
+// RadialGradientNode: a render node for a radial gradient.
+type RadialGradientNode struct {
+	RenderNode
+}
+
+// Renderer: base type for the object managing the rendering pipeline for a
+// Surface.
+type Renderer struct {
+	*glib.Object
+}
+
+// RepeatNode: a render node repeating its single child node.
+type RepeatNode struct {
+	RenderNode
+}
+
+// RepeatingLinearGradientNode: a render node for a repeating linear gradient.
+type RepeatingLinearGradientNode struct {
+	RenderNode
+}
+
+// RepeatingRadialGradientNode: a render node for a repeating radial gradient.
+type RepeatingRadialGradientNode struct {
+	RenderNode
+}
+
+// RoundedClipNode: a render node applying a rounded rectangle clip to its
+// single child.
+type RoundedClipNode struct {
+	RenderNode
+}
+
+// ShadowNode: a render node drawing one or more shadows behind its single child
+// node.
+type ShadowNode struct {
+	RenderNode
+}
+
+// TextNode: a render node drawing a set of glyphs.
+type TextNode struct {
+	RenderNode
+}
+
+// TextureNode: a render node for a Texture.
+type TextureNode struct {
+	RenderNode
+}
+
+// TransformNode: a render node applying a Transform to its single child node.
+type TransformNode struct {
+	RenderNode
+}
+
+type VulkanRenderer struct {
+	Renderer
 }

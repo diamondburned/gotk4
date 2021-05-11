@@ -3,6 +3,7 @@
 package gdkwayland
 
 import (
+	"github.com/diamondburned/gotk4/gdk"
 	"github.com/gotk3/gotk3/glib"
 )
 
@@ -16,4 +17,32 @@ func init() {
 
 		// Objects/Classes
 	})
+}
+
+type WaylandDevice struct {
+	gdk.Device
+}
+
+type WaylandDisplay struct {
+	gdk.Display
+}
+
+type WaylandMonitor struct {
+	gdk.Monitor
+}
+
+type WaylandPopup struct {
+	WaylandSurface
+}
+
+type WaylandSeat struct {
+	gdk.Seat
+}
+
+type WaylandSurface struct {
+	gdk.Surface
+}
+
+type WaylandToplevel struct {
+	WaylandSurface
 }

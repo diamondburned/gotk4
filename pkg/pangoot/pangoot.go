@@ -3,6 +3,7 @@
 package pangoot
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pango"
@@ -73,6 +74,10 @@ type Buffer struct {
 
 func wrapBuffer(p *C.PangoOTBuffer) *Buffer {
 	v := Buffer{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Buffer).free)
+
 	return &v
 }
 
@@ -81,6 +86,14 @@ func marshalBuffer(p uintptr) (interface{}, error) {
 	c := (*C.PangoOTBuffer)(unsafe.Pointer(b))
 
 	return wrapBuffer(c)
+}
+
+func (b *Buffer) free() {}
+
+// Native returns the pointer to *C.PangoOTBuffer. The caller is expected to
+// cast.
+func (b *Buffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // FeatureMap: the OTFeatureMap typedef is used to represent an OpenType feature
@@ -92,12 +105,15 @@ type FeatureMap struct {
 	// PropertyBit: the property bit to use for this feature. See
 	// pango_ot_ruleset_add_feature() for details.
 	PropertyBit uint32
+
+	native *C.PangoOTFeatureMap
 }
 
 func wrapFeatureMap(p *C.PangoOTFeatureMap) *FeatureMap {
 	var v FeatureMap
 
 	v.PropertyBit = uint32(p.property_bit)
+
 	return &v
 }
 
@@ -106,6 +122,12 @@ func marshalFeatureMap(p uintptr) (interface{}, error) {
 	c := (*C.PangoOTFeatureMap)(unsafe.Pointer(b))
 
 	return wrapFeatureMap(c)
+}
+
+// Native returns the pointer to *C.PangoOTFeatureMap. The caller is expected to
+// cast.
+func (f *FeatureMap) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Glyph: the OTGlyph structure represents a single glyph together with
@@ -125,16 +147,20 @@ type Glyph struct {
 	LigID uint16
 	// Internal: for Pango internal use
 	Internal uint
+
+	native *C.PangoOTGlyph
 }
 
 func wrapGlyph(p *C.PangoOTGlyph) *Glyph {
 	var v Glyph
+
 	v.Glyph = uint32(p.glyph)
 	v.Properties = uint(p.properties)
 	v.Cluster = uint(p.cluster)
 	v.Component = uint16(p.component)
 	v.LigID = uint16(p.ligID)
 	v.Internal = uint(p.internal)
+
 	return &v
 }
 
@@ -143,6 +169,12 @@ func marshalGlyph(p uintptr) (interface{}, error) {
 	c := (*C.PangoOTGlyph)(unsafe.Pointer(b))
 
 	return wrapGlyph(c)
+}
+
+// Native returns the pointer to *C.PangoOTGlyph. The caller is expected to
+// cast.
+func (g *Glyph) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // RulesetDescription: the OTRuleset structure holds all the information needed
@@ -170,18 +202,22 @@ type RulesetDescription struct {
 	OtherFeatures *FeatureMap
 	// NOtherFeatures: length of @other_features, or 0.
 	NOtherFeatures uint
+
+	native *C.PangoOTRulesetDescription
 }
 
 func wrapRulesetDescription(p *C.PangoOTRulesetDescription) *RulesetDescription {
 	var v RulesetDescription
-	v.Script = pango.Script(p.script)
-	v.Language = wrap * pango.Language(p.language)
+
+	v.Script = Script(p.script)
+	v.Language = wrap * Language(p.language)
 	v.StaticGsubFeatures = wrap * FeatureMap(p.static_gsub_features)
 	v.NStaticGsubFeatures = uint(p.n_static_gsub_features)
 	v.StaticGposFeatures = wrap * FeatureMap(p.static_gpos_features)
 	v.NStaticGposFeatures = uint(p.n_static_gpos_features)
 	v.OtherFeatures = wrap * FeatureMap(p.other_features)
 	v.NOtherFeatures = uint(p.n_other_features)
+
 	return &v
 }
 
@@ -190,4 +226,24 @@ func marshalRulesetDescription(p uintptr) (interface{}, error) {
 	c := (*C.PangoOTRulesetDescription)(unsafe.Pointer(b))
 
 	return wrapRulesetDescription(c)
+}
+
+// Native returns the pointer to *C.PangoOTRulesetDescription. The caller is expected to
+// cast.
+func (r *RulesetDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
+type Info struct {
+	*glib.Object
+}
+
+// Ruleset: the OTRuleset structure holds a set of features selected from the
+// tables in an OpenType font. (A feature is an operation such as adjusting
+// glyph positioning that should be applied to a text feature such as a certain
+// type of accent.) A OTRuleset is created with pango_ot_ruleset_new(), features
+// are added to it with pango_ot_ruleset_add_feature(), then it is applied to a
+// GlyphString with pango_ot_ruleset_shape().
+type Ruleset struct {
+	*glib.Object
 }

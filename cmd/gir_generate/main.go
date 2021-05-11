@@ -37,9 +37,8 @@ var packages = []Package{
 	}},
 	{"pango", nil},
 	{"gdk-pixbuf-2.0", []string{"GdkPixbuf", "GdkPixdata"}},
-	{"gdk-wayland-3.0", []string{"Gdk", "GdkX11"}},
 	{"graphene-1.0", nil},
-	{"gtk4", nil},
+	{"gtk4", nil}, // includes Gdk
 }
 
 func main() {
@@ -56,6 +55,10 @@ func main() {
 		if err != nil {
 			log.Fatalln("error adding packages:", err)
 		}
+	}
+
+	for _, repo := range repos {
+		log.Println("Added from package", repo.Pkg, "file", repo.Path)
 	}
 
 	var wg sync.WaitGroup
@@ -88,6 +91,7 @@ func main() {
 
 	wg.Wait()
 
+	log.Println("running goimports on output...")
 	if err := goimports.Dir(output); err != nil {
 		log.Println("failed to run goimports on "+output+":", err)
 	}

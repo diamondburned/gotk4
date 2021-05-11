@@ -3,6 +3,7 @@
 package vulkan
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/gotk3/gotk3/glib"
@@ -25,6 +26,10 @@ type Flags struct {
 
 func wrapFlags(p *C.VkFlags) *Flags {
 	v := Flags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Flags).free)
+
 	return &v
 }
 
@@ -35,12 +40,24 @@ func marshalFlags(p uintptr) (interface{}, error) {
 	return wrapFlags(c)
 }
 
+func (f *Flags) free() {}
+
+// Native returns the pointer to *C.VkFlags. The caller is expected to
+// cast.
+func (f *Flags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type Bool32 struct {
 	native *C.VkBool32
 }
 
 func wrapBool32(p *C.VkBool32) *Bool32 {
 	v := Bool32{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Bool32).free)
+
 	return &v
 }
 
@@ -51,12 +68,24 @@ func marshalBool32(p uintptr) (interface{}, error) {
 	return wrapBool32(c)
 }
 
+func (b *Bool32) free() {}
+
+// Native returns the pointer to *C.VkBool32. The caller is expected to
+// cast.
+func (b *Bool32) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type DeviceSize struct {
 	native *C.VkDeviceSize
 }
 
 func wrapDeviceSize(p *C.VkDeviceSize) *DeviceSize {
 	v := DeviceSize{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceSize).free)
+
 	return &v
 }
 
@@ -67,12 +96,24 @@ func marshalDeviceSize(p uintptr) (interface{}, error) {
 	return wrapDeviceSize(c)
 }
 
+func (d *DeviceSize) free() {}
+
+// Native returns the pointer to *C.VkDeviceSize. The caller is expected to
+// cast.
+func (d *DeviceSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type SampleMask struct {
 	native *C.VkSampleMask
 }
 
 func wrapSampleMask(p *C.VkSampleMask) *SampleMask {
 	v := SampleMask{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SampleMask).free)
+
 	return &v
 }
 
@@ -83,12 +124,24 @@ func marshalSampleMask(p uintptr) (interface{}, error) {
 	return wrapSampleMask(c)
 }
 
+func (s *SampleMask) free() {}
+
+// Native returns the pointer to *C.VkSampleMask. The caller is expected to
+// cast.
+func (s *SampleMask) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type Instance struct {
 	native *C.VkInstance
 }
 
 func wrapInstance(p *C.VkInstance) *Instance {
 	v := Instance{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Instance).free)
+
 	return &v
 }
 
@@ -99,12 +152,24 @@ func marshalInstance(p uintptr) (interface{}, error) {
 	return wrapInstance(c)
 }
 
+func (i *Instance) free() {}
+
+// Native returns the pointer to *C.VkInstance. The caller is expected to
+// cast.
+func (i *Instance) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type PhysicalDevice struct {
 	native *C.VkPhysicalDevice
 }
 
 func wrapPhysicalDevice(p *C.VkPhysicalDevice) *PhysicalDevice {
 	v := PhysicalDevice{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDevice).free)
+
 	return &v
 }
 
@@ -115,12 +180,24 @@ func marshalPhysicalDevice(p uintptr) (interface{}, error) {
 	return wrapPhysicalDevice(c)
 }
 
+func (p *PhysicalDevice) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDevice. The caller is expected to
+// cast.
+func (p *PhysicalDevice) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type Device struct {
 	native *C.VkDevice
 }
 
 func wrapDevice(p *C.VkDevice) *Device {
 	v := Device{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Device).free)
+
 	return &v
 }
 
@@ -131,12 +208,24 @@ func marshalDevice(p uintptr) (interface{}, error) {
 	return wrapDevice(c)
 }
 
+func (d *Device) free() {}
+
+// Native returns the pointer to *C.VkDevice. The caller is expected to
+// cast.
+func (d *Device) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type Queue struct {
 	native *C.VkQueue
 }
 
 func wrapQueue(p *C.VkQueue) *Queue {
 	v := Queue{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Queue).free)
+
 	return &v
 }
 
@@ -147,12 +236,24 @@ func marshalQueue(p uintptr) (interface{}, error) {
 	return wrapQueue(c)
 }
 
+func (q *Queue) free() {}
+
+// Native returns the pointer to *C.VkQueue. The caller is expected to
+// cast.
+func (q *Queue) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type Semaphore struct {
 	native *C.VkSemaphore
 }
 
 func wrapSemaphore(p *C.VkSemaphore) *Semaphore {
 	v := Semaphore{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Semaphore).free)
+
 	return &v
 }
 
@@ -163,12 +264,24 @@ func marshalSemaphore(p uintptr) (interface{}, error) {
 	return wrapSemaphore(c)
 }
 
+func (s *Semaphore) free() {}
+
+// Native returns the pointer to *C.VkSemaphore. The caller is expected to
+// cast.
+func (s *Semaphore) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type CommandBuffer struct {
 	native *C.VkCommandBuffer
 }
 
 func wrapCommandBuffer(p *C.VkCommandBuffer) *CommandBuffer {
 	v := CommandBuffer{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandBuffer).free)
+
 	return &v
 }
 
@@ -179,12 +292,24 @@ func marshalCommandBuffer(p uintptr) (interface{}, error) {
 	return wrapCommandBuffer(c)
 }
 
+func (c *CommandBuffer) free() {}
+
+// Native returns the pointer to *C.VkCommandBuffer. The caller is expected to
+// cast.
+func (c *CommandBuffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type Fence struct {
 	native *C.VkFence
 }
 
 func wrapFence(p *C.VkFence) *Fence {
 	v := Fence{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Fence).free)
+
 	return &v
 }
 
@@ -195,12 +320,24 @@ func marshalFence(p uintptr) (interface{}, error) {
 	return wrapFence(c)
 }
 
+func (f *Fence) free() {}
+
+// Native returns the pointer to *C.VkFence. The caller is expected to
+// cast.
+func (f *Fence) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type DeviceMemory struct {
 	native *C.VkDeviceMemory
 }
 
 func wrapDeviceMemory(p *C.VkDeviceMemory) *DeviceMemory {
 	v := DeviceMemory{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceMemory).free)
+
 	return &v
 }
 
@@ -211,12 +348,24 @@ func marshalDeviceMemory(p uintptr) (interface{}, error) {
 	return wrapDeviceMemory(c)
 }
 
+func (d *DeviceMemory) free() {}
+
+// Native returns the pointer to *C.VkDeviceMemory. The caller is expected to
+// cast.
+func (d *DeviceMemory) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type Buffer struct {
 	native *C.VkBuffer
 }
 
 func wrapBuffer(p *C.VkBuffer) *Buffer {
 	v := Buffer{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Buffer).free)
+
 	return &v
 }
 
@@ -227,12 +376,24 @@ func marshalBuffer(p uintptr) (interface{}, error) {
 	return wrapBuffer(c)
 }
 
+func (b *Buffer) free() {}
+
+// Native returns the pointer to *C.VkBuffer. The caller is expected to
+// cast.
+func (b *Buffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type Image struct {
 	native *C.VkImage
 }
 
 func wrapImage(p *C.VkImage) *Image {
 	v := Image{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Image).free)
+
 	return &v
 }
 
@@ -243,12 +404,24 @@ func marshalImage(p uintptr) (interface{}, error) {
 	return wrapImage(c)
 }
 
+func (i *Image) free() {}
+
+// Native returns the pointer to *C.VkImage. The caller is expected to
+// cast.
+func (i *Image) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type Event struct {
 	native *C.VkEvent
 }
 
 func wrapEvent(p *C.VkEvent) *Event {
 	v := Event{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Event).free)
+
 	return &v
 }
 
@@ -259,12 +432,24 @@ func marshalEvent(p uintptr) (interface{}, error) {
 	return wrapEvent(c)
 }
 
+func (e *Event) free() {}
+
+// Native returns the pointer to *C.VkEvent. The caller is expected to
+// cast.
+func (e *Event) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type QueryPool struct {
 	native *C.VkQueryPool
 }
 
 func wrapQueryPool(p *C.VkQueryPool) *QueryPool {
 	v := QueryPool{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueryPool).free)
+
 	return &v
 }
 
@@ -275,12 +460,24 @@ func marshalQueryPool(p uintptr) (interface{}, error) {
 	return wrapQueryPool(c)
 }
 
+func (q *QueryPool) free() {}
+
+// Native returns the pointer to *C.VkQueryPool. The caller is expected to
+// cast.
+func (q *QueryPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type BufferView struct {
 	native *C.VkBufferView
 }
 
 func wrapBufferView(p *C.VkBufferView) *BufferView {
 	v := BufferView{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferView).free)
+
 	return &v
 }
 
@@ -291,12 +488,24 @@ func marshalBufferView(p uintptr) (interface{}, error) {
 	return wrapBufferView(c)
 }
 
+func (b *BufferView) free() {}
+
+// Native returns the pointer to *C.VkBufferView. The caller is expected to
+// cast.
+func (b *BufferView) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ImageView struct {
 	native *C.VkImageView
 }
 
 func wrapImageView(p *C.VkImageView) *ImageView {
 	v := ImageView{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageView).free)
+
 	return &v
 }
 
@@ -307,12 +516,24 @@ func marshalImageView(p uintptr) (interface{}, error) {
 	return wrapImageView(c)
 }
 
+func (i *ImageView) free() {}
+
+// Native returns the pointer to *C.VkImageView. The caller is expected to
+// cast.
+func (i *ImageView) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ShaderModule struct {
 	native *C.VkShaderModule
 }
 
 func wrapShaderModule(p *C.VkShaderModule) *ShaderModule {
 	v := ShaderModule{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShaderModule).free)
+
 	return &v
 }
 
@@ -323,12 +544,24 @@ func marshalShaderModule(p uintptr) (interface{}, error) {
 	return wrapShaderModule(c)
 }
 
+func (s *ShaderModule) free() {}
+
+// Native returns the pointer to *C.VkShaderModule. The caller is expected to
+// cast.
+func (s *ShaderModule) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PipelineCache struct {
 	native *C.VkPipelineCache
 }
 
 func wrapPipelineCache(p *C.VkPipelineCache) *PipelineCache {
 	v := PipelineCache{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCache).free)
+
 	return &v
 }
 
@@ -339,12 +572,24 @@ func marshalPipelineCache(p uintptr) (interface{}, error) {
 	return wrapPipelineCache(c)
 }
 
+func (p *PipelineCache) free() {}
+
+// Native returns the pointer to *C.VkPipelineCache. The caller is expected to
+// cast.
+func (p *PipelineCache) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineLayout struct {
 	native *C.VkPipelineLayout
 }
 
 func wrapPipelineLayout(p *C.VkPipelineLayout) *PipelineLayout {
 	v := PipelineLayout{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineLayout).free)
+
 	return &v
 }
 
@@ -355,12 +600,24 @@ func marshalPipelineLayout(p uintptr) (interface{}, error) {
 	return wrapPipelineLayout(c)
 }
 
+func (p *PipelineLayout) free() {}
+
+// Native returns the pointer to *C.VkPipelineLayout. The caller is expected to
+// cast.
+func (p *PipelineLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type RenderPass struct {
 	native *C.VkRenderPass
 }
 
 func wrapRenderPass(p *C.VkRenderPass) *RenderPass {
 	v := RenderPass{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPass).free)
+
 	return &v
 }
 
@@ -371,12 +628,24 @@ func marshalRenderPass(p uintptr) (interface{}, error) {
 	return wrapRenderPass(c)
 }
 
+func (r *RenderPass) free() {}
+
+// Native returns the pointer to *C.VkRenderPass. The caller is expected to
+// cast.
+func (r *RenderPass) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type Pipeline struct {
 	native *C.VkPipeline
 }
 
 func wrapPipeline(p *C.VkPipeline) *Pipeline {
 	v := Pipeline{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Pipeline).free)
+
 	return &v
 }
 
@@ -387,12 +656,24 @@ func marshalPipeline(p uintptr) (interface{}, error) {
 	return wrapPipeline(c)
 }
 
+func (p *Pipeline) free() {}
+
+// Native returns the pointer to *C.VkPipeline. The caller is expected to
+// cast.
+func (p *Pipeline) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DescriptorSetLayout struct {
 	native *C.VkDescriptorSetLayout
 }
 
 func wrapDescriptorSetLayout(p *C.VkDescriptorSetLayout) *DescriptorSetLayout {
 	v := DescriptorSetLayout{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetLayout).free)
+
 	return &v
 }
 
@@ -403,12 +684,24 @@ func marshalDescriptorSetLayout(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayout(c)
 }
 
+func (d *DescriptorSetLayout) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetLayout. The caller is expected to
+// cast.
+func (d *DescriptorSetLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type Sampler struct {
 	native *C.VkSampler
 }
 
 func wrapSampler(p *C.VkSampler) *Sampler {
 	v := Sampler{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Sampler).free)
+
 	return &v
 }
 
@@ -419,12 +712,24 @@ func marshalSampler(p uintptr) (interface{}, error) {
 	return wrapSampler(c)
 }
 
+func (s *Sampler) free() {}
+
+// Native returns the pointer to *C.VkSampler. The caller is expected to
+// cast.
+func (s *Sampler) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type DescriptorPool struct {
 	native *C.VkDescriptorPool
 }
 
 func wrapDescriptorPool(p *C.VkDescriptorPool) *DescriptorPool {
 	v := DescriptorPool{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorPool).free)
+
 	return &v
 }
 
@@ -435,12 +740,24 @@ func marshalDescriptorPool(p uintptr) (interface{}, error) {
 	return wrapDescriptorPool(c)
 }
 
+func (d *DescriptorPool) free() {}
+
+// Native returns the pointer to *C.VkDescriptorPool. The caller is expected to
+// cast.
+func (d *DescriptorPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorSet struct {
 	native *C.VkDescriptorSet
 }
 
 func wrapDescriptorSet(p *C.VkDescriptorSet) *DescriptorSet {
 	v := DescriptorSet{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSet).free)
+
 	return &v
 }
 
@@ -451,12 +768,24 @@ func marshalDescriptorSet(p uintptr) (interface{}, error) {
 	return wrapDescriptorSet(c)
 }
 
+func (d *DescriptorSet) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSet. The caller is expected to
+// cast.
+func (d *DescriptorSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type Framebuffer struct {
 	native *C.VkFramebuffer
 }
 
 func wrapFramebuffer(p *C.VkFramebuffer) *Framebuffer {
 	v := Framebuffer{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Framebuffer).free)
+
 	return &v
 }
 
@@ -467,12 +796,24 @@ func marshalFramebuffer(p uintptr) (interface{}, error) {
 	return wrapFramebuffer(c)
 }
 
+func (f *Framebuffer) free() {}
+
+// Native returns the pointer to *C.VkFramebuffer. The caller is expected to
+// cast.
+func (f *Framebuffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type CommandPool struct {
 	native *C.VkCommandPool
 }
 
 func wrapCommandPool(p *C.VkCommandPool) *CommandPool {
 	v := CommandPool{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandPool).free)
+
 	return &v
 }
 
@@ -483,12 +824,24 @@ func marshalCommandPool(p uintptr) (interface{}, error) {
 	return wrapCommandPool(c)
 }
 
+func (c *CommandPool) free() {}
+
+// Native returns the pointer to *C.VkCommandPool. The caller is expected to
+// cast.
+func (c *CommandPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PipelineCacheHeaderVersion struct {
 	native *C.VkPipelineCacheHeaderVersion
 }
 
 func wrapPipelineCacheHeaderVersion(p *C.VkPipelineCacheHeaderVersion) *PipelineCacheHeaderVersion {
 	v := PipelineCacheHeaderVersion{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCacheHeaderVersion).free)
+
 	return &v
 }
 
@@ -499,12 +852,24 @@ func marshalPipelineCacheHeaderVersion(p uintptr) (interface{}, error) {
 	return wrapPipelineCacheHeaderVersion(c)
 }
 
+func (p *PipelineCacheHeaderVersion) free() {}
+
+// Native returns the pointer to *C.VkPipelineCacheHeaderVersion. The caller is expected to
+// cast.
+func (p *PipelineCacheHeaderVersion) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type Result struct {
 	native *C.VkResult
 }
 
 func wrapResult(p *C.VkResult) *Result {
 	v := Result{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Result).free)
+
 	return &v
 }
 
@@ -515,12 +880,24 @@ func marshalResult(p uintptr) (interface{}, error) {
 	return wrapResult(c)
 }
 
+func (r *Result) free() {}
+
+// Native returns the pointer to *C.VkResult. The caller is expected to
+// cast.
+func (r *Result) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type StructureType struct {
 	native *C.VkStructureType
 }
 
 func wrapStructureType(p *C.VkStructureType) *StructureType {
 	v := StructureType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*StructureType).free)
+
 	return &v
 }
 
@@ -531,12 +908,24 @@ func marshalStructureType(p uintptr) (interface{}, error) {
 	return wrapStructureType(c)
 }
 
+func (s *StructureType) free() {}
+
+// Native returns the pointer to *C.VkStructureType. The caller is expected to
+// cast.
+func (s *StructureType) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SystemAllocationScope struct {
 	native *C.VkSystemAllocationScope
 }
 
 func wrapSystemAllocationScope(p *C.VkSystemAllocationScope) *SystemAllocationScope {
 	v := SystemAllocationScope{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SystemAllocationScope).free)
+
 	return &v
 }
 
@@ -547,12 +936,24 @@ func marshalSystemAllocationScope(p uintptr) (interface{}, error) {
 	return wrapSystemAllocationScope(c)
 }
 
+func (s *SystemAllocationScope) free() {}
+
+// Native returns the pointer to *C.VkSystemAllocationScope. The caller is expected to
+// cast.
+func (s *SystemAllocationScope) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type InternalAllocationType struct {
 	native *C.VkInternalAllocationType
 }
 
 func wrapInternalAllocationType(p *C.VkInternalAllocationType) *InternalAllocationType {
 	v := InternalAllocationType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*InternalAllocationType).free)
+
 	return &v
 }
 
@@ -563,12 +964,24 @@ func marshalInternalAllocationType(p uintptr) (interface{}, error) {
 	return wrapInternalAllocationType(c)
 }
 
+func (i *InternalAllocationType) free() {}
+
+// Native returns the pointer to *C.VkInternalAllocationType. The caller is expected to
+// cast.
+func (i *InternalAllocationType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type Format struct {
 	native *C.VkFormat
 }
 
 func wrapFormat(p *C.VkFormat) *Format {
 	v := Format{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Format).free)
+
 	return &v
 }
 
@@ -579,12 +992,24 @@ func marshalFormat(p uintptr) (interface{}, error) {
 	return wrapFormat(c)
 }
 
+func (f *Format) free() {}
+
+// Native returns the pointer to *C.VkFormat. The caller is expected to
+// cast.
+func (f *Format) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type ImageType struct {
 	native *C.VkImageType
 }
 
 func wrapImageType(p *C.VkImageType) *ImageType {
 	v := ImageType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageType).free)
+
 	return &v
 }
 
@@ -595,12 +1020,24 @@ func marshalImageType(p uintptr) (interface{}, error) {
 	return wrapImageType(c)
 }
 
+func (i *ImageType) free() {}
+
+// Native returns the pointer to *C.VkImageType. The caller is expected to
+// cast.
+func (i *ImageType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageTiling struct {
 	native *C.VkImageTiling
 }
 
 func wrapImageTiling(p *C.VkImageTiling) *ImageTiling {
 	v := ImageTiling{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageTiling).free)
+
 	return &v
 }
 
@@ -611,12 +1048,24 @@ func marshalImageTiling(p uintptr) (interface{}, error) {
 	return wrapImageTiling(c)
 }
 
+func (i *ImageTiling) free() {}
+
+// Native returns the pointer to *C.VkImageTiling. The caller is expected to
+// cast.
+func (i *ImageTiling) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type PhysicalDeviceType struct {
 	native *C.VkPhysicalDeviceType
 }
 
 func wrapPhysicalDeviceType(p *C.VkPhysicalDeviceType) *PhysicalDeviceType {
 	v := PhysicalDeviceType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceType).free)
+
 	return &v
 }
 
@@ -627,12 +1076,24 @@ func marshalPhysicalDeviceType(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceType(c)
 }
 
+func (p *PhysicalDeviceType) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceType. The caller is expected to
+// cast.
+func (p *PhysicalDeviceType) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type QueryType struct {
 	native *C.VkQueryType
 }
 
 func wrapQueryType(p *C.VkQueryType) *QueryType {
 	v := QueryType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueryType).free)
+
 	return &v
 }
 
@@ -643,12 +1104,24 @@ func marshalQueryType(p uintptr) (interface{}, error) {
 	return wrapQueryType(c)
 }
 
+func (q *QueryType) free() {}
+
+// Native returns the pointer to *C.VkQueryType. The caller is expected to
+// cast.
+func (q *QueryType) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type SharingMode struct {
 	native *C.VkSharingMode
 }
 
 func wrapSharingMode(p *C.VkSharingMode) *SharingMode {
 	v := SharingMode{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SharingMode).free)
+
 	return &v
 }
 
@@ -659,12 +1132,24 @@ func marshalSharingMode(p uintptr) (interface{}, error) {
 	return wrapSharingMode(c)
 }
 
+func (s *SharingMode) free() {}
+
+// Native returns the pointer to *C.VkSharingMode. The caller is expected to
+// cast.
+func (s *SharingMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ImageLayout struct {
 	native *C.VkImageLayout
 }
 
 func wrapImageLayout(p *C.VkImageLayout) *ImageLayout {
 	v := ImageLayout{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageLayout).free)
+
 	return &v
 }
 
@@ -675,12 +1160,24 @@ func marshalImageLayout(p uintptr) (interface{}, error) {
 	return wrapImageLayout(c)
 }
 
+func (i *ImageLayout) free() {}
+
+// Native returns the pointer to *C.VkImageLayout. The caller is expected to
+// cast.
+func (i *ImageLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageViewType struct {
 	native *C.VkImageViewType
 }
 
 func wrapImageViewType(p *C.VkImageViewType) *ImageViewType {
 	v := ImageViewType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageViewType).free)
+
 	return &v
 }
 
@@ -691,12 +1188,24 @@ func marshalImageViewType(p uintptr) (interface{}, error) {
 	return wrapImageViewType(c)
 }
 
+func (i *ImageViewType) free() {}
+
+// Native returns the pointer to *C.VkImageViewType. The caller is expected to
+// cast.
+func (i *ImageViewType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ComponentSwizzle struct {
 	native *C.VkComponentSwizzle
 }
 
 func wrapComponentSwizzle(p *C.VkComponentSwizzle) *ComponentSwizzle {
 	v := ComponentSwizzle{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ComponentSwizzle).free)
+
 	return &v
 }
 
@@ -707,12 +1216,24 @@ func marshalComponentSwizzle(p uintptr) (interface{}, error) {
 	return wrapComponentSwizzle(c)
 }
 
+func (c *ComponentSwizzle) free() {}
+
+// Native returns the pointer to *C.VkComponentSwizzle. The caller is expected to
+// cast.
+func (c *ComponentSwizzle) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type VertexInputRate struct {
 	native *C.VkVertexInputRate
 }
 
 func wrapVertexInputRate(p *C.VkVertexInputRate) *VertexInputRate {
 	v := VertexInputRate{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*VertexInputRate).free)
+
 	return &v
 }
 
@@ -723,12 +1244,24 @@ func marshalVertexInputRate(p uintptr) (interface{}, error) {
 	return wrapVertexInputRate(c)
 }
 
+func (v *VertexInputRate) free() {}
+
+// Native returns the pointer to *C.VkVertexInputRate. The caller is expected to
+// cast.
+func (v *VertexInputRate) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type PrimitiveTopology struct {
 	native *C.VkPrimitiveTopology
 }
 
 func wrapPrimitiveTopology(p *C.VkPrimitiveTopology) *PrimitiveTopology {
 	v := PrimitiveTopology{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PrimitiveTopology).free)
+
 	return &v
 }
 
@@ -739,12 +1272,24 @@ func marshalPrimitiveTopology(p uintptr) (interface{}, error) {
 	return wrapPrimitiveTopology(c)
 }
 
+func (p *PrimitiveTopology) free() {}
+
+// Native returns the pointer to *C.VkPrimitiveTopology. The caller is expected to
+// cast.
+func (p *PrimitiveTopology) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PolygonMode struct {
 	native *C.VkPolygonMode
 }
 
 func wrapPolygonMode(p *C.VkPolygonMode) *PolygonMode {
 	v := PolygonMode{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PolygonMode).free)
+
 	return &v
 }
 
@@ -755,12 +1300,24 @@ func marshalPolygonMode(p uintptr) (interface{}, error) {
 	return wrapPolygonMode(c)
 }
 
+func (p *PolygonMode) free() {}
+
+// Native returns the pointer to *C.VkPolygonMode. The caller is expected to
+// cast.
+func (p *PolygonMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type FrontFace struct {
 	native *C.VkFrontFace
 }
 
 func wrapFrontFace(p *C.VkFrontFace) *FrontFace {
 	v := FrontFace{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FrontFace).free)
+
 	return &v
 }
 
@@ -771,12 +1328,24 @@ func marshalFrontFace(p uintptr) (interface{}, error) {
 	return wrapFrontFace(c)
 }
 
+func (f *FrontFace) free() {}
+
+// Native returns the pointer to *C.VkFrontFace. The caller is expected to
+// cast.
+func (f *FrontFace) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type CompareOp struct {
 	native *C.VkCompareOp
 }
 
 func wrapCompareOp(p *C.VkCompareOp) *CompareOp {
 	v := CompareOp{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CompareOp).free)
+
 	return &v
 }
 
@@ -787,12 +1356,24 @@ func marshalCompareOp(p uintptr) (interface{}, error) {
 	return wrapCompareOp(c)
 }
 
+func (c *CompareOp) free() {}
+
+// Native returns the pointer to *C.VkCompareOp. The caller is expected to
+// cast.
+func (c *CompareOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type StencilOp struct {
 	native *C.VkStencilOp
 }
 
 func wrapStencilOp(p *C.VkStencilOp) *StencilOp {
 	v := StencilOp{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*StencilOp).free)
+
 	return &v
 }
 
@@ -803,12 +1384,24 @@ func marshalStencilOp(p uintptr) (interface{}, error) {
 	return wrapStencilOp(c)
 }
 
+func (s *StencilOp) free() {}
+
+// Native returns the pointer to *C.VkStencilOp. The caller is expected to
+// cast.
+func (s *StencilOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type LogicOp struct {
 	native *C.VkLogicOp
 }
 
 func wrapLogicOp(p *C.VkLogicOp) *LogicOp {
 	v := LogicOp{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*LogicOp).free)
+
 	return &v
 }
 
@@ -819,12 +1412,24 @@ func marshalLogicOp(p uintptr) (interface{}, error) {
 	return wrapLogicOp(c)
 }
 
+func (l *LogicOp) free() {}
+
+// Native returns the pointer to *C.VkLogicOp. The caller is expected to
+// cast.
+func (l *LogicOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
+}
+
 type BlendFactor struct {
 	native *C.VkBlendFactor
 }
 
 func wrapBlendFactor(p *C.VkBlendFactor) *BlendFactor {
 	v := BlendFactor{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BlendFactor).free)
+
 	return &v
 }
 
@@ -835,12 +1440,24 @@ func marshalBlendFactor(p uintptr) (interface{}, error) {
 	return wrapBlendFactor(c)
 }
 
+func (b *BlendFactor) free() {}
+
+// Native returns the pointer to *C.VkBlendFactor. The caller is expected to
+// cast.
+func (b *BlendFactor) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BlendOp struct {
 	native *C.VkBlendOp
 }
 
 func wrapBlendOp(p *C.VkBlendOp) *BlendOp {
 	v := BlendOp{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BlendOp).free)
+
 	return &v
 }
 
@@ -851,12 +1468,24 @@ func marshalBlendOp(p uintptr) (interface{}, error) {
 	return wrapBlendOp(c)
 }
 
+func (b *BlendOp) free() {}
+
+// Native returns the pointer to *C.VkBlendOp. The caller is expected to
+// cast.
+func (b *BlendOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type DynamicState struct {
 	native *C.VkDynamicState
 }
 
 func wrapDynamicState(p *C.VkDynamicState) *DynamicState {
 	v := DynamicState{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DynamicState).free)
+
 	return &v
 }
 
@@ -867,12 +1496,24 @@ func marshalDynamicState(p uintptr) (interface{}, error) {
 	return wrapDynamicState(c)
 }
 
+func (d *DynamicState) free() {}
+
+// Native returns the pointer to *C.VkDynamicState. The caller is expected to
+// cast.
+func (d *DynamicState) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type Filter struct {
 	native *C.VkFilter
 }
 
 func wrapFilter(p *C.VkFilter) *Filter {
 	v := Filter{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Filter).free)
+
 	return &v
 }
 
@@ -883,12 +1524,24 @@ func marshalFilter(p uintptr) (interface{}, error) {
 	return wrapFilter(c)
 }
 
+func (f *Filter) free() {}
+
+// Native returns the pointer to *C.VkFilter. The caller is expected to
+// cast.
+func (f *Filter) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type SamplerMipmapMode struct {
 	native *C.VkSamplerMipmapMode
 }
 
 func wrapSamplerMipmapMode(p *C.VkSamplerMipmapMode) *SamplerMipmapMode {
 	v := SamplerMipmapMode{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerMipmapMode).free)
+
 	return &v
 }
 
@@ -899,12 +1552,24 @@ func marshalSamplerMipmapMode(p uintptr) (interface{}, error) {
 	return wrapSamplerMipmapMode(c)
 }
 
+func (s *SamplerMipmapMode) free() {}
+
+// Native returns the pointer to *C.VkSamplerMipmapMode. The caller is expected to
+// cast.
+func (s *SamplerMipmapMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SamplerAddressMode struct {
 	native *C.VkSamplerAddressMode
 }
 
 func wrapSamplerAddressMode(p *C.VkSamplerAddressMode) *SamplerAddressMode {
 	v := SamplerAddressMode{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerAddressMode).free)
+
 	return &v
 }
 
@@ -915,12 +1580,24 @@ func marshalSamplerAddressMode(p uintptr) (interface{}, error) {
 	return wrapSamplerAddressMode(c)
 }
 
+func (s *SamplerAddressMode) free() {}
+
+// Native returns the pointer to *C.VkSamplerAddressMode. The caller is expected to
+// cast.
+func (s *SamplerAddressMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type BorderColor struct {
 	native *C.VkBorderColor
 }
 
 func wrapBorderColor(p *C.VkBorderColor) *BorderColor {
 	v := BorderColor{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BorderColor).free)
+
 	return &v
 }
 
@@ -931,12 +1608,24 @@ func marshalBorderColor(p uintptr) (interface{}, error) {
 	return wrapBorderColor(c)
 }
 
+func (b *BorderColor) free() {}
+
+// Native returns the pointer to *C.VkBorderColor. The caller is expected to
+// cast.
+func (b *BorderColor) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type DescriptorType struct {
 	native *C.VkDescriptorType
 }
 
 func wrapDescriptorType(p *C.VkDescriptorType) *DescriptorType {
 	v := DescriptorType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorType).free)
+
 	return &v
 }
 
@@ -947,12 +1636,24 @@ func marshalDescriptorType(p uintptr) (interface{}, error) {
 	return wrapDescriptorType(c)
 }
 
+func (d *DescriptorType) free() {}
+
+// Native returns the pointer to *C.VkDescriptorType. The caller is expected to
+// cast.
+func (d *DescriptorType) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type AttachmentLoadOp struct {
 	native *C.VkAttachmentLoadOp
 }
 
 func wrapAttachmentLoadOp(p *C.VkAttachmentLoadOp) *AttachmentLoadOp {
 	v := AttachmentLoadOp{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttachmentLoadOp).free)
+
 	return &v
 }
 
@@ -963,12 +1664,24 @@ func marshalAttachmentLoadOp(p uintptr) (interface{}, error) {
 	return wrapAttachmentLoadOp(c)
 }
 
+func (a *AttachmentLoadOp) free() {}
+
+// Native returns the pointer to *C.VkAttachmentLoadOp. The caller is expected to
+// cast.
+func (a *AttachmentLoadOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type AttachmentStoreOp struct {
 	native *C.VkAttachmentStoreOp
 }
 
 func wrapAttachmentStoreOp(p *C.VkAttachmentStoreOp) *AttachmentStoreOp {
 	v := AttachmentStoreOp{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttachmentStoreOp).free)
+
 	return &v
 }
 
@@ -979,12 +1692,24 @@ func marshalAttachmentStoreOp(p uintptr) (interface{}, error) {
 	return wrapAttachmentStoreOp(c)
 }
 
+func (a *AttachmentStoreOp) free() {}
+
+// Native returns the pointer to *C.VkAttachmentStoreOp. The caller is expected to
+// cast.
+func (a *AttachmentStoreOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type PipelineBindPoint struct {
 	native *C.VkPipelineBindPoint
 }
 
 func wrapPipelineBindPoint(p *C.VkPipelineBindPoint) *PipelineBindPoint {
 	v := PipelineBindPoint{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineBindPoint).free)
+
 	return &v
 }
 
@@ -995,12 +1720,24 @@ func marshalPipelineBindPoint(p uintptr) (interface{}, error) {
 	return wrapPipelineBindPoint(c)
 }
 
+func (p *PipelineBindPoint) free() {}
+
+// Native returns the pointer to *C.VkPipelineBindPoint. The caller is expected to
+// cast.
+func (p *PipelineBindPoint) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type CommandBufferLevel struct {
 	native *C.VkCommandBufferLevel
 }
 
 func wrapCommandBufferLevel(p *C.VkCommandBufferLevel) *CommandBufferLevel {
 	v := CommandBufferLevel{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandBufferLevel).free)
+
 	return &v
 }
 
@@ -1011,12 +1748,24 @@ func marshalCommandBufferLevel(p uintptr) (interface{}, error) {
 	return wrapCommandBufferLevel(c)
 }
 
+func (c *CommandBufferLevel) free() {}
+
+// Native returns the pointer to *C.VkCommandBufferLevel. The caller is expected to
+// cast.
+func (c *CommandBufferLevel) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type IndexType struct {
 	native *C.VkIndexType
 }
 
 func wrapIndexType(p *C.VkIndexType) *IndexType {
 	v := IndexType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*IndexType).free)
+
 	return &v
 }
 
@@ -1027,12 +1776,24 @@ func marshalIndexType(p uintptr) (interface{}, error) {
 	return wrapIndexType(c)
 }
 
+func (i *IndexType) free() {}
+
+// Native returns the pointer to *C.VkIndexType. The caller is expected to
+// cast.
+func (i *IndexType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type SubpassContents struct {
 	native *C.VkSubpassContents
 }
 
 func wrapSubpassContents(p *C.VkSubpassContents) *SubpassContents {
 	v := SubpassContents{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassContents).free)
+
 	return &v
 }
 
@@ -1043,12 +1804,24 @@ func marshalSubpassContents(p uintptr) (interface{}, error) {
 	return wrapSubpassContents(c)
 }
 
+func (s *SubpassContents) free() {}
+
+// Native returns the pointer to *C.VkSubpassContents. The caller is expected to
+// cast.
+func (s *SubpassContents) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ObjectType struct {
 	native *C.VkObjectType
 }
 
 func wrapObjectType(p *C.VkObjectType) *ObjectType {
 	v := ObjectType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectType).free)
+
 	return &v
 }
 
@@ -1059,12 +1832,24 @@ func marshalObjectType(p uintptr) (interface{}, error) {
 	return wrapObjectType(c)
 }
 
+func (o *ObjectType) free() {}
+
+// Native returns the pointer to *C.VkObjectType. The caller is expected to
+// cast.
+func (o *ObjectType) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type VendorID struct {
 	native *C.VkVendorId
 }
 
 func wrapVendorID(p *C.VkVendorId) *VendorID {
 	v := VendorID{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*VendorID).free)
+
 	return &v
 }
 
@@ -1075,12 +1860,24 @@ func marshalVendorID(p uintptr) (interface{}, error) {
 	return wrapVendorID(c)
 }
 
+func (v *VendorID) free() {}
+
+// Native returns the pointer to *C.VkVendorId. The caller is expected to
+// cast.
+func (v *VendorID) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type InstanceCreateFlags struct {
 	native *C.VkInstanceCreateFlags
 }
 
 func wrapInstanceCreateFlags(p *C.VkInstanceCreateFlags) *InstanceCreateFlags {
 	v := InstanceCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*InstanceCreateFlags).free)
+
 	return &v
 }
 
@@ -1091,12 +1888,24 @@ func marshalInstanceCreateFlags(p uintptr) (interface{}, error) {
 	return wrapInstanceCreateFlags(c)
 }
 
+func (i *InstanceCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkInstanceCreateFlags. The caller is expected to
+// cast.
+func (i *InstanceCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type FormatFeatureFlagBits struct {
 	native *C.VkFormatFeatureFlagBits
 }
 
 func wrapFormatFeatureFlagBits(p *C.VkFormatFeatureFlagBits) *FormatFeatureFlagBits {
 	v := FormatFeatureFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FormatFeatureFlagBits).free)
+
 	return &v
 }
 
@@ -1107,12 +1916,24 @@ func marshalFormatFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapFormatFeatureFlagBits(c)
 }
 
+func (f *FormatFeatureFlagBits) free() {}
+
+// Native returns the pointer to *C.VkFormatFeatureFlagBits. The caller is expected to
+// cast.
+func (f *FormatFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type FormatFeatureFlags struct {
 	native *C.VkFormatFeatureFlags
 }
 
 func wrapFormatFeatureFlags(p *C.VkFormatFeatureFlags) *FormatFeatureFlags {
 	v := FormatFeatureFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FormatFeatureFlags).free)
+
 	return &v
 }
 
@@ -1123,12 +1944,24 @@ func marshalFormatFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapFormatFeatureFlags(c)
 }
 
+func (f *FormatFeatureFlags) free() {}
+
+// Native returns the pointer to *C.VkFormatFeatureFlags. The caller is expected to
+// cast.
+func (f *FormatFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type ImageUsageFlagBits struct {
 	native *C.VkImageUsageFlagBits
 }
 
 func wrapImageUsageFlagBits(p *C.VkImageUsageFlagBits) *ImageUsageFlagBits {
 	v := ImageUsageFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageUsageFlagBits).free)
+
 	return &v
 }
 
@@ -1139,12 +1972,24 @@ func marshalImageUsageFlagBits(p uintptr) (interface{}, error) {
 	return wrapImageUsageFlagBits(c)
 }
 
+func (i *ImageUsageFlagBits) free() {}
+
+// Native returns the pointer to *C.VkImageUsageFlagBits. The caller is expected to
+// cast.
+func (i *ImageUsageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageUsageFlags struct {
 	native *C.VkImageUsageFlags
 }
 
 func wrapImageUsageFlags(p *C.VkImageUsageFlags) *ImageUsageFlags {
 	v := ImageUsageFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageUsageFlags).free)
+
 	return &v
 }
 
@@ -1155,12 +2000,24 @@ func marshalImageUsageFlags(p uintptr) (interface{}, error) {
 	return wrapImageUsageFlags(c)
 }
 
+func (i *ImageUsageFlags) free() {}
+
+// Native returns the pointer to *C.VkImageUsageFlags. The caller is expected to
+// cast.
+func (i *ImageUsageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageCreateFlagBits struct {
 	native *C.VkImageCreateFlagBits
 }
 
 func wrapImageCreateFlagBits(p *C.VkImageCreateFlagBits) *ImageCreateFlagBits {
 	v := ImageCreateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageCreateFlagBits).free)
+
 	return &v
 }
 
@@ -1171,12 +2028,24 @@ func marshalImageCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapImageCreateFlagBits(c)
 }
 
+func (i *ImageCreateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkImageCreateFlagBits. The caller is expected to
+// cast.
+func (i *ImageCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageCreateFlags struct {
 	native *C.VkImageCreateFlags
 }
 
 func wrapImageCreateFlags(p *C.VkImageCreateFlags) *ImageCreateFlags {
 	v := ImageCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageCreateFlags).free)
+
 	return &v
 }
 
@@ -1187,12 +2056,24 @@ func marshalImageCreateFlags(p uintptr) (interface{}, error) {
 	return wrapImageCreateFlags(c)
 }
 
+func (i *ImageCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkImageCreateFlags. The caller is expected to
+// cast.
+func (i *ImageCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type SampleCountFlagBits struct {
 	native *C.VkSampleCountFlagBits
 }
 
 func wrapSampleCountFlagBits(p *C.VkSampleCountFlagBits) *SampleCountFlagBits {
 	v := SampleCountFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SampleCountFlagBits).free)
+
 	return &v
 }
 
@@ -1203,12 +2084,24 @@ func marshalSampleCountFlagBits(p uintptr) (interface{}, error) {
 	return wrapSampleCountFlagBits(c)
 }
 
+func (s *SampleCountFlagBits) free() {}
+
+// Native returns the pointer to *C.VkSampleCountFlagBits. The caller is expected to
+// cast.
+func (s *SampleCountFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SampleCountFlags struct {
 	native *C.VkSampleCountFlags
 }
 
 func wrapSampleCountFlags(p *C.VkSampleCountFlags) *SampleCountFlags {
 	v := SampleCountFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SampleCountFlags).free)
+
 	return &v
 }
 
@@ -1219,12 +2112,24 @@ func marshalSampleCountFlags(p uintptr) (interface{}, error) {
 	return wrapSampleCountFlags(c)
 }
 
+func (s *SampleCountFlags) free() {}
+
+// Native returns the pointer to *C.VkSampleCountFlags. The caller is expected to
+// cast.
+func (s *SampleCountFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type QueueFlagBits struct {
 	native *C.VkQueueFlagBits
 }
 
 func wrapQueueFlagBits(p *C.VkQueueFlagBits) *QueueFlagBits {
 	v := QueueFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueueFlagBits).free)
+
 	return &v
 }
 
@@ -1235,12 +2140,24 @@ func marshalQueueFlagBits(p uintptr) (interface{}, error) {
 	return wrapQueueFlagBits(c)
 }
 
+func (q *QueueFlagBits) free() {}
+
+// Native returns the pointer to *C.VkQueueFlagBits. The caller is expected to
+// cast.
+func (q *QueueFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type QueueFlags struct {
 	native *C.VkQueueFlags
 }
 
 func wrapQueueFlags(p *C.VkQueueFlags) *QueueFlags {
 	v := QueueFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueueFlags).free)
+
 	return &v
 }
 
@@ -1251,12 +2168,24 @@ func marshalQueueFlags(p uintptr) (interface{}, error) {
 	return wrapQueueFlags(c)
 }
 
+func (q *QueueFlags) free() {}
+
+// Native returns the pointer to *C.VkQueueFlags. The caller is expected to
+// cast.
+func (q *QueueFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type MemoryPropertyFlagBits struct {
 	native *C.VkMemoryPropertyFlagBits
 }
 
 func wrapMemoryPropertyFlagBits(p *C.VkMemoryPropertyFlagBits) *MemoryPropertyFlagBits {
 	v := MemoryPropertyFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryPropertyFlagBits).free)
+
 	return &v
 }
 
@@ -1267,12 +2196,24 @@ func marshalMemoryPropertyFlagBits(p uintptr) (interface{}, error) {
 	return wrapMemoryPropertyFlagBits(c)
 }
 
+func (m *MemoryPropertyFlagBits) free() {}
+
+// Native returns the pointer to *C.VkMemoryPropertyFlagBits. The caller is expected to
+// cast.
+func (m *MemoryPropertyFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryPropertyFlags struct {
 	native *C.VkMemoryPropertyFlags
 }
 
 func wrapMemoryPropertyFlags(p *C.VkMemoryPropertyFlags) *MemoryPropertyFlags {
 	v := MemoryPropertyFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryPropertyFlags).free)
+
 	return &v
 }
 
@@ -1283,12 +2224,24 @@ func marshalMemoryPropertyFlags(p uintptr) (interface{}, error) {
 	return wrapMemoryPropertyFlags(c)
 }
 
+func (m *MemoryPropertyFlags) free() {}
+
+// Native returns the pointer to *C.VkMemoryPropertyFlags. The caller is expected to
+// cast.
+func (m *MemoryPropertyFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryHeapFlagBits struct {
 	native *C.VkMemoryHeapFlagBits
 }
 
 func wrapMemoryHeapFlagBits(p *C.VkMemoryHeapFlagBits) *MemoryHeapFlagBits {
 	v := MemoryHeapFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryHeapFlagBits).free)
+
 	return &v
 }
 
@@ -1299,12 +2252,24 @@ func marshalMemoryHeapFlagBits(p uintptr) (interface{}, error) {
 	return wrapMemoryHeapFlagBits(c)
 }
 
+func (m *MemoryHeapFlagBits) free() {}
+
+// Native returns the pointer to *C.VkMemoryHeapFlagBits. The caller is expected to
+// cast.
+func (m *MemoryHeapFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryHeapFlags struct {
 	native *C.VkMemoryHeapFlags
 }
 
 func wrapMemoryHeapFlags(p *C.VkMemoryHeapFlags) *MemoryHeapFlags {
 	v := MemoryHeapFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryHeapFlags).free)
+
 	return &v
 }
 
@@ -1315,12 +2280,24 @@ func marshalMemoryHeapFlags(p uintptr) (interface{}, error) {
 	return wrapMemoryHeapFlags(c)
 }
 
+func (m *MemoryHeapFlags) free() {}
+
+// Native returns the pointer to *C.VkMemoryHeapFlags. The caller is expected to
+// cast.
+func (m *MemoryHeapFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type DeviceCreateFlags struct {
 	native *C.VkDeviceCreateFlags
 }
 
 func wrapDeviceCreateFlags(p *C.VkDeviceCreateFlags) *DeviceCreateFlags {
 	v := DeviceCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceCreateFlags).free)
+
 	return &v
 }
 
@@ -1331,12 +2308,24 @@ func marshalDeviceCreateFlags(p uintptr) (interface{}, error) {
 	return wrapDeviceCreateFlags(c)
 }
 
+func (d *DeviceCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkDeviceCreateFlags. The caller is expected to
+// cast.
+func (d *DeviceCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceQueueCreateFlagBits struct {
 	native *C.VkDeviceQueueCreateFlagBits
 }
 
 func wrapDeviceQueueCreateFlagBits(p *C.VkDeviceQueueCreateFlagBits) *DeviceQueueCreateFlagBits {
 	v := DeviceQueueCreateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceQueueCreateFlagBits).free)
+
 	return &v
 }
 
@@ -1347,12 +2336,24 @@ func marshalDeviceQueueCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapDeviceQueueCreateFlagBits(c)
 }
 
+func (d *DeviceQueueCreateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkDeviceQueueCreateFlagBits. The caller is expected to
+// cast.
+func (d *DeviceQueueCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceQueueCreateFlags struct {
 	native *C.VkDeviceQueueCreateFlags
 }
 
 func wrapDeviceQueueCreateFlags(p *C.VkDeviceQueueCreateFlags) *DeviceQueueCreateFlags {
 	v := DeviceQueueCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceQueueCreateFlags).free)
+
 	return &v
 }
 
@@ -1363,12 +2364,24 @@ func marshalDeviceQueueCreateFlags(p uintptr) (interface{}, error) {
 	return wrapDeviceQueueCreateFlags(c)
 }
 
+func (d *DeviceQueueCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkDeviceQueueCreateFlags. The caller is expected to
+// cast.
+func (d *DeviceQueueCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PipelineStageFlagBits struct {
 	native *C.VkPipelineStageFlagBits
 }
 
 func wrapPipelineStageFlagBits(p *C.VkPipelineStageFlagBits) *PipelineStageFlagBits {
 	v := PipelineStageFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineStageFlagBits).free)
+
 	return &v
 }
 
@@ -1379,12 +2392,24 @@ func marshalPipelineStageFlagBits(p uintptr) (interface{}, error) {
 	return wrapPipelineStageFlagBits(c)
 }
 
+func (p *PipelineStageFlagBits) free() {}
+
+// Native returns the pointer to *C.VkPipelineStageFlagBits. The caller is expected to
+// cast.
+func (p *PipelineStageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineStageFlags struct {
 	native *C.VkPipelineStageFlags
 }
 
 func wrapPipelineStageFlags(p *C.VkPipelineStageFlags) *PipelineStageFlags {
 	v := PipelineStageFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineStageFlags).free)
+
 	return &v
 }
 
@@ -1395,12 +2420,24 @@ func marshalPipelineStageFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineStageFlags(c)
 }
 
+func (p *PipelineStageFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineStageFlags. The caller is expected to
+// cast.
+func (p *PipelineStageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type MemoryMapFlags struct {
 	native *C.VkMemoryMapFlags
 }
 
 func wrapMemoryMapFlags(p *C.VkMemoryMapFlags) *MemoryMapFlags {
 	v := MemoryMapFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryMapFlags).free)
+
 	return &v
 }
 
@@ -1411,12 +2448,24 @@ func marshalMemoryMapFlags(p uintptr) (interface{}, error) {
 	return wrapMemoryMapFlags(c)
 }
 
+func (m *MemoryMapFlags) free() {}
+
+// Native returns the pointer to *C.VkMemoryMapFlags. The caller is expected to
+// cast.
+func (m *MemoryMapFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type ImageAspectFlagBits struct {
 	native *C.VkImageAspectFlagBits
 }
 
 func wrapImageAspectFlagBits(p *C.VkImageAspectFlagBits) *ImageAspectFlagBits {
 	v := ImageAspectFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageAspectFlagBits).free)
+
 	return &v
 }
 
@@ -1427,12 +2476,24 @@ func marshalImageAspectFlagBits(p uintptr) (interface{}, error) {
 	return wrapImageAspectFlagBits(c)
 }
 
+func (i *ImageAspectFlagBits) free() {}
+
+// Native returns the pointer to *C.VkImageAspectFlagBits. The caller is expected to
+// cast.
+func (i *ImageAspectFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageAspectFlags struct {
 	native *C.VkImageAspectFlags
 }
 
 func wrapImageAspectFlags(p *C.VkImageAspectFlags) *ImageAspectFlags {
 	v := ImageAspectFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageAspectFlags).free)
+
 	return &v
 }
 
@@ -1443,12 +2504,24 @@ func marshalImageAspectFlags(p uintptr) (interface{}, error) {
 	return wrapImageAspectFlags(c)
 }
 
+func (i *ImageAspectFlags) free() {}
+
+// Native returns the pointer to *C.VkImageAspectFlags. The caller is expected to
+// cast.
+func (i *ImageAspectFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type SparseImageFormatFlagBits struct {
 	native *C.VkSparseImageFormatFlagBits
 }
 
 func wrapSparseImageFormatFlagBits(p *C.VkSparseImageFormatFlagBits) *SparseImageFormatFlagBits {
 	v := SparseImageFormatFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageFormatFlagBits).free)
+
 	return &v
 }
 
@@ -1459,12 +2532,24 @@ func marshalSparseImageFormatFlagBits(p uintptr) (interface{}, error) {
 	return wrapSparseImageFormatFlagBits(c)
 }
 
+func (s *SparseImageFormatFlagBits) free() {}
+
+// Native returns the pointer to *C.VkSparseImageFormatFlagBits. The caller is expected to
+// cast.
+func (s *SparseImageFormatFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SparseImageFormatFlags struct {
 	native *C.VkSparseImageFormatFlags
 }
 
 func wrapSparseImageFormatFlags(p *C.VkSparseImageFormatFlags) *SparseImageFormatFlags {
 	v := SparseImageFormatFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageFormatFlags).free)
+
 	return &v
 }
 
@@ -1475,12 +2560,24 @@ func marshalSparseImageFormatFlags(p uintptr) (interface{}, error) {
 	return wrapSparseImageFormatFlags(c)
 }
 
+func (s *SparseImageFormatFlags) free() {}
+
+// Native returns the pointer to *C.VkSparseImageFormatFlags. The caller is expected to
+// cast.
+func (s *SparseImageFormatFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SparseMemoryBindFlagBits struct {
 	native *C.VkSparseMemoryBindFlagBits
 }
 
 func wrapSparseMemoryBindFlagBits(p *C.VkSparseMemoryBindFlagBits) *SparseMemoryBindFlagBits {
 	v := SparseMemoryBindFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseMemoryBindFlagBits).free)
+
 	return &v
 }
 
@@ -1491,12 +2588,24 @@ func marshalSparseMemoryBindFlagBits(p uintptr) (interface{}, error) {
 	return wrapSparseMemoryBindFlagBits(c)
 }
 
+func (s *SparseMemoryBindFlagBits) free() {}
+
+// Native returns the pointer to *C.VkSparseMemoryBindFlagBits. The caller is expected to
+// cast.
+func (s *SparseMemoryBindFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SparseMemoryBindFlags struct {
 	native *C.VkSparseMemoryBindFlags
 }
 
 func wrapSparseMemoryBindFlags(p *C.VkSparseMemoryBindFlags) *SparseMemoryBindFlags {
 	v := SparseMemoryBindFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseMemoryBindFlags).free)
+
 	return &v
 }
 
@@ -1507,12 +2616,24 @@ func marshalSparseMemoryBindFlags(p uintptr) (interface{}, error) {
 	return wrapSparseMemoryBindFlags(c)
 }
 
+func (s *SparseMemoryBindFlags) free() {}
+
+// Native returns the pointer to *C.VkSparseMemoryBindFlags. The caller is expected to
+// cast.
+func (s *SparseMemoryBindFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type FenceCreateFlagBits struct {
 	native *C.VkFenceCreateFlagBits
 }
 
 func wrapFenceCreateFlagBits(p *C.VkFenceCreateFlagBits) *FenceCreateFlagBits {
 	v := FenceCreateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FenceCreateFlagBits).free)
+
 	return &v
 }
 
@@ -1523,12 +2644,24 @@ func marshalFenceCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapFenceCreateFlagBits(c)
 }
 
+func (f *FenceCreateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkFenceCreateFlagBits. The caller is expected to
+// cast.
+func (f *FenceCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type FenceCreateFlags struct {
 	native *C.VkFenceCreateFlags
 }
 
 func wrapFenceCreateFlags(p *C.VkFenceCreateFlags) *FenceCreateFlags {
 	v := FenceCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FenceCreateFlags).free)
+
 	return &v
 }
 
@@ -1539,12 +2672,24 @@ func marshalFenceCreateFlags(p uintptr) (interface{}, error) {
 	return wrapFenceCreateFlags(c)
 }
 
+func (f *FenceCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkFenceCreateFlags. The caller is expected to
+// cast.
+func (f *FenceCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type SemaphoreCreateFlags struct {
 	native *C.VkSemaphoreCreateFlags
 }
 
 func wrapSemaphoreCreateFlags(p *C.VkSemaphoreCreateFlags) *SemaphoreCreateFlags {
 	v := SemaphoreCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SemaphoreCreateFlags).free)
+
 	return &v
 }
 
@@ -1555,12 +2700,24 @@ func marshalSemaphoreCreateFlags(p uintptr) (interface{}, error) {
 	return wrapSemaphoreCreateFlags(c)
 }
 
+func (s *SemaphoreCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkSemaphoreCreateFlags. The caller is expected to
+// cast.
+func (s *SemaphoreCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type EventCreateFlags struct {
 	native *C.VkEventCreateFlags
 }
 
 func wrapEventCreateFlags(p *C.VkEventCreateFlags) *EventCreateFlags {
 	v := EventCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*EventCreateFlags).free)
+
 	return &v
 }
 
@@ -1571,12 +2728,24 @@ func marshalEventCreateFlags(p uintptr) (interface{}, error) {
 	return wrapEventCreateFlags(c)
 }
 
+func (e *EventCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkEventCreateFlags. The caller is expected to
+// cast.
+func (e *EventCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type QueryPoolCreateFlags struct {
 	native *C.VkQueryPoolCreateFlags
 }
 
 func wrapQueryPoolCreateFlags(p *C.VkQueryPoolCreateFlags) *QueryPoolCreateFlags {
 	v := QueryPoolCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueryPoolCreateFlags).free)
+
 	return &v
 }
 
@@ -1587,12 +2756,24 @@ func marshalQueryPoolCreateFlags(p uintptr) (interface{}, error) {
 	return wrapQueryPoolCreateFlags(c)
 }
 
+func (q *QueryPoolCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkQueryPoolCreateFlags. The caller is expected to
+// cast.
+func (q *QueryPoolCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type QueryPipelineStatisticFlagBits struct {
 	native *C.VkQueryPipelineStatisticFlagBits
 }
 
 func wrapQueryPipelineStatisticFlagBits(p *C.VkQueryPipelineStatisticFlagBits) *QueryPipelineStatisticFlagBits {
 	v := QueryPipelineStatisticFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueryPipelineStatisticFlagBits).free)
+
 	return &v
 }
 
@@ -1603,12 +2784,24 @@ func marshalQueryPipelineStatisticFlagBits(p uintptr) (interface{}, error) {
 	return wrapQueryPipelineStatisticFlagBits(c)
 }
 
+func (q *QueryPipelineStatisticFlagBits) free() {}
+
+// Native returns the pointer to *C.VkQueryPipelineStatisticFlagBits. The caller is expected to
+// cast.
+func (q *QueryPipelineStatisticFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type QueryPipelineStatisticFlags struct {
 	native *C.VkQueryPipelineStatisticFlags
 }
 
 func wrapQueryPipelineStatisticFlags(p *C.VkQueryPipelineStatisticFlags) *QueryPipelineStatisticFlags {
 	v := QueryPipelineStatisticFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueryPipelineStatisticFlags).free)
+
 	return &v
 }
 
@@ -1619,12 +2812,24 @@ func marshalQueryPipelineStatisticFlags(p uintptr) (interface{}, error) {
 	return wrapQueryPipelineStatisticFlags(c)
 }
 
+func (q *QueryPipelineStatisticFlags) free() {}
+
+// Native returns the pointer to *C.VkQueryPipelineStatisticFlags. The caller is expected to
+// cast.
+func (q *QueryPipelineStatisticFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type QueryResultFlagBits struct {
 	native *C.VkQueryResultFlagBits
 }
 
 func wrapQueryResultFlagBits(p *C.VkQueryResultFlagBits) *QueryResultFlagBits {
 	v := QueryResultFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueryResultFlagBits).free)
+
 	return &v
 }
 
@@ -1635,12 +2840,24 @@ func marshalQueryResultFlagBits(p uintptr) (interface{}, error) {
 	return wrapQueryResultFlagBits(c)
 }
 
+func (q *QueryResultFlagBits) free() {}
+
+// Native returns the pointer to *C.VkQueryResultFlagBits. The caller is expected to
+// cast.
+func (q *QueryResultFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type QueryResultFlags struct {
 	native *C.VkQueryResultFlags
 }
 
 func wrapQueryResultFlags(p *C.VkQueryResultFlags) *QueryResultFlags {
 	v := QueryResultFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueryResultFlags).free)
+
 	return &v
 }
 
@@ -1651,12 +2868,24 @@ func marshalQueryResultFlags(p uintptr) (interface{}, error) {
 	return wrapQueryResultFlags(c)
 }
 
+func (q *QueryResultFlags) free() {}
+
+// Native returns the pointer to *C.VkQueryResultFlags. The caller is expected to
+// cast.
+func (q *QueryResultFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type BufferCreateFlagBits struct {
 	native *C.VkBufferCreateFlagBits
 }
 
 func wrapBufferCreateFlagBits(p *C.VkBufferCreateFlagBits) *BufferCreateFlagBits {
 	v := BufferCreateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferCreateFlagBits).free)
+
 	return &v
 }
 
@@ -1667,12 +2896,24 @@ func marshalBufferCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapBufferCreateFlagBits(c)
 }
 
+func (b *BufferCreateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkBufferCreateFlagBits. The caller is expected to
+// cast.
+func (b *BufferCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BufferCreateFlags struct {
 	native *C.VkBufferCreateFlags
 }
 
 func wrapBufferCreateFlags(p *C.VkBufferCreateFlags) *BufferCreateFlags {
 	v := BufferCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferCreateFlags).free)
+
 	return &v
 }
 
@@ -1683,12 +2924,24 @@ func marshalBufferCreateFlags(p uintptr) (interface{}, error) {
 	return wrapBufferCreateFlags(c)
 }
 
+func (b *BufferCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkBufferCreateFlags. The caller is expected to
+// cast.
+func (b *BufferCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BufferUsageFlagBits struct {
 	native *C.VkBufferUsageFlagBits
 }
 
 func wrapBufferUsageFlagBits(p *C.VkBufferUsageFlagBits) *BufferUsageFlagBits {
 	v := BufferUsageFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferUsageFlagBits).free)
+
 	return &v
 }
 
@@ -1699,12 +2952,24 @@ func marshalBufferUsageFlagBits(p uintptr) (interface{}, error) {
 	return wrapBufferUsageFlagBits(c)
 }
 
+func (b *BufferUsageFlagBits) free() {}
+
+// Native returns the pointer to *C.VkBufferUsageFlagBits. The caller is expected to
+// cast.
+func (b *BufferUsageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BufferUsageFlags struct {
 	native *C.VkBufferUsageFlags
 }
 
 func wrapBufferUsageFlags(p *C.VkBufferUsageFlags) *BufferUsageFlags {
 	v := BufferUsageFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferUsageFlags).free)
+
 	return &v
 }
 
@@ -1715,12 +2980,24 @@ func marshalBufferUsageFlags(p uintptr) (interface{}, error) {
 	return wrapBufferUsageFlags(c)
 }
 
+func (b *BufferUsageFlags) free() {}
+
+// Native returns the pointer to *C.VkBufferUsageFlags. The caller is expected to
+// cast.
+func (b *BufferUsageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BufferViewCreateFlags struct {
 	native *C.VkBufferViewCreateFlags
 }
 
 func wrapBufferViewCreateFlags(p *C.VkBufferViewCreateFlags) *BufferViewCreateFlags {
 	v := BufferViewCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferViewCreateFlags).free)
+
 	return &v
 }
 
@@ -1731,12 +3008,24 @@ func marshalBufferViewCreateFlags(p uintptr) (interface{}, error) {
 	return wrapBufferViewCreateFlags(c)
 }
 
+func (b *BufferViewCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkBufferViewCreateFlags. The caller is expected to
+// cast.
+func (b *BufferViewCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ImageViewCreateFlagBits struct {
 	native *C.VkImageViewCreateFlagBits
 }
 
 func wrapImageViewCreateFlagBits(p *C.VkImageViewCreateFlagBits) *ImageViewCreateFlagBits {
 	v := ImageViewCreateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageViewCreateFlagBits).free)
+
 	return &v
 }
 
@@ -1747,12 +3036,24 @@ func marshalImageViewCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapImageViewCreateFlagBits(c)
 }
 
+func (i *ImageViewCreateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkImageViewCreateFlagBits. The caller is expected to
+// cast.
+func (i *ImageViewCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageViewCreateFlags struct {
 	native *C.VkImageViewCreateFlags
 }
 
 func wrapImageViewCreateFlags(p *C.VkImageViewCreateFlags) *ImageViewCreateFlags {
 	v := ImageViewCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageViewCreateFlags).free)
+
 	return &v
 }
 
@@ -1763,12 +3064,24 @@ func marshalImageViewCreateFlags(p uintptr) (interface{}, error) {
 	return wrapImageViewCreateFlags(c)
 }
 
+func (i *ImageViewCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkImageViewCreateFlags. The caller is expected to
+// cast.
+func (i *ImageViewCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ShaderModuleCreateFlags struct {
 	native *C.VkShaderModuleCreateFlags
 }
 
 func wrapShaderModuleCreateFlags(p *C.VkShaderModuleCreateFlags) *ShaderModuleCreateFlags {
 	v := ShaderModuleCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShaderModuleCreateFlags).free)
+
 	return &v
 }
 
@@ -1779,12 +3092,24 @@ func marshalShaderModuleCreateFlags(p uintptr) (interface{}, error) {
 	return wrapShaderModuleCreateFlags(c)
 }
 
+func (s *ShaderModuleCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkShaderModuleCreateFlags. The caller is expected to
+// cast.
+func (s *ShaderModuleCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PipelineCacheCreateFlags struct {
 	native *C.VkPipelineCacheCreateFlags
 }
 
 func wrapPipelineCacheCreateFlags(p *C.VkPipelineCacheCreateFlags) *PipelineCacheCreateFlags {
 	v := PipelineCacheCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCacheCreateFlags).free)
+
 	return &v
 }
 
@@ -1795,12 +3120,24 @@ func marshalPipelineCacheCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineCacheCreateFlags(c)
 }
 
+func (p *PipelineCacheCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineCacheCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineCacheCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineCreateFlagBits struct {
 	native *C.VkPipelineCreateFlagBits
 }
 
 func wrapPipelineCreateFlagBits(p *C.VkPipelineCreateFlagBits) *PipelineCreateFlagBits {
 	v := PipelineCreateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCreateFlagBits).free)
+
 	return &v
 }
 
@@ -1811,12 +3148,24 @@ func marshalPipelineCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapPipelineCreateFlagBits(c)
 }
 
+func (p *PipelineCreateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkPipelineCreateFlagBits. The caller is expected to
+// cast.
+func (p *PipelineCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineCreateFlags struct {
 	native *C.VkPipelineCreateFlags
 }
 
 func wrapPipelineCreateFlags(p *C.VkPipelineCreateFlags) *PipelineCreateFlags {
 	v := PipelineCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCreateFlags).free)
+
 	return &v
 }
 
@@ -1827,12 +3176,24 @@ func marshalPipelineCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineCreateFlags(c)
 }
 
+func (p *PipelineCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineShaderStageCreateFlags struct {
 	native *C.VkPipelineShaderStageCreateFlags
 }
 
 func wrapPipelineShaderStageCreateFlags(p *C.VkPipelineShaderStageCreateFlags) *PipelineShaderStageCreateFlags {
 	v := PipelineShaderStageCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineShaderStageCreateFlags).free)
+
 	return &v
 }
 
@@ -1843,12 +3204,24 @@ func marshalPipelineShaderStageCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineShaderStageCreateFlags(c)
 }
 
+func (p *PipelineShaderStageCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineShaderStageCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineShaderStageCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ShaderStageFlagBits struct {
 	native *C.VkShaderStageFlagBits
 }
 
 func wrapShaderStageFlagBits(p *C.VkShaderStageFlagBits) *ShaderStageFlagBits {
 	v := ShaderStageFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShaderStageFlagBits).free)
+
 	return &v
 }
 
@@ -1859,12 +3232,24 @@ func marshalShaderStageFlagBits(p uintptr) (interface{}, error) {
 	return wrapShaderStageFlagBits(c)
 }
 
+func (s *ShaderStageFlagBits) free() {}
+
+// Native returns the pointer to *C.VkShaderStageFlagBits. The caller is expected to
+// cast.
+func (s *ShaderStageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PipelineVertexInputStateCreateFlags struct {
 	native *C.VkPipelineVertexInputStateCreateFlags
 }
 
 func wrapPipelineVertexInputStateCreateFlags(p *C.VkPipelineVertexInputStateCreateFlags) *PipelineVertexInputStateCreateFlags {
 	v := PipelineVertexInputStateCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineVertexInputStateCreateFlags).free)
+
 	return &v
 }
 
@@ -1875,12 +3260,24 @@ func marshalPipelineVertexInputStateCreateFlags(p uintptr) (interface{}, error) 
 	return wrapPipelineVertexInputStateCreateFlags(c)
 }
 
+func (p *PipelineVertexInputStateCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineVertexInputStateCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineVertexInputStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineInputAssemblyStateCreateFlags struct {
 	native *C.VkPipelineInputAssemblyStateCreateFlags
 }
 
 func wrapPipelineInputAssemblyStateCreateFlags(p *C.VkPipelineInputAssemblyStateCreateFlags) *PipelineInputAssemblyStateCreateFlags {
 	v := PipelineInputAssemblyStateCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineInputAssemblyStateCreateFlags).free)
+
 	return &v
 }
 
@@ -1891,12 +3288,24 @@ func marshalPipelineInputAssemblyStateCreateFlags(p uintptr) (interface{}, error
 	return wrapPipelineInputAssemblyStateCreateFlags(c)
 }
 
+func (p *PipelineInputAssemblyStateCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineInputAssemblyStateCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineInputAssemblyStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineTessellationStateCreateFlags struct {
 	native *C.VkPipelineTessellationStateCreateFlags
 }
 
 func wrapPipelineTessellationStateCreateFlags(p *C.VkPipelineTessellationStateCreateFlags) *PipelineTessellationStateCreateFlags {
 	v := PipelineTessellationStateCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineTessellationStateCreateFlags).free)
+
 	return &v
 }
 
@@ -1907,12 +3316,24 @@ func marshalPipelineTessellationStateCreateFlags(p uintptr) (interface{}, error)
 	return wrapPipelineTessellationStateCreateFlags(c)
 }
 
+func (p *PipelineTessellationStateCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineTessellationStateCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineTessellationStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineViewportStateCreateFlags struct {
 	native *C.VkPipelineViewportStateCreateFlags
 }
 
 func wrapPipelineViewportStateCreateFlags(p *C.VkPipelineViewportStateCreateFlags) *PipelineViewportStateCreateFlags {
 	v := PipelineViewportStateCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineViewportStateCreateFlags).free)
+
 	return &v
 }
 
@@ -1923,12 +3344,24 @@ func marshalPipelineViewportStateCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineViewportStateCreateFlags(c)
 }
 
+func (p *PipelineViewportStateCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineViewportStateCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineViewportStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineRasterizationStateCreateFlags struct {
 	native *C.VkPipelineRasterizationStateCreateFlags
 }
 
 func wrapPipelineRasterizationStateCreateFlags(p *C.VkPipelineRasterizationStateCreateFlags) *PipelineRasterizationStateCreateFlags {
 	v := PipelineRasterizationStateCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineRasterizationStateCreateFlags).free)
+
 	return &v
 }
 
@@ -1939,12 +3372,24 @@ func marshalPipelineRasterizationStateCreateFlags(p uintptr) (interface{}, error
 	return wrapPipelineRasterizationStateCreateFlags(c)
 }
 
+func (p *PipelineRasterizationStateCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineRasterizationStateCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineRasterizationStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type CullModeFlagBits struct {
 	native *C.VkCullModeFlagBits
 }
 
 func wrapCullModeFlagBits(p *C.VkCullModeFlagBits) *CullModeFlagBits {
 	v := CullModeFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CullModeFlagBits).free)
+
 	return &v
 }
 
@@ -1955,12 +3400,24 @@ func marshalCullModeFlagBits(p uintptr) (interface{}, error) {
 	return wrapCullModeFlagBits(c)
 }
 
+func (c *CullModeFlagBits) free() {}
+
+// Native returns the pointer to *C.VkCullModeFlagBits. The caller is expected to
+// cast.
+func (c *CullModeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CullModeFlags struct {
 	native *C.VkCullModeFlags
 }
 
 func wrapCullModeFlags(p *C.VkCullModeFlags) *CullModeFlags {
 	v := CullModeFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CullModeFlags).free)
+
 	return &v
 }
 
@@ -1971,12 +3428,24 @@ func marshalCullModeFlags(p uintptr) (interface{}, error) {
 	return wrapCullModeFlags(c)
 }
 
+func (c *CullModeFlags) free() {}
+
+// Native returns the pointer to *C.VkCullModeFlags. The caller is expected to
+// cast.
+func (c *CullModeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PipelineMultisampleStateCreateFlags struct {
 	native *C.VkPipelineMultisampleStateCreateFlags
 }
 
 func wrapPipelineMultisampleStateCreateFlags(p *C.VkPipelineMultisampleStateCreateFlags) *PipelineMultisampleStateCreateFlags {
 	v := PipelineMultisampleStateCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineMultisampleStateCreateFlags).free)
+
 	return &v
 }
 
@@ -1987,12 +3456,24 @@ func marshalPipelineMultisampleStateCreateFlags(p uintptr) (interface{}, error) 
 	return wrapPipelineMultisampleStateCreateFlags(c)
 }
 
+func (p *PipelineMultisampleStateCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineMultisampleStateCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineMultisampleStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineDepthStencilStateCreateFlags struct {
 	native *C.VkPipelineDepthStencilStateCreateFlags
 }
 
 func wrapPipelineDepthStencilStateCreateFlags(p *C.VkPipelineDepthStencilStateCreateFlags) *PipelineDepthStencilStateCreateFlags {
 	v := PipelineDepthStencilStateCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineDepthStencilStateCreateFlags).free)
+
 	return &v
 }
 
@@ -2003,12 +3484,24 @@ func marshalPipelineDepthStencilStateCreateFlags(p uintptr) (interface{}, error)
 	return wrapPipelineDepthStencilStateCreateFlags(c)
 }
 
+func (p *PipelineDepthStencilStateCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineDepthStencilStateCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineDepthStencilStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineColorBlendStateCreateFlags struct {
 	native *C.VkPipelineColorBlendStateCreateFlags
 }
 
 func wrapPipelineColorBlendStateCreateFlags(p *C.VkPipelineColorBlendStateCreateFlags) *PipelineColorBlendStateCreateFlags {
 	v := PipelineColorBlendStateCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineColorBlendStateCreateFlags).free)
+
 	return &v
 }
 
@@ -2019,12 +3512,24 @@ func marshalPipelineColorBlendStateCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineColorBlendStateCreateFlags(c)
 }
 
+func (p *PipelineColorBlendStateCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineColorBlendStateCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineColorBlendStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ColorComponentFlagBits struct {
 	native *C.VkColorComponentFlagBits
 }
 
 func wrapColorComponentFlagBits(p *C.VkColorComponentFlagBits) *ColorComponentFlagBits {
 	v := ColorComponentFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ColorComponentFlagBits).free)
+
 	return &v
 }
 
@@ -2035,12 +3540,24 @@ func marshalColorComponentFlagBits(p uintptr) (interface{}, error) {
 	return wrapColorComponentFlagBits(c)
 }
 
+func (c *ColorComponentFlagBits) free() {}
+
+// Native returns the pointer to *C.VkColorComponentFlagBits. The caller is expected to
+// cast.
+func (c *ColorComponentFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ColorComponentFlags struct {
 	native *C.VkColorComponentFlags
 }
 
 func wrapColorComponentFlags(p *C.VkColorComponentFlags) *ColorComponentFlags {
 	v := ColorComponentFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ColorComponentFlags).free)
+
 	return &v
 }
 
@@ -2051,12 +3568,24 @@ func marshalColorComponentFlags(p uintptr) (interface{}, error) {
 	return wrapColorComponentFlags(c)
 }
 
+func (c *ColorComponentFlags) free() {}
+
+// Native returns the pointer to *C.VkColorComponentFlags. The caller is expected to
+// cast.
+func (c *ColorComponentFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PipelineDynamicStateCreateFlags struct {
 	native *C.VkPipelineDynamicStateCreateFlags
 }
 
 func wrapPipelineDynamicStateCreateFlags(p *C.VkPipelineDynamicStateCreateFlags) *PipelineDynamicStateCreateFlags {
 	v := PipelineDynamicStateCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineDynamicStateCreateFlags).free)
+
 	return &v
 }
 
@@ -2067,12 +3596,24 @@ func marshalPipelineDynamicStateCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineDynamicStateCreateFlags(c)
 }
 
+func (p *PipelineDynamicStateCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineDynamicStateCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineDynamicStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineLayoutCreateFlags struct {
 	native *C.VkPipelineLayoutCreateFlags
 }
 
 func wrapPipelineLayoutCreateFlags(p *C.VkPipelineLayoutCreateFlags) *PipelineLayoutCreateFlags {
 	v := PipelineLayoutCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineLayoutCreateFlags).free)
+
 	return &v
 }
 
@@ -2083,12 +3624,24 @@ func marshalPipelineLayoutCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineLayoutCreateFlags(c)
 }
 
+func (p *PipelineLayoutCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkPipelineLayoutCreateFlags. The caller is expected to
+// cast.
+func (p *PipelineLayoutCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ShaderStageFlags struct {
 	native *C.VkShaderStageFlags
 }
 
 func wrapShaderStageFlags(p *C.VkShaderStageFlags) *ShaderStageFlags {
 	v := ShaderStageFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShaderStageFlags).free)
+
 	return &v
 }
 
@@ -2099,12 +3652,24 @@ func marshalShaderStageFlags(p uintptr) (interface{}, error) {
 	return wrapShaderStageFlags(c)
 }
 
+func (s *ShaderStageFlags) free() {}
+
+// Native returns the pointer to *C.VkShaderStageFlags. The caller is expected to
+// cast.
+func (s *ShaderStageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SamplerCreateFlagBits struct {
 	native *C.VkSamplerCreateFlagBits
 }
 
 func wrapSamplerCreateFlagBits(p *C.VkSamplerCreateFlagBits) *SamplerCreateFlagBits {
 	v := SamplerCreateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerCreateFlagBits).free)
+
 	return &v
 }
 
@@ -2115,12 +3680,24 @@ func marshalSamplerCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapSamplerCreateFlagBits(c)
 }
 
+func (s *SamplerCreateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkSamplerCreateFlagBits. The caller is expected to
+// cast.
+func (s *SamplerCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SamplerCreateFlags struct {
 	native *C.VkSamplerCreateFlags
 }
 
 func wrapSamplerCreateFlags(p *C.VkSamplerCreateFlags) *SamplerCreateFlags {
 	v := SamplerCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerCreateFlags).free)
+
 	return &v
 }
 
@@ -2131,12 +3708,24 @@ func marshalSamplerCreateFlags(p uintptr) (interface{}, error) {
 	return wrapSamplerCreateFlags(c)
 }
 
+func (s *SamplerCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkSamplerCreateFlags. The caller is expected to
+// cast.
+func (s *SamplerCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type DescriptorSetLayoutCreateFlagBits struct {
 	native *C.VkDescriptorSetLayoutCreateFlagBits
 }
 
 func wrapDescriptorSetLayoutCreateFlagBits(p *C.VkDescriptorSetLayoutCreateFlagBits) *DescriptorSetLayoutCreateFlagBits {
 	v := DescriptorSetLayoutCreateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetLayoutCreateFlagBits).free)
+
 	return &v
 }
 
@@ -2147,12 +3736,24 @@ func marshalDescriptorSetLayoutCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutCreateFlagBits(c)
 }
 
+func (d *DescriptorSetLayoutCreateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetLayoutCreateFlagBits. The caller is expected to
+// cast.
+func (d *DescriptorSetLayoutCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorSetLayoutCreateFlags struct {
 	native *C.VkDescriptorSetLayoutCreateFlags
 }
 
 func wrapDescriptorSetLayoutCreateFlags(p *C.VkDescriptorSetLayoutCreateFlags) *DescriptorSetLayoutCreateFlags {
 	v := DescriptorSetLayoutCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetLayoutCreateFlags).free)
+
 	return &v
 }
 
@@ -2163,12 +3764,24 @@ func marshalDescriptorSetLayoutCreateFlags(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutCreateFlags(c)
 }
 
+func (d *DescriptorSetLayoutCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetLayoutCreateFlags. The caller is expected to
+// cast.
+func (d *DescriptorSetLayoutCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorPoolCreateFlagBits struct {
 	native *C.VkDescriptorPoolCreateFlagBits
 }
 
 func wrapDescriptorPoolCreateFlagBits(p *C.VkDescriptorPoolCreateFlagBits) *DescriptorPoolCreateFlagBits {
 	v := DescriptorPoolCreateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorPoolCreateFlagBits).free)
+
 	return &v
 }
 
@@ -2179,12 +3792,24 @@ func marshalDescriptorPoolCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapDescriptorPoolCreateFlagBits(c)
 }
 
+func (d *DescriptorPoolCreateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkDescriptorPoolCreateFlagBits. The caller is expected to
+// cast.
+func (d *DescriptorPoolCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorPoolCreateFlags struct {
 	native *C.VkDescriptorPoolCreateFlags
 }
 
 func wrapDescriptorPoolCreateFlags(p *C.VkDescriptorPoolCreateFlags) *DescriptorPoolCreateFlags {
 	v := DescriptorPoolCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorPoolCreateFlags).free)
+
 	return &v
 }
 
@@ -2195,12 +3820,24 @@ func marshalDescriptorPoolCreateFlags(p uintptr) (interface{}, error) {
 	return wrapDescriptorPoolCreateFlags(c)
 }
 
+func (d *DescriptorPoolCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkDescriptorPoolCreateFlags. The caller is expected to
+// cast.
+func (d *DescriptorPoolCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorPoolResetFlags struct {
 	native *C.VkDescriptorPoolResetFlags
 }
 
 func wrapDescriptorPoolResetFlags(p *C.VkDescriptorPoolResetFlags) *DescriptorPoolResetFlags {
 	v := DescriptorPoolResetFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorPoolResetFlags).free)
+
 	return &v
 }
 
@@ -2211,12 +3848,24 @@ func marshalDescriptorPoolResetFlags(p uintptr) (interface{}, error) {
 	return wrapDescriptorPoolResetFlags(c)
 }
 
+func (d *DescriptorPoolResetFlags) free() {}
+
+// Native returns the pointer to *C.VkDescriptorPoolResetFlags. The caller is expected to
+// cast.
+func (d *DescriptorPoolResetFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type FramebufferCreateFlags struct {
 	native *C.VkFramebufferCreateFlags
 }
 
 func wrapFramebufferCreateFlags(p *C.VkFramebufferCreateFlags) *FramebufferCreateFlags {
 	v := FramebufferCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FramebufferCreateFlags).free)
+
 	return &v
 }
 
@@ -2227,12 +3876,24 @@ func marshalFramebufferCreateFlags(p uintptr) (interface{}, error) {
 	return wrapFramebufferCreateFlags(c)
 }
 
+func (f *FramebufferCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkFramebufferCreateFlags. The caller is expected to
+// cast.
+func (f *FramebufferCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type RenderPassCreateFlags struct {
 	native *C.VkRenderPassCreateFlags
 }
 
 func wrapRenderPassCreateFlags(p *C.VkRenderPassCreateFlags) *RenderPassCreateFlags {
 	v := RenderPassCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPassCreateFlags).free)
+
 	return &v
 }
 
@@ -2243,12 +3904,24 @@ func marshalRenderPassCreateFlags(p uintptr) (interface{}, error) {
 	return wrapRenderPassCreateFlags(c)
 }
 
+func (r *RenderPassCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkRenderPassCreateFlags. The caller is expected to
+// cast.
+func (r *RenderPassCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type AttachmentDescriptionFlagBits struct {
 	native *C.VkAttachmentDescriptionFlagBits
 }
 
 func wrapAttachmentDescriptionFlagBits(p *C.VkAttachmentDescriptionFlagBits) *AttachmentDescriptionFlagBits {
 	v := AttachmentDescriptionFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttachmentDescriptionFlagBits).free)
+
 	return &v
 }
 
@@ -2259,12 +3932,24 @@ func marshalAttachmentDescriptionFlagBits(p uintptr) (interface{}, error) {
 	return wrapAttachmentDescriptionFlagBits(c)
 }
 
+func (a *AttachmentDescriptionFlagBits) free() {}
+
+// Native returns the pointer to *C.VkAttachmentDescriptionFlagBits. The caller is expected to
+// cast.
+func (a *AttachmentDescriptionFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type AttachmentDescriptionFlags struct {
 	native *C.VkAttachmentDescriptionFlags
 }
 
 func wrapAttachmentDescriptionFlags(p *C.VkAttachmentDescriptionFlags) *AttachmentDescriptionFlags {
 	v := AttachmentDescriptionFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttachmentDescriptionFlags).free)
+
 	return &v
 }
 
@@ -2275,12 +3960,24 @@ func marshalAttachmentDescriptionFlags(p uintptr) (interface{}, error) {
 	return wrapAttachmentDescriptionFlags(c)
 }
 
+func (a *AttachmentDescriptionFlags) free() {}
+
+// Native returns the pointer to *C.VkAttachmentDescriptionFlags. The caller is expected to
+// cast.
+func (a *AttachmentDescriptionFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type SubpassDescriptionFlagBits struct {
 	native *C.VkSubpassDescriptionFlagBits
 }
 
 func wrapSubpassDescriptionFlagBits(p *C.VkSubpassDescriptionFlagBits) *SubpassDescriptionFlagBits {
 	v := SubpassDescriptionFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassDescriptionFlagBits).free)
+
 	return &v
 }
 
@@ -2291,12 +3988,24 @@ func marshalSubpassDescriptionFlagBits(p uintptr) (interface{}, error) {
 	return wrapSubpassDescriptionFlagBits(c)
 }
 
+func (s *SubpassDescriptionFlagBits) free() {}
+
+// Native returns the pointer to *C.VkSubpassDescriptionFlagBits. The caller is expected to
+// cast.
+func (s *SubpassDescriptionFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SubpassDescriptionFlags struct {
 	native *C.VkSubpassDescriptionFlags
 }
 
 func wrapSubpassDescriptionFlags(p *C.VkSubpassDescriptionFlags) *SubpassDescriptionFlags {
 	v := SubpassDescriptionFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassDescriptionFlags).free)
+
 	return &v
 }
 
@@ -2307,12 +4016,24 @@ func marshalSubpassDescriptionFlags(p uintptr) (interface{}, error) {
 	return wrapSubpassDescriptionFlags(c)
 }
 
+func (s *SubpassDescriptionFlags) free() {}
+
+// Native returns the pointer to *C.VkSubpassDescriptionFlags. The caller is expected to
+// cast.
+func (s *SubpassDescriptionFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type AccessFlagBits struct {
 	native *C.VkAccessFlagBits
 }
 
 func wrapAccessFlagBits(p *C.VkAccessFlagBits) *AccessFlagBits {
 	v := AccessFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AccessFlagBits).free)
+
 	return &v
 }
 
@@ -2323,12 +4044,24 @@ func marshalAccessFlagBits(p uintptr) (interface{}, error) {
 	return wrapAccessFlagBits(c)
 }
 
+func (a *AccessFlagBits) free() {}
+
+// Native returns the pointer to *C.VkAccessFlagBits. The caller is expected to
+// cast.
+func (a *AccessFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type AccessFlags struct {
 	native *C.VkAccessFlags
 }
 
 func wrapAccessFlags(p *C.VkAccessFlags) *AccessFlags {
 	v := AccessFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AccessFlags).free)
+
 	return &v
 }
 
@@ -2339,12 +4072,24 @@ func marshalAccessFlags(p uintptr) (interface{}, error) {
 	return wrapAccessFlags(c)
 }
 
+func (a *AccessFlags) free() {}
+
+// Native returns the pointer to *C.VkAccessFlags. The caller is expected to
+// cast.
+func (a *AccessFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type DependencyFlagBits struct {
 	native *C.VkDependencyFlagBits
 }
 
 func wrapDependencyFlagBits(p *C.VkDependencyFlagBits) *DependencyFlagBits {
 	v := DependencyFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DependencyFlagBits).free)
+
 	return &v
 }
 
@@ -2355,12 +4100,24 @@ func marshalDependencyFlagBits(p uintptr) (interface{}, error) {
 	return wrapDependencyFlagBits(c)
 }
 
+func (d *DependencyFlagBits) free() {}
+
+// Native returns the pointer to *C.VkDependencyFlagBits. The caller is expected to
+// cast.
+func (d *DependencyFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DependencyFlags struct {
 	native *C.VkDependencyFlags
 }
 
 func wrapDependencyFlags(p *C.VkDependencyFlags) *DependencyFlags {
 	v := DependencyFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DependencyFlags).free)
+
 	return &v
 }
 
@@ -2371,12 +4128,24 @@ func marshalDependencyFlags(p uintptr) (interface{}, error) {
 	return wrapDependencyFlags(c)
 }
 
+func (d *DependencyFlags) free() {}
+
+// Native returns the pointer to *C.VkDependencyFlags. The caller is expected to
+// cast.
+func (d *DependencyFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type CommandPoolCreateFlagBits struct {
 	native *C.VkCommandPoolCreateFlagBits
 }
 
 func wrapCommandPoolCreateFlagBits(p *C.VkCommandPoolCreateFlagBits) *CommandPoolCreateFlagBits {
 	v := CommandPoolCreateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandPoolCreateFlagBits).free)
+
 	return &v
 }
 
@@ -2387,12 +4156,24 @@ func marshalCommandPoolCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapCommandPoolCreateFlagBits(c)
 }
 
+func (c *CommandPoolCreateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkCommandPoolCreateFlagBits. The caller is expected to
+// cast.
+func (c *CommandPoolCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CommandPoolCreateFlags struct {
 	native *C.VkCommandPoolCreateFlags
 }
 
 func wrapCommandPoolCreateFlags(p *C.VkCommandPoolCreateFlags) *CommandPoolCreateFlags {
 	v := CommandPoolCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandPoolCreateFlags).free)
+
 	return &v
 }
 
@@ -2403,12 +4184,24 @@ func marshalCommandPoolCreateFlags(p uintptr) (interface{}, error) {
 	return wrapCommandPoolCreateFlags(c)
 }
 
+func (c *CommandPoolCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkCommandPoolCreateFlags. The caller is expected to
+// cast.
+func (c *CommandPoolCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CommandPoolResetFlagBits struct {
 	native *C.VkCommandPoolResetFlagBits
 }
 
 func wrapCommandPoolResetFlagBits(p *C.VkCommandPoolResetFlagBits) *CommandPoolResetFlagBits {
 	v := CommandPoolResetFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandPoolResetFlagBits).free)
+
 	return &v
 }
 
@@ -2419,12 +4212,24 @@ func marshalCommandPoolResetFlagBits(p uintptr) (interface{}, error) {
 	return wrapCommandPoolResetFlagBits(c)
 }
 
+func (c *CommandPoolResetFlagBits) free() {}
+
+// Native returns the pointer to *C.VkCommandPoolResetFlagBits. The caller is expected to
+// cast.
+func (c *CommandPoolResetFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CommandPoolResetFlags struct {
 	native *C.VkCommandPoolResetFlags
 }
 
 func wrapCommandPoolResetFlags(p *C.VkCommandPoolResetFlags) *CommandPoolResetFlags {
 	v := CommandPoolResetFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandPoolResetFlags).free)
+
 	return &v
 }
 
@@ -2435,12 +4240,24 @@ func marshalCommandPoolResetFlags(p uintptr) (interface{}, error) {
 	return wrapCommandPoolResetFlags(c)
 }
 
+func (c *CommandPoolResetFlags) free() {}
+
+// Native returns the pointer to *C.VkCommandPoolResetFlags. The caller is expected to
+// cast.
+func (c *CommandPoolResetFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CommandBufferUsageFlagBits struct {
 	native *C.VkCommandBufferUsageFlagBits
 }
 
 func wrapCommandBufferUsageFlagBits(p *C.VkCommandBufferUsageFlagBits) *CommandBufferUsageFlagBits {
 	v := CommandBufferUsageFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandBufferUsageFlagBits).free)
+
 	return &v
 }
 
@@ -2451,12 +4268,24 @@ func marshalCommandBufferUsageFlagBits(p uintptr) (interface{}, error) {
 	return wrapCommandBufferUsageFlagBits(c)
 }
 
+func (c *CommandBufferUsageFlagBits) free() {}
+
+// Native returns the pointer to *C.VkCommandBufferUsageFlagBits. The caller is expected to
+// cast.
+func (c *CommandBufferUsageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CommandBufferUsageFlags struct {
 	native *C.VkCommandBufferUsageFlags
 }
 
 func wrapCommandBufferUsageFlags(p *C.VkCommandBufferUsageFlags) *CommandBufferUsageFlags {
 	v := CommandBufferUsageFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandBufferUsageFlags).free)
+
 	return &v
 }
 
@@ -2467,12 +4296,24 @@ func marshalCommandBufferUsageFlags(p uintptr) (interface{}, error) {
 	return wrapCommandBufferUsageFlags(c)
 }
 
+func (c *CommandBufferUsageFlags) free() {}
+
+// Native returns the pointer to *C.VkCommandBufferUsageFlags. The caller is expected to
+// cast.
+func (c *CommandBufferUsageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type QueryControlFlagBits struct {
 	native *C.VkQueryControlFlagBits
 }
 
 func wrapQueryControlFlagBits(p *C.VkQueryControlFlagBits) *QueryControlFlagBits {
 	v := QueryControlFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueryControlFlagBits).free)
+
 	return &v
 }
 
@@ -2483,12 +4324,24 @@ func marshalQueryControlFlagBits(p uintptr) (interface{}, error) {
 	return wrapQueryControlFlagBits(c)
 }
 
+func (q *QueryControlFlagBits) free() {}
+
+// Native returns the pointer to *C.VkQueryControlFlagBits. The caller is expected to
+// cast.
+func (q *QueryControlFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type QueryControlFlags struct {
 	native *C.VkQueryControlFlags
 }
 
 func wrapQueryControlFlags(p *C.VkQueryControlFlags) *QueryControlFlags {
 	v := QueryControlFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueryControlFlags).free)
+
 	return &v
 }
 
@@ -2499,12 +4352,24 @@ func marshalQueryControlFlags(p uintptr) (interface{}, error) {
 	return wrapQueryControlFlags(c)
 }
 
+func (q *QueryControlFlags) free() {}
+
+// Native returns the pointer to *C.VkQueryControlFlags. The caller is expected to
+// cast.
+func (q *QueryControlFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type CommandBufferResetFlagBits struct {
 	native *C.VkCommandBufferResetFlagBits
 }
 
 func wrapCommandBufferResetFlagBits(p *C.VkCommandBufferResetFlagBits) *CommandBufferResetFlagBits {
 	v := CommandBufferResetFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandBufferResetFlagBits).free)
+
 	return &v
 }
 
@@ -2515,12 +4380,24 @@ func marshalCommandBufferResetFlagBits(p uintptr) (interface{}, error) {
 	return wrapCommandBufferResetFlagBits(c)
 }
 
+func (c *CommandBufferResetFlagBits) free() {}
+
+// Native returns the pointer to *C.VkCommandBufferResetFlagBits. The caller is expected to
+// cast.
+func (c *CommandBufferResetFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CommandBufferResetFlags struct {
 	native *C.VkCommandBufferResetFlags
 }
 
 func wrapCommandBufferResetFlags(p *C.VkCommandBufferResetFlags) *CommandBufferResetFlags {
 	v := CommandBufferResetFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandBufferResetFlags).free)
+
 	return &v
 }
 
@@ -2531,12 +4408,24 @@ func marshalCommandBufferResetFlags(p uintptr) (interface{}, error) {
 	return wrapCommandBufferResetFlags(c)
 }
 
+func (c *CommandBufferResetFlags) free() {}
+
+// Native returns the pointer to *C.VkCommandBufferResetFlags. The caller is expected to
+// cast.
+func (c *CommandBufferResetFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type StencilFaceFlagBits struct {
 	native *C.VkStencilFaceFlagBits
 }
 
 func wrapStencilFaceFlagBits(p *C.VkStencilFaceFlagBits) *StencilFaceFlagBits {
 	v := StencilFaceFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*StencilFaceFlagBits).free)
+
 	return &v
 }
 
@@ -2547,12 +4436,24 @@ func marshalStencilFaceFlagBits(p uintptr) (interface{}, error) {
 	return wrapStencilFaceFlagBits(c)
 }
 
+func (s *StencilFaceFlagBits) free() {}
+
+// Native returns the pointer to *C.VkStencilFaceFlagBits. The caller is expected to
+// cast.
+func (s *StencilFaceFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type StencilFaceFlags struct {
 	native *C.VkStencilFaceFlags
 }
 
 func wrapStencilFaceFlags(p *C.VkStencilFaceFlags) *StencilFaceFlags {
 	v := StencilFaceFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*StencilFaceFlags).free)
+
 	return &v
 }
 
@@ -2563,12 +4464,24 @@ func marshalStencilFaceFlags(p uintptr) (interface{}, error) {
 	return wrapStencilFaceFlags(c)
 }
 
+func (s *StencilFaceFlags) free() {}
+
+// Native returns the pointer to *C.VkStencilFaceFlags. The caller is expected to
+// cast.
+func (s *StencilFaceFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ApplicationInfo struct {
 	native *C.VkApplicationInfo
 }
 
 func wrapApplicationInfo(p *C.VkApplicationInfo) *ApplicationInfo {
 	v := ApplicationInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ApplicationInfo).free)
+
 	return &v
 }
 
@@ -2579,12 +4492,24 @@ func marshalApplicationInfo(p uintptr) (interface{}, error) {
 	return wrapApplicationInfo(c)
 }
 
+func (a *ApplicationInfo) free() {}
+
+// Native returns the pointer to *C.VkApplicationInfo. The caller is expected to
+// cast.
+func (a *ApplicationInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type InstanceCreateInfo struct {
 	native *C.VkInstanceCreateInfo
 }
 
 func wrapInstanceCreateInfo(p *C.VkInstanceCreateInfo) *InstanceCreateInfo {
 	v := InstanceCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*InstanceCreateInfo).free)
+
 	return &v
 }
 
@@ -2595,12 +4520,24 @@ func marshalInstanceCreateInfo(p uintptr) (interface{}, error) {
 	return wrapInstanceCreateInfo(c)
 }
 
+func (i *InstanceCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkInstanceCreateInfo. The caller is expected to
+// cast.
+func (i *InstanceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type AllocationCallbacks struct {
 	native *C.VkAllocationCallbacks
 }
 
 func wrapAllocationCallbacks(p *C.VkAllocationCallbacks) *AllocationCallbacks {
 	v := AllocationCallbacks{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AllocationCallbacks).free)
+
 	return &v
 }
 
@@ -2611,12 +4548,24 @@ func marshalAllocationCallbacks(p uintptr) (interface{}, error) {
 	return wrapAllocationCallbacks(c)
 }
 
+func (a *AllocationCallbacks) free() {}
+
+// Native returns the pointer to *C.VkAllocationCallbacks. The caller is expected to
+// cast.
+func (a *AllocationCallbacks) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type PhysicalDeviceFeatures struct {
 	native *C.VkPhysicalDeviceFeatures
 }
 
 func wrapPhysicalDeviceFeatures(p *C.VkPhysicalDeviceFeatures) *PhysicalDeviceFeatures {
 	v := PhysicalDeviceFeatures{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceFeatures).free)
+
 	return &v
 }
 
@@ -2627,12 +4576,24 @@ func marshalPhysicalDeviceFeatures(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceFeatures(c)
 }
 
+func (p *PhysicalDeviceFeatures) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceFeatures. The caller is expected to
+// cast.
+func (p *PhysicalDeviceFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type FormatProperties struct {
 	native *C.VkFormatProperties
 }
 
 func wrapFormatProperties(p *C.VkFormatProperties) *FormatProperties {
 	v := FormatProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FormatProperties).free)
+
 	return &v
 }
 
@@ -2643,12 +4604,24 @@ func marshalFormatProperties(p uintptr) (interface{}, error) {
 	return wrapFormatProperties(c)
 }
 
+func (f *FormatProperties) free() {}
+
+// Native returns the pointer to *C.VkFormatProperties. The caller is expected to
+// cast.
+func (f *FormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type Extent3D struct {
 	native *C.VkExtent3D
 }
 
 func wrapExtent3D(p *C.VkExtent3D) *Extent3D {
 	v := Extent3D{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Extent3D).free)
+
 	return &v
 }
 
@@ -2659,12 +4632,24 @@ func marshalExtent3D(p uintptr) (interface{}, error) {
 	return wrapExtent3D(c)
 }
 
+func (e *Extent3D) free() {}
+
+// Native returns the pointer to *C.VkExtent3D. The caller is expected to
+// cast.
+func (e *Extent3D) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ImageFormatProperties struct {
 	native *C.VkImageFormatProperties
 }
 
 func wrapImageFormatProperties(p *C.VkImageFormatProperties) *ImageFormatProperties {
 	v := ImageFormatProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageFormatProperties).free)
+
 	return &v
 }
 
@@ -2675,12 +4660,24 @@ func marshalImageFormatProperties(p uintptr) (interface{}, error) {
 	return wrapImageFormatProperties(c)
 }
 
+func (i *ImageFormatProperties) free() {}
+
+// Native returns the pointer to *C.VkImageFormatProperties. The caller is expected to
+// cast.
+func (i *ImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type PhysicalDeviceLimits struct {
 	native *C.VkPhysicalDeviceLimits
 }
 
 func wrapPhysicalDeviceLimits(p *C.VkPhysicalDeviceLimits) *PhysicalDeviceLimits {
 	v := PhysicalDeviceLimits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceLimits).free)
+
 	return &v
 }
 
@@ -2691,12 +4688,24 @@ func marshalPhysicalDeviceLimits(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceLimits(c)
 }
 
+func (p *PhysicalDeviceLimits) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceLimits. The caller is expected to
+// cast.
+func (p *PhysicalDeviceLimits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceSparseProperties struct {
 	native *C.VkPhysicalDeviceSparseProperties
 }
 
 func wrapPhysicalDeviceSparseProperties(p *C.VkPhysicalDeviceSparseProperties) *PhysicalDeviceSparseProperties {
 	v := PhysicalDeviceSparseProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceSparseProperties).free)
+
 	return &v
 }
 
@@ -2707,12 +4716,24 @@ func marshalPhysicalDeviceSparseProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceSparseProperties(c)
 }
 
+func (p *PhysicalDeviceSparseProperties) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceSparseProperties. The caller is expected to
+// cast.
+func (p *PhysicalDeviceSparseProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceProperties struct {
 	native *C.VkPhysicalDeviceProperties
 }
 
 func wrapPhysicalDeviceProperties(p *C.VkPhysicalDeviceProperties) *PhysicalDeviceProperties {
 	v := PhysicalDeviceProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceProperties).free)
+
 	return &v
 }
 
@@ -2723,12 +4744,24 @@ func marshalPhysicalDeviceProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceProperties(c)
 }
 
+func (p *PhysicalDeviceProperties) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceProperties. The caller is expected to
+// cast.
+func (p *PhysicalDeviceProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type QueueFamilyProperties struct {
 	native *C.VkQueueFamilyProperties
 }
 
 func wrapQueueFamilyProperties(p *C.VkQueueFamilyProperties) *QueueFamilyProperties {
 	v := QueueFamilyProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueueFamilyProperties).free)
+
 	return &v
 }
 
@@ -2739,12 +4772,24 @@ func marshalQueueFamilyProperties(p uintptr) (interface{}, error) {
 	return wrapQueueFamilyProperties(c)
 }
 
+func (q *QueueFamilyProperties) free() {}
+
+// Native returns the pointer to *C.VkQueueFamilyProperties. The caller is expected to
+// cast.
+func (q *QueueFamilyProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type MemoryType struct {
 	native *C.VkMemoryType
 }
 
 func wrapMemoryType(p *C.VkMemoryType) *MemoryType {
 	v := MemoryType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryType).free)
+
 	return &v
 }
 
@@ -2755,12 +4800,24 @@ func marshalMemoryType(p uintptr) (interface{}, error) {
 	return wrapMemoryType(c)
 }
 
+func (m *MemoryType) free() {}
+
+// Native returns the pointer to *C.VkMemoryType. The caller is expected to
+// cast.
+func (m *MemoryType) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryHeap struct {
 	native *C.VkMemoryHeap
 }
 
 func wrapMemoryHeap(p *C.VkMemoryHeap) *MemoryHeap {
 	v := MemoryHeap{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryHeap).free)
+
 	return &v
 }
 
@@ -2771,12 +4828,24 @@ func marshalMemoryHeap(p uintptr) (interface{}, error) {
 	return wrapMemoryHeap(c)
 }
 
+func (m *MemoryHeap) free() {}
+
+// Native returns the pointer to *C.VkMemoryHeap. The caller is expected to
+// cast.
+func (m *MemoryHeap) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type PhysicalDeviceMemoryProperties struct {
 	native *C.VkPhysicalDeviceMemoryProperties
 }
 
 func wrapPhysicalDeviceMemoryProperties(p *C.VkPhysicalDeviceMemoryProperties) *PhysicalDeviceMemoryProperties {
 	v := PhysicalDeviceMemoryProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMemoryProperties).free)
+
 	return &v
 }
 
@@ -2787,12 +4856,24 @@ func marshalPhysicalDeviceMemoryProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMemoryProperties(c)
 }
 
+func (p *PhysicalDeviceMemoryProperties) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMemoryProperties. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMemoryProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DeviceQueueCreateInfo struct {
 	native *C.VkDeviceQueueCreateInfo
 }
 
 func wrapDeviceQueueCreateInfo(p *C.VkDeviceQueueCreateInfo) *DeviceQueueCreateInfo {
 	v := DeviceQueueCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceQueueCreateInfo).free)
+
 	return &v
 }
 
@@ -2803,12 +4884,24 @@ func marshalDeviceQueueCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceQueueCreateInfo(c)
 }
 
+func (d *DeviceQueueCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkDeviceQueueCreateInfo. The caller is expected to
+// cast.
+func (d *DeviceQueueCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceCreateInfo struct {
 	native *C.VkDeviceCreateInfo
 }
 
 func wrapDeviceCreateInfo(p *C.VkDeviceCreateInfo) *DeviceCreateInfo {
 	v := DeviceCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceCreateInfo).free)
+
 	return &v
 }
 
@@ -2819,12 +4912,24 @@ func marshalDeviceCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceCreateInfo(c)
 }
 
+func (d *DeviceCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkDeviceCreateInfo. The caller is expected to
+// cast.
+func (d *DeviceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type ExtensionProperties struct {
 	native *C.VkExtensionProperties
 }
 
 func wrapExtensionProperties(p *C.VkExtensionProperties) *ExtensionProperties {
 	v := ExtensionProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExtensionProperties).free)
+
 	return &v
 }
 
@@ -2835,12 +4940,24 @@ func marshalExtensionProperties(p uintptr) (interface{}, error) {
 	return wrapExtensionProperties(c)
 }
 
+func (e *ExtensionProperties) free() {}
+
+// Native returns the pointer to *C.VkExtensionProperties. The caller is expected to
+// cast.
+func (e *ExtensionProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type LayerProperties struct {
 	native *C.VkLayerProperties
 }
 
 func wrapLayerProperties(p *C.VkLayerProperties) *LayerProperties {
 	v := LayerProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*LayerProperties).free)
+
 	return &v
 }
 
@@ -2851,12 +4968,24 @@ func marshalLayerProperties(p uintptr) (interface{}, error) {
 	return wrapLayerProperties(c)
 }
 
+func (l *LayerProperties) free() {}
+
+// Native returns the pointer to *C.VkLayerProperties. The caller is expected to
+// cast.
+func (l *LayerProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
+}
+
 type SubmitInfo struct {
 	native *C.VkSubmitInfo
 }
 
 func wrapSubmitInfo(p *C.VkSubmitInfo) *SubmitInfo {
 	v := SubmitInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubmitInfo).free)
+
 	return &v
 }
 
@@ -2867,12 +4996,24 @@ func marshalSubmitInfo(p uintptr) (interface{}, error) {
 	return wrapSubmitInfo(c)
 }
 
+func (s *SubmitInfo) free() {}
+
+// Native returns the pointer to *C.VkSubmitInfo. The caller is expected to
+// cast.
+func (s *SubmitInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type MemoryAllocateInfo struct {
 	native *C.VkMemoryAllocateInfo
 }
 
 func wrapMemoryAllocateInfo(p *C.VkMemoryAllocateInfo) *MemoryAllocateInfo {
 	v := MemoryAllocateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryAllocateInfo).free)
+
 	return &v
 }
 
@@ -2883,12 +5024,24 @@ func marshalMemoryAllocateInfo(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateInfo(c)
 }
 
+func (m *MemoryAllocateInfo) free() {}
+
+// Native returns the pointer to *C.VkMemoryAllocateInfo. The caller is expected to
+// cast.
+func (m *MemoryAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MappedMemoryRange struct {
 	native *C.VkMappedMemoryRange
 }
 
 func wrapMappedMemoryRange(p *C.VkMappedMemoryRange) *MappedMemoryRange {
 	v := MappedMemoryRange{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MappedMemoryRange).free)
+
 	return &v
 }
 
@@ -2899,12 +5052,24 @@ func marshalMappedMemoryRange(p uintptr) (interface{}, error) {
 	return wrapMappedMemoryRange(c)
 }
 
+func (m *MappedMemoryRange) free() {}
+
+// Native returns the pointer to *C.VkMappedMemoryRange. The caller is expected to
+// cast.
+func (m *MappedMemoryRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryRequirements struct {
 	native *C.VkMemoryRequirements
 }
 
 func wrapMemoryRequirements(p *C.VkMemoryRequirements) *MemoryRequirements {
 	v := MemoryRequirements{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryRequirements).free)
+
 	return &v
 }
 
@@ -2915,12 +5080,24 @@ func marshalMemoryRequirements(p uintptr) (interface{}, error) {
 	return wrapMemoryRequirements(c)
 }
 
+func (m *MemoryRequirements) free() {}
+
+// Native returns the pointer to *C.VkMemoryRequirements. The caller is expected to
+// cast.
+func (m *MemoryRequirements) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type SparseImageFormatProperties struct {
 	native *C.VkSparseImageFormatProperties
 }
 
 func wrapSparseImageFormatProperties(p *C.VkSparseImageFormatProperties) *SparseImageFormatProperties {
 	v := SparseImageFormatProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageFormatProperties).free)
+
 	return &v
 }
 
@@ -2931,12 +5108,24 @@ func marshalSparseImageFormatProperties(p uintptr) (interface{}, error) {
 	return wrapSparseImageFormatProperties(c)
 }
 
+func (s *SparseImageFormatProperties) free() {}
+
+// Native returns the pointer to *C.VkSparseImageFormatProperties. The caller is expected to
+// cast.
+func (s *SparseImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SparseImageMemoryRequirements struct {
 	native *C.VkSparseImageMemoryRequirements
 }
 
 func wrapSparseImageMemoryRequirements(p *C.VkSparseImageMemoryRequirements) *SparseImageMemoryRequirements {
 	v := SparseImageMemoryRequirements{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageMemoryRequirements).free)
+
 	return &v
 }
 
@@ -2947,12 +5136,24 @@ func marshalSparseImageMemoryRequirements(p uintptr) (interface{}, error) {
 	return wrapSparseImageMemoryRequirements(c)
 }
 
+func (s *SparseImageMemoryRequirements) free() {}
+
+// Native returns the pointer to *C.VkSparseImageMemoryRequirements. The caller is expected to
+// cast.
+func (s *SparseImageMemoryRequirements) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SparseMemoryBind struct {
 	native *C.VkSparseMemoryBind
 }
 
 func wrapSparseMemoryBind(p *C.VkSparseMemoryBind) *SparseMemoryBind {
 	v := SparseMemoryBind{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseMemoryBind).free)
+
 	return &v
 }
 
@@ -2963,12 +5164,24 @@ func marshalSparseMemoryBind(p uintptr) (interface{}, error) {
 	return wrapSparseMemoryBind(c)
 }
 
+func (s *SparseMemoryBind) free() {}
+
+// Native returns the pointer to *C.VkSparseMemoryBind. The caller is expected to
+// cast.
+func (s *SparseMemoryBind) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SparseBufferMemoryBindInfo struct {
 	native *C.VkSparseBufferMemoryBindInfo
 }
 
 func wrapSparseBufferMemoryBindInfo(p *C.VkSparseBufferMemoryBindInfo) *SparseBufferMemoryBindInfo {
 	v := SparseBufferMemoryBindInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseBufferMemoryBindInfo).free)
+
 	return &v
 }
 
@@ -2979,12 +5192,24 @@ func marshalSparseBufferMemoryBindInfo(p uintptr) (interface{}, error) {
 	return wrapSparseBufferMemoryBindInfo(c)
 }
 
+func (s *SparseBufferMemoryBindInfo) free() {}
+
+// Native returns the pointer to *C.VkSparseBufferMemoryBindInfo. The caller is expected to
+// cast.
+func (s *SparseBufferMemoryBindInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SparseImageOpaqueMemoryBindInfo struct {
 	native *C.VkSparseImageOpaqueMemoryBindInfo
 }
 
 func wrapSparseImageOpaqueMemoryBindInfo(p *C.VkSparseImageOpaqueMemoryBindInfo) *SparseImageOpaqueMemoryBindInfo {
 	v := SparseImageOpaqueMemoryBindInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageOpaqueMemoryBindInfo).free)
+
 	return &v
 }
 
@@ -2995,12 +5220,24 @@ func marshalSparseImageOpaqueMemoryBindInfo(p uintptr) (interface{}, error) {
 	return wrapSparseImageOpaqueMemoryBindInfo(c)
 }
 
+func (s *SparseImageOpaqueMemoryBindInfo) free() {}
+
+// Native returns the pointer to *C.VkSparseImageOpaqueMemoryBindInfo. The caller is expected to
+// cast.
+func (s *SparseImageOpaqueMemoryBindInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ImageSubresource struct {
 	native *C.VkImageSubresource
 }
 
 func wrapImageSubresource(p *C.VkImageSubresource) *ImageSubresource {
 	v := ImageSubresource{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageSubresource).free)
+
 	return &v
 }
 
@@ -3011,12 +5248,24 @@ func marshalImageSubresource(p uintptr) (interface{}, error) {
 	return wrapImageSubresource(c)
 }
 
+func (i *ImageSubresource) free() {}
+
+// Native returns the pointer to *C.VkImageSubresource. The caller is expected to
+// cast.
+func (i *ImageSubresource) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type Offset3D struct {
 	native *C.VkOffset3D
 }
 
 func wrapOffset3D(p *C.VkOffset3D) *Offset3D {
 	v := Offset3D{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Offset3D).free)
+
 	return &v
 }
 
@@ -3027,12 +5276,24 @@ func marshalOffset3D(p uintptr) (interface{}, error) {
 	return wrapOffset3D(c)
 }
 
+func (o *Offset3D) free() {}
+
+// Native returns the pointer to *C.VkOffset3D. The caller is expected to
+// cast.
+func (o *Offset3D) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type SparseImageMemoryBind struct {
 	native *C.VkSparseImageMemoryBind
 }
 
 func wrapSparseImageMemoryBind(p *C.VkSparseImageMemoryBind) *SparseImageMemoryBind {
 	v := SparseImageMemoryBind{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageMemoryBind).free)
+
 	return &v
 }
 
@@ -3043,12 +5304,24 @@ func marshalSparseImageMemoryBind(p uintptr) (interface{}, error) {
 	return wrapSparseImageMemoryBind(c)
 }
 
+func (s *SparseImageMemoryBind) free() {}
+
+// Native returns the pointer to *C.VkSparseImageMemoryBind. The caller is expected to
+// cast.
+func (s *SparseImageMemoryBind) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SparseImageMemoryBindInfo struct {
 	native *C.VkSparseImageMemoryBindInfo
 }
 
 func wrapSparseImageMemoryBindInfo(p *C.VkSparseImageMemoryBindInfo) *SparseImageMemoryBindInfo {
 	v := SparseImageMemoryBindInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageMemoryBindInfo).free)
+
 	return &v
 }
 
@@ -3059,12 +5332,24 @@ func marshalSparseImageMemoryBindInfo(p uintptr) (interface{}, error) {
 	return wrapSparseImageMemoryBindInfo(c)
 }
 
+func (s *SparseImageMemoryBindInfo) free() {}
+
+// Native returns the pointer to *C.VkSparseImageMemoryBindInfo. The caller is expected to
+// cast.
+func (s *SparseImageMemoryBindInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type BindSparseInfo struct {
 	native *C.VkBindSparseInfo
 }
 
 func wrapBindSparseInfo(p *C.VkBindSparseInfo) *BindSparseInfo {
 	v := BindSparseInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindSparseInfo).free)
+
 	return &v
 }
 
@@ -3075,12 +5360,24 @@ func marshalBindSparseInfo(p uintptr) (interface{}, error) {
 	return wrapBindSparseInfo(c)
 }
 
+func (b *BindSparseInfo) free() {}
+
+// Native returns the pointer to *C.VkBindSparseInfo. The caller is expected to
+// cast.
+func (b *BindSparseInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type FenceCreateInfo struct {
 	native *C.VkFenceCreateInfo
 }
 
 func wrapFenceCreateInfo(p *C.VkFenceCreateInfo) *FenceCreateInfo {
 	v := FenceCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FenceCreateInfo).free)
+
 	return &v
 }
 
@@ -3091,12 +5388,24 @@ func marshalFenceCreateInfo(p uintptr) (interface{}, error) {
 	return wrapFenceCreateInfo(c)
 }
 
+func (f *FenceCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkFenceCreateInfo. The caller is expected to
+// cast.
+func (f *FenceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type SemaphoreCreateInfo struct {
 	native *C.VkSemaphoreCreateInfo
 }
 
 func wrapSemaphoreCreateInfo(p *C.VkSemaphoreCreateInfo) *SemaphoreCreateInfo {
 	v := SemaphoreCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SemaphoreCreateInfo).free)
+
 	return &v
 }
 
@@ -3107,12 +5416,24 @@ func marshalSemaphoreCreateInfo(p uintptr) (interface{}, error) {
 	return wrapSemaphoreCreateInfo(c)
 }
 
+func (s *SemaphoreCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkSemaphoreCreateInfo. The caller is expected to
+// cast.
+func (s *SemaphoreCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type EventCreateInfo struct {
 	native *C.VkEventCreateInfo
 }
 
 func wrapEventCreateInfo(p *C.VkEventCreateInfo) *EventCreateInfo {
 	v := EventCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*EventCreateInfo).free)
+
 	return &v
 }
 
@@ -3123,12 +5444,24 @@ func marshalEventCreateInfo(p uintptr) (interface{}, error) {
 	return wrapEventCreateInfo(c)
 }
 
+func (e *EventCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkEventCreateInfo. The caller is expected to
+// cast.
+func (e *EventCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type QueryPoolCreateInfo struct {
 	native *C.VkQueryPoolCreateInfo
 }
 
 func wrapQueryPoolCreateInfo(p *C.VkQueryPoolCreateInfo) *QueryPoolCreateInfo {
 	v := QueryPoolCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueryPoolCreateInfo).free)
+
 	return &v
 }
 
@@ -3139,12 +5472,24 @@ func marshalQueryPoolCreateInfo(p uintptr) (interface{}, error) {
 	return wrapQueryPoolCreateInfo(c)
 }
 
+func (q *QueryPoolCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkQueryPoolCreateInfo. The caller is expected to
+// cast.
+func (q *QueryPoolCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type BufferCreateInfo struct {
 	native *C.VkBufferCreateInfo
 }
 
 func wrapBufferCreateInfo(p *C.VkBufferCreateInfo) *BufferCreateInfo {
 	v := BufferCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferCreateInfo).free)
+
 	return &v
 }
 
@@ -3155,12 +5500,24 @@ func marshalBufferCreateInfo(p uintptr) (interface{}, error) {
 	return wrapBufferCreateInfo(c)
 }
 
+func (b *BufferCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkBufferCreateInfo. The caller is expected to
+// cast.
+func (b *BufferCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BufferViewCreateInfo struct {
 	native *C.VkBufferViewCreateInfo
 }
 
 func wrapBufferViewCreateInfo(p *C.VkBufferViewCreateInfo) *BufferViewCreateInfo {
 	v := BufferViewCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferViewCreateInfo).free)
+
 	return &v
 }
 
@@ -3171,12 +5528,24 @@ func marshalBufferViewCreateInfo(p uintptr) (interface{}, error) {
 	return wrapBufferViewCreateInfo(c)
 }
 
+func (b *BufferViewCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkBufferViewCreateInfo. The caller is expected to
+// cast.
+func (b *BufferViewCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ImageCreateInfo struct {
 	native *C.VkImageCreateInfo
 }
 
 func wrapImageCreateInfo(p *C.VkImageCreateInfo) *ImageCreateInfo {
 	v := ImageCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageCreateInfo).free)
+
 	return &v
 }
 
@@ -3187,12 +5556,24 @@ func marshalImageCreateInfo(p uintptr) (interface{}, error) {
 	return wrapImageCreateInfo(c)
 }
 
+func (i *ImageCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkImageCreateInfo. The caller is expected to
+// cast.
+func (i *ImageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type SubresourceLayout struct {
 	native *C.VkSubresourceLayout
 }
 
 func wrapSubresourceLayout(p *C.VkSubresourceLayout) *SubresourceLayout {
 	v := SubresourceLayout{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubresourceLayout).free)
+
 	return &v
 }
 
@@ -3203,12 +5584,24 @@ func marshalSubresourceLayout(p uintptr) (interface{}, error) {
 	return wrapSubresourceLayout(c)
 }
 
+func (s *SubresourceLayout) free() {}
+
+// Native returns the pointer to *C.VkSubresourceLayout. The caller is expected to
+// cast.
+func (s *SubresourceLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ComponentMapping struct {
 	native *C.VkComponentMapping
 }
 
 func wrapComponentMapping(p *C.VkComponentMapping) *ComponentMapping {
 	v := ComponentMapping{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ComponentMapping).free)
+
 	return &v
 }
 
@@ -3219,12 +5612,24 @@ func marshalComponentMapping(p uintptr) (interface{}, error) {
 	return wrapComponentMapping(c)
 }
 
+func (c *ComponentMapping) free() {}
+
+// Native returns the pointer to *C.VkComponentMapping. The caller is expected to
+// cast.
+func (c *ComponentMapping) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ImageSubresourceRange struct {
 	native *C.VkImageSubresourceRange
 }
 
 func wrapImageSubresourceRange(p *C.VkImageSubresourceRange) *ImageSubresourceRange {
 	v := ImageSubresourceRange{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageSubresourceRange).free)
+
 	return &v
 }
 
@@ -3235,12 +5640,24 @@ func marshalImageSubresourceRange(p uintptr) (interface{}, error) {
 	return wrapImageSubresourceRange(c)
 }
 
+func (i *ImageSubresourceRange) free() {}
+
+// Native returns the pointer to *C.VkImageSubresourceRange. The caller is expected to
+// cast.
+func (i *ImageSubresourceRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageViewCreateInfo struct {
 	native *C.VkImageViewCreateInfo
 }
 
 func wrapImageViewCreateInfo(p *C.VkImageViewCreateInfo) *ImageViewCreateInfo {
 	v := ImageViewCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageViewCreateInfo).free)
+
 	return &v
 }
 
@@ -3251,12 +5668,24 @@ func marshalImageViewCreateInfo(p uintptr) (interface{}, error) {
 	return wrapImageViewCreateInfo(c)
 }
 
+func (i *ImageViewCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkImageViewCreateInfo. The caller is expected to
+// cast.
+func (i *ImageViewCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ShaderModuleCreateInfo struct {
 	native *C.VkShaderModuleCreateInfo
 }
 
 func wrapShaderModuleCreateInfo(p *C.VkShaderModuleCreateInfo) *ShaderModuleCreateInfo {
 	v := ShaderModuleCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShaderModuleCreateInfo).free)
+
 	return &v
 }
 
@@ -3267,12 +5696,24 @@ func marshalShaderModuleCreateInfo(p uintptr) (interface{}, error) {
 	return wrapShaderModuleCreateInfo(c)
 }
 
+func (s *ShaderModuleCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkShaderModuleCreateInfo. The caller is expected to
+// cast.
+func (s *ShaderModuleCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PipelineCacheCreateInfo struct {
 	native *C.VkPipelineCacheCreateInfo
 }
 
 func wrapPipelineCacheCreateInfo(p *C.VkPipelineCacheCreateInfo) *PipelineCacheCreateInfo {
 	v := PipelineCacheCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCacheCreateInfo).free)
+
 	return &v
 }
 
@@ -3283,12 +5724,24 @@ func marshalPipelineCacheCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineCacheCreateInfo(c)
 }
 
+func (p *PipelineCacheCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineCacheCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineCacheCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SpecializationMapEntry struct {
 	native *C.VkSpecializationMapEntry
 }
 
 func wrapSpecializationMapEntry(p *C.VkSpecializationMapEntry) *SpecializationMapEntry {
 	v := SpecializationMapEntry{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SpecializationMapEntry).free)
+
 	return &v
 }
 
@@ -3299,12 +5752,24 @@ func marshalSpecializationMapEntry(p uintptr) (interface{}, error) {
 	return wrapSpecializationMapEntry(c)
 }
 
+func (s *SpecializationMapEntry) free() {}
+
+// Native returns the pointer to *C.VkSpecializationMapEntry. The caller is expected to
+// cast.
+func (s *SpecializationMapEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SpecializationInfo struct {
 	native *C.VkSpecializationInfo
 }
 
 func wrapSpecializationInfo(p *C.VkSpecializationInfo) *SpecializationInfo {
 	v := SpecializationInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SpecializationInfo).free)
+
 	return &v
 }
 
@@ -3315,12 +5780,24 @@ func marshalSpecializationInfo(p uintptr) (interface{}, error) {
 	return wrapSpecializationInfo(c)
 }
 
+func (s *SpecializationInfo) free() {}
+
+// Native returns the pointer to *C.VkSpecializationInfo. The caller is expected to
+// cast.
+func (s *SpecializationInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PipelineShaderStageCreateInfo struct {
 	native *C.VkPipelineShaderStageCreateInfo
 }
 
 func wrapPipelineShaderStageCreateInfo(p *C.VkPipelineShaderStageCreateInfo) *PipelineShaderStageCreateInfo {
 	v := PipelineShaderStageCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineShaderStageCreateInfo).free)
+
 	return &v
 }
 
@@ -3331,12 +5808,24 @@ func marshalPipelineShaderStageCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineShaderStageCreateInfo(c)
 }
 
+func (p *PipelineShaderStageCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineShaderStageCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineShaderStageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type VertexInputBindingDescription struct {
 	native *C.VkVertexInputBindingDescription
 }
 
 func wrapVertexInputBindingDescription(p *C.VkVertexInputBindingDescription) *VertexInputBindingDescription {
 	v := VertexInputBindingDescription{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*VertexInputBindingDescription).free)
+
 	return &v
 }
 
@@ -3347,12 +5836,24 @@ func marshalVertexInputBindingDescription(p uintptr) (interface{}, error) {
 	return wrapVertexInputBindingDescription(c)
 }
 
+func (v *VertexInputBindingDescription) free() {}
+
+// Native returns the pointer to *C.VkVertexInputBindingDescription. The caller is expected to
+// cast.
+func (v *VertexInputBindingDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type VertexInputAttributeDescription struct {
 	native *C.VkVertexInputAttributeDescription
 }
 
 func wrapVertexInputAttributeDescription(p *C.VkVertexInputAttributeDescription) *VertexInputAttributeDescription {
 	v := VertexInputAttributeDescription{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*VertexInputAttributeDescription).free)
+
 	return &v
 }
 
@@ -3363,12 +5864,24 @@ func marshalVertexInputAttributeDescription(p uintptr) (interface{}, error) {
 	return wrapVertexInputAttributeDescription(c)
 }
 
+func (v *VertexInputAttributeDescription) free() {}
+
+// Native returns the pointer to *C.VkVertexInputAttributeDescription. The caller is expected to
+// cast.
+func (v *VertexInputAttributeDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type PipelineVertexInputStateCreateInfo struct {
 	native *C.VkPipelineVertexInputStateCreateInfo
 }
 
 func wrapPipelineVertexInputStateCreateInfo(p *C.VkPipelineVertexInputStateCreateInfo) *PipelineVertexInputStateCreateInfo {
 	v := PipelineVertexInputStateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineVertexInputStateCreateInfo).free)
+
 	return &v
 }
 
@@ -3379,12 +5892,24 @@ func marshalPipelineVertexInputStateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineVertexInputStateCreateInfo(c)
 }
 
+func (p *PipelineVertexInputStateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineVertexInputStateCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineVertexInputStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineInputAssemblyStateCreateInfo struct {
 	native *C.VkPipelineInputAssemblyStateCreateInfo
 }
 
 func wrapPipelineInputAssemblyStateCreateInfo(p *C.VkPipelineInputAssemblyStateCreateInfo) *PipelineInputAssemblyStateCreateInfo {
 	v := PipelineInputAssemblyStateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineInputAssemblyStateCreateInfo).free)
+
 	return &v
 }
 
@@ -3395,12 +5920,24 @@ func marshalPipelineInputAssemblyStateCreateInfo(p uintptr) (interface{}, error)
 	return wrapPipelineInputAssemblyStateCreateInfo(c)
 }
 
+func (p *PipelineInputAssemblyStateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineInputAssemblyStateCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineInputAssemblyStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineTessellationStateCreateInfo struct {
 	native *C.VkPipelineTessellationStateCreateInfo
 }
 
 func wrapPipelineTessellationStateCreateInfo(p *C.VkPipelineTessellationStateCreateInfo) *PipelineTessellationStateCreateInfo {
 	v := PipelineTessellationStateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineTessellationStateCreateInfo).free)
+
 	return &v
 }
 
@@ -3411,12 +5948,24 @@ func marshalPipelineTessellationStateCreateInfo(p uintptr) (interface{}, error) 
 	return wrapPipelineTessellationStateCreateInfo(c)
 }
 
+func (p *PipelineTessellationStateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineTessellationStateCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineTessellationStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type Viewport struct {
 	native *C.VkViewport
 }
 
 func wrapViewport(p *C.VkViewport) *Viewport {
 	v := Viewport{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Viewport).free)
+
 	return &v
 }
 
@@ -3427,12 +5976,24 @@ func marshalViewport(p uintptr) (interface{}, error) {
 	return wrapViewport(c)
 }
 
+func (v *Viewport) free() {}
+
+// Native returns the pointer to *C.VkViewport. The caller is expected to
+// cast.
+func (v *Viewport) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type Offset2D struct {
 	native *C.VkOffset2D
 }
 
 func wrapOffset2D(p *C.VkOffset2D) *Offset2D {
 	v := Offset2D{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Offset2D).free)
+
 	return &v
 }
 
@@ -3443,12 +6004,24 @@ func marshalOffset2D(p uintptr) (interface{}, error) {
 	return wrapOffset2D(c)
 }
 
+func (o *Offset2D) free() {}
+
+// Native returns the pointer to *C.VkOffset2D. The caller is expected to
+// cast.
+func (o *Offset2D) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type Extent2D struct {
 	native *C.VkExtent2D
 }
 
 func wrapExtent2D(p *C.VkExtent2D) *Extent2D {
 	v := Extent2D{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Extent2D).free)
+
 	return &v
 }
 
@@ -3459,12 +6032,24 @@ func marshalExtent2D(p uintptr) (interface{}, error) {
 	return wrapExtent2D(c)
 }
 
+func (e *Extent2D) free() {}
+
+// Native returns the pointer to *C.VkExtent2D. The caller is expected to
+// cast.
+func (e *Extent2D) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type Rect2D struct {
 	native *C.VkRect2D
 }
 
 func wrapRect2D(p *C.VkRect2D) *Rect2D {
 	v := Rect2D{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Rect2D).free)
+
 	return &v
 }
 
@@ -3475,12 +6060,24 @@ func marshalRect2D(p uintptr) (interface{}, error) {
 	return wrapRect2D(c)
 }
 
+func (r *Rect2D) free() {}
+
+// Native returns the pointer to *C.VkRect2D. The caller is expected to
+// cast.
+func (r *Rect2D) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type PipelineViewportStateCreateInfo struct {
 	native *C.VkPipelineViewportStateCreateInfo
 }
 
 func wrapPipelineViewportStateCreateInfo(p *C.VkPipelineViewportStateCreateInfo) *PipelineViewportStateCreateInfo {
 	v := PipelineViewportStateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineViewportStateCreateInfo).free)
+
 	return &v
 }
 
@@ -3491,12 +6088,24 @@ func marshalPipelineViewportStateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineViewportStateCreateInfo(c)
 }
 
+func (p *PipelineViewportStateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineViewportStateCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineViewportStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineRasterizationStateCreateInfo struct {
 	native *C.VkPipelineRasterizationStateCreateInfo
 }
 
 func wrapPipelineRasterizationStateCreateInfo(p *C.VkPipelineRasterizationStateCreateInfo) *PipelineRasterizationStateCreateInfo {
 	v := PipelineRasterizationStateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineRasterizationStateCreateInfo).free)
+
 	return &v
 }
 
@@ -3507,12 +6116,24 @@ func marshalPipelineRasterizationStateCreateInfo(p uintptr) (interface{}, error)
 	return wrapPipelineRasterizationStateCreateInfo(c)
 }
 
+func (p *PipelineRasterizationStateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineRasterizationStateCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineRasterizationStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineMultisampleStateCreateInfo struct {
 	native *C.VkPipelineMultisampleStateCreateInfo
 }
 
 func wrapPipelineMultisampleStateCreateInfo(p *C.VkPipelineMultisampleStateCreateInfo) *PipelineMultisampleStateCreateInfo {
 	v := PipelineMultisampleStateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineMultisampleStateCreateInfo).free)
+
 	return &v
 }
 
@@ -3523,12 +6144,24 @@ func marshalPipelineMultisampleStateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineMultisampleStateCreateInfo(c)
 }
 
+func (p *PipelineMultisampleStateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineMultisampleStateCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineMultisampleStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type StencilOpState struct {
 	native *C.VkStencilOpState
 }
 
 func wrapStencilOpState(p *C.VkStencilOpState) *StencilOpState {
 	v := StencilOpState{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*StencilOpState).free)
+
 	return &v
 }
 
@@ -3539,12 +6172,24 @@ func marshalStencilOpState(p uintptr) (interface{}, error) {
 	return wrapStencilOpState(c)
 }
 
+func (s *StencilOpState) free() {}
+
+// Native returns the pointer to *C.VkStencilOpState. The caller is expected to
+// cast.
+func (s *StencilOpState) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PipelineDepthStencilStateCreateInfo struct {
 	native *C.VkPipelineDepthStencilStateCreateInfo
 }
 
 func wrapPipelineDepthStencilStateCreateInfo(p *C.VkPipelineDepthStencilStateCreateInfo) *PipelineDepthStencilStateCreateInfo {
 	v := PipelineDepthStencilStateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineDepthStencilStateCreateInfo).free)
+
 	return &v
 }
 
@@ -3555,12 +6200,24 @@ func marshalPipelineDepthStencilStateCreateInfo(p uintptr) (interface{}, error) 
 	return wrapPipelineDepthStencilStateCreateInfo(c)
 }
 
+func (p *PipelineDepthStencilStateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineDepthStencilStateCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineDepthStencilStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineColorBlendAttachmentState struct {
 	native *C.VkPipelineColorBlendAttachmentState
 }
 
 func wrapPipelineColorBlendAttachmentState(p *C.VkPipelineColorBlendAttachmentState) *PipelineColorBlendAttachmentState {
 	v := PipelineColorBlendAttachmentState{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineColorBlendAttachmentState).free)
+
 	return &v
 }
 
@@ -3571,12 +6228,24 @@ func marshalPipelineColorBlendAttachmentState(p uintptr) (interface{}, error) {
 	return wrapPipelineColorBlendAttachmentState(c)
 }
 
+func (p *PipelineColorBlendAttachmentState) free() {}
+
+// Native returns the pointer to *C.VkPipelineColorBlendAttachmentState. The caller is expected to
+// cast.
+func (p *PipelineColorBlendAttachmentState) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineColorBlendStateCreateInfo struct {
 	native *C.VkPipelineColorBlendStateCreateInfo
 }
 
 func wrapPipelineColorBlendStateCreateInfo(p *C.VkPipelineColorBlendStateCreateInfo) *PipelineColorBlendStateCreateInfo {
 	v := PipelineColorBlendStateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineColorBlendStateCreateInfo).free)
+
 	return &v
 }
 
@@ -3587,12 +6256,24 @@ func marshalPipelineColorBlendStateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineColorBlendStateCreateInfo(c)
 }
 
+func (p *PipelineColorBlendStateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineColorBlendStateCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineColorBlendStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineDynamicStateCreateInfo struct {
 	native *C.VkPipelineDynamicStateCreateInfo
 }
 
 func wrapPipelineDynamicStateCreateInfo(p *C.VkPipelineDynamicStateCreateInfo) *PipelineDynamicStateCreateInfo {
 	v := PipelineDynamicStateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineDynamicStateCreateInfo).free)
+
 	return &v
 }
 
@@ -3603,12 +6284,24 @@ func marshalPipelineDynamicStateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineDynamicStateCreateInfo(c)
 }
 
+func (p *PipelineDynamicStateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineDynamicStateCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineDynamicStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type GraphicsPipelineCreateInfo struct {
 	native *C.VkGraphicsPipelineCreateInfo
 }
 
 func wrapGraphicsPipelineCreateInfo(p *C.VkGraphicsPipelineCreateInfo) *GraphicsPipelineCreateInfo {
 	v := GraphicsPipelineCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GraphicsPipelineCreateInfo).free)
+
 	return &v
 }
 
@@ -3619,12 +6312,24 @@ func marshalGraphicsPipelineCreateInfo(p uintptr) (interface{}, error) {
 	return wrapGraphicsPipelineCreateInfo(c)
 }
 
+func (g *GraphicsPipelineCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkGraphicsPipelineCreateInfo. The caller is expected to
+// cast.
+func (g *GraphicsPipelineCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
+}
+
 type ComputePipelineCreateInfo struct {
 	native *C.VkComputePipelineCreateInfo
 }
 
 func wrapComputePipelineCreateInfo(p *C.VkComputePipelineCreateInfo) *ComputePipelineCreateInfo {
 	v := ComputePipelineCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ComputePipelineCreateInfo).free)
+
 	return &v
 }
 
@@ -3635,12 +6340,24 @@ func marshalComputePipelineCreateInfo(p uintptr) (interface{}, error) {
 	return wrapComputePipelineCreateInfo(c)
 }
 
+func (c *ComputePipelineCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkComputePipelineCreateInfo. The caller is expected to
+// cast.
+func (c *ComputePipelineCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PushConstantRange struct {
 	native *C.VkPushConstantRange
 }
 
 func wrapPushConstantRange(p *C.VkPushConstantRange) *PushConstantRange {
 	v := PushConstantRange{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PushConstantRange).free)
+
 	return &v
 }
 
@@ -3651,12 +6368,24 @@ func marshalPushConstantRange(p uintptr) (interface{}, error) {
 	return wrapPushConstantRange(c)
 }
 
+func (p *PushConstantRange) free() {}
+
+// Native returns the pointer to *C.VkPushConstantRange. The caller is expected to
+// cast.
+func (p *PushConstantRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineLayoutCreateInfo struct {
 	native *C.VkPipelineLayoutCreateInfo
 }
 
 func wrapPipelineLayoutCreateInfo(p *C.VkPipelineLayoutCreateInfo) *PipelineLayoutCreateInfo {
 	v := PipelineLayoutCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineLayoutCreateInfo).free)
+
 	return &v
 }
 
@@ -3667,12 +6396,24 @@ func marshalPipelineLayoutCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineLayoutCreateInfo(c)
 }
 
+func (p *PipelineLayoutCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineLayoutCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineLayoutCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SamplerCreateInfo struct {
 	native *C.VkSamplerCreateInfo
 }
 
 func wrapSamplerCreateInfo(p *C.VkSamplerCreateInfo) *SamplerCreateInfo {
 	v := SamplerCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerCreateInfo).free)
+
 	return &v
 }
 
@@ -3683,12 +6424,24 @@ func marshalSamplerCreateInfo(p uintptr) (interface{}, error) {
 	return wrapSamplerCreateInfo(c)
 }
 
+func (s *SamplerCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkSamplerCreateInfo. The caller is expected to
+// cast.
+func (s *SamplerCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type DescriptorSetLayoutBinding struct {
 	native *C.VkDescriptorSetLayoutBinding
 }
 
 func wrapDescriptorSetLayoutBinding(p *C.VkDescriptorSetLayoutBinding) *DescriptorSetLayoutBinding {
 	v := DescriptorSetLayoutBinding{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetLayoutBinding).free)
+
 	return &v
 }
 
@@ -3699,12 +6452,24 @@ func marshalDescriptorSetLayoutBinding(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutBinding(c)
 }
 
+func (d *DescriptorSetLayoutBinding) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetLayoutBinding. The caller is expected to
+// cast.
+func (d *DescriptorSetLayoutBinding) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorSetLayoutCreateInfo struct {
 	native *C.VkDescriptorSetLayoutCreateInfo
 }
 
 func wrapDescriptorSetLayoutCreateInfo(p *C.VkDescriptorSetLayoutCreateInfo) *DescriptorSetLayoutCreateInfo {
 	v := DescriptorSetLayoutCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetLayoutCreateInfo).free)
+
 	return &v
 }
 
@@ -3715,12 +6480,24 @@ func marshalDescriptorSetLayoutCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutCreateInfo(c)
 }
 
+func (d *DescriptorSetLayoutCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetLayoutCreateInfo. The caller is expected to
+// cast.
+func (d *DescriptorSetLayoutCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorPoolSize struct {
 	native *C.VkDescriptorPoolSize
 }
 
 func wrapDescriptorPoolSize(p *C.VkDescriptorPoolSize) *DescriptorPoolSize {
 	v := DescriptorPoolSize{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorPoolSize).free)
+
 	return &v
 }
 
@@ -3731,12 +6508,24 @@ func marshalDescriptorPoolSize(p uintptr) (interface{}, error) {
 	return wrapDescriptorPoolSize(c)
 }
 
+func (d *DescriptorPoolSize) free() {}
+
+// Native returns the pointer to *C.VkDescriptorPoolSize. The caller is expected to
+// cast.
+func (d *DescriptorPoolSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorPoolCreateInfo struct {
 	native *C.VkDescriptorPoolCreateInfo
 }
 
 func wrapDescriptorPoolCreateInfo(p *C.VkDescriptorPoolCreateInfo) *DescriptorPoolCreateInfo {
 	v := DescriptorPoolCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorPoolCreateInfo).free)
+
 	return &v
 }
 
@@ -3747,12 +6536,24 @@ func marshalDescriptorPoolCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorPoolCreateInfo(c)
 }
 
+func (d *DescriptorPoolCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkDescriptorPoolCreateInfo. The caller is expected to
+// cast.
+func (d *DescriptorPoolCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorSetAllocateInfo struct {
 	native *C.VkDescriptorSetAllocateInfo
 }
 
 func wrapDescriptorSetAllocateInfo(p *C.VkDescriptorSetAllocateInfo) *DescriptorSetAllocateInfo {
 	v := DescriptorSetAllocateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetAllocateInfo).free)
+
 	return &v
 }
 
@@ -3763,12 +6564,24 @@ func marshalDescriptorSetAllocateInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetAllocateInfo(c)
 }
 
+func (d *DescriptorSetAllocateInfo) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetAllocateInfo. The caller is expected to
+// cast.
+func (d *DescriptorSetAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorImageInfo struct {
 	native *C.VkDescriptorImageInfo
 }
 
 func wrapDescriptorImageInfo(p *C.VkDescriptorImageInfo) *DescriptorImageInfo {
 	v := DescriptorImageInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorImageInfo).free)
+
 	return &v
 }
 
@@ -3779,12 +6592,24 @@ func marshalDescriptorImageInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorImageInfo(c)
 }
 
+func (d *DescriptorImageInfo) free() {}
+
+// Native returns the pointer to *C.VkDescriptorImageInfo. The caller is expected to
+// cast.
+func (d *DescriptorImageInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorBufferInfo struct {
 	native *C.VkDescriptorBufferInfo
 }
 
 func wrapDescriptorBufferInfo(p *C.VkDescriptorBufferInfo) *DescriptorBufferInfo {
 	v := DescriptorBufferInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorBufferInfo).free)
+
 	return &v
 }
 
@@ -3795,12 +6620,24 @@ func marshalDescriptorBufferInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorBufferInfo(c)
 }
 
+func (d *DescriptorBufferInfo) free() {}
+
+// Native returns the pointer to *C.VkDescriptorBufferInfo. The caller is expected to
+// cast.
+func (d *DescriptorBufferInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type WriteDescriptorSet struct {
 	native *C.VkWriteDescriptorSet
 }
 
 func wrapWriteDescriptorSet(p *C.VkWriteDescriptorSet) *WriteDescriptorSet {
 	v := WriteDescriptorSet{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*WriteDescriptorSet).free)
+
 	return &v
 }
 
@@ -3811,12 +6648,24 @@ func marshalWriteDescriptorSet(p uintptr) (interface{}, error) {
 	return wrapWriteDescriptorSet(c)
 }
 
+func (w *WriteDescriptorSet) free() {}
+
+// Native returns the pointer to *C.VkWriteDescriptorSet. The caller is expected to
+// cast.
+func (w *WriteDescriptorSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(w.native)
+}
+
 type CopyDescriptorSet struct {
 	native *C.VkCopyDescriptorSet
 }
 
 func wrapCopyDescriptorSet(p *C.VkCopyDescriptorSet) *CopyDescriptorSet {
 	v := CopyDescriptorSet{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CopyDescriptorSet).free)
+
 	return &v
 }
 
@@ -3827,12 +6676,24 @@ func marshalCopyDescriptorSet(p uintptr) (interface{}, error) {
 	return wrapCopyDescriptorSet(c)
 }
 
+func (c *CopyDescriptorSet) free() {}
+
+// Native returns the pointer to *C.VkCopyDescriptorSet. The caller is expected to
+// cast.
+func (c *CopyDescriptorSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type FramebufferCreateInfo struct {
 	native *C.VkFramebufferCreateInfo
 }
 
 func wrapFramebufferCreateInfo(p *C.VkFramebufferCreateInfo) *FramebufferCreateInfo {
 	v := FramebufferCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FramebufferCreateInfo).free)
+
 	return &v
 }
 
@@ -3843,12 +6704,24 @@ func marshalFramebufferCreateInfo(p uintptr) (interface{}, error) {
 	return wrapFramebufferCreateInfo(c)
 }
 
+func (f *FramebufferCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkFramebufferCreateInfo. The caller is expected to
+// cast.
+func (f *FramebufferCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type AttachmentDescription struct {
 	native *C.VkAttachmentDescription
 }
 
 func wrapAttachmentDescription(p *C.VkAttachmentDescription) *AttachmentDescription {
 	v := AttachmentDescription{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttachmentDescription).free)
+
 	return &v
 }
 
@@ -3859,12 +6732,24 @@ func marshalAttachmentDescription(p uintptr) (interface{}, error) {
 	return wrapAttachmentDescription(c)
 }
 
+func (a *AttachmentDescription) free() {}
+
+// Native returns the pointer to *C.VkAttachmentDescription. The caller is expected to
+// cast.
+func (a *AttachmentDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type AttachmentReference struct {
 	native *C.VkAttachmentReference
 }
 
 func wrapAttachmentReference(p *C.VkAttachmentReference) *AttachmentReference {
 	v := AttachmentReference{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttachmentReference).free)
+
 	return &v
 }
 
@@ -3875,12 +6760,24 @@ func marshalAttachmentReference(p uintptr) (interface{}, error) {
 	return wrapAttachmentReference(c)
 }
 
+func (a *AttachmentReference) free() {}
+
+// Native returns the pointer to *C.VkAttachmentReference. The caller is expected to
+// cast.
+func (a *AttachmentReference) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type SubpassDescription struct {
 	native *C.VkSubpassDescription
 }
 
 func wrapSubpassDescription(p *C.VkSubpassDescription) *SubpassDescription {
 	v := SubpassDescription{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassDescription).free)
+
 	return &v
 }
 
@@ -3891,12 +6788,24 @@ func marshalSubpassDescription(p uintptr) (interface{}, error) {
 	return wrapSubpassDescription(c)
 }
 
+func (s *SubpassDescription) free() {}
+
+// Native returns the pointer to *C.VkSubpassDescription. The caller is expected to
+// cast.
+func (s *SubpassDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SubpassDependency struct {
 	native *C.VkSubpassDependency
 }
 
 func wrapSubpassDependency(p *C.VkSubpassDependency) *SubpassDependency {
 	v := SubpassDependency{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassDependency).free)
+
 	return &v
 }
 
@@ -3907,12 +6816,24 @@ func marshalSubpassDependency(p uintptr) (interface{}, error) {
 	return wrapSubpassDependency(c)
 }
 
+func (s *SubpassDependency) free() {}
+
+// Native returns the pointer to *C.VkSubpassDependency. The caller is expected to
+// cast.
+func (s *SubpassDependency) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type RenderPassCreateInfo struct {
 	native *C.VkRenderPassCreateInfo
 }
 
 func wrapRenderPassCreateInfo(p *C.VkRenderPassCreateInfo) *RenderPassCreateInfo {
 	v := RenderPassCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPassCreateInfo).free)
+
 	return &v
 }
 
@@ -3923,12 +6844,24 @@ func marshalRenderPassCreateInfo(p uintptr) (interface{}, error) {
 	return wrapRenderPassCreateInfo(c)
 }
 
+func (r *RenderPassCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkRenderPassCreateInfo. The caller is expected to
+// cast.
+func (r *RenderPassCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type CommandPoolCreateInfo struct {
 	native *C.VkCommandPoolCreateInfo
 }
 
 func wrapCommandPoolCreateInfo(p *C.VkCommandPoolCreateInfo) *CommandPoolCreateInfo {
 	v := CommandPoolCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandPoolCreateInfo).free)
+
 	return &v
 }
 
@@ -3939,12 +6872,24 @@ func marshalCommandPoolCreateInfo(p uintptr) (interface{}, error) {
 	return wrapCommandPoolCreateInfo(c)
 }
 
+func (c *CommandPoolCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkCommandPoolCreateInfo. The caller is expected to
+// cast.
+func (c *CommandPoolCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CommandBufferAllocateInfo struct {
 	native *C.VkCommandBufferAllocateInfo
 }
 
 func wrapCommandBufferAllocateInfo(p *C.VkCommandBufferAllocateInfo) *CommandBufferAllocateInfo {
 	v := CommandBufferAllocateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandBufferAllocateInfo).free)
+
 	return &v
 }
 
@@ -3955,12 +6900,24 @@ func marshalCommandBufferAllocateInfo(p uintptr) (interface{}, error) {
 	return wrapCommandBufferAllocateInfo(c)
 }
 
+func (c *CommandBufferAllocateInfo) free() {}
+
+// Native returns the pointer to *C.VkCommandBufferAllocateInfo. The caller is expected to
+// cast.
+func (c *CommandBufferAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CommandBufferInheritanceInfo struct {
 	native *C.VkCommandBufferInheritanceInfo
 }
 
 func wrapCommandBufferInheritanceInfo(p *C.VkCommandBufferInheritanceInfo) *CommandBufferInheritanceInfo {
 	v := CommandBufferInheritanceInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandBufferInheritanceInfo).free)
+
 	return &v
 }
 
@@ -3971,12 +6928,24 @@ func marshalCommandBufferInheritanceInfo(p uintptr) (interface{}, error) {
 	return wrapCommandBufferInheritanceInfo(c)
 }
 
+func (c *CommandBufferInheritanceInfo) free() {}
+
+// Native returns the pointer to *C.VkCommandBufferInheritanceInfo. The caller is expected to
+// cast.
+func (c *CommandBufferInheritanceInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CommandBufferBeginInfo struct {
 	native *C.VkCommandBufferBeginInfo
 }
 
 func wrapCommandBufferBeginInfo(p *C.VkCommandBufferBeginInfo) *CommandBufferBeginInfo {
 	v := CommandBufferBeginInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandBufferBeginInfo).free)
+
 	return &v
 }
 
@@ -3987,12 +6956,24 @@ func marshalCommandBufferBeginInfo(p uintptr) (interface{}, error) {
 	return wrapCommandBufferBeginInfo(c)
 }
 
+func (c *CommandBufferBeginInfo) free() {}
+
+// Native returns the pointer to *C.VkCommandBufferBeginInfo. The caller is expected to
+// cast.
+func (c *CommandBufferBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type BufferCopy struct {
 	native *C.VkBufferCopy
 }
 
 func wrapBufferCopy(p *C.VkBufferCopy) *BufferCopy {
 	v := BufferCopy{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferCopy).free)
+
 	return &v
 }
 
@@ -4003,12 +6984,24 @@ func marshalBufferCopy(p uintptr) (interface{}, error) {
 	return wrapBufferCopy(c)
 }
 
+func (b *BufferCopy) free() {}
+
+// Native returns the pointer to *C.VkBufferCopy. The caller is expected to
+// cast.
+func (b *BufferCopy) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ImageSubresourceLayers struct {
 	native *C.VkImageSubresourceLayers
 }
 
 func wrapImageSubresourceLayers(p *C.VkImageSubresourceLayers) *ImageSubresourceLayers {
 	v := ImageSubresourceLayers{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageSubresourceLayers).free)
+
 	return &v
 }
 
@@ -4019,12 +7012,24 @@ func marshalImageSubresourceLayers(p uintptr) (interface{}, error) {
 	return wrapImageSubresourceLayers(c)
 }
 
+func (i *ImageSubresourceLayers) free() {}
+
+// Native returns the pointer to *C.VkImageSubresourceLayers. The caller is expected to
+// cast.
+func (i *ImageSubresourceLayers) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageCopy struct {
 	native *C.VkImageCopy
 }
 
 func wrapImageCopy(p *C.VkImageCopy) *ImageCopy {
 	v := ImageCopy{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageCopy).free)
+
 	return &v
 }
 
@@ -4035,12 +7040,24 @@ func marshalImageCopy(p uintptr) (interface{}, error) {
 	return wrapImageCopy(c)
 }
 
+func (i *ImageCopy) free() {}
+
+// Native returns the pointer to *C.VkImageCopy. The caller is expected to
+// cast.
+func (i *ImageCopy) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageBlit struct {
 	native *C.VkImageBlit
 }
 
 func wrapImageBlit(p *C.VkImageBlit) *ImageBlit {
 	v := ImageBlit{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageBlit).free)
+
 	return &v
 }
 
@@ -4051,12 +7068,24 @@ func marshalImageBlit(p uintptr) (interface{}, error) {
 	return wrapImageBlit(c)
 }
 
+func (i *ImageBlit) free() {}
+
+// Native returns the pointer to *C.VkImageBlit. The caller is expected to
+// cast.
+func (i *ImageBlit) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type BufferImageCopy struct {
 	native *C.VkBufferImageCopy
 }
 
 func wrapBufferImageCopy(p *C.VkBufferImageCopy) *BufferImageCopy {
 	v := BufferImageCopy{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferImageCopy).free)
+
 	return &v
 }
 
@@ -4067,12 +7096,24 @@ func marshalBufferImageCopy(p uintptr) (interface{}, error) {
 	return wrapBufferImageCopy(c)
 }
 
+func (b *BufferImageCopy) free() {}
+
+// Native returns the pointer to *C.VkBufferImageCopy. The caller is expected to
+// cast.
+func (b *BufferImageCopy) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ClearColorValue struct {
 	native *C.VkClearColorValue
 }
 
 func wrapClearColorValue(p *C.VkClearColorValue) *ClearColorValue {
 	v := ClearColorValue{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ClearColorValue).free)
+
 	return &v
 }
 
@@ -4083,12 +7124,24 @@ func marshalClearColorValue(p uintptr) (interface{}, error) {
 	return wrapClearColorValue(c)
 }
 
+func (c *ClearColorValue) free() {}
+
+// Native returns the pointer to *C.VkClearColorValue. The caller is expected to
+// cast.
+func (c *ClearColorValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ClearDepthStencilValue struct {
 	native *C.VkClearDepthStencilValue
 }
 
 func wrapClearDepthStencilValue(p *C.VkClearDepthStencilValue) *ClearDepthStencilValue {
 	v := ClearDepthStencilValue{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ClearDepthStencilValue).free)
+
 	return &v
 }
 
@@ -4099,12 +7152,24 @@ func marshalClearDepthStencilValue(p uintptr) (interface{}, error) {
 	return wrapClearDepthStencilValue(c)
 }
 
+func (c *ClearDepthStencilValue) free() {}
+
+// Native returns the pointer to *C.VkClearDepthStencilValue. The caller is expected to
+// cast.
+func (c *ClearDepthStencilValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ClearValue struct {
 	native *C.VkClearValue
 }
 
 func wrapClearValue(p *C.VkClearValue) *ClearValue {
 	v := ClearValue{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ClearValue).free)
+
 	return &v
 }
 
@@ -4115,12 +7180,24 @@ func marshalClearValue(p uintptr) (interface{}, error) {
 	return wrapClearValue(c)
 }
 
+func (c *ClearValue) free() {}
+
+// Native returns the pointer to *C.VkClearValue. The caller is expected to
+// cast.
+func (c *ClearValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ClearAttachment struct {
 	native *C.VkClearAttachment
 }
 
 func wrapClearAttachment(p *C.VkClearAttachment) *ClearAttachment {
 	v := ClearAttachment{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ClearAttachment).free)
+
 	return &v
 }
 
@@ -4131,12 +7208,24 @@ func marshalClearAttachment(p uintptr) (interface{}, error) {
 	return wrapClearAttachment(c)
 }
 
+func (c *ClearAttachment) free() {}
+
+// Native returns the pointer to *C.VkClearAttachment. The caller is expected to
+// cast.
+func (c *ClearAttachment) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ClearRect struct {
 	native *C.VkClearRect
 }
 
 func wrapClearRect(p *C.VkClearRect) *ClearRect {
 	v := ClearRect{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ClearRect).free)
+
 	return &v
 }
 
@@ -4147,12 +7236,24 @@ func marshalClearRect(p uintptr) (interface{}, error) {
 	return wrapClearRect(c)
 }
 
+func (c *ClearRect) free() {}
+
+// Native returns the pointer to *C.VkClearRect. The caller is expected to
+// cast.
+func (c *ClearRect) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ImageResolve struct {
 	native *C.VkImageResolve
 }
 
 func wrapImageResolve(p *C.VkImageResolve) *ImageResolve {
 	v := ImageResolve{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageResolve).free)
+
 	return &v
 }
 
@@ -4163,12 +7264,24 @@ func marshalImageResolve(p uintptr) (interface{}, error) {
 	return wrapImageResolve(c)
 }
 
+func (i *ImageResolve) free() {}
+
+// Native returns the pointer to *C.VkImageResolve. The caller is expected to
+// cast.
+func (i *ImageResolve) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type MemoryBarrier struct {
 	native *C.VkMemoryBarrier
 }
 
 func wrapMemoryBarrier(p *C.VkMemoryBarrier) *MemoryBarrier {
 	v := MemoryBarrier{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryBarrier).free)
+
 	return &v
 }
 
@@ -4179,12 +7292,24 @@ func marshalMemoryBarrier(p uintptr) (interface{}, error) {
 	return wrapMemoryBarrier(c)
 }
 
+func (m *MemoryBarrier) free() {}
+
+// Native returns the pointer to *C.VkMemoryBarrier. The caller is expected to
+// cast.
+func (m *MemoryBarrier) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type BufferMemoryBarrier struct {
 	native *C.VkBufferMemoryBarrier
 }
 
 func wrapBufferMemoryBarrier(p *C.VkBufferMemoryBarrier) *BufferMemoryBarrier {
 	v := BufferMemoryBarrier{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferMemoryBarrier).free)
+
 	return &v
 }
 
@@ -4195,12 +7320,24 @@ func marshalBufferMemoryBarrier(p uintptr) (interface{}, error) {
 	return wrapBufferMemoryBarrier(c)
 }
 
+func (b *BufferMemoryBarrier) free() {}
+
+// Native returns the pointer to *C.VkBufferMemoryBarrier. The caller is expected to
+// cast.
+func (b *BufferMemoryBarrier) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ImageMemoryBarrier struct {
 	native *C.VkImageMemoryBarrier
 }
 
 func wrapImageMemoryBarrier(p *C.VkImageMemoryBarrier) *ImageMemoryBarrier {
 	v := ImageMemoryBarrier{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageMemoryBarrier).free)
+
 	return &v
 }
 
@@ -4211,12 +7348,24 @@ func marshalImageMemoryBarrier(p uintptr) (interface{}, error) {
 	return wrapImageMemoryBarrier(c)
 }
 
+func (i *ImageMemoryBarrier) free() {}
+
+// Native returns the pointer to *C.VkImageMemoryBarrier. The caller is expected to
+// cast.
+func (i *ImageMemoryBarrier) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type RenderPassBeginInfo struct {
 	native *C.VkRenderPassBeginInfo
 }
 
 func wrapRenderPassBeginInfo(p *C.VkRenderPassBeginInfo) *RenderPassBeginInfo {
 	v := RenderPassBeginInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPassBeginInfo).free)
+
 	return &v
 }
 
@@ -4227,12 +7376,24 @@ func marshalRenderPassBeginInfo(p uintptr) (interface{}, error) {
 	return wrapRenderPassBeginInfo(c)
 }
 
+func (r *RenderPassBeginInfo) free() {}
+
+// Native returns the pointer to *C.VkRenderPassBeginInfo. The caller is expected to
+// cast.
+func (r *RenderPassBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type DispatchIndirectCommand struct {
 	native *C.VkDispatchIndirectCommand
 }
 
 func wrapDispatchIndirectCommand(p *C.VkDispatchIndirectCommand) *DispatchIndirectCommand {
 	v := DispatchIndirectCommand{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DispatchIndirectCommand).free)
+
 	return &v
 }
 
@@ -4243,12 +7404,24 @@ func marshalDispatchIndirectCommand(p uintptr) (interface{}, error) {
 	return wrapDispatchIndirectCommand(c)
 }
 
+func (d *DispatchIndirectCommand) free() {}
+
+// Native returns the pointer to *C.VkDispatchIndirectCommand. The caller is expected to
+// cast.
+func (d *DispatchIndirectCommand) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DrawIndexedIndirectCommand struct {
 	native *C.VkDrawIndexedIndirectCommand
 }
 
 func wrapDrawIndexedIndirectCommand(p *C.VkDrawIndexedIndirectCommand) *DrawIndexedIndirectCommand {
 	v := DrawIndexedIndirectCommand{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DrawIndexedIndirectCommand).free)
+
 	return &v
 }
 
@@ -4259,12 +7432,24 @@ func marshalDrawIndexedIndirectCommand(p uintptr) (interface{}, error) {
 	return wrapDrawIndexedIndirectCommand(c)
 }
 
+func (d *DrawIndexedIndirectCommand) free() {}
+
+// Native returns the pointer to *C.VkDrawIndexedIndirectCommand. The caller is expected to
+// cast.
+func (d *DrawIndexedIndirectCommand) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DrawIndirectCommand struct {
 	native *C.VkDrawIndirectCommand
 }
 
 func wrapDrawIndirectCommand(p *C.VkDrawIndirectCommand) *DrawIndirectCommand {
 	v := DrawIndirectCommand{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DrawIndirectCommand).free)
+
 	return &v
 }
 
@@ -4275,12 +7460,24 @@ func marshalDrawIndirectCommand(p uintptr) (interface{}, error) {
 	return wrapDrawIndirectCommand(c)
 }
 
+func (d *DrawIndirectCommand) free() {}
+
+// Native returns the pointer to *C.VkDrawIndirectCommand. The caller is expected to
+// cast.
+func (d *DrawIndirectCommand) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type BaseOutStructure struct {
 	native *C.VkBaseOutStructure
 }
 
 func wrapBaseOutStructure(p *C.VkBaseOutStructure) *BaseOutStructure {
 	v := BaseOutStructure{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BaseOutStructure).free)
+
 	return &v
 }
 
@@ -4291,12 +7488,24 @@ func marshalBaseOutStructure(p uintptr) (interface{}, error) {
 	return wrapBaseOutStructure(c)
 }
 
+func (b *BaseOutStructure) free() {}
+
+// Native returns the pointer to *C.VkBaseOutStructure. The caller is expected to
+// cast.
+func (b *BaseOutStructure) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BaseInStructure struct {
 	native *C.VkBaseInStructure
 }
 
 func wrapBaseInStructure(p *C.VkBaseInStructure) *BaseInStructure {
 	v := BaseInStructure{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BaseInStructure).free)
+
 	return &v
 }
 
@@ -4307,12 +7516,24 @@ func marshalBaseInStructure(p uintptr) (interface{}, error) {
 	return wrapBaseInStructure(c)
 }
 
+func (b *BaseInStructure) free() {}
+
+// Native returns the pointer to *C.VkBaseInStructure. The caller is expected to
+// cast.
+func (b *BaseInStructure) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type SamplerYcbcrConversion struct {
 	native *C.VkSamplerYcbcrConversion
 }
 
 func wrapSamplerYcbcrConversion(p *C.VkSamplerYcbcrConversion) *SamplerYcbcrConversion {
 	v := SamplerYcbcrConversion{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrConversion).free)
+
 	return &v
 }
 
@@ -4323,12 +7544,24 @@ func marshalSamplerYcbcrConversion(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrConversion(c)
 }
 
+func (s *SamplerYcbcrConversion) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrConversion. The caller is expected to
+// cast.
+func (s *SamplerYcbcrConversion) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type DescriptorUpdateTemplate struct {
 	native *C.VkDescriptorUpdateTemplate
 }
 
 func wrapDescriptorUpdateTemplate(p *C.VkDescriptorUpdateTemplate) *DescriptorUpdateTemplate {
 	v := DescriptorUpdateTemplate{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorUpdateTemplate).free)
+
 	return &v
 }
 
@@ -4339,12 +7572,24 @@ func marshalDescriptorUpdateTemplate(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplate(c)
 }
 
+func (d *DescriptorUpdateTemplate) free() {}
+
+// Native returns the pointer to *C.VkDescriptorUpdateTemplate. The caller is expected to
+// cast.
+func (d *DescriptorUpdateTemplate) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PointClippingBehavior struct {
 	native *C.VkPointClippingBehavior
 }
 
 func wrapPointClippingBehavior(p *C.VkPointClippingBehavior) *PointClippingBehavior {
 	v := PointClippingBehavior{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PointClippingBehavior).free)
+
 	return &v
 }
 
@@ -4355,12 +7600,24 @@ func marshalPointClippingBehavior(p uintptr) (interface{}, error) {
 	return wrapPointClippingBehavior(c)
 }
 
+func (p *PointClippingBehavior) free() {}
+
+// Native returns the pointer to *C.VkPointClippingBehavior. The caller is expected to
+// cast.
+func (p *PointClippingBehavior) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type TessellationDomainOrigin struct {
 	native *C.VkTessellationDomainOrigin
 }
 
 func wrapTessellationDomainOrigin(p *C.VkTessellationDomainOrigin) *TessellationDomainOrigin {
 	v := TessellationDomainOrigin{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*TessellationDomainOrigin).free)
+
 	return &v
 }
 
@@ -4371,12 +7628,24 @@ func marshalTessellationDomainOrigin(p uintptr) (interface{}, error) {
 	return wrapTessellationDomainOrigin(c)
 }
 
+func (t *TessellationDomainOrigin) free() {}
+
+// Native returns the pointer to *C.VkTessellationDomainOrigin. The caller is expected to
+// cast.
+func (t *TessellationDomainOrigin) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
 type SamplerYcbcrModelConversion struct {
 	native *C.VkSamplerYcbcrModelConversion
 }
 
 func wrapSamplerYcbcrModelConversion(p *C.VkSamplerYcbcrModelConversion) *SamplerYcbcrModelConversion {
 	v := SamplerYcbcrModelConversion{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrModelConversion).free)
+
 	return &v
 }
 
@@ -4387,12 +7656,24 @@ func marshalSamplerYcbcrModelConversion(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrModelConversion(c)
 }
 
+func (s *SamplerYcbcrModelConversion) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrModelConversion. The caller is expected to
+// cast.
+func (s *SamplerYcbcrModelConversion) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SamplerYcbcrRange struct {
 	native *C.VkSamplerYcbcrRange
 }
 
 func wrapSamplerYcbcrRange(p *C.VkSamplerYcbcrRange) *SamplerYcbcrRange {
 	v := SamplerYcbcrRange{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrRange).free)
+
 	return &v
 }
 
@@ -4403,12 +7684,24 @@ func marshalSamplerYcbcrRange(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrRange(c)
 }
 
+func (s *SamplerYcbcrRange) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrRange. The caller is expected to
+// cast.
+func (s *SamplerYcbcrRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ChromaLocation struct {
 	native *C.VkChromaLocation
 }
 
 func wrapChromaLocation(p *C.VkChromaLocation) *ChromaLocation {
 	v := ChromaLocation{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ChromaLocation).free)
+
 	return &v
 }
 
@@ -4419,12 +7712,24 @@ func marshalChromaLocation(p uintptr) (interface{}, error) {
 	return wrapChromaLocation(c)
 }
 
+func (c *ChromaLocation) free() {}
+
+// Native returns the pointer to *C.VkChromaLocation. The caller is expected to
+// cast.
+func (c *ChromaLocation) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type DescriptorUpdateTemplateType struct {
 	native *C.VkDescriptorUpdateTemplateType
 }
 
 func wrapDescriptorUpdateTemplateType(p *C.VkDescriptorUpdateTemplateType) *DescriptorUpdateTemplateType {
 	v := DescriptorUpdateTemplateType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateType).free)
+
 	return &v
 }
 
@@ -4435,12 +7740,24 @@ func marshalDescriptorUpdateTemplateType(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateType(c)
 }
 
+func (d *DescriptorUpdateTemplateType) free() {}
+
+// Native returns the pointer to *C.VkDescriptorUpdateTemplateType. The caller is expected to
+// cast.
+func (d *DescriptorUpdateTemplateType) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type SubgroupFeatureFlagBits struct {
 	native *C.VkSubgroupFeatureFlagBits
 }
 
 func wrapSubgroupFeatureFlagBits(p *C.VkSubgroupFeatureFlagBits) *SubgroupFeatureFlagBits {
 	v := SubgroupFeatureFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubgroupFeatureFlagBits).free)
+
 	return &v
 }
 
@@ -4451,12 +7768,24 @@ func marshalSubgroupFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapSubgroupFeatureFlagBits(c)
 }
 
+func (s *SubgroupFeatureFlagBits) free() {}
+
+// Native returns the pointer to *C.VkSubgroupFeatureFlagBits. The caller is expected to
+// cast.
+func (s *SubgroupFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SubgroupFeatureFlags struct {
 	native *C.VkSubgroupFeatureFlags
 }
 
 func wrapSubgroupFeatureFlags(p *C.VkSubgroupFeatureFlags) *SubgroupFeatureFlags {
 	v := SubgroupFeatureFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubgroupFeatureFlags).free)
+
 	return &v
 }
 
@@ -4467,12 +7796,24 @@ func marshalSubgroupFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapSubgroupFeatureFlags(c)
 }
 
+func (s *SubgroupFeatureFlags) free() {}
+
+// Native returns the pointer to *C.VkSubgroupFeatureFlags. The caller is expected to
+// cast.
+func (s *SubgroupFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PeerMemoryFeatureFlagBits struct {
 	native *C.VkPeerMemoryFeatureFlagBits
 }
 
 func wrapPeerMemoryFeatureFlagBits(p *C.VkPeerMemoryFeatureFlagBits) *PeerMemoryFeatureFlagBits {
 	v := PeerMemoryFeatureFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PeerMemoryFeatureFlagBits).free)
+
 	return &v
 }
 
@@ -4483,12 +7824,24 @@ func marshalPeerMemoryFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapPeerMemoryFeatureFlagBits(c)
 }
 
+func (p *PeerMemoryFeatureFlagBits) free() {}
+
+// Native returns the pointer to *C.VkPeerMemoryFeatureFlagBits. The caller is expected to
+// cast.
+func (p *PeerMemoryFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PeerMemoryFeatureFlags struct {
 	native *C.VkPeerMemoryFeatureFlags
 }
 
 func wrapPeerMemoryFeatureFlags(p *C.VkPeerMemoryFeatureFlags) *PeerMemoryFeatureFlags {
 	v := PeerMemoryFeatureFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PeerMemoryFeatureFlags).free)
+
 	return &v
 }
 
@@ -4499,12 +7852,24 @@ func marshalPeerMemoryFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapPeerMemoryFeatureFlags(c)
 }
 
+func (p *PeerMemoryFeatureFlags) free() {}
+
+// Native returns the pointer to *C.VkPeerMemoryFeatureFlags. The caller is expected to
+// cast.
+func (p *PeerMemoryFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type MemoryAllocateFlagBits struct {
 	native *C.VkMemoryAllocateFlagBits
 }
 
 func wrapMemoryAllocateFlagBits(p *C.VkMemoryAllocateFlagBits) *MemoryAllocateFlagBits {
 	v := MemoryAllocateFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryAllocateFlagBits).free)
+
 	return &v
 }
 
@@ -4515,12 +7880,24 @@ func marshalMemoryAllocateFlagBits(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlagBits(c)
 }
 
+func (m *MemoryAllocateFlagBits) free() {}
+
+// Native returns the pointer to *C.VkMemoryAllocateFlagBits. The caller is expected to
+// cast.
+func (m *MemoryAllocateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryAllocateFlags struct {
 	native *C.VkMemoryAllocateFlags
 }
 
 func wrapMemoryAllocateFlags(p *C.VkMemoryAllocateFlags) *MemoryAllocateFlags {
 	v := MemoryAllocateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryAllocateFlags).free)
+
 	return &v
 }
 
@@ -4531,12 +7908,24 @@ func marshalMemoryAllocateFlags(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlags(c)
 }
 
+func (m *MemoryAllocateFlags) free() {}
+
+// Native returns the pointer to *C.VkMemoryAllocateFlags. The caller is expected to
+// cast.
+func (m *MemoryAllocateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type CommandPoolTrimFlags struct {
 	native *C.VkCommandPoolTrimFlags
 }
 
 func wrapCommandPoolTrimFlags(p *C.VkCommandPoolTrimFlags) *CommandPoolTrimFlags {
 	v := CommandPoolTrimFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandPoolTrimFlags).free)
+
 	return &v
 }
 
@@ -4547,12 +7936,24 @@ func marshalCommandPoolTrimFlags(p uintptr) (interface{}, error) {
 	return wrapCommandPoolTrimFlags(c)
 }
 
+func (c *CommandPoolTrimFlags) free() {}
+
+// Native returns the pointer to *C.VkCommandPoolTrimFlags. The caller is expected to
+// cast.
+func (c *CommandPoolTrimFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type DescriptorUpdateTemplateCreateFlags struct {
 	native *C.VkDescriptorUpdateTemplateCreateFlags
 }
 
 func wrapDescriptorUpdateTemplateCreateFlags(p *C.VkDescriptorUpdateTemplateCreateFlags) *DescriptorUpdateTemplateCreateFlags {
 	v := DescriptorUpdateTemplateCreateFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateCreateFlags).free)
+
 	return &v
 }
 
@@ -4563,12 +7964,24 @@ func marshalDescriptorUpdateTemplateCreateFlags(p uintptr) (interface{}, error) 
 	return wrapDescriptorUpdateTemplateCreateFlags(c)
 }
 
+func (d *DescriptorUpdateTemplateCreateFlags) free() {}
+
+// Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateFlags. The caller is expected to
+// cast.
+func (d *DescriptorUpdateTemplateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type ExternalMemoryHandleTypeFlagBits struct {
 	native *C.VkExternalMemoryHandleTypeFlagBits
 }
 
 func wrapExternalMemoryHandleTypeFlagBits(p *C.VkExternalMemoryHandleTypeFlagBits) *ExternalMemoryHandleTypeFlagBits {
 	v := ExternalMemoryHandleTypeFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlagBits).free)
+
 	return &v
 }
 
@@ -4579,12 +7992,24 @@ func marshalExternalMemoryHandleTypeFlagBits(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryHandleTypeFlagBits(c)
 }
 
+func (e *ExternalMemoryHandleTypeFlagBits) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagBits. The caller is expected to
+// cast.
+func (e *ExternalMemoryHandleTypeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryHandleTypeFlags struct {
 	native *C.VkExternalMemoryHandleTypeFlags
 }
 
 func wrapExternalMemoryHandleTypeFlags(p *C.VkExternalMemoryHandleTypeFlags) *ExternalMemoryHandleTypeFlags {
 	v := ExternalMemoryHandleTypeFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlags).free)
+
 	return &v
 }
 
@@ -4595,12 +8020,24 @@ func marshalExternalMemoryHandleTypeFlags(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryHandleTypeFlags(c)
 }
 
+func (e *ExternalMemoryHandleTypeFlags) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryHandleTypeFlags. The caller is expected to
+// cast.
+func (e *ExternalMemoryHandleTypeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryFeatureFlagBits struct {
 	native *C.VkExternalMemoryFeatureFlagBits
 }
 
 func wrapExternalMemoryFeatureFlagBits(p *C.VkExternalMemoryFeatureFlagBits) *ExternalMemoryFeatureFlagBits {
 	v := ExternalMemoryFeatureFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlagBits).free)
+
 	return &v
 }
 
@@ -4611,12 +8048,24 @@ func marshalExternalMemoryFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlagBits(c)
 }
 
+func (e *ExternalMemoryFeatureFlagBits) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryFeatureFlagBits. The caller is expected to
+// cast.
+func (e *ExternalMemoryFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryFeatureFlags struct {
 	native *C.VkExternalMemoryFeatureFlags
 }
 
 func wrapExternalMemoryFeatureFlags(p *C.VkExternalMemoryFeatureFlags) *ExternalMemoryFeatureFlags {
 	v := ExternalMemoryFeatureFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlags).free)
+
 	return &v
 }
 
@@ -4627,12 +8076,24 @@ func marshalExternalMemoryFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlags(c)
 }
 
+func (e *ExternalMemoryFeatureFlags) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryFeatureFlags. The caller is expected to
+// cast.
+func (e *ExternalMemoryFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalFenceHandleTypeFlagBits struct {
 	native *C.VkExternalFenceHandleTypeFlagBits
 }
 
 func wrapExternalFenceHandleTypeFlagBits(p *C.VkExternalFenceHandleTypeFlagBits) *ExternalFenceHandleTypeFlagBits {
 	v := ExternalFenceHandleTypeFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalFenceHandleTypeFlagBits).free)
+
 	return &v
 }
 
@@ -4643,12 +8104,24 @@ func marshalExternalFenceHandleTypeFlagBits(p uintptr) (interface{}, error) {
 	return wrapExternalFenceHandleTypeFlagBits(c)
 }
 
+func (e *ExternalFenceHandleTypeFlagBits) free() {}
+
+// Native returns the pointer to *C.VkExternalFenceHandleTypeFlagBits. The caller is expected to
+// cast.
+func (e *ExternalFenceHandleTypeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalFenceHandleTypeFlags struct {
 	native *C.VkExternalFenceHandleTypeFlags
 }
 
 func wrapExternalFenceHandleTypeFlags(p *C.VkExternalFenceHandleTypeFlags) *ExternalFenceHandleTypeFlags {
 	v := ExternalFenceHandleTypeFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalFenceHandleTypeFlags).free)
+
 	return &v
 }
 
@@ -4659,12 +8132,24 @@ func marshalExternalFenceHandleTypeFlags(p uintptr) (interface{}, error) {
 	return wrapExternalFenceHandleTypeFlags(c)
 }
 
+func (e *ExternalFenceHandleTypeFlags) free() {}
+
+// Native returns the pointer to *C.VkExternalFenceHandleTypeFlags. The caller is expected to
+// cast.
+func (e *ExternalFenceHandleTypeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalFenceFeatureFlagBits struct {
 	native *C.VkExternalFenceFeatureFlagBits
 }
 
 func wrapExternalFenceFeatureFlagBits(p *C.VkExternalFenceFeatureFlagBits) *ExternalFenceFeatureFlagBits {
 	v := ExternalFenceFeatureFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalFenceFeatureFlagBits).free)
+
 	return &v
 }
 
@@ -4675,12 +8160,24 @@ func marshalExternalFenceFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapExternalFenceFeatureFlagBits(c)
 }
 
+func (e *ExternalFenceFeatureFlagBits) free() {}
+
+// Native returns the pointer to *C.VkExternalFenceFeatureFlagBits. The caller is expected to
+// cast.
+func (e *ExternalFenceFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalFenceFeatureFlags struct {
 	native *C.VkExternalFenceFeatureFlags
 }
 
 func wrapExternalFenceFeatureFlags(p *C.VkExternalFenceFeatureFlags) *ExternalFenceFeatureFlags {
 	v := ExternalFenceFeatureFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalFenceFeatureFlags).free)
+
 	return &v
 }
 
@@ -4691,12 +8188,24 @@ func marshalExternalFenceFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapExternalFenceFeatureFlags(c)
 }
 
+func (e *ExternalFenceFeatureFlags) free() {}
+
+// Native returns the pointer to *C.VkExternalFenceFeatureFlags. The caller is expected to
+// cast.
+func (e *ExternalFenceFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type FenceImportFlagBits struct {
 	native *C.VkFenceImportFlagBits
 }
 
 func wrapFenceImportFlagBits(p *C.VkFenceImportFlagBits) *FenceImportFlagBits {
 	v := FenceImportFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FenceImportFlagBits).free)
+
 	return &v
 }
 
@@ -4707,12 +8216,24 @@ func marshalFenceImportFlagBits(p uintptr) (interface{}, error) {
 	return wrapFenceImportFlagBits(c)
 }
 
+func (f *FenceImportFlagBits) free() {}
+
+// Native returns the pointer to *C.VkFenceImportFlagBits. The caller is expected to
+// cast.
+func (f *FenceImportFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type FenceImportFlags struct {
 	native *C.VkFenceImportFlags
 }
 
 func wrapFenceImportFlags(p *C.VkFenceImportFlags) *FenceImportFlags {
 	v := FenceImportFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FenceImportFlags).free)
+
 	return &v
 }
 
@@ -4723,12 +8244,24 @@ func marshalFenceImportFlags(p uintptr) (interface{}, error) {
 	return wrapFenceImportFlags(c)
 }
 
+func (f *FenceImportFlags) free() {}
+
+// Native returns the pointer to *C.VkFenceImportFlags. The caller is expected to
+// cast.
+func (f *FenceImportFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type SemaphoreImportFlagBits struct {
 	native *C.VkSemaphoreImportFlagBits
 }
 
 func wrapSemaphoreImportFlagBits(p *C.VkSemaphoreImportFlagBits) *SemaphoreImportFlagBits {
 	v := SemaphoreImportFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SemaphoreImportFlagBits).free)
+
 	return &v
 }
 
@@ -4739,12 +8272,24 @@ func marshalSemaphoreImportFlagBits(p uintptr) (interface{}, error) {
 	return wrapSemaphoreImportFlagBits(c)
 }
 
+func (s *SemaphoreImportFlagBits) free() {}
+
+// Native returns the pointer to *C.VkSemaphoreImportFlagBits. The caller is expected to
+// cast.
+func (s *SemaphoreImportFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SemaphoreImportFlags struct {
 	native *C.VkSemaphoreImportFlags
 }
 
 func wrapSemaphoreImportFlags(p *C.VkSemaphoreImportFlags) *SemaphoreImportFlags {
 	v := SemaphoreImportFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SemaphoreImportFlags).free)
+
 	return &v
 }
 
@@ -4755,12 +8300,24 @@ func marshalSemaphoreImportFlags(p uintptr) (interface{}, error) {
 	return wrapSemaphoreImportFlags(c)
 }
 
+func (s *SemaphoreImportFlags) free() {}
+
+// Native returns the pointer to *C.VkSemaphoreImportFlags. The caller is expected to
+// cast.
+func (s *SemaphoreImportFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ExternalSemaphoreHandleTypeFlagBits struct {
 	native *C.VkExternalSemaphoreHandleTypeFlagBits
 }
 
 func wrapExternalSemaphoreHandleTypeFlagBits(p *C.VkExternalSemaphoreHandleTypeFlagBits) *ExternalSemaphoreHandleTypeFlagBits {
 	v := ExternalSemaphoreHandleTypeFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalSemaphoreHandleTypeFlagBits).free)
+
 	return &v
 }
 
@@ -4771,12 +8328,24 @@ func marshalExternalSemaphoreHandleTypeFlagBits(p uintptr) (interface{}, error) 
 	return wrapExternalSemaphoreHandleTypeFlagBits(c)
 }
 
+func (e *ExternalSemaphoreHandleTypeFlagBits) free() {}
+
+// Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlagBits. The caller is expected to
+// cast.
+func (e *ExternalSemaphoreHandleTypeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalSemaphoreHandleTypeFlags struct {
 	native *C.VkExternalSemaphoreHandleTypeFlags
 }
 
 func wrapExternalSemaphoreHandleTypeFlags(p *C.VkExternalSemaphoreHandleTypeFlags) *ExternalSemaphoreHandleTypeFlags {
 	v := ExternalSemaphoreHandleTypeFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalSemaphoreHandleTypeFlags).free)
+
 	return &v
 }
 
@@ -4787,12 +8356,24 @@ func marshalExternalSemaphoreHandleTypeFlags(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphoreHandleTypeFlags(c)
 }
 
+func (e *ExternalSemaphoreHandleTypeFlags) free() {}
+
+// Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlags. The caller is expected to
+// cast.
+func (e *ExternalSemaphoreHandleTypeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalSemaphoreFeatureFlagBits struct {
 	native *C.VkExternalSemaphoreFeatureFlagBits
 }
 
 func wrapExternalSemaphoreFeatureFlagBits(p *C.VkExternalSemaphoreFeatureFlagBits) *ExternalSemaphoreFeatureFlagBits {
 	v := ExternalSemaphoreFeatureFlagBits{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalSemaphoreFeatureFlagBits).free)
+
 	return &v
 }
 
@@ -4803,12 +8384,24 @@ func marshalExternalSemaphoreFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphoreFeatureFlagBits(c)
 }
 
+func (e *ExternalSemaphoreFeatureFlagBits) free() {}
+
+// Native returns the pointer to *C.VkExternalSemaphoreFeatureFlagBits. The caller is expected to
+// cast.
+func (e *ExternalSemaphoreFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalSemaphoreFeatureFlags struct {
 	native *C.VkExternalSemaphoreFeatureFlags
 }
 
 func wrapExternalSemaphoreFeatureFlags(p *C.VkExternalSemaphoreFeatureFlags) *ExternalSemaphoreFeatureFlags {
 	v := ExternalSemaphoreFeatureFlags{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalSemaphoreFeatureFlags).free)
+
 	return &v
 }
 
@@ -4819,12 +8412,24 @@ func marshalExternalSemaphoreFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphoreFeatureFlags(c)
 }
 
+func (e *ExternalSemaphoreFeatureFlags) free() {}
+
+// Native returns the pointer to *C.VkExternalSemaphoreFeatureFlags. The caller is expected to
+// cast.
+func (e *ExternalSemaphoreFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceSubgroupProperties struct {
 	native *C.VkPhysicalDeviceSubgroupProperties
 }
 
 func wrapPhysicalDeviceSubgroupProperties(p *C.VkPhysicalDeviceSubgroupProperties) *PhysicalDeviceSubgroupProperties {
 	v := PhysicalDeviceSubgroupProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceSubgroupProperties).free)
+
 	return &v
 }
 
@@ -4835,12 +8440,24 @@ func marshalPhysicalDeviceSubgroupProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceSubgroupProperties(c)
 }
 
+func (p *PhysicalDeviceSubgroupProperties) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceSubgroupProperties. The caller is expected to
+// cast.
+func (p *PhysicalDeviceSubgroupProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type BindBufferMemoryInfo struct {
 	native *C.VkBindBufferMemoryInfo
 }
 
 func wrapBindBufferMemoryInfo(p *C.VkBindBufferMemoryInfo) *BindBufferMemoryInfo {
 	v := BindBufferMemoryInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindBufferMemoryInfo).free)
+
 	return &v
 }
 
@@ -4851,12 +8468,24 @@ func marshalBindBufferMemoryInfo(p uintptr) (interface{}, error) {
 	return wrapBindBufferMemoryInfo(c)
 }
 
+func (b *BindBufferMemoryInfo) free() {}
+
+// Native returns the pointer to *C.VkBindBufferMemoryInfo. The caller is expected to
+// cast.
+func (b *BindBufferMemoryInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BindImageMemoryInfo struct {
 	native *C.VkBindImageMemoryInfo
 }
 
 func wrapBindImageMemoryInfo(p *C.VkBindImageMemoryInfo) *BindImageMemoryInfo {
 	v := BindImageMemoryInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindImageMemoryInfo).free)
+
 	return &v
 }
 
@@ -4867,12 +8496,24 @@ func marshalBindImageMemoryInfo(p uintptr) (interface{}, error) {
 	return wrapBindImageMemoryInfo(c)
 }
 
+func (b *BindImageMemoryInfo) free() {}
+
+// Native returns the pointer to *C.VkBindImageMemoryInfo. The caller is expected to
+// cast.
+func (b *BindImageMemoryInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type PhysicalDevice16BitStorageFeatures struct {
 	native *C.VkPhysicalDevice16BitStorageFeatures
 }
 
 func wrapPhysicalDevice16BitStorageFeatures(p *C.VkPhysicalDevice16BitStorageFeatures) *PhysicalDevice16BitStorageFeatures {
 	v := PhysicalDevice16BitStorageFeatures{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDevice16BitStorageFeatures).free)
+
 	return &v
 }
 
@@ -4883,12 +8524,24 @@ func marshalPhysicalDevice16BitStorageFeatures(p uintptr) (interface{}, error) {
 	return wrapPhysicalDevice16BitStorageFeatures(c)
 }
 
+func (p *PhysicalDevice16BitStorageFeatures) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDevice16BitStorageFeatures. The caller is expected to
+// cast.
+func (p *PhysicalDevice16BitStorageFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type MemoryDedicatedRequirements struct {
 	native *C.VkMemoryDedicatedRequirements
 }
 
 func wrapMemoryDedicatedRequirements(p *C.VkMemoryDedicatedRequirements) *MemoryDedicatedRequirements {
 	v := MemoryDedicatedRequirements{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryDedicatedRequirements).free)
+
 	return &v
 }
 
@@ -4899,12 +8552,24 @@ func marshalMemoryDedicatedRequirements(p uintptr) (interface{}, error) {
 	return wrapMemoryDedicatedRequirements(c)
 }
 
+func (m *MemoryDedicatedRequirements) free() {}
+
+// Native returns the pointer to *C.VkMemoryDedicatedRequirements. The caller is expected to
+// cast.
+func (m *MemoryDedicatedRequirements) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryDedicatedAllocateInfo struct {
 	native *C.VkMemoryDedicatedAllocateInfo
 }
 
 func wrapMemoryDedicatedAllocateInfo(p *C.VkMemoryDedicatedAllocateInfo) *MemoryDedicatedAllocateInfo {
 	v := MemoryDedicatedAllocateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryDedicatedAllocateInfo).free)
+
 	return &v
 }
 
@@ -4915,12 +8580,24 @@ func marshalMemoryDedicatedAllocateInfo(p uintptr) (interface{}, error) {
 	return wrapMemoryDedicatedAllocateInfo(c)
 }
 
+func (m *MemoryDedicatedAllocateInfo) free() {}
+
+// Native returns the pointer to *C.VkMemoryDedicatedAllocateInfo. The caller is expected to
+// cast.
+func (m *MemoryDedicatedAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryAllocateFlagsInfo struct {
 	native *C.VkMemoryAllocateFlagsInfo
 }
 
 func wrapMemoryAllocateFlagsInfo(p *C.VkMemoryAllocateFlagsInfo) *MemoryAllocateFlagsInfo {
 	v := MemoryAllocateFlagsInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryAllocateFlagsInfo).free)
+
 	return &v
 }
 
@@ -4931,12 +8608,24 @@ func marshalMemoryAllocateFlagsInfo(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlagsInfo(c)
 }
 
+func (m *MemoryAllocateFlagsInfo) free() {}
+
+// Native returns the pointer to *C.VkMemoryAllocateFlagsInfo. The caller is expected to
+// cast.
+func (m *MemoryAllocateFlagsInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type DeviceGroupRenderPassBeginInfo struct {
 	native *C.VkDeviceGroupRenderPassBeginInfo
 }
 
 func wrapDeviceGroupRenderPassBeginInfo(p *C.VkDeviceGroupRenderPassBeginInfo) *DeviceGroupRenderPassBeginInfo {
 	v := DeviceGroupRenderPassBeginInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupRenderPassBeginInfo).free)
+
 	return &v
 }
 
@@ -4947,12 +8636,24 @@ func marshalDeviceGroupRenderPassBeginInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupRenderPassBeginInfo(c)
 }
 
+func (d *DeviceGroupRenderPassBeginInfo) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupRenderPassBeginInfo. The caller is expected to
+// cast.
+func (d *DeviceGroupRenderPassBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceGroupCommandBufferBeginInfo struct {
 	native *C.VkDeviceGroupCommandBufferBeginInfo
 }
 
 func wrapDeviceGroupCommandBufferBeginInfo(p *C.VkDeviceGroupCommandBufferBeginInfo) *DeviceGroupCommandBufferBeginInfo {
 	v := DeviceGroupCommandBufferBeginInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupCommandBufferBeginInfo).free)
+
 	return &v
 }
 
@@ -4963,12 +8664,24 @@ func marshalDeviceGroupCommandBufferBeginInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupCommandBufferBeginInfo(c)
 }
 
+func (d *DeviceGroupCommandBufferBeginInfo) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupCommandBufferBeginInfo. The caller is expected to
+// cast.
+func (d *DeviceGroupCommandBufferBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceGroupSubmitInfo struct {
 	native *C.VkDeviceGroupSubmitInfo
 }
 
 func wrapDeviceGroupSubmitInfo(p *C.VkDeviceGroupSubmitInfo) *DeviceGroupSubmitInfo {
 	v := DeviceGroupSubmitInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupSubmitInfo).free)
+
 	return &v
 }
 
@@ -4979,12 +8692,24 @@ func marshalDeviceGroupSubmitInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupSubmitInfo(c)
 }
 
+func (d *DeviceGroupSubmitInfo) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupSubmitInfo. The caller is expected to
+// cast.
+func (d *DeviceGroupSubmitInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceGroupBindSparseInfo struct {
 	native *C.VkDeviceGroupBindSparseInfo
 }
 
 func wrapDeviceGroupBindSparseInfo(p *C.VkDeviceGroupBindSparseInfo) *DeviceGroupBindSparseInfo {
 	v := DeviceGroupBindSparseInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupBindSparseInfo).free)
+
 	return &v
 }
 
@@ -4995,12 +8720,24 @@ func marshalDeviceGroupBindSparseInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupBindSparseInfo(c)
 }
 
+func (d *DeviceGroupBindSparseInfo) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupBindSparseInfo. The caller is expected to
+// cast.
+func (d *DeviceGroupBindSparseInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type BindBufferMemoryDeviceGroupInfo struct {
 	native *C.VkBindBufferMemoryDeviceGroupInfo
 }
 
 func wrapBindBufferMemoryDeviceGroupInfo(p *C.VkBindBufferMemoryDeviceGroupInfo) *BindBufferMemoryDeviceGroupInfo {
 	v := BindBufferMemoryDeviceGroupInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindBufferMemoryDeviceGroupInfo).free)
+
 	return &v
 }
 
@@ -5011,12 +8748,24 @@ func marshalBindBufferMemoryDeviceGroupInfo(p uintptr) (interface{}, error) {
 	return wrapBindBufferMemoryDeviceGroupInfo(c)
 }
 
+func (b *BindBufferMemoryDeviceGroupInfo) free() {}
+
+// Native returns the pointer to *C.VkBindBufferMemoryDeviceGroupInfo. The caller is expected to
+// cast.
+func (b *BindBufferMemoryDeviceGroupInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BindImageMemoryDeviceGroupInfo struct {
 	native *C.VkBindImageMemoryDeviceGroupInfo
 }
 
 func wrapBindImageMemoryDeviceGroupInfo(p *C.VkBindImageMemoryDeviceGroupInfo) *BindImageMemoryDeviceGroupInfo {
 	v := BindImageMemoryDeviceGroupInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindImageMemoryDeviceGroupInfo).free)
+
 	return &v
 }
 
@@ -5027,12 +8776,24 @@ func marshalBindImageMemoryDeviceGroupInfo(p uintptr) (interface{}, error) {
 	return wrapBindImageMemoryDeviceGroupInfo(c)
 }
 
+func (b *BindImageMemoryDeviceGroupInfo) free() {}
+
+// Native returns the pointer to *C.VkBindImageMemoryDeviceGroupInfo. The caller is expected to
+// cast.
+func (b *BindImageMemoryDeviceGroupInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type PhysicalDeviceGroupProperties struct {
 	native *C.VkPhysicalDeviceGroupProperties
 }
 
 func wrapPhysicalDeviceGroupProperties(p *C.VkPhysicalDeviceGroupProperties) *PhysicalDeviceGroupProperties {
 	v := PhysicalDeviceGroupProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceGroupProperties).free)
+
 	return &v
 }
 
@@ -5043,12 +8804,24 @@ func marshalPhysicalDeviceGroupProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceGroupProperties(c)
 }
 
+func (p *PhysicalDeviceGroupProperties) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceGroupProperties. The caller is expected to
+// cast.
+func (p *PhysicalDeviceGroupProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DeviceGroupDeviceCreateInfo struct {
 	native *C.VkDeviceGroupDeviceCreateInfo
 }
 
 func wrapDeviceGroupDeviceCreateInfo(p *C.VkDeviceGroupDeviceCreateInfo) *DeviceGroupDeviceCreateInfo {
 	v := DeviceGroupDeviceCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupDeviceCreateInfo).free)
+
 	return &v
 }
 
@@ -5059,12 +8832,24 @@ func marshalDeviceGroupDeviceCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupDeviceCreateInfo(c)
 }
 
+func (d *DeviceGroupDeviceCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupDeviceCreateInfo. The caller is expected to
+// cast.
+func (d *DeviceGroupDeviceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type BufferMemoryRequirementsInfo2 struct {
 	native *C.VkBufferMemoryRequirementsInfo2
 }
 
 func wrapBufferMemoryRequirementsInfo2(p *C.VkBufferMemoryRequirementsInfo2) *BufferMemoryRequirementsInfo2 {
 	v := BufferMemoryRequirementsInfo2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferMemoryRequirementsInfo2).free)
+
 	return &v
 }
 
@@ -5075,12 +8860,24 @@ func marshalBufferMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
 	return wrapBufferMemoryRequirementsInfo2(c)
 }
 
+func (b *BufferMemoryRequirementsInfo2) free() {}
+
+// Native returns the pointer to *C.VkBufferMemoryRequirementsInfo2. The caller is expected to
+// cast.
+func (b *BufferMemoryRequirementsInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ImageMemoryRequirementsInfo2 struct {
 	native *C.VkImageMemoryRequirementsInfo2
 }
 
 func wrapImageMemoryRequirementsInfo2(p *C.VkImageMemoryRequirementsInfo2) *ImageMemoryRequirementsInfo2 {
 	v := ImageMemoryRequirementsInfo2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageMemoryRequirementsInfo2).free)
+
 	return &v
 }
 
@@ -5091,12 +8888,24 @@ func marshalImageMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
 	return wrapImageMemoryRequirementsInfo2(c)
 }
 
+func (i *ImageMemoryRequirementsInfo2) free() {}
+
+// Native returns the pointer to *C.VkImageMemoryRequirementsInfo2. The caller is expected to
+// cast.
+func (i *ImageMemoryRequirementsInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageSparseMemoryRequirementsInfo2 struct {
 	native *C.VkImageSparseMemoryRequirementsInfo2
 }
 
 func wrapImageSparseMemoryRequirementsInfo2(p *C.VkImageSparseMemoryRequirementsInfo2) *ImageSparseMemoryRequirementsInfo2 {
 	v := ImageSparseMemoryRequirementsInfo2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageSparseMemoryRequirementsInfo2).free)
+
 	return &v
 }
 
@@ -5107,12 +8916,24 @@ func marshalImageSparseMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
 	return wrapImageSparseMemoryRequirementsInfo2(c)
 }
 
+func (i *ImageSparseMemoryRequirementsInfo2) free() {}
+
+// Native returns the pointer to *C.VkImageSparseMemoryRequirementsInfo2. The caller is expected to
+// cast.
+func (i *ImageSparseMemoryRequirementsInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type MemoryRequirements2 struct {
 	native *C.VkMemoryRequirements2
 }
 
 func wrapMemoryRequirements2(p *C.VkMemoryRequirements2) *MemoryRequirements2 {
 	v := MemoryRequirements2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryRequirements2).free)
+
 	return &v
 }
 
@@ -5123,12 +8944,24 @@ func marshalMemoryRequirements2(p uintptr) (interface{}, error) {
 	return wrapMemoryRequirements2(c)
 }
 
+func (m *MemoryRequirements2) free() {}
+
+// Native returns the pointer to *C.VkMemoryRequirements2. The caller is expected to
+// cast.
+func (m *MemoryRequirements2) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryRequirements2KHR struct {
 	native *C.VkMemoryRequirements2KHR
 }
 
 func wrapMemoryRequirements2KHR(p *C.VkMemoryRequirements2KHR) *MemoryRequirements2KHR {
 	v := MemoryRequirements2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryRequirements2KHR).free)
+
 	return &v
 }
 
@@ -5139,12 +8972,24 @@ func marshalMemoryRequirements2KHR(p uintptr) (interface{}, error) {
 	return wrapMemoryRequirements2KHR(c)
 }
 
+func (m *MemoryRequirements2KHR) free() {}
+
+// Native returns the pointer to *C.VkMemoryRequirements2KHR. The caller is expected to
+// cast.
+func (m *MemoryRequirements2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type SparseImageMemoryRequirements2 struct {
 	native *C.VkSparseImageMemoryRequirements2
 }
 
 func wrapSparseImageMemoryRequirements2(p *C.VkSparseImageMemoryRequirements2) *SparseImageMemoryRequirements2 {
 	v := SparseImageMemoryRequirements2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageMemoryRequirements2).free)
+
 	return &v
 }
 
@@ -5155,12 +9000,24 @@ func marshalSparseImageMemoryRequirements2(p uintptr) (interface{}, error) {
 	return wrapSparseImageMemoryRequirements2(c)
 }
 
+func (s *SparseImageMemoryRequirements2) free() {}
+
+// Native returns the pointer to *C.VkSparseImageMemoryRequirements2. The caller is expected to
+// cast.
+func (s *SparseImageMemoryRequirements2) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PhysicalDeviceFeatures2 struct {
 	native *C.VkPhysicalDeviceFeatures2
 }
 
 func wrapPhysicalDeviceFeatures2(p *C.VkPhysicalDeviceFeatures2) *PhysicalDeviceFeatures2 {
 	v := PhysicalDeviceFeatures2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceFeatures2).free)
+
 	return &v
 }
 
@@ -5171,12 +9028,24 @@ func marshalPhysicalDeviceFeatures2(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceFeatures2(c)
 }
 
+func (p *PhysicalDeviceFeatures2) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceFeatures2. The caller is expected to
+// cast.
+func (p *PhysicalDeviceFeatures2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceProperties2 struct {
 	native *C.VkPhysicalDeviceProperties2
 }
 
 func wrapPhysicalDeviceProperties2(p *C.VkPhysicalDeviceProperties2) *PhysicalDeviceProperties2 {
 	v := PhysicalDeviceProperties2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceProperties2).free)
+
 	return &v
 }
 
@@ -5187,12 +9056,24 @@ func marshalPhysicalDeviceProperties2(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceProperties2(c)
 }
 
+func (p *PhysicalDeviceProperties2) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceProperties2. The caller is expected to
+// cast.
+func (p *PhysicalDeviceProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type FormatProperties2 struct {
 	native *C.VkFormatProperties2
 }
 
 func wrapFormatProperties2(p *C.VkFormatProperties2) *FormatProperties2 {
 	v := FormatProperties2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FormatProperties2).free)
+
 	return &v
 }
 
@@ -5203,12 +9084,24 @@ func marshalFormatProperties2(p uintptr) (interface{}, error) {
 	return wrapFormatProperties2(c)
 }
 
+func (f *FormatProperties2) free() {}
+
+// Native returns the pointer to *C.VkFormatProperties2. The caller is expected to
+// cast.
+func (f *FormatProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type ImageFormatProperties2 struct {
 	native *C.VkImageFormatProperties2
 }
 
 func wrapImageFormatProperties2(p *C.VkImageFormatProperties2) *ImageFormatProperties2 {
 	v := ImageFormatProperties2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageFormatProperties2).free)
+
 	return &v
 }
 
@@ -5219,12 +9112,24 @@ func marshalImageFormatProperties2(p uintptr) (interface{}, error) {
 	return wrapImageFormatProperties2(c)
 }
 
+func (i *ImageFormatProperties2) free() {}
+
+// Native returns the pointer to *C.VkImageFormatProperties2. The caller is expected to
+// cast.
+func (i *ImageFormatProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type PhysicalDeviceImageFormatInfo2 struct {
 	native *C.VkPhysicalDeviceImageFormatInfo2
 }
 
 func wrapPhysicalDeviceImageFormatInfo2(p *C.VkPhysicalDeviceImageFormatInfo2) *PhysicalDeviceImageFormatInfo2 {
 	v := PhysicalDeviceImageFormatInfo2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceImageFormatInfo2).free)
+
 	return &v
 }
 
@@ -5235,12 +9140,24 @@ func marshalPhysicalDeviceImageFormatInfo2(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceImageFormatInfo2(c)
 }
 
+func (p *PhysicalDeviceImageFormatInfo2) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceImageFormatInfo2. The caller is expected to
+// cast.
+func (p *PhysicalDeviceImageFormatInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type QueueFamilyProperties2 struct {
 	native *C.VkQueueFamilyProperties2
 }
 
 func wrapQueueFamilyProperties2(p *C.VkQueueFamilyProperties2) *QueueFamilyProperties2 {
 	v := QueueFamilyProperties2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueueFamilyProperties2).free)
+
 	return &v
 }
 
@@ -5251,12 +9168,24 @@ func marshalQueueFamilyProperties2(p uintptr) (interface{}, error) {
 	return wrapQueueFamilyProperties2(c)
 }
 
+func (q *QueueFamilyProperties2) free() {}
+
+// Native returns the pointer to *C.VkQueueFamilyProperties2. The caller is expected to
+// cast.
+func (q *QueueFamilyProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type PhysicalDeviceMemoryProperties2 struct {
 	native *C.VkPhysicalDeviceMemoryProperties2
 }
 
 func wrapPhysicalDeviceMemoryProperties2(p *C.VkPhysicalDeviceMemoryProperties2) *PhysicalDeviceMemoryProperties2 {
 	v := PhysicalDeviceMemoryProperties2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMemoryProperties2).free)
+
 	return &v
 }
 
@@ -5267,12 +9196,24 @@ func marshalPhysicalDeviceMemoryProperties2(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMemoryProperties2(c)
 }
 
+func (p *PhysicalDeviceMemoryProperties2) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMemoryProperties2. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMemoryProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SparseImageFormatProperties2 struct {
 	native *C.VkSparseImageFormatProperties2
 }
 
 func wrapSparseImageFormatProperties2(p *C.VkSparseImageFormatProperties2) *SparseImageFormatProperties2 {
 	v := SparseImageFormatProperties2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageFormatProperties2).free)
+
 	return &v
 }
 
@@ -5283,12 +9224,24 @@ func marshalSparseImageFormatProperties2(p uintptr) (interface{}, error) {
 	return wrapSparseImageFormatProperties2(c)
 }
 
+func (s *SparseImageFormatProperties2) free() {}
+
+// Native returns the pointer to *C.VkSparseImageFormatProperties2. The caller is expected to
+// cast.
+func (s *SparseImageFormatProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PhysicalDeviceSparseImageFormatInfo2 struct {
 	native *C.VkPhysicalDeviceSparseImageFormatInfo2
 }
 
 func wrapPhysicalDeviceSparseImageFormatInfo2(p *C.VkPhysicalDeviceSparseImageFormatInfo2) *PhysicalDeviceSparseImageFormatInfo2 {
 	v := PhysicalDeviceSparseImageFormatInfo2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceSparseImageFormatInfo2).free)
+
 	return &v
 }
 
@@ -5299,12 +9252,24 @@ func marshalPhysicalDeviceSparseImageFormatInfo2(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceSparseImageFormatInfo2(c)
 }
 
+func (p *PhysicalDeviceSparseImageFormatInfo2) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceSparseImageFormatInfo2. The caller is expected to
+// cast.
+func (p *PhysicalDeviceSparseImageFormatInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDevicePointClippingProperties struct {
 	native *C.VkPhysicalDevicePointClippingProperties
 }
 
 func wrapPhysicalDevicePointClippingProperties(p *C.VkPhysicalDevicePointClippingProperties) *PhysicalDevicePointClippingProperties {
 	v := PhysicalDevicePointClippingProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDevicePointClippingProperties).free)
+
 	return &v
 }
 
@@ -5315,12 +9280,24 @@ func marshalPhysicalDevicePointClippingProperties(p uintptr) (interface{}, error
 	return wrapPhysicalDevicePointClippingProperties(c)
 }
 
+func (p *PhysicalDevicePointClippingProperties) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDevicePointClippingProperties. The caller is expected to
+// cast.
+func (p *PhysicalDevicePointClippingProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type InputAttachmentAspectReference struct {
 	native *C.VkInputAttachmentAspectReference
 }
 
 func wrapInputAttachmentAspectReference(p *C.VkInputAttachmentAspectReference) *InputAttachmentAspectReference {
 	v := InputAttachmentAspectReference{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*InputAttachmentAspectReference).free)
+
 	return &v
 }
 
@@ -5331,12 +9308,24 @@ func marshalInputAttachmentAspectReference(p uintptr) (interface{}, error) {
 	return wrapInputAttachmentAspectReference(c)
 }
 
+func (i *InputAttachmentAspectReference) free() {}
+
+// Native returns the pointer to *C.VkInputAttachmentAspectReference. The caller is expected to
+// cast.
+func (i *InputAttachmentAspectReference) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type RenderPassInputAttachmentAspectCreateInfo struct {
 	native *C.VkRenderPassInputAttachmentAspectCreateInfo
 }
 
 func wrapRenderPassInputAttachmentAspectCreateInfo(p *C.VkRenderPassInputAttachmentAspectCreateInfo) *RenderPassInputAttachmentAspectCreateInfo {
 	v := RenderPassInputAttachmentAspectCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPassInputAttachmentAspectCreateInfo).free)
+
 	return &v
 }
 
@@ -5347,12 +9336,24 @@ func marshalRenderPassInputAttachmentAspectCreateInfo(p uintptr) (interface{}, e
 	return wrapRenderPassInputAttachmentAspectCreateInfo(c)
 }
 
+func (r *RenderPassInputAttachmentAspectCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkRenderPassInputAttachmentAspectCreateInfo. The caller is expected to
+// cast.
+func (r *RenderPassInputAttachmentAspectCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type ImageViewUsageCreateInfo struct {
 	native *C.VkImageViewUsageCreateInfo
 }
 
 func wrapImageViewUsageCreateInfo(p *C.VkImageViewUsageCreateInfo) *ImageViewUsageCreateInfo {
 	v := ImageViewUsageCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageViewUsageCreateInfo).free)
+
 	return &v
 }
 
@@ -5363,12 +9364,24 @@ func marshalImageViewUsageCreateInfo(p uintptr) (interface{}, error) {
 	return wrapImageViewUsageCreateInfo(c)
 }
 
+func (i *ImageViewUsageCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkImageViewUsageCreateInfo. The caller is expected to
+// cast.
+func (i *ImageViewUsageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type PipelineTessellationDomainOriginStateCreateInfo struct {
 	native *C.VkPipelineTessellationDomainOriginStateCreateInfo
 }
 
 func wrapPipelineTessellationDomainOriginStateCreateInfo(p *C.VkPipelineTessellationDomainOriginStateCreateInfo) *PipelineTessellationDomainOriginStateCreateInfo {
 	v := PipelineTessellationDomainOriginStateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineTessellationDomainOriginStateCreateInfo).free)
+
 	return &v
 }
 
@@ -5379,12 +9392,24 @@ func marshalPipelineTessellationDomainOriginStateCreateInfo(p uintptr) (interfac
 	return wrapPipelineTessellationDomainOriginStateCreateInfo(c)
 }
 
+func (p *PipelineTessellationDomainOriginStateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkPipelineTessellationDomainOriginStateCreateInfo. The caller is expected to
+// cast.
+func (p *PipelineTessellationDomainOriginStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type RenderPassMultiviewCreateInfo struct {
 	native *C.VkRenderPassMultiviewCreateInfo
 }
 
 func wrapRenderPassMultiviewCreateInfo(p *C.VkRenderPassMultiviewCreateInfo) *RenderPassMultiviewCreateInfo {
 	v := RenderPassMultiviewCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPassMultiviewCreateInfo).free)
+
 	return &v
 }
 
@@ -5395,12 +9420,24 @@ func marshalRenderPassMultiviewCreateInfo(p uintptr) (interface{}, error) {
 	return wrapRenderPassMultiviewCreateInfo(c)
 }
 
+func (r *RenderPassMultiviewCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkRenderPassMultiviewCreateInfo. The caller is expected to
+// cast.
+func (r *RenderPassMultiviewCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type PhysicalDeviceMultiviewFeatures struct {
 	native *C.VkPhysicalDeviceMultiviewFeatures
 }
 
 func wrapPhysicalDeviceMultiviewFeatures(p *C.VkPhysicalDeviceMultiviewFeatures) *PhysicalDeviceMultiviewFeatures {
 	v := PhysicalDeviceMultiviewFeatures{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMultiviewFeatures).free)
+
 	return &v
 }
 
@@ -5411,12 +9448,24 @@ func marshalPhysicalDeviceMultiviewFeatures(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMultiviewFeatures(c)
 }
 
+func (p *PhysicalDeviceMultiviewFeatures) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMultiviewFeatures. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMultiviewFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceMultiviewProperties struct {
 	native *C.VkPhysicalDeviceMultiviewProperties
 }
 
 func wrapPhysicalDeviceMultiviewProperties(p *C.VkPhysicalDeviceMultiviewProperties) *PhysicalDeviceMultiviewProperties {
 	v := PhysicalDeviceMultiviewProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMultiviewProperties).free)
+
 	return &v
 }
 
@@ -5427,12 +9476,24 @@ func marshalPhysicalDeviceMultiviewProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMultiviewProperties(c)
 }
 
+func (p *PhysicalDeviceMultiviewProperties) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMultiviewProperties. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMultiviewProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceVariablePointersFeatures struct {
 	native *C.VkPhysicalDeviceVariablePointersFeatures
 }
 
 func wrapPhysicalDeviceVariablePointersFeatures(p *C.VkPhysicalDeviceVariablePointersFeatures) *PhysicalDeviceVariablePointersFeatures {
 	v := PhysicalDeviceVariablePointersFeatures{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceVariablePointersFeatures).free)
+
 	return &v
 }
 
@@ -5443,12 +9504,24 @@ func marshalPhysicalDeviceVariablePointersFeatures(p uintptr) (interface{}, erro
 	return wrapPhysicalDeviceVariablePointersFeatures(c)
 }
 
+func (p *PhysicalDeviceVariablePointersFeatures) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceVariablePointersFeatures. The caller is expected to
+// cast.
+func (p *PhysicalDeviceVariablePointersFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceVariablePointerFeatures struct {
 	native *C.VkPhysicalDeviceVariablePointerFeatures
 }
 
 func wrapPhysicalDeviceVariablePointerFeatures(p *C.VkPhysicalDeviceVariablePointerFeatures) *PhysicalDeviceVariablePointerFeatures {
 	v := PhysicalDeviceVariablePointerFeatures{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceVariablePointerFeatures).free)
+
 	return &v
 }
 
@@ -5459,12 +9532,24 @@ func marshalPhysicalDeviceVariablePointerFeatures(p uintptr) (interface{}, error
 	return wrapPhysicalDeviceVariablePointerFeatures(c)
 }
 
+func (p *PhysicalDeviceVariablePointerFeatures) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceVariablePointerFeatures. The caller is expected to
+// cast.
+func (p *PhysicalDeviceVariablePointerFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceProtectedMemoryFeatures struct {
 	native *C.VkPhysicalDeviceProtectedMemoryFeatures
 }
 
 func wrapPhysicalDeviceProtectedMemoryFeatures(p *C.VkPhysicalDeviceProtectedMemoryFeatures) *PhysicalDeviceProtectedMemoryFeatures {
 	v := PhysicalDeviceProtectedMemoryFeatures{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceProtectedMemoryFeatures).free)
+
 	return &v
 }
 
@@ -5475,12 +9560,24 @@ func marshalPhysicalDeviceProtectedMemoryFeatures(p uintptr) (interface{}, error
 	return wrapPhysicalDeviceProtectedMemoryFeatures(c)
 }
 
+func (p *PhysicalDeviceProtectedMemoryFeatures) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceProtectedMemoryFeatures. The caller is expected to
+// cast.
+func (p *PhysicalDeviceProtectedMemoryFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceProtectedMemoryProperties struct {
 	native *C.VkPhysicalDeviceProtectedMemoryProperties
 }
 
 func wrapPhysicalDeviceProtectedMemoryProperties(p *C.VkPhysicalDeviceProtectedMemoryProperties) *PhysicalDeviceProtectedMemoryProperties {
 	v := PhysicalDeviceProtectedMemoryProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceProtectedMemoryProperties).free)
+
 	return &v
 }
 
@@ -5491,12 +9588,24 @@ func marshalPhysicalDeviceProtectedMemoryProperties(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceProtectedMemoryProperties(c)
 }
 
+func (p *PhysicalDeviceProtectedMemoryProperties) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceProtectedMemoryProperties. The caller is expected to
+// cast.
+func (p *PhysicalDeviceProtectedMemoryProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DeviceQueueInfo2 struct {
 	native *C.VkDeviceQueueInfo2
 }
 
 func wrapDeviceQueueInfo2(p *C.VkDeviceQueueInfo2) *DeviceQueueInfo2 {
 	v := DeviceQueueInfo2{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceQueueInfo2).free)
+
 	return &v
 }
 
@@ -5507,12 +9616,24 @@ func marshalDeviceQueueInfo2(p uintptr) (interface{}, error) {
 	return wrapDeviceQueueInfo2(c)
 }
 
+func (d *DeviceQueueInfo2) free() {}
+
+// Native returns the pointer to *C.VkDeviceQueueInfo2. The caller is expected to
+// cast.
+func (d *DeviceQueueInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type ProtectedSubmitInfo struct {
 	native *C.VkProtectedSubmitInfo
 }
 
 func wrapProtectedSubmitInfo(p *C.VkProtectedSubmitInfo) *ProtectedSubmitInfo {
 	v := ProtectedSubmitInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ProtectedSubmitInfo).free)
+
 	return &v
 }
 
@@ -5523,12 +9644,24 @@ func marshalProtectedSubmitInfo(p uintptr) (interface{}, error) {
 	return wrapProtectedSubmitInfo(c)
 }
 
+func (p *ProtectedSubmitInfo) free() {}
+
+// Native returns the pointer to *C.VkProtectedSubmitInfo. The caller is expected to
+// cast.
+func (p *ProtectedSubmitInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SamplerYcbcrConversionCreateInfo struct {
 	native *C.VkSamplerYcbcrConversionCreateInfo
 }
 
 func wrapSamplerYcbcrConversionCreateInfo(p *C.VkSamplerYcbcrConversionCreateInfo) *SamplerYcbcrConversionCreateInfo {
 	v := SamplerYcbcrConversionCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrConversionCreateInfo).free)
+
 	return &v
 }
 
@@ -5539,12 +9672,24 @@ func marshalSamplerYcbcrConversionCreateInfo(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrConversionCreateInfo(c)
 }
 
+func (s *SamplerYcbcrConversionCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrConversionCreateInfo. The caller is expected to
+// cast.
+func (s *SamplerYcbcrConversionCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SamplerYcbcrConversionInfo struct {
 	native *C.VkSamplerYcbcrConversionInfo
 }
 
 func wrapSamplerYcbcrConversionInfo(p *C.VkSamplerYcbcrConversionInfo) *SamplerYcbcrConversionInfo {
 	v := SamplerYcbcrConversionInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrConversionInfo).free)
+
 	return &v
 }
 
@@ -5555,12 +9700,24 @@ func marshalSamplerYcbcrConversionInfo(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrConversionInfo(c)
 }
 
+func (s *SamplerYcbcrConversionInfo) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrConversionInfo. The caller is expected to
+// cast.
+func (s *SamplerYcbcrConversionInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type BindImagePlaneMemoryInfo struct {
 	native *C.VkBindImagePlaneMemoryInfo
 }
 
 func wrapBindImagePlaneMemoryInfo(p *C.VkBindImagePlaneMemoryInfo) *BindImagePlaneMemoryInfo {
 	v := BindImagePlaneMemoryInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindImagePlaneMemoryInfo).free)
+
 	return &v
 }
 
@@ -5571,12 +9728,24 @@ func marshalBindImagePlaneMemoryInfo(p uintptr) (interface{}, error) {
 	return wrapBindImagePlaneMemoryInfo(c)
 }
 
+func (b *BindImagePlaneMemoryInfo) free() {}
+
+// Native returns the pointer to *C.VkBindImagePlaneMemoryInfo. The caller is expected to
+// cast.
+func (b *BindImagePlaneMemoryInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ImagePlaneMemoryRequirementsInfo struct {
 	native *C.VkImagePlaneMemoryRequirementsInfo
 }
 
 func wrapImagePlaneMemoryRequirementsInfo(p *C.VkImagePlaneMemoryRequirementsInfo) *ImagePlaneMemoryRequirementsInfo {
 	v := ImagePlaneMemoryRequirementsInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImagePlaneMemoryRequirementsInfo).free)
+
 	return &v
 }
 
@@ -5587,12 +9756,24 @@ func marshalImagePlaneMemoryRequirementsInfo(p uintptr) (interface{}, error) {
 	return wrapImagePlaneMemoryRequirementsInfo(c)
 }
 
+func (i *ImagePlaneMemoryRequirementsInfo) free() {}
+
+// Native returns the pointer to *C.VkImagePlaneMemoryRequirementsInfo. The caller is expected to
+// cast.
+func (i *ImagePlaneMemoryRequirementsInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type PhysicalDeviceSamplerYcbcrConversionFeatures struct {
 	native *C.VkPhysicalDeviceSamplerYcbcrConversionFeatures
 }
 
 func wrapPhysicalDeviceSamplerYcbcrConversionFeatures(p *C.VkPhysicalDeviceSamplerYcbcrConversionFeatures) *PhysicalDeviceSamplerYcbcrConversionFeatures {
 	v := PhysicalDeviceSamplerYcbcrConversionFeatures{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceSamplerYcbcrConversionFeatures).free)
+
 	return &v
 }
 
@@ -5603,12 +9784,24 @@ func marshalPhysicalDeviceSamplerYcbcrConversionFeatures(p uintptr) (interface{}
 	return wrapPhysicalDeviceSamplerYcbcrConversionFeatures(c)
 }
 
+func (p *PhysicalDeviceSamplerYcbcrConversionFeatures) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceSamplerYcbcrConversionFeatures. The caller is expected to
+// cast.
+func (p *PhysicalDeviceSamplerYcbcrConversionFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SamplerYcbcrConversionImageFormatProperties struct {
 	native *C.VkSamplerYcbcrConversionImageFormatProperties
 }
 
 func wrapSamplerYcbcrConversionImageFormatProperties(p *C.VkSamplerYcbcrConversionImageFormatProperties) *SamplerYcbcrConversionImageFormatProperties {
 	v := SamplerYcbcrConversionImageFormatProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrConversionImageFormatProperties).free)
+
 	return &v
 }
 
@@ -5619,12 +9812,24 @@ func marshalSamplerYcbcrConversionImageFormatProperties(p uintptr) (interface{},
 	return wrapSamplerYcbcrConversionImageFormatProperties(c)
 }
 
+func (s *SamplerYcbcrConversionImageFormatProperties) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrConversionImageFormatProperties. The caller is expected to
+// cast.
+func (s *SamplerYcbcrConversionImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type DescriptorUpdateTemplateEntry struct {
 	native *C.VkDescriptorUpdateTemplateEntry
 }
 
 func wrapDescriptorUpdateTemplateEntry(p *C.VkDescriptorUpdateTemplateEntry) *DescriptorUpdateTemplateEntry {
 	v := DescriptorUpdateTemplateEntry{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateEntry).free)
+
 	return &v
 }
 
@@ -5635,12 +9840,24 @@ func marshalDescriptorUpdateTemplateEntry(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateEntry(c)
 }
 
+func (d *DescriptorUpdateTemplateEntry) free() {}
+
+// Native returns the pointer to *C.VkDescriptorUpdateTemplateEntry. The caller is expected to
+// cast.
+func (d *DescriptorUpdateTemplateEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorUpdateTemplateCreateInfo struct {
 	native *C.VkDescriptorUpdateTemplateCreateInfo
 }
 
 func wrapDescriptorUpdateTemplateCreateInfo(p *C.VkDescriptorUpdateTemplateCreateInfo) *DescriptorUpdateTemplateCreateInfo {
 	v := DescriptorUpdateTemplateCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateCreateInfo).free)
+
 	return &v
 }
 
@@ -5651,12 +9868,24 @@ func marshalDescriptorUpdateTemplateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateCreateInfo(c)
 }
 
+func (d *DescriptorUpdateTemplateCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateInfo. The caller is expected to
+// cast.
+func (d *DescriptorUpdateTemplateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type ExternalMemoryProperties struct {
 	native *C.VkExternalMemoryProperties
 }
 
 func wrapExternalMemoryProperties(p *C.VkExternalMemoryProperties) *ExternalMemoryProperties {
 	v := ExternalMemoryProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryProperties).free)
+
 	return &v
 }
 
@@ -5667,12 +9896,24 @@ func marshalExternalMemoryProperties(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryProperties(c)
 }
 
+func (e *ExternalMemoryProperties) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryProperties. The caller is expected to
+// cast.
+func (e *ExternalMemoryProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceExternalImageFormatInfo struct {
 	native *C.VkPhysicalDeviceExternalImageFormatInfo
 }
 
 func wrapPhysicalDeviceExternalImageFormatInfo(p *C.VkPhysicalDeviceExternalImageFormatInfo) *PhysicalDeviceExternalImageFormatInfo {
 	v := PhysicalDeviceExternalImageFormatInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceExternalImageFormatInfo).free)
+
 	return &v
 }
 
@@ -5683,12 +9924,24 @@ func marshalPhysicalDeviceExternalImageFormatInfo(p uintptr) (interface{}, error
 	return wrapPhysicalDeviceExternalImageFormatInfo(c)
 }
 
+func (p *PhysicalDeviceExternalImageFormatInfo) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceExternalImageFormatInfo. The caller is expected to
+// cast.
+func (p *PhysicalDeviceExternalImageFormatInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalImageFormatProperties struct {
 	native *C.VkExternalImageFormatProperties
 }
 
 func wrapExternalImageFormatProperties(p *C.VkExternalImageFormatProperties) *ExternalImageFormatProperties {
 	v := ExternalImageFormatProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalImageFormatProperties).free)
+
 	return &v
 }
 
@@ -5699,12 +9952,24 @@ func marshalExternalImageFormatProperties(p uintptr) (interface{}, error) {
 	return wrapExternalImageFormatProperties(c)
 }
 
+func (e *ExternalImageFormatProperties) free() {}
+
+// Native returns the pointer to *C.VkExternalImageFormatProperties. The caller is expected to
+// cast.
+func (e *ExternalImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceExternalBufferInfo struct {
 	native *C.VkPhysicalDeviceExternalBufferInfo
 }
 
 func wrapPhysicalDeviceExternalBufferInfo(p *C.VkPhysicalDeviceExternalBufferInfo) *PhysicalDeviceExternalBufferInfo {
 	v := PhysicalDeviceExternalBufferInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceExternalBufferInfo).free)
+
 	return &v
 }
 
@@ -5715,12 +9980,24 @@ func marshalPhysicalDeviceExternalBufferInfo(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceExternalBufferInfo(c)
 }
 
+func (p *PhysicalDeviceExternalBufferInfo) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceExternalBufferInfo. The caller is expected to
+// cast.
+func (p *PhysicalDeviceExternalBufferInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalBufferProperties struct {
 	native *C.VkExternalBufferProperties
 }
 
 func wrapExternalBufferProperties(p *C.VkExternalBufferProperties) *ExternalBufferProperties {
 	v := ExternalBufferProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalBufferProperties).free)
+
 	return &v
 }
 
@@ -5731,12 +10008,24 @@ func marshalExternalBufferProperties(p uintptr) (interface{}, error) {
 	return wrapExternalBufferProperties(c)
 }
 
+func (e *ExternalBufferProperties) free() {}
+
+// Native returns the pointer to *C.VkExternalBufferProperties. The caller is expected to
+// cast.
+func (e *ExternalBufferProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceIDProperties struct {
 	native *C.VkPhysicalDeviceIDProperties
 }
 
 func wrapPhysicalDeviceIDProperties(p *C.VkPhysicalDeviceIDProperties) *PhysicalDeviceIDProperties {
 	v := PhysicalDeviceIDProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceIDProperties).free)
+
 	return &v
 }
 
@@ -5747,12 +10036,24 @@ func marshalPhysicalDeviceIDProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceIDProperties(c)
 }
 
+func (p *PhysicalDeviceIDProperties) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceIDProperties. The caller is expected to
+// cast.
+func (p *PhysicalDeviceIDProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalMemoryImageCreateInfo struct {
 	native *C.VkExternalMemoryImageCreateInfo
 }
 
 func wrapExternalMemoryImageCreateInfo(p *C.VkExternalMemoryImageCreateInfo) *ExternalMemoryImageCreateInfo {
 	v := ExternalMemoryImageCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryImageCreateInfo).free)
+
 	return &v
 }
 
@@ -5763,12 +10064,24 @@ func marshalExternalMemoryImageCreateInfo(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryImageCreateInfo(c)
 }
 
+func (e *ExternalMemoryImageCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryImageCreateInfo. The caller is expected to
+// cast.
+func (e *ExternalMemoryImageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryBufferCreateInfo struct {
 	native *C.VkExternalMemoryBufferCreateInfo
 }
 
 func wrapExternalMemoryBufferCreateInfo(p *C.VkExternalMemoryBufferCreateInfo) *ExternalMemoryBufferCreateInfo {
 	v := ExternalMemoryBufferCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryBufferCreateInfo).free)
+
 	return &v
 }
 
@@ -5779,12 +10092,24 @@ func marshalExternalMemoryBufferCreateInfo(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryBufferCreateInfo(c)
 }
 
+func (e *ExternalMemoryBufferCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryBufferCreateInfo. The caller is expected to
+// cast.
+func (e *ExternalMemoryBufferCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExportMemoryAllocateInfo struct {
 	native *C.VkExportMemoryAllocateInfo
 }
 
 func wrapExportMemoryAllocateInfo(p *C.VkExportMemoryAllocateInfo) *ExportMemoryAllocateInfo {
 	v := ExportMemoryAllocateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExportMemoryAllocateInfo).free)
+
 	return &v
 }
 
@@ -5795,12 +10120,24 @@ func marshalExportMemoryAllocateInfo(p uintptr) (interface{}, error) {
 	return wrapExportMemoryAllocateInfo(c)
 }
 
+func (e *ExportMemoryAllocateInfo) free() {}
+
+// Native returns the pointer to *C.VkExportMemoryAllocateInfo. The caller is expected to
+// cast.
+func (e *ExportMemoryAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceExternalFenceInfo struct {
 	native *C.VkPhysicalDeviceExternalFenceInfo
 }
 
 func wrapPhysicalDeviceExternalFenceInfo(p *C.VkPhysicalDeviceExternalFenceInfo) *PhysicalDeviceExternalFenceInfo {
 	v := PhysicalDeviceExternalFenceInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceExternalFenceInfo).free)
+
 	return &v
 }
 
@@ -5811,12 +10148,24 @@ func marshalPhysicalDeviceExternalFenceInfo(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceExternalFenceInfo(c)
 }
 
+func (p *PhysicalDeviceExternalFenceInfo) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceExternalFenceInfo. The caller is expected to
+// cast.
+func (p *PhysicalDeviceExternalFenceInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalFenceProperties struct {
 	native *C.VkExternalFenceProperties
 }
 
 func wrapExternalFenceProperties(p *C.VkExternalFenceProperties) *ExternalFenceProperties {
 	v := ExternalFenceProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalFenceProperties).free)
+
 	return &v
 }
 
@@ -5827,12 +10176,24 @@ func marshalExternalFenceProperties(p uintptr) (interface{}, error) {
 	return wrapExternalFenceProperties(c)
 }
 
+func (e *ExternalFenceProperties) free() {}
+
+// Native returns the pointer to *C.VkExternalFenceProperties. The caller is expected to
+// cast.
+func (e *ExternalFenceProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExportFenceCreateInfo struct {
 	native *C.VkExportFenceCreateInfo
 }
 
 func wrapExportFenceCreateInfo(p *C.VkExportFenceCreateInfo) *ExportFenceCreateInfo {
 	v := ExportFenceCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExportFenceCreateInfo).free)
+
 	return &v
 }
 
@@ -5843,12 +10204,24 @@ func marshalExportFenceCreateInfo(p uintptr) (interface{}, error) {
 	return wrapExportFenceCreateInfo(c)
 }
 
+func (e *ExportFenceCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkExportFenceCreateInfo. The caller is expected to
+// cast.
+func (e *ExportFenceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExportSemaphoreCreateInfo struct {
 	native *C.VkExportSemaphoreCreateInfo
 }
 
 func wrapExportSemaphoreCreateInfo(p *C.VkExportSemaphoreCreateInfo) *ExportSemaphoreCreateInfo {
 	v := ExportSemaphoreCreateInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExportSemaphoreCreateInfo).free)
+
 	return &v
 }
 
@@ -5859,12 +10232,24 @@ func marshalExportSemaphoreCreateInfo(p uintptr) (interface{}, error) {
 	return wrapExportSemaphoreCreateInfo(c)
 }
 
+func (e *ExportSemaphoreCreateInfo) free() {}
+
+// Native returns the pointer to *C.VkExportSemaphoreCreateInfo. The caller is expected to
+// cast.
+func (e *ExportSemaphoreCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceExternalSemaphoreInfo struct {
 	native *C.VkPhysicalDeviceExternalSemaphoreInfo
 }
 
 func wrapPhysicalDeviceExternalSemaphoreInfo(p *C.VkPhysicalDeviceExternalSemaphoreInfo) *PhysicalDeviceExternalSemaphoreInfo {
 	v := PhysicalDeviceExternalSemaphoreInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceExternalSemaphoreInfo).free)
+
 	return &v
 }
 
@@ -5875,12 +10260,24 @@ func marshalPhysicalDeviceExternalSemaphoreInfo(p uintptr) (interface{}, error) 
 	return wrapPhysicalDeviceExternalSemaphoreInfo(c)
 }
 
+func (p *PhysicalDeviceExternalSemaphoreInfo) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceExternalSemaphoreInfo. The caller is expected to
+// cast.
+func (p *PhysicalDeviceExternalSemaphoreInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalSemaphoreProperties struct {
 	native *C.VkExternalSemaphoreProperties
 }
 
 func wrapExternalSemaphoreProperties(p *C.VkExternalSemaphoreProperties) *ExternalSemaphoreProperties {
 	v := ExternalSemaphoreProperties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalSemaphoreProperties).free)
+
 	return &v
 }
 
@@ -5891,12 +10288,24 @@ func marshalExternalSemaphoreProperties(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphoreProperties(c)
 }
 
+func (e *ExternalSemaphoreProperties) free() {}
+
+// Native returns the pointer to *C.VkExternalSemaphoreProperties. The caller is expected to
+// cast.
+func (e *ExternalSemaphoreProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceMaintenance3Properties struct {
 	native *C.VkPhysicalDeviceMaintenance3Properties
 }
 
 func wrapPhysicalDeviceMaintenance3Properties(p *C.VkPhysicalDeviceMaintenance3Properties) *PhysicalDeviceMaintenance3Properties {
 	v := PhysicalDeviceMaintenance3Properties{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMaintenance3Properties).free)
+
 	return &v
 }
 
@@ -5907,12 +10316,24 @@ func marshalPhysicalDeviceMaintenance3Properties(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceMaintenance3Properties(c)
 }
 
+func (p *PhysicalDeviceMaintenance3Properties) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMaintenance3Properties. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMaintenance3Properties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DescriptorSetLayoutSupport struct {
 	native *C.VkDescriptorSetLayoutSupport
 }
 
 func wrapDescriptorSetLayoutSupport(p *C.VkDescriptorSetLayoutSupport) *DescriptorSetLayoutSupport {
 	v := DescriptorSetLayoutSupport{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetLayoutSupport).free)
+
 	return &v
 }
 
@@ -5923,12 +10344,24 @@ func marshalDescriptorSetLayoutSupport(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutSupport(c)
 }
 
+func (d *DescriptorSetLayoutSupport) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetLayoutSupport. The caller is expected to
+// cast.
+func (d *DescriptorSetLayoutSupport) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PhysicalDeviceShaderDrawParametersFeatures struct {
 	native *C.VkPhysicalDeviceShaderDrawParametersFeatures
 }
 
 func wrapPhysicalDeviceShaderDrawParametersFeatures(p *C.VkPhysicalDeviceShaderDrawParametersFeatures) *PhysicalDeviceShaderDrawParametersFeatures {
 	v := PhysicalDeviceShaderDrawParametersFeatures{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceShaderDrawParametersFeatures).free)
+
 	return &v
 }
 
@@ -5939,12 +10372,24 @@ func marshalPhysicalDeviceShaderDrawParametersFeatures(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceShaderDrawParametersFeatures(c)
 }
 
+func (p *PhysicalDeviceShaderDrawParametersFeatures) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceShaderDrawParametersFeatures. The caller is expected to
+// cast.
+func (p *PhysicalDeviceShaderDrawParametersFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceShaderDrawParameterFeatures struct {
 	native *C.VkPhysicalDeviceShaderDrawParameterFeatures
 }
 
 func wrapPhysicalDeviceShaderDrawParameterFeatures(p *C.VkPhysicalDeviceShaderDrawParameterFeatures) *PhysicalDeviceShaderDrawParameterFeatures {
 	v := PhysicalDeviceShaderDrawParameterFeatures{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceShaderDrawParameterFeatures).free)
+
 	return &v
 }
 
@@ -5955,12 +10400,24 @@ func marshalPhysicalDeviceShaderDrawParameterFeatures(p uintptr) (interface{}, e
 	return wrapPhysicalDeviceShaderDrawParameterFeatures(c)
 }
 
+func (p *PhysicalDeviceShaderDrawParameterFeatures) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceShaderDrawParameterFeatures. The caller is expected to
+// cast.
+func (p *PhysicalDeviceShaderDrawParameterFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SurfaceKHR struct {
 	native *C.VkSurfaceKHR
 }
 
 func wrapSurfaceKHR(p *C.VkSurfaceKHR) *SurfaceKHR {
 	v := SurfaceKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceKHR).free)
+
 	return &v
 }
 
@@ -5971,12 +10428,24 @@ func marshalSurfaceKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceKHR(c)
 }
 
+func (s *SurfaceKHR) free() {}
+
+// Native returns the pointer to *C.VkSurfaceKHR. The caller is expected to
+// cast.
+func (s *SurfaceKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ColorSpaceKHR struct {
 	native *C.VkColorSpaceKHR
 }
 
 func wrapColorSpaceKHR(p *C.VkColorSpaceKHR) *ColorSpaceKHR {
 	v := ColorSpaceKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ColorSpaceKHR).free)
+
 	return &v
 }
 
@@ -5987,12 +10456,24 @@ func marshalColorSpaceKHR(p uintptr) (interface{}, error) {
 	return wrapColorSpaceKHR(c)
 }
 
+func (c *ColorSpaceKHR) free() {}
+
+// Native returns the pointer to *C.VkColorSpaceKHR. The caller is expected to
+// cast.
+func (c *ColorSpaceKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PresentModeKHR struct {
 	native *C.VkPresentModeKHR
 }
 
 func wrapPresentModeKHR(p *C.VkPresentModeKHR) *PresentModeKHR {
 	v := PresentModeKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PresentModeKHR).free)
+
 	return &v
 }
 
@@ -6003,12 +10484,24 @@ func marshalPresentModeKHR(p uintptr) (interface{}, error) {
 	return wrapPresentModeKHR(c)
 }
 
+func (p *PresentModeKHR) free() {}
+
+// Native returns the pointer to *C.VkPresentModeKHR. The caller is expected to
+// cast.
+func (p *PresentModeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SurfaceTransformFlagBitsKHR struct {
 	native *C.VkSurfaceTransformFlagBitsKHR
 }
 
 func wrapSurfaceTransformFlagBitsKHR(p *C.VkSurfaceTransformFlagBitsKHR) *SurfaceTransformFlagBitsKHR {
 	v := SurfaceTransformFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceTransformFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -6019,12 +10512,24 @@ func marshalSurfaceTransformFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceTransformFlagBitsKHR(c)
 }
 
+func (s *SurfaceTransformFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkSurfaceTransformFlagBitsKHR. The caller is expected to
+// cast.
+func (s *SurfaceTransformFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SurfaceTransformFlagsKHR struct {
 	native *C.VkSurfaceTransformFlagsKHR
 }
 
 func wrapSurfaceTransformFlagsKHR(p *C.VkSurfaceTransformFlagsKHR) *SurfaceTransformFlagsKHR {
 	v := SurfaceTransformFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceTransformFlagsKHR).free)
+
 	return &v
 }
 
@@ -6035,12 +10540,24 @@ func marshalSurfaceTransformFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceTransformFlagsKHR(c)
 }
 
+func (s *SurfaceTransformFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkSurfaceTransformFlagsKHR. The caller is expected to
+// cast.
+func (s *SurfaceTransformFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type CompositeAlphaFlagBitsKHR struct {
 	native *C.VkCompositeAlphaFlagBitsKHR
 }
 
 func wrapCompositeAlphaFlagBitsKHR(p *C.VkCompositeAlphaFlagBitsKHR) *CompositeAlphaFlagBitsKHR {
 	v := CompositeAlphaFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CompositeAlphaFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -6051,12 +10568,24 @@ func marshalCompositeAlphaFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapCompositeAlphaFlagBitsKHR(c)
 }
 
+func (c *CompositeAlphaFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkCompositeAlphaFlagBitsKHR. The caller is expected to
+// cast.
+func (c *CompositeAlphaFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CompositeAlphaFlagsKHR struct {
 	native *C.VkCompositeAlphaFlagsKHR
 }
 
 func wrapCompositeAlphaFlagsKHR(p *C.VkCompositeAlphaFlagsKHR) *CompositeAlphaFlagsKHR {
 	v := CompositeAlphaFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CompositeAlphaFlagsKHR).free)
+
 	return &v
 }
 
@@ -6067,12 +10596,24 @@ func marshalCompositeAlphaFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapCompositeAlphaFlagsKHR(c)
 }
 
+func (c *CompositeAlphaFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkCompositeAlphaFlagsKHR. The caller is expected to
+// cast.
+func (c *CompositeAlphaFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type SurfaceCapabilitiesKHR struct {
 	native *C.VkSurfaceCapabilitiesKHR
 }
 
 func wrapSurfaceCapabilitiesKHR(p *C.VkSurfaceCapabilitiesKHR) *SurfaceCapabilitiesKHR {
 	v := SurfaceCapabilitiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceCapabilitiesKHR).free)
+
 	return &v
 }
 
@@ -6083,12 +10624,24 @@ func marshalSurfaceCapabilitiesKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceCapabilitiesKHR(c)
 }
 
+func (s *SurfaceCapabilitiesKHR) free() {}
+
+// Native returns the pointer to *C.VkSurfaceCapabilitiesKHR. The caller is expected to
+// cast.
+func (s *SurfaceCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SurfaceFormatKHR struct {
 	native *C.VkSurfaceFormatKHR
 }
 
 func wrapSurfaceFormatKHR(p *C.VkSurfaceFormatKHR) *SurfaceFormatKHR {
 	v := SurfaceFormatKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceFormatKHR).free)
+
 	return &v
 }
 
@@ -6099,12 +10652,24 @@ func marshalSurfaceFormatKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceFormatKHR(c)
 }
 
+func (s *SurfaceFormatKHR) free() {}
+
+// Native returns the pointer to *C.VkSurfaceFormatKHR. The caller is expected to
+// cast.
+func (s *SurfaceFormatKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SwapchainKHR struct {
 	native *C.VkSwapchainKHR
 }
 
 func wrapSwapchainKHR(p *C.VkSwapchainKHR) *SwapchainKHR {
 	v := SwapchainKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SwapchainKHR).free)
+
 	return &v
 }
 
@@ -6115,12 +10680,24 @@ func marshalSwapchainKHR(p uintptr) (interface{}, error) {
 	return wrapSwapchainKHR(c)
 }
 
+func (s *SwapchainKHR) free() {}
+
+// Native returns the pointer to *C.VkSwapchainKHR. The caller is expected to
+// cast.
+func (s *SwapchainKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SwapchainCreateFlagBitsKHR struct {
 	native *C.VkSwapchainCreateFlagBitsKHR
 }
 
 func wrapSwapchainCreateFlagBitsKHR(p *C.VkSwapchainCreateFlagBitsKHR) *SwapchainCreateFlagBitsKHR {
 	v := SwapchainCreateFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SwapchainCreateFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -6131,12 +10708,24 @@ func marshalSwapchainCreateFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapSwapchainCreateFlagBitsKHR(c)
 }
 
+func (s *SwapchainCreateFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkSwapchainCreateFlagBitsKHR. The caller is expected to
+// cast.
+func (s *SwapchainCreateFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SwapchainCreateFlagsKHR struct {
 	native *C.VkSwapchainCreateFlagsKHR
 }
 
 func wrapSwapchainCreateFlagsKHR(p *C.VkSwapchainCreateFlagsKHR) *SwapchainCreateFlagsKHR {
 	v := SwapchainCreateFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SwapchainCreateFlagsKHR).free)
+
 	return &v
 }
 
@@ -6147,12 +10736,24 @@ func marshalSwapchainCreateFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapSwapchainCreateFlagsKHR(c)
 }
 
+func (s *SwapchainCreateFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkSwapchainCreateFlagsKHR. The caller is expected to
+// cast.
+func (s *SwapchainCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type DeviceGroupPresentModeFlagBitsKHR struct {
 	native *C.VkDeviceGroupPresentModeFlagBitsKHR
 }
 
 func wrapDeviceGroupPresentModeFlagBitsKHR(p *C.VkDeviceGroupPresentModeFlagBitsKHR) *DeviceGroupPresentModeFlagBitsKHR {
 	v := DeviceGroupPresentModeFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupPresentModeFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -6163,12 +10764,24 @@ func marshalDeviceGroupPresentModeFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupPresentModeFlagBitsKHR(c)
 }
 
+func (d *DeviceGroupPresentModeFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupPresentModeFlagBitsKHR. The caller is expected to
+// cast.
+func (d *DeviceGroupPresentModeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceGroupPresentModeFlagsKHR struct {
 	native *C.VkDeviceGroupPresentModeFlagsKHR
 }
 
 func wrapDeviceGroupPresentModeFlagsKHR(p *C.VkDeviceGroupPresentModeFlagsKHR) *DeviceGroupPresentModeFlagsKHR {
 	v := DeviceGroupPresentModeFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupPresentModeFlagsKHR).free)
+
 	return &v
 }
 
@@ -6179,12 +10792,24 @@ func marshalDeviceGroupPresentModeFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupPresentModeFlagsKHR(c)
 }
 
+func (d *DeviceGroupPresentModeFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupPresentModeFlagsKHR. The caller is expected to
+// cast.
+func (d *DeviceGroupPresentModeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type SwapchainCreateInfoKHR struct {
 	native *C.VkSwapchainCreateInfoKHR
 }
 
 func wrapSwapchainCreateInfoKHR(p *C.VkSwapchainCreateInfoKHR) *SwapchainCreateInfoKHR {
 	v := SwapchainCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SwapchainCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -6195,12 +10820,24 @@ func marshalSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapSwapchainCreateInfoKHR(c)
 }
 
+func (s *SwapchainCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkSwapchainCreateInfoKHR. The caller is expected to
+// cast.
+func (s *SwapchainCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PresentInfoKHR struct {
 	native *C.VkPresentInfoKHR
 }
 
 func wrapPresentInfoKHR(p *C.VkPresentInfoKHR) *PresentInfoKHR {
 	v := PresentInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PresentInfoKHR).free)
+
 	return &v
 }
 
@@ -6211,12 +10848,24 @@ func marshalPresentInfoKHR(p uintptr) (interface{}, error) {
 	return wrapPresentInfoKHR(c)
 }
 
+func (p *PresentInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkPresentInfoKHR. The caller is expected to
+// cast.
+func (p *PresentInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ImageSwapchainCreateInfoKHR struct {
 	native *C.VkImageSwapchainCreateInfoKHR
 }
 
 func wrapImageSwapchainCreateInfoKHR(p *C.VkImageSwapchainCreateInfoKHR) *ImageSwapchainCreateInfoKHR {
 	v := ImageSwapchainCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageSwapchainCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -6227,12 +10876,24 @@ func marshalImageSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImageSwapchainCreateInfoKHR(c)
 }
 
+func (i *ImageSwapchainCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkImageSwapchainCreateInfoKHR. The caller is expected to
+// cast.
+func (i *ImageSwapchainCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type BindImageMemorySwapchainInfoKHR struct {
 	native *C.VkBindImageMemorySwapchainInfoKHR
 }
 
 func wrapBindImageMemorySwapchainInfoKHR(p *C.VkBindImageMemorySwapchainInfoKHR) *BindImageMemorySwapchainInfoKHR {
 	v := BindImageMemorySwapchainInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindImageMemorySwapchainInfoKHR).free)
+
 	return &v
 }
 
@@ -6243,12 +10904,24 @@ func marshalBindImageMemorySwapchainInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindImageMemorySwapchainInfoKHR(c)
 }
 
+func (b *BindImageMemorySwapchainInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkBindImageMemorySwapchainInfoKHR. The caller is expected to
+// cast.
+func (b *BindImageMemorySwapchainInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type AcquireNextImageInfoKHR struct {
 	native *C.VkAcquireNextImageInfoKHR
 }
 
 func wrapAcquireNextImageInfoKHR(p *C.VkAcquireNextImageInfoKHR) *AcquireNextImageInfoKHR {
 	v := AcquireNextImageInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AcquireNextImageInfoKHR).free)
+
 	return &v
 }
 
@@ -6259,12 +10932,24 @@ func marshalAcquireNextImageInfoKHR(p uintptr) (interface{}, error) {
 	return wrapAcquireNextImageInfoKHR(c)
 }
 
+func (a *AcquireNextImageInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkAcquireNextImageInfoKHR. The caller is expected to
+// cast.
+func (a *AcquireNextImageInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type DeviceGroupPresentCapabilitiesKHR struct {
 	native *C.VkDeviceGroupPresentCapabilitiesKHR
 }
 
 func wrapDeviceGroupPresentCapabilitiesKHR(p *C.VkDeviceGroupPresentCapabilitiesKHR) *DeviceGroupPresentCapabilitiesKHR {
 	v := DeviceGroupPresentCapabilitiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupPresentCapabilitiesKHR).free)
+
 	return &v
 }
 
@@ -6275,12 +10960,24 @@ func marshalDeviceGroupPresentCapabilitiesKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupPresentCapabilitiesKHR(c)
 }
 
+func (d *DeviceGroupPresentCapabilitiesKHR) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupPresentCapabilitiesKHR. The caller is expected to
+// cast.
+func (d *DeviceGroupPresentCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceGroupPresentInfoKHR struct {
 	native *C.VkDeviceGroupPresentInfoKHR
 }
 
 func wrapDeviceGroupPresentInfoKHR(p *C.VkDeviceGroupPresentInfoKHR) *DeviceGroupPresentInfoKHR {
 	v := DeviceGroupPresentInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupPresentInfoKHR).free)
+
 	return &v
 }
 
@@ -6291,12 +10988,24 @@ func marshalDeviceGroupPresentInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupPresentInfoKHR(c)
 }
 
+func (d *DeviceGroupPresentInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupPresentInfoKHR. The caller is expected to
+// cast.
+func (d *DeviceGroupPresentInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceGroupSwapchainCreateInfoKHR struct {
 	native *C.VkDeviceGroupSwapchainCreateInfoKHR
 }
 
 func wrapDeviceGroupSwapchainCreateInfoKHR(p *C.VkDeviceGroupSwapchainCreateInfoKHR) *DeviceGroupSwapchainCreateInfoKHR {
 	v := DeviceGroupSwapchainCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupSwapchainCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -6307,12 +11016,24 @@ func marshalDeviceGroupSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupSwapchainCreateInfoKHR(c)
 }
 
+func (d *DeviceGroupSwapchainCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupSwapchainCreateInfoKHR. The caller is expected to
+// cast.
+func (d *DeviceGroupSwapchainCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayKHR struct {
 	native *C.VkDisplayKHR
 }
 
 func wrapDisplayKHR(p *C.VkDisplayKHR) *DisplayKHR {
 	v := DisplayKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayKHR).free)
+
 	return &v
 }
 
@@ -6323,12 +11044,24 @@ func marshalDisplayKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayKHR(c)
 }
 
+func (d *DisplayKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayKHR. The caller is expected to
+// cast.
+func (d *DisplayKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayModeKHR struct {
 	native *C.VkDisplayModeKHR
 }
 
 func wrapDisplayModeKHR(p *C.VkDisplayModeKHR) *DisplayModeKHR {
 	v := DisplayModeKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayModeKHR).free)
+
 	return &v
 }
 
@@ -6339,12 +11072,24 @@ func marshalDisplayModeKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModeKHR(c)
 }
 
+func (d *DisplayModeKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayModeKHR. The caller is expected to
+// cast.
+func (d *DisplayModeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayPlaneAlphaFlagBitsKHR struct {
 	native *C.VkDisplayPlaneAlphaFlagBitsKHR
 }
 
 func wrapDisplayPlaneAlphaFlagBitsKHR(p *C.VkDisplayPlaneAlphaFlagBitsKHR) *DisplayPlaneAlphaFlagBitsKHR {
 	v := DisplayPlaneAlphaFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPlaneAlphaFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -6355,12 +11100,24 @@ func marshalDisplayPlaneAlphaFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneAlphaFlagBitsKHR(c)
 }
 
+func (d *DisplayPlaneAlphaFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayPlaneAlphaFlagBitsKHR. The caller is expected to
+// cast.
+func (d *DisplayPlaneAlphaFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayPlaneAlphaFlagsKHR struct {
 	native *C.VkDisplayPlaneAlphaFlagsKHR
 }
 
 func wrapDisplayPlaneAlphaFlagsKHR(p *C.VkDisplayPlaneAlphaFlagsKHR) *DisplayPlaneAlphaFlagsKHR {
 	v := DisplayPlaneAlphaFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPlaneAlphaFlagsKHR).free)
+
 	return &v
 }
 
@@ -6371,12 +11128,24 @@ func marshalDisplayPlaneAlphaFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneAlphaFlagsKHR(c)
 }
 
+func (d *DisplayPlaneAlphaFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayPlaneAlphaFlagsKHR. The caller is expected to
+// cast.
+func (d *DisplayPlaneAlphaFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayModeCreateFlagsKHR struct {
 	native *C.VkDisplayModeCreateFlagsKHR
 }
 
 func wrapDisplayModeCreateFlagsKHR(p *C.VkDisplayModeCreateFlagsKHR) *DisplayModeCreateFlagsKHR {
 	v := DisplayModeCreateFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayModeCreateFlagsKHR).free)
+
 	return &v
 }
 
@@ -6387,12 +11156,24 @@ func marshalDisplayModeCreateFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModeCreateFlagsKHR(c)
 }
 
+func (d *DisplayModeCreateFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayModeCreateFlagsKHR. The caller is expected to
+// cast.
+func (d *DisplayModeCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplaySurfaceCreateFlagsKHR struct {
 	native *C.VkDisplaySurfaceCreateFlagsKHR
 }
 
 func wrapDisplaySurfaceCreateFlagsKHR(p *C.VkDisplaySurfaceCreateFlagsKHR) *DisplaySurfaceCreateFlagsKHR {
 	v := DisplaySurfaceCreateFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplaySurfaceCreateFlagsKHR).free)
+
 	return &v
 }
 
@@ -6403,12 +11184,24 @@ func marshalDisplaySurfaceCreateFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapDisplaySurfaceCreateFlagsKHR(c)
 }
 
+func (d *DisplaySurfaceCreateFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplaySurfaceCreateFlagsKHR. The caller is expected to
+// cast.
+func (d *DisplaySurfaceCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayPropertiesKHR struct {
 	native *C.VkDisplayPropertiesKHR
 }
 
 func wrapDisplayPropertiesKHR(p *C.VkDisplayPropertiesKHR) *DisplayPropertiesKHR {
 	v := DisplayPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPropertiesKHR).free)
+
 	return &v
 }
 
@@ -6419,12 +11212,24 @@ func marshalDisplayPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPropertiesKHR(c)
 }
 
+func (d *DisplayPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayPropertiesKHR. The caller is expected to
+// cast.
+func (d *DisplayPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayModeParametersKHR struct {
 	native *C.VkDisplayModeParametersKHR
 }
 
 func wrapDisplayModeParametersKHR(p *C.VkDisplayModeParametersKHR) *DisplayModeParametersKHR {
 	v := DisplayModeParametersKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayModeParametersKHR).free)
+
 	return &v
 }
 
@@ -6435,12 +11240,24 @@ func marshalDisplayModeParametersKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModeParametersKHR(c)
 }
 
+func (d *DisplayModeParametersKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayModeParametersKHR. The caller is expected to
+// cast.
+func (d *DisplayModeParametersKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayModePropertiesKHR struct {
 	native *C.VkDisplayModePropertiesKHR
 }
 
 func wrapDisplayModePropertiesKHR(p *C.VkDisplayModePropertiesKHR) *DisplayModePropertiesKHR {
 	v := DisplayModePropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayModePropertiesKHR).free)
+
 	return &v
 }
 
@@ -6451,12 +11268,24 @@ func marshalDisplayModePropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModePropertiesKHR(c)
 }
 
+func (d *DisplayModePropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayModePropertiesKHR. The caller is expected to
+// cast.
+func (d *DisplayModePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayModeCreateInfoKHR struct {
 	native *C.VkDisplayModeCreateInfoKHR
 }
 
 func wrapDisplayModeCreateInfoKHR(p *C.VkDisplayModeCreateInfoKHR) *DisplayModeCreateInfoKHR {
 	v := DisplayModeCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayModeCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -6467,12 +11296,24 @@ func marshalDisplayModeCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModeCreateInfoKHR(c)
 }
 
+func (d *DisplayModeCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayModeCreateInfoKHR. The caller is expected to
+// cast.
+func (d *DisplayModeCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayPlaneCapabilitiesKHR struct {
 	native *C.VkDisplayPlaneCapabilitiesKHR
 }
 
 func wrapDisplayPlaneCapabilitiesKHR(p *C.VkDisplayPlaneCapabilitiesKHR) *DisplayPlaneCapabilitiesKHR {
 	v := DisplayPlaneCapabilitiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPlaneCapabilitiesKHR).free)
+
 	return &v
 }
 
@@ -6483,12 +11324,24 @@ func marshalDisplayPlaneCapabilitiesKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneCapabilitiesKHR(c)
 }
 
+func (d *DisplayPlaneCapabilitiesKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayPlaneCapabilitiesKHR. The caller is expected to
+// cast.
+func (d *DisplayPlaneCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayPlanePropertiesKHR struct {
 	native *C.VkDisplayPlanePropertiesKHR
 }
 
 func wrapDisplayPlanePropertiesKHR(p *C.VkDisplayPlanePropertiesKHR) *DisplayPlanePropertiesKHR {
 	v := DisplayPlanePropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPlanePropertiesKHR).free)
+
 	return &v
 }
 
@@ -6499,12 +11352,24 @@ func marshalDisplayPlanePropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlanePropertiesKHR(c)
 }
 
+func (d *DisplayPlanePropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayPlanePropertiesKHR. The caller is expected to
+// cast.
+func (d *DisplayPlanePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplaySurfaceCreateInfoKHR struct {
 	native *C.VkDisplaySurfaceCreateInfoKHR
 }
 
 func wrapDisplaySurfaceCreateInfoKHR(p *C.VkDisplaySurfaceCreateInfoKHR) *DisplaySurfaceCreateInfoKHR {
 	v := DisplaySurfaceCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplaySurfaceCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -6515,12 +11380,24 @@ func marshalDisplaySurfaceCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDisplaySurfaceCreateInfoKHR(c)
 }
 
+func (d *DisplaySurfaceCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplaySurfaceCreateInfoKHR. The caller is expected to
+// cast.
+func (d *DisplaySurfaceCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayPresentInfoKHR struct {
 	native *C.VkDisplayPresentInfoKHR
 }
 
 func wrapDisplayPresentInfoKHR(p *C.VkDisplayPresentInfoKHR) *DisplayPresentInfoKHR {
 	v := DisplayPresentInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPresentInfoKHR).free)
+
 	return &v
 }
 
@@ -6531,12 +11408,24 @@ func marshalDisplayPresentInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPresentInfoKHR(c)
 }
 
+func (d *DisplayPresentInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayPresentInfoKHR. The caller is expected to
+// cast.
+func (d *DisplayPresentInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type RenderPassMultiviewCreateInfoKHR struct {
 	native *C.VkRenderPassMultiviewCreateInfoKHR
 }
 
 func wrapRenderPassMultiviewCreateInfoKHR(p *C.VkRenderPassMultiviewCreateInfoKHR) *RenderPassMultiviewCreateInfoKHR {
 	v := RenderPassMultiviewCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPassMultiviewCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -6547,12 +11436,24 @@ func marshalRenderPassMultiviewCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapRenderPassMultiviewCreateInfoKHR(c)
 }
 
+func (r *RenderPassMultiviewCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkRenderPassMultiviewCreateInfoKHR. The caller is expected to
+// cast.
+func (r *RenderPassMultiviewCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type PhysicalDeviceMultiviewFeaturesKHR struct {
 	native *C.VkPhysicalDeviceMultiviewFeaturesKHR
 }
 
 func wrapPhysicalDeviceMultiviewFeaturesKHR(p *C.VkPhysicalDeviceMultiviewFeaturesKHR) *PhysicalDeviceMultiviewFeaturesKHR {
 	v := PhysicalDeviceMultiviewFeaturesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMultiviewFeaturesKHR).free)
+
 	return &v
 }
 
@@ -6563,12 +11464,24 @@ func marshalPhysicalDeviceMultiviewFeaturesKHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMultiviewFeaturesKHR(c)
 }
 
+func (p *PhysicalDeviceMultiviewFeaturesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMultiviewFeaturesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMultiviewFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceMultiviewPropertiesKHR struct {
 	native *C.VkPhysicalDeviceMultiviewPropertiesKHR
 }
 
 func wrapPhysicalDeviceMultiviewPropertiesKHR(p *C.VkPhysicalDeviceMultiviewPropertiesKHR) *PhysicalDeviceMultiviewPropertiesKHR {
 	v := PhysicalDeviceMultiviewPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMultiviewPropertiesKHR).free)
+
 	return &v
 }
 
@@ -6579,12 +11492,24 @@ func marshalPhysicalDeviceMultiviewPropertiesKHR(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceMultiviewPropertiesKHR(c)
 }
 
+func (p *PhysicalDeviceMultiviewPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMultiviewPropertiesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMultiviewPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceFeatures2KHR struct {
 	native *C.VkPhysicalDeviceFeatures2KHR
 }
 
 func wrapPhysicalDeviceFeatures2KHR(p *C.VkPhysicalDeviceFeatures2KHR) *PhysicalDeviceFeatures2KHR {
 	v := PhysicalDeviceFeatures2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceFeatures2KHR).free)
+
 	return &v
 }
 
@@ -6595,12 +11520,24 @@ func marshalPhysicalDeviceFeatures2KHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceFeatures2KHR(c)
 }
 
+func (p *PhysicalDeviceFeatures2KHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceFeatures2KHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceFeatures2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceProperties2KHR struct {
 	native *C.VkPhysicalDeviceProperties2KHR
 }
 
 func wrapPhysicalDeviceProperties2KHR(p *C.VkPhysicalDeviceProperties2KHR) *PhysicalDeviceProperties2KHR {
 	v := PhysicalDeviceProperties2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceProperties2KHR).free)
+
 	return &v
 }
 
@@ -6611,12 +11548,24 @@ func marshalPhysicalDeviceProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceProperties2KHR(c)
 }
 
+func (p *PhysicalDeviceProperties2KHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceProperties2KHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type FormatProperties2KHR struct {
 	native *C.VkFormatProperties2KHR
 }
 
 func wrapFormatProperties2KHR(p *C.VkFormatProperties2KHR) *FormatProperties2KHR {
 	v := FormatProperties2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FormatProperties2KHR).free)
+
 	return &v
 }
 
@@ -6627,12 +11576,24 @@ func marshalFormatProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapFormatProperties2KHR(c)
 }
 
+func (f *FormatProperties2KHR) free() {}
+
+// Native returns the pointer to *C.VkFormatProperties2KHR. The caller is expected to
+// cast.
+func (f *FormatProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type ImageFormatProperties2KHR struct {
 	native *C.VkImageFormatProperties2KHR
 }
 
 func wrapImageFormatProperties2KHR(p *C.VkImageFormatProperties2KHR) *ImageFormatProperties2KHR {
 	v := ImageFormatProperties2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageFormatProperties2KHR).free)
+
 	return &v
 }
 
@@ -6643,12 +11604,24 @@ func marshalImageFormatProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapImageFormatProperties2KHR(c)
 }
 
+func (i *ImageFormatProperties2KHR) free() {}
+
+// Native returns the pointer to *C.VkImageFormatProperties2KHR. The caller is expected to
+// cast.
+func (i *ImageFormatProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type PhysicalDeviceImageFormatInfo2KHR struct {
 	native *C.VkPhysicalDeviceImageFormatInfo2KHR
 }
 
 func wrapPhysicalDeviceImageFormatInfo2KHR(p *C.VkPhysicalDeviceImageFormatInfo2KHR) *PhysicalDeviceImageFormatInfo2KHR {
 	v := PhysicalDeviceImageFormatInfo2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceImageFormatInfo2KHR).free)
+
 	return &v
 }
 
@@ -6659,12 +11632,24 @@ func marshalPhysicalDeviceImageFormatInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceImageFormatInfo2KHR(c)
 }
 
+func (p *PhysicalDeviceImageFormatInfo2KHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceImageFormatInfo2KHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceImageFormatInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type QueueFamilyProperties2KHR struct {
 	native *C.VkQueueFamilyProperties2KHR
 }
 
 func wrapQueueFamilyProperties2KHR(p *C.VkQueueFamilyProperties2KHR) *QueueFamilyProperties2KHR {
 	v := QueueFamilyProperties2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueueFamilyProperties2KHR).free)
+
 	return &v
 }
 
@@ -6675,12 +11660,24 @@ func marshalQueueFamilyProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapQueueFamilyProperties2KHR(c)
 }
 
+func (q *QueueFamilyProperties2KHR) free() {}
+
+// Native returns the pointer to *C.VkQueueFamilyProperties2KHR. The caller is expected to
+// cast.
+func (q *QueueFamilyProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type PhysicalDeviceMemoryProperties2KHR struct {
 	native *C.VkPhysicalDeviceMemoryProperties2KHR
 }
 
 func wrapPhysicalDeviceMemoryProperties2KHR(p *C.VkPhysicalDeviceMemoryProperties2KHR) *PhysicalDeviceMemoryProperties2KHR {
 	v := PhysicalDeviceMemoryProperties2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMemoryProperties2KHR).free)
+
 	return &v
 }
 
@@ -6691,12 +11688,24 @@ func marshalPhysicalDeviceMemoryProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMemoryProperties2KHR(c)
 }
 
+func (p *PhysicalDeviceMemoryProperties2KHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMemoryProperties2KHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMemoryProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SparseImageFormatProperties2KHR struct {
 	native *C.VkSparseImageFormatProperties2KHR
 }
 
 func wrapSparseImageFormatProperties2KHR(p *C.VkSparseImageFormatProperties2KHR) *SparseImageFormatProperties2KHR {
 	v := SparseImageFormatProperties2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageFormatProperties2KHR).free)
+
 	return &v
 }
 
@@ -6707,12 +11716,24 @@ func marshalSparseImageFormatProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapSparseImageFormatProperties2KHR(c)
 }
 
+func (s *SparseImageFormatProperties2KHR) free() {}
+
+// Native returns the pointer to *C.VkSparseImageFormatProperties2KHR. The caller is expected to
+// cast.
+func (s *SparseImageFormatProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PhysicalDeviceSparseImageFormatInfo2KHR struct {
 	native *C.VkPhysicalDeviceSparseImageFormatInfo2KHR
 }
 
 func wrapPhysicalDeviceSparseImageFormatInfo2KHR(p *C.VkPhysicalDeviceSparseImageFormatInfo2KHR) *PhysicalDeviceSparseImageFormatInfo2KHR {
 	v := PhysicalDeviceSparseImageFormatInfo2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceSparseImageFormatInfo2KHR).free)
+
 	return &v
 }
 
@@ -6723,12 +11744,24 @@ func marshalPhysicalDeviceSparseImageFormatInfo2KHR(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceSparseImageFormatInfo2KHR(c)
 }
 
+func (p *PhysicalDeviceSparseImageFormatInfo2KHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceSparseImageFormatInfo2KHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceSparseImageFormatInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PeerMemoryFeatureFlagsKHR struct {
 	native *C.VkPeerMemoryFeatureFlagsKHR
 }
 
 func wrapPeerMemoryFeatureFlagsKHR(p *C.VkPeerMemoryFeatureFlagsKHR) *PeerMemoryFeatureFlagsKHR {
 	v := PeerMemoryFeatureFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PeerMemoryFeatureFlagsKHR).free)
+
 	return &v
 }
 
@@ -6739,12 +11772,24 @@ func marshalPeerMemoryFeatureFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapPeerMemoryFeatureFlagsKHR(c)
 }
 
+func (p *PeerMemoryFeatureFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkPeerMemoryFeatureFlagsKHR. The caller is expected to
+// cast.
+func (p *PeerMemoryFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PeerMemoryFeatureFlagBitsKHR struct {
 	native *C.VkPeerMemoryFeatureFlagBitsKHR
 }
 
 func wrapPeerMemoryFeatureFlagBitsKHR(p *C.VkPeerMemoryFeatureFlagBitsKHR) *PeerMemoryFeatureFlagBitsKHR {
 	v := PeerMemoryFeatureFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PeerMemoryFeatureFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -6755,12 +11800,24 @@ func marshalPeerMemoryFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapPeerMemoryFeatureFlagBitsKHR(c)
 }
 
+func (p *PeerMemoryFeatureFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkPeerMemoryFeatureFlagBitsKHR. The caller is expected to
+// cast.
+func (p *PeerMemoryFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type MemoryAllocateFlagsKHR struct {
 	native *C.VkMemoryAllocateFlagsKHR
 }
 
 func wrapMemoryAllocateFlagsKHR(p *C.VkMemoryAllocateFlagsKHR) *MemoryAllocateFlagsKHR {
 	v := MemoryAllocateFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryAllocateFlagsKHR).free)
+
 	return &v
 }
 
@@ -6771,12 +11828,24 @@ func marshalMemoryAllocateFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlagsKHR(c)
 }
 
+func (m *MemoryAllocateFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkMemoryAllocateFlagsKHR. The caller is expected to
+// cast.
+func (m *MemoryAllocateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryAllocateFlagBitsKHR struct {
 	native *C.VkMemoryAllocateFlagBitsKHR
 }
 
 func wrapMemoryAllocateFlagBitsKHR(p *C.VkMemoryAllocateFlagBitsKHR) *MemoryAllocateFlagBitsKHR {
 	v := MemoryAllocateFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryAllocateFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -6787,12 +11856,24 @@ func marshalMemoryAllocateFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlagBitsKHR(c)
 }
 
+func (m *MemoryAllocateFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkMemoryAllocateFlagBitsKHR. The caller is expected to
+// cast.
+func (m *MemoryAllocateFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryAllocateFlagsInfoKHR struct {
 	native *C.VkMemoryAllocateFlagsInfoKHR
 }
 
 func wrapMemoryAllocateFlagsInfoKHR(p *C.VkMemoryAllocateFlagsInfoKHR) *MemoryAllocateFlagsInfoKHR {
 	v := MemoryAllocateFlagsInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryAllocateFlagsInfoKHR).free)
+
 	return &v
 }
 
@@ -6803,12 +11884,24 @@ func marshalMemoryAllocateFlagsInfoKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlagsInfoKHR(c)
 }
 
+func (m *MemoryAllocateFlagsInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkMemoryAllocateFlagsInfoKHR. The caller is expected to
+// cast.
+func (m *MemoryAllocateFlagsInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type DeviceGroupRenderPassBeginInfoKHR struct {
 	native *C.VkDeviceGroupRenderPassBeginInfoKHR
 }
 
 func wrapDeviceGroupRenderPassBeginInfoKHR(p *C.VkDeviceGroupRenderPassBeginInfoKHR) *DeviceGroupRenderPassBeginInfoKHR {
 	v := DeviceGroupRenderPassBeginInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupRenderPassBeginInfoKHR).free)
+
 	return &v
 }
 
@@ -6819,12 +11912,24 @@ func marshalDeviceGroupRenderPassBeginInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupRenderPassBeginInfoKHR(c)
 }
 
+func (d *DeviceGroupRenderPassBeginInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupRenderPassBeginInfoKHR. The caller is expected to
+// cast.
+func (d *DeviceGroupRenderPassBeginInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceGroupCommandBufferBeginInfoKHR struct {
 	native *C.VkDeviceGroupCommandBufferBeginInfoKHR
 }
 
 func wrapDeviceGroupCommandBufferBeginInfoKHR(p *C.VkDeviceGroupCommandBufferBeginInfoKHR) *DeviceGroupCommandBufferBeginInfoKHR {
 	v := DeviceGroupCommandBufferBeginInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupCommandBufferBeginInfoKHR).free)
+
 	return &v
 }
 
@@ -6835,12 +11940,24 @@ func marshalDeviceGroupCommandBufferBeginInfoKHR(p uintptr) (interface{}, error)
 	return wrapDeviceGroupCommandBufferBeginInfoKHR(c)
 }
 
+func (d *DeviceGroupCommandBufferBeginInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupCommandBufferBeginInfoKHR. The caller is expected to
+// cast.
+func (d *DeviceGroupCommandBufferBeginInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceGroupSubmitInfoKHR struct {
 	native *C.VkDeviceGroupSubmitInfoKHR
 }
 
 func wrapDeviceGroupSubmitInfoKHR(p *C.VkDeviceGroupSubmitInfoKHR) *DeviceGroupSubmitInfoKHR {
 	v := DeviceGroupSubmitInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupSubmitInfoKHR).free)
+
 	return &v
 }
 
@@ -6851,12 +11968,24 @@ func marshalDeviceGroupSubmitInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupSubmitInfoKHR(c)
 }
 
+func (d *DeviceGroupSubmitInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupSubmitInfoKHR. The caller is expected to
+// cast.
+func (d *DeviceGroupSubmitInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceGroupBindSparseInfoKHR struct {
 	native *C.VkDeviceGroupBindSparseInfoKHR
 }
 
 func wrapDeviceGroupBindSparseInfoKHR(p *C.VkDeviceGroupBindSparseInfoKHR) *DeviceGroupBindSparseInfoKHR {
 	v := DeviceGroupBindSparseInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupBindSparseInfoKHR).free)
+
 	return &v
 }
 
@@ -6867,12 +11996,24 @@ func marshalDeviceGroupBindSparseInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupBindSparseInfoKHR(c)
 }
 
+func (d *DeviceGroupBindSparseInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupBindSparseInfoKHR. The caller is expected to
+// cast.
+func (d *DeviceGroupBindSparseInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type BindBufferMemoryDeviceGroupInfoKHR struct {
 	native *C.VkBindBufferMemoryDeviceGroupInfoKHR
 }
 
 func wrapBindBufferMemoryDeviceGroupInfoKHR(p *C.VkBindBufferMemoryDeviceGroupInfoKHR) *BindBufferMemoryDeviceGroupInfoKHR {
 	v := BindBufferMemoryDeviceGroupInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindBufferMemoryDeviceGroupInfoKHR).free)
+
 	return &v
 }
 
@@ -6883,12 +12024,24 @@ func marshalBindBufferMemoryDeviceGroupInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindBufferMemoryDeviceGroupInfoKHR(c)
 }
 
+func (b *BindBufferMemoryDeviceGroupInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkBindBufferMemoryDeviceGroupInfoKHR. The caller is expected to
+// cast.
+func (b *BindBufferMemoryDeviceGroupInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BindImageMemoryDeviceGroupInfoKHR struct {
 	native *C.VkBindImageMemoryDeviceGroupInfoKHR
 }
 
 func wrapBindImageMemoryDeviceGroupInfoKHR(p *C.VkBindImageMemoryDeviceGroupInfoKHR) *BindImageMemoryDeviceGroupInfoKHR {
 	v := BindImageMemoryDeviceGroupInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindImageMemoryDeviceGroupInfoKHR).free)
+
 	return &v
 }
 
@@ -6899,12 +12052,24 @@ func marshalBindImageMemoryDeviceGroupInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindImageMemoryDeviceGroupInfoKHR(c)
 }
 
+func (b *BindImageMemoryDeviceGroupInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkBindImageMemoryDeviceGroupInfoKHR. The caller is expected to
+// cast.
+func (b *BindImageMemoryDeviceGroupInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type CommandPoolTrimFlagsKHR struct {
 	native *C.VkCommandPoolTrimFlagsKHR
 }
 
 func wrapCommandPoolTrimFlagsKHR(p *C.VkCommandPoolTrimFlagsKHR) *CommandPoolTrimFlagsKHR {
 	v := CommandPoolTrimFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandPoolTrimFlagsKHR).free)
+
 	return &v
 }
 
@@ -6915,12 +12080,24 @@ func marshalCommandPoolTrimFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapCommandPoolTrimFlagsKHR(c)
 }
 
+func (c *CommandPoolTrimFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkCommandPoolTrimFlagsKHR. The caller is expected to
+// cast.
+func (c *CommandPoolTrimFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PhysicalDeviceGroupPropertiesKHR struct {
 	native *C.VkPhysicalDeviceGroupPropertiesKHR
 }
 
 func wrapPhysicalDeviceGroupPropertiesKHR(p *C.VkPhysicalDeviceGroupPropertiesKHR) *PhysicalDeviceGroupPropertiesKHR {
 	v := PhysicalDeviceGroupPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceGroupPropertiesKHR).free)
+
 	return &v
 }
 
@@ -6931,12 +12108,24 @@ func marshalPhysicalDeviceGroupPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceGroupPropertiesKHR(c)
 }
 
+func (p *PhysicalDeviceGroupPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceGroupPropertiesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceGroupPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DeviceGroupDeviceCreateInfoKHR struct {
 	native *C.VkDeviceGroupDeviceCreateInfoKHR
 }
 
 func wrapDeviceGroupDeviceCreateInfoKHR(p *C.VkDeviceGroupDeviceCreateInfoKHR) *DeviceGroupDeviceCreateInfoKHR {
 	v := DeviceGroupDeviceCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGroupDeviceCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -6947,12 +12136,24 @@ func marshalDeviceGroupDeviceCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupDeviceCreateInfoKHR(c)
 }
 
+func (d *DeviceGroupDeviceCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDeviceGroupDeviceCreateInfoKHR. The caller is expected to
+// cast.
+func (d *DeviceGroupDeviceCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type ExternalMemoryHandleTypeFlagsKHR struct {
 	native *C.VkExternalMemoryHandleTypeFlagsKHR
 }
 
 func wrapExternalMemoryHandleTypeFlagsKHR(p *C.VkExternalMemoryHandleTypeFlagsKHR) *ExternalMemoryHandleTypeFlagsKHR {
 	v := ExternalMemoryHandleTypeFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlagsKHR).free)
+
 	return &v
 }
 
@@ -6963,12 +12164,24 @@ func marshalExternalMemoryHandleTypeFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryHandleTypeFlagsKHR(c)
 }
 
+func (e *ExternalMemoryHandleTypeFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagsKHR. The caller is expected to
+// cast.
+func (e *ExternalMemoryHandleTypeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryHandleTypeFlagBitsKHR struct {
 	native *C.VkExternalMemoryHandleTypeFlagBitsKHR
 }
 
 func wrapExternalMemoryHandleTypeFlagBitsKHR(p *C.VkExternalMemoryHandleTypeFlagBitsKHR) *ExternalMemoryHandleTypeFlagBitsKHR {
 	v := ExternalMemoryHandleTypeFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -6979,12 +12192,24 @@ func marshalExternalMemoryHandleTypeFlagBitsKHR(p uintptr) (interface{}, error) 
 	return wrapExternalMemoryHandleTypeFlagBitsKHR(c)
 }
 
+func (e *ExternalMemoryHandleTypeFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagBitsKHR. The caller is expected to
+// cast.
+func (e *ExternalMemoryHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryFeatureFlagsKHR struct {
 	native *C.VkExternalMemoryFeatureFlagsKHR
 }
 
 func wrapExternalMemoryFeatureFlagsKHR(p *C.VkExternalMemoryFeatureFlagsKHR) *ExternalMemoryFeatureFlagsKHR {
 	v := ExternalMemoryFeatureFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlagsKHR).free)
+
 	return &v
 }
 
@@ -6995,12 +12220,24 @@ func marshalExternalMemoryFeatureFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlagsKHR(c)
 }
 
+func (e *ExternalMemoryFeatureFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryFeatureFlagsKHR. The caller is expected to
+// cast.
+func (e *ExternalMemoryFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryFeatureFlagBitsKHR struct {
 	native *C.VkExternalMemoryFeatureFlagBitsKHR
 }
 
 func wrapExternalMemoryFeatureFlagBitsKHR(p *C.VkExternalMemoryFeatureFlagBitsKHR) *ExternalMemoryFeatureFlagBitsKHR {
 	v := ExternalMemoryFeatureFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -7011,12 +12248,24 @@ func marshalExternalMemoryFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlagBitsKHR(c)
 }
 
+func (e *ExternalMemoryFeatureFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryFeatureFlagBitsKHR. The caller is expected to
+// cast.
+func (e *ExternalMemoryFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryPropertiesKHR struct {
 	native *C.VkExternalMemoryPropertiesKHR
 }
 
 func wrapExternalMemoryPropertiesKHR(p *C.VkExternalMemoryPropertiesKHR) *ExternalMemoryPropertiesKHR {
 	v := ExternalMemoryPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryPropertiesKHR).free)
+
 	return &v
 }
 
@@ -7027,12 +12276,24 @@ func marshalExternalMemoryPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryPropertiesKHR(c)
 }
 
+func (e *ExternalMemoryPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryPropertiesKHR. The caller is expected to
+// cast.
+func (e *ExternalMemoryPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceExternalImageFormatInfoKHR struct {
 	native *C.VkPhysicalDeviceExternalImageFormatInfoKHR
 }
 
 func wrapPhysicalDeviceExternalImageFormatInfoKHR(p *C.VkPhysicalDeviceExternalImageFormatInfoKHR) *PhysicalDeviceExternalImageFormatInfoKHR {
 	v := PhysicalDeviceExternalImageFormatInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceExternalImageFormatInfoKHR).free)
+
 	return &v
 }
 
@@ -7043,12 +12304,24 @@ func marshalPhysicalDeviceExternalImageFormatInfoKHR(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceExternalImageFormatInfoKHR(c)
 }
 
+func (p *PhysicalDeviceExternalImageFormatInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceExternalImageFormatInfoKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceExternalImageFormatInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalImageFormatPropertiesKHR struct {
 	native *C.VkExternalImageFormatPropertiesKHR
 }
 
 func wrapExternalImageFormatPropertiesKHR(p *C.VkExternalImageFormatPropertiesKHR) *ExternalImageFormatPropertiesKHR {
 	v := ExternalImageFormatPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalImageFormatPropertiesKHR).free)
+
 	return &v
 }
 
@@ -7059,12 +12332,24 @@ func marshalExternalImageFormatPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapExternalImageFormatPropertiesKHR(c)
 }
 
+func (e *ExternalImageFormatPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalImageFormatPropertiesKHR. The caller is expected to
+// cast.
+func (e *ExternalImageFormatPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceExternalBufferInfoKHR struct {
 	native *C.VkPhysicalDeviceExternalBufferInfoKHR
 }
 
 func wrapPhysicalDeviceExternalBufferInfoKHR(p *C.VkPhysicalDeviceExternalBufferInfoKHR) *PhysicalDeviceExternalBufferInfoKHR {
 	v := PhysicalDeviceExternalBufferInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceExternalBufferInfoKHR).free)
+
 	return &v
 }
 
@@ -7075,12 +12360,24 @@ func marshalPhysicalDeviceExternalBufferInfoKHR(p uintptr) (interface{}, error) 
 	return wrapPhysicalDeviceExternalBufferInfoKHR(c)
 }
 
+func (p *PhysicalDeviceExternalBufferInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceExternalBufferInfoKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceExternalBufferInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalBufferPropertiesKHR struct {
 	native *C.VkExternalBufferPropertiesKHR
 }
 
 func wrapExternalBufferPropertiesKHR(p *C.VkExternalBufferPropertiesKHR) *ExternalBufferPropertiesKHR {
 	v := ExternalBufferPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalBufferPropertiesKHR).free)
+
 	return &v
 }
 
@@ -7091,12 +12388,24 @@ func marshalExternalBufferPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapExternalBufferPropertiesKHR(c)
 }
 
+func (e *ExternalBufferPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalBufferPropertiesKHR. The caller is expected to
+// cast.
+func (e *ExternalBufferPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceIDPropertiesKHR struct {
 	native *C.VkPhysicalDeviceIDPropertiesKHR
 }
 
 func wrapPhysicalDeviceIDPropertiesKHR(p *C.VkPhysicalDeviceIDPropertiesKHR) *PhysicalDeviceIDPropertiesKHR {
 	v := PhysicalDeviceIDPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceIDPropertiesKHR).free)
+
 	return &v
 }
 
@@ -7107,12 +12416,24 @@ func marshalPhysicalDeviceIDPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceIDPropertiesKHR(c)
 }
 
+func (p *PhysicalDeviceIDPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceIDPropertiesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceIDPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalMemoryImageCreateInfoKHR struct {
 	native *C.VkExternalMemoryImageCreateInfoKHR
 }
 
 func wrapExternalMemoryImageCreateInfoKHR(p *C.VkExternalMemoryImageCreateInfoKHR) *ExternalMemoryImageCreateInfoKHR {
 	v := ExternalMemoryImageCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryImageCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -7123,12 +12444,24 @@ func marshalExternalMemoryImageCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryImageCreateInfoKHR(c)
 }
 
+func (e *ExternalMemoryImageCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryImageCreateInfoKHR. The caller is expected to
+// cast.
+func (e *ExternalMemoryImageCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryBufferCreateInfoKHR struct {
 	native *C.VkExternalMemoryBufferCreateInfoKHR
 }
 
 func wrapExternalMemoryBufferCreateInfoKHR(p *C.VkExternalMemoryBufferCreateInfoKHR) *ExternalMemoryBufferCreateInfoKHR {
 	v := ExternalMemoryBufferCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryBufferCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -7139,12 +12472,24 @@ func marshalExternalMemoryBufferCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryBufferCreateInfoKHR(c)
 }
 
+func (e *ExternalMemoryBufferCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryBufferCreateInfoKHR. The caller is expected to
+// cast.
+func (e *ExternalMemoryBufferCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExportMemoryAllocateInfoKHR struct {
 	native *C.VkExportMemoryAllocateInfoKHR
 }
 
 func wrapExportMemoryAllocateInfoKHR(p *C.VkExportMemoryAllocateInfoKHR) *ExportMemoryAllocateInfoKHR {
 	v := ExportMemoryAllocateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExportMemoryAllocateInfoKHR).free)
+
 	return &v
 }
 
@@ -7155,12 +12500,24 @@ func marshalExportMemoryAllocateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapExportMemoryAllocateInfoKHR(c)
 }
 
+func (e *ExportMemoryAllocateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkExportMemoryAllocateInfoKHR. The caller is expected to
+// cast.
+func (e *ExportMemoryAllocateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ImportMemoryFdInfoKHR struct {
 	native *C.VkImportMemoryFdInfoKHR
 }
 
 func wrapImportMemoryFdInfoKHR(p *C.VkImportMemoryFdInfoKHR) *ImportMemoryFdInfoKHR {
 	v := ImportMemoryFdInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImportMemoryFdInfoKHR).free)
+
 	return &v
 }
 
@@ -7171,12 +12528,24 @@ func marshalImportMemoryFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImportMemoryFdInfoKHR(c)
 }
 
+func (i *ImportMemoryFdInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkImportMemoryFdInfoKHR. The caller is expected to
+// cast.
+func (i *ImportMemoryFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type MemoryFdPropertiesKHR struct {
 	native *C.VkMemoryFdPropertiesKHR
 }
 
 func wrapMemoryFdPropertiesKHR(p *C.VkMemoryFdPropertiesKHR) *MemoryFdPropertiesKHR {
 	v := MemoryFdPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryFdPropertiesKHR).free)
+
 	return &v
 }
 
@@ -7187,12 +12556,24 @@ func marshalMemoryFdPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryFdPropertiesKHR(c)
 }
 
+func (m *MemoryFdPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkMemoryFdPropertiesKHR. The caller is expected to
+// cast.
+func (m *MemoryFdPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryGetFdInfoKHR struct {
 	native *C.VkMemoryGetFdInfoKHR
 }
 
 func wrapMemoryGetFdInfoKHR(p *C.VkMemoryGetFdInfoKHR) *MemoryGetFdInfoKHR {
 	v := MemoryGetFdInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryGetFdInfoKHR).free)
+
 	return &v
 }
 
@@ -7203,12 +12584,24 @@ func marshalMemoryGetFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryGetFdInfoKHR(c)
 }
 
+func (m *MemoryGetFdInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkMemoryGetFdInfoKHR. The caller is expected to
+// cast.
+func (m *MemoryGetFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type ExternalSemaphoreHandleTypeFlagsKHR struct {
 	native *C.VkExternalSemaphoreHandleTypeFlagsKHR
 }
 
 func wrapExternalSemaphoreHandleTypeFlagsKHR(p *C.VkExternalSemaphoreHandleTypeFlagsKHR) *ExternalSemaphoreHandleTypeFlagsKHR {
 	v := ExternalSemaphoreHandleTypeFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalSemaphoreHandleTypeFlagsKHR).free)
+
 	return &v
 }
 
@@ -7219,12 +12612,24 @@ func marshalExternalSemaphoreHandleTypeFlagsKHR(p uintptr) (interface{}, error) 
 	return wrapExternalSemaphoreHandleTypeFlagsKHR(c)
 }
 
+func (e *ExternalSemaphoreHandleTypeFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlagsKHR. The caller is expected to
+// cast.
+func (e *ExternalSemaphoreHandleTypeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalSemaphoreHandleTypeFlagBitsKHR struct {
 	native *C.VkExternalSemaphoreHandleTypeFlagBitsKHR
 }
 
 func wrapExternalSemaphoreHandleTypeFlagBitsKHR(p *C.VkExternalSemaphoreHandleTypeFlagBitsKHR) *ExternalSemaphoreHandleTypeFlagBitsKHR {
 	v := ExternalSemaphoreHandleTypeFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalSemaphoreHandleTypeFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -7235,12 +12640,24 @@ func marshalExternalSemaphoreHandleTypeFlagBitsKHR(p uintptr) (interface{}, erro
 	return wrapExternalSemaphoreHandleTypeFlagBitsKHR(c)
 }
 
+func (e *ExternalSemaphoreHandleTypeFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlagBitsKHR. The caller is expected to
+// cast.
+func (e *ExternalSemaphoreHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalSemaphoreFeatureFlagsKHR struct {
 	native *C.VkExternalSemaphoreFeatureFlagsKHR
 }
 
 func wrapExternalSemaphoreFeatureFlagsKHR(p *C.VkExternalSemaphoreFeatureFlagsKHR) *ExternalSemaphoreFeatureFlagsKHR {
 	v := ExternalSemaphoreFeatureFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalSemaphoreFeatureFlagsKHR).free)
+
 	return &v
 }
 
@@ -7251,12 +12668,24 @@ func marshalExternalSemaphoreFeatureFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphoreFeatureFlagsKHR(c)
 }
 
+func (e *ExternalSemaphoreFeatureFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalSemaphoreFeatureFlagsKHR. The caller is expected to
+// cast.
+func (e *ExternalSemaphoreFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalSemaphoreFeatureFlagBitsKHR struct {
 	native *C.VkExternalSemaphoreFeatureFlagBitsKHR
 }
 
 func wrapExternalSemaphoreFeatureFlagBitsKHR(p *C.VkExternalSemaphoreFeatureFlagBitsKHR) *ExternalSemaphoreFeatureFlagBitsKHR {
 	v := ExternalSemaphoreFeatureFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalSemaphoreFeatureFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -7267,12 +12696,24 @@ func marshalExternalSemaphoreFeatureFlagBitsKHR(p uintptr) (interface{}, error) 
 	return wrapExternalSemaphoreFeatureFlagBitsKHR(c)
 }
 
+func (e *ExternalSemaphoreFeatureFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalSemaphoreFeatureFlagBitsKHR. The caller is expected to
+// cast.
+func (e *ExternalSemaphoreFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceExternalSemaphoreInfoKHR struct {
 	native *C.VkPhysicalDeviceExternalSemaphoreInfoKHR
 }
 
 func wrapPhysicalDeviceExternalSemaphoreInfoKHR(p *C.VkPhysicalDeviceExternalSemaphoreInfoKHR) *PhysicalDeviceExternalSemaphoreInfoKHR {
 	v := PhysicalDeviceExternalSemaphoreInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceExternalSemaphoreInfoKHR).free)
+
 	return &v
 }
 
@@ -7283,12 +12724,24 @@ func marshalPhysicalDeviceExternalSemaphoreInfoKHR(p uintptr) (interface{}, erro
 	return wrapPhysicalDeviceExternalSemaphoreInfoKHR(c)
 }
 
+func (p *PhysicalDeviceExternalSemaphoreInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceExternalSemaphoreInfoKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceExternalSemaphoreInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalSemaphorePropertiesKHR struct {
 	native *C.VkExternalSemaphorePropertiesKHR
 }
 
 func wrapExternalSemaphorePropertiesKHR(p *C.VkExternalSemaphorePropertiesKHR) *ExternalSemaphorePropertiesKHR {
 	v := ExternalSemaphorePropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalSemaphorePropertiesKHR).free)
+
 	return &v
 }
 
@@ -7299,12 +12752,24 @@ func marshalExternalSemaphorePropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphorePropertiesKHR(c)
 }
 
+func (e *ExternalSemaphorePropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalSemaphorePropertiesKHR. The caller is expected to
+// cast.
+func (e *ExternalSemaphorePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type SemaphoreImportFlagsKHR struct {
 	native *C.VkSemaphoreImportFlagsKHR
 }
 
 func wrapSemaphoreImportFlagsKHR(p *C.VkSemaphoreImportFlagsKHR) *SemaphoreImportFlagsKHR {
 	v := SemaphoreImportFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SemaphoreImportFlagsKHR).free)
+
 	return &v
 }
 
@@ -7315,12 +12780,24 @@ func marshalSemaphoreImportFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapSemaphoreImportFlagsKHR(c)
 }
 
+func (s *SemaphoreImportFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkSemaphoreImportFlagsKHR. The caller is expected to
+// cast.
+func (s *SemaphoreImportFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SemaphoreImportFlagBitsKHR struct {
 	native *C.VkSemaphoreImportFlagBitsKHR
 }
 
 func wrapSemaphoreImportFlagBitsKHR(p *C.VkSemaphoreImportFlagBitsKHR) *SemaphoreImportFlagBitsKHR {
 	v := SemaphoreImportFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SemaphoreImportFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -7331,12 +12808,24 @@ func marshalSemaphoreImportFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapSemaphoreImportFlagBitsKHR(c)
 }
 
+func (s *SemaphoreImportFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkSemaphoreImportFlagBitsKHR. The caller is expected to
+// cast.
+func (s *SemaphoreImportFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ExportSemaphoreCreateInfoKHR struct {
 	native *C.VkExportSemaphoreCreateInfoKHR
 }
 
 func wrapExportSemaphoreCreateInfoKHR(p *C.VkExportSemaphoreCreateInfoKHR) *ExportSemaphoreCreateInfoKHR {
 	v := ExportSemaphoreCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExportSemaphoreCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -7347,12 +12836,24 @@ func marshalExportSemaphoreCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapExportSemaphoreCreateInfoKHR(c)
 }
 
+func (e *ExportSemaphoreCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkExportSemaphoreCreateInfoKHR. The caller is expected to
+// cast.
+func (e *ExportSemaphoreCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ImportSemaphoreFdInfoKHR struct {
 	native *C.VkImportSemaphoreFdInfoKHR
 }
 
 func wrapImportSemaphoreFdInfoKHR(p *C.VkImportSemaphoreFdInfoKHR) *ImportSemaphoreFdInfoKHR {
 	v := ImportSemaphoreFdInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImportSemaphoreFdInfoKHR).free)
+
 	return &v
 }
 
@@ -7363,12 +12864,24 @@ func marshalImportSemaphoreFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImportSemaphoreFdInfoKHR(c)
 }
 
+func (i *ImportSemaphoreFdInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkImportSemaphoreFdInfoKHR. The caller is expected to
+// cast.
+func (i *ImportSemaphoreFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type SemaphoreGetFdInfoKHR struct {
 	native *C.VkSemaphoreGetFdInfoKHR
 }
 
 func wrapSemaphoreGetFdInfoKHR(p *C.VkSemaphoreGetFdInfoKHR) *SemaphoreGetFdInfoKHR {
 	v := SemaphoreGetFdInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SemaphoreGetFdInfoKHR).free)
+
 	return &v
 }
 
@@ -7379,12 +12892,24 @@ func marshalSemaphoreGetFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapSemaphoreGetFdInfoKHR(c)
 }
 
+func (s *SemaphoreGetFdInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkSemaphoreGetFdInfoKHR. The caller is expected to
+// cast.
+func (s *SemaphoreGetFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PhysicalDevicePushDescriptorPropertiesKHR struct {
 	native *C.VkPhysicalDevicePushDescriptorPropertiesKHR
 }
 
 func wrapPhysicalDevicePushDescriptorPropertiesKHR(p *C.VkPhysicalDevicePushDescriptorPropertiesKHR) *PhysicalDevicePushDescriptorPropertiesKHR {
 	v := PhysicalDevicePushDescriptorPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDevicePushDescriptorPropertiesKHR).free)
+
 	return &v
 }
 
@@ -7395,12 +12920,24 @@ func marshalPhysicalDevicePushDescriptorPropertiesKHR(p uintptr) (interface{}, e
 	return wrapPhysicalDevicePushDescriptorPropertiesKHR(c)
 }
 
+func (p *PhysicalDevicePushDescriptorPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDevicePushDescriptorPropertiesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDevicePushDescriptorPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceFloat16Int8FeaturesKHR struct {
 	native *C.VkPhysicalDeviceFloat16Int8FeaturesKHR
 }
 
 func wrapPhysicalDeviceFloat16Int8FeaturesKHR(p *C.VkPhysicalDeviceFloat16Int8FeaturesKHR) *PhysicalDeviceFloat16Int8FeaturesKHR {
 	v := PhysicalDeviceFloat16Int8FeaturesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceFloat16Int8FeaturesKHR).free)
+
 	return &v
 }
 
@@ -7411,12 +12948,24 @@ func marshalPhysicalDeviceFloat16Int8FeaturesKHR(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceFloat16Int8FeaturesKHR(c)
 }
 
+func (p *PhysicalDeviceFloat16Int8FeaturesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceFloat16Int8FeaturesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceFloat16Int8FeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDevice16BitStorageFeaturesKHR struct {
 	native *C.VkPhysicalDevice16BitStorageFeaturesKHR
 }
 
 func wrapPhysicalDevice16BitStorageFeaturesKHR(p *C.VkPhysicalDevice16BitStorageFeaturesKHR) *PhysicalDevice16BitStorageFeaturesKHR {
 	v := PhysicalDevice16BitStorageFeaturesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDevice16BitStorageFeaturesKHR).free)
+
 	return &v
 }
 
@@ -7427,12 +12976,24 @@ func marshalPhysicalDevice16BitStorageFeaturesKHR(p uintptr) (interface{}, error
 	return wrapPhysicalDevice16BitStorageFeaturesKHR(c)
 }
 
+func (p *PhysicalDevice16BitStorageFeaturesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDevice16BitStorageFeaturesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDevice16BitStorageFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type RectLayerKHR struct {
 	native *C.VkRectLayerKHR
 }
 
 func wrapRectLayerKHR(p *C.VkRectLayerKHR) *RectLayerKHR {
 	v := RectLayerKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RectLayerKHR).free)
+
 	return &v
 }
 
@@ -7443,12 +13004,24 @@ func marshalRectLayerKHR(p uintptr) (interface{}, error) {
 	return wrapRectLayerKHR(c)
 }
 
+func (r *RectLayerKHR) free() {}
+
+// Native returns the pointer to *C.VkRectLayerKHR. The caller is expected to
+// cast.
+func (r *RectLayerKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type PresentRegionKHR struct {
 	native *C.VkPresentRegionKHR
 }
 
 func wrapPresentRegionKHR(p *C.VkPresentRegionKHR) *PresentRegionKHR {
 	v := PresentRegionKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PresentRegionKHR).free)
+
 	return &v
 }
 
@@ -7459,12 +13032,24 @@ func marshalPresentRegionKHR(p uintptr) (interface{}, error) {
 	return wrapPresentRegionKHR(c)
 }
 
+func (p *PresentRegionKHR) free() {}
+
+// Native returns the pointer to *C.VkPresentRegionKHR. The caller is expected to
+// cast.
+func (p *PresentRegionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PresentRegionsKHR struct {
 	native *C.VkPresentRegionsKHR
 }
 
 func wrapPresentRegionsKHR(p *C.VkPresentRegionsKHR) *PresentRegionsKHR {
 	v := PresentRegionsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PresentRegionsKHR).free)
+
 	return &v
 }
 
@@ -7475,12 +13060,24 @@ func marshalPresentRegionsKHR(p uintptr) (interface{}, error) {
 	return wrapPresentRegionsKHR(c)
 }
 
+func (p *PresentRegionsKHR) free() {}
+
+// Native returns the pointer to *C.VkPresentRegionsKHR. The caller is expected to
+// cast.
+func (p *PresentRegionsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DescriptorUpdateTemplateKHR struct {
 	native *C.VkDescriptorUpdateTemplateKHR
 }
 
 func wrapDescriptorUpdateTemplateKHR(p *C.VkDescriptorUpdateTemplateKHR) *DescriptorUpdateTemplateKHR {
 	v := DescriptorUpdateTemplateKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateKHR).free)
+
 	return &v
 }
 
@@ -7491,12 +13088,24 @@ func marshalDescriptorUpdateTemplateKHR(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateKHR(c)
 }
 
+func (d *DescriptorUpdateTemplateKHR) free() {}
+
+// Native returns the pointer to *C.VkDescriptorUpdateTemplateKHR. The caller is expected to
+// cast.
+func (d *DescriptorUpdateTemplateKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorUpdateTemplateTypeKHR struct {
 	native *C.VkDescriptorUpdateTemplateTypeKHR
 }
 
 func wrapDescriptorUpdateTemplateTypeKHR(p *C.VkDescriptorUpdateTemplateTypeKHR) *DescriptorUpdateTemplateTypeKHR {
 	v := DescriptorUpdateTemplateTypeKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateTypeKHR).free)
+
 	return &v
 }
 
@@ -7507,12 +13116,24 @@ func marshalDescriptorUpdateTemplateTypeKHR(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateTypeKHR(c)
 }
 
+func (d *DescriptorUpdateTemplateTypeKHR) free() {}
+
+// Native returns the pointer to *C.VkDescriptorUpdateTemplateTypeKHR. The caller is expected to
+// cast.
+func (d *DescriptorUpdateTemplateTypeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorUpdateTemplateCreateFlagsKHR struct {
 	native *C.VkDescriptorUpdateTemplateCreateFlagsKHR
 }
 
 func wrapDescriptorUpdateTemplateCreateFlagsKHR(p *C.VkDescriptorUpdateTemplateCreateFlagsKHR) *DescriptorUpdateTemplateCreateFlagsKHR {
 	v := DescriptorUpdateTemplateCreateFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateCreateFlagsKHR).free)
+
 	return &v
 }
 
@@ -7523,12 +13144,24 @@ func marshalDescriptorUpdateTemplateCreateFlagsKHR(p uintptr) (interface{}, erro
 	return wrapDescriptorUpdateTemplateCreateFlagsKHR(c)
 }
 
+func (d *DescriptorUpdateTemplateCreateFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateFlagsKHR. The caller is expected to
+// cast.
+func (d *DescriptorUpdateTemplateCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorUpdateTemplateEntryKHR struct {
 	native *C.VkDescriptorUpdateTemplateEntryKHR
 }
 
 func wrapDescriptorUpdateTemplateEntryKHR(p *C.VkDescriptorUpdateTemplateEntryKHR) *DescriptorUpdateTemplateEntryKHR {
 	v := DescriptorUpdateTemplateEntryKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateEntryKHR).free)
+
 	return &v
 }
 
@@ -7539,12 +13172,24 @@ func marshalDescriptorUpdateTemplateEntryKHR(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateEntryKHR(c)
 }
 
+func (d *DescriptorUpdateTemplateEntryKHR) free() {}
+
+// Native returns the pointer to *C.VkDescriptorUpdateTemplateEntryKHR. The caller is expected to
+// cast.
+func (d *DescriptorUpdateTemplateEntryKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorUpdateTemplateCreateInfoKHR struct {
 	native *C.VkDescriptorUpdateTemplateCreateInfoKHR
 }
 
 func wrapDescriptorUpdateTemplateCreateInfoKHR(p *C.VkDescriptorUpdateTemplateCreateInfoKHR) *DescriptorUpdateTemplateCreateInfoKHR {
 	v := DescriptorUpdateTemplateCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -7555,12 +13200,24 @@ func marshalDescriptorUpdateTemplateCreateInfoKHR(p uintptr) (interface{}, error
 	return wrapDescriptorUpdateTemplateCreateInfoKHR(c)
 }
 
+func (d *DescriptorUpdateTemplateCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateInfoKHR. The caller is expected to
+// cast.
+func (d *DescriptorUpdateTemplateCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type AttachmentDescription2KHR struct {
 	native *C.VkAttachmentDescription2KHR
 }
 
 func wrapAttachmentDescription2KHR(p *C.VkAttachmentDescription2KHR) *AttachmentDescription2KHR {
 	v := AttachmentDescription2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttachmentDescription2KHR).free)
+
 	return &v
 }
 
@@ -7571,12 +13228,24 @@ func marshalAttachmentDescription2KHR(p uintptr) (interface{}, error) {
 	return wrapAttachmentDescription2KHR(c)
 }
 
+func (a *AttachmentDescription2KHR) free() {}
+
+// Native returns the pointer to *C.VkAttachmentDescription2KHR. The caller is expected to
+// cast.
+func (a *AttachmentDescription2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type AttachmentReference2KHR struct {
 	native *C.VkAttachmentReference2KHR
 }
 
 func wrapAttachmentReference2KHR(p *C.VkAttachmentReference2KHR) *AttachmentReference2KHR {
 	v := AttachmentReference2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttachmentReference2KHR).free)
+
 	return &v
 }
 
@@ -7587,12 +13256,24 @@ func marshalAttachmentReference2KHR(p uintptr) (interface{}, error) {
 	return wrapAttachmentReference2KHR(c)
 }
 
+func (a *AttachmentReference2KHR) free() {}
+
+// Native returns the pointer to *C.VkAttachmentReference2KHR. The caller is expected to
+// cast.
+func (a *AttachmentReference2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type SubpassDescription2KHR struct {
 	native *C.VkSubpassDescription2KHR
 }
 
 func wrapSubpassDescription2KHR(p *C.VkSubpassDescription2KHR) *SubpassDescription2KHR {
 	v := SubpassDescription2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassDescription2KHR).free)
+
 	return &v
 }
 
@@ -7603,12 +13284,24 @@ func marshalSubpassDescription2KHR(p uintptr) (interface{}, error) {
 	return wrapSubpassDescription2KHR(c)
 }
 
+func (s *SubpassDescription2KHR) free() {}
+
+// Native returns the pointer to *C.VkSubpassDescription2KHR. The caller is expected to
+// cast.
+func (s *SubpassDescription2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SubpassDependency2KHR struct {
 	native *C.VkSubpassDependency2KHR
 }
 
 func wrapSubpassDependency2KHR(p *C.VkSubpassDependency2KHR) *SubpassDependency2KHR {
 	v := SubpassDependency2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassDependency2KHR).free)
+
 	return &v
 }
 
@@ -7619,12 +13312,24 @@ func marshalSubpassDependency2KHR(p uintptr) (interface{}, error) {
 	return wrapSubpassDependency2KHR(c)
 }
 
+func (s *SubpassDependency2KHR) free() {}
+
+// Native returns the pointer to *C.VkSubpassDependency2KHR. The caller is expected to
+// cast.
+func (s *SubpassDependency2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type RenderPassCreateInfo2KHR struct {
 	native *C.VkRenderPassCreateInfo2KHR
 }
 
 func wrapRenderPassCreateInfo2KHR(p *C.VkRenderPassCreateInfo2KHR) *RenderPassCreateInfo2KHR {
 	v := RenderPassCreateInfo2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPassCreateInfo2KHR).free)
+
 	return &v
 }
 
@@ -7635,12 +13340,24 @@ func marshalRenderPassCreateInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapRenderPassCreateInfo2KHR(c)
 }
 
+func (r *RenderPassCreateInfo2KHR) free() {}
+
+// Native returns the pointer to *C.VkRenderPassCreateInfo2KHR. The caller is expected to
+// cast.
+func (r *RenderPassCreateInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type SubpassBeginInfoKHR struct {
 	native *C.VkSubpassBeginInfoKHR
 }
 
 func wrapSubpassBeginInfoKHR(p *C.VkSubpassBeginInfoKHR) *SubpassBeginInfoKHR {
 	v := SubpassBeginInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassBeginInfoKHR).free)
+
 	return &v
 }
 
@@ -7651,12 +13368,24 @@ func marshalSubpassBeginInfoKHR(p uintptr) (interface{}, error) {
 	return wrapSubpassBeginInfoKHR(c)
 }
 
+func (s *SubpassBeginInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkSubpassBeginInfoKHR. The caller is expected to
+// cast.
+func (s *SubpassBeginInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SubpassEndInfoKHR struct {
 	native *C.VkSubpassEndInfoKHR
 }
 
 func wrapSubpassEndInfoKHR(p *C.VkSubpassEndInfoKHR) *SubpassEndInfoKHR {
 	v := SubpassEndInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassEndInfoKHR).free)
+
 	return &v
 }
 
@@ -7667,12 +13396,24 @@ func marshalSubpassEndInfoKHR(p uintptr) (interface{}, error) {
 	return wrapSubpassEndInfoKHR(c)
 }
 
+func (s *SubpassEndInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkSubpassEndInfoKHR. The caller is expected to
+// cast.
+func (s *SubpassEndInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SharedPresentSurfaceCapabilitiesKHR struct {
 	native *C.VkSharedPresentSurfaceCapabilitiesKHR
 }
 
 func wrapSharedPresentSurfaceCapabilitiesKHR(p *C.VkSharedPresentSurfaceCapabilitiesKHR) *SharedPresentSurfaceCapabilitiesKHR {
 	v := SharedPresentSurfaceCapabilitiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SharedPresentSurfaceCapabilitiesKHR).free)
+
 	return &v
 }
 
@@ -7683,12 +13424,24 @@ func marshalSharedPresentSurfaceCapabilitiesKHR(p uintptr) (interface{}, error) 
 	return wrapSharedPresentSurfaceCapabilitiesKHR(c)
 }
 
+func (s *SharedPresentSurfaceCapabilitiesKHR) free() {}
+
+// Native returns the pointer to *C.VkSharedPresentSurfaceCapabilitiesKHR. The caller is expected to
+// cast.
+func (s *SharedPresentSurfaceCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ExternalFenceHandleTypeFlagsKHR struct {
 	native *C.VkExternalFenceHandleTypeFlagsKHR
 }
 
 func wrapExternalFenceHandleTypeFlagsKHR(p *C.VkExternalFenceHandleTypeFlagsKHR) *ExternalFenceHandleTypeFlagsKHR {
 	v := ExternalFenceHandleTypeFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalFenceHandleTypeFlagsKHR).free)
+
 	return &v
 }
 
@@ -7699,12 +13452,24 @@ func marshalExternalFenceHandleTypeFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalFenceHandleTypeFlagsKHR(c)
 }
 
+func (e *ExternalFenceHandleTypeFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalFenceHandleTypeFlagsKHR. The caller is expected to
+// cast.
+func (e *ExternalFenceHandleTypeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalFenceHandleTypeFlagBitsKHR struct {
 	native *C.VkExternalFenceHandleTypeFlagBitsKHR
 }
 
 func wrapExternalFenceHandleTypeFlagBitsKHR(p *C.VkExternalFenceHandleTypeFlagBitsKHR) *ExternalFenceHandleTypeFlagBitsKHR {
 	v := ExternalFenceHandleTypeFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalFenceHandleTypeFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -7715,12 +13480,24 @@ func marshalExternalFenceHandleTypeFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalFenceHandleTypeFlagBitsKHR(c)
 }
 
+func (e *ExternalFenceHandleTypeFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalFenceHandleTypeFlagBitsKHR. The caller is expected to
+// cast.
+func (e *ExternalFenceHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalFenceFeatureFlagsKHR struct {
 	native *C.VkExternalFenceFeatureFlagsKHR
 }
 
 func wrapExternalFenceFeatureFlagsKHR(p *C.VkExternalFenceFeatureFlagsKHR) *ExternalFenceFeatureFlagsKHR {
 	v := ExternalFenceFeatureFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalFenceFeatureFlagsKHR).free)
+
 	return &v
 }
 
@@ -7731,12 +13508,24 @@ func marshalExternalFenceFeatureFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalFenceFeatureFlagsKHR(c)
 }
 
+func (e *ExternalFenceFeatureFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalFenceFeatureFlagsKHR. The caller is expected to
+// cast.
+func (e *ExternalFenceFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalFenceFeatureFlagBitsKHR struct {
 	native *C.VkExternalFenceFeatureFlagBitsKHR
 }
 
 func wrapExternalFenceFeatureFlagBitsKHR(p *C.VkExternalFenceFeatureFlagBitsKHR) *ExternalFenceFeatureFlagBitsKHR {
 	v := ExternalFenceFeatureFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalFenceFeatureFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -7747,12 +13536,24 @@ func marshalExternalFenceFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalFenceFeatureFlagBitsKHR(c)
 }
 
+func (e *ExternalFenceFeatureFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalFenceFeatureFlagBitsKHR. The caller is expected to
+// cast.
+func (e *ExternalFenceFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type PhysicalDeviceExternalFenceInfoKHR struct {
 	native *C.VkPhysicalDeviceExternalFenceInfoKHR
 }
 
 func wrapPhysicalDeviceExternalFenceInfoKHR(p *C.VkPhysicalDeviceExternalFenceInfoKHR) *PhysicalDeviceExternalFenceInfoKHR {
 	v := PhysicalDeviceExternalFenceInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceExternalFenceInfoKHR).free)
+
 	return &v
 }
 
@@ -7763,12 +13564,24 @@ func marshalPhysicalDeviceExternalFenceInfoKHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceExternalFenceInfoKHR(c)
 }
 
+func (p *PhysicalDeviceExternalFenceInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceExternalFenceInfoKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceExternalFenceInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalFencePropertiesKHR struct {
 	native *C.VkExternalFencePropertiesKHR
 }
 
 func wrapExternalFencePropertiesKHR(p *C.VkExternalFencePropertiesKHR) *ExternalFencePropertiesKHR {
 	v := ExternalFencePropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalFencePropertiesKHR).free)
+
 	return &v
 }
 
@@ -7779,12 +13592,24 @@ func marshalExternalFencePropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapExternalFencePropertiesKHR(c)
 }
 
+func (e *ExternalFencePropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkExternalFencePropertiesKHR. The caller is expected to
+// cast.
+func (e *ExternalFencePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type FenceImportFlagsKHR struct {
 	native *C.VkFenceImportFlagsKHR
 }
 
 func wrapFenceImportFlagsKHR(p *C.VkFenceImportFlagsKHR) *FenceImportFlagsKHR {
 	v := FenceImportFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FenceImportFlagsKHR).free)
+
 	return &v
 }
 
@@ -7795,12 +13620,24 @@ func marshalFenceImportFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapFenceImportFlagsKHR(c)
 }
 
+func (f *FenceImportFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkFenceImportFlagsKHR. The caller is expected to
+// cast.
+func (f *FenceImportFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type FenceImportFlagBitsKHR struct {
 	native *C.VkFenceImportFlagBitsKHR
 }
 
 func wrapFenceImportFlagBitsKHR(p *C.VkFenceImportFlagBitsKHR) *FenceImportFlagBitsKHR {
 	v := FenceImportFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FenceImportFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -7811,12 +13648,24 @@ func marshalFenceImportFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapFenceImportFlagBitsKHR(c)
 }
 
+func (f *FenceImportFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkFenceImportFlagBitsKHR. The caller is expected to
+// cast.
+func (f *FenceImportFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type ExportFenceCreateInfoKHR struct {
 	native *C.VkExportFenceCreateInfoKHR
 }
 
 func wrapExportFenceCreateInfoKHR(p *C.VkExportFenceCreateInfoKHR) *ExportFenceCreateInfoKHR {
 	v := ExportFenceCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExportFenceCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -7827,12 +13676,24 @@ func marshalExportFenceCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapExportFenceCreateInfoKHR(c)
 }
 
+func (e *ExportFenceCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkExportFenceCreateInfoKHR. The caller is expected to
+// cast.
+func (e *ExportFenceCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ImportFenceFdInfoKHR struct {
 	native *C.VkImportFenceFdInfoKHR
 }
 
 func wrapImportFenceFdInfoKHR(p *C.VkImportFenceFdInfoKHR) *ImportFenceFdInfoKHR {
 	v := ImportFenceFdInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImportFenceFdInfoKHR).free)
+
 	return &v
 }
 
@@ -7843,12 +13704,24 @@ func marshalImportFenceFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImportFenceFdInfoKHR(c)
 }
 
+func (i *ImportFenceFdInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkImportFenceFdInfoKHR. The caller is expected to
+// cast.
+func (i *ImportFenceFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type FenceGetFdInfoKHR struct {
 	native *C.VkFenceGetFdInfoKHR
 }
 
 func wrapFenceGetFdInfoKHR(p *C.VkFenceGetFdInfoKHR) *FenceGetFdInfoKHR {
 	v := FenceGetFdInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FenceGetFdInfoKHR).free)
+
 	return &v
 }
 
@@ -7859,12 +13732,24 @@ func marshalFenceGetFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapFenceGetFdInfoKHR(c)
 }
 
+func (f *FenceGetFdInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkFenceGetFdInfoKHR. The caller is expected to
+// cast.
+func (f *FenceGetFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type PointClippingBehaviorKHR struct {
 	native *C.VkPointClippingBehaviorKHR
 }
 
 func wrapPointClippingBehaviorKHR(p *C.VkPointClippingBehaviorKHR) *PointClippingBehaviorKHR {
 	v := PointClippingBehaviorKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PointClippingBehaviorKHR).free)
+
 	return &v
 }
 
@@ -7875,12 +13760,24 @@ func marshalPointClippingBehaviorKHR(p uintptr) (interface{}, error) {
 	return wrapPointClippingBehaviorKHR(c)
 }
 
+func (p *PointClippingBehaviorKHR) free() {}
+
+// Native returns the pointer to *C.VkPointClippingBehaviorKHR. The caller is expected to
+// cast.
+func (p *PointClippingBehaviorKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type TessellationDomainOriginKHR struct {
 	native *C.VkTessellationDomainOriginKHR
 }
 
 func wrapTessellationDomainOriginKHR(p *C.VkTessellationDomainOriginKHR) *TessellationDomainOriginKHR {
 	v := TessellationDomainOriginKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*TessellationDomainOriginKHR).free)
+
 	return &v
 }
 
@@ -7891,12 +13788,24 @@ func marshalTessellationDomainOriginKHR(p uintptr) (interface{}, error) {
 	return wrapTessellationDomainOriginKHR(c)
 }
 
+func (t *TessellationDomainOriginKHR) free() {}
+
+// Native returns the pointer to *C.VkTessellationDomainOriginKHR. The caller is expected to
+// cast.
+func (t *TessellationDomainOriginKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
 type PhysicalDevicePointClippingPropertiesKHR struct {
 	native *C.VkPhysicalDevicePointClippingPropertiesKHR
 }
 
 func wrapPhysicalDevicePointClippingPropertiesKHR(p *C.VkPhysicalDevicePointClippingPropertiesKHR) *PhysicalDevicePointClippingPropertiesKHR {
 	v := PhysicalDevicePointClippingPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDevicePointClippingPropertiesKHR).free)
+
 	return &v
 }
 
@@ -7907,12 +13816,24 @@ func marshalPhysicalDevicePointClippingPropertiesKHR(p uintptr) (interface{}, er
 	return wrapPhysicalDevicePointClippingPropertiesKHR(c)
 }
 
+func (p *PhysicalDevicePointClippingPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDevicePointClippingPropertiesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDevicePointClippingPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type RenderPassInputAttachmentAspectCreateInfoKHR struct {
 	native *C.VkRenderPassInputAttachmentAspectCreateInfoKHR
 }
 
 func wrapRenderPassInputAttachmentAspectCreateInfoKHR(p *C.VkRenderPassInputAttachmentAspectCreateInfoKHR) *RenderPassInputAttachmentAspectCreateInfoKHR {
 	v := RenderPassInputAttachmentAspectCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPassInputAttachmentAspectCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -7923,12 +13844,24 @@ func marshalRenderPassInputAttachmentAspectCreateInfoKHR(p uintptr) (interface{}
 	return wrapRenderPassInputAttachmentAspectCreateInfoKHR(c)
 }
 
+func (r *RenderPassInputAttachmentAspectCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkRenderPassInputAttachmentAspectCreateInfoKHR. The caller is expected to
+// cast.
+func (r *RenderPassInputAttachmentAspectCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type InputAttachmentAspectReferenceKHR struct {
 	native *C.VkInputAttachmentAspectReferenceKHR
 }
 
 func wrapInputAttachmentAspectReferenceKHR(p *C.VkInputAttachmentAspectReferenceKHR) *InputAttachmentAspectReferenceKHR {
 	v := InputAttachmentAspectReferenceKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*InputAttachmentAspectReferenceKHR).free)
+
 	return &v
 }
 
@@ -7939,12 +13872,24 @@ func marshalInputAttachmentAspectReferenceKHR(p uintptr) (interface{}, error) {
 	return wrapInputAttachmentAspectReferenceKHR(c)
 }
 
+func (i *InputAttachmentAspectReferenceKHR) free() {}
+
+// Native returns the pointer to *C.VkInputAttachmentAspectReferenceKHR. The caller is expected to
+// cast.
+func (i *InputAttachmentAspectReferenceKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageViewUsageCreateInfoKHR struct {
 	native *C.VkImageViewUsageCreateInfoKHR
 }
 
 func wrapImageViewUsageCreateInfoKHR(p *C.VkImageViewUsageCreateInfoKHR) *ImageViewUsageCreateInfoKHR {
 	v := ImageViewUsageCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageViewUsageCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -7955,12 +13900,24 @@ func marshalImageViewUsageCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImageViewUsageCreateInfoKHR(c)
 }
 
+func (i *ImageViewUsageCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkImageViewUsageCreateInfoKHR. The caller is expected to
+// cast.
+func (i *ImageViewUsageCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type PipelineTessellationDomainOriginStateCreateInfoKHR struct {
 	native *C.VkPipelineTessellationDomainOriginStateCreateInfoKHR
 }
 
 func wrapPipelineTessellationDomainOriginStateCreateInfoKHR(p *C.VkPipelineTessellationDomainOriginStateCreateInfoKHR) *PipelineTessellationDomainOriginStateCreateInfoKHR {
 	v := PipelineTessellationDomainOriginStateCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineTessellationDomainOriginStateCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -7971,12 +13928,24 @@ func marshalPipelineTessellationDomainOriginStateCreateInfoKHR(p uintptr) (inter
 	return wrapPipelineTessellationDomainOriginStateCreateInfoKHR(c)
 }
 
+func (p *PipelineTessellationDomainOriginStateCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkPipelineTessellationDomainOriginStateCreateInfoKHR. The caller is expected to
+// cast.
+func (p *PipelineTessellationDomainOriginStateCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceSurfaceInfo2KHR struct {
 	native *C.VkPhysicalDeviceSurfaceInfo2KHR
 }
 
 func wrapPhysicalDeviceSurfaceInfo2KHR(p *C.VkPhysicalDeviceSurfaceInfo2KHR) *PhysicalDeviceSurfaceInfo2KHR {
 	v := PhysicalDeviceSurfaceInfo2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceSurfaceInfo2KHR).free)
+
 	return &v
 }
 
@@ -7987,12 +13956,24 @@ func marshalPhysicalDeviceSurfaceInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceSurfaceInfo2KHR(c)
 }
 
+func (p *PhysicalDeviceSurfaceInfo2KHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceSurfaceInfo2KHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceSurfaceInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SurfaceCapabilities2KHR struct {
 	native *C.VkSurfaceCapabilities2KHR
 }
 
 func wrapSurfaceCapabilities2KHR(p *C.VkSurfaceCapabilities2KHR) *SurfaceCapabilities2KHR {
 	v := SurfaceCapabilities2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceCapabilities2KHR).free)
+
 	return &v
 }
 
@@ -8003,12 +13984,24 @@ func marshalSurfaceCapabilities2KHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceCapabilities2KHR(c)
 }
 
+func (s *SurfaceCapabilities2KHR) free() {}
+
+// Native returns the pointer to *C.VkSurfaceCapabilities2KHR. The caller is expected to
+// cast.
+func (s *SurfaceCapabilities2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SurfaceFormat2KHR struct {
 	native *C.VkSurfaceFormat2KHR
 }
 
 func wrapSurfaceFormat2KHR(p *C.VkSurfaceFormat2KHR) *SurfaceFormat2KHR {
 	v := SurfaceFormat2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceFormat2KHR).free)
+
 	return &v
 }
 
@@ -8019,12 +14012,24 @@ func marshalSurfaceFormat2KHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceFormat2KHR(c)
 }
 
+func (s *SurfaceFormat2KHR) free() {}
+
+// Native returns the pointer to *C.VkSurfaceFormat2KHR. The caller is expected to
+// cast.
+func (s *SurfaceFormat2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PhysicalDeviceVariablePointerFeaturesKHR struct {
 	native *C.VkPhysicalDeviceVariablePointerFeaturesKHR
 }
 
 func wrapPhysicalDeviceVariablePointerFeaturesKHR(p *C.VkPhysicalDeviceVariablePointerFeaturesKHR) *PhysicalDeviceVariablePointerFeaturesKHR {
 	v := PhysicalDeviceVariablePointerFeaturesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceVariablePointerFeaturesKHR).free)
+
 	return &v
 }
 
@@ -8035,12 +14040,24 @@ func marshalPhysicalDeviceVariablePointerFeaturesKHR(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceVariablePointerFeaturesKHR(c)
 }
 
+func (p *PhysicalDeviceVariablePointerFeaturesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceVariablePointerFeaturesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceVariablePointerFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceVariablePointersFeaturesKHR struct {
 	native *C.VkPhysicalDeviceVariablePointersFeaturesKHR
 }
 
 func wrapPhysicalDeviceVariablePointersFeaturesKHR(p *C.VkPhysicalDeviceVariablePointersFeaturesKHR) *PhysicalDeviceVariablePointersFeaturesKHR {
 	v := PhysicalDeviceVariablePointersFeaturesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceVariablePointersFeaturesKHR).free)
+
 	return &v
 }
 
@@ -8051,12 +14068,24 @@ func marshalPhysicalDeviceVariablePointersFeaturesKHR(p uintptr) (interface{}, e
 	return wrapPhysicalDeviceVariablePointersFeaturesKHR(c)
 }
 
+func (p *PhysicalDeviceVariablePointersFeaturesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceVariablePointersFeaturesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceVariablePointersFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DisplayProperties2KHR struct {
 	native *C.VkDisplayProperties2KHR
 }
 
 func wrapDisplayProperties2KHR(p *C.VkDisplayProperties2KHR) *DisplayProperties2KHR {
 	v := DisplayProperties2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayProperties2KHR).free)
+
 	return &v
 }
 
@@ -8067,12 +14096,24 @@ func marshalDisplayProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapDisplayProperties2KHR(c)
 }
 
+func (d *DisplayProperties2KHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayProperties2KHR. The caller is expected to
+// cast.
+func (d *DisplayProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayPlaneProperties2KHR struct {
 	native *C.VkDisplayPlaneProperties2KHR
 }
 
 func wrapDisplayPlaneProperties2KHR(p *C.VkDisplayPlaneProperties2KHR) *DisplayPlaneProperties2KHR {
 	v := DisplayPlaneProperties2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPlaneProperties2KHR).free)
+
 	return &v
 }
 
@@ -8083,12 +14124,24 @@ func marshalDisplayPlaneProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneProperties2KHR(c)
 }
 
+func (d *DisplayPlaneProperties2KHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayPlaneProperties2KHR. The caller is expected to
+// cast.
+func (d *DisplayPlaneProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayModeProperties2KHR struct {
 	native *C.VkDisplayModeProperties2KHR
 }
 
 func wrapDisplayModeProperties2KHR(p *C.VkDisplayModeProperties2KHR) *DisplayModeProperties2KHR {
 	v := DisplayModeProperties2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayModeProperties2KHR).free)
+
 	return &v
 }
 
@@ -8099,12 +14152,24 @@ func marshalDisplayModeProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModeProperties2KHR(c)
 }
 
+func (d *DisplayModeProperties2KHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayModeProperties2KHR. The caller is expected to
+// cast.
+func (d *DisplayModeProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayPlaneInfo2KHR struct {
 	native *C.VkDisplayPlaneInfo2KHR
 }
 
 func wrapDisplayPlaneInfo2KHR(p *C.VkDisplayPlaneInfo2KHR) *DisplayPlaneInfo2KHR {
 	v := DisplayPlaneInfo2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPlaneInfo2KHR).free)
+
 	return &v
 }
 
@@ -8115,12 +14180,24 @@ func marshalDisplayPlaneInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneInfo2KHR(c)
 }
 
+func (d *DisplayPlaneInfo2KHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayPlaneInfo2KHR. The caller is expected to
+// cast.
+func (d *DisplayPlaneInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayPlaneCapabilities2KHR struct {
 	native *C.VkDisplayPlaneCapabilities2KHR
 }
 
 func wrapDisplayPlaneCapabilities2KHR(p *C.VkDisplayPlaneCapabilities2KHR) *DisplayPlaneCapabilities2KHR {
 	v := DisplayPlaneCapabilities2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPlaneCapabilities2KHR).free)
+
 	return &v
 }
 
@@ -8131,12 +14208,24 @@ func marshalDisplayPlaneCapabilities2KHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneCapabilities2KHR(c)
 }
 
+func (d *DisplayPlaneCapabilities2KHR) free() {}
+
+// Native returns the pointer to *C.VkDisplayPlaneCapabilities2KHR. The caller is expected to
+// cast.
+func (d *DisplayPlaneCapabilities2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type MemoryDedicatedRequirementsKHR struct {
 	native *C.VkMemoryDedicatedRequirementsKHR
 }
 
 func wrapMemoryDedicatedRequirementsKHR(p *C.VkMemoryDedicatedRequirementsKHR) *MemoryDedicatedRequirementsKHR {
 	v := MemoryDedicatedRequirementsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryDedicatedRequirementsKHR).free)
+
 	return &v
 }
 
@@ -8147,12 +14236,24 @@ func marshalMemoryDedicatedRequirementsKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryDedicatedRequirementsKHR(c)
 }
 
+func (m *MemoryDedicatedRequirementsKHR) free() {}
+
+// Native returns the pointer to *C.VkMemoryDedicatedRequirementsKHR. The caller is expected to
+// cast.
+func (m *MemoryDedicatedRequirementsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type MemoryDedicatedAllocateInfoKHR struct {
 	native *C.VkMemoryDedicatedAllocateInfoKHR
 }
 
 func wrapMemoryDedicatedAllocateInfoKHR(p *C.VkMemoryDedicatedAllocateInfoKHR) *MemoryDedicatedAllocateInfoKHR {
 	v := MemoryDedicatedAllocateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryDedicatedAllocateInfoKHR).free)
+
 	return &v
 }
 
@@ -8163,12 +14264,24 @@ func marshalMemoryDedicatedAllocateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryDedicatedAllocateInfoKHR(c)
 }
 
+func (m *MemoryDedicatedAllocateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkMemoryDedicatedAllocateInfoKHR. The caller is expected to
+// cast.
+func (m *MemoryDedicatedAllocateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type BufferMemoryRequirementsInfo2KHR struct {
 	native *C.VkBufferMemoryRequirementsInfo2KHR
 }
 
 func wrapBufferMemoryRequirementsInfo2KHR(p *C.VkBufferMemoryRequirementsInfo2KHR) *BufferMemoryRequirementsInfo2KHR {
 	v := BufferMemoryRequirementsInfo2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferMemoryRequirementsInfo2KHR).free)
+
 	return &v
 }
 
@@ -8179,12 +14292,24 @@ func marshalBufferMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapBufferMemoryRequirementsInfo2KHR(c)
 }
 
+func (b *BufferMemoryRequirementsInfo2KHR) free() {}
+
+// Native returns the pointer to *C.VkBufferMemoryRequirementsInfo2KHR. The caller is expected to
+// cast.
+func (b *BufferMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ImageMemoryRequirementsInfo2KHR struct {
 	native *C.VkImageMemoryRequirementsInfo2KHR
 }
 
 func wrapImageMemoryRequirementsInfo2KHR(p *C.VkImageMemoryRequirementsInfo2KHR) *ImageMemoryRequirementsInfo2KHR {
 	v := ImageMemoryRequirementsInfo2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageMemoryRequirementsInfo2KHR).free)
+
 	return &v
 }
 
@@ -8195,12 +14320,24 @@ func marshalImageMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapImageMemoryRequirementsInfo2KHR(c)
 }
 
+func (i *ImageMemoryRequirementsInfo2KHR) free() {}
+
+// Native returns the pointer to *C.VkImageMemoryRequirementsInfo2KHR. The caller is expected to
+// cast.
+func (i *ImageMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageSparseMemoryRequirementsInfo2KHR struct {
 	native *C.VkImageSparseMemoryRequirementsInfo2KHR
 }
 
 func wrapImageSparseMemoryRequirementsInfo2KHR(p *C.VkImageSparseMemoryRequirementsInfo2KHR) *ImageSparseMemoryRequirementsInfo2KHR {
 	v := ImageSparseMemoryRequirementsInfo2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageSparseMemoryRequirementsInfo2KHR).free)
+
 	return &v
 }
 
@@ -8211,12 +14348,24 @@ func marshalImageSparseMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error
 	return wrapImageSparseMemoryRequirementsInfo2KHR(c)
 }
 
+func (i *ImageSparseMemoryRequirementsInfo2KHR) free() {}
+
+// Native returns the pointer to *C.VkImageSparseMemoryRequirementsInfo2KHR. The caller is expected to
+// cast.
+func (i *ImageSparseMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type SparseImageMemoryRequirements2KHR struct {
 	native *C.VkSparseImageMemoryRequirements2KHR
 }
 
 func wrapSparseImageMemoryRequirements2KHR(p *C.VkSparseImageMemoryRequirements2KHR) *SparseImageMemoryRequirements2KHR {
 	v := SparseImageMemoryRequirements2KHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SparseImageMemoryRequirements2KHR).free)
+
 	return &v
 }
 
@@ -8227,12 +14376,24 @@ func marshalSparseImageMemoryRequirements2KHR(p uintptr) (interface{}, error) {
 	return wrapSparseImageMemoryRequirements2KHR(c)
 }
 
+func (s *SparseImageMemoryRequirements2KHR) free() {}
+
+// Native returns the pointer to *C.VkSparseImageMemoryRequirements2KHR. The caller is expected to
+// cast.
+func (s *SparseImageMemoryRequirements2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ImageFormatListCreateInfoKHR struct {
 	native *C.VkImageFormatListCreateInfoKHR
 }
 
 func wrapImageFormatListCreateInfoKHR(p *C.VkImageFormatListCreateInfoKHR) *ImageFormatListCreateInfoKHR {
 	v := ImageFormatListCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageFormatListCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -8243,12 +14404,24 @@ func marshalImageFormatListCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImageFormatListCreateInfoKHR(c)
 }
 
+func (i *ImageFormatListCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkImageFormatListCreateInfoKHR. The caller is expected to
+// cast.
+func (i *ImageFormatListCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type SamplerYcbcrConversionKHR struct {
 	native *C.VkSamplerYcbcrConversionKHR
 }
 
 func wrapSamplerYcbcrConversionKHR(p *C.VkSamplerYcbcrConversionKHR) *SamplerYcbcrConversionKHR {
 	v := SamplerYcbcrConversionKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrConversionKHR).free)
+
 	return &v
 }
 
@@ -8259,12 +14432,24 @@ func marshalSamplerYcbcrConversionKHR(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrConversionKHR(c)
 }
 
+func (s *SamplerYcbcrConversionKHR) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrConversionKHR. The caller is expected to
+// cast.
+func (s *SamplerYcbcrConversionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SamplerYcbcrModelConversionKHR struct {
 	native *C.VkSamplerYcbcrModelConversionKHR
 }
 
 func wrapSamplerYcbcrModelConversionKHR(p *C.VkSamplerYcbcrModelConversionKHR) *SamplerYcbcrModelConversionKHR {
 	v := SamplerYcbcrModelConversionKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrModelConversionKHR).free)
+
 	return &v
 }
 
@@ -8275,12 +14460,24 @@ func marshalSamplerYcbcrModelConversionKHR(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrModelConversionKHR(c)
 }
 
+func (s *SamplerYcbcrModelConversionKHR) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrModelConversionKHR. The caller is expected to
+// cast.
+func (s *SamplerYcbcrModelConversionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SamplerYcbcrRangeKHR struct {
 	native *C.VkSamplerYcbcrRangeKHR
 }
 
 func wrapSamplerYcbcrRangeKHR(p *C.VkSamplerYcbcrRangeKHR) *SamplerYcbcrRangeKHR {
 	v := SamplerYcbcrRangeKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrRangeKHR).free)
+
 	return &v
 }
 
@@ -8291,12 +14488,24 @@ func marshalSamplerYcbcrRangeKHR(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrRangeKHR(c)
 }
 
+func (s *SamplerYcbcrRangeKHR) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrRangeKHR. The caller is expected to
+// cast.
+func (s *SamplerYcbcrRangeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ChromaLocationKHR struct {
 	native *C.VkChromaLocationKHR
 }
 
 func wrapChromaLocationKHR(p *C.VkChromaLocationKHR) *ChromaLocationKHR {
 	v := ChromaLocationKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ChromaLocationKHR).free)
+
 	return &v
 }
 
@@ -8307,12 +14516,24 @@ func marshalChromaLocationKHR(p uintptr) (interface{}, error) {
 	return wrapChromaLocationKHR(c)
 }
 
+func (c *ChromaLocationKHR) free() {}
+
+// Native returns the pointer to *C.VkChromaLocationKHR. The caller is expected to
+// cast.
+func (c *ChromaLocationKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type SamplerYcbcrConversionCreateInfoKHR struct {
 	native *C.VkSamplerYcbcrConversionCreateInfoKHR
 }
 
 func wrapSamplerYcbcrConversionCreateInfoKHR(p *C.VkSamplerYcbcrConversionCreateInfoKHR) *SamplerYcbcrConversionCreateInfoKHR {
 	v := SamplerYcbcrConversionCreateInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrConversionCreateInfoKHR).free)
+
 	return &v
 }
 
@@ -8323,12 +14544,24 @@ func marshalSamplerYcbcrConversionCreateInfoKHR(p uintptr) (interface{}, error) 
 	return wrapSamplerYcbcrConversionCreateInfoKHR(c)
 }
 
+func (s *SamplerYcbcrConversionCreateInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrConversionCreateInfoKHR. The caller is expected to
+// cast.
+func (s *SamplerYcbcrConversionCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SamplerYcbcrConversionInfoKHR struct {
 	native *C.VkSamplerYcbcrConversionInfoKHR
 }
 
 func wrapSamplerYcbcrConversionInfoKHR(p *C.VkSamplerYcbcrConversionInfoKHR) *SamplerYcbcrConversionInfoKHR {
 	v := SamplerYcbcrConversionInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrConversionInfoKHR).free)
+
 	return &v
 }
 
@@ -8339,12 +14572,24 @@ func marshalSamplerYcbcrConversionInfoKHR(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrConversionInfoKHR(c)
 }
 
+func (s *SamplerYcbcrConversionInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrConversionInfoKHR. The caller is expected to
+// cast.
+func (s *SamplerYcbcrConversionInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type BindImagePlaneMemoryInfoKHR struct {
 	native *C.VkBindImagePlaneMemoryInfoKHR
 }
 
 func wrapBindImagePlaneMemoryInfoKHR(p *C.VkBindImagePlaneMemoryInfoKHR) *BindImagePlaneMemoryInfoKHR {
 	v := BindImagePlaneMemoryInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindImagePlaneMemoryInfoKHR).free)
+
 	return &v
 }
 
@@ -8355,12 +14600,24 @@ func marshalBindImagePlaneMemoryInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindImagePlaneMemoryInfoKHR(c)
 }
 
+func (b *BindImagePlaneMemoryInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkBindImagePlaneMemoryInfoKHR. The caller is expected to
+// cast.
+func (b *BindImagePlaneMemoryInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ImagePlaneMemoryRequirementsInfoKHR struct {
 	native *C.VkImagePlaneMemoryRequirementsInfoKHR
 }
 
 func wrapImagePlaneMemoryRequirementsInfoKHR(p *C.VkImagePlaneMemoryRequirementsInfoKHR) *ImagePlaneMemoryRequirementsInfoKHR {
 	v := ImagePlaneMemoryRequirementsInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImagePlaneMemoryRequirementsInfoKHR).free)
+
 	return &v
 }
 
@@ -8371,12 +14628,24 @@ func marshalImagePlaneMemoryRequirementsInfoKHR(p uintptr) (interface{}, error) 
 	return wrapImagePlaneMemoryRequirementsInfoKHR(c)
 }
 
+func (i *ImagePlaneMemoryRequirementsInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkImagePlaneMemoryRequirementsInfoKHR. The caller is expected to
+// cast.
+func (i *ImagePlaneMemoryRequirementsInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type PhysicalDeviceSamplerYcbcrConversionFeaturesKHR struct {
 	native *C.VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR
 }
 
 func wrapPhysicalDeviceSamplerYcbcrConversionFeaturesKHR(p *C.VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR) *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR {
 	v := PhysicalDeviceSamplerYcbcrConversionFeaturesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceSamplerYcbcrConversionFeaturesKHR).free)
+
 	return &v
 }
 
@@ -8387,12 +14656,24 @@ func marshalPhysicalDeviceSamplerYcbcrConversionFeaturesKHR(p uintptr) (interfac
 	return wrapPhysicalDeviceSamplerYcbcrConversionFeaturesKHR(c)
 }
 
+func (p *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SamplerYcbcrConversionImageFormatPropertiesKHR struct {
 	native *C.VkSamplerYcbcrConversionImageFormatPropertiesKHR
 }
 
 func wrapSamplerYcbcrConversionImageFormatPropertiesKHR(p *C.VkSamplerYcbcrConversionImageFormatPropertiesKHR) *SamplerYcbcrConversionImageFormatPropertiesKHR {
 	v := SamplerYcbcrConversionImageFormatPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerYcbcrConversionImageFormatPropertiesKHR).free)
+
 	return &v
 }
 
@@ -8403,12 +14684,24 @@ func marshalSamplerYcbcrConversionImageFormatPropertiesKHR(p uintptr) (interface
 	return wrapSamplerYcbcrConversionImageFormatPropertiesKHR(c)
 }
 
+func (s *SamplerYcbcrConversionImageFormatPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkSamplerYcbcrConversionImageFormatPropertiesKHR. The caller is expected to
+// cast.
+func (s *SamplerYcbcrConversionImageFormatPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type BindBufferMemoryInfoKHR struct {
 	native *C.VkBindBufferMemoryInfoKHR
 }
 
 func wrapBindBufferMemoryInfoKHR(p *C.VkBindBufferMemoryInfoKHR) *BindBufferMemoryInfoKHR {
 	v := BindBufferMemoryInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindBufferMemoryInfoKHR).free)
+
 	return &v
 }
 
@@ -8419,12 +14712,24 @@ func marshalBindBufferMemoryInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindBufferMemoryInfoKHR(c)
 }
 
+func (b *BindBufferMemoryInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkBindBufferMemoryInfoKHR. The caller is expected to
+// cast.
+func (b *BindBufferMemoryInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BindImageMemoryInfoKHR struct {
 	native *C.VkBindImageMemoryInfoKHR
 }
 
 func wrapBindImageMemoryInfoKHR(p *C.VkBindImageMemoryInfoKHR) *BindImageMemoryInfoKHR {
 	v := BindImageMemoryInfoKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindImageMemoryInfoKHR).free)
+
 	return &v
 }
 
@@ -8435,12 +14740,24 @@ func marshalBindImageMemoryInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindImageMemoryInfoKHR(c)
 }
 
+func (b *BindImageMemoryInfoKHR) free() {}
+
+// Native returns the pointer to *C.VkBindImageMemoryInfoKHR. The caller is expected to
+// cast.
+func (b *BindImageMemoryInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type PhysicalDeviceMaintenance3PropertiesKHR struct {
 	native *C.VkPhysicalDeviceMaintenance3PropertiesKHR
 }
 
 func wrapPhysicalDeviceMaintenance3PropertiesKHR(p *C.VkPhysicalDeviceMaintenance3PropertiesKHR) *PhysicalDeviceMaintenance3PropertiesKHR {
 	v := PhysicalDeviceMaintenance3PropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMaintenance3PropertiesKHR).free)
+
 	return &v
 }
 
@@ -8451,12 +14768,24 @@ func marshalPhysicalDeviceMaintenance3PropertiesKHR(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceMaintenance3PropertiesKHR(c)
 }
 
+func (p *PhysicalDeviceMaintenance3PropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMaintenance3PropertiesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMaintenance3PropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DescriptorSetLayoutSupportKHR struct {
 	native *C.VkDescriptorSetLayoutSupportKHR
 }
 
 func wrapDescriptorSetLayoutSupportKHR(p *C.VkDescriptorSetLayoutSupportKHR) *DescriptorSetLayoutSupportKHR {
 	v := DescriptorSetLayoutSupportKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetLayoutSupportKHR).free)
+
 	return &v
 }
 
@@ -8467,12 +14796,24 @@ func marshalDescriptorSetLayoutSupportKHR(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutSupportKHR(c)
 }
 
+func (d *DescriptorSetLayoutSupportKHR) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetLayoutSupportKHR. The caller is expected to
+// cast.
+func (d *DescriptorSetLayoutSupportKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PhysicalDevice8BitStorageFeaturesKHR struct {
 	native *C.VkPhysicalDevice8BitStorageFeaturesKHR
 }
 
 func wrapPhysicalDevice8BitStorageFeaturesKHR(p *C.VkPhysicalDevice8BitStorageFeaturesKHR) *PhysicalDevice8BitStorageFeaturesKHR {
 	v := PhysicalDevice8BitStorageFeaturesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDevice8BitStorageFeaturesKHR).free)
+
 	return &v
 }
 
@@ -8483,12 +14824,24 @@ func marshalPhysicalDevice8BitStorageFeaturesKHR(p uintptr) (interface{}, error)
 	return wrapPhysicalDevice8BitStorageFeaturesKHR(c)
 }
 
+func (p *PhysicalDevice8BitStorageFeaturesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDevice8BitStorageFeaturesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDevice8BitStorageFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceShaderAtomicInt64FeaturesKHR struct {
 	native *C.VkPhysicalDeviceShaderAtomicInt64FeaturesKHR
 }
 
 func wrapPhysicalDeviceShaderAtomicInt64FeaturesKHR(p *C.VkPhysicalDeviceShaderAtomicInt64FeaturesKHR) *PhysicalDeviceShaderAtomicInt64FeaturesKHR {
 	v := PhysicalDeviceShaderAtomicInt64FeaturesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceShaderAtomicInt64FeaturesKHR).free)
+
 	return &v
 }
 
@@ -8499,12 +14852,24 @@ func marshalPhysicalDeviceShaderAtomicInt64FeaturesKHR(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceShaderAtomicInt64FeaturesKHR(c)
 }
 
+func (p *PhysicalDeviceShaderAtomicInt64FeaturesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceShaderAtomicInt64FeaturesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceShaderAtomicInt64FeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DriverIDKHR struct {
 	native *C.VkDriverIdKHR
 }
 
 func wrapDriverIDKHR(p *C.VkDriverIdKHR) *DriverIDKHR {
 	v := DriverIDKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DriverIDKHR).free)
+
 	return &v
 }
 
@@ -8515,12 +14880,24 @@ func marshalDriverIDKHR(p uintptr) (interface{}, error) {
 	return wrapDriverIDKHR(c)
 }
 
+func (d *DriverIDKHR) free() {}
+
+// Native returns the pointer to *C.VkDriverIdKHR. The caller is expected to
+// cast.
+func (d *DriverIDKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type ConformanceVersionKHR struct {
 	native *C.VkConformanceVersionKHR
 }
 
 func wrapConformanceVersionKHR(p *C.VkConformanceVersionKHR) *ConformanceVersionKHR {
 	v := ConformanceVersionKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ConformanceVersionKHR).free)
+
 	return &v
 }
 
@@ -8531,12 +14908,24 @@ func marshalConformanceVersionKHR(p uintptr) (interface{}, error) {
 	return wrapConformanceVersionKHR(c)
 }
 
+func (c *ConformanceVersionKHR) free() {}
+
+// Native returns the pointer to *C.VkConformanceVersionKHR. The caller is expected to
+// cast.
+func (c *ConformanceVersionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PhysicalDeviceDriverPropertiesKHR struct {
 	native *C.VkPhysicalDeviceDriverPropertiesKHR
 }
 
 func wrapPhysicalDeviceDriverPropertiesKHR(p *C.VkPhysicalDeviceDriverPropertiesKHR) *PhysicalDeviceDriverPropertiesKHR {
 	v := PhysicalDeviceDriverPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceDriverPropertiesKHR).free)
+
 	return &v
 }
 
@@ -8547,12 +14936,24 @@ func marshalPhysicalDeviceDriverPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceDriverPropertiesKHR(c)
 }
 
+func (p *PhysicalDeviceDriverPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceDriverPropertiesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceDriverPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceFloatControlsPropertiesKHR struct {
 	native *C.VkPhysicalDeviceFloatControlsPropertiesKHR
 }
 
 func wrapPhysicalDeviceFloatControlsPropertiesKHR(p *C.VkPhysicalDeviceFloatControlsPropertiesKHR) *PhysicalDeviceFloatControlsPropertiesKHR {
 	v := PhysicalDeviceFloatControlsPropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceFloatControlsPropertiesKHR).free)
+
 	return &v
 }
 
@@ -8563,12 +14964,24 @@ func marshalPhysicalDeviceFloatControlsPropertiesKHR(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceFloatControlsPropertiesKHR(c)
 }
 
+func (p *PhysicalDeviceFloatControlsPropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceFloatControlsPropertiesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceFloatControlsPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ResolveModeFlagBitsKHR struct {
 	native *C.VkResolveModeFlagBitsKHR
 }
 
 func wrapResolveModeFlagBitsKHR(p *C.VkResolveModeFlagBitsKHR) *ResolveModeFlagBitsKHR {
 	v := ResolveModeFlagBitsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ResolveModeFlagBitsKHR).free)
+
 	return &v
 }
 
@@ -8579,12 +14992,24 @@ func marshalResolveModeFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapResolveModeFlagBitsKHR(c)
 }
 
+func (r *ResolveModeFlagBitsKHR) free() {}
+
+// Native returns the pointer to *C.VkResolveModeFlagBitsKHR. The caller is expected to
+// cast.
+func (r *ResolveModeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type ResolveModeFlagsKHR struct {
 	native *C.VkResolveModeFlagsKHR
 }
 
 func wrapResolveModeFlagsKHR(p *C.VkResolveModeFlagsKHR) *ResolveModeFlagsKHR {
 	v := ResolveModeFlagsKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ResolveModeFlagsKHR).free)
+
 	return &v
 }
 
@@ -8595,12 +15020,24 @@ func marshalResolveModeFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapResolveModeFlagsKHR(c)
 }
 
+func (r *ResolveModeFlagsKHR) free() {}
+
+// Native returns the pointer to *C.VkResolveModeFlagsKHR. The caller is expected to
+// cast.
+func (r *ResolveModeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type SubpassDescriptionDepthStencilResolveKHR struct {
 	native *C.VkSubpassDescriptionDepthStencilResolveKHR
 }
 
 func wrapSubpassDescriptionDepthStencilResolveKHR(p *C.VkSubpassDescriptionDepthStencilResolveKHR) *SubpassDescriptionDepthStencilResolveKHR {
 	v := SubpassDescriptionDepthStencilResolveKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassDescriptionDepthStencilResolveKHR).free)
+
 	return &v
 }
 
@@ -8611,12 +15048,24 @@ func marshalSubpassDescriptionDepthStencilResolveKHR(p uintptr) (interface{}, er
 	return wrapSubpassDescriptionDepthStencilResolveKHR(c)
 }
 
+func (s *SubpassDescriptionDepthStencilResolveKHR) free() {}
+
+// Native returns the pointer to *C.VkSubpassDescriptionDepthStencilResolveKHR. The caller is expected to
+// cast.
+func (s *SubpassDescriptionDepthStencilResolveKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PhysicalDeviceDepthStencilResolvePropertiesKHR struct {
 	native *C.VkPhysicalDeviceDepthStencilResolvePropertiesKHR
 }
 
 func wrapPhysicalDeviceDepthStencilResolvePropertiesKHR(p *C.VkPhysicalDeviceDepthStencilResolvePropertiesKHR) *PhysicalDeviceDepthStencilResolvePropertiesKHR {
 	v := PhysicalDeviceDepthStencilResolvePropertiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceDepthStencilResolvePropertiesKHR).free)
+
 	return &v
 }
 
@@ -8627,12 +15076,24 @@ func marshalPhysicalDeviceDepthStencilResolvePropertiesKHR(p uintptr) (interface
 	return wrapPhysicalDeviceDepthStencilResolvePropertiesKHR(c)
 }
 
+func (p *PhysicalDeviceDepthStencilResolvePropertiesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceDepthStencilResolvePropertiesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceDepthStencilResolvePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceVulkanMemoryModelFeaturesKHR struct {
 	native *C.VkPhysicalDeviceVulkanMemoryModelFeaturesKHR
 }
 
 func wrapPhysicalDeviceVulkanMemoryModelFeaturesKHR(p *C.VkPhysicalDeviceVulkanMemoryModelFeaturesKHR) *PhysicalDeviceVulkanMemoryModelFeaturesKHR {
 	v := PhysicalDeviceVulkanMemoryModelFeaturesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceVulkanMemoryModelFeaturesKHR).free)
+
 	return &v
 }
 
@@ -8643,12 +15104,24 @@ func marshalPhysicalDeviceVulkanMemoryModelFeaturesKHR(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceVulkanMemoryModelFeaturesKHR(c)
 }
 
+func (p *PhysicalDeviceVulkanMemoryModelFeaturesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceVulkanMemoryModelFeaturesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceVulkanMemoryModelFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SurfaceProtectedCapabilitiesKHR struct {
 	native *C.VkSurfaceProtectedCapabilitiesKHR
 }
 
 func wrapSurfaceProtectedCapabilitiesKHR(p *C.VkSurfaceProtectedCapabilitiesKHR) *SurfaceProtectedCapabilitiesKHR {
 	v := SurfaceProtectedCapabilitiesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceProtectedCapabilitiesKHR).free)
+
 	return &v
 }
 
@@ -8659,12 +15132,24 @@ func marshalSurfaceProtectedCapabilitiesKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceProtectedCapabilitiesKHR(c)
 }
 
+func (s *SurfaceProtectedCapabilitiesKHR) free() {}
+
+// Native returns the pointer to *C.VkSurfaceProtectedCapabilitiesKHR. The caller is expected to
+// cast.
+func (s *SurfaceProtectedCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR struct {
 	native *C.VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR
 }
 
 func wrapPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR(p *C.VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR {
 	v := PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR).free)
+
 	return &v
 }
 
@@ -8675,12 +15160,24 @@ func marshalPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR(p uintptr) (int
 	return wrapPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR(c)
 }
 
+func (p *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR. The caller is expected to
+// cast.
+func (p *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DebugReportCallbackEXT struct {
 	native *C.VkDebugReportCallbackEXT
 }
 
 func wrapDebugReportCallbackEXT(p *C.VkDebugReportCallbackEXT) *DebugReportCallbackEXT {
 	v := DebugReportCallbackEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugReportCallbackEXT).free)
+
 	return &v
 }
 
@@ -8691,12 +15188,24 @@ func marshalDebugReportCallbackEXT(p uintptr) (interface{}, error) {
 	return wrapDebugReportCallbackEXT(c)
 }
 
+func (d *DebugReportCallbackEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugReportCallbackEXT. The caller is expected to
+// cast.
+func (d *DebugReportCallbackEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugReportObjectTypeEXT struct {
 	native *C.VkDebugReportObjectTypeEXT
 }
 
 func wrapDebugReportObjectTypeEXT(p *C.VkDebugReportObjectTypeEXT) *DebugReportObjectTypeEXT {
 	v := DebugReportObjectTypeEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugReportObjectTypeEXT).free)
+
 	return &v
 }
 
@@ -8707,12 +15216,24 @@ func marshalDebugReportObjectTypeEXT(p uintptr) (interface{}, error) {
 	return wrapDebugReportObjectTypeEXT(c)
 }
 
+func (d *DebugReportObjectTypeEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugReportObjectTypeEXT. The caller is expected to
+// cast.
+func (d *DebugReportObjectTypeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugReportFlagBitsEXT struct {
 	native *C.VkDebugReportFlagBitsEXT
 }
 
 func wrapDebugReportFlagBitsEXT(p *C.VkDebugReportFlagBitsEXT) *DebugReportFlagBitsEXT {
 	v := DebugReportFlagBitsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugReportFlagBitsEXT).free)
+
 	return &v
 }
 
@@ -8723,12 +15244,24 @@ func marshalDebugReportFlagBitsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugReportFlagBitsEXT(c)
 }
 
+func (d *DebugReportFlagBitsEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugReportFlagBitsEXT. The caller is expected to
+// cast.
+func (d *DebugReportFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugReportFlagsEXT struct {
 	native *C.VkDebugReportFlagsEXT
 }
 
 func wrapDebugReportFlagsEXT(p *C.VkDebugReportFlagsEXT) *DebugReportFlagsEXT {
 	v := DebugReportFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugReportFlagsEXT).free)
+
 	return &v
 }
 
@@ -8739,12 +15272,24 @@ func marshalDebugReportFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugReportFlagsEXT(c)
 }
 
+func (d *DebugReportFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugReportFlagsEXT. The caller is expected to
+// cast.
+func (d *DebugReportFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugReportCallbackCreateInfoEXT struct {
 	native *C.VkDebugReportCallbackCreateInfoEXT
 }
 
 func wrapDebugReportCallbackCreateInfoEXT(p *C.VkDebugReportCallbackCreateInfoEXT) *DebugReportCallbackCreateInfoEXT {
 	v := DebugReportCallbackCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugReportCallbackCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -8755,12 +15300,24 @@ func marshalDebugReportCallbackCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugReportCallbackCreateInfoEXT(c)
 }
 
+func (d *DebugReportCallbackCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugReportCallbackCreateInfoEXT. The caller is expected to
+// cast.
+func (d *DebugReportCallbackCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type RasterizationOrderAMD struct {
 	native *C.VkRasterizationOrderAMD
 }
 
 func wrapRasterizationOrderAMD(p *C.VkRasterizationOrderAMD) *RasterizationOrderAMD {
 	v := RasterizationOrderAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RasterizationOrderAMD).free)
+
 	return &v
 }
 
@@ -8771,12 +15328,24 @@ func marshalRasterizationOrderAMD(p uintptr) (interface{}, error) {
 	return wrapRasterizationOrderAMD(c)
 }
 
+func (r *RasterizationOrderAMD) free() {}
+
+// Native returns the pointer to *C.VkRasterizationOrderAMD. The caller is expected to
+// cast.
+func (r *RasterizationOrderAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type PipelineRasterizationStateRasterizationOrderAMD struct {
 	native *C.VkPipelineRasterizationStateRasterizationOrderAMD
 }
 
 func wrapPipelineRasterizationStateRasterizationOrderAMD(p *C.VkPipelineRasterizationStateRasterizationOrderAMD) *PipelineRasterizationStateRasterizationOrderAMD {
 	v := PipelineRasterizationStateRasterizationOrderAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineRasterizationStateRasterizationOrderAMD).free)
+
 	return &v
 }
 
@@ -8787,12 +15356,24 @@ func marshalPipelineRasterizationStateRasterizationOrderAMD(p uintptr) (interfac
 	return wrapPipelineRasterizationStateRasterizationOrderAMD(c)
 }
 
+func (p *PipelineRasterizationStateRasterizationOrderAMD) free() {}
+
+// Native returns the pointer to *C.VkPipelineRasterizationStateRasterizationOrderAMD. The caller is expected to
+// cast.
+func (p *PipelineRasterizationStateRasterizationOrderAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DebugMarkerObjectNameInfoEXT struct {
 	native *C.VkDebugMarkerObjectNameInfoEXT
 }
 
 func wrapDebugMarkerObjectNameInfoEXT(p *C.VkDebugMarkerObjectNameInfoEXT) *DebugMarkerObjectNameInfoEXT {
 	v := DebugMarkerObjectNameInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugMarkerObjectNameInfoEXT).free)
+
 	return &v
 }
 
@@ -8803,12 +15384,24 @@ func marshalDebugMarkerObjectNameInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugMarkerObjectNameInfoEXT(c)
 }
 
+func (d *DebugMarkerObjectNameInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugMarkerObjectNameInfoEXT. The caller is expected to
+// cast.
+func (d *DebugMarkerObjectNameInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugMarkerObjectTagInfoEXT struct {
 	native *C.VkDebugMarkerObjectTagInfoEXT
 }
 
 func wrapDebugMarkerObjectTagInfoEXT(p *C.VkDebugMarkerObjectTagInfoEXT) *DebugMarkerObjectTagInfoEXT {
 	v := DebugMarkerObjectTagInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugMarkerObjectTagInfoEXT).free)
+
 	return &v
 }
 
@@ -8819,12 +15412,24 @@ func marshalDebugMarkerObjectTagInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugMarkerObjectTagInfoEXT(c)
 }
 
+func (d *DebugMarkerObjectTagInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugMarkerObjectTagInfoEXT. The caller is expected to
+// cast.
+func (d *DebugMarkerObjectTagInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugMarkerMarkerInfoEXT struct {
 	native *C.VkDebugMarkerMarkerInfoEXT
 }
 
 func wrapDebugMarkerMarkerInfoEXT(p *C.VkDebugMarkerMarkerInfoEXT) *DebugMarkerMarkerInfoEXT {
 	v := DebugMarkerMarkerInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugMarkerMarkerInfoEXT).free)
+
 	return &v
 }
 
@@ -8835,12 +15440,24 @@ func marshalDebugMarkerMarkerInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugMarkerMarkerInfoEXT(c)
 }
 
+func (d *DebugMarkerMarkerInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugMarkerMarkerInfoEXT. The caller is expected to
+// cast.
+func (d *DebugMarkerMarkerInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DedicatedAllocationImageCreateInfoNV struct {
 	native *C.VkDedicatedAllocationImageCreateInfoNV
 }
 
 func wrapDedicatedAllocationImageCreateInfoNV(p *C.VkDedicatedAllocationImageCreateInfoNV) *DedicatedAllocationImageCreateInfoNV {
 	v := DedicatedAllocationImageCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DedicatedAllocationImageCreateInfoNV).free)
+
 	return &v
 }
 
@@ -8851,12 +15468,24 @@ func marshalDedicatedAllocationImageCreateInfoNV(p uintptr) (interface{}, error)
 	return wrapDedicatedAllocationImageCreateInfoNV(c)
 }
 
+func (d *DedicatedAllocationImageCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkDedicatedAllocationImageCreateInfoNV. The caller is expected to
+// cast.
+func (d *DedicatedAllocationImageCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DedicatedAllocationBufferCreateInfoNV struct {
 	native *C.VkDedicatedAllocationBufferCreateInfoNV
 }
 
 func wrapDedicatedAllocationBufferCreateInfoNV(p *C.VkDedicatedAllocationBufferCreateInfoNV) *DedicatedAllocationBufferCreateInfoNV {
 	v := DedicatedAllocationBufferCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DedicatedAllocationBufferCreateInfoNV).free)
+
 	return &v
 }
 
@@ -8867,12 +15496,24 @@ func marshalDedicatedAllocationBufferCreateInfoNV(p uintptr) (interface{}, error
 	return wrapDedicatedAllocationBufferCreateInfoNV(c)
 }
 
+func (d *DedicatedAllocationBufferCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkDedicatedAllocationBufferCreateInfoNV. The caller is expected to
+// cast.
+func (d *DedicatedAllocationBufferCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DedicatedAllocationMemoryAllocateInfoNV struct {
 	native *C.VkDedicatedAllocationMemoryAllocateInfoNV
 }
 
 func wrapDedicatedAllocationMemoryAllocateInfoNV(p *C.VkDedicatedAllocationMemoryAllocateInfoNV) *DedicatedAllocationMemoryAllocateInfoNV {
 	v := DedicatedAllocationMemoryAllocateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DedicatedAllocationMemoryAllocateInfoNV).free)
+
 	return &v
 }
 
@@ -8883,12 +15524,24 @@ func marshalDedicatedAllocationMemoryAllocateInfoNV(p uintptr) (interface{}, err
 	return wrapDedicatedAllocationMemoryAllocateInfoNV(c)
 }
 
+func (d *DedicatedAllocationMemoryAllocateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkDedicatedAllocationMemoryAllocateInfoNV. The caller is expected to
+// cast.
+func (d *DedicatedAllocationMemoryAllocateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PipelineRasterizationStateStreamCreateFlagsEXT struct {
 	native *C.VkPipelineRasterizationStateStreamCreateFlagsEXT
 }
 
 func wrapPipelineRasterizationStateStreamCreateFlagsEXT(p *C.VkPipelineRasterizationStateStreamCreateFlagsEXT) *PipelineRasterizationStateStreamCreateFlagsEXT {
 	v := PipelineRasterizationStateStreamCreateFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineRasterizationStateStreamCreateFlagsEXT).free)
+
 	return &v
 }
 
@@ -8899,12 +15552,24 @@ func marshalPipelineRasterizationStateStreamCreateFlagsEXT(p uintptr) (interface
 	return wrapPipelineRasterizationStateStreamCreateFlagsEXT(c)
 }
 
+func (p *PipelineRasterizationStateStreamCreateFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineRasterizationStateStreamCreateFlagsEXT. The caller is expected to
+// cast.
+func (p *PipelineRasterizationStateStreamCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceTransformFeedbackFeaturesEXT struct {
 	native *C.VkPhysicalDeviceTransformFeedbackFeaturesEXT
 }
 
 func wrapPhysicalDeviceTransformFeedbackFeaturesEXT(p *C.VkPhysicalDeviceTransformFeedbackFeaturesEXT) *PhysicalDeviceTransformFeedbackFeaturesEXT {
 	v := PhysicalDeviceTransformFeedbackFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceTransformFeedbackFeaturesEXT).free)
+
 	return &v
 }
 
@@ -8915,12 +15580,24 @@ func marshalPhysicalDeviceTransformFeedbackFeaturesEXT(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceTransformFeedbackFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceTransformFeedbackFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceTransformFeedbackFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceTransformFeedbackFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceTransformFeedbackPropertiesEXT struct {
 	native *C.VkPhysicalDeviceTransformFeedbackPropertiesEXT
 }
 
 func wrapPhysicalDeviceTransformFeedbackPropertiesEXT(p *C.VkPhysicalDeviceTransformFeedbackPropertiesEXT) *PhysicalDeviceTransformFeedbackPropertiesEXT {
 	v := PhysicalDeviceTransformFeedbackPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceTransformFeedbackPropertiesEXT).free)
+
 	return &v
 }
 
@@ -8931,12 +15608,24 @@ func marshalPhysicalDeviceTransformFeedbackPropertiesEXT(p uintptr) (interface{}
 	return wrapPhysicalDeviceTransformFeedbackPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceTransformFeedbackPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceTransformFeedbackPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceTransformFeedbackPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineRasterizationStateStreamCreateInfoEXT struct {
 	native *C.VkPipelineRasterizationStateStreamCreateInfoEXT
 }
 
 func wrapPipelineRasterizationStateStreamCreateInfoEXT(p *C.VkPipelineRasterizationStateStreamCreateInfoEXT) *PipelineRasterizationStateStreamCreateInfoEXT {
 	v := PipelineRasterizationStateStreamCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineRasterizationStateStreamCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -8947,12 +15636,24 @@ func marshalPipelineRasterizationStateStreamCreateInfoEXT(p uintptr) (interface{
 	return wrapPipelineRasterizationStateStreamCreateInfoEXT(c)
 }
 
+func (p *PipelineRasterizationStateStreamCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineRasterizationStateStreamCreateInfoEXT. The caller is expected to
+// cast.
+func (p *PipelineRasterizationStateStreamCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ImageViewHandleInfoNVX struct {
 	native *C.VkImageViewHandleInfoNVX
 }
 
 func wrapImageViewHandleInfoNVX(p *C.VkImageViewHandleInfoNVX) *ImageViewHandleInfoNVX {
 	v := ImageViewHandleInfoNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageViewHandleInfoNVX).free)
+
 	return &v
 }
 
@@ -8963,12 +15664,24 @@ func marshalImageViewHandleInfoNVX(p uintptr) (interface{}, error) {
 	return wrapImageViewHandleInfoNVX(c)
 }
 
+func (i *ImageViewHandleInfoNVX) free() {}
+
+// Native returns the pointer to *C.VkImageViewHandleInfoNVX. The caller is expected to
+// cast.
+func (i *ImageViewHandleInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type TextureLODGatherFormatPropertiesAMD struct {
 	native *C.VkTextureLODGatherFormatPropertiesAMD
 }
 
 func wrapTextureLODGatherFormatPropertiesAMD(p *C.VkTextureLODGatherFormatPropertiesAMD) *TextureLODGatherFormatPropertiesAMD {
 	v := TextureLODGatherFormatPropertiesAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*TextureLODGatherFormatPropertiesAMD).free)
+
 	return &v
 }
 
@@ -8979,12 +15692,24 @@ func marshalTextureLODGatherFormatPropertiesAMD(p uintptr) (interface{}, error) 
 	return wrapTextureLODGatherFormatPropertiesAMD(c)
 }
 
+func (t *TextureLODGatherFormatPropertiesAMD) free() {}
+
+// Native returns the pointer to *C.VkTextureLODGatherFormatPropertiesAMD. The caller is expected to
+// cast.
+func (t *TextureLODGatherFormatPropertiesAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
 type ShaderInfoTypeAMD struct {
 	native *C.VkShaderInfoTypeAMD
 }
 
 func wrapShaderInfoTypeAMD(p *C.VkShaderInfoTypeAMD) *ShaderInfoTypeAMD {
 	v := ShaderInfoTypeAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShaderInfoTypeAMD).free)
+
 	return &v
 }
 
@@ -8995,12 +15720,24 @@ func marshalShaderInfoTypeAMD(p uintptr) (interface{}, error) {
 	return wrapShaderInfoTypeAMD(c)
 }
 
+func (s *ShaderInfoTypeAMD) free() {}
+
+// Native returns the pointer to *C.VkShaderInfoTypeAMD. The caller is expected to
+// cast.
+func (s *ShaderInfoTypeAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ShaderResourceUsageAMD struct {
 	native *C.VkShaderResourceUsageAMD
 }
 
 func wrapShaderResourceUsageAMD(p *C.VkShaderResourceUsageAMD) *ShaderResourceUsageAMD {
 	v := ShaderResourceUsageAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShaderResourceUsageAMD).free)
+
 	return &v
 }
 
@@ -9011,12 +15748,24 @@ func marshalShaderResourceUsageAMD(p uintptr) (interface{}, error) {
 	return wrapShaderResourceUsageAMD(c)
 }
 
+func (s *ShaderResourceUsageAMD) free() {}
+
+// Native returns the pointer to *C.VkShaderResourceUsageAMD. The caller is expected to
+// cast.
+func (s *ShaderResourceUsageAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type ShaderStatisticsInfoAMD struct {
 	native *C.VkShaderStatisticsInfoAMD
 }
 
 func wrapShaderStatisticsInfoAMD(p *C.VkShaderStatisticsInfoAMD) *ShaderStatisticsInfoAMD {
 	v := ShaderStatisticsInfoAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShaderStatisticsInfoAMD).free)
+
 	return &v
 }
 
@@ -9027,12 +15776,24 @@ func marshalShaderStatisticsInfoAMD(p uintptr) (interface{}, error) {
 	return wrapShaderStatisticsInfoAMD(c)
 }
 
+func (s *ShaderStatisticsInfoAMD) free() {}
+
+// Native returns the pointer to *C.VkShaderStatisticsInfoAMD. The caller is expected to
+// cast.
+func (s *ShaderStatisticsInfoAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PhysicalDeviceCornerSampledImageFeaturesNV struct {
 	native *C.VkPhysicalDeviceCornerSampledImageFeaturesNV
 }
 
 func wrapPhysicalDeviceCornerSampledImageFeaturesNV(p *C.VkPhysicalDeviceCornerSampledImageFeaturesNV) *PhysicalDeviceCornerSampledImageFeaturesNV {
 	v := PhysicalDeviceCornerSampledImageFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceCornerSampledImageFeaturesNV).free)
+
 	return &v
 }
 
@@ -9043,12 +15804,24 @@ func marshalPhysicalDeviceCornerSampledImageFeaturesNV(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceCornerSampledImageFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceCornerSampledImageFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceCornerSampledImageFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceCornerSampledImageFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ExternalMemoryHandleTypeFlagBitsNV struct {
 	native *C.VkExternalMemoryHandleTypeFlagBitsNV
 }
 
 func wrapExternalMemoryHandleTypeFlagBitsNV(p *C.VkExternalMemoryHandleTypeFlagBitsNV) *ExternalMemoryHandleTypeFlagBitsNV {
 	v := ExternalMemoryHandleTypeFlagBitsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlagBitsNV).free)
+
 	return &v
 }
 
@@ -9059,12 +15832,24 @@ func marshalExternalMemoryHandleTypeFlagBitsNV(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryHandleTypeFlagBitsNV(c)
 }
 
+func (e *ExternalMemoryHandleTypeFlagBitsNV) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagBitsNV. The caller is expected to
+// cast.
+func (e *ExternalMemoryHandleTypeFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryHandleTypeFlagsNV struct {
 	native *C.VkExternalMemoryHandleTypeFlagsNV
 }
 
 func wrapExternalMemoryHandleTypeFlagsNV(p *C.VkExternalMemoryHandleTypeFlagsNV) *ExternalMemoryHandleTypeFlagsNV {
 	v := ExternalMemoryHandleTypeFlagsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlagsNV).free)
+
 	return &v
 }
 
@@ -9075,12 +15860,24 @@ func marshalExternalMemoryHandleTypeFlagsNV(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryHandleTypeFlagsNV(c)
 }
 
+func (e *ExternalMemoryHandleTypeFlagsNV) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagsNV. The caller is expected to
+// cast.
+func (e *ExternalMemoryHandleTypeFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryFeatureFlagBitsNV struct {
 	native *C.VkExternalMemoryFeatureFlagBitsNV
 }
 
 func wrapExternalMemoryFeatureFlagBitsNV(p *C.VkExternalMemoryFeatureFlagBitsNV) *ExternalMemoryFeatureFlagBitsNV {
 	v := ExternalMemoryFeatureFlagBitsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlagBitsNV).free)
+
 	return &v
 }
 
@@ -9091,12 +15888,24 @@ func marshalExternalMemoryFeatureFlagBitsNV(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlagBitsNV(c)
 }
 
+func (e *ExternalMemoryFeatureFlagBitsNV) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryFeatureFlagBitsNV. The caller is expected to
+// cast.
+func (e *ExternalMemoryFeatureFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryFeatureFlagsNV struct {
 	native *C.VkExternalMemoryFeatureFlagsNV
 }
 
 func wrapExternalMemoryFeatureFlagsNV(p *C.VkExternalMemoryFeatureFlagsNV) *ExternalMemoryFeatureFlagsNV {
 	v := ExternalMemoryFeatureFlagsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlagsNV).free)
+
 	return &v
 }
 
@@ -9107,12 +15916,24 @@ func marshalExternalMemoryFeatureFlagsNV(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlagsNV(c)
 }
 
+func (e *ExternalMemoryFeatureFlagsNV) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryFeatureFlagsNV. The caller is expected to
+// cast.
+func (e *ExternalMemoryFeatureFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalImageFormatPropertiesNV struct {
 	native *C.VkExternalImageFormatPropertiesNV
 }
 
 func wrapExternalImageFormatPropertiesNV(p *C.VkExternalImageFormatPropertiesNV) *ExternalImageFormatPropertiesNV {
 	v := ExternalImageFormatPropertiesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalImageFormatPropertiesNV).free)
+
 	return &v
 }
 
@@ -9123,12 +15944,24 @@ func marshalExternalImageFormatPropertiesNV(p uintptr) (interface{}, error) {
 	return wrapExternalImageFormatPropertiesNV(c)
 }
 
+func (e *ExternalImageFormatPropertiesNV) free() {}
+
+// Native returns the pointer to *C.VkExternalImageFormatPropertiesNV. The caller is expected to
+// cast.
+func (e *ExternalImageFormatPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExternalMemoryImageCreateInfoNV struct {
 	native *C.VkExternalMemoryImageCreateInfoNV
 }
 
 func wrapExternalMemoryImageCreateInfoNV(p *C.VkExternalMemoryImageCreateInfoNV) *ExternalMemoryImageCreateInfoNV {
 	v := ExternalMemoryImageCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExternalMemoryImageCreateInfoNV).free)
+
 	return &v
 }
 
@@ -9139,12 +15972,24 @@ func marshalExternalMemoryImageCreateInfoNV(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryImageCreateInfoNV(c)
 }
 
+func (e *ExternalMemoryImageCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkExternalMemoryImageCreateInfoNV. The caller is expected to
+// cast.
+func (e *ExternalMemoryImageCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ExportMemoryAllocateInfoNV struct {
 	native *C.VkExportMemoryAllocateInfoNV
 }
 
 func wrapExportMemoryAllocateInfoNV(p *C.VkExportMemoryAllocateInfoNV) *ExportMemoryAllocateInfoNV {
 	v := ExportMemoryAllocateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ExportMemoryAllocateInfoNV).free)
+
 	return &v
 }
 
@@ -9155,12 +16000,24 @@ func marshalExportMemoryAllocateInfoNV(p uintptr) (interface{}, error) {
 	return wrapExportMemoryAllocateInfoNV(c)
 }
 
+func (e *ExportMemoryAllocateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkExportMemoryAllocateInfoNV. The caller is expected to
+// cast.
+func (e *ExportMemoryAllocateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
+}
+
 type ValidationCheckEXT struct {
 	native *C.VkValidationCheckEXT
 }
 
 func wrapValidationCheckEXT(p *C.VkValidationCheckEXT) *ValidationCheckEXT {
 	v := ValidationCheckEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ValidationCheckEXT).free)
+
 	return &v
 }
 
@@ -9171,12 +16028,24 @@ func marshalValidationCheckEXT(p uintptr) (interface{}, error) {
 	return wrapValidationCheckEXT(c)
 }
 
+func (v *ValidationCheckEXT) free() {}
+
+// Native returns the pointer to *C.VkValidationCheckEXT. The caller is expected to
+// cast.
+func (v *ValidationCheckEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type ValidationFlagsEXT struct {
 	native *C.VkValidationFlagsEXT
 }
 
 func wrapValidationFlagsEXT(p *C.VkValidationFlagsEXT) *ValidationFlagsEXT {
 	v := ValidationFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ValidationFlagsEXT).free)
+
 	return &v
 }
 
@@ -9187,12 +16056,24 @@ func marshalValidationFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapValidationFlagsEXT(c)
 }
 
+func (v *ValidationFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkValidationFlagsEXT. The caller is expected to
+// cast.
+func (v *ValidationFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type ImageViewASTCDecodeModeEXT struct {
 	native *C.VkImageViewASTCDecodeModeEXT
 }
 
 func wrapImageViewASTCDecodeModeEXT(p *C.VkImageViewASTCDecodeModeEXT) *ImageViewASTCDecodeModeEXT {
 	v := ImageViewASTCDecodeModeEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageViewASTCDecodeModeEXT).free)
+
 	return &v
 }
 
@@ -9203,12 +16084,24 @@ func marshalImageViewASTCDecodeModeEXT(p uintptr) (interface{}, error) {
 	return wrapImageViewASTCDecodeModeEXT(c)
 }
 
+func (i *ImageViewASTCDecodeModeEXT) free() {}
+
+// Native returns the pointer to *C.VkImageViewASTCDecodeModeEXT. The caller is expected to
+// cast.
+func (i *ImageViewASTCDecodeModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type PhysicalDeviceASTCDecodeFeaturesEXT struct {
 	native *C.VkPhysicalDeviceASTCDecodeFeaturesEXT
 }
 
 func wrapPhysicalDeviceASTCDecodeFeaturesEXT(p *C.VkPhysicalDeviceASTCDecodeFeaturesEXT) *PhysicalDeviceASTCDecodeFeaturesEXT {
 	v := PhysicalDeviceASTCDecodeFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceASTCDecodeFeaturesEXT).free)
+
 	return &v
 }
 
@@ -9219,12 +16112,24 @@ func marshalPhysicalDeviceASTCDecodeFeaturesEXT(p uintptr) (interface{}, error) 
 	return wrapPhysicalDeviceASTCDecodeFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceASTCDecodeFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceASTCDecodeFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceASTCDecodeFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ConditionalRenderingFlagBitsEXT struct {
 	native *C.VkConditionalRenderingFlagBitsEXT
 }
 
 func wrapConditionalRenderingFlagBitsEXT(p *C.VkConditionalRenderingFlagBitsEXT) *ConditionalRenderingFlagBitsEXT {
 	v := ConditionalRenderingFlagBitsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ConditionalRenderingFlagBitsEXT).free)
+
 	return &v
 }
 
@@ -9235,12 +16140,24 @@ func marshalConditionalRenderingFlagBitsEXT(p uintptr) (interface{}, error) {
 	return wrapConditionalRenderingFlagBitsEXT(c)
 }
 
+func (c *ConditionalRenderingFlagBitsEXT) free() {}
+
+// Native returns the pointer to *C.VkConditionalRenderingFlagBitsEXT. The caller is expected to
+// cast.
+func (c *ConditionalRenderingFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ConditionalRenderingFlagsEXT struct {
 	native *C.VkConditionalRenderingFlagsEXT
 }
 
 func wrapConditionalRenderingFlagsEXT(p *C.VkConditionalRenderingFlagsEXT) *ConditionalRenderingFlagsEXT {
 	v := ConditionalRenderingFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ConditionalRenderingFlagsEXT).free)
+
 	return &v
 }
 
@@ -9251,12 +16168,24 @@ func marshalConditionalRenderingFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapConditionalRenderingFlagsEXT(c)
 }
 
+func (c *ConditionalRenderingFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkConditionalRenderingFlagsEXT. The caller is expected to
+// cast.
+func (c *ConditionalRenderingFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ConditionalRenderingBeginInfoEXT struct {
 	native *C.VkConditionalRenderingBeginInfoEXT
 }
 
 func wrapConditionalRenderingBeginInfoEXT(p *C.VkConditionalRenderingBeginInfoEXT) *ConditionalRenderingBeginInfoEXT {
 	v := ConditionalRenderingBeginInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ConditionalRenderingBeginInfoEXT).free)
+
 	return &v
 }
 
@@ -9267,12 +16196,24 @@ func marshalConditionalRenderingBeginInfoEXT(p uintptr) (interface{}, error) {
 	return wrapConditionalRenderingBeginInfoEXT(c)
 }
 
+func (c *ConditionalRenderingBeginInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkConditionalRenderingBeginInfoEXT. The caller is expected to
+// cast.
+func (c *ConditionalRenderingBeginInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PhysicalDeviceConditionalRenderingFeaturesEXT struct {
 	native *C.VkPhysicalDeviceConditionalRenderingFeaturesEXT
 }
 
 func wrapPhysicalDeviceConditionalRenderingFeaturesEXT(p *C.VkPhysicalDeviceConditionalRenderingFeaturesEXT) *PhysicalDeviceConditionalRenderingFeaturesEXT {
 	v := PhysicalDeviceConditionalRenderingFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceConditionalRenderingFeaturesEXT).free)
+
 	return &v
 }
 
@@ -9283,12 +16224,24 @@ func marshalPhysicalDeviceConditionalRenderingFeaturesEXT(p uintptr) (interface{
 	return wrapPhysicalDeviceConditionalRenderingFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceConditionalRenderingFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceConditionalRenderingFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceConditionalRenderingFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type CommandBufferInheritanceConditionalRenderingInfoEXT struct {
 	native *C.VkCommandBufferInheritanceConditionalRenderingInfoEXT
 }
 
 func wrapCommandBufferInheritanceConditionalRenderingInfoEXT(p *C.VkCommandBufferInheritanceConditionalRenderingInfoEXT) *CommandBufferInheritanceConditionalRenderingInfoEXT {
 	v := CommandBufferInheritanceConditionalRenderingInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CommandBufferInheritanceConditionalRenderingInfoEXT).free)
+
 	return &v
 }
 
@@ -9299,12 +16252,24 @@ func marshalCommandBufferInheritanceConditionalRenderingInfoEXT(p uintptr) (inte
 	return wrapCommandBufferInheritanceConditionalRenderingInfoEXT(c)
 }
 
+func (c *CommandBufferInheritanceConditionalRenderingInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkCommandBufferInheritanceConditionalRenderingInfoEXT. The caller is expected to
+// cast.
+func (c *CommandBufferInheritanceConditionalRenderingInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ObjectTableNVX struct {
 	native *C.VkObjectTableNVX
 }
 
 func wrapObjectTableNVX(p *C.VkObjectTableNVX) *ObjectTableNVX {
 	v := ObjectTableNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectTableNVX).free)
+
 	return &v
 }
 
@@ -9315,12 +16280,24 @@ func marshalObjectTableNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableNVX(c)
 }
 
+func (o *ObjectTableNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectTableNVX. The caller is expected to
+// cast.
+func (o *ObjectTableNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type IndirectCommandsLayoutNVX struct {
 	native *C.VkIndirectCommandsLayoutNVX
 }
 
 func wrapIndirectCommandsLayoutNVX(p *C.VkIndirectCommandsLayoutNVX) *IndirectCommandsLayoutNVX {
 	v := IndirectCommandsLayoutNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*IndirectCommandsLayoutNVX).free)
+
 	return &v
 }
 
@@ -9331,12 +16308,24 @@ func marshalIndirectCommandsLayoutNVX(p uintptr) (interface{}, error) {
 	return wrapIndirectCommandsLayoutNVX(c)
 }
 
+func (i *IndirectCommandsLayoutNVX) free() {}
+
+// Native returns the pointer to *C.VkIndirectCommandsLayoutNVX. The caller is expected to
+// cast.
+func (i *IndirectCommandsLayoutNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type IndirectCommandsTokenTypeNVX struct {
 	native *C.VkIndirectCommandsTokenTypeNVX
 }
 
 func wrapIndirectCommandsTokenTypeNVX(p *C.VkIndirectCommandsTokenTypeNVX) *IndirectCommandsTokenTypeNVX {
 	v := IndirectCommandsTokenTypeNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*IndirectCommandsTokenTypeNVX).free)
+
 	return &v
 }
 
@@ -9347,12 +16336,24 @@ func marshalIndirectCommandsTokenTypeNVX(p uintptr) (interface{}, error) {
 	return wrapIndirectCommandsTokenTypeNVX(c)
 }
 
+func (i *IndirectCommandsTokenTypeNVX) free() {}
+
+// Native returns the pointer to *C.VkIndirectCommandsTokenTypeNVX. The caller is expected to
+// cast.
+func (i *IndirectCommandsTokenTypeNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ObjectEntryTypeNVX struct {
 	native *C.VkObjectEntryTypeNVX
 }
 
 func wrapObjectEntryTypeNVX(p *C.VkObjectEntryTypeNVX) *ObjectEntryTypeNVX {
 	v := ObjectEntryTypeNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectEntryTypeNVX).free)
+
 	return &v
 }
 
@@ -9363,12 +16364,24 @@ func marshalObjectEntryTypeNVX(p uintptr) (interface{}, error) {
 	return wrapObjectEntryTypeNVX(c)
 }
 
+func (o *ObjectEntryTypeNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectEntryTypeNVX. The caller is expected to
+// cast.
+func (o *ObjectEntryTypeNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type IndirectCommandsLayoutUsageFlagBitsNVX struct {
 	native *C.VkIndirectCommandsLayoutUsageFlagBitsNVX
 }
 
 func wrapIndirectCommandsLayoutUsageFlagBitsNVX(p *C.VkIndirectCommandsLayoutUsageFlagBitsNVX) *IndirectCommandsLayoutUsageFlagBitsNVX {
 	v := IndirectCommandsLayoutUsageFlagBitsNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*IndirectCommandsLayoutUsageFlagBitsNVX).free)
+
 	return &v
 }
 
@@ -9379,12 +16392,24 @@ func marshalIndirectCommandsLayoutUsageFlagBitsNVX(p uintptr) (interface{}, erro
 	return wrapIndirectCommandsLayoutUsageFlagBitsNVX(c)
 }
 
+func (i *IndirectCommandsLayoutUsageFlagBitsNVX) free() {}
+
+// Native returns the pointer to *C.VkIndirectCommandsLayoutUsageFlagBitsNVX. The caller is expected to
+// cast.
+func (i *IndirectCommandsLayoutUsageFlagBitsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type IndirectCommandsLayoutUsageFlagsNVX struct {
 	native *C.VkIndirectCommandsLayoutUsageFlagsNVX
 }
 
 func wrapIndirectCommandsLayoutUsageFlagsNVX(p *C.VkIndirectCommandsLayoutUsageFlagsNVX) *IndirectCommandsLayoutUsageFlagsNVX {
 	v := IndirectCommandsLayoutUsageFlagsNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*IndirectCommandsLayoutUsageFlagsNVX).free)
+
 	return &v
 }
 
@@ -9395,12 +16420,24 @@ func marshalIndirectCommandsLayoutUsageFlagsNVX(p uintptr) (interface{}, error) 
 	return wrapIndirectCommandsLayoutUsageFlagsNVX(c)
 }
 
+func (i *IndirectCommandsLayoutUsageFlagsNVX) free() {}
+
+// Native returns the pointer to *C.VkIndirectCommandsLayoutUsageFlagsNVX. The caller is expected to
+// cast.
+func (i *IndirectCommandsLayoutUsageFlagsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ObjectEntryUsageFlagBitsNVX struct {
 	native *C.VkObjectEntryUsageFlagBitsNVX
 }
 
 func wrapObjectEntryUsageFlagBitsNVX(p *C.VkObjectEntryUsageFlagBitsNVX) *ObjectEntryUsageFlagBitsNVX {
 	v := ObjectEntryUsageFlagBitsNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectEntryUsageFlagBitsNVX).free)
+
 	return &v
 }
 
@@ -9411,12 +16448,24 @@ func marshalObjectEntryUsageFlagBitsNVX(p uintptr) (interface{}, error) {
 	return wrapObjectEntryUsageFlagBitsNVX(c)
 }
 
+func (o *ObjectEntryUsageFlagBitsNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectEntryUsageFlagBitsNVX. The caller is expected to
+// cast.
+func (o *ObjectEntryUsageFlagBitsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type ObjectEntryUsageFlagsNVX struct {
 	native *C.VkObjectEntryUsageFlagsNVX
 }
 
 func wrapObjectEntryUsageFlagsNVX(p *C.VkObjectEntryUsageFlagsNVX) *ObjectEntryUsageFlagsNVX {
 	v := ObjectEntryUsageFlagsNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectEntryUsageFlagsNVX).free)
+
 	return &v
 }
 
@@ -9427,12 +16476,24 @@ func marshalObjectEntryUsageFlagsNVX(p uintptr) (interface{}, error) {
 	return wrapObjectEntryUsageFlagsNVX(c)
 }
 
+func (o *ObjectEntryUsageFlagsNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectEntryUsageFlagsNVX. The caller is expected to
+// cast.
+func (o *ObjectEntryUsageFlagsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type DeviceGeneratedCommandsFeaturesNVX struct {
 	native *C.VkDeviceGeneratedCommandsFeaturesNVX
 }
 
 func wrapDeviceGeneratedCommandsFeaturesNVX(p *C.VkDeviceGeneratedCommandsFeaturesNVX) *DeviceGeneratedCommandsFeaturesNVX {
 	v := DeviceGeneratedCommandsFeaturesNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGeneratedCommandsFeaturesNVX).free)
+
 	return &v
 }
 
@@ -9443,12 +16504,24 @@ func marshalDeviceGeneratedCommandsFeaturesNVX(p uintptr) (interface{}, error) {
 	return wrapDeviceGeneratedCommandsFeaturesNVX(c)
 }
 
+func (d *DeviceGeneratedCommandsFeaturesNVX) free() {}
+
+// Native returns the pointer to *C.VkDeviceGeneratedCommandsFeaturesNVX. The caller is expected to
+// cast.
+func (d *DeviceGeneratedCommandsFeaturesNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceGeneratedCommandsLimitsNVX struct {
 	native *C.VkDeviceGeneratedCommandsLimitsNVX
 }
 
 func wrapDeviceGeneratedCommandsLimitsNVX(p *C.VkDeviceGeneratedCommandsLimitsNVX) *DeviceGeneratedCommandsLimitsNVX {
 	v := DeviceGeneratedCommandsLimitsNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceGeneratedCommandsLimitsNVX).free)
+
 	return &v
 }
 
@@ -9459,12 +16532,24 @@ func marshalDeviceGeneratedCommandsLimitsNVX(p uintptr) (interface{}, error) {
 	return wrapDeviceGeneratedCommandsLimitsNVX(c)
 }
 
+func (d *DeviceGeneratedCommandsLimitsNVX) free() {}
+
+// Native returns the pointer to *C.VkDeviceGeneratedCommandsLimitsNVX. The caller is expected to
+// cast.
+func (d *DeviceGeneratedCommandsLimitsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type IndirectCommandsTokenNVX struct {
 	native *C.VkIndirectCommandsTokenNVX
 }
 
 func wrapIndirectCommandsTokenNVX(p *C.VkIndirectCommandsTokenNVX) *IndirectCommandsTokenNVX {
 	v := IndirectCommandsTokenNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*IndirectCommandsTokenNVX).free)
+
 	return &v
 }
 
@@ -9475,12 +16560,24 @@ func marshalIndirectCommandsTokenNVX(p uintptr) (interface{}, error) {
 	return wrapIndirectCommandsTokenNVX(c)
 }
 
+func (i *IndirectCommandsTokenNVX) free() {}
+
+// Native returns the pointer to *C.VkIndirectCommandsTokenNVX. The caller is expected to
+// cast.
+func (i *IndirectCommandsTokenNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type IndirectCommandsLayoutTokenNVX struct {
 	native *C.VkIndirectCommandsLayoutTokenNVX
 }
 
 func wrapIndirectCommandsLayoutTokenNVX(p *C.VkIndirectCommandsLayoutTokenNVX) *IndirectCommandsLayoutTokenNVX {
 	v := IndirectCommandsLayoutTokenNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*IndirectCommandsLayoutTokenNVX).free)
+
 	return &v
 }
 
@@ -9491,12 +16588,24 @@ func marshalIndirectCommandsLayoutTokenNVX(p uintptr) (interface{}, error) {
 	return wrapIndirectCommandsLayoutTokenNVX(c)
 }
 
+func (i *IndirectCommandsLayoutTokenNVX) free() {}
+
+// Native returns the pointer to *C.VkIndirectCommandsLayoutTokenNVX. The caller is expected to
+// cast.
+func (i *IndirectCommandsLayoutTokenNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type IndirectCommandsLayoutCreateInfoNVX struct {
 	native *C.VkIndirectCommandsLayoutCreateInfoNVX
 }
 
 func wrapIndirectCommandsLayoutCreateInfoNVX(p *C.VkIndirectCommandsLayoutCreateInfoNVX) *IndirectCommandsLayoutCreateInfoNVX {
 	v := IndirectCommandsLayoutCreateInfoNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*IndirectCommandsLayoutCreateInfoNVX).free)
+
 	return &v
 }
 
@@ -9507,12 +16616,24 @@ func marshalIndirectCommandsLayoutCreateInfoNVX(p uintptr) (interface{}, error) 
 	return wrapIndirectCommandsLayoutCreateInfoNVX(c)
 }
 
+func (i *IndirectCommandsLayoutCreateInfoNVX) free() {}
+
+// Native returns the pointer to *C.VkIndirectCommandsLayoutCreateInfoNVX. The caller is expected to
+// cast.
+func (i *IndirectCommandsLayoutCreateInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type CmdProcessCommandsInfoNVX struct {
 	native *C.VkCmdProcessCommandsInfoNVX
 }
 
 func wrapCmdProcessCommandsInfoNVX(p *C.VkCmdProcessCommandsInfoNVX) *CmdProcessCommandsInfoNVX {
 	v := CmdProcessCommandsInfoNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CmdProcessCommandsInfoNVX).free)
+
 	return &v
 }
 
@@ -9523,12 +16644,24 @@ func marshalCmdProcessCommandsInfoNVX(p uintptr) (interface{}, error) {
 	return wrapCmdProcessCommandsInfoNVX(c)
 }
 
+func (c *CmdProcessCommandsInfoNVX) free() {}
+
+// Native returns the pointer to *C.VkCmdProcessCommandsInfoNVX. The caller is expected to
+// cast.
+func (c *CmdProcessCommandsInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CmdReserveSpaceForCommandsInfoNVX struct {
 	native *C.VkCmdReserveSpaceForCommandsInfoNVX
 }
 
 func wrapCmdReserveSpaceForCommandsInfoNVX(p *C.VkCmdReserveSpaceForCommandsInfoNVX) *CmdReserveSpaceForCommandsInfoNVX {
 	v := CmdReserveSpaceForCommandsInfoNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CmdReserveSpaceForCommandsInfoNVX).free)
+
 	return &v
 }
 
@@ -9539,12 +16672,24 @@ func marshalCmdReserveSpaceForCommandsInfoNVX(p uintptr) (interface{}, error) {
 	return wrapCmdReserveSpaceForCommandsInfoNVX(c)
 }
 
+func (c *CmdReserveSpaceForCommandsInfoNVX) free() {}
+
+// Native returns the pointer to *C.VkCmdReserveSpaceForCommandsInfoNVX. The caller is expected to
+// cast.
+func (c *CmdReserveSpaceForCommandsInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ObjectTableCreateInfoNVX struct {
 	native *C.VkObjectTableCreateInfoNVX
 }
 
 func wrapObjectTableCreateInfoNVX(p *C.VkObjectTableCreateInfoNVX) *ObjectTableCreateInfoNVX {
 	v := ObjectTableCreateInfoNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectTableCreateInfoNVX).free)
+
 	return &v
 }
 
@@ -9555,12 +16700,24 @@ func marshalObjectTableCreateInfoNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableCreateInfoNVX(c)
 }
 
+func (o *ObjectTableCreateInfoNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectTableCreateInfoNVX. The caller is expected to
+// cast.
+func (o *ObjectTableCreateInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type ObjectTableEntryNVX struct {
 	native *C.VkObjectTableEntryNVX
 }
 
 func wrapObjectTableEntryNVX(p *C.VkObjectTableEntryNVX) *ObjectTableEntryNVX {
 	v := ObjectTableEntryNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectTableEntryNVX).free)
+
 	return &v
 }
 
@@ -9571,12 +16728,24 @@ func marshalObjectTableEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableEntryNVX(c)
 }
 
+func (o *ObjectTableEntryNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectTableEntryNVX. The caller is expected to
+// cast.
+func (o *ObjectTableEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type ObjectTablePipelineEntryNVX struct {
 	native *C.VkObjectTablePipelineEntryNVX
 }
 
 func wrapObjectTablePipelineEntryNVX(p *C.VkObjectTablePipelineEntryNVX) *ObjectTablePipelineEntryNVX {
 	v := ObjectTablePipelineEntryNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectTablePipelineEntryNVX).free)
+
 	return &v
 }
 
@@ -9587,12 +16756,24 @@ func marshalObjectTablePipelineEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTablePipelineEntryNVX(c)
 }
 
+func (o *ObjectTablePipelineEntryNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectTablePipelineEntryNVX. The caller is expected to
+// cast.
+func (o *ObjectTablePipelineEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type ObjectTableDescriptorSetEntryNVX struct {
 	native *C.VkObjectTableDescriptorSetEntryNVX
 }
 
 func wrapObjectTableDescriptorSetEntryNVX(p *C.VkObjectTableDescriptorSetEntryNVX) *ObjectTableDescriptorSetEntryNVX {
 	v := ObjectTableDescriptorSetEntryNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectTableDescriptorSetEntryNVX).free)
+
 	return &v
 }
 
@@ -9603,12 +16784,24 @@ func marshalObjectTableDescriptorSetEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableDescriptorSetEntryNVX(c)
 }
 
+func (o *ObjectTableDescriptorSetEntryNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectTableDescriptorSetEntryNVX. The caller is expected to
+// cast.
+func (o *ObjectTableDescriptorSetEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type ObjectTableVertexBufferEntryNVX struct {
 	native *C.VkObjectTableVertexBufferEntryNVX
 }
 
 func wrapObjectTableVertexBufferEntryNVX(p *C.VkObjectTableVertexBufferEntryNVX) *ObjectTableVertexBufferEntryNVX {
 	v := ObjectTableVertexBufferEntryNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectTableVertexBufferEntryNVX).free)
+
 	return &v
 }
 
@@ -9619,12 +16812,24 @@ func marshalObjectTableVertexBufferEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableVertexBufferEntryNVX(c)
 }
 
+func (o *ObjectTableVertexBufferEntryNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectTableVertexBufferEntryNVX. The caller is expected to
+// cast.
+func (o *ObjectTableVertexBufferEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type ObjectTableIndexBufferEntryNVX struct {
 	native *C.VkObjectTableIndexBufferEntryNVX
 }
 
 func wrapObjectTableIndexBufferEntryNVX(p *C.VkObjectTableIndexBufferEntryNVX) *ObjectTableIndexBufferEntryNVX {
 	v := ObjectTableIndexBufferEntryNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectTableIndexBufferEntryNVX).free)
+
 	return &v
 }
 
@@ -9635,12 +16840,24 @@ func marshalObjectTableIndexBufferEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableIndexBufferEntryNVX(c)
 }
 
+func (o *ObjectTableIndexBufferEntryNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectTableIndexBufferEntryNVX. The caller is expected to
+// cast.
+func (o *ObjectTableIndexBufferEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type ObjectTablePushConstantEntryNVX struct {
 	native *C.VkObjectTablePushConstantEntryNVX
 }
 
 func wrapObjectTablePushConstantEntryNVX(p *C.VkObjectTablePushConstantEntryNVX) *ObjectTablePushConstantEntryNVX {
 	v := ObjectTablePushConstantEntryNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ObjectTablePushConstantEntryNVX).free)
+
 	return &v
 }
 
@@ -9651,12 +16868,24 @@ func marshalObjectTablePushConstantEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTablePushConstantEntryNVX(c)
 }
 
+func (o *ObjectTablePushConstantEntryNVX) free() {}
+
+// Native returns the pointer to *C.VkObjectTablePushConstantEntryNVX. The caller is expected to
+// cast.
+func (o *ObjectTablePushConstantEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 type ViewportWScalingNV struct {
 	native *C.VkViewportWScalingNV
 }
 
 func wrapViewportWScalingNV(p *C.VkViewportWScalingNV) *ViewportWScalingNV {
 	v := ViewportWScalingNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ViewportWScalingNV).free)
+
 	return &v
 }
 
@@ -9667,12 +16896,24 @@ func marshalViewportWScalingNV(p uintptr) (interface{}, error) {
 	return wrapViewportWScalingNV(c)
 }
 
+func (v *ViewportWScalingNV) free() {}
+
+// Native returns the pointer to *C.VkViewportWScalingNV. The caller is expected to
+// cast.
+func (v *ViewportWScalingNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type PipelineViewportWScalingStateCreateInfoNV struct {
 	native *C.VkPipelineViewportWScalingStateCreateInfoNV
 }
 
 func wrapPipelineViewportWScalingStateCreateInfoNV(p *C.VkPipelineViewportWScalingStateCreateInfoNV) *PipelineViewportWScalingStateCreateInfoNV {
 	v := PipelineViewportWScalingStateCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineViewportWScalingStateCreateInfoNV).free)
+
 	return &v
 }
 
@@ -9683,12 +16924,24 @@ func marshalPipelineViewportWScalingStateCreateInfoNV(p uintptr) (interface{}, e
 	return wrapPipelineViewportWScalingStateCreateInfoNV(c)
 }
 
+func (p *PipelineViewportWScalingStateCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineViewportWScalingStateCreateInfoNV. The caller is expected to
+// cast.
+func (p *PipelineViewportWScalingStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type SurfaceCounterFlagBitsEXT struct {
 	native *C.VkSurfaceCounterFlagBitsEXT
 }
 
 func wrapSurfaceCounterFlagBitsEXT(p *C.VkSurfaceCounterFlagBitsEXT) *SurfaceCounterFlagBitsEXT {
 	v := SurfaceCounterFlagBitsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceCounterFlagBitsEXT).free)
+
 	return &v
 }
 
@@ -9699,12 +16952,24 @@ func marshalSurfaceCounterFlagBitsEXT(p uintptr) (interface{}, error) {
 	return wrapSurfaceCounterFlagBitsEXT(c)
 }
 
+func (s *SurfaceCounterFlagBitsEXT) free() {}
+
+// Native returns the pointer to *C.VkSurfaceCounterFlagBitsEXT. The caller is expected to
+// cast.
+func (s *SurfaceCounterFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SurfaceCounterFlagsEXT struct {
 	native *C.VkSurfaceCounterFlagsEXT
 }
 
 func wrapSurfaceCounterFlagsEXT(p *C.VkSurfaceCounterFlagsEXT) *SurfaceCounterFlagsEXT {
 	v := SurfaceCounterFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceCounterFlagsEXT).free)
+
 	return &v
 }
 
@@ -9715,12 +16980,24 @@ func marshalSurfaceCounterFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapSurfaceCounterFlagsEXT(c)
 }
 
+func (s *SurfaceCounterFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkSurfaceCounterFlagsEXT. The caller is expected to
+// cast.
+func (s *SurfaceCounterFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SurfaceCapabilities2EXT struct {
 	native *C.VkSurfaceCapabilities2EXT
 }
 
 func wrapSurfaceCapabilities2EXT(p *C.VkSurfaceCapabilities2EXT) *SurfaceCapabilities2EXT {
 	v := SurfaceCapabilities2EXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SurfaceCapabilities2EXT).free)
+
 	return &v
 }
 
@@ -9731,12 +17008,24 @@ func marshalSurfaceCapabilities2EXT(p uintptr) (interface{}, error) {
 	return wrapSurfaceCapabilities2EXT(c)
 }
 
+func (s *SurfaceCapabilities2EXT) free() {}
+
+// Native returns the pointer to *C.VkSurfaceCapabilities2EXT. The caller is expected to
+// cast.
+func (s *SurfaceCapabilities2EXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type DisplayPowerStateEXT struct {
 	native *C.VkDisplayPowerStateEXT
 }
 
 func wrapDisplayPowerStateEXT(p *C.VkDisplayPowerStateEXT) *DisplayPowerStateEXT {
 	v := DisplayPowerStateEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPowerStateEXT).free)
+
 	return &v
 }
 
@@ -9747,12 +17036,24 @@ func marshalDisplayPowerStateEXT(p uintptr) (interface{}, error) {
 	return wrapDisplayPowerStateEXT(c)
 }
 
+func (d *DisplayPowerStateEXT) free() {}
+
+// Native returns the pointer to *C.VkDisplayPowerStateEXT. The caller is expected to
+// cast.
+func (d *DisplayPowerStateEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceEventTypeEXT struct {
 	native *C.VkDeviceEventTypeEXT
 }
 
 func wrapDeviceEventTypeEXT(p *C.VkDeviceEventTypeEXT) *DeviceEventTypeEXT {
 	v := DeviceEventTypeEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceEventTypeEXT).free)
+
 	return &v
 }
 
@@ -9763,12 +17064,24 @@ func marshalDeviceEventTypeEXT(p uintptr) (interface{}, error) {
 	return wrapDeviceEventTypeEXT(c)
 }
 
+func (d *DeviceEventTypeEXT) free() {}
+
+// Native returns the pointer to *C.VkDeviceEventTypeEXT. The caller is expected to
+// cast.
+func (d *DeviceEventTypeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayEventTypeEXT struct {
 	native *C.VkDisplayEventTypeEXT
 }
 
 func wrapDisplayEventTypeEXT(p *C.VkDisplayEventTypeEXT) *DisplayEventTypeEXT {
 	v := DisplayEventTypeEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayEventTypeEXT).free)
+
 	return &v
 }
 
@@ -9779,12 +17092,24 @@ func marshalDisplayEventTypeEXT(p uintptr) (interface{}, error) {
 	return wrapDisplayEventTypeEXT(c)
 }
 
+func (d *DisplayEventTypeEXT) free() {}
+
+// Native returns the pointer to *C.VkDisplayEventTypeEXT. The caller is expected to
+// cast.
+func (d *DisplayEventTypeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayPowerInfoEXT struct {
 	native *C.VkDisplayPowerInfoEXT
 }
 
 func wrapDisplayPowerInfoEXT(p *C.VkDisplayPowerInfoEXT) *DisplayPowerInfoEXT {
 	v := DisplayPowerInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayPowerInfoEXT).free)
+
 	return &v
 }
 
@@ -9795,12 +17120,24 @@ func marshalDisplayPowerInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDisplayPowerInfoEXT(c)
 }
 
+func (d *DisplayPowerInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDisplayPowerInfoEXT. The caller is expected to
+// cast.
+func (d *DisplayPowerInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DeviceEventInfoEXT struct {
 	native *C.VkDeviceEventInfoEXT
 }
 
 func wrapDeviceEventInfoEXT(p *C.VkDeviceEventInfoEXT) *DeviceEventInfoEXT {
 	v := DeviceEventInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceEventInfoEXT).free)
+
 	return &v
 }
 
@@ -9811,12 +17148,24 @@ func marshalDeviceEventInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDeviceEventInfoEXT(c)
 }
 
+func (d *DeviceEventInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDeviceEventInfoEXT. The caller is expected to
+// cast.
+func (d *DeviceEventInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DisplayEventInfoEXT struct {
 	native *C.VkDisplayEventInfoEXT
 }
 
 func wrapDisplayEventInfoEXT(p *C.VkDisplayEventInfoEXT) *DisplayEventInfoEXT {
 	v := DisplayEventInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayEventInfoEXT).free)
+
 	return &v
 }
 
@@ -9827,12 +17176,24 @@ func marshalDisplayEventInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDisplayEventInfoEXT(c)
 }
 
+func (d *DisplayEventInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDisplayEventInfoEXT. The caller is expected to
+// cast.
+func (d *DisplayEventInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type SwapchainCounterCreateInfoEXT struct {
 	native *C.VkSwapchainCounterCreateInfoEXT
 }
 
 func wrapSwapchainCounterCreateInfoEXT(p *C.VkSwapchainCounterCreateInfoEXT) *SwapchainCounterCreateInfoEXT {
 	v := SwapchainCounterCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SwapchainCounterCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -9843,12 +17204,24 @@ func marshalSwapchainCounterCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapSwapchainCounterCreateInfoEXT(c)
 }
 
+func (s *SwapchainCounterCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkSwapchainCounterCreateInfoEXT. The caller is expected to
+// cast.
+func (s *SwapchainCounterCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type RefreshCycleDurationGOOGLE struct {
 	native *C.VkRefreshCycleDurationGOOGLE
 }
 
 func wrapRefreshCycleDurationGOOGLE(p *C.VkRefreshCycleDurationGOOGLE) *RefreshCycleDurationGOOGLE {
 	v := RefreshCycleDurationGOOGLE{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RefreshCycleDurationGOOGLE).free)
+
 	return &v
 }
 
@@ -9859,12 +17232,24 @@ func marshalRefreshCycleDurationGOOGLE(p uintptr) (interface{}, error) {
 	return wrapRefreshCycleDurationGOOGLE(c)
 }
 
+func (r *RefreshCycleDurationGOOGLE) free() {}
+
+// Native returns the pointer to *C.VkRefreshCycleDurationGOOGLE. The caller is expected to
+// cast.
+func (r *RefreshCycleDurationGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type PastPresentationTimingGOOGLE struct {
 	native *C.VkPastPresentationTimingGOOGLE
 }
 
 func wrapPastPresentationTimingGOOGLE(p *C.VkPastPresentationTimingGOOGLE) *PastPresentationTimingGOOGLE {
 	v := PastPresentationTimingGOOGLE{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PastPresentationTimingGOOGLE).free)
+
 	return &v
 }
 
@@ -9875,12 +17260,24 @@ func marshalPastPresentationTimingGOOGLE(p uintptr) (interface{}, error) {
 	return wrapPastPresentationTimingGOOGLE(c)
 }
 
+func (p *PastPresentationTimingGOOGLE) free() {}
+
+// Native returns the pointer to *C.VkPastPresentationTimingGOOGLE. The caller is expected to
+// cast.
+func (p *PastPresentationTimingGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PresentTimeGOOGLE struct {
 	native *C.VkPresentTimeGOOGLE
 }
 
 func wrapPresentTimeGOOGLE(p *C.VkPresentTimeGOOGLE) *PresentTimeGOOGLE {
 	v := PresentTimeGOOGLE{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PresentTimeGOOGLE).free)
+
 	return &v
 }
 
@@ -9891,12 +17288,24 @@ func marshalPresentTimeGOOGLE(p uintptr) (interface{}, error) {
 	return wrapPresentTimeGOOGLE(c)
 }
 
+func (p *PresentTimeGOOGLE) free() {}
+
+// Native returns the pointer to *C.VkPresentTimeGOOGLE. The caller is expected to
+// cast.
+func (p *PresentTimeGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PresentTimesInfoGOOGLE struct {
 	native *C.VkPresentTimesInfoGOOGLE
 }
 
 func wrapPresentTimesInfoGOOGLE(p *C.VkPresentTimesInfoGOOGLE) *PresentTimesInfoGOOGLE {
 	v := PresentTimesInfoGOOGLE{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PresentTimesInfoGOOGLE).free)
+
 	return &v
 }
 
@@ -9907,12 +17316,24 @@ func marshalPresentTimesInfoGOOGLE(p uintptr) (interface{}, error) {
 	return wrapPresentTimesInfoGOOGLE(c)
 }
 
+func (p *PresentTimesInfoGOOGLE) free() {}
+
+// Native returns the pointer to *C.VkPresentTimesInfoGOOGLE. The caller is expected to
+// cast.
+func (p *PresentTimesInfoGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX struct {
 	native *C.VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX
 }
 
 func wrapPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(p *C.VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX {
 	v := PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX).free)
+
 	return &v
 }
 
@@ -9923,12 +17344,24 @@ func marshalPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(p uintptr) (in
 	return wrapPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(c)
 }
 
+func (p *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ViewportCoordinateSwizzleNV struct {
 	native *C.VkViewportCoordinateSwizzleNV
 }
 
 func wrapViewportCoordinateSwizzleNV(p *C.VkViewportCoordinateSwizzleNV) *ViewportCoordinateSwizzleNV {
 	v := ViewportCoordinateSwizzleNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ViewportCoordinateSwizzleNV).free)
+
 	return &v
 }
 
@@ -9939,12 +17372,24 @@ func marshalViewportCoordinateSwizzleNV(p uintptr) (interface{}, error) {
 	return wrapViewportCoordinateSwizzleNV(c)
 }
 
+func (v *ViewportCoordinateSwizzleNV) free() {}
+
+// Native returns the pointer to *C.VkViewportCoordinateSwizzleNV. The caller is expected to
+// cast.
+func (v *ViewportCoordinateSwizzleNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type PipelineViewportSwizzleStateCreateFlagsNV struct {
 	native *C.VkPipelineViewportSwizzleStateCreateFlagsNV
 }
 
 func wrapPipelineViewportSwizzleStateCreateFlagsNV(p *C.VkPipelineViewportSwizzleStateCreateFlagsNV) *PipelineViewportSwizzleStateCreateFlagsNV {
 	v := PipelineViewportSwizzleStateCreateFlagsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineViewportSwizzleStateCreateFlagsNV).free)
+
 	return &v
 }
 
@@ -9955,12 +17400,24 @@ func marshalPipelineViewportSwizzleStateCreateFlagsNV(p uintptr) (interface{}, e
 	return wrapPipelineViewportSwizzleStateCreateFlagsNV(c)
 }
 
+func (p *PipelineViewportSwizzleStateCreateFlagsNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineViewportSwizzleStateCreateFlagsNV. The caller is expected to
+// cast.
+func (p *PipelineViewportSwizzleStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ViewportSwizzleNV struct {
 	native *C.VkViewportSwizzleNV
 }
 
 func wrapViewportSwizzleNV(p *C.VkViewportSwizzleNV) *ViewportSwizzleNV {
 	v := ViewportSwizzleNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ViewportSwizzleNV).free)
+
 	return &v
 }
 
@@ -9971,12 +17428,24 @@ func marshalViewportSwizzleNV(p uintptr) (interface{}, error) {
 	return wrapViewportSwizzleNV(c)
 }
 
+func (v *ViewportSwizzleNV) free() {}
+
+// Native returns the pointer to *C.VkViewportSwizzleNV. The caller is expected to
+// cast.
+func (v *ViewportSwizzleNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type PipelineViewportSwizzleStateCreateInfoNV struct {
 	native *C.VkPipelineViewportSwizzleStateCreateInfoNV
 }
 
 func wrapPipelineViewportSwizzleStateCreateInfoNV(p *C.VkPipelineViewportSwizzleStateCreateInfoNV) *PipelineViewportSwizzleStateCreateInfoNV {
 	v := PipelineViewportSwizzleStateCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineViewportSwizzleStateCreateInfoNV).free)
+
 	return &v
 }
 
@@ -9987,12 +17456,24 @@ func marshalPipelineViewportSwizzleStateCreateInfoNV(p uintptr) (interface{}, er
 	return wrapPipelineViewportSwizzleStateCreateInfoNV(c)
 }
 
+func (p *PipelineViewportSwizzleStateCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineViewportSwizzleStateCreateInfoNV. The caller is expected to
+// cast.
+func (p *PipelineViewportSwizzleStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DiscardRectangleModeEXT struct {
 	native *C.VkDiscardRectangleModeEXT
 }
 
 func wrapDiscardRectangleModeEXT(p *C.VkDiscardRectangleModeEXT) *DiscardRectangleModeEXT {
 	v := DiscardRectangleModeEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DiscardRectangleModeEXT).free)
+
 	return &v
 }
 
@@ -10003,12 +17484,24 @@ func marshalDiscardRectangleModeEXT(p uintptr) (interface{}, error) {
 	return wrapDiscardRectangleModeEXT(c)
 }
 
+func (d *DiscardRectangleModeEXT) free() {}
+
+// Native returns the pointer to *C.VkDiscardRectangleModeEXT. The caller is expected to
+// cast.
+func (d *DiscardRectangleModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PipelineDiscardRectangleStateCreateFlagsEXT struct {
 	native *C.VkPipelineDiscardRectangleStateCreateFlagsEXT
 }
 
 func wrapPipelineDiscardRectangleStateCreateFlagsEXT(p *C.VkPipelineDiscardRectangleStateCreateFlagsEXT) *PipelineDiscardRectangleStateCreateFlagsEXT {
 	v := PipelineDiscardRectangleStateCreateFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineDiscardRectangleStateCreateFlagsEXT).free)
+
 	return &v
 }
 
@@ -10019,12 +17512,24 @@ func marshalPipelineDiscardRectangleStateCreateFlagsEXT(p uintptr) (interface{},
 	return wrapPipelineDiscardRectangleStateCreateFlagsEXT(c)
 }
 
+func (p *PipelineDiscardRectangleStateCreateFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineDiscardRectangleStateCreateFlagsEXT. The caller is expected to
+// cast.
+func (p *PipelineDiscardRectangleStateCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceDiscardRectanglePropertiesEXT struct {
 	native *C.VkPhysicalDeviceDiscardRectanglePropertiesEXT
 }
 
 func wrapPhysicalDeviceDiscardRectanglePropertiesEXT(p *C.VkPhysicalDeviceDiscardRectanglePropertiesEXT) *PhysicalDeviceDiscardRectanglePropertiesEXT {
 	v := PhysicalDeviceDiscardRectanglePropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceDiscardRectanglePropertiesEXT).free)
+
 	return &v
 }
 
@@ -10035,12 +17540,24 @@ func marshalPhysicalDeviceDiscardRectanglePropertiesEXT(p uintptr) (interface{},
 	return wrapPhysicalDeviceDiscardRectanglePropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceDiscardRectanglePropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceDiscardRectanglePropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceDiscardRectanglePropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineDiscardRectangleStateCreateInfoEXT struct {
 	native *C.VkPipelineDiscardRectangleStateCreateInfoEXT
 }
 
 func wrapPipelineDiscardRectangleStateCreateInfoEXT(p *C.VkPipelineDiscardRectangleStateCreateInfoEXT) *PipelineDiscardRectangleStateCreateInfoEXT {
 	v := PipelineDiscardRectangleStateCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineDiscardRectangleStateCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10051,12 +17568,24 @@ func marshalPipelineDiscardRectangleStateCreateInfoEXT(p uintptr) (interface{}, 
 	return wrapPipelineDiscardRectangleStateCreateInfoEXT(c)
 }
 
+func (p *PipelineDiscardRectangleStateCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineDiscardRectangleStateCreateInfoEXT. The caller is expected to
+// cast.
+func (p *PipelineDiscardRectangleStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ConservativeRasterizationModeEXT struct {
 	native *C.VkConservativeRasterizationModeEXT
 }
 
 func wrapConservativeRasterizationModeEXT(p *C.VkConservativeRasterizationModeEXT) *ConservativeRasterizationModeEXT {
 	v := ConservativeRasterizationModeEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ConservativeRasterizationModeEXT).free)
+
 	return &v
 }
 
@@ -10067,12 +17596,24 @@ func marshalConservativeRasterizationModeEXT(p uintptr) (interface{}, error) {
 	return wrapConservativeRasterizationModeEXT(c)
 }
 
+func (c *ConservativeRasterizationModeEXT) free() {}
+
+// Native returns the pointer to *C.VkConservativeRasterizationModeEXT. The caller is expected to
+// cast.
+func (c *ConservativeRasterizationModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PipelineRasterizationConservativeStateCreateFlagsEXT struct {
 	native *C.VkPipelineRasterizationConservativeStateCreateFlagsEXT
 }
 
 func wrapPipelineRasterizationConservativeStateCreateFlagsEXT(p *C.VkPipelineRasterizationConservativeStateCreateFlagsEXT) *PipelineRasterizationConservativeStateCreateFlagsEXT {
 	v := PipelineRasterizationConservativeStateCreateFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineRasterizationConservativeStateCreateFlagsEXT).free)
+
 	return &v
 }
 
@@ -10083,12 +17624,24 @@ func marshalPipelineRasterizationConservativeStateCreateFlagsEXT(p uintptr) (int
 	return wrapPipelineRasterizationConservativeStateCreateFlagsEXT(c)
 }
 
+func (p *PipelineRasterizationConservativeStateCreateFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineRasterizationConservativeStateCreateFlagsEXT. The caller is expected to
+// cast.
+func (p *PipelineRasterizationConservativeStateCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceConservativeRasterizationPropertiesEXT struct {
 	native *C.VkPhysicalDeviceConservativeRasterizationPropertiesEXT
 }
 
 func wrapPhysicalDeviceConservativeRasterizationPropertiesEXT(p *C.VkPhysicalDeviceConservativeRasterizationPropertiesEXT) *PhysicalDeviceConservativeRasterizationPropertiesEXT {
 	v := PhysicalDeviceConservativeRasterizationPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceConservativeRasterizationPropertiesEXT).free)
+
 	return &v
 }
 
@@ -10099,12 +17652,24 @@ func marshalPhysicalDeviceConservativeRasterizationPropertiesEXT(p uintptr) (int
 	return wrapPhysicalDeviceConservativeRasterizationPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceConservativeRasterizationPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceConservativeRasterizationPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceConservativeRasterizationPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineRasterizationConservativeStateCreateInfoEXT struct {
 	native *C.VkPipelineRasterizationConservativeStateCreateInfoEXT
 }
 
 func wrapPipelineRasterizationConservativeStateCreateInfoEXT(p *C.VkPipelineRasterizationConservativeStateCreateInfoEXT) *PipelineRasterizationConservativeStateCreateInfoEXT {
 	v := PipelineRasterizationConservativeStateCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineRasterizationConservativeStateCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10115,12 +17680,24 @@ func marshalPipelineRasterizationConservativeStateCreateInfoEXT(p uintptr) (inte
 	return wrapPipelineRasterizationConservativeStateCreateInfoEXT(c)
 }
 
+func (p *PipelineRasterizationConservativeStateCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineRasterizationConservativeStateCreateInfoEXT. The caller is expected to
+// cast.
+func (p *PipelineRasterizationConservativeStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineRasterizationDepthClipStateCreateFlagsEXT struct {
 	native *C.VkPipelineRasterizationDepthClipStateCreateFlagsEXT
 }
 
 func wrapPipelineRasterizationDepthClipStateCreateFlagsEXT(p *C.VkPipelineRasterizationDepthClipStateCreateFlagsEXT) *PipelineRasterizationDepthClipStateCreateFlagsEXT {
 	v := PipelineRasterizationDepthClipStateCreateFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineRasterizationDepthClipStateCreateFlagsEXT).free)
+
 	return &v
 }
 
@@ -10131,12 +17708,24 @@ func marshalPipelineRasterizationDepthClipStateCreateFlagsEXT(p uintptr) (interf
 	return wrapPipelineRasterizationDepthClipStateCreateFlagsEXT(c)
 }
 
+func (p *PipelineRasterizationDepthClipStateCreateFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineRasterizationDepthClipStateCreateFlagsEXT. The caller is expected to
+// cast.
+func (p *PipelineRasterizationDepthClipStateCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceDepthClipEnableFeaturesEXT struct {
 	native *C.VkPhysicalDeviceDepthClipEnableFeaturesEXT
 }
 
 func wrapPhysicalDeviceDepthClipEnableFeaturesEXT(p *C.VkPhysicalDeviceDepthClipEnableFeaturesEXT) *PhysicalDeviceDepthClipEnableFeaturesEXT {
 	v := PhysicalDeviceDepthClipEnableFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceDepthClipEnableFeaturesEXT).free)
+
 	return &v
 }
 
@@ -10147,12 +17736,24 @@ func marshalPhysicalDeviceDepthClipEnableFeaturesEXT(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceDepthClipEnableFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceDepthClipEnableFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceDepthClipEnableFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceDepthClipEnableFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineRasterizationDepthClipStateCreateInfoEXT struct {
 	native *C.VkPipelineRasterizationDepthClipStateCreateInfoEXT
 }
 
 func wrapPipelineRasterizationDepthClipStateCreateInfoEXT(p *C.VkPipelineRasterizationDepthClipStateCreateInfoEXT) *PipelineRasterizationDepthClipStateCreateInfoEXT {
 	v := PipelineRasterizationDepthClipStateCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineRasterizationDepthClipStateCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10163,12 +17764,24 @@ func marshalPipelineRasterizationDepthClipStateCreateInfoEXT(p uintptr) (interfa
 	return wrapPipelineRasterizationDepthClipStateCreateInfoEXT(c)
 }
 
+func (p *PipelineRasterizationDepthClipStateCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineRasterizationDepthClipStateCreateInfoEXT. The caller is expected to
+// cast.
+func (p *PipelineRasterizationDepthClipStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type XYColorEXT struct {
 	native *C.VkXYColorEXT
 }
 
 func wrapXYColorEXT(p *C.VkXYColorEXT) *XYColorEXT {
 	v := XYColorEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*XYColorEXT).free)
+
 	return &v
 }
 
@@ -10179,12 +17792,24 @@ func marshalXYColorEXT(p uintptr) (interface{}, error) {
 	return wrapXYColorEXT(c)
 }
 
+func (x *XYColorEXT) free() {}
+
+// Native returns the pointer to *C.VkXYColorEXT. The caller is expected to
+// cast.
+func (x *XYColorEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
+}
+
 type HdrMetadataEXT struct {
 	native *C.VkHdrMetadataEXT
 }
 
 func wrapHdrMetadataEXT(p *C.VkHdrMetadataEXT) *HdrMetadataEXT {
 	v := HdrMetadataEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*HdrMetadataEXT).free)
+
 	return &v
 }
 
@@ -10195,12 +17820,24 @@ func marshalHdrMetadataEXT(p uintptr) (interface{}, error) {
 	return wrapHdrMetadataEXT(c)
 }
 
+func (h *HdrMetadataEXT) free() {}
+
+// Native returns the pointer to *C.VkHdrMetadataEXT. The caller is expected to
+// cast.
+func (h *HdrMetadataEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
+}
+
 type DebugUtilsMessengerEXT struct {
 	native *C.VkDebugUtilsMessengerEXT
 }
 
 func wrapDebugUtilsMessengerEXT(p *C.VkDebugUtilsMessengerEXT) *DebugUtilsMessengerEXT {
 	v := DebugUtilsMessengerEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsMessengerEXT).free)
+
 	return &v
 }
 
@@ -10211,12 +17848,24 @@ func marshalDebugUtilsMessengerEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessengerEXT(c)
 }
 
+func (d *DebugUtilsMessengerEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsMessengerEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsMessengerEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsMessengerCallbackDataFlagsEXT struct {
 	native *C.VkDebugUtilsMessengerCallbackDataFlagsEXT
 }
 
 func wrapDebugUtilsMessengerCallbackDataFlagsEXT(p *C.VkDebugUtilsMessengerCallbackDataFlagsEXT) *DebugUtilsMessengerCallbackDataFlagsEXT {
 	v := DebugUtilsMessengerCallbackDataFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsMessengerCallbackDataFlagsEXT).free)
+
 	return &v
 }
 
@@ -10227,12 +17876,24 @@ func marshalDebugUtilsMessengerCallbackDataFlagsEXT(p uintptr) (interface{}, err
 	return wrapDebugUtilsMessengerCallbackDataFlagsEXT(c)
 }
 
+func (d *DebugUtilsMessengerCallbackDataFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsMessengerCallbackDataFlagsEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsMessengerCallbackDataFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsMessengerCreateFlagsEXT struct {
 	native *C.VkDebugUtilsMessengerCreateFlagsEXT
 }
 
 func wrapDebugUtilsMessengerCreateFlagsEXT(p *C.VkDebugUtilsMessengerCreateFlagsEXT) *DebugUtilsMessengerCreateFlagsEXT {
 	v := DebugUtilsMessengerCreateFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsMessengerCreateFlagsEXT).free)
+
 	return &v
 }
 
@@ -10243,12 +17904,24 @@ func marshalDebugUtilsMessengerCreateFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessengerCreateFlagsEXT(c)
 }
 
+func (d *DebugUtilsMessengerCreateFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsMessengerCreateFlagsEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsMessengerCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsMessageSeverityFlagBitsEXT struct {
 	native *C.VkDebugUtilsMessageSeverityFlagBitsEXT
 }
 
 func wrapDebugUtilsMessageSeverityFlagBitsEXT(p *C.VkDebugUtilsMessageSeverityFlagBitsEXT) *DebugUtilsMessageSeverityFlagBitsEXT {
 	v := DebugUtilsMessageSeverityFlagBitsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsMessageSeverityFlagBitsEXT).free)
+
 	return &v
 }
 
@@ -10259,12 +17932,24 @@ func marshalDebugUtilsMessageSeverityFlagBitsEXT(p uintptr) (interface{}, error)
 	return wrapDebugUtilsMessageSeverityFlagBitsEXT(c)
 }
 
+func (d *DebugUtilsMessageSeverityFlagBitsEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsMessageSeverityFlagBitsEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsMessageSeverityFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsMessageSeverityFlagsEXT struct {
 	native *C.VkDebugUtilsMessageSeverityFlagsEXT
 }
 
 func wrapDebugUtilsMessageSeverityFlagsEXT(p *C.VkDebugUtilsMessageSeverityFlagsEXT) *DebugUtilsMessageSeverityFlagsEXT {
 	v := DebugUtilsMessageSeverityFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsMessageSeverityFlagsEXT).free)
+
 	return &v
 }
 
@@ -10275,12 +17960,24 @@ func marshalDebugUtilsMessageSeverityFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessageSeverityFlagsEXT(c)
 }
 
+func (d *DebugUtilsMessageSeverityFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsMessageSeverityFlagsEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsMessageSeverityFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsMessageTypeFlagBitsEXT struct {
 	native *C.VkDebugUtilsMessageTypeFlagBitsEXT
 }
 
 func wrapDebugUtilsMessageTypeFlagBitsEXT(p *C.VkDebugUtilsMessageTypeFlagBitsEXT) *DebugUtilsMessageTypeFlagBitsEXT {
 	v := DebugUtilsMessageTypeFlagBitsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsMessageTypeFlagBitsEXT).free)
+
 	return &v
 }
 
@@ -10291,12 +17988,24 @@ func marshalDebugUtilsMessageTypeFlagBitsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessageTypeFlagBitsEXT(c)
 }
 
+func (d *DebugUtilsMessageTypeFlagBitsEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsMessageTypeFlagBitsEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsMessageTypeFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsMessageTypeFlagsEXT struct {
 	native *C.VkDebugUtilsMessageTypeFlagsEXT
 }
 
 func wrapDebugUtilsMessageTypeFlagsEXT(p *C.VkDebugUtilsMessageTypeFlagsEXT) *DebugUtilsMessageTypeFlagsEXT {
 	v := DebugUtilsMessageTypeFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsMessageTypeFlagsEXT).free)
+
 	return &v
 }
 
@@ -10307,12 +18016,24 @@ func marshalDebugUtilsMessageTypeFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessageTypeFlagsEXT(c)
 }
 
+func (d *DebugUtilsMessageTypeFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsMessageTypeFlagsEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsMessageTypeFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsObjectNameInfoEXT struct {
 	native *C.VkDebugUtilsObjectNameInfoEXT
 }
 
 func wrapDebugUtilsObjectNameInfoEXT(p *C.VkDebugUtilsObjectNameInfoEXT) *DebugUtilsObjectNameInfoEXT {
 	v := DebugUtilsObjectNameInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsObjectNameInfoEXT).free)
+
 	return &v
 }
 
@@ -10323,12 +18044,24 @@ func marshalDebugUtilsObjectNameInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsObjectNameInfoEXT(c)
 }
 
+func (d *DebugUtilsObjectNameInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsObjectNameInfoEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsObjectNameInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsObjectTagInfoEXT struct {
 	native *C.VkDebugUtilsObjectTagInfoEXT
 }
 
 func wrapDebugUtilsObjectTagInfoEXT(p *C.VkDebugUtilsObjectTagInfoEXT) *DebugUtilsObjectTagInfoEXT {
 	v := DebugUtilsObjectTagInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsObjectTagInfoEXT).free)
+
 	return &v
 }
 
@@ -10339,12 +18072,24 @@ func marshalDebugUtilsObjectTagInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsObjectTagInfoEXT(c)
 }
 
+func (d *DebugUtilsObjectTagInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsObjectTagInfoEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsObjectTagInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsLabelEXT struct {
 	native *C.VkDebugUtilsLabelEXT
 }
 
 func wrapDebugUtilsLabelEXT(p *C.VkDebugUtilsLabelEXT) *DebugUtilsLabelEXT {
 	v := DebugUtilsLabelEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsLabelEXT).free)
+
 	return &v
 }
 
@@ -10355,12 +18100,24 @@ func marshalDebugUtilsLabelEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsLabelEXT(c)
 }
 
+func (d *DebugUtilsLabelEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsLabelEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsLabelEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsMessengerCallbackDataEXT struct {
 	native *C.VkDebugUtilsMessengerCallbackDataEXT
 }
 
 func wrapDebugUtilsMessengerCallbackDataEXT(p *C.VkDebugUtilsMessengerCallbackDataEXT) *DebugUtilsMessengerCallbackDataEXT {
 	v := DebugUtilsMessengerCallbackDataEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsMessengerCallbackDataEXT).free)
+
 	return &v
 }
 
@@ -10371,12 +18128,24 @@ func marshalDebugUtilsMessengerCallbackDataEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessengerCallbackDataEXT(c)
 }
 
+func (d *DebugUtilsMessengerCallbackDataEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsMessengerCallbackDataEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsMessengerCallbackDataEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DebugUtilsMessengerCreateInfoEXT struct {
 	native *C.VkDebugUtilsMessengerCreateInfoEXT
 }
 
 func wrapDebugUtilsMessengerCreateInfoEXT(p *C.VkDebugUtilsMessengerCreateInfoEXT) *DebugUtilsMessengerCreateInfoEXT {
 	v := DebugUtilsMessengerCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DebugUtilsMessengerCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10387,12 +18156,24 @@ func marshalDebugUtilsMessengerCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessengerCreateInfoEXT(c)
 }
 
+func (d *DebugUtilsMessengerCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDebugUtilsMessengerCreateInfoEXT. The caller is expected to
+// cast.
+func (d *DebugUtilsMessengerCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type SamplerReductionModeEXT struct {
 	native *C.VkSamplerReductionModeEXT
 }
 
 func wrapSamplerReductionModeEXT(p *C.VkSamplerReductionModeEXT) *SamplerReductionModeEXT {
 	v := SamplerReductionModeEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerReductionModeEXT).free)
+
 	return &v
 }
 
@@ -10403,12 +18184,24 @@ func marshalSamplerReductionModeEXT(p uintptr) (interface{}, error) {
 	return wrapSamplerReductionModeEXT(c)
 }
 
+func (s *SamplerReductionModeEXT) free() {}
+
+// Native returns the pointer to *C.VkSamplerReductionModeEXT. The caller is expected to
+// cast.
+func (s *SamplerReductionModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SamplerReductionModeCreateInfoEXT struct {
 	native *C.VkSamplerReductionModeCreateInfoEXT
 }
 
 func wrapSamplerReductionModeCreateInfoEXT(p *C.VkSamplerReductionModeCreateInfoEXT) *SamplerReductionModeCreateInfoEXT {
 	v := SamplerReductionModeCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SamplerReductionModeCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10419,12 +18212,24 @@ func marshalSamplerReductionModeCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapSamplerReductionModeCreateInfoEXT(c)
 }
 
+func (s *SamplerReductionModeCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkSamplerReductionModeCreateInfoEXT. The caller is expected to
+// cast.
+func (s *SamplerReductionModeCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PhysicalDeviceSamplerFilterMinmaxPropertiesEXT struct {
 	native *C.VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT
 }
 
 func wrapPhysicalDeviceSamplerFilterMinmaxPropertiesEXT(p *C.VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT) *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT {
 	v := PhysicalDeviceSamplerFilterMinmaxPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceSamplerFilterMinmaxPropertiesEXT).free)
+
 	return &v
 }
 
@@ -10435,12 +18240,24 @@ func marshalPhysicalDeviceSamplerFilterMinmaxPropertiesEXT(p uintptr) (interface
 	return wrapPhysicalDeviceSamplerFilterMinmaxPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceInlineUniformBlockFeaturesEXT struct {
 	native *C.VkPhysicalDeviceInlineUniformBlockFeaturesEXT
 }
 
 func wrapPhysicalDeviceInlineUniformBlockFeaturesEXT(p *C.VkPhysicalDeviceInlineUniformBlockFeaturesEXT) *PhysicalDeviceInlineUniformBlockFeaturesEXT {
 	v := PhysicalDeviceInlineUniformBlockFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceInlineUniformBlockFeaturesEXT).free)
+
 	return &v
 }
 
@@ -10451,12 +18268,24 @@ func marshalPhysicalDeviceInlineUniformBlockFeaturesEXT(p uintptr) (interface{},
 	return wrapPhysicalDeviceInlineUniformBlockFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceInlineUniformBlockFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceInlineUniformBlockFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceInlineUniformBlockFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceInlineUniformBlockPropertiesEXT struct {
 	native *C.VkPhysicalDeviceInlineUniformBlockPropertiesEXT
 }
 
 func wrapPhysicalDeviceInlineUniformBlockPropertiesEXT(p *C.VkPhysicalDeviceInlineUniformBlockPropertiesEXT) *PhysicalDeviceInlineUniformBlockPropertiesEXT {
 	v := PhysicalDeviceInlineUniformBlockPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceInlineUniformBlockPropertiesEXT).free)
+
 	return &v
 }
 
@@ -10467,12 +18296,24 @@ func marshalPhysicalDeviceInlineUniformBlockPropertiesEXT(p uintptr) (interface{
 	return wrapPhysicalDeviceInlineUniformBlockPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceInlineUniformBlockPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceInlineUniformBlockPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceInlineUniformBlockPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type WriteDescriptorSetInlineUniformBlockEXT struct {
 	native *C.VkWriteDescriptorSetInlineUniformBlockEXT
 }
 
 func wrapWriteDescriptorSetInlineUniformBlockEXT(p *C.VkWriteDescriptorSetInlineUniformBlockEXT) *WriteDescriptorSetInlineUniformBlockEXT {
 	v := WriteDescriptorSetInlineUniformBlockEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*WriteDescriptorSetInlineUniformBlockEXT).free)
+
 	return &v
 }
 
@@ -10483,12 +18324,24 @@ func marshalWriteDescriptorSetInlineUniformBlockEXT(p uintptr) (interface{}, err
 	return wrapWriteDescriptorSetInlineUniformBlockEXT(c)
 }
 
+func (w *WriteDescriptorSetInlineUniformBlockEXT) free() {}
+
+// Native returns the pointer to *C.VkWriteDescriptorSetInlineUniformBlockEXT. The caller is expected to
+// cast.
+func (w *WriteDescriptorSetInlineUniformBlockEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(w.native)
+}
+
 type DescriptorPoolInlineUniformBlockCreateInfoEXT struct {
 	native *C.VkDescriptorPoolInlineUniformBlockCreateInfoEXT
 }
 
 func wrapDescriptorPoolInlineUniformBlockCreateInfoEXT(p *C.VkDescriptorPoolInlineUniformBlockCreateInfoEXT) *DescriptorPoolInlineUniformBlockCreateInfoEXT {
 	v := DescriptorPoolInlineUniformBlockCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorPoolInlineUniformBlockCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10499,12 +18352,24 @@ func marshalDescriptorPoolInlineUniformBlockCreateInfoEXT(p uintptr) (interface{
 	return wrapDescriptorPoolInlineUniformBlockCreateInfoEXT(c)
 }
 
+func (d *DescriptorPoolInlineUniformBlockCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDescriptorPoolInlineUniformBlockCreateInfoEXT. The caller is expected to
+// cast.
+func (d *DescriptorPoolInlineUniformBlockCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type SampleLocationEXT struct {
 	native *C.VkSampleLocationEXT
 }
 
 func wrapSampleLocationEXT(p *C.VkSampleLocationEXT) *SampleLocationEXT {
 	v := SampleLocationEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SampleLocationEXT).free)
+
 	return &v
 }
 
@@ -10515,12 +18380,24 @@ func marshalSampleLocationEXT(p uintptr) (interface{}, error) {
 	return wrapSampleLocationEXT(c)
 }
 
+func (s *SampleLocationEXT) free() {}
+
+// Native returns the pointer to *C.VkSampleLocationEXT. The caller is expected to
+// cast.
+func (s *SampleLocationEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type SampleLocationsInfoEXT struct {
 	native *C.VkSampleLocationsInfoEXT
 }
 
 func wrapSampleLocationsInfoEXT(p *C.VkSampleLocationsInfoEXT) *SampleLocationsInfoEXT {
 	v := SampleLocationsInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SampleLocationsInfoEXT).free)
+
 	return &v
 }
 
@@ -10531,12 +18408,24 @@ func marshalSampleLocationsInfoEXT(p uintptr) (interface{}, error) {
 	return wrapSampleLocationsInfoEXT(c)
 }
 
+func (s *SampleLocationsInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkSampleLocationsInfoEXT. The caller is expected to
+// cast.
+func (s *SampleLocationsInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type AttachmentSampleLocationsEXT struct {
 	native *C.VkAttachmentSampleLocationsEXT
 }
 
 func wrapAttachmentSampleLocationsEXT(p *C.VkAttachmentSampleLocationsEXT) *AttachmentSampleLocationsEXT {
 	v := AttachmentSampleLocationsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttachmentSampleLocationsEXT).free)
+
 	return &v
 }
 
@@ -10547,12 +18436,24 @@ func marshalAttachmentSampleLocationsEXT(p uintptr) (interface{}, error) {
 	return wrapAttachmentSampleLocationsEXT(c)
 }
 
+func (a *AttachmentSampleLocationsEXT) free() {}
+
+// Native returns the pointer to *C.VkAttachmentSampleLocationsEXT. The caller is expected to
+// cast.
+func (a *AttachmentSampleLocationsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type SubpassSampleLocationsEXT struct {
 	native *C.VkSubpassSampleLocationsEXT
 }
 
 func wrapSubpassSampleLocationsEXT(p *C.VkSubpassSampleLocationsEXT) *SubpassSampleLocationsEXT {
 	v := SubpassSampleLocationsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SubpassSampleLocationsEXT).free)
+
 	return &v
 }
 
@@ -10563,12 +18464,24 @@ func marshalSubpassSampleLocationsEXT(p uintptr) (interface{}, error) {
 	return wrapSubpassSampleLocationsEXT(c)
 }
 
+func (s *SubpassSampleLocationsEXT) free() {}
+
+// Native returns the pointer to *C.VkSubpassSampleLocationsEXT. The caller is expected to
+// cast.
+func (s *SubpassSampleLocationsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type RenderPassSampleLocationsBeginInfoEXT struct {
 	native *C.VkRenderPassSampleLocationsBeginInfoEXT
 }
 
 func wrapRenderPassSampleLocationsBeginInfoEXT(p *C.VkRenderPassSampleLocationsBeginInfoEXT) *RenderPassSampleLocationsBeginInfoEXT {
 	v := RenderPassSampleLocationsBeginInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPassSampleLocationsBeginInfoEXT).free)
+
 	return &v
 }
 
@@ -10579,12 +18492,24 @@ func marshalRenderPassSampleLocationsBeginInfoEXT(p uintptr) (interface{}, error
 	return wrapRenderPassSampleLocationsBeginInfoEXT(c)
 }
 
+func (r *RenderPassSampleLocationsBeginInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkRenderPassSampleLocationsBeginInfoEXT. The caller is expected to
+// cast.
+func (r *RenderPassSampleLocationsBeginInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type PipelineSampleLocationsStateCreateInfoEXT struct {
 	native *C.VkPipelineSampleLocationsStateCreateInfoEXT
 }
 
 func wrapPipelineSampleLocationsStateCreateInfoEXT(p *C.VkPipelineSampleLocationsStateCreateInfoEXT) *PipelineSampleLocationsStateCreateInfoEXT {
 	v := PipelineSampleLocationsStateCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineSampleLocationsStateCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10595,12 +18520,24 @@ func marshalPipelineSampleLocationsStateCreateInfoEXT(p uintptr) (interface{}, e
 	return wrapPipelineSampleLocationsStateCreateInfoEXT(c)
 }
 
+func (p *PipelineSampleLocationsStateCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineSampleLocationsStateCreateInfoEXT. The caller is expected to
+// cast.
+func (p *PipelineSampleLocationsStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceSampleLocationsPropertiesEXT struct {
 	native *C.VkPhysicalDeviceSampleLocationsPropertiesEXT
 }
 
 func wrapPhysicalDeviceSampleLocationsPropertiesEXT(p *C.VkPhysicalDeviceSampleLocationsPropertiesEXT) *PhysicalDeviceSampleLocationsPropertiesEXT {
 	v := PhysicalDeviceSampleLocationsPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceSampleLocationsPropertiesEXT).free)
+
 	return &v
 }
 
@@ -10611,12 +18548,24 @@ func marshalPhysicalDeviceSampleLocationsPropertiesEXT(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceSampleLocationsPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceSampleLocationsPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceSampleLocationsPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceSampleLocationsPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type MultisamplePropertiesEXT struct {
 	native *C.VkMultisamplePropertiesEXT
 }
 
 func wrapMultisamplePropertiesEXT(p *C.VkMultisamplePropertiesEXT) *MultisamplePropertiesEXT {
 	v := MultisamplePropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MultisamplePropertiesEXT).free)
+
 	return &v
 }
 
@@ -10627,12 +18576,24 @@ func marshalMultisamplePropertiesEXT(p uintptr) (interface{}, error) {
 	return wrapMultisamplePropertiesEXT(c)
 }
 
+func (m *MultisamplePropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkMultisamplePropertiesEXT. The caller is expected to
+// cast.
+func (m *MultisamplePropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type BlendOverlapEXT struct {
 	native *C.VkBlendOverlapEXT
 }
 
 func wrapBlendOverlapEXT(p *C.VkBlendOverlapEXT) *BlendOverlapEXT {
 	v := BlendOverlapEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BlendOverlapEXT).free)
+
 	return &v
 }
 
@@ -10643,12 +18604,24 @@ func marshalBlendOverlapEXT(p uintptr) (interface{}, error) {
 	return wrapBlendOverlapEXT(c)
 }
 
+func (b *BlendOverlapEXT) free() {}
+
+// Native returns the pointer to *C.VkBlendOverlapEXT. The caller is expected to
+// cast.
+func (b *BlendOverlapEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type PhysicalDeviceBlendOperationAdvancedFeaturesEXT struct {
 	native *C.VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT
 }
 
 func wrapPhysicalDeviceBlendOperationAdvancedFeaturesEXT(p *C.VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT) *PhysicalDeviceBlendOperationAdvancedFeaturesEXT {
 	v := PhysicalDeviceBlendOperationAdvancedFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceBlendOperationAdvancedFeaturesEXT).free)
+
 	return &v
 }
 
@@ -10659,12 +18632,24 @@ func marshalPhysicalDeviceBlendOperationAdvancedFeaturesEXT(p uintptr) (interfac
 	return wrapPhysicalDeviceBlendOperationAdvancedFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceBlendOperationAdvancedFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceBlendOperationAdvancedFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceBlendOperationAdvancedPropertiesEXT struct {
 	native *C.VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT
 }
 
 func wrapPhysicalDeviceBlendOperationAdvancedPropertiesEXT(p *C.VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT) *PhysicalDeviceBlendOperationAdvancedPropertiesEXT {
 	v := PhysicalDeviceBlendOperationAdvancedPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceBlendOperationAdvancedPropertiesEXT).free)
+
 	return &v
 }
 
@@ -10675,12 +18660,24 @@ func marshalPhysicalDeviceBlendOperationAdvancedPropertiesEXT(p uintptr) (interf
 	return wrapPhysicalDeviceBlendOperationAdvancedPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceBlendOperationAdvancedPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceBlendOperationAdvancedPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineColorBlendAdvancedStateCreateInfoEXT struct {
 	native *C.VkPipelineColorBlendAdvancedStateCreateInfoEXT
 }
 
 func wrapPipelineColorBlendAdvancedStateCreateInfoEXT(p *C.VkPipelineColorBlendAdvancedStateCreateInfoEXT) *PipelineColorBlendAdvancedStateCreateInfoEXT {
 	v := PipelineColorBlendAdvancedStateCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineColorBlendAdvancedStateCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10691,12 +18688,24 @@ func marshalPipelineColorBlendAdvancedStateCreateInfoEXT(p uintptr) (interface{}
 	return wrapPipelineColorBlendAdvancedStateCreateInfoEXT(c)
 }
 
+func (p *PipelineColorBlendAdvancedStateCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineColorBlendAdvancedStateCreateInfoEXT. The caller is expected to
+// cast.
+func (p *PipelineColorBlendAdvancedStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineCoverageToColorStateCreateFlagsNV struct {
 	native *C.VkPipelineCoverageToColorStateCreateFlagsNV
 }
 
 func wrapPipelineCoverageToColorStateCreateFlagsNV(p *C.VkPipelineCoverageToColorStateCreateFlagsNV) *PipelineCoverageToColorStateCreateFlagsNV {
 	v := PipelineCoverageToColorStateCreateFlagsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCoverageToColorStateCreateFlagsNV).free)
+
 	return &v
 }
 
@@ -10707,12 +18716,24 @@ func marshalPipelineCoverageToColorStateCreateFlagsNV(p uintptr) (interface{}, e
 	return wrapPipelineCoverageToColorStateCreateFlagsNV(c)
 }
 
+func (p *PipelineCoverageToColorStateCreateFlagsNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineCoverageToColorStateCreateFlagsNV. The caller is expected to
+// cast.
+func (p *PipelineCoverageToColorStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineCoverageToColorStateCreateInfoNV struct {
 	native *C.VkPipelineCoverageToColorStateCreateInfoNV
 }
 
 func wrapPipelineCoverageToColorStateCreateInfoNV(p *C.VkPipelineCoverageToColorStateCreateInfoNV) *PipelineCoverageToColorStateCreateInfoNV {
 	v := PipelineCoverageToColorStateCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCoverageToColorStateCreateInfoNV).free)
+
 	return &v
 }
 
@@ -10723,12 +18744,24 @@ func marshalPipelineCoverageToColorStateCreateInfoNV(p uintptr) (interface{}, er
 	return wrapPipelineCoverageToColorStateCreateInfoNV(c)
 }
 
+func (p *PipelineCoverageToColorStateCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineCoverageToColorStateCreateInfoNV. The caller is expected to
+// cast.
+func (p *PipelineCoverageToColorStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type CoverageModulationModeNV struct {
 	native *C.VkCoverageModulationModeNV
 }
 
 func wrapCoverageModulationModeNV(p *C.VkCoverageModulationModeNV) *CoverageModulationModeNV {
 	v := CoverageModulationModeNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CoverageModulationModeNV).free)
+
 	return &v
 }
 
@@ -10739,12 +18772,24 @@ func marshalCoverageModulationModeNV(p uintptr) (interface{}, error) {
 	return wrapCoverageModulationModeNV(c)
 }
 
+func (c *CoverageModulationModeNV) free() {}
+
+// Native returns the pointer to *C.VkCoverageModulationModeNV. The caller is expected to
+// cast.
+func (c *CoverageModulationModeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PipelineCoverageModulationStateCreateFlagsNV struct {
 	native *C.VkPipelineCoverageModulationStateCreateFlagsNV
 }
 
 func wrapPipelineCoverageModulationStateCreateFlagsNV(p *C.VkPipelineCoverageModulationStateCreateFlagsNV) *PipelineCoverageModulationStateCreateFlagsNV {
 	v := PipelineCoverageModulationStateCreateFlagsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCoverageModulationStateCreateFlagsNV).free)
+
 	return &v
 }
 
@@ -10755,12 +18800,24 @@ func marshalPipelineCoverageModulationStateCreateFlagsNV(p uintptr) (interface{}
 	return wrapPipelineCoverageModulationStateCreateFlagsNV(c)
 }
 
+func (p *PipelineCoverageModulationStateCreateFlagsNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineCoverageModulationStateCreateFlagsNV. The caller is expected to
+// cast.
+func (p *PipelineCoverageModulationStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineCoverageModulationStateCreateInfoNV struct {
 	native *C.VkPipelineCoverageModulationStateCreateInfoNV
 }
 
 func wrapPipelineCoverageModulationStateCreateInfoNV(p *C.VkPipelineCoverageModulationStateCreateInfoNV) *PipelineCoverageModulationStateCreateInfoNV {
 	v := PipelineCoverageModulationStateCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCoverageModulationStateCreateInfoNV).free)
+
 	return &v
 }
 
@@ -10771,12 +18828,24 @@ func marshalPipelineCoverageModulationStateCreateInfoNV(p uintptr) (interface{},
 	return wrapPipelineCoverageModulationStateCreateInfoNV(c)
 }
 
+func (p *PipelineCoverageModulationStateCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineCoverageModulationStateCreateInfoNV. The caller is expected to
+// cast.
+func (p *PipelineCoverageModulationStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DrmFormatModifierPropertiesEXT struct {
 	native *C.VkDrmFormatModifierPropertiesEXT
 }
 
 func wrapDrmFormatModifierPropertiesEXT(p *C.VkDrmFormatModifierPropertiesEXT) *DrmFormatModifierPropertiesEXT {
 	v := DrmFormatModifierPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DrmFormatModifierPropertiesEXT).free)
+
 	return &v
 }
 
@@ -10787,12 +18856,24 @@ func marshalDrmFormatModifierPropertiesEXT(p uintptr) (interface{}, error) {
 	return wrapDrmFormatModifierPropertiesEXT(c)
 }
 
+func (d *DrmFormatModifierPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkDrmFormatModifierPropertiesEXT. The caller is expected to
+// cast.
+func (d *DrmFormatModifierPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DrmFormatModifierPropertiesListEXT struct {
 	native *C.VkDrmFormatModifierPropertiesListEXT
 }
 
 func wrapDrmFormatModifierPropertiesListEXT(p *C.VkDrmFormatModifierPropertiesListEXT) *DrmFormatModifierPropertiesListEXT {
 	v := DrmFormatModifierPropertiesListEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DrmFormatModifierPropertiesListEXT).free)
+
 	return &v
 }
 
@@ -10803,12 +18884,24 @@ func marshalDrmFormatModifierPropertiesListEXT(p uintptr) (interface{}, error) {
 	return wrapDrmFormatModifierPropertiesListEXT(c)
 }
 
+func (d *DrmFormatModifierPropertiesListEXT) free() {}
+
+// Native returns the pointer to *C.VkDrmFormatModifierPropertiesListEXT. The caller is expected to
+// cast.
+func (d *DrmFormatModifierPropertiesListEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PhysicalDeviceImageDrmFormatModifierInfoEXT struct {
 	native *C.VkPhysicalDeviceImageDrmFormatModifierInfoEXT
 }
 
 func wrapPhysicalDeviceImageDrmFormatModifierInfoEXT(p *C.VkPhysicalDeviceImageDrmFormatModifierInfoEXT) *PhysicalDeviceImageDrmFormatModifierInfoEXT {
 	v := PhysicalDeviceImageDrmFormatModifierInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceImageDrmFormatModifierInfoEXT).free)
+
 	return &v
 }
 
@@ -10819,12 +18912,24 @@ func marshalPhysicalDeviceImageDrmFormatModifierInfoEXT(p uintptr) (interface{},
 	return wrapPhysicalDeviceImageDrmFormatModifierInfoEXT(c)
 }
 
+func (p *PhysicalDeviceImageDrmFormatModifierInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceImageDrmFormatModifierInfoEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceImageDrmFormatModifierInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type ImageDrmFormatModifierListCreateInfoEXT struct {
 	native *C.VkImageDrmFormatModifierListCreateInfoEXT
 }
 
 func wrapImageDrmFormatModifierListCreateInfoEXT(p *C.VkImageDrmFormatModifierListCreateInfoEXT) *ImageDrmFormatModifierListCreateInfoEXT {
 	v := ImageDrmFormatModifierListCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageDrmFormatModifierListCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10835,12 +18940,24 @@ func marshalImageDrmFormatModifierListCreateInfoEXT(p uintptr) (interface{}, err
 	return wrapImageDrmFormatModifierListCreateInfoEXT(c)
 }
 
+func (i *ImageDrmFormatModifierListCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkImageDrmFormatModifierListCreateInfoEXT. The caller is expected to
+// cast.
+func (i *ImageDrmFormatModifierListCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageDrmFormatModifierExplicitCreateInfoEXT struct {
 	native *C.VkImageDrmFormatModifierExplicitCreateInfoEXT
 }
 
 func wrapImageDrmFormatModifierExplicitCreateInfoEXT(p *C.VkImageDrmFormatModifierExplicitCreateInfoEXT) *ImageDrmFormatModifierExplicitCreateInfoEXT {
 	v := ImageDrmFormatModifierExplicitCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageDrmFormatModifierExplicitCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10851,12 +18968,24 @@ func marshalImageDrmFormatModifierExplicitCreateInfoEXT(p uintptr) (interface{},
 	return wrapImageDrmFormatModifierExplicitCreateInfoEXT(c)
 }
 
+func (i *ImageDrmFormatModifierExplicitCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkImageDrmFormatModifierExplicitCreateInfoEXT. The caller is expected to
+// cast.
+func (i *ImageDrmFormatModifierExplicitCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ImageDrmFormatModifierPropertiesEXT struct {
 	native *C.VkImageDrmFormatModifierPropertiesEXT
 }
 
 func wrapImageDrmFormatModifierPropertiesEXT(p *C.VkImageDrmFormatModifierPropertiesEXT) *ImageDrmFormatModifierPropertiesEXT {
 	v := ImageDrmFormatModifierPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageDrmFormatModifierPropertiesEXT).free)
+
 	return &v
 }
 
@@ -10867,12 +18996,24 @@ func marshalImageDrmFormatModifierPropertiesEXT(p uintptr) (interface{}, error) 
 	return wrapImageDrmFormatModifierPropertiesEXT(c)
 }
 
+func (i *ImageDrmFormatModifierPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkImageDrmFormatModifierPropertiesEXT. The caller is expected to
+// cast.
+func (i *ImageDrmFormatModifierPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ValidationCacheEXT struct {
 	native *C.VkValidationCacheEXT
 }
 
 func wrapValidationCacheEXT(p *C.VkValidationCacheEXT) *ValidationCacheEXT {
 	v := ValidationCacheEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ValidationCacheEXT).free)
+
 	return &v
 }
 
@@ -10883,12 +19024,24 @@ func marshalValidationCacheEXT(p uintptr) (interface{}, error) {
 	return wrapValidationCacheEXT(c)
 }
 
+func (v *ValidationCacheEXT) free() {}
+
+// Native returns the pointer to *C.VkValidationCacheEXT. The caller is expected to
+// cast.
+func (v *ValidationCacheEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type ValidationCacheHeaderVersionEXT struct {
 	native *C.VkValidationCacheHeaderVersionEXT
 }
 
 func wrapValidationCacheHeaderVersionEXT(p *C.VkValidationCacheHeaderVersionEXT) *ValidationCacheHeaderVersionEXT {
 	v := ValidationCacheHeaderVersionEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ValidationCacheHeaderVersionEXT).free)
+
 	return &v
 }
 
@@ -10899,12 +19052,24 @@ func marshalValidationCacheHeaderVersionEXT(p uintptr) (interface{}, error) {
 	return wrapValidationCacheHeaderVersionEXT(c)
 }
 
+func (v *ValidationCacheHeaderVersionEXT) free() {}
+
+// Native returns the pointer to *C.VkValidationCacheHeaderVersionEXT. The caller is expected to
+// cast.
+func (v *ValidationCacheHeaderVersionEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type ValidationCacheCreateFlagsEXT struct {
 	native *C.VkValidationCacheCreateFlagsEXT
 }
 
 func wrapValidationCacheCreateFlagsEXT(p *C.VkValidationCacheCreateFlagsEXT) *ValidationCacheCreateFlagsEXT {
 	v := ValidationCacheCreateFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ValidationCacheCreateFlagsEXT).free)
+
 	return &v
 }
 
@@ -10915,12 +19080,24 @@ func marshalValidationCacheCreateFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapValidationCacheCreateFlagsEXT(c)
 }
 
+func (v *ValidationCacheCreateFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkValidationCacheCreateFlagsEXT. The caller is expected to
+// cast.
+func (v *ValidationCacheCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type ValidationCacheCreateInfoEXT struct {
 	native *C.VkValidationCacheCreateInfoEXT
 }
 
 func wrapValidationCacheCreateInfoEXT(p *C.VkValidationCacheCreateInfoEXT) *ValidationCacheCreateInfoEXT {
 	v := ValidationCacheCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ValidationCacheCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10931,12 +19108,24 @@ func marshalValidationCacheCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapValidationCacheCreateInfoEXT(c)
 }
 
+func (v *ValidationCacheCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkValidationCacheCreateInfoEXT. The caller is expected to
+// cast.
+func (v *ValidationCacheCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type ShaderModuleValidationCacheCreateInfoEXT struct {
 	native *C.VkShaderModuleValidationCacheCreateInfoEXT
 }
 
 func wrapShaderModuleValidationCacheCreateInfoEXT(p *C.VkShaderModuleValidationCacheCreateInfoEXT) *ShaderModuleValidationCacheCreateInfoEXT {
 	v := ShaderModuleValidationCacheCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShaderModuleValidationCacheCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10947,12 +19136,24 @@ func marshalShaderModuleValidationCacheCreateInfoEXT(p uintptr) (interface{}, er
 	return wrapShaderModuleValidationCacheCreateInfoEXT(c)
 }
 
+func (s *ShaderModuleValidationCacheCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkShaderModuleValidationCacheCreateInfoEXT. The caller is expected to
+// cast.
+func (s *ShaderModuleValidationCacheCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type DescriptorBindingFlagBitsEXT struct {
 	native *C.VkDescriptorBindingFlagBitsEXT
 }
 
 func wrapDescriptorBindingFlagBitsEXT(p *C.VkDescriptorBindingFlagBitsEXT) *DescriptorBindingFlagBitsEXT {
 	v := DescriptorBindingFlagBitsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorBindingFlagBitsEXT).free)
+
 	return &v
 }
 
@@ -10963,12 +19164,24 @@ func marshalDescriptorBindingFlagBitsEXT(p uintptr) (interface{}, error) {
 	return wrapDescriptorBindingFlagBitsEXT(c)
 }
 
+func (d *DescriptorBindingFlagBitsEXT) free() {}
+
+// Native returns the pointer to *C.VkDescriptorBindingFlagBitsEXT. The caller is expected to
+// cast.
+func (d *DescriptorBindingFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorBindingFlagsEXT struct {
 	native *C.VkDescriptorBindingFlagsEXT
 }
 
 func wrapDescriptorBindingFlagsEXT(p *C.VkDescriptorBindingFlagsEXT) *DescriptorBindingFlagsEXT {
 	v := DescriptorBindingFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorBindingFlagsEXT).free)
+
 	return &v
 }
 
@@ -10979,12 +19192,24 @@ func marshalDescriptorBindingFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapDescriptorBindingFlagsEXT(c)
 }
 
+func (d *DescriptorBindingFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkDescriptorBindingFlagsEXT. The caller is expected to
+// cast.
+func (d *DescriptorBindingFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorSetLayoutBindingFlagsCreateInfoEXT struct {
 	native *C.VkDescriptorSetLayoutBindingFlagsCreateInfoEXT
 }
 
 func wrapDescriptorSetLayoutBindingFlagsCreateInfoEXT(p *C.VkDescriptorSetLayoutBindingFlagsCreateInfoEXT) *DescriptorSetLayoutBindingFlagsCreateInfoEXT {
 	v := DescriptorSetLayoutBindingFlagsCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetLayoutBindingFlagsCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -10995,12 +19220,24 @@ func marshalDescriptorSetLayoutBindingFlagsCreateInfoEXT(p uintptr) (interface{}
 	return wrapDescriptorSetLayoutBindingFlagsCreateInfoEXT(c)
 }
 
+func (d *DescriptorSetLayoutBindingFlagsCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetLayoutBindingFlagsCreateInfoEXT. The caller is expected to
+// cast.
+func (d *DescriptorSetLayoutBindingFlagsCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PhysicalDeviceDescriptorIndexingFeaturesEXT struct {
 	native *C.VkPhysicalDeviceDescriptorIndexingFeaturesEXT
 }
 
 func wrapPhysicalDeviceDescriptorIndexingFeaturesEXT(p *C.VkPhysicalDeviceDescriptorIndexingFeaturesEXT) *PhysicalDeviceDescriptorIndexingFeaturesEXT {
 	v := PhysicalDeviceDescriptorIndexingFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceDescriptorIndexingFeaturesEXT).free)
+
 	return &v
 }
 
@@ -11011,12 +19248,24 @@ func marshalPhysicalDeviceDescriptorIndexingFeaturesEXT(p uintptr) (interface{},
 	return wrapPhysicalDeviceDescriptorIndexingFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceDescriptorIndexingFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceDescriptorIndexingFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceDescriptorIndexingFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceDescriptorIndexingPropertiesEXT struct {
 	native *C.VkPhysicalDeviceDescriptorIndexingPropertiesEXT
 }
 
 func wrapPhysicalDeviceDescriptorIndexingPropertiesEXT(p *C.VkPhysicalDeviceDescriptorIndexingPropertiesEXT) *PhysicalDeviceDescriptorIndexingPropertiesEXT {
 	v := PhysicalDeviceDescriptorIndexingPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceDescriptorIndexingPropertiesEXT).free)
+
 	return &v
 }
 
@@ -11027,12 +19276,24 @@ func marshalPhysicalDeviceDescriptorIndexingPropertiesEXT(p uintptr) (interface{
 	return wrapPhysicalDeviceDescriptorIndexingPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceDescriptorIndexingPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceDescriptorIndexingPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceDescriptorIndexingPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DescriptorSetVariableDescriptorCountAllocateInfoEXT struct {
 	native *C.VkDescriptorSetVariableDescriptorCountAllocateInfoEXT
 }
 
 func wrapDescriptorSetVariableDescriptorCountAllocateInfoEXT(p *C.VkDescriptorSetVariableDescriptorCountAllocateInfoEXT) *DescriptorSetVariableDescriptorCountAllocateInfoEXT {
 	v := DescriptorSetVariableDescriptorCountAllocateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetVariableDescriptorCountAllocateInfoEXT).free)
+
 	return &v
 }
 
@@ -11043,12 +19304,24 @@ func marshalDescriptorSetVariableDescriptorCountAllocateInfoEXT(p uintptr) (inte
 	return wrapDescriptorSetVariableDescriptorCountAllocateInfoEXT(c)
 }
 
+func (d *DescriptorSetVariableDescriptorCountAllocateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetVariableDescriptorCountAllocateInfoEXT. The caller is expected to
+// cast.
+func (d *DescriptorSetVariableDescriptorCountAllocateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type DescriptorSetVariableDescriptorCountLayoutSupportEXT struct {
 	native *C.VkDescriptorSetVariableDescriptorCountLayoutSupportEXT
 }
 
 func wrapDescriptorSetVariableDescriptorCountLayoutSupportEXT(p *C.VkDescriptorSetVariableDescriptorCountLayoutSupportEXT) *DescriptorSetVariableDescriptorCountLayoutSupportEXT {
 	v := DescriptorSetVariableDescriptorCountLayoutSupportEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DescriptorSetVariableDescriptorCountLayoutSupportEXT).free)
+
 	return &v
 }
 
@@ -11059,12 +19332,24 @@ func marshalDescriptorSetVariableDescriptorCountLayoutSupportEXT(p uintptr) (int
 	return wrapDescriptorSetVariableDescriptorCountLayoutSupportEXT(c)
 }
 
+func (d *DescriptorSetVariableDescriptorCountLayoutSupportEXT) free() {}
+
+// Native returns the pointer to *C.VkDescriptorSetVariableDescriptorCountLayoutSupportEXT. The caller is expected to
+// cast.
+func (d *DescriptorSetVariableDescriptorCountLayoutSupportEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type ShadingRatePaletteEntryNV struct {
 	native *C.VkShadingRatePaletteEntryNV
 }
 
 func wrapShadingRatePaletteEntryNV(p *C.VkShadingRatePaletteEntryNV) *ShadingRatePaletteEntryNV {
 	v := ShadingRatePaletteEntryNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShadingRatePaletteEntryNV).free)
+
 	return &v
 }
 
@@ -11075,12 +19360,24 @@ func marshalShadingRatePaletteEntryNV(p uintptr) (interface{}, error) {
 	return wrapShadingRatePaletteEntryNV(c)
 }
 
+func (s *ShadingRatePaletteEntryNV) free() {}
+
+// Native returns the pointer to *C.VkShadingRatePaletteEntryNV. The caller is expected to
+// cast.
+func (s *ShadingRatePaletteEntryNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type CoarseSampleOrderTypeNV struct {
 	native *C.VkCoarseSampleOrderTypeNV
 }
 
 func wrapCoarseSampleOrderTypeNV(p *C.VkCoarseSampleOrderTypeNV) *CoarseSampleOrderTypeNV {
 	v := CoarseSampleOrderTypeNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CoarseSampleOrderTypeNV).free)
+
 	return &v
 }
 
@@ -11091,12 +19388,24 @@ func marshalCoarseSampleOrderTypeNV(p uintptr) (interface{}, error) {
 	return wrapCoarseSampleOrderTypeNV(c)
 }
 
+func (c *CoarseSampleOrderTypeNV) free() {}
+
+// Native returns the pointer to *C.VkCoarseSampleOrderTypeNV. The caller is expected to
+// cast.
+func (c *CoarseSampleOrderTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ShadingRatePaletteNV struct {
 	native *C.VkShadingRatePaletteNV
 }
 
 func wrapShadingRatePaletteNV(p *C.VkShadingRatePaletteNV) *ShadingRatePaletteNV {
 	v := ShadingRatePaletteNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ShadingRatePaletteNV).free)
+
 	return &v
 }
 
@@ -11107,12 +19416,24 @@ func marshalShadingRatePaletteNV(p uintptr) (interface{}, error) {
 	return wrapShadingRatePaletteNV(c)
 }
 
+func (s *ShadingRatePaletteNV) free() {}
+
+// Native returns the pointer to *C.VkShadingRatePaletteNV. The caller is expected to
+// cast.
+func (s *ShadingRatePaletteNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PipelineViewportShadingRateImageStateCreateInfoNV struct {
 	native *C.VkPipelineViewportShadingRateImageStateCreateInfoNV
 }
 
 func wrapPipelineViewportShadingRateImageStateCreateInfoNV(p *C.VkPipelineViewportShadingRateImageStateCreateInfoNV) *PipelineViewportShadingRateImageStateCreateInfoNV {
 	v := PipelineViewportShadingRateImageStateCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineViewportShadingRateImageStateCreateInfoNV).free)
+
 	return &v
 }
 
@@ -11123,12 +19444,24 @@ func marshalPipelineViewportShadingRateImageStateCreateInfoNV(p uintptr) (interf
 	return wrapPipelineViewportShadingRateImageStateCreateInfoNV(c)
 }
 
+func (p *PipelineViewportShadingRateImageStateCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineViewportShadingRateImageStateCreateInfoNV. The caller is expected to
+// cast.
+func (p *PipelineViewportShadingRateImageStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceShadingRateImageFeaturesNV struct {
 	native *C.VkPhysicalDeviceShadingRateImageFeaturesNV
 }
 
 func wrapPhysicalDeviceShadingRateImageFeaturesNV(p *C.VkPhysicalDeviceShadingRateImageFeaturesNV) *PhysicalDeviceShadingRateImageFeaturesNV {
 	v := PhysicalDeviceShadingRateImageFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceShadingRateImageFeaturesNV).free)
+
 	return &v
 }
 
@@ -11139,12 +19472,24 @@ func marshalPhysicalDeviceShadingRateImageFeaturesNV(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceShadingRateImageFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceShadingRateImageFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceShadingRateImageFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceShadingRateImageFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceShadingRateImagePropertiesNV struct {
 	native *C.VkPhysicalDeviceShadingRateImagePropertiesNV
 }
 
 func wrapPhysicalDeviceShadingRateImagePropertiesNV(p *C.VkPhysicalDeviceShadingRateImagePropertiesNV) *PhysicalDeviceShadingRateImagePropertiesNV {
 	v := PhysicalDeviceShadingRateImagePropertiesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceShadingRateImagePropertiesNV).free)
+
 	return &v
 }
 
@@ -11155,12 +19500,24 @@ func marshalPhysicalDeviceShadingRateImagePropertiesNV(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceShadingRateImagePropertiesNV(c)
 }
 
+func (p *PhysicalDeviceShadingRateImagePropertiesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceShadingRateImagePropertiesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceShadingRateImagePropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type CoarseSampleLocationNV struct {
 	native *C.VkCoarseSampleLocationNV
 }
 
 func wrapCoarseSampleLocationNV(p *C.VkCoarseSampleLocationNV) *CoarseSampleLocationNV {
 	v := CoarseSampleLocationNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CoarseSampleLocationNV).free)
+
 	return &v
 }
 
@@ -11171,12 +19528,24 @@ func marshalCoarseSampleLocationNV(p uintptr) (interface{}, error) {
 	return wrapCoarseSampleLocationNV(c)
 }
 
+func (c *CoarseSampleLocationNV) free() {}
+
+// Native returns the pointer to *C.VkCoarseSampleLocationNV. The caller is expected to
+// cast.
+func (c *CoarseSampleLocationNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type CoarseSampleOrderCustomNV struct {
 	native *C.VkCoarseSampleOrderCustomNV
 }
 
 func wrapCoarseSampleOrderCustomNV(p *C.VkCoarseSampleOrderCustomNV) *CoarseSampleOrderCustomNV {
 	v := CoarseSampleOrderCustomNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CoarseSampleOrderCustomNV).free)
+
 	return &v
 }
 
@@ -11187,12 +19556,24 @@ func marshalCoarseSampleOrderCustomNV(p uintptr) (interface{}, error) {
 	return wrapCoarseSampleOrderCustomNV(c)
 }
 
+func (c *CoarseSampleOrderCustomNV) free() {}
+
+// Native returns the pointer to *C.VkCoarseSampleOrderCustomNV. The caller is expected to
+// cast.
+func (c *CoarseSampleOrderCustomNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PipelineViewportCoarseSampleOrderStateCreateInfoNV struct {
 	native *C.VkPipelineViewportCoarseSampleOrderStateCreateInfoNV
 }
 
 func wrapPipelineViewportCoarseSampleOrderStateCreateInfoNV(p *C.VkPipelineViewportCoarseSampleOrderStateCreateInfoNV) *PipelineViewportCoarseSampleOrderStateCreateInfoNV {
 	v := PipelineViewportCoarseSampleOrderStateCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineViewportCoarseSampleOrderStateCreateInfoNV).free)
+
 	return &v
 }
 
@@ -11203,12 +19584,24 @@ func marshalPipelineViewportCoarseSampleOrderStateCreateInfoNV(p uintptr) (inter
 	return wrapPipelineViewportCoarseSampleOrderStateCreateInfoNV(c)
 }
 
+func (p *PipelineViewportCoarseSampleOrderStateCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineViewportCoarseSampleOrderStateCreateInfoNV. The caller is expected to
+// cast.
+func (p *PipelineViewportCoarseSampleOrderStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type AccelerationStructureNV struct {
 	native *C.VkAccelerationStructureNV
 }
 
 func wrapAccelerationStructureNV(p *C.VkAccelerationStructureNV) *AccelerationStructureNV {
 	v := AccelerationStructureNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AccelerationStructureNV).free)
+
 	return &v
 }
 
@@ -11219,12 +19612,24 @@ func marshalAccelerationStructureNV(p uintptr) (interface{}, error) {
 	return wrapAccelerationStructureNV(c)
 }
 
+func (a *AccelerationStructureNV) free() {}
+
+// Native returns the pointer to *C.VkAccelerationStructureNV. The caller is expected to
+// cast.
+func (a *AccelerationStructureNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type RayTracingShaderGroupTypeNV struct {
 	native *C.VkRayTracingShaderGroupTypeNV
 }
 
 func wrapRayTracingShaderGroupTypeNV(p *C.VkRayTracingShaderGroupTypeNV) *RayTracingShaderGroupTypeNV {
 	v := RayTracingShaderGroupTypeNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RayTracingShaderGroupTypeNV).free)
+
 	return &v
 }
 
@@ -11235,12 +19640,24 @@ func marshalRayTracingShaderGroupTypeNV(p uintptr) (interface{}, error) {
 	return wrapRayTracingShaderGroupTypeNV(c)
 }
 
+func (r *RayTracingShaderGroupTypeNV) free() {}
+
+// Native returns the pointer to *C.VkRayTracingShaderGroupTypeNV. The caller is expected to
+// cast.
+func (r *RayTracingShaderGroupTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type GeometryTypeNV struct {
 	native *C.VkGeometryTypeNV
 }
 
 func wrapGeometryTypeNV(p *C.VkGeometryTypeNV) *GeometryTypeNV {
 	v := GeometryTypeNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GeometryTypeNV).free)
+
 	return &v
 }
 
@@ -11251,12 +19668,24 @@ func marshalGeometryTypeNV(p uintptr) (interface{}, error) {
 	return wrapGeometryTypeNV(c)
 }
 
+func (g *GeometryTypeNV) free() {}
+
+// Native returns the pointer to *C.VkGeometryTypeNV. The caller is expected to
+// cast.
+func (g *GeometryTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
+}
+
 type AccelerationStructureTypeNV struct {
 	native *C.VkAccelerationStructureTypeNV
 }
 
 func wrapAccelerationStructureTypeNV(p *C.VkAccelerationStructureTypeNV) *AccelerationStructureTypeNV {
 	v := AccelerationStructureTypeNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AccelerationStructureTypeNV).free)
+
 	return &v
 }
 
@@ -11267,12 +19696,24 @@ func marshalAccelerationStructureTypeNV(p uintptr) (interface{}, error) {
 	return wrapAccelerationStructureTypeNV(c)
 }
 
+func (a *AccelerationStructureTypeNV) free() {}
+
+// Native returns the pointer to *C.VkAccelerationStructureTypeNV. The caller is expected to
+// cast.
+func (a *AccelerationStructureTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type CopyAccelerationStructureModeNV struct {
 	native *C.VkCopyAccelerationStructureModeNV
 }
 
 func wrapCopyAccelerationStructureModeNV(p *C.VkCopyAccelerationStructureModeNV) *CopyAccelerationStructureModeNV {
 	v := CopyAccelerationStructureModeNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CopyAccelerationStructureModeNV).free)
+
 	return &v
 }
 
@@ -11283,12 +19724,24 @@ func marshalCopyAccelerationStructureModeNV(p uintptr) (interface{}, error) {
 	return wrapCopyAccelerationStructureModeNV(c)
 }
 
+func (c *CopyAccelerationStructureModeNV) free() {}
+
+// Native returns the pointer to *C.VkCopyAccelerationStructureModeNV. The caller is expected to
+// cast.
+func (c *CopyAccelerationStructureModeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type AccelerationStructureMemoryRequirementsTypeNV struct {
 	native *C.VkAccelerationStructureMemoryRequirementsTypeNV
 }
 
 func wrapAccelerationStructureMemoryRequirementsTypeNV(p *C.VkAccelerationStructureMemoryRequirementsTypeNV) *AccelerationStructureMemoryRequirementsTypeNV {
 	v := AccelerationStructureMemoryRequirementsTypeNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AccelerationStructureMemoryRequirementsTypeNV).free)
+
 	return &v
 }
 
@@ -11299,12 +19752,24 @@ func marshalAccelerationStructureMemoryRequirementsTypeNV(p uintptr) (interface{
 	return wrapAccelerationStructureMemoryRequirementsTypeNV(c)
 }
 
+func (a *AccelerationStructureMemoryRequirementsTypeNV) free() {}
+
+// Native returns the pointer to *C.VkAccelerationStructureMemoryRequirementsTypeNV. The caller is expected to
+// cast.
+func (a *AccelerationStructureMemoryRequirementsTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type GeometryFlagBitsNV struct {
 	native *C.VkGeometryFlagBitsNV
 }
 
 func wrapGeometryFlagBitsNV(p *C.VkGeometryFlagBitsNV) *GeometryFlagBitsNV {
 	v := GeometryFlagBitsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GeometryFlagBitsNV).free)
+
 	return &v
 }
 
@@ -11315,12 +19780,24 @@ func marshalGeometryFlagBitsNV(p uintptr) (interface{}, error) {
 	return wrapGeometryFlagBitsNV(c)
 }
 
+func (g *GeometryFlagBitsNV) free() {}
+
+// Native returns the pointer to *C.VkGeometryFlagBitsNV. The caller is expected to
+// cast.
+func (g *GeometryFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
+}
+
 type GeometryFlagsNV struct {
 	native *C.VkGeometryFlagsNV
 }
 
 func wrapGeometryFlagsNV(p *C.VkGeometryFlagsNV) *GeometryFlagsNV {
 	v := GeometryFlagsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GeometryFlagsNV).free)
+
 	return &v
 }
 
@@ -11331,12 +19808,24 @@ func marshalGeometryFlagsNV(p uintptr) (interface{}, error) {
 	return wrapGeometryFlagsNV(c)
 }
 
+func (g *GeometryFlagsNV) free() {}
+
+// Native returns the pointer to *C.VkGeometryFlagsNV. The caller is expected to
+// cast.
+func (g *GeometryFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
+}
+
 type GeometryInstanceFlagBitsNV struct {
 	native *C.VkGeometryInstanceFlagBitsNV
 }
 
 func wrapGeometryInstanceFlagBitsNV(p *C.VkGeometryInstanceFlagBitsNV) *GeometryInstanceFlagBitsNV {
 	v := GeometryInstanceFlagBitsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GeometryInstanceFlagBitsNV).free)
+
 	return &v
 }
 
@@ -11347,12 +19836,24 @@ func marshalGeometryInstanceFlagBitsNV(p uintptr) (interface{}, error) {
 	return wrapGeometryInstanceFlagBitsNV(c)
 }
 
+func (g *GeometryInstanceFlagBitsNV) free() {}
+
+// Native returns the pointer to *C.VkGeometryInstanceFlagBitsNV. The caller is expected to
+// cast.
+func (g *GeometryInstanceFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
+}
+
 type GeometryInstanceFlagsNV struct {
 	native *C.VkGeometryInstanceFlagsNV
 }
 
 func wrapGeometryInstanceFlagsNV(p *C.VkGeometryInstanceFlagsNV) *GeometryInstanceFlagsNV {
 	v := GeometryInstanceFlagsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GeometryInstanceFlagsNV).free)
+
 	return &v
 }
 
@@ -11363,12 +19864,24 @@ func marshalGeometryInstanceFlagsNV(p uintptr) (interface{}, error) {
 	return wrapGeometryInstanceFlagsNV(c)
 }
 
+func (g *GeometryInstanceFlagsNV) free() {}
+
+// Native returns the pointer to *C.VkGeometryInstanceFlagsNV. The caller is expected to
+// cast.
+func (g *GeometryInstanceFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
+}
+
 type BuildAccelerationStructureFlagBitsNV struct {
 	native *C.VkBuildAccelerationStructureFlagBitsNV
 }
 
 func wrapBuildAccelerationStructureFlagBitsNV(p *C.VkBuildAccelerationStructureFlagBitsNV) *BuildAccelerationStructureFlagBitsNV {
 	v := BuildAccelerationStructureFlagBitsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BuildAccelerationStructureFlagBitsNV).free)
+
 	return &v
 }
 
@@ -11379,12 +19892,24 @@ func marshalBuildAccelerationStructureFlagBitsNV(p uintptr) (interface{}, error)
 	return wrapBuildAccelerationStructureFlagBitsNV(c)
 }
 
+func (b *BuildAccelerationStructureFlagBitsNV) free() {}
+
+// Native returns the pointer to *C.VkBuildAccelerationStructureFlagBitsNV. The caller is expected to
+// cast.
+func (b *BuildAccelerationStructureFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BuildAccelerationStructureFlagsNV struct {
 	native *C.VkBuildAccelerationStructureFlagsNV
 }
 
 func wrapBuildAccelerationStructureFlagsNV(p *C.VkBuildAccelerationStructureFlagsNV) *BuildAccelerationStructureFlagsNV {
 	v := BuildAccelerationStructureFlagsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BuildAccelerationStructureFlagsNV).free)
+
 	return &v
 }
 
@@ -11395,12 +19920,24 @@ func marshalBuildAccelerationStructureFlagsNV(p uintptr) (interface{}, error) {
 	return wrapBuildAccelerationStructureFlagsNV(c)
 }
 
+func (b *BuildAccelerationStructureFlagsNV) free() {}
+
+// Native returns the pointer to *C.VkBuildAccelerationStructureFlagsNV. The caller is expected to
+// cast.
+func (b *BuildAccelerationStructureFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type RayTracingShaderGroupCreateInfoNV struct {
 	native *C.VkRayTracingShaderGroupCreateInfoNV
 }
 
 func wrapRayTracingShaderGroupCreateInfoNV(p *C.VkRayTracingShaderGroupCreateInfoNV) *RayTracingShaderGroupCreateInfoNV {
 	v := RayTracingShaderGroupCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RayTracingShaderGroupCreateInfoNV).free)
+
 	return &v
 }
 
@@ -11411,12 +19948,24 @@ func marshalRayTracingShaderGroupCreateInfoNV(p uintptr) (interface{}, error) {
 	return wrapRayTracingShaderGroupCreateInfoNV(c)
 }
 
+func (r *RayTracingShaderGroupCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkRayTracingShaderGroupCreateInfoNV. The caller is expected to
+// cast.
+func (r *RayTracingShaderGroupCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type RayTracingPipelineCreateInfoNV struct {
 	native *C.VkRayTracingPipelineCreateInfoNV
 }
 
 func wrapRayTracingPipelineCreateInfoNV(p *C.VkRayTracingPipelineCreateInfoNV) *RayTracingPipelineCreateInfoNV {
 	v := RayTracingPipelineCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RayTracingPipelineCreateInfoNV).free)
+
 	return &v
 }
 
@@ -11427,12 +19976,24 @@ func marshalRayTracingPipelineCreateInfoNV(p uintptr) (interface{}, error) {
 	return wrapRayTracingPipelineCreateInfoNV(c)
 }
 
+func (r *RayTracingPipelineCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkRayTracingPipelineCreateInfoNV. The caller is expected to
+// cast.
+func (r *RayTracingPipelineCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type GeometryTrianglesNV struct {
 	native *C.VkGeometryTrianglesNV
 }
 
 func wrapGeometryTrianglesNV(p *C.VkGeometryTrianglesNV) *GeometryTrianglesNV {
 	v := GeometryTrianglesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GeometryTrianglesNV).free)
+
 	return &v
 }
 
@@ -11443,12 +20004,24 @@ func marshalGeometryTrianglesNV(p uintptr) (interface{}, error) {
 	return wrapGeometryTrianglesNV(c)
 }
 
+func (g *GeometryTrianglesNV) free() {}
+
+// Native returns the pointer to *C.VkGeometryTrianglesNV. The caller is expected to
+// cast.
+func (g *GeometryTrianglesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
+}
+
 type GeometryAABBNV struct {
 	native *C.VkGeometryAABBNV
 }
 
 func wrapGeometryAABBNV(p *C.VkGeometryAABBNV) *GeometryAABBNV {
 	v := GeometryAABBNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GeometryAABBNV).free)
+
 	return &v
 }
 
@@ -11459,12 +20032,24 @@ func marshalGeometryAABBNV(p uintptr) (interface{}, error) {
 	return wrapGeometryAABBNV(c)
 }
 
+func (g *GeometryAABBNV) free() {}
+
+// Native returns the pointer to *C.VkGeometryAABBNV. The caller is expected to
+// cast.
+func (g *GeometryAABBNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
+}
+
 type GeometryDataNV struct {
 	native *C.VkGeometryDataNV
 }
 
 func wrapGeometryDataNV(p *C.VkGeometryDataNV) *GeometryDataNV {
 	v := GeometryDataNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GeometryDataNV).free)
+
 	return &v
 }
 
@@ -11475,12 +20060,24 @@ func marshalGeometryDataNV(p uintptr) (interface{}, error) {
 	return wrapGeometryDataNV(c)
 }
 
+func (g *GeometryDataNV) free() {}
+
+// Native returns the pointer to *C.VkGeometryDataNV. The caller is expected to
+// cast.
+func (g *GeometryDataNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
+}
+
 type GeometryNV struct {
 	native *C.VkGeometryNV
 }
 
 func wrapGeometryNV(p *C.VkGeometryNV) *GeometryNV {
 	v := GeometryNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GeometryNV).free)
+
 	return &v
 }
 
@@ -11491,12 +20088,24 @@ func marshalGeometryNV(p uintptr) (interface{}, error) {
 	return wrapGeometryNV(c)
 }
 
+func (g *GeometryNV) free() {}
+
+// Native returns the pointer to *C.VkGeometryNV. The caller is expected to
+// cast.
+func (g *GeometryNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
+}
+
 type AccelerationStructureInfoNV struct {
 	native *C.VkAccelerationStructureInfoNV
 }
 
 func wrapAccelerationStructureInfoNV(p *C.VkAccelerationStructureInfoNV) *AccelerationStructureInfoNV {
 	v := AccelerationStructureInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AccelerationStructureInfoNV).free)
+
 	return &v
 }
 
@@ -11507,12 +20116,24 @@ func marshalAccelerationStructureInfoNV(p uintptr) (interface{}, error) {
 	return wrapAccelerationStructureInfoNV(c)
 }
 
+func (a *AccelerationStructureInfoNV) free() {}
+
+// Native returns the pointer to *C.VkAccelerationStructureInfoNV. The caller is expected to
+// cast.
+func (a *AccelerationStructureInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type AccelerationStructureCreateInfoNV struct {
 	native *C.VkAccelerationStructureCreateInfoNV
 }
 
 func wrapAccelerationStructureCreateInfoNV(p *C.VkAccelerationStructureCreateInfoNV) *AccelerationStructureCreateInfoNV {
 	v := AccelerationStructureCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AccelerationStructureCreateInfoNV).free)
+
 	return &v
 }
 
@@ -11523,12 +20144,24 @@ func marshalAccelerationStructureCreateInfoNV(p uintptr) (interface{}, error) {
 	return wrapAccelerationStructureCreateInfoNV(c)
 }
 
+func (a *AccelerationStructureCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkAccelerationStructureCreateInfoNV. The caller is expected to
+// cast.
+func (a *AccelerationStructureCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type BindAccelerationStructureMemoryInfoNV struct {
 	native *C.VkBindAccelerationStructureMemoryInfoNV
 }
 
 func wrapBindAccelerationStructureMemoryInfoNV(p *C.VkBindAccelerationStructureMemoryInfoNV) *BindAccelerationStructureMemoryInfoNV {
 	v := BindAccelerationStructureMemoryInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BindAccelerationStructureMemoryInfoNV).free)
+
 	return &v
 }
 
@@ -11539,12 +20172,24 @@ func marshalBindAccelerationStructureMemoryInfoNV(p uintptr) (interface{}, error
 	return wrapBindAccelerationStructureMemoryInfoNV(c)
 }
 
+func (b *BindAccelerationStructureMemoryInfoNV) free() {}
+
+// Native returns the pointer to *C.VkBindAccelerationStructureMemoryInfoNV. The caller is expected to
+// cast.
+func (b *BindAccelerationStructureMemoryInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type WriteDescriptorSetAccelerationStructureNV struct {
 	native *C.VkWriteDescriptorSetAccelerationStructureNV
 }
 
 func wrapWriteDescriptorSetAccelerationStructureNV(p *C.VkWriteDescriptorSetAccelerationStructureNV) *WriteDescriptorSetAccelerationStructureNV {
 	v := WriteDescriptorSetAccelerationStructureNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*WriteDescriptorSetAccelerationStructureNV).free)
+
 	return &v
 }
 
@@ -11555,12 +20200,24 @@ func marshalWriteDescriptorSetAccelerationStructureNV(p uintptr) (interface{}, e
 	return wrapWriteDescriptorSetAccelerationStructureNV(c)
 }
 
+func (w *WriteDescriptorSetAccelerationStructureNV) free() {}
+
+// Native returns the pointer to *C.VkWriteDescriptorSetAccelerationStructureNV. The caller is expected to
+// cast.
+func (w *WriteDescriptorSetAccelerationStructureNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(w.native)
+}
+
 type AccelerationStructureMemoryRequirementsInfoNV struct {
 	native *C.VkAccelerationStructureMemoryRequirementsInfoNV
 }
 
 func wrapAccelerationStructureMemoryRequirementsInfoNV(p *C.VkAccelerationStructureMemoryRequirementsInfoNV) *AccelerationStructureMemoryRequirementsInfoNV {
 	v := AccelerationStructureMemoryRequirementsInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AccelerationStructureMemoryRequirementsInfoNV).free)
+
 	return &v
 }
 
@@ -11571,12 +20228,24 @@ func marshalAccelerationStructureMemoryRequirementsInfoNV(p uintptr) (interface{
 	return wrapAccelerationStructureMemoryRequirementsInfoNV(c)
 }
 
+func (a *AccelerationStructureMemoryRequirementsInfoNV) free() {}
+
+// Native returns the pointer to *C.VkAccelerationStructureMemoryRequirementsInfoNV. The caller is expected to
+// cast.
+func (a *AccelerationStructureMemoryRequirementsInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 type PhysicalDeviceRayTracingPropertiesNV struct {
 	native *C.VkPhysicalDeviceRayTracingPropertiesNV
 }
 
 func wrapPhysicalDeviceRayTracingPropertiesNV(p *C.VkPhysicalDeviceRayTracingPropertiesNV) *PhysicalDeviceRayTracingPropertiesNV {
 	v := PhysicalDeviceRayTracingPropertiesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceRayTracingPropertiesNV).free)
+
 	return &v
 }
 
@@ -11587,12 +20256,24 @@ func marshalPhysicalDeviceRayTracingPropertiesNV(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceRayTracingPropertiesNV(c)
 }
 
+func (p *PhysicalDeviceRayTracingPropertiesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceRayTracingPropertiesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceRayTracingPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceRepresentativeFragmentTestFeaturesNV struct {
 	native *C.VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV
 }
 
 func wrapPhysicalDeviceRepresentativeFragmentTestFeaturesNV(p *C.VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV) *PhysicalDeviceRepresentativeFragmentTestFeaturesNV {
 	v := PhysicalDeviceRepresentativeFragmentTestFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceRepresentativeFragmentTestFeaturesNV).free)
+
 	return &v
 }
 
@@ -11603,12 +20284,24 @@ func marshalPhysicalDeviceRepresentativeFragmentTestFeaturesNV(p uintptr) (inter
 	return wrapPhysicalDeviceRepresentativeFragmentTestFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceRepresentativeFragmentTestFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceRepresentativeFragmentTestFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineRepresentativeFragmentTestStateCreateInfoNV struct {
 	native *C.VkPipelineRepresentativeFragmentTestStateCreateInfoNV
 }
 
 func wrapPipelineRepresentativeFragmentTestStateCreateInfoNV(p *C.VkPipelineRepresentativeFragmentTestStateCreateInfoNV) *PipelineRepresentativeFragmentTestStateCreateInfoNV {
 	v := PipelineRepresentativeFragmentTestStateCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineRepresentativeFragmentTestStateCreateInfoNV).free)
+
 	return &v
 }
 
@@ -11619,12 +20312,24 @@ func marshalPipelineRepresentativeFragmentTestStateCreateInfoNV(p uintptr) (inte
 	return wrapPipelineRepresentativeFragmentTestStateCreateInfoNV(c)
 }
 
+func (p *PipelineRepresentativeFragmentTestStateCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineRepresentativeFragmentTestStateCreateInfoNV. The caller is expected to
+// cast.
+func (p *PipelineRepresentativeFragmentTestStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceImageViewImageFormatInfoEXT struct {
 	native *C.VkPhysicalDeviceImageViewImageFormatInfoEXT
 }
 
 func wrapPhysicalDeviceImageViewImageFormatInfoEXT(p *C.VkPhysicalDeviceImageViewImageFormatInfoEXT) *PhysicalDeviceImageViewImageFormatInfoEXT {
 	v := PhysicalDeviceImageViewImageFormatInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceImageViewImageFormatInfoEXT).free)
+
 	return &v
 }
 
@@ -11635,12 +20340,24 @@ func marshalPhysicalDeviceImageViewImageFormatInfoEXT(p uintptr) (interface{}, e
 	return wrapPhysicalDeviceImageViewImageFormatInfoEXT(c)
 }
 
+func (p *PhysicalDeviceImageViewImageFormatInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceImageViewImageFormatInfoEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceImageViewImageFormatInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type FilterCubicImageViewImageFormatPropertiesEXT struct {
 	native *C.VkFilterCubicImageViewImageFormatPropertiesEXT
 }
 
 func wrapFilterCubicImageViewImageFormatPropertiesEXT(p *C.VkFilterCubicImageViewImageFormatPropertiesEXT) *FilterCubicImageViewImageFormatPropertiesEXT {
 	v := FilterCubicImageViewImageFormatPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FilterCubicImageViewImageFormatPropertiesEXT).free)
+
 	return &v
 }
 
@@ -11651,12 +20368,24 @@ func marshalFilterCubicImageViewImageFormatPropertiesEXT(p uintptr) (interface{}
 	return wrapFilterCubicImageViewImageFormatPropertiesEXT(c)
 }
 
+func (f *FilterCubicImageViewImageFormatPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkFilterCubicImageViewImageFormatPropertiesEXT. The caller is expected to
+// cast.
+func (f *FilterCubicImageViewImageFormatPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type QueueGlobalPriorityEXT struct {
 	native *C.VkQueueGlobalPriorityEXT
 }
 
 func wrapQueueGlobalPriorityEXT(p *C.VkQueueGlobalPriorityEXT) *QueueGlobalPriorityEXT {
 	v := QueueGlobalPriorityEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueueGlobalPriorityEXT).free)
+
 	return &v
 }
 
@@ -11667,12 +20396,24 @@ func marshalQueueGlobalPriorityEXT(p uintptr) (interface{}, error) {
 	return wrapQueueGlobalPriorityEXT(c)
 }
 
+func (q *QueueGlobalPriorityEXT) free() {}
+
+// Native returns the pointer to *C.VkQueueGlobalPriorityEXT. The caller is expected to
+// cast.
+func (q *QueueGlobalPriorityEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type DeviceQueueGlobalPriorityCreateInfoEXT struct {
 	native *C.VkDeviceQueueGlobalPriorityCreateInfoEXT
 }
 
 func wrapDeviceQueueGlobalPriorityCreateInfoEXT(p *C.VkDeviceQueueGlobalPriorityCreateInfoEXT) *DeviceQueueGlobalPriorityCreateInfoEXT {
 	v := DeviceQueueGlobalPriorityCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceQueueGlobalPriorityCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -11683,12 +20424,24 @@ func marshalDeviceQueueGlobalPriorityCreateInfoEXT(p uintptr) (interface{}, erro
 	return wrapDeviceQueueGlobalPriorityCreateInfoEXT(c)
 }
 
+func (d *DeviceQueueGlobalPriorityCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkDeviceQueueGlobalPriorityCreateInfoEXT. The caller is expected to
+// cast.
+func (d *DeviceQueueGlobalPriorityCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type ImportMemoryHostPointerInfoEXT struct {
 	native *C.VkImportMemoryHostPointerInfoEXT
 }
 
 func wrapImportMemoryHostPointerInfoEXT(p *C.VkImportMemoryHostPointerInfoEXT) *ImportMemoryHostPointerInfoEXT {
 	v := ImportMemoryHostPointerInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImportMemoryHostPointerInfoEXT).free)
+
 	return &v
 }
 
@@ -11699,12 +20452,24 @@ func marshalImportMemoryHostPointerInfoEXT(p uintptr) (interface{}, error) {
 	return wrapImportMemoryHostPointerInfoEXT(c)
 }
 
+func (i *ImportMemoryHostPointerInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkImportMemoryHostPointerInfoEXT. The caller is expected to
+// cast.
+func (i *ImportMemoryHostPointerInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type MemoryHostPointerPropertiesEXT struct {
 	native *C.VkMemoryHostPointerPropertiesEXT
 }
 
 func wrapMemoryHostPointerPropertiesEXT(p *C.VkMemoryHostPointerPropertiesEXT) *MemoryHostPointerPropertiesEXT {
 	v := MemoryHostPointerPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryHostPointerPropertiesEXT).free)
+
 	return &v
 }
 
@@ -11715,12 +20480,24 @@ func marshalMemoryHostPointerPropertiesEXT(p uintptr) (interface{}, error) {
 	return wrapMemoryHostPointerPropertiesEXT(c)
 }
 
+func (m *MemoryHostPointerPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkMemoryHostPointerPropertiesEXT. The caller is expected to
+// cast.
+func (m *MemoryHostPointerPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type PhysicalDeviceExternalMemoryHostPropertiesEXT struct {
 	native *C.VkPhysicalDeviceExternalMemoryHostPropertiesEXT
 }
 
 func wrapPhysicalDeviceExternalMemoryHostPropertiesEXT(p *C.VkPhysicalDeviceExternalMemoryHostPropertiesEXT) *PhysicalDeviceExternalMemoryHostPropertiesEXT {
 	v := PhysicalDeviceExternalMemoryHostPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceExternalMemoryHostPropertiesEXT).free)
+
 	return &v
 }
 
@@ -11731,12 +20508,24 @@ func marshalPhysicalDeviceExternalMemoryHostPropertiesEXT(p uintptr) (interface{
 	return wrapPhysicalDeviceExternalMemoryHostPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceExternalMemoryHostPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceExternalMemoryHostPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceExternalMemoryHostPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type TimeDomainEXT struct {
 	native *C.VkTimeDomainEXT
 }
 
 func wrapTimeDomainEXT(p *C.VkTimeDomainEXT) *TimeDomainEXT {
 	v := TimeDomainEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*TimeDomainEXT).free)
+
 	return &v
 }
 
@@ -11747,12 +20536,24 @@ func marshalTimeDomainEXT(p uintptr) (interface{}, error) {
 	return wrapTimeDomainEXT(c)
 }
 
+func (t *TimeDomainEXT) free() {}
+
+// Native returns the pointer to *C.VkTimeDomainEXT. The caller is expected to
+// cast.
+func (t *TimeDomainEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
 type CalibratedTimestampInfoEXT struct {
 	native *C.VkCalibratedTimestampInfoEXT
 }
 
 func wrapCalibratedTimestampInfoEXT(p *C.VkCalibratedTimestampInfoEXT) *CalibratedTimestampInfoEXT {
 	v := CalibratedTimestampInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CalibratedTimestampInfoEXT).free)
+
 	return &v
 }
 
@@ -11763,12 +20564,24 @@ func marshalCalibratedTimestampInfoEXT(p uintptr) (interface{}, error) {
 	return wrapCalibratedTimestampInfoEXT(c)
 }
 
+func (c *CalibratedTimestampInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkCalibratedTimestampInfoEXT. The caller is expected to
+// cast.
+func (c *CalibratedTimestampInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PhysicalDeviceShaderCorePropertiesAMD struct {
 	native *C.VkPhysicalDeviceShaderCorePropertiesAMD
 }
 
 func wrapPhysicalDeviceShaderCorePropertiesAMD(p *C.VkPhysicalDeviceShaderCorePropertiesAMD) *PhysicalDeviceShaderCorePropertiesAMD {
 	v := PhysicalDeviceShaderCorePropertiesAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceShaderCorePropertiesAMD).free)
+
 	return &v
 }
 
@@ -11779,12 +20592,24 @@ func marshalPhysicalDeviceShaderCorePropertiesAMD(p uintptr) (interface{}, error
 	return wrapPhysicalDeviceShaderCorePropertiesAMD(c)
 }
 
+func (p *PhysicalDeviceShaderCorePropertiesAMD) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceShaderCorePropertiesAMD. The caller is expected to
+// cast.
+func (p *PhysicalDeviceShaderCorePropertiesAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type MemoryOverallocationBehaviorAMD struct {
 	native *C.VkMemoryOverallocationBehaviorAMD
 }
 
 func wrapMemoryOverallocationBehaviorAMD(p *C.VkMemoryOverallocationBehaviorAMD) *MemoryOverallocationBehaviorAMD {
 	v := MemoryOverallocationBehaviorAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryOverallocationBehaviorAMD).free)
+
 	return &v
 }
 
@@ -11795,12 +20620,24 @@ func marshalMemoryOverallocationBehaviorAMD(p uintptr) (interface{}, error) {
 	return wrapMemoryOverallocationBehaviorAMD(c)
 }
 
+func (m *MemoryOverallocationBehaviorAMD) free() {}
+
+// Native returns the pointer to *C.VkMemoryOverallocationBehaviorAMD. The caller is expected to
+// cast.
+func (m *MemoryOverallocationBehaviorAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type DeviceMemoryOverallocationCreateInfoAMD struct {
 	native *C.VkDeviceMemoryOverallocationCreateInfoAMD
 }
 
 func wrapDeviceMemoryOverallocationCreateInfoAMD(p *C.VkDeviceMemoryOverallocationCreateInfoAMD) *DeviceMemoryOverallocationCreateInfoAMD {
 	v := DeviceMemoryOverallocationCreateInfoAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceMemoryOverallocationCreateInfoAMD).free)
+
 	return &v
 }
 
@@ -11811,12 +20648,24 @@ func marshalDeviceMemoryOverallocationCreateInfoAMD(p uintptr) (interface{}, err
 	return wrapDeviceMemoryOverallocationCreateInfoAMD(c)
 }
 
+func (d *DeviceMemoryOverallocationCreateInfoAMD) free() {}
+
+// Native returns the pointer to *C.VkDeviceMemoryOverallocationCreateInfoAMD. The caller is expected to
+// cast.
+func (d *DeviceMemoryOverallocationCreateInfoAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PhysicalDeviceVertexAttributeDivisorPropertiesEXT struct {
 	native *C.VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT
 }
 
 func wrapPhysicalDeviceVertexAttributeDivisorPropertiesEXT(p *C.VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT) *PhysicalDeviceVertexAttributeDivisorPropertiesEXT {
 	v := PhysicalDeviceVertexAttributeDivisorPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceVertexAttributeDivisorPropertiesEXT).free)
+
 	return &v
 }
 
@@ -11827,12 +20676,24 @@ func marshalPhysicalDeviceVertexAttributeDivisorPropertiesEXT(p uintptr) (interf
 	return wrapPhysicalDeviceVertexAttributeDivisorPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceVertexAttributeDivisorPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceVertexAttributeDivisorPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type VertexInputBindingDivisorDescriptionEXT struct {
 	native *C.VkVertexInputBindingDivisorDescriptionEXT
 }
 
 func wrapVertexInputBindingDivisorDescriptionEXT(p *C.VkVertexInputBindingDivisorDescriptionEXT) *VertexInputBindingDivisorDescriptionEXT {
 	v := VertexInputBindingDivisorDescriptionEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*VertexInputBindingDivisorDescriptionEXT).free)
+
 	return &v
 }
 
@@ -11843,12 +20704,24 @@ func marshalVertexInputBindingDivisorDescriptionEXT(p uintptr) (interface{}, err
 	return wrapVertexInputBindingDivisorDescriptionEXT(c)
 }
 
+func (v *VertexInputBindingDivisorDescriptionEXT) free() {}
+
+// Native returns the pointer to *C.VkVertexInputBindingDivisorDescriptionEXT. The caller is expected to
+// cast.
+func (v *VertexInputBindingDivisorDescriptionEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type PipelineVertexInputDivisorStateCreateInfoEXT struct {
 	native *C.VkPipelineVertexInputDivisorStateCreateInfoEXT
 }
 
 func wrapPipelineVertexInputDivisorStateCreateInfoEXT(p *C.VkPipelineVertexInputDivisorStateCreateInfoEXT) *PipelineVertexInputDivisorStateCreateInfoEXT {
 	v := PipelineVertexInputDivisorStateCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineVertexInputDivisorStateCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -11859,12 +20732,24 @@ func marshalPipelineVertexInputDivisorStateCreateInfoEXT(p uintptr) (interface{}
 	return wrapPipelineVertexInputDivisorStateCreateInfoEXT(c)
 }
 
+func (p *PipelineVertexInputDivisorStateCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineVertexInputDivisorStateCreateInfoEXT. The caller is expected to
+// cast.
+func (p *PipelineVertexInputDivisorStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceVertexAttributeDivisorFeaturesEXT struct {
 	native *C.VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT
 }
 
 func wrapPhysicalDeviceVertexAttributeDivisorFeaturesEXT(p *C.VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT) *PhysicalDeviceVertexAttributeDivisorFeaturesEXT {
 	v := PhysicalDeviceVertexAttributeDivisorFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceVertexAttributeDivisorFeaturesEXT).free)
+
 	return &v
 }
 
@@ -11875,12 +20760,24 @@ func marshalPhysicalDeviceVertexAttributeDivisorFeaturesEXT(p uintptr) (interfac
 	return wrapPhysicalDeviceVertexAttributeDivisorFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceVertexAttributeDivisorFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceVertexAttributeDivisorFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineCreationFeedbackFlagBitsEXT struct {
 	native *C.VkPipelineCreationFeedbackFlagBitsEXT
 }
 
 func wrapPipelineCreationFeedbackFlagBitsEXT(p *C.VkPipelineCreationFeedbackFlagBitsEXT) *PipelineCreationFeedbackFlagBitsEXT {
 	v := PipelineCreationFeedbackFlagBitsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCreationFeedbackFlagBitsEXT).free)
+
 	return &v
 }
 
@@ -11891,12 +20788,24 @@ func marshalPipelineCreationFeedbackFlagBitsEXT(p uintptr) (interface{}, error) 
 	return wrapPipelineCreationFeedbackFlagBitsEXT(c)
 }
 
+func (p *PipelineCreationFeedbackFlagBitsEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineCreationFeedbackFlagBitsEXT. The caller is expected to
+// cast.
+func (p *PipelineCreationFeedbackFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineCreationFeedbackFlagsEXT struct {
 	native *C.VkPipelineCreationFeedbackFlagsEXT
 }
 
 func wrapPipelineCreationFeedbackFlagsEXT(p *C.VkPipelineCreationFeedbackFlagsEXT) *PipelineCreationFeedbackFlagsEXT {
 	v := PipelineCreationFeedbackFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCreationFeedbackFlagsEXT).free)
+
 	return &v
 }
 
@@ -11907,12 +20816,24 @@ func marshalPipelineCreationFeedbackFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapPipelineCreationFeedbackFlagsEXT(c)
 }
 
+func (p *PipelineCreationFeedbackFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineCreationFeedbackFlagsEXT. The caller is expected to
+// cast.
+func (p *PipelineCreationFeedbackFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineCreationFeedbackEXT struct {
 	native *C.VkPipelineCreationFeedbackEXT
 }
 
 func wrapPipelineCreationFeedbackEXT(p *C.VkPipelineCreationFeedbackEXT) *PipelineCreationFeedbackEXT {
 	v := PipelineCreationFeedbackEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCreationFeedbackEXT).free)
+
 	return &v
 }
 
@@ -11923,12 +20844,24 @@ func marshalPipelineCreationFeedbackEXT(p uintptr) (interface{}, error) {
 	return wrapPipelineCreationFeedbackEXT(c)
 }
 
+func (p *PipelineCreationFeedbackEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineCreationFeedbackEXT. The caller is expected to
+// cast.
+func (p *PipelineCreationFeedbackEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineCreationFeedbackCreateInfoEXT struct {
 	native *C.VkPipelineCreationFeedbackCreateInfoEXT
 }
 
 func wrapPipelineCreationFeedbackCreateInfoEXT(p *C.VkPipelineCreationFeedbackCreateInfoEXT) *PipelineCreationFeedbackCreateInfoEXT {
 	v := PipelineCreationFeedbackCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCreationFeedbackCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -11939,12 +20872,24 @@ func marshalPipelineCreationFeedbackCreateInfoEXT(p uintptr) (interface{}, error
 	return wrapPipelineCreationFeedbackCreateInfoEXT(c)
 }
 
+func (p *PipelineCreationFeedbackCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkPipelineCreationFeedbackCreateInfoEXT. The caller is expected to
+// cast.
+func (p *PipelineCreationFeedbackCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceComputeShaderDerivativesFeaturesNV struct {
 	native *C.VkPhysicalDeviceComputeShaderDerivativesFeaturesNV
 }
 
 func wrapPhysicalDeviceComputeShaderDerivativesFeaturesNV(p *C.VkPhysicalDeviceComputeShaderDerivativesFeaturesNV) *PhysicalDeviceComputeShaderDerivativesFeaturesNV {
 	v := PhysicalDeviceComputeShaderDerivativesFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceComputeShaderDerivativesFeaturesNV).free)
+
 	return &v
 }
 
@@ -11955,12 +20900,24 @@ func marshalPhysicalDeviceComputeShaderDerivativesFeaturesNV(p uintptr) (interfa
 	return wrapPhysicalDeviceComputeShaderDerivativesFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceComputeShaderDerivativesFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceComputeShaderDerivativesFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceComputeShaderDerivativesFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceMeshShaderFeaturesNV struct {
 	native *C.VkPhysicalDeviceMeshShaderFeaturesNV
 }
 
 func wrapPhysicalDeviceMeshShaderFeaturesNV(p *C.VkPhysicalDeviceMeshShaderFeaturesNV) *PhysicalDeviceMeshShaderFeaturesNV {
 	v := PhysicalDeviceMeshShaderFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMeshShaderFeaturesNV).free)
+
 	return &v
 }
 
@@ -11971,12 +20928,24 @@ func marshalPhysicalDeviceMeshShaderFeaturesNV(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMeshShaderFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceMeshShaderFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMeshShaderFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMeshShaderFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceMeshShaderPropertiesNV struct {
 	native *C.VkPhysicalDeviceMeshShaderPropertiesNV
 }
 
 func wrapPhysicalDeviceMeshShaderPropertiesNV(p *C.VkPhysicalDeviceMeshShaderPropertiesNV) *PhysicalDeviceMeshShaderPropertiesNV {
 	v := PhysicalDeviceMeshShaderPropertiesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMeshShaderPropertiesNV).free)
+
 	return &v
 }
 
@@ -11987,12 +20956,24 @@ func marshalPhysicalDeviceMeshShaderPropertiesNV(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceMeshShaderPropertiesNV(c)
 }
 
+func (p *PhysicalDeviceMeshShaderPropertiesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMeshShaderPropertiesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMeshShaderPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DrawMeshTasksIndirectCommandNV struct {
 	native *C.VkDrawMeshTasksIndirectCommandNV
 }
 
 func wrapDrawMeshTasksIndirectCommandNV(p *C.VkDrawMeshTasksIndirectCommandNV) *DrawMeshTasksIndirectCommandNV {
 	v := DrawMeshTasksIndirectCommandNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DrawMeshTasksIndirectCommandNV).free)
+
 	return &v
 }
 
@@ -12003,12 +20984,24 @@ func marshalDrawMeshTasksIndirectCommandNV(p uintptr) (interface{}, error) {
 	return wrapDrawMeshTasksIndirectCommandNV(c)
 }
 
+func (d *DrawMeshTasksIndirectCommandNV) free() {}
+
+// Native returns the pointer to *C.VkDrawMeshTasksIndirectCommandNV. The caller is expected to
+// cast.
+func (d *DrawMeshTasksIndirectCommandNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PhysicalDeviceFragmentShaderBarycentricFeaturesNV struct {
 	native *C.VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV
 }
 
 func wrapPhysicalDeviceFragmentShaderBarycentricFeaturesNV(p *C.VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV) *PhysicalDeviceFragmentShaderBarycentricFeaturesNV {
 	v := PhysicalDeviceFragmentShaderBarycentricFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceFragmentShaderBarycentricFeaturesNV).free)
+
 	return &v
 }
 
@@ -12019,12 +21012,24 @@ func marshalPhysicalDeviceFragmentShaderBarycentricFeaturesNV(p uintptr) (interf
 	return wrapPhysicalDeviceFragmentShaderBarycentricFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceFragmentShaderBarycentricFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceFragmentShaderBarycentricFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceShaderImageFootprintFeaturesNV struct {
 	native *C.VkPhysicalDeviceShaderImageFootprintFeaturesNV
 }
 
 func wrapPhysicalDeviceShaderImageFootprintFeaturesNV(p *C.VkPhysicalDeviceShaderImageFootprintFeaturesNV) *PhysicalDeviceShaderImageFootprintFeaturesNV {
 	v := PhysicalDeviceShaderImageFootprintFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceShaderImageFootprintFeaturesNV).free)
+
 	return &v
 }
 
@@ -12035,12 +21040,24 @@ func marshalPhysicalDeviceShaderImageFootprintFeaturesNV(p uintptr) (interface{}
 	return wrapPhysicalDeviceShaderImageFootprintFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceShaderImageFootprintFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceShaderImageFootprintFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceShaderImageFootprintFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineViewportExclusiveScissorStateCreateInfoNV struct {
 	native *C.VkPipelineViewportExclusiveScissorStateCreateInfoNV
 }
 
 func wrapPipelineViewportExclusiveScissorStateCreateInfoNV(p *C.VkPipelineViewportExclusiveScissorStateCreateInfoNV) *PipelineViewportExclusiveScissorStateCreateInfoNV {
 	v := PipelineViewportExclusiveScissorStateCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineViewportExclusiveScissorStateCreateInfoNV).free)
+
 	return &v
 }
 
@@ -12051,12 +21068,24 @@ func marshalPipelineViewportExclusiveScissorStateCreateInfoNV(p uintptr) (interf
 	return wrapPipelineViewportExclusiveScissorStateCreateInfoNV(c)
 }
 
+func (p *PipelineViewportExclusiveScissorStateCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineViewportExclusiveScissorStateCreateInfoNV. The caller is expected to
+// cast.
+func (p *PipelineViewportExclusiveScissorStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceExclusiveScissorFeaturesNV struct {
 	native *C.VkPhysicalDeviceExclusiveScissorFeaturesNV
 }
 
 func wrapPhysicalDeviceExclusiveScissorFeaturesNV(p *C.VkPhysicalDeviceExclusiveScissorFeaturesNV) *PhysicalDeviceExclusiveScissorFeaturesNV {
 	v := PhysicalDeviceExclusiveScissorFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceExclusiveScissorFeaturesNV).free)
+
 	return &v
 }
 
@@ -12067,12 +21096,24 @@ func marshalPhysicalDeviceExclusiveScissorFeaturesNV(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceExclusiveScissorFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceExclusiveScissorFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceExclusiveScissorFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceExclusiveScissorFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type QueueFamilyCheckpointPropertiesNV struct {
 	native *C.VkQueueFamilyCheckpointPropertiesNV
 }
 
 func wrapQueueFamilyCheckpointPropertiesNV(p *C.VkQueueFamilyCheckpointPropertiesNV) *QueueFamilyCheckpointPropertiesNV {
 	v := QueueFamilyCheckpointPropertiesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*QueueFamilyCheckpointPropertiesNV).free)
+
 	return &v
 }
 
@@ -12083,12 +21124,24 @@ func marshalQueueFamilyCheckpointPropertiesNV(p uintptr) (interface{}, error) {
 	return wrapQueueFamilyCheckpointPropertiesNV(c)
 }
 
+func (q *QueueFamilyCheckpointPropertiesNV) free() {}
+
+// Native returns the pointer to *C.VkQueueFamilyCheckpointPropertiesNV. The caller is expected to
+// cast.
+func (q *QueueFamilyCheckpointPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
+}
+
 type CheckpointDataNV struct {
 	native *C.VkCheckpointDataNV
 }
 
 func wrapCheckpointDataNV(p *C.VkCheckpointDataNV) *CheckpointDataNV {
 	v := CheckpointDataNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CheckpointDataNV).free)
+
 	return &v
 }
 
@@ -12099,12 +21152,24 @@ func marshalCheckpointDataNV(p uintptr) (interface{}, error) {
 	return wrapCheckpointDataNV(c)
 }
 
+func (c *CheckpointDataNV) free() {}
+
+// Native returns the pointer to *C.VkCheckpointDataNV. The caller is expected to
+// cast.
+func (c *CheckpointDataNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PhysicalDevicePCIBusInfoPropertiesEXT struct {
 	native *C.VkPhysicalDevicePCIBusInfoPropertiesEXT
 }
 
 func wrapPhysicalDevicePCIBusInfoPropertiesEXT(p *C.VkPhysicalDevicePCIBusInfoPropertiesEXT) *PhysicalDevicePCIBusInfoPropertiesEXT {
 	v := PhysicalDevicePCIBusInfoPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDevicePCIBusInfoPropertiesEXT).free)
+
 	return &v
 }
 
@@ -12115,12 +21180,24 @@ func marshalPhysicalDevicePCIBusInfoPropertiesEXT(p uintptr) (interface{}, error
 	return wrapPhysicalDevicePCIBusInfoPropertiesEXT(c)
 }
 
+func (p *PhysicalDevicePCIBusInfoPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDevicePCIBusInfoPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDevicePCIBusInfoPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DisplayNativeHdrSurfaceCapabilitiesAMD struct {
 	native *C.VkDisplayNativeHdrSurfaceCapabilitiesAMD
 }
 
 func wrapDisplayNativeHdrSurfaceCapabilitiesAMD(p *C.VkDisplayNativeHdrSurfaceCapabilitiesAMD) *DisplayNativeHdrSurfaceCapabilitiesAMD {
 	v := DisplayNativeHdrSurfaceCapabilitiesAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DisplayNativeHdrSurfaceCapabilitiesAMD).free)
+
 	return &v
 }
 
@@ -12131,12 +21208,24 @@ func marshalDisplayNativeHdrSurfaceCapabilitiesAMD(p uintptr) (interface{}, erro
 	return wrapDisplayNativeHdrSurfaceCapabilitiesAMD(c)
 }
 
+func (d *DisplayNativeHdrSurfaceCapabilitiesAMD) free() {}
+
+// Native returns the pointer to *C.VkDisplayNativeHdrSurfaceCapabilitiesAMD. The caller is expected to
+// cast.
+func (d *DisplayNativeHdrSurfaceCapabilitiesAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type SwapchainDisplayNativeHdrCreateInfoAMD struct {
 	native *C.VkSwapchainDisplayNativeHdrCreateInfoAMD
 }
 
 func wrapSwapchainDisplayNativeHdrCreateInfoAMD(p *C.VkSwapchainDisplayNativeHdrCreateInfoAMD) *SwapchainDisplayNativeHdrCreateInfoAMD {
 	v := SwapchainDisplayNativeHdrCreateInfoAMD{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SwapchainDisplayNativeHdrCreateInfoAMD).free)
+
 	return &v
 }
 
@@ -12147,12 +21236,24 @@ func marshalSwapchainDisplayNativeHdrCreateInfoAMD(p uintptr) (interface{}, erro
 	return wrapSwapchainDisplayNativeHdrCreateInfoAMD(c)
 }
 
+func (s *SwapchainDisplayNativeHdrCreateInfoAMD) free() {}
+
+// Native returns the pointer to *C.VkSwapchainDisplayNativeHdrCreateInfoAMD. The caller is expected to
+// cast.
+func (s *SwapchainDisplayNativeHdrCreateInfoAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type PhysicalDeviceFragmentDensityMapFeaturesEXT struct {
 	native *C.VkPhysicalDeviceFragmentDensityMapFeaturesEXT
 }
 
 func wrapPhysicalDeviceFragmentDensityMapFeaturesEXT(p *C.VkPhysicalDeviceFragmentDensityMapFeaturesEXT) *PhysicalDeviceFragmentDensityMapFeaturesEXT {
 	v := PhysicalDeviceFragmentDensityMapFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceFragmentDensityMapFeaturesEXT).free)
+
 	return &v
 }
 
@@ -12163,12 +21264,24 @@ func marshalPhysicalDeviceFragmentDensityMapFeaturesEXT(p uintptr) (interface{},
 	return wrapPhysicalDeviceFragmentDensityMapFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceFragmentDensityMapFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceFragmentDensityMapFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceFragmentDensityMapFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceFragmentDensityMapPropertiesEXT struct {
 	native *C.VkPhysicalDeviceFragmentDensityMapPropertiesEXT
 }
 
 func wrapPhysicalDeviceFragmentDensityMapPropertiesEXT(p *C.VkPhysicalDeviceFragmentDensityMapPropertiesEXT) *PhysicalDeviceFragmentDensityMapPropertiesEXT {
 	v := PhysicalDeviceFragmentDensityMapPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceFragmentDensityMapPropertiesEXT).free)
+
 	return &v
 }
 
@@ -12179,12 +21292,24 @@ func marshalPhysicalDeviceFragmentDensityMapPropertiesEXT(p uintptr) (interface{
 	return wrapPhysicalDeviceFragmentDensityMapPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceFragmentDensityMapPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceFragmentDensityMapPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceFragmentDensityMapPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type RenderPassFragmentDensityMapCreateInfoEXT struct {
 	native *C.VkRenderPassFragmentDensityMapCreateInfoEXT
 }
 
 func wrapRenderPassFragmentDensityMapCreateInfoEXT(p *C.VkRenderPassFragmentDensityMapCreateInfoEXT) *RenderPassFragmentDensityMapCreateInfoEXT {
 	v := RenderPassFragmentDensityMapCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RenderPassFragmentDensityMapCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -12195,12 +21320,24 @@ func marshalRenderPassFragmentDensityMapCreateInfoEXT(p uintptr) (interface{}, e
 	return wrapRenderPassFragmentDensityMapCreateInfoEXT(c)
 }
 
+func (r *RenderPassFragmentDensityMapCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkRenderPassFragmentDensityMapCreateInfoEXT. The caller is expected to
+// cast.
+func (r *RenderPassFragmentDensityMapCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type PhysicalDeviceScalarBlockLayoutFeaturesEXT struct {
 	native *C.VkPhysicalDeviceScalarBlockLayoutFeaturesEXT
 }
 
 func wrapPhysicalDeviceScalarBlockLayoutFeaturesEXT(p *C.VkPhysicalDeviceScalarBlockLayoutFeaturesEXT) *PhysicalDeviceScalarBlockLayoutFeaturesEXT {
 	v := PhysicalDeviceScalarBlockLayoutFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceScalarBlockLayoutFeaturesEXT).free)
+
 	return &v
 }
 
@@ -12211,12 +21348,24 @@ func marshalPhysicalDeviceScalarBlockLayoutFeaturesEXT(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceScalarBlockLayoutFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceScalarBlockLayoutFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceScalarBlockLayoutFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceScalarBlockLayoutFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceMemoryBudgetPropertiesEXT struct {
 	native *C.VkPhysicalDeviceMemoryBudgetPropertiesEXT
 }
 
 func wrapPhysicalDeviceMemoryBudgetPropertiesEXT(p *C.VkPhysicalDeviceMemoryBudgetPropertiesEXT) *PhysicalDeviceMemoryBudgetPropertiesEXT {
 	v := PhysicalDeviceMemoryBudgetPropertiesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMemoryBudgetPropertiesEXT).free)
+
 	return &v
 }
 
@@ -12227,12 +21376,24 @@ func marshalPhysicalDeviceMemoryBudgetPropertiesEXT(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceMemoryBudgetPropertiesEXT(c)
 }
 
+func (p *PhysicalDeviceMemoryBudgetPropertiesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMemoryBudgetPropertiesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMemoryBudgetPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceMemoryPriorityFeaturesEXT struct {
 	native *C.VkPhysicalDeviceMemoryPriorityFeaturesEXT
 }
 
 func wrapPhysicalDeviceMemoryPriorityFeaturesEXT(p *C.VkPhysicalDeviceMemoryPriorityFeaturesEXT) *PhysicalDeviceMemoryPriorityFeaturesEXT {
 	v := PhysicalDeviceMemoryPriorityFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceMemoryPriorityFeaturesEXT).free)
+
 	return &v
 }
 
@@ -12243,12 +21404,24 @@ func marshalPhysicalDeviceMemoryPriorityFeaturesEXT(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceMemoryPriorityFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceMemoryPriorityFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceMemoryPriorityFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceMemoryPriorityFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type MemoryPriorityAllocateInfoEXT struct {
 	native *C.VkMemoryPriorityAllocateInfoEXT
 }
 
 func wrapMemoryPriorityAllocateInfoEXT(p *C.VkMemoryPriorityAllocateInfoEXT) *MemoryPriorityAllocateInfoEXT {
 	v := MemoryPriorityAllocateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MemoryPriorityAllocateInfoEXT).free)
+
 	return &v
 }
 
@@ -12259,12 +21432,24 @@ func marshalMemoryPriorityAllocateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapMemoryPriorityAllocateInfoEXT(c)
 }
 
+func (m *MemoryPriorityAllocateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkMemoryPriorityAllocateInfoEXT. The caller is expected to
+// cast.
+func (m *MemoryPriorityAllocateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV struct {
 	native *C.VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV
 }
 
 func wrapPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(p *C.VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV {
 	v := PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV).free)
+
 	return &v
 }
 
@@ -12275,12 +21460,24 @@ func marshalPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(p uintptr) 
 	return wrapPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type DeviceAddress struct {
 	native *C.VkDeviceAddress
 }
 
 func wrapDeviceAddress(p *C.VkDeviceAddress) *DeviceAddress {
 	v := DeviceAddress{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DeviceAddress).free)
+
 	return &v
 }
 
@@ -12291,12 +21488,24 @@ func marshalDeviceAddress(p uintptr) (interface{}, error) {
 	return wrapDeviceAddress(c)
 }
 
+func (d *DeviceAddress) free() {}
+
+// Native returns the pointer to *C.VkDeviceAddress. The caller is expected to
+// cast.
+func (d *DeviceAddress) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type PhysicalDeviceBufferDeviceAddressFeaturesEXT struct {
 	native *C.VkPhysicalDeviceBufferDeviceAddressFeaturesEXT
 }
 
 func wrapPhysicalDeviceBufferDeviceAddressFeaturesEXT(p *C.VkPhysicalDeviceBufferDeviceAddressFeaturesEXT) *PhysicalDeviceBufferDeviceAddressFeaturesEXT {
 	v := PhysicalDeviceBufferDeviceAddressFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceBufferDeviceAddressFeaturesEXT).free)
+
 	return &v
 }
 
@@ -12307,12 +21516,24 @@ func marshalPhysicalDeviceBufferDeviceAddressFeaturesEXT(p uintptr) (interface{}
 	return wrapPhysicalDeviceBufferDeviceAddressFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceBufferDeviceAddressFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceBufferDeviceAddressFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceBufferDeviceAddressFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceBufferAddressFeaturesEXT struct {
 	native *C.VkPhysicalDeviceBufferAddressFeaturesEXT
 }
 
 func wrapPhysicalDeviceBufferAddressFeaturesEXT(p *C.VkPhysicalDeviceBufferAddressFeaturesEXT) *PhysicalDeviceBufferAddressFeaturesEXT {
 	v := PhysicalDeviceBufferAddressFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceBufferAddressFeaturesEXT).free)
+
 	return &v
 }
 
@@ -12323,12 +21544,24 @@ func marshalPhysicalDeviceBufferAddressFeaturesEXT(p uintptr) (interface{}, erro
 	return wrapPhysicalDeviceBufferAddressFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceBufferAddressFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceBufferAddressFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceBufferAddressFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type BufferDeviceAddressInfoEXT struct {
 	native *C.VkBufferDeviceAddressInfoEXT
 }
 
 func wrapBufferDeviceAddressInfoEXT(p *C.VkBufferDeviceAddressInfoEXT) *BufferDeviceAddressInfoEXT {
 	v := BufferDeviceAddressInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferDeviceAddressInfoEXT).free)
+
 	return &v
 }
 
@@ -12339,12 +21572,24 @@ func marshalBufferDeviceAddressInfoEXT(p uintptr) (interface{}, error) {
 	return wrapBufferDeviceAddressInfoEXT(c)
 }
 
+func (b *BufferDeviceAddressInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkBufferDeviceAddressInfoEXT. The caller is expected to
+// cast.
+func (b *BufferDeviceAddressInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type BufferDeviceAddressCreateInfoEXT struct {
 	native *C.VkBufferDeviceAddressCreateInfoEXT
 }
 
 func wrapBufferDeviceAddressCreateInfoEXT(p *C.VkBufferDeviceAddressCreateInfoEXT) *BufferDeviceAddressCreateInfoEXT {
 	v := BufferDeviceAddressCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BufferDeviceAddressCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -12355,12 +21600,24 @@ func marshalBufferDeviceAddressCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapBufferDeviceAddressCreateInfoEXT(c)
 }
 
+func (b *BufferDeviceAddressCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkBufferDeviceAddressCreateInfoEXT. The caller is expected to
+// cast.
+func (b *BufferDeviceAddressCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 type ImageStencilUsageCreateInfoEXT struct {
 	native *C.VkImageStencilUsageCreateInfoEXT
 }
 
 func wrapImageStencilUsageCreateInfoEXT(p *C.VkImageStencilUsageCreateInfoEXT) *ImageStencilUsageCreateInfoEXT {
 	v := ImageStencilUsageCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ImageStencilUsageCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -12371,12 +21628,24 @@ func marshalImageStencilUsageCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapImageStencilUsageCreateInfoEXT(c)
 }
 
+func (i *ImageStencilUsageCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkImageStencilUsageCreateInfoEXT. The caller is expected to
+// cast.
+func (i *ImageStencilUsageCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 type ValidationFeatureEnableEXT struct {
 	native *C.VkValidationFeatureEnableEXT
 }
 
 func wrapValidationFeatureEnableEXT(p *C.VkValidationFeatureEnableEXT) *ValidationFeatureEnableEXT {
 	v := ValidationFeatureEnableEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ValidationFeatureEnableEXT).free)
+
 	return &v
 }
 
@@ -12387,12 +21656,24 @@ func marshalValidationFeatureEnableEXT(p uintptr) (interface{}, error) {
 	return wrapValidationFeatureEnableEXT(c)
 }
 
+func (v *ValidationFeatureEnableEXT) free() {}
+
+// Native returns the pointer to *C.VkValidationFeatureEnableEXT. The caller is expected to
+// cast.
+func (v *ValidationFeatureEnableEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type ValidationFeatureDisableEXT struct {
 	native *C.VkValidationFeatureDisableEXT
 }
 
 func wrapValidationFeatureDisableEXT(p *C.VkValidationFeatureDisableEXT) *ValidationFeatureDisableEXT {
 	v := ValidationFeatureDisableEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ValidationFeatureDisableEXT).free)
+
 	return &v
 }
 
@@ -12403,12 +21684,24 @@ func marshalValidationFeatureDisableEXT(p uintptr) (interface{}, error) {
 	return wrapValidationFeatureDisableEXT(c)
 }
 
+func (v *ValidationFeatureDisableEXT) free() {}
+
+// Native returns the pointer to *C.VkValidationFeatureDisableEXT. The caller is expected to
+// cast.
+func (v *ValidationFeatureDisableEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type ValidationFeaturesEXT struct {
 	native *C.VkValidationFeaturesEXT
 }
 
 func wrapValidationFeaturesEXT(p *C.VkValidationFeaturesEXT) *ValidationFeaturesEXT {
 	v := ValidationFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ValidationFeaturesEXT).free)
+
 	return &v
 }
 
@@ -12419,12 +21712,24 @@ func marshalValidationFeaturesEXT(p uintptr) (interface{}, error) {
 	return wrapValidationFeaturesEXT(c)
 }
 
+func (v *ValidationFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkValidationFeaturesEXT. The caller is expected to
+// cast.
+func (v *ValidationFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 type ComponentTypeNV struct {
 	native *C.VkComponentTypeNV
 }
 
 func wrapComponentTypeNV(p *C.VkComponentTypeNV) *ComponentTypeNV {
 	v := ComponentTypeNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ComponentTypeNV).free)
+
 	return &v
 }
 
@@ -12435,12 +21740,24 @@ func marshalComponentTypeNV(p uintptr) (interface{}, error) {
 	return wrapComponentTypeNV(c)
 }
 
+func (c *ComponentTypeNV) free() {}
+
+// Native returns the pointer to *C.VkComponentTypeNV. The caller is expected to
+// cast.
+func (c *ComponentTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type ScopeNV struct {
 	native *C.VkScopeNV
 }
 
 func wrapScopeNV(p *C.VkScopeNV) *ScopeNV {
 	v := ScopeNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ScopeNV).free)
+
 	return &v
 }
 
@@ -12451,12 +21768,24 @@ func marshalScopeNV(p uintptr) (interface{}, error) {
 	return wrapScopeNV(c)
 }
 
+func (s *ScopeNV) free() {}
+
+// Native returns the pointer to *C.VkScopeNV. The caller is expected to
+// cast.
+func (s *ScopeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type CooperativeMatrixPropertiesNV struct {
 	native *C.VkCooperativeMatrixPropertiesNV
 }
 
 func wrapCooperativeMatrixPropertiesNV(p *C.VkCooperativeMatrixPropertiesNV) *CooperativeMatrixPropertiesNV {
 	v := CooperativeMatrixPropertiesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CooperativeMatrixPropertiesNV).free)
+
 	return &v
 }
 
@@ -12467,12 +21796,24 @@ func marshalCooperativeMatrixPropertiesNV(p uintptr) (interface{}, error) {
 	return wrapCooperativeMatrixPropertiesNV(c)
 }
 
+func (c *CooperativeMatrixPropertiesNV) free() {}
+
+// Native returns the pointer to *C.VkCooperativeMatrixPropertiesNV. The caller is expected to
+// cast.
+func (c *CooperativeMatrixPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PhysicalDeviceCooperativeMatrixFeaturesNV struct {
 	native *C.VkPhysicalDeviceCooperativeMatrixFeaturesNV
 }
 
 func wrapPhysicalDeviceCooperativeMatrixFeaturesNV(p *C.VkPhysicalDeviceCooperativeMatrixFeaturesNV) *PhysicalDeviceCooperativeMatrixFeaturesNV {
 	v := PhysicalDeviceCooperativeMatrixFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceCooperativeMatrixFeaturesNV).free)
+
 	return &v
 }
 
@@ -12483,12 +21824,24 @@ func marshalPhysicalDeviceCooperativeMatrixFeaturesNV(p uintptr) (interface{}, e
 	return wrapPhysicalDeviceCooperativeMatrixFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceCooperativeMatrixFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceCooperativeMatrixFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceCooperativeMatrixFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceCooperativeMatrixPropertiesNV struct {
 	native *C.VkPhysicalDeviceCooperativeMatrixPropertiesNV
 }
 
 func wrapPhysicalDeviceCooperativeMatrixPropertiesNV(p *C.VkPhysicalDeviceCooperativeMatrixPropertiesNV) *PhysicalDeviceCooperativeMatrixPropertiesNV {
 	v := PhysicalDeviceCooperativeMatrixPropertiesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceCooperativeMatrixPropertiesNV).free)
+
 	return &v
 }
 
@@ -12499,12 +21852,24 @@ func marshalPhysicalDeviceCooperativeMatrixPropertiesNV(p uintptr) (interface{},
 	return wrapPhysicalDeviceCooperativeMatrixPropertiesNV(c)
 }
 
+func (p *PhysicalDeviceCooperativeMatrixPropertiesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceCooperativeMatrixPropertiesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceCooperativeMatrixPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type CoverageReductionModeNV struct {
 	native *C.VkCoverageReductionModeNV
 }
 
 func wrapCoverageReductionModeNV(p *C.VkCoverageReductionModeNV) *CoverageReductionModeNV {
 	v := CoverageReductionModeNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CoverageReductionModeNV).free)
+
 	return &v
 }
 
@@ -12515,12 +21880,24 @@ func marshalCoverageReductionModeNV(p uintptr) (interface{}, error) {
 	return wrapCoverageReductionModeNV(c)
 }
 
+func (c *CoverageReductionModeNV) free() {}
+
+// Native returns the pointer to *C.VkCoverageReductionModeNV. The caller is expected to
+// cast.
+func (c *CoverageReductionModeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type PipelineCoverageReductionStateCreateFlagsNV struct {
 	native *C.VkPipelineCoverageReductionStateCreateFlagsNV
 }
 
 func wrapPipelineCoverageReductionStateCreateFlagsNV(p *C.VkPipelineCoverageReductionStateCreateFlagsNV) *PipelineCoverageReductionStateCreateFlagsNV {
 	v := PipelineCoverageReductionStateCreateFlagsNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCoverageReductionStateCreateFlagsNV).free)
+
 	return &v
 }
 
@@ -12531,12 +21908,24 @@ func marshalPipelineCoverageReductionStateCreateFlagsNV(p uintptr) (interface{},
 	return wrapPipelineCoverageReductionStateCreateFlagsNV(c)
 }
 
+func (p *PipelineCoverageReductionStateCreateFlagsNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineCoverageReductionStateCreateFlagsNV. The caller is expected to
+// cast.
+func (p *PipelineCoverageReductionStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PhysicalDeviceCoverageReductionModeFeaturesNV struct {
 	native *C.VkPhysicalDeviceCoverageReductionModeFeaturesNV
 }
 
 func wrapPhysicalDeviceCoverageReductionModeFeaturesNV(p *C.VkPhysicalDeviceCoverageReductionModeFeaturesNV) *PhysicalDeviceCoverageReductionModeFeaturesNV {
 	v := PhysicalDeviceCoverageReductionModeFeaturesNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceCoverageReductionModeFeaturesNV).free)
+
 	return &v
 }
 
@@ -12547,12 +21936,24 @@ func marshalPhysicalDeviceCoverageReductionModeFeaturesNV(p uintptr) (interface{
 	return wrapPhysicalDeviceCoverageReductionModeFeaturesNV(c)
 }
 
+func (p *PhysicalDeviceCoverageReductionModeFeaturesNV) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceCoverageReductionModeFeaturesNV. The caller is expected to
+// cast.
+func (p *PhysicalDeviceCoverageReductionModeFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type PipelineCoverageReductionStateCreateInfoNV struct {
 	native *C.VkPipelineCoverageReductionStateCreateInfoNV
 }
 
 func wrapPipelineCoverageReductionStateCreateInfoNV(p *C.VkPipelineCoverageReductionStateCreateInfoNV) *PipelineCoverageReductionStateCreateInfoNV {
 	v := PipelineCoverageReductionStateCreateInfoNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PipelineCoverageReductionStateCreateInfoNV).free)
+
 	return &v
 }
 
@@ -12563,12 +21964,24 @@ func marshalPipelineCoverageReductionStateCreateInfoNV(p uintptr) (interface{}, 
 	return wrapPipelineCoverageReductionStateCreateInfoNV(c)
 }
 
+func (p *PipelineCoverageReductionStateCreateInfoNV) free() {}
+
+// Native returns the pointer to *C.VkPipelineCoverageReductionStateCreateInfoNV. The caller is expected to
+// cast.
+func (p *PipelineCoverageReductionStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type FramebufferMixedSamplesCombinationNV struct {
 	native *C.VkFramebufferMixedSamplesCombinationNV
 }
 
 func wrapFramebufferMixedSamplesCombinationNV(p *C.VkFramebufferMixedSamplesCombinationNV) *FramebufferMixedSamplesCombinationNV {
 	v := FramebufferMixedSamplesCombinationNV{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FramebufferMixedSamplesCombinationNV).free)
+
 	return &v
 }
 
@@ -12579,12 +21992,24 @@ func marshalFramebufferMixedSamplesCombinationNV(p uintptr) (interface{}, error)
 	return wrapFramebufferMixedSamplesCombinationNV(c)
 }
 
+func (f *FramebufferMixedSamplesCombinationNV) free() {}
+
+// Native returns the pointer to *C.VkFramebufferMixedSamplesCombinationNV. The caller is expected to
+// cast.
+func (f *FramebufferMixedSamplesCombinationNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type PhysicalDeviceYcbcrImageArraysFeaturesEXT struct {
 	native *C.VkPhysicalDeviceYcbcrImageArraysFeaturesEXT
 }
 
 func wrapPhysicalDeviceYcbcrImageArraysFeaturesEXT(p *C.VkPhysicalDeviceYcbcrImageArraysFeaturesEXT) *PhysicalDeviceYcbcrImageArraysFeaturesEXT {
 	v := PhysicalDeviceYcbcrImageArraysFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceYcbcrImageArraysFeaturesEXT).free)
+
 	return &v
 }
 
@@ -12595,12 +22020,24 @@ func marshalPhysicalDeviceYcbcrImageArraysFeaturesEXT(p uintptr) (interface{}, e
 	return wrapPhysicalDeviceYcbcrImageArraysFeaturesEXT(c)
 }
 
+func (p *PhysicalDeviceYcbcrImageArraysFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceYcbcrImageArraysFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceYcbcrImageArraysFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type HeadlessSurfaceCreateFlagsEXT struct {
 	native *C.VkHeadlessSurfaceCreateFlagsEXT
 }
 
 func wrapHeadlessSurfaceCreateFlagsEXT(p *C.VkHeadlessSurfaceCreateFlagsEXT) *HeadlessSurfaceCreateFlagsEXT {
 	v := HeadlessSurfaceCreateFlagsEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*HeadlessSurfaceCreateFlagsEXT).free)
+
 	return &v
 }
 
@@ -12611,12 +22048,24 @@ func marshalHeadlessSurfaceCreateFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapHeadlessSurfaceCreateFlagsEXT(c)
 }
 
+func (h *HeadlessSurfaceCreateFlagsEXT) free() {}
+
+// Native returns the pointer to *C.VkHeadlessSurfaceCreateFlagsEXT. The caller is expected to
+// cast.
+func (h *HeadlessSurfaceCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
+}
+
 type HeadlessSurfaceCreateInfoEXT struct {
 	native *C.VkHeadlessSurfaceCreateInfoEXT
 }
 
 func wrapHeadlessSurfaceCreateInfoEXT(p *C.VkHeadlessSurfaceCreateInfoEXT) *HeadlessSurfaceCreateInfoEXT {
 	v := HeadlessSurfaceCreateInfoEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*HeadlessSurfaceCreateInfoEXT).free)
+
 	return &v
 }
 
@@ -12627,12 +22076,24 @@ func marshalHeadlessSurfaceCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapHeadlessSurfaceCreateInfoEXT(c)
 }
 
+func (h *HeadlessSurfaceCreateInfoEXT) free() {}
+
+// Native returns the pointer to *C.VkHeadlessSurfaceCreateInfoEXT. The caller is expected to
+// cast.
+func (h *HeadlessSurfaceCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
+}
+
 type PhysicalDeviceHostQueryResetFeaturesEXT struct {
 	native *C.VkPhysicalDeviceHostQueryResetFeaturesEXT
 }
 
 func wrapPhysicalDeviceHostQueryResetFeaturesEXT(p *C.VkPhysicalDeviceHostQueryResetFeaturesEXT) *PhysicalDeviceHostQueryResetFeaturesEXT {
 	v := PhysicalDeviceHostQueryResetFeaturesEXT{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PhysicalDeviceHostQueryResetFeaturesEXT).free)
+
 	return &v
 }
 
@@ -12641,4 +22102,12 @@ func marshalPhysicalDeviceHostQueryResetFeaturesEXT(p uintptr) (interface{}, err
 	c := (*C.VkPhysicalDeviceHostQueryResetFeaturesEXT)(unsafe.Pointer(b))
 
 	return wrapPhysicalDeviceHostQueryResetFeaturesEXT(c)
+}
+
+func (p *PhysicalDeviceHostQueryResetFeaturesEXT) free() {}
+
+// Native returns the pointer to *C.VkPhysicalDeviceHostQueryResetFeaturesEXT. The caller is expected to
+// cast.
+func (p *PhysicalDeviceHostQueryResetFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }

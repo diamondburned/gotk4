@@ -41,7 +41,7 @@ func ContextGetResolution(context *pango.Context) float64
 // Retrieves callback function and associated user data for rendering attributes
 // of type PANGO_ATTR_SHAPE as set by
 // [func@PangoCairo.context_set_shape_renderer], if any.
-func ContextGetShapeRenderer(context *pango.Context, data *unsafe.Pointer) ShapeRendererFunc
+func ContextGetShapeRenderer(context *pango.Context, data unsafe.Pointer) ShapeRendererFunc
 
 // ContextSetFontOptions: sets the font options used when rendering text with
 // this context.

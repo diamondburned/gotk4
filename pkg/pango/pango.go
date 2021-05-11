@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/glib"
@@ -1157,7 +1158,7 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 //
 // Use g_unichar_get_mirror_char() instead; the docs for that function provide
 // full details.
-func GetMirrorChar(ch uint32, mirroredCh *uint32) bool
+func GetMirrorChar(ch uint32, mirroredCh uint32) bool
 
 // GravityGetForMatrix: finds the gravity that best matches the rotation
 // component in a `PangoMatrix`.
@@ -1284,7 +1285,7 @@ func LanguageGetPreferred() **Language
 //
 // If the input base direction is a weak direction, the direction of the
 // characters in the text will determine the final resolved direction.
-func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *uint8
+func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) uint8
 
 // MarkupParserFinish: finishes parsing markup.
 //
@@ -1383,7 +1384,7 @@ func ParseWeight(str string, warn bool) (Weight, bool)
 // Care is taken to make sure @thickness is at least one pixel when this
 // function returns, but returned @position may become zero as a result of
 // rounding.
-func QuantizeLineGeometry(thickness *int, position *int)
+func QuantizeLineGeometry(thickness int, position int)
 
 // ReadLine: reads an entire line from a file into a buffer.
 //
@@ -1392,7 +1393,7 @@ func QuantizeLineGeometry(thickness *int, position *int)
 // comment and skipped. '\' can be used to escape a # character. '\' proceeding
 // a line delimiter combines adjacent lines. A '\' proceeding any other
 // character is ignored and written into the output buffer unmodified.
-func ReadLine(stream *unsafe.Pointer, str *glib.String) int
+func ReadLine(stream unsafe.Pointer, str *glib.String) int
 
 // ReorderItems: reorder items from logical order to visual order.
 //
@@ -1403,20 +1404,20 @@ func ReorderItems(logicalItems *glib.List) *glib.List
 // ScanInt: scans an integer.
 //
 // Leading white space is skipped.
-func ScanInt(pos *string) (int, bool)
+func ScanInt(pos string) (int, bool)
 
 // ScanString: scans a string into a #GString buffer.
 //
 // The string may either be a sequence of non-white-space characters, or a
 // quoted string with '"'. Instead a quoted string, '\"' represents a literal
 // quote. Leading white space outside of quotes is skipped.
-func ScanString(pos *string, out *glib.String) bool
+func ScanString(pos string, out *glib.String) bool
 
 // ScanWord: scans a word into a #GString buffer.
 //
 // A word consists of [A-Za-z_] followed by zero or more [A-Za-z_0-9]. Leading
 // white space is skipped.
-func ScanWord(pos *string, out *glib.String) bool
+func ScanWord(pos string, out *glib.String) bool
 
 // ScriptForUnichar: looks up the script for a particular character.
 //
@@ -1506,7 +1507,7 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags)
 
 // SkipSpace: skips 0 or more characters of white space.
-func SkipSpace(pos *string) bool
+func SkipSpace(pos string) bool
 
 // SplitFileList: splits a G_SEARCHPATH_SEPARATOR-separated list of files,
 // stripping white space and substituting ~/ with $HOME/.
@@ -1598,10 +1599,13 @@ type Analysis struct {
 	Language *Language
 	// ExtraAttrs: extra attributes for this segment.
 	ExtraAttrs *glib.SList
+
+	native *C.PangoAnalysis
 }
 
 func wrapAnalysis(p *C.PangoAnalysis) *Analysis {
 	var v Analysis
+
 	v.ShapeEngine = unsafe.Pointer(p.shape_engine)
 	v.LangEngine = unsafe.Pointer(p.lang_engine)
 	v.Font = wrap * Font(p.font)
@@ -1610,7 +1614,8 @@ func wrapAnalysis(p *C.PangoAnalysis) *Analysis {
 	v.Flags = uint8(p.flags)
 	v.Script = uint8(p.script)
 	v.Language = wrap * Language(p.language)
-	v.ExtraAttrs = wrap * glib.SList(p.extra_attrs)
+	v.ExtraAttrs = wrap * SList(p.extra_attrs)
+
 	return &v
 }
 
@@ -1621,6 +1626,12 @@ func marshalAnalysis(p uintptr) (interface{}, error) {
 	return wrapAnalysis(c)
 }
 
+// Native returns the pointer to *C.PangoAnalysis. The caller is expected to
+// cast.
+func (a *Analysis) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 // AttrColor: the `PangoAttrColor` structure is used to represent attributes
 // that are colors.
 type AttrColor struct {
@@ -1628,12 +1639,16 @@ type AttrColor struct {
 	Attr Attribute
 	// Color: the `PangoColor` which is the value of the attribute
 	Color Color
+
+	native *C.PangoAttrColor
 }
 
 func wrapAttrColor(p *C.PangoAttrColor) *AttrColor {
 	var v AttrColor
+
 	v.Attr = wrapAttribute(p.attr)
 	v.Color = wrapColor(p.color)
+
 	return &v
 }
 
@@ -1644,6 +1659,12 @@ func marshalAttrColor(p uintptr) (interface{}, error) {
 	return wrapAttrColor(c)
 }
 
+// Native returns the pointer to *C.PangoAttrColor. The caller is expected to
+// cast.
+func (a *AttrColor) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 // AttrFloat: the `PangoAttrFloat` structure is used to represent attributes
 // with a float or double value.
 type AttrFloat struct {
@@ -1651,12 +1672,16 @@ type AttrFloat struct {
 	Attr Attribute
 	// Value: the value of the attribute
 	Value float64
+
+	native *C.PangoAttrFloat
 }
 
 func wrapAttrFloat(p *C.PangoAttrFloat) *AttrFloat {
 	var v AttrFloat
+
 	v.Attr = wrapAttribute(p.attr)
 	v.Value = float64(p.value)
+
 	return &v
 }
 
@@ -1667,6 +1692,12 @@ func marshalAttrFloat(p uintptr) (interface{}, error) {
 	return wrapAttrFloat(c)
 }
 
+// Native returns the pointer to *C.PangoAttrFloat. The caller is expected to
+// cast.
+func (a *AttrFloat) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 // AttrFontDesc: the `PangoAttrFontDesc` structure is used to store an attribute
 // that sets all aspects of the font description at once.
 type AttrFontDesc struct {
@@ -1674,12 +1705,16 @@ type AttrFontDesc struct {
 	Attr Attribute
 	// Desc: the font description which is the value of this attribute
 	Desc *FontDescription
+
+	native *C.PangoAttrFontDesc
 }
 
 func wrapAttrFontDesc(p *C.PangoAttrFontDesc) *AttrFontDesc {
 	var v AttrFontDesc
+
 	v.Attr = wrapAttribute(p.attr)
 	v.Desc = wrap * FontDescription(p.desc)
+
 	return &v
 }
 
@@ -1690,6 +1725,12 @@ func marshalAttrFontDesc(p uintptr) (interface{}, error) {
 	return wrapAttrFontDesc(c)
 }
 
+// Native returns the pointer to *C.PangoAttrFontDesc. The caller is expected to
+// cast.
+func (a *AttrFontDesc) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 // AttrFontFeatures: the `PangoAttrFontFeatures` structure is used to represent
 // OpenType font features as an attribute.
 type AttrFontFeatures struct {
@@ -1697,12 +1738,16 @@ type AttrFontFeatures struct {
 	Attr Attribute
 	// Features: the featues, as a string in CSS syntax
 	Features string
+
+	native *C.PangoAttrFontFeatures
 }
 
 func wrapAttrFontFeatures(p *C.PangoAttrFontFeatures) *AttrFontFeatures {
 	var v AttrFontFeatures
+
 	v.Attr = wrapAttribute(p.attr)
 	v.Features = C.GoString(p.features)
+
 	return &v
 }
 
@@ -1713,6 +1758,12 @@ func marshalAttrFontFeatures(p uintptr) (interface{}, error) {
 	return wrapAttrFontFeatures(c)
 }
 
+// Native returns the pointer to *C.PangoAttrFontFeatures. The caller is expected to
+// cast.
+func (a *AttrFontFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 // AttrInt: the `PangoAttrInt` structure is used to represent attributes with an
 // integer or enumeration value.
 type AttrInt struct {
@@ -1720,12 +1771,16 @@ type AttrInt struct {
 	Attr Attribute
 	// Value: the value of the attribute
 	Value int
+
+	native *C.PangoAttrInt
 }
 
 func wrapAttrInt(p *C.PangoAttrInt) *AttrInt {
 	var v AttrInt
+
 	v.Attr = wrapAttribute(p.attr)
 	v.Value = int(p.value)
+
 	return &v
 }
 
@@ -1734,6 +1789,12 @@ func marshalAttrInt(p uintptr) (interface{}, error) {
 	c := (*C.PangoAttrInt)(unsafe.Pointer(b))
 
 	return wrapAttrInt(c)
+}
+
+// Native returns the pointer to *C.PangoAttrInt. The caller is expected to
+// cast.
+func (a *AttrInt) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // AttrIterator: a `PangoAttrIterator` is used to iterate through a
@@ -1750,6 +1811,10 @@ type AttrIterator struct {
 
 func wrapAttrIterator(p *C.PangoAttrIterator) *AttrIterator {
 	v := AttrIterator{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttrIterator).free)
+
 	return &v
 }
 
@@ -1760,6 +1825,14 @@ func marshalAttrIterator(p uintptr) (interface{}, error) {
 	return wrapAttrIterator(c)
 }
 
+func (a *AttrIterator) free() {}
+
+// Native returns the pointer to *C.PangoAttrIterator. The caller is expected to
+// cast.
+func (a *AttrIterator) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 // AttrLanguage: the `PangoAttrLanguage` structure is used to represent
 // attributes that are languages.
 type AttrLanguage struct {
@@ -1767,12 +1840,16 @@ type AttrLanguage struct {
 	Attr Attribute
 	// Value: the `PangoLanguage` which is the value of the attribute
 	Value *Language
+
+	native *C.PangoAttrLanguage
 }
 
 func wrapAttrLanguage(p *C.PangoAttrLanguage) *AttrLanguage {
 	var v AttrLanguage
+
 	v.Attr = wrapAttribute(p.attr)
 	v.Value = wrap * Language(p.value)
+
 	return &v
 }
 
@@ -1781,6 +1858,12 @@ func marshalAttrLanguage(p uintptr) (interface{}, error) {
 	c := (*C.PangoAttrLanguage)(unsafe.Pointer(b))
 
 	return wrapAttrLanguage(c)
+}
+
+// Native returns the pointer to *C.PangoAttrLanguage. The caller is expected to
+// cast.
+func (a *AttrLanguage) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // AttrList: a `PangoAttrList` represents a list of attributes that apply to a
@@ -1800,6 +1883,10 @@ type AttrList struct {
 
 func wrapAttrList(p *C.PangoAttrList) *AttrList {
 	v := AttrList{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*AttrList).free)
+
 	return &v
 }
 
@@ -1808,6 +1895,14 @@ func marshalAttrList(p uintptr) (interface{}, error) {
 	c := (*C.PangoAttrList)(unsafe.Pointer(b))
 
 	return wrapAttrList(c)
+}
+
+func (a *AttrList) free() {}
+
+// Native returns the pointer to *C.PangoAttrList. The caller is expected to
+// cast.
+func (a *AttrList) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // AttrShape: the `PangoAttrShape` structure is used to represent attributes
@@ -1825,10 +1920,13 @@ type AttrShape struct {
 	CopyFunc AttrDataCopyFunc
 	// DestroyFunc: destroy function for the user data
 	DestroyFunc unsafe.Pointer
+
+	native *C.PangoAttrShape
 }
 
 func wrapAttrShape(p *C.PangoAttrShape) *AttrShape {
 	var v AttrShape
+
 	v.Attr = wrapAttribute(p.attr)
 	v.InkRect = wrapRectangle(p.ink_rect)
 	v.LogicalRect = wrapRectangle(p.logical_rect)
@@ -1845,6 +1943,12 @@ func marshalAttrShape(p uintptr) (interface{}, error) {
 	return wrapAttrShape(c)
 }
 
+// Native returns the pointer to *C.PangoAttrShape. The caller is expected to
+// cast.
+func (a *AttrShape) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 // AttrSize: the `PangoAttrSize` structure is used to represent attributes which
 // set font size.
 type AttrSize struct {
@@ -1858,13 +1962,17 @@ type AttrSize struct {
 	// (PANGO_ATTR_ABSOLUTE_SIZE was added in 1.8.1); and always will be false
 	// for PANGO_ATTR_SIZE and true for PANGO_ATTR_ABSOLUTE_SIZE.
 	Absolute uint
+
+	native *C.PangoAttrSize
 }
 
 func wrapAttrSize(p *C.PangoAttrSize) *AttrSize {
 	var v AttrSize
+
 	v.Attr = wrapAttribute(p.attr)
 	v.Size = int(p.size)
 	v.Absolute = uint(p.absolute)
+
 	return &v
 }
 
@@ -1875,6 +1983,12 @@ func marshalAttrSize(p uintptr) (interface{}, error) {
 	return wrapAttrSize(c)
 }
 
+// Native returns the pointer to *C.PangoAttrSize. The caller is expected to
+// cast.
+func (a *AttrSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 // AttrString: the `PangoAttrString` structure is used to represent attributes
 // with a string value.
 type AttrString struct {
@@ -1882,12 +1996,16 @@ type AttrString struct {
 	Attr Attribute
 	// Value: the string which is the value of the attribute
 	Value string
+
+	native *C.PangoAttrString
 }
 
 func wrapAttrString(p *C.PangoAttrString) *AttrString {
 	var v AttrString
+
 	v.Attr = wrapAttribute(p.attr)
 	v.Value = C.GoString(p.value)
+
 	return &v
 }
 
@@ -1896,6 +2014,12 @@ func marshalAttrString(p uintptr) (interface{}, error) {
 	c := (*C.PangoAttrString)(unsafe.Pointer(b))
 
 	return wrapAttrString(c)
+}
+
+// Native returns the pointer to *C.PangoAttrString. The caller is expected to
+// cast.
+func (a *AttrString) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Attribute: the `PangoAttribute` structure represents the common portions of
@@ -1915,13 +2039,17 @@ type Attribute struct {
 	// EndIndex: end index of the range (in bytes). The character at this index
 	// is not included in the range.
 	EndIndex uint
+
+	native *C.PangoAttribute
 }
 
 func wrapAttribute(p *C.PangoAttribute) *Attribute {
 	var v Attribute
+
 	v.Klass = wrap * AttrClass(p.klass)
 	v.StartIndex = uint(p.start_index)
 	v.EndIndex = uint(p.end_index)
+
 	return &v
 }
 
@@ -1930,6 +2058,12 @@ func marshalAttribute(p uintptr) (interface{}, error) {
 	c := (*C.PangoAttribute)(unsafe.Pointer(b))
 
 	return wrapAttribute(c)
+}
+
+// Native returns the pointer to *C.PangoAttribute. The caller is expected to
+// cast.
+func (a *Attribute) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Color: the `PangoColor` structure is used to represent a color in an
@@ -1941,13 +2075,17 @@ type Color struct {
 	Green uint16
 	// Blue: value of blue component
 	Blue uint16
+
+	native *C.PangoColor
 }
 
 func wrapColor(p *C.PangoColor) *Color {
 	var v Color
+
 	v.Red = uint16(p.red)
 	v.Green = uint16(p.green)
 	v.Blue = uint16(p.blue)
+
 	return &v
 }
 
@@ -1956,6 +2094,12 @@ func marshalColor(p uintptr) (interface{}, error) {
 	c := (*C.PangoColor)(unsafe.Pointer(b))
 
 	return wrapColor(c)
+}
+
+// Native returns the pointer to *C.PangoColor. The caller is expected to
+// cast.
+func (c *Color) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // FontDescription: a `PangoFontDescription` describes a font in an
@@ -1970,6 +2114,10 @@ type FontDescription struct {
 
 func wrapFontDescription(p *C.PangoFontDescription) *FontDescription {
 	v := FontDescription{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FontDescription).free)
+
 	return &v
 }
 
@@ -1978,6 +2126,14 @@ func marshalFontDescription(p uintptr) (interface{}, error) {
 	c := (*C.PangoFontDescription)(unsafe.Pointer(b))
 
 	return wrapFontDescription(c)
+}
+
+func (f *FontDescription) free() {}
+
+// Native returns the pointer to *C.PangoFontDescription. The caller is expected to
+// cast.
+func (f *FontDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // FontMetrics: a `PangoFontMetrics` structure holds the overall metric
@@ -1993,6 +2149,10 @@ type FontMetrics struct {
 
 func wrapFontMetrics(p *C.PangoFontMetrics) *FontMetrics {
 	v := FontMetrics{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FontMetrics).free)
+
 	return &v
 }
 
@@ -2001,6 +2161,14 @@ func marshalFontMetrics(p uintptr) (interface{}, error) {
 	c := (*C.PangoFontMetrics)(unsafe.Pointer(b))
 
 	return wrapFontMetrics(c)
+}
+
+func (f *FontMetrics) free() {}
+
+// Native returns the pointer to *C.PangoFontMetrics. The caller is expected to
+// cast.
+func (f *FontMetrics) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // GlyphGeometry: the `PangoGlyphGeometry` structure contains width and
@@ -2012,22 +2180,32 @@ type GlyphGeometry struct {
 	XOffset GlyphUnit
 	// YOffset: vertical offset from nominal character position.
 	YOffset GlyphUnit
+
+	native *C.PangoGlyphGeometry
 }
 
 func wrapGlyphGeometry(p *C.PangoGlyphGeometry) *GlyphGeometry {
 	var v GlyphGeometry
+
 	{
 		tmp := int32(p.width)
+
 		v.Width = GlyphUnit(tmp)
+
 	}
 	{
 		tmp := int32(p.x_offset)
+
 		v.XOffset = GlyphUnit(tmp)
+
 	}
 	{
 		tmp := int32(p.y_offset)
+
 		v.YOffset = GlyphUnit(tmp)
+
 	}
+
 	return &v
 }
 
@@ -2036,6 +2214,12 @@ func marshalGlyphGeometry(p uintptr) (interface{}, error) {
 	c := (*C.PangoGlyphGeometry)(unsafe.Pointer(b))
 
 	return wrapGlyphGeometry(c)
+}
+
+// Native returns the pointer to *C.PangoGlyphGeometry. The caller is expected to
+// cast.
+func (g *GlyphGeometry) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // GlyphInfo: a `PangoGlyphInfo` structure represents a single glyph with
@@ -2047,16 +2231,22 @@ type GlyphInfo struct {
 	Geometry GlyphGeometry
 	// Attr: the visual attributes of the glyph.
 	Attr GlyphVisAttr
+
+	native *C.PangoGlyphInfo
 }
 
 func wrapGlyphInfo(p *C.PangoGlyphInfo) *GlyphInfo {
 	var v GlyphInfo
+
 	{
 		tmp := uint32(p.glyph)
+
 		v.Glyph = Glyph(tmp)
+
 	}
 	v.Geometry = wrapGlyphGeometry(p.geometry)
 	v.Attr = wrapGlyphVisAttr(p.attr)
+
 	return &v
 }
 
@@ -2065,6 +2255,12 @@ func marshalGlyphInfo(p uintptr) (interface{}, error) {
 	c := (*C.PangoGlyphInfo)(unsafe.Pointer(b))
 
 	return wrapGlyphInfo(c)
+}
+
+// Native returns the pointer to *C.PangoGlyphInfo. The caller is expected to
+// cast.
+func (g *GlyphInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // GlyphItem: a `PangoGlyphItem` is a pair of a `PangoItem` and the glyphs
@@ -2078,12 +2274,16 @@ type GlyphItem struct {
 	Item *Item
 	// Glyphs: corresponding `PangoGlyphString`
 	Glyphs *GlyphString
+
+	native *C.PangoGlyphItem
 }
 
 func wrapGlyphItem(p *C.PangoGlyphItem) *GlyphItem {
 	var v GlyphItem
+
 	v.Item = wrap * Item(p.item)
 	v.Glyphs = wrap * GlyphString(p.glyphs)
+
 	return &v
 }
 
@@ -2092,6 +2292,12 @@ func marshalGlyphItem(p uintptr) (interface{}, error) {
 	c := (*C.PangoGlyphItem)(unsafe.Pointer(b))
 
 	return wrapGlyphItem(c)
+}
+
+// Native returns the pointer to *C.PangoGlyphItem. The caller is expected to
+// cast.
+func (g *GlyphItem) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // GlyphItemIter: a `PangoGlyphItemIter` is an iterator over the clusters in a
@@ -2142,10 +2348,13 @@ type GlyphItemIter struct {
 	EndIndex int
 
 	EndChar int
+
+	native *C.PangoGlyphItemIter
 }
 
 func wrapGlyphItemIter(p *C.PangoGlyphItemIter) *GlyphItemIter {
 	var v GlyphItemIter
+
 	v.GlyphItem = wrap * GlyphItem(p.glyph_item)
 	v.Text = C.GoString(p.text)
 	v.StartGlyph = int(p.start_glyph)
@@ -2154,6 +2363,7 @@ func wrapGlyphItemIter(p *C.PangoGlyphItemIter) *GlyphItemIter {
 	v.EndGlyph = int(p.end_glyph)
 	v.EndIndex = int(p.end_index)
 	v.EndChar = int(p.end_char)
+
 	return &v
 }
 
@@ -2162,6 +2372,12 @@ func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 	c := (*C.PangoGlyphItemIter)(unsafe.Pointer(b))
 
 	return wrapGlyphItemIter(c)
+}
+
+// Native returns the pointer to *C.PangoGlyphItemIter. The caller is expected to
+// cast.
+func (g *GlyphItemIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // GlyphString: a `PangoGlyphString` is used to store strings of glyphs with
@@ -2176,16 +2392,21 @@ type GlyphString struct {
 	Glyphs []GlyphInfo
 	// LogClusters: logical cluster info, indexed by the byte index within the
 	// text corresponding to the glyph string.
-	LogClusters *int
+	LogClusters int
 
 	native *C.PangoGlyphString
 }
 
 func wrapGlyphString(p *C.PangoGlyphString) *GlyphString {
 	v := GlyphString{native: p}
+
 	v.NumGlyphs = int(p.num_glyphs)
 
 	v.LogClusters = int(p.log_clusters)
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*GlyphString).free)
+
 	return &v
 }
 
@@ -2194,6 +2415,14 @@ func marshalGlyphString(p uintptr) (interface{}, error) {
 	c := (*C.PangoGlyphString)(unsafe.Pointer(b))
 
 	return wrapGlyphString(c)
+}
+
+func (g *GlyphString) free() {}
+
+// Native returns the pointer to *C.PangoGlyphString. The caller is expected to
+// cast.
+func (g *GlyphString) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // GlyphVisAttr: a `PangoGlyphVisAttr` structure communicates information
@@ -2208,11 +2437,15 @@ type GlyphVisAttr struct {
 	// is, in Arabic text, accent glyphs follow the glyphs for the base
 	// character.)
 	IsClusterStart uint
+
+	native *C.PangoGlyphVisAttr
 }
 
 func wrapGlyphVisAttr(p *C.PangoGlyphVisAttr) *GlyphVisAttr {
 	var v GlyphVisAttr
+
 	v.IsClusterStart = uint(p.is_cluster_start)
+
 	return &v
 }
 
@@ -2221,6 +2454,12 @@ func marshalGlyphVisAttr(p uintptr) (interface{}, error) {
 	c := (*C.PangoGlyphVisAttr)(unsafe.Pointer(b))
 
 	return wrapGlyphVisAttr(c)
+}
+
+// Native returns the pointer to *C.PangoGlyphVisAttr. The caller is expected to
+// cast.
+func (g *GlyphVisAttr) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Item: the `PangoItem` structure stores information about a segment of text.
@@ -2236,14 +2475,18 @@ type Item struct {
 	NumChars int
 	// Analysis: analysis results for the item.
 	Analysis Analysis
+
+	native *C.PangoItem
 }
 
 func wrapItem(p *C.PangoItem) *Item {
 	var v Item
+
 	v.Offset = int(p.offset)
 	v.Length = int(p.length)
 	v.NumChars = int(p.num_chars)
 	v.Analysis = wrapAnalysis(p.analysis)
+
 	return &v
 }
 
@@ -2252,6 +2495,12 @@ func marshalItem(p uintptr) (interface{}, error) {
 	c := (*C.PangoItem)(unsafe.Pointer(b))
 
 	return wrapItem(c)
+}
+
+// Native returns the pointer to *C.PangoItem. The caller is expected to
+// cast.
+func (i *Item) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Language: the `PangoLanguage` structure is used to represent a language.
@@ -2264,6 +2513,10 @@ type Language struct {
 
 func wrapLanguage(p *C.PangoLanguage) *Language {
 	v := Language{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Language).free)
+
 	return &v
 }
 
@@ -2272,6 +2525,14 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 	c := (*C.PangoLanguage)(unsafe.Pointer(b))
 
 	return wrapLanguage(c)
+}
+
+func (l *Language) free() {}
+
+// Native returns the pointer to *C.PangoLanguage. The caller is expected to
+// cast.
+func (l *Language) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // LayoutIter: a `PangoLayoutIter` can be used to iterate over the visual
@@ -2286,6 +2547,10 @@ type LayoutIter struct {
 
 func wrapLayoutIter(p *C.PangoLayoutIter) *LayoutIter {
 	v := LayoutIter{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*LayoutIter).free)
+
 	return &v
 }
 
@@ -2294,6 +2559,14 @@ func marshalLayoutIter(p uintptr) (interface{}, error) {
 	c := (*C.PangoLayoutIter)(unsafe.Pointer(b))
 
 	return wrapLayoutIter(c)
+}
+
+func (l *LayoutIter) free() {}
+
+// Native returns the pointer to *C.PangoLayoutIter. The caller is expected to
+// cast.
+func (l *LayoutIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // LayoutLine: a `PangoLayoutLine` represents one of the lines resulting from
@@ -2315,16 +2588,20 @@ type LayoutLine struct {
 	IsParagraphStart uint
 	// ResolvedDir: resolved PangoDirection of line
 	ResolvedDir uint
+
+	native *C.PangoLayoutLine
 }
 
 func wrapLayoutLine(p *C.PangoLayoutLine) *LayoutLine {
 	var v LayoutLine
+
 	v.Layout = wrap * Layout(p.layout)
 	v.StartIndex = int(p.start_index)
 	v.Length = int(p.length)
-	v.Runs = wrap * glib.SList(p.runs)
+	v.Runs = wrap * SList(p.runs)
 	v.IsParagraphStart = uint(p.is_paragraph_start)
 	v.ResolvedDir = uint(p.resolved_dir)
+
 	return &v
 }
 
@@ -2333,6 +2610,12 @@ func marshalLayoutLine(p uintptr) (interface{}, error) {
 	c := (*C.PangoLayoutLine)(unsafe.Pointer(b))
 
 	return wrapLayoutLine(c)
+}
+
+// Native returns the pointer to *C.PangoLayoutLine. The caller is expected to
+// cast.
+func (l *LayoutLine) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // LogAttr: the `PangoLogAttr` structure stores information about the attributes
@@ -2392,10 +2675,13 @@ type LogAttr struct {
 	// Boundaries](http://www.unicode.org/reports/tr29/) semantics. (Since:
 	// 1.22)
 	IsWordBoundary uint
+
+	native *C.PangoLogAttr
 }
 
 func wrapLogAttr(p *C.PangoLogAttr) *LogAttr {
 	var v LogAttr
+
 	v.IsLineBreak = uint(p.is_line_break)
 	v.IsMandatoryBreak = uint(p.is_mandatory_break)
 	v.IsCharBreak = uint(p.is_char_break)
@@ -2409,6 +2695,7 @@ func wrapLogAttr(p *C.PangoLogAttr) *LogAttr {
 	v.BackspaceDeletesCharacter = uint(p.backspace_deletes_character)
 	v.IsExpandableSpace = uint(p.is_expandable_space)
 	v.IsWordBoundary = uint(p.is_word_boundary)
+
 	return &v
 }
 
@@ -2417,6 +2704,12 @@ func marshalLogAttr(p uintptr) (interface{}, error) {
 	c := (*C.PangoLogAttr)(unsafe.Pointer(b))
 
 	return wrapLogAttr(c)
+}
+
+// Native returns the pointer to *C.PangoLogAttr. The caller is expected to
+// cast.
+func (l *LogAttr) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // Matrix: a `PangoMatrix` specifies a transformation between user-space and
@@ -2440,16 +2733,20 @@ type Matrix struct {
 	X0 float64
 	// Y0: y translation
 	Y0 float64
+
+	native *C.PangoMatrix
 }
 
 func wrapMatrix(p *C.PangoMatrix) *Matrix {
 	var v Matrix
+
 	v.XX = float64(p.xx)
 	v.XY = float64(p.xy)
 	v.YX = float64(p.yx)
 	v.YY = float64(p.yy)
 	v.X0 = float64(p.x0)
 	v.Y0 = float64(p.y0)
+
 	return &v
 }
 
@@ -2458,6 +2755,12 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 	c := (*C.PangoMatrix)(unsafe.Pointer(b))
 
 	return wrapMatrix(c)
+}
+
+// Native returns the pointer to *C.PangoMatrix. The caller is expected to
+// cast.
+func (m *Matrix) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Rectangle: the `PangoRectangle` structure represents a rectangle.
@@ -2474,14 +2777,18 @@ type Rectangle struct {
 	Width int
 	// Height: height of the rectangle.
 	Height int
+
+	native *C.PangoRectangle
 }
 
 func wrapRectangle(p *C.PangoRectangle) *Rectangle {
 	var v Rectangle
+
 	v.X = int(p.x)
 	v.Y = int(p.y)
 	v.Width = int(p.width)
 	v.Height = int(p.height)
+
 	return &v
 }
 
@@ -2492,6 +2799,12 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 	return wrapRectangle(c)
 }
 
+// Native returns the pointer to *C.PangoRectangle. The caller is expected to
+// cast.
+func (r *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 // ScriptIter: a `PangoScriptIter` is used to iterate through a string and
 // identify ranges in different scripts.
 type ScriptIter struct {
@@ -2500,6 +2813,10 @@ type ScriptIter struct {
 
 func wrapScriptIter(p *C.PangoScriptIter) *ScriptIter {
 	v := ScriptIter{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ScriptIter).free)
+
 	return &v
 }
 
@@ -2508,6 +2825,14 @@ func marshalScriptIter(p uintptr) (interface{}, error) {
 	c := (*C.PangoScriptIter)(unsafe.Pointer(b))
 
 	return wrapScriptIter(c)
+}
+
+func (s *ScriptIter) free() {}
+
+// Native returns the pointer to *C.PangoScriptIter. The caller is expected to
+// cast.
+func (s *ScriptIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // TabArray: a `PangoTabArray` contains an array of tab stops.
@@ -2520,6 +2845,10 @@ type TabArray struct {
 
 func wrapTabArray(p *C.PangoTabArray) *TabArray {
 	v := TabArray{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*TabArray).free)
+
 	return &v
 }
 
@@ -2528,4 +2857,122 @@ func marshalTabArray(p uintptr) (interface{}, error) {
 	c := (*C.PangoTabArray)(unsafe.Pointer(b))
 
 	return wrapTabArray(c)
+}
+
+func (t *TabArray) free() {}
+
+// Native returns the pointer to *C.PangoTabArray. The caller is expected to
+// cast.
+func (t *TabArray) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
+// Context: a `PangoContext` stores global information used to control the
+// itemization process.
+//
+// The information stored by `PangoContext includes the fontmap used to look up
+// fonts, and default values such as the default language, default gravity, or
+// default font.
+//
+// To obtain a `PangoContext`, use [method@Pango.FontMap.create_context].
+type Context struct {
+	*glib.Object
+}
+
+// Coverage: a Coverage structure is a map from Unicode characters to
+// CoverageLevel values.
+//
+// It is often necessary in Pango to determine if a particular font can
+// represent a particular character, and also how well it can represent that
+// character. The Coverage is a data structure that is used to represent that
+// information. It is an opaque structure with no public fields.
+type Coverage struct {
+	*glib.Object
+}
+
+// Font: a `PangoFont` is used to represent a font in a
+// rendering-system-independent manner.
+type Font struct {
+	*glib.Object
+}
+
+// FontFace: a `PangoFontFace` is used to represent a group of fonts with the
+// same family, slant, weight, and width, but varying sizes.
+type FontFace struct {
+	*glib.Object
+}
+
+// FontFamily: a `PangoFontFamily` is used to represent a family of related font
+// faces.
+//
+// The font faces in a family share a common design, but differ in slant,
+// weight, width or other aspects.
+type FontFamily struct {
+	*glib.Object
+}
+
+// FontMap: a `PangoFontMap` represents the set of fonts available for a
+// particular rendering system.
+//
+// This is a virtual object with implementations being specific to particular
+// rendering systems.
+type FontMap struct {
+	*glib.Object
+}
+
+// Fontset: a `PangoFontset` represents a set of `PangoFont` to use when
+// rendering text.
+//
+// A `PAngoFontset` is the result of resolving a `PangoFontDescription` against
+// a particular `PangoContext`. It has operations for finding the component font
+// for a particular Unicode character, and for finding a composite set of
+// metrics for the entire fontset.
+type Fontset struct {
+	*glib.Object
+}
+
+// FontsetSimple: `PangoFontsetSimple` is a implementation of the abstract
+// `PangoFontset` base class as an array of fonts.
+//
+// When creating a `PangoFontsetSimple`, you have to provide the array of fonts
+// that make up the fontset.
+type FontsetSimple struct {
+	Fontset
+}
+
+// Layout: a `PangoLayout` structure represents an entire paragraph of text.
+//
+// While complete access to the layout capabilities of Pango is provided using
+// the detailed interfaces for itemization and shaping, using that functionality
+// directly involves writing a fairly large amount of code. `PangoLayout`
+// provides a high-level driver for formatting entire paragraphs of text at
+// once. This includes paragraph-level functionality such as line breaking,
+// justification, alignment and ellipsization.
+//
+// A `PangoLayout is initialized with a `PangoContext`, UTF-8 string and set of
+// attributes for that string. Once that is done, the set of formatted lines can
+// be extracted from the object, the layout can be rendered, and conversion
+// between logical character positions within the layout's text, and the
+// physical position of the resulting glyphs can be made.
+//
+// There are a number of parameters to adjust the formatting of a `PangoLayout`.
+// The following image shows adjustable parameters (on the left) and font
+// metrics (on the right):
+//
+// ![Pango Layout Parameters](layout.png)
+//
+// It is possible, as well, to ignore the 2-D setup, and simply treat the
+// results of a `PangoLayout` as a list of lines.
+type Layout struct {
+	*glib.Object
+}
+
+// Renderer: `PangoRenderer` is a base class for objects that can render text
+// provided as `PangoGlyphString` or `PangoLayout`.
+//
+// By subclassing `PangoRenderer` and overriding operations such as @draw_glyphs
+// and @draw_rectangle, renderers for particular font backends and destinations
+// can be created.
+type Renderer struct {
+	*glib.Object
 }

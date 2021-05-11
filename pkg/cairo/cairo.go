@@ -3,6 +3,7 @@
 package cairo
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/gotk3/gotk3/glib"
@@ -575,6 +576,10 @@ type Context struct {
 
 func wrapContext(p *C.cairo_t) *Context {
 	v := Context{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Context).free)
+
 	return &v
 }
 
@@ -585,12 +590,24 @@ func marshalContext(p uintptr) (interface{}, error) {
 	return wrapContext(c)
 }
 
+func (c *Context) free() {}
+
+// Native returns the pointer to *C.cairo_t. The caller is expected to
+// cast.
+func (c *Context) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
+}
+
 type Device struct {
 	native *C.cairo_device_t
 }
 
 func wrapDevice(p *C.cairo_device_t) *Device {
 	v := Device{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Device).free)
+
 	return &v
 }
 
@@ -601,12 +618,24 @@ func marshalDevice(p uintptr) (interface{}, error) {
 	return wrapDevice(c)
 }
 
+func (d *Device) free() {}
+
+// Native returns the pointer to *C.cairo_device_t. The caller is expected to
+// cast.
+func (d *Device) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 type Surface struct {
 	native *C.cairo_surface_t
 }
 
 func wrapSurface(p *C.cairo_surface_t) *Surface {
 	v := Surface{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Surface).free)
+
 	return &v
 }
 
@@ -617,12 +646,24 @@ func marshalSurface(p uintptr) (interface{}, error) {
 	return wrapSurface(c)
 }
 
+func (s *Surface) free() {}
+
+// Native returns the pointer to *C.cairo_surface_t. The caller is expected to
+// cast.
+func (s *Surface) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type Matrix struct {
 	native *C.cairo_matrix_t
 }
 
 func wrapMatrix(p *C.cairo_matrix_t) *Matrix {
 	v := Matrix{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Matrix).free)
+
 	return &v
 }
 
@@ -633,12 +674,24 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 	return wrapMatrix(c)
 }
 
+func (m *Matrix) free() {}
+
+// Native returns the pointer to *C.cairo_matrix_t. The caller is expected to
+// cast.
+func (m *Matrix) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 type Pattern struct {
 	native *C.cairo_pattern_t
 }
 
 func wrapPattern(p *C.cairo_pattern_t) *Pattern {
 	v := Pattern{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Pattern).free)
+
 	return &v
 }
 
@@ -649,12 +702,24 @@ func marshalPattern(p uintptr) (interface{}, error) {
 	return wrapPattern(c)
 }
 
+func (p *Pattern) free() {}
+
+// Native returns the pointer to *C.cairo_pattern_t. The caller is expected to
+// cast.
+func (p *Pattern) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type Region struct {
 	native *C.cairo_region_t
 }
 
 func wrapRegion(p *C.cairo_region_t) *Region {
 	v := Region{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Region).free)
+
 	return &v
 }
 
@@ -665,12 +730,24 @@ func marshalRegion(p uintptr) (interface{}, error) {
 	return wrapRegion(c)
 }
 
+func (r *Region) free() {}
+
+// Native returns the pointer to *C.cairo_region_t. The caller is expected to
+// cast.
+func (r *Region) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type FontOptions struct {
 	native *C.cairo_font_options_t
 }
 
 func wrapFontOptions(p *C.cairo_font_options_t) *FontOptions {
 	v := FontOptions{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FontOptions).free)
+
 	return &v
 }
 
@@ -681,12 +758,24 @@ func marshalFontOptions(p uintptr) (interface{}, error) {
 	return wrapFontOptions(c)
 }
 
+func (f *FontOptions) free() {}
+
+// Native returns the pointer to *C.cairo_font_options_t. The caller is expected to
+// cast.
+func (f *FontOptions) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type FontFace struct {
 	native *C.cairo_font_face_t
 }
 
 func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
 	v := FontFace{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FontFace).free)
+
 	return &v
 }
 
@@ -697,12 +786,24 @@ func marshalFontFace(p uintptr) (interface{}, error) {
 	return wrapFontFace(c)
 }
 
+func (f *FontFace) free() {}
+
+// Native returns the pointer to *C.cairo_font_face_t. The caller is expected to
+// cast.
+func (f *FontFace) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 type ScaledFont struct {
 	native *C.cairo_scaled_font_t
 }
 
 func wrapScaledFont(p *C.cairo_scaled_font_t) *ScaledFont {
 	v := ScaledFont{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ScaledFont).free)
+
 	return &v
 }
 
@@ -713,12 +814,24 @@ func marshalScaledFont(p uintptr) (interface{}, error) {
 	return wrapScaledFont(c)
 }
 
+func (s *ScaledFont) free() {}
+
+// Native returns the pointer to *C.cairo_scaled_font_t. The caller is expected to
+// cast.
+func (s *ScaledFont) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 type Path struct {
 	native *C.cairo_path_t
 }
 
 func wrapPath(p *C.cairo_path_t) *Path {
 	v := Path{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Path).free)
+
 	return &v
 }
 
@@ -729,6 +842,14 @@ func marshalPath(p uintptr) (interface{}, error) {
 	return wrapPath(c)
 }
 
+func (p *Path) free() {}
+
+// Native returns the pointer to *C.cairo_path_t. The caller is expected to
+// cast.
+func (p *Path) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 type Rectangle struct {
 	X float64
 
@@ -737,14 +858,18 @@ type Rectangle struct {
 	Width float64
 
 	Height float64
+
+	native *C.cairo_rectangle_t
 }
 
 func wrapRectangle(p *C.cairo_rectangle_t) *Rectangle {
 	var v Rectangle
+
 	v.X = float64(p.x)
 	v.Y = float64(p.y)
 	v.Width = float64(p.width)
 	v.Height = float64(p.height)
+
 	return &v
 }
 
@@ -755,6 +880,12 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 	return wrapRectangle(c)
 }
 
+// Native returns the pointer to *C.cairo_rectangle_t. The caller is expected to
+// cast.
+func (r *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type RectangleInt struct {
 	X int
 
@@ -763,14 +894,18 @@ type RectangleInt struct {
 	Width int
 
 	Height int
+
+	native *C.cairo_rectangle_int_t
 }
 
 func wrapRectangleInt(p *C.cairo_rectangle_int_t) *RectangleInt {
 	var v RectangleInt
+
 	v.X = int(p.x)
 	v.Y = int(p.y)
 	v.Width = int(p.width)
 	v.Height = int(p.height)
+
 	return &v
 }
 
@@ -779,4 +914,10 @@ func marshalRectangleInt(p uintptr) (interface{}, error) {
 	c := (*C.cairo_rectangle_int_t)(unsafe.Pointer(b))
 
 	return wrapRectangleInt(c)
+}
+
+// Native returns the pointer to *C.cairo_rectangle_int_t. The caller is expected to
+// cast.
+func (r *RectangleInt) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }

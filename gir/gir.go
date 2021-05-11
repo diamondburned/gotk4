@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"path"
 	"strings"
+	"sync"
 	"unicode"
 
 	"github.com/diamondburned/gotk4/gir/pkgconfig"
 	"github.com/pkg/errors"
+	"golang.org/x/sync/singleflight"
 )
 
 // PackageRoot is the root of the gotk4 (this) package.
@@ -18,19 +20,28 @@ func ImportPath(pkgPath string) string {
 	return path.Join(PackageRoot, pkgPath)
 }
 
+// goPackageNameTrans describes the transformation checks to filter out runes.
+var goPackageNameTrans = []func(r rune) bool{
+	unicode.IsLetter,
+	unicode.IsDigit,
+}
+
 // GoPackageName converts a GIR package name to a Go package name. It's only
 // tested against a known set of GIR files.
 func GoPackageName(girPkgName string) string {
 	return strings.Map(func(r rune) rune {
-		if !unicode.IsLetter(r) {
-			return -1
+		for _, trans := range goPackageNameTrans {
+			if trans(r) {
+				return unicode.ToLower(r)
+			}
 		}
-		return unicode.ToLower(r)
+
+		return -1
 	}, girPkgName)
 }
 
 // GoNamespace converts a namespace's name to a Go package name.
-func GoNamespace(namespace Namespace) string {
+func GoNamespace(namespace *Namespace) string {
 	return GoPackageName(namespace.Name)
 }
 
@@ -86,11 +97,9 @@ func (repos *Repositories) AddSelected(pkg string, namespaces []string) error {
 			continue
 		}
 
-		*repos = append(*repos, PkgRepository{
-			Repository: *repo,
-			Pkg:        pkg,
-			Path:       gir,
-		})
+		if err := repos.add(*repo, pkg, gir); err != nil {
+			return errors.Wrapf(err, "failed to add file %q", gir)
+		}
 	}
 
 	if found != len(namespaces) {
@@ -114,20 +123,42 @@ func (repos *Repositories) Add(pkg string) error {
 			return errors.Wrapf(err, "failed to parse file %q", gir)
 		}
 
-		*repos = append(*repos, PkgRepository{
-			Repository: *repo,
-			Pkg:        pkg,
-			Path:       gir,
-		})
+		if err := repos.add(*repo, pkg, gir); err != nil {
+			return errors.Wrapf(err, "failed to add file %q", gir)
+		}
 	}
+
+	return nil
+}
+
+// add adds the given PkgRepository.
+func (repos *Repositories) add(r Repository, pkg, path string) error {
+	for _, repo := range *repos {
+		for _, repoNsp := range repo.Namespaces {
+			for _, addingNsp := range r.Namespaces {
+				if addingNsp.Name == repoNsp.Name {
+					return fmt.Errorf(
+						"colliding namespace %s, got v%s, add v%s",
+						addingNsp.Name, repoNsp.Version, addingNsp.Version,
+					)
+				}
+			}
+		}
+	}
+
+	*repos = append(*repos, PkgRepository{
+		Repository: r,
+		Pkg:        pkg,
+		Path:       path,
+	})
 
 	return nil
 }
 
 // NamespaceFindResult is the result returned from FindNamespace.
 type NamespaceFindResult struct {
-	Repository PkgRepository
-	Namespace  Namespace
+	Repository *PkgRepository
+	Namespace  *Namespace
 }
 
 // Eq compares that the resulting namespace's name and version match.
@@ -139,22 +170,19 @@ func (res *NamespaceFindResult) Eq(other *NamespaceFindResult) bool {
 
 // FindNamespace finds the repository and namespace with the given name and
 // version.
-func (repos *Repositories) FindNamespace(name, version string) *NamespaceFindResult {
-	for _, repo := range *repos {
-		for _, nsp := range repo.Namespaces {
-			if nsp.Name != name {
-				continue
-			}
-			// Only skip the namespace if the version is not empty AND it
-			// doesn't match, in case a namespace doesn't actually have a
-			// version.
-			if nsp.Version != version && version != "" {
+func (repos *Repositories) FindNamespace(name string) *NamespaceFindResult {
+	for i := range *repos {
+		repository := &(*repos)[i]
+
+		for j := range repository.Namespaces {
+			namespace := &repository.Namespaces[j]
+			if namespace.Name != name {
 				continue
 			}
 
 			return &NamespaceFindResult{
-				Repository: repo,
-				Namespace:  nsp,
+				Repository: repository,
+				Namespace:  namespace,
 			}
 		}
 	}
@@ -165,8 +193,6 @@ func (repos *Repositories) FindNamespace(name, version string) *NamespaceFindRes
 // TypeFindResult is the result
 type TypeFindResult struct {
 	*NamespaceFindResult
-
-	SameNamespace bool
 
 	// Only one of these fields are not nil. They should also be read-only.
 	Alias     *Alias
@@ -211,31 +237,47 @@ func (res *TypeFindResult) Info() (name, ctype string) {
 	panic("TypeFindResult has all fields nil")
 }
 
+var (
+	typeResultCache  sync.Map // full GIR type -> *TypeFindResult
+	typeResultFlight singleflight.Group
+)
+
 // FindType finds a type in the repositories from the given current namespace
-// name, version, and the GIR type name.
-func (repos *Repositories) FindType(nspName, nspVersion, typ string) *TypeFindResult {
-	var r TypeFindResult
+// name, version, and the GIR type name. The function will cache the returned
+// TypeFindResult.
+func (repos *Repositories) FindType(nspName, typ string) *TypeFindResult {
+	// Build the full type name for cache querying. Use a faster method to check
+	// if the type name already has a namespace by detecting for a period (".").
+	fullType := typ
+	if !strings.Contains(typ, ".") {
+		fullType = nspName + "." + typ
+	}
 
-	// need this for the version
-	currentNamespace := repos.FindNamespace(nspName, nspVersion)
+	v, ok := typeResultCache.Load(fullType)
+	if ok {
+		return v.(*TypeFindResult)
+	}
 
-	if namespace, typeName := SplitGIRType(typ); namespace != "" {
-		// Search the namespace's version, if possible or available.
-		var version string
-		for _, incl := range currentNamespace.Repository.Includes {
-			if incl.Name == nspName && incl.Version != "" {
-				version = incl.Version
-				break
-			}
+	v, _, _ = typeResultFlight.Do(fullType, func() (interface{}, error) {
+		result := repos.findType(nspName, typ)
+		if result != nil {
+			typeResultCache.Store(fullType, result)
 		}
 
-		r.NamespaceFindResult = repos.FindNamespace(namespace, version)
-		typ = typeName
+		return result, nil
+	})
 
-	} else {
-		r.NamespaceFindResult = currentNamespace
-		r.SameNamespace = true
+	return v.(*TypeFindResult)
+}
+
+func (repos *Repositories) findType(nspName, typ string) *TypeFindResult {
+	var r TypeFindResult
+
+	if namespace, typeName := SplitGIRType(typ); namespace != "" {
+		r.NamespaceFindResult = repos.FindNamespace(namespace)
 		typ = typeName
+	} else {
+		r.NamespaceFindResult = repos.FindNamespace(nspName)
 	}
 
 	if r.NamespaceFindResult == nil {
@@ -307,59 +349,6 @@ func (repos *Repositories) FindType(nspName, nspVersion, typ string) *TypeFindRe
 
 	return nil
 }
-
-// // FindCType works like FindType but for C types.
-// func (repos *Repositories) FindCType(cTyp string) *TypeFindResult {
-// 	r := TypeFindResult{
-// 		NamespaceFindResult: &NamespaceFindResult{},
-// 	}
-
-// 	for _, r.Repository = range *repos {
-// 		for _, r.Namespace = range r.Repository.Namespaces {
-// 			// Avoid searching the whole namespace by verifying the prefix.
-// 			if !strings.HasPrefix(cTyp, r.Namespace.CIdentifierPrefixes) {
-// 				continue
-// 			}
-
-// 			for _, class := range r.Namespace.Classes {
-// 				if class.Name == cTyp {
-// 					r.Class = &class
-// 					return &r
-// 				}
-// 			}
-
-// 			for _, enum := range r.Namespace.Enums {
-// 				if enum.Name == cTyp {
-// 					r.Enum = &enum
-// 					return &r
-// 				}
-// 			}
-
-// 			for _, function := range r.Namespace.Functions {
-// 				if function.Name == cTyp {
-// 					r.Function = &function
-// 					return &r
-// 				}
-// 			}
-
-// 			for _, callback := range r.Namespace.Callbacks {
-// 				if callback.Name == cTyp {
-// 					r.Callback = &callback
-// 					return &r
-// 				}
-// 			}
-
-// 			for _, iface := range r.Namespace.Interfaces {
-// 				if iface.Name == cTyp {
-// 					r.Interface = &iface
-// 					return &r
-// 				}
-// 			}
-// 		}
-// 	}
-
-// 	return nil
-// }
 
 // PkgRepository wraps a Repository to add additional information.
 type PkgRepository struct {

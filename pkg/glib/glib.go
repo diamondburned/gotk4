@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/glib"
@@ -111,7 +112,7 @@ type RefString byte
 
 // Strv: a typedef alias for gchar**. This is mostly useful when used together
 // with g_auto().
-type Strv *string
+type Strv string
 
 // Time: simply a replacement for `time_t`. It has been deprecated since it is
 // not equivalent to `time_t` on 64-bit platforms with a 64-bit `time_t`.
@@ -2370,7 +2371,7 @@ const (
 // file permissions on Windows more exactly should use the Win32 API.
 //
 // See your C library manual for more details about access().
-func Access(filename *string, mode int) int
+func Access(filename string, mode int) int
 
 // ASCIIDigitValue: determines the numeric value of a character as a decimal
 // digit. Differs from g_unichar_digit_value() because it takes a char, so
@@ -2614,7 +2615,7 @@ func Atexit(_func VoidFunc)
 //
 // Before version 2.30, this function did not return a value (but
 // g_atomic_int_exchange_and_add() did, and had the same meaning).
-func AtomicIntAdd(atomic *int, val int) int
+func AtomicIntAdd(atomic int, val int) int
 
 // AtomicIntAnd: performs an atomic bitwise 'and' of the value of @atomic and
 // @val, storing the result back in @atomic.
@@ -2623,7 +2624,7 @@ func AtomicIntAdd(atomic *int, val int) int
 //
 // Think of this operation as an atomic version of `{ tmp = *atomic; *atomic &=
 // val; return tmp; }`.
-func AtomicIntAnd(atomic *uint, val uint) uint
+func AtomicIntAnd(atomic uint, val uint) uint
 
 // AtomicIntCompareAndExchange: compares @atomic to @oldval and, if equal, sets
 // it to @newval. If @atomic was not equal to @oldval then no change occurs.
@@ -2634,7 +2635,7 @@ func AtomicIntAnd(atomic *uint, val uint) uint
 // *atomic = newval; return TRUE; } else return FALSE; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicIntCompareAndExchange(atomic *int, oldval int, newval int) bool
+func AtomicIntCompareAndExchange(atomic int, oldval int, newval int) bool
 
 // AtomicIntDecAndTest: decrements the value of @atomic by 1.
 //
@@ -2642,25 +2643,25 @@ func AtomicIntCompareAndExchange(atomic *int, oldval int, newval int) bool
 // (*atomic == 0); }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicIntDecAndTest(atomic *int) bool
+func AtomicIntDecAndTest(atomic int) bool
 
 // AtomicIntExchangeAndAdd: this function existed before g_atomic_int_add()
 // returned the prior value of the integer (which it now does). It is retained
 // only for compatibility reasons. Don't use this function in new code.
-func AtomicIntExchangeAndAdd(atomic *int, val int) int
+func AtomicIntExchangeAndAdd(atomic int, val int) int
 
 // AtomicIntGet: gets the current value of @atomic.
 //
 // This call acts as a full compiler and hardware memory barrier (before the
 // get).
-func AtomicIntGet(atomic *int) int
+func AtomicIntGet(atomic int) int
 
 // AtomicIntInc: increments the value of @atomic by 1.
 //
 // Think of this operation as an atomic version of `{ *atomic += 1; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicIntInc(atomic *int)
+func AtomicIntInc(atomic int)
 
 // AtomicIntOr: performs an atomic bitwise 'or' of the value of @atomic and
 // @val, storing the result back in @atomic.
@@ -2669,13 +2670,13 @@ func AtomicIntInc(atomic *int)
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicIntOr(atomic *uint, val uint) uint
+func AtomicIntOr(atomic uint, val uint) uint
 
 // AtomicIntSet: sets the value of @atomic to @newval.
 //
 // This call acts as a full compiler and hardware memory barrier (after the
 // set).
-func AtomicIntSet(atomic *int, newval int)
+func AtomicIntSet(atomic int, newval int)
 
 // AtomicIntXor: performs an atomic bitwise 'xor' of the value of @atomic and
 // @val, storing the result back in @atomic.
@@ -2684,7 +2685,7 @@ func AtomicIntSet(atomic *int, newval int)
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicIntXor(atomic *uint, val uint) uint
+func AtomicIntXor(atomic uint, val uint) uint
 
 // AtomicPointerAdd: atomically adds @val to the value of @atomic.
 //
@@ -2692,7 +2693,7 @@ func AtomicIntXor(atomic *uint, val uint) uint
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicPointerAdd(atomic *unsafe.Pointer, val int) int
+func AtomicPointerAdd(atomic unsafe.Pointer, val int) int
 
 // AtomicPointerAnd: performs an atomic bitwise 'and' of the value of @atomic
 // and @val, storing the result back in @atomic.
@@ -2701,7 +2702,7 @@ func AtomicPointerAdd(atomic *unsafe.Pointer, val int) int
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicPointerAnd(atomic *unsafe.Pointer, val uint) uint
+func AtomicPointerAnd(atomic unsafe.Pointer, val uint) uint
 
 // AtomicPointerCompareAndExchange: compares @atomic to @oldval and, if equal,
 // sets it to @newval. If @atomic was not equal to @oldval then no change
@@ -2713,13 +2714,13 @@ func AtomicPointerAnd(atomic *unsafe.Pointer, val uint) uint
 // *atomic = newval; return TRUE; } else return FALSE; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicPointerCompareAndExchange(atomic *unsafe.Pointer, oldval unsafe.Pointer, newval unsafe.Pointer) bool
+func AtomicPointerCompareAndExchange(atomic unsafe.Pointer, oldval unsafe.Pointer, newval unsafe.Pointer) bool
 
 // AtomicPointerGet: gets the current value of @atomic.
 //
 // This call acts as a full compiler and hardware memory barrier (before the
 // get).
-func AtomicPointerGet(atomic *unsafe.Pointer) unsafe.Pointer
+func AtomicPointerGet(atomic unsafe.Pointer) unsafe.Pointer
 
 // AtomicPointerOr: performs an atomic bitwise 'or' of the value of @atomic and
 // @val, storing the result back in @atomic.
@@ -2728,13 +2729,13 @@ func AtomicPointerGet(atomic *unsafe.Pointer) unsafe.Pointer
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicPointerOr(atomic *unsafe.Pointer, val uint) uint
+func AtomicPointerOr(atomic unsafe.Pointer, val uint) uint
 
 // AtomicPointerSet: sets the value of @atomic to @newval.
 //
 // This call acts as a full compiler and hardware memory barrier (after the
 // set).
-func AtomicPointerSet(atomic *unsafe.Pointer, newval unsafe.Pointer)
+func AtomicPointerSet(atomic unsafe.Pointer, newval unsafe.Pointer)
 
 // AtomicPointerXor: performs an atomic bitwise 'xor' of the value of @atomic
 // and @val, storing the result back in @atomic.
@@ -2743,7 +2744,7 @@ func AtomicPointerSet(atomic *unsafe.Pointer, newval unsafe.Pointer)
 // val; return tmp; }`.
 //
 // This call acts as a full compiler and hardware memory barrier.
-func AtomicPointerXor(atomic *unsafe.Pointer, val uint) uint
+func AtomicPointerXor(atomic unsafe.Pointer, val uint) uint
 
 // AtomicRcBoxAcquire: atomically acquires a reference on the data pointed by
 // @mem_block.
@@ -2794,16 +2795,16 @@ func AtomicRcBoxReleaseFull(memBlock unsafe.Pointer, clearFunc unsafe.Pointer)
 
 // AtomicRefCountCompare: atomically compares the current value of @arc with
 // @val.
-func AtomicRefCountCompare(arc *int, val int) bool
+func AtomicRefCountCompare(arc int, val int) bool
 
 // AtomicRefCountDec: atomically decreases the reference count.
-func AtomicRefCountDec(arc *int) bool
+func AtomicRefCountDec(arc int) bool
 
 // AtomicRefCountInc: atomically increases the reference count.
-func AtomicRefCountInc(arc *int)
+func AtomicRefCountInc(arc int)
 
 // AtomicRefCountInit: initializes a reference count variable.
-func AtomicRefCountInit(arc *int)
+func AtomicRefCountInit(arc int)
 
 // Base64Decode: decode a sequence of Base-64 encoded text into binary data.
 // Note that the returned binary data is not necessarily zero-terminated, so it
@@ -2812,7 +2813,7 @@ func Base64Decode(text string) (uint, []uint8)
 
 // Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
 // data by overwriting the input data.
-func Base64DecodeInplace(text []uint8, outLen *uint) *uint8
+func Base64DecodeInplace(text []uint8, outLen uint) uint8
 
 // Base64DecodeStep: incrementally decode a sequence of binary data from its
 // Base-64 stringified representation. By calling this function multiple times
@@ -2822,7 +2823,7 @@ func Base64DecodeInplace(text []uint8, outLen *uint) *uint8
 // The output buffer must be large enough to fit all the data that will be
 // written to it. Since base64 encodes 3 bytes in 4 chars you need at least:
 // (@len / 4) * 3 + 3 bytes (+ 3 may be needed in case of non-zero state).
-func Base64DecodeStep(in []uint8, len uint, state *int, save *uint) ([]uint8, uint)
+func Base64DecodeStep(in []uint8, len uint, state int, save uint) ([]uint8, uint)
 
 // Base64Encode: encode a sequence of binary data into its Base-64 stringified
 // representation.
@@ -2836,7 +2837,7 @@ func Base64Encode(data []uint8, len uint) string
 // is enabled.
 //
 // The @out array will not be automatically nul-terminated.
-func Base64EncodeClose(breakLines bool, state *int, save *int) ([]uint8, uint)
+func Base64EncodeClose(breakLines bool, state int, save int) ([]uint8, uint)
 
 // Base64EncodeStep: incrementally encode a sequence of binary data into its
 // Base-64 stringified representation. By calling this function multiple times
@@ -2857,11 +2858,11 @@ func Base64EncodeClose(breakLines bool, state *int, save *int) ([]uint8, uint)
 // line. This avoids problems with long lines in the email system. Note however
 // that it breaks the lines with `LF` characters, not `CR LF` sequences, so the
 // result cannot be passed directly to SMTP or certain other protocols.
-func Base64EncodeStep(in []uint8, len uint, breakLines bool, state *int, save *int) ([]uint8, uint)
+func Base64EncodeStep(in []uint8, len uint, breakLines bool, state int, save int) ([]uint8, uint)
 
 // Basename: gets the name of the file without any leading directory components.
 // It returns a pointer into the given file name string.
-func Basename(fileName *string) *string
+func Basename(fileName string) string
 
 // BitLock: sets the indicated @lock_bit in @address. If the bit is already set,
 // this call will block until g_bit_unlock() unsets the corresponding bit.
@@ -2874,7 +2875,7 @@ func Basename(fileName *string) *string
 //
 // This function accesses @address atomically. All other accesses to @address
 // must be atomic in order for this function to work reliably.
-func BitLock(address *int, lockBit int)
+func BitLock(address int, lockBit int)
 
 // BitNthLsf: find the position of the first bit set in @mask, searching from
 // (but not including) @nth_bit upwards. Bits are numbered from 0 (least
@@ -2903,32 +2904,32 @@ func BitStorage(number uint32) uint
 //
 // This function accesses @address atomically. All other accesses to @address
 // must be atomic in order for this function to work reliably.
-func BitTrylock(address *int, lockBit int) bool
+func BitTrylock(address int, lockBit int) bool
 
 // BitUnlock: clears the indicated @lock_bit in @address. If another thread is
 // currently blocked in g_bit_lock() on this same bit then it will be woken up.
 //
 // This function accesses @address atomically. All other accesses to @address
 // must be atomic in order for this function to work reliably.
-func BitUnlock(address *int, lockBit int)
+func BitUnlock(address int, lockBit int)
 
 func BookmarkFileErrorQuark() Quark
 
 // BuildFilenamev: behaves exactly like g_build_filename(), but takes the path
 // elements as a string array, instead of varargs. This function is mainly meant
 // for language bindings.
-func BuildFilenamev(args []string) *string
+func BuildFilenamev(args []string) string
 
 // BuildPathv: behaves exactly like g_build_path(), but takes the path elements
 // as a string array, instead of varargs. This function is mainly meant for
 // language bindings.
-func BuildPathv(separator string, args []string) *string
+func BuildPathv(separator string, args []string) string
 
 // ByteArrayFree: frees the memory allocated by the Array. If @free_segment is
 // true it frees the actual byte data. If the reference count of @array is
 // greater than one, the Array wrapper is preserved but the size of @array will
 // be set to zero.
-func ByteArrayFree(array []uint8, freeSegment bool) *uint8
+func ByteArrayFree(array []uint8, freeSegment bool) uint8
 
 // ByteArrayFreeToBytes: transfers the data from the Array into a new immutable
 // #GBytes.
@@ -2951,7 +2952,7 @@ func ByteArrayNewTake(data []uint8, len uint) []uint8
 // ByteArraySteal: frees the data in the array and resets the size to zero,
 // while the underlying array is preserved for use elsewhere and returned to the
 // caller.
-func ByteArraySteal(array []uint8) (uint, *uint8)
+func ByteArraySteal(array []uint8) (uint, uint8)
 
 // ByteArrayUnref: atomically decrements the reference count of @array by one.
 // If the reference count drops to 0, all memory allocated by the array is
@@ -2974,13 +2975,13 @@ func ByteArrayUnref(array []uint8)
 // don't exist.
 //
 // No file system I/O is done.
-func CanonicalizeFilename(filename *string, relativeTo *string) *string
+func CanonicalizeFilename(filename string, relativeTo string) string
 
 // Chdir: a wrapper for the POSIX chdir() function. The function changes the
 // current directory of the process to @path.
 //
 // See your C library manual for more details about chdir().
-func Chdir(path *string) int
+func Chdir(path string) int
 
 // CheckVersion: checks that the GLib library in use is compatible with the
 // given version. Generally you would pass in the constants IB_MAJOR_VERSION,
@@ -3087,14 +3088,14 @@ func ClearError()
 //
 // A macro is also included that allows this function to be used without pointer
 // casts.
-func ClearHandleID(tagPtr *uint, clearFunc ClearHandleFunc)
+func ClearHandleID(tagPtr uint, clearFunc ClearHandleFunc)
 
 // ClearList: clears a pointer to a #GList, freeing it and, optionally, freeing
 // its elements using @destroy.
 //
 // @list_ptr must be a valid pointer. If @list_ptr points to a null #GList, this
 // does nothing.
-func ClearList(listPtr **glib.List, destroy unsafe.Pointer)
+func ClearList(listPtr **List, destroy unsafe.Pointer)
 
 // ClearPointer: clears a reference to a variable.
 //
@@ -3109,14 +3110,14 @@ func ClearList(listPtr **glib.List, destroy unsafe.Pointer)
 // compatible with being called as `GDestroyNotify` using the standard calling
 // convention for the platform that GLib was compiled for; otherwise the program
 // will experience undefined behaviour.
-func ClearPointer(pp *unsafe.Pointer, destroy unsafe.Pointer)
+func ClearPointer(pp unsafe.Pointer, destroy unsafe.Pointer)
 
 // ClearSlist: clears a pointer to a List, freeing it and, optionally, freeing
 // its elements using @destroy.
 //
 // @slist_ptr must be a valid pointer. If @slist_ptr points to a null List, this
 // does nothing.
-func ClearSlist(slistPtr **glib.SList, destroy unsafe.Pointer)
+func ClearSlist(slistPtr **SList, destroy unsafe.Pointer)
 
 // Close: this wraps the close() call; in case of error, errno will be
 // preserved, but the error will also be stored as a #GError in @error.
@@ -3450,7 +3451,7 @@ func Dgettext(domain string, msgid string) string
 //
 // Note that in contrast to g_mkdtemp() (and mkdtemp()) @tmpl is not modified,
 // and might thus be a read-only literal string.
-func DirMakeTmp(tmpl *string) *string
+func DirMakeTmp(tmpl string) string
 
 // DirectEqual: compares two #gpointer arguments and returns true if they are
 // equal. It can be passed to g_hash_table_new() as the @key_equal_func
@@ -3514,15 +3515,15 @@ func Dpgettext2(domain string, context string, msgid string) string
 
 // EnvironGetenv: returns the value of the environment variable @variable in the
 // provided list @envp.
-func EnvironGetenv(envp []string, variable *string) *string
+func EnvironGetenv(envp []string, variable string) string
 
 // EnvironSetenv: sets the environment variable @variable in the provided list
 // @envp to @value.
-func EnvironSetenv(envp []string, variable *string, value *string, overwrite bool) []string
+func EnvironSetenv(envp []string, variable string, value string, overwrite bool) []string
 
 // EnvironUnsetenv: removes the environment variable @variable from the provided
 // environment @envp.
-func EnvironUnsetenv(envp []string, variable *string) []string
+func EnvironUnsetenv(envp []string, variable string) []string
 
 // FileErrorFromErrno: gets a Error constant based on the passed-in @err_no. For
 // example, if you pass in `EEXIST` this function returns FILE_ERROR_EXIST.
@@ -3546,7 +3547,7 @@ func FileErrorQuark() Quark
 // false and sets @error. The error domain is FILE_ERROR. Possible error codes
 // are those in the Error enumeration. In the error case, @contents is set to
 // nil and @length is set to zero.
-func FileGetContents(filename *string) ([]uint8, uint, bool)
+func FileGetContents(filename string) ([]uint8, uint, bool)
 
 // FileOpenTmp: opens a file for writing in the preferred directory for
 // temporary files (as returned by g_get_tmp_dir()).
@@ -3562,18 +3563,18 @@ func FileGetContents(filename *string) ([]uint8, uint, bool)
 // Upon success, and if @name_used is non-nil, the actual name used is returned
 // in @name_used. This string should be freed with g_free() when not needed any
 // longer. The returned name is in the GLib file name encoding.
-func FileOpenTmp(tmpl *string) (*string, int)
+func FileOpenTmp(tmpl string) (string, int)
 
 // FileReadLink: reads the contents of the symbolic link @filename like the
 // POSIX readlink() function. The returned string is in the encoding used for
 // filenames. Use g_filename_to_utf8() to convert it to UTF-8.
-func FileReadLink(filename *string) *string
+func FileReadLink(filename string) string
 
 // FileSetContents: writes all of @contents to a file named @filename. This is a
 // convenience wrapper around calling g_file_set_contents() with `flags` set to
 // `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING` and
 // `mode` set to `0666`.
-func FileSetContents(filename *string, contents []uint8, length int) bool
+func FileSetContents(filename string, contents []uint8, length int) bool
 
 // FileSetContentsFull: writes all of @contents to a file named @filename, with
 // good error checking. If a file called @filename already exists it will be
@@ -3630,7 +3631,7 @@ func FileSetContents(filename *string, contents []uint8, length int) bool
 // If the file didn’t exist before and is created, it will be given the
 // permissions from @mode. Otherwise, the permissions of the existing file may
 // be changed to @mode depending on @flags, or they may remain unchanged.
-func FileSetContentsFull(filename *string, contents []uint8, length int, flags FileSetContentsFlags, mode int) bool
+func FileSetContentsFull(filename string, contents []uint8, length int, flags FileSetContentsFlags, mode int) bool
 
 // FileTest: returns true if any of the tests in the bitfield @test are true.
 // For example, `(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)` will return true if
@@ -3663,7 +3664,7 @@ func FileSetContentsFull(filename *string, contents []uint8, length int, flags F
 // that the file exists and its name indicates that it is executable, checking
 // for well-known extensions and those listed in the `PATHEXT` environment
 // variable.
-func FileTest(filename *string, test FileTest) bool
+func FileTest(filename string, test FileTest) bool
 
 // FilenameDisplayBasename: returns the display basename for the particular
 // filename, guaranteed to be valid UTF-8. The display name might not be
@@ -3681,7 +3682,7 @@ func FileTest(filename *string, test FileTest) bool
 //
 // This function is preferred over g_filename_display_name() if you know the
 // whole path, as it allows translation.
-func FilenameDisplayBasename(filename *string) string
+func FilenameDisplayBasename(filename string) string
 
 // FilenameDisplayName: converts a filename into a valid UTF-8 string. The
 // conversion is not necessarily reversible, so you should keep the original
@@ -3698,11 +3699,11 @@ func FilenameDisplayBasename(filename *string) string
 // If you know the whole pathname of the file you should use
 // g_filename_display_basename(), since that allows location-based translation
 // of filenames.
-func FilenameDisplayName(filename *string) string
+func FilenameDisplayName(filename string) string
 
 // FilenameFromURI: converts an escaped ASCII-encoded URI to a local filename in
 // the encoding used for filenames.
-func FilenameFromURI(uri string) (string, *string)
+func FilenameFromURI(uri string) (string, string)
 
 // FilenameFromUTF8: converts a string from UTF-8 to the encoding GLib uses for
 // filenames. Note that on Windows GLib uses UTF-8 for filenames; on other
@@ -3714,11 +3715,11 @@ func FilenameFromURI(uri string) (string, *string)
 // G_CONVERT_ERROR_ILLEGAL_SEQUENCE. If the filename encoding is not UTF-8 and
 // the conversion output contains a nul character, the error
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil.
-func FilenameFromUTF8(utf8String string, len int) (uint, uint, *string)
+func FilenameFromUTF8(utf8String string, len int) (uint, uint, string)
 
 // FilenameToURI: converts an absolute filename to an escaped ASCII-encoded URI,
 // with the path component following Section 3.3. of RFC 2396.
-func FilenameToURI(filename *string, hostname string) string
+func FilenameToURI(filename string, hostname string) string
 
 // FilenameToUTF8: converts a string which is in the encoding used by GLib for
 // filenames into a UTF-8 string. Note that on Windows GLib uses UTF-8 for
@@ -3731,7 +3732,7 @@ func FilenameToURI(filename *string, hostname string) string
 // conversion output contains a nul character, the error
 // G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns nil. Use
 // g_convert() to produce output that may contain embedded nul characters.
-func FilenameToUTF8(opsysstring *string, len int) (uint, uint, string)
+func FilenameToUTF8(opsysstring string, len int) (uint, uint, string)
 
 // FindProgramInPath: locates the first executable named @program in the user's
 // path, in the same way that execvp() would locate it. Returns an allocated
@@ -3747,7 +3748,7 @@ func FilenameToUTF8(opsysstring *string, len int) (uint, uint, string)
 // directory, then in the Windows directory, and finally in the directories in
 // the `PATH` environment variable. If the program is found, the return value
 // contains the full name including the type suffix.
-func FindProgramInPath(program *string) *string
+func FindProgramInPath(program string) string
 
 // FormatSize: formats a size (for example the size of a file) into a human
 // readable string. Sizes are rounded to the nearest size prefix (kB, MB, GB)
@@ -3844,7 +3845,7 @@ func GetConsoleCharset() (string, bool)
 // variable if it is set and it happens to be the same as the current directory.
 // This can make a difference in the case that the current directory is the
 // target of a symbolic link.
-func GetCurrentDir() *string
+func GetCurrentDir() string
 
 // GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
 //
@@ -3886,7 +3887,7 @@ func GetEnviron() []string
 // Note that on Unix, regardless of the locale character set or
 // `G_FILENAME_ENCODING` value, the actual file names present on a system might
 // be in any random encoding or just gibberish.
-func GetFilenameCharsets() ([]*string, bool)
+func GetFilenameCharsets() ([]string, bool)
 
 // GetHomeDir: gets the current user's home directory.
 //
@@ -3908,7 +3909,7 @@ func GetFilenameCharsets() ([]*string, bool)
 // that the new behaviour is in effect) then you should either directly check
 // the `HOME` environment variable yourself or unset it before calling any
 // functions in GLib.
-func GetHomeDir() *string
+func GetHomeDir() string
 
 // GetHostName: return a name for the machine.
 //
@@ -4005,7 +4006,7 @@ func GetPrgname() string
 // user's entry in the `passwd` file. The encoding of the returned string is
 // system-defined. (On Windows, it is, however, always UTF-8.) If the real user
 // name cannot be determined, the string "Unknown" is returned.
-func GetRealName() *string
+func GetRealName() string
 
 // GetRealTime: queries the system wall-clock time.
 //
@@ -4076,7 +4077,7 @@ func GetSystemDataDirs() []string
 //
 // The encoding of the returned string is system-defined. On Windows, it is
 // always UTF-8. The return value is never nil or the empty string.
-func GetTmpDir() *string
+func GetTmpDir() string
 
 // GetUserCacheDir: returns a base directory in which to store non-essential,
 // cached data specific to particular user.
@@ -4092,7 +4093,7 @@ func GetTmpDir() *string
 // path is `C:\Documents and Settings\username\Local Settings\Temporary Internet
 // Files`. See the [documentation for
 // `CSIDL_INTERNET_CACHE`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_internet_cache).
-func GetUserCacheDir() *string
+func GetUserCacheDir() string
 
 // GetUserConfigDir: returns a base directory in which to store user-specific
 // application configuration information such as user preferences and settings.
@@ -4109,7 +4110,7 @@ func GetUserCacheDir() *string
 // `CSIDL_LOCAL_APPDATA`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_local_appdata).
 // Note that in this case on Windows it will be the same as what
 // g_get_user_data_dir() returns.
-func GetUserConfigDir() *string
+func GetUserConfigDir() string
 
 // GetUserDataDir: returns a base directory in which to access application data
 // such as icons that is customized for a particular user.
@@ -4126,13 +4127,13 @@ func GetUserConfigDir() *string
 // `CSIDL_LOCAL_APPDATA`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_local_appdata).
 // Note that in this case on Windows it will be the same as what
 // g_get_user_config_dir() returns.
-func GetUserDataDir() *string
+func GetUserDataDir() string
 
 // GetUserName: gets the user name of the current user. The encoding of the
 // returned string is system-defined. On UNIX, it might be the preferred file
 // name encoding, or something else, and there is no guarantee that it is even
 // consistent on a machine. On Windows, it is always UTF-8.
-func GetUserName() *string
+func GetUserName() string
 
 // GetUserRuntimeDir: returns a directory that is unique to the current user on
 // the local system.
@@ -4142,7 +4143,7 @@ func GetUserName() *string
 // the directory specified in the `XDG_RUNTIME_DIR` environment variable. In the
 // case that this variable is not set, we return the value of
 // g_get_user_cache_dir(), after verifying that it exists.
-func GetUserRuntimeDir() *string
+func GetUserRuntimeDir() string
 
 // GetUserSpecialDir: returns the full path of a special directory using its
 // logical id.
@@ -4154,7 +4155,7 @@ func GetUserRuntimeDir() *string
 // Depending on the platform, the user might be able to change the path of the
 // special directory without requiring the session to restart; GLib will not
 // reflect any change once the special directories are loaded.
-func GetUserSpecialDir(directory UserDirectory) *string
+func GetUserSpecialDir(directory UserDirectory) string
 
 // Getenv: returns the value of an environment variable.
 //
@@ -4162,7 +4163,7 @@ func GetUserSpecialDir(directory UserDirectory) *string
 // some consistent character set and encoding. On Windows, they are in UTF-8. On
 // Windows, in case the environment variable's value contains references to
 // other environment variables, they are expanded.
-func Getenv(variable *string) *string
+func Getenv(variable string) string
 
 // HashTableAdd: this is a convenience function for using a Table as a set. It
 // is equivalent to calling g_hash_table_replace() with @key as both the key and
@@ -4178,17 +4179,17 @@ func Getenv(variable *string) *string
 //
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
-func HashTableAdd(hashTable *glib.HashTable, key unsafe.Pointer) bool
+func HashTableAdd(hashTable *HashTable, key unsafe.Pointer) bool
 
 // HashTableContains: checks if @key is in @hash_table.
-func HashTableContains(hashTable *glib.HashTable, key unsafe.Pointer) bool
+func HashTableContains(hashTable *HashTable, key unsafe.Pointer) bool
 
 // HashTableDestroy: destroys all keys and values in the Table and decrements
 // its reference count by 1. If keys and/or values are dynamically allocated,
 // you should either free them first or create the Table with destroy notifiers
 // using g_hash_table_new_full(). In the latter case the destroy functions you
 // supplied will be called on all keys and values during the destruction phase.
-func HashTableDestroy(hashTable *glib.HashTable)
+func HashTableDestroy(hashTable *HashTable)
 
 // HashTableInsert: inserts a new key and value into a Table.
 //
@@ -4199,13 +4200,13 @@ func HashTableDestroy(hashTable *glib.HashTable)
 //
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
-func HashTableInsert(hashTable *glib.HashTable, key unsafe.Pointer, value unsafe.Pointer) bool
+func HashTableInsert(hashTable *HashTable, key unsafe.Pointer, value unsafe.Pointer) bool
 
 // HashTableLookup: looks up a key in a Table. Note that this function cannot
 // distinguish between a key that is not present and one which is present and
 // has the value nil. If you need this distinction, use
 // g_hash_table_lookup_extended().
-func HashTableLookup(hashTable *glib.HashTable, key unsafe.Pointer) unsafe.Pointer
+func HashTableLookup(hashTable *HashTable, key unsafe.Pointer) unsafe.Pointer
 
 // HashTableLookupExtended: looks up a key in the Table, returning the original
 // key and the associated value and a #gboolean which is true if the key was
@@ -4214,14 +4215,14 @@ func HashTableLookup(hashTable *glib.HashTable, key unsafe.Pointer) unsafe.Point
 //
 // You can actually pass nil for @lookup_key to test whether the nil key exists,
 // provided the hash and equal functions of @hash_table are nil-safe.
-func HashTableLookupExtended(hashTable *glib.HashTable, lookupKey unsafe.Pointer) (unsafe.Pointer, unsafe.Pointer, bool)
+func HashTableLookupExtended(hashTable *HashTable, lookupKey unsafe.Pointer) (unsafe.Pointer, unsafe.Pointer, bool)
 
 // HashTableRemove: removes a key and its associated value from a Table.
 //
 // If the Table was created using g_hash_table_new_full(), the key and value are
 // freed using the supplied destroy functions, otherwise you have to make sure
 // that any dynamically allocated values are freed yourself.
-func HashTableRemove(hashTable *glib.HashTable, key unsafe.Pointer) bool
+func HashTableRemove(hashTable *HashTable, key unsafe.Pointer) bool
 
 // HashTableRemoveAll: removes all keys and their associated values from a
 // Table.
@@ -4229,7 +4230,7 @@ func HashTableRemove(hashTable *glib.HashTable, key unsafe.Pointer) bool
 // If the Table was created using g_hash_table_new_full(), the keys and values
 // are freed using the supplied destroy functions, otherwise you have to make
 // sure that any dynamically allocated values are freed yourself.
-func HashTableRemoveAll(hashTable *glib.HashTable)
+func HashTableRemoveAll(hashTable *HashTable)
 
 // HashTableReplace: inserts a new key and value into a Table similar to
 // g_hash_table_insert(). The difference is that if the key already exists in
@@ -4240,18 +4241,18 @@ func HashTableRemoveAll(hashTable *glib.HashTable)
 //
 // Starting from GLib 2.40, this function returns a boolean value to indicate
 // whether the newly added value was already in the hash table or not.
-func HashTableReplace(hashTable *glib.HashTable, key unsafe.Pointer, value unsafe.Pointer) bool
+func HashTableReplace(hashTable *HashTable, key unsafe.Pointer, value unsafe.Pointer) bool
 
 // HashTableSize: returns the number of elements contained in the Table.
-func HashTableSize(hashTable *glib.HashTable) uint
+func HashTableSize(hashTable *HashTable) uint
 
 // HashTableSteal: removes a key and its associated value from a Table without
 // calling the key and value destroy functions.
-func HashTableSteal(hashTable *glib.HashTable, key unsafe.Pointer) bool
+func HashTableSteal(hashTable *HashTable, key unsafe.Pointer) bool
 
 // HashTableStealAll: removes all keys and their associated values from a Table
 // without calling the key and value destroy functions.
-func HashTableStealAll(hashTable *glib.HashTable)
+func HashTableStealAll(hashTable *HashTable)
 
 // HashTableStealExtended: looks up a key in the Table, stealing the original
 // key and the associated value and returning true if the key was found. If the
@@ -4263,13 +4264,13 @@ func HashTableStealAll(hashTable *glib.HashTable)
 //
 // You can pass nil for @lookup_key, provided the hash and equal functions of
 // @hash_table are nil-safe.
-func HashTableStealExtended(hashTable *glib.HashTable, lookupKey unsafe.Pointer) (unsafe.Pointer, unsafe.Pointer, bool)
+func HashTableStealExtended(hashTable *HashTable, lookupKey unsafe.Pointer) (unsafe.Pointer, unsafe.Pointer, bool)
 
 // HashTableUnref: atomically decrements the reference count of @hash_table by
 // one. If the reference count drops to 0, all keys and values will be
 // destroyed, and all memory allocated by the hash table is released. This
 // function is MT-safe and may be called from any thread.
-func HashTableUnref(hashTable *glib.HashTable)
+func HashTableUnref(hashTable *HashTable)
 
 // HookDestroy: destroys a #GHook, given its ID.
 func HookDestroy(hookList *HookList, hookID uint32) bool
@@ -4344,7 +4345,7 @@ func HostnameToUnicode(hostname string) string
 // positive number of non-reversible conversions as replacement characters were
 // used), or it may return -1 and set an error such as EILSEQ, in such a
 // situation.
-func Iconv(converter IConv, inbuf *string, inbytesLeft *uint, outbuf *string, outbytesLeft *uint) uint
+func Iconv(converter IConv, inbuf string, inbytesLeft uint, outbuf string, outbytesLeft uint) uint
 
 // IconvOpen: same as the standard UNIX routine iconv_open(), but may be
 // implemented via libiconv on UNIX flavors that lack a native implementation.
@@ -4899,7 +4900,7 @@ func Memdup(mem unsafe.Pointer, byteSize uint) unsafe.Pointer
 
 // MkdirWithParents: create a directory if it doesn't already exist. Create
 // intermediate parent directories as needed, too.
-func MkdirWithParents(pathname *string, mode int) int
+func MkdirWithParents(pathname string, mode int) int
 
 // Mkdtemp: creates a temporary directory. See the mkdtemp() documentation on
 // most UNIX-like systems.
@@ -4913,7 +4914,7 @@ func MkdirWithParents(pathname *string, mode int) int
 //
 // If you are going to be creating a temporary directory inside the directory
 // returned by g_get_tmp_dir(), you might want to use g_dir_make_tmp() instead.
-func Mkdtemp(tmpl *string) *string
+func Mkdtemp(tmpl string) string
 
 // MkdtempFull: creates a temporary directory. See the mkdtemp() documentation
 // on most UNIX-like systems.
@@ -4928,7 +4929,7 @@ func Mkdtemp(tmpl *string) *string
 //
 // If you are going to be creating a temporary directory inside the directory
 // returned by g_get_tmp_dir(), you might want to use g_dir_make_tmp() instead.
-func MkdtempFull(tmpl *string, mode int) *string
+func MkdtempFull(tmpl string, mode int) string
 
 // Mkstemp: opens a temporary file. See the mkstemp() documentation on most
 // UNIX-like systems.
@@ -4939,7 +4940,7 @@ func MkdtempFull(tmpl *string, mode int) *string
 // very end of the template. The X string will be modified to form the name of a
 // file that didn't exist. The string should be in the GLib file name encoding.
 // Most importantly, on Windows it should be in UTF-8.
-func Mkstemp(tmpl *string) int
+func Mkstemp(tmpl string) int
 
 // MkstempFull: opens a temporary file. See the mkstemp() documentation on most
 // UNIX-like systems.
@@ -4951,10 +4952,10 @@ func Mkstemp(tmpl *string) int
 // The X string will be modified to form the name of a file that didn't exist.
 // The string should be in the GLib file name encoding. Most importantly, on
 // Windows it should be in UTF-8.
-func MkstempFull(tmpl *string, flags int, mode int) int
+func MkstempFull(tmpl string, flags int, mode int) int
 
 // NullifyPointer: set the pointer at the specified location to nil.
-func NullifyPointer(nullifyLocation *unsafe.Pointer)
+func NullifyPointer(nullifyLocation unsafe.Pointer)
 
 func NumberParserErrorQuark() Quark
 
@@ -5037,14 +5038,14 @@ func OnErrorStackTrace(prgName string)
 //
 //      // use initialization_value here
 //
-func OnceInitEnter(location *unsafe.Pointer) bool
+func OnceInitEnter(location unsafe.Pointer) bool
 
 // OnceInitLeave: counterpart to g_once_init_enter(). Expects a location of a
 // static 0-initialized initialization variable, and an initialization value
 // other than 0. Sets the variable to the initialization value, and releases
 // concurrent threads blocking in g_once_init_enter() on this initialization
 // variable.
-func OnceInitLeave(location *unsafe.Pointer, result uint)
+func OnceInitLeave(location unsafe.Pointer, result uint)
 
 func OptionErrorQuark() Quark
 
@@ -5066,7 +5067,7 @@ func ParseDebugString(string string, keys []DebugKey, nkeys uint) uint
 // the last slash. If @file_name consists only of directory separators (and on
 // Windows, possibly a drive letter), a single separator is returned. If
 // @file_name is empty, it gets ".".
-func PathGetBasename(fileName *string) *string
+func PathGetBasename(fileName string) string
 
 // PathGetDirname: gets the directory components of a file name. For example,
 // the directory component of `/usr/bin/test` is `/usr/bin`. The directory
@@ -5074,7 +5075,7 @@ func PathGetBasename(fileName *string) *string
 //
 // If the file name has no directory components "." is returned. The returned
 // string should be freed when no longer needed.
-func PathGetDirname(fileName *string) *string
+func PathGetDirname(fileName string) string
 
 // PathIsAbsolute: returns true if the given @file_name is an absolute file
 // name. Note that this is a somewhat vague concept on Windows.
@@ -5098,12 +5099,12 @@ func PathGetDirname(fileName *string) *string
 // obviously are not relative to the normal current directory as returned by
 // getcwd() or g_get_current_dir() either. Such paths should be avoided, or need
 // to be handled using Windows-specific code.
-func PathIsAbsolute(fileName *string) bool
+func PathIsAbsolute(fileName string) bool
 
 // PathSkipRoot: returns a pointer into @file_name after the root component,
 // i.e. after the "/" in UNIX or "C:\" under Windows. If @file_name is not an
 // absolute path it returns nil.
-func PathSkipRoot(fileName *string) *string
+func PathSkipRoot(fileName string) string
 
 // PatternMatch: matches a string against a compiled pattern. Passing the
 // correct length of the string given is mandatory. The reversed string can be
@@ -5139,21 +5140,21 @@ func PatternMatchString(pspec *PatternSpec, string string) bool
 //
 // For portability reasons, you may only lock on the bottom 32 bits of the
 // pointer.
-func PointerBitLock(address *unsafe.Pointer, lockBit int)
+func PointerBitLock(address unsafe.Pointer, lockBit int)
 
 // PointerBitTrylock: this is equivalent to g_bit_trylock, but working on
 // pointers (or other pointer-sized values).
 //
 // For portability reasons, you may only lock on the bottom 32 bits of the
 // pointer.
-func PointerBitTrylock(address *unsafe.Pointer, lockBit int) bool
+func PointerBitTrylock(address unsafe.Pointer, lockBit int) bool
 
 // PointerBitUnlock: this is equivalent to g_bit_unlock, but working on pointers
 // (or other pointer-sized values).
 //
 // For portability reasons, you may only lock on the bottom 32 bits of the
 // pointer.
-func PointerBitUnlock(address *unsafe.Pointer, lockBit int)
+func PointerBitUnlock(address unsafe.Pointer, lockBit int)
 
 // Poll: polls @fds, as with the poll() system call, but portably. (On systems
 // that don't have poll(), it is emulated using select().) This is used
@@ -5324,16 +5325,16 @@ func Realloc(mem unsafe.Pointer, nBytes uint) unsafe.Pointer
 func ReallocN(mem unsafe.Pointer, nBlocks uint, nBlockBytes uint) unsafe.Pointer
 
 // RefCountCompare: compares the current value of @rc with @val.
-func RefCountCompare(rc *int, val int) bool
+func RefCountCompare(rc int, val int) bool
 
 // RefCountDec: decreases the reference count.
-func RefCountDec(rc *int) bool
+func RefCountDec(rc int) bool
 
 // RefCountInc: increases the reference count.
-func RefCountInc(rc *int)
+func RefCountInc(rc int)
 
 // RefCountInit: initializes a reference count variable.
-func RefCountInit(rc *int)
+func RefCountInit(rc int)
 
 // RefStringAcquire: acquires a reference on a string.
 func RefStringAcquire(str string) string
@@ -5389,7 +5390,7 @@ func RegexEscapeNUL(string string, length int) string
 //
 // @string can contain nul characters that are replaced with "\0", in this case
 // remember to specify the correct length of @string in @length.
-func RegexEscapeString(string []string, length int) string
+func RegexEscapeString(string []byte, length int) string
 
 // RegexMatchSimple: scans for a match in @string for @pattern.
 //
@@ -5449,7 +5450,7 @@ func ReturnIfFailWarning(logDomain string, prettyFunction string, expression str
 //
 // See your C library manual for more details about how rmdir() works on your
 // system.
-func Rmdir(filename *string) int
+func Rmdir(filename string) int
 
 // SequenceGet: returns the data that @iter points to.
 func SequenceGet(iter *SequenceIter) unsafe.Pointer
@@ -5568,7 +5569,7 @@ func SetPrinterrHandler(_func PrintFunc) PrintFunc
 // g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
-func Setenv(variable *string, value *string, overwrite bool) bool
+func Setenv(variable string, value string, overwrite bool) bool
 
 func ShellErrorQuark() Quark
 
@@ -5580,14 +5581,14 @@ func ShellErrorQuark() Quark
 // shell expansions. If the input does contain such expansions, they are passed
 // through literally. Possible errors are those from the SHELL_ERROR domain.
 // Free the returned vector with g_strfreev().
-func ShellParseArgv(commandLine *string) (int, []string, bool)
+func ShellParseArgv(commandLine string) (int, []string, bool)
 
 // ShellQuote: quotes a string so that the shell (/bin/sh) will interpret the
 // quoted string to mean @unquoted_string. If you pass a filename to the shell,
 // for example, you should first quote it with this function. The return value
 // must be freed with g_free(). The quoting style used is undefined (single or
 // double quotes may be used).
-func ShellQuote(unquotedString *string) *string
+func ShellQuote(unquotedString string) string
 
 // ShellUnquote: unquotes a string as the shell (/bin/sh) would. Only handles
 // quotes; if a string contains file globs, arithmetic operators, variables,
@@ -5607,7 +5608,7 @@ func ShellQuote(unquotedString *string) *string
 // ' in the quoted text, you have to do something like 'foo'\”bar'. Double
 // quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
 // double quotes preserve things literally.
-func ShellUnquote(quotedString *string) *string
+func ShellUnquote(quotedString string) string
 
 // SliceAlloc: allocates a block of memory from the slice allocator. The block
 // address handed out can be expected to be aligned to at least 1 * sizeof
@@ -5656,7 +5657,7 @@ func SliceFreeChainWithOffset(blockSize uint, memChain unsafe.Pointer, nextOffse
 
 func SliceGetConfig(ckey SliceConfig) int64
 
-func SliceGetConfigState(ckey SliceConfig, address int64, nValues *uint) *int64
+func SliceGetConfigState(ckey SliceConfig, address int64, nValues uint) int64
 
 func SliceSetConfig(ckey SliceConfig, value int64)
 
@@ -5728,7 +5729,7 @@ func SpacedPrimesClosest(num uint) uint
 // Note that the returned @child_pid on Windows is a handle to the child process
 // and not its identifier. Process handles and process identifiers are different
 // concepts on Windows.
-func SpawnAsync(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer) (Pid, bool)
+func SpawnAsync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer) (Pid, bool)
 
 // SpawnAsyncWithFds: identical to g_spawn_async_with_pipes() but instead of
 // creating pipes for the stdin/stdout/stderr, you can pass existing file
@@ -5748,7 +5749,7 @@ func SpawnAsync(workingDirectory *string, argv []string, envp []string, flags Sp
 //
 // It is valid to pass the same fd in multiple parameters (e.g. you can pass a
 // single fd for both stdout and stderr).
-func SpawnAsyncWithFds(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, stdinFd int, stdoutFd int, stderrFd int) (Pid, bool)
+func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer, stdinFd int, stdoutFd int, stderrFd int) (Pid, bool)
 
 // SpawnAsyncWithPipes: executes a child program asynchronously (your program
 // will not block waiting for the child to exit). The child program is specified
@@ -5906,7 +5907,7 @@ func SpawnAsyncWithFds(workingDirectory *string, argv []string, envp []string, f
 // graphical application too, then to ensure that the spawned program opens its
 // windows on the right screen, you may want to use AppLaunchContext,
 // LaunchContext, or set the DISPLAY environment variable.
-func SpawnAsyncWithPipes(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer) (Pid, int, int, int, bool)
+func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer) (Pid, int, int, int, bool)
 
 // SpawnCheckExitStatus: set @error if @exit_status indicates the child exited
 // abnormally (e.g. with a nonzero exit code, or via a fatal signal).
@@ -5960,7 +5961,7 @@ func SpawnClosePid(pid Pid)
 // g_shell_parse_argv() and g_spawn_async().
 //
 // The same concerns on Windows apply as for g_spawn_command_line_sync().
-func SpawnCommandLineAsync(commandLine *string) bool
+func SpawnCommandLineAsync(commandLine string) bool
 
 // SpawnCommandLineSync: a simple version of g_spawn_sync() with little-used
 // parameters removed, taking a command line instead of an argument vector. See
@@ -5982,7 +5983,7 @@ func SpawnCommandLineAsync(commandLine *string) bool
 // eaten, and the space will act as a separator. You need to enclose such paths
 // with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
-func SpawnCommandLineSync(commandLine *string) ([]uint8, []uint8, int, bool)
+func SpawnCommandLineSync(commandLine string) ([]uint8, []uint8, int, bool)
 
 func SpawnErrorQuark() Quark
 
@@ -6006,7 +6007,7 @@ func SpawnExitErrorQuark() Quark
 // This function calls g_spawn_async_with_pipes() internally; see that function
 // for full details on the other parameters and details on how these functions
 // work on Windows.
-func SpawnSync(workingDirectory *string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer) ([]uint8, []uint8, int, bool)
+func SpawnSync(workingDirectory string, argv []string, envp []string, flags SpawnFlags, childSetup SpawnChildSetupFunc, userData unsafe.Pointer) ([]uint8, []uint8, int, bool)
 
 // Stpcpy: copies a nul-terminated string into the dest buffer, include the
 // trailing nul, and return a pointer to the trailing nul byte. This is useful
@@ -6101,7 +6102,7 @@ func StrToASCII(str string, fromLocale string) string
 // The number of ASCII alternatives that are generated and the method for doing
 // so is unspecified, but @translit_locale (if specified) may improve the
 // transliteration if the language of the source string is known.
-func StrTokenizeAndFold(string string, translitLocale string) ([]*string, []string)
+func StrTokenizeAndFold(string string, translitLocale string) ([]string, []string)
 
 // g_ascii_strup (g_strcanon (str, "abc", '?'))
 //
@@ -6160,7 +6161,7 @@ func Strdup(str string) string
 // new array should be freed by first freeing each string, then the array
 // itself. g_strfreev() does this for you. If called on a nil value, g_strdupv()
 // simply returns nil.
-func Strdupv(strArray *string) []string
+func Strdupv(strArray string) []string
 
 // Strerror: returns a string corresponding to the given error code, e.g. "no
 // such process". Unlike strerror(), this always returns a string in UTF-8
@@ -6193,7 +6194,7 @@ func Strescape(source string, exceptions string) string
 // contains.
 //
 // If @str_array is nil, this function simply returns.
-func Strfreev(strArray *string)
+func Strfreev(strArray string)
 
 // NewString: creates a new #GString, initialized with the given string.
 func NewString(init string) *String
@@ -6221,7 +6222,7 @@ func StripContext(msgid string, msgval string) string
 // If @str_array has no items, the return value will be an empty string. If
 // @str_array contains a single item, @separator will not appear in the
 // resulting string.
-func Strjoinv(separator string, strArray *string) string
+func Strjoinv(separator string, strArray string) string
 
 // Strlcat: portability wrapper that calls strlcat() on systems which have it,
 // and emulates it otherwise. Appends nul-terminated @src string to @dest,
@@ -6352,7 +6353,7 @@ func Strtod(nptr string) (string, float64)
 func Strup(string string) string
 
 // StrvContains: checks if @strv contains @str. @strv must not be nil.
-func StrvContains(strv *string, str string) bool
+func StrvContains(strv string, str string) bool
 
 // StrvEqual: checks if @strv1 and @strv2 contain exactly the same elements in
 // exactly the same order. Elements are compared using g_str_equal(). To match
@@ -6360,13 +6361,13 @@ func StrvContains(strv *string, str string) bool
 // similar).
 //
 // Two empty arrays are considered equal. Neither @strv1 not @strv2 may be nil.
-func StrvEqual(strv1 *string, strv2 *string) bool
+func StrvEqual(strv1 string, strv2 string) bool
 
 func StrvGetType() glib.Type
 
 // StrvLength: returns the length of the given nil-terminated string array
 // @str_array. @str_array must not be nil.
-func StrvLength(strArray *string) uint
+func StrvLength(strArray string) uint
 
 // TestAddDataFunc: create a new test case, similar to g_test_create_case().
 // However the test is assumed to use no fixture, and test suites are
@@ -6510,7 +6511,7 @@ func TestFailed() bool
 //
 // This is approximately the same as calling g_test_build_filename("."), but you
 // don't need to free the return value.
-func TestGetDir(fileType TestFileType) *string
+func TestGetDir(fileType TestFileType) string
 
 // TestGetRoot: get the toplevel test suite for the test path API.
 func TestGetRoot() *TestSuite
@@ -7048,11 +7049,11 @@ func TryReallocN(mem unsafe.Pointer, nBlocks uint, nBlockBytes uint) unsafe.Poin
 
 // Ucs4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func Ucs4ToUTF16(str *uint32, len int32) (int32, int32, *uint16)
+func Ucs4ToUTF16(str uint32, len int32) (int32, int32, uint16)
 
 // Ucs4ToUTF8: convert a string from a 32-bit fixed width representation as
 // UCS-4. to UTF-8. The result will be terminated with a 0 byte.
-func Ucs4ToUTF8(str *uint32, len int32) (int32, int32, string)
+func Ucs4ToUTF8(str uint32, len int32) (int32, int32, string)
 
 // UnicharBreakType: determines the break type of @c. @c should be a Unicode
 // character (to derive a character from UTF-8 encoded text, use
@@ -7128,7 +7129,7 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (uint32, uint
 // character that typically has a glyph that is the mirror image of @ch's glyph
 // and @mirrored_ch is set, it puts that character in the address pointed to by
 // @mirrored_ch. Otherwise the original character is put.
-func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool
+func UnicharGetMirrorChar(ch uint32, mirroredCh uint32) bool
 
 // UnicharGetScript: looks up the Script for a particular character (as defined
 // by Unicode Standard Annex \#24). No check is made for @ch being a valid
@@ -7260,12 +7261,12 @@ func UnicharXdigitValue(c uint32) int
 
 // UnicodeCanonicalDecomposition: computes the canonical decomposition of a
 // Unicode character.
-func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32
+func UnicodeCanonicalDecomposition(ch uint32, resultLen uint) uint32
 
 // UnicodeCanonicalOrdering: computes the canonical ordering of a string
 // in-place. This rearranges decomposed characters in the string according to
 // their combining classes. See the Unicode manual for more information.
-func UnicodeCanonicalOrdering(string *uint32, len uint)
+func UnicodeCanonicalOrdering(string uint32, len uint)
 
 // UnicodeScriptFromIso15924: looks up the Unicode script for @iso15924. ISO
 // 15924 assigns four-letter codes to scripts. For example, the code for Arabic
@@ -7327,7 +7328,7 @@ func NewUnixFdSource(fd int, condition IOCondition) *Source
 // This function is safe to call from multiple threads concurrently.
 //
 // You will need to include `pwd.h` to get the definition of `struct passwd`.
-func UnixGetPasswdEntry(userName string) *unsafe.Pointer
+func UnixGetPasswdEntry(userName string) unsafe.Pointer
 
 // UnixOpenPipe: similar to the UNIX pipe() call, but on modern systems like
 // Linux uses the pipe2() system call, which atomically creates a pipe with the
@@ -7337,7 +7338,7 @@ func UnixGetPasswdEntry(userName string) *unsafe.Pointer
 //
 // This function does not take O_CLOEXEC, it takes FD_CLOEXEC as if for fcntl();
 // these are different on Linux/glibc.
-func UnixOpenPipe(fds *int, flags int) bool
+func UnixOpenPipe(fds int, flags int) bool
 
 // UnixSetFdNonblocking: control the non-blocking state of the given file
 // descriptor, according to @nonblock. On most systems this uses O_NONBLOCK, but
@@ -7384,7 +7385,7 @@ func NewUnixSignalSource(signum int) *Source
 // See your C library manual for more details about unlink(). Note that on
 // Windows, it is in general not possible to delete files that are open to some
 // process, or mapped into memory.
-func Unlink(filename *string) int
+func Unlink(filename string) int
 
 // Unsetenv: removes an environment variable from the environment.
 //
@@ -7402,13 +7403,13 @@ func Unlink(filename *string) int
 // g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
-func Unsetenv(variable *string)
+func Unsetenv(variable string)
 
 // URIBuild: creates a new #GUri from the given components according to @flags.
 //
 // See also g_uri_build_with_user(), which allows specifying the components of
 // the "userinfo" separately.
-func URIBuild(flags UriFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) *Uri
+func URIBuild(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) *URI
 
 // URIBuildWithUser: creates a new #GUri from the given components according to
 // @flags (G_URI_FLAGS_HAS_PASSWORD is added unconditionally). The @flags must
@@ -7418,7 +7419,7 @@ func URIBuild(flags UriFlags, scheme string, userinfo string, host string, port 
 // In contrast to g_uri_build(), this allows specifying the components of the
 // ‘userinfo’ field separately. Note that @user must be non-nil if either
 // @password or @auth_params is non-nil.
-func URIBuildWithUser(flags UriFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) *Uri
+func URIBuildWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) *URI
 
 func URIErrorQuark() Quark
 
@@ -7451,7 +7452,7 @@ func URIEscapeString(unescaped string, reservedCharsAllowed string, allowUTF8 bo
 //
 // See g_uri_split(), and the definition of Flags, for more information on the
 // effect of @flags.
-func URIIsValid(uriString string, flags UriFlags) bool
+func URIIsValid(uriString string, flags URIFlags) bool
 
 // URIJoin: joins the given components together according to @flags to create an
 // absolute URI string. @path may not be nil (though it may be the empty
@@ -7467,7 +7468,7 @@ func URIIsValid(uriString string, flags UriFlags) bool
 //
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
 // in @flags.
-func URIJoin(flags UriFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) string
+func URIJoin(flags URIFlags, scheme string, userinfo string, host string, port int, path string, query string, fragment string) string
 
 // URIJoinWithUser: joins the given components together according to @flags to
 // create an absolute URI string. @path may not be nil (though it may be the
@@ -7478,7 +7479,7 @@ func URIJoin(flags UriFlags, scheme string, userinfo string, host string, port i
 //
 // G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
 // in @flags.
-func URIJoinWithUser(flags UriFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) string
+func URIJoinWithUser(flags URIFlags, scheme string, user string, password string, authParams string, host string, port int, path string, query string, fragment string) string
 
 // URIListExtractUris: splits an URI list conforming to the text/uri-list mime
 // type defined in RFC 2483 into individual URIs, discarding any comments. The
@@ -7488,7 +7489,7 @@ func URIListExtractUris(uriList string) []string
 // URIParse: parses @uri_string according to @flags. If the result is not a
 // valid [absolute URI][relative-absolute-uris], it will be discarded, and an
 // error returned.
-func URIParse(uriString string, flags UriFlags) *Uri
+func URIParse(uriString string, flags URIFlags) *URI
 
 // URIParseParams: many URI schemes include one or more attribute/value pairs as
 // part of the URI value. This method can be used to parse them into a hash
@@ -7514,7 +7515,7 @@ func URIParse(uriString string, flags UriFlags) *Uri
 //
 // If @params cannot be parsed (for example, it contains two @separators
 // characters in a row), then @error is set and nil is returned.
-func URIParseParams(params string, length int, separators string, flags UriParamsFlags) *glib.HashTable
+func URIParseParams(params string, length int, separators string, flags URIParamsFlags) *HashTable
 
 // URIParseScheme: gets the scheme portion of a URI string. [RFC
 // 3986](https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme as:
@@ -7538,7 +7539,7 @@ func URIPeekScheme(uri string) string
 //
 // (If @base_uri_string is nil, this just returns @uri_ref, or nil if @uri_ref
 // is invalid or not absolute.)
-func URIResolveRelative(baseURIString string, uriRef string, flags UriFlags) string
+func URIResolveRelative(baseURIString string, uriRef string, flags URIFlags) string
 
 // URISplit: parses @uri_ref (which can be an [absolute or relative
 // URI][relative-absolute-uris]) according to @flags, and returns the pieces.
@@ -7555,7 +7556,7 @@ func URIResolveRelative(baseURIString string, uriRef string, flags UriFlags) str
 // Note that the G_URI_FLAGS_HAS_PASSWORD and G_URI_FLAGS_HAS_AUTH_PARAMS @flags
 // are ignored by g_uri_split(), since it always returns only the full userinfo;
 // use g_uri_split_with_user() if you want it split up.
-func URISplit(uriRef string, flags UriFlags) (string, string, string, int, string, string, string, bool)
+func URISplit(uriRef string, flags URIFlags) (string, string, string, int, string, string, string, bool)
 
 // URISplitNetwork: parses @uri_string (which must be an [absolute
 // URI][relative-absolute-uris]) according to @flags, and returns the pieces
@@ -7563,7 +7564,7 @@ func URISplit(uriRef string, flags UriFlags) (string, string, string, int, strin
 // more details; this is mostly a wrapper around that function with simpler
 // arguments. However, it will return an error if @uri_string is a relative URI,
 // or does not contain a hostname component.
-func URISplitNetwork(uriString string, flags UriFlags) (string, string, int, bool)
+func URISplitNetwork(uriString string, flags URIFlags) (string, string, int, bool)
 
 // URISplitWithUser: parses @uri_ref (which can be an [absolute or relative
 // URI][relative-absolute-uris]) according to @flags, and returns the pieces.
@@ -7575,7 +7576,7 @@ func URISplitNetwork(uriString string, flags UriFlags) (string, string, int, boo
 // effect of @flags. Note that @password will only be parsed out if @flags
 // contains G_URI_FLAGS_HAS_PASSWORD, and @auth_params will only be parsed out
 // if @flags contains G_URI_FLAGS_HAS_AUTH_PARAMS.
-func URISplitWithUser(uriRef string, flags UriFlags) (string, string, string, string, string, int, string, string, string, bool)
+func URISplitWithUser(uriRef string, flags URIFlags) (string, string, string, string, string, int, string, string, string, bool)
 
 // URIUnescapeBytes: unescapes a segment of an escaped string as binary data.
 //
@@ -7618,7 +7619,7 @@ func Usleep(microseconds uint32)
 
 // UTF16ToUcs4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
-func UTF16ToUcs4(str *uint16, len int32) (int32, int32, *uint32)
+func UTF16ToUcs4(str uint16, len int32) (int32, int32, uint32)
 
 // UTF16ToUTF8: convert a string from UTF-16 to UTF-8. The result will be
 // terminated with a 0 byte.
@@ -7631,7 +7632,7 @@ func UTF16ToUcs4(str *uint16, len int32) (int32, int32, *uint32)
 // e.g. include embedded NUL characters. The only validation done by this
 // function is to ensure that the input can be correctly interpreted as UTF-16,
 // i.e. it doesn't contain unpaired surrogates or partial character sequences.
-func UTF16ToUTF8(str *uint16, len int32) (int32, int32, string)
+func UTF16ToUTF8(str uint16, len int32) (int32, int32, string)
 
 // UTF8Casefold: converts a string into a form that is independent of case. The
 // result will not correspond to any particular case, but can be compared for
@@ -7829,17 +7830,17 @@ func UTF8Substring(str string, startPos int32, endPos int32) string
 // UTF8ToUcs4: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4. A trailing 0 character will be added to the string
 // after the converted text.
-func UTF8ToUcs4(str string, len int32) (int32, int32, *uint32)
+func UTF8ToUcs4(str string, len int32) (int32, int32, uint32)
 
 // UTF8ToUcs4Fast: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4, assuming valid UTF-8 input. This function is roughly
 // twice as fast as g_utf8_to_ucs4() but does no error checking on the input. A
 // trailing 0 character will be added to the string after the converted text.
-func UTF8ToUcs4Fast(str string, len int32) (int32, *uint32)
+func UTF8ToUcs4Fast(str string, len int32) (int32, uint32)
 
 // UTF8ToUTF16: convert a string from UTF-8 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func UTF8ToUTF16(str string, len int32) (int32, int32, *uint16)
+func UTF8ToUTF16(str string, len int32) (int32, int32, uint16)
 
 // UTF8Validate: validates UTF-8 encoded text. @str is the text to validate; if
 // @str is nul-terminated, then @max_len can be -1, otherwise @max_len should be
@@ -7930,7 +7931,7 @@ func VariantIsSignature(string string) bool
 // There may be implementation specific restrictions on deeply nested values,
 // which would result in a G_VARIANT_PARSE_ERROR_RECURSION error. #GVariant is
 // guaranteed to handle nesting up to at least 64 levels.
-func VariantParse(_type *VariantType, text string, limit string, endptr *string) *Variant
+func VariantParse(_type *VariantType, text string, limit string, endptr string) *Variant
 
 // VariantParseErrorPrintContext: pretty-prints a message showing the context of
 // a #GVariant parse error within the string for which parsing was attempted.
@@ -8000,12 +8001,16 @@ type Array struct {
 	// Len: the number of elements in the #GArray not including the possible
 	// terminating zero element.
 	Len uint
+
+	native *C.GArray
 }
 
 func wrapArray(p *C.GArray) *Array {
 	var v Array
+
 	v.Data = C.GoString(p.data)
 	v.Len = uint(p.len)
+
 	return &v
 }
 
@@ -8016,19 +8021,29 @@ func marshalArray(p uintptr) (interface{}, error) {
 	return wrapArray(c)
 }
 
+// Native returns the pointer to *C.GArray. The caller is expected to
+// cast.
+func (a *Array) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
+}
+
 // ByteArray: contains the public fields of a GByteArray.
 type ByteArray struct {
 	// Data: a pointer to the element data. The data may be moved as elements
 	// are added to the Array
-	Data *uint8
+	Data uint8
 	// Len: the number of elements in the Array
 	Len uint
+
+	native *C.GByteArray
 }
 
 func wrapByteArray(p *C.GByteArray) *ByteArray {
 	var v ByteArray
+
 	v.Data = uint8(p.data)
 	v.Len = uint(p.len)
+
 	return &v
 }
 
@@ -8037,6 +8052,12 @@ func marshalByteArray(p uintptr) (interface{}, error) {
 	c := (*C.GByteArray)(unsafe.Pointer(b))
 
 	return wrapByteArray(c)
+}
+
+// Native returns the pointer to *C.GByteArray. The caller is expected to
+// cast.
+func (b *ByteArray) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Bytes: a simple refcounted data type representing an immutable sequence of
@@ -8068,6 +8089,10 @@ type Bytes struct {
 
 func wrapBytes(p *C.GBytes) *Bytes {
 	v := Bytes{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Bytes).free)
+
 	return &v
 }
 
@@ -8076,6 +8101,14 @@ func marshalBytes(p uintptr) (interface{}, error) {
 	c := (*C.GBytes)(unsafe.Pointer(b))
 
 	return wrapBytes(c)
+}
+
+func (b *Bytes) free() {}
+
+// Native returns the pointer to *C.GBytes. The caller is expected to
+// cast.
+func (b *Bytes) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Checksum: an opaque structure representing a checksumming operation. To
@@ -8087,6 +8120,10 @@ type Checksum struct {
 
 func wrapChecksum(p *C.GChecksum) *Checksum {
 	v := Checksum{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Checksum).free)
+
 	return &v
 }
 
@@ -8095,6 +8132,14 @@ func marshalChecksum(p uintptr) (interface{}, error) {
 	c := (*C.GChecksum)(unsafe.Pointer(b))
 
 	return wrapChecksum(c)
+}
+
+func (c *Checksum) free() {}
+
+// Native returns the pointer to *C.GChecksum. The caller is expected to
+// cast.
+func (c *Checksum) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Cond: the #GCond struct is an opaque data structure that represents a
@@ -8147,6 +8192,10 @@ type Cond struct {
 
 func wrapCond(p *C.GCond) *Cond {
 	v := Cond{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Cond).free)
+
 	return &v
 }
 
@@ -8155,6 +8204,14 @@ func marshalCond(p uintptr) (interface{}, error) {
 	c := (*C.GCond)(unsafe.Pointer(b))
 
 	return wrapCond(c)
+}
+
+func (c *Cond) free() {}
+
+// Native returns the pointer to *C.GCond. The caller is expected to
+// cast.
+func (c *Cond) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Date: represents a day between January 1, Year 1 and a few thousand years in
@@ -8182,16 +8239,20 @@ type Date struct {
 	Month uint
 	// Year: the day of the day-month-year representation of the date
 	Year uint
+
+	native *C.GDate
 }
 
 func wrapDate(p *C.GDate) *Date {
 	var v Date
+
 	v.JulianDays = uint(p.julian_days)
 	v.Julian = uint(p.julian)
 	v.DMY = uint(p.dmy)
 	v.Day = uint(p.day)
 	v.Month = uint(p.month)
 	v.Year = uint(p.year)
+
 	return &v
 }
 
@@ -8202,6 +8263,12 @@ func marshalDate(p uintptr) (interface{}, error) {
 	return wrapDate(c)
 }
 
+// Native returns the pointer to *C.GDate. The caller is expected to
+// cast.
+func (d *Date) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 // DateTime: `GDateTime` is an opaque structure whose members cannot be accessed
 // directly.
 type DateTime struct {
@@ -8210,6 +8277,10 @@ type DateTime struct {
 
 func wrapDateTime(p *C.GDateTime) *DateTime {
 	v := DateTime{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DateTime).free)
+
 	return &v
 }
 
@@ -8220,6 +8291,14 @@ func marshalDateTime(p uintptr) (interface{}, error) {
 	return wrapDateTime(c)
 }
 
+func (d *DateTime) free() {}
+
+// Native returns the pointer to *C.GDateTime. The caller is expected to
+// cast.
+func (d *DateTime) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 // DebugKey: associates a string with a bit flag. Used in
 // g_parse_debug_string().
 type DebugKey struct {
@@ -8227,12 +8306,16 @@ type DebugKey struct {
 	Key string
 	// Value: the flag
 	Value uint
+
+	native *C.GDebugKey
 }
 
 func wrapDebugKey(p *C.GDebugKey) *DebugKey {
 	var v DebugKey
+
 	v.Key = C.GoString(p.key)
 	v.Value = uint(p.value)
+
 	return &v
 }
 
@@ -8241,6 +8324,12 @@ func marshalDebugKey(p uintptr) (interface{}, error) {
 	c := (*C.GDebugKey)(unsafe.Pointer(b))
 
 	return wrapDebugKey(c)
+}
+
+// Native returns the pointer to *C.GDebugKey. The caller is expected to
+// cast.
+func (d *DebugKey) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Error: the `GError` structure contains information about an error that has
@@ -8252,16 +8341,22 @@ type Error struct {
 	Code int
 	// Message: human-readable informative error message
 	Message string
+
+	native *C.GError
 }
 
 func wrapError(p *C.GError) *Error {
 	var v Error
+
 	{
 		tmp := uint32(p.domain)
+
 		v.Domain = Quark(tmp)
+
 	}
 	v.Code = int(p.code)
 	v.Message = C.GoString(p.message)
+
 	return &v
 }
 
@@ -8270,6 +8365,12 @@ func marshalError(p uintptr) (interface{}, error) {
 	c := (*C.GError)(unsafe.Pointer(b))
 
 	return wrapError(c)
+}
+
+// Native returns the pointer to *C.GError. The caller is expected to
+// cast.
+func (e *Error) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // HashTable: the Table struct is an opaque data structure to represent a [Hash
@@ -8281,6 +8382,10 @@ type HashTable struct {
 
 func wrapHashTable(p *C.GHashTable) *HashTable {
 	v := HashTable{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*HashTable).free)
+
 	return &v
 }
 
@@ -8289,6 +8394,14 @@ func marshalHashTable(p uintptr) (interface{}, error) {
 	c := (*C.GHashTable)(unsafe.Pointer(b))
 
 	return wrapHashTable(c)
+}
+
+func (h *HashTable) free() {}
+
+// Native returns the pointer to *C.GHashTable. The caller is expected to
+// cast.
+func (h *HashTable) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
 }
 
 // HashTableIter: a GHashTableIter structure represents an iterator that can be
@@ -8304,6 +8417,10 @@ type HashTableIter struct {
 
 func wrapHashTableIter(p *C.GHashTableIter) *HashTableIter {
 	v := HashTableIter{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*HashTableIter).free)
+
 	return &v
 }
 
@@ -8312,6 +8429,14 @@ func marshalHashTableIter(p uintptr) (interface{}, error) {
 	c := (*C.GHashTableIter)(unsafe.Pointer(b))
 
 	return wrapHashTableIter(c)
+}
+
+func (h *HashTableIter) free() {}
+
+// Native returns the pointer to *C.GHashTableIter. The caller is expected to
+// cast.
+func (h *HashTableIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
 }
 
 // Hook: the #GHook struct represents a single hook function in a List.
@@ -8335,10 +8460,13 @@ type Hook struct {
 	// Destroy: the default @finalize_hook function of a List calls this member
 	// of the hook that is being finalized
 	Destroy unsafe.Pointer
+
+	native *C.GHook
 }
 
 func wrapHook(p *C.GHook) *Hook {
 	var v Hook
+
 	v.Data = unsafe.Pointer(p.data)
 	v.Next = wrap * Hook(p.next)
 	v.Prev = wrap * Hook(p.prev)
@@ -8355,6 +8483,12 @@ func marshalHook(p uintptr) (interface{}, error) {
 	c := (*C.GHook)(unsafe.Pointer(b))
 
 	return wrapHook(c)
+}
+
+// Native returns the pointer to *C.GHook. The caller is expected to
+// cast.
+func (h *Hook) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
 }
 
 // HookList: the List struct represents a list of hook functions.
@@ -8374,10 +8508,13 @@ type HookList struct {
 	FinalizeHook HookFinalizeFunc
 	// Dummy: unused
 	Dummy [2]unsafe.Pointer
+
+	native *C.GHookList
 }
 
 func wrapHookList(p *C.GHookList) *HookList {
 	var v HookList
+
 	v.SeqID = uint32(p.seq_id)
 	v.HookSize = uint(p.hook_size)
 	v.IsSetup = uint(p.is_setup)
@@ -8395,6 +8532,12 @@ func marshalHookList(p uintptr) (interface{}, error) {
 	return wrapHookList(c)
 }
 
+// Native returns the pointer to *C.GHookList. The caller is expected to
+// cast.
+func (h *HookList) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
+}
+
 // IOChannel: a data structure representing an IO Channel. The fields should be
 // considered private and should only be accessed with the following functions.
 type IOChannel struct {
@@ -8403,6 +8546,10 @@ type IOChannel struct {
 
 func wrapIOChannel(p *C.GIOChannel) *IOChannel {
 	v := IOChannel{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*IOChannel).free)
+
 	return &v
 }
 
@@ -8413,13 +8560,23 @@ func marshalIOChannel(p uintptr) (interface{}, error) {
 	return wrapIOChannel(c)
 }
 
+func (i *IOChannel) free() {}
+
+// Native returns the pointer to *C.GIOChannel. The caller is expected to
+// cast.
+func (i *IOChannel) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 // IOFuncs: a table of functions used to handle different types of OChannel in a
 // generic way.
 type IOFuncs struct {
+	native *C.GIOFuncs
 }
 
 func wrapIOFuncs(p *C.GIOFuncs) *IOFuncs {
 	var v IOFuncs
+
 	return &v
 }
 
@@ -8430,6 +8587,12 @@ func marshalIOFuncs(p uintptr) (interface{}, error) {
 	return wrapIOFuncs(c)
 }
 
+// Native returns the pointer to *C.GIOFuncs. The caller is expected to
+// cast.
+func (i *IOFuncs) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 // KeyFile: the GKeyFile struct contains only private data and should not be
 // accessed directly.
 type KeyFile struct {
@@ -8438,6 +8601,10 @@ type KeyFile struct {
 
 func wrapKeyFile(p *C.GKeyFile) *KeyFile {
 	v := KeyFile{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*KeyFile).free)
+
 	return &v
 }
 
@@ -8448,6 +8615,14 @@ func marshalKeyFile(p uintptr) (interface{}, error) {
 	return wrapKeyFile(c)
 }
 
+func (k *KeyFile) free() {}
+
+// Native returns the pointer to *C.GKeyFile. The caller is expected to
+// cast.
+func (k *KeyFile) Native() unsafe.Pointer {
+	return unsafe.Pointer(k.native)
+}
+
 // List: the #GList struct is used for each element in a doubly-linked list.
 type List struct {
 	// Data: holds the element's data, which can be a pointer to any kind of
@@ -8455,16 +8630,20 @@ type List struct {
 	// Macros][glib-Type-Conversion-Macros]
 	Data unsafe.Pointer
 	// Next: contains the link to the next element in the list
-	Next *glib.List
+	Next *List
 	// Prev: contains the link to the previous element in the list
-	Prev *glib.List
+	Prev *List
+
+	native *C.GList
 }
 
 func wrapList(p *C.GList) *List {
 	var v List
+
 	v.Data = unsafe.Pointer(p.data)
-	v.Next = wrap * glib.List(p.next)
-	v.Prev = wrap * glib.List(p.prev)
+	v.Next = wrap * List(p.next)
+	v.Prev = wrap * List(p.prev)
+
 	return &v
 }
 
@@ -8473,6 +8652,12 @@ func marshalList(p uintptr) (interface{}, error) {
 	c := (*C.GList)(unsafe.Pointer(b))
 
 	return wrapList(c)
+}
+
+// Native returns the pointer to *C.GList. The caller is expected to
+// cast.
+func (l *List) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // LogField: structure representing a single field in a structured log entry.
@@ -8489,13 +8674,17 @@ type LogField struct {
 	Value unsafe.Pointer
 	// Length: length of @value, in bytes, or -1 if it is nul-terminated
 	Length int
+
+	native *C.GLogField
 }
 
 func wrapLogField(p *C.GLogField) *LogField {
 	var v LogField
+
 	v.Key = C.GoString(p.key)
 	v.Value = unsafe.Pointer(p.value)
 	v.Length = int(p.length)
+
 	return &v
 }
 
@@ -8506,6 +8695,12 @@ func marshalLogField(p uintptr) (interface{}, error) {
 	return wrapLogField(c)
 }
 
+// Native returns the pointer to *C.GLogField. The caller is expected to
+// cast.
+func (l *LogField) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
+}
+
 // MainContext: the `GMainContext` struct is an opaque data type representing a
 // set of sources to be handled in a main loop.
 type MainContext struct {
@@ -8514,6 +8709,10 @@ type MainContext struct {
 
 func wrapMainContext(p *C.GMainContext) *MainContext {
 	v := MainContext{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MainContext).free)
+
 	return &v
 }
 
@@ -8524,6 +8723,14 @@ func marshalMainContext(p uintptr) (interface{}, error) {
 	return wrapMainContext(c)
 }
 
+func (m *MainContext) free() {}
+
+// Native returns the pointer to *C.GMainContext. The caller is expected to
+// cast.
+func (m *MainContext) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 // MainLoop: the `GMainLoop` struct is an opaque data type representing the main
 // event loop of a GLib or GTK+ application.
 type MainLoop struct {
@@ -8532,6 +8739,10 @@ type MainLoop struct {
 
 func wrapMainLoop(p *C.GMainLoop) *MainLoop {
 	v := MainLoop{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MainLoop).free)
+
 	return &v
 }
 
@@ -8540,6 +8751,14 @@ func marshalMainLoop(p uintptr) (interface{}, error) {
 	c := (*C.GMainLoop)(unsafe.Pointer(b))
 
 	return wrapMainLoop(c)
+}
+
+func (m *MainLoop) free() {}
+
+// Native returns the pointer to *C.GMainLoop. The caller is expected to
+// cast.
+func (m *MainLoop) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // MappedFile: the File represents a file mapping created with
@@ -8551,6 +8770,10 @@ type MappedFile struct {
 
 func wrapMappedFile(p *C.GMappedFile) *MappedFile {
 	v := MappedFile{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MappedFile).free)
+
 	return &v
 }
 
@@ -8559,6 +8782,14 @@ func marshalMappedFile(p uintptr) (interface{}, error) {
 	c := (*C.GMappedFile)(unsafe.Pointer(b))
 
 	return wrapMappedFile(c)
+}
+
+func (m *MappedFile) free() {}
+
+// Native returns the pointer to *C.GMappedFile. The caller is expected to
+// cast.
+func (m *MappedFile) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // MarkupParseContext: a parse context is used to parse a stream of bytes that
@@ -8571,6 +8802,10 @@ type MarkupParseContext struct {
 
 func wrapMarkupParseContext(p *C.GMarkupParseContext) *MarkupParseContext {
 	v := MarkupParseContext{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MarkupParseContext).free)
+
 	return &v
 }
 
@@ -8581,6 +8816,14 @@ func marshalMarkupParseContext(p uintptr) (interface{}, error) {
 	return wrapMarkupParseContext(c)
 }
 
+func (m *MarkupParseContext) free() {}
+
+// Native returns the pointer to *C.GMarkupParseContext. The caller is expected to
+// cast.
+func (m *MarkupParseContext) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 // MarkupParser: any of the fields in Parser can be nil, in which case they will
 // be ignored. Except for the @error function, any of these callbacks can set an
 // error; in particular the G_MARKUP_ERROR_UNKNOWN_ELEMENT,
@@ -8589,10 +8832,12 @@ func marshalMarkupParseContext(p uintptr) (interface{}, error) {
 // callback, g_markup_parse_context_parse() will report that error back to its
 // caller.
 type MarkupParser struct {
+	native *C.GMarkupParser
 }
 
 func wrapMarkupParser(p *C.GMarkupParser) *MarkupParser {
 	var v MarkupParser
+
 	return &v
 }
 
@@ -8603,6 +8848,12 @@ func marshalMarkupParser(p uintptr) (interface{}, error) {
 	return wrapMarkupParser(c)
 }
 
+// Native returns the pointer to *C.GMarkupParser. The caller is expected to
+// cast.
+func (m *MarkupParser) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 // MatchInfo: a GMatchInfo is an opaque struct used to return information about
 // matches.
 type MatchInfo struct {
@@ -8611,6 +8862,10 @@ type MatchInfo struct {
 
 func wrapMatchInfo(p *C.GMatchInfo) *MatchInfo {
 	v := MatchInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*MatchInfo).free)
+
 	return &v
 }
 
@@ -8621,6 +8876,14 @@ func marshalMatchInfo(p uintptr) (interface{}, error) {
 	return wrapMatchInfo(c)
 }
 
+func (m *MatchInfo) free() {}
+
+// Native returns the pointer to *C.GMatchInfo. The caller is expected to
+// cast.
+func (m *MatchInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
+}
+
 // MemVTable: a set of functions used to perform memory allocation. The same
 // VTable must be used for all allocations in the same program; a call to
 // g_mem_set_vtable(), if it exists, should be prior to any use of GLib.
@@ -8628,10 +8891,12 @@ func marshalMatchInfo(p uintptr) (interface{}, error) {
 // This functions related to this has been deprecated in 2.46, and no longer
 // work.
 type MemVTable struct {
+	native *C.GMemVTable
 }
 
 func wrapMemVTable(p *C.GMemVTable) *MemVTable {
 	var v MemVTable
+
 	return &v
 }
 
@@ -8640,6 +8905,12 @@ func marshalMemVTable(p uintptr) (interface{}, error) {
 	c := (*C.GMemVTable)(unsafe.Pointer(b))
 
 	return wrapMemVTable(c)
+}
+
+// Native returns the pointer to *C.GMemVTable. The caller is expected to
+// cast.
+func (m *MemVTable) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Node: the #GNode struct represents one node in a [n-ary
@@ -8658,15 +8929,19 @@ type Node struct {
 	// Children: points to the first child of the #GNode. The other children are
 	// accessed by using the @next pointer of each child.
 	Children *Node
+
+	native *C.GNode
 }
 
 func wrapNode(p *C.GNode) *Node {
 	var v Node
+
 	v.Data = unsafe.Pointer(p.data)
 	v.Next = wrap * Node(p.next)
 	v.Prev = wrap * Node(p.prev)
 	v.Parent = wrap * Node(p.parent)
 	v.Children = wrap * Node(p.children)
+
 	return &v
 }
 
@@ -8677,6 +8952,12 @@ func marshalNode(p uintptr) (interface{}, error) {
 	return wrapNode(c)
 }
 
+// Native returns the pointer to *C.GNode. The caller is expected to
+// cast.
+func (n *Node) Native() unsafe.Pointer {
+	return unsafe.Pointer(n.native)
+}
+
 // Once: a #GOnce struct controls a one-time initialization function. Any
 // one-time initialization function must have its own unique #GOnce struct.
 type Once struct {
@@ -8685,12 +8966,16 @@ type Once struct {
 	// Retval: the value returned by the call to the function, if @status is
 	// G_ONCE_STATUS_READY
 	Retval unsafe.Pointer
+
+	native *C.GOnce
 }
 
 func wrapOnce(p *C.GOnce) *Once {
 	var v Once
+
 	v.Status = OnceStatus(p.status)
 	v.Retval = unsafe.Pointer(p.retval)
+
 	return &v
 }
 
@@ -8699,6 +8984,12 @@ func marshalOnce(p uintptr) (interface{}, error) {
 	c := (*C.GOnce)(unsafe.Pointer(b))
 
 	return wrapOnce(c)
+}
+
+// Native returns the pointer to *C.GOnce. The caller is expected to
+// cast.
+func (o *Once) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // OptionEntry: a GOptionEntry struct defines a single option. To have an
@@ -8740,10 +9031,13 @@ type OptionEntry struct {
 	// the @translate_func of the group, see
 	// g_option_group_set_translation_domain().
 	ArgDescription string
+
+	native *C.GOptionEntry
 }
 
 func wrapOptionEntry(p *C.GOptionEntry) *OptionEntry {
 	var v OptionEntry
+
 	v.LongName = C.GoString(p.long_name)
 	v.ShortName = byte(p.short_name)
 	v.Flags = int(p.flags)
@@ -8751,6 +9045,7 @@ func wrapOptionEntry(p *C.GOptionEntry) *OptionEntry {
 	v.ArgData = unsafe.Pointer(p.arg_data)
 	v.Description = C.GoString(p.description)
 	v.ArgDescription = C.GoString(p.arg_description)
+
 	return &v
 }
 
@@ -8759,6 +9054,12 @@ func marshalOptionEntry(p uintptr) (interface{}, error) {
 	c := (*C.GOptionEntry)(unsafe.Pointer(b))
 
 	return wrapOptionEntry(c)
+}
+
+// Native returns the pointer to *C.GOptionEntry. The caller is expected to
+// cast.
+func (o *OptionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // OptionGroup: a `GOptionGroup` struct defines the options in a single group.
@@ -8774,6 +9075,10 @@ type OptionGroup struct {
 
 func wrapOptionGroup(p *C.GOptionGroup) *OptionGroup {
 	v := OptionGroup{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*OptionGroup).free)
+
 	return &v
 }
 
@@ -8782,6 +9087,14 @@ func marshalOptionGroup(p uintptr) (interface{}, error) {
 	c := (*C.GOptionGroup)(unsafe.Pointer(b))
 
 	return wrapOptionGroup(c)
+}
+
+func (o *OptionGroup) free() {}
+
+// Native returns the pointer to *C.GOptionGroup. The caller is expected to
+// cast.
+func (o *OptionGroup) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // PollFD: represents a file descriptor, which events to poll for, and which
@@ -8797,13 +9110,17 @@ type PollFD struct {
 	// Revents: a bitwise combination of flags from OCondition, returned from
 	// the poll() function to indicate which events occurred.
 	Revents uint16
+
+	native *C.GPollFD
 }
 
 func wrapPollFD(p *C.GPollFD) *PollFD {
 	var v PollFD
+
 	v.Fd = int(p.fd)
 	v.Events = uint16(p.events)
 	v.Revents = uint16(p.revents)
+
 	return &v
 }
 
@@ -8812,6 +9129,12 @@ func marshalPollFD(p uintptr) (interface{}, error) {
 	c := (*C.GPollFD)(unsafe.Pointer(b))
 
 	return wrapPollFD(c)
+}
+
+// Native returns the pointer to *C.GPollFD. The caller is expected to
+// cast.
+func (p *PollFD) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Private: the #GPrivate struct is an opaque data structure to represent a
@@ -8837,6 +9160,10 @@ type Private struct {
 
 func wrapPrivate(p *C.GPrivate) *Private {
 	v := Private{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Private).free)
+
 	return &v
 }
 
@@ -8847,19 +9174,31 @@ func marshalPrivate(p uintptr) (interface{}, error) {
 	return wrapPrivate(c)
 }
 
+func (p *Private) free() {}
+
+// Native returns the pointer to *C.GPrivate. The caller is expected to
+// cast.
+func (p *Private) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 // PtrArray: contains the public fields of a pointer array.
 type PtrArray struct {
 	// Pdata: points to the array of pointers, which may be moved when the array
 	// grows
-	Pdata *unsafe.Pointer
+	Pdata unsafe.Pointer
 	// Len: number of pointers in the array
 	Len uint
+
+	native *C.GPtrArray
 }
 
 func wrapPtrArray(p *C.GPtrArray) *PtrArray {
 	var v PtrArray
+
 	v.Pdata = unsafe.Pointer(p.pdata)
 	v.Len = uint(p.len)
+
 	return &v
 }
 
@@ -8870,21 +9209,31 @@ func marshalPtrArray(p uintptr) (interface{}, error) {
 	return wrapPtrArray(c)
 }
 
+// Native returns the pointer to *C.GPtrArray. The caller is expected to
+// cast.
+func (p *PtrArray) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 // Queue: contains the public fields of a [Queue][glib-Double-ended-Queues].
 type Queue struct {
 	// Head: a pointer to the first element of the queue
-	Head *glib.List
+	Head *List
 	// Tail: a pointer to the last element of the queue
-	Tail *glib.List
+	Tail *List
 	// Length: the number of elements in the queue
 	Length uint
+
+	native *C.GQueue
 }
 
 func wrapQueue(p *C.GQueue) *Queue {
 	var v Queue
-	v.Head = wrap * glib.List(p.head)
-	v.Tail = wrap * glib.List(p.tail)
+
+	v.Head = wrap * List(p.head)
+	v.Tail = wrap * List(p.tail)
 	v.Length = uint(p.length)
+
 	return &v
 }
 
@@ -8893,6 +9242,12 @@ func marshalQueue(p uintptr) (interface{}, error) {
 	c := (*C.GQueue)(unsafe.Pointer(b))
 
 	return wrapQueue(c)
+}
+
+// Native returns the pointer to *C.GQueue. The caller is expected to
+// cast.
+func (q *Queue) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // RWLock: the GRWLock struct is an opaque data structure to represent a
@@ -8947,6 +9302,10 @@ type RWLock struct {
 
 func wrapRWLock(p *C.GRWLock) *RWLock {
 	v := RWLock{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RWLock).free)
+
 	return &v
 }
 
@@ -8955,6 +9314,14 @@ func marshalRWLock(p uintptr) (interface{}, error) {
 	c := (*C.GRWLock)(unsafe.Pointer(b))
 
 	return wrapRWLock(c)
+}
+
+func (r *RWLock) free() {}
+
+// Native returns the pointer to *C.GRWLock. The caller is expected to
+// cast.
+func (r *RWLock) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // RecMutex: the GRecMutex struct is an opaque data structure to represent a
@@ -8974,6 +9341,10 @@ type RecMutex struct {
 
 func wrapRecMutex(p *C.GRecMutex) *RecMutex {
 	v := RecMutex{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RecMutex).free)
+
 	return &v
 }
 
@@ -8982,6 +9353,14 @@ func marshalRecMutex(p uintptr) (interface{}, error) {
 	c := (*C.GRecMutex)(unsafe.Pointer(b))
 
 	return wrapRecMutex(c)
+}
+
+func (r *RecMutex) free() {}
+
+// Native returns the pointer to *C.GRecMutex. The caller is expected to
+// cast.
+func (r *RecMutex) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Regex: the g_regex_*() functions implement regular expression pattern
@@ -9048,6 +9427,10 @@ type Regex struct {
 
 func wrapRegex(p *C.GRegex) *Regex {
 	v := Regex{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Regex).free)
+
 	return &v
 }
 
@@ -9058,6 +9441,14 @@ func marshalRegex(p uintptr) (interface{}, error) {
 	return wrapRegex(c)
 }
 
+func (r *Regex) free() {}
+
+// Native returns the pointer to *C.GRegex. The caller is expected to
+// cast.
+func (r *Regex) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 // SList: the List struct is used for each element in the singly-linked list.
 type SList struct {
 	// Data: holds the element's data, which can be a pointer to any kind of
@@ -9065,13 +9456,17 @@ type SList struct {
 	// Macros][glib-Type-Conversion-Macros]
 	Data unsafe.Pointer
 	// Next: contains the link to the next element in the list.
-	Next *glib.SList
+	Next *SList
+
+	native *C.GSList
 }
 
 func wrapSList(p *C.GSList) *SList {
 	var v SList
+
 	v.Data = unsafe.Pointer(p.data)
-	v.Next = wrap * glib.SList(p.next)
+	v.Next = wrap * SList(p.next)
+
 	return &v
 }
 
@@ -9080,6 +9475,12 @@ func marshalSList(p uintptr) (interface{}, error) {
 	c := (*C.GSList)(unsafe.Pointer(b))
 
 	return wrapSList(c)
+}
+
+// Native returns the pointer to *C.GSList. The caller is expected to
+// cast.
+func (s *SList) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Scanner: the data structure representing a lexical scanner.
@@ -9131,6 +9532,7 @@ type Scanner struct {
 
 func wrapScanner(p *C.GScanner) *Scanner {
 	v := Scanner{native: p}
+
 	v.UserData = unsafe.Pointer(p.user_data)
 	v.MaxParseErrors = uint(p.max_parse_errors)
 	v.ParseErrors = uint(p.parse_errors)
@@ -9146,6 +9548,10 @@ func wrapScanner(p *C.GScanner) *Scanner {
 	v.NextLine = uint(p.next_line)
 	v.NextPosition = uint(p.next_position)
 	v.MsgHandler = wrapScannerMsgFunc(p.msg_handler)
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Scanner).free)
+
 	return &v
 }
 
@@ -9154,6 +9560,14 @@ func marshalScanner(p uintptr) (interface{}, error) {
 	c := (*C.GScanner)(unsafe.Pointer(b))
 
 	return wrapScanner(c)
+}
+
+func (s *Scanner) free() {}
+
+// Native returns the pointer to *C.GScanner. The caller is expected to
+// cast.
+func (s *Scanner) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // ScannerConfig: specifies the #GScanner parser configuration. Most settings
@@ -9245,6 +9659,7 @@ type ScannerConfig struct {
 
 func wrapScannerConfig(p *C.GScannerConfig) *ScannerConfig {
 	v := ScannerConfig{native: p}
+
 	v.CsetSkipCharacters = C.GoString(p.cset_skip_characters)
 	v.CsetIdentifierFirst = C.GoString(p.cset_identifier_first)
 	v.CsetIdentifierNth = C.GoString(p.cset_identifier_nth)
@@ -9271,6 +9686,10 @@ func wrapScannerConfig(p *C.GScannerConfig) *ScannerConfig {
 	v.Symbol2Token = uint(p.symbol_2_token)
 	v.Scope0Fallback = uint(p.scope_0_fallback)
 	v.StoreInt64 = uint(p.store_int64)
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ScannerConfig).free)
+
 	return &v
 }
 
@@ -9281,6 +9700,14 @@ func marshalScannerConfig(p uintptr) (interface{}, error) {
 	return wrapScannerConfig(c)
 }
 
+func (s *ScannerConfig) free() {}
+
+// Native returns the pointer to *C.GScannerConfig. The caller is expected to
+// cast.
+func (s *ScannerConfig) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 // Source: the `GSource` struct is an opaque data type representing an event
 // source.
 type Source struct {
@@ -9289,6 +9716,10 @@ type Source struct {
 
 func wrapSource(p *C.GSource) *Source {
 	v := Source{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Source).free)
+
 	return &v
 }
 
@@ -9299,13 +9730,23 @@ func marshalSource(p uintptr) (interface{}, error) {
 	return wrapSource(c)
 }
 
+func (s *Source) free() {}
+
+// Native returns the pointer to *C.GSource. The caller is expected to
+// cast.
+func (s *Source) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 // SourceCallbackFuncs: the `GSourceCallbackFuncs` struct contains functions for
 // managing callback objects.
 type SourceCallbackFuncs struct {
+	native *C.GSourceCallbackFuncs
 }
 
 func wrapSourceCallbackFuncs(p *C.GSourceCallbackFuncs) *SourceCallbackFuncs {
 	var v SourceCallbackFuncs
+
 	return &v
 }
 
@@ -9314,6 +9755,12 @@ func marshalSourceCallbackFuncs(p uintptr) (interface{}, error) {
 	c := (*C.GSourceCallbackFuncs)(unsafe.Pointer(b))
 
 	return wrapSourceCallbackFuncs(c)
+}
+
+// Native returns the pointer to *C.GSourceCallbackFuncs. The caller is expected to
+// cast.
+func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // SourceFuncs: the `GSourceFuncs` struct contains a table of functions used to
@@ -9342,6 +9789,10 @@ type SourceFuncs struct {
 
 func wrapSourceFuncs(p *C.GSourceFuncs) *SourceFuncs {
 	v := SourceFuncs{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SourceFuncs).free)
+
 	return &v
 }
 
@@ -9350,6 +9801,14 @@ func marshalSourceFuncs(p uintptr) (interface{}, error) {
 	c := (*C.GSourceFuncs)(unsafe.Pointer(b))
 
 	return wrapSourceFuncs(c)
+}
+
+func (s *SourceFuncs) free() {}
+
+// Native returns the pointer to *C.GSourceFuncs. The caller is expected to
+// cast.
+func (s *SourceFuncs) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // String: the GString struct contains the public fields of a GString.
@@ -9363,13 +9822,17 @@ type String struct {
 	// AllocatedLen: the number of bytes that can be stored in the string before
 	// it needs to be reallocated. May be larger than @len.
 	AllocatedLen uint
+
+	native *C.GString
 }
 
 func wrapString(p *C.GString) *String {
 	var v String
+
 	v.Str = C.GoString(p.str)
 	v.Len = uint(p.len)
 	v.AllocatedLen = uint(p.allocated_len)
+
 	return &v
 }
 
@@ -9378,6 +9841,12 @@ func marshalString(p uintptr) (interface{}, error) {
 	c := (*C.GString)(unsafe.Pointer(b))
 
 	return wrapString(c)
+}
+
+// Native returns the pointer to *C.GString. The caller is expected to
+// cast.
+func (s *String) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type TestConfig struct {
@@ -9392,16 +9861,20 @@ type TestConfig struct {
 	TestQuiet bool
 
 	TestUndefined bool
+
+	native *C.GTestConfig
 }
 
 func wrapTestConfig(p *C.GTestConfig) *TestConfig {
 	var v TestConfig
+
 	v.TestInitialized = bool(p.test_initialized)
 	v.TestQuick = bool(p.test_quick)
 	v.TestPerf = bool(p.test_perf)
 	v.TestVerbose = bool(p.test_verbose)
 	v.TestQuiet = bool(p.test_quiet)
 	v.TestUndefined = bool(p.test_undefined)
+
 	return &v
 }
 
@@ -9412,12 +9885,22 @@ func marshalTestConfig(p uintptr) (interface{}, error) {
 	return wrapTestConfig(c)
 }
 
+// Native returns the pointer to *C.GTestConfig. The caller is expected to
+// cast.
+func (t *TestConfig) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
 type TestLogBuffer struct {
 	native *C.GTestLogBuffer
 }
 
 func wrapTestLogBuffer(p *C.GTestLogBuffer) *TestLogBuffer {
 	v := TestLogBuffer{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*TestLogBuffer).free)
+
 	return &v
 }
 
@@ -9428,25 +9911,37 @@ func marshalTestLogBuffer(p uintptr) (interface{}, error) {
 	return wrapTestLogBuffer(c)
 }
 
+func (t *TestLogBuffer) free() {}
+
+// Native returns the pointer to *C.GTestLogBuffer. The caller is expected to
+// cast.
+func (t *TestLogBuffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
 type TestLogMsg struct {
 	LogType TestLogType
 
 	NStrings uint
 
-	Strings *string
+	Strings string
 
 	NNums uint
 
-	Nums *float64
+	Nums float64
+
+	native *C.GTestLogMsg
 }
 
 func wrapTestLogMsg(p *C.GTestLogMsg) *TestLogMsg {
 	var v TestLogMsg
+
 	v.LogType = TestLogType(p.log_type)
 	v.NStrings = uint(p.n_strings)
 	v.Strings = C.GoString(p.strings)
 	v.NNums = uint(p.n_nums)
 	v.Nums = float64(p.nums)
+
 	return &v
 }
 
@@ -9455,6 +9950,12 @@ func marshalTestLogMsg(p uintptr) (interface{}, error) {
 	c := (*C.GTestLogMsg)(unsafe.Pointer(b))
 
 	return wrapTestLogMsg(c)
+}
+
+// Native returns the pointer to *C.GTestLogMsg. The caller is expected to
+// cast.
+func (t *TestLogMsg) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // Thread: the #GThread struct represents a running thread. This struct is
@@ -9473,6 +9974,10 @@ type Thread struct {
 
 func wrapThread(p *C.GThread) *Thread {
 	v := Thread{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Thread).free)
+
 	return &v
 }
 
@@ -9481,6 +9986,14 @@ func marshalThread(p uintptr) (interface{}, error) {
 	c := (*C.GThread)(unsafe.Pointer(b))
 
 	return wrapThread(c)
+}
+
+func (t *Thread) free() {}
+
+// Native returns the pointer to *C.GThread. The caller is expected to
+// cast.
+func (t *Thread) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // ThreadPool: the Pool struct represents a thread pool. It has three public
@@ -9493,13 +10006,17 @@ type ThreadPool struct {
 	UserData unsafe.Pointer
 	// Exclusive: are all threads exclusive to this pool
 	Exclusive bool
+
+	native *C.GThreadPool
 }
 
 func wrapThreadPool(p *C.GThreadPool) *ThreadPool {
 	var v ThreadPool
+
 	v.Func = wrapFunc(p._func)
 	v.UserData = unsafe.Pointer(p.user_data)
 	v.Exclusive = bool(p.exclusive)
+
 	return &v
 }
 
@@ -9508,6 +10025,12 @@ func marshalThreadPool(p uintptr) (interface{}, error) {
 	c := (*C.GThreadPool)(unsafe.Pointer(b))
 
 	return wrapThreadPool(c)
+}
+
+// Native returns the pointer to *C.GThreadPool. The caller is expected to
+// cast.
+func (t *ThreadPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // TimeVal: represents a precise time, with seconds and microseconds. Similar to
@@ -9522,12 +10045,16 @@ type TimeVal struct {
 	TvSec int32
 	// TvUsec: microseconds
 	TvUsec int32
+
+	native *C.GTimeVal
 }
 
 func wrapTimeVal(p *C.GTimeVal) *TimeVal {
 	var v TimeVal
+
 	v.TvSec = int32(p.tv_sec)
 	v.TvUsec = int32(p.tv_usec)
+
 	return &v
 }
 
@@ -9538,6 +10065,12 @@ func marshalTimeVal(p uintptr) (interface{}, error) {
 	return wrapTimeVal(c)
 }
 
+// Native returns the pointer to *C.GTimeVal. The caller is expected to
+// cast.
+func (t *TimeVal) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
 // TimeZone: GTimeZone is an opaque structure whose members cannot be accessed
 // directly.
 type TimeZone struct {
@@ -9546,6 +10079,10 @@ type TimeZone struct {
 
 func wrapTimeZone(p *C.GTimeZone) *TimeZone {
 	v := TimeZone{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*TimeZone).free)
+
 	return &v
 }
 
@@ -9556,17 +10093,29 @@ func marshalTimeZone(p uintptr) (interface{}, error) {
 	return wrapTimeZone(c)
 }
 
+func (t *TimeZone) free() {}
+
+// Native returns the pointer to *C.GTimeZone. The caller is expected to
+// cast.
+func (t *TimeZone) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
 // TrashStack: each piece of memory that is pushed onto the stack is cast to a
 // GTrashStack*.
 type TrashStack struct {
 	// Next: pointer to the previous element of the stack, gets stored in the
 	// first `sizeof (gpointer)` bytes of the element
 	Next *TrashStack
+
+	native *C.GTrashStack
 }
 
 func wrapTrashStack(p *C.GTrashStack) *TrashStack {
 	var v TrashStack
+
 	v.Next = wrap * TrashStack(p.next)
+
 	return &v
 }
 
@@ -9575,6 +10124,12 @@ func marshalTrashStack(p uintptr) (interface{}, error) {
 	c := (*C.GTrashStack)(unsafe.Pointer(b))
 
 	return wrapTrashStack(c)
+}
+
+// Native returns the pointer to *C.GTrashStack. The caller is expected to
+// cast.
+func (t *TrashStack) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // URI: the #GUri type and related functions can be used to parse URIs into
@@ -9688,6 +10243,10 @@ type URI struct {
 
 func wrapURI(p *C.GUri) *URI {
 	v := URI{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*URI).free)
+
 	return &v
 }
 
@@ -9696,6 +10255,14 @@ func marshalURI(p uintptr) (interface{}, error) {
 	c := (*C.GUri)(unsafe.Pointer(b))
 
 	return wrapURI(c)
+}
+
+func (u *URI) free() {}
+
+// Native returns the pointer to *C.GUri. The caller is expected to
+// cast.
+func (u *URI) Native() unsafe.Pointer {
+	return unsafe.Pointer(u.native)
 }
 
 // URIParamsIter: many URI schemes include one or more attribute/value pairs as
@@ -9714,6 +10281,10 @@ type URIParamsIter struct {
 
 func wrapURIParamsIter(p *C.GUriParamsIter) *URIParamsIter {
 	v := URIParamsIter{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*URIParamsIter).free)
+
 	return &v
 }
 
@@ -9722,6 +10293,14 @@ func marshalURIParamsIter(p uintptr) (interface{}, error) {
 	c := (*C.GUriParamsIter)(unsafe.Pointer(b))
 
 	return wrapURIParamsIter(c)
+}
+
+func (u *URIParamsIter) free() {}
+
+// Native returns the pointer to *C.GUriParamsIter. The caller is expected to
+// cast.
+func (u *URIParamsIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(u.native)
 }
 
 // Variant: GVariant is a variant datatype; it can contain one or more values
@@ -9955,6 +10534,10 @@ type Variant struct {
 
 func wrapVariant(p *C.GVariant) *Variant {
 	v := Variant{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Variant).free)
+
 	return &v
 }
 
@@ -9963,6 +10546,14 @@ func marshalVariant(p uintptr) (interface{}, error) {
 	c := (*C.GVariant)(unsafe.Pointer(b))
 
 	return wrapVariant(c)
+}
+
+func (v *Variant) free() {}
+
+// Native returns the pointer to *C.GVariant. The caller is expected to
+// cast.
+func (v *Variant) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // VariantBuilder: a utility type for constructing container-type #GVariant
@@ -9979,6 +10570,10 @@ type VariantBuilder struct {
 
 func wrapVariantBuilder(p *C.GVariantBuilder) *VariantBuilder {
 	v := VariantBuilder{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*VariantBuilder).free)
+
 	return &v
 }
 
@@ -9987,6 +10582,14 @@ func marshalVariantBuilder(p uintptr) (interface{}, error) {
 	c := (*C.GVariantBuilder)(unsafe.Pointer(b))
 
 	return wrapVariantBuilder(c)
+}
+
+func (v *VariantBuilder) free() {}
+
+// Native returns the pointer to *C.GVariantBuilder. The caller is expected to
+// cast.
+func (v *VariantBuilder) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // VariantDict: GVariantDict is a mutable interface to #GVariant dictionaries.
@@ -10076,6 +10679,10 @@ type VariantDict struct {
 
 func wrapVariantDict(p *C.GVariantDict) *VariantDict {
 	v := VariantDict{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*VariantDict).free)
+
 	return &v
 }
 
@@ -10086,6 +10693,14 @@ func marshalVariantDict(p uintptr) (interface{}, error) {
 	return wrapVariantDict(c)
 }
 
+func (v *VariantDict) free() {}
+
+// Native returns the pointer to *C.GVariantDict. The caller is expected to
+// cast.
+func (v *VariantDict) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
+}
+
 // VariantIter: GVariantIter is an opaque data structure and can only be
 // accessed using the following functions.
 type VariantIter struct {
@@ -10094,6 +10709,10 @@ type VariantIter struct {
 
 func wrapVariantIter(p *C.GVariantIter) *VariantIter {
 	v := VariantIter{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*VariantIter).free)
+
 	return &v
 }
 
@@ -10102,6 +10721,14 @@ func marshalVariantIter(p uintptr) (interface{}, error) {
 	c := (*C.GVariantIter)(unsafe.Pointer(b))
 
 	return wrapVariantIter(c)
+}
+
+func (v *VariantIter) free() {}
+
+// Native returns the pointer to *C.GVariantIter. The caller is expected to
+// cast.
+func (v *VariantIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // VariantType: this section introduces the GVariant type system. It is based,
@@ -10240,6 +10867,10 @@ type VariantType struct {
 
 func wrapVariantType(p *C.GVariantType) *VariantType {
 	v := VariantType{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*VariantType).free)
+
 	return &v
 }
 
@@ -10248,4 +10879,12 @@ func marshalVariantType(p uintptr) (interface{}, error) {
 	c := (*C.GVariantType)(unsafe.Pointer(b))
 
 	return wrapVariantType(c)
+}
+
+func (v *VariantType) free() {}
+
+// Native returns the pointer to *C.GVariantType. The caller is expected to
+// cast.
+func (v *VariantType) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }

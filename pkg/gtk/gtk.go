@@ -3,13 +3,14 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/cairo"
 	"github.com/diamondburned/gotk4/gdk"
 	"github.com/diamondburned/gotk4/gio"
-	"github.com/diamondburned/gotk4/glib"
-	"github.com/diamondburned/gotk4/pango"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdkx11"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/glib"
 )
 
@@ -3026,7 +3027,7 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 //
 // This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
-func AcceleratorGetLabelWithKeycode(display *gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
+func AcceleratorGetLabelWithKeycode(display *gdkx11.X11Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
 
 // AcceleratorName: converts an accelerator keyval and modifier mask into a
 // string parseable by gtk_accelerator_parse(). For example, if you pass in
@@ -3041,7 +3042,7 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 // gtk_accelerator_name() but handling keycodes. This is only useful for
 // system-level components, applications should use gtk_accelerator_parse()
 // instead.
-func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
+func AcceleratorNameWithKeycode(display *gdkx11.X11Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
 
 // AcceleratorParse: parses a string representing an accelerator. The format
 // looks like “<Control>a” or “<Shift><Alt>F1”.
@@ -3068,7 +3069,7 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool)
 //
 // If the parse fails, @accelerator_key, @accelerator_mods and
 // @accelerator_codes will be set to 0 (zero).
-func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint, []*uint, gdk.ModifierType, bool)
+func AcceleratorParseWithKeycode(accelerator string, display *gdkx11.X11Display) (uint, []uint, gdk.ModifierType, bool)
 
 // AcceleratorValid: determines whether a given keyval and modifier mask
 // constitute a valid keyboard accelerator. For example, the K_KEY_a keyval plus
@@ -3076,11 +3077,11 @@ func AcceleratorParseWithKeycode(accelerator string, display *gdk.Display) (uint
 // instance, use the K_KEY_Control_L keyval as an accelerator.
 func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool
 
-func AccessiblePropertyInitValue(property AccessibleProperty, value **glib.Value)
+func AccessiblePropertyInitValue(property AccessibleProperty, value *glib.Value)
 
-func AccessibleRelationInitValue(relation AccessibleRelation, value **glib.Value)
+func AccessibleRelationInitValue(relation AccessibleRelation, value *glib.Value)
 
-func AccessibleStateInitValue(state AccessibleState, value **glib.Value)
+func AccessibleStateInitValue(state AccessibleState, value *glib.Value)
 
 // BitsetIterInitAt: initializes @iter to point to @target. If @target is not
 // found, finds the next value after it. If no value >= @target exists in @set,
@@ -3256,6 +3257,9 @@ func InitCheck() bool
 // gtk_init() or gtk_init_check().
 func IsInitialized() bool
 
+// NativeGetForSurface: finds the GtkNative associated with the surface.
+func NativeGetForSurface(surface *gdkx11.X11Surface) Native
+
 // PaperSizeGetDefault: returns the name of the default paper size, which
 // depends on the current locale.
 func PaperSizeGetDefault() string
@@ -3349,6 +3353,14 @@ func RenderFrame(context *StyleContext, cr *cairo.Context, x float64, y float64,
 // ![](handles.png)
 func RenderHandle(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
 
+// RenderIcon: renders the icon in @texture at the specified @x and @y
+// coordinates.
+//
+// This function will render the icon in @texture at exactly its size,
+// regardless of scaling factors, which may not be appropriate when drawing on
+// displays with high pixel densities.
+func RenderIcon(context *StyleContext, cr *cairo.Context, texture *gdk.Texture, x float64, y float64)
+
 // RenderLayout: renders @layout on the coordinates @x, @y
 func RenderLayout(context *StyleContext, cr *cairo.Context, x float64, y float64, layout *pango.Layout)
 
@@ -3424,43 +3436,47 @@ func TestRegisterAllTypes()
 // @widget relayouting or on interaction with the display server.
 func TestWidgetWaitForDraw(widget *Widget)
 
+// TreeCreateRowDragContent: creates a content provider for dragging @path from
+// @tree_model.
+func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) *gdk.ContentProvider
+
 // TreeGetRowDragData: obtains a @tree_model and @path from value of target type
 // GTK_TYPE_TREE_ROW_DATA.
 //
 // The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(value **glib.Value) (TreeModel, *TreePath, bool)
+func TreeGetRowDragData(value *glib.Value) (TreeModel, *TreePath, bool)
 
 // TreeRowReferenceDeleted: lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::row-deleted signal.
-func TreeRowReferenceDeleted(proxy **glib.Object, path *TreePath)
+func TreeRowReferenceDeleted(proxy *glib.Object, path *TreePath)
 
 // TreeRowReferenceInserted: lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::row-inserted signal.
-func TreeRowReferenceInserted(proxy **glib.Object, path *TreePath)
+func TreeRowReferenceInserted(proxy *glib.Object, path *TreePath)
 
 // TreeRowReferenceReordered: lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::rows-reordered signal.
-func TreeRowReferenceReordered(proxy **glib.Object, path *TreePath, iter *TreeIter, newOrder []int)
+func TreeRowReferenceReordered(proxy *glib.Object, path *TreePath, iter *TreeIter, newOrder []int)
 
 // ValueDupExpression: retrieves the Expression stored inside the given @value,
 // and acquires a reference to it.
-func ValueDupExpression(value **glib.Value) *Expression
+func ValueDupExpression(value *glib.Value) *Expression
 
 // ValueGetExpression: retrieves the Expression stored inside the given @value.
-func ValueGetExpression(value **glib.Value) *Expression
+func ValueGetExpression(value *glib.Value) *Expression
 
 // ValueSetExpression: stores the given Expression inside @value.
 //
 // The #GValue will acquire a reference to the @expression.
-func ValueSetExpression(value **glib.Value, expression *Expression)
+func ValueSetExpression(value *glib.Value, expression *Expression)
 
 // ValueTakeExpression: stores the given Expression inside @value.
 //
 // This function transfers the ownership of the @expression to the #GValue.
-func ValueTakeExpression(value **glib.Value, expression *Expression)
+func ValueTakeExpression(value *glib.Value, expression *Expression)
 
 // Bitset: gtkBitset is a data structure for representing a set of unsigned
 // integers. Another name for this data structure is "bitmap".
@@ -3483,6 +3499,10 @@ type Bitset struct {
 
 func wrapBitset(p *C.GtkBitset) *Bitset {
 	v := Bitset{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Bitset).free)
+
 	return &v
 }
 
@@ -3491,6 +3511,14 @@ func marshalBitset(p uintptr) (interface{}, error) {
 	c := (*C.GtkBitset)(unsafe.Pointer(b))
 
 	return wrapBitset(c)
+}
+
+func (b *Bitset) free() {}
+
+// Native returns the pointer to *C.GtkBitset. The caller is expected to
+// cast.
+func (b *Bitset) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // BitsetIter: an opaque, stack-allocated struct for iterating over the elements
@@ -3503,6 +3531,10 @@ type BitsetIter struct {
 
 func wrapBitsetIter(p *C.GtkBitsetIter) *BitsetIter {
 	v := BitsetIter{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BitsetIter).free)
+
 	return &v
 }
 
@@ -3511,6 +3543,14 @@ func marshalBitsetIter(p uintptr) (interface{}, error) {
 	c := (*C.GtkBitsetIter)(unsafe.Pointer(b))
 
 	return wrapBitsetIter(c)
+}
+
+func (b *BitsetIter) free() {}
+
+// Native returns the pointer to *C.GtkBitsetIter. The caller is expected to
+// cast.
+func (b *BitsetIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Border: a struct that specifies a border around a rectangular area that can
@@ -3524,14 +3564,18 @@ type Border struct {
 	Top int16
 	// Bottom: the width of the bottom border
 	Bottom int16
+
+	native *C.GtkBorder
 }
 
 func wrapBorder(p *C.GtkBorder) *Border {
 	var v Border
+
 	v.Left = int16(p.left)
 	v.Right = int16(p.right)
 	v.Top = int16(p.top)
 	v.Bottom = int16(p.bottom)
+
 	return &v
 }
 
@@ -3542,6 +3586,12 @@ func marshalBorder(p uintptr) (interface{}, error) {
 	return wrapBorder(c)
 }
 
+// Native returns the pointer to *C.GtkBorder. The caller is expected to
+// cast.
+func (b *Border) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
+}
+
 // BuildableParser: a sub-parser for Buildable implementations.
 type BuildableParser struct {
 	native *C.GtkBuildableParser
@@ -3549,6 +3599,10 @@ type BuildableParser struct {
 
 func wrapBuildableParser(p *C.GtkBuildableParser) *BuildableParser {
 	v := BuildableParser{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*BuildableParser).free)
+
 	return &v
 }
 
@@ -3557,6 +3611,14 @@ func marshalBuildableParser(p uintptr) (interface{}, error) {
 	c := (*C.GtkBuildableParser)(unsafe.Pointer(b))
 
 	return wrapBuildableParser(c)
+}
+
+func (b *BuildableParser) free() {}
+
+// Native returns the pointer to *C.GtkBuildableParser. The caller is expected to
+// cast.
+func (b *BuildableParser) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // CSSLocation: gtkCssLocation is used to present a location in a file - or
@@ -3582,15 +3644,19 @@ type CSSLocation struct {
 	LineBytes uint
 	// LineChars: number of characters parsed since the last line break
 	LineChars uint
+
+	native *C.GtkCssLocation
 }
 
 func wrapCSSLocation(p *C.GtkCssLocation) *CSSLocation {
 	var v CSSLocation
+
 	v.Bytes = uint(p.bytes)
 	v.Chars = uint(p.chars)
 	v.Lines = uint(p.lines)
 	v.LineBytes = uint(p.line_bytes)
 	v.LineChars = uint(p.line_chars)
+
 	return &v
 }
 
@@ -3599,6 +3665,12 @@ func marshalCSSLocation(p uintptr) (interface{}, error) {
 	c := (*C.GtkCssLocation)(unsafe.Pointer(b))
 
 	return wrapCSSLocation(c)
+}
+
+// Native returns the pointer to *C.GtkCssLocation. The caller is expected to
+// cast.
+func (c *CSSLocation) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // CSSSection: defines a part of a CSS document. Because sections are nested
@@ -3610,6 +3682,10 @@ type CSSSection struct {
 
 func wrapCSSSection(p *C.GtkCssSection) *CSSSection {
 	v := CSSSection{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*CSSSection).free)
+
 	return &v
 }
 
@@ -3618,6 +3694,14 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 	c := (*C.GtkCssSection)(unsafe.Pointer(b))
 
 	return wrapCSSSection(c)
+}
+
+func (c *CSSSection) free() {}
+
+// Native returns the pointer to *C.GtkCssSection. The caller is expected to
+// cast.
+func (c *CSSSection) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // PadActionEntry: struct defining a pad action entry.
@@ -3634,15 +3718,19 @@ type PadActionEntry struct {
 	Label string
 	// ActionName: action name that will be activated in the Group.
 	ActionName string
+
+	native *C.GtkPadActionEntry
 }
 
 func wrapPadActionEntry(p *C.GtkPadActionEntry) *PadActionEntry {
 	var v PadActionEntry
+
 	v.Type = PadActionType(p._type)
 	v.Index = int(p.index)
 	v.Mode = int(p.mode)
 	v.Label = C.GoString(p.label)
 	v.ActionName = C.GoString(p.action_name)
+
 	return &v
 }
 
@@ -3653,18 +3741,28 @@ func marshalPadActionEntry(p uintptr) (interface{}, error) {
 	return wrapPadActionEntry(c)
 }
 
+// Native returns the pointer to *C.GtkPadActionEntry. The caller is expected to
+// cast.
+func (p *PadActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
+}
+
 // PageRange: see also gtk_print_settings_set_page_ranges().
 type PageRange struct {
 	// Start: start of page range.
 	Start int
 	// End: end of page range.
 	End int
+
+	native *C.GtkPageRange
 }
 
 func wrapPageRange(p *C.GtkPageRange) *PageRange {
 	var v PageRange
+
 	v.Start = int(p.start)
 	v.End = int(p.end)
+
 	return &v
 }
 
@@ -3673,6 +3771,12 @@ func marshalPageRange(p uintptr) (interface{}, error) {
 	c := (*C.GtkPageRange)(unsafe.Pointer(b))
 
 	return wrapPageRange(c)
+}
+
+// Native returns the pointer to *C.GtkPageRange. The caller is expected to
+// cast.
+func (p *PageRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // PaperSize: gtkPaperSize handles paper sizes. It uses the standard called [PWG
@@ -3691,6 +3795,10 @@ type PaperSize struct {
 
 func wrapPaperSize(p *C.GtkPaperSize) *PaperSize {
 	v := PaperSize{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PaperSize).free)
+
 	return &v
 }
 
@@ -3699,6 +3807,14 @@ func marshalPaperSize(p uintptr) (interface{}, error) {
 	c := (*C.GtkPaperSize)(unsafe.Pointer(b))
 
 	return wrapPaperSize(c)
+}
+
+func (p *PaperSize) free() {}
+
+// Native returns the pointer to *C.GtkPaperSize. The caller is expected to
+// cast.
+func (p *PaperSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
@@ -3724,10 +3840,13 @@ type RecentData struct {
 	// IsPrivate: whether this resource should be displayed only by the
 	// applications that have registered it or not.
 	IsPrivate bool
+
+	native *C.GtkRecentData
 }
 
 func wrapRecentData(p *C.GtkRecentData) *RecentData {
 	var v RecentData
+
 	v.DisplayName = C.GoString(p.display_name)
 	v.Description = C.GoString(p.description)
 	v.MimeType = C.GoString(p.mime_type)
@@ -3735,6 +3854,7 @@ func wrapRecentData(p *C.GtkRecentData) *RecentData {
 	v.AppExec = C.GoString(p.app_exec)
 
 	v.IsPrivate = bool(p.is_private)
+
 	return &v
 }
 
@@ -3743,6 +3863,12 @@ func marshalRecentData(p uintptr) (interface{}, error) {
 	c := (*C.GtkRecentData)(unsafe.Pointer(b))
 
 	return wrapRecentData(c)
+}
+
+// Native returns the pointer to *C.GtkRecentData. The caller is expected to
+// cast.
+func (r *RecentData) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // RecentInfo: gtkRecentInfo contains private data only, and should be accessed
@@ -3756,6 +3882,10 @@ type RecentInfo struct {
 
 func wrapRecentInfo(p *C.GtkRecentInfo) *RecentInfo {
 	v := RecentInfo{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*RecentInfo).free)
+
 	return &v
 }
 
@@ -3764,6 +3894,14 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 	c := (*C.GtkRecentInfo)(unsafe.Pointer(b))
 
 	return wrapRecentInfo(c)
+}
+
+func (r *RecentInfo) free() {}
+
+// Native returns the pointer to *C.GtkRecentInfo. The caller is expected to
+// cast.
+func (r *RecentInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // RequestedSize: represents a request of a screen object in a given
@@ -3778,13 +3916,17 @@ type RequestedSize struct {
 	MinimumSize int
 	// NaturalSize: the natural size for allocation in a given orientation
 	NaturalSize int
+
+	native *C.GtkRequestedSize
 }
 
 func wrapRequestedSize(p *C.GtkRequestedSize) *RequestedSize {
 	var v RequestedSize
+
 	v.Data = unsafe.Pointer(p.data)
 	v.MinimumSize = int(p.minimum_size)
 	v.NaturalSize = int(p.natural_size)
+
 	return &v
 }
 
@@ -3795,6 +3937,12 @@ func marshalRequestedSize(p uintptr) (interface{}, error) {
 	return wrapRequestedSize(c)
 }
 
+// Native returns the pointer to *C.GtkRequestedSize. The caller is expected to
+// cast.
+func (r *RequestedSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 // Requisition: a Requisition-struct represents the desired size of a widget.
 // See [GtkWidget’s geometry management section][geometry-management] for more
 // information.
@@ -3803,12 +3951,16 @@ type Requisition struct {
 	Width int
 	// Height: the widget’s desired height
 	Height int
+
+	native *C.GtkRequisition
 }
 
 func wrapRequisition(p *C.GtkRequisition) *Requisition {
 	var v Requisition
+
 	v.Width = int(p.width)
 	v.Height = int(p.height)
+
 	return &v
 }
 
@@ -3819,6 +3971,12 @@ func marshalRequisition(p uintptr) (interface{}, error) {
 	return wrapRequisition(c)
 }
 
+// Native returns the pointer to *C.GtkRequisition. The caller is expected to
+// cast.
+func (r *Requisition) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 type SettingsValue struct {
 	// Origin: origin should be something like “filename:linenumber” for rc
 	// files, or e.g. “XProperty” for other sources.
@@ -3826,10 +3984,13 @@ type SettingsValue struct {
 	// Value: valid types are LONG, DOUBLE and STRING corresponding to the token
 	// parsed, or a GSTRING holding an unparsed statement
 	Value *glib.Value
+
+	native *C.GtkSettingsValue
 }
 
 func wrapSettingsValue(p *C.GtkSettingsValue) *SettingsValue {
 	var v SettingsValue
+
 	v.Origin = C.GoString(p.origin)
 
 	return &v
@@ -3842,6 +4003,12 @@ func marshalSettingsValue(p uintptr) (interface{}, error) {
 	return wrapSettingsValue(c)
 }
 
+// Native returns the pointer to *C.GtkSettingsValue. The caller is expected to
+// cast.
+func (s *SettingsValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 // TextIter: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
@@ -3851,6 +4018,10 @@ type TextIter struct {
 
 func wrapTextIter(p *C.GtkTextIter) *TextIter {
 	v := TextIter{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*TextIter).free)
+
 	return &v
 }
 
@@ -3859,6 +4030,14 @@ func marshalTextIter(p uintptr) (interface{}, error) {
 	c := (*C.GtkTextIter)(unsafe.Pointer(b))
 
 	return wrapTextIter(c)
+}
+
+func (t *TextIter) free() {}
+
+// Native returns the pointer to *C.GtkTextIter. The caller is expected to
+// cast.
+func (t *TextIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // TreeIter: the TreeIter is the primary structure for accessing a TreeModel.
@@ -3873,14 +4052,18 @@ type TreeIter struct {
 	UserData2 unsafe.Pointer
 	// UserData3: model-specific data
 	UserData3 unsafe.Pointer
+
+	native *C.GtkTreeIter
 }
 
 func wrapTreeIter(p *C.GtkTreeIter) *TreeIter {
 	var v TreeIter
+
 	v.Stamp = int(p.stamp)
 	v.UserData = unsafe.Pointer(p.user_data)
 	v.UserData2 = unsafe.Pointer(p.user_data2)
 	v.UserData3 = unsafe.Pointer(p.user_data3)
+
 	return &v
 }
 
@@ -3891,12 +4074,22 @@ func marshalTreeIter(p uintptr) (interface{}, error) {
 	return wrapTreeIter(c)
 }
 
+// Native returns the pointer to *C.GtkTreeIter. The caller is expected to
+// cast.
+func (t *TreeIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
 type TreePath struct {
 	native *C.GtkTreePath
 }
 
 func wrapTreePath(p *C.GtkTreePath) *TreePath {
 	v := TreePath{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*TreePath).free)
+
 	return &v
 }
 
@@ -3905,6 +4098,14 @@ func marshalTreePath(p uintptr) (interface{}, error) {
 	c := (*C.GtkTreePath)(unsafe.Pointer(b))
 
 	return wrapTreePath(c)
+}
+
+func (t *TreePath) free() {}
+
+// Native returns the pointer to *C.GtkTreePath. The caller is expected to
+// cast.
+func (t *TreePath) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // TreeRowReference: a GtkTreeRowReference tracks model changes so that it
@@ -3916,6 +4117,10 @@ type TreeRowReference struct {
 
 func wrapTreeRowReference(p *C.GtkTreeRowReference) *TreeRowReference {
 	v := TreeRowReference{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*TreeRowReference).free)
+
 	return &v
 }
 
@@ -3924,4 +4129,7939 @@ func marshalTreeRowReference(p uintptr) (interface{}, error) {
 	c := (*C.GtkTreeRowReference)(unsafe.Pointer(b))
 
 	return wrapTreeRowReference(c)
+}
+
+func (t *TreeRowReference) free() {}
+
+// Native returns the pointer to *C.GtkTreeRowReference. The caller is expected to
+// cast.
+func (t *TreeRowReference) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
+// ATContext: gtkATContext is an abstract class provided by GTK to communicate
+// to platform-specific assistive technologies API.
+//
+// Each platform supported by GTK implements a ATContext subclass, and is
+// responsible for updating the accessible state in response to state changes in
+// Accessible.
+type ATContext struct {
+	*glib.Object
+}
+
+// AboutDialog: the GtkAboutDialog offers a simple way to display information
+// about a program like its logo, name, copyright, website and license. It is
+// also possible to give credits to the authors, documenters, translators and
+// artists who have worked on the program. An about dialog is typically opened
+// when the user selects the `About` option from the `Help` menu. All parts of
+// the dialog are optional.
+//
+// About dialogs often contain links and email addresses. GtkAboutDialog
+// displays these as clickable links. By default, it calls gtk_show_uri() when a
+// user clicks one. The behaviour can be overridden with the
+// AboutDialog::activate-link signal.
+//
+// To specify a person with an email address, use a string like "Edgar Allan Poe
+// <edgar\@poe.com>". To specify a website with a title, use a string like "GTK
+// team http://www.gtk.org".
+//
+// To make constructing a GtkAboutDialog as convenient as possible, you can use
+// the function gtk_show_about_dialog() which constructs and shows a dialog and
+// keeps it around so that it can be shown again.
+//
+// Note that GTK sets a default title of `_("About s")` on the dialog window
+// (where \s is replaced by the name of the application, but in order to ensure
+// proper translation of the title, applications should set the title property
+// explicitly when constructing a GtkAboutDialog, as shown in the following
+// example: |[<!-- language="C" --> GFile *logo_file = g_file_new_for_path
+// ("./logo.png"); GdkTexture *example_logo = gdk_texture_new_from_file
+// (logo_file, NULL); g_object_unref (logo_file);
+//
+//    gtk_show_about_dialog (NULL,
+//                           "program-name", "ExampleCode",
+//                           "logo", example_logo,
+//                           "title", _("About ExampleCode"),
+//                           NULL);
+//
+//
+//    # CSS nodes
+//
+//    GtkAboutDialog has a single CSS node with the name window and style
+//    class .aboutdialog.
+type AboutDialog struct {
+	Window
+}
+
+// ActionBar: gtkActionBar is designed to present contextual actions. It is
+// expected to be displayed below the content and expand horizontally to fill
+// the area.
+//
+// It allows placing children at the start or the end. In addition, it contains
+// an internal centered box which is centered with respect to the full width of
+// the box, even if the children at either side take up different amounts of
+// space.
+//
+//
+// CSS nodes
+//
+// GtkActionBar has a single CSS node with name actionbar.
+type ActionBar struct {
+	Widget
+}
+
+// ActivateAction: a ShortcutAction that calls gtk_widget_activate().
+type ActivateAction struct {
+	ShortcutAction
+}
+
+// Adjustment: the Adjustment object represents a value which has an associated
+// lower and upper bound, together with step and page increments, and a page
+// size. It is used within several GTK+ widgets, including SpinButton, Viewport,
+// and Range (which is a base class for Scrollbar and Scale).
+//
+// The Adjustment object does not update the value itself. Instead it is left up
+// to the owner of the Adjustment to control the value.
+type Adjustment struct {
+	glib.InitiallyUnowned
+}
+
+// AlternativeTrigger: a ShortcutTrigger that triggers when either of two
+// ShortcutTriggers trigger.
+type AlternativeTrigger struct {
+	ShortcutTrigger
+}
+
+type AnyFilter struct {
+	MultiFilter
+}
+
+// AppChooserButton: the AppChooserButton is a widget that lets the user select
+// an application. It implements the AppChooser interface.
+//
+// Initially, a AppChooserButton selects the first application in its list,
+// which will either be the most-recently used application or, if
+// AppChooserButton:show-default-item is true, the default application.
+//
+// The list of applications shown in a AppChooserButton includes the recommended
+// applications for the given content type. When
+// AppChooserButton:show-default-item is set, the default application is also
+// included. To let the user chooser other applications, you can set the
+// AppChooserButton:show-dialog-item property, which allows to open a full
+// AppChooserDialog.
+//
+// It is possible to add custom items to the list, using
+// gtk_app_chooser_button_append_custom_item(). These items cause the
+// AppChooserButton::custom-item-activated signal to be emitted when they are
+// selected.
+//
+// To track changes in the selected application, use the
+// AppChooserButton::changed signal.
+//
+//
+// CSS nodes
+//
+// GtkAppChooserButton has a single CSS node with the name “appchooserbutton”.
+type AppChooserButton struct {
+	Widget
+}
+
+// AppChooserDialog: gtkAppChooserDialog shows a AppChooserWidget inside a
+// Dialog.
+//
+// Note that AppChooserDialog does not have any interesting methods of its own.
+// Instead, you should get the embedded AppChooserWidget using
+// gtk_app_chooser_dialog_get_widget() and call its methods if the generic
+// AppChooser interface is not sufficient for your needs.
+//
+// To set the heading that is shown above the AppChooserWidget, use
+// gtk_app_chooser_dialog_set_heading().
+type AppChooserDialog struct {
+	Dialog
+}
+
+// AppChooserWidget: gtkAppChooserWidget is a widget for selecting applications.
+// It is the main building block for AppChooserDialog. Most applications only
+// need to use the latter; but you can use this widget as part of a larger
+// widget if you have special needs.
+//
+// AppChooserWidget offers detailed control over what applications are shown,
+// using the AppChooserWidget:show-default, AppChooserWidget:show-recommended,
+// AppChooserWidget:show-fallback, AppChooserWidget:show-other and
+// AppChooserWidget:show-all properties. See the AppChooser documentation for
+// more information about these groups of applications.
+//
+// To keep track of the selected application, use the
+// AppChooserWidget::application-selected and
+// AppChooserWidget::application-activated signals.
+//
+//
+// CSS nodes
+//
+// GtkAppChooserWidget has a single CSS node with name appchooser.
+type AppChooserWidget struct {
+	Widget
+}
+
+// Application: gtkApplication is a class that handles many important aspects of
+// a GTK+ application in a convenient fashion, without enforcing a
+// one-size-fits-all application model.
+//
+// Currently, GtkApplication handles GTK initialization, application uniqueness,
+// session management, provides some basic scriptability and desktop shell
+// integration by exporting actions and menus and manages a list of toplevel
+// windows whose life-cycle is automatically tied to the life-cycle of your
+// application.
+//
+// While GtkApplication works fine with plain Windows, it is recommended to use
+// it together with ApplicationWindow.
+//
+// When GDK threads are enabled, GtkApplication will acquire the GDK lock when
+// invoking actions that arrive from other processes. The GDK lock is not
+// touched for local action invocations. In order to have actions invoked in a
+// predictable context it is therefore recommended that the GDK lock be held
+// while invoking actions locally with g_action_group_activate_action(). The
+// same applies to actions associated with ApplicationWindow and to the
+// “activate” and “open” #GApplication methods.
+//
+// Automatic resources {#automatic-resources}
+//
+// Application will automatically load menus from the Builder resource located
+// at "gtk/menus.ui", relative to the application's resource base path (see
+// g_application_set_resource_base_path()). The menu with the ID "menubar" is
+// taken as the application's menubar. Additional menus (most interesting
+// submenus) can be named and accessed via gtk_application_get_menu_by_id()
+// which allows for dynamic population of a part of the menu structure.
+//
+// It is also possible to provide the menubar manually using
+// gtk_application_set_menubar().
+//
+// Application will also automatically setup an icon search path for the default
+// icon theme by appending "icons" to the resource base path. This allows your
+// application to easily store its icons as resources. See
+// gtk_icon_theme_add_resource_path() for more information.
+//
+// If there is a resource located at "gtk/help-overlay.ui" which defines a
+// ShortcutsWindow with ID "help_overlay" then GtkApplication associates an
+// instance of this shortcuts window with each ApplicationWindow and sets up the
+// keyboard accelerator Control-? to open it. To create a menu item that
+// displays the shortcuts window, associate the item with the action
+// win.show-help-overlay.
+//
+// A simple application {#gtkapplication}
+//
+// [A simple
+// example](https://gitlab.gnome.org/GNOME/gtk/tree/master/examples/bp/bloatpad.c)
+//
+// GtkApplication optionally registers with a session manager of the users
+// session (if you set the Application:register-session property) and offers
+// various functionality related to the session life-cycle.
+//
+// An application can block various ways to end the session with the
+// gtk_application_inhibit() function. Typical use cases for this kind of
+// inhibiting are long-running, uninterruptible operations, such as burning a CD
+// or performing a disk backup. The session manager may not honor the inhibitor,
+// but it can be expected to inform the user about the negative consequences of
+// ending the session while inhibitors are present.
+//
+// See Also {#seealso} [HowDoI: Using
+// GtkApplication](https://wiki.gnome.org/HowDoI/GtkApplication), [Getting
+// Started with GTK:
+// Basics](https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
+type Application struct {
+	gio.Application
+}
+
+// ApplicationWindow: gtkApplicationWindow is a Window subclass that offers some
+// extra functionality for better integration with Application features.
+// Notably, it can handle an application menubar. See
+// gtk_application_set_menubar().
+//
+// This class implements the Group and Map interfaces, to let you add
+// window-specific actions that will be exported by the associated Application,
+// together with its application-wide actions. Window-specific actions are
+// prefixed with the “win.” prefix and application-wide actions are prefixed
+// with the “app.” prefix. Actions must be addressed with the prefixed name when
+// referring to them from a Model.
+//
+// Note that widgets that are placed inside a ApplicationWindow can also
+// activate these actions, if they implement the Actionable interface.
+//
+// As with Application, the GDK lock will be acquired when processing actions
+// arriving from other processes and should therefore be held when activating
+// actions locally (if GDK threads are enabled).
+//
+// The settings Settings:gtk-shell-shows-app-menu and
+// Settings:gtk-shell-shows-menubar tell GTK+ whether the desktop environment is
+// showing the application menu and menubar models outside the application as
+// part of the desktop shell. For instance, on OS X, both menus will be
+// displayed remotely; on Windows neither will be. gnome-shell (starting with
+// version 3.4) will display the application menu, but not the menubar.
+//
+// If the desktop environment does not display the menubar, then
+// ApplicationWindow will automatically show a menubar for it. This behaviour
+// can be overridden with the ApplicationWindow:show-menubar property. If the
+// desktop environment does not display the application menu, then it will
+// automatically be included in the menubar or in the windows client-side
+// decorations.
+//
+// See PopoverMenu for information about the XML language used by Builder for
+// menu models.
+//
+// A GtkApplicationWindow with a menubar
+//
+//    GtkApplication *app = gtk_application_new ("org.gtk.test", 0);
+//
+//    GtkBuilder *builder = gtk_builder_new_from_string (
+//        "<interface>"
+//        "  <menu id='menubar'>"
+//        "    <submenu>"
+//        "      <attribute name='label' translatable='yes'>_Edit</attribute>"
+//        "      <item>"
+//        "        <attribute name='label' translatable='yes'>_Copy</attribute>"
+//        "        <attribute name='action'>win.copy</attribute>"
+//        "      </item>"
+//        "      <item>"
+//        "        <attribute name='label' translatable='yes'>_Paste</attribute>"
+//        "        <attribute name='action'>win.paste</attribute>"
+//        "      </item>"
+//        "    </submenu>"
+//        "  </menu>"
+//        "</interface>",
+//        -1);
+//
+//    GMenuModel *menubar = G_MENU_MODEL (gtk_builder_get_object (builder,
+//                                                               "menubar"));
+//    gtk_application_set_menubar (GTK_APPLICATION (app), menubar);
+//    g_object_unref (builder);
+//
+//    // ...
+//
+//    GtkWidget *window = gtk_application_window_new (app);
+//
+type ApplicationWindow struct {
+	Window
+}
+
+// AspectFrame: gtkAspectFrame is useful when you want pack a widget so that it
+// can resize while retaining the same aspect ratio. For instance, one might be
+// drawing a small preview of a larger image.
+//
+// The frame can respect the aspect ratio of the child widget, or use its own
+// aspect ratio.
+//
+//
+// CSS nodes
+//
+// GtkAspectFrame uses a CSS node with name `frame`.
+type AspectFrame struct {
+	Widget
+}
+
+// Assistant: a Assistant is a widget used to represent a generally complex
+// operation split up into several steps. Each step consists of one or more
+// pages. GtkAssistant guides the user through the pages, and controls the page
+// flow to collect the data needed for the operation.
+//
+// GtkAssistant handles which buttons to show and to make sensitive based on
+// page sequence knowledge and the [type][GtkAssistantPageType] of each page in
+// addition to state information like the
+// [completion][gtk-assistant-set-page-complete] and
+// [committed][gtk-assistant-commit] page statuses.
+//
+// If you have a case that doesn’t quite fit in Assistants way of handling
+// buttons, you can use the K_ASSISTANT_PAGE_CUSTOM page type and handle buttons
+// yourself.
+//
+// GtkAssistant maintains a AssistantPage object for each added child, which
+// holds additional per-child properties. You obtain the AssistantPage for a
+// child with gtk_assistant_get_page().
+//
+//
+// GtkAssistant as GtkBuildable
+//
+// The GtkAssistant implementation of the Buildable interface exposes the
+// @action_area as internal children with the name “action_area”.
+//
+// To add pages to an assistant in Builder, simply add it as a child to the
+// GtkAssistant object. If you need to set per-object properties, create a
+// AssistantPage object explicitly, and set the child widget as a property on
+// it.
+//
+//
+// CSS nodes
+//
+// GtkAssistant has a single CSS node with the name window and style class
+// .assistant.
+type Assistant struct {
+	Window
+}
+
+type AssistantPage struct {
+	*glib.Object
+}
+
+// BinLayout: gtkBinLayout is a LayoutManager subclass useful for create "bins"
+// of widgets. GtkBinLayout will stack each child of a widget on top of each
+// other, using the Widget:hexpand, Widget:vexpand, Widget:halign, and
+// Widget:valign properties of each child to determine where they should be
+// positioned.
+type BinLayout struct {
+	LayoutManager
+}
+
+// BookmarkList: gtkBookmarkList is a list model that wraps GBookmarkFile. It
+// presents a Model and fills it asynchronously with the Infos returned from
+// that function.
+//
+// The Infos in the list have some attributes in the recent namespace added:
+// recent::private (boolean) and recent:applications (stringv).
+type BookmarkList struct {
+	*glib.Object
+}
+
+// BoolFilter: gtkBoolFilter is a simple filter that takes a boolean Expression
+// to determine whether to include items.
+type BoolFilter struct {
+	Filter
+}
+
+// Box: the GtkBox widget arranges child widgets into a single row or column,
+// depending upon the value of its Orientable:orientation property. Within the
+// other dimension, all children are allocated the same size. Of course, the
+// Widget:halign and Widget:valign properties can be used on the children to
+// influence their allocation.
+//
+// Use repeated calls to gtk_box_append() to pack widgets into a GtkBox from
+// start to end. Use gtk_box_remove() to remove widgets from the GtkBox.
+// gtk_box_insert_child_after() can be used to add a child at a particular
+// position.
+//
+// Use gtk_box_set_homogeneous() to specify whether or not all children of the
+// GtkBox are forced to get the same amount of space.
+//
+// Use gtk_box_set_spacing() to determine how much space will be minimally
+// placed between all children in the GtkBox. Note that spacing is added between
+// the children.
+//
+// Use gtk_box_reorder_child_after() to move a child to a different place in the
+// box.
+//
+//
+// CSS nodes
+//
+// GtkBox uses a single CSS node with name box.
+//
+//
+// Accessibility
+//
+// GtkBox uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+type Box struct {
+	Widget
+}
+
+// BoxLayout: a GtkBoxLayout is a layout manager that arranges the children of
+// any widget using it into a single row or column, depending on the value of
+// its Orientable:orientation property. Within the other dimension all children
+// all allocated the same size. The GtkBoxLayout will respect the Widget:halign
+// and Widget:valign properties of each child widget.
+//
+// If you want all children to be assigned the same size, you can use the
+// BoxLayout:homogeneous property.
+//
+// If you want to specify the amount of space placed between each child, you can
+// use the BoxLayout:spacing property.
+type BoxLayout struct {
+	LayoutManager
+}
+
+// Builder: a GtkBuilder is an auxiliary object that reads textual descriptions
+// of a user interface and instantiates the described objects. To create a
+// GtkBuilder from a user interface description, call
+// gtk_builder_new_from_file(), gtk_builder_new_from_resource() or
+// gtk_builder_new_from_string().
+//
+// In the (unusual) case that you want to add user interface descriptions from
+// multiple sources to the same GtkBuilder you can call gtk_builder_new() to get
+// an empty builder and populate it by (multiple) calls to
+// gtk_builder_add_from_file(), gtk_builder_add_from_resource() or
+// gtk_builder_add_from_string().
+//
+// A GtkBuilder holds a reference to all objects that it has constructed and
+// drops these references when it is finalized. This finalization can cause the
+// destruction of non-widget objects or widgets which are not contained in a
+// toplevel window. For toplevel windows constructed by a builder, it is the
+// responsibility of the user to call gtk_window_destroy() to get rid of them
+// and all the widgets they contain.
+//
+// The functions gtk_builder_get_object() and gtk_builder_get_objects() can be
+// used to access the widgets in the interface by the names assigned to them
+// inside the UI description. Toplevel windows returned by these functions will
+// stay around until the user explicitly destroys them with
+// gtk_window_destroy(). Other widgets will either be part of a larger hierarchy
+// constructed by the builder (in which case you should not have to worry about
+// their lifecycle), or without a parent, in which case they have to be added to
+// some container to make use of them. Non-widget objects need to be reffed with
+// g_object_ref() to keep them beyond the lifespan of the builder.
+//
+// GtkBuilder UI Definitions {ILDER-UI}
+//
+// GtkBuilder parses textual descriptions of user interfaces which are specified
+// in XML format. We refer to these descriptions as “GtkBuilder UI definitions”
+// or just “UI definitions” if the context is clear.
+//
+// The toplevel element is `<interface>`. It optionally takes a “domain”
+// attribute, which will make the builder look for translated strings using
+// `dgettext()` in the domain specified. This can also be done by calling
+// gtk_builder_set_translation_domain() on the builder. Objects are described by
+// `<object>` elements, which can contain <property> elements to set properties,
+// `<signal>` elements which connect signals to handlers, and `<child>`
+// elements, which describe child objects (most often widgets inside a
+// container, but also e.g. actions in an action group, or columns in a tree
+// model). A `<child>` element contains an `<object>` element which describes
+// the child object. The target toolkit version(s) are described by <requires>
+// elements, the “lib” attribute specifies the widget library in question
+// (currently the only supported value is “gtk”) and the “version” attribute
+// specifies the target version in the form “`<major>`.`<minor>`”. The builder
+// will error out if the version requirements are not met.
+//
+// Typically, the specific kind of object represented by an `<object>` element
+// is specified by the “class” attribute. If the type has not been loaded yet,
+// GTK tries to find the `get_type()` function from the class name by applying
+// heuristics. This works in most cases, but if necessary, it is possible to
+// specify the name of the `get_type()` function explicitly with the "type-func"
+// attribute.
+//
+// Objects may be given a name with the “id” attribute, which allows the
+// application to retrieve them from the builder with gtk_builder_get_object().
+// An id is also necessary to use the object as property value in other parts of
+// the UI definition. GTK reserves ids starting and ending with `___` (three
+// consecutive underscores) for its own purposes.
+//
+// Setting properties of objects is pretty straightforward with the <property>
+// element: the “name” attribute specifies the name of the property, and the
+// content of the element specifies the value. If the “translatable” attribute
+// is set to a true value, GTK uses `gettext()` (or `dgettext()` if the builder
+// has a translation domain set) to find a translation for the value. This
+// happens before the value is parsed, so it can be used for properties of any
+// type, but it is probably most useful for string properties. It is also
+// possible to specify a context to disambiguate short strings, and comments
+// which may help the translators.
+//
+// Builder can parse textual representations for the most common property types:
+// characters, strings, integers, floating-point numbers, booleans (strings like
+// “TRUE”, “t”, “yes”, “y”, “1” are interpreted as true, strings like “FALSE”,
+// “f”, “no”, “n”, “0” are interpreted as false), enumerations (can be specified
+// by their name, nick or integer value), flags (can be specified by their name,
+// nick, integer value, optionally combined with “|”, e.g.
+// “GTK_INPUT_HINT_EMOJI|GTK_INPUT_HINT_LOWERCASE”) and colors (in a format
+// understood by gdk_rgba_parse()).
+//
+// GVariants can be specified in the format understood by g_variant_parse(), and
+// pixbufs can be specified as a filename of an image file to load.
+//
+// Objects can be referred to by their name and by default refer to objects
+// declared in the local XML fragment and objects exposed via
+// gtk_builder_expose_object(). In general, GtkBuilder allows forward references
+// to objects — declared in the local XML; an object doesn’t have to be
+// constructed before it can be referred to. The exception to this rule is that
+// an object has to be constructed before it can be used as the value of a
+// construct-only property.
+//
+// It is also possible to bind a property value to another object's property
+// value using the attributes "bind-source" to specify the source object of the
+// binding, and optionally, "bind-property" and "bind-flags" to specify the
+// source property and source binding flags respectively. Internally builder
+// implements this using #GBinding objects. For more information see
+// g_object_bind_property()
+//
+// Sometimes it is necessary to refer to widgets which have implicitly been
+// constructed by GTK as part of a composite widget, to set properties on them
+// or to add further children (e.g. the content area of a Dialog). This can be
+// achieved by setting the “internal-child” property of the `<child>` element to
+// a true value. Note that Builder still requires an `<object>` element for the
+// internal child, even if it has already been constructed.
+//
+// A number of widgets have different places where a child can be added (e.g.
+// tabs vs. page content in notebooks). This can be reflected in a UI definition
+// by specifying the “type” attribute on a `<child>` The possible values for the
+// “type” attribute are described in the sections describing the widget-specific
+// portions of UI definitions.
+//
+//
+// Signal handlers and function pointers
+//
+// Signal handlers are set up with the <signal> element. The “name” attribute
+// specifies the name of the signal, and the “handler” attribute specifies the
+// function to connect to the signal. The remaining attributes, “after”,
+// “swapped” and “object”, have the same meaning as the corresponding parameters
+// of the g_signal_connect_object() or g_signal_connect_data() functions. A
+// “last_modification_time” attribute is also allowed, but it does not have a
+// meaning to the builder.
+//
+// If you rely on #GModule support to lookup callbacks in the symbol table, the
+// following details should be noted:
+//
+// When compiling applications for Windows, you must declare signal callbacks
+// with MODULE_EXPORT, or they will not be put in the symbol table. On Linux and
+// Unices, this is not necessary; applications should instead be compiled with
+// the -Wl,--export-dynamic CFLAGS, and linked against gmodule-export-2.0.
+//
+// A GtkBuilder UI Definition
+//
+//
+//    <interface>
+//      <object class="GtkDialog" id="dialog1">
+//        <child internal-child="vbox">
+//          <object class="GtkBox" id="vbox1">
+//            <child internal-child="action_area">
+//              <object class="GtkBox" id="hbuttonbox1">
+//                <child>
+//                  <object class="GtkButton" id="ok_button">
+//                    <property name="label">gtk-ok</property>
+//                    <signal name="clicked" handler="ok_button_clicked"/>
+//                  </object>
+//                </child>
+//              </object>
+//            </child>
+//          </object>
+//        </child>
+//      </object>
+//    </interface>
+//
+// Beyond this general structure, several object classes define their own XML
+// DTD fragments for filling in the ANY placeholders in the DTD above. Note that
+// a custom element in a <child> element gets parsed by the custom tag handler
+// of the parent object, while a custom element in an <object> element gets
+// parsed by the custom tag handler of the object.
+//
+// These XML fragments are explained in the documentation of the respective
+// objects.
+//
+// Additionally, since 3.10 a special <template> tag has been added to the
+// format allowing one to define a widget class’s components. See the [GtkWidget
+// documentation][composite-templates] for details.
+type Builder struct {
+	*glib.Object
+}
+
+type BuilderCScope struct {
+	*glib.Object
+}
+
+// BuilderListItemFactory: gtkBuilderListItemFactory is a ListItemFactory that
+// creates widgets by instantiating Builder UI templates. The templates must be
+// extending ListItem, and typically use Expressions to obtain data from the
+// items in the model.
+//
+//
+//      <interface>
+//        <template class="GtkListItem">
+//          <property name="child">
+//            <object class="GtkLabel">
+//              <property name="xalign">0</property>
+//              <binding name="label">
+//                <lookup name="name" type="SettingsKey">
+//                  <lookup name="item">GtkListItem</lookup>
+//                </lookup>
+//              </binding>
+//            </object>
+//          </property>
+//        </template>
+//      </interface>
+type BuilderListItemFactory struct {
+	ListItemFactory
+}
+
+// Button: the Button widget is generally used to trigger a callback function
+// that is called when the button is pressed. The various signals and how to use
+// them are outlined below.
+//
+// The Button widget can hold any valid child widget. That is, it can hold
+// almost any other standard Widget. The most commonly used child is the Label.
+//
+//
+// CSS nodes
+//
+// GtkButton has a single CSS node with name button. The node will get the style
+// classes .image-button or .text-button, if the content is just an image or
+// label, respectively. It may also receive the .flat style class.
+//
+// Other style classes that are commonly used with GtkButton include
+// .suggested-action and .destructive-action. In special cases, buttons can be
+// made round by adding the .circular style class.
+//
+// Button-like widgets like ToggleButton, MenuButton, VolumeButton, LockButton,
+// ColorButton or FontButton use style classes such as .toggle, .popup, .scale,
+// .lock, .color on the button node to differentiate themselves from a plain
+// GtkButton.
+//
+//
+// Accessibility
+//
+// GtkButton uses the K_ACCESSIBLE_ROLE_BUTTON role.
+type Button struct {
+	Widget
+}
+
+type CClosureExpression struct {
+	Expression
+}
+
+// Calendar: gtkCalendar is a widget that displays a Gregorian calendar, one
+// month at a time. It can be created with gtk_calendar_new().
+//
+// The date that is currently displayed can be altered with
+// gtk_calendar_select_day().
+//
+// To place a visual marker on a particular day, use gtk_calendar_mark_day() and
+// to remove the marker, gtk_calendar_unmark_day(). Alternative, all marks can
+// be cleared with gtk_calendar_clear_marks().
+//
+// The selected date can be retrieved from a Calendar using
+// gtk_calendar_get_date().
+//
+// Users should be aware that, although the Gregorian calendar is the legal
+// calendar in most countries, it was adopted progressively between 1582 and
+// 1929. Display before these dates is likely to be historically incorrect.
+//
+// CSS nodes
+//
+//    calendar.view
+//    ├── header
+//    │   ├── button
+//    │   ├── stack.month
+//    │   ├── button
+//    │   ├── button
+//    │   ├── label.year
+//    │   ╰── button
+//    ╰── grid
+//        ╰── label[.day-name][.week-number][.day-number][.other-month][.today]
+//
+// GtkCalendar has a main node with name calendar. It contains a subnode called
+// header containing the widgets for switching between years and months.
+//
+// The grid subnode contains all day labels, including week numbers on the left
+// (marked with the .week-number css class) and day names on top (marked with
+// the .day-name css class).
+//
+// Day labels that belong to the previous or next month get the .other-month
+// style class. The label of the current day get the .today style class.
+//
+// Marked day labels get the :selected state assigned.
+type Calendar struct {
+	Widget
+}
+
+// CallbackAction: a ShortcutAction that invokes a callback.
+type CallbackAction struct {
+	ShortcutAction
+}
+
+// CellArea: the CellArea is an abstract class for CellLayout widgets (also
+// referred to as "layouting widgets") to interface with an arbitrary number of
+// CellRenderers and interact with the user for a given TreeModel row.
+//
+// The cell area handles events, focus navigation, drawing and size requests and
+// allocations for a given row of data.
+//
+// Usually users dont have to interact with the CellArea directly unless they
+// are implementing a cell-layouting widget themselves.
+//
+//
+// Requesting area sizes
+//
+// As outlined in [GtkWidget’s geometry management
+// section][geometry-management], GTK uses a height-for-width geometry
+// management system to compute the sizes of widgets and user interfaces.
+// CellArea uses the same semantics to calculate the size of an area for an
+// arbitrary number of TreeModel rows.
+//
+// When requesting the size of a cell area one needs to calculate the size for a
+// handful of rows, and this will be done differently by different layouting
+// widgets. For instance a TreeViewColumn always lines up the areas from top to
+// bottom while a IconView on the other hand might enforce that all areas
+// received the same width and wrap the areas around, requesting height for more
+// cell areas when allocated less width.
+//
+// It’s also important for areas to maintain some cell alignments with areas
+// rendered for adjacent rows (cells can appear “columnized” inside an area even
+// when the size of cells are different in each row). For this reason the
+// CellArea uses a CellAreaContext object to store the alignments and sizes
+// along the way (as well as the overall largest minimum and natural size for
+// all the rows which have been calculated with the said context).
+//
+// The CellAreaContext is an opaque object specific to the CellArea which
+// created it (see gtk_cell_area_create_context()). The owning cell-layouting
+// widget can create as many contexts as it wishes to calculate sizes of rows
+// which should receive the same size in at least one orientation (horizontally
+// or vertically), However, it’s important that the same CellAreaContext which
+// was used to request the sizes for a given TreeModel row be used when
+// rendering or processing events for that row.
+//
+// In order to request the width of all the rows at the root level of a
+// TreeModel one would do the following:
+//
+//    GtkTreeIter iter;
+//    int         minimum_width;
+//    int         natural_width;
+//
+//    valid = gtk_tree_model_get_iter_first (model, &iter);
+//    while (valid)
+//      {
+//        gtk_cell_area_apply_attributes (area, model, &iter, FALSE, FALSE);
+//        gtk_cell_area_get_preferred_width (area, context, widget, NULL, NULL);
+//
+//        valid = gtk_tree_model_iter_next (model, &iter);
+//      }
+//    gtk_cell_area_context_get_preferred_width (context, &minimum_width, &natural_width);
+//
+//
+// Note that in this example it’s not important to observe the returned minimum
+// and natural width of the area for each row unless the cell-layouting object
+// is actually interested in the widths of individual rows. The overall width is
+// however stored in the accompanying CellAreaContext object and can be
+// consulted at any time.
+//
+// This can be useful since CellLayout widgets usually have to support
+// requesting and rendering rows in treemodels with an exceedingly large amount
+// of rows. The CellLayout widget in that case would calculate the required
+// width of the rows in an idle or timeout source (see g_timeout_add()) and when
+// the widget is requested its actual width in WidgetClass.measure() it can
+// simply consult the width accumulated so far in the CellAreaContext object.
+//
+// A simple example where rows are rendered from top to bottom and take up the
+// full width of the layouting widget would look like:
+//
+//    static void
+//    foo_get_preferred_width (GtkWidget       *widget,
+//                             int             *minimum_size,
+//                             int             *natural_size)
+//    {
+//      Foo        *foo  = FOO (widget);
+//      FooPrivate *priv = foo->priv;
+//
+//      foo_ensure_at_least_one_handfull_of_rows_have_been_requested (foo);
+//
+//      gtk_cell_area_context_get_preferred_width (priv->context, minimum_size, natural_size);
+//    }
+//
+//
+// In the above example the Foo widget has to make sure that some row sizes have
+// been calculated (the amount of rows that Foo judged was appropriate to
+// request space for in a single timeout iteration) before simply returning the
+// amount of space required by the area via the CellAreaContext.
+//
+// Requesting the height for width (or width for height) of an area is a similar
+// task except in this case the CellAreaContext does not store the data
+// (actually, it does not know how much space the layouting widget plans to
+// allocate it for every row. It’s up to the layouting widget to render each row
+// of data with the appropriate height and width which was requested by the
+// CellArea).
+//
+// In order to request the height for width of all the rows at the root level of
+// a TreeModel one would do the following:
+//
+//    GtkTreeIter iter;
+//    int         minimum_height;
+//    int         natural_height;
+//    int         full_minimum_height = 0;
+//    int         full_natural_height = 0;
+//
+//    valid = gtk_tree_model_get_iter_first (model, &iter);
+//    while (valid)
+//      {
+//        gtk_cell_area_apply_attributes (area, model, &iter, FALSE, FALSE);
+//        gtk_cell_area_get_preferred_height_for_width (area, context, widget,
+//                                                      width, &minimum_height, &natural_height);
+//
+//        if (width_is_for_allocation)
+//           cache_row_height (&iter, minimum_height, natural_height);
+//
+//        full_minimum_height += minimum_height;
+//        full_natural_height += natural_height;
+//
+//        valid = gtk_tree_model_iter_next (model, &iter);
+//      }
+//
+//
+// Note that in the above example we would need to cache the heights returned
+// for each row so that we would know what sizes to render the areas for each
+// row. However we would only want to really cache the heights if the request is
+// intended for the layouting widgets real allocation.
+//
+// In some cases the layouting widget is requested the height for an arbitrary
+// for_width, this is a special case for layouting widgets who need to request
+// size for tens of thousands of rows. For this case it’s only important that
+// the layouting widget calculate one reasonably sized chunk of rows and return
+// that height synchronously. The reasoning here is that any layouting widget is
+// at least capable of synchronously calculating enough height to fill the
+// screen height (or scrolled window height) in response to a single call to
+// WidgetClass.measure(). Returning a perfect height for width that is larger
+// than the screen area is inconsequential since after the layouting receives an
+// allocation from a scrolled window it simply continues to drive the scrollbar
+// values while more and more height is required for the row heights that are
+// calculated in the background.
+//
+//
+// Rendering Areas
+//
+// Once area sizes have been acquired at least for the rows in the visible area
+// of the layouting widget they can be rendered at WidgetClass.snapshot() time.
+//
+// A crude example of how to render all the rows at the root level runs as
+// follows:
+//
+//    GtkAllocation allocation;
+//    GdkRectangle  cell_area = { 0, };
+//    GtkTreeIter   iter;
+//    int           minimum_width;
+//    int           natural_width;
+//
+//    gtk_widget_get_allocation (widget, &allocation);
+//    cell_area.width = allocation.width;
+//
+//    valid = gtk_tree_model_get_iter_first (model, &iter);
+//    while (valid)
+//      {
+//        cell_area.height = get_cached_height_for_row (&iter);
+//
+//        gtk_cell_area_apply_attributes (area, model, &iter, FALSE, FALSE);
+//        gtk_cell_area_render (area, context, widget, cr,
+//                              &cell_area, &cell_area, state_flags, FALSE);
+//
+//        cell_area.y += cell_area.height;
+//
+//        valid = gtk_tree_model_iter_next (model, &iter);
+//      }
+//
+//
+// Note that the cached height in this example really depends on how the
+// layouting widget works. The layouting widget might decide to give every row
+// its minimum or natural height or, if the model content is expected to fit
+// inside the layouting widget without scrolling, it would make sense to
+// calculate the allocation for each row at the time the widget is allocated
+// using gtk_distribute_natural_allocation().
+//
+//
+// Handling Events and Driving Keyboard Focus
+//
+// Passing events to the area is as simple as handling events on any normal
+// widget and then passing them to the gtk_cell_area_event() API as they come
+// in. Usually CellArea is only interested in button events, however some
+// customized derived areas can be implemented who are interested in handling
+// other events. Handling an event can trigger the CellArea::focus-changed
+// signal to fire; as well as CellArea::add-editable in the case that an
+// editable cell was clicked and needs to start editing. You can call
+// gtk_cell_area_stop_editing() at any time to cancel any cell editing that is
+// currently in progress.
+//
+// The CellArea drives keyboard focus from cell to cell in a way similar to
+// Widget. For layouting widgets that support giving focus to cells it’s
+// important to remember to pass GTK_CELL_RENDERER_FOCUSED to the area functions
+// for the row that has focus and to tell the area to paint the focus at render
+// time.
+//
+// Layouting widgets that accept focus on cells should implement the
+// WidgetClass.focus() virtual method. The layouting widget is always
+// responsible for knowing where TreeModel rows are rendered inside the widget,
+// so at WidgetClass.focus() time the layouting widget should use the CellArea
+// methods to navigate focus inside the area and then observe the
+// GtkDirectionType to pass the focus to adjacent rows and areas.
+//
+// A basic example of how the WidgetClass.focus() virtual method should be
+// implemented:
+//
+//    static gboolean
+//    foo_focus (GtkWidget       *widget,
+//               GtkDirectionType direction)
+//    {
+//      Foo        *foo  = FOO (widget);
+//      FooPrivate *priv = foo->priv;
+//      int         focus_row;
+//      gboolean    have_focus = FALSE;
+//
+//      focus_row = priv->focus_row;
+//
+//      if (!gtk_widget_has_focus (widget))
+//        gtk_widget_grab_focus (widget);
+//
+//      valid = gtk_tree_model_iter_nth_child (priv->model, &iter, NULL, priv->focus_row);
+//      while (valid)
+//        {
+//          gtk_cell_area_apply_attributes (priv->area, priv->model, &iter, FALSE, FALSE);
+//
+//          if (gtk_cell_area_focus (priv->area, direction))
+//            {
+//               priv->focus_row = focus_row;
+//               have_focus = TRUE;
+//               break;
+//            }
+//          else
+//            {
+//              if (direction == GTK_DIR_RIGHT ||
+//                  direction == GTK_DIR_LEFT)
+//                break;
+//              else if (direction == GTK_DIR_UP ||
+//                       direction == GTK_DIR_TAB_BACKWARD)
+//               {
+//                  if (focus_row == 0)
+//                    break;
+//                  else
+//                   {
+//                      focus_row--;
+//                      valid = gtk_tree_model_iter_nth_child (priv->model, &iter, NULL, focus_row);
+//                   }
+//                }
+//              else
+//                {
+//                  if (focus_row == last_row)
+//                    break;
+//                  else
+//                    {
+//                      focus_row++;
+//                      valid = gtk_tree_model_iter_next (priv->model, &iter);
+//                    }
+//                }
+//            }
+//        }
+//        return have_focus;
+//    }
+//
+//
+// Note that the layouting widget is responsible for matching the
+// GtkDirectionType values to the way it lays out its cells.
+//
+//
+// Cell Properties
+//
+// The CellArea introduces cell properties for CellRenderers. This provides some
+// general interfaces for defining the relationship cell areas have with their
+// cells. For instance in a CellAreaBox a cell might “expand” and receive extra
+// space when the area is allocated more than its full natural request, or a
+// cell might be configured to “align” with adjacent rows which were requested
+// and rendered with the same CellAreaContext.
+//
+// Use gtk_cell_area_class_install_cell_property() to install cell properties
+// for a cell area class and gtk_cell_area_class_find_cell_property() or
+// gtk_cell_area_class_list_cell_properties() to get information about existing
+// cell properties.
+//
+// To set the value of a cell property, use gtk_cell_area_cell_set_property(),
+// gtk_cell_area_cell_set() or gtk_cell_area_cell_set_valist(). To obtain the
+// value of a cell property, use gtk_cell_area_cell_get_property(),
+// gtk_cell_area_cell_get() or gtk_cell_area_cell_get_valist().
+type CellArea struct {
+	glib.InitiallyUnowned
+}
+
+// CellAreaBox: the CellAreaBox renders cell renderers into a row or a column
+// depending on its Orientation.
+//
+// GtkCellAreaBox uses a notion of packing. Packing refers to adding cell
+// renderers with reference to a particular position in a CellAreaBox. There are
+// two reference positions: the start and the end of the box. When the
+// CellAreaBox is oriented in the GTK_ORIENTATION_VERTICAL orientation, the
+// start is defined as the top of the box and the end is defined as the bottom.
+// In the GTK_ORIENTATION_HORIZONTAL orientation start is defined as the left
+// side and the end is defined as the right side.
+//
+// Alignments of CellRenderers rendered in adjacent rows can be configured by
+// configuring the CellAreaBox align child cell property with
+// gtk_cell_area_cell_set_property() or by specifying the "align" argument to
+// gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end().
+type CellAreaBox struct {
+	CellArea
+}
+
+// CellAreaContext: the CellAreaContext object is created by a given CellArea
+// implementation via its CellAreaClass.create_context() virtual method and is
+// used to store cell sizes and alignments for a series of TreeModel rows that
+// are requested and rendered in the same context.
+//
+// CellLayout widgets can create any number of contexts in which to request and
+// render groups of data rows. However, it’s important that the same context
+// which was used to request sizes for a given TreeModel row also be used for
+// the same row when calling other CellArea APIs such as gtk_cell_area_render()
+// and gtk_cell_area_event().
+type CellAreaContext struct {
+	*glib.Object
+}
+
+// CellRenderer: the CellRenderer is a base class of a set of objects used for
+// rendering a cell to a #cairo_t. These objects are used primarily by the
+// TreeView widget, though they aren’t tied to them in any specific way. It is
+// worth noting that CellRenderer is not a Widget and cannot be treated as such.
+//
+// The primary use of a CellRenderer is for drawing a certain graphical elements
+// on a #cairo_t. Typically, one cell renderer is used to draw many cells on the
+// screen. To this extent, it isn’t expected that a CellRenderer keep any
+// permanent state around. Instead, any state is set just prior to use using
+// #GObjects property system. Then, the cell is measured using
+// gtk_cell_renderer_get_preferred_size(). Finally, the cell is rendered in the
+// correct location using gtk_cell_renderer_snapshot().
+//
+// There are a number of rules that must be followed when writing a new
+// CellRenderer. First and foremost, it’s important that a certain set of
+// properties will always yield a cell renderer of the same size, barring a
+// style change. The CellRenderer also has a number of generic properties that
+// are expected to be honored by all children.
+//
+// Beyond merely rendering a cell, cell renderers can optionally provide active
+// user interface elements. A cell renderer can be “activatable” like
+// CellRendererToggle, which toggles when it gets activated by a mouse click, or
+// it can be “editable” like CellRendererText, which allows the user to edit the
+// text using a widget implementing the CellEditable interface, e.g. Entry. To
+// make a cell renderer activatable or editable, you have to implement the
+// CellRendererClass.activate or CellRendererClass.start_editing virtual
+// functions, respectively.
+//
+// Many properties of CellRenderer and its subclasses have a corresponding “set”
+// property, e.g. “cell-background-set” corresponds to “cell-background”. These
+// “set” properties reflect whether a property has been set or not. You should
+// not set them independently.
+type CellRenderer struct {
+	glib.InitiallyUnowned
+}
+
+// CellRendererAccel: gtkCellRendererAccel displays a keyboard accelerator (i.e.
+// a key combination like `Control + a`). If the cell renderer is editable, the
+// accelerator can be changed by simply typing the new combination.
+type CellRendererAccel struct {
+	CellRendererText
+}
+
+// CellRendererCombo: gtkCellRendererCombo renders text in a cell like
+// CellRendererText from which it is derived. But while CellRendererText offers
+// a simple entry to edit the text, CellRendererCombo offers a ComboBox widget
+// to edit the text. The values to display in the combo box are taken from the
+// tree model specified in the CellRendererCombo:model property.
+//
+// The combo cell renderer takes care of adding a text cell renderer to the
+// combo box and sets it to display the column specified by its
+// CellRendererCombo:text-column property. Further properties of the combo box
+// can be set in a handler for the CellRenderer::editing-started signal.
+type CellRendererCombo struct {
+	CellRendererText
+}
+
+// CellRendererPixbuf: a CellRendererPixbuf can be used to render an image in a
+// cell. It allows to render either a given Pixbuf (set via the
+// CellRendererPixbuf:pixbuf property) or a named icon (set via the
+// CellRendererPixbuf:icon-name property).
+//
+// To support the tree view, CellRendererPixbuf also supports rendering two
+// alternative pixbufs, when the CellRenderer:is-expander property is true. If
+// the CellRenderer:is-expanded property is true and the
+// CellRendererPixbuf:pixbuf-expander-open property is set to a pixbuf, it
+// renders that pixbuf, if the CellRenderer:is-expanded property is false and
+// the CellRendererPixbuf:pixbuf-expander-closed property is set to a pixbuf, it
+// renders that one.
+type CellRendererPixbuf struct {
+	CellRenderer
+}
+
+// CellRendererProgress: gtkCellRendererProgress renders a numeric value as a
+// progress par in a cell. Additionally, it can display a text on top of the
+// progress bar.
+type CellRendererProgress struct {
+	CellRenderer
+}
+
+// CellRendererSpin: gtkCellRendererSpin renders text in a cell like
+// CellRendererText from which it is derived. But while CellRendererText offers
+// a simple entry to edit the text, CellRendererSpin offers a SpinButton widget.
+// Of course, that means that the text has to be parseable as a floating point
+// number.
+//
+// The range of the spinbutton is taken from the adjustment property of the cell
+// renderer, which can be set explicitly or mapped to a column in the tree
+// model, like all properties of cell renders. CellRendererSpin also has
+// properties for the CellRendererSpin:climb-rate and the number of
+// CellRendererSpin:digits to display. Other SpinButton properties can be set in
+// a handler for the CellRenderer::editing-started signal.
+//
+// The CellRendererSpin cell renderer was added in GTK 2.10.
+type CellRendererSpin struct {
+	CellRendererText
+}
+
+// CellRendererSpinner: gtkCellRendererSpinner renders a spinning animation in a
+// cell, very similar to Spinner. It can often be used as an alternative to a
+// CellRendererProgress for displaying indefinite activity, instead of actual
+// progress.
+//
+// To start the animation in a cell, set the CellRendererSpinner:active property
+// to true and increment the CellRendererSpinner:pulse property at regular
+// intervals. The usual way to set the cell renderer properties for each cell is
+// to bind them to columns in your tree model using e.g.
+// gtk_tree_view_column_add_attribute().
+type CellRendererSpinner struct {
+	CellRenderer
+}
+
+// CellRendererText: a CellRendererText renders a given text in its cell, using
+// the font, color and style information provided by its properties. The text
+// will be ellipsized if it is too long and the CellRendererText:ellipsize
+// property allows it.
+//
+// If the CellRenderer:mode is GTK_CELL_RENDERER_MODE_EDITABLE, the
+// CellRendererText allows to edit its text using an entry.
+type CellRendererText struct {
+	CellRenderer
+}
+
+// CellRendererToggle: gtkCellRendererToggle renders a toggle button in a cell.
+// The button is drawn as a radio or a checkbutton, depending on the
+// CellRendererToggle:radio property. When activated, it emits the
+// CellRendererToggle::toggled signal.
+type CellRendererToggle struct {
+	CellRenderer
+}
+
+// CellView: a CellView displays a single row of a TreeModel using a CellArea
+// and CellAreaContext. A CellAreaContext can be provided to the CellView at
+// construction time in order to keep the cellview in context of a group of cell
+// views, this ensures that the renderers displayed will be properly aligned
+// with each other (like the aligned cells in the menus of ComboBox).
+//
+// CellView is Orientable in order to decide in which orientation the underlying
+// CellAreaContext should be allocated. Taking the ComboBox menu as an example,
+// cellviews should be oriented horizontally if the menus are listed
+// top-to-bottom and thus all share the same width but may have separate
+// individual heights (left-to-right menus should be allocated vertically since
+// they all share the same height but may have variable widths).
+//
+//
+// CSS nodes
+//
+// GtkCellView has a single CSS node with name cellview.
+type CellView struct {
+	Widget
+}
+
+// CenterBox: the GtkCenterBox widget arranges three children in a horizontal or
+// vertical arrangement, keeping the middle child centered as well as possible.
+//
+// To add children to GtkCenterBox, use gtk_center_box_set_start_widget(),
+// gtk_center_box_set_center_widget() and gtk_center_box_set_end_widget().
+//
+// The sizing and positioning of children can be influenced with the align and
+// expand properties of the children.
+//
+//
+// GtkCenterBox as GtkBuildable
+//
+// The GtkCenterBox implementation of the Buildable interface supports placing
+// children in the 3 positions by specifying “start”, “center” or “end” as the
+// “type” attribute of a <child> element.
+//
+//
+// CSS nodes
+//
+// GtkCenterBox uses a single CSS node with the name “box”,
+//
+// The first child of the CenterBox will be allocated depending on the text
+// direction, i.e. in left-to-right layouts it will be allocated on the left and
+// in right-to-left layouts on the right.
+//
+// In vertical orientation, the nodes of the children are arranged from top to
+// bottom.
+//
+//
+// Accessibility
+//
+// GtkCenterBox uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+type CenterBox struct {
+	Widget
+}
+
+// CenterLayout: a CenterLayout is a layout manager that manages up to three
+// children. The start widget is allocated at the start of the layout (left in
+// LRT layouts and right in RTL ones), and the end widget at the end.
+//
+// The center widget is centered regarding the full width of the layout's.
+type CenterLayout struct {
+	LayoutManager
+}
+
+// CheckButton: a CheckButton places a label next to an indicator.
+//
+// CSS nodes
+//
+//    checkbutton[.text-button]
+//    ├── check
+//    ╰── [label]
+//
+// A CheckButton has a main node with name checkbutton. If the CheckButton:label
+// property is set, it contains a label child. The indicator node is named check
+// when no group is set, and radio if the checkbutton is grouped together with
+// other checkbuttons.
+//
+//
+// Accessibility
+//
+// GtkCheckButton uses the K_ACCESSIBLE_ROLE_CHECKBOX role.
+type CheckButton struct {
+	Widget
+}
+
+type ClosureExpression struct {
+	Expression
+}
+
+// ColorButton: the ColorButton is a button which displays the currently
+// selected color and allows to open a color selection dialog to change the
+// color. It is suitable widget for selecting a color in a preference dialog.
+//
+// CSS nodes
+//
+//    colorbutton
+//    ╰── button.color
+//        ╰── [content]
+//
+// GtkColorButton has a single CSS node with name colorbutton which contains a
+// button node. To differentiate it from a plain Button, it gets the .color
+// style class.
+type ColorButton struct {
+	Widget
+}
+
+// ColorChooserDialog: the ColorChooserDialog widget is a dialog for choosing a
+// color. It implements the ColorChooser interface.
+type ColorChooserDialog struct {
+	Dialog
+}
+
+// ColorChooserWidget: the ColorChooserWidget widget lets the user select a
+// color. By default, the chooser presents a predefined palette of colors, plus
+// a small number of settable custom colors. It is also possible to select a
+// different color with the single-color editor. To enter the single-color
+// editing mode, use the context menu of any color of the palette, or use the
+// '+' button to add a new custom color.
+//
+// The chooser automatically remembers the last selection, as well as custom
+// colors.
+//
+// To change the initially selected color, use gtk_color_chooser_set_rgba(). To
+// get the selected color use gtk_color_chooser_get_rgba().
+//
+// The ColorChooserWidget is used in the ColorChooserDialog to provide a dialog
+// for selecting colors.
+//
+//
+// CSS names
+//
+// GtkColorChooserWidget has a single CSS node with name colorchooser.
+type ColorChooserWidget struct {
+	Widget
+}
+
+// ColumnView: gtkColumnView is a widget to present a view into a large dynamic
+// list of items using multiple columns with headers.
+//
+// GtkColumnView uses the factories of its columns to generate a cell widget for
+// each column, for each visible item and displays them together as the row for
+// this item. The ColumnView:show-row-separators and
+// ColumnView:show-column-separators properties offer a simple way to display
+// separators between the rows or columns.
+//
+// GtkColumnView allows the user to select items according to the selection
+// characteristics of the model. For models that allow multiple selected items,
+// it is possible to turn on *rubberband selection*, using
+// ColumnView:enable-rubberband.
+//
+// The column view supports sorting that can be customized by the user by
+// clicking on column headers. To set this up, the Sorter returned by
+// gtk_column_view_get_sorter() must be attached to a sort model for the data
+// that the view is showing, and the columns must have sorters attached to them
+// by calling gtk_column_view_column_set_sorter(). The initial sort order can be
+// set with gtk_column_view_sort_by_column().
+//
+// The column view also supports interactive resizing and reordering of columns,
+// via Drag-and-Drop of the column headers. This can be enabled or disabled with
+// the ColumnView:reorderable and ColumnViewColumn:resizable properties.
+//
+// To learn more about the list widget framework, see the [overview](Widget).
+//
+// CSS nodes
+//
+//    columnview[.column-separators][.rich-list][.navigation-sidebar][.data-table]
+//    ├── header
+//    │   ├── <column header>
+//    ┊   ┊
+//    │   ╰── <column header>
+//    │
+//    ├── listview
+//    │
+//    ┊
+//    ╰── [rubberband]
+//
+//
+//
+// GtkColumnView uses a single CSS node named columnview. It may carry the
+// .column-separators style class, when ColumnView:show-column-separators
+// property is set. Header widets appear below a node with name header. The rows
+// are contained in a GtkListView widget, so there is a listview node with the
+// same structure as for a standalone GtkListView widget. If
+// ColumnView:show-row-separators is set, it will be passed on to the list view,
+// causing its CSS node to carry the .separators style class. For rubberband
+// selection, a node with name rubberband is used.
+//
+// The main columnview node may also carry style classes to select the style of
+// [list presentation](ListContainers.html#list-styles): .rich-list,
+// .navigation-sidebar or .data-table.
+//
+//
+// Accessibility
+//
+// GtkColumnView uses the K_ACCESSIBLE_ROLE_TREE_GRID role, header title widgets
+// are using the K_ACCESSIBLE_ROLE_COLUMN_HEADER role. The row widgets are using
+// the K_ACCESSIBLE_ROLE_ROW role, and individual cells are using the
+// K_ACCESSIBLE_ROLE_GRID_CELL role
+type ColumnView struct {
+	Widget
+}
+
+// ColumnViewColumn: gtkColumnViewColumn represents the columns being added to
+// ColumnView.
+//
+// Columns have a title, and can optionally have a header menu set with
+// gtk_column_view_column_set_header_menu().
+//
+// A sorter can be associated with a column using
+// gtk_column_view_column_set_sorter(), to let users influence sorting by
+// clicking on the column header.
+type ColumnViewColumn struct {
+	*glib.Object
+}
+
+// ComboBox: a GtkComboBox is a widget that allows the user to choose from a
+// list of valid choices. The GtkComboBox displays the selected choice. When
+// activated, the GtkComboBox displays a popup which allows the user to make a
+// new choice. The style in which the selected value is displayed, and the style
+// of the popup is determined by the current theme. It may be similar to a
+// Windows-style combo box.
+//
+// The GtkComboBox uses the model-view pattern; the list of valid choices is
+// specified in the form of a tree model, and the display of the choices can be
+// adapted to the data in the model by using cell renderers, as you would in a
+// tree view. This is possible since GtkComboBox implements the CellLayout
+// interface. The tree model holding the valid choices is not restricted to a
+// flat list, it can be a real tree, and the popup will reflect the tree
+// structure.
+//
+// To allow the user to enter values not in the model, the “has-entry” property
+// allows the GtkComboBox to contain a Entry. This entry can be accessed by
+// calling gtk_combo_box_get_child() on the combo box.
+//
+// For a simple list of textual choices, the model-view API of GtkComboBox can
+// be a bit overwhelming. In this case, ComboBoxText offers a simple
+// alternative. Both GtkComboBox and ComboBoxText can contain an entry.
+//
+// CSS nodes
+//
+//    combobox
+//    ├── box.linked
+//    │   ╰── button.combo
+//    │       ╰── box
+//    │           ├── cellview
+//    │           ╰── arrow
+//    ╰── window.popup
+//
+// A normal combobox contains a box with the .linked class, a button with the
+// .combo class and inside those buttons, there are a cellview and an arrow.
+//
+//    combobox
+//    ├── box.linked
+//    │   ├── entry.combo
+//    │   ╰── button.combo
+//    │       ╰── box
+//    │           ╰── arrow
+//    ╰── window.popup
+//
+// A GtkComboBox with an entry has a single CSS node with name combobox. It
+// contains a box with the .linked class. That box contains an entry and a
+// button, both with the .combo class added. The button also contains another
+// node with name arrow.
+//
+//
+// Accessibility
+//
+// GtkComboBox uses the K_ACCESSIBLE_ROLE_COMBO_BOX role.
+type ComboBox struct {
+	Widget
+}
+
+// ComboBoxText: a GtkComboBoxText is a simple variant of ComboBox that hides
+// the model-view complexity for simple text-only use cases.
+//
+// To create a GtkComboBoxText, use gtk_combo_box_text_new() or
+// gtk_combo_box_text_new_with_entry().
+//
+// You can add items to a GtkComboBoxText with gtk_combo_box_text_append_text(),
+// gtk_combo_box_text_insert_text() or gtk_combo_box_text_prepend_text() and
+// remove options with gtk_combo_box_text_remove().
+//
+// If the GtkComboBoxText contains an entry (via the “has-entry” property), its
+// contents can be retrieved using gtk_combo_box_text_get_active_text(). The
+// entry itself can be accessed by calling gtk_bin_get_child() on the combo box.
+//
+// You should not call gtk_combo_box_set_model() or attempt to pack more cells
+// into this combo box via its GtkCellLayout interface.
+//
+//
+// GtkComboBoxText as GtkBuildable
+//
+// The GtkComboBoxText implementation of the GtkBuildable interface supports
+// adding items directly using the <items> element and specifying <item>
+// elements for each item. Each <item> element can specify the “id”
+// corresponding to the appended text and also supports the regular translation
+// attributes “translatable”, “context” and “comments”.
+//
+//
+//    <object class="GtkComboBoxText">
+//      <items>
+//        <item translatable="yes" id="factory">Factory</item>
+//        <item translatable="yes" id="home">Home</item>
+//        <item translatable="yes" id="subway">Subway</item>
+//      </items>
+//    </object>
+//
+// CSS nodes
+//
+//    combobox
+//    ╰── box.linked
+//        ├── entry.combo
+//        ├── button.combo
+//        ╰── window.popup
+//
+// GtkComboBoxText has a single CSS node with name combobox. It adds the style
+// class .combo to the main CSS nodes of its entry and button children, and the
+// .linked class to the node of its internal box.
+type ComboBoxText struct {
+	ComboBox
+}
+
+type ConstantExpression struct {
+	Expression
+}
+
+// Constraint: gtkConstraint describes a constraint between an attribute on a
+// widget and another attribute on another widget, expressed as a linear
+// equation like:
+//
+//
+//      target.attr1 = source.attr2 × multiplier + constant
+//
+// Each Constraint is part of a system that will be solved by a ConstraintLayout
+// in order to allocate and position each child widget.
+//
+// The source and target widgets, as well as their attributes, of a Constraint
+// instance are immutable after creation.
+type Constraint struct {
+	*glib.Object
+}
+
+// ConstraintGuide: a ConstraintGuide is an invisible layout element that can be
+// used by widgets inside a ConstraintLayout as a source or a target of a
+// Constraint. Guides can be used like guidelines or as flexible space.
+//
+// Unlike a Widget, a ConstraintGuide will not be drawn.
+type ConstraintGuide struct {
+	*glib.Object
+}
+
+// ConstraintLayout: gtkConstraintLayout is a layout manager that uses relations
+// between widget attributes, expressed via Constraint instances, to measure and
+// allocate widgets.
+//
+//
+// How do constraints work
+//
+// Constraints are objects defining the relationship between attributes of a
+// widget; you can read the description of the Constraint class to have a more
+// in depth definition.
+//
+// By taking multiple constraints and applying them to the children of a widget
+// using ConstraintLayout, it's possible to describe complex layout policies;
+// each constraint applied to a child or to the parent widgets contributes to
+// the full description of the layout, in terms of parameters for resolving the
+// value of each attribute.
+//
+// It is important to note that a layout is defined by the totality of
+// constraints; removing a child, or a constraint, from an existing layout
+// without changing the remaining constraints may result in an unstable or
+// unsolvable layout.
+//
+// Constraints have an implicit "reading order"; you should start describing
+// each edge of each child, as well as their relationship with the parent
+// container, from the top left (or top right, in RTL languages), horizontally
+// first, and then vertically.
+//
+// A constraint-based layout with too few constraints can become "unstable",
+// that is: have more than one solution. The behavior of an unstable layout is
+// undefined.
+//
+// A constraint-based layout with conflicting constraints may be unsolvable, and
+// lead to an unstable layout. You can use the Constraint:strength property of
+// Constraint to "nudge" the layout towards a solution.
+//
+//
+// GtkConstraintLayout as GtkBuildable
+//
+// GtkConstraintLayout implements the Buildable interface and has a custom
+// "constraints" element which allows describing constraints in a GtkBuilder UI
+// file.
+//
+// An example of a UI definition fragment specifying a constraint:
+//
+//
+//      <object class="GtkConstraintLayout">
+//        <constraints>
+//          <constraint target="button" target-attribute="start"
+//                      relation="eq"
+//                      source="super" source-attribute="start"
+//                      constant="12"
+//                      strength="required" />
+//          <constraint target="button" target-attribute="width"
+//                      relation="ge"
+//                      constant="250"
+//                      strength="strong" />
+//        </constraints>
+//      </object>
+//
+// The definition above will add two constraints to the GtkConstraintLayout:
+//
+// - a required constraint between the leading edge of "button" and the leading
+// edge of the widget using the constraint layout, plus 12 pixels - a strong,
+// constant constraint making the width of "button" greater than, or equal to
+// 250 pixels
+//
+// The "target" and "target-attribute" attributes are required.
+//
+// The "source" and "source-attribute" attributes of the "constraint" element
+// are optional; if they are not specified, the constraint is assumed to be a
+// constant.
+//
+// The "relation" attribute is optional; if not specified, the constraint is
+// assumed to be an equality.
+//
+// The "strength" attribute is optional; if not specified, the constraint is
+// assumed to be required.
+//
+// The "source" and "target" attributes can be set to "super" to indicate that
+// the constraint target is the widget using the GtkConstraintLayout.
+//
+// There can be "constant" and "multiplier" attributes.
+//
+// Additionally, the "constraints" element can also contain a description of the
+// ConstraintGuides used by the layout:
+//
+//
+//      <constraints>
+//        <guide min-width="100" max-width="500" name="hspace"/>
+//        <guide min-height="64" nat-height="128" name="vspace" strength="strong"/>
+//      </constraints>
+//
+// The "guide" element has the following optional attributes:
+//
+// - "min-width", "nat-width", and "max-width", describe the minimum, natural,
+// and maximum width of the guide, respectively - "min-height", "nat-height",
+// and "max-height", describe the minimum, natural, and maximum height of the
+// guide, respectively - "strength" describes the strength of the constraint on
+// the natural size of the guide; if not specified, the constraint is assumed to
+// have a medium strength - "name" describes a name for the guide, useful when
+// debugging
+//
+//
+// Using the Visual Format Language
+//
+// Complex constraints can be described using a compact syntax called VFL, or
+// *Visual Format Language*.
+//
+// The Visual Format Language describes all the constraints on a row or column,
+// typically starting from the leading edge towards the trailing one. Each
+// element of the layout is composed by "views", which identify a
+// ConstraintTarget.
+//
+// For instance:
+//
+//
+//      [button]-[textField]
+//
+// Describes a constraint that binds the trailing edge of "button" to the
+// leading edge of "textField", leaving a default space between the two.
+//
+// Using VFL is also possible to specify predicates that describe constraints on
+// attributes like width and height:
+//
+//
+//      // Width must be greater than, or equal to 50
+//      [button(>=50)]
+//
+//      // Width of button1 must be equal to width of button2
+//      [button1(==button2)]
+//
+//
+// The default orientation for a VFL description is horizontal, unless otherwise
+// specified:
+//
+//
+//      // horizontal orientation, default attribute: width
+//      H:[button(>=150)]
+//
+//      // vertical orientation, default attribute: height
+//      V:[button1(==button2)]
+//
+//
+// It's also possible to specify multiple predicates, as well as their strength:
+//
+//
+//      // minimum width of button must be 150
+//      // natural width of button can be 250
+//      [button(>=150@required, ==250@medium)]
+//
+// Finally, it's also possible to use simple arithmetic operators:
+//
+//
+//      // width of button1 must be equal to width of button2
+//      // divided by 2 plus 12
+//      [button1(button2 / 2 + 12)]
+type ConstraintLayout struct {
+	LayoutManager
+}
+
+// ConstraintLayoutChild: a LayoutChild in a ConstraintLayout.
+type ConstraintLayoutChild struct {
+	LayoutChild
+}
+
+// CSSProvider: gtkCssProvider is an object implementing the StyleProvider
+// interface. It is able to parse [CSS-like][css-overview] input in order to
+// style widgets.
+//
+// An application can make GTK parse a specific CSS style sheet by calling
+// gtk_css_provider_load_from_file() or gtk_css_provider_load_from_resource()
+// and adding the provider with gtk_style_context_add_provider() or
+// gtk_style_context_add_provider_for_display().
+//
+// In addition, certain files will be read when GTK is initialized. First, the
+// file `$XDG_CONFIG_HOME/gtk-4.0/gtk.css` is loaded if it exists. Then, GTK
+// loads the first existing file among
+// `XDG_DATA_HOME/themes/THEME/gtk-VERSION/gtk-VARIANT.css`,
+// `$HOME/.themes/THEME/gtk-VERSION/gtk-VARIANT.css`,
+// `$XDG_DATA_DIRS/themes/THEME/gtk-VERSION/gtk-VARIANT.css` and
+// `DATADIR/share/themes/THEME/gtk-VERSION/gtk-VARIANT.css`, where `THEME` is
+// the name of the current theme (see the Settings:gtk-theme-name setting),
+// VARIANT is the variant to load (see the
+// Settings:gtk-application-prefer-dark-theme setting), `DATADIR` is the prefix
+// configured when GTK was compiled (unless overridden by the `GTK_DATA_PREFIX`
+// environment variable), and `VERSION` is the GTK version number. If no file is
+// found for the current version, GTK tries older versions all the way back to
+// 4.0.
+type CSSProvider struct {
+	*glib.Object
+}
+
+// CustomFilter: gtkCustomFilter is a Filter that uses a callback to determine
+// whether to include an item or not.
+type CustomFilter struct {
+	Filter
+}
+
+// CustomLayout: gtkCustomLayout is a convenience type meant to be used as a
+// transition mechanism between Widgets implementing a layout policy, and
+// LayoutManager classes.
+//
+// A CustomLayout uses closures matching to the old Widget virtual functions for
+// size negotiation, as a convenience API to ease the porting towards the
+// corresponding LayoutManager virtual functions.
+type CustomLayout struct {
+	LayoutManager
+}
+
+// CustomSorter: gtkCustomSorter is a Sorter implementation that sorts via a
+// traditional DataFunc callback.
+type CustomSorter struct {
+	Sorter
+}
+
+// Dialog: dialogs are a convenient way to prompt the user for a small amount of
+// input, e.g. to display a message, ask a question, or anything else that does
+// not require extensive effort on the user’s part.
+//
+// The main area of a GtkDialog is called the "content area", and is yours to
+// populate with widgets such a Label or Entry, to present your information,
+// questions, or tasks to the user. In addition, dialogs allow you to add
+// "action widgets". Most commonly, action widgets are buttons. Depending on the
+// platform, action widgets may be presented in the header bar at the top of the
+// window, or at the bottom of the window. To add action widgets, use GtkDialog
+// using gtk_dialog_new_with_buttons(), gtk_dialog_add_button(),
+// gtk_dialog_add_buttons(), or gtk_dialog_add_action_widget().
+//
+// Clicking a button that was added as an action widget will emit the
+// Dialog::response signal with a response ID that you specified. GTK will never
+// assign a meaning to positive response IDs; these are entirely user-defined.
+// But for convenience, you can use the response IDs in the ResponseType
+// enumeration (these all have values less than zero). If a dialog receives a
+// delete event, the Dialog::response signal will be emitted with the
+// K_RESPONSE_DELETE_EVENT response ID.
+//
+// Dialogs are created with a call to gtk_dialog_new() or
+// gtk_dialog_new_with_buttons(). gtk_dialog_new_with_buttons() is recommended;
+// it allows you to set the dialog title, some convenient flags, and add simple
+// buttons.
+//
+// A “modal” dialog (that is, one which freezes the rest of the application from
+// user input), can be created by calling gtk_window_set_modal() on the dialog.
+// Use the GTK_WINDOW() macro to cast the widget returned from gtk_dialog_new()
+// into a Window. When using gtk_dialog_new_with_buttons() you can also pass the
+// K_DIALOG_MODAL flag to make a dialog modal.
+//
+// For the simple dialog in the following example, a MessageDialog would save
+// some effort. But you’d need to create the dialog contents manually if you had
+// more than a simple message in the dialog.
+//
+// An example for simple GtkDialog usage: |[<!-- language="C" --> // Function to
+// open a dialog box with a message void quick_message (GtkWindow *parent, char
+// *message) { GtkWidget *dialog, *label, *content_area; GtkDialogFlags flags;
+//
+// // Create the widgets flags = GTK_DIALOG_DESTROY_WITH_PARENT; dialog =
+// // gtk_dialog_new_with_buttons ("Message", parent, flags, _("_OK"),
+// // GTK_RESPONSE_NONE, NULL); content_area = gtk_dialog_get_content_area
+// // (GTK_DIALOG (dialog)); label = gtk_label_new (message);
+//
+// // Ensure that the dialog box is destroyed when the user responds
+//
+// g_signal_connect_swapped (dialog, "response", G_CALLBACK
+// (gtk_window_destroy), dialog);
+//
+// // Add the label, and show everything we’ve added
+//
+//     gtk_box_append (GTK_BOX (content_area), label);
+//     gtk_widget_show (dialog);
+//    }
+//
+//
+//    # GtkDialog as GtkBuildable
+//
+//    The GtkDialog implementation of the Buildable interface exposes the
+//    @content_area as an internal child with the name “content_area”.
+//
+//    GtkDialog supports a custom <action-widgets> element, which can contain
+//    multiple <action-widget> elements. The “response” attribute specifies a
+//    numeric response, and the content of the element is the id of widget
+//    (which should be a child of the dialogs @action_area). To mark a response
+//    as default, set the “default“ attribute of the <action-widget> element
+//    to true.
+//
+//    GtkDialog supports adding action widgets by specifying “action“ as
+//    the “type“ attribute of a <child> element. The widget will be added
+//    either to the action area or the headerbar of the dialog, depending
+//    on the “use-header-bar“ property. The response id has to be associated
+//    with the action widget using the <action-widgets> element.
+//
+//
+//    <object class="GtkDialog" id="dialog1">
+//      <child type="action">
+//        <object class="GtkButton" id="button_cancel"/>
+//      </child>
+//      <child type="action">
+//        <object class="GtkButton" id="button_ok">
+//        </object>
+//      </child>
+//      <action-widgets>
+//        <action-widget response="cancel">button_cancel</action-widget>
+//        <action-widget response="ok" default="true">button_ok</action-widget>
+//      </action-widgets>
+//    </object>
+//
+//
+// Accessibility
+//
+// GtkDialog uses the K_ACCESSIBLE_ROLE_DIALOG role.
+type Dialog struct {
+	Window
+}
+
+// DirectoryList: gtkDirectoryList is a list model that wraps
+// g_file_enumerate_children_async(). It presents a Model and fills it
+// asynchronously with the Infos returned from that function.
+//
+// Enumeration will start automatically when a the DirectoryList:file property
+// is set.
+//
+// While the DirectoryList is being filled, the DirectoryList:loading property
+// will be set to true. You can listen to that property if you want to show
+// information like a Spinner or a "Loading..." text.
+//
+// If loading fails at any point, the DirectoryList:error property will be set
+// to give more indication about the failure.
+//
+// The Infos returned from a DirectoryList have the "standard::file" attribute
+// set to the #GFile they refer to. This way you can get at the file that is
+// referred to in the same way you would via g_file_enumerator_get_child(). This
+// means you do not need access to the DirectoryList but can access the #GFile
+// directly from the Info when operating with a ListView or similar.
+type DirectoryList struct {
+	*glib.Object
+}
+
+// DragIcon: gtkDragIcon is a Root implementation with the sole purpose to serve
+// as a drag icon during DND operations. A drag icon moves with the pointer
+// during a drag operation and is destroyed when the drag ends.
+//
+// To set up a drag icon and associate it with an ongoing drag operation, use
+// gtk_drag_icon_get_for_drag() to get the icon for a drag. You can then use it
+// like any other widget and use gtk_drag_icon_set_child() to set whatever
+// widget should be used for the drag icon.
+//
+// Keep in mind that drag icons do not allow user input.
+type DragIcon struct {
+	Widget
+}
+
+// DragSource: gtkDragSource is an auxiliary object that is used to initiate
+// Drag-And-Drop operations. It can be set up with the necessary ingredients for
+// a DND operation ahead of time. This includes the source for the data that is
+// being transferred, in the form of a ContentProvider, the desired action, and
+// the icon to use during the drag operation. After setting it up, the drag
+// source must be added to a widget as an event controller, using
+// gtk_widget_add_controller().
+//
+//    static void
+//    my_widget_init (MyWidget *self)
+//    {
+//      GtkDragSource *drag_source = gtk_drag_source_new ();
+//
+//      g_signal_connect (drag_source, "prepare", G_CALLBACK (on_drag_prepare), self);
+//      g_signal_connect (drag_source, "drag-begin", G_CALLBACK (on_drag_begin), self);
+//
+//      gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (drag_source));
+//    }
+//
+//
+// Setting up the content provider and icon ahead of time only makes sense when
+// the data does not change. More commonly, you will want to set them up just in
+// time. To do so, DragSource has DragSource::prepare and DragSource::drag-begin
+// signals.
+//
+// The ::prepare signal is emitted before a drag is started, and can be used to
+// set the content provider and actions that the drag should be started with.
+//
+//    static GdkContentProvider *
+//    on_drag_prepare (GtkDragSource *source,
+//                     double         x,
+//                     double         y,
+//                     MyWidget      *self)
+//    {
+//      // This widget supports two types of content: GFile objects
+//      // and GdkPixbuf objects; GTK will handle the serialization
+//      // of these types automatically
+//      GFile *file = my_widget_get_file (self);
+//      GdkPixbuf *pixbuf = my_widget_get_pixbuf (self);
+//
+//      return gdk_content_provider_new_union ((GdkContentProvider *[2]) {
+//          gdk_content_provider_new_typed (G_TYPE_FILE, file),
+//          gdk_content_provider_new_typed (GDK_TYPE_PIXBUF, pixbuf),
+//        }, 2);
+//    }
+//
+//
+// The ::drag-begin signal is emitted after the Drag object has been created,
+// and can be used to set up the drag icon.
+//
+//    static void
+//    on_drag_begin (GtkDragSource *source,
+//                   GtkDrag       *drag,
+//                   MyWidget      *self)
+//    {
+//      // Set the widget as the drag icon
+//      GdkPaintable *paintable = gtk_widget_paintable_new (GTK_WIDGET (self));
+//      gtk_drag_source_set_icon (source, paintable, 0, 0);
+//      g_object_unref (paintable);
+//    }
+//
+// During the DND operation, GtkDragSource emits signals that can be used to
+// obtain updates about the status of the operation, but it is not normally
+// necessary to connect to any signals, except for one case: when the supported
+// actions include GDK_ACTION_MOVE, you need to listen for the
+// DragSource::drag-end signal and delete the data after it has been
+// transferred.
+type DragSource struct {
+	GestureSingle
+}
+
+// DrawingArea: the DrawingArea widget is used for creating custom user
+// interface elements. It’s essentially a blank widget; you can draw on it.
+// After creating a drawing area, the application may want to connect to:
+//
+// - The Widget::realize signal to take any necessary actions when the widget is
+// instantiated on a particular display. (Create GDK resources in response to
+// this signal.)
+//
+// - The DrawingArea::resize signal to take any necessary actions when the
+// widget changes size.
+//
+// - Call gtk_drawing_area_set_draw_func() to handle redrawing the contents of
+// the widget.
+//
+// The following code portion demonstrates using a drawing area to display a
+// circle in the normal widget foreground color.
+//
+// Simple GtkDrawingArea usage
+//
+//    static void
+//    draw_function (GtkDrawingArea *area,
+//                   cairo_t        *cr,
+//                   int             width,
+//                   int             height,
+//                   gpointer        data)
+//    {
+//      GdkRGBA color;
+//      GtkStyleContext *context;
+//
+//      context = gtk_widget_get_style_context (GTK_WIDGET (area));
+//
+//      cairo_arc (cr,
+//                 width / 2.0, height / 2.0,
+//                 MIN (width, height) / 2.0,
+//                 0, 2 * G_PI);
+//
+//      gtk_style_context_get_color (context,
+//                                   &color);
+//      gdk_cairo_set_source_rgba (cr, &color);
+//
+//      cairo_fill (cr);
+//    }
+//
+//    int
+//    main (int argc, char **argv)
+//    {
+//      gtk_init ();
+//
+//      GtkWidget *area = gtk_drawing_area_new ();
+//      gtk_drawing_area_set_content_width (GTK_DRAWING_AREA (area), 100);
+//      gtk_drawing_area_set_content_height (GTK_DRAWING_AREA (area), 100);
+//      gtk_drawing_area_set_draw_func (GTK_DRAWING_AREA (area),
+//                                      draw_function,
+//                                      NULL, NULL);
+//      return 0;
+//    }
+//
+//
+// The draw function is normally called when a drawing area first comes
+// onscreen, or when it’s covered by another window and then uncovered. You can
+// also force a redraw by adding to the “damage region” of the drawing area’s
+// window using gtk_widget_queue_draw(). This will cause the drawing area to
+// call the draw function again.
+//
+// The available routines for drawing are documented on the [GDK Drawing
+// Primitives][gdk4-Cairo-Interaction] page and the cairo documentation.
+//
+// To receive mouse events on a drawing area, you will need to use event
+// controllers. To receive keyboard events, you will need to set the “can-focus”
+// property on the drawing area, and you should probably draw some user-visible
+// indication that the drawing area is focused.
+//
+// If you need more complex control over your widget, you should consider
+// creating your own Widget subclass.
+type DrawingArea struct {
+	Widget
+}
+
+// DropControllerMotion: gtkDropControllerMotion is an event controller meant
+// for tracking the pointer hovering over a widget during a drag and drop
+// operation.
+//
+// It is modeled after EventControllerMotion so if you have used that, this
+// should feel really familiar.
+//
+// The drop controller is not able to accept drops, use DropTarget for that
+// purpose.
+type DropControllerMotion struct {
+	EventController
+}
+
+// DropDown: gtkDropDown is a widget that allows the user to choose an item from
+// a list of options. The GtkDropDown displays the selected choice.
+//
+// The options are given to GtkDropDown in the form of Model, and how the
+// individual options are represented is determined by a ListItemFactory. The
+// default factory displays simple strings.
+//
+// GtkDropDown knows how to obtain strings from the items in a StringList; for
+// other models, you have to provide an expression to find the strings via
+// gtk_drop_down_set_expression().
+//
+// GtkDropDown can optionally allow search in the popup, which is useful if the
+// list of options is long. To enable the search entry, use
+// gtk_drop_down_set_enable_search().
+//
+//
+// CSS nodes
+//
+// GtkDropDown has a single CSS node with name dropdown, with the button and
+// popover nodes as children.
+//
+//
+// Accessibility
+//
+// GtkDropDown uses the K_ACCESSIBLE_ROLE_COMBO_BOX role.
+type DropDown struct {
+	Widget
+}
+
+// DropTarget: gtkDropTarget is an event controller implementing a simple way to
+// receive Drag-and-Drop operations.
+//
+// The most basic way to use a DropTarget to receive drops on a widget is to
+// create it via gtk_drop_target_new() passing in the #GType of the data you
+// want to receive and connect to the DropTarget::drop signal to receive the
+// data:
+//
+//    static gboolean
+//    on_drop (GtkDropTarget *target,
+//             const GValue  *value,
+//             double         x,
+//             double         y,
+//             gpointer       data)
+//    {
+//      MyWidget *self = data;
+//
+//      // Call the appropriate setter depending on the type of data
+//      // that we received
+//      if (G_VALUE_HOLDS (value, G_TYPE_FILE))
+//        my_widget_set_file (self, g_value_get_object (value));
+//      else if (G_VALUE_HOLDS (value, GDK_TYPE_PIXBUF))
+//        my_widget_set_pixbuf (self, g_value_get_object (value));
+//      else
+//        return FALSE;
+//
+//      return TRUE;
+//    }
+//
+//    static void
+//    my_widget_init (MyWidget *self)
+//    {
+//      GtkDropTarget *target =
+//        gtk_drop_target_new (G_TYPE_INVALID, GDK_ACTION_COPY);
+//
+//      // This widget accepts two types of drop types: GFile objects
+//      // and GdkPixbuf objects
+//      gtk_drop_target_set_gtypes (target, (GTypes [2]) {
+//        G_TYPE_FILE,
+//        GDK_TYPE_PIXBUF,
+//      }, 2);
+//
+//      gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (target));
+//    }
+//
+//
+// DropTarget supports more options, such as:
+//
+// * rejecting potential drops via the DropTarget::accept signal and the
+// gtk_drop_target_reject() function to let other drop targets handle the drop *
+// tracking an ongoing drag operation before the drop via the DropTarget::enter,
+// DropTarget::motion and DropTarget::leave signals * configuring how to receive
+// data by setting the DropTarget:preload property and listening for its
+// availability via the DropTarget:value property
+//
+// However, DropTarget is ultimately modeled in a synchronous way and only
+// supports data transferred via #GType. If you want full control over an
+// ongoing drop, the DropTargetAsync object gives you this ability.
+//
+// While a pointer is dragged over the drop target's widget and the drop has not
+// been rejected, that widget will receive the GTK_STATE_FLAG_DROP_ACTIVE state,
+// which can be used to style the widget.
+type DropTarget struct {
+	EventController
+}
+
+// DropTargetAsync: gtkDropTargetAsync is an auxiliary object that can be used
+// to receive Drag-and-Drop operations. It is the more complete but also more
+// complex method of handling drop operations compared to DropTarget and you
+// should only use it if DropTarget doesn't provide all the features you need.
+//
+// To use a DropTargetAsync to receive drops on a widget, you create a
+// DropTargetAsync object, configure which data formats and actions you support,
+// connect to its signals, and then attach it to the widget with
+// gtk_widget_add_controller().
+//
+// During a drag operation, the first signal that a GtkDropTargetAsync emits is
+// DropTargetAsync::accept, which is meant to determine whether the target is a
+// possible drop site for the ongoing drop. The default handler for the ::accept
+// signal accepts the drop if it finds a compatible data format and an action
+// that is supported on both sides.
+//
+// If it is, and the widget becomes a target, you will receive a
+// DropTargetAsync::drag-enter signal, followed by DropTargetAsync::drag-motion
+// signals as the pointer moves, optionally a DropTargetAsync::drop signal when
+// a drop happens, and finally a DropTargetAsync::drag-leave signal when the
+// pointer moves off the widget.
+//
+// The ::drag-enter and ::drag-motion handler return a DragAction to update the
+// status of the ongoing operation. The ::drop handler should decide if it
+// ultimately accepts the drop and if it does, it should initiate the data
+// transfer and finish the operation by calling gdk_drop_finish().
+//
+// Between the ::drag-enter and ::drag-leave signals the widget is a current
+// drop target, and will receive the GTK_STATE_FLAG_DROP_ACTIVE state, which can
+// be used by themes to style the widget as a drop target.
+type DropTargetAsync struct {
+	EventController
+}
+
+// EditableLabel: a GtkEditableLabel is a Label that allows users to edit the
+// text by switching the widget to an “edit mode”.
+//
+// GtkEditableLabel does not have API of its own, but it implements the Editable
+// interface.
+//
+// The default bindings for activating the edit mode is to click or press the
+// Enter key. The default bindings for leaving the edit mode are the Enter key
+// (to save the results) or the Escape key (to cancel the editing).
+//
+// CSS nodes
+//
+//    editablelabel[.editing]
+//    ╰── stack
+//        ├── label
+//        ╰── text
+//
+// GtkEditableLabel has a main node with the name editablelabel. When the entry
+// is in editing mode, it gets the .editing style class.
+//
+// For all the subnodes added to the text node in various situations, see Text.
+type EditableLabel struct {
+	Widget
+}
+
+// EmojiChooser: the EmojiChooser popover is used by text widgets such as Entry
+// or TextView to offer users a convenient way to insert Emoji characters.
+//
+// GtkEmojiChooser emits the EmojiChooser::emoji-picked signal when an Emoji is
+// selected.
+//
+//    popover
+//    ├── box.emoji-searchbar
+//    │   ╰── entry.search
+//    ╰── box.emoji-toolbar
+//        ├── button.image-button.emoji-section
+//        ├── ...
+//        ╰── button.image-button.emoji-section
+//
+// Every EmojiChooser consists of a main node called popover. The contents of
+// the popover are largely implementation defined and supposed to inherit
+// general styles. The top searchbar used to search emoji and gets the
+// .emoji-searchbar style class itself. The bottom toolbar used to switch
+// between different emoji categories consists of buttons with the
+// .emoji-section style class and gets the .emoji-toolbar style class itself.
+type EmojiChooser struct {
+	Popover
+}
+
+// Entry: the Entry widget is a single line text entry widget. A fairly large
+// set of key bindings are supported by default. If the entered text is longer
+// than the allocation of the widget, the widget will scroll so that the cursor
+// position is visible.
+//
+// When using an entry for passwords and other sensitive information, it can be
+// put into “password mode” using gtk_entry_set_visibility(). In this mode,
+// entered text is displayed using a “invisible” character. By default, GTK
+// picks the best invisible character that is available in the current font, but
+// it can be changed with gtk_entry_set_invisible_char().
+//
+// GtkEntry has the ability to display progress or activity information behind
+// the text. To make an entry display such information, use
+// gtk_entry_set_progress_fraction() or gtk_entry_set_progress_pulse_step().
+//
+// Additionally, GtkEntry can show icons at either side of the entry. These
+// icons can be activatable by clicking, can be set up as drag source and can
+// have tooltips. To add an icon, use gtk_entry_set_icon_from_gicon() or one of
+// the various other functions that set an icon from an icon name or a
+// paintable. To trigger an action when the user clicks an icon, connect to the
+// Entry::icon-press signal. To allow DND operations from an icon, use
+// gtk_entry_set_icon_drag_source(). To set a tooltip on an icon, use
+// gtk_entry_set_icon_tooltip_text() or the corresponding function for markup.
+//
+// Note that functionality or information that is only available by clicking on
+// an icon in an entry may not be accessible at all to users which are not able
+// to use a mouse or other pointing device. It is therefore recommended that any
+// such functionality should also be available by other means, e.g. via the
+// context menu of the entry.
+//
+// CSS nodes
+//
+//    entry[.flat][.warning][.error]
+//    ├── text[.readonly]
+//    ├── image.left
+//    ├── image.right
+//    ╰── [progress[.pulse]]
+//
+// GtkEntry has a main node with the name entry. Depending on the properties of
+// the entry, the style classes .read-only and .flat may appear. The style
+// classes .warning and .error may also be used with entries.
+//
+// When the entry shows icons, it adds subnodes with the name image and the
+// style class .left or .right, depending on where the icon appears.
+//
+// When the entry shows progress, it adds a subnode with the name progress. The
+// node has the style class .pulse when the shown progress is pulsing.
+//
+// For all the subnodes added to the text node in various situations, see Text.
+//
+//
+// GtkEntry as GtkBuildable
+//
+// The GtkEntry implementation of the GtkBuildable interface supports a custom
+// <attributes> element, which supports any number of <attribute> elements. The
+// <attribute> element has attributes named “name“, “value“, “start“ and “end“
+// and allows you to specify Attribute values for this label.
+//
+//
+//    <object class="GtkEnry">
+//      <attributes>
+//        <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+//        <attribute name="background" value="red" start="5" end="10"/>
+//      </attributes>
+//    </object>
+//
+// The start and end attributes specify the range of characters to which the
+// Pango attribute applies. If start and end are not specified, the attribute is
+// applied to the whole text. Note that specifying ranges does not make much
+// sense with translatable attributes. Use markup embedded in the translatable
+// content instead.
+//
+//
+// Accessibility
+//
+// GtkEntry uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
+type Entry struct {
+	Widget
+}
+
+// EntryBuffer: the EntryBuffer class contains the actual text displayed in a
+// Entry widget.
+//
+// A single EntryBuffer object can be shared by multiple Entry widgets which
+// will then share the same text content, but not the cursor position,
+// visibility attributes, icon etc.
+//
+// EntryBuffer may be derived from. Such a derived class might allow text to be
+// stored in an alternate location, such as non-pageable memory, useful in the
+// case of important passwords. Or a derived class could integrate with an
+// application’s concept of undo/redo.
+type EntryBuffer struct {
+	*glib.Object
+}
+
+// EntryCompletion: gtkEntryCompletion is an auxiliary object to be used in
+// conjunction with Entry to provide the completion functionality. It implements
+// the CellLayout interface, to allow the user to add extra cells to the
+// TreeView with completion matches.
+//
+// “Completion functionality” means that when the user modifies the text in the
+// entry, EntryCompletion checks which rows in the model match the current
+// content of the entry, and displays a list of matches. By default, the
+// matching is done by comparing the entry text case-insensitively against the
+// text column of the model (see gtk_entry_completion_set_text_column()), but
+// this can be overridden with a custom match function (see
+// gtk_entry_completion_set_match_func()).
+//
+// When the user selects a completion, the content of the entry is updated. By
+// default, the content of the entry is replaced by the text column of the
+// model, but this can be overridden by connecting to the
+// EntryCompletion::match-selected signal and updating the entry in the signal
+// handler. Note that you should return true from the signal handler to suppress
+// the default behaviour.
+//
+// To add completion functionality to an entry, use gtk_entry_set_completion().
+//
+// GtkEntryCompletion uses a TreeModelFilter model to represent the subset of
+// the entire model that is currently matching. While the GtkEntryCompletion
+// signals EntryCompletion::match-selected and EntryCompletion::cursor-on-match
+// take the original model and an iter pointing to that model as arguments,
+// other callbacks and signals (such as CellLayoutDataFuncs or
+// CellArea::apply-attributes) will generally take the filter model as argument.
+// As long as you are only calling gtk_tree_model_get(), this will make no
+// difference to you. If for some reason, you need the original model, use
+// gtk_tree_model_filter_get_model(). Don’t forget to use
+// gtk_tree_model_filter_convert_iter_to_child_iter() to obtain a matching iter.
+type EntryCompletion struct {
+	*glib.Object
+}
+
+// EventController: gtkEventController is a base, low-level implementation for
+// event controllers. Those react to a series of Events, and possibly trigger
+// actions as a consequence of those.
+type EventController struct {
+	*glib.Object
+}
+
+// EventControllerFocus: gtkEventControllerFocus is an event controller meant
+// for situations where you need to know where the focus is.
+type EventControllerFocus struct {
+	EventController
+}
+
+// EventControllerKey: gtkEventControllerKey is an event controller meant for
+// situations where you need access to key events.
+type EventControllerKey struct {
+	EventController
+}
+
+// EventControllerLegacy: gtkEventControllerLegacy is an event controller that
+// gives you direct access to the event stream. It should only be used as a last
+// resort if none of the other event controllers or gestures do the job.
+type EventControllerLegacy struct {
+	EventController
+}
+
+// EventControllerMotion: gtkEventControllerMotion is an event controller meant
+// for situations where you need to track the position of the pointer.
+type EventControllerMotion struct {
+	EventController
+}
+
+// EventControllerScroll: gtkEventControllerScroll is an event controller meant
+// to handle scroll events from mice and touchpads. It is capable of handling
+// both discrete and continuous scroll events, abstracting them both on the
+// EventControllerScroll::scroll signal (deltas in the discrete case are
+// multiples of 1).
+//
+// In the case of continuous scroll events, EventControllerScroll encloses all
+// EventControllerScroll::scroll events between two
+// EventControllerScroll::scroll-begin and EventControllerScroll::scroll-end
+// signals.
+//
+// The behavior of the event controller can be modified by the flags given at
+// creation time, or modified at a later point through
+// gtk_event_controller_scroll_set_flags() (e.g. because the scrolling
+// conditions of the widget changed).
+//
+// The controller can be set up to emit motion for either/both vertical and
+// horizontal scroll events through K_EVENT_CONTROLLER_SCROLL_VERTICAL,
+// K_EVENT_CONTROLLER_SCROLL_HORIZONTAL and K_EVENT_CONTROLLER_SCROLL_BOTH_AXES.
+// If any axis is disabled, the respective EventControllerScroll::scroll delta
+// will be 0. Vertical scroll events will be translated to horizontal motion for
+// the devices incapable of horizontal scrolling.
+//
+// The event controller can also be forced to emit discrete events on all
+// devices through K_EVENT_CONTROLLER_SCROLL_DISCRETE. This can be used to
+// implement discrete actions triggered through scroll events (e.g. switching
+// across combobox options).
+//
+// The K_EVENT_CONTROLLER_SCROLL_KINETIC flag toggles the emission of the
+// EventControllerScroll::decelerate signal, emitted at the end of scrolling
+// with two X/Y velocity arguments that are consistent with the motion that was
+// received.
+type EventControllerScroll struct {
+	EventController
+}
+
+type EveryFilter struct {
+	MultiFilter
+}
+
+// Expander: a Expander allows the user to hide or show its child by clicking on
+// an expander triangle similar to the triangles used in a TreeView.
+//
+// Normally you use an expander as you would use a frame; you create the child
+// widget and use gtk_expander_set_child() to add it to the expander. When the
+// expander is toggled, it will take care of showing and hiding the child
+// automatically.
+//
+//
+// Special Usage
+//
+// There are situations in which you may prefer to show and hide the expanded
+// widget yourself, such as when you want to actually create the widget at
+// expansion time. In this case, create a Expander but do not add a child to it.
+// The expander widget has an Expander:expanded property which can be used to
+// monitor its expansion state. You should watch this property with a signal
+// connection as follows:
+//
+//    static void
+//    expander_callback (GObject    *object,
+//                       GParamSpec *param_spec,
+//                       gpointer    user_data)
+//    {
+//      GtkExpander *expander;
+//
+//      expander = GTK_EXPANDER (object);
+//
+//      if (gtk_expander_get_expanded (expander))
+//        {
+//          // Show or create widgets
+//        }
+//      else
+//        {
+//          // Hide or destroy widgets
+//        }
+//    }
+//
+//    static void
+//    create_expander (void)
+//    {
+//      GtkWidget *expander = gtk_expander_new_with_mnemonic ("_More Options");
+//      g_signal_connect (expander, "notify::expanded",
+//                        G_CALLBACK (expander_callback), NULL);
+//
+//      // ...
+//    }
+//
+//
+//
+// GtkExpander as GtkBuildable
+//
+// The GtkExpander implementation of the GtkBuildable interface supports placing
+// a child in the label position by specifying “label” as the “type” attribute
+// of a <child> element. A normal content child can be specified without
+// specifying a <child> type attribute.
+//
+//
+//    <object class="GtkExpander">
+//      <child type="label">
+//        <object class="GtkLabel" id="expander-label"/>
+//      </child>
+//      <child>
+//        <object class="GtkEntry" id="expander-content"/>
+//      </child>
+//    </object>
+//
+// CSS nodes
+//
+//    expander
+//    ╰── box
+//        ├── title
+//        │   ├── arrow
+//        │   ╰── <label widget>
+//        ╰── <child>
+//
+// GtkExpander has three CSS nodes, the main node with the name expander, a
+// subnode with name title and node below it with name arrow. The arrow of an
+// expander that is showing its child gets the :checked pseudoclass added to it.
+//
+//
+// Accessibility
+//
+// GtkExpander uses the K_ACCESSIBLE_ROLE_BUTTON role.
+type Expander struct {
+	Widget
+}
+
+// FileChooserDialog: gtkFileChooserDialog is a dialog box suitable for use with
+// “File Open” or “File Save” commands. This widget works by putting a
+// FileChooserWidget inside a Dialog. It exposes the FileChooser interface, so
+// you can use all of the FileChooser functions on the file chooser dialog as
+// well as those for Dialog.
+//
+// Note that FileChooserDialog does not have any methods of its own. Instead,
+// you should use the functions that work on a FileChooser.
+//
+// If you want to integrate well with the platform you should use the
+// FileChooserNative API, which will use a platform-specific dialog if available
+// and fall back to GtkFileChooserDialog otherwise.
+//
+// Typical usage {#gtkfilechooser-typical-usage}
+//
+// In the simplest of cases, you can the following code to use FileChooserDialog
+// to select a file for opening:
+//
+//
+//    static void
+//    on_open_response (GtkDialog *dialog,
+//                      int        response)
+//    {
+//      if (response == GTK_RESPONSE_ACCEPT)
+//        {
+//          GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+//
+//          g_autoptr(GFile) file = gtk_file_chooser_get_file (chooser);
+//
+//          open_file (file);
+//        }
+//
+//      gtk_window_destroy (GTK_WINDOW (dialog));
+//    }
+//
+//      // ...
+//      GtkWidget *dialog;
+//      GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+//
+//      dialog = gtk_file_chooser_dialog_new ("Open File",
+//                                            parent_window,
+//                                            action,
+//                                            _("_Cancel"),
+//                                            GTK_RESPONSE_CANCEL,
+//                                            _("_Open"),
+//                                            GTK_RESPONSE_ACCEPT,
+//                                            NULL);
+//
+//      gtk_widget_show (dialog);
+//
+//      g_signal_connect (dialog, "response",
+//                        G_CALLBACK (on_open_response),
+//                        NULL);
+//
+//
+// To use a dialog for saving, you can use this:
+//
+//
+//    static void
+//    on_save_response (GtkDialog *dialog,
+//                      int        response)
+//    {
+//      if (response == GTK_RESPONSE_ACCEPT)
+//        {
+//          GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+//
+//          g_autoptr(GFile) file = gtk_file_chooser_get_file (chooser);
+//
+//          save_to_file (file);
+//        }
+//
+//      gtk_window_destroy (GTK_WINDOW (dialog));
+//    }
+//
+//      // ...
+//      GtkWidget *dialog;
+//      GtkFileChooser *chooser;
+//      GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
+//
+//      dialog = gtk_file_chooser_dialog_new ("Save File",
+//                                            parent_window,
+//                                            action,
+//                                            _("_Cancel"),
+//                                            GTK_RESPONSE_CANCEL,
+//                                            _("_Save"),
+//                                            GTK_RESPONSE_ACCEPT,
+//                                            NULL);
+//      chooser = GTK_FILE_CHOOSER (dialog);
+//
+//      if (user_edited_a_new_document)
+//        gtk_file_chooser_set_current_name (chooser, _("Untitled document"));
+//      else
+//        gtk_file_chooser_set_file (chooser, existing_filename);
+//
+//      gtk_widget_show (dialog);
+//
+//      g_signal_connect (dialog, "response",
+//                        G_CALLBACK (on_save_response),
+//                        NULL);
+//
+//
+// Setting up a file chooser dialog {#gtkfilechooserdialog-setting-up}
+//
+// There are various cases in which you may need to use a FileChooserDialog:
+//
+// - To select a file for opening. Use K_FILE_CHOOSER_ACTION_OPEN.
+//
+// - To save a file for the first time. Use K_FILE_CHOOSER_ACTION_SAVE, and
+// suggest a name such as “Untitled” with gtk_file_chooser_set_current_name().
+//
+// - To save a file under a different name. Use K_FILE_CHOOSER_ACTION_SAVE, and
+// set the existing file with gtk_file_chooser_set_file().
+//
+// - To choose a folder instead of a file. Use
+// K_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+//
+// Note that old versions of the file chooser’s documentation suggested using
+// gtk_file_chooser_set_current_folder() in various situations, with the
+// intention of letting the application suggest a reasonable default folder.
+// This is no longer considered to be a good policy, as now the file chooser is
+// able to make good suggestions on its own. In general, you should only cause
+// the file chooser to show a specific folder when it is appropriate to use
+// gtk_file_chooser_set_file(), i.e. when you are doing a Save As command and
+// you already have a file saved somewhere.
+//
+// Response Codes {#gtkfilechooserdialog-responses}
+//
+// FileChooserDialog inherits from Dialog, so buttons that go in its action area
+// have response codes such as K_RESPONSE_ACCEPT and K_RESPONSE_CANCEL. For
+// example, you could call gtk_file_chooser_dialog_new() as follows:
+//
+//
+//    GtkWidget *dialog;
+//    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+//
+//    dialog = gtk_file_chooser_dialog_new ("Open File",
+//                                          parent_window,
+//                                          action,
+//                                          _("_Cancel"),
+//                                          GTK_RESPONSE_CANCEL,
+//                                          _("_Open"),
+//                                          GTK_RESPONSE_ACCEPT,
+//                                          NULL);
+//
+//
+// This will create buttons for “Cancel” and “Open” that use predefined response
+// identifiers from ResponseType. For most dialog boxes you can use your own
+// custom response codes rather than the ones in ResponseType, but
+// FileChooserDialog assumes that its “accept”-type action, e.g. an “Open” or
+// “Save” button, will have one of the following response codes:
+//
+// - K_RESPONSE_ACCEPT - K_RESPONSE_OK - K_RESPONSE_YES - K_RESPONSE_APPLY
+//
+// This is because FileChooserDialog must intercept responses and switch to
+// folders if appropriate, rather than letting the dialog terminate — the
+// implementation uses these known response codes to know which responses can be
+// blocked if appropriate.
+//
+// To summarize, make sure you use a [predefined response
+// code][gtkfilechooserdialog-responses] when you use FileChooserDialog to
+// ensure proper operation.
+type FileChooserDialog struct {
+	Dialog
+}
+
+// FileChooserNative: gtkFileChooserNative is an abstraction of a dialog box
+// suitable for use with “File Open” or “File Save as” commands. By default,
+// this just uses a FileChooserDialog to implement the actual dialog. However,
+// on certain platforms, such as Windows and macOS, the native platform file
+// chooser is used instead. When the application is running in a sandboxed
+// environment without direct filesystem access (such as Flatpak),
+// FileChooserNative may call the proper APIs (portals) to let the user choose a
+// file and make it available to the application.
+//
+// While the API of FileChooserNative closely mirrors FileChooserDialog, the
+// main difference is that there is no access to any Window or Widget for the
+// dialog. This is required, as there may not be one in the case of a platform
+// native dialog.
+//
+// Showing, hiding and running the dialog is handled by the NativeDialog
+// functions.
+//
+// Note that unlike FileChooserDialog, FileChooserNative objects are not
+// toplevel widgets, and GTK does not keep them alive. It is your responsibility
+// to keep a reference until you are done with the object.
+//
+// Typical usage {#gtkfilechoosernative-typical-usage}
+//
+// In the simplest of cases, you can the following code to use FileChooserDialog
+// to select a file for opening:
+//
+//    static void
+//    on_response (GtkNativeDialog *native,
+//                 int              response)
+//    {
+//      if (response == GTK_RESPONSE_ACCEPT)
+//        {
+//          GtkFileChooser *chooser = GTK_FILE_CHOOSER (native);
+//          GFile *file = gtk_file_chooser_get_file (chooser);
+//
+//          open_file (file);
+//
+//          g_object_unref (file);
+//        }
+//
+//      g_object_unref (native);
+//    }
+//
+//      // ...
+//      GtkFileChooserNative *native;
+//      GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+//
+//      native = gtk_file_chooser_native_new ("Open File",
+//                                            parent_window,
+//                                            action,
+//                                            "_Open",
+//                                            "_Cancel");
+//
+//      g_signal_connect (native, "response", G_CALLBACK (on_response), NULL);
+//      gtk_native_dialog_show (GTK_NATIVE_DIALOG (native));
+//
+//
+// To use a dialog for saving, you can use this:
+//
+//    static void
+//    on_response (GtkNativeDialog *native,
+//                 int              response)
+//    {
+//      if (response == GTK_RESPONSE_ACCEPT)
+//        {
+//          GtkFileChooser *chooser = GTK_FILE_CHOOSER (native);
+//          GFile *file = gtk_file_chooser_get_file (chooser);
+//
+//          save_to_file (file);
+//
+//          g_object_unref (file);
+//        }
+//
+//      g_object_unref (native);
+//    }
+//
+//      // ...
+//      GtkFileChooserNative *native;
+//      GtkFileChooser *chooser;
+//      GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
+//
+//      native = gtk_file_chooser_native_new ("Save File",
+//                                            parent_window,
+//                                            action,
+//                                            "_Save",
+//                                            "_Cancel");
+//      chooser = GTK_FILE_CHOOSER (native);
+//
+//      if (user_edited_a_new_document)
+//        gtk_file_chooser_set_current_name (chooser, _("Untitled document"));
+//      else
+//        gtk_file_chooser_set_file (chooser, existing_file, NULL);
+//
+//      g_signal_connect (native, "response", G_CALLBACK (on_response), NULL);
+//      gtk_native_dialog_show (GTK_NATIVE_DIALOG (native));
+//
+//
+// For more information on how to best set up a file dialog, see
+// FileChooserDialog.
+//
+// Response Codes {#gtkfilechooserdialognative-responses}
+//
+// FileChooserNative inherits from NativeDialog, which means it will return
+// K_RESPONSE_ACCEPT if the user accepted, and K_RESPONSE_CANCEL if he pressed
+// cancel. It can also return K_RESPONSE_DELETE_EVENT if the window was
+// unexpectedly closed.
+//
+// Differences from FileChooserDialog {#gtkfilechooserdialognative-differences}
+//
+// There are a few things in the GtkFileChooser API that are not possible to use
+// with FileChooserNative, as such use would prohibit the use of a native
+// dialog.
+//
+// No operations that change the dialog work while the dialog is visible. Set
+// all the properties that are required before showing the dialog.
+//
+// Win32 details {#gtkfilechooserdialognative-win32}
+//
+// On windows the IFileDialog implementation (added in Windows Vista) is used.
+// It supports many of the features that FileChooserDialog does, but there are
+// some things it does not handle:
+//
+// * Any FileFilter added using a mimetype
+//
+// If any of these features are used the regular FileChooserDialog will be used
+// in place of the native one.
+//
+// Portal details {#gtkfilechooserdialognative-portal}
+//
+// When the org.freedesktop.portal.FileChooser portal is available on the
+// session bus, it is used to bring up an out-of-process file chooser. Depending
+// on the kind of session the application is running in, this may or may not be
+// a GTK file chooser.
+//
+// macOS details {#gtkfilechooserdialognative-macos}
+//
+// On macOS the NSSavePanel and NSOpenPanel classes are used to provide native
+// file chooser dialogs. Some features provided by FileChooserDialog are not
+// supported:
+//
+// * Shortcut folders.
+type FileChooserNative struct {
+	NativeDialog
+}
+
+// FileChooserWidget: gtkFileChooserWidget is a widget for choosing files. It
+// exposes the FileChooser interface, and you should use the methods of this
+// interface to interact with the widget.
+//
+//
+// CSS nodes
+//
+// GtkFileChooserWidget has a single CSS node with name filechooser.
+type FileChooserWidget struct {
+	Widget
+}
+
+// FileFilter: a GtkFileFilter can be used to restrict the files being shown in
+// a FileChooser. Files can be filtered based on their name (with
+// gtk_file_filter_add_pattern()) or on their mime type (with
+// gtk_file_filter_add_mime_type()).
+//
+// Filtering by mime types handles aliasing and subclassing of mime types; e.g.
+// a filter for text/plain also matches a file with mime type application/rtf,
+// since application/rtf is a subclass of text/plain. Note that FileFilter
+// allows wildcards for the subtype of a mime type, so you can e.g. filter for
+// image/\*.
+//
+// Normally, file filters are used by adding them to a FileChooser (see
+// gtk_file_chooser_add_filter()), but it is also possible to manually use a
+// file filter on any FilterListModel containing Info objects.
+//
+//
+// GtkFileFilter as GtkBuildable
+//
+// The GtkFileFilter implementation of the GtkBuildable interface supports
+// adding rules using the <mime-types> and <patterns> elements and listing the
+// rules within. Specifying a <mime-type> or <pattern> has the same effect as as
+// calling gtk_file_filter_add_mime_type() or gtk_file_filter_add_pattern().
+//
+//
+//    <object class="GtkFileFilter">
+//      <property name="name" translatable="yes">Text and Images</property>
+//      <mime-types>
+//        <mime-type>text/plain</mime-type>
+//        <mime-type>image/ *</mime-type>
+//      </mime-types>
+//      <patterns>
+//        <pattern>*.txt</pattern>
+//        <pattern>*.png</pattern>
+//      </patterns>
+//    </object>
+type FileFilter struct {
+	Filter
+}
+
+// Filter: a Filter object describes the filtering to be performed by a
+// FilterListModel.
+//
+// The model will use the filter to determine if it should include items or not
+// by calling gtk_filter_match() for each item and only keeping the ones that
+// the function returns true for.
+//
+// Filters may change what items they match through their lifetime. In that
+// case, they will emit the Filter::changed signal to notify that previous
+// filter results are no longer valid and that items should be checked again via
+// gtk_filter_match().
+//
+// GTK provides various pre-made filter implementations for common filtering
+// operations. These filters often include properties that can be linked to
+// various widgets to easily allow searches.
+//
+// However, in particular for large lists or complex search methods, it is also
+// possible to subclass Filter and provide one's own filter.
+type Filter struct {
+	*glib.Object
+}
+
+// FilterListModel: gtkFilterListModel is a list model that filters a given
+// other listmodel. It hides some elements from the other model according to
+// criteria given by a Filter.
+//
+// The model can be set up to do incremental searching, so that filtering long
+// lists doesn't block the UI. See gtk_filter_list_model_set_incremental() for
+// details.
+type FilterListModel struct {
+	*glib.Object
+}
+
+// Fixed: the Fixed widget is a container which can place child widgets at fixed
+// positions and with fixed sizes, given in pixels. Fixed performs no automatic
+// layout management.
+//
+// For most applications, you should not use this container! It keeps you from
+// having to learn about the other GTK+ containers, but it results in broken
+// applications. With Fixed, the following things will result in truncated text,
+// overlapping widgets, and other display bugs:
+//
+// - Themes, which may change widget sizes.
+//
+// - Fonts other than the one you used to write the app will of course change
+// the size of widgets containing text; keep in mind that users may use a larger
+// font because of difficulty reading the default, or they may be using a
+// different OS that provides different fonts.
+//
+// - Translation of text into other languages changes its size. Also, display of
+// non-English text will use a different font in many cases.
+//
+// In addition, Fixed does not pay attention to text direction and thus may
+// produce unwanted results if your app is run under right-to-left languages
+// such as Hebrew or Arabic. That is: normally GTK will order containers
+// appropriately for the text direction, e.g. to put labels to the right of the
+// thing they label when using an RTL language, but it can’t do that with Fixed.
+// So if you need to reorder widgets depending on the text direction, you would
+// need to manually detect it and adjust child positions accordingly.
+//
+// Finally, fixed positioning makes it kind of annoying to add/remove GUI
+// elements, since you have to reposition all the other elements. This is a
+// long-term maintenance problem for your application.
+//
+// If you know none of these things are an issue for your application, and
+// prefer the simplicity of Fixed, by all means use the widget. But you should
+// be aware of the tradeoffs.
+type Fixed struct {
+	Widget
+}
+
+// FixedLayout: gtkFixedLayout is a layout manager which can place child widgets
+// at fixed positions, and with fixed sizes.
+//
+// Most applications should never use this layout manager; fixed positioning and
+// sizing requires constant recalculations on where children need to be
+// positioned and sized. Other layout managers perform this kind of work
+// internally so that application developers don't need to do it. Specifically,
+// widgets positioned in a fixed layout manager will need to take into account:
+//
+// - Themes, which may change widget sizes.
+//
+// - Fonts other than the one you used to write the app will of course change
+// the size of widgets containing text; keep in mind that users may use a larger
+// font because of difficulty reading the default, or they may be using a
+// different OS that provides different fonts.
+//
+// - Translation of text into other languages changes its size. Also, display of
+// non-English text will use a different font in many cases.
+//
+// In addition, FixedLayout does not pay attention to text direction and thus
+// may produce unwanted results if your app is run under right-to-left languages
+// such as Hebrew or Arabic. That is: normally GTK will order containers
+// appropriately depending on the text direction, e.g. to put labels to the
+// right of the thing they label when using an RTL language; FixedLayout won't
+// be able to do that for you.
+//
+// Finally, fixed positioning makes it kind of annoying to add/remove GUI
+// elements, since you have to reposition all the other elements. This is a
+// long-term maintenance problem for your application.
+type FixedLayout struct {
+	LayoutManager
+}
+
+type FixedLayoutChild struct {
+	LayoutChild
+}
+
+// FlattenListModel: gtkFlattenListModel is a list model that takes a list model
+// containing list models and flattens it into a single model.
+//
+// Another term for this is concatenation: FlattenListModel takes a list of
+// lists and concatenates them into a single list.
+type FlattenListModel struct {
+	*glib.Object
+}
+
+// FlowBox: a GtkFlowBox positions child widgets in sequence according to its
+// orientation.
+//
+// For instance, with the horizontal orientation, the widgets will be arranged
+// from left to right, starting a new row under the previous row when necessary.
+// Reducing the width in this case will require more rows, so a larger height
+// will be requested.
+//
+// Likewise, with the vertical orientation, the widgets will be arranged from
+// top to bottom, starting a new column to the right when necessary. Reducing
+// the height will require more columns, so a larger width will be requested.
+//
+// The size request of a GtkFlowBox alone may not be what you expect; if you
+// need to be able to shrink it along both axes and dynamically reflow its
+// children, you may have to wrap it in a ScrolledWindow to enable that.
+//
+// The children of a GtkFlowBox can be dynamically sorted and filtered.
+//
+// Although a GtkFlowBox must have only FlowBoxChild children, you can add any
+// kind of widget to it via gtk_flow_box_insert(), and a GtkFlowBoxChild widget
+// will automatically be inserted between the box and the widget.
+//
+// Also see ListBox.
+//
+// CSS nodes
+//
+//    flowbox
+//    ├── flowboxchild
+//    │   ╰── <child>
+//    ├── flowboxchild
+//    │   ╰── <child>
+//    ┊
+//    ╰── [rubberband]
+//
+// GtkFlowBox uses a single CSS node with name flowbox. GtkFlowBoxChild uses a
+// single CSS node with name flowboxchild. For rubberband selection, a subnode
+// with name rubberband is used.
+//
+//
+// Accessibility
+//
+// GtkFlowBox uses the K_ACCESSIBLE_ROLE_GRID role, and GtkFlowBoxChild uses the
+// K_ACCESSIBLE_ROLE_GRID_CELL role.
+type FlowBox struct {
+	Widget
+}
+
+type FlowBoxChild struct {
+	Widget
+}
+
+// FontButton: the FontButton is a button which displays the currently selected
+// font an allows to open a font chooser dialog to change the font. It is
+// suitable widget for selecting a font in a preference dialog.
+//
+// CSS nodes
+//
+//    fontbutton
+//    ╰── button.font
+//        ╰── [content]
+//
+// GtkFontButton has a single CSS node with name fontbutton which contains a
+// button node with the .font style class.
+type FontButton struct {
+	Widget
+}
+
+// FontChooserDialog: the FontChooserDialog widget is a dialog for selecting a
+// font. It implements the FontChooser interface.
+//
+//
+// GtkFontChooserDialog as GtkBuildable
+//
+// The GtkFontChooserDialog implementation of the Buildable interface exposes
+// the buttons with the names “select_button” and “cancel_button”.
+type FontChooserDialog struct {
+	Dialog
+}
+
+// FontChooserWidget: the FontChooserWidget widget lists the available fonts,
+// styles and sizes, allowing the user to select a font. It is used in the
+// FontChooserDialog widget to provide a dialog box for selecting fonts.
+//
+// To set the font which is initially selected, use gtk_font_chooser_set_font()
+// or gtk_font_chooser_set_font_desc().
+//
+// To get the selected font use gtk_font_chooser_get_font() or
+// gtk_font_chooser_get_font_desc().
+//
+// To change the text which is shown in the preview area, use
+// gtk_font_chooser_set_preview_text().
+//
+//
+// CSS nodes
+//
+// GtkFontChooserWidget has a single CSS node with name fontchooser.
+type FontChooserWidget struct {
+	Widget
+}
+
+// Frame: the frame widget is a widget that surrounds its child with a
+// decorative frame and an optional label. If present, the label is drawn inside
+// the top edge of the frame. The horizontal position of the label can be
+// controlled with gtk_frame_set_label_align().
+//
+// GtkFrame clips its child. You can use this to add rounded corners to widgets,
+// but be aware that it also cuts off shadows.
+//
+//
+// GtkFrame as GtkBuildable
+//
+// The GtkFrame implementation of the GtkBuildable interface supports placing a
+// child in the label position by specifying “label” as the “type” attribute of
+// a <child> element. A normal content child can be specified without specifying
+// a <child> type attribute.
+//
+//
+//    <object class="GtkFrame">
+//      <child type="label">
+//        <object class="GtkLabel" id="frame_label"/>
+//      </child>
+//      <child>
+//        <object class="GtkEntry" id="frame_content"/>
+//      </child>
+//    </object>
+//
+// CSS nodes
+//
+//    frame
+//    ├── <label widget>
+//    ╰── <child>
+//
+// GtkFrame has a main CSS node with name “frame”, which is used to draw the
+// visible border. You can set the appearance of the border using CSS properties
+// like “border-style” on this node.
+type Frame struct {
+	Widget
+}
+
+// GLArea: gtkGLArea is a widget that allows drawing with OpenGL.
+//
+// GLArea sets up its own GLContext for the window it creates, and creates a
+// custom GL framebuffer that the widget will do GL rendering onto. It also
+// ensures that this framebuffer is the default GL rendering target when
+// rendering.
+//
+// In order to draw, you have to connect to the GLArea::render signal, or
+// subclass GLArea and override the @GtkGLAreaClass.render() virtual function.
+//
+// The GLArea widget ensures that the GLContext is associated with the widget's
+// drawing area, and it is kept updated when the size and position of the
+// drawing area changes.
+//
+// Drawing with GtkGLArea ##
+//
+// The simplest way to draw using OpenGL commands in a GLArea is to create a
+// widget instance and connect to the GLArea::render signal:
+//
+//    <!-- language="C" -->
+//
+//
+//
+// The `render()` function will be called when the GLArea is ready for you to
+// draw its content:
+//
+//      static gboolean
+//      render (GtkGLArea *area, GdkGLContext *context)
+//      {
+//        // inside this function it's safe to use GL; the given
+//        // GLContext has been made current to the drawable
+//        // surface used by the GLArea and the viewport has
+//        // already been set to be the size of the allocation
+//
+//        // we can start by clearing the buffer
+//        glClearColor (0, 0, 0, 0);
+//        glClear (GL_COLOR_BUFFER_BIT);
+//
+//        // draw your object
+//        // draw_an_object ();
+//
+//        // we completed our drawing; the draw commands will be
+//        // flushed at the end of the signal emission chain, and
+//        // the buffers will be drawn on the window
+//        return TRUE;
+//      }
+//
+//      void setup_glarea (void)
+//      {
+//        // create a GtkGLArea instance
+//        GtkWidget *gl_area = gtk_gl_area_new ();
+//
+//        // connect to the "render" signal
+//        g_signal_connect (gl_area, "render", G_CALLBACK (render), NULL);
+//      }
+//
+//
+// If you need to initialize OpenGL state, e.g. buffer objects or shaders, you
+// should use the Widget::realize signal; you can use the Widget::unrealize
+// signal to clean up. Since the GLContext creation and initialization may fail,
+// you will need to check for errors, using gtk_gl_area_get_error(). An example
+// of how to safely initialize the GL state is:
+//
+//      static void
+//      on_realize (GtkGLarea *area)
+//      {
+//        // We need to make the context current if we want to
+//        // call GL API
+//        gtk_gl_area_make_current (area);
+//
+//        // If there were errors during the initialization or
+//        // when trying to make the context current, this
+//        // function will return a #GError for you to catch
+//        if (gtk_gl_area_get_error (area) != NULL)
+//          return;
+//
+//        // You can also use gtk_gl_area_set_error() in order
+//        // to show eventual initialization errors on the
+//        // GtkGLArea widget itself
+//        GError *internal_error = NULL;
+//        init_buffer_objects (&error);
+//        if (error != NULL)
+//          {
+//            gtk_gl_area_set_error (area, error);
+//            g_error_free (error);
+//            return;
+//          }
+//
+//        init_shaders (&error);
+//        if (error != NULL)
+//          {
+//            gtk_gl_area_set_error (area, error);
+//            g_error_free (error);
+//            return;
+//          }
+//      }
+//
+//
+// If you need to change the options for creating the GLContext you should use
+// the GLArea::create-context signal.
+type GLArea struct {
+	Widget
+}
+
+// Gesture: gtkGesture is the base object for gesture recognition, although this
+// object is quite generalized to serve as a base for multi-touch gestures, it
+// is suitable to implement single-touch and pointer-based gestures (using the
+// special nil EventSequence value for these).
+//
+// The number of touches that a Gesture need to be recognized is controlled by
+// the Gesture:n-points property, if a gesture is keeping track of less or more
+// than that number of sequences, it won't check whether the gesture is
+// recognized.
+//
+// As soon as the gesture has the expected number of touches, it will check
+// regularly if it is recognized, the criteria to consider a gesture as
+// "recognized" is left to Gesture subclasses.
+//
+// A recognized gesture will then emit the following signals: - Gesture::begin
+// when the gesture is recognized. - A number of Gesture::update, whenever an
+// input event is processed. - Gesture::end when the gesture is no longer
+// recognized.
+//
+//
+// Event propagation
+//
+// In order to receive events, a gesture needs to set a propagation phase
+// through gtk_event_controller_set_propagation_phase().
+//
+// In the capture phase, events are propagated from the toplevel down to the
+// target widget, and gestures that are attached to containers above the widget
+// get a chance to interact with the event before it reaches the target.
+//
+// In the bubble phase, events are propagated up from the target widget to the
+// toplevel, and gestures that are attached to containers above the widget get a
+// chance to interact with events that have not been handled yet.
+//
+// States of a sequence {#touch-sequence-states}
+//
+// Whenever input interaction happens, a single event may trigger a cascade of
+// Gestures, both across the parents of the widget receiving the event and in
+// parallel within an individual widget. It is a responsibility of the widgets
+// using those gestures to set the state of touch sequences accordingly in order
+// to enable cooperation of gestures around the EventSequences triggering those.
+//
+// Within a widget, gestures can be grouped through gtk_gesture_group(), grouped
+// gestures synchronize the state of sequences, so calling
+// gtk_gesture_set_sequence_state() on one will effectively propagate the state
+// throughout the group.
+//
+// By default, all sequences start out in the K_EVENT_SEQUENCE_NONE state,
+// sequences in this state trigger the gesture event handler, but event
+// propagation will continue unstopped by gestures.
+//
+// If a sequence enters into the K_EVENT_SEQUENCE_DENIED state, the gesture
+// group will effectively ignore the sequence, letting events go unstopped
+// through the gesture, but the "slot" will still remain occupied while the
+// touch is active.
+//
+// If a sequence enters in the K_EVENT_SEQUENCE_CLAIMED state, the gesture group
+// will grab all interaction on the sequence, by: - Setting the same sequence to
+// K_EVENT_SEQUENCE_DENIED on every other gesture group within the widget, and
+// every gesture on parent widgets in the propagation chain. - calling
+// Gesture::cancel on every gesture in widgets underneath in the propagation
+// chain. - Stopping event propagation after the gesture group handles the
+// event.
+//
+// Note: if a sequence is set early to K_EVENT_SEQUENCE_CLAIMED on
+// K_TOUCH_BEGIN/K_BUTTON_PRESS (so those events are captured before reaching
+// the event widget, this implies K_PHASE_CAPTURE), one similar event will
+// emulated if the sequence changes to K_EVENT_SEQUENCE_DENIED. This way event
+// coherence is preserved before event propagation is unstopped again.
+//
+// Sequence states can't be changed freely, see gtk_gesture_set_sequence_state()
+// to know about the possible lifetimes of a EventSequence.
+//
+//
+// Touchpad gestures
+//
+// On the platforms that support it, Gesture will handle transparently touchpad
+// gesture events. The only precautions users of Gesture should do to enable
+// this support are: - Enabling GDK_TOUCHPAD_GESTURE_MASK on their Surfaces - If
+// the gesture has GTK_PHASE_NONE, ensuring events of type GDK_TOUCHPAD_SWIPE
+// and GDK_TOUCHPAD_PINCH are handled by the Gesture
+type Gesture struct {
+	EventController
+}
+
+// GestureClick: gtkGestureClick is a Gesture implementation able to recognize
+// multiple clicks on a nearby zone, which can be listened for through the
+// GestureClick::pressed signal. Whenever time or distance between clicks exceed
+// the GTK defaults, GestureClick::stopped is emitted, and the click counter is
+// reset.
+type GestureClick struct {
+	GestureSingle
+}
+
+// GestureDrag: gtkGestureDrag is a Gesture implementation that recognizes drag
+// operations. The drag operation itself can be tracked throughout the
+// GestureDrag::drag-begin, GestureDrag::drag-update and GestureDrag::drag-end
+// signals, or the relevant coordinates be extracted through
+// gtk_gesture_drag_get_offset() and gtk_gesture_drag_get_start_point().
+type GestureDrag struct {
+	GestureSingle
+}
+
+// GestureLongPress: gtkGestureLongPress is a Gesture implementation able to
+// recognize long presses, triggering the GestureLongPress::pressed after the
+// timeout is exceeded.
+//
+// If the touchpoint is lifted before the timeout passes, or if it drifts too
+// far of the initial press point, the GestureLongPress::cancelled signal will
+// be emitted.
+type GestureLongPress struct {
+	GestureSingle
+}
+
+// GesturePan: gtkGesturePan is a Gesture implementation able to recognize pan
+// gestures, those are drags that are locked to happen along one axis. The axis
+// that a GesturePan handles is defined at construct time, and can be changed
+// through gtk_gesture_pan_set_orientation().
+//
+// When the gesture starts to be recognized, GesturePan will attempt to
+// determine as early as possible whether the sequence is moving in the expected
+// direction, and denying the sequence if this does not happen.
+//
+// Once a panning gesture along the expected axis is recognized, the
+// GesturePan::pan signal will be emitted as input events are received,
+// containing the offset in the given axis.
+type GesturePan struct {
+	GestureDrag
+}
+
+// GestureRotate: gtkGestureRotate is a Gesture implementation able to recognize
+// 2-finger rotations, whenever the angle between both handled sequences
+// changes, the GestureRotate::angle-changed signal is emitted.
+type GestureRotate struct {
+	Gesture
+}
+
+// GestureSingle: gtkGestureSingle is a subclass of Gesture, optimized (although
+// not restricted) for dealing with mouse and single-touch gestures. Under
+// interaction, these gestures stick to the first interacting sequence, which is
+// accessible through gtk_gesture_single_get_current_sequence() while the
+// gesture is being interacted with.
+//
+// By default gestures react to both GDK_BUTTON_PRIMARY and touch events,
+// gtk_gesture_single_set_touch_only() can be used to change the touch behavior.
+// Callers may also specify a different mouse button number to interact with
+// through gtk_gesture_single_set_button(), or react to any mouse button by
+// setting 0. While the gesture is active, the button being currently pressed
+// can be known through gtk_gesture_single_get_current_button().
+type GestureSingle struct {
+	Gesture
+}
+
+// GestureStylus: gtkGestureStylus is a Gesture implementation specific to
+// stylus input. The provided signals just relay the basic information of the
+// stylus events.
+type GestureStylus struct {
+	GestureSingle
+}
+
+// GestureSwipe: gtkGestureSwipe is a Gesture implementation able to recognize
+// swipes, after a press/move/.../move/release sequence happens, the
+// GestureSwipe::swipe signal will be emitted, providing the velocity and
+// directionality of the sequence at the time it was lifted.
+//
+// If the velocity is desired in intermediate points,
+// gtk_gesture_swipe_get_velocity() can be called on eg. a Gesture::update
+// handler.
+//
+// All velocities are reported in pixels/sec units.
+type GestureSwipe struct {
+	GestureSingle
+}
+
+// GestureZoom: gtkGestureZoom is a Gesture implementation able to recognize
+// pinch/zoom gestures, whenever the distance between both tracked sequences
+// changes, the GestureZoom::scale-changed signal is emitted to report the scale
+// factor.
+type GestureZoom struct {
+	Gesture
+}
+
+// Grid: gtkGrid is a container which arranges its child widgets in rows and
+// columns, with arbitrary positions and horizontal/vertical spans.
+//
+// Children are added using gtk_grid_attach(). They can span multiple rows or
+// columns. It is also possible to add a child next to an existing child, using
+// gtk_grid_attach_next_to(). To remove a child from the grid, use
+// gtk_grid_remove(). The behaviour of GtkGrid when several children occupy the
+// same grid cell is undefined.
+//
+//
+// CSS nodes
+//
+// GtkGrid uses a single CSS node with name `grid`.
+//
+//
+// Accessibility
+//
+// GtkGrid uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+type Grid struct {
+	Widget
+}
+
+// GridLayout: gtkGridLayout is a layout manager which arranges child widgets in
+// rows and columns, with arbitrary positions and horizontal/vertical spans.
+//
+// Children have an "attach point" defined by the horizontal and vertical index
+// of the cell they occupy; children can span multiple rows or columns. The
+// layout properties for setting the attach points and spans are set using the
+// GridLayoutChild associated to each child widget.
+//
+// The behaviour of GtkGrid when several children occupy the same grid cell is
+// undefined.
+//
+// GtkGridLayout can be used like a BoxLayout if all children are attached to
+// the same row or column; however, if you only ever need a single row or
+// column, you should consider using BoxLayout.
+type GridLayout struct {
+	LayoutManager
+}
+
+// GridLayoutChild: layout properties for children of GridLayout.
+type GridLayoutChild struct {
+	LayoutChild
+}
+
+// GridView: gtkGridView is a widget to present a view into a large dynamic grid
+// of items.
+//
+// GtkGridView uses its factory to generate one child widget for each visible
+// item and shows them in a grid. The orientation of the grid view determines if
+// the grid reflows vertically or horizontally.
+//
+// GtkGridView allows the user to select items according to the selection
+// characteristics of the model. For models that allow multiple selected items,
+// it is possible to turn on _rubberband selection_, using
+// GridView:enable-rubberband.
+//
+// To learn more about the list widget framework, see the [overview](Widget).
+//
+// CSS nodes
+//
+//    gridview
+//    ├── child
+//    │
+//    ├── child
+//    │
+//    ┊
+//    ╰── [rubberband]
+//
+// GtkGridView uses a single CSS node with name gridview. Each child uses a
+// single CSS node with name child. For rubberband selection, a subnode with
+// name rubberband is used.
+//
+//
+// Accessibility
+//
+// GtkGridView uses the K_ACCESSIBLE_ROLE_GRID role, and the items use the
+// K_ACCESSIBLE_ROLE_GRID_CELL role.
+type GridView struct {
+	ListBase
+}
+
+// HeaderBar: gtkHeaderBar is similar to a horizontal Box. It allows children to
+// be placed at the start or the end. In addition, it allows the window title to
+// be displayed. The title will be centered with respect to the width of the
+// box, even if the children at either side take up different amounts of space.
+//
+// GtkHeaderBar can add typical window frame controls, such as minimize,
+// maximize and close buttons, or the window icon.
+//
+// For these reasons, GtkHeaderBar is the natural choice for use as the custom
+// titlebar widget of a Window (see gtk_window_set_titlebar()), as it gives
+// features typical of titlebars while allowing the addition of child widgets.
+//
+// The GtkHeaderBar implementation of the Buildable interface supports adding
+// children at the start or end sides by specifying “start” or “end” as the
+// “type” attribute of a <child> element, or setting the title widget by
+// specifying “title” value.
+//
+// By default the GtkHeaderBar uses a Label displaying the title of the window
+// it is contained in as the title widget, equivalent to the following UI
+// definition:
+//
+//
+//    <object class="GtkHeaderBar">
+//      <property name="title-widget">
+//        <object class="GtkLabel">
+//          <property name="label" translatable="yes">Label</property>
+//          <property name="single-line-mode">True</property>
+//          <property name="ellipsize">end</property>
+//          <property name="width-chars">5</property>
+//          <style>
+//            <class name="title"/>
+//          </style>
+//        </object>
+//      </property>
+//    </object>
+//
+// CSS nodes
+//
+//    headerbar
+//    ╰── windowhandle
+//        ╰── box
+//            ├── box.start
+//            │   ├── windowcontrols.start
+//            │   ╰── [other children]
+//            ├── [Title Widget]
+//            ╰── box.end
+//                ├── [other children]
+//                ╰── windowcontrols.end
+//
+// A HeaderBar's CSS node is called `headerbar`. It contains a `windowhandle`
+// subnode, which contains a `box` subnode, which contains two `box` subnodes at
+// the start and end of the header bar, as well as a center node that represents
+// the title.
+//
+// Each of the boxes contains a `windowcontrols` subnode, see WindowControls for
+// details, as well as other children.
+//
+//
+// Accessibility
+//
+// GtkHeaderBar uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+type HeaderBar struct {
+	Widget
+}
+
+// IMContext: gtkIMContext defines the interface for GTK input methods. An input
+// method is used by GTK text input widgets like Entry to map from key events to
+// Unicode character strings.
+//
+// The default input method can be set programmatically via the
+// Settings:gtk-im-module GtkSettings property. Alternatively, you may set the
+// GTK_IM_MODULE environment variable as documented in [Running GTK
+// Applications][gtk-running].
+//
+// The Entry Entry:im-module and TextView TextView:im-module properties may also
+// be used to set input methods for specific widget instances. For instance, a
+// certain entry widget might be expected to contain certain characters which
+// would be easier to input with a certain input method.
+//
+// An input method may consume multiple key events in sequence and finally
+// output the composed result. This is called preediting, and an input method
+// may provide feedback about this process by displaying the intermediate
+// composition states as preedit text. For instance, the default GTK input
+// method implements the input of arbitrary Unicode code points by holding down
+// the Control and Shift keys and then typing “U” followed by the hexadecimal
+// digits of the code point. When releasing the Control and Shift keys,
+// preediting ends and the character is inserted as text. Ctrl+Shift+u20AC for
+// example results in the € sign.
+//
+// Additional input methods can be made available for use by GTK widgets as
+// loadable modules. An input method module is a small shared library which
+// implements a subclass of IMContext or IMContextSimple and exports these four
+// functions:
+//
+//    void im_module_init(GTypeModule *module);
+//    ]|
+//    This function should register the #GType of the IMContext subclass which
+//    implements the input method by means of g_type_module_register_type(). Note
+//    that g_type_register_static() cannot be used as the type needs to be
+//    registered dynamically.
+//
+//    void im_module_exit(void);
+//    ]|
+//    Here goes any cleanup code your input method might require on module unload.
+//
+//    void im_module_list(const GtkIMContextInfo ***contexts, int *n_contexts)
+//    {
+//      *contexts = info_list;
+//      *n_contexts = G_N_ELEMENTS (info_list);
+//    }
+//    ]|
+//    This function returns the list of input methods provided by the module. The
+//    example implementation above shows a common solution and simply returns a
+//    pointer to statically defined array of IMContextInfo items for each
+//    provided input method.
+//
+//    GtkIMContext * im_module_create(const char *context_id);
+//    ]|
+//    This function should return a pointer to a newly created instance of the
+//    IMContext subclass identified by @context_id. The context ID is the same
+//    as specified in the IMContextInfo array returned by im_module_list().
+//
+// After a new loadable input method module has been installed on the system,
+// the configuration file `gtk.immodules` needs to be regenerated by
+// [gtk-query-immodules-3.0][gtk-query-immodules-3.0], in order for the new
+// input method to become available to GTK applications.
+type IMContext struct {
+	*glib.Object
+}
+
+// IMContextSimple: gtkIMContextSimple is a simple input method context
+// supporting table-based input methods. It has a built-in table of compose
+// sequences that is derived from the X11 Compose files.
+//
+// GtkIMContextSimple reads additional compose sequences from the first of the
+// following files that is found: ~/.config/gtk-4.0/Compose, ~/.XCompose,
+// /usr/share/X11/locale/$locale/Compose (for locales that have a nontrivial
+// Compose file). The syntax of these files is described in the Compose(5)
+// manual page.
+//
+//
+// Unicode characters
+//
+// GtkIMContextSimple also supports numeric entry of Unicode characters by
+// typing Ctrl-Shift-u, followed by a hexadecimal Unicode codepoint. For
+// example, Ctrl-Shift-u 1 2 3 Enter yields U+0123 LATIN SMALL LETTER G WITH
+// CEDILLA, i.e. ģ.
+type IMContextSimple struct {
+	IMContext
+}
+
+type IMMulticontext struct {
+	IMContext
+}
+
+// IconPaintable: contains information found when looking up an icon in an icon
+// theme and supports painting it as a Paintable.
+type IconPaintable struct {
+	*glib.Object
+}
+
+// IconTheme: gtkIconTheme provides a facility for looking up icons by name and
+// size. The main reason for using a name rather than simply providing a
+// filename is to allow different icons to be used depending on what “icon
+// theme” is selected by the user. The operation of icon themes on Linux and
+// Unix follows the [Icon Theme
+// Specification](http://www.freedesktop.org/Standards/icon-theme-spec) There is
+// a fallback icon theme, named `hicolor`, where applications should install
+// their icons, but additional icon themes can be installed as operating system
+// vendors and users choose.
+//
+// In many cases, named themes are used indirectly, via Image rather than
+// directly, but looking up icons directly is also simple. The IconTheme object
+// acts as a database of all the icons in the current theme. You can create new
+// IconTheme objects, but it’s much more efficient to use the standard icon
+// theme of the Widget so that the icon information is shared with other people
+// looking up icons. |[<!-- language="C" --> GtkIconTheme *icon_theme;
+// GtkIconPaintable *icon; GdkPaintable *paintable;
+//
+//    icon_theme = gtk_icon_theme_get_for_display (gtk_widget_get_display (my_widget));
+//    icon = gtk_icon_theme_lookup_icon (icon_theme,
+//                                       "my-icon-name", // icon name
+//                                       48, // icon size
+//                                       1,  // scale
+//                                       0,  // flags);
+//     paintable = GDK_PAINTABLE (icon);
+//     // Use the paintable
+//     g_object_unref (icon);
+//
+type IconTheme struct {
+	*glib.Object
+}
+
+// IconView: gtkIconView provides an alternative view on a TreeModel. It
+// displays the model as a grid of icons with labels. Like TreeView, it allows
+// to select one or multiple items (depending on the selection mode, see
+// gtk_icon_view_set_selection_mode()). In addition to selection with the arrow
+// keys, IconView supports rubberband selection, which is controlled by dragging
+// the pointer.
+//
+// Note that if the tree model is backed by an actual tree store (as opposed to
+// a flat list where the mapping to icons is obvious), IconView will only
+// display the first level of the tree and ignore the tree’s branches.
+//
+// CSS nodes
+//
+//    iconview.view
+//    ╰── [rubberband]
+//
+// GtkIconView has a single CSS node with name iconview and style class .view.
+// For rubberband selection, a subnode with name rubberband is used.
+type IconView struct {
+	Widget
+}
+
+// Image: the Image widget displays an image. Various kinds of object can be
+// displayed as an image; most typically, you would load a Texture from a file,
+// and then display that. There’s a convenience function to do this,
+// gtk_image_new_from_file(), used as follows: |[<!-- language="C" --> GtkWidget
+// *image; image = gtk_image_new_from_file ("myfile.png"); ]| If the file isn’t
+// loaded successfully, the image will contain a “broken image” icon similar to
+// that used in many web browsers. If you want to handle errors in loading the
+// file yourself, for example by displaying an error message, then load the
+// image with gdk_texture_new_from_file(), then create the Image with
+// gtk_image_new_from_paintable().
+//
+// Sometimes an application will want to avoid depending on external data files,
+// such as image files. See the documentation of #GResource for details. In this
+// case, the Image:resource, gtk_image_new_from_resource() and
+// gtk_image_set_from_resource() should be used.
+//
+// GtkImage displays its image as an icon, with a size that is determined by the
+// application. See Picture if you want to show an image at is actual size.
+//
+//
+// CSS nodes
+//
+// GtkImage has a single CSS node with the name image. The style classes
+// .normal-icons or .large-icons may appear, depending on the Image:icon-size
+// property.
+//
+//
+// Accessibility
+//
+// GtkImage uses the K_ACCESSIBLE_ROLE_IMG role.
+type Image struct {
+	Widget
+}
+
+// InfoBar: gtkInfoBar is a widget that can be used to show messages to the user
+// without showing a dialog. It is often temporarily shown at the top or bottom
+// of a document. In contrast to Dialog, which has an action area at the bottom,
+// InfoBar has an action area at the side.
+//
+// The API of InfoBar is very similar to Dialog, allowing you to add buttons to
+// the action area with gtk_info_bar_add_button() or
+// gtk_info_bar_new_with_buttons(). The sensitivity of action widgets can be
+// controlled with gtk_info_bar_set_response_sensitive().
+//
+// To add widgets to the main content area of a InfoBar, use
+// gtk_info_bar_add_child().
+//
+// Similar to MessageDialog, the contents of a InfoBar can by classified as
+// error message, warning, informational message, etc, by using
+// gtk_info_bar_set_message_type(). GTK may use the message type to determine
+// how the message is displayed.
+//
+// A simple example for using a InfoBar: |[<!-- language="C" --> GtkWidget
+// *message_label; GtkWidget *widget; GtkWidget *grid; GtkInfoBar *bar;
+//
+// // set up info bar widget = gtk_info_bar_new (); bar = GTK_INFO_BAR (widget);
+// // grid = gtk_grid_new ();
+//
+// message_label = gtk_label_new (""); gtk_info_bar_add_child (bar,
+// message_label); gtk_info_bar_add_button (bar, _("_OK"), GTK_RESPONSE_OK);
+// g_signal_connect (bar, "response", G_CALLBACK (gtk_widget_hide), NULL);
+// gtk_grid_attach (GTK_GRID (grid), widget, 0, 2, 1, 1);
+//
+// // ...
+//
+//    // show an error message
+//    gtk_label_set_text (GTK_LABEL (message_label), "An error occurred!");
+//    gtk_info_bar_set_message_type (bar, GTK_MESSAGE_ERROR);
+//    gtk_widget_show (bar);
+//
+//
+//    # GtkInfoBar as GtkBuildable
+//
+//    The GtkInfoBar implementation of the GtkBuildable interface exposes
+//    the content area and action area as internal children with the names
+//    “content_area” and “action_area”.
+//
+//    GtkInfoBar supports a custom <action-widgets> element, which can contain
+//    multiple <action-widget> elements. The “response” attribute specifies a
+//    numeric response, and the content of the element is the id of widget
+//    (which should be a child of the dialogs @action_area).
+//
+//    # CSS nodes
+//
+//    GtkInfoBar has a single CSS node with name infobar. The node may get
+//    one of the style classes .info, .warning, .error or .question, depending
+//    on the message type.
+//    If the info bar shows a close button, that button will have the .close
+//    style class applied.
+type InfoBar struct {
+	Widget
+}
+
+// KeyvalTrigger: a ShortcutTrigger that triggers when a specific keyval and
+// (optionally) modifiers are pressed.
+type KeyvalTrigger struct {
+	ShortcutTrigger
+}
+
+// Label: the Label widget displays a small amount of text. As the name implies,
+// most labels are used to label another widget such as a Button.
+//
+// CSS nodes
+//
+//    label
+//    ├── [selection]
+//    ├── [link]
+//    ┊
+//    ╰── [link]
+//
+// GtkLabel has a single CSS node with the name label. A wide variety of style
+// classes may be applied to labels, such as .title, .subtitle, .dim-label, etc.
+// In the ShortcutsWindow, labels are used with the .keycap style class.
+//
+// If the label has a selection, it gets a subnode with name selection.
+//
+// If the label has links, there is one subnode per link. These subnodes carry
+// the link or visited state depending on whether they have been visited. In
+// this case, label node also gets a .link style class.
+//
+//
+// GtkLabel as GtkBuildable
+//
+// The GtkLabel implementation of the GtkBuildable interface supports a custom
+// <attributes> element, which supports any number of <attribute> elements. The
+// <attribute> element has attributes named “name“, “value“, “start“ and “end“
+// and allows you to specify Attribute values for this label.
+//
+//
+//    <object class="GtkLabel">
+//      <attributes>
+//        <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
+//        <attribute name="background" value="red" start="5" end="10"/>
+//      </attributes>
+//    </object>
+//
+// The start and end attributes specify the range of characters to which the
+// Pango attribute applies. If start and end are not specified, the attribute is
+// applied to the whole text. Note that specifying ranges does not make much
+// sense with translatable attributes. Use markup embedded in the translatable
+// content instead.
+//
+//
+// Accessibility
+//
+// GtkLabel uses the K_ACCESSIBLE_ROLE_LABEL role.
+//
+//
+// Mnemonics
+//
+// Labels may contain “mnemonics”. Mnemonics are underlined characters in the
+// label, used for keyboard navigation. Mnemonics are created by providing a
+// string with an underscore before the mnemonic character, such as `"_File"`,
+// to the functions gtk_label_new_with_mnemonic() or
+// gtk_label_set_text_with_mnemonic().
+//
+// Mnemonics automatically activate any activatable widget the label is inside,
+// such as a Button; if the label is not inside the mnemonic’s target widget,
+// you have to tell the label about the target using
+// gtk_label_set_mnemonic_widget(). Here’s a simple example where the label is
+// inside a button:
+//
+//    // Pressing Alt+H will activate this button
+//    GtkWidget *button = gtk_button_new ();
+//    GtkWidget *label = gtk_label_new_with_mnemonic ("_Hello");
+//    gtk_button_set_child (GTK_BUTTON (button), label);
+//
+// There’s a convenience function to create buttons with a mnemonic label
+// already inside:
+//
+//    // Pressing Alt+H will activate this button
+//    GtkWidget *button = gtk_button_new_with_mnemonic ("_Hello");
+//
+// To create a mnemonic for a widget alongside the label, such as a Entry, you
+// have to point the label at the entry with gtk_label_set_mnemonic_widget():
+//
+//    // Pressing Alt+H will focus the entry
+//    GtkWidget *entry = gtk_entry_new ();
+//    GtkWidget *label = gtk_label_new_with_mnemonic ("_Hello");
+//    gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
+//
+// Markup (styled text)
+//
+// To make it easy to format text in a label (changing colors, fonts, etc.),
+// label text can be provided in a simple [markup format][PangoMarkupFormat].
+//
+//    GtkWidget *label = gtk_label_new (NULL);
+//    gtk_label_set_markup (GTK_LABEL (label), "<small>Small text</small>");
+//
+// (See [complete documentation][PangoMarkupFormat] of available tags in the
+// Pango manual.)
+//
+// The markup passed to gtk_label_set_markup() must be valid; for example,
+// literal <, > and & characters must be escaped as &lt;, &gt;, and &amp;. If
+// you pass text obtained from the user, file, or a network to
+// gtk_label_set_markup(), you’ll want to escape it with g_markup_escape_text()
+// or g_markup_printf_escaped().
+//
+// Markup strings are just a convenient way to set the AttrList on a label;
+// gtk_label_set_attributes() may be a simpler way to set attributes in some
+// cases. Be careful though; AttrList tends to cause internationalization
+// problems, unless you’re applying attributes to the entire string (i.e. unless
+// you set the range of each attribute to [0, G_MAXINT)). The reason is that
+// specifying the start_index and end_index for a Attribute requires knowledge
+// of the exact string being displayed, so translations will cause problems.
+//
+//
+// Selectable labels
+//
+// Labels can be made selectable with gtk_label_set_selectable(). Selectable
+// labels allow the user to copy the label contents to the clipboard. Only
+// labels that contain useful-to-copy information — such as error messages —
+// should be made selectable.
+//
+// Text layout {#label-text-layout}
+//
+// A label can contain any number of paragraphs, but will have performance
+// problems if it contains more than a small number. Paragraphs are separated by
+// newlines or other paragraph separators understood by Pango.
+//
+// Labels can automatically wrap text if you call gtk_label_set_wrap().
+//
+// gtk_label_set_justify() sets how the lines in a label align with one another.
+// If you want to set how the label as a whole aligns in its available space,
+// see the Widget:halign and Widget:valign properties.
+//
+// The Label:width-chars and Label:max-width-chars properties can be used to
+// control the size allocation of ellipsized or wrapped labels. For ellipsizing
+// labels, if either is specified (and less than the actual text size), it is
+// used as the minimum width, and the actual text size is used as the natural
+// width of the label. For wrapping labels, width-chars is used as the minimum
+// width, if specified, and max-width-chars is used as the natural width. Even
+// if max-width-chars specified, wrapping labels will be rewrapped to use all of
+// the available width.
+//
+// Note that the interpretation of Label:width-chars and Label:max-width-chars
+// has changed a bit with the introduction of [width-for-height geometry
+// management.][geometry-management]
+//
+//
+// Links
+//
+// GTK supports markup for clickable hyperlinks in addition to regular Pango
+// markup. The markup for links is borrowed from HTML, using the `<a>` with
+// “href“, “title“ and “class“ attributes. GTK renders links similar to the way
+// they appear in web browsers, with colored, underlined text. The “title“
+// attribute is displayed as a tooltip on the link. The “class“ attribute is
+// used as style class on the CSS node for the link.
+//
+// An example looks like this:
+//
+//    const char *text =
+//    "Go to the"
+//    "<a href=\"http://www.gtk.org title=\"&lt;i&gt;Our&lt;/i&gt; website\">"
+//    "GTK website</a> for more...";
+//    GtkWidget *label = gtk_label_new (NULL);
+//    gtk_label_set_markup (GTK_LABEL (label), text);
+//
+// It is possible to implement custom handling for links and their tooltips with
+// the Label::activate-link signal and the gtk_label_get_current_uri() function.
+type Label struct {
+	Widget
+}
+
+// LayoutChild: gtkLayoutChild is the base class for objects that are meant to
+// hold layout properties. If a LayoutManager has per-child properties, like
+// their packing type, or the horizontal and vertical span, or the icon name,
+// then the layout manager should use a LayoutChild implementation to store
+// those properties.
+//
+// A LayoutChild instance is only ever valid while a widget is part of a layout.
+type LayoutChild struct {
+	*glib.Object
+}
+
+// LayoutManager: layout managers are delegate classes that handle the preferred
+// size and the allocation of a container widget.
+//
+// You typically subclass LayoutManager if you want to implement a layout policy
+// for the children of a widget, or if you want to determine the size of a
+// widget depending on its contents.
+//
+// Each Widget can only have a LayoutManager instance associated to it at any
+// given time; it is possible, though, to replace the layout manager instance
+// using gtk_widget_set_layout_manager().
+//
+//
+// Layout properties
+//
+// A layout manager can expose properties for controlling the layout of each
+// child, by creating an object type derived from LayoutChild and installing the
+// properties on it as normal GObject properties.
+//
+// Each LayoutChild instance storing the layout properties for a specific child
+// is created through the gtk_layout_manager_get_layout_child() method; a
+// LayoutManager controls the creation of its LayoutChild instances by
+// overriding the GtkLayoutManagerClass.create_layout_child() virtual function.
+// The typical implementation should look like:
+//
+//    static GtkLayoutChild *
+//    create_layout_child (GtkLayoutManager *manager,
+//                         GtkWidget        *container,
+//                         GtkWidget        *child)
+//    {
+//      return g_object_new (your_layout_child_get_type (),
+//                           "layout-manager", manager,
+//                           "child-widget", child,
+//                           NULL);
+//    }
+//
+// The LayoutChild:layout-manager and LayoutChild:child-widget properties on the
+// newly created LayoutChild instance are mandatory. The LayoutManager will
+// cache the newly created LayoutChild instance until the widget is removed from
+// its parent, or the parent removes the layout manager.
+//
+// Each LayoutManager instance creating a LayoutChild should use
+// gtk_layout_manager_get_layout_child() every time it needs to query the layout
+// properties; each LayoutChild instance should call
+// gtk_layout_manager_layout_changed() every time a property is updated, in
+// order to queue a new size measuring and allocation.
+type LayoutManager struct {
+	*glib.Object
+}
+
+// LevelBar: the LevelBar is a bar widget that can be used as a level indicator.
+// Typical use cases are displaying the strength of a password, or showing the
+// charge level of a battery.
+//
+// Use gtk_level_bar_set_value() to set the current value, and
+// gtk_level_bar_add_offset_value() to set the value offsets at which the bar
+// will be considered in a different state. GTK will add a few offsets by
+// default on the level bar: K_LEVEL_BAR_OFFSET_LOW, K_LEVEL_BAR_OFFSET_HIGH and
+// K_LEVEL_BAR_OFFSET_FULL, with values 0.25, 0.75 and 1.0 respectively.
+//
+// Note that it is your responsibility to update preexisting offsets when
+// changing the minimum or maximum value. GTK will simply clamp them to the new
+// range.
+//
+// Adding a custom offset on the bar
+//
+//    <!-- language="C" -->
+//
+//    static GtkWidget *
+//    create_level_bar (void)
+//    {
+//      GtkWidget *widget;
+//      GtkLevelBar *bar;
+//
+//      widget = gtk_level_bar_new ();
+//      bar = GTK_LEVEL_BAR (widget);
+//
+//      // This changes the value of the default low offset
+//
+//      gtk_level_bar_add_offset_value (bar,
+//                                      GTK_LEVEL_BAR_OFFSET_LOW,
+//                                      0.10);
+//
+//      // This adds a new offset to the bar; the application will
+//      // be able to change its color CSS like this:
+//      //
+//      // levelbar block.my-offset {
+//      //   background-color: magenta;
+//      //   border-style: solid;
+//      //   border-color: black;
+//      //   border-style: 1px;
+//      // }
+//
+//      gtk_level_bar_add_offset_value (bar, "my-offset", 0.60);
+//
+//      return widget;
+//    }
+//
+//
+// The default interval of values is between zero and one, but it’s possible to
+// modify the interval using gtk_level_bar_set_min_value() and
+// gtk_level_bar_set_max_value(). The value will be always drawn in proportion
+// to the admissible interval, i.e. a value of 15 with a specified interval
+// between 10 and 20 is equivalent to a value of 0.5 with an interval between 0
+// and 1. When K_LEVEL_BAR_MODE_DISCRETE is used, the bar level is rendered as a
+// finite number of separated blocks instead of a single one. The number of
+// blocks that will be rendered is equal to the number of units specified by the
+// admissible interval.
+//
+// For instance, to build a bar rendered with five blocks, it’s sufficient to
+// set the minimum value to 0 and the maximum value to 5 after changing the
+// indicator mode to discrete.
+//
+//
+// GtkLevelBar as GtkBuildable
+//
+// The GtkLevelBar implementation of the GtkBuildable interface supports a
+// custom <offsets> element, which can contain any number of <offset> elements,
+// each of which must have name and value attributes.
+//
+// CSS nodes
+//
+//    levelbar[.discrete]
+//    ╰── trough
+//        ├── block.filled.level-name
+//        ┊
+//        ├── block.empty
+//        ┊
+//
+// GtkLevelBar has a main CSS node with name levelbar and one of the style
+// classes .discrete or .continuous and a subnode with name trough. Below the
+// trough node are a number of nodes with name block and style class .filled or
+// .empty. In continuous mode, there is exactly one node of each, in discrete
+// mode, the number of filled and unfilled nodes corresponds to blocks that are
+// drawn. The block.filled nodes also get a style class .level-name
+// corresponding to the level for the current value.
+//
+// In horizontal orientation, the nodes are always arranged from left to right,
+// regardless of text direction.
+//
+//
+// Accessibility
+//
+// GtkLevelBar uses the K_ACCESSIBLE_ROLE_METER role.
+type LevelBar struct {
+	Widget
+}
+
+// LinkButton: a GtkLinkButton is a Button with a hyperlink, similar to the one
+// used by web browsers, which triggers an action when clicked. It is useful to
+// show quick links to resources.
+//
+// A link button is created by calling either gtk_link_button_new() or
+// gtk_link_button_new_with_label(). If using the former, the URI you pass to
+// the constructor is used as a label for the widget.
+//
+// The URI bound to a GtkLinkButton can be set specifically using
+// gtk_link_button_set_uri(), and retrieved using gtk_link_button_get_uri().
+//
+// By default, GtkLinkButton calls gtk_show_uri() when the button is clicked.
+// This behaviour can be overridden by connecting to the
+// LinkButton::activate-link signal and returning true from the signal handler.
+//
+//
+// CSS nodes
+//
+// GtkLinkButton has a single CSS node with name button. To differentiate it
+// from a plain Button, it gets the .link style class.
+//
+//
+// Accessibility
+//
+// GtkLinkButton uses the K_ACCESSIBLE_ROLE_LINK role.
+type LinkButton struct {
+	Button
+}
+
+// ListBase: gtkListBase is the abstract base class for GTK's list widgets.
+type ListBase struct {
+	Widget
+}
+
+// ListBox: a GtkListBox is a vertical container that contains GtkListBoxRow
+// children. These rows can by dynamically sorted and filtered, and headers can
+// be added dynamically depending on the row content. It also allows keyboard
+// and mouse navigation and selection like a typical list.
+//
+// Using GtkListBox is often an alternative to TreeView, especially when the
+// list contents has a more complicated layout than what is allowed by a
+// CellRenderer, or when the contents is interactive (i.e. has a button in it).
+//
+// Although a ListBox must have only ListBoxRow children you can add any kind of
+// widget to it via gtk_list_box_prepend(), gtk_list_box_append() and
+// gtk_list_box_insert() and a ListBoxRow widget will automatically be inserted
+// between the list and the widget.
+//
+// ListBoxRows can be marked as activatable or selectable. If a row is
+// activatable, ListBox::row-activated will be emitted for it when the user
+// tries to activate it. If it is selectable, the row will be marked as selected
+// when the user tries to select it.
+//
+//
+// GtkListBox as GtkBuildable
+//
+// The GtkListBox implementation of the Buildable interface supports setting a
+// child as the placeholder by specifying “placeholder” as the “type” attribute
+// of a <child> element. See gtk_list_box_set_placeholder() for info.
+//
+// CSS nodes
+//
+//    list[.separators][.rich-list][.navigation-sidebar]
+//    ╰── row[.activatable]
+//
+// GtkListBox uses a single CSS node named list. It may carry the .separators
+// style class, when the ListBox:show-separators property is set. Each
+// GtkListBoxRow uses a single CSS node named row. The row nodes get the
+// .activatable style class added when appropriate.
+//
+// The main list node may also carry style classes to select the style of [list
+// presentation](ListContainers.html#list-styles): .rich-list,
+// .navigation-sidebar or .data-table.
+//
+//
+// Accessibility
+//
+// GtkListBox uses the K_ACCESSIBLE_ROLE_LIST role and GtkListBoxRow uses the
+// K_ACCESSIBLE_ROLE_LIST_ITEM role.
+type ListBox struct {
+	Widget
+}
+
+type ListBoxRow struct {
+	Widget
+}
+
+// ListItem: gtkListItem is the object that list-handling containers such as
+// ListView use to represent items in a Model. They are managed by the container
+// and cannot be created by application code.
+//
+// ListItems need to be populated by application code. This is done by calling
+// gtk_list_item_set_child().
+//
+// ListItems exist in 2 stages:
+//
+// 1. The unbound stage where the listitem is not currently connected to an item
+// in the list. In that case, the ListItem:item property is set to nil.
+//
+// 2. The bound stage where the listitem references an item from the list. The
+// ListItem:item property is not nil.
+type ListItem struct {
+	*glib.Object
+}
+
+// ListItemFactory: gtkListItemFactory is one of the core concepts of handling
+// list widgets. It is the object tasked with creating widgets for items taken
+// from a Model when the views need them and updating them as the items
+// displayed by the view change.
+//
+// A view is usually only able to display anything after both a factory and a
+// model have been set on the view. So it is important that you do not skip this
+// step when setting up your first view.
+//
+// Because views do not display the whole list at once but only a few items,
+// they only need to maintain a few widgets at a time. They will instruct the
+// ListItemFactory to create these widgets and bind them to the items that are
+// currently displayed. As the list model changes or the user scrolls to the
+// list, the items will change and the view will instruct the factory to bind
+// the widgets to those new items.
+//
+// The actual widgets used for displaying those widgets is provided by you.
+//
+// When the factory needs widgets created, it will create a ListItem and hand it
+// to your code to set up a widget for. This list item will provide various
+// properties with information about what item to display and provide you with
+// some opportunities to configure its behavior. See the ListItem documentation
+// for further details.
+//
+// Various implementations of ListItemFactory exist to allow you different ways
+// to provide those widgets. The most common implementations are
+// BuilderListItemFactory which takes a Builder .ui file and then creates
+// widgets and manages everything automatically from the information in that
+// file and SignalListItemFactory which allows you to connect to signals with
+// your own code and retain full control over how the widgets are setup and
+// managed.
+//
+// A ListItemFactory is supposed to be final - that means its behavior should
+// not change and the first widget created from it should behave the same way as
+// the last widget created from it. If you intend to do changes to the behavior,
+// it is recommended that you create a new ListItemFactory which will allow the
+// views to recreate its widgets.
+//
+// Once you have chosen your factory and created it, you need to set it on the
+// view widget you want to use it with, such as via gtk_list_view_set_factory().
+// Reusing factories across different views is allowed, but very uncommon.
+type ListItemFactory struct {
+	*glib.Object
+}
+
+// ListStore: the ListStore object is a list model for use with a TreeView
+// widget. It implements the TreeModel interface, and consequentialy, can use
+// all of the methods available there. It also implements the TreeSortable
+// interface so it can be sorted by the view. Finally, it also implements the
+// tree [drag and drop][gtk4-GtkTreeView-drag-and-drop] interfaces.
+//
+// The ListStore can accept most GObject types as a column type, though it can’t
+// accept all custom types. Internally, it will keep a copy of data passed in
+// (such as a string or a boxed pointer). Columns that accept #GObjects are
+// handled a little differently. The ListStore will keep a reference to the
+// object instead of copying the value. As a result, if the object is modified,
+// it is up to the application writer to call gtk_tree_model_row_changed() to
+// emit the TreeModel::row_changed signal. This most commonly affects lists with
+// Textures stored.
+//
+// An example for creating a simple list store: |[<!-- language="C" --> enum {
+// COLUMN_STRING, COLUMN_INT, COLUMN_BOOLEAN, N_COLUMNS };
+//
+// { GtkListStore *list_store; GtkTreePath *path; GtkTreeIter iter; int i;
+//
+// list_store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_INT,
+// G_TYPE_BOOLEAN);
+//
+// for (i = 0; i < 10; i++) { char *some_data;
+//
+// some_data = get_some_data (i);
+//
+// // Add a new row to the model gtk_list_store_append (list_store, &iter);
+// // gtk_list_store_set (list_store, &iter, COLUMN_STRING, some_data, COLUMN_INT,
+// // i, COLUMN_BOOLEAN, FALSE, -1);
+//
+// // As the store will keep a copy of the string internally, // we free
+// // some_data. g_free (some_data); }
+//
+//      // Modify a particular row
+//      path = gtk_tree_path_new_from_string ("4");
+//      gtk_tree_model_get_iter (GTK_TREE_MODEL (list_store),
+//                               &iter,
+//                               path);
+//      gtk_tree_path_free (path);
+//      gtk_list_store_set (list_store, &iter,
+//                          COLUMN_BOOLEAN, TRUE,
+//                          -1);
+//    }
+//
+//
+//    # Performance Considerations
+//
+//    Internally, the ListStore was originally implemented with a linked list
+//    with a tail pointer.  As a result, it was fast at data insertion and deletion,
+//    and not fast at random data access.  The ListStore sets the
+//    K_TREE_MODEL_ITERS_PERSIST flag, which means that TreeIters can be
+//    cached while the row exists.  Thus, if access to a particular row is needed
+//    often and your code is expected to run on older versions of GTK, it is worth
+//    keeping the iter around.
+//
+//    # Atomic Operations
+//
+//    It is important to note that only the methods
+//    gtk_list_store_insert_with_values() and gtk_list_store_insert_with_valuesv()
+//    are atomic, in the sense that the row is being appended to the store and the
+//    values filled in in a single operation with regard to TreeModel signaling.
+//    In contrast, using e.g. gtk_list_store_append() and then gtk_list_store_set()
+//    will first create a row, which triggers the TreeModel::row-inserted signal
+//    on ListStore. The row, however, is still empty, and any signal handler
+//    connecting to TreeModel::row-inserted on this particular store should be prepared
+//    for the situation that the row might be empty. This is especially important
+//    if you are wrapping the ListStore inside a TreeModelFilter and are
+//    using a TreeModelFilterVisibleFunc. Using any of the non-atomic operations
+//    to append rows to the ListStore will cause the
+//    TreeModelFilterVisibleFunc to be visited with an empty row first; the
+//    function must be prepared for that.
+//
+//    # GtkListStore as GtkBuildable
+//
+//    The GtkListStore implementation of the GtkBuildable interface allows
+//    to specify the model columns with a <columns> element that may contain
+//    multiple <column> elements, each specifying one model column. The “type”
+//    attribute specifies the data type for the column.
+//
+//    Additionally, it is possible to specify content for the list store
+//    in the UI definition, with the <data> element. It can contain multiple
+//    <row> elements, each specifying to content for one row of the list model.
+//    Inside a <row>, the <col> elements specify the content for individual cells.
+//
+//    Note that it is probably more common to define your models in the code,
+//    and one might consider it a layering violation to specify the content of
+//    a list store in a UI definition, data, not presentation, and common wisdom
+//    is to separate the two, as far as possible.
+//
+//    <object class="GtkListStore">
+//      <columns>
+//        <column type="gchararray"/>
+//        <column type="gchararray"/>
+//        <column type="gint"/>
+//      </columns>
+//      <data>
+//        <row>
+//          <col id="0">John</col>
+//          <col id="1">Doe</col>
+//          <col id="2">25</col>
+//        </row>
+//        <row>
+//          <col id="0">Johan</col>
+//          <col id="1">Dahlin</col>
+//          <col id="2">50</col>
+//        </row>
+//      </data>
+//    </object>
+type ListStore struct {
+	*glib.Object
+}
+
+// ListView: gtkListView is a widget to present a view into a large dynamic list
+// of items.
+//
+// GtkListView uses its factory to generate one row widget for each visible item
+// and shows them in a linear display, either vertically or horizontally. The
+// ListView:show-separators property offers a simple way to display separators
+// between the rows.
+//
+// GtkListView allows the user to select items according to the selection
+// characteristics of the model. For models that allow multiple selected items,
+// it is possible to turn on _rubberband selection_, using
+// ListView:enable-rubberband.
+//
+// If you need multiple columns with headers, see ColumnView.
+//
+// To learn more about the list widget framework, see the [overview](Widget).
+//
+// An example of using GtkListView: |[ static void setup_listitem_cb
+// (GtkListItemFactory *factory, GtkListItem *list_item) { GtkWidget *image;
+//
+// image = gtk_image_new (); gtk_image_set_icon_size (GTK_IMAGE (image),
+// GTK_ICON_SIZE_LARGE); gtk_list_item_set_child (list_item, image); }
+//
+// static void bind_listitem_cb (GtkListItemFactory *factory, GtkListItem
+// *list_item) { GtkWidget *image; GAppInfo *app_info;
+//
+// image = gtk_list_item_get_child (list_item); app_info =
+// gtk_list_item_get_item (list_item); gtk_image_set_from_gicon (GTK_IMAGE
+// (image), g_app_info_get_icon (app_info)); }
+//
+// static void activate_cb (GtkListView *list, guint position, gpointer unused)
+// { GAppInfo *app_info;
+//
+// app_info = g_list_model_get_item (G_LIST_MODEL (gtk_list_view_get_model
+// (list)), position); g_app_info_launch (app_info, NULL, NULL, NULL);
+// g_object_unref (app_info); }
+//
+// ...
+//
+// model = create_application_list ();
+//
+// factory = gtk_signal_list_item_factory_new (); g_signal_connect (factory,
+// "setup", G_CALLBACK (setup_listitem_cb), NULL); g_signal_connect (factory,
+// "bind", G_CALLBACK (bind_listitem_cb), NULL);
+//
+// list = gtk_list_view_new (GTK_SELECTION_MODEL (gtk_single_selection_new
+// (model)), factory);
+//
+// g_signal_connect (list, "activate", G_CALLBACK (activate_cb), NULL);
+//
+//      gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (sw), list);
+//
+//
+//    # CSS nodes
+//
+//    listview[.separators][.rich-list][.navigation-sidebar][.data-table]
+//    ├── row
+//    │
+//    ├── row
+//    │
+//    ┊
+//    ╰── [rubberband]
+//
+//
+//
+//    GtkListView uses a single CSS node named listview. It may carry the
+//    .separators style class, when ListView:show-separators property
+//    is set. Each child widget uses a single CSS node named row. For
+//    rubberband selection, a node with name rubberband is used.
+//
+//    The main listview node may also carry style classes to select
+//    the style of [list presentation](ListContainers.html#list-styles):
+//    .rich-list, .navigation-sidebar or .data-table.
+//
+//    # Accessibility
+//
+//    GtkListView uses the K_ACCESSIBLE_ROLE_LIST role, and the list
+//    items use the K_ACCESSIBLE_ROLE_LIST_ITEM role.
+type ListView struct {
+	ListBase
+}
+
+// LockButton: gtkLockButton is a widget that can be used in control panels or
+// preference dialogs to allow users to obtain and revoke authorizations needed
+// to operate the controls. The required authorization is represented by a
+// #GPermission object. Concrete implementations of #GPermission may use
+// PolicyKit or some other authorization framework. To obtain a PolicyKit-based
+// #GPermission, use polkit_permission_new().
+//
+// If the user is not currently allowed to perform the action, but can obtain
+// the permission, the widget looks like this:
+//
+// ![](lockbutton-locked.png)
+//
+// and the user can click the button to request the permission. Depending on the
+// platform, this may pop up an authentication dialog or ask the user to
+// authenticate in some other way. Once the user has obtained the permission,
+// the widget changes to this:
+//
+// ![](lockbutton-unlocked.png)
+//
+// and the permission can be dropped again by clicking the button. If the user
+// is not able to obtain the permission at all, the widget looks like this:
+//
+// ![](lockbutton-sorry.png)
+//
+// If the user has the permission and cannot drop it, the button is hidden.
+//
+// The text (and tooltips) that are shown in the various cases can be adjusted
+// with the LockButton:text-lock, LockButton:text-unlock,
+// LockButton:tooltip-lock, LockButton:tooltip-unlock and
+// LockButton:tooltip-not-authorized properties.
+type LockButton struct {
+	Button
+}
+
+// MapListModel: gtkMapListModel is a list model that takes a list model and
+// maps the items in that model to different items according to a
+// MapListModelMapFunc.
+//
+// Example: Create a list of EventControllers |[ static gpointer
+// map_to_controllers (gpointer widget, gpointer data) { gpointer result =
+// gtk_widget_observe_controllers (widget); g_object_unref (widget); return
+// result; }
+//
+// widgets = gtk_widget_observe_children (widget);
+//
+// controllers = gtk_map_list_model_new (G_TYPE_LIST_MODEL, widgets,
+// map_to_controllers, NULL, NULL);
+//
+//      model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER,
+//                                          controllers);
+//
+//
+//    MapListModel will attempt to discard the mapped objects as soon as
+//    they are no longer needed and recreate them if necessary.
+type MapListModel struct {
+	*glib.Object
+}
+
+// MediaControls: gtkMediaControls is a widget to show controls for a
+// MediaStream and giving users a way to use it.
+type MediaControls struct {
+	Widget
+}
+
+// MediaFile: gtkMediaFile is the implementation for media file usage with
+// MediaStream.
+//
+// This provides a simple way to play back video files with GTK.
+//
+// GTK provides a GIO extension point for MediaFile implementations to allow for
+// external implementations using various media frameworks. GTK itself includes
+// implementations using GStreamer and ffmpeg.
+type MediaFile struct {
+	MediaStream
+}
+
+// MediaStream: gtkMediaStream is the integration point for media playback
+// inside GTK.
+//
+// GTK provides an implementation of the MediaStream interface that is called
+// MediaFile.
+//
+// Apart from application-facing API for stream playback, MediaStream has a
+// number of APIs that are only useful for implementations and should not be
+// used in applications: gtk_media_stream_prepared(),
+// gtk_media_stream_unprepared(), gtk_media_stream_update(),
+// gtk_media_stream_ended(), gtk_media_stream_seek_success(),
+// gtk_media_stream_seek_failed(), gtk_media_stream_gerror(),
+// gtk_media_stream_error(), gtk_media_stream_error_valist().
+type MediaStream struct {
+	*glib.Object
+}
+
+// MenuButton: the MenuButton widget is used to display a popup when clicked on.
+// This popup can be provided either as a Popover or as an abstract Model.
+//
+// The MenuButton widget can show either an icon (set with the
+// MenuButton:icon-name property) or a label (set with the MenuButton:label
+// property). If neither is explicitly set, a Image is automatically created,
+// using an arrow image oriented according to MenuButton:direction or the
+// generic “open-menu-symbolic” icon if the direction is not set.
+//
+// The positioning of the popup is determined by the MenuButton:direction
+// property of the menu button.
+//
+// For menus, the Widget:halign and Widget:valign properties of the menu are
+// also taken into account. For example, when the direction is GTK_ARROW_DOWN
+// and the horizontal alignment is GTK_ALIGN_START, the menu will be positioned
+// below the button, with the starting edge (depending on the text direction) of
+// the menu aligned with the starting edge of the button. If there is not enough
+// space below the button, the menu is popped up above the button instead. If
+// the alignment would move part of the menu offscreen, it is “pushed in”.
+//
+// Direction = Down
+//
+// - halign = start
+//
+// ![](down-start.png)
+//
+// - halign = center
+//
+// ![](down-center.png)
+//
+// - halign = end
+//
+// ![](down-end.png)
+//
+// Direction = Up
+//
+// - halign = start
+//
+// ![](up-start.png)
+//
+// - halign = center
+//
+// ![](up-center.png)
+//
+// - halign = end
+//
+// ![](up-end.png)
+//
+// Direction = Left
+//
+// - valign = start
+//
+// ![](left-start.png)
+//
+// - valign = center
+//
+// ![](left-center.png)
+//
+// - valign = end
+//
+// ![](left-end.png)
+//
+// Direction = Right
+//
+// - valign = start
+//
+// ![](right-start.png)
+//
+// - valign = center
+//
+// ![](right-center.png)
+//
+// - valign = end
+//
+// ![](right-end.png)
+//
+// CSS nodes
+//
+//    menubutton
+//    ╰── button.toggle
+//        ╰── [content]
+//
+// GtkMenuButton has a single CSS node with name menubutton which contains a
+// toggle button node.
+//
+//
+// Accessibility
+//
+// GtkMenuButton uses the K_ACCESSIBLE_ROLE_BUTTON role.
+type MenuButton struct {
+	Widget
+}
+
+// MessageDialog: gtkMessageDialog presents a dialog with some message text.
+// It’s simply a convenience widget; you could construct the equivalent of
+// MessageDialog from Dialog without too much effort, but MessageDialog saves
+// typing.
+//
+// The easiest way to do a modal message dialog is to use the GTK_DIALOG_MODAL
+// flag, which will call gtk_window_set_modal() internally. The dialog will
+// prevent interaction with the parent window until it's hidden or destroyed.
+// You can use the Dialog::response signal to know when the user dismissed the
+// dialog.
+//
+// An example for using a modal dialog: |[<!-- language="C" --> GtkDialogFlags
+// flags = GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL; dialog =
+// gtk_message_dialog_new (parent_window, flags, GTK_MESSAGE_ERROR,
+// GTK_BUTTONS_CLOSE, "Error reading “s”: s", filename, g_strerror (errno)); //
+// Destroy the dialog when the user responds to it // (e.g. clicks a button)
+//
+//     g_signal_connect (dialog, "response",
+//                       G_CALLBACK (gtk_window_destroy),
+//                       NULL);
+//
+//
+//    You might do a non-modal MessageDialog simply by omitting the
+//    GTK_DIALOG_MODAL flag:
+//
+//     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+//     dialog = gtk_message_dialog_new (parent_window,
+//                                      flags,
+//                                      GTK_MESSAGE_ERROR,
+//                                      GTK_BUTTONS_CLOSE,
+//                                      "Error reading “s”: s",
+//                                      filename,
+//                                      g_strerror (errno));
+//
+//     // Destroy the dialog when the user responds to it
+//     // (e.g. clicks a button)
+//     g_signal_connect (dialog, "response",
+//                       G_CALLBACK (gtk_window_destroy),
+//                       NULL);
+//
+//
+//    # GtkMessageDialog as GtkBuildable
+//
+//    The GtkMessageDialog implementation of the GtkBuildable interface exposes
+//    the message area as an internal child with the name “message_area”.
+type MessageDialog struct {
+	Dialog
+}
+
+// MnemonicAction: a ShortcutAction that calls gtk_widget_mnemonic_activate().
+type MnemonicAction struct {
+	ShortcutAction
+}
+
+// MnemonicTrigger: a ShortcutTrigger that triggers when a specific mnemonic is
+// pressed.
+type MnemonicTrigger struct {
+	ShortcutTrigger
+}
+
+// MountOperation: this should not be accessed directly. Use the accessor
+// functions below.
+type MountOperation struct {
+	gio.MountOperation
+}
+
+// MultiFilter: gtkMultiFilter is the base type that implements support for
+// handling multiple filters.
+//
+// GtkAnyFilter is a subclass of GtkMultiFilter that matches an item when at
+// least one of its filters matches.
+//
+// GtkEveryFilter is a subclass of GtkMultiFilter that matches an item when each
+// of its filters matches.
+type MultiFilter struct {
+	Filter
+}
+
+// MultiSelection: gtkMultiSelection is an implementation of the SelectionModel
+// interface that allows selecting multiple elements.
+type MultiSelection struct {
+	*glib.Object
+}
+
+// MultiSorter: gtkMultiSorter combines multiple sorters by trying them in turn.
+// If the first sorter compares two items as equal, the second is tried next,
+// and so on.
+type MultiSorter struct {
+	Sorter
+}
+
+// NamedAction: a ShortcutAction that activates an action by name.
+type NamedAction struct {
+	ShortcutAction
+}
+
+// NativeDialog: native dialogs are platform dialogs that don't use Dialog or
+// Window. They are used in order to integrate better with a platform, by
+// looking the same as other native applications and supporting platform
+// specific features.
+//
+// The Dialog functions cannot be used on such objects, but we need a similar
+// API in order to drive them. The NativeDialog object is an API that allows you
+// to do this. It allows you to set various common properties on the dialog, as
+// well as show and hide it and get a NativeDialog::response signal when the
+// user finished with the dialog.
+//
+// Note that unlike Dialog, NativeDialog objects are not toplevel widgets, and
+// GTK does not keep them alive. It is your responsibility to keep a reference
+// until you are done with the object.
+type NativeDialog struct {
+	*glib.Object
+}
+
+// NeverTrigger: a ShortcutTrigger that never triggers.
+type NeverTrigger struct {
+	ShortcutTrigger
+}
+
+// NoSelection: gtkNoSelection is an implementation of the SelectionModel
+// interface that does not allow selecting anything.
+//
+// This model is meant to be used as a simple wrapper to Models when a
+// SelectionModel is required.
+type NoSelection struct {
+	*glib.Object
+}
+
+// Notebook: the Notebook widget is a layout container whose children are pages
+// that can be switched between using tab labels along one edge.
+//
+// There are many configuration options for GtkNotebook. Among other things, you
+// can choose on which edge the tabs appear (see gtk_notebook_set_tab_pos()),
+// whether, if there are too many tabs to fit the notebook should be made bigger
+// or scrolling arrows added (see gtk_notebook_set_scrollable()), and whether
+// there will be a popup menu allowing the users to switch pages. (see
+// gtk_notebook_popup_enable(), gtk_notebook_popup_disable())
+//
+//
+// GtkNotebook as GtkBuildable
+//
+// The GtkNotebook implementation of the Buildable interface supports placing
+// children into tabs by specifying “tab” as the “type” attribute of a <child>
+// element. Note that the content of the tab must be created before the tab can
+// be filled. A tab child can be specified without specifying a <child> type
+// attribute.
+//
+// To add a child widget in the notebooks action area, specify "action-start" or
+// “action-end” as the “type” attribute of the <child> element.
+//
+//
+//    <object class="GtkNotebook">
+//      <child>
+//        <object class="GtkLabel" id="notebook-content">
+//          <property name="label">Content</property>
+//        </object>
+//      </child>
+//      <child type="tab">
+//        <object class="GtkLabel" id="notebook-tab">
+//          <property name="label">Tab</property>
+//        </object>
+//      </child>
+//    </object>
+//
+// CSS nodes
+//
+//    notebook
+//    ├── header.top
+//    │   ├── [<action widget>]
+//    │   ├── tabs
+//    │   │   ├── [arrow]
+//    │   │   ├── tab
+//    │   │   │   ╰── <tab label>
+//    ┊   ┊   ┊
+//    │   │   ├── tab[.reorderable-page]
+//    │   │   │   ╰── <tab label>
+//    │   │   ╰── [arrow]
+//    │   ╰── [<action widget>]
+//    │
+//    ╰── stack
+//        ├── <child>
+//        ┊
+//        ╰── <child>
+//
+// GtkNotebook has a main CSS node with name `notebook`, a subnode with name
+// `header` and below that a subnode with name `tabs` which contains one subnode
+// per tab with name `tab`.
+//
+// If action widgets are present, their CSS nodes are placed next to the `tabs`
+// node. If the notebook is scrollable, CSS nodes with name `arrow` are placed
+// as first and last child of the `tabs` node.
+//
+// The main node gets the `.frame` style class when the notebook has a border
+// (see gtk_notebook_set_show_border()).
+//
+// The header node gets one of the style class `.top`, `.bottom`, `.left` or
+// `.right`, depending on where the tabs are placed. For reorderable pages, the
+// tab node gets the `.reorderable-page` class.
+//
+// A `tab` node gets the `.dnd` style class while it is moved with
+// drag-and-drop.
+//
+// The nodes are always arranged from left-to-right, regardless of text
+// direction.
+//
+//
+// Accessibility
+//
+// GtkNotebook uses the following roles:
+//
+// - GTK_ACCESSIBLE_ROLE_GROUP for the notebook widget -
+// GTK_ACCESSIBLE_ROLE_TAB_LIST for the list of tabs - GTK_ACCESSIBLE_ROLE_TAB
+// role for each tab - GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page
+type Notebook struct {
+	Widget
+}
+
+// NotebookPage: a page in the Notebook.
+//
+// The `GtkNotebookPage` structure only contains private data.
+type NotebookPage struct {
+	*glib.Object
+}
+
+// NothingAction: a ShortcutAction that does nothing.
+type NothingAction struct {
+	ShortcutAction
+}
+
+// NumericSorter: gtkNumericSorter is a Sorter that compares numbers.
+//
+// To obtain the numbers to compare, this sorter evaluates a Expression.
+type NumericSorter struct {
+	Sorter
+}
+
+type ObjectExpression struct {
+	Expression
+}
+
+// Overlay: gtkOverlay is a container which contains a single main child, on top
+// of which it can place “overlay” widgets. The position of each overlay widget
+// is determined by its Widget:halign and Widget:valign properties. E.g. a
+// widget with both alignments set to GTK_ALIGN_START will be placed at the top
+// left corner of the GtkOverlay container, whereas an overlay with halign set
+// to GTK_ALIGN_CENTER and valign set to GTK_ALIGN_END will be placed a the
+// bottom edge of the GtkOverlay, horizontally centered. The position can be
+// adjusted by setting the margin properties of the child to non-zero values.
+//
+// More complicated placement of overlays is possible by connecting to the
+// Overlay::get-child-position signal.
+//
+// An overlay’s minimum and natural sizes are those of its main child. The sizes
+// of overlay children are not considered when measuring these preferred sizes.
+//
+//
+// GtkOverlay as GtkBuildable
+//
+// The GtkOverlay implementation of the GtkBuildable interface supports placing
+// a child as an overlay by specifying “overlay” as the “type” attribute of a
+// `<child>` element.
+//
+//
+// CSS nodes
+//
+// GtkOverlay has a single CSS node with the name “overlay”. Overlay children
+// whose alignments cause them to be positioned at an edge get the style classes
+// “.left”, “.right”, “.top”, and/or “.bottom” according to their position.
+type Overlay struct {
+	Widget
+}
+
+// OverlayLayout: gtkOverlayLayout is the layout manager used by Overlay. It
+// places widgets as overlays on top of the main child.
+//
+// This is not a reusable layout manager, since it expects its widget to be a
+// Overlay. It only listed here so that its layout properties get documented.
+type OverlayLayout struct {
+	LayoutManager
+}
+
+type OverlayLayoutChild struct {
+	LayoutChild
+}
+
+// PadController: gtkPadController is an event controller for the pads found in
+// drawing tablets (The collection of buttons and tactile sensors often found
+// around the stylus-sensitive area).
+//
+// These buttons and sensors have no implicit meaning, and by default they
+// perform no action, this event controller is provided to map those to #GAction
+// objects, thus letting the application give those a more semantic meaning.
+//
+// Buttons and sensors are not constrained to triggering a single action, some
+// GDK_SOURCE_TABLET_PAD devices feature multiple "modes", all these input
+// elements have one current mode, which may determine the final action being
+// triggered. Pad devices often divide buttons and sensors into groups, all
+// elements in a group share the same current mode, but different groups may
+// have different modes. See gdk_device_pad_get_n_groups() and
+// gdk_device_pad_get_group_n_modes().
+//
+// Each of the actions that a given button/strip/ring performs for a given mode
+// is defined by PadActionEntry, it contains an action name that will be looked
+// up in the given Group and activated whenever the specified input element and
+// mode are triggered.
+//
+// A simple example of PadController usage, assigning button 1 in all modes and
+// pad devices to an "invert-selection" action: |[ GtkPadActionEntry
+// *pad_actions[] = { { GTK_PAD_ACTION_BUTTON, 1, -1, "Invert selection",
+// "pad-actions.invert-selection" }, … };
+//
+//      …
+//      action_group = g_simple_action_group_new ();
+//      action = g_simple_action_new ("pad-actions.invert-selection", NULL);
+//      g_signal_connect (action, "activate", on_invert_selection_activated, NULL);
+//      g_action_map_add_action (G_ACTION_MAP (action_group), action);
+//      …
+//      pad_controller = gtk_pad_controller_new (action_group, NULL);
+//
+//
+//    The actions belonging to rings/strips will be activated with a parameter
+//    of type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it
+//    is required that those are made stateful and accepting this Type.
+type PadController struct {
+	EventController
+}
+
+// PageSetup: a GtkPageSetup object stores the page size, orientation and
+// margins. The idea is that you can get one of these from the page setup dialog
+// and then pass it to the PrintOperation when printing. The benefit of
+// splitting this out of the PrintSettings is that these affect the actual
+// layout of the page, and thus need to be set long before user prints.
+//
+// Margins {#print-margins} The margins specified in this object are the “print
+// margins”, i.e. the parts of the page that the printer cannot print on. These
+// are different from the layout margins that a word processor uses; they are
+// typically used to determine the minimal size for the layout margins
+//
+// To obtain a PageSetup use gtk_page_setup_new() to get the defaults, or use
+// gtk_print_run_page_setup_dialog() to show the page setup dialog and receive
+// the resulting page setup.
+//
+// A page setup dialog
+//
+//    static GtkPrintSettings *settings = NULL;
+//    static GtkPageSetup *page_setup = NULL;
+//
+//    static void
+//    do_page_setup (void)
+//    {
+//      GtkPageSetup *new_page_setup;
+//
+//      if (settings == NULL)
+//        settings = gtk_print_settings_new ();
+//
+//      new_page_setup = gtk_print_run_page_setup_dialog (GTK_WINDOW (main_window),
+//                                                        page_setup, settings);
+//
+//      if (page_setup)
+//        g_object_unref (page_setup);
+//
+//      page_setup = new_page_setup;
+//    }
+//
+type PageSetup struct {
+	*glib.Object
+}
+
+// Paned: gtkPaned has two panes, arranged either horizontally or vertically.
+// The division between the two panes is adjustable by the user by dragging a
+// handle.
+//
+// Child widgets are added to the panes of the widget with
+// gtk_paned_set_start_child() and gtk_paned_set_end_child(). The division
+// between the two children is set by default from the size requests of the
+// children, but it can be adjusted by the user.
+//
+// A paned widget draws a separator between the two child widgets and a small
+// handle that the user can drag to adjust the division. It does not draw any
+// relief around the children or around the separator. (The space in which the
+// separator is called the gutter.) Often, it is useful to put each child inside
+// a Frame so that the gutter appears as a ridge. No separator is drawn if one
+// of the children is missing.
+//
+// Each child has two options that can be set, @resize and @shrink. If @resize
+// is true, then when the Paned is resized, that child will expand or shrink
+// along with the paned widget. If @shrink is true, then that child can be made
+// smaller than its requisition by the user. Setting @shrink to false allows the
+// application to set a minimum size. If @resize is false for both children,
+// then this is treated as if @resize is true for both children.
+//
+// The application can set the position of the slider as if it were set by the
+// user, by calling gtk_paned_set_position().
+//
+// CSS nodes
+//
+//    paned
+//    ├── <child>
+//    ├── separator[.wide]
+//    ╰── <child>
+//
+// GtkPaned has a main CSS node with name paned, and a subnode for the separator
+// with name separator. The subnode gets a .wide style class when the paned is
+// supposed to be wide.
+//
+// In horizontal orientation, the nodes are arranged based on the text
+// direction, so in left-to-right mode, :first-child will select the leftmost
+// child, while it will select the rightmost child in RTL layouts.
+//
+// Creating a paned widget with minimum sizes
+//
+//    GtkWidget *hpaned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
+//    GtkWidget *frame1 = gtk_frame_new (NULL);
+//    GtkWidget *frame2 = gtk_frame_new (NULL);
+//
+//    gtk_widget_set_size_request (hpaned, 200, -1);
+//
+//    gtk_paned_set_start_child (GTK_PANED (hpaned), frame1);
+//    gtk_paned_set_start_child_resize (GTK_PANED (hpaned), TRUE);
+//    gtk_paned_set_start_child_shrink (GTK_PANED (hpaned), FALSE);
+//    gtk_widget_set_size_request (frame1, 50, -1);
+//
+//    gtk_paned_set_end_child (GTK_PANED (hpaned), frame2);
+//    gtk_paned_set_end_child_resize (GTK_PANED (hpaned), FALSE);
+//    gtk_paned_set_end_child_shrink (GTK_PANED (hpaned), FALSE);
+//    gtk_widget_set_size_request (frame2, 50, -1);
+//
+type Paned struct {
+	Widget
+}
+
+// PasswordEntry: gtkPasswordEntry is entry that has been tailored for entering
+// secrets. It does not show its contents in clear text, does not allow to copy
+// it to the clipboard, and it shows a warning when Caps Lock is engaged. If the
+// underlying platform allows it, GtkPasswordEntry will also place the text in a
+// non-pageable memory area, to avoid it being written out to disk by the
+// operating system.
+//
+// Optionally, it can offer a way to reveal the contents in clear text.
+//
+// GtkPasswordEntry provides only minimal API and should be used with the
+// Editable API.
+//
+// CSS Nodes
+//
+//    entry.password
+//    ╰── text
+//        ├── image.caps-lock-indicator
+//        ┊
+//
+// GtkPasswordEntry has a single CSS node with name entry that carries a
+// .passwordstyle class. The text Css node below it has a child with name image
+// and style class .caps-lock-indicator for the Caps Lock icon, and possibly
+// other children.
+//
+//
+// Accessibility
+//
+// GtkPasswordEntry uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
+type PasswordEntry struct {
+	Widget
+}
+
+// Picture: the Picture widget displays a Paintable. Many convenience functions
+// are provided to make pictures simple to use. For example, if you want to load
+// an image from a file, and then display that, there’s a convenience function
+// to do this: |[<!-- language="C" --> GtkWidget *widget; widget =
+// gtk_picture_new_for_filename ("myfile.png"); ]| If the file isn’t loaded
+// successfully, the picture will contain a “broken image” icon similar to that
+// used in many web browsers. If you want to handle errors in loading the file
+// yourself, for example by displaying an error message, then load the image
+// with gdk_texture_new_from_file(), then create the Picture with
+// gtk_picture_new_for_paintable().
+//
+// Sometimes an application will want to avoid depending on external data files,
+// such as image files. See the documentation of #GResource for details. In this
+// case, gtk_picture_new_for_resource() and gtk_picture_set_resource() should be
+// used.
+//
+// GtkPicture displays an image at its natural size. See Image if you want to
+// display a fixed-size image, such as an icon.
+//
+//
+// Sizing the paintable
+//
+// You can influence how the paintable is displayed inside the Picture. By
+// turning off Picture:keep-aspect-ratio you can allow the paintable to get
+// stretched. Picture:can-shrink can be unset to make sure that paintables are
+// never made smaller than their ideal size - but be careful if you do not know
+// the size of the paintable in use (like when displaying user-loaded images).
+// This can easily cause the picture to grow larger than the screen. And
+// Widget:halign and Widget:valign can be used to make sure the paintable
+// doesn't fill all available space but is instead displayed at its original
+// size.
+//
+//
+// CSS nodes
+//
+// GtkPicture has a single CSS node with the name picture.
+//
+//
+// Accessibility
+//
+// GtkPicture uses the K_ACCESSIBLE_ROLE_IMG role.
+type Picture struct {
+	Widget
+}
+
+// Popover: gtkPopover is a bubble-like context window, primarily meant to
+// provide context-dependent information or options. Popovers are attached to a
+// widget, set with gtk_widget_set_parent(). By default they will point to the
+// whole widget area, although this behavior can be changed through
+// gtk_popover_set_pointing_to().
+//
+// The position of a popover relative to the widget it is attached to can also
+// be changed through gtk_popover_set_position().
+//
+// By default, Popover performs a grab, in order to ensure input events get
+// redirected to it while it is shown, and also so the popover is dismissed in
+// the expected situations (clicks outside the popover, or the Escape key being
+// pressed). If no such modal behavior is desired on a popover,
+// gtk_popover_set_autohide() may be called on it to tweak its behavior.
+//
+//
+// GtkPopover as menu replacement
+//
+// GtkPopover is often used to replace menus. The best was to do this is to use
+// the PopoverMenu subclass which supports being populated from a Model with
+// gtk_popover_menu_new_from_model().
+//
+//
+//    <section>
+//      <attribute name="display-hint">horizontal-buttons</attribute>
+//      <item>
+//        <attribute name="label">Cut</attribute>
+//        <attribute name="action">app.cut</attribute>
+//        <attribute name="verb-icon">edit-cut-symbolic</attribute>
+//      </item>
+//      <item>
+//        <attribute name="label">Copy</attribute>
+//        <attribute name="action">app.copy</attribute>
+//        <attribute name="verb-icon">edit-copy-symbolic</attribute>
+//      </item>
+//      <item>
+//        <attribute name="label">Paste</attribute>
+//        <attribute name="action">app.paste</attribute>
+//        <attribute name="verb-icon">edit-paste-symbolic</attribute>
+//      </item>
+//    </section>
+//
+// CSS nodes
+//
+//    popover[.menu]
+//    ├── arrow
+//    ╰── contents.background
+//        ╰── <child>
+//
+// The contents child node always gets the .background style class and the
+// popover itself gets the .menu style class if the popover is menu-like (i.e.
+// PopoverMenu).
+//
+// Particular uses of GtkPopover, such as touch selection popups or magnifiers
+// in Entry or TextView get style classes like .touch-selection or .magnifier to
+// differentiate from plain popovers.
+//
+// When styling a popover directly, the popover node should usually not have any
+// background.
+//
+// Note that, in order to accomplish appropriate arrow visuals, Popover uses
+// custom drawing for the arrow node. This makes it possible for the arrow to
+// change its shape dynamically, but it also limits the possibilities of styling
+// it using CSS. In particular, the arrow gets drawn over the content node's
+// border so they look like one shape, which means that the border-width of the
+// content node and the arrow node should be the same. The arrow also does not
+// support any border shape other than solid, no border-radius, only one border
+// width (border-bottom-width is used) and no box-shadow.
+type Popover struct {
+	Widget
+}
+
+// PopoverMenu: gtkPopoverMenu is a subclass of Popover that treats its children
+// like menus and allows switching between them. It can open submenus as
+// traditional, nested submenus, or in a more touch-friendly sliding fashion.
+//
+// GtkPopoverMenu is meant to be used primarily with menu models, using
+// gtk_popover_menu_new_from_model(). If you need to put other widgets such as
+// SpinButton or Switch into a popover, use a plain Popover.
+//
+//
+// Menu models
+//
+// The XML format understood by Builder for Model consists of a toplevel
+// `<menu>` element, which contains one or more `<item>` elements. Each `<item>`
+// element contains `<attribute>` and `<link>` elements with a mandatory name
+// attribute. `<link>` elements have the same content model as `<menu>`. Instead
+// of `<link name="submenu>` or `<link name="section">`, you can use `<submenu>`
+// or `<section>` elements.
+//
+//    <menu id='app-menu'>
+//      <section>
+//        <item>
+//          <attribute name='label' translatable='yes'>_New Window</attribute>
+//          <attribute name='action'>app.new</attribute>
+//        </item>
+//        <item>
+//          <attribute name='label' translatable='yes'>_About Sunny</attribute>
+//          <attribute name='action'>app.about</attribute>
+//        </item>
+//        <item>
+//          <attribute name='label' translatable='yes'>_Quit</attribute>
+//          <attribute name='action'>app.quit</attribute>
+//        </item>
+//      </section>
+//    </menu>
+//
+// Attribute values can be translated using gettext, like other Builder content.
+// `<attribute>` elements can be marked for translation with a
+// `translatable="yes"` attribute. It is also possible to specify message
+// context and translator comments, using the context and comments attributes.
+// To make use of this, the Builder must have been given the gettext domain to
+// use.
+//
+// The following attributes are used when constructing menu items: - "label": a
+// user-visible string to display - "action": the prefixed name of the action to
+// trigger - "target": the parameter to use when activating the action - "icon"
+// and "verb-icon": names of icons that may be displayed - "submenu-action":
+// name of an action that may be used to determine if a submenu can be opened -
+// "hidden-when": a string used to determine when the item will be hidden.
+// Possible values include "action-disabled", "action-missing", "macos-menubar".
+// This is mainly useful for exported menus, see gtk_application_set_menubar().
+// - "custom": a string used to match against the ID of a custom child added
+// with gtk_popover_menu_add_child(), gtk_popover_menu_bar_add_child(), or in
+// the ui file with `<child type="ID">`.
+//
+// The following attributes are used when constructing sections: - "label": a
+// user-visible string to use as section heading - "display-hint": a string used
+// to determine special formatting for the section. Possible values include
+// "horizontal-buttons", "circular-buttons" and "inline-buttons". They all
+// indicate that section should be displayed as a horizontal row of buttons. -
+// "text-direction": a string used to determine the TextDirection to use when
+// "display-hint" is set to "horizontal-buttons". Possible values include "rtl",
+// "ltr", and "none".
+//
+// The following attributes are used when constructing submenus: - "label": a
+// user-visible string to display - "icon": icon name to display
+//
+// Menu items will also show accelerators, which are usually associated with
+// actions via gtk_application_set_accels_for_action(),
+// gtk_widget_class_add_binding_action() or
+// gtk_shortcut_controller_add_shortcut().
+//
+//
+// CSS Nodes
+//
+// PopoverMenu is just a subclass of Popover that adds custom content to it,
+// therefore it has the same CSS nodes. It is one of the cases that add a .menu
+// style class to the popover's main node.
+//
+//
+// Accessibility
+//
+// GtkPopoverMenu uses the K_ACCESSIBLE_ROLE_MENU role, and its items use the
+// K_ACCESSIBLE_ROLE_MENU_ITEM, K_ACCESSIBLE_ROLE_MENU_ITEM_CHECKBOX or
+// K_ACCESSIBLE_ROLE_MENU_ITEM_RADIO roles, depending on the action they are
+// connected to.
+type PopoverMenu struct {
+	Popover
+}
+
+// PopoverMenuBar: gtkPopoverMenuBar presents a horizontal bar of items that pop
+// up popover menus when clicked.
+//
+// The only way to create instances of GtkPopoverMenuBar is from a Model.
+//
+// CSS nodes
+//
+//    menubar
+//    ├── item[.active]
+//    ┊   ╰── popover
+//    ╰── item
+//        ╰── popover
+//
+// GtkPopoverMenuBar has a single CSS node with name menubar, below which each
+// item has its CSS node, and below that the corresponding popover.
+//
+// The item whose popover is currently open gets the .active style class.
+//
+//
+// Accessibility
+//
+// GtkPopoverMenuBar uses the K_ACCESSIBLE_ROLE_MENU_BAR role, the menu items
+// use the K_ACCESSIBLE_ROLE_MENU_ITEM role and the menus use the
+// K_ACCESSIBLE_ROLE_MENU role.
+type PopoverMenuBar struct {
+	Widget
+}
+
+// PrintContext: a GtkPrintContext encapsulates context information that is
+// required when drawing pages for printing, such as the cairo context and
+// important parameters like page size and resolution. It also lets you easily
+// create Layout and Context objects that match the font metrics of the cairo
+// surface.
+//
+// GtkPrintContext objects gets passed to the PrintOperation::begin-print,
+// PrintOperation::end-print, PrintOperation::request-page-setup and
+// PrintOperation::draw-page signals on the PrintOperation.
+//
+// Using GtkPrintContext in a PrintOperation::draw-page callback
+//
+//    static void
+//    draw_page (GtkPrintOperation *operation,
+//    	   GtkPrintContext   *context,
+//    	   int                page_nr)
+//    {
+//      cairo_t *cr;
+//      PangoLayout *layout;
+//      PangoFontDescription *desc;
+//
+//      cr = gtk_print_context_get_cairo_context (context);
+//
+//      // Draw a red rectangle, as wide as the paper (inside the margins)
+//      cairo_set_source_rgb (cr, 1.0, 0, 0);
+//      cairo_rectangle (cr, 0, 0, gtk_print_context_get_width (context), 50);
+//
+//      cairo_fill (cr);
+//
+//      // Draw some lines
+//      cairo_move_to (cr, 20, 10);
+//      cairo_line_to (cr, 40, 20);
+//      cairo_arc (cr, 60, 60, 20, 0, M_PI);
+//      cairo_line_to (cr, 80, 20);
+//
+//      cairo_set_source_rgb (cr, 0, 0, 0);
+//      cairo_set_line_width (cr, 5);
+//      cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+//      cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
+//
+//      cairo_stroke (cr);
+//
+//      // Draw some text
+//      layout = gtk_print_context_create_pango_layout (context);
+//      pango_layout_set_text (layout, "Hello World! Printing is easy", -1);
+//      desc = pango_font_description_from_string ("sans 28");
+//      pango_layout_set_font_description (layout, desc);
+//      pango_font_description_free (desc);
+//
+//      cairo_move_to (cr, 30, 20);
+//      pango_cairo_layout_path (cr, layout);
+//
+//      // Font Outline
+//      cairo_set_source_rgb (cr, 0.93, 1.0, 0.47);
+//      cairo_set_line_width (cr, 0.5);
+//      cairo_stroke_preserve (cr);
+//
+//      // Font Fill
+//      cairo_set_source_rgb (cr, 0, 0.0, 1.0);
+//      cairo_fill (cr);
+//
+//      g_object_unref (layout);
+//    }
+//
+type PrintContext struct {
+	*glib.Object
+}
+
+// PrintOperation: gtkPrintOperation is the high-level, portable printing API.
+// It looks a bit different than other GTK dialogs such as the FileChooser,
+// since some platforms don’t expose enough infrastructure to implement a good
+// print dialog. On such platforms, GtkPrintOperation uses the native print
+// dialog. On platforms which do not provide a native print dialog, GTK uses its
+// own, see PrintUnixDialog.
+//
+// The typical way to use the high-level printing API is to create a
+// GtkPrintOperation object with gtk_print_operation_new() when the user selects
+// to print. Then you set some properties on it, e.g. the page size, any
+// PrintSettings from previous print operations, the number of pages, the
+// current page, etc.
+//
+// Then you start the print operation by calling gtk_print_operation_run(). It
+// will then show a dialog, let the user select a printer and options. When the
+// user finished the dialog various signals will be emitted on the
+// PrintOperation, the main one being PrintOperation::draw-page, which you are
+// supposed to catch and render the page on the provided PrintContext using
+// Cairo.
+//
+// The high-level printing API
+//
+//    static GtkPrintSettings *settings = NULL;
+//
+//    static void
+//    do_print (void)
+//    {
+//      GtkPrintOperation *print;
+//      GtkPrintOperationResult res;
+//
+//      print = gtk_print_operation_new ();
+//
+//      if (settings != NULL)
+//        gtk_print_operation_set_print_settings (print, settings);
+//
+//      g_signal_connect (print, "begin_print", G_CALLBACK (begin_print), NULL);
+//      g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), NULL);
+//
+//      res = gtk_print_operation_run (print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
+//                                     GTK_WINDOW (main_window), NULL);
+//
+//      if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
+//        {
+//          if (settings != NULL)
+//            g_object_unref (settings);
+//          settings = g_object_ref (gtk_print_operation_get_print_settings (print));
+//        }
+//
+//      g_object_unref (print);
+//    }
+//
+//
+// By default GtkPrintOperation uses an external application to do print
+// preview. To implement a custom print preview, an application must connect to
+// the preview signal. The functions gtk_print_operation_preview_render_page(),
+// gtk_print_operation_preview_end_preview() and
+// gtk_print_operation_preview_is_selected() are useful when implementing a
+// print preview.
+type PrintOperation struct {
+	*glib.Object
+}
+
+// PrintSettings: a GtkPrintSettings object represents the settings of a print
+// dialog in a system-independent way. The main use for this object is that once
+// you’ve printed you can get a settings object that represents the settings the
+// user chose, and the next time you print you can pass that object in so that
+// the user doesn’t have to re-set all his settings.
+//
+// Its also possible to enumerate the settings so that you can easily save the
+// settings for the next time your app runs, or even store them in a document.
+// The predefined keys try to use shared values as much as possible so that
+// moving such a document between systems still works.
+type PrintSettings struct {
+	*glib.Object
+}
+
+// ProgressBar: the ProgressBar is typically used to display the progress of a
+// long running operation. It provides a visual clue that processing is
+// underway. The GtkProgressBar can be used in two different modes: percentage
+// mode and activity mode.
+//
+// When an application can determine how much work needs to take place (e.g.
+// read a fixed number of bytes from a file) and can monitor its progress, it
+// can use the GtkProgressBar in percentage mode and the user sees a growing bar
+// indicating the percentage of the work that has been completed. In this mode,
+// the application is required to call gtk_progress_bar_set_fraction()
+// periodically to update the progress bar.
+//
+// When an application has no accurate way of knowing the amount of work to do,
+// it can use the ProgressBar in activity mode, which shows activity by a block
+// moving back and forth within the progress area. In this mode, the application
+// is required to call gtk_progress_bar_pulse() periodically to update the
+// progress bar.
+//
+// There is quite a bit of flexibility provided to control the appearance of the
+// ProgressBar. Functions are provided to control the orientation of the bar,
+// optional text can be displayed along with the bar, and the step size used in
+// activity mode can be set.
+//
+// CSS nodes
+//
+//    progressbar[.osd]
+//    ├── [text]
+//    ╰── trough[.empty][.full]
+//        ╰── progress[.pulse]
+//
+// GtkProgressBar has a main CSS node with name progressbar and subnodes with
+// names text and trough, of which the latter has a subnode named progress. The
+// text subnode is only present if text is shown. The progress subnode has the
+// style class .pulse when in activity mode. It gets the style classes .left,
+// .right, .top or .bottom added when the progress 'touches' the corresponding
+// end of the GtkProgressBar. The .osd class on the progressbar node is for use
+// in overlays like the one Epiphany has for page loading progress.
+//
+//
+// Accessibility
+//
+// GtkProgressBar uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
+type ProgressBar struct {
+	Widget
+}
+
+type PropertyExpression struct {
+	Expression
+}
+
+// Range: gtkRange is the common base class for widgets which visualize an
+// adjustment, e.g Scale or Scrollbar.
+//
+// Apart from signals for monitoring the parameters of the adjustment, Range
+// provides properties and methods for setting a “fill level” on range widgets.
+// See gtk_range_set_fill_level().
+type Range struct {
+	Widget
+}
+
+// RecentManager: gtkRecentManager provides a facility for adding, removing and
+// looking up recently used files. Each recently used file is identified by its
+// URI, and has meta-data associated to it, like the names and command lines of
+// the applications that have registered it, the number of time each application
+// has registered the same file, the mime type of the file and whether the file
+// should be displayed only by the applications that have registered it.
+//
+// The recently used files list is per user.
+//
+// The RecentManager acts like a database of all the recently used files. You
+// can create new RecentManager objects, but it is more efficient to use the
+// default manager created by GTK
+//
+// Adding a new recently used file is as simple as:
+//
+//    GtkRecentManager *manager;
+//
+//    manager = gtk_recent_manager_get_default ();
+//    gtk_recent_manager_add_item (manager, file_uri);
+//
+//
+// The RecentManager will try to gather all the needed information from the file
+// itself through GIO.
+//
+// Looking up the meta-data associated with a recently used file given its URI
+// requires calling gtk_recent_manager_lookup_item():
+//
+//    GtkRecentManager *manager;
+//    GtkRecentInfo *info;
+//    GError *error = NULL;
+//
+//    manager = gtk_recent_manager_get_default ();
+//    info = gtk_recent_manager_lookup_item (manager, file_uri, &error);
+//    if (error)
+//      {
+//        g_warning ("Could not find the file: s", error->message);
+//        g_error_free (error);
+//      }
+//    else
+//     {
+//       // Use the info object
+//       gtk_recent_info_unref (info);
+//     }
+//
+//
+// In order to retrieve the list of recently used files, you can use
+// gtk_recent_manager_get_items(), which returns a list of RecentInfo.
+//
+// A RecentManager is the model used to populate the contents of one, or more
+// RecentChooser implementations.
+//
+// Note that the maximum age of the recently used files list is controllable
+// through the Settings:gtk-recent-files-max-age property.
+type RecentManager struct {
+	*glib.Object
+}
+
+// Revealer: the GtkRevealer widget is a container which animates the transition
+// of its child from invisible to visible.
+//
+// The style of transition can be controlled with
+// gtk_revealer_set_transition_type().
+//
+// These animations respect the Settings:gtk-enable-animations setting.
+//
+//
+// CSS nodes
+//
+// GtkRevealer has a single CSS node with name revealer. When styling Revealer
+// using CSS, remember that it only hides its contents, not itself. That means
+// applied margin, padding and borders will be visible even when the
+// Revealer:reveal-child property is set to false.
+//
+//
+// Accessibility
+//
+// GtkRevealer uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+//
+// The child of GtkRevealer, if set, is always available in the accessibility
+// tree, regardless of the state of the revealer widget.
+type Revealer struct {
+	Widget
+}
+
+// Scale: a GtkScale is a slider control used to select a numeric value. To use
+// it, you’ll probably want to investigate the methods on its base class, Range,
+// in addition to the methods for GtkScale itself. To set the value of a scale,
+// you would normally use gtk_range_set_value(). To detect changes to the value,
+// you would normally use the Range::value-changed signal.
+//
+// Note that using the same upper and lower bounds for the Scale (through the
+// Range methods) will hide the slider itself. This is useful for applications
+// that want to show an undeterminate value on the scale, without changing the
+// layout of the application (such as movie or music players).
+//
+//
+// GtkScale as GtkBuildable
+//
+// GtkScale supports a custom <marks> element, which can contain multiple <mark>
+// elements. The “value” and “position” attributes have the same meaning as
+// gtk_scale_add_mark() parameters of the same name. If the element is not
+// empty, its content is taken as the markup to show at the mark. It can be
+// translated with the usual ”translatable” and “context” attributes.
+//
+// CSS nodes
+//
+//    scale[.fine-tune][.marks-before][.marks-after]
+//    ├── [value][.top][.right][.bottom][.left]
+//    ├── marks.top
+//    │   ├── mark
+//    │   ┊    ├── [label]
+//    │   ┊    ╰── indicator
+//    ┊   ┊
+//    │   ╰── mark
+//    ├── marks.bottom
+//    │   ├── mark
+//    │   ┊    ├── indicator
+//    │   ┊    ╰── [label]
+//    ┊   ┊
+//    │   ╰── mark
+//    ╰── trough
+//        ├── [fill]
+//        ├── [highlight]
+//        ╰── slider
+//
+// GtkScale has a main CSS node with name scale and a subnode for its contents,
+// with subnodes named trough and slider.
+//
+// The main node gets the style class .fine-tune added when the scale is in
+// 'fine-tuning' mode.
+//
+// If the scale has an origin (see gtk_scale_set_has_origin()), there is a
+// subnode with name highlight below the trough node that is used for rendering
+// the highlighted part of the trough.
+//
+// If the scale is showing a fill level (see gtk_range_set_show_fill_level()),
+// there is a subnode with name fill below the trough node that is used for
+// rendering the filled in part of the trough.
+//
+// If marks are present, there is a marks subnode before or after the trough
+// node, below which each mark gets a node with name mark. The marks nodes get
+// either the .top or .bottom style class.
+//
+// The mark node has a subnode named indicator. If the mark has text, it also
+// has a subnode named label. When the mark is either above or left of the
+// scale, the label subnode is the first when present. Otherwise, the indicator
+// subnode is the first.
+//
+// The main CSS node gets the 'marks-before' and/or 'marks-after' style classes
+// added depending on what marks are present.
+//
+// If the scale is displaying the value (see Scale:draw-value), there is subnode
+// with name value. This node will get the .top or .bottom style classes similar
+// to the marks node.
+//
+//
+// Accessibility
+//
+// GtkScale uses the K_ACCESSIBLE_ROLE_SLIDER role.
+type Scale struct {
+	Range
+}
+
+// ScaleButton: gtkScaleButton provides a button which pops up a scale widget.
+// This kind of widget is commonly used for volume controls in multimedia
+// applications, and GTK provides a VolumeButton subclass that is tailored for
+// this use case.
+//
+//
+// CSS nodes
+//
+// GtkScaleButton has a single CSS node with name button. To differentiate it
+// from a plain Button, it gets the .scale style class.
+type ScaleButton struct {
+	Widget
+}
+
+// Scrollbar: the Scrollbar widget is a horizontal or vertical scrollbar,
+// depending on the value of the Orientable:orientation property.
+//
+// Its position and movement are controlled by the adjustment that is passed to
+// or created by gtk_scrollbar_new(). See Adjustment for more details. The
+// Adjustment:value field sets the position of the thumb and must be between
+// Adjustment:lower and Adjustment:upper - Adjustment:page-size. The
+// Adjustment:page-size represents the size of the visible scrollable area. The
+// fields Adjustment:step-increment and Adjustment:page-increment fields are
+// added to or subtracted from the Adjustment:value when the user asks to move
+// by a step (using e.g. the cursor arrow keys) or by a page (using e.g. the
+// Page Down/Up keys).
+//
+// CSS nodes
+//
+//    scrollbar
+//    ╰── range[.fine-tune]
+//        ╰── trough
+//            ╰── slider
+//
+// GtkScrollbar has a main CSS node with name scrollbar and a subnode for its
+// contents. The main node gets the .horizontal or .vertical style classes
+// applied, depending on the scrollbar's orientation.
+//
+// The range node gets the style class .fine-tune added when the scrollbar is in
+// 'fine-tuning' mode.
+//
+// Other style classes that may be added to scrollbars inside ScrolledWindow
+// include the positional classes (.left, .right, .top, .bottom) and style
+// classes related to overlay scrolling (.overlay-indicator, .dragging,
+// .hovering).
+//
+//
+// Accessibility
+//
+// GtkScrollbar uses the K_ACCESSIBLE_ROLE_SCROLLBAR role.
+type Scrollbar struct {
+	Widget
+}
+
+// ScrolledWindow: gtkScrolledWindow is a container that accepts a single child
+// widget, makes that child scrollable using either internally added scrollbars
+// or externally associated adjustments, and optionally draws a frame around the
+// child.
+//
+// Widgets with native scrolling support, i.e. those whose classes implement the
+// Scrollable interface, are added directly. For other types of widget, the
+// class Viewport acts as an adaptor, giving scrollability to other widgets.
+// gtk_scrolled_window_set_child() intelligently accounts for whether or not the
+// added child is a Scrollable. If it isn’t, ScrolledWindow wraps the child in a
+// Viewport and adds that for you. Therefore, you can just add any child widget
+// and not worry about the details.
+//
+// If gtk_scrolled_window_set_child() has added a Viewport for you, you can
+// remove both your added child widget from the Viewport, and the Viewport from
+// the GtkScrolledWindow, like this:
+//
+//    GtkWidget *scrolled_window = gtk_scrolled_window_new ();
+//    GtkWidget *child_widget = gtk_button_new ();
+//
+//    // GtkButton is not a GtkScrollable, so GtkScrolledWindow will automatically
+//    // add a GtkViewport.
+//    gtk_box_append (GTK_BOX (scrolled_window),
+//                       child_widget);
+//
+//    // Either of these will result in child_widget being unparented:
+//    gtk_box_remove (GTK_BOX (scrolled_window),
+//                          child_widget);
+//    // or
+//    gtk_box_remove (GTK_BOX (scrolled_window),
+//                          gtk_bin_get_child (GTK_BIN (scrolled_window)));
+//
+//
+// Unless ScrolledWindow:hscrollbar-policy and ScrolledWindow:vscrollbar-policy
+// are GTK_POLICY_NEVER or GTK_POLICY_EXTERNAL, GtkScrolledWindow adds internal
+// Scrollbar widgets around its child. The scroll position of the child, and if
+// applicable the scrollbars, is controlled by the ScrolledWindow:hadjustment
+// and ScrolledWindow:vadjustment that are associated with the
+// GtkScrolledWindow. See the docs on Scrollbar for the details, but note that
+// the “step_increment” and “page_increment” fields are only effective if the
+// policy causes scrollbars to be present.
+//
+// If a GtkScrolledWindow doesn’t behave quite as you would like, or doesn’t
+// have exactly the right layout, it’s very possible to set up your own
+// scrolling with Scrollbar and for example a Grid.
+//
+//
+// Touch support
+//
+// GtkScrolledWindow has built-in support for touch devices. When a touchscreen
+// is used, swiping will move the scrolled window, and will expose 'kinetic'
+// behavior. This can be turned off with the ScrolledWindow:kinetic-scrolling
+// property if it is undesired.
+//
+// GtkScrolledWindow also displays visual 'overshoot' indication when the
+// content is pulled beyond the end, and this situation can be captured with the
+// ScrolledWindow::edge-overshot signal.
+//
+// If no mouse device is present, the scrollbars will overlaid as narrow,
+// auto-hiding indicators over the content. If traditional scrollbars are
+// desired although no mouse is present, this behaviour can be turned off with
+// the ScrolledWindow:overlay-scrolling property.
+//
+//
+// CSS nodes
+//
+// GtkScrolledWindow has a main CSS node with name scrolledwindow. It gets a
+// .frame style class added when ScrolledWindow:has-frame is true.
+//
+// It uses subnodes with names overshoot and undershoot to draw the overflow and
+// underflow indications. These nodes get the .left, .right, .top or .bottom
+// style class added depending on where the indication is drawn.
+//
+// GtkScrolledWindow also sets the positional style classes (.left, .right,
+// .top, .bottom) and style classes related to overlay scrolling
+// (.overlay-indicator, .dragging, .hovering) on its scrollbars.
+//
+// If both scrollbars are visible, the area where they meet is drawn with a
+// subnode named junction.
+//
+//
+// Accessibility
+//
+// GtkScrolledWindow uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+type ScrolledWindow struct {
+	Widget
+}
+
+// SearchBar: gtkSearchBar is a container made to have a search entry (possibly
+// with additional connex widgets, such as drop-down menus, or buttons)
+// built-in. The search bar would appear when a search is started through typing
+// on the keyboard, or the application’s search mode is toggled on.
+//
+// For keyboard presses to start a search, the search bar must be told of a
+// widget to capture key events from through
+// gtk_search_bar_set_key_capture_widget(). This widget will typically be the
+// top-level window, or a parent container of the search bar. Common shortcuts
+// such as Ctrl+F should be handled as an application action, or through the
+// menu items.
+//
+// You will also need to tell the search bar about which entry you are using as
+// your search entry using gtk_search_bar_connect_entry(). The following example
+// shows you how to create a more complex search entry.
+//
+//
+// Creating a search bar
+//
+// [A simple
+// example](https://gitlab.gnome.org/GNOME/gtk/tree/master/examples/search-bar.c)
+//
+// CSS nodes
+//
+//    searchbar
+//    ╰── revealer
+//        ╰── box
+//             ├── [child]
+//             ╰── [button.close]
+//
+// GtkSearchBar has a main CSS node with name searchbar. It has a child node
+// with name revealer that contains a node with name box. The box node contains
+// both the CSS node of the child widget as well as an optional button node
+// which gets the .close style class applied.
+//
+//
+// Accessibility
+//
+// GtkSearchBar uses the GTK_ACCESSIBLE_ROLE_SEARCH role.
+type SearchBar struct {
+	Widget
+}
+
+// SearchEntry: gtkSearchEntry is an entry widget that has been tailored for use
+// as a search entry. The main aPI for interacting with a GtkSearchEntry as
+// entry is the Editable interface.
+//
+// It will show an inactive symbolic “find” icon when the search entry is empty,
+// and a symbolic “clear” icon when there is text. Clicking on the “clear” icon
+// will empty the search entry.
+//
+// To make filtering appear more reactive, it is a good idea to not react to
+// every change in the entry text immediately, but only after a short delay. To
+// support this, SearchEntry emits the SearchEntry::search-changed signal which
+// can be used instead of the Editable::changed signal.
+//
+// The SearchEntry::previous-match, SearchEntry::next-match and
+// SearchEntry::stop-search signals can be used to implement moving between
+// search results and ending the search.
+//
+// Often, GtkSearchEntry will be fed events by means of being placed inside a
+// SearchBar. If that is not the case, you can use
+// gtk_search_entry_set_key_capture_widget() to let it capture key input from
+// another widget.
+//
+// CSS Nodes
+//
+//    entry.search
+//    ╰── text
+//
+// GtkSearchEntry has a single CSS node with name entry that carries a .sarch
+// style class, and the text node is a child of that.
+//
+//
+// Accessibility
+//
+// GtkSearchEntry uses the K_ACCESSIBLE_ROLE_SEARCH_BOX role.
+type SearchEntry struct {
+	Widget
+}
+
+// SelectionFilterModel: gtkSelectionFilterModel is a list model that presents
+// the selected items in a SelectionModel as its own list model.
+type SelectionFilterModel struct {
+	*glib.Object
+}
+
+// Separator: gtkSeparator is a horizontal or vertical separator widget,
+// depending on the value of the Orientable:orientation property, used to group
+// the widgets within a window. It displays a line with a shadow to make it
+// appear sunken into the interface.
+//
+//
+// CSS nodes
+//
+// GtkSeparator has a single CSS node with name separator. The node gets one of
+// the .horizontal or .vertical style classes.
+//
+//
+// Accessibility
+//
+// GtkSeparator uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
+type Separator struct {
+	Widget
+}
+
+// Settings: gtkSettings provide a mechanism to share global settings between
+// applications.
+//
+// On the X window system, this sharing is realized by an
+// [XSettings](http://www.freedesktop.org/wiki/Specifications/xsettings-spec)
+// manager that is usually part of the desktop environment, along with utilities
+// that let the user change these settings.
+//
+// On Wayland, the settings are obtained either via a settings portal, or by
+// reading desktop settings from DConf.
+//
+// In the absence of these sharing mechanisms, GTK reads default values for
+// settings from `settings.ini` files in `/etc/gtk-4.0`,
+// `$XDG_CONFIG_DIRS/gtk-4.0` and `$XDG_CONFIG_HOME/gtk-4.0`. These files must
+// be valid key files (see File), and have a section called Settings. Themes can
+// also provide default values for settings by installing a `settings.ini` file
+// next to their `gtk.css` file.
+//
+// Applications can override system-wide settings by setting the property of the
+// GtkSettings object with g_object_set(). This should be restricted to special
+// cases though; GtkSettings are not meant as an application configuration
+// facility.
+//
+// There is one GtkSettings instance per display. It can be obtained with
+// gtk_settings_get_for_display(), but in many cases, it is more convenient to
+// use gtk_widget_get_settings().
+type Settings struct {
+	*glib.Object
+}
+
+// Shortcut: gtkShortcut is the low level object used for managing keyboard
+// shortcuts.
+//
+// It contains a description of how to trigger the shortcut via a
+// ShortcutTrigger and a way to activate the shortcut on a widget via
+// ShortcutAction.
+//
+// The actual work is usually done via ShortcutController, which decides if and
+// when to activate a shortcut. Using that controller directly however is rarely
+// necessary as various higher level convenience APIs exist on Widgets that make
+// it easier to use shortcuts in GTK.
+//
+// Shortcut does provide functionality to make it easy for users to work with
+// shortcuts, either by providing informational strings for display purposes or
+// by allowing shortcuts to be configured.
+type Shortcut struct {
+	*glib.Object
+}
+
+// ShortcutAction: gtkShortcutAction is the object used to describe what a
+// Shortcut should do when triggered. To activate a ShortcutAction manually,
+// gtk_shortcut_action_activate() can be called.
+//
+// ShortcutActions contain functions that allow easy presentation to end users
+// as well as being printed for debugging.
+//
+// All ShortcutActions are immutable, you can only specify their properties
+// during construction. If you want to change a action, you have to replace it
+// with a new one. If you need to pass arguments to an action, these are
+// specified by the higher-level Shortcut object.
+//
+// GTK provides various actions:
+//
+// - MnemonicAction: a shortcut action that calls gtk_widget_mnemonic_activate()
+// - CallbackAction: a shortcut action that invokes a given callback -
+// SignalAction: a shortcut action that emits a given signal - ActivateAction: a
+// shortcut action that calls gtk_widget_activate() - NamedAction: a shortcut
+// action that calls gtk_widget_activate_action() - NothingAction: a shortcut
+// action that does nothing
+//
+//
+// GtkShortcutAction as GtkBuildable
+//
+// GtkShortcut
+type ShortcutAction struct {
+	*glib.Object
+}
+
+// ShortcutController: gtkShortcutController is an event controller that manages
+// shortcuts.
+//
+// Most common shortcuts are using this controller implicitly, e.g. by adding a
+// mnemonic underline to a Label, or by installing a key binding using
+// gtk_widget_class_add_binding(), or by adding accelerators to global actions
+// using gtk_application_set_accels_for_action().
+//
+// But it is possible to create your own shortcut controller, and add shortcuts
+// to it.
+//
+// ShortcutController implements Model for querying the shortcuts that have been
+// added to it.
+//
+//
+// GtkShortcutController as a GtkBuildable
+//
+// GtkShortcutControllers can be creates in ui files to set up shortcuts in the
+// same place as the widgets.
+//
+//
+//      <object class='GtkButton'>
+//        <child>
+//          <object class='GtkShortcutController'>
+//            <property name='scope'>managed</property>
+//            <child>
+//              <object class='GtkShortcut'>
+//                <property name='trigger'>&amp;lt;Control&amp;gt;k</property>
+//                <property name='action'>activate</property>
+//              </object>
+//            </child>
+//          </object>
+//        </child>
+//      </object>
+//
+// This example creates a ActivateAction for triggering the `activate` signal of
+// the GtkButton. See gtk_shortcut_action_parse_string() for the syntax for
+// other kinds of ShortcutAction. See gtk_shortcut_trigger_parse_string() to
+// learn more about the syntax for triggers.
+type ShortcutController struct {
+	EventController
+}
+
+// ShortcutLabel: gtkShortcutLabel is a widget that represents a single keyboard
+// shortcut or gesture in the user interface.
+type ShortcutLabel struct {
+	Widget
+}
+
+// ShortcutTrigger: gtkShortcutTrigger is the object used to track if a Shortcut
+// should be activated. For this purpose, gtk_shortcut_trigger_trigger() can be
+// called on a Event.
+//
+// ShortcutTriggers contain functions that allow easy presentation to end users
+// as well as being printed for debugging.
+//
+// All ShortcutTriggers are immutable, you can only specify their properties
+// during construction. If you want to change a trigger, you have to replace it
+// with a new one.
+type ShortcutTrigger struct {
+	*glib.Object
+}
+
+// ShortcutsGroup: a GtkShortcutsGroup represents a group of related keyboard
+// shortcuts or gestures. The group has a title. It may optionally be associated
+// with a view of the application, which can be used to show only relevant
+// shortcuts depending on the application context.
+//
+// This widget is only meant to be used with ShortcutsWindow.
+type ShortcutsGroup struct {
+	Box
+}
+
+// ShortcutsSection: a GtkShortcutsSection collects all the keyboard shortcuts
+// and gestures for a major application mode. If your application needs multiple
+// sections, you should give each section a unique ShortcutsSection:section-name
+// and a ShortcutsSection:title that can be shown in the section selector of the
+// GtkShortcutsWindow.
+//
+// The ShortcutsSection:max-height property can be used to influence how the
+// groups in the section are distributed over pages and columns.
+//
+// This widget is only meant to be used with ShortcutsWindow.
+type ShortcutsSection struct {
+	Box
+}
+
+// ShortcutsShortcut: a GtkShortcutsShortcut represents a single keyboard
+// shortcut or gesture with a short text. This widget is only meant to be used
+// with ShortcutsWindow.
+type ShortcutsShortcut struct {
+	Widget
+}
+
+// ShortcutsWindow: a GtkShortcutsWindow shows brief information about the
+// keyboard shortcuts and gestures of an application. The shortcuts can be
+// grouped, and you can have multiple sections in this window, corresponding to
+// the major modes of your application.
+//
+// Additionally, the shortcuts can be filtered by the current view, to avoid
+// showing information that is not relevant in the current application context.
+//
+// The recommended way to construct a GtkShortcutsWindow is with GtkBuilder, by
+// populating a ShortcutsWindow with one or more ShortcutsSection objects, which
+// contain ShortcutsGroups that in turn contain objects of class
+// ShortcutsShortcut.
+//
+// A simple example:
+//
+// ![](gedit-shortcuts.png)
+//
+// This example has as single section. As you can see, the shortcut groups are
+// arranged in columns, and spread across several pages if there are too many to
+// find on a single page.
+//
+// The .ui file for this example can be found
+// [here](https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-gedit.ui).
+//
+// An example with multiple views:
+//
+// ![](clocks-shortcuts.png)
+//
+// This example shows a ShortcutsWindow that has been configured to show only
+// the shortcuts relevant to the "stopwatch" view.
+//
+// The .ui file for this example can be found
+// [here](https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-clocks.ui).
+//
+// An example with multiple sections:
+//
+// ![](builder-shortcuts.png)
+//
+// This example shows a ShortcutsWindow with two sections, "Editor Shortcuts"
+// and "Terminal Shortcuts".
+//
+// The .ui file for this example can be found
+// [here](https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
+type ShortcutsWindow struct {
+	Window
+}
+
+// SignalAction: a ShortcutAction that emits a signal.
+//
+// Signals that are used in this way are referred to as keybinding signals, and
+// they are expected to be defined with the G_SIGNAL_ACTION flag.
+type SignalAction struct {
+	ShortcutAction
+}
+
+// SignalListItemFactory: gtkSignalListItemFactory is a ListItemFactory that
+// provides signals that user code can connect to to manage listitems. Signals
+// are emitted for every listitem in the same order:
+//
+// 1. SignalListItemFactory::setup is emitted to set up permanent things on the
+// listitem. This usually means constructing the widgets used in the row and
+// adding them to the listitem.
+//
+// 2. SignalListItemFactory::bind is emitted to bind the item passed via
+// ListItem:item to the widgets that have been created in step 1 or to add
+// item-specific widgets. Signals are connected to listen to changes - both to
+// changes in the item to update the widgets or to changes in the widgets to
+// update the item. After this signal has been called, the listitem may be shown
+// in a list widget.
+//
+// 3. SignalListItemFactory::unbind is emitted to undo everything done in step
+// 2. Usually this means disconnecting signal handlers. Once this signal has
+// been called, the listitem will no longer be used in a list widget.
+//
+// 4. SignalListItemFactory::bind and SignalListItemFactory::unbind may be
+// emitted multiple times again to bind the listitem for use with new items. By
+// reusing listitems, potentially costly setup can be avoided. However, it means
+// code needs to make sure to properly clean up the listitem in step 3 so that
+// no information from the previous use leaks into the next use.
+//
+// 5. SignalListItemFactory::teardown is emitted to allow undoing the effects of
+// SignalListItemFactory::setup. After this signal was emitted on a listitem,
+// the listitem will be destroyed and not be used again.
+//
+// Note that during the signal emissions, changing properties on the ListItems
+// passed will not trigger notify signals as the listitem's notifications are
+// frozen. See g_object_freeze_notify() for details.
+//
+// For tracking changes in other properties in the ListItem, the
+// ListItem::notify signal is recommended. The signal can be connected in the
+// SignalListItemFactory::setup signal and removed again during
+// SignalListItemFactory::teardown.
+type SignalListItemFactory struct {
+	ListItemFactory
+}
+
+// SingleSelection: gtkSingleSelection is an implementation of the
+// SelectionModel interface that allows selecting a single element. It is the
+// default selection method used by list widgets in GTK.
+//
+// Note that the selection is *persistent* -- if the selected item is removed
+// and re-added in the same Model::items-changed emission, it stays selected. In
+// particular, this means that changing the sort order of an underlying sort
+// model will preserve the selection.
+type SingleSelection struct {
+	*glib.Object
+}
+
+// SizeGroup: gtkSizeGroup provides a mechanism for grouping a number of widgets
+// together so they all request the same amount of space. This is typically
+// useful when you want a column of widgets to have the same size, but you can’t
+// use a Grid widget.
+//
+// In detail, the size requested for each widget in a SizeGroup is the maximum
+// of the sizes that would have been requested for each widget in the size group
+// if they were not in the size group. The mode of the size group (see
+// gtk_size_group_set_mode()) determines whether this applies to the horizontal
+// size, the vertical size, or both sizes.
+//
+// Note that size groups only affect the amount of space requested, not the size
+// that the widgets finally receive. If you want the widgets in a SizeGroup to
+// actually be the same size, you need to pack them in such a way that they get
+// the size they request and not more. For example, if you are packing your
+// widgets into a table, you would not include the GTK_FILL flag.
+//
+// SizeGroup objects are referenced by each widget in the size group, so once
+// you have added all widgets to a SizeGroup, you can drop the initial reference
+// to the size group with g_object_unref(). If the widgets in the size group are
+// subsequently destroyed, then they will be removed from the size group and
+// drop their references on the size group; when all widgets have been removed,
+// the size group will be freed.
+//
+// Widgets can be part of multiple size groups; GTK will compute the horizontal
+// size of a widget from the horizontal requisition of all widgets that can be
+// reached from the widget by a chain of size groups of type
+// GTK_SIZE_GROUP_HORIZONTAL or GTK_SIZE_GROUP_BOTH, and the vertical size from
+// the vertical requisition of all widgets that can be reached from the widget
+// by a chain of size groups of type GTK_SIZE_GROUP_VERTICAL or
+// GTK_SIZE_GROUP_BOTH.
+//
+// Note that only non-contextual sizes of every widget are ever consulted by
+// size groups (since size groups have no knowledge of what size a widget will
+// be allocated in one dimension, it cannot derive how much height a widget will
+// receive for a given width). When grouping widgets that trade height for width
+// in mode GTK_SIZE_GROUP_VERTICAL or GTK_SIZE_GROUP_BOTH: the height for the
+// minimum width will be the requested height for all widgets in the group. The
+// same is of course true when horizontally grouping width for height widgets.
+//
+// Widgets that trade height-for-width should set a reasonably large minimum
+// width by way of Label:width-chars for instance. Widgets with static sizes as
+// well as widgets that grow (such as ellipsizing text) need no such
+// considerations.
+//
+//
+// GtkSizeGroup as GtkBuildable
+//
+// Size groups can be specified in a UI definition by placing an <object>
+// element with `class="GtkSizeGroup"` somewhere in the UI definition. The
+// widgets that belong to the size group are specified by a <widgets> element
+// that may contain multiple <widget> elements, one for each member of the size
+// group. The ”name” attribute gives the id of the widget.
+//
+//
+//    <object class="GtkSizeGroup">
+//      <property name="mode">horizontal</property>
+//      <widgets>
+//        <widget name="radio1"/>
+//        <widget name="radio2"/>
+//      </widgets>
+//    </object>
+type SizeGroup struct {
+	*glib.Object
+}
+
+// SliceListModel: gtkSliceListModel is a list model that takes a list model and
+// presents a slice of that model.
+//
+// This is useful when implementing paging by setting the size to the number of
+// elements per page and updating the offset whenever a different page is
+// opened.
+type SliceListModel struct {
+	*glib.Object
+}
+
+// Snapshot: gtkSnapshot is an auxiliary object that assists in creating
+// RenderNodes in the PaintableInterface.snapshot() vfunc. It functions in a
+// similar way to a cairo context, and maintains a stack of render nodes and
+// their associated transformations.
+//
+// The node at the top of the stack is the the one that gtk_snapshot_append_…
+// functions operate on. Use the gtk_snapshot_push_… functions and
+// gtk_snapshot_pop() to change the current node.
+//
+// The typical way to obtain a GtkSnapshot object is as an argument to the
+// WidgetClass.snapshot() vfunc. If you need to create your own GtkSnapshot, use
+// gtk_snapshot_new().
+type Snapshot struct {
+	gdk.Snapshot
+}
+
+// SortListModel: gtkSortListModel is a list model that takes a list model and
+// sorts its elements according to a Sorter.
+//
+// The model can be set up to do incremental sorting, so that sorting long lists
+// doesn't block the UI. See gtk_sort_list_model_set_incremental() for details.
+//
+// SortListModel is a generic model and because of that it cannot take advantage
+// of any external knowledge when sorting. If you run into performance issues
+// with SortListModel, it is strongly recommended that you write your own
+// sorting list model.
+type SortListModel struct {
+	*glib.Object
+}
+
+// Sorter: gtkSorter is the way to describe sorting criteria. Its primary user
+// is SortListModel.
+//
+// The model will use a sorter to determine the order in which its items should
+// appear by calling gtk_sorter_compare() for pairs of items.
+//
+// Sorters may change their sorting behavior through their lifetime. In that
+// case, they will emit the Sorter::changed signal to notify that the sort order
+// is no longer valid and should be updated by calling gtk_sorter_compare()
+// again.
+//
+// GTK provides various pre-made sorter implementations for common sorting
+// operations. ColumnView has built-in support for sorting lists via the
+// ColumnViewColumn:sorter property, where the user can change the sorting by
+// clicking on list headers.
+//
+// Of course, in particular for large lists, it is also possible to subclass
+// Sorter and provide one's own sorter.
+type Sorter struct {
+	*glib.Object
+}
+
+// SpinButton: a SpinButton is an ideal way to allow the user to set the value
+// of some attribute. Rather than having to directly type a number into a Entry,
+// GtkSpinButton allows the user to click on one of two arrows to increment or
+// decrement the displayed value. A value can still be typed in, with the bonus
+// that it can be checked to ensure it is in a given range.
+//
+// The main properties of a GtkSpinButton are through an adjustment. See the
+// Adjustment section for more details about an adjustment's properties.
+//
+// Note that GtkSpinButton will by default make its entry large enough to
+// accommodate the lower and upper bounds of the adjustment. If this is not
+// desired, the automatic sizing can be turned off by explicitly setting
+// Editable::width-chars to a value != -1.
+//
+// Using a GtkSpinButton to get an integer
+//
+//    // Provides a function to retrieve an integer value from a GtkSpinButton
+//    // and creates a spin button to model percentage values.
+//
+//    int
+//    grab_int_value (GtkSpinButton *button,
+//                    gpointer       user_data)
+//    {
+//      return gtk_spin_button_get_value_as_int (button);
+//    }
+//
+//    void
+//    create_integer_spin_button (void)
+//    {
+//
+//      GtkWidget *window, *button;
+//      GtkAdjustment *adjustment;
+//
+//      adjustment = gtk_adjustment_new (50.0, 0.0, 100.0, 1.0, 5.0, 0.0);
+//
+//      window = gtk_window_new ();
+//
+//      // creates the spinbutton, with no decimal places
+//      button = gtk_spin_button_new (adjustment, 1.0, 0);
+//      gtk_window_set_child (GTK_WINDOW (window), button);
+//
+//      gtk_widget_show (window);
+//    }
+//
+//
+// Using a GtkSpinButton to get a floating point value
+//
+//    // Provides a function to retrieve a floating point value from a
+//    // GtkSpinButton, and creates a high precision spin button.
+//
+//    float
+//    grab_float_value (GtkSpinButton *button,
+//                      gpointer       user_data)
+//    {
+//      return gtk_spin_button_get_value (button);
+//    }
+//
+//    void
+//    create_floating_spin_button (void)
+//    {
+//      GtkWidget *window, *button;
+//      GtkAdjustment *adjustment;
+//
+//      adjustment = gtk_adjustment_new (2.500, 0.0, 5.0, 0.001, 0.1, 0.0);
+//
+//      window = gtk_window_new ();
+//
+//      // creates the spinbutton, with three decimal places
+//      button = gtk_spin_button_new (adjustment, 0.001, 3);
+//      gtk_window_set_child (GTK_WINDOW (window), button);
+//
+//      gtk_widget_show (window);
+//    }
+//
+//
+// CSS nodes
+//
+//    spinbutton.horizontal
+//    ├── text
+//    │    ├── undershoot.left
+//    │    ╰── undershoot.right
+//    ├── button.down
+//    ╰── button.up
+//
+//    spinbutton.vertical
+//    ├── button.up
+//    ├── text
+//    │    ├── undershoot.left
+//    │    ╰── undershoot.right
+//    ╰── button.down
+//
+// GtkSpinButtons main CSS node has the name spinbutton. It creates subnodes for
+// the entry and the two buttons, with these names. The button nodes have the
+// style classes .up and .down. The GtkText subnodes (if present) are put below
+// the text node. The orientation of the spin button is reflected in the
+// .vertical or .horizontal style class on the main node.
+//
+//
+// Accessiblity
+//
+// GtkSpinButton uses the K_ACCESSIBLE_ROLE_SPIN_BUTTON role.
+type SpinButton struct {
+	Widget
+}
+
+// Spinner: a GtkSpinner widget displays an icon-size spinning animation. It is
+// often used as an alternative to a ProgressBar for displaying indefinite
+// activity, instead of actual progress.
+//
+// To start the animation, use gtk_spinner_start(), to stop it use
+// gtk_spinner_stop().
+//
+//
+// CSS nodes
+//
+// GtkSpinner has a single CSS node with the name spinner. When the animation is
+// active, the :checked pseudoclass is added to this node.
+type Spinner struct {
+	Widget
+}
+
+// Stack: the GtkStack widget is a container which only shows one of its
+// children at a time. In contrast to GtkNotebook, GtkStack does not provide a
+// means for users to change the visible child. Instead, the StackSwitcher
+// widget can be used with GtkStack to provide this functionality.
+//
+// Transitions between pages can be animated as slides or fades. This can be
+// controlled with gtk_stack_set_transition_type(). These animations respect the
+// Settings:gtk-enable-animations setting.
+//
+// GtkStack maintains a StackPage object for each added child, which holds
+// additional per-child properties. You obtain the StackPage for a child with
+// gtk_stack_get_page().
+//
+// GtkStack as GtkBuildable
+//
+//
+//      <object class="GtkStack" id="stack">
+//        <child>
+//          <object class="GtkStackPage">
+//            <property name="name">page1</property>
+//            <property name="title">In the beginning…</property>
+//            <property name="child">
+//              <object class="GtkLabel">
+//                <property name="label">It was dark</property>
+//              </object>
+//            </property>
+//          </object>
+//        </child>
+//
+//
+// CSS nodes
+//
+// GtkStack has a single CSS node named stack.
+//
+//
+// Accessibility
+//
+// GtkStack uses the K_ACCESSIBLE_ROLE_TAB_PANEL for the stack pages, which are
+// the accessible parent objects of the child widgets.
+type Stack struct {
+	Widget
+}
+
+type StackPage struct {
+	*glib.Object
+}
+
+// StackSidebar: a GtkStackSidebar enables you to quickly and easily provide a
+// consistent "sidebar" object for your user interface.
+//
+// In order to use a GtkStackSidebar, you simply use a GtkStack to organize your
+// UI flow, and add the sidebar to your sidebar area. You can use
+// gtk_stack_sidebar_set_stack() to connect the StackSidebar to the Stack.
+//
+//
+// CSS nodes
+//
+// GtkStackSidebar has a single CSS node with name stacksidebar and style class
+// .sidebar.
+//
+// When circumstances require it, GtkStackSidebar adds the .needs-attention
+// style class to the widgets representing the stack pages.
+type StackSidebar struct {
+	Widget
+}
+
+// StackSwitcher: the GtkStackSwitcher widget acts as a controller for a Stack;
+// it shows a row of buttons to switch between the various pages of the
+// associated stack widget.
+//
+// All the content for the buttons comes from the child properties of the Stack;
+// the button visibility in a StackSwitcher widget is controlled by the
+// visibility of the child in the Stack.
+//
+// It is possible to associate multiple StackSwitcher widgets with the same
+// Stack widget.
+//
+//
+// CSS nodes
+//
+// GtkStackSwitcher has a single CSS node named stackswitcher and style class
+// .stack-switcher.
+//
+// When circumstances require it, GtkStackSwitcher adds the .needs-attention
+// style class to the widgets representing the stack pages.
+//
+//
+// Accessibility
+//
+// GtkStackSwitcher uses the K_ACCESSIBLE_ROLE_TAB_LIST role and uses the
+// K_ACCESSIBLE_ROLE_TAB for its buttons.
+type StackSwitcher struct {
+	Widget
+}
+
+// Statusbar: a Statusbar is usually placed along the bottom of an application's
+// main Window. It may provide a regular commentary of the application's status
+// (as is usually the case in a web browser, for example), or may be used to
+// simply output a message when the status changes, (when an upload is complete
+// in an FTP client, for example).
+//
+// Status bars in GTK+ maintain a stack of messages. The message at the top of
+// the each bar’s stack is the one that will currently be displayed.
+//
+// Any messages added to a statusbar’s stack must specify a context id that is
+// used to uniquely identify the source of a message. This context id can be
+// generated by gtk_statusbar_get_context_id(), given a message and the
+// statusbar that it will be added to. Note that messages are stored in a stack,
+// and when choosing which message to display, the stack structure is adhered
+// to, regardless of the context identifier of a message.
+//
+// One could say that a statusbar maintains one stack of messages for display
+// purposes, but allows multiple message producers to maintain sub-stacks of the
+// messages they produced (via context ids).
+//
+// Status bars are created using gtk_statusbar_new().
+//
+// Messages are added to the bar’s stack with gtk_statusbar_push().
+//
+// The message at the top of the stack can be removed using gtk_statusbar_pop().
+// A message can be removed from anywhere in the stack if its message id was
+// recorded at the time it was added. This is done using gtk_statusbar_remove().
+//
+//
+// CSS node
+//
+// GtkStatusbar has a single CSS node with name statusbar.
+type Statusbar struct {
+	Widget
+}
+
+// StringFilter: gtkStringFilter determines whether to include items by looking
+// at strings and comparing them to a fixed search term. The strings are
+// obtained from the items by evaluating a Expression.
+//
+// GtkStringFilter has several different modes of comparison - it can match the
+// whole string, just a prefix, or any substring.
+type StringFilter struct {
+	Filter
+}
+
+// StringList: gtkStringList is a list model that wraps an array of strings.
+//
+// The objects in the model have a "string" property.
+//
+// GtkStringList is well-suited for any place where you would typically use a
+// `char*[]`, but need a list model.
+//
+//
+// GtkStringList as GtkBuildable
+//
+// The GtkStringList implementation of the GtkBuildable interface supports
+// adding items directly using the <items> element and specifying <item>
+// elements for each item. Each <item> element supports the regular translation
+// attributes “translatable”, “context” and “comments”.
+//
+//
+//    <object class="GtkStringList">
+//      <items>
+//        <item translatable="yes">Factory</item>
+//        <item translatable="yes">Home</item>
+//        <item translatable="yes">Subway</item>
+//      </items>
+//    </object>
+type StringList struct {
+	*glib.Object
+}
+
+type StringObject struct {
+	*glib.Object
+}
+
+// StringSorter: gtkStringSorter is a Sorter that compares strings. It does the
+// comparison in a linguistically correct way using the current locale by
+// normalizing Unicode strings and possibly case-folding them before performing
+// the comparison.
+//
+// To obtain the strings to compare, this sorter evaluates a Expression.
+type StringSorter struct {
+	Sorter
+}
+
+// StyleContext: gtkStyleContext is an object that stores styling information
+// affecting a widget.
+//
+// In order to construct the final style information, StyleContext queries
+// information from all attached StyleProviders. Style providers can be either
+// attached explicitly to the context through gtk_style_context_add_provider(),
+// or to the display through gtk_style_context_add_provider_for_display(). The
+// resulting style is a combination of all providers’ information in priority
+// order.
+//
+// For GTK widgets, any StyleContext returned by gtk_widget_get_style_context()
+// will already have a Display and RTL/LTR information set. The style context
+// will also be updated automatically if any of these settings change on the
+// widget.
+//
+// Style Classes {#gtkstylecontext-classes}
+//
+// Widgets can add style classes to their context, which can be used to
+// associate different styles by class. The documentation for individual widgets
+// lists which style classes it uses itself, and which style classes may be
+// added by applications to affect their appearance.
+//
+// GTK defines macros for a number of style classes.
+//
+//
+// Custom styling in UI libraries and applications
+//
+// If you are developing a library with custom Widgets that render differently
+// than standard components, you may need to add a StyleProvider yourself with
+// the GTK_STYLE_PROVIDER_PRIORITY_FALLBACK priority, either a CssProvider or a
+// custom object implementing the StyleProvider interface. This way themes may
+// still attempt to style your UI elements in a different way if needed so.
+//
+// If you are using custom styling on an applications, you probably want then to
+// make your style information prevail to the theme’s, so you must use a
+// StyleProvider with the GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority, keep
+// in mind that the user settings in `XDG_CONFIG_HOME/gtk-4.0/gtk.css` will
+// still take precedence over your changes, as it uses the
+// GTK_STYLE_PROVIDER_PRIORITY_USER priority.
+type StyleContext struct {
+	*glib.Object
+}
+
+// Switch: gtkSwitch is a widget that has two states: on or off. The user can
+// control which state should be active by clicking the empty area, or by
+// dragging the handle.
+//
+// GtkSwitch can also handle situations where the underlying state changes with
+// a delay. See Switch::state-set for details.
+//
+// CSS nodes
+//
+//    switch
+//    ├── label
+//    ├── label
+//    ╰── slider
+//
+// GtkSwitch has four css nodes, the main node with the name switch and subnodes
+// for the slider and the on and off labels. Neither of them is using any style
+// classes.
+//
+//
+// Accessibility
+//
+// GtkSwitch uses the K_ACCESSIBLE_ROLE_SWITCH role.
+type Switch struct {
+	Widget
+}
+
+// Text: the Text widget is a single line text entry widget.
+//
+// A fairly large set of key bindings are supported by default. If the entered
+// text is longer than the allocation of the widget, the widget will scroll so
+// that the cursor position is visible.
+//
+// When using an entry for passwords and other sensitive information, it can be
+// put into “password mode” using gtk_text_set_visibility(). In this mode,
+// entered text is displayed using a “invisible” character. By default, GTK
+// picks the best invisible character that is available in the current font, but
+// it can be changed with gtk_text_set_invisible_char().
+//
+// If you are looking to add icons or progress display in an entry, look at
+// Entry. There other alternatives for more specialized use cases, such as
+// SearchEntry.
+//
+// If you need multi-line editable text, look at TextView.
+//
+// CSS nodes
+//
+//    text[.read-only]
+//    ├── placeholder
+//    ├── undershoot.left
+//    ├── undershoot.right
+//    ├── [selection]
+//    ├── [block-cursor]
+//    ╰── [window.popup]
+//
+// GtkText has a main node with the name text. Depending on the properties of
+// the widget, the .read-only style class may appear.
+//
+// When the entry has a selection, it adds a subnode with the name selection.
+//
+// When the entry is in overwrite mode, it adds a subnode with the name
+// block-cursor that determines how the block cursor is drawn.
+//
+// The CSS node for a context menu is added as a subnode below text as well.
+//
+// The undershoot nodes are used to draw the underflow indication when content
+// is scrolled out of view. These nodes get the .left and .right style classes
+// added depending on where the indication is drawn.
+//
+// When touch is used and touch selection handles are shown, they are using CSS
+// nodes with name cursor-handle. They get the .top or .bottom style class
+// depending on where they are shown in relation to the selection. If there is
+// just a single handle for the text cursor, it gets the style class
+// .insertion-cursor.
+//
+//
+// Accessibility
+//
+// GtkText uses the K_ACCESSIBLE_ROLE_NONE role, which causes it to be skipped
+// for accessibility. This is because GtkText is expected to be used as a
+// delegate for a Editable implementation that will be represented to
+// accessibility.
+type Text struct {
+	Widget
+}
+
+// TextBuffer: you may wish to begin by reading the [text widget conceptual
+// overview][TextWidget] which gives an overview of all the objects and data
+// types related to the text widget and how they work together.
+type TextBuffer struct {
+	*glib.Object
+}
+
+// TextChildAnchor: a TextChildAnchor is a spot in the buffer where child
+// widgets can be “anchored” (inserted inline, as if they were characters). The
+// anchor can have multiple widgets anchored, to allow for multiple views.
+type TextChildAnchor struct {
+	*glib.Object
+}
+
+// TextMark: you may wish to begin by reading the [text widget conceptual
+// overview][TextWidget] which gives an overview of all the objects and data
+// types related to the text widget and how they work together.
+//
+// A TextMark is like a bookmark in a text buffer; it preserves a position in
+// the text. You can convert the mark to an iterator using
+// gtk_text_buffer_get_iter_at_mark(). Unlike iterators, marks remain valid
+// across buffer mutations, because their behavior is defined when text is
+// inserted or deleted. When text containing a mark is deleted, the mark remains
+// in the position originally occupied by the deleted text. When text is
+// inserted at a mark, a mark with “left gravity” will be moved to the beginning
+// of the newly-inserted text, and a mark with “right gravity” will be moved to
+// the end.
+//
+// Note that “left” and “right” here refer to logical direction (left is the
+// toward the start of the buffer); in some languages such as Hebrew the
+// logically-leftmost text is not actually on the left when displayed.
+//
+// Marks are reference counted, but the reference count only controls the
+// validity of the memory; marks can be deleted from the buffer at any time with
+// gtk_text_buffer_delete_mark(). Once deleted from the buffer, a mark is
+// essentially useless.
+//
+// Marks optionally have names; these can be convenient to avoid passing the
+// TextMark object around.
+//
+// Marks are typically created using the gtk_text_buffer_create_mark() function.
+type TextMark struct {
+	*glib.Object
+}
+
+// TextTag: you may wish to begin by reading the [text widget conceptual
+// overview][TextWidget] which gives an overview of all the objects and data
+// types related to the text widget and how they work together.
+//
+// Tags should be in the TextTagTable for a given TextBuffer before using them
+// with that buffer.
+//
+// gtk_text_buffer_create_tag() is the best way to create tags. See “gtk4-demo”
+// for numerous examples.
+//
+// For each property of TextTag, there is a “set” property, e.g. “font-set”
+// corresponds to “font”. These “set” properties reflect whether a property has
+// been set or not. They are maintained by GTK+ and you should not set them
+// independently.
+type TextTag struct {
+	*glib.Object
+}
+
+// TextTagTable: you may wish to begin by reading the [text widget conceptual
+// overview][TextWidget] which gives an overview of all the objects and data
+// types related to the text widget and how they work together.
+//
+//
+// GtkTextTagTables as GtkBuildable
+//
+// The GtkTextTagTable implementation of the GtkBuildable interface supports
+// adding tags by specifying “tag” as the “type” attribute of a <child> element.
+//
+//
+//    <object class="GtkTextTagTable">
+//     <child type="tag">
+//       <object class="GtkTextTag"/>
+//     </child>
+//    </object>
+type TextTagTable struct {
+	*glib.Object
+}
+
+// TextView: you may wish to begin by reading the [text widget conceptual
+// overview][TextWidget] which gives an overview of all the objects and data
+// types related to the text widget and how they work together.
+//
+// CSS nodes
+//
+//    textview.view
+//    ├── border.top
+//    ├── border.left
+//    ├── text
+//    │   ╰── [selection]
+//    ├── border.right
+//    ├── border.bottom
+//    ╰── [window.popup]
+//
+// GtkTextView has a main css node with name textview and style class .view, and
+// subnodes for each of the border windows, and the main text area, with names
+// border and text, respectively. The border nodes each get one of the style
+// classes .left, .right, .top or .bottom.
+//
+// A node representing the selection will appear below the text node.
+//
+// If a context menu is opened, the window node will appear as a subnode of the
+// main node.
+//
+//
+// Accessibility
+//
+// GtkTextView uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
+type TextView struct {
+	Widget
+}
+
+// ToggleButton: a ToggleButton is a Button which will remain “pressed-in” when
+// clicked. Clicking again will cause the toggle button to return to its normal
+// state.
+//
+// A toggle button is created by calling either gtk_toggle_button_new() or
+// gtk_toggle_button_new_with_label(). If using the former, it is advisable to
+// pack a widget, (such as a Label and/or a Image), into the toggle button’s
+// container. (See Button for more information).
+//
+// The state of a ToggleButton can be set specifically using
+// gtk_toggle_button_set_active(), and retrieved using
+// gtk_toggle_button_get_active().
+//
+// To simply switch the state of a toggle button, use
+// gtk_toggle_button_toggled().
+//
+//
+// CSS nodes
+//
+// GtkToggleButton has a single CSS node with name button. To differentiate it
+// from a plain Button, it gets the .toggle style class.
+//
+// Creating two ToggleButton widgets
+//
+//    static void output_state (GtkToggleButton *source, gpointer user_data) {
+//      printf ("Active: d\n", gtk_toggle_button_get_active (source));
+//    }
+//
+//    void make_toggles (void) {
+//      GtkWidget *window, *toggle1, *toggle2;
+//      GtkWidget *box;
+//      const char *text;
+//
+//      window = gtk_window_new ();
+//      box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+//
+//      text = "Hi, I’m a toggle button.";
+//      toggle1 = gtk_toggle_button_new_with_label (text);
+//
+//      g_signal_connect (toggle1, "toggled",
+//                        G_CALLBACK (output_state),
+//                        NULL);
+//      gtk_box_append (GTK_BOX (box), toggle1);
+//
+//      text = "Hi, I’m a toggle button.";
+//      toggle2 = gtk_toggle_button_new_with_label (text);
+//      g_signal_connect (toggle2, "toggled",
+//                        G_CALLBACK (output_state),
+//                        NULL);
+//      gtk_box_append (GTK_BOX (box), toggle2);
+//
+//      gtk_window_set_child (GTK_WINDOW (window), box);
+//      gtk_widget_show (window);
+//    }
+//
+type ToggleButton struct {
+	Button
+}
+
+// Tooltip: basic tooltips can be realized simply by using
+// gtk_widget_set_tooltip_text() or gtk_widget_set_tooltip_markup() without any
+// explicit tooltip object.
+//
+// When you need a tooltip with a little more fancy contents, like adding an
+// image, or you want the tooltip to have different contents per TreeView row or
+// cell, you will have to do a little more work:
+//
+// - Set the Widget:has-tooltip property to true, this will make GTK monitor the
+// widget for motion and related events which are needed to determine when and
+// where to show a tooltip.
+//
+// - Connect to the Widget::query-tooltip signal. This signal will be emitted
+// when a tooltip is supposed to be shown. One of the arguments passed to the
+// signal handler is a GtkTooltip object. This is the object that we are about
+// to display as a tooltip, and can be manipulated in your callback using
+// functions like gtk_tooltip_set_icon(). There are functions for setting the
+// tooltip’s markup, setting an image from a named icon, or even putting in a
+// custom widget.
+//
+// Return true from your query-tooltip handler. This causes the tooltip to be
+// show. If you return false, it will not be shown.
+type Tooltip struct {
+	*glib.Object
+}
+
+// TreeExpander: gtkTreeExpander is a widget that provides an expander for a
+// list.
+//
+// It is typically placed as a bottommost child into a ListView to allow users
+// to expand and collapse children in a list with a TreeListModel. It will
+// provide the common UI elements, gestures and keybindings for this purpose.
+//
+// On top of this, the "listitem.expand", "listitem.collapse" and
+// "listitem.toggle-expand" actions are provided to allow adding custom UI for
+// managing expanded state.
+//
+// The TreeListModel must be set to not be passthrough. Then it will provide
+// TreeListRow items which can be set via gtk_tree_expander_set_list_row() on
+// the expander. The expander will then watch that row item automatically.
+// gtk_tree_expander_set_child() sets the widget that displays the actual row
+// contents.
+//
+// CSS nodes
+//
+//    treeexpander
+//    ├── [indent]*
+//    ├── [expander]
+//    ╰── <child>
+//
+// GtkTreeExpander has zero or one CSS nodes with the name "expander" that
+// should display the expander icon. The node will be `:checked` when it is
+// expanded. If the node is not expandable, an "indent" node will be displayed
+// instead.
+//
+// For every level of depth, another "indent" node is prepended.
+//
+//
+// Accessibility
+//
+// GtkTreeExpander uses the GTK_ACCESSIBLE_ROLE_GROUP role. The expander icon is
+// represented as a GTK_ACCESSIBLE_ROLE_BUTTON, labelled by the expander's
+// child, and toggling it will change the GTK_ACCESSIBLE_STATE_EXPANDED state.
+type TreeExpander struct {
+	Widget
+}
+
+// TreeListModel: gtkTreeListModel is a Model implementation that can expand
+// rows by creating new child list models on demand.
+type TreeListModel struct {
+	*glib.Object
+}
+
+// TreeListRow: gtkTreeListRow is the object used by TreeListModel to represent
+// items. It allows navigating the model as a tree and modify the state of rows.
+//
+// TreeListRow instances are created by a TreeListModel only when the
+// TreeListModel:passthrough property is not set.
+//
+// There are various support objects that can make use of TreeListRow objects,
+// such as the TreeExpander widget that allows displaying an icon to expand or
+// collapse a row or TreeListRowSorter that makes it possible to sort trees
+// properly.
+type TreeListRow struct {
+	*glib.Object
+}
+
+// TreeListRowSorter: gtkTreeListRowSorter is a special-purpose sorter that will
+// apply a given sorter to the levels in a tree, while respecting the tree
+// structure.
+//
+// Here is an example for setting up a column view with a tree model and a
+// GtkTreeListSorter:
+//
+//
+//    column_sorter = gtk_column_view_get_sorter (view);
+//    sorter = gtk_tree_list_row_sorter_new (g_object_ref (column_sorter));
+//    sort_model = gtk_sort_list_model_new (tree_model, sorter);
+//    selection = gtk_single_selection_new (sort_model);
+//    gtk_column_view_set_model (view, G_LIST_MODEL (selection));
+type TreeListRowSorter struct {
+	Sorter
+}
+
+// TreeModelFilter: a TreeModelFilter is a tree model which wraps another tree
+// model, and can do the following things:
+//
+// - Filter specific rows, based on data from a “visible column”, a column
+// storing booleans indicating whether the row should be filtered or not, or
+// based on the return value of a “visible function”, which gets a model, iter
+// and user_data and returns a boolean indicating whether the row should be
+// filtered or not.
+//
+// - Modify the “appearance” of the model, using a modify function. This is
+// extremely powerful and allows for just changing some values and also for
+// creating a completely different model based on the given child model.
+//
+// - Set a different root node, also known as a “virtual root”. You can pass in
+// a TreePath indicating the root node for the filter at construction time.
+//
+// The basic API is similar to TreeModelSort. For an example on its usage, see
+// the section on TreeModelSort.
+//
+// When using TreeModelFilter, it is important to realize that TreeModelFilter
+// maintains an internal cache of all nodes which are visible in its clients.
+// The cache is likely to be a subtree of the tree exposed by the child model.
+// TreeModelFilter will not cache the entire child model when unnecessary to not
+// compromise the caching mechanism that is exposed by the reference counting
+// scheme. If the child model implements reference counting, unnecessary signals
+// may not be emitted because of reference counting rule 3, see the TreeModel
+// documentation. (Note that e.g. TreeStore does not implement reference
+// counting and will always emit all signals, even when the receiving node is
+// not visible).
+//
+// Because of this, limitations for possible visible functions do apply. In
+// general, visible functions should only use data or properties from the node
+// for which the visibility state must be determined, its siblings or its
+// parents. Usually, having a dependency on the state of any child node is not
+// possible, unless references are taken on these explicitly. When no such
+// reference exists, no signals may be received for these child nodes (see
+// reference counting rule number 3 in the TreeModel section).
+//
+// Determining the visibility state of a given node based on the state of its
+// child nodes is a frequently occurring use case. Therefore, TreeModelFilter
+// explicitly supports this. For example, when a node does not have any
+// children, you might not want the node to be visible. As soon as the first row
+// is added to the node’s child level (or the last row removed), the node’s
+// visibility should be updated.
+//
+// This introduces a dependency from the node on its child nodes. In order to
+// accommodate this, TreeModelFilter must make sure the necessary signals are
+// received from the child model. This is achieved by building, for all nodes
+// which are exposed as visible nodes to TreeModelFilter's clients, the child
+// level (if any) and take a reference on the first node in this level.
+// Furthermore, for every row-inserted, row-changed or row-deleted signal (also
+// these which were not handled because the node was not cached),
+// TreeModelFilter will check if the visibility state of any parent node has
+// changed.
+//
+// Beware, however, that this explicit support is limited to these two cases.
+// For example, if you want a node to be visible only if two nodes in a child’s
+// child level (2 levels deeper) are visible, you are on your own. In this case,
+// either rely on TreeStore to emit all signals because it does not implement
+// reference counting, or for models that do implement reference counting,
+// obtain references on these child levels yourself.
+type TreeModelFilter struct {
+	*glib.Object
+}
+
+// TreeModelSort: the TreeModelSort is a model which implements the TreeSortable
+// interface. It does not hold any data itself, but rather is created with a
+// child model and proxies its data. It has identical column types to this child
+// model, and the changes in the child are propagated. The primary purpose of
+// this model is to provide a way to sort a different model without modifying
+// it. Note that the sort function used by TreeModelSort is not guaranteed to be
+// stable.
+//
+// The use of this is best demonstrated through an example. In the following
+// sample code we create two TreeView widgets each with a view of the same data.
+// As the model is wrapped here by a TreeModelSort, the two TreeViews can each
+// sort their view of the data without affecting the other. By contrast, if we
+// simply put the same model in each widget, then sorting the first would sort
+// the second.
+//
+// Using a TreeModelSort
+//
+//    {
+//      GtkTreeView *tree_view1;
+//      GtkTreeView *tree_view2;
+//      GtkTreeModel *sort_model1;
+//      GtkTreeModel *sort_model2;
+//      GtkTreeModel *child_model;
+//
+//      // get the child model
+//      child_model = get_my_model ();
+//
+//      // Create the first tree
+//      sort_model1 = gtk_tree_model_sort_new_with_model (child_model);
+//      tree_view1 = gtk_tree_view_new_with_model (sort_model1);
+//
+//      // Create the second tree
+//      sort_model2 = gtk_tree_model_sort_new_with_model (child_model);
+//      tree_view2 = gtk_tree_view_new_with_model (sort_model2);
+//
+//      // Now we can sort the two models independently
+//      gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (sort_model1),
+//                                            COLUMN_1, GTK_SORT_ASCENDING);
+//      gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (sort_model2),
+//                                            COLUMN_1, GTK_SORT_DESCENDING);
+//    }
+//
+//
+// To demonstrate how to access the underlying child model from the sort model,
+// the next example will be a callback for the TreeSelection
+// TreeSelection::changed signal. In this callback, we get a string from
+// COLUMN_1 of the model. We then modify the string, find the same selected row
+// on the child model, and change the row there.
+//
+// Accessing the child model of in a selection changed callback
+//
+//    void
+//    selection_changed (GtkTreeSelection *selection, gpointer data)
+//    {
+//      GtkTreeModel *sort_model = NULL;
+//      GtkTreeModel *child_model;
+//      GtkTreeIter sort_iter;
+//      GtkTreeIter child_iter;
+//      char *some_data = NULL;
+//      char *modified_data;
+//
+//      // Get the current selected row and the model.
+//      if (! gtk_tree_selection_get_selected (selection,
+//                                             &sort_model,
+//                                             &sort_iter))
+//        return;
+//
+//      // Look up the current value on the selected row and get
+//      // a new value to change it to.
+//      gtk_tree_model_get (GTK_TREE_MODEL (sort_model), &sort_iter,
+//                          COLUMN_1, &some_data,
+//                          -1);
+//
+//      modified_data = change_the_data (some_data);
+//      g_free (some_data);
+//
+//      // Get an iterator on the child model, instead of the sort model.
+//      gtk_tree_model_sort_convert_iter_to_child_iter (GTK_TREE_MODEL_SORT (sort_model),
+//                                                      &child_iter,
+//                                                      &sort_iter);
+//
+//      // Get the child model and change the value of the row. In this
+//      // example, the child model is a GtkListStore. It could be any other
+//      // type of model, though.
+//      child_model = gtk_tree_model_sort_get_model (GTK_TREE_MODEL_SORT (sort_model));
+//      gtk_list_store_set (GTK_LIST_STORE (child_model), &child_iter,
+//                          COLUMN_1, &modified_data,
+//                          -1);
+//      g_free (modified_data);
+//    }
+//
+type TreeModelSort struct {
+	*glib.Object
+}
+
+// TreeSelection: the TreeSelection object is a helper object to manage the
+// selection for a TreeView widget. The TreeSelection object is automatically
+// created when a new TreeView widget is created, and cannot exist independently
+// of this widget. The primary reason the TreeSelection objects exists is for
+// cleanliness of code and API. That is, there is no conceptual reason all these
+// functions could not be methods on the TreeView widget instead of a separate
+// function.
+//
+// The TreeSelection object is gotten from a TreeView by calling
+// gtk_tree_view_get_selection(). It can be manipulated to check the selection
+// status of the tree, as well as select and deselect individual rows. Selection
+// is done completely view side. As a result, multiple views of the same model
+// can have completely different selections. Additionally, you cannot change the
+// selection of a row on the model that is not currently displayed by the view
+// without expanding its parents first.
+//
+// One of the important things to remember when monitoring the selection of a
+// view is that the TreeSelection::changed signal is mostly a hint. That is, it
+// may only emit one signal when a range of rows is selected. Additionally, it
+// may on occasion emit a TreeSelection::changed signal when nothing has
+// happened (mostly as a result of programmers calling select_row on an already
+// selected row).
+type TreeSelection struct {
+	*glib.Object
+}
+
+// TreeStore: the TreeStore object is a list model for use with a TreeView
+// widget. It implements the TreeModel interface, and consequently, can use all
+// of the methods available there. It also implements the TreeSortable interface
+// so it can be sorted by the view. Finally, it also implements the tree [drag
+// and drop][gtk3-GtkTreeView-drag-and-drop] interfaces.
+//
+//
+// GtkTreeStore as GtkBuildable
+//
+// The GtkTreeStore implementation of the Buildable interface allows to specify
+// the model columns with a <columns> element that may contain multiple <column>
+// elements, each specifying one model column. The “type” attribute specifies
+// the data type for the column.
+//
+//
+//    <object class="GtkTreeStore">
+//      <columns>
+//        <column type="gchararray"/>
+//        <column type="gchararray"/>
+//        <column type="gint"/>
+//      </columns>
+//    </object>
+type TreeStore struct {
+	*glib.Object
+}
+
+// TreeView: widget that displays any object that implements the TreeModel
+// interface.
+//
+// Please refer to the [tree widget conceptual overview][TreeWidget] for an
+// overview of all the objects and data types related to the tree widget and how
+// they work together.
+//
+// Several different coordinate systems are exposed in the GtkTreeView API.
+// These are:
+//
+// ![](tree-view-coordinates.png)
+//
+// Coordinate systems in GtkTreeView API:
+//
+// - Widget coordinates: Coordinates relative to the widget (usually
+// `widget->window`).
+//
+// - Bin window coordinates: Coordinates relative to the window that GtkTreeView
+// renders to.
+//
+// - Tree coordinates: Coordinates relative to the entire scrollable area of
+// GtkTreeView. These coordinates start at (0, 0) for row 0 of the tree.
+//
+// Several functions are available for converting between the different
+// coordinate systems. The most common translations are between widget and bin
+// window coordinates and between bin window and tree coordinates. For the
+// former you can use gtk_tree_view_convert_widget_to_bin_window_coords() (and
+// vice versa), for the latter gtk_tree_view_convert_bin_window_to_tree_coords()
+// (and vice versa).
+//
+//
+// GtkTreeView as GtkBuildable
+//
+// The GtkTreeView implementation of the GtkBuildable interface accepts
+// TreeViewColumn objects as <child> elements and exposes the internal
+// TreeSelection in UI definitions.
+//
+//
+//    <object class="GtkTreeView" id="treeview">
+//      <property name="model">liststore1</property>
+//      <child>
+//        <object class="GtkTreeViewColumn" id="test-column">
+//          <property name="title">Test</property>
+//          <child>
+//            <object class="GtkCellRendererText" id="test-renderer"/>
+//            <attributes>
+//              <attribute name="text">1</attribute>
+//            </attributes>
+//          </child>
+//        </object>
+//      </child>
+//      <child internal-child="selection">
+//        <object class="GtkTreeSelection" id="selection">
+//          <signal name="changed" handler="on_treeview_selection_changed"/>
+//        </object>
+//      </child>
+//    </object>
+//
+// CSS nodes
+//
+//    treeview.view
+//    ├── header
+//    │   ├── <column header>
+//    ┊   ┊
+//    │   ╰── <column header>
+//    │
+//    ├── [rubberband]
+//    ╰── [dndtarget]
+//
+// GtkTreeView has a main CSS node with name treeview and style class .view. It
+// has a subnode with name header, which is the parent for all the column header
+// widgets' CSS nodes.
+//
+// For rubberband selection, a subnode with name rubberband is used.
+//
+// For the drop target location during DND, a subnode with name dndtarget is
+// used.
+type TreeView struct {
+	Widget
+}
+
+// TreeViewColumn: the GtkTreeViewColumn object represents a visible column in a
+// TreeView widget. It allows to set properties of the column header, and
+// functions as a holding pen for the cell renderers which determine how the
+// data in the column is displayed.
+//
+// Please refer to the [tree widget conceptual overview][TreeWidget] for an
+// overview of all the objects and data types related to the tree widget and how
+// they work together.
+type TreeViewColumn struct {
+	glib.InitiallyUnowned
+}
+
+// Video: gtkVideo is a widget to show a MediaStream with media controls as
+// provided by MediaControls. If you just want to display a video without
+// controls, you can treat it like any other paintable and for example put it
+// into a Picture.
+//
+// GtkVideo aims to cover use cases such as previews, embedded animations, etc.
+// It supports autoplay, looping, and simple media controls. It does not have
+// support for video overlays, multichannel audio, device selection, or input.
+// If you are writing a full-fledged video player, you may want to use the
+// Paintable API and a media framework such as Gstreamer directly.
+type Video struct {
+	Widget
+}
+
+// Viewport: the Viewport widget acts as an adaptor class, implementing
+// scrollability for child widgets that lack their own scrolling capabilities.
+// Use GtkViewport to scroll child widgets such as Grid, Box, and so on.
+//
+// The GtkViewport will start scrolling content only if allocated less than the
+// child widget’s minimum size in a given orientation.
+//
+//
+// CSS nodes
+//
+// GtkViewport has a single CSS node with name `viewport`.
+//
+//
+// Accessibility
+//
+// GtkViewport uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+type Viewport struct {
+	Widget
+}
+
+// VolumeButton: gtkVolumeButton is a subclass of ScaleButton that has been
+// tailored for use as a volume control widget with suitable icons, tooltips and
+// accessible labels.
+type VolumeButton struct {
+	ScaleButton
+}
+
+// Widget: gtkWidget is the base class all widgets in GTK derive from. It
+// manages the widget lifecycle, states and style.
+//
+// Height-for-width Geometry Management {#geometry-management}
+//
+// GTK uses a height-for-width (and width-for-height) geometry management
+// system. Height-for-width means that a widget can change how much vertical
+// space it needs, depending on the amount of horizontal space that it is given
+// (and similar for width-for-height). The most common example is a label that
+// reflows to fill up the available width, wraps to fewer lines, and therefore
+// needs less height.
+//
+// Height-for-width geometry management is implemented in GTK by way of two
+// virtual methods:
+//
+// - WidgetClass.get_request_mode() - WidgetClass.measure()
+//
+// There are some important things to keep in mind when implementing
+// height-for-width and when using it in widget implementations.
+//
+// If you implement a direct Widget subclass that supports height-for-width or
+// width-for-height geometry management for itself or its child widgets, the
+// WidgetClass.get_request_mode() virtual function must be implemented as well
+// and return the widget's preferred request mode. The default implementation of
+// this virtual function returns GTK_SIZE_REQUEST_CONSTANT_SIZE, which means
+// that the widget will only ever get -1 passed as the for_size value to its
+// WidgetClass.measure() implementation.
+//
+// The geometry management system will query a widget hierarchy in only one
+// orientation at a time. When widgets are initially queried for their minimum
+// sizes it is generally done in two initial passes in the SizeRequestMode
+// chosen by the toplevel.
+//
+// For example, when queried in the normal GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH
+// mode: First, the default minimum and natural width for each widget in the
+// interface will be computed using gtk_widget_measure() with an orientation of
+// GTK_ORIENTATION_HORIZONTAL and a for_size of -1. Because the preferred widths
+// for each widget depend on the preferred widths of their children, this
+// information propagates up the hierarchy, and finally a minimum and natural
+// width is determined for the entire toplevel. Next, the toplevel will use the
+// minimum width to query for the minimum height contextual to that width using
+// gtk_widget_measure() with an orientation of GTK_ORIENTATION_VERTICAL and a
+// for_size of the just computed width. This will also be a highly recursive
+// operation. The minimum height for the minimum width is normally used to set
+// the minimum size constraint on the toplevel.
+//
+// After the toplevel window has initially requested its size in both dimensions
+// it can go on to allocate itself a reasonable size (or a size previously
+// specified with gtk_window_set_default_size()). During the recursive
+// allocation process it’s important to note that request cycles will be
+// recursively executed while widgets allocate their children. Each widget, once
+// allocated a size, will go on to first share the space in one orientation
+// among its children and then request each child's height for its target
+// allocated width or its width for allocated height, depending. In this way a
+// Widget will typically be requested its size a number of times before actually
+// being allocated a size. The size a widget is finally allocated can of course
+// differ from the size it has requested. For this reason, Widget caches a small
+// number of results to avoid re-querying for the same sizes in one allocation
+// cycle.
+//
+// If a widget does move content around to intelligently use up the allocated
+// size then it must support the request in both SizeRequestModes even if the
+// widget in question only trades sizes in a single orientation.
+//
+// For instance, a Label that does height-for-width word wrapping will not
+// expect to have WidgetClass.measure() with an orientation of
+// GTK_ORIENTATION_VERTICAL called because that call is specific to a
+// width-for-height request. In this case the label must return the height
+// required for its own minimum possible width. By following this rule any
+// widget that handles height-for-width or width-for-height requests will always
+// be allocated at least enough space to fit its own content.
+//
+// Here are some examples of how a GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH widget
+// generally deals with width-for-height requests:
+//
+//    static void
+//    foo_widget_measure (GtkWidget      *widget,
+//                        GtkOrientation  orientation,
+//                        int             for_size,
+//                        int            *minimum_size,
+//                        int            *natural_size,
+//                        int            *minimum_baseline,
+//                        int            *natural_baseline)
+//    {
+//      if (orientation == GTK_ORIENTATION_HORIZONTAL)
+//        {
+//          // Calculate minimum and natural width
+//        }
+//      else // VERTICAL
+//        {
+//           if (i_am_in_height_for_width_mode)
+//             {
+//               int min_width, dummy;
+//
+//               // First, get the minimum width of our widget
+//               GTK_WIDGET_GET_CLASS (widget)->measure (widget, GTK_ORIENTATION_HORIZONTAL, -1,
+//                                                       &min_width, &dummy, &dummy, &dummy);
+//
+//               // Now use the minimum width to retrieve the minimum and natural height to display
+//               // that width.
+//               GTK_WIDGET_GET_CLASS (widget)->measure (widget, GTK_ORIENTATION_VERTICAL, min_width,
+//                                                       minimum_size, natural_size, &dummy, &dummy);
+//             }
+//           else
+//             {
+//               // ... some widgets do both.
+//             }
+//       }
+//    }
+//
+//
+// Often a widget needs to get its own request during size request or
+// allocation. For example, when computing height it may need to also compute
+// width. Or when deciding how to use an allocation, the widget may need to know
+// its natural size. In these cases, the widget should be careful to call its
+// virtual methods directly, like in the code example above.
+//
+// It will not work to use the wrapper function gtk_widget_measure() inside your
+// own WidgetClass.size-allocate() implementation. These return a request
+// adjusted by SizeGroup, the widget's align and expand flags as well as its CSS
+// style. If a widget used the wrappers inside its virtual method
+// implementations, then the adjustments (such as widget margins) would be
+// applied twice. GTK therefore does not allow this and will warn if you try to
+// do it.
+//
+// Of course if you are getting the size request for another widget, such as a
+// child widget, you must use gtk_widget_measure(). Otherwise, you would not
+// properly consider widget margins, SizeGroup, and so forth.
+//
+// GTK also supports baseline vertical alignment of widgets. This means that
+// widgets are positioned such that the typographical baseline of widgets in the
+// same row are aligned. This happens if a widget supports baselines, has a
+// vertical alignment of GTK_ALIGN_BASELINE, and is inside a widget that
+// supports baselines and has a natural “row” that it aligns to the baseline, or
+// a baseline assigned to it by the grandparent.
+//
+// Baseline alignment support for a widget is also done by the
+// WidgetClass.measure() virtual function. It allows you to report both a
+// minimum and natural size.
+//
+// If a widget ends up baseline aligned it will be allocated all the space in
+// the parent as if it was GTK_ALIGN_FILL, but the selected baseline can be
+// found via gtk_widget_get_allocated_baseline(). If this has a value other than
+// -1 you need to align the widget such that the baseline appears at the
+// position.
+//
+//
+// GtkWidget as GtkBuildable
+//
+// The GtkWidget implementation of the Buildable interface supports a custom
+// elements to specify various aspects of widgets that are not directly
+// expressed as properties.
+//
+// If the parent widget uses a LayoutManager, Widget supports a custom
+// `<layout>` element, used to define layout properties:
+//
+//    <object class="MyGrid" id="grid1">
+//      <child>
+//        <object class="GtkLabel" id="label1">
+//          <property name="label">Description</property>
+//          <layout>
+//            <property name="column">0</property>
+//            <property name="row">0</property>
+//            <property name="row-span">1</property>
+//            <property name="column-span">1</property>
+//          </layout>
+//        </object>
+//      </child>
+//      <child>
+//        <object class="GtkEntry" id="description_entry">
+//          <layout>
+//            <property name="column">1</property>
+//            <property name="row">0</property>
+//            <property name="row-span">1</property>
+//            <property name="column-span">1</property>
+//          </layout>
+//        </object>
+//      </child>
+//    </object>
+//
+// GtkWidget allows style information such as style classes to be associated
+// with widgets, using the custom `<style>` element:
+//
+//    <object class="GtkButton" id="button1">
+//      <style>
+//        <class name="my-special-button-class"/>
+//        <class name="dark-button"/>
+//      </style>
+//    </object>
+//
+// GtkWidget allows defining accessibility information, such as properties,
+// relations, and states, using the custom `<accessibility>` element:
+//
+//    <object class="GtkButton" id="button1">
+//      <accessibility>
+//        <property name="label">Download</property>
+//        <relation name="labelled-by">label1</relation>
+//      </accessibility>
+//    </object>
+//
+// Building composite widgets from template XML {#composite-templates}
+//
+// GtkWidget exposes some facilities to automate the procedure of creating
+// composite widgets using Builder interface description language.
+//
+// To create composite widgets with Builder XML, one must associate the
+// interface description with the widget class at class initialization time
+// using gtk_widget_class_set_template().
+//
+// The interface description semantics expected in composite template
+// descriptions is slightly different from regular Builder XML.
+//
+// Unlike regular interface descriptions, gtk_widget_class_set_template() will
+// expect a `<template>` tag as a direct child of the toplevel `<interface>`
+// tag. The `<template>` tag must specify the “class” attribute which must be
+// the type name of the widget. Optionally, the “parent” attribute may be
+// specified to specify the direct parent type of the widget type, this is
+// ignored by the GtkBuilder but required for Glade to introspect what kind of
+// properties and internal children exist for a given type when the actual type
+// does not exist.
+//
+// The XML which is contained inside the `<template>` tag behaves as if it were
+// added to the `<object>` tag defining @widget itself. You may set properties
+// on @widget by inserting `<property>` tags into the `<template>` tag, and also
+// add `<child>` tags to add children and extend @widget in the normal way you
+// would with `<object>` tags.
+//
+// Additionally, `<object>` tags can also be added before and after the initial
+// `<template>` tag in the normal way, allowing one to define auxiliary objects
+// which might be referenced by other widgets declared as children of the
+// `<template>` tag.
+//
+// An example of a GtkBuilder Template Definition:
+//
+//    <interface>
+//      <template class="FooWidget" parent="GtkBox">
+//        <property name="orientation">horizontal</property>
+//        <property name="spacing">4</property>
+//        <child>
+//          <object class="GtkButton" id="hello_button">
+//            <property name="label">Hello World</property>
+//            <signal name="clicked" handler="hello_button_clicked" object="FooWidget" swapped="yes"/>
+//          </object>
+//        </child>
+//        <child>
+//          <object class="GtkButton" id="goodbye_button">
+//            <property name="label">Goodbye World</property>
+//          </object>
+//        </child>
+//      </template>
+//    </interface>
+//
+// Typically, you'll place the template fragment into a file that is bundled
+// with your project, using #GResource. In order to load the template, you need
+// to call gtk_widget_class_set_template_from_resource() from the class
+// initialization of your Widget type:
+//
+//    static void
+//    foo_widget_class_init (FooWidgetClass *klass)
+//    {
+//      // ...
+//
+//      gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass),
+//                                                   "/com/example/ui/foowidget.ui");
+//    }
+//
+//
+// You will also need to call gtk_widget_init_template() from the instance
+// initialization function:
+//
+//    static void
+//    foo_widget_init (FooWidget *self)
+//    {
+//      // ...
+//      gtk_widget_init_template (GTK_WIDGET (self));
+//    }
+//
+// You can access widgets defined in the template using the
+// gtk_widget_get_template_child() function, but you will typically declare a
+// pointer in the instance private data structure of your type using the same
+// name as the widget in the template definition, and call
+// gtk_widget_class_bind_template_child_private() with that name, e.g.
+//
+//    typedef struct {
+//      GtkWidget *hello_button;
+//      GtkWidget *goodbye_button;
+//    } FooWidgetPrivate;
+//
+//    G_DEFINE_TYPE_WITH_PRIVATE (FooWidget, foo_widget, GTK_TYPE_BOX)
+//
+//    static void
+//    foo_widget_class_init (FooWidgetClass *klass)
+//    {
+//      // ...
+//      gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass),
+//                                                   "/com/example/ui/foowidget.ui");
+//      gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (klass),
+//                                                    FooWidget, hello_button);
+//      gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (klass),
+//                                                    FooWidget, goodbye_button);
+//    }
+//
+//    static void
+//    foo_widget_init (FooWidget *widget)
+//    {
+//
+//    }
+//
+//
+// You can also use gtk_widget_class_bind_template_callback() to connect a
+// signal callback defined in the template with a function visible in the scope
+// of the class, e.g.
+//
+//    // the signal handler has the instance and user data swapped
+//    // because of the swapped="yes" attribute in the template XML
+//    static void
+//    hello_button_clicked (FooWidget *self,
+//                          GtkButton *button)
+//    {
+//      g_print ("Hello, world!\n");
+//    }
+//
+//    static void
+//    foo_widget_class_init (FooWidgetClass *klass)
+//    {
+//      // ...
+//      gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass),
+//                                                   "/com/example/ui/foowidget.ui");
+//      gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (klass), hello_button_clicked);
+//    }
+//
+type Widget struct {
+	glib.InitiallyUnowned
+}
+
+// WidgetPaintable: gtkWidgetPaintable is an implementation of the Paintable
+// interface that allows displaying the contents of a Widget.
+//
+// GtkWidgetPaintable will also take care of the widget not being in a state
+// where it can be drawn (like when it isn't shown) and just draw nothing or
+// where it does not have a size (like when it is hidden) and report no size in
+// that case.
+//
+// Of course, GtkWidgetPaintable allows you to monitor widgets for size changes
+// by emitting the Paintable::invalidate-size signal whenever the size of the
+// widget changes as well as for visual changes by emitting the
+// Paintable::invalidate-contents signal whenever the widget changes.
+//
+// You can of course use a GtkWidgetPaintable everywhere a Paintable is allowed,
+// including using it on a Picture (or one of its parents) that it was set on
+// itself via gtk_picture_set_paintable(). The paintable will take care of
+// recursion when this happens. If you do this however, ensure the
+// Picture:can-shrink property is set to true or you might end up with an
+// infinitely growing widget.
+type WidgetPaintable struct {
+	*glib.Object
+}
+
+// Window: a GtkWindow is a toplevel window which can contain other widgets.
+// Windows normally have decorations that are under the control of the windowing
+// system and allow the user to manipulate the window (resize it, move it, close
+// it,...).
+//
+//
+// GtkWindow as GtkBuildable
+//
+// The GtkWindow implementation of the Buildable interface supports setting a
+// child as the titlebar by specifying “titlebar” as the “type” attribute of a
+// <child> element.
+//
+// CSS nodes
+//
+//    window.background
+//    ├── <child>
+//    ╰── <titlebar child>.titlebar [.default-decoration]
+//
+// GtkWindow has a main CSS node with name window and style class .background.
+//
+// Style classes that are typically used with the main CSS node are .csd (when
+// client-side decorations are in use), .solid-csd (for client-side decorations
+// without invisible borders), .ssd (used by mutter when rendering server-side
+// decorations). GtkWindow also represents window states with the following
+// style classes on the main node: .tiled, .maximized, .fullscreen. Specialized
+// types of window often add their own discriminating style classes, such as
+// .popup or .tooltip.
+//
+// Generally, some CSS properties don't make sense on the toplevel window node,
+// such as margins or padding. When client-side decorations without invisible
+// borders are in use (i.e. the .solid-csd style class is added to the main
+// window node), the CSS border of the toplevel window is used for resize drags.
+// In the .csd case, the shadow area outside of the window can be used to resize
+// it.
+//
+// GtkWindow adds the .titlebar and .default-decoration style classes to the
+// widget that is added as a titlebar child.
+//
+//
+// Accessibility
+//
+// GtkWindow uses the GTK_ACCESSIBLE_ROLE_WINDOW role.
+type Window struct {
+	Widget
+}
+
+// WindowControls: gtkWindowControls shows window frame controls, such as
+// minimize, maximize and close buttons, and the window icon.
+//
+// WindowControls only displays start or end side of the controls (see
+// WindowControls:side), so it's intended to be always used in pair with another
+// WindowControls using the opposite side, for example:
+//
+//
+//    <object class="GtkBox">
+//      <child>
+//        <object class="GtkWindowControls">
+//          <property name="side">start</property>
+//        </object>
+//      </child>
+//
+//      ...
+//
+//      <child>
+//        <object class="GtkWindowControls">
+//          <property name="side">end</property>
+//        </object>
+//      </child>
+//    </object>
+//
+//
+// CSS nodes
+//
+//    windowcontrols
+//    ├── [image.icon]
+//    ├── [button.minimize]
+//    ├── [button.maximize]
+//    ╰── [button.close]
+//
+// A WindowControls' CSS node is called windowcontrols. It contains subnodes
+// corresponding to each title button. Which of the title buttons exist and
+// where they are placed exactly depends on the desktop environment and
+// WindowControls:decoration-layout value.
+//
+// When WindowControls:empty is true, it gets the .empty style class.
+//
+//
+// Accessibility
+//
+// GtkWindowHandle uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+type WindowControls struct {
+	Widget
+}
+
+// WindowGroup: a WindowGroup restricts the effect of grabs to windows in the
+// same group, thereby making window groups almost behave like separate
+// applications.
+//
+// A window can be a member in at most one window group at a time. Windows that
+// have not been explicitly assigned to a group are implicitly treated like
+// windows of the default window group.
+//
+// GtkWindowGroup objects are referenced by each window in the group, so once
+// you have added all windows to a GtkWindowGroup, you can drop the initial
+// reference to the window group with g_object_unref(). If the windows in the
+// window group are subsequently destroyed, then they will be removed from the
+// window group and drop their references on the window group; when all window
+// have been removed, the window group will be freed.
+type WindowGroup struct {
+	*glib.Object
+}
+
+// WindowHandle: gtkWindowHandle is a titlebar area widget. When added into a
+// window, it can be dragged to move the window, and handles right click, double
+// click and middle click as expected of a titlebar.
+//
+//
+// CSS nodes
+//
+// WindowHandle has a single CSS node with the name `windowhandle`.
+//
+//
+// Accessibility
+//
+// GtkWindowHandle uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+type WindowHandle struct {
+	Widget
 }

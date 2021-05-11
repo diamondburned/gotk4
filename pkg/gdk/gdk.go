@@ -3,16 +3,18 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/cairo"
 	"github.com/diamondburned/gotk4/gdkpixbuf"
-	"github.com/diamondburned/gotk4/glib"
-	"github.com/diamondburned/gotk4/pango"
+	"github.com/diamondburned/gotk4/gio"
+	"github.com/diamondburned/gotk4/pkg/gdkx11"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 import "C"
@@ -21,50 +23,30 @@ func init() {
 	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
 		// Enums
 		{T: glib.Type(C.gdk_axis_use_get_type()), F: marshalAxisUse},
-		{T: glib.Type(C.gdk_byte_order_get_type()), F: marshalByteOrder},
 		{T: glib.Type(C.gdk_crossing_mode_get_type()), F: marshalCrossingMode},
-		{T: glib.Type(C.gdk_cursor_type_get_type()), F: marshalCursorType},
 		{T: glib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
 		{T: glib.Type(C.gdk_device_tool_type_get_type()), F: marshalDeviceToolType},
-		{T: glib.Type(C.gdk_device_type_get_type()), F: marshalDeviceType},
 		{T: glib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
-		{T: glib.Type(C.gdk_drag_protocol_get_type()), F: marshalDragProtocol},
 		{T: glib.Type(C.gdk_event_type_get_type()), F: marshalEventType},
-		{T: glib.Type(C.gdk_filter_return_get_type()), F: marshalFilterReturn},
 		{T: glib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
 		{T: glib.Type(C.gdk_gl_error_get_type()), F: marshalGLError},
-		{T: glib.Type(C.gdk_grab_ownership_get_type()), F: marshalGrabOwnership},
-		{T: glib.Type(C.gdk_grab_status_get_type()), F: marshalGrabStatus},
 		{T: glib.Type(C.gdk_gravity_get_type()), F: marshalGravity},
-		{T: glib.Type(C.gdk_input_mode_get_type()), F: marshalInputMode},
 		{T: glib.Type(C.gdk_input_source_get_type()), F: marshalInputSource},
-		{T: glib.Type(C.gdk_modifier_intent_get_type()), F: marshalModifierIntent},
+		{T: glib.Type(C.gdk_key_match_get_type()), F: marshalKeyMatch},
+		{T: glib.Type(C.gdk_memory_format_get_type()), F: marshalMemoryFormat},
 		{T: glib.Type(C.gdk_notify_type_get_type()), F: marshalNotifyType},
-		{T: glib.Type(C.gdk_owner_change_get_type()), F: marshalOwnerChange},
-		{T: glib.Type(C.gdk_prop_mode_get_type()), F: marshalPropMode},
-		{T: glib.Type(C.gdk_property_state_get_type()), F: marshalPropertyState},
 		{T: glib.Type(C.gdk_scroll_direction_get_type()), F: marshalScrollDirection},
-		{T: glib.Type(C.gdk_setting_action_get_type()), F: marshalSettingAction},
-		{T: glib.Type(C.gdk_status_get_type()), F: marshalStatus},
 		{T: glib.Type(C.gdk_subpixel_layout_get_type()), F: marshalSubpixelLayout},
+		{T: glib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
 		{T: glib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
-		{T: glib.Type(C.gdk_visibility_state_get_type()), F: marshalVisibilityState},
-		{T: glib.Type(C.gdk_visual_type_get_type()), F: marshalVisualType},
-		{T: glib.Type(C.gdk_window_edge_get_type()), F: marshalWindowEdge},
-		{T: glib.Type(C.gdk_window_type_get_type()), F: marshalWindowType},
-		{T: glib.Type(C.gdk_window_type_hint_get_type()), F: marshalWindowTypeHint},
-		{T: glib.Type(C.gdk_window_window_class_get_type()), F: marshalWindowWindowClass},
+		{T: glib.Type(C.gdk_vulkan_error_get_type()), F: marshalVulkanError},
 
 		// Objects/Classes
 	})
 }
 
-// XEvent: used to represent native events (XEvents for the X11 backend, MSGs
-// for Win32).
-type XEvent struct{}
-
 // AxisUse: an enumeration describing the way in which a device axis (valuator)
-// maps onto the predefined valuator types that GTK+ understands.
+// maps onto the predefined valuator types that GTK understands.
 //
 // Note that the X and Y axes are not really needed; pointer devices report
 // their location via the x/y members of events regardless. Whether X and Y are
@@ -78,50 +60,33 @@ const (
 	AxisUseX AxisUse = 1
 	// AxisUseY: the axis is used as the y axis.
 	AxisUseY AxisUse = 2
+	// AxisUseDeltaX: the axis is used as the scroll x delta
+	AxisUseDeltaX AxisUse = 3
+	// AxisUseDeltaY: the axis is used as the scroll y delta
+	AxisUseDeltaY AxisUse = 4
 	// AxisUsePressure: the axis is used for pressure information.
-	AxisUsePressure AxisUse = 3
+	AxisUsePressure AxisUse = 5
 	// AxisUseXtilt: the axis is used for x tilt information.
-	AxisUseXtilt AxisUse = 4
+	AxisUseXtilt AxisUse = 6
 	// AxisUseYtilt: the axis is used for y tilt information.
-	AxisUseYtilt AxisUse = 5
+	AxisUseYtilt AxisUse = 7
 	// AxisUseWheel: the axis is used for wheel information.
-	AxisUseWheel AxisUse = 6
-	// AxisUseDistance: the axis is used for pen/tablet distance information.
-	// (Since: 3.22)
-	AxisUseDistance AxisUse = 7
-	// AxisUseRotation: the axis is used for pen rotation information. (Since:
-	// 3.22)
-	AxisUseRotation AxisUse = 8
-	// AxisUseSlider: the axis is used for pen slider information. (Since: 3.22)
-	AxisUseSlider AxisUse = 9
+	AxisUseWheel AxisUse = 8
+	// AxisUseDistance: the axis is used for pen/tablet distance information
+	AxisUseDistance AxisUse = 9
+	// AxisUseRotation: the axis is used for pen rotation information
+	AxisUseRotation AxisUse = 10
+	// AxisUseSlider: the axis is used for pen slider information
+	AxisUseSlider AxisUse = 11
 	// AxisUseLast: a constant equal to the numerically highest axis value.
-	AxisUseLast AxisUse = 10
+	AxisUseLast AxisUse = 12
 )
 
 func marshalAxisUse(p uintptr) (interface{}, error) {
 	return AxisUse(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ByteOrder: a set of values describing the possible byte-orders for storing
-// pixel values in memory.
-type ByteOrder int
-
-const (
-	// ByteOrderLsbFirst: the values are stored with the least-significant byte
-	// first. For instance, the 32-bit value 0xffeecc would be stored in memory
-	// as 0xcc, 0xee, 0xff, 0x00.
-	ByteOrderLsbFirst ByteOrder = 0
-	// ByteOrderMsbFirst: the values are stored with the most-significant byte
-	// first. For instance, the 32-bit value 0xffeecc would be stored in memory
-	// as 0x00, 0xff, 0xee, 0xcc.
-	ByteOrderMsbFirst ByteOrder = 1
-)
-
-func marshalByteOrder(p uintptr) (interface{}, error) {
-	return ByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// CrossingMode: specifies the crossing mode for EventCrossing.
+// CrossingMode: specifies the crossing mode for enter and leave events.
 type CrossingMode int
 
 const (
@@ -131,203 +96,27 @@ const (
 	CrossingModeGrab CrossingMode = 1
 	// CrossingModeUngrab: crossing because a grab is deactivated.
 	CrossingModeUngrab CrossingMode = 2
-	// CrossingModeGTKGrab: crossing because a GTK+ grab is activated.
+	// CrossingModeGTKGrab: crossing because a GTK grab is activated.
 	CrossingModeGTKGrab CrossingMode = 3
-	// CrossingModeGTKUngrab: crossing because a GTK+ grab is deactivated.
+	// CrossingModeGTKUngrab: crossing because a GTK grab is deactivated.
 	CrossingModeGTKUngrab CrossingMode = 4
-	// CrossingModeStateChanged: crossing because a GTK+ widget changed state
+	// CrossingModeStateChanged: crossing because a GTK widget changed state
 	// (e.g. sensitivity).
 	CrossingModeStateChanged CrossingMode = 5
 	// CrossingModeTouchBegin: crossing because a touch sequence has begun, this
-	// event is synthetic as the pointer might have not left the window.
+	// event is synthetic as the pointer might have not left the surface.
 	CrossingModeTouchBegin CrossingMode = 6
 	// CrossingModeTouchEnd: crossing because a touch sequence has ended, this
-	// event is synthetic as the pointer might have not left the window.
+	// event is synthetic as the pointer might have not left the surface.
 	CrossingModeTouchEnd CrossingMode = 7
 	// CrossingModeDeviceSwitch: crossing because of a device switch (i.e. a
 	// mouse taking control of the pointer after a touch device), this event is
-	// synthetic as the pointer didn’t leave the window.
+	// synthetic as the pointer didn’t leave the surface.
 	CrossingModeDeviceSwitch CrossingMode = 8
 )
 
 func marshalCrossingMode(p uintptr) (interface{}, error) {
 	return CrossingMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// CursorType: predefined cursors.
-//
-// Note that these IDs are directly taken from the X cursor font, and many of
-// these cursors are either not useful, or are not available on other platforms.
-//
-// The recommended way to create cursors is to use gdk_cursor_new_from_name().
-type CursorType int
-
-const (
-	// CursorTypeXCursor: ![](X_cursor.png)
-	CursorTypeXCursor CursorType = 0
-	// CursorTypeArrow: ![](arrow.png)
-	CursorTypeArrow CursorType = 2
-	// CursorTypeBasedArrowDown: ![](based_arrow_down.png)
-	CursorTypeBasedArrowDown CursorType = 4
-	// CursorTypeBasedArrowUp: ![](based_arrow_up.png)
-	CursorTypeBasedArrowUp CursorType = 6
-	// CursorTypeBoat: ![](boat.png)
-	CursorTypeBoat CursorType = 8
-	// CursorTypeBogosity: ![](bogosity.png)
-	CursorTypeBogosity CursorType = 10
-	// CursorTypeBottomLeftCorner: ![](bottom_left_corner.png)
-	CursorTypeBottomLeftCorner CursorType = 12
-	// CursorTypeBottomRightCorner: ![](bottom_right_corner.png)
-	CursorTypeBottomRightCorner CursorType = 14
-	// CursorTypeBottomSide: ![](bottom_side.png)
-	CursorTypeBottomSide CursorType = 16
-	// CursorTypeBottomTee: ![](bottom_tee.png)
-	CursorTypeBottomTee CursorType = 18
-	// CursorTypeBoxSpiral: ![](box_spiral.png)
-	CursorTypeBoxSpiral CursorType = 20
-	// CursorTypeCenterPtr: ![](center_ptr.png)
-	CursorTypeCenterPtr CursorType = 22
-	// CursorTypeCircle: ![](circle.png)
-	CursorTypeCircle CursorType = 24
-	// CursorTypeClock: ![](clock.png)
-	CursorTypeClock CursorType = 26
-	// CursorTypeCoffeeMug: ![](coffee_mug.png)
-	CursorTypeCoffeeMug CursorType = 28
-	// CursorTypeCross: ![](cross.png)
-	CursorTypeCross CursorType = 30
-	// CursorTypeCrossReverse: ![](cross_reverse.png)
-	CursorTypeCrossReverse CursorType = 32
-	// CursorTypeCrosshair: ![](crosshair.png)
-	CursorTypeCrosshair CursorType = 34
-	// CursorTypeDiamondCross: ![](diamond_cross.png)
-	CursorTypeDiamondCross CursorType = 36
-	// CursorTypeDot: ![](dot.png)
-	CursorTypeDot CursorType = 38
-	// CursorTypeDotbox: ![](dotbox.png)
-	CursorTypeDotbox CursorType = 40
-	// CursorTypeDoubleArrow: ![](double_arrow.png)
-	CursorTypeDoubleArrow CursorType = 42
-	// CursorTypeDraftLarge: ![](draft_large.png)
-	CursorTypeDraftLarge CursorType = 44
-	// CursorTypeDraftSmall: ![](draft_small.png)
-	CursorTypeDraftSmall CursorType = 46
-	// CursorTypeDrapedBox: ![](draped_box.png)
-	CursorTypeDrapedBox CursorType = 48
-	// CursorTypeExchange: ![](exchange.png)
-	CursorTypeExchange CursorType = 50
-	// CursorTypeFleur: ![](fleur.png)
-	CursorTypeFleur CursorType = 52
-	// CursorTypeGobbler: ![](gobbler.png)
-	CursorTypeGobbler CursorType = 54
-	// CursorTypeGumby: ![](gumby.png)
-	CursorTypeGumby CursorType = 56
-	// CursorTypeHand1: ![](hand1.png)
-	CursorTypeHand1 CursorType = 58
-	// CursorTypeHand2: ![](hand2.png)
-	CursorTypeHand2 CursorType = 60
-	// CursorTypeHeart: ![](heart.png)
-	CursorTypeHeart CursorType = 62
-	// CursorTypeIcon: ![](icon.png)
-	CursorTypeIcon CursorType = 64
-	// CursorTypeIronCross: ![](iron_cross.png)
-	CursorTypeIronCross CursorType = 66
-	// CursorTypeLeftPtr: ![](left_ptr.png)
-	CursorTypeLeftPtr CursorType = 68
-	// CursorTypeLeftSide: ![](left_side.png)
-	CursorTypeLeftSide CursorType = 70
-	// CursorTypeLeftTee: ![](left_tee.png)
-	CursorTypeLeftTee CursorType = 72
-	// CursorTypeLeftbutton: ![](leftbutton.png)
-	CursorTypeLeftbutton CursorType = 74
-	// CursorTypeLlAngle: ![](ll_angle.png)
-	CursorTypeLlAngle CursorType = 76
-	// CursorTypeLrAngle: ![](lr_angle.png)
-	CursorTypeLrAngle CursorType = 78
-	// CursorTypeMan: ![](man.png)
-	CursorTypeMan CursorType = 80
-	// CursorTypeMiddlebutton: ![](middlebutton.png)
-	CursorTypeMiddlebutton CursorType = 82
-	// CursorTypeMouse: ![](mouse.png)
-	CursorTypeMouse CursorType = 84
-	// CursorTypePencil: ![](pencil.png)
-	CursorTypePencil CursorType = 86
-	// CursorTypePirate: ![](pirate.png)
-	CursorTypePirate CursorType = 88
-	// CursorTypePlus: ![](plus.png)
-	CursorTypePlus CursorType = 90
-	// CursorTypeQuestionArrow: ![](question_arrow.png)
-	CursorTypeQuestionArrow CursorType = 92
-	// CursorTypeRightPtr: ![](right_ptr.png)
-	CursorTypeRightPtr CursorType = 94
-	// CursorTypeRightSide: ![](right_side.png)
-	CursorTypeRightSide CursorType = 96
-	// CursorTypeRightTee: ![](right_tee.png)
-	CursorTypeRightTee CursorType = 98
-	// CursorTypeRightbutton: ![](rightbutton.png)
-	CursorTypeRightbutton CursorType = 100
-	// CursorTypeRTLLogo: ![](rtl_logo.png)
-	CursorTypeRTLLogo CursorType = 102
-	// CursorTypeSailboat: ![](sailboat.png)
-	CursorTypeSailboat CursorType = 104
-	// CursorTypeSbDownArrow: ![](sb_down_arrow.png)
-	CursorTypeSbDownArrow CursorType = 106
-	// CursorTypeSbHDoubleArrow: ![](sb_h_double_arrow.png)
-	CursorTypeSbHDoubleArrow CursorType = 108
-	// CursorTypeSbLeftArrow: ![](sb_left_arrow.png)
-	CursorTypeSbLeftArrow CursorType = 110
-	// CursorTypeSbRightArrow: ![](sb_right_arrow.png)
-	CursorTypeSbRightArrow CursorType = 112
-	// CursorTypeSbUpArrow: ![](sb_up_arrow.png)
-	CursorTypeSbUpArrow CursorType = 114
-	// CursorTypeSbVDoubleArrow: ![](sb_v_double_arrow.png)
-	CursorTypeSbVDoubleArrow CursorType = 116
-	// CursorTypeShuttle: ![](shuttle.png)
-	CursorTypeShuttle CursorType = 118
-	// CursorTypeSizing: ![](sizing.png)
-	CursorTypeSizing CursorType = 120
-	// CursorTypeSpider: ![](spider.png)
-	CursorTypeSpider CursorType = 122
-	// CursorTypeSpraycan: ![](spraycan.png)
-	CursorTypeSpraycan CursorType = 124
-	// CursorTypeStar: ![](star.png)
-	CursorTypeStar CursorType = 126
-	// CursorTypeTarget: ![](target.png)
-	CursorTypeTarget CursorType = 128
-	// CursorTypeTcross: ![](tcross.png)
-	CursorTypeTcross CursorType = 130
-	// CursorTypeTopLeftArrow: ![](top_left_arrow.png)
-	CursorTypeTopLeftArrow CursorType = 132
-	// CursorTypeTopLeftCorner: ![](top_left_corner.png)
-	CursorTypeTopLeftCorner CursorType = 134
-	// CursorTypeTopRightCorner: ![](top_right_corner.png)
-	CursorTypeTopRightCorner CursorType = 136
-	// CursorTypeTopSide: ![](top_side.png)
-	CursorTypeTopSide CursorType = 138
-	// CursorTypeTopTee: ![](top_tee.png)
-	CursorTypeTopTee CursorType = 140
-	// CursorTypeTrek: ![](trek.png)
-	CursorTypeTrek CursorType = 142
-	// CursorTypeUlAngle: ![](ul_angle.png)
-	CursorTypeUlAngle CursorType = 144
-	// CursorTypeUmbrella: ![](umbrella.png)
-	CursorTypeUmbrella CursorType = 146
-	// CursorTypeUrAngle: ![](ur_angle.png)
-	CursorTypeUrAngle CursorType = 148
-	// CursorTypeWatch: ![](watch.png)
-	CursorTypeWatch CursorType = 150
-	// CursorTypeXterm: ![](xterm.png)
-	CursorTypeXterm CursorType = 152
-	// CursorTypeLastCursor: last cursor type
-	CursorTypeLastCursor CursorType = 153
-	// CursorTypeBlankCursor: blank cursor. Since 2.16
-	CursorTypeBlankCursor CursorType = -2
-	// CursorTypeCursorIsPixmap: type of cursors constructed with
-	// gdk_cursor_new_from_pixbuf()
-	CursorTypeCursorIsPixmap CursorType = -1
-)
-
-func marshalCursorType(p uintptr) (interface{}, error) {
-	return CursorType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // DevicePadFeature: a pad feature.
@@ -373,28 +162,7 @@ func marshalDeviceToolType(p uintptr) (interface{}, error) {
 	return DeviceToolType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DeviceType: indicates the device type. See
-// [above][GdkDeviceManager.description] for more information about the meaning
-// of these device types.
-type DeviceType int
-
-const (
-	// DeviceTypeMaster: device is a master (or virtual) device. There will be
-	// an associated focus indicator on the screen.
-	DeviceTypeMaster DeviceType = 0
-	// DeviceTypeSlave: device is a slave (or physical) device.
-	DeviceTypeSlave DeviceType = 1
-	// DeviceTypeFloating: device is a physical device, currently not attached
-	// to any virtual device.
-	DeviceTypeFloating DeviceType = 2
-)
-
-func marshalDeviceType(p uintptr) (interface{}, error) {
-	return DeviceType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// DragCancelReason: used in DragContext to the reason of a cancelled DND
-// operation.
+// DragCancelReason: used in Drag to the reason of a cancelled DND operation.
 type DragCancelReason int
 
 const (
@@ -410,210 +178,84 @@ func marshalDragCancelReason(p uintptr) (interface{}, error) {
 	return DragCancelReason(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DragProtocol: used in DragContext to indicate the protocol according to which
-// DND is done.
-type DragProtocol int
-
-const (
-	// DragProtocolNone: no protocol.
-	DragProtocolNone DragProtocol = 0
-	// DragProtocolMotif: the Motif DND protocol. No longer supported
-	DragProtocolMotif DragProtocol = 1
-	// DragProtocolXdnd: the Xdnd protocol.
-	DragProtocolXdnd DragProtocol = 2
-	// DragProtocolRootwin: an extension to the Xdnd protocol for unclaimed root
-	// window drops.
-	DragProtocolRootwin DragProtocol = 3
-	// DragProtocolWin32Dropfiles: the simple WM_DROPFILES protocol.
-	DragProtocolWin32Dropfiles DragProtocol = 4
-	// DragProtocolOle2: the complex OLE2 DND protocol (not implemented).
-	DragProtocolOle2 DragProtocol = 5
-	// DragProtocolLocal: intra-application DND.
-	DragProtocolLocal DragProtocol = 6
-	// DragProtocolWayland: wayland DND protocol.
-	DragProtocolWayland DragProtocol = 7
-)
-
-func marshalDragProtocol(p uintptr) (interface{}, error) {
-	return DragProtocol(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
 // EventType: specifies the type of the event.
-//
-// Do not confuse these events with the signals that GTK+ widgets emit. Although
-// many of these events result in corresponding signals being emitted, the
-// events are often transformed or filtered along the way.
-//
-// In some language bindings, the values GDK_2BUTTON_PRESS and GDK_3BUTTON_PRESS
-// would translate into something syntactically invalid (eg
-// `Gdk.EventType.2ButtonPress`, where a symbol is not allowed to start with a
-// number). In that case, the aliases GDK_DOUBLE_BUTTON_PRESS and
-// GDK_TRIPLE_BUTTON_PRESS can be used instead.
 type EventType int
 
 const (
-	// EventTypeNothing: a special code to indicate a null event.
-	EventTypeNothing EventType = -1
 	// EventTypeDelete: the window manager has requested that the toplevel
-	// window be hidden or destroyed, usually when the user clicks on a special
+	// surface be hidden or destroyed, usually when the user clicks on a special
 	// icon in the title bar.
 	EventTypeDelete EventType = 0
-	// EventTypeDestroy: the window has been destroyed.
-	EventTypeDestroy EventType = 1
-	// EventTypeExpose: all or part of the window has become visible and needs
-	// to be redrawn.
-	EventTypeExpose EventType = 2
 	// EventTypeMotionNotify: the pointer (usually a mouse) has moved.
-	EventTypeMotionNotify EventType = 3
+	EventTypeMotionNotify EventType = 1
 	// EventTypeButtonPress: a mouse button has been pressed.
-	EventTypeButtonPress EventType = 4
-	// EventType2ButtonPress: a mouse button has been double-clicked (clicked
-	// twice within a short period of time). Note that each click also generates
-	// a GDK_BUTTON_PRESS event.
-	EventType2ButtonPress EventType = 5
-	// EventTypeDoubleButtonPress: alias for GDK_2BUTTON_PRESS, added in 3.6.
-	EventTypeDoubleButtonPress EventType = 5
-	// EventType3ButtonPress: a mouse button has been clicked 3 times in a short
-	// period of time. Note that each click also generates a GDK_BUTTON_PRESS
-	// event.
-	EventType3ButtonPress EventType = 6
-	// EventTypeTripleButtonPress: alias for GDK_3BUTTON_PRESS, added in 3.6.
-	EventTypeTripleButtonPress EventType = 6
+	EventTypeButtonPress EventType = 2
 	// EventTypeButtonRelease: a mouse button has been released.
-	EventTypeButtonRelease EventType = 7
+	EventTypeButtonRelease EventType = 3
 	// EventTypeKeyPress: a key has been pressed.
-	EventTypeKeyPress EventType = 8
+	EventTypeKeyPress EventType = 4
 	// EventTypeKeyRelease: a key has been released.
-	EventTypeKeyRelease EventType = 9
-	// EventTypeEnterNotify: the pointer has entered the window.
-	EventTypeEnterNotify EventType = 10
-	// EventTypeLeaveNotify: the pointer has left the window.
-	EventTypeLeaveNotify EventType = 11
-	// EventTypeFocusChange: the keyboard focus has entered or left the window.
-	EventTypeFocusChange EventType = 12
-	// EventTypeConfigure: the size, position or stacking order of the window
-	// has changed. Note that GTK+ discards these events for GDK_WINDOW_CHILD
-	// windows.
-	EventTypeConfigure EventType = 13
-	// EventTypeMap: the window has been mapped.
-	EventTypeMap EventType = 14
-	// EventTypeUnmap: the window has been unmapped.
-	EventTypeUnmap EventType = 15
-	// EventTypePropertyNotify: a property on the window has been changed or
-	// deleted.
-	EventTypePropertyNotify EventType = 16
-	// EventTypeSelectionClear: the application has lost ownership of a
-	// selection.
-	EventTypeSelectionClear EventType = 17
-	// EventTypeSelectionRequest: another application has requested a selection.
-	EventTypeSelectionRequest EventType = 18
-	// EventTypeSelectionNotify: a selection has been received.
-	EventTypeSelectionNotify EventType = 19
+	EventTypeKeyRelease EventType = 5
+	// EventTypeEnterNotify: the pointer has entered the surface.
+	EventTypeEnterNotify EventType = 6
+	// EventTypeLeaveNotify: the pointer has left the surface.
+	EventTypeLeaveNotify EventType = 7
+	// EventTypeFocusChange: the keyboard focus has entered or left the surface.
+	EventTypeFocusChange EventType = 8
 	// EventTypeProximityIn: an input device has moved into contact with a
 	// sensing surface (e.g. a touchscreen or graphics tablet).
-	EventTypeProximityIn EventType = 20
+	EventTypeProximityIn EventType = 9
 	// EventTypeProximityOut: an input device has moved out of contact with a
 	// sensing surface.
-	EventTypeProximityOut EventType = 21
-	// EventTypeDragEnter: the mouse has entered the window while a drag is in
+	EventTypeProximityOut EventType = 10
+	// EventTypeDragEnter: the mouse has entered the surface while a drag is in
 	// progress.
-	EventTypeDragEnter EventType = 22
-	// EventTypeDragLeave: the mouse has left the window while a drag is in
+	EventTypeDragEnter EventType = 11
+	// EventTypeDragLeave: the mouse has left the surface while a drag is in
 	// progress.
-	EventTypeDragLeave EventType = 23
-	// EventTypeDragMotion: the mouse has moved in the window while a drag is in
-	// progress.
-	EventTypeDragMotion EventType = 24
-	// EventTypeDragStatus: the status of the drag operation initiated by the
-	// window has changed.
-	EventTypeDragStatus EventType = 25
-	// EventTypeDropStart: a drop operation onto the window has started.
-	EventTypeDropStart EventType = 26
-	// EventTypeDropFinished: the drop operation initiated by the window has
-	// completed.
-	EventTypeDropFinished EventType = 27
-	// EventTypeClientEvent: a message has been received from another
-	// application.
-	EventTypeClientEvent EventType = 28
-	// EventTypeVisibilityNotify: the window visibility status has changed.
-	EventTypeVisibilityNotify EventType = 29
+	EventTypeDragLeave EventType = 12
+	// EventTypeDragMotion: the mouse has moved in the surface while a drag is
+	// in progress.
+	EventTypeDragMotion EventType = 13
+	// EventTypeDropStart: a drop operation onto the surface has started.
+	EventTypeDropStart EventType = 14
 	// EventTypeScroll: the scroll wheel was turned
-	EventTypeScroll EventType = 31
-	// EventTypeWindowState: the state of a window has changed. See WindowState
-	// for the possible window states
-	EventTypeWindowState EventType = 32
-	// EventTypeSetting: a setting has been modified.
-	EventTypeSetting EventType = 33
-	// EventTypeOwnerChange: the owner of a selection has changed. This event
-	// type was added in 2.6
-	EventTypeOwnerChange EventType = 34
-	// EventTypeGrabBroken: a pointer or keyboard grab was broken. This event
-	// type was added in 2.8.
-	EventTypeGrabBroken EventType = 35
-	// EventTypeDamage: the content of the window has been changed. This event
-	// type was added in 2.14.
-	EventTypeDamage EventType = 36
-	// EventTypeTouchBegin: a new touch event sequence has just started. This
-	// event type was added in 3.4.
-	EventTypeTouchBegin EventType = 37
-	// EventTypeTouchUpdate: a touch event sequence has been updated. This event
-	// type was added in 3.4.
-	EventTypeTouchUpdate EventType = 38
-	// EventTypeTouchEnd: a touch event sequence has finished. This event type
-	// was added in 3.4.
-	EventTypeTouchEnd EventType = 39
-	// EventTypeTouchCancel: a touch event sequence has been canceled. This
-	// event type was added in 3.4.
-	EventTypeTouchCancel EventType = 40
+	EventTypeScroll EventType = 15
+	// EventTypeGrabBroken: a pointer or keyboard grab was broken.
+	EventTypeGrabBroken EventType = 16
+	// EventTypeTouchBegin: a new touch event sequence has just started.
+	EventTypeTouchBegin EventType = 17
+	// EventTypeTouchUpdate: a touch event sequence has been updated.
+	EventTypeTouchUpdate EventType = 18
+	// EventTypeTouchEnd: a touch event sequence has finished.
+	EventTypeTouchEnd EventType = 19
+	// EventTypeTouchCancel: a touch event sequence has been canceled.
+	EventTypeTouchCancel EventType = 20
 	// EventTypeTouchpadSwipe: a touchpad swipe gesture event, the current state
-	// is determined by its phase field. This event type was added in 3.18.
-	EventTypeTouchpadSwipe EventType = 41
+	// is determined by its phase field.
+	EventTypeTouchpadSwipe EventType = 21
 	// EventTypeTouchpadPinch: a touchpad pinch gesture event, the current state
-	// is determined by its phase field. This event type was added in 3.18.
-	EventTypeTouchpadPinch EventType = 42
-	// EventTypePadButtonPress: a tablet pad button press event. This event type
-	// was added in 3.22.
-	EventTypePadButtonPress EventType = 43
-	// EventTypePadButtonRelease: a tablet pad button release event. This event
-	// type was added in 3.22.
-	EventTypePadButtonRelease EventType = 44
-	// EventTypePadRing: a tablet pad axis event from a "ring". This event type
-	// was added in 3.22.
-	EventTypePadRing EventType = 45
-	// EventTypePadStrip: a tablet pad axis event from a "strip". This event
-	// type was added in 3.22.
-	EventTypePadStrip EventType = 46
-	// EventTypePadGroupMode: a tablet pad group mode change. This event type
-	// was added in 3.22.
-	EventTypePadGroupMode EventType = 47
-	// EventTypeEventLast: marks the end of the GdkEventType enumeration. Added
-	// in 2.18
-	EventTypeEventLast EventType = 48
+	// is determined by its phase field.
+	EventTypeTouchpadPinch EventType = 22
+	// EventTypePadButtonPress: a tablet pad button press event.
+	EventTypePadButtonPress EventType = 23
+	// EventTypePadButtonRelease: a tablet pad button release event.
+	EventTypePadButtonRelease EventType = 24
+	// EventTypePadRing: a tablet pad axis event from a "ring".
+	EventTypePadRing EventType = 25
+	// EventTypePadStrip: a tablet pad axis event from a "strip".
+	EventTypePadStrip EventType = 26
+	// EventTypePadGroupMode: a tablet pad group mode change.
+	EventTypePadGroupMode EventType = 27
+	// EventTypeEventLast: marks the end of the GdkEventType enumeration.
+	EventTypeEventLast EventType = 28
 )
 
 func marshalEventType(p uintptr) (interface{}, error) {
 	return EventType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FilterReturn: specifies the result of applying a FilterFunc to a native
-// event.
-type FilterReturn int
-
-const (
-	// FilterReturnContinue: event not handled, continue processing.
-	FilterReturnContinue FilterReturn = 0
-	// FilterReturnTranslate: native event translated into a GDK event and
-	// stored in the `event` structure that was passed in.
-	FilterReturnTranslate FilterReturn = 1
-	// FilterReturnRemove: event handled, terminate processing.
-	FilterReturnRemove FilterReturn = 2
-)
-
-func marshalFilterReturn(p uintptr) (interface{}, error) {
-	return FilterReturn(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// FullscreenMode: indicates which monitor (in a multi-head setup) a window
+// FullscreenMode: indicates which monitor (in a multi-head setup) a surface
 // should span over when in fullscreen mode.
 type FullscreenMode int
 
@@ -638,63 +280,17 @@ const (
 	GLErrorUnsupportedFormat GLError = 1
 	// GLErrorUnsupportedProfile: the requested profile is not supported
 	GLErrorUnsupportedProfile GLError = 2
+	// GLErrorCompilationFailed: the shader compilation failed
+	GLErrorCompilationFailed GLError = 3
+	// GLErrorLinkFailed: the shader linking failed
+	GLErrorLinkFailed GLError = 4
 )
 
 func marshalGLError(p uintptr) (interface{}, error) {
 	return GLError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// GrabOwnership: defines how device grabs interact with other devices.
-type GrabOwnership int
-
-const (
-	// GrabOwnershipNone: all other devices’ events are allowed.
-	GrabOwnershipNone GrabOwnership = 0
-	// GrabOwnershipWindow: other devices’ events are blocked for the grab
-	// window.
-	GrabOwnershipWindow GrabOwnership = 1
-	// GrabOwnershipApplication: other devices’ events are blocked for the whole
-	// application.
-	GrabOwnershipApplication GrabOwnership = 2
-)
-
-func marshalGrabOwnership(p uintptr) (interface{}, error) {
-	return GrabOwnership(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// GrabStatus: returned by gdk_device_grab(), gdk_pointer_grab() and
-// gdk_keyboard_grab() to indicate success or the reason for the failure of the
-// grab attempt.
-type GrabStatus int
-
-const (
-	// GrabStatusSuccess: the resource was successfully grabbed.
-	GrabStatusSuccess GrabStatus = 0
-	// GrabStatusAlreadyGrabbed: the resource is actively grabbed by another
-	// client.
-	GrabStatusAlreadyGrabbed GrabStatus = 1
-	// GrabStatusInvalidTime: the resource was grabbed more recently than the
-	// specified time.
-	GrabStatusInvalidTime GrabStatus = 2
-	// GrabStatusNotViewable: the grab window or the @confine_to window are not
-	// viewable.
-	GrabStatusNotViewable GrabStatus = 3
-	// GrabStatusFrozen: the resource is frozen by an active grab of another
-	// client.
-	GrabStatusFrozen GrabStatus = 4
-	// GrabStatusFailed: the grab failed for some other reason. Since 3.16
-	GrabStatusFailed GrabStatus = 5
-)
-
-func marshalGrabStatus(p uintptr) (interface{}, error) {
-	return GrabStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// Gravity: defines the reference point of a window and the meaning of
-// coordinates passed to gtk_window_move(). See gtk_window_move() and the
-// "implementation notes" section of the [Extended Window Manager
-// Hints](http://www.freedesktop.org/Standards/wm-spec) specification for more
-// details.
+// Gravity: defines the reference point of a surface and is used in PopupLayout.
 type Gravity int
 
 const (
@@ -706,7 +302,7 @@ const (
 	GravityNorthEast Gravity = 3
 	// GravityWest: the reference point is at the middle of the left edge.
 	GravityWest Gravity = 4
-	// GravityCenter: the reference point is at the center of the window.
+	// GravityCenter: the reference point is at the center of the surface.
 	GravityCenter Gravity = 5
 	// GravityEast: the reference point is at the middle of the right edge.
 	GravityEast Gravity = 6
@@ -717,32 +313,12 @@ const (
 	// GravitySouthEast: the reference point is at the lower right corner.
 	GravitySouthEast Gravity = 9
 	// GravityStatic: the reference point is at the top left corner of the
-	// window itself, ignoring window manager decorations.
+	// surface itself, ignoring window manager decorations.
 	GravityStatic Gravity = 10
 )
 
 func marshalGravity(p uintptr) (interface{}, error) {
 	return Gravity(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// InputMode: an enumeration that describes the mode of an input device.
-type InputMode int
-
-const (
-	// InputModeDisabled: the device is disabled and will not report any events.
-	InputModeDisabled InputMode = 0
-	// InputModeScreen: the device is enabled. The device’s coordinate space
-	// maps to the entire screen.
-	InputModeScreen InputMode = 1
-	// InputModeWindow: the device is enabled. The device’s coordinate space is
-	// mapped to a single window. The manner in which this window is chosen is
-	// undefined, but it will typically be the same way in which the focus
-	// window for key events is determined.
-	InputModeWindow InputMode = 2
-)
-
-func marshalInputMode(p uintptr) (interface{}, error) {
-	return InputMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // InputSource: an enumeration describing the type of an input device in general
@@ -756,98 +332,110 @@ const (
 	// InputSourcePen: the device is a stylus of a graphics tablet or similar
 	// device.
 	InputSourcePen InputSource = 1
-	// InputSourceEraser: the device is an eraser. Typically, this would be the
-	// other end of a stylus on a graphics tablet.
-	InputSourceEraser InputSource = 2
-	// InputSourceCursor: the device is a graphics tablet “puck” or similar
-	// device.
-	InputSourceCursor InputSource = 3
 	// InputSourceKeyboard: the device is a keyboard.
-	InputSourceKeyboard InputSource = 4
+	InputSourceKeyboard InputSource = 2
 	// InputSourceTouchscreen: the device is a direct-input touch device, such
-	// as a touchscreen or tablet. This device type has been added in 3.4.
-	InputSourceTouchscreen InputSource = 5
+	// as a touchscreen or tablet
+	InputSourceTouchscreen InputSource = 3
 	// InputSourceTouchpad: the device is an indirect touch device, such as a
-	// touchpad. This device type has been added in 3.4.
-	InputSourceTouchpad InputSource = 6
-	// InputSourceTrackpoint: the device is a trackpoint. This device type has
-	// been added in 3.22
-	InputSourceTrackpoint InputSource = 7
+	// touchpad
+	InputSourceTouchpad InputSource = 4
+	// InputSourceTrackpoint: the device is a trackpoint
+	InputSourceTrackpoint InputSource = 5
 	// InputSourceTabletPad: the device is a "pad", a collection of buttons,
-	// rings and strips found in drawing tablets. This device type has been
-	// added in 3.22.
-	InputSourceTabletPad InputSource = 8
+	// rings and strips found in drawing tablets
+	InputSourceTabletPad InputSource = 6
 )
 
 func marshalInputSource(p uintptr) (interface{}, error) {
 	return InputSource(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ModifierIntent: this enum is used with gdk_keymap_get_modifier_mask() in
-// order to determine what modifiers the currently used windowing system backend
-// uses for particular purposes. For example, on X11/Windows, the Control key is
-// used for invoking menu shortcuts (accelerators), whereas on Apple computers
-// it’s the Command key (which correspond to GDK_CONTROL_MASK and GDK_MOD2_MASK,
-// respectively).
-type ModifierIntent int
+// KeyMatch: the possible return values from gdk_key_event_matches() describe
+// how well an event matches a given keyval and modifiers.
+type KeyMatch int
 
 const (
-	// ModifierIntentPrimaryAccelerator: the primary modifier used to invoke
-	// menu accelerators.
-	ModifierIntentPrimaryAccelerator ModifierIntent = 0
-	// ModifierIntentContextMenu: the modifier used to invoke context menus.
-	// Note that mouse button 3 always triggers context menus. When this
-	// modifier is not 0, it additionally triggers context menus when used with
-	// mouse button 1.
-	ModifierIntentContextMenu ModifierIntent = 1
-	// ModifierIntentExtendSelection: the modifier used to extend selections
-	// using `modifier`-click or `modifier`-cursor-key
-	ModifierIntentExtendSelection ModifierIntent = 2
-	// ModifierIntentModifySelection: the modifier used to modify selections,
-	// which in most cases means toggling the clicked item into or out of the
-	// selection.
-	ModifierIntentModifySelection ModifierIntent = 3
-	// ModifierIntentNoTextInput: when any of these modifiers is pressed, the
-	// key event cannot produce a symbol directly. This is meant to be used for
-	// input methods, and for use cases like typeahead search.
-	ModifierIntentNoTextInput ModifierIntent = 4
-	// ModifierIntentShiftGroup: the modifier that switches between keyboard
-	// groups (AltGr on X11/Windows and Option/Alt on OS X).
-	ModifierIntentShiftGroup ModifierIntent = 5
-	// ModifierIntentDefaultModMask: the set of modifier masks accepted as
-	// modifiers in accelerators. Needed because Command is mapped to MOD2 on
-	// OSX, which is widely used, but on X11 MOD2 is NumLock and using that for
-	// a mod key is problematic at best. Ref:
-	// https://bugzilla.gnome.org/show_bug.cgi?id=736125.
-	ModifierIntentDefaultModMask ModifierIntent = 6
+	// KeyMatchNone: the key event does not match
+	KeyMatchNone KeyMatch = 0
+	// KeyMatchPartial: the key event matches if keyboard state (specifically,
+	// the currently active group) is ignored
+	KeyMatchPartial KeyMatch = 1
+	// KeyMatchExact: the key event matches
+	KeyMatchExact KeyMatch = 2
 )
 
-func marshalModifierIntent(p uintptr) (interface{}, error) {
-	return ModifierIntent(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalKeyMatch(p uintptr) (interface{}, error) {
+	return KeyMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// NotifyType: specifies the kind of crossing for EventCrossing.
+// MemoryFormat: gdkMemoryFormat describes a format that bytes can have in
+// memory.
+//
+// It describes formats by listing the contents of the memory passed to it. So
+// GDK_MEMORY_A8R8G8B8 will be 1 byte (8 bits) of alpha, followed by a byte each
+// of red, green and blue. It is not endian-dependent, so CAIRO_FORMAT_ARGB32 is
+// represented by different MemoryFormats on architectures with different
+// endiannesses.
+//
+// Its naming is modelled after VkFormat (see
+// https://www.khronos.org/registry/vulkan/specs/1.0/html/vkspec.htmlFormat for
+// details).
+type MemoryFormat int
+
+const (
+	// MemoryFormatB8G8R8A8Premultiplied: 4 bytes; for blue, green, red, alpha.
+	// The color values are premultiplied with the alpha value.
+	MemoryFormatB8G8R8A8Premultiplied MemoryFormat = 0
+	// MemoryFormatA8R8G8B8Premultiplied: 4 bytes; for alpha, red, green, blue.
+	// The color values are premultiplied with the alpha value.
+	MemoryFormatA8R8G8B8Premultiplied MemoryFormat = 1
+	// MemoryFormatR8G8B8A8Premultiplied: 4 bytes; for red, green, blue, alpha
+	// The color values are premultiplied with the alpha value.
+	MemoryFormatR8G8B8A8Premultiplied MemoryFormat = 2
+	// MemoryFormatB8G8R8A8: 4 bytes; for blue, green, red, alpha.
+	MemoryFormatB8G8R8A8 MemoryFormat = 3
+	// MemoryFormatA8R8G8B8: 4 bytes; for alpha, red, green, blue.
+	MemoryFormatA8R8G8B8 MemoryFormat = 4
+	// MemoryFormatR8G8B8A8: 4 bytes; for red, green, blue, alpha.
+	MemoryFormatR8G8B8A8 MemoryFormat = 5
+	// MemoryFormatA8B8G8R8: 4 bytes; for alpha, blue, green, red.
+	MemoryFormatA8B8G8R8 MemoryFormat = 6
+	// MemoryFormatR8G8B8: 3 bytes; for red, green, blue. The data is opaque.
+	MemoryFormatR8G8B8 MemoryFormat = 7
+	// MemoryFormatB8G8R8: 3 bytes; for blue, green, red. The data is opaque.
+	MemoryFormatB8G8R8 MemoryFormat = 8
+	// MemoryFormatNFormats: the number of formats. This value will change as
+	// more formats get added, so do not rely on its concrete integer.
+	MemoryFormatNFormats MemoryFormat = 9
+)
+
+func marshalMemoryFormat(p uintptr) (interface{}, error) {
+	return MemoryFormat(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// NotifyType: specifies the kind of crossing for enter and leave events.
 //
 // See the X11 protocol specification of LeaveNotify for full details of
 // crossing event generation.
 type NotifyType int
 
 const (
-	// NotifyTypeAncestor: the window is entered from an ancestor or left
+	// NotifyTypeAncestor: the surface is entered from an ancestor or left
 	// towards an ancestor.
 	NotifyTypeAncestor NotifyType = 0
 	// NotifyTypeVirtual: the pointer moves between an ancestor and an inferior
-	// of the window.
+	// of the surface.
 	NotifyTypeVirtual NotifyType = 1
-	// NotifyTypeInferior: the window is entered from an inferior or left
+	// NotifyTypeInferior: the surface is entered from an inferior or left
 	// towards an inferior.
 	NotifyTypeInferior NotifyType = 2
-	// NotifyTypeNonlinear: the window is entered from or left towards a window
-	// which is neither an ancestor nor an inferior.
+	// NotifyTypeNonlinear: the surface is entered from or left towards a
+	// surface which is neither an ancestor nor an inferior.
 	NotifyTypeNonlinear NotifyType = 3
-	// NotifyTypeNonlinearVirtual: the pointer moves between two windows which
-	// are not ancestors of each other and the window is part of the ancestor
-	// chain between one of these windows and their least common ancestor.
+	// NotifyTypeNonlinearVirtual: the pointer moves between two surfaces which
+	// are not ancestors of each other and the surface is part of the ancestor
+	// chain between one of these surfaces and their least common ancestor.
 	NotifyTypeNonlinearVirtual NotifyType = 4
 	// NotifyTypeUnknown: an unknown type of enter/leave event occurred.
 	NotifyTypeUnknown NotifyType = 5
@@ -857,107 +445,25 @@ func marshalNotifyType(p uintptr) (interface{}, error) {
 	return NotifyType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// OwnerChange: specifies why a selection ownership was changed.
-type OwnerChange int
-
-const (
-	// OwnerChangeNewOwner: some other app claimed the ownership
-	OwnerChangeNewOwner OwnerChange = 0
-	// OwnerChangeDestroy: the window was destroyed
-	OwnerChangeDestroy OwnerChange = 1
-	// OwnerChangeClose: the client was closed
-	OwnerChangeClose OwnerChange = 2
-)
-
-func marshalOwnerChange(p uintptr) (interface{}, error) {
-	return OwnerChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// PropMode: describes how existing data is combined with new data when using
-// gdk_property_change().
-type PropMode int
-
-const (
-	// PropModeReplace: the new data replaces the existing data.
-	PropModeReplace PropMode = 0
-	// PropModePrepend: the new data is prepended to the existing data.
-	PropModePrepend PropMode = 1
-	// PropModeAppend: the new data is appended to the existing data.
-	PropModeAppend PropMode = 2
-)
-
-func marshalPropMode(p uintptr) (interface{}, error) {
-	return PropMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// PropertyState: specifies the type of a property change for a EventProperty.
-type PropertyState int
-
-const (
-	// PropertyStateNewValue: the property value was changed.
-	PropertyStateNewValue PropertyState = 0
-	// PropertyStateDelete: the property was deleted.
-	PropertyStateDelete PropertyState = 1
-)
-
-func marshalPropertyState(p uintptr) (interface{}, error) {
-	return PropertyState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// ScrollDirection: specifies the direction for EventScroll.
+// ScrollDirection: specifies the direction for scroll events.
 type ScrollDirection int
 
 const (
-	// ScrollDirectionUp: the window is scrolled up.
+	// ScrollDirectionUp: the surface is scrolled up.
 	ScrollDirectionUp ScrollDirection = 0
-	// ScrollDirectionDown: the window is scrolled down.
+	// ScrollDirectionDown: the surface is scrolled down.
 	ScrollDirectionDown ScrollDirection = 1
-	// ScrollDirectionLeft: the window is scrolled to the left.
+	// ScrollDirectionLeft: the surface is scrolled to the left.
 	ScrollDirectionLeft ScrollDirection = 2
-	// ScrollDirectionRight: the window is scrolled to the right.
+	// ScrollDirectionRight: the surface is scrolled to the right.
 	ScrollDirectionRight ScrollDirection = 3
 	// ScrollDirectionSmooth: the scrolling is determined by the delta values in
-	// EventScroll. See gdk_event_get_scroll_deltas(). Since: 3.4
+	// scroll events. See gdk_scroll_event_get_deltas()
 	ScrollDirectionSmooth ScrollDirection = 4
 )
 
 func marshalScrollDirection(p uintptr) (interface{}, error) {
 	return ScrollDirection(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// SettingAction: specifies the kind of modification applied to a setting in a
-// EventSetting.
-type SettingAction int
-
-const (
-	// SettingActionNew: a setting was added.
-	SettingActionNew SettingAction = 0
-	// SettingActionChanged: a setting was changed.
-	SettingActionChanged SettingAction = 1
-	// SettingActionDeleted: a setting was deleted.
-	SettingActionDeleted SettingAction = 2
-)
-
-func marshalSettingAction(p uintptr) (interface{}, error) {
-	return SettingAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-type Status int
-
-const (
-	StatusOk Status = 0
-
-	StatusError Status = -1
-
-	StatusErrorParam Status = -2
-
-	StatusErrorFile Status = -3
-
-	StatusErrorMem Status = -4
-)
-
-func marshalStatus(p uintptr) (interface{}, error) {
-	return Status(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // SubpixelLayout: this enumeration describes how the red, green and blue
@@ -983,6 +489,32 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 	return SubpixelLayout(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// SurfaceEdge: determines a surface edge or corner.
+type SurfaceEdge int
+
+const (
+	// SurfaceEdgeNorthWest: the top left corner.
+	SurfaceEdgeNorthWest SurfaceEdge = 0
+	// SurfaceEdgeNorth: the top edge.
+	SurfaceEdgeNorth SurfaceEdge = 1
+	// SurfaceEdgeNorthEast: the top right corner.
+	SurfaceEdgeNorthEast SurfaceEdge = 2
+	// SurfaceEdgeWest: the left edge.
+	SurfaceEdgeWest SurfaceEdge = 3
+	// SurfaceEdgeEast: the right edge.
+	SurfaceEdgeEast SurfaceEdge = 4
+	// SurfaceEdgeSouthWest: the lower left corner.
+	SurfaceEdgeSouthWest SurfaceEdge = 5
+	// SurfaceEdgeSouth: the lower edge.
+	SurfaceEdgeSouth SurfaceEdge = 6
+	// SurfaceEdgeSouthEast: the lower right corner.
+	SurfaceEdgeSouthEast SurfaceEdge = 7
+)
+
+func marshalSurfaceEdge(p uintptr) (interface{}, error) {
+	return SurfaceEdge(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
 // TouchpadGesturePhase: specifies the current state of a touchpad gesture. All
 // gestures are guaranteed to begin with an event with phase
 // GDK_TOUCHPAD_GESTURE_PHASE_BEGIN, followed by 0 or several events with phase
@@ -999,8 +531,6 @@ func marshalSubpixelLayout(p uintptr) (interface{}, error) {
 // GDK_TOUCHPAD_GESTURE_PHASE_CANCEL, this should be used as a hint to undo any
 // visible/permanent changes that were done throughout the progress of the
 // gesture.
-//
-// See also EventTouchpadSwipe and EventTouchpadPinch.
 type TouchpadGesturePhase int
 
 const (
@@ -1020,191 +550,33 @@ func marshalTouchpadGesturePhase(p uintptr) (interface{}, error) {
 	return TouchpadGesturePhase(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// VisibilityState: specifies the visiblity status of a window for a
-// EventVisibility.
-type VisibilityState int
+// VulkanError: error enumeration for VulkanContext.
+type VulkanError int
 
 const (
-	// VisibilityStateUnobscured: the window is completely visible.
-	VisibilityStateUnobscured VisibilityState = 0
-	// VisibilityStatePartial: the window is partially visible.
-	VisibilityStatePartial VisibilityState = 1
-	// VisibilityStateFullyObscured: the window is not visible at all.
-	VisibilityStateFullyObscured VisibilityState = 2
+	// VulkanErrorUnsupported: vulkan is not supported on this backend or has
+	// not been compiled in.
+	VulkanErrorUnsupported VulkanError = 0
+	// VulkanErrorNotAvailable: vulkan support is not available on this Surface
+	VulkanErrorNotAvailable VulkanError = 1
 )
 
-func marshalVisibilityState(p uintptr) (interface{}, error) {
-	return VisibilityState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
+func marshalVulkanError(p uintptr) (interface{}, error) {
+	return VulkanError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// VisualType: a set of values that describe the manner in which the pixel
-// values for a visual are converted into RGB values for display.
-type VisualType int
-
-const (
-	// VisualTypeStaticGray: each pixel value indexes a grayscale value
-	// directly.
-	VisualTypeStaticGray VisualType = 0
-	// VisualTypeGrayscale: each pixel is an index into a color map that maps
-	// pixel values into grayscale values. The color map can be changed by an
-	// application.
-	VisualTypeGrayscale VisualType = 1
-	// VisualTypeStaticColor: each pixel value is an index into a predefined,
-	// unmodifiable color map that maps pixel values into RGB values.
-	VisualTypeStaticColor VisualType = 2
-	// VisualTypePseudoColor: each pixel is an index into a color map that maps
-	// pixel values into rgb values. The color map can be changed by an
-	// application.
-	VisualTypePseudoColor VisualType = 3
-	// VisualTypeTrueColor: each pixel value directly contains red, green, and
-	// blue components. Use gdk_visual_get_red_pixel_details(), etc, to obtain
-	// information about how the components are assembled into a pixel value.
-	VisualTypeTrueColor VisualType = 4
-	// VisualTypeDirectColor: each pixel value contains red, green, and blue
-	// components as for GDK_VISUAL_TRUE_COLOR, but the components are mapped
-	// via a color table into the final output table instead of being converted
-	// directly.
-	VisualTypeDirectColor VisualType = 5
-)
-
-func marshalVisualType(p uintptr) (interface{}, error) {
-	return VisualType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// WindowEdge: determines a window edge or corner.
-type WindowEdge int
-
-const (
-	// WindowEdgeNorthWest: the top left corner.
-	WindowEdgeNorthWest WindowEdge = 0
-	// WindowEdgeNorth: the top edge.
-	WindowEdgeNorth WindowEdge = 1
-	// WindowEdgeNorthEast: the top right corner.
-	WindowEdgeNorthEast WindowEdge = 2
-	// WindowEdgeWest: the left edge.
-	WindowEdgeWest WindowEdge = 3
-	// WindowEdgeEast: the right edge.
-	WindowEdgeEast WindowEdge = 4
-	// WindowEdgeSouthWest: the lower left corner.
-	WindowEdgeSouthWest WindowEdge = 5
-	// WindowEdgeSouth: the lower edge.
-	WindowEdgeSouth WindowEdge = 6
-	// WindowEdgeSouthEast: the lower right corner.
-	WindowEdgeSouthEast WindowEdge = 7
-)
-
-func marshalWindowEdge(p uintptr) (interface{}, error) {
-	return WindowEdge(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// WindowType: describes the kind of window.
-type WindowType int
-
-const (
-	// WindowTypeRoot: root window; this window has no parent, covers the entire
-	// screen, and is created by the window system
-	WindowTypeRoot WindowType = 0
-	// WindowTypeToplevel: toplevel window (used to implement Window)
-	WindowTypeToplevel WindowType = 1
-	// WindowTypeChild: child window (used to implement e.g. Entry)
-	WindowTypeChild WindowType = 2
-	// WindowTypeTemp: override redirect temporary window (used to implement
-	// Menu)
-	WindowTypeTemp WindowType = 3
-	// WindowTypeForeign: foreign window (see gdk_window_foreign_new())
-	WindowTypeForeign WindowType = 4
-	// WindowTypeOffscreen: offscreen window (see [Offscreen
-	// Windows][OFFSCREEN-WINDOWS]). Since 2.18
-	WindowTypeOffscreen WindowType = 5
-	// WindowTypeSubsurface: subsurface-based window; This window is visually
-	// tied to a toplevel, and is moved/stacked with it. Currently this window
-	// type is only implemented in Wayland. Since 3.14
-	WindowTypeSubsurface WindowType = 6
-)
-
-func marshalWindowType(p uintptr) (interface{}, error) {
-	return WindowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// WindowTypeHint: these are hints for the window manager that indicate what
-// type of function the window has. The window manager can use this when
-// determining decoration and behaviour of the window. The hint must be set
-// before mapping the window.
+// AnchorHints: positioning hints for aligning a surface relative to a
+// rectangle.
 //
-// See the [Extended Window Manager
-// Hints](http://www.freedesktop.org/Standards/wm-spec) specification for more
-// details about window types.
-type WindowTypeHint int
-
-const (
-	// WindowTypeHintNormal: normal toplevel window.
-	WindowTypeHintNormal WindowTypeHint = 0
-	// WindowTypeHintDialog: dialog window.
-	WindowTypeHintDialog WindowTypeHint = 1
-	// WindowTypeHintMenu: window used to implement a menu; GTK+ uses this hint
-	// only for torn-off menus, see TearoffMenuItem.
-	WindowTypeHintMenu WindowTypeHint = 2
-	// WindowTypeHintToolbar: window used to implement toolbars.
-	WindowTypeHintToolbar WindowTypeHint = 3
-	// WindowTypeHintSplashscreen: window used to display a splash screen during
-	// application startup.
-	WindowTypeHintSplashscreen WindowTypeHint = 4
-	// WindowTypeHintUtility: utility windows which are not detached toolbars or
-	// dialogs.
-	WindowTypeHintUtility WindowTypeHint = 5
-	// WindowTypeHintDock: used for creating dock or panel windows.
-	WindowTypeHintDock WindowTypeHint = 6
-	// WindowTypeHintDesktop: used for creating the desktop background window.
-	WindowTypeHintDesktop WindowTypeHint = 7
-	// WindowTypeHintDropdownMenu: a menu that belongs to a menubar.
-	WindowTypeHintDropdownMenu WindowTypeHint = 8
-	// WindowTypeHintPopupMenu: a menu that does not belong to a menubar, e.g. a
-	// context menu.
-	WindowTypeHintPopupMenu WindowTypeHint = 9
-	// WindowTypeHintTooltip: a tooltip.
-	WindowTypeHintTooltip WindowTypeHint = 10
-	// WindowTypeHintNotification: a notification - typically a “bubble” that
-	// belongs to a status icon.
-	WindowTypeHintNotification WindowTypeHint = 11
-	// WindowTypeHintCombo: a popup from a combo box.
-	WindowTypeHintCombo WindowTypeHint = 12
-	// WindowTypeHintDnd: a window that is used to implement a DND cursor.
-	WindowTypeHintDnd WindowTypeHint = 13
-)
-
-func marshalWindowTypeHint(p uintptr) (interface{}, error) {
-	return WindowTypeHint(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// WindowWindowClass: @GDK_INPUT_OUTPUT windows are the standard kind of window
-// you might expect. Such windows receive events and are also displayed on
-// screen. @GDK_INPUT_ONLY windows are invisible; they are usually placed above
-// other windows in order to trap or filter the events. You can’t draw on
-// @GDK_INPUT_ONLY windows.
-type WindowWindowClass int
-
-const (
-	// WindowWindowClassInputOutput: window for graphics and events
-	WindowWindowClassInputOutput WindowWindowClass = 0
-	// WindowWindowClassInputOnly: window for events only
-	WindowWindowClassInputOnly WindowWindowClass = 1
-)
-
-func marshalWindowWindowClass(p uintptr) (interface{}, error) {
-	return WindowWindowClass(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// AnchorHints: positioning hints for aligning a window relative to a rectangle.
-//
-// These hints determine how the window should be positioned in the case that
-// the window would fall off-screen if placed in its ideal position.
+// These hints determine how the surface should be positioned in the case that
+// the surface would fall off-screen if placed in its ideal position.
 //
 // For example, GDK_ANCHOR_FLIP_X will replace GDK_GRAVITY_NORTH_WEST with
-// GDK_GRAVITY_NORTH_EAST and vice versa if the window extends beyond the left
+// GDK_GRAVITY_NORTH_EAST and vice versa if the surface extends beyond the left
 // or right edges of the monitor.
 //
-// If GDK_ANCHOR_SLIDE_X is set, the window can be shifted horizontally to fit
-// on-screen. If GDK_ANCHOR_RESIZE_X is set, the window can be shrunken
+// If GDK_ANCHOR_SLIDE_X is set, the surface can be shifted horizontally to fit
+// on-screen. If GDK_ANCHOR_RESIZE_X is set, the surface can be shrunken
 // horizontally to fit.
 //
 // In general, when multiple flags are set, flipping should take precedence over
@@ -1216,19 +588,19 @@ const (
 	AnchorHintsFlipX AnchorHints = 0b1
 	// AnchorHintsFlipY: allow flipping anchors vertically
 	AnchorHintsFlipY AnchorHints = 0b10
-	// AnchorHintsSlideX: allow sliding window horizontally
+	// AnchorHintsSlideX: allow sliding surface horizontally
 	AnchorHintsSlideX AnchorHints = 0b100
-	// AnchorHintsSlideY: allow sliding window vertically
+	// AnchorHintsSlideY: allow sliding surface vertically
 	AnchorHintsSlideY AnchorHints = 0b1000
-	// AnchorHintsResizeX: allow resizing window horizontally
+	// AnchorHintsResizeX: allow resizing surface horizontally
 	AnchorHintsResizeX AnchorHints = 0b10000
-	// AnchorHintsResizeY: allow resizing window vertically
+	// AnchorHintsResizeY: allow resizing surface vertically
 	AnchorHintsResizeY AnchorHints = 0b100000
 	// AnchorHintsFlip: allow flipping anchors on both axes
 	AnchorHintsFlip AnchorHints = 0b11
-	// AnchorHintsSlide: allow sliding window on both axes
+	// AnchorHintsSlide: allow sliding surface on both axes
 	AnchorHintsSlide AnchorHints = 0b1100
-	// AnchorHintsResize: allow resizing window on both axes
+	// AnchorHintsResize: allow resizing surface on both axes
 	AnchorHintsResize AnchorHints = 0b110000
 )
 
@@ -1244,141 +616,50 @@ const (
 	AxisFlagsX AxisFlags = 0b10
 	// AxisFlagsY: y axis is present
 	AxisFlagsY AxisFlags = 0b100
+	// AxisFlagsDeltaX: scroll X delta axis is present
+	AxisFlagsDeltaX AxisFlags = 0b1000
+	// AxisFlagsDeltaY: scroll Y delta axis is present
+	AxisFlagsDeltaY AxisFlags = 0b10000
 	// AxisFlagsPressure: pressure axis is present
-	AxisFlagsPressure AxisFlags = 0b1000
+	AxisFlagsPressure AxisFlags = 0b100000
 	// AxisFlagsXtilt: x tilt axis is present
-	AxisFlagsXtilt AxisFlags = 0b10000
+	AxisFlagsXtilt AxisFlags = 0b1000000
 	// AxisFlagsYtilt: y tilt axis is present
-	AxisFlagsYtilt AxisFlags = 0b100000
+	AxisFlagsYtilt AxisFlags = 0b10000000
 	// AxisFlagsWheel: wheel axis is present
-	AxisFlagsWheel AxisFlags = 0b1000000
+	AxisFlagsWheel AxisFlags = 0b100000000
 	// AxisFlagsDistance: distance axis is present
-	AxisFlagsDistance AxisFlags = 0b10000000
+	AxisFlagsDistance AxisFlags = 0b1000000000
 	// AxisFlagsRotation: z-axis rotation is present
-	AxisFlagsRotation AxisFlags = 0b100000000
+	AxisFlagsRotation AxisFlags = 0b10000000000
 	// AxisFlagsSlider: slider axis is present
-	AxisFlagsSlider AxisFlags = 0b1000000000
+	AxisFlagsSlider AxisFlags = 0b100000000000
 )
 
 func marshalAxisFlags(p uintptr) (interface{}, error) {
 	return AxisFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DragAction: used in DragContext to indicate what the destination should do
-// with the dropped data.
+// DragAction: used in Drop and Drag to indicate the actions that the
+// destination can and should do with the dropped data.
 type DragAction int
 
 const (
-	// DragActionDefault: means nothing, and should not be used.
-	DragActionDefault DragAction = 0b1
 	// DragActionCopy: copy the data.
-	DragActionCopy DragAction = 0b10
+	DragActionCopy DragAction = 0b1
 	// DragActionMove: move the data, i.e. first copy it, then delete it from
 	// the source using the DELETE target of the X selection protocol.
-	DragActionMove DragAction = 0b100
+	DragActionMove DragAction = 0b10
 	// DragActionLink: add a link to the data. Note that this is only useful if
-	// source and destination agree on what it means.
-	DragActionLink DragAction = 0b1000
-	// DragActionPrivate: special action which tells the source that the
-	// destination will do something that the source doesn’t understand.
-	DragActionPrivate DragAction = 0b10000
+	// source and destination agree on what it means, and is not supported on
+	// all platforms.
+	DragActionLink DragAction = 0b100
 	// DragActionAsk: ask the user what to do with the data.
-	DragActionAsk DragAction = 0b100000
+	DragActionAsk DragAction = 0b1000
 )
 
 func marshalDragAction(p uintptr) (interface{}, error) {
 	return DragAction(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// EventMask: a set of bit-flags to indicate which events a window is to
-// receive. Most of these masks map onto one or more of the EventType event
-// types above.
-//
-// See the [input handling overview][chap-input-handling] for details of [event
-// masks][event-masks] and [event propagation][event-propagation].
-//
-// GDK_POINTER_MOTION_HINT_MASK is deprecated. It is a special mask to reduce
-// the number of GDK_MOTION_NOTIFY events received. When using
-// GDK_POINTER_MOTION_HINT_MASK, fewer GDK_MOTION_NOTIFY events will be sent,
-// some of which are marked as a hint (the is_hint member is true). To receive
-// more motion events after a motion hint event, the application needs to asks
-// for more, by calling gdk_event_request_motions().
-//
-// Since GTK 3.8, motion events are already compressed by default, independent
-// of this mechanism. This compression can be disabled with
-// gdk_window_set_event_compression(). See the documentation of that function
-// for details.
-//
-// If GDK_TOUCH_MASK is enabled, the window will receive touch events from
-// touch-enabled devices. Those will come as sequences of EventTouch with type
-// GDK_TOUCH_UPDATE, enclosed by two events with type GDK_TOUCH_BEGIN and
-// GDK_TOUCH_END (or GDK_TOUCH_CANCEL). gdk_event_get_event_sequence() returns
-// the event sequence for these events, so different sequences may be
-// distinguished.
-type EventMask int
-
-const (
-	// EventMaskExposureMask: receive expose events
-	EventMaskExposureMask EventMask = 0b10
-	// EventMaskPointerMotionMask: receive all pointer motion events
-	EventMaskPointerMotionMask EventMask = 0b100
-	// EventMaskPointerMotionHintMask: deprecated. see the explanation above
-	EventMaskPointerMotionHintMask EventMask = 0b1000
-	// EventMaskButtonMotionMask: receive pointer motion events while any button
-	// is pressed
-	EventMaskButtonMotionMask EventMask = 0b10000
-	// EventMaskButton1MotionMask: receive pointer motion events while 1 button
-	// is pressed
-	EventMaskButton1MotionMask EventMask = 0b100000
-	// EventMaskButton2MotionMask: receive pointer motion events while 2 button
-	// is pressed
-	EventMaskButton2MotionMask EventMask = 0b1000000
-	// EventMaskButton3MotionMask: receive pointer motion events while 3 button
-	// is pressed
-	EventMaskButton3MotionMask EventMask = 0b10000000
-	// EventMaskButtonPressMask: receive button press events
-	EventMaskButtonPressMask EventMask = 0b100000000
-	// EventMaskButtonReleaseMask: receive button release events
-	EventMaskButtonReleaseMask EventMask = 0b1000000000
-	// EventMaskKeyPressMask: receive key press events
-	EventMaskKeyPressMask EventMask = 0b10000000000
-	// EventMaskKeyReleaseMask: receive key release events
-	EventMaskKeyReleaseMask EventMask = 0b100000000000
-	// EventMaskEnterNotifyMask: receive window enter events
-	EventMaskEnterNotifyMask EventMask = 0b1000000000000
-	// EventMaskLeaveNotifyMask: receive window leave events
-	EventMaskLeaveNotifyMask EventMask = 0b10000000000000
-	// EventMaskFocusChangeMask: receive focus change events
-	EventMaskFocusChangeMask EventMask = 0b100000000000000
-	// EventMaskStructureMask: receive events about window configuration change
-	EventMaskStructureMask EventMask = 0b1000000000000000
-	// EventMaskPropertyChangeMask: receive property change events
-	EventMaskPropertyChangeMask EventMask = 0b10000000000000000
-	// EventMaskVisibilityNotifyMask: receive visibility change events
-	EventMaskVisibilityNotifyMask EventMask = 0b100000000000000000
-	// EventMaskProximityInMask: receive proximity in events
-	EventMaskProximityInMask EventMask = 0b1000000000000000000
-	// EventMaskProximityOutMask: receive proximity out events
-	EventMaskProximityOutMask EventMask = 0b10000000000000000000
-	// EventMaskSubstructureMask: receive events about window configuration
-	// changes of child windows
-	EventMaskSubstructureMask EventMask = 0b100000000000000000000
-	// EventMaskScrollMask: receive scroll events
-	EventMaskScrollMask EventMask = 0b1000000000000000000000
-	// EventMaskTouchMask: receive touch events. Since 3.4
-	EventMaskTouchMask EventMask = 0b10000000000000000000000
-	// EventMaskSmoothScrollMask: receive smooth scrolling events. Since 3.4
-	EventMaskSmoothScrollMask EventMask = 0b100000000000000000000000
-	// EventMaskTouchpadGestureMask: receive touchpad gesture events. Since 3.18
-	EventMaskTouchpadGestureMask EventMask = 0b1000000000000000000000000
-	// EventMaskTabletPadMask: receive tablet pad events. Since 3.22
-	EventMaskTabletPadMask EventMask = 0b10000000000000000000000000
-	// EventMaskAllEventsMask: the combination of all the above event masks.
-	EventMaskAllEventsMask EventMask = 0b11111111111111111111111110
-)
-
-func marshalEventMask(p uintptr) (interface{}, error) {
-	return EventMask(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // FrameClockPhase: gdkFrameClockPhase is used to represent the different paint
@@ -1397,7 +678,8 @@ const (
 	FrameClockPhaseBeforePaint FrameClockPhase = 0b10
 	// FrameClockPhaseUpdate: corresponds to GdkFrameClock::update.
 	FrameClockPhaseUpdate FrameClockPhase = 0b100
-	// FrameClockPhaseLayout: corresponds to GdkFrameClock::layout.
+	// FrameClockPhaseLayout: corresponds to GdkFrameClock::layout. Should not
+	// be handled by applicatiosn.
 	FrameClockPhaseLayout FrameClockPhase = 0b1000
 	// FrameClockPhasePaint: corresponds to GdkFrameClock::paint.
 	FrameClockPhasePaint FrameClockPhase = 0b10000
@@ -1417,19 +699,9 @@ func marshalFrameClockPhase(p uintptr) (interface{}, error) {
 // mouse buttons in various event types. Typical modifier keys are Shift,
 // Control, Meta, Super, Hyper, Alt, Compose, Apple, CapsLock or ShiftLock.
 //
-// Like the X Window System, GDK supports 8 modifier keys and 5 mouse buttons.
-//
-// Since 2.10, GDK recognizes which of the Meta, Super or Hyper keys are mapped
-// to Mod2 - Mod5, and indicates this by setting GDK_SUPER_MASK, GDK_HYPER_MASK
-// or GDK_META_MASK in the state field of key events.
-//
-// Note that GDK may add internal values to events which include reserved values
-// such as GDK_MODIFIER_RESERVED_13_MASK. Your code should preserve and ignore
-// them. You can use GDK_MODIFIER_MASK to remove all reserved values.
-//
-// Also note that the GDK X backend interprets button press events for button
-// 4-7 as scroll events, so GDK_BUTTON4_MASK and GDK_BUTTON5_MASK will never be
-// set.
+// Note that GDK may add internal values to events which include values outside
+// of this enumeration. Your code should preserve and ignore them. You can use
+// GDK_MODIFIER_MASK to remove all private values.
 type ModifierType int
 
 const (
@@ -1440,23 +712,10 @@ const (
 	ModifierTypeLockMask ModifierType = 0b10
 	// ModifierTypeControlMask: the Control key.
 	ModifierTypeControlMask ModifierType = 0b100
-	// ModifierTypeMod1Mask: the fourth modifier key (it depends on the modifier
+	// ModifierTypeAltMask: the fourth modifier key (it depends on the modifier
 	// mapping of the X server which key is interpreted as this modifier, but
 	// normally it is the Alt key).
-	ModifierTypeMod1Mask ModifierType = 0b1000
-	// ModifierTypeMod2Mask: the fifth modifier key (it depends on the modifier
-	// mapping of the X server which key is interpreted as this modifier).
-	ModifierTypeMod2Mask ModifierType = 0b10000
-	// ModifierTypeMod3Mask: the sixth modifier key (it depends on the modifier
-	// mapping of the X server which key is interpreted as this modifier).
-	ModifierTypeMod3Mask ModifierType = 0b100000
-	// ModifierTypeMod4Mask: the seventh modifier key (it depends on the
-	// modifier mapping of the X server which key is interpreted as this
-	// modifier).
-	ModifierTypeMod4Mask ModifierType = 0b1000000
-	// ModifierTypeMod5Mask: the eighth modifier key (it depends on the modifier
-	// mapping of the X server which key is interpreted as this modifier).
-	ModifierTypeMod5Mask ModifierType = 0b10000000
+	ModifierTypeAltMask ModifierType = 0b1000
 	// ModifierTypeButton1Mask: the first mouse button.
 	ModifierTypeButton1Mask ModifierType = 0b100000000
 	// ModifierTypeButton2Mask: the second mouse button.
@@ -1467,64 +726,33 @@ const (
 	ModifierTypeButton4Mask ModifierType = 0b100000000000
 	// ModifierTypeButton5Mask: the fifth mouse button.
 	ModifierTypeButton5Mask ModifierType = 0b1000000000000
-	// ModifierTypeModifierReserved13Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved13Mask ModifierType = 0b10000000000000
-	// ModifierTypeModifierReserved14Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved14Mask ModifierType = 0b100000000000000
-	// ModifierTypeModifierReserved15Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved15Mask ModifierType = 0b1000000000000000
-	// ModifierTypeModifierReserved16Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved16Mask ModifierType = 0b10000000000000000
-	// ModifierTypeModifierReserved17Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved17Mask ModifierType = 0b100000000000000000
-	// ModifierTypeModifierReserved18Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved18Mask ModifierType = 0b1000000000000000000
-	// ModifierTypeModifierReserved19Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved19Mask ModifierType = 0b10000000000000000000
-	// ModifierTypeModifierReserved20Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved20Mask ModifierType = 0b100000000000000000000
-	// ModifierTypeModifierReserved21Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved21Mask ModifierType = 0b1000000000000000000000
-	// ModifierTypeModifierReserved22Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved22Mask ModifierType = 0b10000000000000000000000
-	// ModifierTypeModifierReserved23Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved23Mask ModifierType = 0b100000000000000000000000
-	// ModifierTypeModifierReserved24Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved24Mask ModifierType = 0b1000000000000000000000000
-	// ModifierTypeModifierReserved25Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved25Mask ModifierType = 0b10000000000000000000000000
-	// ModifierTypeSuperMask: the Super modifier. Since 2.10
+	// ModifierTypeSuperMask: the Super modifier
 	ModifierTypeSuperMask ModifierType = 0b100000000000000000000000000
-	// ModifierTypeHyperMask: the Hyper modifier. Since 2.10
+	// ModifierTypeHyperMask: the Hyper modifier
 	ModifierTypeHyperMask ModifierType = 0b1000000000000000000000000000
-	// ModifierTypeMetaMask: the Meta modifier. Since 2.10
+	// ModifierTypeMetaMask: the Meta modifier
 	ModifierTypeMetaMask ModifierType = 0b10000000000000000000000000000
-	// ModifierTypeModifierReserved29Mask: a reserved bit flag; do not use in
-	// your own code
-	ModifierTypeModifierReserved29Mask ModifierType = 0b100000000000000000000000000000
-	// ModifierTypeReleaseMask: not used in GDK itself. GTK+ uses it to
-	// differentiate between (keyval, modifiers) pairs from key press and
-	// release events.
-	ModifierTypeReleaseMask ModifierType = 0b1000000000000000000000000000000
-	// ModifierTypeModifierMask: a mask covering all modifier types.
-	ModifierTypeModifierMask ModifierType = 0b1011100000000000001111111111111
 )
 
 func marshalModifierType(p uintptr) (interface{}, error) {
 	return ModifierType(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
+
+// PaintableFlags: flags about this object. Implementations use these for
+// optimizations such as caching.
+type PaintableFlags int
+
+const (
+	// PaintableFlagsSize: the size is immutable. The Paintable::invalidate-size
+	// signal will never be emitted.
+	PaintableFlagsSize PaintableFlags = 0b1
+	// PaintableFlagsContents: the content is immutable. The
+	// Paintable::invalidate-contents signal will never be emitted.
+	PaintableFlagsContents PaintableFlags = 0b10
+)
+
+func marshalPaintableFlags(p uintptr) (interface{}, error) {
+	return PaintableFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
 // SeatCapabilities: flags describing the seat capabilities.
@@ -1541,6 +769,8 @@ const (
 	SeatCapabilitiesTabletStylus SeatCapabilities = 0b100
 	// SeatCapabilitiesKeyboard: the seat has keyboard(s) attached
 	SeatCapabilitiesKeyboard SeatCapabilities = 0b1000
+	// SeatCapabilitiesTabletPad: the seat has drawing tablet pad(s) attached
+	SeatCapabilitiesTabletPad SeatCapabilities = 0b10000
 	// SeatCapabilitiesAllPointing: the union of all pointing capabilities
 	SeatCapabilitiesAllPointing SeatCapabilities = 0b111
 	// SeatCapabilitiesAll: the union of all capabilities
@@ -1551,237 +781,72 @@ func marshalSeatCapabilities(p uintptr) (interface{}, error) {
 	return SeatCapabilities(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// WMDecoration: these are hints originally defined by the Motif toolkit. The
-// window manager can use them when determining how to decorate the window. The
-// hint must be set before mapping the window.
-type WMDecoration int
-
-const (
-	// WMDecorationAll: all decorations should be applied.
-	WMDecorationAll WMDecoration = 0b1
-	// WMDecorationBorder: a frame should be drawn around the window.
-	WMDecorationBorder WMDecoration = 0b10
-	// WMDecorationResizeh: the frame should have resize handles.
-	WMDecorationResizeh WMDecoration = 0b100
-	// WMDecorationTitle: a titlebar should be placed above the window.
-	WMDecorationTitle WMDecoration = 0b1000
-	// WMDecorationMenu: a button for opening a menu should be included.
-	WMDecorationMenu WMDecoration = 0b10000
-	// WMDecorationMinimize: a minimize button should be included.
-	WMDecorationMinimize WMDecoration = 0b100000
-	// WMDecorationMaximize: a maximize button should be included.
-	WMDecorationMaximize WMDecoration = 0b1000000
-)
-
-func marshalWMDecoration(p uintptr) (interface{}, error) {
-	return WMDecoration(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// WMFunction: these are hints originally defined by the Motif toolkit. The
-// window manager can use them when determining the functions to offer for the
-// window. The hint must be set before mapping the window.
-type WMFunction int
-
-const (
-	// WMFunctionAll: all functions should be offered.
-	WMFunctionAll WMFunction = 0b1
-	// WMFunctionResize: the window should be resizable.
-	WMFunctionResize WMFunction = 0b10
-	// WMFunctionMove: the window should be movable.
-	WMFunctionMove WMFunction = 0b100
-	// WMFunctionMinimize: the window should be minimizable.
-	WMFunctionMinimize WMFunction = 0b1000
-	// WMFunctionMaximize: the window should be maximizable.
-	WMFunctionMaximize WMFunction = 0b10000
-	// WMFunctionClose: the window should be closable.
-	WMFunctionClose WMFunction = 0b100000
-)
-
-func marshalWMFunction(p uintptr) (interface{}, error) {
-	return WMFunction(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// WindowAttributesType: used to indicate which fields in the WindowAttr struct
-// should be honored. For example, if you filled in the “cursor” and “x” fields
-// of WindowAttr, pass “@GDK_WA_X | @GDK_WA_CURSOR” to gdk_window_new(). Fields
-// in WindowAttr not covered by a bit in this enum are required; for example,
-// the @width/@height, @wclass, and @window_type fields are required, they have
-// no corresponding flag in WindowAttributesType.
-type WindowAttributesType int
-
-const (
-	// WindowAttributesTypeTitle: honor the title field
-	WindowAttributesTypeTitle WindowAttributesType = 0b10
-	// WindowAttributesTypeX: honor the X coordinate field
-	WindowAttributesTypeX WindowAttributesType = 0b100
-	// WindowAttributesTypeY: honor the Y coordinate field
-	WindowAttributesTypeY WindowAttributesType = 0b1000
-	// WindowAttributesTypeCursor: honor the cursor field
-	WindowAttributesTypeCursor WindowAttributesType = 0b10000
-	// WindowAttributesTypeVisual: honor the visual field
-	WindowAttributesTypeVisual WindowAttributesType = 0b100000
-	// WindowAttributesTypeWmclass: honor the wmclass_class and wmclass_name
-	// fields
-	WindowAttributesTypeWmclass WindowAttributesType = 0b1000000
-	// WindowAttributesTypeNoredir: honor the override_redirect field
-	WindowAttributesTypeNoredir WindowAttributesType = 0b10000000
-	// WindowAttributesTypeTypeHint: honor the type_hint field
-	WindowAttributesTypeTypeHint WindowAttributesType = 0b100000000
-)
-
-func marshalWindowAttributesType(p uintptr) (interface{}, error) {
-	return WindowAttributesType(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// WindowHints: used to indicate which fields of a Geometry struct should be
-// paid attention to. Also, the presence/absence of @GDK_HINT_POS,
-// @GDK_HINT_USER_POS, and @GDK_HINT_USER_SIZE is significant, though they don't
-// directly refer to Geometry fields. @GDK_HINT_USER_POS will be set
-// automatically by Window if you call gtk_window_move(). @GDK_HINT_USER_POS and
-// @GDK_HINT_USER_SIZE should be set if the user specified a size/position using
-// a --geometry command-line argument; gtk_window_parse_geometry() automatically
-// sets these flags.
-type WindowHints int
-
-const (
-	// WindowHintsPos: indicates that the program has positioned the window
-	WindowHintsPos WindowHints = 0b1
-	// WindowHintsMinSize: min size fields are set
-	WindowHintsMinSize WindowHints = 0b10
-	// WindowHintsMaxSize: max size fields are set
-	WindowHintsMaxSize WindowHints = 0b100
-	// WindowHintsBaseSize: base size fields are set
-	WindowHintsBaseSize WindowHints = 0b1000
-	// WindowHintsAspect: aspect ratio fields are set
-	WindowHintsAspect WindowHints = 0b10000
-	// WindowHintsResizeInc: resize increment fields are set
-	WindowHintsResizeInc WindowHints = 0b100000
-	// WindowHintsWinGravity: window gravity field is set
-	WindowHintsWinGravity WindowHints = 0b1000000
-	// WindowHintsUserPos: indicates that the window’s position was explicitly
-	// set by the user
-	WindowHintsUserPos WindowHints = 0b10000000
-	// WindowHintsUserSize: indicates that the window’s size was explicitly set
-	// by the user
-	WindowHintsUserSize WindowHints = 0b100000000
-)
-
-func marshalWindowHints(p uintptr) (interface{}, error) {
-	return WindowHints(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// WindowState: specifies the state of a toplevel window.
-type WindowState int
-
-const (
-	// WindowStateWithdrawn: the window is not shown.
-	WindowStateWithdrawn WindowState = 0b1
-	// WindowStateIconified: the window is minimized.
-	WindowStateIconified WindowState = 0b10
-	// WindowStateMaximized: the window is maximized.
-	WindowStateMaximized WindowState = 0b100
-	// WindowStateSticky: the window is sticky.
-	WindowStateSticky WindowState = 0b1000
-	// WindowStateFullscreen: the window is maximized without decorations.
-	WindowStateFullscreen WindowState = 0b10000
-	// WindowStateAbove: the window is kept above other windows.
-	WindowStateAbove WindowState = 0b100000
-	// WindowStateBelow: the window is kept below other windows.
-	WindowStateBelow WindowState = 0b1000000
-	// WindowStateFocused: the window is presented as focused (with active
-	// decorations).
-	WindowStateFocused WindowState = 0b10000000
-	// WindowStateTiled: the window is in a tiled state, Since 3.10. Since
-	// 3.22.23, this is deprecated in favor of per-edge information.
-	WindowStateTiled WindowState = 0b100000000
-	// WindowStateTopTiled: whether the top edge is tiled, Since 3.22.23
-	WindowStateTopTiled WindowState = 0b1000000000
-	// WindowStateTopResizable: whether the top edge is resizable, Since 3.22.23
-	WindowStateTopResizable WindowState = 0b10000000000
-	// WindowStateRightTiled: whether the right edge is tiled, Since 3.22.23
-	WindowStateRightTiled WindowState = 0b100000000000
-	// WindowStateRightResizable: whether the right edge is resizable, Since
-	// 3.22.23
-	WindowStateRightResizable WindowState = 0b1000000000000
-	// WindowStateBottomTiled: whether the bottom edge is tiled, Since 3.22.23
-	WindowStateBottomTiled WindowState = 0b10000000000000
-	// WindowStateBottomResizable: whether the bottom edge is resizable, Since
-	// 3.22.23
-	WindowStateBottomResizable WindowState = 0b100000000000000
-	// WindowStateLeftTiled: whether the left edge is tiled, Since 3.22.23
-	WindowStateLeftTiled WindowState = 0b1000000000000000
-	// WindowStateLeftResizable: whether the left edge is resizable, Since
-	// 3.22.23
-	WindowStateLeftResizable WindowState = 0b10000000000000000
-)
-
-func marshalWindowState(p uintptr) (interface{}, error) {
-	return WindowState(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
-// AddOptionEntriesLibgtkOnly: appends gdk option entries to the passed in
-// option group. This is not public API and must not be used by applications.
-func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup)
-
-// AtomIntern: finds or creates an atom corresponding to a given string.
-func AtomIntern(atomName string, onlyIfExists bool) Atom
-
-// AtomInternStaticString: finds or creates an atom corresponding to a given
-// string.
+// ToplevelState: specifies the state of a toplevel surface.
 //
-// Note that this function is identical to gdk_atom_intern() except that if a
-// new Atom is created the string itself is used rather than a copy. This saves
-// memory, but can only be used if the string will always exist. It can be used
-// with statically allocated strings in the main program, but not with
-// statically allocated memory in dynamically loaded modules, if you expect to
-// ever unload the module again (e.g. do not use this function in GTK+ theme
-// engines).
-func AtomInternStaticString(atomName string) Atom
+// On platforms that support information about individual edges, the
+// GDK_TOPLEVEL_STATE_TILED state will be set whenever any of the individual
+// tiled states is set. On platforms that lack that support, the tiled state
+// will give an indication of tiledness without any of the per-edge states being
+// set.
+type ToplevelState int
 
-// Beep: emits a short beep on the default display.
-func Beep()
+const (
+	// ToplevelStateMinimized: the surface is minimized
+	ToplevelStateMinimized ToplevelState = 0b1
+	// ToplevelStateMaximized: the surface is maximized
+	ToplevelStateMaximized ToplevelState = 0b10
+	// ToplevelStateSticky: the surface is sticky
+	ToplevelStateSticky ToplevelState = 0b100
+	// ToplevelStateFullscreen: the surface is maximized without decorations
+	ToplevelStateFullscreen ToplevelState = 0b1000
+	// ToplevelStateAbove: the surface is kept above other surfaces
+	ToplevelStateAbove ToplevelState = 0b10000
+	// ToplevelStateBelow: the surface is kept below other surfaces
+	ToplevelStateBelow ToplevelState = 0b100000
+	// ToplevelStateFocused: the surface is presented as focused (with active
+	// decorations)
+	ToplevelStateFocused ToplevelState = 0b1000000
+	// ToplevelStateTiled: the surface is in a tiled state
+	ToplevelStateTiled ToplevelState = 0b10000000
+	// ToplevelStateTopTiled: whether the top edge is tiled
+	ToplevelStateTopTiled ToplevelState = 0b100000000
+	// ToplevelStateTopResizable: whether the top edge is resizable
+	ToplevelStateTopResizable ToplevelState = 0b1000000000
+	// ToplevelStateRightTiled: whether the right edge is tiled
+	ToplevelStateRightTiled ToplevelState = 0b10000000000
+	// ToplevelStateRightResizable: whether the right edge is resizable
+	ToplevelStateRightResizable ToplevelState = 0b100000000000
+	// ToplevelStateBottomTiled: whether the bottom edge is tiled
+	ToplevelStateBottomTiled ToplevelState = 0b1000000000000
+	// ToplevelStateBottomResizable: whether the bottom edge is resizable
+	ToplevelStateBottomResizable ToplevelState = 0b10000000000000
+	// ToplevelStateLeftTiled: whether the left edge is tiled
+	ToplevelStateLeftTiled ToplevelState = 0b100000000000000
+	// ToplevelStateLeftResizable: whether the left edge is resizable
+	ToplevelStateLeftResizable ToplevelState = 0b1000000000000000
+)
 
-// CairoCreate: creates a Cairo context for drawing to @window.
-//
-// Note that calling cairo_reset_clip() on the resulting #cairo_t will produce
-// undefined results, so avoid it at all costs.
-//
-// Typically, this function is used to draw on a Window out of the paint cycle
-// of the toolkit; this should be avoided, as it breaks various assumptions and
-// optimizations.
-//
-// If you are drawing on a native Window in response to a GDK_EXPOSE event you
-// should use gdk_window_begin_draw_frame() and
-// gdk_drawing_context_get_cairo_context() instead. GTK will automatically do
-// this for you when drawing a widget.
-func CairoCreate(window *Window) *cairo.Context
+func marshalToplevelState(p uintptr) (interface{}, error) {
+	return ToplevelState(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
+}
 
-// CairoDrawFromGl: this is the main way to draw GL content in GTK+. It takes a
+// CairoDrawFromGl: this is the main way to draw GL content in GTK. It takes a
 // render buffer ID (@source_type == RENDERBUFFER) or a texture id (@source_type
 // == TEXTURE) and draws it onto @cr with an OVER operation, respecting the
 // current clip. The top left corner of the rectangle specified by @x, @y,
 // @width and @height will be drawn at the current (0,0) position of the
 // cairo_t.
 //
-// This will work for *all* cairo_t, as long as @window is realized, but the
+// This will work for *all* cairo_t, as long as @surface is realized, but the
 // fallback implementation that reads back the pixels from the buffer may be
-// used in the general case. In the case of direct drawing to a window with no
+// used in the general case. In the case of direct drawing to a surface with no
 // special effects applied to @cr it will however use a more efficient approach.
 //
 // For RENDERBUFFER the code will always fall back to software for buffers with
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGl(cr *cairo.Context, window *Window, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
-
-// CairoGetClipRectangle: this is a convenience function around
-// cairo_clip_extents(). It rounds the clip extents to integer coordinates and
-// returns a boolean indicating if a clip area exists.
-func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool)
-
-// CairoGetDrawingContext: retrieves the DrawingContext that created the Cairo
-// context @cr.
-func CairoGetDrawingContext(cr *cairo.Context) *DrawingContext
+func CairoDrawFromGl(cr *cairo.Context, surface *gdkx11.X11Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
 
 // CairoRectangle: adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle)
@@ -1796,9 +861,6 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region)
 // cairo_surface_set_device_offset().
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region
 
-// CairoSetSourceColor: sets the specified Color as the source color of @cr.
-func CairoSetSourceColor(cr *cairo.Context, color *Color)
-
 // CairoSetSourcePixbuf: sets the given pixbuf as the source pattern for @cr.
 //
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
@@ -1808,203 +870,37 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX f
 // CairoSetSourceRgba: sets the specified RGBA as the source color of @cr.
 func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA)
 
-// CairoSetSourceWindow: sets the given window as the source pattern for @cr.
-//
-// The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
-// the origin of @window is @x, @y. The window contains all its subwindows when
-// rendering.
-//
-// Note that the contents of @window are undefined outside of the visible part
-// of @window, so use this function with care.
-func CairoSetSourceWindow(cr *cairo.Context, window *Window, x float64, y float64)
+// ContentDeserializeAsync: read content from the given input stream and
+// deserialize it, asynchronously. When the operation is finished, @callback
+// will be called. You can then call gdk_content_deserialize_finish() to get the
+// result of the operation.
+func ContentDeserializeAsync(stream *gio.InputStream, mimeType string, _type glib.Type, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
 
-// CairoSurfaceCreateFromPixbuf: creates an image surface with the same contents
-// as the pixbuf.
-func CairoSurfaceCreateFromPixbuf(pixbuf *gdkpixbuf.Pixbuf, scale int, forWindow *Window) *cairo.Surface
+// ContentDeserializeFinish: finishes a content deserialization operation.
+func ContentDeserializeFinish(result gio.AsyncResult, value *glib.Value) bool
 
-// ColorParse: parses a textual specification of a color and fill in the @red,
-// @green, and @blue fields of a Color.
-//
-// The string can either one of a large set of standard names (taken from the
-// X11 `rgb.txt` file), or it can be a hexadecimal value in the form “\#rgb”
-// “\#rrggbb”, “\#rrrgggbbb” or “\#rrrrggggbbbb” where “r”, “g” and “b” are hex
-// digits of the red, green, and blue components of the color, respectively.
-// (White in the four forms is “\#fff”, “\#ffffff”, “\#fffffffff” and
-// “\#ffffffffffff”).
-func ColorParse(spec string) (Color, bool)
+// ContentRegisterDeserializer: registers a function to create objects of a
+// given @type from a serialized representation with the given mime type.
+func ContentRegisterDeserializer(mimeType string, _type glib.Type, deserialize ContentDeserializeFunc, data unsafe.Pointer, notify unsafe.Pointer)
 
-// DisableMultidevice: disables multidevice support in GDK. This call must
-// happen prior to gdk_display_open(), gtk_init(), gtk_init_with_args() or
-// gtk_init_check() in order to take effect.
-//
-// Most common GTK+ applications won’t ever need to call this. Only applications
-// that do mixed GDK/Xlib calls could want to disable multidevice support if
-// such Xlib code deals with input devices in any way and doesn’t observe the
-// presence of XInput 2.
-func DisableMultidevice()
+// ContentRegisterSerializer: registers a function to convert objects of the
+// given @type to a serialized representation with the given mime type.
+func ContentRegisterSerializer(_type glib.Type, mimeType string, serialize ContentSerializeFunc, data unsafe.Pointer, notify unsafe.Pointer)
 
-// DragAbort: aborts a drag without dropping.
-//
-// This function is called by the drag source.
-//
-// This function does not need to be called in managed drag and drop operations.
-// See gdk_drag_context_manage_dnd() for more information.
-func DragAbort(context *DragContext, time_ uint32)
+// ContentSerializeAsync: serialize content and write it to the given output
+// stream, asynchronously. When the operation is finished, @callback will be
+// called. You can then call gdk_content_serialize_finish() to get the result of
+// the operation.
+func ContentSerializeAsync(stream *gio.OutputStream, mimeType string, value *glib.Value, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
 
-// DragBegin: starts a drag and creates a new drag context for it. This function
-// assumes that the drag is controlled by the client pointer device, use
-// gdk_drag_begin_for_device() to begin a drag with a different device.
-//
-// This function is called by the drag source.
-func DragBegin(window *Window, targets *glib.List) *DragContext
+// ContentSerializeFinish: finishes a content serialization operation.
+func ContentSerializeFinish(result gio.AsyncResult) bool
 
-// DragBeginForDevice: starts a drag and creates a new drag context for it.
+// DragActionIsUnique: checks if @action represents a single action or if it
+// includes multiple flags that can be selected from.
 //
-// This function is called by the drag source.
-func DragBeginForDevice(window *Window, device *Device, targets *glib.List) *DragContext
-
-// DragBeginFromPoint: starts a drag and creates a new drag context for it.
-//
-// This function is called by the drag source.
-func DragBeginFromPoint(window *Window, device *Device, targets *glib.List, xRoot int, yRoot int) *DragContext
-
-// DragDrop: drops on the current destination.
-//
-// This function is called by the drag source.
-//
-// This function does not need to be called in managed drag and drop operations.
-// See gdk_drag_context_manage_dnd() for more information.
-func DragDrop(context *DragContext, time_ uint32)
-
-// DragDropDone: inform GDK if the drop ended successfully. Passing false for
-// @success may trigger a drag cancellation animation.
-//
-// This function is called by the drag source, and should be the last call
-// before dropping the reference to the @context.
-//
-// The DragContext will only take the first gdk_drag_drop_done() call as
-// effective, if this function is called multiple times, all subsequent calls
-// will be ignored.
-func DragDropDone(context *DragContext, success bool)
-
-// DragDropSucceeded: returns whether the dropped data has been successfully
-// transferred. This function is intended to be used while handling a
-// GDK_DROP_FINISHED event, its return value is meaningless at other times.
-func DragDropSucceeded(context *DragContext) bool
-
-// DragFindWindowForScreen: finds the destination window and DND protocol to use
-// at the given pointer position.
-//
-// This function is called by the drag source to obtain the @dest_window and
-// @protocol parameters for gdk_drag_motion().
-func DragFindWindowForScreen(context *DragContext, dragWindow *Window, screen *Screen, xRoot int, yRoot int) (*Window, DragProtocol)
-
-// DragGetSelection: returns the selection atom for the current source window.
-func DragGetSelection(context *DragContext) Atom
-
-// DragMotion: updates the drag context when the pointer moves or the set of
-// actions changes.
-//
-// This function is called by the drag source.
-//
-// This function does not need to be called in managed drag and drop operations.
-// See gdk_drag_context_manage_dnd() for more information.
-func DragMotion(context *DragContext, destWindow *Window, protocol DragProtocol, xRoot int, yRoot int, suggestedAction DragAction, possibleActions DragAction, time_ uint32) bool
-
-// DragStatus: selects one of the actions offered by the drag source.
-//
-// This function is called by the drag destination in response to
-// gdk_drag_motion() called by the drag source.
-func DragStatus(context *DragContext, action DragAction, time_ uint32)
-
-// DropFinish: ends the drag operation after a drop.
-//
-// This function is called by the drag destination.
-func DropFinish(context *DragContext, success bool, time_ uint32)
-
-// DropReply: accepts or rejects a drop.
-//
-// This function is called by the drag destination in response to a drop
-// initiated by the drag source.
-func DropReply(context *DragContext, accepted bool, time_ uint32)
-
-// ErrorTrapPop: removes an error trap pushed with gdk_error_trap_push(). May
-// block until an error has been definitively received or not received from the
-// X server. gdk_error_trap_pop_ignored() is preferred if you don’t need to know
-// whether an error occurred, because it never has to block. If you don't need
-// the return value of gdk_error_trap_pop(), use gdk_error_trap_pop_ignored().
-//
-// Prior to GDK 3.0, this function would not automatically sync for you, so you
-// had to gdk_flush() if your last call to Xlib was not a blocking round trip.
-func ErrorTrapPop() int
-
-// ErrorTrapPopIgnored: removes an error trap pushed with gdk_error_trap_push(),
-// but without bothering to wait and see whether an error occurred. If an error
-// arrives later asynchronously that was triggered while the trap was pushed,
-// that error will be ignored.
-func ErrorTrapPopIgnored()
-
-// ErrorTrapPush: this function allows X errors to be trapped instead of the
-// normal behavior of exiting the application. It should only be used if it is
-// not possible to avoid the X error in any other way. Errors are ignored on all
-// Display currently known to the DisplayManager. If you don’t care which error
-// happens and just want to ignore everything, pop with
-// gdk_error_trap_pop_ignored(). If you need the error code, use
-// gdk_error_trap_pop() which may have to block and wait for the error to arrive
-// from the X server.
-//
-// This API exists on all platforms but only does anything on X.
-//
-// You can use gdk_x11_display_error_trap_push() to ignore errors on only a
-// single display.
-//
-// Trapping an X error
-//
-//    gdk_error_trap_push ();
-//
-//     // ... Call the X function which may cause an error here ...
-//
-//
-//    if (gdk_error_trap_pop ())
-//     {
-//       // ... Handle the error here ...
-//     }
-//
-func ErrorTrapPush()
-
-// EventGet: checks all open displays for a Event to process,to be processed on,
-// fetching events from the windowing system if necessary. See
-// gdk_display_get_event().
-func EventGet() *Event
-
-// EventHandlerSet: sets the function to call to handle all events from GDK.
-//
-// Note that GTK+ uses this to install its own event handler, so it is usually
-// not useful for GTK+ applications. (Although an application can call this
-// function then call gtk_main_do_event() to pass events to GTK+.)
-func EventHandlerSet(_func EventFunc, data unsafe.Pointer, notify unsafe.Pointer)
-
-// EventPeek: if there is an event waiting in the event queue of some open
-// display, returns a copy of it. See gdk_display_peek_event().
-func EventPeek() *Event
-
-// EventRequestMotions: request more motion notifies if @event is a motion
-// notify hint event.
-//
-// This function should be used instead of gdk_window_get_pointer() to request
-// further motion notifies, because it also works for extension events where
-// motion notifies are provided for devices other than the core pointer.
-// Coordinate extraction, processing and requesting more motion events from a
-// GDK_MOTION_NOTIFY event usually works like this:
-//
-//    {
-//      // motion_event handler
-//      x = motion_event->x;
-//      y = motion_event->y;
-//      // handle (x,y) motion
-//      gdk_event_request_motions (motion_event); // handles is_hint events
-//    }
-func EventRequestMotions(event *EventMotion)
+// When @action is 0 - ie no action was given, true is returned.
+func DragActionIsUnique(action DragAction) bool
 
 // EventsGetAngle: if both events contain X/Y information, this function will
 // return true and return in @angle the relative angle from @event1 to @event2.
@@ -2021,70 +917,13 @@ func EventsGetCenter(event1 *Event, event2 *Event) (float64, float64, bool)
 // be returned.
 func EventsGetDistance(event1 *Event, event2 *Event) (float64, bool)
 
-// EventsPending: checks if any events are ready to be processed for any
-// display.
-func EventsPending() bool
-
-// Flush: flushes the output buffers of all display connections and waits until
-// all requests have been processed. This is rarely needed by applications.
-func Flush()
-
-// GetDefaultRootWindow: obtains the root window (parent all other windows are
-// inside) for the default display and screen.
-func GetDefaultRootWindow() *Window
-
-// GetDisplay: gets the name of the display, which usually comes from the
-// `DISPLAY` environment variable or the `--display` command line option.
-func GetDisplay() string
-
-// GetDisplayArgName: gets the display name specified in the command line
-// arguments passed to gdk_init() or gdk_parse_args(), if any.
-func GetDisplayArgName() string
-
-// GetProgramClass: gets the program class. Unless the program class has
-// explicitly been set with gdk_set_program_class() or with the `--class`
-// commandline option, the default value is the program name (determined with
-// g_get_prgname()) with the first character converted to uppercase.
-func GetProgramClass() string
-
-// GetShowEvents: gets whether event debugging output is enabled.
-func GetShowEvents() bool
-
 func GlErrorQuark() glib.Quark
 
-// Init: initializes the GDK library and connects to the windowing system. If
-// initialization fails, a warning message is output and the application
-// terminates with a call to `exit(1)`.
+// InternMimeType: canonicalizes the given mime type and interns the result.
 //
-// Any arguments used by GDK are removed from the array and @argc and @argv are
-// updated accordingly.
-//
-// GTK+ initializes GDK in gtk_init() and so this function is not usually needed
-// by GTK+ applications.
-func Init(argc *int, argv []*string)
-
-// InitCheck: initializes the GDK library and connects to the windowing system,
-// returning true on success.
-//
-// Any arguments used by GDK are removed from the array and @argc and @argv are
-// updated accordingly.
-//
-// GTK+ initializes GDK in gtk_init() and so this function is not usually needed
-// by GTK+ applications.
-func InitCheck(argc *int, argv []*string) bool
-
-// KeyboardGrab: grabs the keyboard so that all events are passed to this
-// application until the keyboard is ungrabbed with gdk_keyboard_ungrab(). This
-// overrides any previous keyboard grab by this client.
-//
-// If you set up anything at the time you take the grab that needs to be cleaned
-// up when the grab ends, you should handle the EventGrabBroken events that are
-// emitted when the grab ends unvoluntarily.
-func KeyboardGrab(window *Window, ownerEvents bool, time_ uint32) GrabStatus
-
-// KeyboardUngrab: ungrabs the keyboard on the default display, if it is grabbed
-// by this application.
-func KeyboardUngrab(time_ uint32)
+// If @string is not a valid mime type, nil is returned instead. See RFC 2048
+// for the syntax if mime types.
+func InternMimeType(string string) string
 
 // KeyvalConvertCase: obtains the upper- and lower-case versions of the keyval
 // @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
@@ -2113,96 +952,19 @@ func KeyvalToLower(keyval uint) uint
 
 // KeyvalToUnicode: convert from a GDK key symbol to the corresponding ISO10646
 // (Unicode) character.
+//
+// Note that the conversion does not take the current locale into consideration,
+// which might be expected for particular keyvals, such as GDK_KEY_KP_Decimal.
 func KeyvalToUnicode(keyval uint) uint32
 
 // KeyvalToUpper: converts a key value to upper case, if applicable.
 func KeyvalToUpper(keyval uint) uint
 
-// ListVisuals: lists the available visuals for the default screen. (See
-// gdk_screen_list_visuals()) A visual describes a hardware image data format.
-// For example, a visual might support 24-bit color, or 8-bit color, and might
-// expect pixels to be in a certain format.
-//
-// Call g_list_free() on the return value when you’re finished with it.
-func ListVisuals() *glib.List
-
-// NotifyStartupComplete: indicates to the GUI environment that the application
-// has finished loading. If the applications opens windows, this function is
-// normally called after opening the application’s initial set of windows.
-//
-// GTK+ will call this function automatically after opening the first Window
-// unless gtk_window_set_auto_startup_notification() is called to disable that
-// feature.
-func NotifyStartupComplete()
-
-// NotifyStartupCompleteWithID: indicates to the GUI environment that the
-// application has finished loading, using a given identifier.
-//
-// GTK+ will call this function automatically for Window with custom
-// startup-notification identifier unless
-// gtk_window_set_auto_startup_notification() is called to disable that feature.
-func NotifyStartupCompleteWithID(startupID string)
-
-// OffscreenWindowGetEmbedder: gets the window that @window is embedded in.
-func OffscreenWindowGetEmbedder(window *Window) *Window
-
-// OffscreenWindowGetSurface: gets the offscreen surface that an offscreen
-// window renders into. If you need to keep this around over window resizes, you
-// need to add a reference to it.
-func OffscreenWindowGetSurface(window *Window) *cairo.Surface
-
-// OffscreenWindowSetEmbedder: sets @window to be embedded in @embedder.
-//
-// To fully embed an offscreen window, in addition to calling this function, it
-// is also necessary to handle the Window::pick-embedded-child signal on the
-// @embedder and the Window::to-embedder and Window::from-embedder signals on
-// @window.
-func OffscreenWindowSetEmbedder(window *Window, embedder *Window)
-
-// PangoContextGet: creates a Context for the default GDK screen.
-//
-// The context must be freed when you’re finished with it.
-//
-// When using GTK+, normally you should use gtk_widget_get_pango_context()
-// instead of this function, to get the appropriate context for the widget you
-// intend to render text onto.
-//
-// The newly created context will have the default font options (see
-// #cairo_font_options_t) for the default screen; if these options change it
-// will not be updated. Using gtk_widget_get_pango_context() is more convenient
-// if you want to keep a context around and track changes to the screen’s font
-// rendering settings.
-func PangoContextGet() *pango.Context
-
-// PangoContextGetForDisplay: creates a Context for @display.
-//
-// The context must be freed when you’re finished with it.
-//
-// When using GTK+, normally you should use gtk_widget_get_pango_context()
-// instead of this function, to get the appropriate context for the widget you
-// intend to render text onto.
-//
-// The newly created context will have the default font options (see
-// #cairo_font_options_t) for the display; if these options change it will not
-// be updated. Using gtk_widget_get_pango_context() is more convenient if you
-// want to keep a context around and track changes to the font rendering
-// settings.
-func PangoContextGetForDisplay(display *Display) *pango.Context
-
-// PangoContextGetForScreen: creates a Context for @screen.
-//
-// The context must be freed when you’re finished with it.
-//
-// When using GTK+, normally you should use gtk_widget_get_pango_context()
-// instead of this function, to get the appropriate context for the widget you
-// intend to render text onto.
-//
-// The newly created context will have the default font options (see
-// #cairo_font_options_t) for the screen; if these options change it will not be
-// updated. Using gtk_widget_get_pango_context() is more convenient if you want
-// to keep a context around and track changes to the screen’s font rendering
-// settings.
-func PangoContextGetForScreen(screen *Screen) *pango.Context
+// PaintableNewEmpty: returns a paintable that has the given intrinsic size and
+// draws nothing. This is often useful for implementing the
+// PaintableInterface.get_current_image() virtual function when the paintable is
+// in an incomplete state (like a MediaStream before receiving the first frame).
+func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable
 
 // PangoLayoutGetClipRegion: obtains a clip region which contains the areas
 // where the given ranges of text would be drawn. @x_origin and @y_origin are
@@ -2213,7 +975,7 @@ func PangoContextGetForScreen(screen *Screen) *pango.Context
 // ranges, not ink extents. So the drawn layout may in fact touch areas out of
 // the clip region. The clip region is mainly useful for highlightling parts of
 // text, such as when text is selected.
-func PangoLayoutGetClipRegion(layout *pango.Layout, xOrigin int, yOrigin int, indexRanges *int, nRanges int) *cairo.Region
+func PangoLayoutGetClipRegion(layout *pango.Layout, xOrigin int, yOrigin int, indexRanges int, nRanges int) *cairo.Region
 
 // PangoLayoutLineGetClipRegion: obtains a clip region which contains the areas
 // where the given ranges of text would be drawn. @x_origin and @y_origin are
@@ -2230,158 +992,22 @@ func PangoLayoutGetClipRegion(layout *pango.Layout, xOrigin int, yOrigin int, in
 // text, such as when text is selected.
 func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin int, indexRanges []int, nRanges int) *cairo.Region
 
-// ParseArgs: parse command line arguments, and store for future use by calls to
-// gdk_display_open().
-//
-// Any arguments used by GDK are removed from the array and @argc and @argv are
-// updated accordingly.
-//
-// You shouldn’t call this function explicitly if you are using gtk_init(),
-// gtk_init_check(), gdk_init(), or gdk_init_check().
-func ParseArgs(argc *int, argv []*string)
-
 // PixbufGetFromSurface: transfers image data from a #cairo_surface_t and
 // converts it to an RGB(A) representation inside a Pixbuf. This allows you to
-// efficiently read individual pixels from cairo surfaces. For Windows, use
-// gdk_pixbuf_get_from_window() instead.
+// efficiently read individual pixels from cairo surfaces.
 //
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the @surface contains one.
 func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) *gdkpixbuf.Pixbuf
 
-// PixbufGetFromWindow: transfers image data from a Window and converts it to an
-// RGB(A) representation inside a Pixbuf. In other words, copies image data from
-// a server-side drawable to a client-side RGB(A) buffer. This allows you to
-// efficiently read individual pixels on the client side.
-//
-// This function will create an RGB pixbuf with 8 bits per channel with the size
-// specified by the @width and @height arguments scaled by the scale factor of
-// @window. The pixbuf will contain an alpha channel if the @window contains
-// one.
-//
-// If the window is off the screen, then there is no image data in the
-// obscured/offscreen regions to be placed in the pixbuf. The contents of
-// portions of the pixbuf corresponding to the offscreen region are undefined.
-//
-// If the window you’re obtaining data from is partially obscured by other
-// windows, then the contents of the pixbuf areas corresponding to the obscured
-// regions are undefined.
-//
-// If the window is not mapped (typically because it’s iconified/minimized or
-// not on the current workspace), then nil will be returned.
-//
-// If memory can’t be allocated for the return value, nil will be returned
-// instead.
-//
-// (In short, there are several ways this function can fail, and if it fails it
-// returns nil; so check the return value.)
-func PixbufGetFromWindow(window *Window, srcX int, srcY int, width int, height int) *gdkpixbuf.Pixbuf
-
-// PointerGrab: grabs the pointer (usually a mouse) so that all events are
-// passed to this application until the pointer is ungrabbed with
-// gdk_pointer_ungrab(), or the grab window becomes unviewable. This overrides
-// any previous pointer grab by this client.
-//
-// Pointer grabs are used for operations which need complete control over mouse
-// events, even if the mouse leaves the application. For example in GTK+ it is
-// used for Drag and Drop, for dragging the handle in the HPaned and VPaned
-// widgets.
-//
-// Note that if the event mask of an X window has selected both button press and
-// button release events, then a button press event will cause an automatic
-// pointer grab until the button is released. X does this automatically since
-// most applications expect to receive button press and release events in pairs.
-// It is equivalent to a pointer grab on the window with @owner_events set to
-// true.
-//
-// If you set up anything at the time you take the grab that needs to be cleaned
-// up when the grab ends, you should handle the EventGrabBroken events that are
-// emitted when the grab ends unvoluntarily.
-func PointerGrab(window *Window, ownerEvents bool, eventMask EventMask, confineTo *Window, cursor *Cursor, time_ uint32) GrabStatus
-
-// PointerIsGrabbed: returns true if the pointer on the default display is
-// currently grabbed by this application.
-//
-// Note that this does not take the inmplicit pointer grab on button presses
-// into account.
-func PointerIsGrabbed() bool
-
-// PointerUngrab: ungrabs the pointer on the default display, if it is grabbed
-// by this application.
-func PointerUngrab(time_ uint32)
-
-// PreParseLibgtkOnly: prepare for parsing command line arguments for GDK. This
-// is not public API and should not be used in application code.
-func PreParseLibgtkOnly()
-
-// PropertyChange: changes the contents of a property on a window.
-func PropertyChange(window *Window, property Atom, _type Atom, format int, mode PropMode, data *uint8, nelements int)
-
-// PropertyDelete: deletes a property from a window.
-func PropertyDelete(window *Window, property Atom)
-
-// PropertyGet: retrieves a portion of the contents of a property. If the
-// property does not exist, then the function returns false, and GDK_NONE will
-// be stored in @actual_property_type.
-//
-// The XGetWindowProperty() function that gdk_property_get() uses has a very
-// confusing and complicated set of semantics. Unfortunately, gdk_property_get()
-// makes the situation worse instead of better (the semantics should be
-// considered undefined), and also prints warnings to stderr in cases where it
-// should return a useful error to the program. You are advised to use
-// XGetWindowProperty() directly until a replacement function for
-// gdk_property_get() is provided.
-func PropertyGet(window *Window, property Atom, _type Atom, offset uint32, length uint32, pdelete int) (Atom, int, int, []*uint8, bool)
-
-// QueryDepths: this function returns the available bit depths for the default
-// screen. It’s equivalent to listing the visuals (gdk_list_visuals()) and then
-// looking at the depth field in each visual, removing duplicates.
-//
-// The array returned by this function should not be freed.
-func QueryDepths() ([]*int, int)
-
-// QueryVisualTypes: this function returns the available visual types for the
-// default screen. It’s equivalent to listing the visuals (gdk_list_visuals())
-// and then looking at the type field in each visual, removing duplicates.
-//
-// The array returned by this function should not be freed.
-func QueryVisualTypes() ([]*VisualType, int)
-
-// SelectionConvert: retrieves the contents of a selection in a given form.
-func SelectionConvert(requestor *Window, selection Atom, target Atom, time_ uint32)
-
-// SelectionOwnerGet: determines the owner of the given selection.
-func SelectionOwnerGet(selection Atom) *Window
-
-// SelectionOwnerGetForDisplay: determine the owner of the given selection.
-//
-// Note that the return value may be owned by a different process if a foreign
-// window was previously created for that window, but a new foreign window will
-// never be created by this call.
-func SelectionOwnerGetForDisplay(display *Display, selection Atom) *Window
-
-// SelectionOwnerSet: sets the owner of the given selection.
-func SelectionOwnerSet(owner *Window, selection Atom, time_ uint32, sendEvent bool) bool
-
-// SelectionOwnerSetForDisplay: sets the Window @owner as the current owner of
-// the selection @selection.
-func SelectionOwnerSetForDisplay(display *Display, owner *Window, selection Atom, time_ uint32, sendEvent bool) bool
-
-// SelectionPropertyGet: retrieves selection data that was stored by the
-// selection data in response to a call to gdk_selection_convert(). This
-// function will not be used by applications, who should use the Clipboard API
-// instead.
-func SelectionPropertyGet(requestor *Window, data **uint8, propType *Atom, propFormat *int) int
-
-// SelectionSendNotify: sends a response to SelectionRequest event.
-func SelectionSendNotify(requestor *Window, selection Atom, target Atom, property Atom, time_ uint32)
-
-// SelectionSendNotifyForDisplay: send a response to SelectionRequest event.
-func SelectionSendNotifyForDisplay(display *Display, requestor *Window, selection Atom, target Atom, property Atom, time_ uint32)
+// PixbufGetFromTexture: creates a new pixbuf from @texture. This should
+// generally not be used in newly written code as later stages will almost
+// certainly convert the pixbuf back into a texture to draw it on screen.
+func PixbufGetFromTexture(texture *Texture) *gdkpixbuf.Pixbuf
 
 // SetAllowedBackends: sets a list of backends that GDK should try to use.
 //
-// This can be be useful if your application does not work with certain GDK
+// This can be useful if your application does not work with certain GDK
 // backends.
 //
 // By default, GDK tries all included backends.
@@ -2397,1101 +1023,114 @@ func SelectionSendNotifyForDisplay(display *Display, requestor *Window, selectio
 // The possible backend names are x11, win32, quartz, broadway, wayland. You can
 // also include a * in the list to try all remaining backends.
 //
-// This call must happen prior to gdk_display_open(), gtk_init(),
-// gtk_init_with_args() or gtk_init_check() in order to take effect.
+// This call must happen prior to gdk_display_open(), gtk_init(), or
+// gtk_init_check() in order to take effect.
 func SetAllowedBackends(backends string)
 
-// SetDoubleClickTime: set the double click time for the default display. See
-// gdk_display_set_double_click_time(). See also
-// gdk_display_set_double_click_distance(). Applications should not set this, it
-// is a global user-configured setting.
-func SetDoubleClickTime(msec uint)
-
-// SetProgramClass: sets the program class. The X11 backend uses the program
-// class to set the class name part of the `WM_CLASS` property on toplevel
-// windows; see the ICCCM.
-//
-// The program class can still be overridden with the --class command line
-// option.
-func SetProgramClass(programClass string)
-
-// SetShowEvents: sets whether a trace of received events is output. Note that
-// GTK+ must be compiled with debugging (that is, configured using the
-// `--enable-debug` option) to use this option.
-func SetShowEvents(showEvents bool)
-
-// SettingGet: obtains a desktop-wide setting, such as the double-click time,
-// for the default screen. See gdk_screen_get_setting().
-func SettingGet(name string, value **glib.Value) bool
-
-func SynthesizeWindowState(window *Window, unsetFlags WindowState, setFlags WindowState)
-
-// TestRenderSync: retrieves a pixel from @window to force the windowing system
-// to carry out any pending rendering commands.
-//
-// This function is intended to be used to synchronize with rendering pipelines,
-// to benchmark windowing system rendering operations.
-func TestRenderSync(window *Window)
-
-// TestSimulateButton: this function is intended to be used in GTK+ test
-// programs. It will warp the mouse pointer to the given (@x,@y) coordinates
-// within @window and simulate a button press or release event. Because the
-// mouse pointer needs to be warped to the target location, use of this function
-// outside of test programs that run in their own virtual windowing system (e.g.
-// Xvfb) is not recommended.
-//
-// Also, gdk_test_simulate_button() is a fairly low level function, for most
-// testing purposes, gtk_test_widget_click() is the right function to call which
-// will generate a button press event followed by its accompanying button
-// release event.
-func TestSimulateButton(window *Window, x int, y int, button uint, modifiers ModifierType, buttonPressrelease EventType) bool
-
-// TestSimulateKey: this function is intended to be used in GTK+ test programs.
-// If (@x,@y) are > (-1,-1), it will warp the mouse pointer to the given (@x,@y)
-// coordinates within @window and simulate a key press or release event.
-//
-// When the mouse pointer is warped to the target location, use of this function
-// outside of test programs that run in their own virtual windowing system (e.g.
-// Xvfb) is not recommended. If (@x,@y) are passed as (-1,-1), the mouse pointer
-// will not be warped and @window origin will be used as mouse pointer location
-// for the event.
-//
-// Also, gdk_test_simulate_key() is a fairly low level function, for most
-// testing purposes, gtk_test_widget_send_key() is the right function to call
-// which will generate a key press event followed by its accompanying key
-// release event.
-func TestSimulateKey(window *Window, x int, y int, keyval uint, modifiers ModifierType, keyPressrelease EventType) bool
-
-// TextPropertyToUTF8ListForDisplay: converts a text property in the given
-// encoding to a list of UTF-8 strings.
-func TextPropertyToUTF8ListForDisplay(display *Display, encoding Atom, format int, text []uint8, length int) ([]*string, int)
-
-// ThreadsAddIdle: a wrapper for the common usage of gdk_threads_add_idle_full()
-// assigning the default priority, PRIORITY_DEFAULT_IDLE.
-//
-// See gdk_threads_add_idle_full().
-func ThreadsAddIdle(function glib.SourceFunc, data unsafe.Pointer) uint
-
-// ThreadsAddIdleFull: adds a function to be called whenever there are no higher
-// priority events pending. If the function returns false it is automatically
-// removed from the list of event sources and will not be called again.
-//
-// This variant of g_idle_add_full() calls @function with the GDK lock held. It
-// can be thought of a MT-safe version for GTK+ widgets for the following use
-// case, where you have to worry about idle_callback() running in thread A and
-// accessing @self after it has been finalized in thread B:
-//
-//    static gboolean
-//    idle_callback (gpointer data)
-//    {
-//       // gdk_threads_enter(); would be needed for g_idle_add()
-//
-//       SomeWidget *self = data;
-//       // do stuff with self
-//
-//       self->idle_id = 0;
-//
-//       // gdk_threads_leave(); would be needed for g_idle_add()
-//       return FALSE;
-//    }
-//
-//    static void
-//    some_widget_do_stuff_later (SomeWidget *self)
-//    {
-//       self->idle_id = gdk_threads_add_idle (idle_callback, self)
-//       // using g_idle_add() here would require thread protection in the callback
-//    }
-//
-//    static void
-//    some_widget_finalize (GObject *object)
-//    {
-//       SomeWidget *self = SOME_WIDGET (object);
-//       if (self->idle_id)
-//         g_source_remove (self->idle_id);
-//       G_OBJECT_CLASS (parent_class)->finalize (object);
-//    }
-//
-func ThreadsAddIdleFull(priority int, function glib.SourceFunc, data unsafe.Pointer, notify unsafe.Pointer) uint
-
-// ThreadsAddTimeout: a wrapper for the common usage of
-// gdk_threads_add_timeout_full() assigning the default priority,
-// PRIORITY_DEFAULT.
-//
-// See gdk_threads_add_timeout_full().
-func ThreadsAddTimeout(interval uint, function glib.SourceFunc, data unsafe.Pointer) uint
-
-// ThreadsAddTimeoutFull: sets a function to be called at regular intervals
-// holding the GDK lock, with the given priority. The function is called
-// repeatedly until it returns false, at which point the timeout is
-// automatically destroyed and the function will not be called again. The
-// @notify function is called when the timeout is destroyed. The first call to
-// the function will be at the end of the first @interval.
-//
-// Note that timeout functions may be delayed, due to the processing of other
-// event sources. Thus they should not be relied on for precise timing. After
-// each call to the timeout function, the time of the next timeout is
-// recalculated based on the current time and the given interval (it does not
-// try to “catch up” time lost in delays).
-//
-// This variant of g_timeout_add_full() can be thought of a MT-safe version for
-// GTK+ widgets for the following use case:
-//
-//    static gboolean timeout_callback (gpointer data)
-//    {
-//       SomeWidget *self = data;
-//
-//       // do stuff with self
-//
-//       self->timeout_id = 0;
-//
-//       return G_SOURCE_REMOVE;
-//    }
-//
-//    static void some_widget_do_stuff_later (SomeWidget *self)
-//    {
-//       self->timeout_id = g_timeout_add (timeout_callback, self)
-//    }
-//
-//    static void some_widget_finalize (GObject *object)
-//    {
-//       SomeWidget *self = SOME_WIDGET (object);
-//
-//       if (self->timeout_id)
-//         g_source_remove (self->timeout_id);
-//
-//       G_OBJECT_CLASS (parent_class)->finalize (object);
-//    }
-func ThreadsAddTimeoutFull(priority int, interval uint, function glib.SourceFunc, data unsafe.Pointer, notify unsafe.Pointer) uint
-
-// ThreadsAddTimeoutSeconds: a wrapper for the common usage of
-// gdk_threads_add_timeout_seconds_full() assigning the default priority,
-// PRIORITY_DEFAULT.
-//
-// For details, see gdk_threads_add_timeout_full().
-func ThreadsAddTimeoutSeconds(interval uint, function glib.SourceFunc, data unsafe.Pointer) uint
-
-// ThreadsAddTimeoutSecondsFull: a variant of gdk_threads_add_timeout_full()
-// with second-granularity. See g_timeout_add_seconds_full() for a discussion of
-// why it is a good idea to use this function if you don’t need finer
-// granularity.
-func ThreadsAddTimeoutSecondsFull(priority int, interval uint, function glib.SourceFunc, data unsafe.Pointer, notify unsafe.Pointer) uint
-
-// ThreadsEnter: this function marks the beginning of a critical section in
-// which GDK and GTK+ functions can be called safely and without causing race
-// conditions. Only one thread at a time can be in such a critial section.
-func ThreadsEnter()
-
-// ThreadsInit: initializes GDK so that it can be used from multiple threads in
-// conjunction with gdk_threads_enter() and gdk_threads_leave().
-//
-// This call must be made before any use of the main loop from GTK+; to be safe,
-// call it before gtk_init().
-func ThreadsInit()
-
-// ThreadsLeave: leaves a critical region begun with gdk_threads_enter().
-func ThreadsLeave()
-
-// ThreadsSetLockFunctions: allows the application to replace the standard
-// method that GDK uses to protect its data structures. Normally, GDK creates a
-// single #GMutex that is locked by gdk_threads_enter(), and released by
-// gdk_threads_leave(); using this function an application provides, instead, a
-// function @enter_fn that is called by gdk_threads_enter() and a function
-// @leave_fn that is called by gdk_threads_leave().
-//
-// The functions must provide at least same locking functionality as the default
-// implementation, but can also do extra application specific processing.
-//
-// As an example, consider an application that has its own recursive lock that
-// when held, holds the GTK+ lock as well. When GTK+ unlocks the GTK+ lock when
-// entering a recursive main loop, the application must temporarily release its
-// lock as well.
-//
-// Most threaded GTK+ apps won’t need to use this method.
-//
-// This method must be called before gdk_threads_init(), and cannot be called
-// multiple times.
-func ThreadsSetLockFunctions(enterFn interface{}, leaveFn interface{})
+func ToplevelSizeGetType() glib.Type
 
 // UnicodeToKeyval: convert from a ISO10646 character to a key symbol.
 func UnicodeToKeyval(wc uint32) uint
 
-// UTF8ToStringTarget: converts an UTF-8 string into the best possible
-// representation as a STRING. The representation of characters not in STRING is
-// not specified; it may be as pseudo-escape sequences \x{ABCD}, or it may be in
-// some other form of approximation.
-func UTF8ToStringTarget(str string) string
+func VulkanErrorQuark() glib.Quark
 
-// Color: a Color is used to describe a color, similar to the XColor struct used
-// in the X11 drawing API.
-type Color struct {
-	// Pixel: for allocated colors, the pixel value used to draw this color on
-	// the screen. Not used anymore.
-	Pixel uint32
-	// Red: the red component of the color. This is a value between 0 and 65535,
-	// with 65535 indicating full intensity
-	Red uint16
-	// Green: the green component of the color
-	Green uint16
-	// Blue: the blue component of the color
-	Blue uint16
-}
-
-func wrapColor(p *C.GdkColor) *Color {
-	var v Color
-	v.Pixel = uint32(p.pixel)
-	v.Red = uint16(p.red)
-	v.Green = uint16(p.green)
-	v.Blue = uint16(p.blue)
-	return &v
-}
-
-func marshalColor(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkColor)(unsafe.Pointer(b))
-
-	return wrapColor(c)
-}
-
-// EventAny: contains the fields which are common to all event structs. Any
-// event pointer can safely be cast to a pointer to a EventAny to access these
-// fields.
-type EventAny struct {
-	// Type: the type of the event.
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-}
-
-func wrapEventAny(p *C.GdkEventAny) *EventAny {
-	var v EventAny
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	return &v
-}
-
-func marshalEventAny(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventAny)(unsafe.Pointer(b))
-
-	return wrapEventAny(c)
-}
-
-// EventButton: used for button press and button release events. The @type field
-// will be one of GDK_BUTTON_PRESS, GDK_2BUTTON_PRESS, GDK_3BUTTON_PRESS or
-// GDK_BUTTON_RELEASE,
+// ContentFormats: this section describes the ContentFormats structure that is
+// used to advertise and negotiate the format of content passed between
+// different widgets, windows or applications using for example the clipboard or
+// drag'n'drop.
 //
-// Double and triple-clicks result in a sequence of events being received. For
-// double-clicks the order of events will be:
+// GDK supports content in 2 forms: #GType and mime type. Using #GTypes is meant
+// only for in-process content transfers. Mime types are meant to be used for
+// data passing both in-process and out-of-process. The details of how data is
+// passed is described in the documentation of the actual implementations.
 //
-// - GDK_BUTTON_PRESS - GDK_BUTTON_RELEASE - GDK_BUTTON_PRESS -
-// GDK_2BUTTON_PRESS - GDK_BUTTON_RELEASE
+// A ContentFormats describes a set of possible formats content can be exchanged
+// in. It is assumed that this set is ordered. #GTypes are more important than
+// mime types. Order between different #GTypes or mime types is the order they
+// were added in, most important first. Functions that care about order, such as
+// gdk_content_formats_union() will describe in their documentation how they
+// interpret that order, though in general the order of the first argument is
+// considered the primary order of the result, followed by the order of further
+// arguments.
 //
-// Note that the first click is received just like a normal button press, while
-// the second click results in a GDK_2BUTTON_PRESS being received just after the
-// GDK_BUTTON_PRESS.
+// For debugging purposes, the function gdk_content_formats_to_string() exists.
+// It will print a comma-seperated formats of formats from most important to
+// least important.
 //
-// Triple-clicks are very similar to double-clicks, except that
-// GDK_3BUTTON_PRESS is inserted after the third click. The order of the events
-// is:
-//
-// - GDK_BUTTON_PRESS - GDK_BUTTON_RELEASE - GDK_BUTTON_PRESS -
-// GDK_2BUTTON_PRESS - GDK_BUTTON_RELEASE - GDK_BUTTON_PRESS - GDK_3BUTTON_PRESS
-// - GDK_BUTTON_RELEASE
-//
-// For a double click to occur, the second button press must occur within 1/4 of
-// a second of the first. For a triple click to occur, the third button press
-// must also occur within 1/2 second of the first button press.
-type EventButton struct {
-	// Type: the type of the event (GDK_BUTTON_PRESS, GDK_2BUTTON_PRESS,
-	// GDK_3BUTTON_PRESS or GDK_BUTTON_RELEASE).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// X: the x coordinate of the pointer relative to the window.
-	X float64
-	// Y: the y coordinate of the pointer relative to the window.
-	Y float64
-	// Axes: @x, @y translated to the axes of @device, or nil if @device is the
-	// mouse.
-	Axes *float64
-	// State: a bit-mask representing the state of the modifier keys (e.g.
-	// Control, Shift and Alt) and the pointer buttons. See ModifierType.
-	State ModifierType
-	// Button: the button which was pressed or released, numbered from 1 to 5.
-	// Normally button 1 is the left mouse button, 2 is the middle button, and 3
-	// is the right button. On 2-button mice, the middle button can often be
-	// simulated by pressing both mouse buttons together.
-	Button uint
-	// Device: the master device that the event originated from. Use
-	// gdk_event_get_source_device() to get the slave device.
-	Device *Device
-	// XRoot: the x coordinate of the pointer relative to the root of the
-	// screen.
-	XRoot float64
-	// YRoot: the y coordinate of the pointer relative to the root of the
-	// screen.
-	YRoot float64
+// ContentFormats is an immutable struct. After creation, you cannot change the
+// types it represents. Instead, new ContentFormats have to be created. The
+// ContentFormatsBuilder structure is meant to help in this endeavor.
+type ContentFormats struct {
+	native *C.GdkContentFormats
 }
 
-func wrapEventButton(p *C.GdkEventButton) *EventButton {
-	var v EventButton
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Time = uint32(p.time)
-	v.X = float64(p.x)
-	v.Y = float64(p.y)
-	v.Axes = float64(p.axes)
-	v.State = ModifierType(p.state)
-	v.Button = uint(p.button)
-	v.Device = wrap * Device(p.device)
-	v.XRoot = float64(p.x_root)
-	v.YRoot = float64(p.y_root)
+func wrapContentFormats(p *C.GdkContentFormats) *ContentFormats {
+	v := ContentFormats{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ContentFormats).free)
+
 	return &v
 }
 
-func marshalEventButton(p uintptr) (interface{}, error) {
+func marshalContentFormats(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventButton)(unsafe.Pointer(b))
+	c := (*C.GdkContentFormats)(unsafe.Pointer(b))
 
-	return wrapEventButton(c)
+	return wrapContentFormats(c)
 }
 
-// EventConfigure: generated when a window size or position has changed.
-type EventConfigure struct {
-	// Type: the type of the event (GDK_CONFIGURE).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// X: the new x coordinate of the window, relative to its parent.
-	X int
-	// Y: the new y coordinate of the window, relative to its parent.
-	Y int
-	// Width: the new width of the window.
-	Width int
-	// Height: the new height of the window.
-	Height int
+func (c *ContentFormats) free() {}
+
+// Native returns the pointer to *C.GdkContentFormats. The caller is expected to
+// cast.
+func (c *ContentFormats) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
-func wrapEventConfigure(p *C.GdkEventConfigure) *EventConfigure {
-	var v EventConfigure
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.X = int(p.x)
-	v.Y = int(p.y)
-	v.Width = int(p.width)
-	v.Height = int(p.height)
+// ContentFormatsBuilder: a ContentFormatsBuilder struct is an opaque struct. It
+// is meant to not be kept around and only be used to create new ContentFormats
+// objects.
+type ContentFormatsBuilder struct {
+	native *C.GdkContentFormatsBuilder
+}
+
+func wrapContentFormatsBuilder(p *C.GdkContentFormatsBuilder) *ContentFormatsBuilder {
+	v := ContentFormatsBuilder{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ContentFormatsBuilder).free)
+
 	return &v
 }
 
-func marshalEventConfigure(p uintptr) (interface{}, error) {
+func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventConfigure)(unsafe.Pointer(b))
+	c := (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
 
-	return wrapEventConfigure(c)
+	return wrapContentFormatsBuilder(c)
 }
 
-// EventCrossing: generated when the pointer enters or leaves a window.
-type EventCrossing struct {
-	// Type: the type of the event (GDK_ENTER_NOTIFY or GDK_LEAVE_NOTIFY).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Subwindow: the window that was entered or left.
-	Subwindow *Window
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// X: the x coordinate of the pointer relative to the window.
-	X float64
-	// Y: the y coordinate of the pointer relative to the window.
-	Y float64
-	// XRoot: the x coordinate of the pointer relative to the root of the
-	// screen.
-	XRoot float64
-	// YRoot: the y coordinate of the pointer relative to the root of the
-	// screen.
-	YRoot float64
-	// Mode: the crossing mode (GDK_CROSSING_NORMAL, GDK_CROSSING_GRAB,
-	// GDK_CROSSING_UNGRAB, GDK_CROSSING_GTK_GRAB, GDK_CROSSING_GTK_UNGRAB or
-	// GDK_CROSSING_STATE_CHANGED). GDK_CROSSING_GTK_GRAB,
-	// GDK_CROSSING_GTK_UNGRAB, and GDK_CROSSING_STATE_CHANGED were added in
-	// 2.14 and are always synthesized, never native.
-	Mode CrossingMode
-	// Detail: the kind of crossing that happened (GDK_NOTIFY_INFERIOR,
-	// GDK_NOTIFY_ANCESTOR, GDK_NOTIFY_VIRTUAL, GDK_NOTIFY_NONLINEAR or
-	// GDK_NOTIFY_NONLINEAR_VIRTUAL).
-	Detail NotifyType
-	// Focus: true if @window is the focus window or an inferior.
-	Focus bool
-	// State: a bit-mask representing the state of the modifier keys (e.g.
-	// Control, Shift and Alt) and the pointer buttons. See ModifierType.
-	State ModifierType
+func (c *ContentFormatsBuilder) free() {}
+
+// Native returns the pointer to *C.GdkContentFormatsBuilder. The caller is expected to
+// cast.
+func (c *ContentFormatsBuilder) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
-func wrapEventCrossing(p *C.GdkEventCrossing) *EventCrossing {
-	var v EventCrossing
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Subwindow = wrap * Window(p.subwindow)
-	v.Time = uint32(p.time)
-	v.X = float64(p.x)
-	v.Y = float64(p.y)
-	v.XRoot = float64(p.x_root)
-	v.YRoot = float64(p.y_root)
-	v.Mode = CrossingMode(p.mode)
-	v.Detail = NotifyType(p.detail)
-	v.Focus = bool(p.focus)
-	v.State = ModifierType(p.state)
-	return &v
-}
-
-func marshalEventCrossing(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventCrossing)(unsafe.Pointer(b))
-
-	return wrapEventCrossing(c)
-}
-
-// EventDND: generated during DND operations.
-type EventDND struct {
-	// Type: the type of the event (GDK_DRAG_ENTER, GDK_DRAG_LEAVE,
-	// GDK_DRAG_MOTION, GDK_DRAG_STATUS, GDK_DROP_START or GDK_DROP_FINISHED).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Context: the DragContext for the current DND operation.
-	Context *DragContext
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// XRoot: the x coordinate of the pointer relative to the root of the
-	// screen, only set for GDK_DRAG_MOTION and GDK_DROP_START.
-	XRoot int16
-	// YRoot: the y coordinate of the pointer relative to the root of the
-	// screen, only set for GDK_DRAG_MOTION and GDK_DROP_START.
-	YRoot int16
-}
-
-func wrapEventDND(p *C.GdkEventDND) *EventDND {
-	var v EventDND
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Context = wrap * DragContext(p.context)
-	v.Time = uint32(p.time)
-	v.XRoot = int16(p.x_root)
-	v.YRoot = int16(p.y_root)
-	return &v
-}
-
-func marshalEventDND(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventDND)(unsafe.Pointer(b))
-
-	return wrapEventDND(c)
-}
-
-// EventExpose: generated when all or part of a window becomes visible and needs
-// to be redrawn.
-type EventExpose struct {
-	// Type: the type of the event (GDK_EXPOSE or GDK_DAMAGE).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Area: bounding box of @region.
-	Area Rectangle
-	// Region: the region that needs to be redrawn.
-	Region *cairo.Region
-	// Count: the number of contiguous GDK_EXPOSE events following this one. The
-	// only use for this is “exposure compression”, i.e. handling all contiguous
-	// GDK_EXPOSE events in one go, though GDK performs some exposure
-	// compression so this is not normally needed.
-	Count int
-}
-
-func wrapEventExpose(p *C.GdkEventExpose) *EventExpose {
-	var v EventExpose
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Area = wrapRectangle(p.area)
-	v.Region = wrap * cairo.Region(p.region)
-	v.Count = int(p.count)
-	return &v
-}
-
-func marshalEventExpose(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventExpose)(unsafe.Pointer(b))
-
-	return wrapEventExpose(c)
-}
-
-// EventFocus: describes a change of keyboard focus.
-type EventFocus struct {
-	// Type: the type of the event (GDK_FOCUS_CHANGE).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// In: true if the window has gained the keyboard focus, false if it has
-	// lost the focus.
-	In int16
-}
-
-func wrapEventFocus(p *C.GdkEventFocus) *EventFocus {
-	var v EventFocus
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.In = int16(p.in)
-	return &v
-}
-
-func marshalEventFocus(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventFocus)(unsafe.Pointer(b))
-
-	return wrapEventFocus(c)
-}
-
-// EventGrabBroken: generated when a pointer or keyboard grab is broken. On X11,
-// this happens when the grab window becomes unviewable (i.e. it or one of its
-// ancestors is unmapped), or if the same application grabs the pointer or
-// keyboard again. Note that implicit grabs (which are initiated by button
-// presses) can also cause EventGrabBroken events.
-type EventGrabBroken struct {
-	// Type: the type of the event (GDK_GRAB_BROKEN)
-	Type EventType
-	// Window: the window which received the event, i.e. the window that
-	// previously owned the grab
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Keyboard: true if a keyboard grab was broken, false if a pointer grab was
-	// broken
-	Keyboard bool
-	// Implicit: true if the broken grab was implicit
-	Implicit bool
-	// GrabWindow: if this event is caused by another grab in the same
-	// application, @grab_window contains the new grab window. Otherwise
-	// @grab_window is nil.
-	GrabWindow *Window
-}
-
-func wrapEventGrabBroken(p *C.GdkEventGrabBroken) *EventGrabBroken {
-	var v EventGrabBroken
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Keyboard = bool(p.keyboard)
-	v.Implicit = bool(p.implicit)
-	v.GrabWindow = wrap * Window(p.grab_window)
-	return &v
-}
-
-func marshalEventGrabBroken(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventGrabBroken)(unsafe.Pointer(b))
-
-	return wrapEventGrabBroken(c)
-}
-
-// EventKey: describes a key press or key release event.
-type EventKey struct {
-	// Type: the type of the event (GDK_KEY_PRESS or GDK_KEY_RELEASE).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// State: a bit-mask representing the state of the modifier keys (e.g.
-	// Control, Shift and Alt) and the pointer buttons. See ModifierType.
-	State ModifierType
-	// Keyval: the key that was pressed or released. See the `gdk/gdkkeysyms.h`
-	// header file for a complete list of GDK key codes.
-	Keyval uint
-	// Length: the length of @string.
-	Length int
-	// String: a string containing an approximation of the text that would
-	// result from this keypress. The only correct way to handle text input of
-	// text is using input methods (see IMContext), so this field is deprecated
-	// and should never be used. (gdk_unicode_to_keyval() provides a
-	// non-deprecated way of getting an approximate translation for a key.) The
-	// string is encoded in the encoding of the current locale (Note: this for
-	// backwards compatibility: strings in GTK+ and GDK are typically in UTF-8.)
-	// and NUL-terminated. In some cases, the translation of the key code will
-	// be a single NUL byte, in which case looking at @length is necessary to
-	// distinguish it from the an empty translation.
-	String string
-	// HardwareKeycode: the raw code of the key that was pressed or released.
-	HardwareKeycode uint16
-	// Group: the keyboard group.
-	Group uint8
-	// IsModifier: a flag that indicates if @hardware_keycode is mapped to a
-	// modifier. Since 2.10
-	IsModifier uint
-}
-
-func wrapEventKey(p *C.GdkEventKey) *EventKey {
-	var v EventKey
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Time = uint32(p.time)
-	v.State = ModifierType(p.state)
-	v.Keyval = uint(p.keyval)
-	v.Length = int(p.length)
-	v.String = C.GoString(p.string)
-	v.HardwareKeycode = uint16(p.hardware_keycode)
-	v.Group = uint8(p.group)
-	v.IsModifier = uint(p.is_modifier)
-	return &v
-}
-
-func marshalEventKey(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventKey)(unsafe.Pointer(b))
-
-	return wrapEventKey(c)
-}
-
-// EventMotion: generated when the pointer moves.
-type EventMotion struct {
-	// Type: the type of the event.
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// X: the x coordinate of the pointer relative to the window.
-	X float64
-	// Y: the y coordinate of the pointer relative to the window.
-	Y float64
-	// Axes: @x, @y translated to the axes of @device, or nil if @device is the
-	// mouse.
-	Axes *float64
-	// State: a bit-mask representing the state of the modifier keys (e.g.
-	// Control, Shift and Alt) and the pointer buttons. See ModifierType.
-	State ModifierType
-	// IsHint: set to 1 if this event is just a hint, see the
-	// GDK_POINTER_MOTION_HINT_MASK value of EventMask.
-	IsHint int16
-	// Device: the master device that the event originated from. Use
-	// gdk_event_get_source_device() to get the slave device.
-	Device *Device
-	// XRoot: the x coordinate of the pointer relative to the root of the
-	// screen.
-	XRoot float64
-	// YRoot: the y coordinate of the pointer relative to the root of the
-	// screen.
-	YRoot float64
-}
-
-func wrapEventMotion(p *C.GdkEventMotion) *EventMotion {
-	var v EventMotion
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Time = uint32(p.time)
-	v.X = float64(p.x)
-	v.Y = float64(p.y)
-	v.Axes = float64(p.axes)
-	v.State = ModifierType(p.state)
-	v.IsHint = int16(p.is_hint)
-	v.Device = wrap * Device(p.device)
-	v.XRoot = float64(p.x_root)
-	v.YRoot = float64(p.y_root)
-	return &v
-}
-
-func marshalEventMotion(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventMotion)(unsafe.Pointer(b))
-
-	return wrapEventMotion(c)
-}
-
-// EventOwnerChange: generated when the owner of a selection changes. On X11,
-// this information is only available if the X server supports the XFIXES
-// extension.
-type EventOwnerChange struct {
-	// Type: the type of the event (GDK_OWNER_CHANGE).
-	Type EventType
-	// Window: the window which received the event
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Owner: the new owner of the selection, or nil if there is none
-	Owner *Window
-	// Reason: the reason for the ownership change as a OwnerChange value
-	Reason OwnerChange
-	// Selection: the atom identifying the selection
-	Selection Atom
-	// Time: the timestamp of the event
-	Time uint32
-	// SelectionTime: the time at which the selection ownership was taken over
-	SelectionTime uint32
-}
-
-func wrapEventOwnerChange(p *C.GdkEventOwnerChange) *EventOwnerChange {
-	var v EventOwnerChange
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Owner = wrap * Window(p.owner)
-	v.Reason = OwnerChange(p.reason)
-	v.Selection = wrapAtom(p.selection)
-	v.Time = uint32(p.time)
-	v.SelectionTime = uint32(p.selection_time)
-	return &v
-}
-
-func marshalEventOwnerChange(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventOwnerChange)(unsafe.Pointer(b))
-
-	return wrapEventOwnerChange(c)
-}
-
-// EventPadAxis: generated during GDK_SOURCE_TABLET_PAD interaction with tactile
-// sensors.
-type EventPadAxis struct {
-	// Type: the type of the event (GDK_PAD_RING or GDK_PAD_STRIP).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// Group: the pad group the ring/strip belongs to. A GDK_SOURCE_TABLET_PAD
-	// device may have one or more groups containing a set of
-	// buttons/rings/strips each.
-	Group uint
-	// Index: number of strip/ring that was interacted. This number is
-	// 0-indexed.
-	Index uint
-	// Mode: the current mode of @group. Different groups in a
-	// GDK_SOURCE_TABLET_PAD device may have different current modes.
-	Mode uint
-	// Value: the current value for the given axis.
-	Value float64
-}
-
-func wrapEventPadAxis(p *C.GdkEventPadAxis) *EventPadAxis {
-	var v EventPadAxis
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Time = uint32(p.time)
-	v.Group = uint(p.group)
-	v.Index = uint(p.index)
-	v.Mode = uint(p.mode)
-	v.Value = float64(p.value)
-	return &v
-}
-
-func marshalEventPadAxis(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventPadAxis)(unsafe.Pointer(b))
-
-	return wrapEventPadAxis(c)
-}
-
-// EventPadButton: generated during GDK_SOURCE_TABLET_PAD button presses and
-// releases.
-type EventPadButton struct {
-	// Type: the type of the event (GDK_PAD_BUTTON_PRESS or
-	// GDK_PAD_BUTTON_RELEASE).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// Group: the pad group the button belongs to. A GDK_SOURCE_TABLET_PAD
-	// device may have one or more groups containing a set of
-	// buttons/rings/strips each.
-	Group uint
-	// Button: the pad button that was pressed.
-	Button uint
-	// Mode: the current mode of @group. Different groups in a
-	// GDK_SOURCE_TABLET_PAD device may have different current modes.
-	Mode uint
-}
-
-func wrapEventPadButton(p *C.GdkEventPadButton) *EventPadButton {
-	var v EventPadButton
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Time = uint32(p.time)
-	v.Group = uint(p.group)
-	v.Button = uint(p.button)
-	v.Mode = uint(p.mode)
-	return &v
-}
-
-func marshalEventPadButton(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventPadButton)(unsafe.Pointer(b))
-
-	return wrapEventPadButton(c)
-}
-
-// EventPadGroupMode: generated during GDK_SOURCE_TABLET_PAD mode switches in a
-// group.
-type EventPadGroupMode struct {
-	// Type: the type of the event (GDK_PAD_GROUP_MODE).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// Group: the pad group that is switching mode. A GDK_SOURCE_TABLET_PAD
-	// device may have one or more groups containing a set of
-	// buttons/rings/strips each.
-	Group uint
-	// Mode: the new mode of @group. Different groups in a GDK_SOURCE_TABLET_PAD
-	// device may have different current modes.
-	Mode uint
-}
-
-func wrapEventPadGroupMode(p *C.GdkEventPadGroupMode) *EventPadGroupMode {
-	var v EventPadGroupMode
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Time = uint32(p.time)
-	v.Group = uint(p.group)
-	v.Mode = uint(p.mode)
-	return &v
-}
-
-func marshalEventPadGroupMode(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventPadGroupMode)(unsafe.Pointer(b))
-
-	return wrapEventPadGroupMode(c)
-}
-
-// EventProperty: describes a property change on a window.
-type EventProperty struct {
-	// Type: the type of the event (GDK_PROPERTY_NOTIFY).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Atom: the property that was changed.
-	Atom Atom
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// State: whether the property was changed (GDK_PROPERTY_NEW_VALUE) or
-	// deleted (GDK_PROPERTY_DELETE).
-	State PropertyState
-}
-
-func wrapEventProperty(p *C.GdkEventProperty) *EventProperty {
-	var v EventProperty
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Atom = wrapAtom(p.atom)
-	v.Time = uint32(p.time)
-	v.State = PropertyState(p.state)
-	return &v
-}
-
-func marshalEventProperty(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventProperty)(unsafe.Pointer(b))
-
-	return wrapEventProperty(c)
-}
-
-// EventProximity: proximity events are generated when using GDK’s wrapper for
-// the XInput extension. The XInput extension is an add-on for standard X that
-// allows you to use nonstandard devices such as graphics tablets. A proximity
-// event indicates that the stylus has moved in or out of contact with the
-// tablet, or perhaps that the user’s finger has moved in or out of contact with
-// a touch screen.
-//
-// This event type will be used pretty rarely. It only is important for XInput
-// aware programs that are drawing their own cursor.
-type EventProximity struct {
-	// Type: the type of the event (GDK_PROXIMITY_IN or GDK_PROXIMITY_OUT).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// Device: the master device that the event originated from. Use
-	// gdk_event_get_source_device() to get the slave device.
-	Device *Device
-}
-
-func wrapEventProximity(p *C.GdkEventProximity) *EventProximity {
-	var v EventProximity
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Time = uint32(p.time)
-	v.Device = wrap * Device(p.device)
-	return &v
-}
-
-func marshalEventProximity(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventProximity)(unsafe.Pointer(b))
-
-	return wrapEventProximity(c)
-}
-
-// EventScroll: generated from button presses for the buttons 4 to 7. Wheel mice
-// are usually configured to generate button press events for buttons 4 and 5
-// when the wheel is turned.
-//
-// Some GDK backends can also generate “smooth” scroll events, which can be
-// recognized by the GDK_SCROLL_SMOOTH scroll direction. For these, the scroll
-// deltas can be obtained with gdk_event_get_scroll_deltas().
-type EventScroll struct {
-	// Type: the type of the event (GDK_SCROLL).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// X: the x coordinate of the pointer relative to the window.
-	X float64
-	// Y: the y coordinate of the pointer relative to the window.
-	Y float64
-	// State: a bit-mask representing the state of the modifier keys (e.g.
-	// Control, Shift and Alt) and the pointer buttons. See ModifierType.
-	State ModifierType
-	// Direction: the direction to scroll to (one of GDK_SCROLL_UP,
-	// GDK_SCROLL_DOWN, GDK_SCROLL_LEFT, GDK_SCROLL_RIGHT or GDK_SCROLL_SMOOTH).
-	Direction ScrollDirection
-	// Device: the master device that the event originated from. Use
-	// gdk_event_get_source_device() to get the slave device.
-	Device *Device
-	// XRoot: the x coordinate of the pointer relative to the root of the
-	// screen.
-	XRoot float64
-	// YRoot: the y coordinate of the pointer relative to the root of the
-	// screen.
-	YRoot float64
-	// DeltaX: the x coordinate of the scroll delta
-	DeltaX float64
-	// DeltaY: the y coordinate of the scroll delta
-	DeltaY float64
-
-	IsStop uint
-}
-
-func wrapEventScroll(p *C.GdkEventScroll) *EventScroll {
-	var v EventScroll
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Time = uint32(p.time)
-	v.X = float64(p.x)
-	v.Y = float64(p.y)
-	v.State = ModifierType(p.state)
-	v.Direction = ScrollDirection(p.direction)
-	v.Device = wrap * Device(p.device)
-	v.XRoot = float64(p.x_root)
-	v.YRoot = float64(p.y_root)
-	v.DeltaX = float64(p.delta_x)
-	v.DeltaY = float64(p.delta_y)
-	v.IsStop = uint(p.is_stop)
-	return &v
-}
-
-func marshalEventScroll(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventScroll)(unsafe.Pointer(b))
-
-	return wrapEventScroll(c)
-}
-
-// EventSelection: generated when a selection is requested or ownership of a
-// selection is taken over by another client application.
-type EventSelection struct {
-	// Type: the type of the event (GDK_SELECTION_CLEAR, GDK_SELECTION_NOTIFY or
-	// GDK_SELECTION_REQUEST).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Selection: the selection.
-	Selection Atom
-	// Target: the target to which the selection should be converted.
-	Target Atom
-	// Property: the property in which to place the result of the conversion.
-	Property Atom
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// Requestor: the window on which to place @property or nil if none.
-	Requestor *Window
-}
-
-func wrapEventSelection(p *C.GdkEventSelection) *EventSelection {
-	var v EventSelection
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Selection = wrapAtom(p.selection)
-	v.Target = wrapAtom(p.target)
-	v.Property = wrapAtom(p.property)
-	v.Time = uint32(p.time)
-	v.Requestor = wrap * Window(p.requestor)
-	return &v
-}
-
-func marshalEventSelection(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventSelection)(unsafe.Pointer(b))
-
-	return wrapEventSelection(c)
-}
-
+// EventSequence: gdkEventSequence is an opaque type representing a sequence of
+// related touch events.
 type EventSequence struct {
 	native *C.GdkEventSequence
 }
 
 func wrapEventSequence(p *C.GdkEventSequence) *EventSequence {
 	v := EventSequence{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*EventSequence).free)
+
 	return &v
 }
 
@@ -3502,288 +1141,12 @@ func marshalEventSequence(p uintptr) (interface{}, error) {
 	return wrapEventSequence(c)
 }
 
-// EventSetting: generated when a setting is modified.
-type EventSetting struct {
-	// Type: the type of the event (GDK_SETTING).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Action: what happened to the setting (GDK_SETTING_ACTION_NEW,
-	// GDK_SETTING_ACTION_CHANGED or GDK_SETTING_ACTION_DELETED).
-	Action SettingAction
-	// Name: the name of the setting.
-	Name string
-}
+func (e *EventSequence) free() {}
 
-func wrapEventSetting(p *C.GdkEventSetting) *EventSetting {
-	var v EventSetting
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Action = SettingAction(p.action)
-	v.Name = C.GoString(p.name)
-	return &v
-}
-
-func marshalEventSetting(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventSetting)(unsafe.Pointer(b))
-
-	return wrapEventSetting(c)
-}
-
-// EventTouch: used for touch events. @type field will be one of
-// GDK_TOUCH_BEGIN, GDK_TOUCH_UPDATE, GDK_TOUCH_END or GDK_TOUCH_CANCEL.
-//
-// Touch events are grouped into sequences by means of the @sequence field,
-// which can also be obtained with gdk_event_get_event_sequence(). Each sequence
-// begins with a GDK_TOUCH_BEGIN event, followed by any number of
-// GDK_TOUCH_UPDATE events, and ends with a GDK_TOUCH_END (or GDK_TOUCH_CANCEL)
-// event. With multitouch devices, there may be several active sequences at the
-// same time.
-type EventTouch struct {
-	// Type: the type of the event (GDK_TOUCH_BEGIN, GDK_TOUCH_UPDATE,
-	// GDK_TOUCH_END, GDK_TOUCH_CANCEL)
-	Type EventType
-	// Window: the window which received the event
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// Time: the time of the event in milliseconds.
-	Time uint32
-	// X: the x coordinate of the pointer relative to the window
-	X float64
-	// Y: the y coordinate of the pointer relative to the window
-	Y float64
-	// Axes: @x, @y translated to the axes of @device, or nil if @device is the
-	// mouse
-	Axes *float64
-	// State: a bit-mask representing the state of the modifier keys (e.g.
-	// Control, Shift and Alt) and the pointer buttons. See ModifierType
-	State ModifierType
-	// Sequence: the event sequence that the event belongs to
-	Sequence *EventSequence
-	// EmulatingPointer: whether the event should be used for emulating pointer
-	// event
-	EmulatingPointer bool
-	// Device: the master device that the event originated from. Use
-	// gdk_event_get_source_device() to get the slave device.
-	Device *Device
-	// XRoot: the x coordinate of the pointer relative to the root of the screen
-	XRoot float64
-	// YRoot: the y coordinate of the pointer relative to the root of the screen
-	YRoot float64
-}
-
-func wrapEventTouch(p *C.GdkEventTouch) *EventTouch {
-	var v EventTouch
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Time = uint32(p.time)
-	v.X = float64(p.x)
-	v.Y = float64(p.y)
-	v.Axes = float64(p.axes)
-	v.State = ModifierType(p.state)
-	v.Sequence = wrap * EventSequence(p.sequence)
-	v.EmulatingPointer = bool(p.emulating_pointer)
-	v.Device = wrap * Device(p.device)
-	v.XRoot = float64(p.x_root)
-	v.YRoot = float64(p.y_root)
-	return &v
-}
-
-func marshalEventTouch(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventTouch)(unsafe.Pointer(b))
-
-	return wrapEventTouch(c)
-}
-
-// EventTouchpadPinch: generated during touchpad swipe gestures.
-type EventTouchpadPinch struct {
-	// Type: the type of the event (GDK_TOUCHPAD_PINCH)
-	Type EventType
-	// Window: the window which received the event
-	Window *Window
-	// SendEvent: true if the event was sent explicitly
-	SendEvent int8
-	// Phase: the current phase of the gesture
-	Phase int8
-	// NFingers: the number of fingers triggering the pinch
-	NFingers int8
-	// Time: the time of the event in milliseconds
-	Time uint32
-	// X: the X coordinate of the pointer
-	X float64
-	// Y: the Y coordinate of the pointer
-	Y float64
-	// Dx: movement delta in the X axis of the swipe focal point
-	Dx float64
-	// Dy: movement delta in the Y axis of the swipe focal point
-	Dy float64
-	// AngleDelta: the angle change in radians, negative angles denote
-	// counter-clockwise movements
-	AngleDelta float64
-	// Scale: the current scale, relative to that at the time of the
-	// corresponding GDK_TOUCHPAD_GESTURE_PHASE_BEGIN event
-	Scale float64
-	// XRoot: the X coordinate of the pointer, relative to the root of the
-	// screen.
-	XRoot float64
-	// YRoot: the Y coordinate of the pointer, relative to the root of the
-	// screen.
-	YRoot float64
-	// State: a bit-mask representing the state of the modifier keys (e.g.
-	// Control, Shift and Alt) and the pointer buttons. See ModifierType.
-	State ModifierType
-}
-
-func wrapEventTouchpadPinch(p *C.GdkEventTouchpadPinch) *EventTouchpadPinch {
-	var v EventTouchpadPinch
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Phase = int8(p.phase)
-	v.NFingers = int8(p.n_fingers)
-	v.Time = uint32(p.time)
-	v.X = float64(p.x)
-	v.Y = float64(p.y)
-	v.Dx = float64(p.dx)
-	v.Dy = float64(p.dy)
-	v.AngleDelta = float64(p.angle_delta)
-	v.Scale = float64(p.scale)
-	v.XRoot = float64(p.x_root)
-	v.YRoot = float64(p.y_root)
-	v.State = ModifierType(p.state)
-	return &v
-}
-
-func marshalEventTouchpadPinch(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventTouchpadPinch)(unsafe.Pointer(b))
-
-	return wrapEventTouchpadPinch(c)
-}
-
-// EventTouchpadSwipe: generated during touchpad swipe gestures.
-type EventTouchpadSwipe struct {
-	// Type: the type of the event (GDK_TOUCHPAD_SWIPE)
-	Type EventType
-	// Window: the window which received the event
-	Window *Window
-	// SendEvent: true if the event was sent explicitly
-	SendEvent int8
-	// Phase: the current phase of the gesture
-	Phase int8
-	// NFingers: the number of fingers triggering the swipe
-	NFingers int8
-	// Time: the time of the event in milliseconds
-	Time uint32
-	// X: the X coordinate of the pointer
-	X float64
-	// Y: the Y coordinate of the pointer
-	Y float64
-	// Dx: movement delta in the X axis of the swipe focal point
-	Dx float64
-	// Dy: movement delta in the Y axis of the swipe focal point
-	Dy float64
-	// XRoot: the X coordinate of the pointer, relative to the root of the
-	// screen.
-	XRoot float64
-	// YRoot: the Y coordinate of the pointer, relative to the root of the
-	// screen.
-	YRoot float64
-	// State: a bit-mask representing the state of the modifier keys (e.g.
-	// Control, Shift and Alt) and the pointer buttons. See ModifierType.
-	State ModifierType
-}
-
-func wrapEventTouchpadSwipe(p *C.GdkEventTouchpadSwipe) *EventTouchpadSwipe {
-	var v EventTouchpadSwipe
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.Phase = int8(p.phase)
-	v.NFingers = int8(p.n_fingers)
-	v.Time = uint32(p.time)
-	v.X = float64(p.x)
-	v.Y = float64(p.y)
-	v.Dx = float64(p.dx)
-	v.Dy = float64(p.dy)
-	v.XRoot = float64(p.x_root)
-	v.YRoot = float64(p.y_root)
-	v.State = ModifierType(p.state)
-	return &v
-}
-
-func marshalEventTouchpadSwipe(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventTouchpadSwipe)(unsafe.Pointer(b))
-
-	return wrapEventTouchpadSwipe(c)
-}
-
-// EventVisibility: generated when the window visibility status has changed.
-type EventVisibility struct {
-	// Type: the type of the event (GDK_VISIBILITY_NOTIFY).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// State: the new visibility state (GDK_VISIBILITY_FULLY_OBSCURED,
-	// GDK_VISIBILITY_PARTIAL or GDK_VISIBILITY_UNOBSCURED).
-	State VisibilityState
-}
-
-func wrapEventVisibility(p *C.GdkEventVisibility) *EventVisibility {
-	var v EventVisibility
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.State = VisibilityState(p.state)
-	return &v
-}
-
-func marshalEventVisibility(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventVisibility)(unsafe.Pointer(b))
-
-	return wrapEventVisibility(c)
-}
-
-// EventWindowState: generated when the state of a toplevel window changes.
-type EventWindowState struct {
-	// Type: the type of the event (GDK_WINDOW_STATE).
-	Type EventType
-	// Window: the window which received the event.
-	Window *Window
-	// SendEvent: true if the event was sent explicitly.
-	SendEvent int8
-	// ChangedMask: mask specifying what flags have changed.
-	ChangedMask WindowState
-	// NewWindowState: the new window state, a combination of WindowState bits.
-	NewWindowState WindowState
-}
-
-func wrapEventWindowState(p *C.GdkEventWindowState) *EventWindowState {
-	var v EventWindowState
-	v.Type = EventType(p._type)
-	v.Window = wrap * Window(p.window)
-	v.SendEvent = int8(p.send_event)
-	v.ChangedMask = WindowState(p.changed_mask)
-	v.NewWindowState = WindowState(p.new_window_state)
-	return &v
-}
-
-func marshalEventWindowState(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventWindowState)(unsafe.Pointer(b))
-
-	return wrapEventWindowState(c)
+// Native returns the pointer to *C.GdkEventSequence. The caller is expected to
+// cast.
+func (e *EventSequence) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // FrameTimings: a FrameTimings object holds timing information for a single
@@ -3798,6 +1161,10 @@ type FrameTimings struct {
 
 func wrapFrameTimings(p *C.GdkFrameTimings) *FrameTimings {
 	v := FrameTimings{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FrameTimings).free)
+
 	return &v
 }
 
@@ -3808,111 +1175,12 @@ func marshalFrameTimings(p uintptr) (interface{}, error) {
 	return wrapFrameTimings(c)
 }
 
-// Geometry: the Geometry struct gives the window manager information about a
-// window’s geometry constraints. Normally you would set these on the GTK+ level
-// using gtk_window_set_geometry_hints(). Window then sets the hints on the
-// Window it creates.
-//
-// gdk_window_set_geometry_hints() expects the hints to be fully valid already
-// and simply passes them to the window manager; in contrast,
-// gtk_window_set_geometry_hints() performs some interpretation. For example,
-// Window will apply the hints to the geometry widget instead of the toplevel
-// window, if you set a geometry widget. Also, the
-// @min_width/@min_height/@max_width/@max_height fields may be set to -1, and
-// Window will substitute the size request of the window or geometry widget. If
-// the minimum size hint is not provided, Window will use its requisition as the
-// minimum size. If the minimum size is provided and a geometry widget is set,
-// Window will take the minimum size as the minimum size of the geometry widget
-// rather than the entire window. The base size is treated similarly.
-//
-// The canonical use-case for gtk_window_set_geometry_hints() is to get a
-// terminal widget to resize properly. Here, the terminal text area should be
-// the geometry widget; Window will then automatically set the base size to the
-// size of other widgets in the terminal window, such as the menubar and
-// scrollbar. Then, the @width_inc and @height_inc fields should be set to the
-// size of one character in the terminal. Finally, the base size should be set
-// to the size of one character. The net effect is that the minimum size of the
-// terminal will have a 1x1 character terminal area, and only terminal sizes on
-// the “character grid” will be allowed.
-//
-// Here’s an example of how the terminal example would be implemented, assuming
-// a terminal area widget called “terminal” and a toplevel window “toplevel”:
-//
-//    	GdkGeometry hints;
-//
-//    	hints.base_width = terminal->char_width;
-//            hints.base_height = terminal->char_height;
-//            hints.min_width = terminal->char_width;
-//            hints.min_height = terminal->char_height;
-//            hints.width_inc = terminal->char_width;
-//            hints.height_inc = terminal->char_height;
-//
-//     gtk_window_set_geometry_hints (GTK_WINDOW (toplevel),
-//                                    GTK_WIDGET (terminal),
-//                                    &hints,
-//                                    GDK_HINT_RESIZE_INC |
-//                                    GDK_HINT_MIN_SIZE |
-//                                    GDK_HINT_BASE_SIZE);
-//
-//
-// The other useful fields are the @min_aspect and @max_aspect fields; these
-// contain a width/height ratio as a floating point number. If a geometry widget
-// is set, the aspect applies to the geometry widget rather than the entire
-// window. The most common use of these hints is probably to set @min_aspect and
-// @max_aspect to the same value, thus forcing the window to keep a constant
-// aspect ratio.
-type Geometry struct {
-	// MinWidth: minimum width of window (or -1 to use requisition, with Window
-	// only)
-	MinWidth int
-	// MinHeight: minimum height of window (or -1 to use requisition, with
-	// Window only)
-	MinHeight int
-	// MaxWidth: maximum width of window (or -1 to use requisition, with Window
-	// only)
-	MaxWidth int
-	// MaxHeight: maximum height of window (or -1 to use requisition, with
-	// Window only)
-	MaxHeight int
-	// BaseWidth: allowed window widths are @base_width + @width_inc * N where N
-	// is any integer (-1 allowed with Window)
-	BaseWidth int
-	// BaseHeight: allowed window widths are @base_height + @height_inc * N
-	// where N is any integer (-1 allowed with Window)
-	BaseHeight int
-	// WidthInc: width resize increment
-	WidthInc int
-	// HeightInc: height resize increment
-	HeightInc int
-	// MinAspect: minimum width/height ratio
-	MinAspect float64
-	// MaxAspect: maximum width/height ratio
-	MaxAspect float64
-	// WinGravity: window gravity, see gtk_window_set_gravity()
-	WinGravity Gravity
-}
+func (f *FrameTimings) free() {}
 
-func wrapGeometry(p *C.GdkGeometry) *Geometry {
-	var v Geometry
-	v.MinWidth = int(p.min_width)
-	v.MinHeight = int(p.min_height)
-	v.MaxWidth = int(p.max_width)
-	v.MaxHeight = int(p.max_height)
-	v.BaseWidth = int(p.base_width)
-	v.BaseHeight = int(p.base_height)
-	v.WidthInc = int(p.width_inc)
-	v.HeightInc = int(p.height_inc)
-	v.MinAspect = float64(p.min_aspect)
-	v.MaxAspect = float64(p.max_aspect)
-	v.WinGravity = Gravity(p.win_gravity)
-	return &v
-}
-
-func marshalGeometry(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkGeometry)(unsafe.Pointer(b))
-
-	return wrapGeometry(c)
+// Native returns the pointer to *C.GdkFrameTimings. The caller is expected to
+// cast.
+func (f *FrameTimings) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // KeymapKey: a KeymapKey is a hardware key that can be mapped to a keyval.
@@ -3933,13 +1201,17 @@ type KeymapKey struct {
 	// considered to have a lowercase letter at level 0, and an uppercase letter
 	// at level 1, though only the uppercase letter is printed.
 	Level int
+
+	native *C.GdkKeymapKey
 }
 
 func wrapKeymapKey(p *C.GdkKeymapKey) *KeymapKey {
 	var v KeymapKey
+
 	v.Keycode = uint(p.keycode)
 	v.Group = int(p.group)
 	v.Level = int(p.level)
+
 	return &v
 }
 
@@ -3950,48 +1222,96 @@ func marshalKeymapKey(p uintptr) (interface{}, error) {
 	return wrapKeymapKey(c)
 }
 
-// Point: defines the x and y coordinates of a point.
-type Point struct {
-	// X: the x coordinate of the point.
-	X int
-	// Y: the y coordinate of the point.
-	Y int
+// Native returns the pointer to *C.GdkKeymapKey. The caller is expected to
+// cast.
+func (k *KeymapKey) Native() unsafe.Pointer {
+	return unsafe.Pointer(k.native)
 }
 
-func wrapPoint(p *C.GdkPoint) *Point {
-	var v Point
-	v.X = int(p.x)
-	v.Y = int(p.y)
+// PopupLayout: popups are positioned relative to their parent surface. The
+// GdkPopupLayout struct contains information that is necessary to do so.
+//
+// The positioning requires a negotiation with the windowing system, since it
+// depends on external constraints, such as the position of the parent surface,
+// and the screen dimensions.
+//
+// The basic ingredients are a rectangle on the parent surface, and the anchor
+// on both that rectangle and the popup. The anchors specify a side or corner to
+// place next to each other.
+//
+// ![Popup anchors](popup-anchors.png)
+//
+// For cases where placing the anchors next to each other would make the popup
+// extend offscreen, the layout includes some hints for how to resolve this
+// problem. The hints may suggest to flip the anchor position to the other side,
+// or to 'slide' the popup along a side, or to resize it.
+//
+// ![Flipping popups](popup-flip.png)
+//
+// ![Sliding popups](popup-slide.png)
+//
+// These hints may be combined.
+//
+// Ultimatively, it is up to the windowing system to determine the position and
+// size of the popup. You can learn about the result by calling
+// gdk_popup_get_position_x(), gdk_popup_get_position_y(),
+// gdk_popup_get_rect_anchor() and gdk_popup_get_surface_anchor() after the
+// popup has been presented. This can be used to adjust the rendering. For
+// example, GtkPopover changes its arrow position accordingly. But you have to
+// be careful avoid changing the size of the popover, or it has to be presented
+// again.
+type PopupLayout struct {
+	native *C.GdkPopupLayout
+}
+
+func wrapPopupLayout(p *C.GdkPopupLayout) *PopupLayout {
+	v := PopupLayout{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*PopupLayout).free)
+
 	return &v
 }
 
-func marshalPoint(p uintptr) (interface{}, error) {
+func marshalPopupLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkPoint)(unsafe.Pointer(b))
+	c := (*C.GdkPopupLayout)(unsafe.Pointer(b))
 
-	return wrapPoint(c)
+	return wrapPopupLayout(c)
+}
+
+func (p *PopupLayout) free() {}
+
+// Native returns the pointer to *C.GdkPopupLayout. The caller is expected to
+// cast.
+func (p *PopupLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // RGBA: a RGBA is used to represent a (possibly translucent) color, in a way
 // that is compatible with cairo’s notion of color.
 type RGBA struct {
 	// Red: the intensity of the red channel from 0.0 to 1.0 inclusive
-	Red float64
+	Red float32
 	// Green: the intensity of the green channel from 0.0 to 1.0 inclusive
-	Green float64
+	Green float32
 	// Blue: the intensity of the blue channel from 0.0 to 1.0 inclusive
-	Blue float64
+	Blue float32
 	// Alpha: the opacity of the color from 0.0 for completely translucent to
 	// 1.0 for opaque
-	Alpha float64
+	Alpha float32
+
+	native *C.GdkRGBA
 }
 
 func wrapRGBA(p *C.GdkRGBA) *RGBA {
 	var v RGBA
-	v.Red = float64(p.red)
-	v.Green = float64(p.green)
-	v.Blue = float64(p.blue)
-	v.Alpha = float64(p.alpha)
+
+	v.Red = float32(p.red)
+	v.Green = float32(p.green)
+	v.Blue = float32(p.blue)
+	v.Alpha = float32(p.alpha)
+
 	return &v
 }
 
@@ -4002,24 +1322,35 @@ func marshalRGBA(p uintptr) (interface{}, error) {
 	return wrapRGBA(c)
 }
 
+// Native returns the pointer to *C.GdkRGBA. The caller is expected to
+// cast.
+func (r *RGBA) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 // Rectangle: defines the position and size of a rectangle. It is identical to
 // #cairo_rectangle_int_t.
 type Rectangle struct {
+	// X: the x coordinate of the top left corner
 	X int
-
+	// Y: the y coordinate of the top left corner
 	Y int
-
+	// Width: the width of the rectangle
 	Width int
-
+	// Height: the height of the rectangle
 	Height int
+
+	native *C.GdkRectangle
 }
 
 func wrapRectangle(p *C.GdkRectangle) *Rectangle {
 	var v Rectangle
+
 	v.X = int(p.x)
 	v.Y = int(p.y)
 	v.Width = int(p.width)
 	v.Height = int(p.height)
+
 	return &v
 }
 
@@ -4030,17 +1361,29 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 	return wrapRectangle(c)
 }
 
+// Native returns the pointer to *C.GdkRectangle. The caller is expected to
+// cast.
+func (r *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
+}
+
 // TimeCoord: a TimeCoord stores a single event in a motion history.
 type TimeCoord struct {
 	// Time: the timestamp for this event.
 	Time uint32
-	// Axes: the values of the device’s axes.
-	Axes [128]float64
+	// Flags: flags indicating what axes are present
+	Flags AxisFlags
+	// Axes: axis values
+	Axes [12]float64
+
+	native *C.GdkTimeCoord
 }
 
 func wrapTimeCoord(p *C.GdkTimeCoord) *TimeCoord {
 	var v TimeCoord
+
 	v.Time = uint32(p.time)
+	v.Flags = AxisFlags(p.flags)
 
 	return &v
 }
@@ -4052,61 +1395,424 @@ func marshalTimeCoord(p uintptr) (interface{}, error) {
 	return wrapTimeCoord(c)
 }
 
-// WindowAttr: attributes to use for a newly-created window.
-type WindowAttr struct {
-	// Title: title of the window (for toplevel windows)
-	Title string
-	// EventMask: event mask (see gdk_window_set_events())
-	EventMask int
-	// X: x coordinate relative to parent window (see gdk_window_move())
-	X int
-	// Y: y coordinate relative to parent window (see gdk_window_move())
-	Y int
-	// Width: width of window
-	Width int
-	// Height: height of window
-	Height int
-	// Wclass: GDK_INPUT_OUTPUT (normal window) or K_INPUT_ONLY (invisible
-	// window that receives events)
-	Wclass WindowWindowClass
-	// Visual: gdkVisual for window
-	Visual *Visual
-	// WindowType: type of window
-	WindowType WindowType
-	// Cursor: cursor for the window (see gdk_window_set_cursor())
-	Cursor *Cursor
-	// WmclassName: don’t use (see gtk_window_set_wmclass())
-	WmclassName string
-	// WmclassClass: don’t use (see gtk_window_set_wmclass())
-	WmclassClass string
-	// OverrideRedirect: true to bypass the window manager
-	OverrideRedirect bool
-	// TypeHint: a hint of the function of the window
-	TypeHint WindowTypeHint
+// Native returns the pointer to *C.GdkTimeCoord. The caller is expected to
+// cast.
+func (t *TimeCoord) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
-func wrapWindowAttr(p *C.GdkWindowAttr) *WindowAttr {
-	var v WindowAttr
-	v.Title = C.GoString(p.title)
-	v.EventMask = int(p.event_mask)
-	v.X = int(p.x)
-	v.Y = int(p.y)
-	v.Width = int(p.width)
-	v.Height = int(p.height)
-	v.Wclass = WindowWindowClass(p.wclass)
-	v.Visual = wrap * Visual(p.visual)
-	v.WindowType = WindowType(p.window_type)
-	v.Cursor = wrap * Cursor(p.cursor)
-	v.WmclassName = C.GoString(p.wmclass_name)
-	v.WmclassClass = C.GoString(p.wmclass_class)
-	v.OverrideRedirect = bool(p.override_redirect)
-	v.TypeHint = WindowTypeHint(p.type_hint)
+// ToplevelLayout: toplevel surfaces are sovereign windows that can be presented
+// to the user in various states (maximized, on all workspaces, etc).
+//
+// The GdkToplevelLayout struct contains information that is necessary to do so,
+// and is passed to gdk_toplevel_present().
+type ToplevelLayout struct {
+	native *C.GdkToplevelLayout
+}
+
+func wrapToplevelLayout(p *C.GdkToplevelLayout) *ToplevelLayout {
+	v := ToplevelLayout{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ToplevelLayout).free)
+
 	return &v
 }
 
-func marshalWindowAttr(p uintptr) (interface{}, error) {
+func marshalToplevelLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkWindowAttr)(unsafe.Pointer(b))
+	c := (*C.GdkToplevelLayout)(unsafe.Pointer(b))
 
-	return wrapWindowAttr(c)
+	return wrapToplevelLayout(c)
+}
+
+func (t *ToplevelLayout) free() {}
+
+// Native returns the pointer to *C.GdkToplevelLayout. The caller is expected to
+// cast.
+func (t *ToplevelLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
+}
+
+// AppLaunchContext: gdkAppLaunchContext is an implementation of LaunchContext
+// that handles launching an application in a graphical context. It provides
+// startup notification and allows to launch applications on a specific screen
+// or workspace.
+//
+// Launching an application
+//
+//    GdkAppLaunchContext *context;
+//
+//    context = gdk_display_get_app_launch_context (display);
+//
+//    gdk_app_launch_context_set_display (display);
+//    gdk_app_launch_context_set_timestamp (gdk_event_get_time (event));
+//
+//    if (!g_app_info_launch_default_for_uri ("http://www.gtk.org", context, &error))
+//      g_warning ("Launching failed: s\n", error->message);
+//
+//    g_object_unref (context);
+//
+type AppLaunchContext struct {
+	gio.AppLaunchContext
+}
+
+// ButtonEvent: an event related to a button on a pointer device/
+type ButtonEvent struct {
+	Event
+}
+
+// CairoContext: gdkCairoContext is an object representing the platform-specific
+// draw context.
+//
+// CairoContexts are created for a Display using
+// gdk_surface_create_cairo_context(), and the context can then be used to draw
+// on that Surface.
+type CairoContext struct {
+	DrawContext
+}
+
+// Clipboard: the Clipboard object represents a clipboard of data shared between
+// different applications or between different parts of the same application.
+//
+// To get a GdkClipboard object, use gdk_display_get_clipboard() or
+// gdk_display_get_primary_clipboard(). You can find out about the data that is
+// currently available in a clipboard using gdk_clipboard_get_formats().
+//
+// To make text or image data available in a clipboard, use
+// gdk_clipboard_set_text() or gdk_clipboard_set_texture(). For other data, you
+// can use gdk_clipboard_set_content(), which takes a ContentProvider object.
+//
+// To read textual or image data from a clipboard, use
+// gdk_clipboard_read_text_async() or gdk_clipboard_read_texture_async(). For
+// other data, use gdk_clipboard_read_async(), which provides a Stream object.
+type Clipboard struct {
+	*glib.Object
+}
+
+// ContentDeserializer: a GdkContentDeserializer is used to deserialize content
+// received via inter-application data transfers.
+type ContentDeserializer struct {
+	*glib.Object
+}
+
+// ContentProvider: a GdkContentProvider is used to provide content for the
+// clipboard in a number of formats.
+//
+// To create a GdkContentProvider, use gdk_content_provider_new_for_value() or
+// gdk_content_provider_new_for_bytes().
+//
+// GDK knows how to handle common text and image formats out-of-the-box. See
+// ContentSerializer and ContentDeserializer if you want to add support for
+// application-specific data formats.
+type ContentProvider struct {
+	*glib.Object
+}
+
+// ContentSerializer: a GdkContentSerializer is used to serialize content for
+// inter-application data transfers.
+type ContentSerializer struct {
+	*glib.Object
+}
+
+// CrossingEvent: an event caused by a pointing device moving between surfaces.
+type CrossingEvent struct {
+	Event
+}
+
+// Cursor: a Cursor represents a cursor. Its contents are private.
+//
+// Cursors are immutable objects, so they can not change after they have been
+// constructed.
+type Cursor struct {
+	*glib.Object
+}
+
+// DNDEvent: an event related to drag and drop operations.
+type DNDEvent struct {
+	Event
+}
+
+// DeleteEvent: an event related to closing a top-level surface.
+type DeleteEvent struct {
+	Event
+}
+
+// Device: the Device object represents a single input device, such as a
+// keyboard, a mouse, a touchpad, etc.
+//
+// See the Seat documentation for more information about the various kinds of
+// devices, and their relationships.
+type Device struct {
+	*glib.Object
+}
+
+// DeviceTool: a physical tool associated to a Device.
+type DeviceTool struct {
+	*glib.Object
+}
+
+// Display: gdkDisplay objects are the GDK representation of a workstation.
+//
+// Their purpose are two-fold: - To manage and provide information about input
+// devices (pointers, keyboards, etc) - To manage and provide information about
+// output devices (monitors, projectors, etc)
+//
+// Most of the input device handling has been factored out into separate Seat
+// objects. Every display has a one or more seats, which can be accessed with
+// gdk_display_get_default_seat() and gdk_display_list_seats().
+//
+// Output devices are represented by Monitor objects, which can be accessed with
+// gdk_display_get_monitor_at_surface() and similar APIs.
+type Display struct {
+	*glib.Object
+}
+
+// DisplayManager: the purpose of the DisplayManager singleton object is to
+// offer notification when displays appear or disappear or the default display
+// changes.
+//
+// You can use gdk_display_manager_get() to obtain the DisplayManager singleton,
+// but that should be rarely necessary. Typically, initializing GTK opens a
+// display that you can work with without ever accessing the DisplayManager.
+//
+// The GDK library can be built with support for multiple backends. The
+// DisplayManager object determines which backend is used at runtime.
+//
+// When writing backend-specific code that is supposed to work with multiple GDK
+// backends, you have to consider both compile time and runtime. At compile
+// time, use the K_WINDOWING_X11, K_WINDOWING_WIN32 macros, etc. to find out
+// which backends are present in the GDK library you are building your
+// application against. At runtime, use type-check macros like
+// GDK_IS_X11_DISPLAY() to find out which backend is in use:
+//
+// Backend-specific code {#backend-specific}
+//
+//    #ifdef GDK_WINDOWING_X11
+//      if (GDK_IS_X11_DISPLAY (display))
+//        {
+//          // make X11-specific calls here
+//        }
+//      else
+//    #endif
+//    #ifdef GDK_WINDOWING_MACOS
+//      if (GDK_IS_MACOS_DISPLAY (display))
+//        {
+//          // make Quartz-specific calls here
+//        }
+//      else
+//    #endif
+//      g_error ("Unsupported GDK backend");
+type DisplayManager struct {
+	*glib.Object
+}
+
+// Drag: the GdkDrag struct contains only private fields and should not be
+// accessed directly.
+type Drag struct {
+	*glib.Object
+}
+
+// DrawContext: gdkDrawContext is the base object used by contexts implementing
+// different rendering methods, such as GLContext or VulkanContext. It provides
+// shared functionality between those contexts.
+//
+// You will always interact with one of those subclasses.
+//
+// A GdkDrawContext is always associated with a single toplevel surface.
+type DrawContext struct {
+	*glib.Object
+}
+
+// Drop: the GdkDrop struct contains only private fields and should not be
+// accessed directly.
+type Drop struct {
+	*glib.Object
+}
+
+// FocusEvent: an event related to a focus change.
+type FocusEvent struct {
+	Event
+}
+
+// FrameClock: a FrameClock tells the application when to update and repaint a
+// surface. This may be synced to the vertical refresh rate of the monitor, for
+// example. Even when the frame clock uses a simple timer rather than a
+// hardware-based vertical sync, the frame clock helps because it ensures
+// everything paints at the same time (reducing the total number of frames). The
+// frame clock can also automatically stop painting when it knows the frames
+// will not be visible, or scale back animation framerates.
+//
+// FrameClock is designed to be compatible with an OpenGL-based implementation
+// or with mozRequestAnimationFrame in Firefox, for example.
+//
+// A frame clock is idle until someone requests a frame with
+// gdk_frame_clock_request_phase(). At some later point that makes sense for the
+// synchronization being implemented, the clock will process a frame and emit
+// signals for each phase that has been requested. (See the signals of the
+// FrameClock class for documentation of the phases.
+// GDK_FRAME_CLOCK_PHASE_UPDATE and the FrameClock::update signal are most
+// interesting for application writers, and are used to update the animations,
+// using the frame time given by gdk_frame_clock_get_frame_time().
+//
+// The frame time is reported in microseconds and generally in the same
+// timescale as g_get_monotonic_time(), however, it is not the same as
+// g_get_monotonic_time(). The frame time does not advance during the time a
+// frame is being painted, and outside of a frame, an attempt is made so that
+// all calls to gdk_frame_clock_get_frame_time() that are called at a “similar”
+// time get the same value. This means that if different animations are timed by
+// looking at the difference in time between an initial value from
+// gdk_frame_clock_get_frame_time() and the value inside the FrameClock::update
+// signal of the clock, they will stay exactly synchronized.
+type FrameClock struct {
+	*glib.Object
+}
+
+// GLContext: gdkGLContext is an object representing the platform-specific
+// OpenGL draw context.
+//
+// GLContexts are created for a Surface using gdk_surface_create_gl_context(),
+// and the context will match the the characteristics of the surface.
+//
+// A GLContext is not tied to any particular normal framebuffer. For instance,
+// it cannot draw to the Surface back buffer. The GDK repaint system is in full
+// control of the painting to that. Instead, you can create render buffers or
+// textures and use gdk_cairo_draw_from_gl() in the draw function of your widget
+// to draw them. Then GDK will handle the integration of your rendering with
+// that of other widgets.
+//
+// Support for GLContext is platform-specific, context creation can fail,
+// returning nil context.
+//
+// A GLContext has to be made "current" in order to start using it, otherwise
+// any OpenGL call will be ignored.
+//
+// Creating a new OpenGL context ##
+//
+// In order to create a new GLContext instance you need a Surface, which you
+// typically get during the realize call of a widget.
+//
+// A GLContext is not realized until either gdk_gl_context_make_current(), or
+// until it is realized using gdk_gl_context_realize(). It is possible to
+// specify details of the GL context like the OpenGL version to be used, or
+// whether the GL context should have extra state validation enabled after
+// calling gdk_surface_create_gl_context() by calling gdk_gl_context_realize().
+// If the realization fails you have the option to change the settings of the
+// GLContext and try again.
+//
+// Using a GdkGLContext ##
+//
+// You will need to make the GLContext the current context before issuing OpenGL
+// calls; the system sends OpenGL commands to whichever context is current. It
+// is possible to have multiple contexts, so you always need to ensure that the
+// one which you want to draw with is the current one before issuing commands:
+//
+//    gdk_gl_context_make_current (context);
+//
+// You can now perform your drawing using OpenGL commands.
+//
+// You can check which GLContext is the current one by using
+// gdk_gl_context_get_current(); you can also unset any GLContext that is
+// currently set by calling gdk_gl_context_clear_current().
+type GLContext struct {
+	DrawContext
+}
+
+// GLTexture: a Texture representing a GL texture object.
+type GLTexture struct {
+	Texture
+}
+
+// GrabBrokenEvent: an event related to a broken windowing system grab.
+type GrabBrokenEvent struct {
+	Event
+}
+
+// KeyEvent: an event related to a key-based device.
+type KeyEvent struct {
+	Event
+}
+
+// MemoryTexture: a Texture representing image data in memory.
+type MemoryTexture struct {
+	Texture
+}
+
+// Monitor: gdkMonitor objects represent the individual outputs that are
+// associated with a Display. GdkDisplay keeps a Model to enumerate and monitor
+// monitors with gdk_display_get_monitors(). You can use
+// gdk_display_get_monitor_at_surface() to find a particular monitor.
+type Monitor struct {
+	*glib.Object
+}
+
+// MotionEvent: an event related to a pointer or touch device motion.
+type MotionEvent struct {
+	Event
+}
+
+// PadEvent: an event related to a pad-based device.
+type PadEvent struct {
+	Event
+}
+
+// ProximityEvent: an event related to the proximity of a tool to a device.
+type ProximityEvent struct {
+	Event
+}
+
+// ScrollEvent: an event related to a scrolling motion.
+type ScrollEvent struct {
+	Event
+}
+
+// Seat: the Seat object represents a collection of input devices that belong to
+// a user.
+type Seat struct {
+	*glib.Object
+}
+
+// Snapshot: base type for snapshot operations.
+type Snapshot struct {
+	*glib.Object
+}
+
+// Surface: a Surface is a (usually) rectangular region on the screen. It’s a
+// low-level object, used to implement high-level objects such as Window or
+// Dialog in GTK.
+//
+// The surfaces you see in practice are either Toplevel or Popup, and those
+// interfaces provide much of the required API to interact with these surfaces.
+// Other, more specialized surface types exist, but you will rarely interact
+// with them directly.
+type Surface struct {
+	*glib.Object
+}
+
+// Texture: the `GdkTexture` structure contains only private data.
+type Texture struct {
+	*glib.Object
+}
+
+// TouchEvent: an event related to a touch-based device.
+type TouchEvent struct {
+	Event
+}
+
+// TouchpadEvent: an event related to a touchpad device.
+type TouchpadEvent struct {
+	Event
+}
+
+// VulkanContext: gdkVulkanContext is an object representing the
+// platform-specific Vulkan draw context.
+//
+// VulkanContexts are created for a Surface using
+// gdk_surface_create_vulkan_context(), and the context will match the the
+// characteristics of the surface.
+//
+// Support for VulkanContext is platform-specific, context creation can fail,
+// returning nil context.
+type VulkanContext struct {
+	DrawContext
 }

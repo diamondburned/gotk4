@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/glib"
@@ -2190,7 +2191,7 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 // applied. For example, if the @commandline contains percent-encoded URIs, the
 // percent-character must be doubled in order to prevent it from being swallowed
 // by Exec key unquoting. See the specification for exact quoting rules.
-func AppInfoCreateFromCommandline(commandline *string, applicationName string, flags AppInfoCreateFlags) AppInfo
+func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) AppInfo
 
 // AppInfoGetAll: gets a list of all of the applications currently registered on
 // this system.
@@ -2351,11 +2352,11 @@ func BusOwnNameOnConnection(connection *DBusConnection, name string, flags BusNa
 
 // BusOwnNameOnConnectionWithClosures: version of g_bus_own_name_on_connection()
 // using closures instead of callbacks for easier binding in other languages.
-func BusOwnNameOnConnectionWithClosures(connection *DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredClosure **glib.Closure, nameLostClosure **glib.Closure) uint
+func BusOwnNameOnConnectionWithClosures(connection *DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredClosure *glib.Closure, nameLostClosure *glib.Closure) uint
 
 // BusOwnNameWithClosures: version of g_bus_own_name() using closures instead of
 // callbacks for easier binding in other languages.
-func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredClosure **glib.Closure, nameAcquiredClosure **glib.Closure, nameLostClosure **glib.Closure) uint
+func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredClosure *glib.Closure, nameAcquiredClosure *glib.Closure, nameLostClosure *glib.Closure) uint
 
 // BusUnownName: stops owning a name.
 //
@@ -2411,11 +2412,11 @@ func BusWatchNameOnConnection(connection *DBusConnection, name string, flags Bus
 // BusWatchNameOnConnectionWithClosures: version of
 // g_bus_watch_name_on_connection() using closures instead of callbacks for
 // easier binding in other languages.
-func BusWatchNameOnConnectionWithClosures(connection *DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedClosure **glib.Closure, nameVanishedClosure **glib.Closure) uint
+func BusWatchNameOnConnectionWithClosures(connection *DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedClosure *glib.Closure, nameVanishedClosure *glib.Closure) uint
 
 // BusWatchNameWithClosures: version of g_bus_watch_name() using closures
 // instead of callbacks for easier binding in other languages.
-func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcherFlags, nameAppearedClosure **glib.Closure, nameVanishedClosure **glib.Closure) uint
+func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcherFlags, nameAppearedClosure *glib.Closure, nameVanishedClosure *glib.Closure) uint
 
 // ContentTypeCanBeExecutable: checks if a content type can be executable. Note
 // that for instance things like text files can be executables (i.e. scripts and
@@ -2626,7 +2627,7 @@ func DbusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName
 
 // DbusErrorRegisterErrorDomain: helper function for associating a #GError error
 // domain with D-Bus error names.
-func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile *uint, entries []DBusErrorEntry, numEntries uint)
+func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uint, entries []DBusErrorEntry, numEntries uint)
 
 // DbusErrorStripRemoteError: looks for extra information in the error message
 // used to recover the D-Bus error name and strips it if found. If stripped, the
@@ -2668,7 +2669,7 @@ func DbusGenerateGuid() string
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DbusGvalueToGvariant(gvalue **glib.Value, _type *glib.VariantType) *glib.Variant
+func DbusGvalueToGvariant(gvalue *glib.Value, _type *glib.VariantType) *glib.Variant
 
 // DbusGvariantToGvalue: converts a #GVariant to a #GValue. If @value is
 // floating, it is consumed.
@@ -2681,7 +2682,7 @@ func DbusGvalueToGvariant(gvalue **glib.Value, _type *glib.VariantType) *glib.Va
 //
 // The conversion never fails - a valid #GValue is always returned in
 // @out_gvalue.
-func DbusGvariantToGvalue(value *glib.Variant) *glib.Value
+func DbusGvariantToGvalue(value *glib.Variant) glib.Value
 
 // DbusIsAddress: checks if @string is a [D-Bus
 // address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
@@ -2719,11 +2720,11 @@ func DbusIsUniqueName(string string) bool
 // NewDtlsClientConnection: creates a new ClientConnection wrapping @base_socket
 // which is assumed to communicate with the server identified by
 // @server_identity.
-func NewDtlsClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) DtlsClientConnection
+func NewDtlsClientConnection(baseSocket DtlsClientConnection, serverIdentity SocketConnectable) DtlsClientConnection
 
 // NewDtlsServerConnection: creates a new ServerConnection wrapping
 // @base_socket.
-func NewDtlsServerConnection(baseSocket DatagramBased, certificate *TlsCertificate) DtlsServerConnection
+func NewDtlsServerConnection(baseSocket DtlsClientConnection, certificate *TlsCertificate) DtlsClientConnection
 
 // FileNewForCommandlineArg: creates a #GFile with the given argument from the
 // command line. The value of @arg can be either a URI, an absolute path or a
@@ -2738,7 +2739,7 @@ func NewDtlsServerConnection(baseSocket DatagramBased, certificate *TlsCertifica
 // but g_application_command_line_create_file_for_arg() may be more useful for
 // you there. It is also always possible to use this function with Context
 // arguments of type G_OPTION_ARG_FILENAME.
-func FileNewForCommandlineArg(arg *string) File
+func FileNewForCommandlineArg(arg string) File
 
 // FileNewForCommandlineArgAndCwd: creates a #GFile with the given argument from
 // the command line.
@@ -2751,12 +2752,12 @@ func FileNewForCommandlineArg(arg *string) File
 // the invocation of the current process.
 //
 // See also g_application_command_line_create_file_for_arg().
-func FileNewForCommandlineArgAndCwd(arg *string, cwd *string) File
+func FileNewForCommandlineArgAndCwd(arg string, cwd string) File
 
 // FileNewForPath: constructs a #GFile for a given path. This operation never
 // fails, but the returned object might not support any I/O operation if @path
 // is malformed.
-func FileNewForPath(path *string) File
+func FileNewForPath(path string) File
 
 // FileNewForURI: constructs a #GFile for a given URI. This operation never
 // fails, but the returned object might not support any I/O operation if @uri is
@@ -2773,7 +2774,7 @@ func FileNewForURI(uri string) File
 //
 // Unlike the other #GFile constructors, this will return nil if a temporary
 // file could not be created.
-func FileNewTmp(tmpl *string) (*FileIOStream, File)
+func FileNewTmp(tmpl string) (*FileIOStream, File)
 
 // FileParseName: constructs a #GFile with the given @parse_name (i.e. something
 // given by g_file_get_parse_name()). This operation never fails, but the
@@ -2827,7 +2828,7 @@ func IOExtensionPointRegister(name string) *IOExtensionPoint
 // If don't require all modules to be initialized (and thus registering all
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectory(dirname *string) *glib.List
+func IOModulesLoadAllInDirectory(dirname string) *glib.List
 
 // IOModulesLoadAllInDirectoryWithScope: loads all the modules in the specified
 // directory.
@@ -2835,7 +2836,7 @@ func IOModulesLoadAllInDirectory(dirname *string) *glib.List
 // If don't require all modules to be initialized (and thus registering all
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) *glib.List
+func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) *glib.List
 
 // IOModulesScanAllInDirectory: scans all the modules in the specified
 // directory, ensuring that any extension point implemented by a module is
@@ -2848,7 +2849,7 @@ func IOModulesLoadAllInDirectoryWithScope(dirname *string, scope *IOModuleScope)
 //
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
-func IOModulesScanAllInDirectory(dirname *string)
+func IOModulesScanAllInDirectory(dirname string)
 
 // IOModulesScanAllInDirectoryWithScope: scans all the modules in the specified
 // directory, ensuring that any extension point implemented by a module is
@@ -2861,7 +2862,7 @@ func IOModulesScanAllInDirectory(dirname *string)
 //
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
-func IOModulesScanAllInDirectoryWithScope(dirname *string, scope *IOModuleScope)
+func IOModulesScanAllInDirectoryWithScope(dirname string, scope *IOModuleScope)
 
 // IOSchedulerCancelAllJobs: cancels all cancellable I/O jobs.
 //
@@ -2955,13 +2956,13 @@ func NewNullSettingsBackend() *SettingsBackend
 // SourceFunc. The new source does not actually do anything on its own; use
 // g_source_add_child_source() to add other sources to it to cause it to
 // trigger.
-func NewPollableSource(pollableStream **glib.Object) *glib.Source
+func NewPollableSource(pollableStream *glib.Object) *glib.Source
 
 // PollableSourceNewFull: utility method for InputStream and OutputStream
 // implementations. Creates a new #GSource, as with g_pollable_source_new(), but
 // also attaching @child_source (with a dummy callback), and @cancellable, if
 // they are non-nil.
-func PollableSourceNewFull(pollableStream *glib.Object, childSource *glib.Source, cancellable *Cancellable) *glib.Source
+func PollableSourceNewFull(pollableStream unsafe.Pointer, childSource *glib.Source, cancellable *Cancellable) *glib.Source
 
 // PollableStreamRead: tries to read from @stream, as with g_input_stream_read()
 // (if @blocking is true) or g_pollable_input_stream_read_nonblocking() (if
@@ -3026,7 +3027,7 @@ func ResourceErrorQuark() glib.Quark
 // If @filename is empty or the data in it is corrupt, G_RESOURCE_ERROR_INTERNAL
 // will be returned. If @filename doesn’t exist, or there is an error in reading
 // it, an error from g_mapped_file_new() will be returned.
-func ResourceLoad(filename *string) *Resource
+func ResourceLoad(filename string) *Resource
 
 // ResourcesEnumerateChildren: returns all the names of children at the
 // specified @path in the set of globally registered resources. The return
@@ -3090,13 +3091,13 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource
 // SimpleAsyncReportGerrorInIdle: reports an error in an idle function. Similar
 // to g_simple_async_report_error_in_idle(), but takes a #GError rather than
 // building a new one.
-func SimpleAsyncReportGerrorInIdle(object **glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
+func SimpleAsyncReportGerrorInIdle(object *glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
 
 // SimpleAsyncReportTakeGerrorInIdle: reports an error in an idle function.
 // Similar to g_simple_async_report_gerror_in_idle(), but takes over the
 // caller's ownership of @error, so the caller does not have to free it any
 // more.
-func SimpleAsyncReportTakeGerrorInIdle(object **glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
+func SimpleAsyncReportTakeGerrorInIdle(object *glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
 
 // SrvTargetListSort: sorts @targets in place according to the algorithm in RFC
 // 2782.
@@ -3115,7 +3116,7 @@ func TlsChannelBindingErrorQuark() glib.Quark
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the @base_io_stream after this
 // function has returned.
-func NewTlsClientConnection(baseIOStream *IOStream, serverIdentity SocketConnectable) TlsClientConnection
+func NewTlsClientConnection(baseIOStream *IOStream, serverIdentity SocketConnectable) *IOStream
 
 // TlsErrorQuark: gets the TLS error quark.
 func TlsErrorQuark() glib.Quark
@@ -3124,7 +3125,7 @@ func TlsErrorQuark() glib.Quark
 // authorities in @anchors to verify certificate chains.
 //
 // The certificates in @anchors must be PEM encoded.
-func NewTlsFileDatabase(anchors *string) TlsFileDatabase
+func NewTlsFileDatabase(anchors string) TlsFileDatabase
 
 // NewTlsServerConnection: creates a new ServerConnection wrapping
 // @base_io_stream (which must have pollable input and output streams).
@@ -3132,13 +3133,13 @@ func NewTlsFileDatabase(anchors *string) TlsFileDatabase
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the @base_io_stream after this
 // function has returned.
-func NewTlsServerConnection(baseIOStream *IOStream, certificate *TlsCertificate) TlsServerConnection
+func NewTlsServerConnection(baseIOStream *IOStream, certificate *TlsCertificate) *IOStream
 
 // UnixIsMountPathSystemInternal: determines if @mount_path is considered an
 // implementation of the OS. This is primarily used for hiding mountable and
 // mounted volumes that only are used in the OS and has little to no relevance
 // to the casual user.
-func UnixIsMountPathSystemInternal(mountPath *string) bool
+func UnixIsMountPathSystemInternal(mountPath string) bool
 
 // UnixIsSystemDevicePath: determines if @device_path is considered a block
 // device path which is only used in implementation of the OS. This is primarily
@@ -3164,7 +3165,7 @@ func UnixIsSystemFsType(fsType string) bool
 // changed since with g_unix_mounts_changed_since().
 //
 // If more mounts have the same mount path, the last matching mount is returned.
-func UnixMountAt(mountPath *string) (uint64, *UnixMountEntry)
+func UnixMountAt(mountPath string) (uint64, *UnixMountEntry)
 
 // UnixMountCompare: compares two unix mounts.
 func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int
@@ -3177,19 +3178,19 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry
 // changed since with g_unix_mounts_changed_since().
 //
 // If more mounts have the same mount path, the last matching mount is returned.
-func UnixMountFor(filePath *string) (uint64, *UnixMountEntry)
+func UnixMountFor(filePath string) (uint64, *UnixMountEntry)
 
 // UnixMountFree: frees a unix mount.
 func UnixMountFree(mountEntry *UnixMountEntry)
 
 // UnixMountGetDevicePath: gets the device path for a unix mount.
-func UnixMountGetDevicePath(mountEntry *UnixMountEntry) *string
+func UnixMountGetDevicePath(mountEntry *UnixMountEntry) string
 
 // UnixMountGetFsType: gets the filesystem type for the unix mount.
 func UnixMountGetFsType(mountEntry *UnixMountEntry) string
 
 // UnixMountGetMountPath: gets the mount path for a unix mount.
-func UnixMountGetMountPath(mountEntry *UnixMountEntry) *string
+func UnixMountGetMountPath(mountEntry *UnixMountEntry) string
 
 // UnixMountGetOptions: gets a comma-separated list of mount options for the
 // unix mount. For example, `rw,relatime,seclabel,data=ordered`.
@@ -3239,7 +3240,7 @@ func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool
 //
 // If more mount points have the same mount path, the last matching mount point
 // is returned.
-func UnixMountPointAt(mountPath *string) (uint64, *UnixMountPoint)
+func UnixMountPointAt(mountPath string) (uint64, *UnixMountPoint)
 
 // UnixMountPointsChangedSince: checks if the unix mount points have changed
 // since a given unix time.
@@ -3287,9 +3288,14 @@ type ActionEntry struct {
 
 func wrapActionEntry(p *C.GActionEntry) *ActionEntry {
 	v := ActionEntry{native: p}
+
 	v.Name = C.GoString(p.name)
 	v.ParameterType = C.GoString(p.parameter_type)
 	v.State = C.GoString(p.state)
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*ActionEntry).free)
+
 	return &v
 }
 
@@ -3298,6 +3304,14 @@ func marshalActionEntry(p uintptr) (interface{}, error) {
 	c := (*C.GActionEntry)(unsafe.Pointer(b))
 
 	return wrapActionEntry(c)
+}
+
+func (a *ActionEntry) free() {}
+
+// Native returns the pointer to *C.GActionEntry. The caller is expected to
+// cast.
+func (a *ActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // DBusAnnotationInfo: information about an annotation.
@@ -3311,10 +3325,13 @@ type DBusAnnotationInfo struct {
 	// Annotations: a pointer to a nil-terminated array of pointers to
 	// BusAnnotationInfo structures or nil if there are no annotations.
 	Annotations []*DBusAnnotationInfo
+
+	native *C.GDBusAnnotationInfo
 }
 
 func wrapDBusAnnotationInfo(p *C.GDBusAnnotationInfo) *DBusAnnotationInfo {
 	var v DBusAnnotationInfo
+
 	v.RefCount = int(p.ref_count)
 	v.Key = C.GoString(p.key)
 	v.Value = C.GoString(p.value)
@@ -3329,6 +3346,12 @@ func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
 	return wrapDBusAnnotationInfo(c)
 }
 
+// Native returns the pointer to *C.GDBusAnnotationInfo. The caller is expected to
+// cast.
+func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 // DBusArgInfo: information about an argument for a method or a signal.
 type DBusArgInfo struct {
 	// RefCount: the reference count or -1 if statically allocated.
@@ -3340,10 +3363,13 @@ type DBusArgInfo struct {
 	// Annotations: a pointer to a nil-terminated array of pointers to
 	// BusAnnotationInfo structures or nil if there are no annotations.
 	Annotations []*DBusAnnotationInfo
+
+	native *C.GDBusArgInfo
 }
 
 func wrapDBusArgInfo(p *C.GDBusArgInfo) *DBusArgInfo {
 	var v DBusArgInfo
+
 	v.RefCount = int(p.ref_count)
 	v.Name = C.GoString(p.name)
 	v.Signature = C.GoString(p.signature)
@@ -3358,18 +3384,28 @@ func marshalDBusArgInfo(p uintptr) (interface{}, error) {
 	return wrapDBusArgInfo(c)
 }
 
+// Native returns the pointer to *C.GDBusArgInfo. The caller is expected to
+// cast.
+func (d *DBusArgInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 // DBusErrorEntry: struct used in g_dbus_error_register_error_domain().
 type DBusErrorEntry struct {
 	// ErrorCode: an error code.
 	ErrorCode int
 	// DbusErrorName: the D-Bus error name to associate with @error_code.
 	DbusErrorName string
+
+	native *C.GDBusErrorEntry
 }
 
 func wrapDBusErrorEntry(p *C.GDBusErrorEntry) *DBusErrorEntry {
 	var v DBusErrorEntry
+
 	v.ErrorCode = int(p.error_code)
 	v.DbusErrorName = C.GoString(p.dbus_error_name)
+
 	return &v
 }
 
@@ -3378,6 +3414,12 @@ func marshalDBusErrorEntry(p uintptr) (interface{}, error) {
 	c := (*C.GDBusErrorEntry)(unsafe.Pointer(b))
 
 	return wrapDBusErrorEntry(c)
+}
+
+// Native returns the pointer to *C.GDBusErrorEntry. The caller is expected to
+// cast.
+func (d *DBusErrorEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // DBusInterfaceInfo: information about a D-Bus interface.
@@ -3399,10 +3441,13 @@ type DBusInterfaceInfo struct {
 	// Annotations: a pointer to a nil-terminated array of pointers to
 	// BusAnnotationInfo structures or nil if there are no annotations.
 	Annotations []*DBusAnnotationInfo
+
+	native *C.GDBusInterfaceInfo
 }
 
 func wrapDBusInterfaceInfo(p *C.GDBusInterfaceInfo) *DBusInterfaceInfo {
 	var v DBusInterfaceInfo
+
 	v.RefCount = int(p.ref_count)
 	v.Name = C.GoString(p.name)
 
@@ -3414,6 +3459,12 @@ func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
 	c := (*C.GDBusInterfaceInfo)(unsafe.Pointer(b))
 
 	return wrapDBusInterfaceInfo(c)
+}
+
+// Native returns the pointer to *C.GDBusInterfaceInfo. The caller is expected to
+// cast.
+func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls
@@ -3467,9 +3518,14 @@ type DBusInterfaceVTable struct {
 
 func wrapDBusInterfaceVTable(p *C.GDBusInterfaceVTable) *DBusInterfaceVTable {
 	v := DBusInterfaceVTable{native: p}
+
 	v.MethodCall = wrapDBusInterfaceMethodCallFunc(p.method_call)
 	v.GetProperty = wrapDBusInterfaceGetPropertyFunc(p.get_property)
 	v.SetProperty = wrapDBusInterfaceSetPropertyFunc(p.set_property)
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DBusInterfaceVTable).free)
+
 	return &v
 }
 
@@ -3478,6 +3534,14 @@ func marshalDBusInterfaceVTable(p uintptr) (interface{}, error) {
 	c := (*C.GDBusInterfaceVTable)(unsafe.Pointer(b))
 
 	return wrapDBusInterfaceVTable(c)
+}
+
+func (d *DBusInterfaceVTable) free() {}
+
+// Native returns the pointer to *C.GDBusInterfaceVTable. The caller is expected to
+// cast.
+func (d *DBusInterfaceVTable) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // DBusMethodInfo: information about a method on an D-Bus interface.
@@ -3495,10 +3559,13 @@ type DBusMethodInfo struct {
 	// Annotations: a pointer to a nil-terminated array of pointers to
 	// BusAnnotationInfo structures or nil if there are no annotations.
 	Annotations []*DBusAnnotationInfo
+
+	native *C.GDBusMethodInfo
 }
 
 func wrapDBusMethodInfo(p *C.GDBusMethodInfo) *DBusMethodInfo {
 	var v DBusMethodInfo
+
 	v.RefCount = int(p.ref_count)
 	v.Name = C.GoString(p.name)
 
@@ -3510,6 +3577,12 @@ func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
 	c := (*C.GDBusMethodInfo)(unsafe.Pointer(b))
 
 	return wrapDBusMethodInfo(c)
+}
+
+// Native returns the pointer to *C.GDBusMethodInfo. The caller is expected to
+// cast.
+func (d *DBusMethodInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // DBusNodeInfo: information about nodes in a remote object hierarchy.
@@ -3528,10 +3601,13 @@ type DBusNodeInfo struct {
 	// Annotations: a pointer to a nil-terminated array of pointers to
 	// BusAnnotationInfo structures or nil if there are no annotations.
 	Annotations []*DBusAnnotationInfo
+
+	native *C.GDBusNodeInfo
 }
 
 func wrapDBusNodeInfo(p *C.GDBusNodeInfo) *DBusNodeInfo {
 	var v DBusNodeInfo
+
 	v.RefCount = int(p.ref_count)
 	v.Path = C.GoString(p.path)
 
@@ -3543,6 +3619,12 @@ func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 	c := (*C.GDBusNodeInfo)(unsafe.Pointer(b))
 
 	return wrapDBusNodeInfo(c)
+}
+
+// Native returns the pointer to *C.GDBusNodeInfo. The caller is expected to
+// cast.
+func (d *DBusNodeInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // DBusPropertyInfo: information about a D-Bus property on a D-Bus interface.
@@ -3558,10 +3640,13 @@ type DBusPropertyInfo struct {
 	// Annotations: a pointer to a nil-terminated array of pointers to
 	// BusAnnotationInfo structures or nil if there are no annotations.
 	Annotations []*DBusAnnotationInfo
+
+	native *C.GDBusPropertyInfo
 }
 
 func wrapDBusPropertyInfo(p *C.GDBusPropertyInfo) *DBusPropertyInfo {
 	var v DBusPropertyInfo
+
 	v.RefCount = int(p.ref_count)
 	v.Name = C.GoString(p.name)
 	v.Signature = C.GoString(p.signature)
@@ -3577,6 +3662,12 @@ func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
 	return wrapDBusPropertyInfo(c)
 }
 
+// Native returns the pointer to *C.GDBusPropertyInfo. The caller is expected to
+// cast.
+func (d *DBusPropertyInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 // DBusSignalInfo: information about a signal on a D-Bus interface.
 type DBusSignalInfo struct {
 	// RefCount: the reference count or -1 if statically allocated.
@@ -3589,10 +3680,13 @@ type DBusSignalInfo struct {
 	// Annotations: a pointer to a nil-terminated array of pointers to
 	// BusAnnotationInfo structures or nil if there are no annotations.
 	Annotations []*DBusAnnotationInfo
+
+	native *C.GDBusSignalInfo
 }
 
 func wrapDBusSignalInfo(p *C.GDBusSignalInfo) *DBusSignalInfo {
 	var v DBusSignalInfo
+
 	v.RefCount = int(p.ref_count)
 	v.Name = C.GoString(p.name)
 
@@ -3604,6 +3698,12 @@ func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
 	c := (*C.GDBusSignalInfo)(unsafe.Pointer(b))
 
 	return wrapDBusSignalInfo(c)
+}
+
+// Native returns the pointer to *C.GDBusSignalInfo. The caller is expected to
+// cast.
+func (d *DBusSignalInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // DBusSubtreeVTable: virtual table for handling subtrees registered with
@@ -3621,9 +3721,14 @@ type DBusSubtreeVTable struct {
 
 func wrapDBusSubtreeVTable(p *C.GDBusSubtreeVTable) *DBusSubtreeVTable {
 	v := DBusSubtreeVTable{native: p}
+
 	v.Enumerate = wrapDBusSubtreeEnumerateFunc(p.enumerate)
 	v.Introspect = wrapDBusSubtreeIntrospectFunc(p.introspect)
 	v.Dispatch = wrapDBusSubtreeDispatchFunc(p.dispatch)
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*DBusSubtreeVTable).free)
+
 	return &v
 }
 
@@ -3634,6 +3739,14 @@ func marshalDBusSubtreeVTable(p uintptr) (interface{}, error) {
 	return wrapDBusSubtreeVTable(c)
 }
 
+func (d *DBusSubtreeVTable) free() {}
+
+// Native returns the pointer to *C.GDBusSubtreeVTable. The caller is expected to
+// cast.
+func (d *DBusSubtreeVTable) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
+}
+
 // FileAttributeInfo: information about a specific attribute.
 type FileAttributeInfo struct {
 	// Name: the name of the attribute.
@@ -3642,13 +3755,17 @@ type FileAttributeInfo struct {
 	Type FileAttributeType
 	// Flags: a set of AttributeInfoFlags.
 	Flags FileAttributeInfoFlags
+
+	native *C.GFileAttributeInfo
 }
 
 func wrapFileAttributeInfo(p *C.GFileAttributeInfo) *FileAttributeInfo {
 	var v FileAttributeInfo
+
 	v.Name = C.GoString(p.name)
 	v.Type = FileAttributeType(p._type)
 	v.Flags = FileAttributeInfoFlags(p.flags)
+
 	return &v
 }
 
@@ -3659,6 +3776,12 @@ func marshalFileAttributeInfo(p uintptr) (interface{}, error) {
 	return wrapFileAttributeInfo(c)
 }
 
+// Native returns the pointer to *C.GFileAttributeInfo. The caller is expected to
+// cast.
+func (f *FileAttributeInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 // FileAttributeInfoList: acts as a lightweight registry for possible valid file
 // attributes. The registry stores Key-Value pair formats as AttributeInfos.
 type FileAttributeInfoList struct {
@@ -3666,12 +3789,16 @@ type FileAttributeInfoList struct {
 	Infos *FileAttributeInfo
 	// NInfos: the number of values in the array.
 	NInfos int
+
+	native *C.GFileAttributeInfoList
 }
 
 func wrapFileAttributeInfoList(p *C.GFileAttributeInfoList) *FileAttributeInfoList {
 	var v FileAttributeInfoList
+
 	v.Infos = wrap * FileAttributeInfo(p.infos)
 	v.NInfos = int(p.n_infos)
+
 	return &v
 }
 
@@ -3682,6 +3809,12 @@ func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 	return wrapFileAttributeInfoList(c)
 }
 
+// Native returns the pointer to *C.GFileAttributeInfoList. The caller is expected to
+// cast.
+func (f *FileAttributeInfoList) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
+}
+
 // FileAttributeMatcher: determines if a string matches a file attribute.
 type FileAttributeMatcher struct {
 	native *C.GFileAttributeMatcher
@@ -3689,6 +3822,10 @@ type FileAttributeMatcher struct {
 
 func wrapFileAttributeMatcher(p *C.GFileAttributeMatcher) *FileAttributeMatcher {
 	v := FileAttributeMatcher{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*FileAttributeMatcher).free)
+
 	return &v
 }
 
@@ -3697,6 +3834,14 @@ func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 	c := (*C.GFileAttributeMatcher)(unsafe.Pointer(b))
 
 	return wrapFileAttributeMatcher(c)
+}
+
+func (f *FileAttributeMatcher) free() {}
+
+// Native returns the pointer to *C.GFileAttributeMatcher. The caller is expected to
+// cast.
+func (f *FileAttributeMatcher) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // InputMessage: structure used for scatter/gather data input when receiving
@@ -3735,11 +3880,14 @@ type InputMessage struct {
 	ControlMessages []**SocketControlMessage
 	// NumControlMessages: return location for the number of elements in
 	// @control_messages
-	NumControlMessages *uint
+	NumControlMessages uint
+
+	native *C.GInputMessage
 }
 
 func wrapInputMessage(p *C.GInputMessage) *InputMessage {
 	var v InputMessage
+
 	v.Address = wrap * *SocketAddress(p.address)
 
 	v.NumVectors = uint(p.num_vectors)
@@ -3747,6 +3895,7 @@ func wrapInputMessage(p *C.GInputMessage) *InputMessage {
 	v.Flags = int(p.flags)
 
 	v.NumControlMessages = uint(p.num_control_messages)
+
 	return &v
 }
 
@@ -3757,6 +3906,12 @@ func marshalInputMessage(p uintptr) (interface{}, error) {
 	return wrapInputMessage(c)
 }
 
+// Native returns the pointer to *C.GInputMessage. The caller is expected to
+// cast.
+func (i *InputMessage) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
+}
+
 // InputVector: structure used for scatter/gather data input. You generally pass
 // in an array of Vectors and the operation will store the read data starting in
 // the first buffer, switching to the next as needed.
@@ -3765,12 +3920,16 @@ type InputVector struct {
 	Buffer unsafe.Pointer
 	// Size: the available size in @buffer.
 	Size uint
+
+	native *C.GInputVector
 }
 
 func wrapInputVector(p *C.GInputVector) *InputVector {
 	var v InputVector
+
 	v.Buffer = unsafe.Pointer(p.buffer)
 	v.Size = uint(p.size)
+
 	return &v
 }
 
@@ -3779,6 +3938,12 @@ func marshalInputVector(p uintptr) (interface{}, error) {
 	c := (*C.GInputVector)(unsafe.Pointer(b))
 
 	return wrapInputVector(c)
+}
+
+// Native returns the pointer to *C.GInputVector. The caller is expected to
+// cast.
+func (i *InputVector) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // OutputMessage: structure used for scatter/gather data output when sending
@@ -3802,16 +3967,20 @@ type OutputMessage struct {
 	ControlMessages []*SocketControlMessage
 	// NumControlMessages: number of elements in @control_messages.
 	NumControlMessages uint
+
+	native *C.GOutputMessage
 }
 
 func wrapOutputMessage(p *C.GOutputMessage) *OutputMessage {
 	var v OutputMessage
+
 	v.Address = wrap * SocketAddress(p.address)
 	v.Vectors = wrap * OutputVector(p.vectors)
 	v.NumVectors = uint(p.num_vectors)
 	v.BytesSent = uint(p.bytes_sent)
 
 	v.NumControlMessages = uint(p.num_control_messages)
+
 	return &v
 }
 
@@ -3822,6 +3991,12 @@ func marshalOutputMessage(p uintptr) (interface{}, error) {
 	return wrapOutputMessage(c)
 }
 
+// Native returns the pointer to *C.GOutputMessage. The caller is expected to
+// cast.
+func (o *OutputMessage) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
+}
+
 // OutputVector: structure used for scatter/gather data output. You generally
 // pass in an array of Vectors and the operation will use all the buffers as if
 // they were one buffer.
@@ -3830,12 +4005,16 @@ type OutputVector struct {
 	Buffer unsafe.Pointer
 	// Size: the size of @buffer.
 	Size uint
+
+	native *C.GOutputVector
 }
 
 func wrapOutputVector(p *C.GOutputVector) *OutputVector {
 	var v OutputVector
+
 	v.Buffer = unsafe.Pointer(p.buffer)
 	v.Size = uint(p.size)
+
 	return &v
 }
 
@@ -3844,6 +4023,12 @@ func marshalOutputVector(p uintptr) (interface{}, error) {
 	c := (*C.GOutputVector)(unsafe.Pointer(b))
 
 	return wrapOutputVector(c)
+}
+
+// Native returns the pointer to *C.GOutputVector. The caller is expected to
+// cast.
+func (o *OutputVector) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Resource: applications and libraries often contain binary or textual data
@@ -3994,6 +4179,10 @@ type Resource struct {
 
 func wrapResource(p *C.GResource) *Resource {
 	v := Resource{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*Resource).free)
+
 	return &v
 }
 
@@ -4002,6 +4191,14 @@ func marshalResource(p uintptr) (interface{}, error) {
 	c := (*C.GResource)(unsafe.Pointer(b))
 
 	return wrapResource(c)
+}
+
+func (r *Resource) free() {}
+
+// Native returns the pointer to *C.GResource. The caller is expected to
+// cast.
+func (r *Resource) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // SettingsSchema: the SchemaSource and Schema APIs provide a mechanism for
@@ -4094,6 +4291,10 @@ type SettingsSchema struct {
 
 func wrapSettingsSchema(p *C.GSettingsSchema) *SettingsSchema {
 	v := SettingsSchema{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SettingsSchema).free)
+
 	return &v
 }
 
@@ -4104,6 +4305,14 @@ func marshalSettingsSchema(p uintptr) (interface{}, error) {
 	return wrapSettingsSchema(c)
 }
 
+func (s *SettingsSchema) free() {}
+
+// Native returns the pointer to *C.GSettingsSchema. The caller is expected to
+// cast.
+func (s *SettingsSchema) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 // SettingsSchemaKey: GSettingsSchemaKey is an opaque data structure and can
 // only be accessed using the following functions.
 type SettingsSchemaKey struct {
@@ -4112,6 +4321,10 @@ type SettingsSchemaKey struct {
 
 func wrapSettingsSchemaKey(p *C.GSettingsSchemaKey) *SettingsSchemaKey {
 	v := SettingsSchemaKey{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SettingsSchemaKey).free)
+
 	return &v
 }
 
@@ -4122,6 +4335,14 @@ func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 	return wrapSettingsSchemaKey(c)
 }
 
+func (s *SettingsSchemaKey) free() {}
+
+// Native returns the pointer to *C.GSettingsSchemaKey. The caller is expected to
+// cast.
+func (s *SettingsSchemaKey) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 // SettingsSchemaSource: this is an opaque structure type. You may not access it
 // directly.
 type SettingsSchemaSource struct {
@@ -4130,6 +4351,10 @@ type SettingsSchemaSource struct {
 
 func wrapSettingsSchemaSource(p *C.GSettingsSchemaSource) *SettingsSchemaSource {
 	v := SettingsSchemaSource{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SettingsSchemaSource).free)
+
 	return &v
 }
 
@@ -4138,6 +4363,14 @@ func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {
 	c := (*C.GSettingsSchemaSource)(unsafe.Pointer(b))
 
 	return wrapSettingsSchemaSource(c)
+}
+
+func (s *SettingsSchemaSource) free() {}
+
+// Native returns the pointer to *C.GSettingsSchemaSource. The caller is expected to
+// cast.
+func (s *SettingsSchemaSource) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // SrvTarget: SRV (service) records are used by some network protocols to
@@ -4158,6 +4391,10 @@ type SrvTarget struct {
 
 func wrapSrvTarget(p *C.GSrvTarget) *SrvTarget {
 	v := SrvTarget{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*SrvTarget).free)
+
 	return &v
 }
 
@@ -4168,6 +4405,14 @@ func marshalSrvTarget(p uintptr) (interface{}, error) {
 	return wrapSrvTarget(c)
 }
 
+func (s *SrvTarget) free() {}
+
+// Native returns the pointer to *C.GSrvTarget. The caller is expected to
+// cast.
+func (s *SrvTarget) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 // StaticResource: GStaticResource is an opaque data structure and can only be
 // accessed using the following functions.
 type StaticResource struct {
@@ -4176,6 +4421,10 @@ type StaticResource struct {
 
 func wrapStaticResource(p *C.GStaticResource) *StaticResource {
 	v := StaticResource{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*StaticResource).free)
+
 	return &v
 }
 
@@ -4186,6 +4435,14 @@ func marshalStaticResource(p uintptr) (interface{}, error) {
 	return wrapStaticResource(c)
 }
 
+func (s *StaticResource) free() {}
+
+// Native returns the pointer to *C.GStaticResource. The caller is expected to
+// cast.
+func (s *StaticResource) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
+}
+
 // UnixMountEntry: defines a Unix mount entry (e.g.
 // <filename>/media/cdrom</filename>). This corresponds roughly to a mtab entry.
 type UnixMountEntry struct {
@@ -4194,6 +4451,10 @@ type UnixMountEntry struct {
 
 func wrapUnixMountEntry(p *C.GUnixMountEntry) *UnixMountEntry {
 	v := UnixMountEntry{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*UnixMountEntry).free)
+
 	return &v
 }
 
@@ -4204,6 +4465,14 @@ func marshalUnixMountEntry(p uintptr) (interface{}, error) {
 	return wrapUnixMountEntry(c)
 }
 
+func (u *UnixMountEntry) free() {}
+
+// Native returns the pointer to *C.GUnixMountEntry. The caller is expected to
+// cast.
+func (u *UnixMountEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(u.native)
+}
+
 // UnixMountPoint: defines a Unix mount point (e.g. <filename>/dev</filename>).
 // This corresponds roughly to a fstab entry.
 type UnixMountPoint struct {
@@ -4212,6 +4481,10 @@ type UnixMountPoint struct {
 
 func wrapUnixMountPoint(p *C.GUnixMountPoint) *UnixMountPoint {
 	v := UnixMountPoint{native: p}
+
+	runtime.SetFinalizer(v, nil)
+	runtime.SetFinalizer(v, (*UnixMountPoint).free)
+
 	return &v
 }
 
@@ -4220,4 +4493,2745 @@ func marshalUnixMountPoint(p uintptr) (interface{}, error) {
 	c := (*C.GUnixMountPoint)(unsafe.Pointer(b))
 
 	return wrapUnixMountPoint(c)
+}
+
+func (u *UnixMountPoint) free() {}
+
+// Native returns the pointer to *C.GUnixMountPoint. The caller is expected to
+// cast.
+func (u *UnixMountPoint) Native() unsafe.Pointer {
+	return unsafe.Pointer(u.native)
+}
+
+// AppInfoMonitor: GAppInfoMonitor is a very simple object used for monitoring
+// the app info database for changes (ie: newly installed or removed
+// applications).
+//
+// Call g_app_info_monitor_get() to get a InfoMonitor and connect to the
+// "changed" signal.
+//
+// In the usual case, applications should try to make note of the change (doing
+// things like invalidating caches) but not act on it. In particular,
+// applications should avoid making calls to Info APIs in response to the change
+// signal, deferring these until the time that the data is actually required.
+// The exception to this case is when application information is actually being
+// displayed on the screen (eg: during a search or when the list of all
+// applications is shown). The reason for this is that changes to the list of
+// installed applications often come in groups (like during system updates) and
+// rescanning the list on every change is pointless and expensive.
+type AppInfoMonitor struct {
+	*glib.Object
+}
+
+// AppLaunchContext: integrating the launch with the launching application. This
+// is used to handle for instance startup notification and launching the new
+// application on the same screen as the launching window.
+type AppLaunchContext struct {
+	*glib.Object
+}
+
+// Application: a #GApplication is the foundation of an application. It wraps
+// some low-level platform-specific services and is intended to act as the
+// foundation for higher-level application classes such as Application or
+// Application. In general, you should not use this class outside of a higher
+// level framework.
+//
+// GApplication provides convenient life cycle management by maintaining a "use
+// count" for the primary application instance. The use count can be changed
+// using g_application_hold() and g_application_release(). If it drops to zero,
+// the application exits. Higher-level classes such as Application employ the
+// use count to ensure that the application stays alive as long as it has any
+// opened windows.
+//
+// Another feature that GApplication (optionally) provides is process
+// uniqueness. Applications can make use of this functionality by providing a
+// unique application ID. If given, only one application with this ID can be
+// running at a time per session. The session concept is platform-dependent, but
+// corresponds roughly to a graphical desktop login. When your application is
+// launched again, its arguments are passed through platform communication to
+// the already running program. The already running instance of the program is
+// called the "primary instance"; for non-unique applications this is always the
+// current instance. On Linux, the D-Bus session bus is used for communication.
+//
+// The use of #GApplication differs from some other commonly-used uniqueness
+// libraries (such as libunique) in important ways. The application is not
+// expected to manually register itself and check if it is the primary instance.
+// Instead, the main() function of a #GApplication should do very little more
+// than instantiating the application instance, possibly connecting signal
+// handlers, then calling g_application_run(). All checks for uniqueness are
+// done internally. If the application is the primary instance then the startup
+// signal is emitted and the mainloop runs. If the application is not the
+// primary instance then a signal is sent to the primary instance and
+// g_application_run() promptly returns. See the code examples below.
+//
+// If used, the expected form of an application identifier is the same as that
+// of of a [D-Bus well-known bus
+// name](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus).
+// Examples include: `com.example.MyApp`,
+// `org.example.internal_apps.Calculator`, `org._7_zip.Archiver`. For details on
+// valid application identifiers, see g_application_id_is_valid().
+//
+// On Linux, the application identifier is claimed as a well-known bus name on
+// the user's session bus. This means that the uniqueness of your application is
+// scoped to the current session. It also means that your application may
+// provide additional services (through registration of other object paths) at
+// that bus name. The registration of these object paths should be done with the
+// shared GDBus session bus. Note that due to the internal architecture of
+// GDBus, method calls can be dispatched at any time (even if a main loop is not
+// running). For this reason, you must ensure that any object paths that you
+// wish to register are registered before #GApplication attempts to acquire the
+// bus name of your application (which happens in g_application_register()).
+// Unfortunately, this means that you cannot use g_application_get_is_remote()
+// to decide if you want to register object paths.
+//
+// GApplication also implements the Group and Map interfaces and lets you easily
+// export actions by adding them with g_action_map_add_action(). When invoking
+// an action by calling g_action_group_activate_action() on the application, it
+// is always invoked in the primary instance. The actions are also exported on
+// the session bus, and GIO provides the BusActionGroup wrapper to conveniently
+// access them remotely. GIO provides a BusMenuModel wrapper for remote access
+// to exported Models.
+//
+// There is a number of different entry points into a GApplication:
+//
+// - via 'Activate' (i.e. just starting the application)
+//
+// - via 'Open' (i.e. opening some files)
+//
+// - by handling a command-line
+//
+// - via activating an action
+//
+// The #GApplication::startup signal lets you handle the application
+// initialization for all of these in a single place.
+//
+// Regardless of which of these entry points is used to start the application,
+// GApplication passes some ‘platform data’ from the launching instance to the
+// primary instance, in the form of a #GVariant dictionary mapping strings to
+// variants. To use platform data, override the @before_emit or @after_emit
+// virtual functions in your #GApplication subclass. When dealing with
+// CommandLine objects, the platform data is directly available via
+// g_application_command_line_get_cwd(),
+// g_application_command_line_get_environ() and
+// g_application_command_line_get_platform_data().
+//
+// As the name indicates, the platform data may vary depending on the operating
+// system, but it always includes the current directory (key "cwd"), and
+// optionally the environment (ie the set of environment variables and their
+// values) of the calling process (key "environ"). The environment is only added
+// to the platform data if the G_APPLICATION_SEND_ENVIRONMENT flag is set.
+// #GApplication subclasses can add their own platform data by overriding the
+// @add_platform_data virtual function. For instance, Application adds startup
+// notification data in this way.
+//
+// To parse commandline arguments you may handle the #GApplication::command-line
+// signal or override the local_command_line() vfunc, to parse them in either
+// the primary instance or the local instance, respectively.
+//
+// For an example of opening files with a GApplication, see
+// [gapplication-example-open.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-open.c).
+//
+// For an example of using actions with GApplication, see
+// [gapplication-example-actions.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-actions.c).
+//
+// For an example of using extra D-Bus hooks with GApplication, see
+// [gapplication-example-dbushooks.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
+type Application struct {
+	*glib.Object
+}
+
+// ApplicationCommandLine: GApplicationCommandLine represents a command-line
+// invocation of an application. It is created by #GApplication and emitted in
+// the #GApplication::command-line signal and virtual function.
+//
+// The class contains the list of arguments that the program was invoked with.
+// It is also possible to query if the commandline invocation was local (ie: the
+// current process is running in direct response to the invocation) or remote
+// (ie: some other process forwarded the commandline to this process).
+//
+// The GApplicationCommandLine object can provide the @argc and @argv parameters
+// for use with the Context command-line parsing API, with the
+// g_application_command_line_get_arguments() function. See
+// [gapplication-example-cmdline3.c][gapplication-example-cmdline3] for an
+// example.
+//
+// The exit status of the originally-invoked process may be set and messages can
+// be printed to stdout or stderr of that process. The lifecycle of the
+// originally-invoked process is tied to the lifecycle of this object (ie: the
+// process exits when the last reference is dropped).
+//
+// The main use for CommandLine (and the #GApplication::command-line signal) is
+// 'Emacs server' like use cases: You can set the `EDITOR` environment variable
+// to have e.g. git use your favourite editor to edit commit messages, and if
+// you already have an instance of the editor running, the editing will happen
+// in the running instance, instead of opening a new one. An important aspect of
+// this use case is that the process that gets started by git does not return
+// until the editing is done.
+//
+// Normally, the commandline is completely handled in the
+// #GApplication::command-line handler. The launching instance exits once the
+// signal handler in the primary instance has returned, and the return value of
+// the signal handler becomes the exit status of the launching instance. |[<!--
+// language="C" --> static int command_line (GApplication *application,
+// GApplicationCommandLine *cmdline) { gchar **argv; gint argc; gint i;
+//
+// argv = g_application_command_line_get_arguments (cmdline, &argc);
+//
+// g_application_command_line_print (cmdline, "This text is written back\n" "to
+// stdout of the caller\n");
+//
+// for (i = 0; i < argc; i++) g_print ("argument d: s\n", i, argv[i]);
+//
+// g_strfreev (argv);
+//
+// return 0; } ]| The complete example can be found here:
+// [gapplication-example-cmdline.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline.c)
+//
+// In more complicated cases, the handling of the comandline can be split
+// between the launcher and the primary instance. |[<!-- language="C" --> static
+// gboolean test_local_cmdline (GApplication *application, gchar ***arguments,
+// gint *exit_status) { gint i, j; gchar **argv;
+//
+// argv = *arguments;
+//
+// i = 1; while (argv[i]) { if (g_str_has_prefix (argv[i], "--local-")) {
+// g_print ("handling argument s locally\n", argv[i]); g_free (argv[i]); for (j
+// = i; argv[j]; j++) argv[j] = argv[j + 1]; } else { g_print ("not handling
+// argument s locally\n", argv[i]); i++; } }
+//
+// *exit_status = 0;
+//
+// return FALSE; }
+//
+// static void test_application_class_init (TestApplicationClass *class) {
+// G_APPLICATION_CLASS (class)->local_command_line = test_local_cmdline;
+//
+// ... } ]| In this example of split commandline handling, options that start
+// with `--local-` are handled locally, all other options are passed to the
+// #GApplication::command-line handler which runs in the primary instance.
+//
+// The complete example can be found here:
+// [gapplication-example-cmdline2.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline2.c)
+//
+// If handling the commandline requires a lot of work, it may be better to defer
+// it. |[<!-- language="C" --> static gboolean my_cmdline_handler (gpointer
+// data) { GApplicationCommandLine *cmdline = data;
+//
+// // do the heavy lifting in an idle
+//
+// g_application_command_line_set_exit_status (cmdline, 0); g_object_unref
+// (cmdline); // this releases the application
+//
+// return G_SOURCE_REMOVE; }
+//
+// static int command_line (GApplication *application, GApplicationCommandLine
+// *cmdline) { // keep the application running until we are done with this
+// commandline g_application_hold (application);
+//
+// g_object_set_data_full (G_OBJECT (cmdline), "application", application,
+// (GDestroyNotify)g_application_release);
+//
+// g_object_ref (cmdline); g_idle_add (my_cmdline_handler, cmdline);
+//
+// return 0; } ]| In this example the commandline is not completely handled
+// before the #GApplication::command-line handler returns. Instead, we keep a
+// reference to the CommandLine object and handle it later (in this example, in
+// an idle). Note that it is necessary to hold the application until you are
+// done with the commandline.
+//
+// The complete example can be found here:
+// [gapplication-example-cmdline3.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c)
+type ApplicationCommandLine struct {
+	*glib.Object
+}
+
+// BufferedInputStream: buffered input stream implements InputStream and
+// provides for buffered reads.
+//
+// By default, InputStream's buffer size is set at 4 kilobytes.
+//
+// To create a buffered input stream, use g_buffered_input_stream_new(), or
+// g_buffered_input_stream_new_sized() to specify the buffer's size at
+// construction.
+//
+// To get the size of a buffer within a buffered input stream, use
+// g_buffered_input_stream_get_buffer_size(). To change the size of a buffered
+// input stream's buffer, use g_buffered_input_stream_set_buffer_size(). Note
+// that the buffer's size cannot be reduced below the size of the data within
+// the buffer.
+type BufferedInputStream struct {
+	FilterInputStream
+}
+
+// BufferedOutputStream: buffered output stream implements OutputStream and
+// provides for buffered writes.
+//
+// By default, OutputStream's buffer size is set at 4 kilobytes.
+//
+// To create a buffered output stream, use g_buffered_output_stream_new(), or
+// g_buffered_output_stream_new_sized() to specify the buffer's size at
+// construction.
+//
+// To get the size of a buffer within a buffered input stream, use
+// g_buffered_output_stream_get_buffer_size(). To change the size of a buffered
+// output stream's buffer, use g_buffered_output_stream_set_buffer_size(). Note
+// that the buffer's size cannot be reduced below the size of the data within
+// the buffer.
+type BufferedOutputStream struct {
+	FilterOutputStream
+}
+
+// BytesIcon: GBytesIcon specifies an image held in memory in a common format
+// (usually png) to be used as icon.
+type BytesIcon struct {
+	*glib.Object
+}
+
+// Cancellable: GCancellable is a thread-safe operation cancellation stack used
+// throughout GIO to allow for cancellation of synchronous and asynchronous
+// operations.
+type Cancellable struct {
+	*glib.Object
+}
+
+// CharsetConverter: GCharsetConverter is an implementation of #GConverter based
+// on GIConv.
+type CharsetConverter struct {
+	*glib.Object
+}
+
+// ConverterInputStream: converter input stream implements Stream and allows
+// conversion of data of various types during reading.
+//
+// As of GLib 2.34, InputStream implements InputStream.
+type ConverterInputStream struct {
+	FilterInputStream
+}
+
+// ConverterOutputStream: converter output stream implements Stream and allows
+// conversion of data of various types during reading.
+//
+// As of GLib 2.34, OutputStream implements OutputStream.
+type ConverterOutputStream struct {
+	FilterOutputStream
+}
+
+// Credentials: the #GCredentials type is a reference-counted wrapper for native
+// credentials. This information is typically used for identifying,
+// authenticating and authorizing other processes.
+//
+// Some operating systems supports looking up the credentials of the remote peer
+// of a communication endpoint - see e.g. g_socket_get_credentials().
+//
+// Some operating systems supports securely sending and receiving credentials
+// over a Unix Domain Socket, see CredentialsMessage,
+// g_unix_connection_send_credentials() and
+// g_unix_connection_receive_credentials() for details.
+//
+// On Linux, the native credential type is a `struct ucred` - see the unix(7)
+// man page for details. This corresponds to G_CREDENTIALS_TYPE_LINUX_UCRED.
+//
+// On Apple operating systems (including iOS, tvOS, and macOS), the native
+// credential type is a `struct xucred`. This corresponds to
+// G_CREDENTIALS_TYPE_APPLE_XUCRED.
+//
+// On FreeBSD, Debian GNU/kFreeBSD, and GNU/Hurd, the native credential type is
+// a `struct cmsgcred`. This corresponds to G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED.
+//
+// On NetBSD, the native credential type is a `struct unpcbid`. This corresponds
+// to G_CREDENTIALS_TYPE_NETBSD_UNPCBID.
+//
+// On OpenBSD, the native credential type is a `struct sockpeercred`. This
+// corresponds to G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED.
+//
+// On Solaris (including OpenSolaris and its derivatives), the native credential
+// type is a `ucred_t`. This corresponds to G_CREDENTIALS_TYPE_SOLARIS_UCRED.
+type Credentials struct {
+	*glib.Object
+}
+
+// DBusActionGroup: GDBusActionGroup is an implementation of the Group interface
+// that can be used as a proxy for an action group that is exported over D-Bus
+// with g_dbus_connection_export_action_group().
+type DBusActionGroup struct {
+	*glib.Object
+}
+
+// DBusAuthObserver: the BusAuthObserver type provides a mechanism for
+// participating in how a BusServer (or a BusConnection) authenticates remote
+// peers. Simply instantiate a BusAuthObserver and connect to the signals you
+// are interested in. Note that new signals may be added in the future
+//
+//
+// Controlling Authentication Mechanisms
+//
+// By default, a BusServer or server-side BusConnection will allow any
+// authentication mechanism to be used. If you only want to allow D-Bus
+// connections with the `EXTERNAL` mechanism, which makes use of credentials
+// passing and is the recommended mechanism for modern Unix platforms such as
+// Linux and the BSD family, you would use a signal handler like this:
+//
+//    static gboolean
+//    on_allow_mechanism (GDBusAuthObserver *observer,
+//                        const gchar       *mechanism,
+//                        gpointer           user_data)
+//    {
+//      if (g_strcmp0 (mechanism, "EXTERNAL") == 0)
+//        {
+//          return TRUE;
+//        }
+//
+//      return FALSE;
+//    }
+//
+//
+// Controlling Authorization {#auth-observer}
+//
+// By default, a BusServer or server-side BusConnection will accept connections
+// from any successfully authenticated user (but not from anonymous connections
+// using the `ANONYMOUS` mechanism). If you only want to allow D-Bus connections
+// from processes owned by the same uid as the server, you would use a signal
+// handler like the following:
+//
+//    static gboolean
+//    on_authorize_authenticated_peer (GDBusAuthObserver *observer,
+//                                     GIOStream         *stream,
+//                                     GCredentials      *credentials,
+//                                     gpointer           user_data)
+//    {
+//      gboolean authorized;
+//
+//      authorized = FALSE;
+//      if (credentials != NULL)
+//        {
+//          GCredentials *own_credentials;
+//          own_credentials = g_credentials_new ();
+//          if (g_credentials_is_same_user (credentials, own_credentials, NULL))
+//            authorized = TRUE;
+//          g_object_unref (own_credentials);
+//        }
+//
+//      return authorized;
+//    }
+//
+type DBusAuthObserver struct {
+	*glib.Object
+}
+
+// DBusConnection: the BusConnection type is used for D-Bus connections to
+// remote peers such as a message buses. It is a low-level API that offers a lot
+// of flexibility. For instance, it lets you establish a connection over any
+// transport that can by represented as a OStream.
+//
+// This class is rarely used directly in D-Bus clients. If you are writing a
+// D-Bus client, it is often easier to use the g_bus_own_name(),
+// g_bus_watch_name() or g_dbus_proxy_new_for_bus() APIs.
+//
+// As an exception to the usual GLib rule that a particular object must not be
+// used by two threads at the same time, BusConnection's methods may be called
+// from any thread. This is so that g_bus_get() and g_bus_get_sync() can safely
+// return the same BusConnection when called from any thread.
+//
+// Most of the ways to obtain a BusConnection automatically initialize it (i.e.
+// connect to D-Bus): for instance, g_dbus_connection_new() and g_bus_get(), and
+// the synchronous versions of those methods, give you an initialized
+// connection. Language bindings for GIO should use g_initable_new() or
+// g_async_initable_new_async(), which also initialize the connection.
+//
+// If you construct an uninitialized BusConnection, such as via g_object_new(),
+// you must initialize it via g_initable_init() or g_async_initable_init_async()
+// before using its methods or properties. Calling methods or accessing
+// properties on a BusConnection that has not completed initialization
+// successfully is considered to be invalid, and leads to undefined behaviour.
+// In particular, if initialization fails with a #GError, the only valid thing
+// you can do with that BusConnection is to free it with g_object_unref().
+//
+// An example D-Bus server {#gdbus-server}
+//
+// Here is an example for a D-Bus server:
+// [gdbus-example-server.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-server.c)
+//
+// An example for exporting a subtree {#gdbus-subtree-server}
+//
+// Here is an example for exporting a subtree:
+// [gdbus-example-subtree.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-subtree.c)
+//
+// An example for file descriptor passing {#gdbus-unix-fd-client}
+//
+// Here is an example for passing UNIX file descriptors:
+// [gdbus-unix-fd-client.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-unix-fd-client.c)
+//
+// An example for exporting a GObject {#gdbus-export}
+//
+// Here is an example for exporting a #GObject:
+// [gdbus-example-export.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c)
+type DBusConnection struct {
+	*glib.Object
+}
+
+// DBusInterfaceSkeleton: abstract base class for D-Bus interfaces on the
+// service side.
+type DBusInterfaceSkeleton struct {
+	*glib.Object
+}
+
+// DBusMenuModel: GDBusMenuModel is an implementation of Model that can be used
+// as a proxy for a menu model that is exported over D-Bus with
+// g_dbus_connection_export_menu_model().
+type DBusMenuModel struct {
+	MenuModel
+}
+
+// DBusMessage: a type for representing D-Bus messages that can be sent or
+// received on a BusConnection.
+type DBusMessage struct {
+	*glib.Object
+}
+
+// DBusMethodInvocation: instances of the BusMethodInvocation class are used
+// when handling D-Bus method calls. It provides a way to asynchronously return
+// results and errors.
+//
+// The normal way to obtain a BusMethodInvocation object is to receive it as an
+// argument to the handle_method_call() function in a BusInterfaceVTable that
+// was passed to g_dbus_connection_register_object().
+type DBusMethodInvocation struct {
+	*glib.Object
+}
+
+// DBusObjectManagerClient: GDBusObjectManagerClient is used to create, monitor
+// and delete object proxies for remote objects exported by a
+// BusObjectManagerServer (or any code implementing the
+// [org.freedesktop.DBus.ObjectManager](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
+// interface).
+//
+// Once an instance of this type has been created, you can connect to the
+// BusObjectManager::object-added and BusObjectManager::object-removed signals
+// and inspect the BusObjectProxy objects returned by
+// g_dbus_object_manager_get_objects().
+//
+// If the name for a BusObjectManagerClient is not owned by anyone at object
+// construction time, the default behavior is to request the message bus to
+// launch an owner for the name. This behavior can be disabled using the
+// G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START flag. It's also worth
+// noting that this only works if the name of interest is activatable in the
+// first place. E.g. in some cases it is not possible to launch an owner for the
+// requested name. In this case, BusObjectManagerClient object construction
+// still succeeds but there will be no object proxies (e.g.
+// g_dbus_object_manager_get_objects() returns the empty list) and the
+// BusObjectManagerClient:name-owner property is nil.
+//
+// The owner of the requested name can come and go (for example consider a
+// system service being restarted) – BusObjectManagerClient handles this case
+// too; simply connect to the #GObject::notify signal to watch for changes on
+// the BusObjectManagerClient:name-owner property. When the name owner vanishes,
+// the behavior is that BusObjectManagerClient:name-owner is set to nil (this
+// includes emission of the #GObject::notify signal) and then
+// BusObjectManager::object-removed signals are synthesized for all currently
+// existing object proxies. Since BusObjectManagerClient:name-owner is nil when
+// this happens, you can use this information to disambiguate a synthesized
+// signal from a genuine signal caused by object removal on the remote
+// BusObjectManager. Similarly, when a new name owner appears,
+// BusObjectManager::object-added signals are synthesized while
+// BusObjectManagerClient:name-owner is still nil. Only when all object proxies
+// have been added, the BusObjectManagerClient:name-owner is set to the new name
+// owner (this includes emission of the #GObject::notify signal). Furthermore,
+// you are guaranteed that BusObjectManagerClient:name-owner will alternate
+// between a name owner (e.g. `:1.42`) and nil even in the case where the name
+// of interest is atomically replaced
+//
+// Ultimately, BusObjectManagerClient is used to obtain BusProxy instances. All
+// signals (including the org.freedesktop.DBus.Properties::PropertiesChanged
+// signal) delivered to BusProxy instances are guaranteed to originate from the
+// name owner. This guarantee along with the behavior described above, means
+// that certain race conditions including the "half the proxy is from the old
+// owner and the other half is from the new owner" problem cannot happen.
+//
+// To avoid having the application connect to signals on the returned
+// BusObjectProxy and BusProxy objects, the BusObject::interface-added,
+// BusObject::interface-removed, BusProxy::g-properties-changed and
+// BusProxy::g-signal signals are also emitted on the BusObjectManagerClient
+// instance managing these objects. The signals emitted are
+// BusObjectManager::interface-added, BusObjectManager::interface-removed,
+// BusObjectManagerClient::interface-proxy-properties-changed and
+// BusObjectManagerClient::interface-proxy-signal.
+//
+// Note that all callbacks and signals are emitted in the [thread-default main
+// context][g-main-context-push-thread-default] that the BusObjectManagerClient
+// object was constructed in. Additionally, the BusObjectProxy and BusProxy
+// objects originating from the BusObjectManagerClient object will be created in
+// the same context and, consequently, will deliver signals in the same main
+// loop.
+type DBusObjectManagerClient struct {
+	*glib.Object
+}
+
+// DBusObjectManagerServer: GDBusObjectManagerServer is used to export BusObject
+// instances using the standardized
+// [org.freedesktop.DBus.ObjectManager](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
+// interface. For example, remote D-Bus clients can get all objects and
+// properties in a single call. Additionally, any change in the object hierarchy
+// is broadcast using signals. This means that D-Bus clients can keep caches up
+// to date by only listening to D-Bus signals.
+//
+// The recommended path to export an object manager at is the path form of the
+// well-known name of a D-Bus service, or below. For example, if a D-Bus service
+// is available at the well-known name `net.example.ExampleService1`, the object
+// manager should typically be exported at `/net/example/ExampleService1`, or
+// below (to allow for multiple object managers in a service).
+//
+// It is supported, but not recommended, to export an object manager at the root
+// path, `/`.
+//
+// See BusObjectManagerClient for the client-side code that is intended to be
+// used with BusObjectManagerServer or any D-Bus object implementing the
+// org.freedesktop.DBus.ObjectManager interface.
+type DBusObjectManagerServer struct {
+	*glib.Object
+}
+
+// DBusObjectProxy: a BusObjectProxy is an object used to represent a remote
+// object with one or more D-Bus interfaces. Normally, you don't instantiate a
+// BusObjectProxy yourself - typically BusObjectManagerClient is used to obtain
+// it.
+type DBusObjectProxy struct {
+	*glib.Object
+}
+
+// DBusObjectSkeleton: a BusObjectSkeleton instance is essentially a group of
+// D-Bus interfaces. The set of exported interfaces on the object may be dynamic
+// and change at runtime.
+//
+// This type is intended to be used with BusObjectManager.
+type DBusObjectSkeleton struct {
+	*glib.Object
+}
+
+// DBusProxy: GDBusProxy is a base class used for proxies to access a D-Bus
+// interface on a remote object. A BusProxy can be constructed for both
+// well-known and unique names.
+//
+// By default, BusProxy will cache all properties (and listen to changes) of the
+// remote object, and proxy all signals that get emitted. This behaviour can be
+// changed by passing suitable BusProxyFlags when the proxy is created. If the
+// proxy is for a well-known name, the property cache is flushed when the name
+// owner vanishes and reloaded when a name owner appears.
+//
+// The unique name owner of the proxy's name is tracked and can be read from
+// BusProxy:g-name-owner. Connect to the #GObject::notify signal to get notified
+// of changes. Additionally, only signals and property changes emitted from the
+// current name owner are considered and calls are always sent to the current
+// name owner. This avoids a number of race conditions when the name is lost by
+// one owner and claimed by another. However, if no name owner currently exists,
+// then calls will be sent to the well-known name which may result in the
+// message bus launching an owner (unless G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START
+// is set).
+//
+// The generic BusProxy::g-properties-changed and BusProxy::g-signal signals are
+// not very convenient to work with. Therefore, the recommended way of working
+// with proxies is to subclass BusProxy, and have more natural properties and
+// signals in your derived class. This [example][gdbus-example-gdbus-codegen]
+// shows how this can easily be done using the [gdbus-codegen][gdbus-codegen]
+// tool.
+//
+// A BusProxy instance can be used from multiple threads but note that all
+// signals (e.g. BusProxy::g-signal, BusProxy::g-properties-changed and
+// #GObject::notify) are emitted in the [thread-default main
+// context][g-main-context-push-thread-default] of the thread where the instance
+// was constructed.
+//
+// An example using a proxy for a well-known name can be found in
+// [gdbus-example-watch-proxy.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c)
+type DBusProxy struct {
+	*glib.Object
+}
+
+// DBusServer: GDBusServer is a helper for listening to and accepting D-Bus
+// connections. This can be used to create a new D-Bus server, allowing two
+// peers to use the D-Bus protocol for their own specialized communication. A
+// server instance provided in this way will not perform message routing or
+// implement the org.freedesktop.DBus interface.
+//
+// To just export an object on a well-known name on a message bus, such as the
+// session or system bus, you should instead use g_bus_own_name().
+//
+// An example of peer-to-peer communication with G-DBus can be found in
+// [gdbus-example-peer.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-peer.c).
+//
+// Note that a minimal BusServer will accept connections from any peer. In many
+// use-cases it will be necessary to add a BusAuthObserver that only accepts
+// connections that have successfully authenticated as the same user that is
+// running the BusServer.
+type DBusServer struct {
+	*glib.Object
+}
+
+// DataInputStream: data input stream implements Stream and includes functions
+// for reading structured data directly from a binary input stream.
+type DataInputStream struct {
+	BufferedInputStream
+}
+
+// DataOutputStream: data output stream implements Stream and includes functions
+// for writing data directly to an output stream.
+type DataOutputStream struct {
+	FilterOutputStream
+}
+
+// DesktopAppInfo: GDesktopAppInfo is an implementation of Info based on desktop
+// files.
+//
+// Note that `<gio/gdesktopappinfo.h>` belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// using it.
+type DesktopAppInfo struct {
+	*glib.Object
+}
+
+// Emblem: GEmblem is an implementation of #GIcon that supports having an
+// emblem, which is an icon with additional properties. It can than be added to
+// a Icon.
+//
+// Currently, only metainformation about the emblem's origin is supported. More
+// may be added in the future.
+type Emblem struct {
+	*glib.Object
+}
+
+// EmblemedIcon: GEmblemedIcon is an implementation of #GIcon that supports
+// adding an emblem to an icon. Adding multiple emblems to an icon is ensured
+// via g_emblemed_icon_add_emblem().
+//
+// Note that Icon allows no control over the position of the emblems. See also
+// #GEmblem for more information.
+type EmblemedIcon struct {
+	*glib.Object
+}
+
+// FileEnumerator: GFileEnumerator allows you to operate on a set of #GFiles,
+// returning a Info structure for each file enumerated (e.g.
+// g_file_enumerate_children() will return a Enumerator for each of the children
+// within a directory).
+//
+// To get the next file's information from a Enumerator, use
+// g_file_enumerator_next_file() or its asynchronous version,
+// g_file_enumerator_next_files_async(). Note that the asynchronous version will
+// return a list of Infos, whereas the synchronous will only return the next
+// file in the enumerator.
+//
+// The ordering of returned files is unspecified for non-Unix platforms; for
+// more information, see g_dir_read_name(). On Unix, when operating on local
+// files, returned files will be sorted by inode number. Effectively you can
+// assume that the ordering of returned files will be stable between successive
+// calls (and applications) assuming the directory is unchanged.
+//
+// If your application needs a specific ordering, such as by name or
+// modification time, you will have to implement that in your application code.
+//
+// To close a Enumerator, use g_file_enumerator_close(), or its asynchronous
+// version, g_file_enumerator_close_async(). Once a Enumerator is closed, no
+// further actions may be performed on it, and it should be freed with
+// g_object_unref().
+type FileEnumerator struct {
+	*glib.Object
+}
+
+// FileIOStream: GFileIOStream provides io streams that both read and write to
+// the same file handle.
+//
+// GFileIOStream implements #GSeekable, which allows the io stream to jump to
+// arbitrary positions in the file and to truncate the file, provided the
+// filesystem of the file supports these operations.
+//
+// To find the position of a file io stream, use g_seekable_tell().
+//
+// To find out if a file io stream supports seeking, use g_seekable_can_seek().
+// To position a file io stream, use g_seekable_seek(). To find out if a file io
+// stream supports truncating, use g_seekable_can_truncate(). To truncate a file
+// io stream, use g_seekable_truncate().
+//
+// The default implementation of all the IOStream operations and the
+// implementation of #GSeekable just call into the same operations on the output
+// stream.
+type FileIOStream struct {
+	IOStream
+}
+
+// FileIcon: GFileIcon specifies an icon by pointing to an image file to be used
+// as icon.
+type FileIcon struct {
+	*glib.Object
+}
+
+// FileInfo: functionality for manipulating basic metadata for files. Info
+// implements methods for getting information that all files should contain, and
+// allows for manipulation of extended attributes.
+//
+// See [GFileAttribute][gio-GFileAttribute] for more information on how GIO
+// handles file attributes.
+//
+// To obtain a Info for a #GFile, use g_file_query_info() (or its async
+// variant). To obtain a Info for a file input or output stream, use
+// g_file_input_stream_query_info() or g_file_output_stream_query_info() (or
+// their async variants).
+//
+// To change the actual attributes of a file, you should then set the attribute
+// in the Info and call g_file_set_attributes_from_info() or
+// g_file_set_attributes_async() on a GFile.
+//
+// However, not all attributes can be changed in the file. For instance, the
+// actual size of a file cannot be changed via g_file_info_set_size(). You may
+// call g_file_query_settable_attributes() and
+// g_file_query_writable_namespaces() to discover the settable attributes of a
+// particular file at runtime.
+//
+// AttributeMatcher allows for searching through a Info for attributes.
+type FileInfo struct {
+	*glib.Object
+}
+
+// FileInputStream: GFileInputStream provides input streams that take their
+// content from a file.
+//
+// GFileInputStream implements #GSeekable, which allows the input stream to jump
+// to arbitrary positions in the file, provided the filesystem of the file
+// allows it. To find the position of a file input stream, use
+// g_seekable_tell(). To find out if a file input stream supports seeking, use
+// g_seekable_can_seek(). To position a file input stream, use
+// g_seekable_seek().
+type FileInputStream struct {
+	InputStream
+}
+
+// FileMonitor: monitors a file or directory for changes.
+//
+// To obtain a Monitor for a file or directory, use g_file_monitor(),
+// g_file_monitor_file(), or g_file_monitor_directory().
+//
+// To get informed about changes to the file or directory you are monitoring,
+// connect to the Monitor::changed signal. The signal will be emitted in the
+// [thread-default main context][g-main-context-push-thread-default] of the
+// thread that the monitor was created in (though if the global default main
+// context is blocked, this may cause notifications to be blocked even if the
+// thread-default context is still running).
+type FileMonitor struct {
+	*glib.Object
+}
+
+// FileOutputStream: GFileOutputStream provides output streams that write their
+// content to a file.
+//
+// GFileOutputStream implements #GSeekable, which allows the output stream to
+// jump to arbitrary positions in the file and to truncate the file, provided
+// the filesystem of the file supports these operations.
+//
+// To find the position of a file output stream, use g_seekable_tell(). To find
+// out if a file output stream supports seeking, use g_seekable_can_seek().To
+// position a file output stream, use g_seekable_seek(). To find out if a file
+// output stream supports truncating, use g_seekable_can_truncate(). To truncate
+// a file output stream, use g_seekable_truncate().
+type FileOutputStream struct {
+	OutputStream
+}
+
+// FilenameCompleter: completes partial file and directory names given a partial
+// string by looking in the file system for clues. Can return a list of possible
+// completion strings for widget implementations.
+type FilenameCompleter struct {
+	*glib.Object
+}
+
+// FilterInputStream: base class for input stream implementations that perform
+// some kind of filtering operation on a base stream. Typical examples of
+// filtering operations are character set conversion, compression and byte order
+// flipping.
+type FilterInputStream struct {
+	InputStream
+}
+
+// FilterOutputStream: base class for output stream implementations that perform
+// some kind of filtering operation on a base stream. Typical examples of
+// filtering operations are character set conversion, compression and byte order
+// flipping.
+type FilterOutputStream struct {
+	OutputStream
+}
+
+// IOStream: GIOStream represents an object that has both read and write
+// streams. Generally the two streams act as separate input and output streams,
+// but they share some common resources and state. For instance, for seekable
+// streams, both streams may use the same position.
+//
+// Examples of OStream objects are Connection, which represents a two-way
+// network connection; and IOStream, which represents a file handle opened in
+// read-write mode.
+//
+// To do the actual reading and writing you need to get the substreams with
+// g_io_stream_get_input_stream() and g_io_stream_get_output_stream().
+//
+// The OStream object owns the input and the output streams, not the other way
+// around, so keeping the substreams alive will not keep the OStream object
+// alive. If the OStream object is freed it will be closed, thus closing the
+// substreams, so even if the substreams stay alive they will always return
+// G_IO_ERROR_CLOSED for all operations.
+//
+// To close a stream use g_io_stream_close() which will close the common stream
+// object and also the individual substreams. You can also close the substreams
+// themselves. In most cases this only marks the substream as closed, so further
+// I/O on it fails but common state in the OStream may still be open. However,
+// some streams may support "half-closed" states where one direction of the
+// stream is actually shut down.
+//
+// Operations on OStreams cannot be started while another operation on the
+// OStream or its substreams is in progress. Specifically, an application can
+// read from the Stream and write to the Stream simultaneously (either in
+// separate threads, or as asynchronous operations in the same thread), but an
+// application cannot start any OStream operation while there is a OStream,
+// Stream or Stream operation in progress, and an application can’t start any
+// Stream or Stream operation while there is a OStream operation in progress.
+//
+// This is a product of individual stream operations being associated with a
+// given Context (the thread-default context at the time the operation was
+// started), rather than entire streams being associated with a single Context.
+//
+// GIO may run operations on OStreams from other (worker) threads, and this may
+// be exposed to application code in the behaviour of wrapper streams, such as
+// InputStream or Connection. With such wrapper APIs, application code may only
+// run operations on the base (wrapped) stream when the wrapper stream is idle.
+// Note that the semantics of such operations may not be well-defined due to the
+// state the wrapper stream leaves the base stream in (though they are
+// guaranteed not to crash).
+type IOStream struct {
+	*glib.Object
+}
+
+// InetAddress: GInetAddress represents an IPv4 or IPv6 internet address. Use
+// g_resolver_lookup_by_name() or g_resolver_lookup_by_name_async() to look up
+// the Address for a hostname. Use g_resolver_lookup_by_address() or
+// g_resolver_lookup_by_address_async() to look up the hostname for a Address.
+//
+// To actually connect to a remote host, you will need a SocketAddress (which
+// includes a Address as well as a port number).
+type InetAddress struct {
+	*glib.Object
+}
+
+// InetAddressMask: GInetAddressMask represents a range of IPv4 or IPv6
+// addresses described by a base address and a length indicating how many bits
+// of the base address are relevant for matching purposes. These are often given
+// in string form. Eg, "10.0.0.0/8", or "fe80::/10".
+type InetAddressMask struct {
+	*glib.Object
+}
+
+// InetSocketAddress: an IPv4 or IPv6 socket address; that is, the combination
+// of a Address and a port number.
+type InetSocketAddress struct {
+	SocketAddress
+}
+
+// InputStream: GInputStream has functions to read from a stream
+// (g_input_stream_read()), to close a stream (g_input_stream_close()) and to
+// skip some content (g_input_stream_skip()).
+//
+// To copy the content of an input stream to an output stream without manually
+// handling the reads and writes, use g_output_stream_splice().
+//
+// See the documentation for OStream for details of thread safety of streaming
+// APIs.
+//
+// All of these functions have async variants too.
+type InputStream struct {
+	*glib.Object
+}
+
+// ListStore: GListStore is a simple implementation of Model that stores all
+// items in memory.
+//
+// It provides insertions, deletions, and lookups in logarithmic time with a
+// fast path for the common case of iterating the list linearly.
+type ListStore struct {
+	*glib.Object
+}
+
+// MemoryInputStream: GMemoryInputStream is a class for using arbitrary memory
+// chunks as input for GIO streaming input operations.
+//
+// As of GLib 2.34, InputStream implements InputStream.
+type MemoryInputStream struct {
+	InputStream
+}
+
+// MemoryOutputStream: GMemoryOutputStream is a class for using arbitrary memory
+// chunks as output for GIO streaming output operations.
+//
+// As of GLib 2.34, OutputStream trivially implements OutputStream: it always
+// polls as ready.
+type MemoryOutputStream struct {
+	OutputStream
+}
+
+// Menu: GMenu is a simple implementation of Model. You populate a #GMenu by
+// adding Item instances to it.
+//
+// There are some convenience functions to allow you to directly add items
+// (avoiding Item) for the common cases. To add a regular item, use
+// g_menu_insert(). To add a section, use g_menu_insert_section(). To add a
+// submenu, use g_menu_insert_submenu().
+type Menu struct {
+	MenuModel
+}
+
+// MenuAttributeIter: GMenuAttributeIter is an opaque structure type. You must
+// access it using the functions below.
+type MenuAttributeIter struct {
+	*glib.Object
+}
+
+// MenuItem: GMenuItem is an opaque structure type. You must access it using the
+// functions below.
+type MenuItem struct {
+	*glib.Object
+}
+
+// MenuLinkIter: GMenuLinkIter is an opaque structure type. You must access it
+// using the functions below.
+type MenuLinkIter struct {
+	*glib.Object
+}
+
+// MenuModel: GMenuModel represents the contents of a menu -- an ordered list of
+// menu items. The items are associated with actions, which can be activated
+// through them. Items can be grouped in sections, and may have submenus
+// associated with them. Both items and sections usually have some
+// representation data, such as labels or icons. The type of the associated
+// action (ie whether it is stateful, and what kind of state it has) can
+// influence the representation of the item.
+//
+// The conceptual model of menus in Model is hierarchical: sections and submenus
+// are again represented by Models. Menus themselves do not define their own
+// roles. Rather, the role of a particular Model is defined by the item that
+// references it (or, in the case of the 'root' menu, is defined by the context
+// in which it is used).
+//
+// As an example, consider the visible portions of this menu:
+//
+// An example menu {#menu-example}
+//
+// ![](menu-example.png)
+//
+// There are 8 "menus" visible in the screenshot: one menubar, two submenus and
+// 5 sections:
+//
+// - the toplevel menubar (containing 4 items) - the View submenu (containing 3
+// sections) - the first section of the View submenu (containing 2 items) - the
+// second section of the View submenu (containing 1 item) - the final section of
+// the View submenu (containing 1 item) - the Highlight Mode submenu (containing
+// 2 sections) - the Sources section (containing 2 items) - the Markup section
+// (containing 2 items)
+//
+// The [example][menu-model] illustrates the conceptual connection between these
+// 8 menus. Each large block in the figure represents a menu and the smaller
+// blocks within the large block represent items in that menu. Some items
+// contain references to other menus.
+//
+// A menu example {#menu-model}
+//
+// ![](menu-model.png)
+//
+// Notice that the separators visible in the [example][menu-example] appear
+// nowhere in the [menu model][menu-model]. This is because separators are not
+// explicitly represented in the menu model. Instead, a separator is inserted
+// between any two non-empty sections of a menu. Section items can have labels
+// just like any other item. In that case, a display system may show a section
+// header instead of a separator.
+//
+// The motivation for this abstract model of application controls is that modern
+// user interfaces tend to make these controls available outside the
+// application. Examples include global menus, jumplists, dash boards, etc. To
+// support such uses, it is necessary to 'export' information about actions and
+// their representation in menus, which is exactly what the [GActionGroup
+// exporter][gio-GActionGroup-exporter] and the [GMenuModel
+// exporter][gio-GMenuModel-exporter] do for Group and Model. The client-side
+// counterparts to make use of the exported information are BusActionGroup and
+// BusMenuModel.
+//
+// The API of Model is very generic, with iterators for the attributes and links
+// of an item, see g_menu_model_iterate_item_attributes() and
+// g_menu_model_iterate_item_links(). The 'standard' attributes and link types
+// have predefined names: G_MENU_ATTRIBUTE_LABEL, G_MENU_ATTRIBUTE_ACTION,
+// G_MENU_ATTRIBUTE_TARGET, G_MENU_LINK_SECTION and G_MENU_LINK_SUBMENU.
+//
+// Items in a Model represent active controls if they refer to an action that
+// can get activated when the user interacts with the menu item. The reference
+// to the action is encoded by the string id in the G_MENU_ATTRIBUTE_ACTION
+// attribute. An action id uniquely identifies an action in an action group.
+// Which action group(s) provide actions depends on the context in which the
+// menu model is used. E.g. when the model is exported as the application menu
+// of a Application, actions can be application-wide or window-specific (and
+// thus come from two different action groups). By convention, the
+// application-wide actions have names that start with "app.", while the names
+// of window-specific actions start with "win.".
+//
+// While a wide variety of stateful actions is possible, the following is the
+// minimum that is expected to be supported by all users of exported menu
+// information: - an action with no parameter type and no state - an action with
+// no parameter type and boolean state - an action with string parameter type
+// and string state
+//
+//
+// Stateless
+//
+// A stateless action typically corresponds to an ordinary menu item.
+//
+// Selecting such a menu item will activate the action (with no parameter).
+//
+//
+// Boolean State
+//
+// An action with a boolean state will most typically be used with a "toggle" or
+// "switch" menu item. The state can be set directly, but activating the action
+// (with no parameter) results in the state being toggled.
+//
+// Selecting a toggle menu item will activate the action. The menu item should
+// be rendered as "checked" when the state is true.
+//
+//
+// String Parameter and State
+//
+// Actions with string parameters and state will most typically be used to
+// represent an enumerated choice over the items available for a group of radio
+// menu items. Activating the action with a string parameter is equivalent to
+// setting that parameter as the state.
+//
+// Radio menu items, in addition to being associated with the action, will have
+// a target value. Selecting that menu item will result in activation of the
+// action with the target value as the parameter. The menu item should be
+// rendered as "selected" when the state of the action is equal to the target
+// value of the menu item.
+type MenuModel struct {
+	*glib.Object
+}
+
+// MountOperation: GMountOperation provides a mechanism for interacting with the
+// user. It can be used for authenticating mountable operations, such as loop
+// mounting files, hard drive partitions or server locations. It can also be
+// used to ask the user questions or show a list of applications preventing
+// unmount or eject operations from completing.
+//
+// Note that Operation is used for more than just #GMount objects – for example
+// it is also used in g_drive_start() and g_drive_stop().
+//
+// Users should instantiate a subclass of this that implements all the various
+// callbacks to show the required dialogs, such as MountOperation. If no user
+// interaction is desired (for example when automounting filesystems at login
+// time), usually nil can be passed, see each method taking a Operation for
+// details.
+//
+// The term ‘TCRYPT’ is used to mean ‘compatible with TrueCrypt and VeraCrypt’.
+// [TrueCrypt](https://en.wikipedia.org/wiki/TrueCrypt) is a discontinued system
+// for encrypting file containers, partitions or whole disks, typically used
+// with Windows. [VeraCrypt](https://www.veracrypt.fr/) is a maintained fork of
+// TrueCrypt with various improvements and auditing fixes.
+type MountOperation struct {
+	*glib.Object
+}
+
+// NativeSocketAddress: a socket address of some unknown native type.
+type NativeSocketAddress struct {
+	SocketAddress
+}
+
+type NativeVolumeMonitor struct {
+	VolumeMonitor
+}
+
+// NetworkAddress: GNetworkAddress provides an easy way to resolve a hostname
+// and then attempt to connect to that host, handling the possibility of
+// multiple IP addresses and multiple address families.
+//
+// The enumeration results of resolved addresses *may* be cached as long as this
+// object is kept alive which may have unexpected results if alive for too long.
+//
+// See Connectable for an example of using the connectable interface.
+type NetworkAddress struct {
+	*glib.Object
+}
+
+// NetworkService: like Address does with hostnames, Service provides an easy
+// way to resolve a SRV record, and then attempt to connect to one of the hosts
+// that implements that service, handling service priority/weighting, multiple
+// IP addresses, and multiple address families.
+//
+// See Target for more information about SRV records, and see Connectable for an
+// example of using the connectable interface.
+type NetworkService struct {
+	*glib.Object
+}
+
+// Notification: GNotification is a mechanism for creating a notification to be
+// shown to the user -- typically as a pop-up notification presented by the
+// desktop environment shell.
+//
+// The key difference between #GNotification and other similar APIs is that, if
+// supported by the desktop environment, notifications sent with #GNotification
+// will persist after the application has exited, and even across system
+// reboots.
+//
+// Since the user may click on a notification while the application is not
+// running, applications using #GNotification should be able to be started as a
+// D-Bus service, using #GApplication.
+//
+// User interaction with a notification (either the default action, or buttons)
+// must be associated with actions on the application (ie: "app." actions). It
+// is not possible to route user interaction through the notification itself,
+// because the object will not exist if the application is autostarted as a
+// result of a notification being clicked.
+//
+// A notification can be sent with g_application_send_notification().
+type Notification struct {
+	*glib.Object
+}
+
+// OutputStream: GOutputStream has functions to write to a stream
+// (g_output_stream_write()), to close a stream (g_output_stream_close()) and to
+// flush pending writes (g_output_stream_flush()).
+//
+// To copy the content of an input stream to an output stream without manually
+// handling the reads and writes, use g_output_stream_splice().
+//
+// See the documentation for OStream for details of thread safety of streaming
+// APIs.
+//
+// All of these functions have async variants too.
+type OutputStream struct {
+	*glib.Object
+}
+
+// Permission: a #GPermission represents the status of the caller's permission
+// to perform a certain action.
+//
+// You can query if the action is currently allowed and if it is possible to
+// acquire the permission so that the action will be allowed in the future.
+//
+// There is also an API to actually acquire the permission and one to release
+// it.
+//
+// As an example, a #GPermission might represent the ability for the user to
+// write to a #GSettings object. This #GPermission object could then be used to
+// decide if it is appropriate to show a "Click here to unlock" button in a
+// dialog and to provide the mechanism to invoke when that button is clicked.
+type Permission struct {
+	*glib.Object
+}
+
+// PropertyAction: a Action is a way to get a #GAction with a state value
+// reflecting and controlling the value of a #GObject property.
+//
+// The state of the action will correspond to the value of the property.
+// Changing it will change the property (assuming the requested value matches
+// the requirements as specified in the Spec).
+//
+// Only the most common types are presently supported. Booleans are mapped to
+// booleans, strings to strings, signed/unsigned integers to int32/uint32 and
+// floats and doubles to doubles.
+//
+// If the property is an enum then the state will be string-typed and conversion
+// will automatically be performed between the enum value and "nick" string as
+// per the Value table.
+//
+// Flags types are not currently supported.
+//
+// Properties of object types, boxed types and pointer types are not supported
+// and probably never will be.
+//
+// Properties of #GVariant types are not currently supported.
+//
+// If the property is boolean-valued then the action will have a NULL parameter
+// type, and activating the action (with no parameter) will toggle the value of
+// the property.
+//
+// In all other cases, the parameter type will correspond to the type of the
+// property.
+//
+// The general idea here is to reduce the number of locations where a particular
+// piece of state is kept (and therefore has to be synchronised between). Action
+// does not have a separate state that is kept in sync with the property value
+// -- its state is the property value.
+//
+// For example, it might be useful to create a #GAction corresponding to the
+// "visible-child-name" property of a Stack so that the current page can be
+// switched from a menu. The active radio indication in the menu is then
+// directly determined from the active page of the Stack.
+//
+// An anti-example would be binding the "active-id" property on a ComboBox. This
+// is because the state of the combobox itself is probably uninteresting and is
+// actually being used to control something else.
+//
+// Another anti-example would be to bind to the "visible-child-name" property of
+// a Stack if this value is actually stored in #GSettings. In that case, the
+// real source of the value is #GSettings. If you want a #GAction to control a
+// setting stored in #GSettings, see g_settings_create_action() instead, and
+// possibly combine its use with g_settings_bind().
+type PropertyAction struct {
+	*glib.Object
+}
+
+// ProxyAddress: support for proxied SocketAddress.
+type ProxyAddress struct {
+	InetSocketAddress
+}
+
+// ProxyAddressEnumerator: GProxyAddressEnumerator is a wrapper around
+// AddressEnumerator which takes the Address instances returned by the
+// AddressEnumerator and wraps them in Address instances, using the given
+// AddressEnumerator:proxy-resolver.
+//
+// This enumerator will be returned (for example, by
+// g_socket_connectable_enumerate()) as appropriate when a proxy is configured;
+// there should be no need to manually wrap a AddressEnumerator instance with
+// one.
+type ProxyAddressEnumerator struct {
+	SocketAddressEnumerator
+}
+
+// Resolver: GResolver provides cancellable synchronous and asynchronous DNS
+// resolution, for hostnames (g_resolver_lookup_by_address(),
+// g_resolver_lookup_by_name() and their async variants) and SRV (service)
+// records (g_resolver_lookup_service()).
+//
+// Address and Service provide wrappers around #GResolver functionality that
+// also implement Connectable, making it easy to connect to a remote
+// host/service.
+type Resolver struct {
+	*glib.Object
+}
+
+// Settings: the #GSettings class provides a convenient API for storing and
+// retrieving application settings.
+//
+// Reads and writes can be considered to be non-blocking. Reading settings with
+// #GSettings is typically extremely fast: on approximately the same order of
+// magnitude (but slower than) a Table lookup. Writing settings is also
+// extremely fast in terms of time to return to your application, but can be
+// extremely expensive for other threads and other processes. Many settings
+// backends (including dconf) have lazy initialisation which means in the common
+// case of the user using their computer without modifying any settings a lot of
+// work can be avoided. For dconf, the D-Bus service doesn't even need to be
+// started in this case. For this reason, you should only ever modify #GSettings
+// keys in response to explicit user action. Particular care should be paid to
+// ensure that modifications are not made during startup -- for example, when
+// setting the initial value of preferences widgets. The built-in
+// g_settings_bind() functionality is careful not to write settings in response
+// to notify signals as a result of modifications that it makes to widgets.
+//
+// When creating a GSettings instance, you have to specify a schema that
+// describes the keys in your settings and their types and default values, as
+// well as some other information.
+//
+// Normally, a schema has a fixed path that determines where the settings are
+// stored in the conceptual global tree of settings. However, schemas can also
+// be '[relocatable][gsettings-relocatable]', i.e. not equipped with a fixed
+// path. This is useful e.g. when the schema describes an 'account', and you
+// want to be able to store a arbitrary number of accounts.
+//
+// Paths must start with and end with a forward slash character ('/') and must
+// not contain two sequential slash characters. Paths should be chosen based on
+// a domain name associated with the program or library to which the settings
+// belong. Examples of paths are "/org/gtk/settings/file-chooser/" and
+// "/ca/desrt/dconf-editor/". Paths should not start with "/apps/", "/desktop/"
+// or "/system/" as they often did in GConf.
+//
+// Unlike other configuration systems (like GConf), GSettings does not restrict
+// keys to basic types like strings and numbers. GSettings stores values as
+// #GVariant, and allows any Type for keys. Key names are restricted to
+// lowercase characters, numbers and '-'. Furthermore, the names must begin with
+// a lowercase character, must not end with a '-', and must not contain
+// consecutive dashes.
+//
+// Similar to GConf, the default values in GSettings schemas can be localized,
+// but the localized values are stored in gettext catalogs and looked up with
+// the domain that is specified in the `gettext-domain` attribute of the
+// <schemalist> or <schema> elements and the category that is specified in the
+// `l10n` attribute of the <default> element. The string which is translated
+// includes all text in the <default> element, including any surrounding
+// quotation marks.
+//
+// The `l10n` attribute must be set to `messages` or `time`, and sets the
+// [locale category for
+// translation](https://www.gnu.org/software/gettext/manual/html_node/Aspects.html#index-locale-categories-1).
+// The `messages` category should be used by default; use `time` for
+// translatable date or time formats. A translation comment can be added as an
+// XML comment immediately above the <default> element — it is recommended to
+// add these comments to aid translators understand the meaning and implications
+// of the default value. An optional translation `context` attribute can be set
+// on the <default> element to disambiguate multiple defaults which use the same
+// string.
+//
+//
+//     <!-- Translators: A list of words which are not allowed to be typed, in
+//          GVariant serialization syntax.
+//          See: https://developer.gnome.org/glib/stable/gvariant-text.html -->
+//     <default l10n='messages' context='Banned words'>['bad', 'words']</default>
+//
+// Translations of default values must remain syntactically valid serialized
+// #GVariants (e.g. retaining any surrounding quotation marks) or runtime errors
+// will occur.
+//
+// GSettings uses schemas in a compact binary form that is created by the
+// [glib-compile-schemas][glib-compile-schemas] utility. The input is a schema
+// description in an XML format.
+//
+// A DTD for the gschema XML format can be found here:
+// [gschema.dtd](https://git.gnome.org/browse/glib/tree/gio/gschema.dtd)
+//
+// The [glib-compile-schemas][glib-compile-schemas] tool expects schema files to
+// have the extension `.gschema.xml`.
+//
+// At runtime, schemas are identified by their id (as specified in the id
+// attribute of the <schema> element). The convention for schema ids is to use a
+// dotted name, similar in style to a D-Bus bus name, e.g.
+// "org.gnome.SessionManager". In particular, if the settings are for a specific
+// service that owns a D-Bus bus name, the D-Bus bus name and schema id should
+// match. For schemas which deal with settings not associated with one named
+// application, the id should not use StudlyCaps, e.g.
+// "org.gnome.font-rendering".
+//
+// In addition to #GVariant types, keys can have types that have enumerated
+// types. These can be described by a <choice>, <enum> or <flags> element, as
+// seen in the [example][schema-enumerated]. The underlying type of such a key
+// is string, but you can use g_settings_get_enum(), g_settings_set_enum(),
+// g_settings_get_flags(), g_settings_set_flags() access the numeric values
+// corresponding to the string value of enum and flags keys.
+//
+// An example for default value: |[ <schemalist> <schema id="org.gtk.Test"
+// path="/org/gtk/Test/" gettext-domain="test">
+//
+// <key name="greeting" type="s"> <default l10n="messages">"Hello,
+// earthlings"</default> <summary>A greeting</summary> <description> Greeting of
+// the invading martians </description> </key>
+//
+// <key name="box" type="(ii)"> <default>(20,30)</default> </key>
+//
+// <key name="empty-string" type="s"> <default>""</default> <summary>Empty
+// strings have to be provided in GVariant form</summary> </key>
+//
+//      </schema>
+//    </schemalist>
+//
+//
+//
+//    <schemalist>
+//
+//      <enum id="org.gtk.Test.myenum">
+//        <value nick="first" value="1"/>
+//        <value nick="second" value="2"/>
+//      </enum>
+//
+//      <flags id="org.gtk.Test.myflags">
+//        <value nick="flag1" value="1"/>
+//        <value nick="flag2" value="2"/>
+//        <value nick="flag3" value="4"/>
+//      </flags>
+//
+//      <schema id="org.gtk.Test">
+//
+//        <key name="key-with-range" type="i">
+//          <range min="1" max="100"/>
+//          <default>10</default>
+//        </key>
+//
+//        <key name="key-with-choices" type="s">
+//          <choices>
+//            <choice value='Elisabeth'/>
+//            <choice value='Annabeth'/>
+//            <choice value='Joe'/>
+//          </choices>
+//          <aliases>
+//            <alias value='Anna' target='Annabeth'/>
+//            <alias value='Beth' target='Elisabeth'/>
+//          </aliases>
+//          <default>'Joe'</default>
+//        </key>
+//
+//        <key name='enumerated-key' enum='org.gtk.Test.myenum'>
+//          <default>'first'</default>
+//        </key>
+//
+//        <key name='flags-key' flags='org.gtk.Test.myflags'>
+//          <default>["flag1","flag2"]</default>
+//        </key>
+//      </schema>
+//    </schemalist>
+//
+//
+// Vendor overrides
+//
+//
+//        [org.gtk.Example]
+//        key1='string'
+//        key2=1.5
+//
+// glib-compile-schemas expects schema files to have the extension
+// `.gschema.override`.
+//
+//
+// Binding
+//
+// A very convenient feature of GSettings lets you bind #GObject properties
+// directly to settings, using g_settings_bind(). Once a GObject property has
+// been bound to a setting, changes on either side are automatically propagated
+// to the other side. GSettings handles details like mapping between GObject and
+// GVariant types, and preventing infinite cycles.
+//
+// This makes it very easy to hook up a preferences dialog to the underlying
+// settings. To make this even more convenient, GSettings looks for a boolean
+// property with the name "sensitivity" and automatically binds it to the
+// writability of the bound setting. If this 'magic' gets in the way, it can be
+// suppressed with the SETTINGS_BIND_NO_SENSITIVITY flag.
+//
+// Relocatable schemas {#gsettings-relocatable}
+//
+// A relocatable schema is one with no `path` attribute specified on its
+// <schema> element. By using g_settings_new_with_path(), a #GSettings object
+// can be instantiated for a relocatable schema, assigning a path to the
+// instance. Paths passed to g_settings_new_with_path() will typically be
+// constructed dynamically from a constant prefix plus some form of instance
+// identifier; but they must still be valid GSettings paths. Paths could also be
+// constant and used with a globally installed schema originating from a
+// dependency library.
+//
+//
+//    <schema id="org.foo.MyApp" path="/org/foo/MyApp/">
+//      <child name="main" schema="org.foo.MyApp.Window"/>
+//    </schema>
+//
+// Build system integration {#gsettings-build-system}
+//
+//
+//    GLIB_GSETTINGS
+//
+// In the appropriate `Makefile.am`, use the following snippet to compile and
+// install the named schema: |[ gsettings_SCHEMAS = org.foo.MyApp.gschema.xml
+// EXTRA_DIST = $(gsettings_SCHEMAS)
+//
+//    @GSETTINGS_RULES@
+//
+//
+//
+//    data/org.foo.MyApp.gschema.xml
+//
+//
+//    [type: gettext/gsettings]data/org.foo.MyApp.gschema.xml
+//
+// GSettings will use gettext to look up translations for the <summary> and
+// <description> elements, and also any <default> elements which have a `l10n`
+// attribute set. Translations must not be included in the `.gschema.xml` file
+// by the build system, for example by using intltool XML rules with a
+// `.gschema.xml.in` template.
+//
+//
+//    gsettings_ENUM_NAMESPACE = org.foo.MyApp
+//    gsettings_ENUM_FILES = my-app-enums.h my-app-misc.h
+//
+// `gsettings_ENUM_NAMESPACE` specifies the schema namespace for the enum files,
+// which are specified in `gsettings_ENUM_FILES`. This will generate a
+// `org.foo.MyApp.enums.xml` file containing the extracted enums, which will be
+// automatically included in the schema compilation, install and uninstall
+// rules. It should not be committed to version control or included in
+// `EXTRA_DIST`.
+type Settings struct {
+	*glib.Object
+}
+
+// SettingsBackend: the Backend interface defines a generic interface for
+// non-strictly-typed data that is stored in a hierarchy. To implement an
+// alternative storage backend for #GSettings, you need to implement the Backend
+// interface and then make it implement the extension point
+// SETTINGS_BACKEND_EXTENSION_POINT_NAME.
+//
+// The interface defines methods for reading and writing values, a method for
+// determining if writing of certain values will fail (lockdown) and a change
+// notification mechanism.
+//
+// The semantics of the interface are very precisely defined and implementations
+// must carefully adhere to the expectations of callers that are documented on
+// each of the interface methods.
+//
+// Some of the Backend functions accept or return a #GTree. These trees always
+// have strings as keys and #GVariant as values.
+// g_settings_backend_create_tree() is a convenience function to create suitable
+// trees.
+//
+// The Backend API is exported to allow third-party implementations, but does
+// not carry the same stability guarantees as the public GIO API. For this
+// reason, you have to define the C preprocessor symbol
+// G_SETTINGS_ENABLE_BACKEND before including `gio/gsettingsbackend.h`.
+type SettingsBackend struct {
+	*glib.Object
+}
+
+// SimpleAction: a Action is the obvious simple implementation of the #GAction
+// interface. This is the easiest way to create an action for purposes of adding
+// it to a ActionGroup.
+//
+// See also Action.
+type SimpleAction struct {
+	*glib.Object
+}
+
+// SimpleActionGroup: GSimpleActionGroup is a hash table filled with #GAction
+// objects, implementing the Group and Map interfaces.
+type SimpleActionGroup struct {
+	*glib.Object
+}
+
+// SimpleAsyncResult: as of GLib 2.46, AsyncResult is deprecated in favor of
+// #GTask, which provides a simpler API.
+//
+// AsyncResult implements Result.
+//
+// GSimpleAsyncResult handles ReadyCallbacks, error reporting, operation
+// cancellation and the final state of an operation, completely transparent to
+// the application. Results can be returned as a pointer e.g. for functions that
+// return data that is collected asynchronously, a boolean value for checking
+// the success or failure of an operation, or a #gssize for operations which
+// return the number of bytes modified by the operation; all of the simple
+// return cases are covered.
+//
+// Most of the time, an application will not need to know of the details of this
+// API; it is handled transparently, and any necessary operations are handled by
+// Result's interface. However, if implementing a new GIO module, for writing
+// language bindings, or for complex applications that need better control of
+// how asynchronous operations are completed, it is important to understand this
+// functionality.
+//
+// GSimpleAsyncResults are tagged with the calling function to ensure that
+// asynchronous functions and their finishing functions are used together
+// correctly.
+//
+// To create a new AsyncResult, call g_simple_async_result_new(). If the result
+// needs to be created for a #GError, use g_simple_async_result_new_from_error()
+// or g_simple_async_result_new_take_error(). If a #GError is not available
+// (e.g. the asynchronous operation's doesn't take a #GError argument), but the
+// result still needs to be created for an error condition, use
+// g_simple_async_result_new_error() (or g_simple_async_result_set_error_va() if
+// your application or binding requires passing a variable argument list
+// directly), and the error can then be propagated through the use of
+// g_simple_async_result_propagate_error().
+//
+// An asynchronous operation can be made to ignore a cancellation event by
+// calling g_simple_async_result_set_handle_cancellation() with a AsyncResult
+// for the operation and false. This is useful for operations that are dangerous
+// to cancel, such as close (which would cause a leak if cancelled before being
+// run).
+//
+// GSimpleAsyncResult can integrate into GLib's event loop, Loop, or it can use
+// #GThreads. g_simple_async_result_complete() will finish an I/O task directly
+// from the point where it is called. g_simple_async_result_complete_in_idle()
+// will finish it from an idle handler in the [thread-default main
+// context][g-main-context-push-thread-default] where the AsyncResult was
+// created. g_simple_async_result_run_in_thread() will run the job in a separate
+// thread and then use g_simple_async_result_complete_in_idle() to deliver the
+// result.
+//
+// To set the results of an asynchronous function,
+// g_simple_async_result_set_op_res_gpointer(),
+// g_simple_async_result_set_op_res_gboolean(), and
+// g_simple_async_result_set_op_res_gssize() are provided, setting the
+// operation's result to a gpointer, gboolean, or gssize, respectively.
+//
+// Likewise, to get the result of an asynchronous function,
+// g_simple_async_result_get_op_res_gpointer(),
+// g_simple_async_result_get_op_res_gboolean(), and
+// g_simple_async_result_get_op_res_gssize() are provided, getting the
+// operation's result as a gpointer, gboolean, and gssize, respectively.
+//
+// For the details of the requirements implementations must respect, see Result.
+// A typical implementation of an asynchronous operation using
+// GSimpleAsyncResult looks something like this:
+//
+//    static void
+//    baked_cb (Cake    *cake,
+//              gpointer user_data)
+//    {
+//      // In this example, this callback is not given a reference to the cake,
+//      // so the GSimpleAsyncResult has to take a reference to it.
+//      GSimpleAsyncResult *result = user_data;
+//
+//      if (cake == NULL)
+//        g_simple_async_result_set_error (result,
+//                                         BAKER_ERRORS,
+//                                         BAKER_ERROR_NO_FLOUR,
+//                                         "Go to the supermarket");
+//      else
+//        g_simple_async_result_set_op_res_gpointer (result,
+//                                                   g_object_ref (cake),
+//                                                   g_object_unref);
+//
+//
+//      // In this example, we assume that baked_cb is called as a callback from
+//      // the mainloop, so it's safe to complete the operation synchronously here.
+//      // If, however, _baker_prepare_cake () might call its callback without
+//      // first returning to the mainloop — inadvisable, but some APIs do so —
+//      // we would need to use g_simple_async_result_complete_in_idle().
+//      g_simple_async_result_complete (result);
+//      g_object_unref (result);
+//    }
+//
+//    void
+//    baker_bake_cake_async (Baker              *self,
+//                           guint               radius,
+//                           GAsyncReadyCallback callback,
+//                           gpointer            user_data)
+//    {
+//      GSimpleAsyncResult *simple;
+//      Cake               *cake;
+//
+//      if (radius < 3)
+//        {
+//          g_simple_async_report_error_in_idle (G_OBJECT (self),
+//                                               callback,
+//                                               user_data,
+//                                               BAKER_ERRORS,
+//                                               BAKER_ERROR_TOO_SMALL,
+//                                               "ucm radius cakes are silly",
+//                                               radius);
+//          return;
+//        }
+//
+//      simple = g_simple_async_result_new (G_OBJECT (self),
+//                                          callback,
+//                                          user_data,
+//                                          baker_bake_cake_async);
+//      cake = _baker_get_cached_cake (self, radius);
+//
+//      if (cake != NULL)
+//        {
+//          g_simple_async_result_set_op_res_gpointer (simple,
+//                                                     g_object_ref (cake),
+//                                                     g_object_unref);
+//          g_simple_async_result_complete_in_idle (simple);
+//          g_object_unref (simple);
+//          // Drop the reference returned by _baker_get_cached_cake();
+//          // the GSimpleAsyncResult has taken its own reference.
+//          g_object_unref (cake);
+//          return;
+//        }
+//
+//      _baker_prepare_cake (self, radius, baked_cb, simple);
+//    }
+//
+//    Cake *
+//    baker_bake_cake_finish (Baker        *self,
+//                            GAsyncResult *result,
+//                            GError      **error)
+//    {
+//      GSimpleAsyncResult *simple;
+//      Cake               *cake;
+//
+//      g_return_val_if_fail (g_simple_async_result_is_valid (result,
+//                                                            G_OBJECT (self),
+//                                                            baker_bake_cake_async),
+//                            NULL);
+//
+//      simple = (GSimpleAsyncResult *) result;
+//
+//      if (g_simple_async_result_propagate_error (simple, error))
+//        return NULL;
+//
+//      cake = CAKE (g_simple_async_result_get_op_res_gpointer (simple));
+//      return g_object_ref (cake);
+//    }
+//
+type SimpleAsyncResult struct {
+	*glib.Object
+}
+
+// SimpleIOStream: GSimpleIOStream creates a OStream from an arbitrary Stream
+// and Stream. This allows any pair of input and output streams to be used with
+// OStream methods.
+//
+// This is useful when you obtained a Stream and a Stream by other means, for
+// instance creating them with platform specific methods as
+// g_unix_input_stream_new() or g_win32_input_stream_new(), and you want to take
+// advantage of the methods provided by OStream.
+type SimpleIOStream struct {
+	IOStream
+}
+
+// SimplePermission: GSimplePermission is a trivial implementation of
+// #GPermission that represents a permission that is either always or never
+// allowed. The value is given at construction and doesn't change.
+//
+// Calling request or release will result in errors.
+type SimplePermission struct {
+	Permission
+}
+
+// SimpleProxyResolver: GSimpleProxyResolver is a simple Resolver implementation
+// that handles a single default proxy, multiple URI-scheme-specific proxies,
+// and a list of hosts that proxies should not be used for.
+//
+// ProxyResolver is never the default proxy resolver, but it can be used as the
+// base class for another proxy resolver implementation, or it can be created
+// and used manually, such as with g_socket_client_set_proxy_resolver().
+type SimpleProxyResolver struct {
+	*glib.Object
+}
+
+// Socket: a #GSocket is a low-level networking primitive. It is a more or less
+// direct mapping of the BSD socket API in a portable GObject based API. It
+// supports both the UNIX socket implementations and winsock2 on Windows.
+//
+// #GSocket is the platform independent base upon which the higher level network
+// primitives are based. Applications are not typically meant to use it
+// directly, but rather through classes like Client, Service and Connection.
+// However there may be cases where direct use of #GSocket is useful
+//
+// #GSocket implements the #GInitable interface, so if it is manually
+// constructed by e.g. g_object_new() you must call g_initable_init() and check
+// the results before using the object. This is done automatically in
+// g_socket_new() and g_socket_new_from_fd(), so these functions can return nil
+//
+// Sockets operate in two general modes, blocking or non-blocking. When in
+// blocking mode all operations (which don’t take an explicit blocking
+// parameter) block until the requested operation is finished or there is an
+// error. In non-blocking mode all calls that would block return immediately
+// with a G_IO_ERROR_WOULD_BLOCK error. To know when a call would successfully
+// run you can call g_socket_condition_check(), or g_socket_condition_wait().
+// You can also use g_socket_create_source() and attach it to a Context to get
+// callbacks when I/O is possible. Note that all sockets are always set to non
+// blocking mode in the system, and blocking mode is emulated in GSocket.
+//
+// When working in non-blocking mode applications should always be able to
+// handle getting a G_IO_ERROR_WOULD_BLOCK error even when some other function
+// said that I/O was possible. This can easily happen in case of a race
+// condition in the application, but it can also happen for other reasons. For
+// instance, on Windows a socket is always seen as writable until a write
+// returns G_IO_ERROR_WOULD_BLOCK.
+//
+// #GSockets can be either connection oriented or datagram based. For connection
+// oriented types you must first establish a connection by either connecting to
+// an address or accepting a connection from another address. For connectionless
+// socket types the target/source address is specified or received in each I/O
+// operation
+//
+// All socket file descriptors are set to be close-on-exec.
+//
+// Note that creating a #GSocket causes the signal SIGPIPE to be ignored for the
+// remainder of the program. If you are writing a command-line utility that uses
+// #GSocket, you may need to take into account the fact that your program will
+// not automatically be killed if it tries to write to stdout after it has been
+// closed.
+//
+// Like most other APIs in GLib, #GSocket is not inherently thread safe. To use
+// a #GSocket concurrently from multiple threads, you must implement your own
+// locking.
+type Socket struct {
+	*glib.Object
+}
+
+// SocketAddress: GSocketAddress is the equivalent of struct sockaddr in the BSD
+// sockets API. This is an abstract class; use SocketAddress for internet
+// sockets, or SocketAddress for UNIX domain sockets.
+type SocketAddress struct {
+	*glib.Object
+}
+
+// SocketAddressEnumerator: GSocketAddressEnumerator is an enumerator type for
+// Address instances. It is returned by enumeration functions such as
+// g_socket_connectable_enumerate(), which returns a AddressEnumerator to list
+// each Address which could be used to connect to that Connectable.
+//
+// Enumeration is typically a blocking operation, so the asynchronous methods
+// g_socket_address_enumerator_next_async() and
+// g_socket_address_enumerator_next_finish() should be used where possible.
+//
+// Each AddressEnumerator can only be enumerated once. Once
+// g_socket_address_enumerator_next() has returned nil, further enumeration with
+// that AddressEnumerator is not possible, and it can be unreffed.
+type SocketAddressEnumerator struct {
+	*glib.Object
+}
+
+// SocketClient: GSocketClient is a lightweight high-level utility class for
+// connecting to a network host using a connection oriented socket type.
+//
+// You create a Client object, set any options you want, and then call a sync or
+// async connect operation, which returns a Connection subclass on success.
+//
+// The type of the Connection object returned depends on the type of the
+// underlying socket that is in use. For instance, for a TCP/IP connection it
+// will be a Connection.
+//
+// As Client is a lightweight object, you don't need to cache it. You can just
+// create a new one any time you need one.
+type SocketClient struct {
+	*glib.Object
+}
+
+// SocketConnection: GSocketConnection is a OStream for a connected socket. They
+// can be created either by Client when connecting to a host, or by Listener
+// when accepting a new client.
+//
+// The type of the Connection object returned from these calls depends on the
+// type of the underlying socket that is in use. For instance, for a TCP/IP
+// connection it will be a Connection.
+//
+// Choosing what type of object to construct is done with the socket connection
+// factory, and it is possible for 3rd parties to register custom socket
+// connection types for specific combination of socket family/type/protocol
+// using g_socket_connection_factory_register_type().
+//
+// To close a Connection, use g_io_stream_close(). Closing both substreams of
+// the OStream separately will not close the underlying #GSocket.
+type SocketConnection struct {
+	IOStream
+}
+
+// SocketControlMessage: a ControlMessage is a special-purpose utility message
+// that can be sent to or received from a #GSocket. These types of messages are
+// often called "ancillary data".
+//
+// The message can represent some sort of special instruction to or information
+// from the socket or can represent a special kind of transfer to the peer (for
+// example, sending a file descriptor over a UNIX socket).
+//
+// These messages are sent with g_socket_send_message() and received with
+// g_socket_receive_message().
+//
+// To extend the set of control message that can be sent, subclass this class
+// and override the get_size, get_level, get_type and serialize methods.
+//
+// To extend the set of control messages that can be received, subclass this
+// class and implement the deserialize method. Also, make sure your class is
+// registered with the GType typesystem before calling
+// g_socket_receive_message() to read such a message.
+type SocketControlMessage struct {
+	*glib.Object
+}
+
+// SocketListener: a Listener is an object that keeps track of a set of server
+// sockets and helps you accept sockets from any of the socket, either sync or
+// async.
+//
+// Add addresses and ports to listen on using g_socket_listener_add_address()
+// and g_socket_listener_add_inet_port(). These will be listened on until
+// g_socket_listener_close() is called. Dropping your final reference to the
+// Listener will not cause g_socket_listener_close() to be called implicitly, as
+// some references to the Listener may be held internally.
+//
+// If you want to implement a network server, also look at Service and
+// SocketService which are subclasses of Listener that make this even easier.
+type SocketListener struct {
+	*glib.Object
+}
+
+// SocketService: a Service is an object that represents a service that is
+// provided to the network or over local sockets. When a new connection is made
+// to the service the Service::incoming signal is emitted.
+//
+// A Service is a subclass of Listener and you need to add the addresses you
+// want to accept connections on with the Listener APIs.
+//
+// There are two options for implementing a network service based on Service.
+// The first is to create the service using g_socket_service_new() and to
+// connect to the Service::incoming signal. The second is to subclass Service
+// and override the default signal handler implementation.
+//
+// In either case, the handler must immediately return, or else it will block
+// additional incoming connections from being serviced. If you are interested in
+// writing connection handlers that contain blocking code then see
+// SocketService.
+//
+// The socket service runs on the main loop of the [thread-default
+// context][g-main-context-push-thread-default-context] of the thread it is
+// created in, and is not threadsafe in general. However, the calls to start and
+// stop the service are thread-safe so these can be used from threads that
+// handle incoming clients.
+type SocketService struct {
+	SocketListener
+}
+
+// Subprocess: GSubprocess allows the creation of and interaction with child
+// processes.
+//
+// Processes can be communicated with using standard GIO-style APIs (ie: Stream,
+// Stream). There are GIO-style APIs to wait for process termination (ie:
+// cancellable and with an asynchronous variant).
+//
+// There is an API to force a process to terminate, as well as a race-free API
+// for sending UNIX signals to a subprocess.
+//
+// One major advantage that GIO brings over the core GLib library is
+// comprehensive API for asynchronous I/O, such g_output_stream_splice_async().
+// This makes GSubprocess significantly more powerful and flexible than
+// equivalent APIs in some other languages such as the `subprocess.py` included
+// with Python. For example, using #GSubprocess one could create two child
+// processes, reading standard output from the first, processing it, and writing
+// to the input stream of the second, all without blocking the main loop.
+//
+// A powerful g_subprocess_communicate() API is provided similar to the
+// `communicate()` method of `subprocess.py`. This enables very easy interaction
+// with a subprocess that has been opened with pipes.
+//
+// #GSubprocess defaults to tight control over the file descriptors open in the
+// child process, avoiding dangling-fd issues that are caused by a simple
+// fork()/exec(). The only open file descriptors in the spawned process are ones
+// that were explicitly specified by the #GSubprocess API (unless
+// G_SUBPROCESS_FLAGS_INHERIT_FDS was specified)
+//
+// #GSubprocess will quickly reap all child processes as they exit, avoiding
+// "zombie processes" remaining around for long periods of time.
+// g_subprocess_wait() can be used to wait for this to happen, but it will
+// happen even without the call being explicitly made
+//
+// As a matter of principle, #GSubprocess has no API that accepts shell-style
+// space-separated strings. It will, however, match the typical shell behaviour
+// of searching the PATH for executables that do not contain a directory
+// separator in their name.
+//
+// #GSubprocess attempts to have a very simple API for most uses (ie: spawning a
+// subprocess with arguments and support for most typical kinds of input and
+// output redirection). See g_subprocess_new(). The Launcher API is provided for
+// more complicated cases (advanced types of redirection, environment variable
+// manipulation, change of working directory, child setup functions, etc)
+//
+// A typical use of #GSubprocess will involve calling g_subprocess_new(),
+// followed by g_subprocess_wait_async() or g_subprocess_wait(). After the
+// process exits, the status can be checked using functions such as
+// g_subprocess_get_if_exited() (which are similar to the familiar
+// WIFEXITED-style POSIX macros).
+type Subprocess struct {
+	*glib.Object
+}
+
+// SubprocessLauncher: this class contains a set of options for launching child
+// processes, such as where its standard input and output will be directed, the
+// argument list, the environment, and more.
+//
+// While the #GSubprocess class has high level functions covering popular cases,
+// use of this class allows access to more advanced options. It can also be used
+// to launch multiple subprocesses with a similar configuration.
+type SubprocessLauncher struct {
+	*glib.Object
+}
+
+// Task: a #GTask represents and manages a cancellable "task".
+//
+//
+// Asynchronous operations
+//
+// The most common usage of #GTask is as a Result, to manage data during an
+// asynchronous operation. You call g_task_new() in the "start" method, followed
+// by g_task_set_task_data() and the like if you need to keep some additional
+// data associated with the task, and then pass the task object around through
+// your asynchronous operation. Eventually, you will call a method such as
+// g_task_return_pointer() or g_task_return_error(), which will save the value
+// you give it and then invoke the task's callback function in the
+// [thread-default main context][g-main-context-push-thread-default] where it
+// was created (waiting until the next iteration of the main loop first, if
+// necessary). The caller will pass the #GTask back to the operation's finish
+// function (as a Result), and you can use g_task_propagate_pointer() or the
+// like to extract the return value.
+//
+// Here is an example for using GTask as a GAsyncResult: |[<!-- language="C" -->
+// typedef struct { CakeFrostingType frosting; char *message; } DecorationData;
+//
+// static void decoration_data_free (DecorationData *decoration) { g_free
+// (decoration->message); g_slice_free (DecorationData, decoration); }
+//
+// static void baked_cb (Cake *cake, gpointer user_data) { GTask *task =
+// user_data; DecorationData *decoration = g_task_get_task_data (task); GError
+// *error = NULL;
+//
+// if (cake == NULL) { g_task_return_new_error (task, BAKER_ERROR,
+// BAKER_ERROR_NO_FLOUR, "Go to the supermarket"); g_object_unref (task);
+// return; }
+//
+// if (!cake_decorate (cake, decoration->frosting, decoration->message, &error))
+// { g_object_unref (cake); // g_task_return_error() takes ownership of error
+// g_task_return_error (task, error); g_object_unref (task); return; }
+//
+// g_task_return_pointer (task, cake, g_object_unref); g_object_unref (task); }
+//
+// void baker_bake_cake_async (Baker *self, guint radius, CakeFlavor flavor,
+// CakeFrostingType frosting, const char *message, GCancellable *cancellable,
+// GAsyncReadyCallback callback, gpointer user_data) { GTask *task;
+// DecorationData *decoration; Cake *cake;
+//
+// task = g_task_new (self, cancellable, callback, user_data); if (radius < 3) {
+// g_task_return_new_error (task, BAKER_ERROR, BAKER_ERROR_TOO_SMALL, "ucm
+// radius cakes are silly", radius); g_object_unref (task); return; }
+//
+// cake = _baker_get_cached_cake (self, radius, flavor, frosting, message); if
+// (cake != NULL) { // _baker_get_cached_cake() returns a reffed cake
+// g_task_return_pointer (task, cake, g_object_unref); g_object_unref (task);
+// return; }
+//
+// decoration = g_slice_new (DecorationData); decoration->frosting = frosting;
+// decoration->message = g_strdup (message); g_task_set_task_data (task,
+// decoration, (GDestroyNotify) decoration_data_free);
+//
+// _baker_begin_cake (self, radius, flavor, cancellable, baked_cb, task); }
+//
+// Cake * baker_bake_cake_finish (Baker *self, GAsyncResult *result, GError
+// **error) { g_return_val_if_fail (g_task_is_valid (result, self), NULL);
+//
+//          return g_task_propagate_pointer (G_TASK (result), error);
+//        }
+//
+//
+//    ## Chained asynchronous operations
+//
+//    #GTask also tries to simplify asynchronous operations that
+//    internally chain together several smaller asynchronous
+//    operations. g_task_get_cancellable(), g_task_get_context(),
+//    and g_task_get_priority() allow you to get back the task's
+//    #GCancellable, Context, and [I/O priority][io-priority]
+//    when starting a new subtask, so you don't have to keep track
+//    of them yourself. g_task_attach_source() simplifies the case
+//    of waiting for a source to fire (automatically using the correct
+//    Context and priority).
+//
+//        typedef struct {
+//          Cake *cake;
+//          CakeFrostingType frosting;
+//          char *message;
+//        } BakingData;
+//
+//        static void
+//        decoration_data_free (BakingData *bd)
+//        {
+//          if (bd->cake)
+//            g_object_unref (bd->cake);
+//          g_free (bd->message);
+//          g_slice_free (BakingData, bd);
+//        }
+//
+//        static void
+//        decorated_cb (Cake         *cake,
+//                      GAsyncResult *result,
+//                      gpointer      user_data)
+//        {
+//          GTask *task = user_data;
+//          GError *error = NULL;
+//
+//          if (!cake_decorate_finish (cake, result, &error))
+//            {
+//              g_object_unref (cake);
+//              g_task_return_error (task, error);
+//              g_object_unref (task);
+//              return;
+//            }
+//
+//          // baking_data_free() will drop its ref on the cake, so we have to
+//          // take another here to give to the caller.
+//          g_task_return_pointer (task, g_object_ref (cake), g_object_unref);
+//          g_object_unref (task);
+//        }
+//
+//        static gboolean
+//        decorator_ready (gpointer user_data)
+//        {
+//          GTask *task = user_data;
+//          BakingData *bd = g_task_get_task_data (task);
+//
+//          cake_decorate_async (bd->cake, bd->frosting, bd->message,
+//                               g_task_get_cancellable (task),
+//                               decorated_cb, task);
+//
+//          return G_SOURCE_REMOVE;
+//        }
+//
+//        static void
+//        baked_cb (Cake     *cake,
+//                  gpointer  user_data)
+//        {
+//          GTask *task = user_data;
+//          BakingData *bd = g_task_get_task_data (task);
+//          GError *error = NULL;
+//
+//          if (cake == NULL)
+//            {
+//              g_task_return_new_error (task, BAKER_ERROR, BAKER_ERROR_NO_FLOUR,
+//                                       "Go to the supermarket");
+//              g_object_unref (task);
+//              return;
+//            }
+//
+//          bd->cake = cake;
+//
+//          // Bail out now if the user has already cancelled
+//          if (g_task_return_error_if_cancelled (task))
+//            {
+//              g_object_unref (task);
+//              return;
+//            }
+//
+//          if (cake_decorator_available (cake))
+//            decorator_ready (task);
+//          else
+//            {
+//              GSource *source;
+//
+//              source = cake_decorator_wait_source_new (cake);
+//              // Attach @source to @task's GMainContext and have it call
+//              // decorator_ready() when it is ready.
+//              g_task_attach_source (task, source, decorator_ready);
+//              g_source_unref (source);
+//            }
+//        }
+//
+//        void
+//        baker_bake_cake_async (Baker               *self,
+//                               guint                radius,
+//                               CakeFlavor           flavor,
+//                               CakeFrostingType     frosting,
+//                               const char          *message,
+//                               gint                 priority,
+//                               GCancellable        *cancellable,
+//                               GAsyncReadyCallback  callback,
+//                               gpointer             user_data)
+//        {
+//          GTask *task;
+//          BakingData *bd;
+//
+//          task = g_task_new (self, cancellable, callback, user_data);
+//          g_task_set_priority (task, priority);
+//
+//          bd = g_slice_new0 (BakingData);
+//          bd->frosting = frosting;
+//          bd->message = g_strdup (message);
+//          g_task_set_task_data (task, bd, (GDestroyNotify) baking_data_free);
+//
+//          _baker_begin_cake (self, radius, flavor, cancellable, baked_cb, task);
+//        }
+//
+//        Cake *
+//        baker_bake_cake_finish (Baker         *self,
+//                                GAsyncResult  *result,
+//                                GError       **error)
+//        {
+//          g_return_val_if_fail (g_task_is_valid (result, self), NULL);
+//
+//          return g_task_propagate_pointer (G_TASK (result), error);
+//        }
+//
+//
+//
+// Asynchronous operations from synchronous ones
+//
+// You can use g_task_run_in_thread() to turn a synchronous operation into an
+// asynchronous one, by running it in a thread. When it completes, the result
+// will be dispatched to the [thread-default main
+// context][g-main-context-push-thread-default] where the #GTask was created.
+//
+// Running a task in a thread: |[<!-- language="C" --> typedef struct { guint
+// radius; CakeFlavor flavor; CakeFrostingType frosting; char *message; }
+// CakeData;
+//
+// static void cake_data_free (CakeData *cake_data) { g_free
+// (cake_data->message); g_slice_free (CakeData, cake_data); }
+//
+// static void bake_cake_thread (GTask *task, gpointer source_object, gpointer
+// task_data, GCancellable *cancellable) { Baker *self = source_object; CakeData
+// *cake_data = task_data; Cake *cake; GError *error = NULL;
+//
+// cake = bake_cake (baker, cake_data->radius, cake_data->flavor,
+// cake_data->frosting, cake_data->message, cancellable, &error); if (cake)
+// g_task_return_pointer (task, cake, g_object_unref); else g_task_return_error
+// (task, error); }
+//
+// void baker_bake_cake_async (Baker *self, guint radius, CakeFlavor flavor,
+// CakeFrostingType frosting, const char *message, GCancellable *cancellable,
+// GAsyncReadyCallback callback, gpointer user_data) { CakeData *cake_data;
+// GTask *task;
+//
+// cake_data = g_slice_new (CakeData); cake_data->radius = radius;
+// cake_data->flavor = flavor; cake_data->frosting = frosting;
+// cake_data->message = g_strdup (message); task = g_task_new (self,
+// cancellable, callback, user_data); g_task_set_task_data (task, cake_data,
+// (GDestroyNotify) cake_data_free); g_task_run_in_thread (task,
+// bake_cake_thread); g_object_unref (task); }
+//
+// Cake * baker_bake_cake_finish (Baker *self, GAsyncResult *result, GError
+// **error) { g_return_val_if_fail (g_task_is_valid (result, self), NULL);
+//
+//          return g_task_propagate_pointer (G_TASK (result), error);
+//        }
+//
+//
+//    ## Adding cancellability to uncancellable tasks
+//
+//    Finally, g_task_run_in_thread() and g_task_run_in_thread_sync()
+//    can be used to turn an uncancellable operation into a
+//    cancellable one. If you call g_task_set_return_on_cancel(),
+//    passing true, then if the task's #GCancellable is cancelled,
+//    it will return control back to the caller immediately, while
+//    allowing the task thread to continue running in the background
+//    (and simply discarding its result when it finally does finish).
+//    Provided that the task thread is careful about how it uses
+//    locks and other externally-visible resources, this allows you
+//    to make "GLib-friendly" asynchronous and cancellable
+//    synchronous variants of blocking APIs.
+//
+//        static void
+//        bake_cake_thread (GTask         *task,
+//                          gpointer       source_object,
+//                          gpointer       task_data,
+//                          GCancellable  *cancellable)
+//        {
+//          Baker *self = source_object;
+//          CakeData *cake_data = task_data;
+//          Cake *cake;
+//          GError *error = NULL;
+//
+//          cake = bake_cake (baker, cake_data->radius, cake_data->flavor,
+//                            cake_data->frosting, cake_data->message,
+//                            &error);
+//          if (error)
+//            {
+//              g_task_return_error (task, error);
+//              return;
+//            }
+//
+//          // If the task has already been cancelled, then we don't want to add
+//          // the cake to the cake cache. Likewise, we don't  want to have the
+//          // task get cancelled in the middle of updating the cache.
+//          // g_task_set_return_on_cancel() will return true here if it managed
+//          // to disable return-on-cancel, or false if the task was cancelled
+//          // before it could.
+//          if (g_task_set_return_on_cancel (task, FALSE))
+//            {
+//              // If the caller cancels at this point, their
+//              // GAsyncReadyCallback won't be invoked until we return,
+//              // so we don't have to worry that this code will run at
+//              // the same time as that code does. But if there were
+//              // other functions that might look at the cake cache,
+//              // then we'd probably need a GMutex here as well.
+//              baker_add_cake_to_cache (baker, cake);
+//              g_task_return_pointer (task, cake, g_object_unref);
+//            }
+//        }
+//
+//        void
+//        baker_bake_cake_async (Baker               *self,
+//                               guint                radius,
+//                               CakeFlavor           flavor,
+//                               CakeFrostingType     frosting,
+//                               const char          *message,
+//                               GCancellable        *cancellable,
+//                               GAsyncReadyCallback  callback,
+//                               gpointer             user_data)
+//        {
+//          CakeData *cake_data;
+//          GTask *task;
+//
+//          cake_data = g_slice_new (CakeData);
+//
+//          ...
+//
+//          task = g_task_new (self, cancellable, callback, user_data);
+//          g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
+//          g_task_set_return_on_cancel (task, TRUE);
+//          g_task_run_in_thread (task, bake_cake_thread);
+//        }
+//
+//        Cake *
+//        baker_bake_cake_sync (Baker               *self,
+//                              guint                radius,
+//                              CakeFlavor           flavor,
+//                              CakeFrostingType     frosting,
+//                              const char          *message,
+//                              GCancellable        *cancellable,
+//                              GError             **error)
+//        {
+//          CakeData *cake_data;
+//          GTask *task;
+//          Cake *cake;
+//
+//          cake_data = g_slice_new (CakeData);
+//
+//          ...
+//
+//          task = g_task_new (self, cancellable, NULL, NULL);
+//          g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
+//          g_task_set_return_on_cancel (task, TRUE);
+//          g_task_run_in_thread_sync (task, bake_cake_thread);
+//
+//          cake = g_task_propagate_pointer (task, error);
+//          g_object_unref (task);
+//          return cake;
+//        }
+//
+//
+//
+// Porting from GSimpleAsyncResult
+//
+// #GTask's API attempts to be simpler than AsyncResult's in several ways: - You
+// can save task-specific data with g_task_set_task_data(), and
+//
+//    retrieve it later with g_task_get_task_data(). This replaces the
+//    abuse of g_simple_async_result_set_op_res_gpointer() for the same
+//    purpose with AsyncResult.
+//
+// - In addition to the task data, #GTask also keeps track of the
+//
+//    [priority][io-priority], #GCancellable, and
+//    Context associated with the task, so tasks that consist of
+//    a chain of simpler asynchronous operations will have easy access
+//    to those values when starting each sub-task.
+//
+// - g_task_return_error_if_cancelled() provides simplified
+//
+//    handling for cancellation. In addition, cancellation
+//    overrides any other #GTask return value by default, like
+//    AsyncResult does when
+//    g_simple_async_result_set_check_cancellable() is called.
+//    (You can use g_task_set_check_cancellable() to turn off that
+//    behavior.) On the other hand, g_task_run_in_thread()
+//    guarantees that it will always run your
+//    `task_func`, even if the task's #GCancellable
+//    is already cancelled before the task gets a chance to run;
+//    you can start your `task_func` with a
+//    g_task_return_error_if_cancelled() check if you need the
+//    old behavior.
+//
+// - The "return" methods (eg, g_task_return_pointer())
+//
+//    automatically cause the task to be "completed" as well, and
+//    there is no need to worry about the "complete" vs "complete
+//    in idle" distinction. (#GTask automatically figures out
+//    whether the task's callback can be invoked directly, or
+//    if it needs to be sent to another Context, or delayed
+//    until the next iteration of the current Context.)
+//
+// - The "finish" functions for #GTask based operations are generally
+//
+//    much simpler than AsyncResult ones, normally consisting
+//    of only a single call to g_task_propagate_pointer() or the like.
+//    Since g_task_propagate_pointer() "steals" the return value from
+//    the #GTask, it is not necessary to juggle pointers around to
+//    prevent it from being freed twice.
+//
+// - With AsyncResult, it was common to call
+//
+//    g_simple_async_result_propagate_error() from the
+//    `_finish()` wrapper function, and have
+//    virtual method implementations only deal with successful
+//    returns. This behavior is deprecated, because it makes it
+//    difficult for a subclass to chain to a parent class's async
+//    methods. Instead, the wrapper function should just be a
+//    simple wrapper, and the virtual method should call an
+//    appropriate `g_task_propagate_` function.
+//    Note that wrapper methods can now use
+//    g_async_result_legacy_propagate_error() to do old-style
+//    AsyncResult error-returning behavior, and
+//    g_async_result_is_tagged() to check if a result is tagged as
+//    having come from the `_async()` wrapper
+//    function (for "short-circuit" results, such as when passing
+//    0 to g_input_stream_read_async())
+type Task struct {
+	*glib.Object
+}
+
+// TcpConnection: this is the subclass of Connection that is created for TCP/IP
+// sockets.
+type TcpConnection struct {
+	SocketConnection
+}
+
+// TcpWrapperConnection: a WrapperConnection can be used to wrap a OStream that
+// is based on a #GSocket, but which is not actually a Connection. This is used
+// by Client so that it can always return a Connection, even when the connection
+// it has actually created is not directly a Connection.
+type TcpWrapperConnection struct {
+	TcpConnection
+}
+
+// TestDBus: a helper class for testing code which uses D-Bus without touching
+// the user's session bus.
+//
+// Note that DBus modifies the user’s environment, calling setenv(). This is not
+// thread-safe, so all DBus calls should be completed before threads are
+// spawned, or should have appropriate locking to ensure no access conflicts to
+// environment variables shared between DBus and other threads.
+//
+//
+// Creating unit tests using GTestDBus
+//
+// Testing of D-Bus services can be tricky because normally we only ever run
+// D-Bus services over an existing instance of the D-Bus daemon thus we usually
+// don't activate D-Bus services that are not yet installed into the target
+// system. The DBus object makes this easier for us by taking care of the lower
+// level tasks such as running a private D-Bus daemon and looking up uninstalled
+// services in customizable locations, typically in your source code tree.
+//
+// The first thing you will need is a separate service description file for the
+// D-Bus daemon. Typically a `services` subdirectory of your `tests` directory
+// is a good place to put this file.
+//
+// The service file should list your service along with an absolute path to the
+// uninstalled service executable in your source tree. Using autotools we would
+// achieve this by adding a file such as `my-server.service.in` in the services
+// directory and have it processed by configure. |[ [D-BUS Service]
+// Name=org.gtk.GDBus.Examples.ObjectManager
+// Exec=@abs_top_builddir@/gio/tests/gdbus-example-objectmanager-server ]| You
+// will also need to indicate this service directory in your test fixtures, so
+// you will need to pass the path while compiling your test cases. Typically
+// this is done with autotools with an added preprocessor flag specified to
+// compile your tests such as: |[
+// -DTEST_SERVICES=\""$(abs_top_builddir)/tests/services"\" ]| Once you have a
+// service definition file which is local to your source tree, you can proceed
+// to set up a GTest fixture using the DBus scaffolding.
+//
+// An example of a test fixture for D-Bus services can be found here:
+// [gdbus-test-fixture.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-test-fixture.c)
+//
+// Note that these examples only deal with isolating the D-Bus aspect of your
+// service. To successfully run isolated unit tests on your service you may need
+// some additional modifications to your test case fixture. For example; if your
+// service uses GSettings and installs a schema then it is important that your
+// test service not load the schema in the ordinary installed location (chances
+// are that your service and schema files are not yet installed, or worse; there
+// is an older version of the schema file sitting in the install location).
+//
+// Most of the time we can work around these obstacles using the environment.
+// Since the environment is inherited by the D-Bus daemon created by DBus and
+// then in turn inherited by any services the D-Bus daemon activates, using the
+// setup routine for your fixture is a practical place to help sandbox your
+// runtime environment. For the rather typical GSettings case we can work around
+// this by setting `GSETTINGS_SCHEMA_DIR` to the in tree directory holding your
+// schemas in the above fixture_setup() routine.
+//
+// The GSettings schemas need to be locally pre-compiled for this to work. This
+// can be achieved by compiling the schemas locally as a step before running
+// test cases, an autotools setup might do the following in the directory
+// holding schemas: |[ all-am: $(GLIB_COMPILE_SCHEMAS) .
+//
+//        CLEANFILES += gschemas.compiled
+//
+type TestDBus struct {
+	*glib.Object
+}
+
+// ThemedIcon: GThemedIcon is an implementation of #GIcon that supports icon
+// themes. Icon contains a list of all of the icons present in an icon theme, so
+// that icons can be looked up quickly. Icon does not provide actual pixmaps for
+// icons, just the icon names. Ideally something like
+// gtk_icon_theme_choose_icon() should be used to resolve the list of names so
+// that fallback icons work nicely with themes that inherit other themes.
+type ThemedIcon struct {
+	*glib.Object
+}
+
+// ThreadedSocketService: a SocketService is a simple subclass of Service that
+// handles incoming connections by creating a worker thread and dispatching the
+// connection to it by emitting the SocketService::run signal in the new thread.
+//
+// The signal handler may perform blocking IO and need not return until the
+// connection is closed.
+//
+// The service is implemented using a thread pool, so there is a limited amount
+// of threads available to serve incoming requests. The service automatically
+// stops the Service from accepting new connections when all threads are busy.
+//
+// As with Service, you may connect to SocketService::run, or subclass and
+// override the default handler.
+type ThreadedSocketService struct {
+	SocketService
+}
+
+// TlsCertificate: a certificate used for TLS authentication and encryption.
+// This can represent either a certificate only (eg, the certificate received by
+// a client from a server), or the combination of a certificate and a private
+// key (which is needed when acting as a ServerConnection).
+type TlsCertificate struct {
+	*glib.Object
+}
+
+// TlsConnection: GTlsConnection is the base TLS connection class type, which
+// wraps a OStream and provides TLS encryption on top of it. Its subclasses,
+// ClientConnection and ServerConnection, implement client-side and server-side
+// TLS, respectively.
+//
+// For DTLS (Datagram TLS) support, see Connection.
+type TlsConnection struct {
+	IOStream
+}
+
+// TlsDatabase: GTlsDatabase is used to look up certificates and other
+// information from a certificate or key store. It is an abstract base class
+// which TLS library specific subtypes override.
+//
+// A Database may be accessed from multiple threads by the TLS backend. All
+// implementations are required to be fully thread-safe.
+//
+// Most common client applications will not directly interact with Database. It
+// is used internally by Connection.
+type TlsDatabase struct {
+	*glib.Object
+}
+
+// TlsInteraction: GTlsInteraction provides a mechanism for the TLS connection
+// and database code to interact with the user. It can be used to ask the user
+// for passwords.
+//
+// To use a Interaction with a TLS connection use
+// g_tls_connection_set_interaction().
+//
+// Callers should instantiate a derived class that implements the various
+// interaction methods to show the required dialogs.
+//
+// Callers should use the 'invoke' functions like
+// g_tls_interaction_invoke_ask_password() to run interaction methods. These
+// functions make sure that the interaction is invoked in the main loop and not
+// in the current thread, if the current thread is not running the main loop.
+//
+// Derived classes can choose to implement whichever interactions methods they'd
+// like to support by overriding those virtual methods in their class
+// initialization function. Any interactions not implemented will return
+// G_TLS_INTERACTION_UNHANDLED. If a derived class implements an async method,
+// it must also implement the corresponding finish method.
+type TlsInteraction struct {
+	*glib.Object
+}
+
+// TlsPassword: holds a password used in TLS.
+type TlsPassword struct {
+	*glib.Object
+}
+
+// UnixConnection: this is the subclass of Connection that is created for UNIX
+// domain sockets.
+//
+// It contains functions to do some of the UNIX socket specific functionality
+// like passing file descriptors.
+//
+// Note that `<gio/gunixconnection.h>` belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// using it.
+type UnixConnection struct {
+	SocketConnection
+}
+
+// UnixCredentialsMessage: this ControlMessage contains a #GCredentials
+// instance. It may be sent using g_socket_send_message() and received using
+// g_socket_receive_message() over UNIX sockets (ie: sockets in the
+// G_SOCKET_FAMILY_UNIX family).
+//
+// For an easier way to send and receive credentials over stream-oriented UNIX
+// sockets, see g_unix_connection_send_credentials() and
+// g_unix_connection_receive_credentials(). To receive credentials of a foreign
+// process connected to a socket, use g_socket_get_credentials().
+type UnixCredentialsMessage struct {
+	SocketControlMessage
+}
+
+// UnixFDList: a FDList contains a list of file descriptors. It owns the file
+// descriptors that it contains, closing them when finalized.
+//
+// It may be wrapped in a FDMessage and sent over a #GSocket in the
+// G_SOCKET_FAMILY_UNIX family by using g_socket_send_message() and received
+// using g_socket_receive_message().
+//
+// Note that `<gio/gunixfdlist.h>` belongs to the UNIX-specific GIO interfaces,
+// thus you have to use the `gio-unix-2.0.pc` pkg-config file when using it.
+type UnixFDList struct {
+	*glib.Object
+}
+
+// UnixFDMessage: this ControlMessage contains a FDList. It may be sent using
+// g_socket_send_message() and received using g_socket_receive_message() over
+// UNIX sockets (ie: sockets in the G_SOCKET_FAMILY_UNIX family). The file
+// descriptors are copied between processes by the kernel.
+//
+// For an easier way to send and receive file descriptors over stream-oriented
+// UNIX sockets, see g_unix_connection_send_fd() and
+// g_unix_connection_receive_fd().
+//
+// Note that `<gio/gunixfdmessage.h>` belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// using it.
+type UnixFDMessage struct {
+	SocketControlMessage
+}
+
+// UnixInputStream: GUnixInputStream implements Stream for reading from a UNIX
+// file descriptor, including asynchronous operations. (If the file descriptor
+// refers to a socket or pipe, this will use poll() to do asynchronous I/O. If
+// it refers to a regular file, it will fall back to doing asynchronous I/O in
+// another thread.)
+//
+// Note that `<gio/gunixinputstream.h>` belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// using it.
+type UnixInputStream struct {
+	InputStream
+}
+
+// UnixMountMonitor: watches Mounts for changes.
+type UnixMountMonitor struct {
+	*glib.Object
+}
+
+// UnixOutputStream: GUnixOutputStream implements Stream for writing to a UNIX
+// file descriptor, including asynchronous operations. (If the file descriptor
+// refers to a socket or pipe, this will use poll() to do asynchronous I/O. If
+// it refers to a regular file, it will fall back to doing asynchronous I/O in
+// another thread.)
+//
+// Note that `<gio/gunixoutputstream.h>` belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// using it.
+type UnixOutputStream struct {
+	OutputStream
+}
+
+// UnixSocketAddress: support for UNIX-domain (also known as local) sockets.
+//
+// UNIX domain sockets are generally visible in the filesystem. However, some
+// systems support abstract socket names which are not visible in the filesystem
+// and not affected by the filesystem permissions, visibility, etc. Currently
+// this is only supported under Linux. If you attempt to use abstract sockets on
+// other systems, function calls may return G_IO_ERROR_NOT_SUPPORTED errors. You
+// can use g_unix_socket_address_abstract_names_supported() to see if abstract
+// names are supported.
+//
+// Note that `<gio/gunixsocketaddress.h>` belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// using it.
+type UnixSocketAddress struct {
+	SocketAddress
+}
+
+// Vfs: entry point for using GIO functionality.
+type Vfs struct {
+	*glib.Object
+}
+
+// VolumeMonitor: GVolumeMonitor is for listing the user interesting devices and
+// volumes on the computer. In other words, what a file selector or file manager
+// would show in a sidebar.
+//
+// Monitor is not [thread-default-context
+// aware][g-main-context-push-thread-default], and so should not be used other
+// than from the main thread, with no thread-default-context active.
+//
+// In order to receive updates about volumes and mounts monitored through GVFS,
+// a main loop must be running.
+type VolumeMonitor struct {
+	*glib.Object
+}
+
+// ZlibCompressor: zlib decompression
+type ZlibCompressor struct {
+	*glib.Object
+}
+
+// ZlibDecompressor: zlib decompression
+type ZlibDecompressor struct {
+	*glib.Object
 }

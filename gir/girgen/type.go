@@ -137,13 +137,9 @@ func (ng *NamespaceGenerator) ResolveAnyType(any gir.AnyType) (string, bool) {
 		return ng.resolveArrayType(*any.Array)
 	case any.Type != nil:
 		return ng.ResolveToGoType(*any.Type)
-	case any.VarArgs != nil:
-		// CGo doesn't support variadic types.
-		return "", false
-	default:
-		ng.logln(logWarn, "anyType empty")
 	}
 
+	// Probably varargs, ignore because Cgo.
 	return "", false
 }
 

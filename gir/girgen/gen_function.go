@@ -183,6 +183,10 @@ func resolveAnyCType(any gir.AnyType) string {
 
 	case any.Type != nil:
 		return any.Type.CType
+
+	case any.VarArgs != nil:
+		return "..."
+
 	default:
 		return ""
 	}

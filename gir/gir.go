@@ -160,9 +160,13 @@ type NamespaceFindResult struct {
 
 // Eq compares that the resulting namespace's name and version match.
 func (res *NamespaceFindResult) Eq(other *NamespaceFindResult) bool {
+	if other == res {
+		return true
+	}
+
 	return true &&
 		res.Namespace.Name == other.Namespace.Name &&
-		res.Namespace.Version == other.Namespace.Version
+		res.Repository.Pkg == other.Repository.Pkg
 }
 
 // FindNamespace finds the repository and namespace with the given name and

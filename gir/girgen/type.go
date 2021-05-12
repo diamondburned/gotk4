@@ -77,14 +77,7 @@ func (typ *ResolvedType) NeedsNamespace(current *gir.NamespaceFindResult) bool {
 		return false
 	}
 
-	// Fast path, in case the pointer matches from the cache.
-	if typ.Extern.Result.NamespaceFindResult == current {
-		return false
-	}
-
-	return false ||
-		typ.Extern.Result.Repository.Pkg != current.Repository.Pkg ||
-		typ.Extern.Result.Namespace.Name != current.Namespace.Name
+	return !typ.Extern.Result.Eq(current)
 }
 
 // GoType formats the Go type.
@@ -195,8 +188,9 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 			// Save into the cache within the singleflight callback.
 			typeCache.Store(typ.CType, resolved)
 
-			// Add the import in the same singleflight callback.
-			if resolved.Extern != nil {
+			// Add the import in the same singleflight callback, but only if the
+			// namespace is not the current one.
+			if resolved.Extern != nil && !resolved.Extern.Result.Eq(ng.current) {
 				ng.addImport(ng.gen.ImportPath(resolved.Extern.Package))
 			}
 		}

@@ -9,9 +9,9 @@ import (
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	"github.com/diamondburned/gotk4/pkg/gdkx11"
+	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/glib"
-	"github.com/linuxdeepin/go-gir/gio-2.0"
 )
 
 // #cgo pkg-config: gtk4

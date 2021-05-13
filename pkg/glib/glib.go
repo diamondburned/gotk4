@@ -8110,6 +8110,14 @@ func (b *Bytes) Native() unsafe.Pointer {
 	return unsafe.Pointer(b.native)
 }
 
+func NewBytes(data []uint8, size uint) *Bytes
+
+func NewBytes(data []uint8, size uint) *Bytes
+
+func NewBytes(data []uint8, size uint) *Bytes
+
+func NewBytes(data []uint8, size uint, freeFunc unsafe.Pointer, userData unsafe.Pointer) *Bytes
+
 // Checksum: an opaque structure representing a checksumming operation. To
 // create a new GChecksum, use g_checksum_new(). To free a GChecksum, use
 // g_checksum_free().
@@ -8140,6 +8148,8 @@ func (c *Checksum) free() {}
 func (c *Checksum) Native() unsafe.Pointer {
 	return unsafe.Pointer(c.native)
 }
+
+func NewChecksum(checksumType ChecksumType) *Checksum
 
 // Cond: the #GCond struct is an opaque data structure that represents a
 // condition. Threads can block on a #GCond if they find a certain condition to
@@ -8268,6 +8278,12 @@ func (d *Date) Native() unsafe.Pointer {
 	return unsafe.Pointer(d.native)
 }
 
+func NewDate() *Date
+
+func NewDate(day DateDay, month DateMonth, year DateYear) *Date
+
+func NewDate(julianDay uint32) *Date
+
 // DateTime: `GDateTime` is an opaque structure whose members cannot be accessed
 // directly.
 type DateTime struct {
@@ -8297,6 +8313,28 @@ func (d *DateTime) free() {}
 func (d *DateTime) Native() unsafe.Pointer {
 	return unsafe.Pointer(d.native)
 }
+
+func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute int, seconds float64) *DateTime
+
+func NewDateTime(text string, defaultTz *TimeZone) *DateTime
+
+func NewDateTime(tv *TimeVal) *DateTime
+
+func NewDateTime(tv *TimeVal) *DateTime
+
+func NewDateTime(t int64) *DateTime
+
+func NewDateTime(t int64) *DateTime
+
+func NewDateTime(year int, month int, day int, hour int, minute int, seconds float64) *DateTime
+
+func NewDateTime(tz *TimeZone) *DateTime
+
+func NewDateTime() *DateTime
+
+func NewDateTime() *DateTime
+
+func NewDateTime(year int, month int, day int, hour int, minute int, seconds float64) *DateTime
 
 // DebugKey: associates a string with a bit flag. Used in
 // g_parse_debug_string().
@@ -8371,6 +8409,8 @@ func marshalError(p uintptr) (interface{}, error) {
 func (e *Error) Native() unsafe.Pointer {
 	return unsafe.Pointer(e.native)
 }
+
+func NewError(domain Quark, code int, message string) *Error
 
 // HashTable: the Table struct is an opaque data structure to represent a [Hash
 // Table][glib-Hash-Tables]. It should only be accessed via the following
@@ -8567,6 +8607,10 @@ func (i *IOChannel) Native() unsafe.Pointer {
 	return unsafe.Pointer(i.native)
 }
 
+func NewIOChannel(filename string, mode string) *IOChannel
+
+func NewIOChannel(fd int) *IOChannel
+
 // IOFuncs: a table of functions used to handle different types of OChannel in a
 // generic way.
 type IOFuncs struct {
@@ -8621,6 +8665,8 @@ func (k *KeyFile) free() {}
 func (k *KeyFile) Native() unsafe.Pointer {
 	return unsafe.Pointer(k.native)
 }
+
+func NewKeyFile() *KeyFile
 
 // List: the #GList struct is used for each element in a doubly-linked list.
 type List struct {
@@ -8730,6 +8776,8 @@ func (m *MainContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(m.native)
 }
 
+func NewMainContext() *MainContext
+
 // MainLoop: the `GMainLoop` struct is an opaque data type representing the main
 // event loop of a GLib or GTK+ application.
 type MainLoop struct {
@@ -8759,6 +8807,8 @@ func (m *MainLoop) free() {}
 func (m *MainLoop) Native() unsafe.Pointer {
 	return unsafe.Pointer(m.native)
 }
+
+func NewMainLoop(context *MainContext, isRunning bool) *MainLoop
 
 // MappedFile: the File represents a file mapping created with
 // g_mapped_file_new(). It has only private members and should not be accessed
@@ -8791,6 +8841,10 @@ func (m *MappedFile) Native() unsafe.Pointer {
 	return unsafe.Pointer(m.native)
 }
 
+func NewMappedFile(filename string, writable bool) *MappedFile
+
+func NewMappedFile(fd int, writable bool) *MappedFile
+
 // MarkupParseContext: a parse context is used to parse a stream of bytes that
 // you expect to contain marked-up text.
 //
@@ -8822,6 +8876,8 @@ func (m *MarkupParseContext) free() {}
 func (m *MarkupParseContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(m.native)
 }
+
+func NewMarkupParseContext(parser *MarkupParser, flags MarkupParseFlags, userData unsafe.Pointer, userDataDnotify unsafe.Pointer) *MarkupParseContext
 
 // MarkupParser: any of the fields in Parser can be nil, in which case they will
 // be ignored. Except for the @error function, any of these callbacks can set an
@@ -9095,6 +9151,8 @@ func (o *OptionGroup) free() {}
 func (o *OptionGroup) Native() unsafe.Pointer {
 	return unsafe.Pointer(o.native)
 }
+
+func NewOptionGroup(name string, description string, helpDescription string, userData unsafe.Pointer, destroy unsafe.Pointer) *OptionGroup
 
 // PollFD: represents a file descriptor, which events to poll for, and which
 // events occurred.
@@ -9448,6 +9506,8 @@ func (r *Regex) Native() unsafe.Pointer {
 	return unsafe.Pointer(r.native)
 }
 
+func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) *Regex
+
 // SList: the List struct is used for each element in the singly-linked list.
 type SList struct {
 	// Data: holds the element's data, which can be a pointer to any kind of
@@ -9737,6 +9797,8 @@ func (s *Source) Native() unsafe.Pointer {
 	return unsafe.Pointer(s.native)
 }
 
+func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source
+
 // SourceCallbackFuncs: the `GSourceCallbackFuncs` struct contains functions for
 // managing callback objects.
 type SourceCallbackFuncs struct {
@@ -9995,6 +10057,10 @@ func (t *Thread) Native() unsafe.Pointer {
 	return unsafe.Pointer(t.native)
 }
 
+func NewThread(name string, _func ThreadFunc, data unsafe.Pointer) *Thread
+
+func NewThread(name string, _func ThreadFunc, data unsafe.Pointer) *Thread
+
 // ThreadPool: the Pool struct represents a thread pool. It has three public
 // read-only members, but the underlying struct is bigger, so you must not copy
 // this struct.
@@ -10099,6 +10165,14 @@ func (t *TimeZone) free() {}
 func (t *TimeZone) Native() unsafe.Pointer {
 	return unsafe.Pointer(t.native)
 }
+
+func NewTimeZone(identifier string) *TimeZone
+
+func NewTimeZone() *TimeZone
+
+func NewTimeZone(seconds int32) *TimeZone
+
+func NewTimeZone() *TimeZone
 
 // TrashStack: each piece of memory that is pushed onto the stack is cast to a
 // GTrashStack*.
@@ -10555,6 +10629,58 @@ func (v *Variant) Native() unsafe.Pointer {
 	return unsafe.Pointer(v.native)
 }
 
+func NewVariant(childType *VariantType, children []*Variant, nChildren uint) *Variant
+
+func NewVariant(value bool) *Variant
+
+func NewVariant(value uint8) *Variant
+
+func NewVariant(string []uint8) *Variant
+
+func NewVariant(strv []string, length int) *Variant
+
+func NewVariant(key *Variant, value *Variant) *Variant
+
+func NewVariant(value float64) *Variant
+
+func NewVariant(elementType *VariantType, elements unsafe.Pointer, nElements uint, elementSize uint) *Variant
+
+func NewVariant(_type *VariantType, bytes *Bytes, trusted bool) *Variant
+
+func NewVariant(_type *VariantType, data []uint8, size uint, trusted bool, notify unsafe.Pointer, userData unsafe.Pointer) *Variant
+
+func NewVariant(value int32) *Variant
+
+func NewVariant(value int16) *Variant
+
+func NewVariant(value int32) *Variant
+
+func NewVariant(value int64) *Variant
+
+func NewVariant(childType *VariantType, child *Variant) *Variant
+
+func NewVariant(objectPath string) *Variant
+
+func NewVariant(strv []string, length int) *Variant
+
+func NewVariant(signature string) *Variant
+
+func NewVariant(string string) *Variant
+
+func NewVariant(strv []string, length int) *Variant
+
+func NewVariant(string string) *Variant
+
+func NewVariant(children []*Variant, nChildren uint) *Variant
+
+func NewVariant(value uint16) *Variant
+
+func NewVariant(value uint32) *Variant
+
+func NewVariant(value uint64) *Variant
+
+func NewVariant(value *Variant) *Variant
+
 // VariantBuilder: a utility type for constructing container-type #GVariant
 // instances.
 //
@@ -10590,6 +10716,8 @@ func (v *VariantBuilder) free() {}
 func (v *VariantBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(v.native)
 }
+
+func NewVariantBuilder(_type *VariantType) *VariantBuilder
 
 // VariantDict: GVariantDict is a mutable interface to #GVariant dictionaries.
 //
@@ -10699,6 +10827,8 @@ func (v *VariantDict) free() {}
 func (v *VariantDict) Native() unsafe.Pointer {
 	return unsafe.Pointer(v.native)
 }
+
+func NewVariantDict(fromAsv *Variant) *VariantDict
 
 // VariantIter: GVariantIter is an opaque data structure and can only be
 // accessed using the following functions.
@@ -10887,3 +11017,13 @@ func (v *VariantType) free() {}
 func (v *VariantType) Native() unsafe.Pointer {
 	return unsafe.Pointer(v.native)
 }
+
+func NewVariantType(typeString string) *VariantType
+
+func NewVariantType(element *VariantType) *VariantType
+
+func NewVariantType(key *VariantType, value *VariantType) *VariantType
+
+func NewVariantType(element *VariantType) *VariantType
+
+func NewVariantType(items []*VariantType, length int) *VariantType

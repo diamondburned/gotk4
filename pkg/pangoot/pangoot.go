@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/pkg/pangofc"
 	"github.com/gotk3/gotk3/glib"
 )
 
@@ -95,6 +96,8 @@ func (b *Buffer) free() {}
 func (b *Buffer) Native() unsafe.Pointer {
 	return unsafe.Pointer(b.native)
 }
+
+func NewBuffer(font *pangofc.Font) *Buffer
 
 // FeatureMap: the OTFeatureMap typedef is used to represent an OpenType feature
 // with the property bit associated with it. The feature tag is represented as a

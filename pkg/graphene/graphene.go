@@ -277,6 +277,8 @@ func (b *Box) Native() unsafe.Pointer {
 	return unsafe.Pointer(b.native)
 }
 
+func NewBox() *Box
+
 // Euler: describe a rotation using Euler angles.
 //
 // The contents of the #graphene_euler_t structure are private and should never
@@ -308,6 +310,8 @@ func (e *Euler) free() {}
 func (e *Euler) Native() unsafe.Pointer {
 	return unsafe.Pointer(e.native)
 }
+
+func NewEuler() *Euler
 
 // Frustum: a 3D volume delimited by 2D clip planes.
 //
@@ -341,6 +345,8 @@ func (f *Frustum) Native() unsafe.Pointer {
 	return unsafe.Pointer(f.native)
 }
 
+func NewFrustum() *Frustum
+
 // Matrix: a structure capable of holding a 4x4 matrix.
 //
 // The contents of the #graphene_matrix_t structure are private and should never
@@ -372,6 +378,8 @@ func (m *Matrix) free() {}
 func (m *Matrix) Native() unsafe.Pointer {
 	return unsafe.Pointer(m.native)
 }
+
+func NewMatrix() *Matrix
 
 // Plane: a 2D plane that extends infinitely in a 3D volume.
 //
@@ -405,6 +413,8 @@ func (p *Plane) Native() unsafe.Pointer {
 	return unsafe.Pointer(p.native)
 }
 
+func NewPlane() *Plane
+
 // Point: a point with two coordinates.
 type Point struct {
 	// X: the X coordinate of the point
@@ -436,6 +446,8 @@ func marshalPoint(p uintptr) (interface{}, error) {
 func (p *Point) Native() unsafe.Pointer {
 	return unsafe.Pointer(p.native)
 }
+
+func NewPoint() *Point
 
 // Point3D: a point with three components: X, Y, and Z.
 type Point3D struct {
@@ -472,6 +484,8 @@ func (p *Point3D) Native() unsafe.Pointer {
 	return unsafe.Pointer(p.native)
 }
 
+func NewPoint3D() *Point3D
+
 // Quad: a 4 vertex quadrilateral, as represented by four #graphene_point_t.
 //
 // The contents of a #graphene_quad_t are private and should never be accessed
@@ -503,6 +517,8 @@ func (q *Quad) free() {}
 func (q *Quad) Native() unsafe.Pointer {
 	return unsafe.Pointer(q.native)
 }
+
+func NewQuad() *Quad
 
 // Quaternion: a quaternion.
 //
@@ -536,6 +552,8 @@ func (q *Quaternion) Native() unsafe.Pointer {
 	return unsafe.Pointer(q.native)
 }
 
+func NewQuaternion() *Quaternion
+
 // Ray: a ray emitted from an origin in a given direction.
 //
 // The contents of the `graphene_ray_t` structure are private, and should not be
@@ -567,6 +585,8 @@ func (r *Ray) free() {}
 func (r *Ray) Native() unsafe.Pointer {
 	return unsafe.Pointer(r.native)
 }
+
+func NewRay() *Ray
 
 // Rect: the location and size of a rectangle region.
 //
@@ -699,6 +719,8 @@ func (s *Size) Native() unsafe.Pointer {
 	return unsafe.Pointer(s.native)
 }
 
+func NewSize() *Size
+
 // Sphere: a sphere, represented by its center and radius.
 type Sphere struct {
 	native *C.graphene_sphere_t
@@ -728,6 +750,8 @@ func (s *Sphere) Native() unsafe.Pointer {
 	return unsafe.Pointer(s.native)
 }
 
+func NewSphere() *Sphere
+
 // Triangle: a triangle.
 type Triangle struct {
 	native *C.graphene_triangle_t
@@ -756,6 +780,8 @@ func (t *Triangle) free() {}
 func (t *Triangle) Native() unsafe.Pointer {
 	return unsafe.Pointer(t.native)
 }
+
+func NewTriangle() *Triangle
 
 // Vec2: a structure capable of holding a vector with two dimensions, x and y.
 //
@@ -788,6 +814,8 @@ func (v *Vec2) free() {}
 func (v *Vec2) Native() unsafe.Pointer {
 	return unsafe.Pointer(v.native)
 }
+
+func NewVec2() *Vec2
 
 // Vec3: a structure capable of holding a vector with three dimensions: x, y,
 // and z.
@@ -822,6 +850,8 @@ func (v *Vec3) Native() unsafe.Pointer {
 	return unsafe.Pointer(v.native)
 }
 
+func NewVec3() *Vec3
+
 // Vec4: a structure capable of holding a vector with four dimensions: x, y, z,
 // and w.
 //
@@ -854,3 +884,5 @@ func (v *Vec4) free() {}
 func (v *Vec4) Native() unsafe.Pointer {
 	return unsafe.Pointer(v.native)
 }
+
+func NewVec4() *Vec4

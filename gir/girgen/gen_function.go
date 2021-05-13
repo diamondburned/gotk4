@@ -42,14 +42,14 @@ func (fg *functionGenerator) Use(fn gir.Function) bool {
 	var ok bool
 
 	if fn.ReturnValue != nil {
-		fg.Return, ok = fg.ng.fnReturns(fn.Parameters, fn.ReturnValue)
+		fg.Return, ok = fg.ng.fnReturns(fn.CallableAttrs)
 		if !ok {
 			return false
 		}
 	}
 
 	if fn.Parameters != nil {
-		fg.Args, ok = fg.ng.fnArgs(fn.Parameters)
+		fg.Args, ok = fg.ng.fnArgs(fn.CallableAttrs)
 		if !ok {
 			return false
 		}
@@ -58,16 +58,36 @@ func (fg *functionGenerator) Use(fn gir.Function) bool {
 	return true
 }
 
+// FnCall generates the tail of the function, that is, everything underlined
+// below:
+//
+//    func FunctionName(arguments...) (returns...)
+//                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// An empty string is returned if the function cannot be generated.
+func (ng *NamespaceGenerator) FnCall(attrs gir.CallableAttrs) string {
+	args, ok := ng.fnArgs(attrs)
+	if !ok {
+		return ""
+	}
+
+	returns, ok := ng.fnReturns(attrs)
+	if !ok {
+		return ""
+	}
+
+	return "(" + args + ") " + returns
+}
+
 // fnArgs returns the function arguments as a Go string and true. It returns
 // false if the argument types cannot be fully resolved.
-func (ng *NamespaceGenerator) fnArgs(params *gir.Parameters) (string, bool) {
-	if params == nil || len(params.Parameters) == 0 {
+func (ng *NamespaceGenerator) fnArgs(attrs gir.CallableAttrs) (string, bool) {
+	if attrs.Parameters == nil || len(attrs.Parameters.Parameters) == 0 {
 		return "", true
 	}
 
-	goArgs := make([]string, 0, len(params.Parameters))
+	goArgs := make([]string, 0, len(attrs.Parameters.Parameters))
 
-	for _, param := range params.Parameters {
+	for _, param := range attrs.Parameters.Parameters {
 		// Skip output parameters.
 		if param.Direction == "out" {
 			continue
@@ -87,11 +107,11 @@ func (ng *NamespaceGenerator) fnArgs(params *gir.Parameters) (string, bool) {
 
 // fnReturns returns the function return type and true. It returns false if the
 // function's return type cannot be resolved.
-func (ng *NamespaceGenerator) fnReturns(ps *gir.Parameters, rs *gir.ReturnValue) (string, bool) {
+func (ng *NamespaceGenerator) fnReturns(attrs gir.CallableAttrs) (string, bool) {
 	var returns []string
 
-	if ps != nil {
-		for _, param := range ps.Parameters {
+	if attrs.Parameters != nil {
+		for _, param := range attrs.Parameters.Parameters {
 			if param.Direction != "out" {
 				continue
 			}
@@ -110,8 +130,8 @@ func (ng *NamespaceGenerator) fnReturns(ps *gir.Parameters, rs *gir.ReturnValue)
 		}
 	}
 
-	if rs != nil {
-		typ, ok := ng.ResolveAnyType(rs.AnyType)
+	if attrs.ReturnValue != nil {
+		typ, ok := ng.ResolveAnyType(attrs.ReturnValue.AnyType)
 		if !ok {
 			return "", false
 		}

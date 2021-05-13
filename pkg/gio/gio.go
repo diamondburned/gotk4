@@ -3627,6 +3627,8 @@ func (d *DBusNodeInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(d.native)
 }
 
+func NewDBusNodeInfo(xmlData string) *DBusNodeInfo
+
 // DBusPropertyInfo: information about a D-Bus property on a D-Bus interface.
 type DBusPropertyInfo struct {
 	// RefCount: the reference count or -1 if statically allocated.
@@ -3815,6 +3817,8 @@ func (f *FileAttributeInfoList) Native() unsafe.Pointer {
 	return unsafe.Pointer(f.native)
 }
 
+func NewFileAttributeInfoList() *FileAttributeInfoList
+
 // FileAttributeMatcher: determines if a string matches a file attribute.
 type FileAttributeMatcher struct {
 	native *C.GFileAttributeMatcher
@@ -3843,6 +3847,8 @@ func (f *FileAttributeMatcher) free() {}
 func (f *FileAttributeMatcher) Native() unsafe.Pointer {
 	return unsafe.Pointer(f.native)
 }
+
+func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher
 
 // InputMessage: structure used for scatter/gather data input when receiving
 // multiple messages or packets in one go. You generally pass in an array of
@@ -4201,6 +4207,8 @@ func (r *Resource) Native() unsafe.Pointer {
 	return unsafe.Pointer(r.native)
 }
 
+func NewResource(data *glib.Bytes) *Resource
+
 // SettingsSchema: the SchemaSource and Schema APIs provide a mechanism for
 // advanced control over the loading of schemas and a mechanism for
 // introspecting their content.
@@ -4373,6 +4381,8 @@ func (s *SettingsSchemaSource) Native() unsafe.Pointer {
 	return unsafe.Pointer(s.native)
 }
 
+func NewSettingsSchemaSource(directory string, parent *SettingsSchemaSource, trusted bool) *SettingsSchemaSource
+
 // SrvTarget: SRV (service) records are used by some network protocols to
 // provide service-specific aliasing and load-balancing. For example, XMPP
 // (Jabber) uses SRV records to locate the XMPP server for a domain; rather than
@@ -4412,6 +4422,8 @@ func (s *SrvTarget) free() {}
 func (s *SrvTarget) Native() unsafe.Pointer {
 	return unsafe.Pointer(s.native)
 }
+
+func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) *SrvTarget
 
 // StaticResource: GStaticResource is an opaque data structure and can only be
 // accessed using the following functions.

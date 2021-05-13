@@ -1905,6 +1905,8 @@ func (a *AttrList) Native() unsafe.Pointer {
 	return unsafe.Pointer(a.native)
 }
 
+func NewAttrList() *AttrList
+
 // AttrShape: the `PangoAttrShape` structure is used to represent attributes
 // which impose shape restrictions.
 type AttrShape struct {
@@ -2135,6 +2137,8 @@ func (f *FontDescription) free() {}
 func (f *FontDescription) Native() unsafe.Pointer {
 	return unsafe.Pointer(f.native)
 }
+
+func NewFontDescription() *FontDescription
 
 // FontMetrics: a `PangoFontMetrics` structure holds the overall metric
 // information for a font.
@@ -2425,6 +2429,8 @@ func (g *GlyphString) Native() unsafe.Pointer {
 	return unsafe.Pointer(g.native)
 }
 
+func NewGlyphString() *GlyphString
+
 // GlyphVisAttr: a `PangoGlyphVisAttr` structure communicates information
 // between the shaping and rendering phases.
 //
@@ -2502,6 +2508,8 @@ func marshalItem(p uintptr) (interface{}, error) {
 func (i *Item) Native() unsafe.Pointer {
 	return unsafe.Pointer(i.native)
 }
+
+func NewItem() *Item
 
 // Language: the `PangoLanguage` structure is used to represent a language.
 //
@@ -2835,6 +2843,8 @@ func (s *ScriptIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(s.native)
 }
 
+func NewScriptIter(text string, length int) *ScriptIter
+
 // TabArray: a `PangoTabArray` contains an array of tab stops.
 //
 // `PangoTabArray` can be used to set tab stops in a `PangoLayout`. Each tab
@@ -2866,6 +2876,8 @@ func (t *TabArray) free() {}
 func (t *TabArray) Native() unsafe.Pointer {
 	return unsafe.Pointer(t.native)
 }
+
+func NewTabArray(initialSize int, positionsInPixels bool) *TabArray
 
 // Context: a `PangoContext` stores global information used to control the
 // itemization process.

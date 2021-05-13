@@ -1088,6 +1088,10 @@ func (c *ContentFormats) Native() unsafe.Pointer {
 	return unsafe.Pointer(c.native)
 }
 
+func NewContentFormats(mimeTypes []string, nMimeTypes uint) *ContentFormats
+
+func NewContentFormats(_type glib.Type) *ContentFormats
+
 // ContentFormatsBuilder: a ContentFormatsBuilder struct is an opaque struct. It
 // is meant to not be kept around and only be used to create new ContentFormats
 // objects.
@@ -1118,6 +1122,8 @@ func (c *ContentFormatsBuilder) free() {}
 func (c *ContentFormatsBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(c.native)
 }
+
+func NewContentFormatsBuilder() *ContentFormatsBuilder
 
 // EventSequence: gdkEventSequence is an opaque type representing a sequence of
 // related touch events.
@@ -1288,6 +1294,8 @@ func (p *PopupLayout) Native() unsafe.Pointer {
 	return unsafe.Pointer(p.native)
 }
 
+func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gravity) *PopupLayout
+
 // RGBA: a RGBA is used to represent a (possibly translucent) color, in a way
 // that is compatible with cairo’s notion of color.
 type RGBA struct {
@@ -1433,6 +1441,8 @@ func (t *ToplevelLayout) free() {}
 func (t *ToplevelLayout) Native() unsafe.Pointer {
 	return unsafe.Pointer(t.native)
 }
+
+func NewToplevelLayout() *ToplevelLayout
 
 // AppLaunchContext: gdkAppLaunchContext is an implementation of LaunchContext
 // that handles launching an application in a graphical context. It provides

@@ -71,6 +71,12 @@ var recordTmpl = newGoTemplate(`
 	func ({{ $recv }} *{{ .GoName }}) Native() unsafe.Pointer {
 		return unsafe.Pointer({{ $recv }}.native)
 	}
+
+	{{ range .Constructors }}
+	{{ with $tail := ($.Ng.FnCall .CallableAttrs) }}
+	func New{{ $.GoName }}{{ $tail }}
+	{{ end }}
+	{{ end }}
 `)
 
 type recordGenerator struct {

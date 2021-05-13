@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gdk"
+	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/gotk3/gotk3/glib"
 )
@@ -435,6 +436,8 @@ func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(s.native)
 }
 
+func NewShaderArgsBuilder(shader *GLShader, initialValues *glib.Bytes) *ShaderArgsBuilder
+
 // Shadow: the shadow parameters in a shadow node.
 type Shadow struct {
 	// Color: the color of the shadow
@@ -501,6 +504,8 @@ func (t *Transform) free() {}
 func (t *Transform) Native() unsafe.Pointer {
 	return unsafe.Pointer(t.native)
 }
+
+func NewTransform() *Transform
 
 // BlendNode: a render node applying a blending function between its two child
 // nodes.

@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk"
 	"github.com/diamondburned/gotk4/pkg/gdkx11"
 	"github.com/diamondburned/gotk4/pkg/gio"
+	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/glib"
 )
@@ -3521,6 +3522,10 @@ func (b *Bitset) Native() unsafe.Pointer {
 	return unsafe.Pointer(b.native)
 }
 
+func NewBitset() *Bitset
+
+func NewBitset(start uint, nItems uint) *Bitset
+
 // BitsetIter: an opaque, stack-allocated struct for iterating over the elements
 // of a Bitset. Before a GtkBitsetIter can be used, it needs to be initialized
 // with gtk_bitset_iter_init_first(), gtk_bitset_iter_init_last() or
@@ -3591,6 +3596,8 @@ func marshalBorder(p uintptr) (interface{}, error) {
 func (b *Border) Native() unsafe.Pointer {
 	return unsafe.Pointer(b.native)
 }
+
+func NewBorder() *Border
 
 // BuildableParser: a sub-parser for Buildable implementations.
 type BuildableParser struct {
@@ -3704,6 +3711,8 @@ func (c *CSSSection) Native() unsafe.Pointer {
 	return unsafe.Pointer(c.native)
 }
 
+func NewCSSSection(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSection
+
 // PadActionEntry: struct defining a pad action entry.
 type PadActionEntry struct {
 	// Type: the type of pad feature that will trigger this action entry.
@@ -3816,6 +3825,18 @@ func (p *PaperSize) free() {}
 func (p *PaperSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(p.native)
 }
+
+func NewPaperSize(name string) *PaperSize
+
+func NewPaperSize(name string, displayName string, width float64, height float64, unit Unit) *PaperSize
+
+func NewPaperSize(variant *glib.Variant) *PaperSize
+
+func NewPaperSize(ippName string, width float64, height float64) *PaperSize
+
+func NewPaperSize(keyFile *glib.KeyFile, groupName string) *PaperSize
+
+func NewPaperSize(ppdName string, ppdDisplayName string, width float64, height float64) *PaperSize
 
 // RecentData: meta-data to be passed to gtk_recent_manager_add_full() when
 // registering a recently used resource.
@@ -3977,6 +3998,8 @@ func (r *Requisition) Native() unsafe.Pointer {
 	return unsafe.Pointer(r.native)
 }
 
+func NewRequisition() *Requisition
+
 type SettingsValue struct {
 	// Origin: origin should be something like “filename:linenumber” for rc
 	// files, or e.g. “XProperty” for other sources.
@@ -4108,6 +4131,14 @@ func (t *TreePath) Native() unsafe.Pointer {
 	return unsafe.Pointer(t.native)
 }
 
+func NewTreePath() *TreePath
+
+func NewTreePath() *TreePath
+
+func NewTreePath(indices []int, length uint) *TreePath
+
+func NewTreePath(path string) *TreePath
+
 // TreeRowReference: a GtkTreeRowReference tracks model changes so that it
 // always refers to the same row (a TreePath refers to a position, not a fixed
 // row). Create a new GtkTreeRowReference with gtk_tree_row_reference_new().
@@ -4138,6 +4169,10 @@ func (t *TreeRowReference) free() {}
 func (t *TreeRowReference) Native() unsafe.Pointer {
 	return unsafe.Pointer(t.native)
 }
+
+func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference
+
+func NewTreeRowReference(proxy *glib.Object, model TreeModel, path *TreePath) *TreeRowReference
 
 // ATContext: gtkATContext is an abstract class provided by GTK to communicate
 // to platform-specific assistive technologies API.

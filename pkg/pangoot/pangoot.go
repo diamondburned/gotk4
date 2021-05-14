@@ -241,6 +241,16 @@ type Info struct {
 	*glib.Object
 }
 
+func wrapInfo(obj *glib.Object) *Info {
+	return &Info{*glib.Object{obj}}
+}
+
+func marshalInfo(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Ruleset: the OTRuleset structure holds a set of features selected from the
 // tables in an OpenType font. (A feature is an operation such as adjusting
 // glyph positioning that should be applied to a text feature such as a certain
@@ -249,4 +259,14 @@ type Info struct {
 // GlyphString with pango_ot_ruleset_shape().
 type Ruleset struct {
 	*glib.Object
+}
+
+func wrapRuleset(obj *glib.Object) *Ruleset {
+	return &Ruleset{*glib.Object{obj}}
+}
+
+func marshalRuleset(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }

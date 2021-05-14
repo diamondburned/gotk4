@@ -1467,9 +1467,29 @@ type AppLaunchContext struct {
 	gio.AppLaunchContext
 }
 
+func wrapAppLaunchContext(obj *glib.Object) *AppLaunchContext {
+	return &AppLaunchContext{AppLaunchContext{*glib.Object{obj}}}
+}
+
+func marshalAppLaunchContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ButtonEvent: an event related to a button on a pointer device/
 type ButtonEvent struct {
 	Event
+}
+
+func wrapButtonEvent(obj *glib.Object) *ButtonEvent {
+	return &ButtonEvent{Event{obj}}
+}
+
+func marshalButtonEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CairoContext: gdkCairoContext is an object representing the platform-specific
@@ -1480,6 +1500,16 @@ type ButtonEvent struct {
 // on that Surface.
 type CairoContext struct {
 	DrawContext
+}
+
+func wrapCairoContext(obj *glib.Object) *CairoContext {
+	return &CairoContext{DrawContext{*glib.Object{obj}}}
+}
+
+func marshalCairoContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Clipboard: the Clipboard object represents a clipboard of data shared between
@@ -1500,10 +1530,30 @@ type Clipboard struct {
 	*glib.Object
 }
 
+func wrapClipboard(obj *glib.Object) *Clipboard {
+	return &Clipboard{*glib.Object{obj}}
+}
+
+func marshalClipboard(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ContentDeserializer: a GdkContentDeserializer is used to deserialize content
 // received via inter-application data transfers.
 type ContentDeserializer struct {
 	*glib.Object
+}
+
+func wrapContentDeserializer(obj *glib.Object) *ContentDeserializer {
+	return &ContentDeserializer{*glib.Object{obj}}
+}
+
+func marshalContentDeserializer(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ContentProvider: a GdkContentProvider is used to provide content for the
@@ -1519,15 +1569,45 @@ type ContentProvider struct {
 	*glib.Object
 }
 
+func wrapContentProvider(obj *glib.Object) *ContentProvider {
+	return &ContentProvider{*glib.Object{obj}}
+}
+
+func marshalContentProvider(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ContentSerializer: a GdkContentSerializer is used to serialize content for
 // inter-application data transfers.
 type ContentSerializer struct {
 	*glib.Object
 }
 
+func wrapContentSerializer(obj *glib.Object) *ContentSerializer {
+	return &ContentSerializer{*glib.Object{obj}}
+}
+
+func marshalContentSerializer(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CrossingEvent: an event caused by a pointing device moving between surfaces.
 type CrossingEvent struct {
 	Event
+}
+
+func wrapCrossingEvent(obj *glib.Object) *CrossingEvent {
+	return &CrossingEvent{Event{obj}}
+}
+
+func marshalCrossingEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Cursor: a Cursor represents a cursor. Its contents are private.
@@ -1538,14 +1618,44 @@ type Cursor struct {
 	*glib.Object
 }
 
+func wrapCursor(obj *glib.Object) *Cursor {
+	return &Cursor{*glib.Object{obj}}
+}
+
+func marshalCursor(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // DNDEvent: an event related to drag and drop operations.
 type DNDEvent struct {
 	Event
 }
 
+func wrapDNDEvent(obj *glib.Object) *DNDEvent {
+	return &DNDEvent{Event{obj}}
+}
+
+func marshalDNDEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // DeleteEvent: an event related to closing a top-level surface.
 type DeleteEvent struct {
 	Event
+}
+
+func wrapDeleteEvent(obj *glib.Object) *DeleteEvent {
+	return &DeleteEvent{Event{obj}}
+}
+
+func marshalDeleteEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Device: the Device object represents a single input device, such as a
@@ -1557,9 +1667,29 @@ type Device struct {
 	*glib.Object
 }
 
+func wrapDevice(obj *glib.Object) *Device {
+	return &Device{*glib.Object{obj}}
+}
+
+func marshalDevice(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // DeviceTool: a physical tool associated to a Device.
 type DeviceTool struct {
 	*glib.Object
+}
+
+func wrapDeviceTool(obj *glib.Object) *DeviceTool {
+	return &DeviceTool{*glib.Object{obj}}
+}
+
+func marshalDeviceTool(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Display: gdkDisplay objects are the GDK representation of a workstation.
@@ -1576,6 +1706,16 @@ type DeviceTool struct {
 // gdk_display_get_monitor_at_surface() and similar APIs.
 type Display struct {
 	*glib.Object
+}
+
+func wrapDisplay(obj *glib.Object) *Display {
+	return &Display{*glib.Object{obj}}
+}
+
+func marshalDisplay(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // DisplayManager: the purpose of the DisplayManager singleton object is to
@@ -1617,10 +1757,30 @@ type DisplayManager struct {
 	*glib.Object
 }
 
+func wrapDisplayManager(obj *glib.Object) *DisplayManager {
+	return &DisplayManager{*glib.Object{obj}}
+}
+
+func marshalDisplayManager(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Drag: the GdkDrag struct contains only private fields and should not be
 // accessed directly.
 type Drag struct {
 	*glib.Object
+}
+
+func wrapDrag(obj *glib.Object) *Drag {
+	return &Drag{*glib.Object{obj}}
+}
+
+func marshalDrag(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // DrawContext: gdkDrawContext is the base object used by contexts implementing
@@ -1634,15 +1794,45 @@ type DrawContext struct {
 	*glib.Object
 }
 
+func wrapDrawContext(obj *glib.Object) *DrawContext {
+	return &DrawContext{*glib.Object{obj}}
+}
+
+func marshalDrawContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Drop: the GdkDrop struct contains only private fields and should not be
 // accessed directly.
 type Drop struct {
 	*glib.Object
 }
 
+func wrapDrop(obj *glib.Object) *Drop {
+	return &Drop{*glib.Object{obj}}
+}
+
+func marshalDrop(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // FocusEvent: an event related to a focus change.
 type FocusEvent struct {
 	Event
+}
+
+func wrapFocusEvent(obj *glib.Object) *FocusEvent {
+	return &FocusEvent{Event{obj}}
+}
+
+func marshalFocusEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // FrameClock: a FrameClock tells the application when to update and repaint a
@@ -1676,6 +1866,16 @@ type FocusEvent struct {
 // signal of the clock, they will stay exactly synchronized.
 type FrameClock struct {
 	*glib.Object
+}
+
+func wrapFrameClock(obj *glib.Object) *FrameClock {
+	return &FrameClock{*glib.Object{obj}}
+}
+
+func marshalFrameClock(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // GLContext: gdkGLContext is an object representing the platform-specific
@@ -1728,9 +1928,29 @@ type GLContext struct {
 	DrawContext
 }
 
+func wrapGLContext(obj *glib.Object) *GLContext {
+	return &GLContext{DrawContext{*glib.Object{obj}}}
+}
+
+func marshalGLContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // GLTexture: a Texture representing a GL texture object.
 type GLTexture struct {
 	Texture
+}
+
+func wrapGLTexture(obj *glib.Object) *GLTexture {
+	return &GLTexture{Texture{*glib.Object{obj}}}
+}
+
+func marshalGLTexture(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // GrabBrokenEvent: an event related to a broken windowing system grab.
@@ -1738,14 +1958,44 @@ type GrabBrokenEvent struct {
 	Event
 }
 
+func wrapGrabBrokenEvent(obj *glib.Object) *GrabBrokenEvent {
+	return &GrabBrokenEvent{Event{obj}}
+}
+
+func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // KeyEvent: an event related to a key-based device.
 type KeyEvent struct {
 	Event
 }
 
+func wrapKeyEvent(obj *glib.Object) *KeyEvent {
+	return &KeyEvent{Event{obj}}
+}
+
+func marshalKeyEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // MemoryTexture: a Texture representing image data in memory.
 type MemoryTexture struct {
 	Texture
+}
+
+func wrapMemoryTexture(obj *glib.Object) *MemoryTexture {
+	return &MemoryTexture{Texture{*glib.Object{obj}}}
+}
+
+func marshalMemoryTexture(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Monitor: gdkMonitor objects represent the individual outputs that are
@@ -1756,9 +2006,29 @@ type Monitor struct {
 	*glib.Object
 }
 
+func wrapMonitor(obj *glib.Object) *Monitor {
+	return &Monitor{*glib.Object{obj}}
+}
+
+func marshalMonitor(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // MotionEvent: an event related to a pointer or touch device motion.
 type MotionEvent struct {
 	Event
+}
+
+func wrapMotionEvent(obj *glib.Object) *MotionEvent {
+	return &MotionEvent{Event{obj}}
+}
+
+func marshalMotionEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // PadEvent: an event related to a pad-based device.
@@ -1766,14 +2036,44 @@ type PadEvent struct {
 	Event
 }
 
+func wrapPadEvent(obj *glib.Object) *PadEvent {
+	return &PadEvent{Event{obj}}
+}
+
+func marshalPadEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ProximityEvent: an event related to the proximity of a tool to a device.
 type ProximityEvent struct {
 	Event
 }
 
+func wrapProximityEvent(obj *glib.Object) *ProximityEvent {
+	return &ProximityEvent{Event{obj}}
+}
+
+func marshalProximityEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ScrollEvent: an event related to a scrolling motion.
 type ScrollEvent struct {
 	Event
+}
+
+func wrapScrollEvent(obj *glib.Object) *ScrollEvent {
+	return &ScrollEvent{Event{obj}}
+}
+
+func marshalScrollEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Seat: the Seat object represents a collection of input devices that belong to
@@ -1782,9 +2082,29 @@ type Seat struct {
 	*glib.Object
 }
 
+func wrapSeat(obj *glib.Object) *Seat {
+	return &Seat{*glib.Object{obj}}
+}
+
+func marshalSeat(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Snapshot: base type for snapshot operations.
 type Snapshot struct {
 	*glib.Object
+}
+
+func wrapSnapshot(obj *glib.Object) *Snapshot {
+	return &Snapshot{*glib.Object{obj}}
+}
+
+func marshalSnapshot(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Surface: a Surface is a (usually) rectangular region on the screen. It’s a
@@ -1799,9 +2119,29 @@ type Surface struct {
 	*glib.Object
 }
 
+func wrapSurface(obj *glib.Object) *Surface {
+	return &Surface{*glib.Object{obj}}
+}
+
+func marshalSurface(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Texture: the `GdkTexture` structure contains only private data.
 type Texture struct {
 	*glib.Object
+}
+
+func wrapTexture(obj *glib.Object) *Texture {
+	return &Texture{*glib.Object{obj}}
+}
+
+func marshalTexture(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // TouchEvent: an event related to a touch-based device.
@@ -1809,9 +2149,29 @@ type TouchEvent struct {
 	Event
 }
 
+func wrapTouchEvent(obj *glib.Object) *TouchEvent {
+	return &TouchEvent{Event{obj}}
+}
+
+func marshalTouchEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // TouchpadEvent: an event related to a touchpad device.
 type TouchpadEvent struct {
 	Event
+}
+
+func wrapTouchpadEvent(obj *glib.Object) *TouchpadEvent {
+	return &TouchpadEvent{Event{obj}}
+}
+
+func marshalTouchpadEvent(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // VulkanContext: gdkVulkanContext is an object representing the
@@ -1825,4 +2185,14 @@ type TouchpadEvent struct {
 // returning nil context.
 type VulkanContext struct {
 	DrawContext
+}
+
+func wrapVulkanContext(obj *glib.Object) *VulkanContext {
+	return &VulkanContext{DrawContext{*glib.Object{obj}}}
+}
+
+func marshalVulkanContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }

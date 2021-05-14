@@ -4184,6 +4184,16 @@ type ATContext struct {
 	*glib.Object
 }
 
+func wrapATContext(obj *glib.Object) *ATContext {
+	return &ATContext{*glib.Object{obj}}
+}
+
+func marshalATContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // AboutDialog: the GtkAboutDialog offers a simple way to display information
 // about a program like its logo, name, copyright, website and license. It is
 // also possible to give credits to the authors, documenters, translators and
@@ -4227,6 +4237,16 @@ type AboutDialog struct {
 	Window
 }
 
+func wrapAboutDialog(obj *glib.Object) *AboutDialog {
+	return &AboutDialog{Window{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalAboutDialog(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ActionBar: gtkActionBar is designed to present contextual actions. It is
 // expected to be displayed below the content and expand horizontally to fill
 // the area.
@@ -4244,9 +4264,29 @@ type ActionBar struct {
 	Widget
 }
 
+func wrapActionBar(obj *glib.Object) *ActionBar {
+	return &ActionBar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalActionBar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ActivateAction: a ShortcutAction that calls gtk_widget_activate().
 type ActivateAction struct {
 	ShortcutAction
+}
+
+func wrapActivateAction(obj *glib.Object) *ActivateAction {
+	return &ActivateAction{ShortcutAction{*glib.Object{obj}}}
+}
+
+func marshalActivateAction(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Adjustment: the Adjustment object represents a value which has an associated
@@ -4260,14 +4300,44 @@ type Adjustment struct {
 	glib.InitiallyUnowned
 }
 
+func wrapAdjustment(obj *glib.Object) *Adjustment {
+	return &Adjustment{glib.InitiallyUnowned{obj}}
+}
+
+func marshalAdjustment(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // AlternativeTrigger: a ShortcutTrigger that triggers when either of two
 // ShortcutTriggers trigger.
 type AlternativeTrigger struct {
 	ShortcutTrigger
 }
 
+func wrapAlternativeTrigger(obj *glib.Object) *AlternativeTrigger {
+	return &AlternativeTrigger{ShortcutTrigger{*glib.Object{obj}}}
+}
+
+func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type AnyFilter struct {
 	MultiFilter
+}
+
+func wrapAnyFilter(obj *glib.Object) *AnyFilter {
+	return &AnyFilter{MultiFilter{Filter{*glib.Object{obj}}}}
+}
+
+func marshalAnyFilter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // AppChooserButton: the AppChooserButton is a widget that lets the user select
@@ -4300,6 +4370,16 @@ type AppChooserButton struct {
 	Widget
 }
 
+func wrapAppChooserButton(obj *glib.Object) *AppChooserButton {
+	return &AppChooserButton{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalAppChooserButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // AppChooserDialog: gtkAppChooserDialog shows a AppChooserWidget inside a
 // Dialog.
 //
@@ -4312,6 +4392,16 @@ type AppChooserButton struct {
 // gtk_app_chooser_dialog_set_heading().
 type AppChooserDialog struct {
 	Dialog
+}
+
+func wrapAppChooserDialog(obj *glib.Object) *AppChooserDialog {
+	return &AppChooserDialog{Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}}
+}
+
+func marshalAppChooserDialog(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // AppChooserWidget: gtkAppChooserWidget is a widget for selecting applications.
@@ -4335,6 +4425,16 @@ type AppChooserDialog struct {
 // GtkAppChooserWidget has a single CSS node with name appchooser.
 type AppChooserWidget struct {
 	Widget
+}
+
+func wrapAppChooserWidget(obj *glib.Object) *AppChooserWidget {
+	return &AppChooserWidget{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalAppChooserWidget(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Application: gtkApplication is a class that handles many important aspects of
@@ -4404,6 +4504,16 @@ type AppChooserWidget struct {
 // Basics](https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
 type Application struct {
 	gio.Application
+}
+
+func wrapApplication(obj *glib.Object) *Application {
+	return &Application{Application{*glib.Object{obj}}}
+}
+
+func marshalApplication(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ApplicationWindow: gtkApplicationWindow is a Window subclass that offers some
@@ -4477,6 +4587,16 @@ type ApplicationWindow struct {
 	Window
 }
 
+func wrapApplicationWindow(obj *glib.Object) *ApplicationWindow {
+	return &ApplicationWindow{Window{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalApplicationWindow(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // AspectFrame: gtkAspectFrame is useful when you want pack a widget so that it
 // can resize while retaining the same aspect ratio. For instance, one might be
 // drawing a small preview of a larger image.
@@ -4490,6 +4610,16 @@ type ApplicationWindow struct {
 // GtkAspectFrame uses a CSS node with name `frame`.
 type AspectFrame struct {
 	Widget
+}
+
+func wrapAspectFrame(obj *glib.Object) *AspectFrame {
+	return &AspectFrame{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalAspectFrame(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Assistant: a Assistant is a widget used to represent a generally complex
@@ -4531,8 +4661,28 @@ type Assistant struct {
 	Window
 }
 
+func wrapAssistant(obj *glib.Object) *Assistant {
+	return &Assistant{Window{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalAssistant(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type AssistantPage struct {
 	*glib.Object
+}
+
+func wrapAssistantPage(obj *glib.Object) *AssistantPage {
+	return &AssistantPage{*glib.Object{obj}}
+}
+
+func marshalAssistantPage(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // BinLayout: gtkBinLayout is a LayoutManager subclass useful for create "bins"
@@ -4542,6 +4692,16 @@ type AssistantPage struct {
 // positioned.
 type BinLayout struct {
 	LayoutManager
+}
+
+func wrapBinLayout(obj *glib.Object) *BinLayout {
+	return &BinLayout{LayoutManager{*glib.Object{obj}}}
+}
+
+func marshalBinLayout(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // BookmarkList: gtkBookmarkList is a list model that wraps GBookmarkFile. It
@@ -4554,10 +4714,30 @@ type BookmarkList struct {
 	*glib.Object
 }
 
+func wrapBookmarkList(obj *glib.Object) *BookmarkList {
+	return &BookmarkList{*glib.Object{obj}}
+}
+
+func marshalBookmarkList(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // BoolFilter: gtkBoolFilter is a simple filter that takes a boolean Expression
 // to determine whether to include items.
 type BoolFilter struct {
 	Filter
+}
+
+func wrapBoolFilter(obj *glib.Object) *BoolFilter {
+	return &BoolFilter{Filter{*glib.Object{obj}}}
+}
+
+func marshalBoolFilter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Box: the GtkBox widget arranges child widgets into a single row or column,
@@ -4594,6 +4774,16 @@ type Box struct {
 	Widget
 }
 
+func wrapBox(obj *glib.Object) *Box {
+	return &Box{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalBox(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // BoxLayout: a GtkBoxLayout is a layout manager that arranges the children of
 // any widget using it into a single row or column, depending on the value of
 // its Orientable:orientation property. Within the other dimension all children
@@ -4607,6 +4797,16 @@ type Box struct {
 // use the BoxLayout:spacing property.
 type BoxLayout struct {
 	LayoutManager
+}
+
+func wrapBoxLayout(obj *glib.Object) *BoxLayout {
+	return &BoxLayout{LayoutManager{*glib.Object{obj}}}
+}
+
+func marshalBoxLayout(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Builder: a GtkBuilder is an auxiliary object that reads textual descriptions
@@ -4779,8 +4979,28 @@ type Builder struct {
 	*glib.Object
 }
 
+func wrapBuilder(obj *glib.Object) *Builder {
+	return &Builder{*glib.Object{obj}}
+}
+
+func marshalBuilder(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type BuilderCScope struct {
 	*glib.Object
+}
+
+func wrapBuilderCScope(obj *glib.Object) *BuilderCScope {
+	return &BuilderCScope{*glib.Object{obj}}
+}
+
+func marshalBuilderCScope(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // BuilderListItemFactory: gtkBuilderListItemFactory is a ListItemFactory that
@@ -4805,6 +5025,16 @@ type BuilderCScope struct {
 //      </interface>
 type BuilderListItemFactory struct {
 	ListItemFactory
+}
+
+func wrapBuilderListItemFactory(obj *glib.Object) *BuilderListItemFactory {
+	return &BuilderListItemFactory{ListItemFactory{*glib.Object{obj}}}
+}
+
+func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Button: the Button widget is generally used to trigger a callback function
@@ -4838,8 +5068,28 @@ type Button struct {
 	Widget
 }
 
+func wrapButton(obj *glib.Object) *Button {
+	return &Button{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type CClosureExpression struct {
 	Expression
+}
+
+func wrapCClosureExpression(obj *glib.Object) *CClosureExpression {
+	return &CClosureExpression{Expression{obj}}
+}
+
+func marshalCClosureExpression(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Calendar: gtkCalendar is a widget that displays a Gregorian calendar, one
@@ -4887,9 +5137,29 @@ type Calendar struct {
 	Widget
 }
 
+func wrapCalendar(obj *glib.Object) *Calendar {
+	return &Calendar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalCalendar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CallbackAction: a ShortcutAction that invokes a callback.
 type CallbackAction struct {
 	ShortcutAction
+}
+
+func wrapCallbackAction(obj *glib.Object) *CallbackAction {
+	return &CallbackAction{ShortcutAction{*glib.Object{obj}}}
+}
+
+func marshalCallbackAction(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CellArea: the CellArea is an abstract class for CellLayout widgets (also
@@ -5189,6 +5459,16 @@ type CellArea struct {
 	glib.InitiallyUnowned
 }
 
+func wrapCellArea(obj *glib.Object) *CellArea {
+	return &CellArea{glib.InitiallyUnowned{obj}}
+}
+
+func marshalCellArea(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CellAreaBox: the CellAreaBox renders cell renderers into a row or a column
 // depending on its Orientation.
 //
@@ -5208,6 +5488,16 @@ type CellAreaBox struct {
 	CellArea
 }
 
+func wrapCellAreaBox(obj *glib.Object) *CellAreaBox {
+	return &CellAreaBox{CellArea{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalCellAreaBox(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CellAreaContext: the CellAreaContext object is created by a given CellArea
 // implementation via its CellAreaClass.create_context() virtual method and is
 // used to store cell sizes and alignments for a series of TreeModel rows that
@@ -5220,6 +5510,16 @@ type CellAreaBox struct {
 // and gtk_cell_area_event().
 type CellAreaContext struct {
 	*glib.Object
+}
+
+func wrapCellAreaContext(obj *glib.Object) *CellAreaContext {
+	return &CellAreaContext{*glib.Object{obj}}
+}
+
+func marshalCellAreaContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CellRenderer: the CellRenderer is a base class of a set of objects used for
@@ -5258,11 +5558,31 @@ type CellRenderer struct {
 	glib.InitiallyUnowned
 }
 
+func wrapCellRenderer(obj *glib.Object) *CellRenderer {
+	return &CellRenderer{glib.InitiallyUnowned{obj}}
+}
+
+func marshalCellRenderer(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CellRendererAccel: gtkCellRendererAccel displays a keyboard accelerator (i.e.
 // a key combination like `Control + a`). If the cell renderer is editable, the
 // accelerator can be changed by simply typing the new combination.
 type CellRendererAccel struct {
 	CellRendererText
+}
+
+func wrapCellRendererAccel(obj *glib.Object) *CellRendererAccel {
+	return &CellRendererAccel{CellRendererText{CellRenderer{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalCellRendererAccel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CellRendererCombo: gtkCellRendererCombo renders text in a cell like
@@ -5277,6 +5597,16 @@ type CellRendererAccel struct {
 // can be set in a handler for the CellRenderer::editing-started signal.
 type CellRendererCombo struct {
 	CellRendererText
+}
+
+func wrapCellRendererCombo(obj *glib.Object) *CellRendererCombo {
+	return &CellRendererCombo{CellRendererText{CellRenderer{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalCellRendererCombo(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CellRendererPixbuf: a CellRendererPixbuf can be used to render an image in a
@@ -5295,11 +5625,31 @@ type CellRendererPixbuf struct {
 	CellRenderer
 }
 
+func wrapCellRendererPixbuf(obj *glib.Object) *CellRendererPixbuf {
+	return &CellRendererPixbuf{CellRenderer{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CellRendererProgress: gtkCellRendererProgress renders a numeric value as a
 // progress par in a cell. Additionally, it can display a text on top of the
 // progress bar.
 type CellRendererProgress struct {
 	CellRenderer
+}
+
+func wrapCellRendererProgress(obj *glib.Object) *CellRendererProgress {
+	return &CellRendererProgress{CellRenderer{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalCellRendererProgress(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CellRendererSpin: gtkCellRendererSpin renders text in a cell like
@@ -5320,6 +5670,16 @@ type CellRendererSpin struct {
 	CellRendererText
 }
 
+func wrapCellRendererSpin(obj *glib.Object) *CellRendererSpin {
+	return &CellRendererSpin{CellRendererText{CellRenderer{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalCellRendererSpin(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CellRendererSpinner: gtkCellRendererSpinner renders a spinning animation in a
 // cell, very similar to Spinner. It can often be used as an alternative to a
 // CellRendererProgress for displaying indefinite activity, instead of actual
@@ -5334,6 +5694,16 @@ type CellRendererSpinner struct {
 	CellRenderer
 }
 
+func wrapCellRendererSpinner(obj *glib.Object) *CellRendererSpinner {
+	return &CellRendererSpinner{CellRenderer{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CellRendererText: a CellRendererText renders a given text in its cell, using
 // the font, color and style information provided by its properties. The text
 // will be ellipsized if it is too long and the CellRendererText:ellipsize
@@ -5345,12 +5715,32 @@ type CellRendererText struct {
 	CellRenderer
 }
 
+func wrapCellRendererText(obj *glib.Object) *CellRendererText {
+	return &CellRendererText{CellRenderer{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalCellRendererText(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CellRendererToggle: gtkCellRendererToggle renders a toggle button in a cell.
 // The button is drawn as a radio or a checkbutton, depending on the
 // CellRendererToggle:radio property. When activated, it emits the
 // CellRendererToggle::toggled signal.
 type CellRendererToggle struct {
 	CellRenderer
+}
+
+func wrapCellRendererToggle(obj *glib.Object) *CellRendererToggle {
+	return &CellRendererToggle{CellRenderer{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalCellRendererToggle(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CellView: a CellView displays a single row of a TreeModel using a CellArea
@@ -5372,6 +5762,16 @@ type CellRendererToggle struct {
 // GtkCellView has a single CSS node with name cellview.
 type CellView struct {
 	Widget
+}
+
+func wrapCellView(obj *glib.Object) *CellView {
+	return &CellView{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalCellView(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CenterBox: the GtkCenterBox widget arranges three children in a horizontal or
@@ -5410,6 +5810,16 @@ type CenterBox struct {
 	Widget
 }
 
+func wrapCenterBox(obj *glib.Object) *CenterBox {
+	return &CenterBox{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalCenterBox(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CenterLayout: a CenterLayout is a layout manager that manages up to three
 // children. The start widget is allocated at the start of the layout (left in
 // LRT layouts and right in RTL ones), and the end widget at the end.
@@ -5417,6 +5827,16 @@ type CenterBox struct {
 // The center widget is centered regarding the full width of the layout's.
 type CenterLayout struct {
 	LayoutManager
+}
+
+func wrapCenterLayout(obj *glib.Object) *CenterLayout {
+	return &CenterLayout{LayoutManager{*glib.Object{obj}}}
+}
+
+func marshalCenterLayout(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CheckButton: a CheckButton places a label next to an indicator.
@@ -5440,8 +5860,28 @@ type CheckButton struct {
 	Widget
 }
 
+func wrapCheckButton(obj *glib.Object) *CheckButton {
+	return &CheckButton{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalCheckButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type ClosureExpression struct {
 	Expression
+}
+
+func wrapClosureExpression(obj *glib.Object) *ClosureExpression {
+	return &ClosureExpression{Expression{obj}}
+}
+
+func marshalClosureExpression(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ColorButton: the ColorButton is a button which displays the currently
@@ -5461,10 +5901,30 @@ type ColorButton struct {
 	Widget
 }
 
+func wrapColorButton(obj *glib.Object) *ColorButton {
+	return &ColorButton{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalColorButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ColorChooserDialog: the ColorChooserDialog widget is a dialog for choosing a
 // color. It implements the ColorChooser interface.
 type ColorChooserDialog struct {
 	Dialog
+}
+
+func wrapColorChooserDialog(obj *glib.Object) *ColorChooserDialog {
+	return &ColorChooserDialog{Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}}
+}
+
+func marshalColorChooserDialog(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ColorChooserWidget: the ColorChooserWidget widget lets the user select a
@@ -5489,6 +5949,16 @@ type ColorChooserDialog struct {
 // GtkColorChooserWidget has a single CSS node with name colorchooser.
 type ColorChooserWidget struct {
 	Widget
+}
+
+func wrapColorChooserWidget(obj *glib.Object) *ColorChooserWidget {
+	return &ColorChooserWidget{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalColorChooserWidget(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ColumnView: gtkColumnView is a widget to present a view into a large dynamic
@@ -5557,6 +6027,16 @@ type ColumnView struct {
 	Widget
 }
 
+func wrapColumnView(obj *glib.Object) *ColumnView {
+	return &ColumnView{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalColumnView(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ColumnViewColumn: gtkColumnViewColumn represents the columns being added to
 // ColumnView.
 //
@@ -5568,6 +6048,16 @@ type ColumnView struct {
 // clicking on the column header.
 type ColumnViewColumn struct {
 	*glib.Object
+}
+
+func wrapColumnViewColumn(obj *glib.Object) *ColumnViewColumn {
+	return &ColumnViewColumn{*glib.Object{obj}}
+}
+
+func marshalColumnViewColumn(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ComboBox: a GtkComboBox is a widget that allows the user to choose from a
@@ -5627,6 +6117,16 @@ type ComboBox struct {
 	Widget
 }
 
+func wrapComboBox(obj *glib.Object) *ComboBox {
+	return &ComboBox{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalComboBox(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ComboBoxText: a GtkComboBoxText is a simple variant of ComboBox that hides
 // the model-view complexity for simple text-only use cases.
 //
@@ -5677,8 +6177,28 @@ type ComboBoxText struct {
 	ComboBox
 }
 
+func wrapComboBoxText(obj *glib.Object) *ComboBoxText {
+	return &ComboBoxText{ComboBox{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalComboBoxText(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type ConstantExpression struct {
 	Expression
+}
+
+func wrapConstantExpression(obj *glib.Object) *ConstantExpression {
+	return &ConstantExpression{Expression{obj}}
+}
+
+func marshalConstantExpression(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Constraint: gtkConstraint describes a constraint between an attribute on a
@@ -5697,6 +6217,16 @@ type Constraint struct {
 	*glib.Object
 }
 
+func wrapConstraint(obj *glib.Object) *Constraint {
+	return &Constraint{*glib.Object{obj}}
+}
+
+func marshalConstraint(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ConstraintGuide: a ConstraintGuide is an invisible layout element that can be
 // used by widgets inside a ConstraintLayout as a source or a target of a
 // Constraint. Guides can be used like guidelines or as flexible space.
@@ -5704,6 +6234,16 @@ type Constraint struct {
 // Unlike a Widget, a ConstraintGuide will not be drawn.
 type ConstraintGuide struct {
 	*glib.Object
+}
+
+func wrapConstraintGuide(obj *glib.Object) *ConstraintGuide {
+	return &ConstraintGuide{*glib.Object{obj}}
+}
+
+func marshalConstraintGuide(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ConstraintLayout: gtkConstraintLayout is a layout manager that uses relations
@@ -5866,9 +6406,29 @@ type ConstraintLayout struct {
 	LayoutManager
 }
 
+func wrapConstraintLayout(obj *glib.Object) *ConstraintLayout {
+	return &ConstraintLayout{LayoutManager{*glib.Object{obj}}}
+}
+
+func marshalConstraintLayout(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ConstraintLayoutChild: a LayoutChild in a ConstraintLayout.
 type ConstraintLayoutChild struct {
 	LayoutChild
+}
+
+func wrapConstraintLayoutChild(obj *glib.Object) *ConstraintLayoutChild {
+	return &ConstraintLayoutChild{LayoutChild{*glib.Object{obj}}}
+}
+
+func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CSSProvider: gtkCssProvider is an object implementing the StyleProvider
@@ -5898,10 +6458,30 @@ type CSSProvider struct {
 	*glib.Object
 }
 
+func wrapCSSProvider(obj *glib.Object) *CSSProvider {
+	return &CSSProvider{*glib.Object{obj}}
+}
+
+func marshalCSSProvider(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CustomFilter: gtkCustomFilter is a Filter that uses a callback to determine
 // whether to include an item or not.
 type CustomFilter struct {
 	Filter
+}
+
+func wrapCustomFilter(obj *glib.Object) *CustomFilter {
+	return &CustomFilter{Filter{*glib.Object{obj}}}
+}
+
+func marshalCustomFilter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // CustomLayout: gtkCustomLayout is a convenience type meant to be used as a
@@ -5915,10 +6495,30 @@ type CustomLayout struct {
 	LayoutManager
 }
 
+func wrapCustomLayout(obj *glib.Object) *CustomLayout {
+	return &CustomLayout{LayoutManager{*glib.Object{obj}}}
+}
+
+func marshalCustomLayout(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // CustomSorter: gtkCustomSorter is a Sorter implementation that sorts via a
 // traditional DataFunc callback.
 type CustomSorter struct {
 	Sorter
+}
+
+func wrapCustomSorter(obj *glib.Object) *CustomSorter {
+	return &CustomSorter{Sorter{*glib.Object{obj}}}
+}
+
+func marshalCustomSorter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Dialog: dialogs are a convenient way to prompt the user for a small amount of
@@ -6019,6 +6619,16 @@ type Dialog struct {
 	Window
 }
 
+func wrapDialog(obj *glib.Object) *Dialog {
+	return &Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalDialog(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // DirectoryList: gtkDirectoryList is a list model that wraps
 // g_file_enumerate_children_async(). It presents a Model and fills it
 // asynchronously with the Infos returned from that function.
@@ -6042,6 +6652,16 @@ type DirectoryList struct {
 	*glib.Object
 }
 
+func wrapDirectoryList(obj *glib.Object) *DirectoryList {
+	return &DirectoryList{*glib.Object{obj}}
+}
+
+func marshalDirectoryList(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // DragIcon: gtkDragIcon is a Root implementation with the sole purpose to serve
 // as a drag icon during DND operations. A drag icon moves with the pointer
 // during a drag operation and is destroyed when the drag ends.
@@ -6054,6 +6674,16 @@ type DirectoryList struct {
 // Keep in mind that drag icons do not allow user input.
 type DragIcon struct {
 	Widget
+}
+
+func wrapDragIcon(obj *glib.Object) *DragIcon {
+	return &DragIcon{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalDragIcon(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // DragSource: gtkDragSource is an auxiliary object that is used to initiate
@@ -6125,6 +6755,16 @@ type DragIcon struct {
 // transferred.
 type DragSource struct {
 	GestureSingle
+}
+
+func wrapDragSource(obj *glib.Object) *DragSource {
+	return &DragSource{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+}
+
+func marshalDragSource(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // DrawingArea: the DrawingArea widget is used for creating custom user
@@ -6205,6 +6845,16 @@ type DrawingArea struct {
 	Widget
 }
 
+func wrapDrawingArea(obj *glib.Object) *DrawingArea {
+	return &DrawingArea{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalDrawingArea(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // DropControllerMotion: gtkDropControllerMotion is an event controller meant
 // for tracking the pointer hovering over a widget during a drag and drop
 // operation.
@@ -6216,6 +6866,16 @@ type DrawingArea struct {
 // purpose.
 type DropControllerMotion struct {
 	EventController
+}
+
+func wrapDropControllerMotion(obj *glib.Object) *DropControllerMotion {
+	return &DropControllerMotion{EventController{*glib.Object{obj}}}
+}
+
+func marshalDropControllerMotion(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // DropDown: gtkDropDown is a widget that allows the user to choose an item from
@@ -6245,6 +6905,16 @@ type DropControllerMotion struct {
 // GtkDropDown uses the K_ACCESSIBLE_ROLE_COMBO_BOX role.
 type DropDown struct {
 	Widget
+}
+
+func wrapDropDown(obj *glib.Object) *DropDown {
+	return &DropDown{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalDropDown(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // DropTarget: gtkDropTarget is an event controller implementing a simple way to
@@ -6313,6 +6983,16 @@ type DropTarget struct {
 	EventController
 }
 
+func wrapDropTarget(obj *glib.Object) *DropTarget {
+	return &DropTarget{EventController{*glib.Object{obj}}}
+}
+
+func marshalDropTarget(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // DropTargetAsync: gtkDropTargetAsync is an auxiliary object that can be used
 // to receive Drag-and-Drop operations. It is the more complete but also more
 // complex method of handling drop operations compared to DropTarget and you
@@ -6347,6 +7027,16 @@ type DropTargetAsync struct {
 	EventController
 }
 
+func wrapDropTargetAsync(obj *glib.Object) *DropTargetAsync {
+	return &DropTargetAsync{EventController{*glib.Object{obj}}}
+}
+
+func marshalDropTargetAsync(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // EditableLabel: a GtkEditableLabel is a Label that allows users to edit the
 // text by switching the widget to an “edit mode”.
 //
@@ -6372,6 +7062,16 @@ type EditableLabel struct {
 	Widget
 }
 
+func wrapEditableLabel(obj *glib.Object) *EditableLabel {
+	return &EditableLabel{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalEditableLabel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // EmojiChooser: the EmojiChooser popover is used by text widgets such as Entry
 // or TextView to offer users a convenient way to insert Emoji characters.
 //
@@ -6394,6 +7094,16 @@ type EditableLabel struct {
 // .emoji-section style class and gets the .emoji-toolbar style class itself.
 type EmojiChooser struct {
 	Popover
+}
+
+func wrapEmojiChooser(obj *glib.Object) *EmojiChooser {
+	return &EmojiChooser{Popover{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalEmojiChooser(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Entry: the Entry widget is a single line text entry widget. A fairly large
@@ -6476,6 +7186,16 @@ type Entry struct {
 	Widget
 }
 
+func wrapEntry(obj *glib.Object) *Entry {
+	return &Entry{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalEntry(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // EntryBuffer: the EntryBuffer class contains the actual text displayed in a
 // Entry widget.
 //
@@ -6489,6 +7209,16 @@ type Entry struct {
 // application’s concept of undo/redo.
 type EntryBuffer struct {
 	*glib.Object
+}
+
+func wrapEntryBuffer(obj *glib.Object) *EntryBuffer {
+	return &EntryBuffer{*glib.Object{obj}}
+}
+
+func marshalEntryBuffer(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // EntryCompletion: gtkEntryCompletion is an auxiliary object to be used in
@@ -6527,11 +7257,31 @@ type EntryCompletion struct {
 	*glib.Object
 }
 
+func wrapEntryCompletion(obj *glib.Object) *EntryCompletion {
+	return &EntryCompletion{*glib.Object{obj}}
+}
+
+func marshalEntryCompletion(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // EventController: gtkEventController is a base, low-level implementation for
 // event controllers. Those react to a series of Events, and possibly trigger
 // actions as a consequence of those.
 type EventController struct {
 	*glib.Object
+}
+
+func wrapEventController(obj *glib.Object) *EventController {
+	return &EventController{*glib.Object{obj}}
+}
+
+func marshalEventController(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // EventControllerFocus: gtkEventControllerFocus is an event controller meant
@@ -6540,10 +7290,30 @@ type EventControllerFocus struct {
 	EventController
 }
 
+func wrapEventControllerFocus(obj *glib.Object) *EventControllerFocus {
+	return &EventControllerFocus{EventController{*glib.Object{obj}}}
+}
+
+func marshalEventControllerFocus(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // EventControllerKey: gtkEventControllerKey is an event controller meant for
 // situations where you need access to key events.
 type EventControllerKey struct {
 	EventController
+}
+
+func wrapEventControllerKey(obj *glib.Object) *EventControllerKey {
+	return &EventControllerKey{EventController{*glib.Object{obj}}}
+}
+
+func marshalEventControllerKey(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // EventControllerLegacy: gtkEventControllerLegacy is an event controller that
@@ -6553,10 +7323,30 @@ type EventControllerLegacy struct {
 	EventController
 }
 
+func wrapEventControllerLegacy(obj *glib.Object) *EventControllerLegacy {
+	return &EventControllerLegacy{EventController{*glib.Object{obj}}}
+}
+
+func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // EventControllerMotion: gtkEventControllerMotion is an event controller meant
 // for situations where you need to track the position of the pointer.
 type EventControllerMotion struct {
 	EventController
+}
+
+func wrapEventControllerMotion(obj *glib.Object) *EventControllerMotion {
+	return &EventControllerMotion{EventController{*glib.Object{obj}}}
+}
+
+func marshalEventControllerMotion(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // EventControllerScroll: gtkEventControllerScroll is an event controller meant
@@ -6595,8 +7385,28 @@ type EventControllerScroll struct {
 	EventController
 }
 
+func wrapEventControllerScroll(obj *glib.Object) *EventControllerScroll {
+	return &EventControllerScroll{EventController{*glib.Object{obj}}}
+}
+
+func marshalEventControllerScroll(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type EveryFilter struct {
 	MultiFilter
+}
+
+func wrapEveryFilter(obj *glib.Object) *EveryFilter {
+	return &EveryFilter{MultiFilter{Filter{*glib.Object{obj}}}}
+}
+
+func marshalEveryFilter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Expander: a Expander allows the user to hide or show its child by clicking on
@@ -6684,6 +7494,16 @@ type EveryFilter struct {
 // GtkExpander uses the K_ACCESSIBLE_ROLE_BUTTON role.
 type Expander struct {
 	Widget
+}
+
+func wrapExpander(obj *glib.Object) *Expander {
+	return &Expander{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalExpander(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // FileChooserDialog: gtkFileChooserDialog is a dialog box suitable for use with
@@ -6851,6 +7671,16 @@ type FileChooserDialog struct {
 	Dialog
 }
 
+func wrapFileChooserDialog(obj *glib.Object) *FileChooserDialog {
+	return &FileChooserDialog{Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}}
+}
+
+func marshalFileChooserDialog(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // FileChooserNative: gtkFileChooserNative is an abstraction of a dialog box
 // suitable for use with “File Open” or “File Save as” commands. By default,
 // this just uses a FileChooserDialog to implement the actual dialog. However,
@@ -6996,6 +7826,16 @@ type FileChooserNative struct {
 	NativeDialog
 }
 
+func wrapFileChooserNative(obj *glib.Object) *FileChooserNative {
+	return &FileChooserNative{NativeDialog{*glib.Object{obj}}}
+}
+
+func marshalFileChooserNative(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // FileChooserWidget: gtkFileChooserWidget is a widget for choosing files. It
 // exposes the FileChooser interface, and you should use the methods of this
 // interface to interact with the widget.
@@ -7006,6 +7846,16 @@ type FileChooserNative struct {
 // GtkFileChooserWidget has a single CSS node with name filechooser.
 type FileChooserWidget struct {
 	Widget
+}
+
+func wrapFileChooserWidget(obj *glib.Object) *FileChooserWidget {
+	return &FileChooserWidget{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalFileChooserWidget(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // FileFilter: a GtkFileFilter can be used to restrict the files being shown in
@@ -7047,6 +7897,16 @@ type FileFilter struct {
 	Filter
 }
 
+func wrapFileFilter(obj *glib.Object) *FileFilter {
+	return &FileFilter{Filter{*glib.Object{obj}}}
+}
+
+func marshalFileFilter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Filter: a Filter object describes the filtering to be performed by a
 // FilterListModel.
 //
@@ -7069,6 +7929,16 @@ type Filter struct {
 	*glib.Object
 }
 
+func wrapFilter(obj *glib.Object) *Filter {
+	return &Filter{*glib.Object{obj}}
+}
+
+func marshalFilter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // FilterListModel: gtkFilterListModel is a list model that filters a given
 // other listmodel. It hides some elements from the other model according to
 // criteria given by a Filter.
@@ -7078,6 +7948,16 @@ type Filter struct {
 // details.
 type FilterListModel struct {
 	*glib.Object
+}
+
+func wrapFilterListModel(obj *glib.Object) *FilterListModel {
+	return &FilterListModel{*glib.Object{obj}}
+}
+
+func marshalFilterListModel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Fixed: the Fixed widget is a container which can place child widgets at fixed
@@ -7118,6 +7998,16 @@ type Fixed struct {
 	Widget
 }
 
+func wrapFixed(obj *glib.Object) *Fixed {
+	return &Fixed{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalFixed(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // FixedLayout: gtkFixedLayout is a layout manager which can place child widgets
 // at fixed positions, and with fixed sizes.
 //
@@ -7151,8 +8041,28 @@ type FixedLayout struct {
 	LayoutManager
 }
 
+func wrapFixedLayout(obj *glib.Object) *FixedLayout {
+	return &FixedLayout{LayoutManager{*glib.Object{obj}}}
+}
+
+func marshalFixedLayout(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type FixedLayoutChild struct {
 	LayoutChild
+}
+
+func wrapFixedLayoutChild(obj *glib.Object) *FixedLayoutChild {
+	return &FixedLayoutChild{LayoutChild{*glib.Object{obj}}}
+}
+
+func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // FlattenListModel: gtkFlattenListModel is a list model that takes a list model
@@ -7162,6 +8072,16 @@ type FixedLayoutChild struct {
 // lists and concatenates them into a single list.
 type FlattenListModel struct {
 	*glib.Object
+}
+
+func wrapFlattenListModel(obj *glib.Object) *FlattenListModel {
+	return &FlattenListModel{*glib.Object{obj}}
+}
+
+func marshalFlattenListModel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // FlowBox: a GtkFlowBox positions child widgets in sequence according to its
@@ -7211,8 +8131,28 @@ type FlowBox struct {
 	Widget
 }
 
+func wrapFlowBox(obj *glib.Object) *FlowBox {
+	return &FlowBox{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalFlowBox(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type FlowBoxChild struct {
 	Widget
+}
+
+func wrapFlowBoxChild(obj *glib.Object) *FlowBoxChild {
+	return &FlowBoxChild{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalFlowBoxChild(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // FontButton: the FontButton is a button which displays the currently selected
@@ -7231,6 +8171,16 @@ type FontButton struct {
 	Widget
 }
 
+func wrapFontButton(obj *glib.Object) *FontButton {
+	return &FontButton{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalFontButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // FontChooserDialog: the FontChooserDialog widget is a dialog for selecting a
 // font. It implements the FontChooser interface.
 //
@@ -7241,6 +8191,16 @@ type FontButton struct {
 // the buttons with the names “select_button” and “cancel_button”.
 type FontChooserDialog struct {
 	Dialog
+}
+
+func wrapFontChooserDialog(obj *glib.Object) *FontChooserDialog {
+	return &FontChooserDialog{Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}}
+}
+
+func marshalFontChooserDialog(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // FontChooserWidget: the FontChooserWidget widget lists the available fonts,
@@ -7262,6 +8222,16 @@ type FontChooserDialog struct {
 // GtkFontChooserWidget has a single CSS node with name fontchooser.
 type FontChooserWidget struct {
 	Widget
+}
+
+func wrapFontChooserWidget(obj *glib.Object) *FontChooserWidget {
+	return &FontChooserWidget{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalFontChooserWidget(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Frame: the frame widget is a widget that surrounds its child with a
@@ -7301,6 +8271,16 @@ type FontChooserWidget struct {
 // like “border-style” on this node.
 type Frame struct {
 	Widget
+}
+
+func wrapFrame(obj *glib.Object) *Frame {
+	return &Frame{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalFrame(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // GLArea: gtkGLArea is a widget that allows drawing with OpenGL.
@@ -7407,6 +8387,16 @@ type GLArea struct {
 	Widget
 }
 
+func wrapGLArea(obj *glib.Object) *GLArea {
+	return &GLArea{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalGLArea(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Gesture: gtkGesture is the base object for gesture recognition, although this
 // object is quite generalized to serve as a base for multi-touch gestures, it
 // is suitable to implement single-touch and pointer-based gestures (using the
@@ -7491,6 +8481,16 @@ type Gesture struct {
 	EventController
 }
 
+func wrapGesture(obj *glib.Object) *Gesture {
+	return &Gesture{EventController{*glib.Object{obj}}}
+}
+
+func marshalGesture(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // GestureClick: gtkGestureClick is a Gesture implementation able to recognize
 // multiple clicks on a nearby zone, which can be listened for through the
 // GestureClick::pressed signal. Whenever time or distance between clicks exceed
@@ -7498,6 +8498,16 @@ type Gesture struct {
 // reset.
 type GestureClick struct {
 	GestureSingle
+}
+
+func wrapGestureClick(obj *glib.Object) *GestureClick {
+	return &GestureClick{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+}
+
+func marshalGestureClick(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // GestureDrag: gtkGestureDrag is a Gesture implementation that recognizes drag
@@ -7509,6 +8519,16 @@ type GestureDrag struct {
 	GestureSingle
 }
 
+func wrapGestureDrag(obj *glib.Object) *GestureDrag {
+	return &GestureDrag{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+}
+
+func marshalGestureDrag(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // GestureLongPress: gtkGestureLongPress is a Gesture implementation able to
 // recognize long presses, triggering the GestureLongPress::pressed after the
 // timeout is exceeded.
@@ -7518,6 +8538,16 @@ type GestureDrag struct {
 // be emitted.
 type GestureLongPress struct {
 	GestureSingle
+}
+
+func wrapGestureLongPress(obj *glib.Object) *GestureLongPress {
+	return &GestureLongPress{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+}
+
+func marshalGestureLongPress(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // GesturePan: gtkGesturePan is a Gesture implementation able to recognize pan
@@ -7536,11 +8566,31 @@ type GesturePan struct {
 	GestureDrag
 }
 
+func wrapGesturePan(obj *glib.Object) *GesturePan {
+	return &GesturePan{GestureDrag{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}}
+}
+
+func marshalGesturePan(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // GestureRotate: gtkGestureRotate is a Gesture implementation able to recognize
 // 2-finger rotations, whenever the angle between both handled sequences
 // changes, the GestureRotate::angle-changed signal is emitted.
 type GestureRotate struct {
 	Gesture
+}
+
+func wrapGestureRotate(obj *glib.Object) *GestureRotate {
+	return &GestureRotate{Gesture{EventController{*glib.Object{obj}}}}
+}
+
+func marshalGestureRotate(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // GestureSingle: gtkGestureSingle is a subclass of Gesture, optimized (although
@@ -7559,11 +8609,31 @@ type GestureSingle struct {
 	Gesture
 }
 
+func wrapGestureSingle(obj *glib.Object) *GestureSingle {
+	return &GestureSingle{Gesture{EventController{*glib.Object{obj}}}}
+}
+
+func marshalGestureSingle(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // GestureStylus: gtkGestureStylus is a Gesture implementation specific to
 // stylus input. The provided signals just relay the basic information of the
 // stylus events.
 type GestureStylus struct {
 	GestureSingle
+}
+
+func wrapGestureStylus(obj *glib.Object) *GestureStylus {
+	return &GestureStylus{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+}
+
+func marshalGestureStylus(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // GestureSwipe: gtkGestureSwipe is a Gesture implementation able to recognize
@@ -7580,12 +8650,32 @@ type GestureSwipe struct {
 	GestureSingle
 }
 
+func wrapGestureSwipe(obj *glib.Object) *GestureSwipe {
+	return &GestureSwipe{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+}
+
+func marshalGestureSwipe(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // GestureZoom: gtkGestureZoom is a Gesture implementation able to recognize
 // pinch/zoom gestures, whenever the distance between both tracked sequences
 // changes, the GestureZoom::scale-changed signal is emitted to report the scale
 // factor.
 type GestureZoom struct {
 	Gesture
+}
+
+func wrapGestureZoom(obj *glib.Object) *GestureZoom {
+	return &GestureZoom{Gesture{EventController{*glib.Object{obj}}}}
+}
+
+func marshalGestureZoom(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Grid: gtkGrid is a container which arranges its child widgets in rows and
@@ -7610,6 +8700,16 @@ type Grid struct {
 	Widget
 }
 
+func wrapGrid(obj *glib.Object) *Grid {
+	return &Grid{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalGrid(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // GridLayout: gtkGridLayout is a layout manager which arranges child widgets in
 // rows and columns, with arbitrary positions and horizontal/vertical spans.
 //
@@ -7628,9 +8728,29 @@ type GridLayout struct {
 	LayoutManager
 }
 
+func wrapGridLayout(obj *glib.Object) *GridLayout {
+	return &GridLayout{LayoutManager{*glib.Object{obj}}}
+}
+
+func marshalGridLayout(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // GridLayoutChild: layout properties for children of GridLayout.
 type GridLayoutChild struct {
 	LayoutChild
+}
+
+func wrapGridLayoutChild(obj *glib.Object) *GridLayoutChild {
+	return &GridLayoutChild{LayoutChild{*glib.Object{obj}}}
+}
+
+func marshalGridLayoutChild(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // GridView: gtkGridView is a widget to present a view into a large dynamic grid
@@ -7668,6 +8788,16 @@ type GridLayoutChild struct {
 // K_ACCESSIBLE_ROLE_GRID_CELL role.
 type GridView struct {
 	ListBase
+}
+
+func wrapGridView(obj *glib.Object) *GridView {
+	return &GridView{ListBase{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalGridView(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // HeaderBar: gtkHeaderBar is similar to a horizontal Box. It allows children to
@@ -7735,6 +8865,16 @@ type HeaderBar struct {
 	Widget
 }
 
+func wrapHeaderBar(obj *glib.Object) *HeaderBar {
+	return &HeaderBar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalHeaderBar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // IMContext: gtkIMContext defines the interface for GTK input methods. An input
 // method is used by GTK text input widgets like Entry to map from key events to
 // Unicode character strings.
@@ -7800,6 +8940,16 @@ type IMContext struct {
 	*glib.Object
 }
 
+func wrapIMContext(obj *glib.Object) *IMContext {
+	return &IMContext{*glib.Object{obj}}
+}
+
+func marshalIMContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // IMContextSimple: gtkIMContextSimple is a simple input method context
 // supporting table-based input methods. It has a built-in table of compose
 // sequences that is derived from the X11 Compose files.
@@ -7821,14 +8971,44 @@ type IMContextSimple struct {
 	IMContext
 }
 
+func wrapIMContextSimple(obj *glib.Object) *IMContextSimple {
+	return &IMContextSimple{IMContext{*glib.Object{obj}}}
+}
+
+func marshalIMContextSimple(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type IMMulticontext struct {
 	IMContext
+}
+
+func wrapIMMulticontext(obj *glib.Object) *IMMulticontext {
+	return &IMMulticontext{IMContext{*glib.Object{obj}}}
+}
+
+func marshalIMMulticontext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // IconPaintable: contains information found when looking up an icon in an icon
 // theme and supports painting it as a Paintable.
 type IconPaintable struct {
 	*glib.Object
+}
+
+func wrapIconPaintable(obj *glib.Object) *IconPaintable {
+	return &IconPaintable{*glib.Object{obj}}
+}
+
+func marshalIconPaintable(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // IconTheme: gtkIconTheme provides a facility for looking up icons by name and
@@ -7863,6 +9043,16 @@ type IconTheme struct {
 	*glib.Object
 }
 
+func wrapIconTheme(obj *glib.Object) *IconTheme {
+	return &IconTheme{*glib.Object{obj}}
+}
+
+func marshalIconTheme(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // IconView: gtkIconView provides an alternative view on a TreeModel. It
 // displays the model as a grid of icons with labels. Like TreeView, it allows
 // to select one or multiple items (depending on the selection mode, see
@@ -7883,6 +9073,16 @@ type IconTheme struct {
 // For rubberband selection, a subnode with name rubberband is used.
 type IconView struct {
 	Widget
+}
+
+func wrapIconView(obj *glib.Object) *IconView {
+	return &IconView{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalIconView(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Image: the Image widget displays an image. Various kinds of object can be
@@ -7917,6 +9117,16 @@ type IconView struct {
 // GtkImage uses the K_ACCESSIBLE_ROLE_IMG role.
 type Image struct {
 	Widget
+}
+
+func wrapImage(obj *glib.Object) *Image {
+	return &Image{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalImage(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // InfoBar: gtkInfoBar is a widget that can be used to show messages to the user
@@ -7978,10 +9188,30 @@ type InfoBar struct {
 	Widget
 }
 
+func wrapInfoBar(obj *glib.Object) *InfoBar {
+	return &InfoBar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalInfoBar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // KeyvalTrigger: a ShortcutTrigger that triggers when a specific keyval and
 // (optionally) modifiers are pressed.
 type KeyvalTrigger struct {
 	ShortcutTrigger
+}
+
+func wrapKeyvalTrigger(obj *glib.Object) *KeyvalTrigger {
+	return &KeyvalTrigger{ShortcutTrigger{*glib.Object{obj}}}
+}
+
+func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Label: the Label widget displays a small amount of text. As the name implies,
@@ -8149,6 +9379,16 @@ type Label struct {
 	Widget
 }
 
+func wrapLabel(obj *glib.Object) *Label {
+	return &Label{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalLabel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // LayoutChild: gtkLayoutChild is the base class for objects that are meant to
 // hold layout properties. If a LayoutManager has per-child properties, like
 // their packing type, or the horizontal and vertical span, or the icon name,
@@ -8158,6 +9398,16 @@ type Label struct {
 // A LayoutChild instance is only ever valid while a widget is part of a layout.
 type LayoutChild struct {
 	*glib.Object
+}
+
+func wrapLayoutChild(obj *glib.Object) *LayoutChild {
+	return &LayoutChild{*glib.Object{obj}}
+}
+
+func marshalLayoutChild(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // LayoutManager: layout managers are delegate classes that handle the preferred
@@ -8207,6 +9457,16 @@ type LayoutChild struct {
 // order to queue a new size measuring and allocation.
 type LayoutManager struct {
 	*glib.Object
+}
+
+func wrapLayoutManager(obj *glib.Object) *LayoutManager {
+	return &LayoutManager{*glib.Object{obj}}
+}
+
+func marshalLayoutManager(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // LevelBar: the LevelBar is a bar widget that can be used as a level indicator.
@@ -8307,6 +9567,16 @@ type LevelBar struct {
 	Widget
 }
 
+func wrapLevelBar(obj *glib.Object) *LevelBar {
+	return &LevelBar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalLevelBar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // LinkButton: a GtkLinkButton is a Button with a hyperlink, similar to the one
 // used by web browsers, which triggers an action when clicked. It is useful to
 // show quick links to resources.
@@ -8336,9 +9606,29 @@ type LinkButton struct {
 	Button
 }
 
+func wrapLinkButton(obj *glib.Object) *LinkButton {
+	return &LinkButton{Button{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalLinkButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ListBase: gtkListBase is the abstract base class for GTK's list widgets.
 type ListBase struct {
 	Widget
+}
+
+func wrapListBase(obj *glib.Object) *ListBase {
+	return &ListBase{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalListBase(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ListBox: a GtkListBox is a vertical container that contains GtkListBoxRow
@@ -8390,8 +9680,28 @@ type ListBox struct {
 	Widget
 }
 
+func wrapListBox(obj *glib.Object) *ListBox {
+	return &ListBox{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalListBox(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type ListBoxRow struct {
 	Widget
+}
+
+func wrapListBoxRow(obj *glib.Object) *ListBoxRow {
+	return &ListBoxRow{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalListBoxRow(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ListItem: gtkListItem is the object that list-handling containers such as
@@ -8410,6 +9720,16 @@ type ListBoxRow struct {
 // ListItem:item property is not nil.
 type ListItem struct {
 	*glib.Object
+}
+
+func wrapListItem(obj *glib.Object) *ListItem {
+	return &ListItem{*glib.Object{obj}}
+}
+
+func marshalListItem(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ListItemFactory: gtkListItemFactory is one of the core concepts of handling
@@ -8455,6 +9775,16 @@ type ListItem struct {
 // Reusing factories across different views is allowed, but very uncommon.
 type ListItemFactory struct {
 	*glib.Object
+}
+
+func wrapListItemFactory(obj *glib.Object) *ListItemFactory {
+	return &ListItemFactory{*glib.Object{obj}}
+}
+
+func marshalListItemFactory(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ListStore: the ListStore object is a list model for use with a TreeView
@@ -8570,6 +9900,16 @@ type ListStore struct {
 	*glib.Object
 }
 
+func wrapListStore(obj *glib.Object) *ListStore {
+	return &ListStore{*glib.Object{obj}}
+}
+
+func marshalListStore(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ListView: gtkListView is a widget to present a view into a large dynamic list
 // of items.
 //
@@ -8652,6 +9992,16 @@ type ListView struct {
 	ListBase
 }
 
+func wrapListView(obj *glib.Object) *ListView {
+	return &ListView{ListBase{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalListView(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // LockButton: gtkLockButton is a widget that can be used in control panels or
 // preference dialogs to allow users to obtain and revoke authorizations needed
 // to operate the controls. The required authorization is represented by a
@@ -8686,6 +10036,16 @@ type LockButton struct {
 	Button
 }
 
+func wrapLockButton(obj *glib.Object) *LockButton {
+	return &LockButton{Button{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalLockButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // MapListModel: gtkMapListModel is a list model that takes a list model and
 // maps the items in that model to different items according to a
 // MapListModelMapFunc.
@@ -8710,10 +10070,30 @@ type MapListModel struct {
 	*glib.Object
 }
 
+func wrapMapListModel(obj *glib.Object) *MapListModel {
+	return &MapListModel{*glib.Object{obj}}
+}
+
+func marshalMapListModel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // MediaControls: gtkMediaControls is a widget to show controls for a
 // MediaStream and giving users a way to use it.
 type MediaControls struct {
 	Widget
+}
+
+func wrapMediaControls(obj *glib.Object) *MediaControls {
+	return &MediaControls{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalMediaControls(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // MediaFile: gtkMediaFile is the implementation for media file usage with
@@ -8726,6 +10106,16 @@ type MediaControls struct {
 // implementations using GStreamer and ffmpeg.
 type MediaFile struct {
 	MediaStream
+}
+
+func wrapMediaFile(obj *glib.Object) *MediaFile {
+	return &MediaFile{MediaStream{*glib.Object{obj}}}
+}
+
+func marshalMediaFile(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // MediaStream: gtkMediaStream is the integration point for media playback
@@ -8743,6 +10133,16 @@ type MediaFile struct {
 // gtk_media_stream_error(), gtk_media_stream_error_valist().
 type MediaStream struct {
 	*glib.Object
+}
+
+func wrapMediaStream(obj *glib.Object) *MediaStream {
+	return &MediaStream{*glib.Object{obj}}
+}
+
+func marshalMediaStream(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // MenuButton: the MenuButton widget is used to display a popup when clicked on.
@@ -8838,6 +10238,16 @@ type MenuButton struct {
 	Widget
 }
 
+func wrapMenuButton(obj *glib.Object) *MenuButton {
+	return &MenuButton{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalMenuButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // MessageDialog: gtkMessageDialog presents a dialog with some message text.
 // It’s simply a convenience widget; you could construct the equivalent of
 // MessageDialog from Dialog without too much effort, but MessageDialog saves
@@ -8887,9 +10297,29 @@ type MessageDialog struct {
 	Dialog
 }
 
+func wrapMessageDialog(obj *glib.Object) *MessageDialog {
+	return &MessageDialog{Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}}
+}
+
+func marshalMessageDialog(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // MnemonicAction: a ShortcutAction that calls gtk_widget_mnemonic_activate().
 type MnemonicAction struct {
 	ShortcutAction
+}
+
+func wrapMnemonicAction(obj *glib.Object) *MnemonicAction {
+	return &MnemonicAction{ShortcutAction{*glib.Object{obj}}}
+}
+
+func marshalMnemonicAction(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // MnemonicTrigger: a ShortcutTrigger that triggers when a specific mnemonic is
@@ -8898,10 +10328,30 @@ type MnemonicTrigger struct {
 	ShortcutTrigger
 }
 
+func wrapMnemonicTrigger(obj *glib.Object) *MnemonicTrigger {
+	return &MnemonicTrigger{ShortcutTrigger{*glib.Object{obj}}}
+}
+
+func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // MountOperation: this should not be accessed directly. Use the accessor
 // functions below.
 type MountOperation struct {
 	gio.MountOperation
+}
+
+func wrapMountOperation(obj *glib.Object) *MountOperation {
+	return &MountOperation{MountOperation{*glib.Object{obj}}}
+}
+
+func marshalMountOperation(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // MultiFilter: gtkMultiFilter is the base type that implements support for
@@ -8916,10 +10366,30 @@ type MultiFilter struct {
 	Filter
 }
 
+func wrapMultiFilter(obj *glib.Object) *MultiFilter {
+	return &MultiFilter{Filter{*glib.Object{obj}}}
+}
+
+func marshalMultiFilter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // MultiSelection: gtkMultiSelection is an implementation of the SelectionModel
 // interface that allows selecting multiple elements.
 type MultiSelection struct {
 	*glib.Object
+}
+
+func wrapMultiSelection(obj *glib.Object) *MultiSelection {
+	return &MultiSelection{*glib.Object{obj}}
+}
+
+func marshalMultiSelection(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // MultiSorter: gtkMultiSorter combines multiple sorters by trying them in turn.
@@ -8929,9 +10399,29 @@ type MultiSorter struct {
 	Sorter
 }
 
+func wrapMultiSorter(obj *glib.Object) *MultiSorter {
+	return &MultiSorter{Sorter{*glib.Object{obj}}}
+}
+
+func marshalMultiSorter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // NamedAction: a ShortcutAction that activates an action by name.
 type NamedAction struct {
 	ShortcutAction
+}
+
+func wrapNamedAction(obj *glib.Object) *NamedAction {
+	return &NamedAction{ShortcutAction{*glib.Object{obj}}}
+}
+
+func marshalNamedAction(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // NativeDialog: native dialogs are platform dialogs that don't use Dialog or
@@ -8952,9 +10442,29 @@ type NativeDialog struct {
 	*glib.Object
 }
 
+func wrapNativeDialog(obj *glib.Object) *NativeDialog {
+	return &NativeDialog{*glib.Object{obj}}
+}
+
+func marshalNativeDialog(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // NeverTrigger: a ShortcutTrigger that never triggers.
 type NeverTrigger struct {
 	ShortcutTrigger
+}
+
+func wrapNeverTrigger(obj *glib.Object) *NeverTrigger {
+	return &NeverTrigger{ShortcutTrigger{*glib.Object{obj}}}
+}
+
+func marshalNeverTrigger(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // NoSelection: gtkNoSelection is an implementation of the SelectionModel
@@ -8964,6 +10474,16 @@ type NeverTrigger struct {
 // SelectionModel is required.
 type NoSelection struct {
 	*glib.Object
+}
+
+func wrapNoSelection(obj *glib.Object) *NoSelection {
+	return &NoSelection{*glib.Object{obj}}
+}
+
+func marshalNoSelection(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Notebook: the Notebook widget is a layout container whose children are pages
@@ -9055,6 +10575,16 @@ type Notebook struct {
 	Widget
 }
 
+func wrapNotebook(obj *glib.Object) *Notebook {
+	return &Notebook{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalNotebook(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // NotebookPage: a page in the Notebook.
 //
 // The `GtkNotebookPage` structure only contains private data.
@@ -9062,9 +10592,29 @@ type NotebookPage struct {
 	*glib.Object
 }
 
+func wrapNotebookPage(obj *glib.Object) *NotebookPage {
+	return &NotebookPage{*glib.Object{obj}}
+}
+
+func marshalNotebookPage(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // NothingAction: a ShortcutAction that does nothing.
 type NothingAction struct {
 	ShortcutAction
+}
+
+func wrapNothingAction(obj *glib.Object) *NothingAction {
+	return &NothingAction{ShortcutAction{*glib.Object{obj}}}
+}
+
+func marshalNothingAction(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // NumericSorter: gtkNumericSorter is a Sorter that compares numbers.
@@ -9074,8 +10624,28 @@ type NumericSorter struct {
 	Sorter
 }
 
+func wrapNumericSorter(obj *glib.Object) *NumericSorter {
+	return &NumericSorter{Sorter{*glib.Object{obj}}}
+}
+
+func marshalNumericSorter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type ObjectExpression struct {
 	Expression
+}
+
+func wrapObjectExpression(obj *glib.Object) *ObjectExpression {
+	return &ObjectExpression{Expression{obj}}
+}
+
+func marshalObjectExpression(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Overlay: gtkOverlay is a container which contains a single main child, on top
@@ -9110,6 +10680,16 @@ type Overlay struct {
 	Widget
 }
 
+func wrapOverlay(obj *glib.Object) *Overlay {
+	return &Overlay{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalOverlay(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // OverlayLayout: gtkOverlayLayout is the layout manager used by Overlay. It
 // places widgets as overlays on top of the main child.
 //
@@ -9119,8 +10699,28 @@ type OverlayLayout struct {
 	LayoutManager
 }
 
+func wrapOverlayLayout(obj *glib.Object) *OverlayLayout {
+	return &OverlayLayout{LayoutManager{*glib.Object{obj}}}
+}
+
+func marshalOverlayLayout(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type OverlayLayoutChild struct {
 	LayoutChild
+}
+
+func wrapOverlayLayoutChild(obj *glib.Object) *OverlayLayoutChild {
+	return &OverlayLayoutChild{LayoutChild{*glib.Object{obj}}}
+}
+
+func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // PadController: gtkPadController is an event controller for the pads found in
@@ -9165,6 +10765,16 @@ type PadController struct {
 	EventController
 }
 
+func wrapPadController(obj *glib.Object) *PadController {
+	return &PadController{EventController{*glib.Object{obj}}}
+}
+
+func marshalPadController(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // PageSetup: a GtkPageSetup object stores the page size, orientation and
 // margins. The idea is that you can get one of these from the page setup dialog
 // and then pass it to the PrintOperation when printing. The benefit of
@@ -9204,6 +10814,16 @@ type PadController struct {
 //
 type PageSetup struct {
 	*glib.Object
+}
+
+func wrapPageSetup(obj *glib.Object) *PageSetup {
+	return &PageSetup{*glib.Object{obj}}
+}
+
+func marshalPageSetup(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Paned: gtkPaned has two panes, arranged either horizontally or vertically.
@@ -9269,6 +10889,16 @@ type Paned struct {
 	Widget
 }
 
+func wrapPaned(obj *glib.Object) *Paned {
+	return &Paned{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalPaned(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // PasswordEntry: gtkPasswordEntry is entry that has been tailored for entering
 // secrets. It does not show its contents in clear text, does not allow to copy
 // it to the clipboard, and it shows a warning when Caps Lock is engaged. If the
@@ -9299,6 +10929,16 @@ type Paned struct {
 // GtkPasswordEntry uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
 type PasswordEntry struct {
 	Widget
+}
+
+func wrapPasswordEntry(obj *glib.Object) *PasswordEntry {
+	return &PasswordEntry{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalPasswordEntry(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Picture: the Picture widget displays a Paintable. Many convenience functions
@@ -9344,6 +10984,16 @@ type PasswordEntry struct {
 // GtkPicture uses the K_ACCESSIBLE_ROLE_IMG role.
 type Picture struct {
 	Widget
+}
+
+func wrapPicture(obj *glib.Object) *Picture {
+	return &Picture{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalPicture(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Popover: gtkPopover is a bubble-like context window, primarily meant to
@@ -9416,6 +11066,16 @@ type Picture struct {
 // width (border-bottom-width is used) and no box-shadow.
 type Popover struct {
 	Widget
+}
+
+func wrapPopover(obj *glib.Object) *Popover {
+	return &Popover{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalPopover(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // PopoverMenu: gtkPopoverMenu is a subclass of Popover that treats its children
@@ -9507,6 +11167,16 @@ type PopoverMenu struct {
 	Popover
 }
 
+func wrapPopoverMenu(obj *glib.Object) *PopoverMenu {
+	return &PopoverMenu{Popover{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalPopoverMenu(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // PopoverMenuBar: gtkPopoverMenuBar presents a horizontal bar of items that pop
 // up popover menus when clicked.
 //
@@ -9533,6 +11203,16 @@ type PopoverMenu struct {
 // K_ACCESSIBLE_ROLE_MENU role.
 type PopoverMenuBar struct {
 	Widget
+}
+
+func wrapPopoverMenuBar(obj *glib.Object) *PopoverMenuBar {
+	return &PopoverMenuBar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // PrintContext: a GtkPrintContext encapsulates context information that is
@@ -9603,6 +11283,16 @@ type PrintContext struct {
 	*glib.Object
 }
 
+func wrapPrintContext(obj *glib.Object) *PrintContext {
+	return &PrintContext{*glib.Object{obj}}
+}
+
+func marshalPrintContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // PrintOperation: gtkPrintOperation is the high-level, portable printing API.
 // It looks a bit different than other GTK dialogs such as the FileChooser,
 // since some platforms don’t expose enough infrastructure to implement a good
@@ -9665,6 +11355,16 @@ type PrintOperation struct {
 	*glib.Object
 }
 
+func wrapPrintOperation(obj *glib.Object) *PrintOperation {
+	return &PrintOperation{*glib.Object{obj}}
+}
+
+func marshalPrintOperation(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // PrintSettings: a GtkPrintSettings object represents the settings of a print
 // dialog in a system-independent way. The main use for this object is that once
 // you’ve printed you can get a settings object that represents the settings the
@@ -9677,6 +11377,16 @@ type PrintOperation struct {
 // moving such a document between systems still works.
 type PrintSettings struct {
 	*glib.Object
+}
+
+func wrapPrintSettings(obj *glib.Object) *PrintSettings {
+	return &PrintSettings{*glib.Object{obj}}
+}
+
+func marshalPrintSettings(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ProgressBar: the ProgressBar is typically used to display the progress of a
@@ -9725,8 +11435,28 @@ type ProgressBar struct {
 	Widget
 }
 
+func wrapProgressBar(obj *glib.Object) *ProgressBar {
+	return &ProgressBar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalProgressBar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type PropertyExpression struct {
 	Expression
+}
+
+func wrapPropertyExpression(obj *glib.Object) *PropertyExpression {
+	return &PropertyExpression{Expression{obj}}
+}
+
+func marshalPropertyExpression(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Range: gtkRange is the common base class for widgets which visualize an
@@ -9737,6 +11467,16 @@ type PropertyExpression struct {
 // See gtk_range_set_fill_level().
 type Range struct {
 	Widget
+}
+
+func wrapRange(obj *glib.Object) *Range {
+	return &Range{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalRange(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // RecentManager: gtkRecentManager provides a facility for adding, removing and
@@ -9796,6 +11536,16 @@ type RecentManager struct {
 	*glib.Object
 }
 
+func wrapRecentManager(obj *glib.Object) *RecentManager {
+	return &RecentManager{*glib.Object{obj}}
+}
+
+func marshalRecentManager(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Revealer: the GtkRevealer widget is a container which animates the transition
 // of its child from invisible to visible.
 //
@@ -9821,6 +11571,16 @@ type RecentManager struct {
 // tree, regardless of the state of the revealer widget.
 type Revealer struct {
 	Widget
+}
+
+func wrapRevealer(obj *glib.Object) *Revealer {
+	return &Revealer{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalRevealer(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Scale: a GtkScale is a slider control used to select a numeric value. To use
@@ -9902,6 +11662,16 @@ type Scale struct {
 	Range
 }
 
+func wrapScale(obj *glib.Object) *Scale {
+	return &Scale{Range{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalScale(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ScaleButton: gtkScaleButton provides a button which pops up a scale widget.
 // This kind of widget is commonly used for volume controls in multimedia
 // applications, and GTK provides a VolumeButton subclass that is tailored for
@@ -9914,6 +11684,16 @@ type Scale struct {
 // from a plain Button, it gets the .scale style class.
 type ScaleButton struct {
 	Widget
+}
+
+func wrapScaleButton(obj *glib.Object) *ScaleButton {
+	return &ScaleButton{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalScaleButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Scrollbar: the Scrollbar widget is a horizontal or vertical scrollbar,
@@ -9954,6 +11734,16 @@ type ScaleButton struct {
 // GtkScrollbar uses the K_ACCESSIBLE_ROLE_SCROLLBAR role.
 type Scrollbar struct {
 	Widget
+}
+
+func wrapScrollbar(obj *glib.Object) *Scrollbar {
+	return &Scrollbar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalScrollbar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ScrolledWindow: gtkScrolledWindow is a container that accepts a single child
@@ -10044,6 +11834,16 @@ type ScrolledWindow struct {
 	Widget
 }
 
+func wrapScrolledWindow(obj *glib.Object) *ScrolledWindow {
+	return &ScrolledWindow{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalScrolledWindow(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // SearchBar: gtkSearchBar is a container made to have a search entry (possibly
 // with additional connex widgets, such as drop-down menus, or buttons)
 // built-in. The search bar would appear when a search is started through typing
@@ -10087,6 +11887,16 @@ type SearchBar struct {
 	Widget
 }
 
+func wrapSearchBar(obj *glib.Object) *SearchBar {
+	return &SearchBar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalSearchBar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // SearchEntry: gtkSearchEntry is an entry widget that has been tailored for use
 // as a search entry. The main aPI for interacting with a GtkSearchEntry as
 // entry is the Editable interface.
@@ -10125,10 +11935,30 @@ type SearchEntry struct {
 	Widget
 }
 
+func wrapSearchEntry(obj *glib.Object) *SearchEntry {
+	return &SearchEntry{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalSearchEntry(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // SelectionFilterModel: gtkSelectionFilterModel is a list model that presents
 // the selected items in a SelectionModel as its own list model.
 type SelectionFilterModel struct {
 	*glib.Object
+}
+
+func wrapSelectionFilterModel(obj *glib.Object) *SelectionFilterModel {
+	return &SelectionFilterModel{*glib.Object{obj}}
+}
+
+func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Separator: gtkSeparator is a horizontal or vertical separator widget,
@@ -10148,6 +11978,16 @@ type SelectionFilterModel struct {
 // GtkSeparator uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
 type Separator struct {
 	Widget
+}
+
+func wrapSeparator(obj *glib.Object) *Separator {
+	return &Separator{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalSeparator(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Settings: gtkSettings provide a mechanism to share global settings between
@@ -10180,6 +12020,16 @@ type Settings struct {
 	*glib.Object
 }
 
+func wrapSettings(obj *glib.Object) *Settings {
+	return &Settings{*glib.Object{obj}}
+}
+
+func marshalSettings(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Shortcut: gtkShortcut is the low level object used for managing keyboard
 // shortcuts.
 //
@@ -10197,6 +12047,16 @@ type Settings struct {
 // by allowing shortcuts to be configured.
 type Shortcut struct {
 	*glib.Object
+}
+
+func wrapShortcut(obj *glib.Object) *Shortcut {
+	return &Shortcut{*glib.Object{obj}}
+}
+
+func marshalShortcut(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ShortcutAction: gtkShortcutAction is the object used to describe what a
@@ -10226,6 +12086,16 @@ type Shortcut struct {
 // GtkShortcut
 type ShortcutAction struct {
 	*glib.Object
+}
+
+func wrapShortcutAction(obj *glib.Object) *ShortcutAction {
+	return &ShortcutAction{*glib.Object{obj}}
+}
+
+func marshalShortcutAction(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ShortcutController: gtkShortcutController is an event controller that manages
@@ -10271,10 +12141,30 @@ type ShortcutController struct {
 	EventController
 }
 
+func wrapShortcutController(obj *glib.Object) *ShortcutController {
+	return &ShortcutController{EventController{*glib.Object{obj}}}
+}
+
+func marshalShortcutController(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ShortcutLabel: gtkShortcutLabel is a widget that represents a single keyboard
 // shortcut or gesture in the user interface.
 type ShortcutLabel struct {
 	Widget
+}
+
+func wrapShortcutLabel(obj *glib.Object) *ShortcutLabel {
+	return &ShortcutLabel{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalShortcutLabel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ShortcutTrigger: gtkShortcutTrigger is the object used to track if a Shortcut
@@ -10291,6 +12181,16 @@ type ShortcutTrigger struct {
 	*glib.Object
 }
 
+func wrapShortcutTrigger(obj *glib.Object) *ShortcutTrigger {
+	return &ShortcutTrigger{*glib.Object{obj}}
+}
+
+func marshalShortcutTrigger(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ShortcutsGroup: a GtkShortcutsGroup represents a group of related keyboard
 // shortcuts or gestures. The group has a title. It may optionally be associated
 // with a view of the application, which can be used to show only relevant
@@ -10299,6 +12199,16 @@ type ShortcutTrigger struct {
 // This widget is only meant to be used with ShortcutsWindow.
 type ShortcutsGroup struct {
 	Box
+}
+
+func wrapShortcutsGroup(obj *glib.Object) *ShortcutsGroup {
+	return &ShortcutsGroup{Box{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalShortcutsGroup(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ShortcutsSection: a GtkShortcutsSection collects all the keyboard shortcuts
@@ -10315,11 +12225,31 @@ type ShortcutsSection struct {
 	Box
 }
 
+func wrapShortcutsSection(obj *glib.Object) *ShortcutsSection {
+	return &ShortcutsSection{Box{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalShortcutsSection(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // ShortcutsShortcut: a GtkShortcutsShortcut represents a single keyboard
 // shortcut or gesture with a short text. This widget is only meant to be used
 // with ShortcutsWindow.
 type ShortcutsShortcut struct {
 	Widget
+}
+
+func wrapShortcutsShortcut(obj *glib.Object) *ShortcutsShortcut {
+	return &ShortcutsShortcut{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ShortcutsWindow: a GtkShortcutsWindow shows brief information about the
@@ -10369,12 +12299,32 @@ type ShortcutsWindow struct {
 	Window
 }
 
+func wrapShortcutsWindow(obj *glib.Object) *ShortcutsWindow {
+	return &ShortcutsWindow{Window{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalShortcutsWindow(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // SignalAction: a ShortcutAction that emits a signal.
 //
 // Signals that are used in this way are referred to as keybinding signals, and
 // they are expected to be defined with the G_SIGNAL_ACTION flag.
 type SignalAction struct {
 	ShortcutAction
+}
+
+func wrapSignalAction(obj *glib.Object) *SignalAction {
+	return &SignalAction{ShortcutAction{*glib.Object{obj}}}
+}
+
+func marshalSignalAction(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // SignalListItemFactory: gtkSignalListItemFactory is a ListItemFactory that
@@ -10418,6 +12368,16 @@ type SignalListItemFactory struct {
 	ListItemFactory
 }
 
+func wrapSignalListItemFactory(obj *glib.Object) *SignalListItemFactory {
+	return &SignalListItemFactory{ListItemFactory{*glib.Object{obj}}}
+}
+
+func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // SingleSelection: gtkSingleSelection is an implementation of the
 // SelectionModel interface that allows selecting a single element. It is the
 // default selection method used by list widgets in GTK.
@@ -10428,6 +12388,16 @@ type SignalListItemFactory struct {
 // model will preserve the selection.
 type SingleSelection struct {
 	*glib.Object
+}
+
+func wrapSingleSelection(obj *glib.Object) *SingleSelection {
+	return &SingleSelection{*glib.Object{obj}}
+}
+
+func marshalSingleSelection(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // SizeGroup: gtkSizeGroup provides a mechanism for grouping a number of widgets
@@ -10496,6 +12466,16 @@ type SizeGroup struct {
 	*glib.Object
 }
 
+func wrapSizeGroup(obj *glib.Object) *SizeGroup {
+	return &SizeGroup{*glib.Object{obj}}
+}
+
+func marshalSizeGroup(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // SliceListModel: gtkSliceListModel is a list model that takes a list model and
 // presents a slice of that model.
 //
@@ -10504,6 +12484,16 @@ type SizeGroup struct {
 // opened.
 type SliceListModel struct {
 	*glib.Object
+}
+
+func wrapSliceListModel(obj *glib.Object) *SliceListModel {
+	return &SliceListModel{*glib.Object{obj}}
+}
+
+func marshalSliceListModel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Snapshot: gtkSnapshot is an auxiliary object that assists in creating
@@ -10522,6 +12512,16 @@ type Snapshot struct {
 	gdk.Snapshot
 }
 
+func wrapSnapshot(obj *glib.Object) *Snapshot {
+	return &Snapshot{Snapshot{*glib.Object{obj}}}
+}
+
+func marshalSnapshot(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // SortListModel: gtkSortListModel is a list model that takes a list model and
 // sorts its elements according to a Sorter.
 //
@@ -10534,6 +12534,16 @@ type Snapshot struct {
 // sorting list model.
 type SortListModel struct {
 	*glib.Object
+}
+
+func wrapSortListModel(obj *glib.Object) *SortListModel {
+	return &SortListModel{*glib.Object{obj}}
+}
+
+func marshalSortListModel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Sorter: gtkSorter is the way to describe sorting criteria. Its primary user
@@ -10556,6 +12566,16 @@ type SortListModel struct {
 // Sorter and provide one's own sorter.
 type Sorter struct {
 	*glib.Object
+}
+
+func wrapSorter(obj *glib.Object) *Sorter {
+	return &Sorter{*glib.Object{obj}}
+}
+
+func marshalSorter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // SpinButton: a SpinButton is an ideal way to allow the user to set the value
@@ -10663,6 +12683,16 @@ type SpinButton struct {
 	Widget
 }
 
+func wrapSpinButton(obj *glib.Object) *SpinButton {
+	return &SpinButton{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalSpinButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Spinner: a GtkSpinner widget displays an icon-size spinning animation. It is
 // often used as an alternative to a ProgressBar for displaying indefinite
 // activity, instead of actual progress.
@@ -10677,6 +12707,16 @@ type SpinButton struct {
 // active, the :checked pseudoclass is added to this node.
 type Spinner struct {
 	Widget
+}
+
+func wrapSpinner(obj *glib.Object) *Spinner {
+	return &Spinner{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalSpinner(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Stack: the GtkStack widget is a container which only shows one of its
@@ -10722,8 +12762,28 @@ type Stack struct {
 	Widget
 }
 
+func wrapStack(obj *glib.Object) *Stack {
+	return &Stack{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalStack(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type StackPage struct {
 	*glib.Object
+}
+
+func wrapStackPage(obj *glib.Object) *StackPage {
+	return &StackPage{*glib.Object{obj}}
+}
+
+func marshalStackPage(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // StackSidebar: a GtkStackSidebar enables you to quickly and easily provide a
@@ -10743,6 +12803,16 @@ type StackPage struct {
 // style class to the widgets representing the stack pages.
 type StackSidebar struct {
 	Widget
+}
+
+func wrapStackSidebar(obj *glib.Object) *StackSidebar {
+	return &StackSidebar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalStackSidebar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // StackSwitcher: the GtkStackSwitcher widget acts as a controller for a Stack;
@@ -10772,6 +12842,16 @@ type StackSidebar struct {
 // K_ACCESSIBLE_ROLE_TAB for its buttons.
 type StackSwitcher struct {
 	Widget
+}
+
+func wrapStackSwitcher(obj *glib.Object) *StackSwitcher {
+	return &StackSwitcher{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalStackSwitcher(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Statusbar: a Statusbar is usually placed along the bottom of an application's
@@ -10810,6 +12890,16 @@ type Statusbar struct {
 	Widget
 }
 
+func wrapStatusbar(obj *glib.Object) *Statusbar {
+	return &Statusbar{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalStatusbar(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // StringFilter: gtkStringFilter determines whether to include items by looking
 // at strings and comparing them to a fixed search term. The strings are
 // obtained from the items by evaluating a Expression.
@@ -10818,6 +12908,16 @@ type Statusbar struct {
 // whole string, just a prefix, or any substring.
 type StringFilter struct {
 	Filter
+}
+
+func wrapStringFilter(obj *glib.Object) *StringFilter {
+	return &StringFilter{Filter{*glib.Object{obj}}}
+}
+
+func marshalStringFilter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // StringList: gtkStringList is a list model that wraps an array of strings.
@@ -10847,8 +12947,28 @@ type StringList struct {
 	*glib.Object
 }
 
+func wrapStringList(obj *glib.Object) *StringList {
+	return &StringList{*glib.Object{obj}}
+}
+
+func marshalStringList(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type StringObject struct {
 	*glib.Object
+}
+
+func wrapStringObject(obj *glib.Object) *StringObject {
+	return &StringObject{*glib.Object{obj}}
+}
+
+func marshalStringObject(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // StringSorter: gtkStringSorter is a Sorter that compares strings. It does the
@@ -10859,6 +12979,16 @@ type StringObject struct {
 // To obtain the strings to compare, this sorter evaluates a Expression.
 type StringSorter struct {
 	Sorter
+}
+
+func wrapStringSorter(obj *glib.Object) *StringSorter {
+	return &StringSorter{Sorter{*glib.Object{obj}}}
+}
+
+func marshalStringSorter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // StyleContext: gtkStyleContext is an object that stores styling information
@@ -10904,6 +13034,16 @@ type StyleContext struct {
 	*glib.Object
 }
 
+func wrapStyleContext(obj *glib.Object) *StyleContext {
+	return &StyleContext{*glib.Object{obj}}
+}
+
+func marshalStyleContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Switch: gtkSwitch is a widget that has two states: on or off. The user can
 // control which state should be active by clicking the empty area, or by
 // dragging the handle.
@@ -10928,6 +13068,16 @@ type StyleContext struct {
 // GtkSwitch uses the K_ACCESSIBLE_ROLE_SWITCH role.
 type Switch struct {
 	Widget
+}
+
+func wrapSwitch(obj *glib.Object) *Switch {
+	return &Switch{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalSwitch(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Text: the Text widget is a single line text entry widget.
@@ -10989,6 +13139,16 @@ type Text struct {
 	Widget
 }
 
+func wrapText(obj *glib.Object) *Text {
+	return &Text{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalText(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // TextBuffer: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
@@ -10996,11 +13156,31 @@ type TextBuffer struct {
 	*glib.Object
 }
 
+func wrapTextBuffer(obj *glib.Object) *TextBuffer {
+	return &TextBuffer{*glib.Object{obj}}
+}
+
+func marshalTextBuffer(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // TextChildAnchor: a TextChildAnchor is a spot in the buffer where child
 // widgets can be “anchored” (inserted inline, as if they were characters). The
 // anchor can have multiple widgets anchored, to allow for multiple views.
 type TextChildAnchor struct {
 	*glib.Object
+}
+
+func wrapTextChildAnchor(obj *glib.Object) *TextChildAnchor {
+	return &TextChildAnchor{*glib.Object{obj}}
+}
+
+func marshalTextChildAnchor(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // TextMark: you may wish to begin by reading the [text widget conceptual
@@ -11034,6 +13214,16 @@ type TextMark struct {
 	*glib.Object
 }
 
+func wrapTextMark(obj *glib.Object) *TextMark {
+	return &TextMark{*glib.Object{obj}}
+}
+
+func marshalTextMark(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // TextTag: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
@@ -11050,6 +13240,16 @@ type TextMark struct {
 // independently.
 type TextTag struct {
 	*glib.Object
+}
+
+func wrapTextTag(obj *glib.Object) *TextTag {
+	return &TextTag{*glib.Object{obj}}
+}
+
+func marshalTextTag(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // TextTagTable: you may wish to begin by reading the [text widget conceptual
@@ -11070,6 +13270,16 @@ type TextTag struct {
 //    </object>
 type TextTagTable struct {
 	*glib.Object
+}
+
+func wrapTextTagTable(obj *glib.Object) *TextTagTable {
+	return &TextTagTable{*glib.Object{obj}}
+}
+
+func marshalTextTagTable(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // TextView: you may wish to begin by reading the [text widget conceptual
@@ -11103,6 +13313,16 @@ type TextTagTable struct {
 // GtkTextView uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
 type TextView struct {
 	Widget
+}
+
+func wrapTextView(obj *glib.Object) *TextView {
+	return &TextView{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalTextView(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // ToggleButton: a ToggleButton is a Button which will remain “pressed-in” when
@@ -11164,6 +13384,16 @@ type ToggleButton struct {
 	Button
 }
 
+func wrapToggleButton(obj *glib.Object) *ToggleButton {
+	return &ToggleButton{Button{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalToggleButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Tooltip: basic tooltips can be realized simply by using
 // gtk_widget_set_tooltip_text() or gtk_widget_set_tooltip_markup() without any
 // explicit tooltip object.
@@ -11188,6 +13418,16 @@ type ToggleButton struct {
 // show. If you return false, it will not be shown.
 type Tooltip struct {
 	*glib.Object
+}
+
+func wrapTooltip(obj *glib.Object) *Tooltip {
+	return &Tooltip{*glib.Object{obj}}
+}
+
+func marshalTooltip(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // TreeExpander: gtkTreeExpander is a widget that provides an expander for a
@@ -11231,10 +13471,30 @@ type TreeExpander struct {
 	Widget
 }
 
+func wrapTreeExpander(obj *glib.Object) *TreeExpander {
+	return &TreeExpander{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalTreeExpander(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // TreeListModel: gtkTreeListModel is a Model implementation that can expand
 // rows by creating new child list models on demand.
 type TreeListModel struct {
 	*glib.Object
+}
+
+func wrapTreeListModel(obj *glib.Object) *TreeListModel {
+	return &TreeListModel{*glib.Object{obj}}
+}
+
+func marshalTreeListModel(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // TreeListRow: gtkTreeListRow is the object used by TreeListModel to represent
@@ -11249,6 +13509,16 @@ type TreeListModel struct {
 // properly.
 type TreeListRow struct {
 	*glib.Object
+}
+
+func wrapTreeListRow(obj *glib.Object) *TreeListRow {
+	return &TreeListRow{*glib.Object{obj}}
+}
+
+func marshalTreeListRow(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // TreeListRowSorter: gtkTreeListRowSorter is a special-purpose sorter that will
@@ -11266,6 +13536,16 @@ type TreeListRow struct {
 //    gtk_column_view_set_model (view, G_LIST_MODEL (selection));
 type TreeListRowSorter struct {
 	Sorter
+}
+
+func wrapTreeListRowSorter(obj *glib.Object) *TreeListRowSorter {
+	return &TreeListRowSorter{Sorter{*glib.Object{obj}}}
+}
+
+func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // TreeModelFilter: a TreeModelFilter is a tree model which wraps another tree
@@ -11331,6 +13611,16 @@ type TreeListRowSorter struct {
 // obtain references on these child levels yourself.
 type TreeModelFilter struct {
 	*glib.Object
+}
+
+func wrapTreeModelFilter(obj *glib.Object) *TreeModelFilter {
+	return &TreeModelFilter{*glib.Object{obj}}
+}
+
+func marshalTreeModelFilter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // TreeModelSort: the TreeModelSort is a model which implements the TreeSortable
@@ -11428,6 +13718,16 @@ type TreeModelSort struct {
 	*glib.Object
 }
 
+func wrapTreeModelSort(obj *glib.Object) *TreeModelSort {
+	return &TreeModelSort{*glib.Object{obj}}
+}
+
+func marshalTreeModelSort(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // TreeSelection: the TreeSelection object is a helper object to manage the
 // selection for a TreeView widget. The TreeSelection object is automatically
 // created when a new TreeView widget is created, and cannot exist independently
@@ -11454,6 +13754,16 @@ type TreeSelection struct {
 	*glib.Object
 }
 
+func wrapTreeSelection(obj *glib.Object) *TreeSelection {
+	return &TreeSelection{*glib.Object{obj}}
+}
+
+func marshalTreeSelection(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // TreeStore: the TreeStore object is a list model for use with a TreeView
 // widget. It implements the TreeModel interface, and consequently, can use all
 // of the methods available there. It also implements the TreeSortable interface
@@ -11478,6 +13788,16 @@ type TreeSelection struct {
 //    </object>
 type TreeStore struct {
 	*glib.Object
+}
+
+func wrapTreeStore(obj *glib.Object) *TreeStore {
+	return &TreeStore{*glib.Object{obj}}
+}
+
+func marshalTreeStore(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // TreeView: widget that displays any object that implements the TreeModel
@@ -11561,6 +13881,16 @@ type TreeView struct {
 	Widget
 }
 
+func wrapTreeView(obj *glib.Object) *TreeView {
+	return &TreeView{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalTreeView(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // TreeViewColumn: the GtkTreeViewColumn object represents a visible column in a
 // TreeView widget. It allows to set properties of the column header, and
 // functions as a holding pen for the cell renderers which determine how the
@@ -11571,6 +13901,16 @@ type TreeView struct {
 // they work together.
 type TreeViewColumn struct {
 	glib.InitiallyUnowned
+}
+
+func wrapTreeViewColumn(obj *glib.Object) *TreeViewColumn {
+	return &TreeViewColumn{glib.InitiallyUnowned{obj}}
+}
+
+func marshalTreeViewColumn(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Video: gtkVideo is a widget to show a MediaStream with media controls as
@@ -11585,6 +13925,16 @@ type TreeViewColumn struct {
 // Paintable API and a media framework such as Gstreamer directly.
 type Video struct {
 	Widget
+}
+
+func wrapVideo(obj *glib.Object) *Video {
+	return &Video{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalVideo(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Viewport: the Viewport widget acts as an adaptor class, implementing
@@ -11607,11 +13957,31 @@ type Viewport struct {
 	Widget
 }
 
+func wrapViewport(obj *glib.Object) *Viewport {
+	return &Viewport{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalViewport(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // VolumeButton: gtkVolumeButton is a subclass of ScaleButton that has been
 // tailored for use as a volume control widget with suitable icons, tooltips and
 // accessible labels.
 type VolumeButton struct {
 	ScaleButton
+}
+
+func wrapVolumeButton(obj *glib.Object) *VolumeButton {
+	return &VolumeButton{ScaleButton{Widget{glib.InitiallyUnowned{obj}}}}
+}
+
+func marshalVolumeButton(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Widget: gtkWidget is the base class all widgets in GTK derive from. It
@@ -11949,6 +14319,16 @@ type Widget struct {
 	glib.InitiallyUnowned
 }
 
+func wrapWidget(obj *glib.Object) *Widget {
+	return &Widget{glib.InitiallyUnowned{obj}}
+}
+
+func marshalWidget(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // WidgetPaintable: gtkWidgetPaintable is an implementation of the Paintable
 // interface that allows displaying the contents of a Widget.
 //
@@ -11970,6 +14350,16 @@ type Widget struct {
 // infinitely growing widget.
 type WidgetPaintable struct {
 	*glib.Object
+}
+
+func wrapWidgetPaintable(obj *glib.Object) *WidgetPaintable {
+	return &WidgetPaintable{*glib.Object{obj}}
+}
+
+func marshalWidgetPaintable(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Window: a GtkWindow is a toplevel window which can contain other widgets.
@@ -12016,6 +14406,16 @@ type WidgetPaintable struct {
 // GtkWindow uses the GTK_ACCESSIBLE_ROLE_WINDOW role.
 type Window struct {
 	Widget
+}
+
+func wrapWindow(obj *glib.Object) *Window {
+	return &Window{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalWindow(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // WindowControls: gtkWindowControls shows window frame controls, such as
@@ -12066,6 +14466,16 @@ type WindowControls struct {
 	Widget
 }
 
+func wrapWindowControls(obj *glib.Object) *WindowControls {
+	return &WindowControls{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalWindowControls(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // WindowGroup: a WindowGroup restricts the effect of grabs to windows in the
 // same group, thereby making window groups almost behave like separate
 // applications.
@@ -12084,6 +14494,16 @@ type WindowGroup struct {
 	*glib.Object
 }
 
+func wrapWindowGroup(obj *glib.Object) *WindowGroup {
+	return &WindowGroup{*glib.Object{obj}}
+}
+
+func marshalWindowGroup(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // WindowHandle: gtkWindowHandle is a titlebar area widget. When added into a
 // window, it can be dragged to move the window, and handles right click, double
 // click and middle click as expected of a titlebar.
@@ -12099,4 +14519,14 @@ type WindowGroup struct {
 // GtkWindowHandle uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowHandle struct {
 	Widget
+}
+
+func wrapWindowHandle(obj *glib.Object) *WindowHandle {
+	return &WindowHandle{Widget{glib.InitiallyUnowned{obj}}}
+}
+
+func marshalWindowHandle(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }

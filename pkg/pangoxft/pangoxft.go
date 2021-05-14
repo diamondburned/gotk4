@@ -74,10 +74,30 @@ type Font struct {
 	pangofc.Font
 }
 
+func wrapFont(obj *glib.Object) *Font {
+	return &Font{Font{Font{*glib.Object{obj}}}}
+}
+
+func marshalFont(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // FontMap: pangoXftFontMap is an implementation of FcFontMap suitable for the
 // Xft library as the renderer. It is used in to create fonts of type XftFont.
 type FontMap struct {
 	pangofc.FontMap
+}
+
+func wrapFontMap(obj *glib.Object) *FontMap {
+	return &FontMap{FontMap{FontMap{*glib.Object{obj}}}}
+}
+
+func marshalFontMap(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // Renderer: pangoXftRenderer is a subclass of Renderer used for rendering with
@@ -85,4 +105,14 @@ type FontMap struct {
 // to modify exactly how drawing of individual elements occurs.
 type Renderer struct {
 	pango.Renderer
+}
+
+func wrapRenderer(obj *glib.Object) *Renderer {
+	return &Renderer{Renderer{*glib.Object{obj}}}
+}
+
+func marshalRenderer(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }

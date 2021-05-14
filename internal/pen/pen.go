@@ -10,6 +10,39 @@ import (
 	"text/template"
 )
 
+// Piece is a simple string builder.
+type Piece struct {
+	str strings.Builder
+}
+
+// Writef writes using Printf.
+func (p *Piece) Writef(f string, v ...interface{}) *Piece {
+	fmt.Fprintf(&p.str, f, v...)
+	return p
+}
+
+// Write writes using Print.
+func (p *Piece) Write(v ...interface{}) *Piece {
+	if len(v) == 1 {
+		if str, ok := v[0].(string); ok {
+			p.str.WriteString(str)
+			return p
+		}
+	}
+
+	fmt.Fprint(&p.str, v...)
+	return p
+}
+
+// Char writes a single ASCII character.
+func (p *Piece) Char(b byte) *Piece {
+	p.str.WriteByte(b)
+	return p
+}
+
+// String returns the inner string block.
+func (p *Piece) String() string { return p.str.String() }
+
 // Block writes a scoped Go block.
 type Block struct {
 	str strings.Builder

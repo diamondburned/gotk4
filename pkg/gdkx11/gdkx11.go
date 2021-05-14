@@ -3,6 +3,8 @@
 package gdkx11
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk"
 	"github.com/diamondburned/gotk4/pkg/xlib"
 	"github.com/gotk3/gotk3/glib"
@@ -76,30 +78,110 @@ type X11AppLaunchContext struct {
 	gdk.AppLaunchContext
 }
 
+func wrapX11AppLaunchContext(obj *glib.Object) *X11AppLaunchContext {
+	return &X11AppLaunchContext{AppLaunchContext{AppLaunchContext{*glib.Object{obj}}}}
+}
+
+func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type X11DeviceManagerXI2 struct {
 	*glib.Object
+}
+
+func wrapX11DeviceManagerXI2(obj *glib.Object) *X11DeviceManagerXI2 {
+	return &X11DeviceManagerXI2{*glib.Object{obj}}
+}
+
+func marshalX11DeviceManagerXI2(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 type X11DeviceXI2 struct {
 	gdk.Device
 }
 
+func wrapX11DeviceXI2(obj *glib.Object) *X11DeviceXI2 {
+	return &X11DeviceXI2{Device{*glib.Object{obj}}}
+}
+
+func marshalX11DeviceXI2(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type X11Display struct {
 	gdk.Display
+}
+
+func wrapX11Display(obj *glib.Object) *X11Display {
+	return &X11Display{Display{*glib.Object{obj}}}
+}
+
+func marshalX11Display(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 type X11Drag struct {
 	gdk.Drag
 }
 
+func wrapX11Drag(obj *glib.Object) *X11Drag {
+	return &X11Drag{Drag{*glib.Object{obj}}}
+}
+
+func marshalX11Drag(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type X11Monitor struct {
 	gdk.Monitor
+}
+
+func wrapX11Monitor(obj *glib.Object) *X11Monitor {
+	return &X11Monitor{Monitor{*glib.Object{obj}}}
+}
+
+func marshalX11Monitor(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 type X11Screen struct {
 	*glib.Object
 }
 
+func wrapX11Screen(obj *glib.Object) *X11Screen {
+	return &X11Screen{*glib.Object{obj}}
+}
+
+func marshalX11Screen(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type X11Surface struct {
 	gdk.Surface
+}
+
+func wrapX11Surface(obj *glib.Object) *X11Surface {
+	return &X11Surface{Surface{*glib.Object{obj}}}
+}
+
+func marshalX11Surface(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }

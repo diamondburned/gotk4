@@ -3,6 +3,8 @@
 package pangoft2
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
@@ -87,4 +89,14 @@ func ShutdownDisplay()
 // FreeType fonts.
 type FontMap struct {
 	pangofc.FontMap
+}
+
+func wrapFontMap(obj *glib.Object) *FontMap {
+	return &FontMap{FontMap{FontMap{*glib.Object{obj}}}}
+}
+
+func marshalFontMap(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }

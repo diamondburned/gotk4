@@ -3,6 +3,8 @@
 package pangofc
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/glib"
 )
@@ -32,6 +34,16 @@ type Decoder struct {
 	*glib.Object
 }
 
+func wrapDecoder(obj *glib.Object) *Decoder {
+	return &Decoder{*glib.Object{obj}}
+}
+
+func marshalDecoder(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // Font: `PangoFcFont` is a base class for font implementations using the
 // Fontconfig and FreeType libraries.
 //
@@ -43,6 +55,16 @@ type Font struct {
 	pango.Font
 }
 
+func wrapFont(obj *glib.Object) *Font {
+	return &Font{Font{*glib.Object{obj}}}
+}
+
+func marshalFont(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // FontMap: `PangoFcFontMap` is a base class for font map implementations using
 // the Fontconfig and FreeType libraries.
 //
@@ -52,4 +74,14 @@ type Font struct {
 // that come with Pango.
 type FontMap struct {
 	pango.FontMap
+}
+
+func wrapFontMap(obj *glib.Object) *FontMap {
+	return &FontMap{FontMap{*glib.Object{obj}}}
+}
+
+func marshalFontMap(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }

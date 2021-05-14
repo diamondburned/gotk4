@@ -2,21 +2,32 @@ package girgen
 
 import (
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/internal/pen"
 )
 
 var classTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .GoName }}
 	type {{ .GoName }} struct {
-		{{ index .TypeTree 0 }}
+		{{ $.Ng.GoType (index .TypeTree 0) }}
+	}
+
+	func wrap{{ .GoName }}(obj *glib.Object) *{{ .GoName }} {
+		return {{ .Wrap "obj" }}
+	}
+
+	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
+		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+		obj := glib.Take(unsafe.Pointer(val))
+		return wrapWidget(obj), nil
 	}
 `)
 
 type classGenerator struct {
 	gir.Class
 	GoName   string
-	TypeTree []string
+	TypeTree []*ResolvedType
 
-	ng *NamespaceGenerator
+	Ng *NamespaceGenerator
 }
 
 func (cg *classGenerator) Use(class gir.Class) bool {
@@ -27,25 +38,19 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	if class.Parent != "" {
 		parent := class.Parent
 		for {
-			parentType := cg.ng.ResolveTypeName(parent)
+			parentType := cg.Ng.ResolveTypeName(parent)
 			if parentType == nil {
 				return false
 			}
 
-			goType := parentType.GoType(parentType.NeedsNamespace(cg.ng.current))
-			cg.TypeTree = append(cg.TypeTree, goType)
+			cg.TypeTree = append(cg.TypeTree, parentType)
 
-			// We've resolved as deep as we can, so bail. This check works
-			// because non-class types don't have parent classes.
-			if parentType.Extern == nil || parentType.Extern.Result.Class == nil {
+			if parentType.Parent == "" {
 				break
 			}
 
 			// Use the parent class' parent type.
-			parent = parentType.Extern.Result.Class.Parent
-			if parent == "" {
-				break
-			}
+			parent = parentType.Parent
 		}
 	} else {
 		// TODO: check what happens if a class has no parent. It should have a
@@ -59,10 +64,31 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	return true
 }
 
+// Wrap returns the wrap string around the given variable name of type
+// *glib.Object.
+func (cg *classGenerator) Wrap(objName string) string {
+	var p pen.Piece
+	p.Char('&').Write(cg.GoName).Char('{')
+
+	for _, typ := range cg.TypeTree {
+		p.Writef("%s{", typ.GoType(false))
+	}
+
+	p.Write(objName)
+
+	for range cg.TypeTree {
+		p.Char('}')
+	}
+
+	p.Char('}')
+
+	return p.String()
+}
+
 func (ng *NamespaceGenerator) generateClasses() {
 	cg := classGenerator{
-		TypeTree: make([]string, 15),
-		ng:       ng,
+		TypeTree: make([]*ResolvedType, 15),
+		Ng:       ng,
 	}
 
 	for _, class := range ng.current.Namespace.Classes {
@@ -70,6 +96,6 @@ func (ng *NamespaceGenerator) generateClasses() {
 			continue
 		}
 
-		ng.pen.BlockTmpl(classTmpl, cg)
+		ng.pen.BlockTmpl(classTmpl, &cg)
 	}
 }

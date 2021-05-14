@@ -190,9 +190,29 @@ type Pixbuf struct {
 	*glib.Object
 }
 
+func wrapPixbuf(obj *glib.Object) *Pixbuf {
+	return &Pixbuf{*glib.Object{obj}}
+}
+
+func marshalPixbuf(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // PixbufAnimation: an opaque struct representing an animation.
 type PixbufAnimation struct {
 	*glib.Object
+}
+
+func wrapPixbufAnimation(obj *glib.Object) *PixbufAnimation {
+	return &PixbufAnimation{*glib.Object{obj}}
+}
+
+func marshalPixbufAnimation(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // PixbufAnimationIter: an opaque struct representing an iterator which points
@@ -201,9 +221,29 @@ type PixbufAnimationIter struct {
 	*glib.Object
 }
 
+func wrapPixbufAnimationIter(obj *glib.Object) *PixbufAnimationIter {
+	return &PixbufAnimationIter{*glib.Object{obj}}
+}
+
+func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 // PixbufLoader: the GdkPixbufLoader struct contains only private fields.
 type PixbufLoader struct {
 	*glib.Object
+}
+
+func wrapPixbufLoader(obj *glib.Object) *PixbufLoader {
+	return &PixbufLoader{*glib.Object{obj}}
+}
+
+func marshalPixbufLoader(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }
 
 // PixbufSimpleAnim: an opaque struct representing a simple animation.
@@ -211,6 +251,26 @@ type PixbufSimpleAnim struct {
 	PixbufAnimation
 }
 
+func wrapPixbufSimpleAnim(obj *glib.Object) *PixbufSimpleAnim {
+	return &PixbufSimpleAnim{PixbufAnimation{*glib.Object{obj}}}
+}
+
+func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
+}
+
 type PixbufSimpleAnimIter struct {
 	PixbufAnimationIter
+}
+
+func wrapPixbufSimpleAnimIter(obj *glib.Object) *PixbufSimpleAnimIter {
+	return &PixbufSimpleAnimIter{PixbufAnimationIter{*glib.Object{obj}}}
+}
+
+func marshalPixbufSimpleAnimIter(p uintptr) (interface{}, error) {
+	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
+	obj := glib.Take(unsafe.Pointer(val))
+	return wrapWidget(obj), nil
 }

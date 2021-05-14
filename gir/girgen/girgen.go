@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"path"
 	"strconv"
 	"text/template"
 
@@ -128,7 +129,7 @@ func (g *Generator) UseNamespace(namespace string) *NamespaceGenerator {
 		pen:  pen.New(&buf),
 		body: &buf,
 
-		imports: map[string]struct{}{},
+		imports: map[string]string{},
 		gen:     g,
 		current: res,
 	}
@@ -139,7 +140,7 @@ type NamespaceGenerator struct {
 	pen  *pen.Pen
 	body *bytes.Buffer
 
-	imports map[string]struct{}
+	imports map[string]string // optional alias value
 
 	gen     *Generator
 	current *gir.NamespaceFindResult
@@ -147,8 +148,6 @@ type NamespaceGenerator struct {
 
 // Generate generates the current namespace into the given writer.
 func (ng *NamespaceGenerator) Generate(w io.Writer) error {
-	ng.addImport("unsafe")
-	ng.addImport("github.com/gotk3/gotk3/glib")
 	ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
 	ng.addImport("github.com/diamondburned/gotk4/internal/callback")
 
@@ -178,7 +177,13 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 
 	if len(ng.imports) > 0 {
 		pen.Words("import (")
-		for imp := range ng.imports {
+		for imp, alias := range ng.imports {
+			// Only use the import alias if it's provided and does not match the
+			// base name of the import path for idiomaticity.
+			if alias != "" && alias != path.Base(imp) {
+				pen.Words(alias, "")
+			}
+
 			pen.Words(strconv.Quote(imp))
 		}
 		pen.Block(")")
@@ -235,10 +240,14 @@ func (ng *NamespaceGenerator) warnUnknownType(typ string) {
 }
 
 func (ng *NamespaceGenerator) addImport(pkgPath string) {
+	ng.addImportAlias(pkgPath, "")
+}
+
+func (ng *NamespaceGenerator) addImportAlias(pkgPath, alias string) {
 	_, ok := ng.imports[pkgPath]
 	if ok {
 		return
 	}
 
-	ng.imports[pkgPath] = struct{}{}
+	ng.imports[pkgPath] = alias
 }

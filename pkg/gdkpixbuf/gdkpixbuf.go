@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/glib"
-	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gdk-pixbuf-2.0
@@ -16,13 +16,13 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		// Enums
-		{T: glib.Type(C.gdk_colorspace_get_type()), F: marshalColorspace},
-		{T: glib.Type(C.gdk_interp_type_get_type()), F: marshalInterpType},
-		{T: glib.Type(C.gdk_pixbuf_alpha_mode_get_type()), F: marshalPixbufAlphaMode},
-		{T: glib.Type(C.gdk_pixbuf_error_get_type()), F: marshalPixbufError},
-		{T: glib.Type(C.gdk_pixbuf_rotation_get_type()), F: marshalPixbufRotation},
+		{T: externglib.Type(C.gdk_colorspace_get_type()), F: marshalColorspace},
+		{T: externglib.Type(C.gdk_interp_type_get_type()), F: marshalInterpType},
+		{T: externglib.Type(C.gdk_pixbuf_alpha_mode_get_type()), F: marshalPixbufAlphaMode},
+		{T: externglib.Type(C.gdk_pixbuf_error_get_type()), F: marshalPixbufError},
+		{T: externglib.Type(C.gdk_pixbuf_rotation_get_type()), F: marshalPixbufRotation},
 
 		// Objects/Classes
 	})
@@ -187,11 +187,11 @@ func (p *PixbufFormat) Native() unsafe.Pointer {
 // color space, bits per sample, width and height, and the rowstride (the number
 // of bytes between the start of one row and the start of the next).
 type Pixbuf struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapPixbuf(obj *glib.Object) *Pixbuf {
-	return &Pixbuf{*glib.Object{obj}}
+	return &Pixbuf{*externglib.Object{obj}}
 }
 
 func marshalPixbuf(p uintptr) (interface{}, error) {
@@ -202,11 +202,11 @@ func marshalPixbuf(p uintptr) (interface{}, error) {
 
 // PixbufAnimation: an opaque struct representing an animation.
 type PixbufAnimation struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapPixbufAnimation(obj *glib.Object) *PixbufAnimation {
-	return &PixbufAnimation{*glib.Object{obj}}
+	return &PixbufAnimation{*externglib.Object{obj}}
 }
 
 func marshalPixbufAnimation(p uintptr) (interface{}, error) {
@@ -218,11 +218,11 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 // PixbufAnimationIter: an opaque struct representing an iterator which points
 // to a certain position in an animation.
 type PixbufAnimationIter struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapPixbufAnimationIter(obj *glib.Object) *PixbufAnimationIter {
-	return &PixbufAnimationIter{*glib.Object{obj}}
+	return &PixbufAnimationIter{*externglib.Object{obj}}
 }
 
 func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
@@ -233,11 +233,11 @@ func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 
 // PixbufLoader: the GdkPixbufLoader struct contains only private fields.
 type PixbufLoader struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapPixbufLoader(obj *glib.Object) *PixbufLoader {
-	return &PixbufLoader{*glib.Object{obj}}
+	return &PixbufLoader{*externglib.Object{obj}}
 }
 
 func marshalPixbufLoader(p uintptr) (interface{}, error) {
@@ -252,7 +252,7 @@ type PixbufSimpleAnim struct {
 }
 
 func wrapPixbufSimpleAnim(obj *glib.Object) *PixbufSimpleAnim {
-	return &PixbufSimpleAnim{PixbufAnimation{*glib.Object{obj}}}
+	return &PixbufSimpleAnim{PixbufAnimation{*externglib.Object{obj}}}
 }
 
 func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
@@ -266,7 +266,7 @@ type PixbufSimpleAnimIter struct {
 }
 
 func wrapPixbufSimpleAnimIter(obj *glib.Object) *PixbufSimpleAnimIter {
-	return &PixbufSimpleAnimIter{PixbufAnimationIter{*glib.Object{obj}}}
+	return &PixbufSimpleAnimIter{PixbufAnimationIter{*externglib.Object{obj}}}
 }
 
 func marshalPixbufSimpleAnimIter(p uintptr) (interface{}, error) {

@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/glib"
-	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: pango
@@ -16,26 +16,26 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		// Enums
-		{T: glib.Type(C.pango_alignment_get_type()), F: marshalAlignment},
-		{T: glib.Type(C.pango_attr_type_get_type()), F: marshalAttrType},
-		{T: glib.Type(C.pango_bidi_type_get_type()), F: marshalBidiType},
-		{T: glib.Type(C.pango_coverage_level_get_type()), F: marshalCoverageLevel},
-		{T: glib.Type(C.pango_direction_get_type()), F: marshalDirection},
-		{T: glib.Type(C.pango_ellipsize_mode_get_type()), F: marshalEllipsizeMode},
-		{T: glib.Type(C.pango_gravity_get_type()), F: marshalGravity},
-		{T: glib.Type(C.pango_gravity_hint_get_type()), F: marshalGravityHint},
-		{T: glib.Type(C.pango_overline_get_type()), F: marshalOverline},
-		{T: glib.Type(C.pango_render_part_get_type()), F: marshalRenderPart},
-		{T: glib.Type(C.pango_script_get_type()), F: marshalScript},
-		{T: glib.Type(C.pango_stretch_get_type()), F: marshalStretch},
-		{T: glib.Type(C.pango_style_get_type()), F: marshalStyle},
-		{T: glib.Type(C.pango_tab_align_get_type()), F: marshalTabAlign},
-		{T: glib.Type(C.pango_underline_get_type()), F: marshalUnderline},
-		{T: glib.Type(C.pango_variant_get_type()), F: marshalVariant},
-		{T: glib.Type(C.pango_weight_get_type()), F: marshalWeight},
-		{T: glib.Type(C.pango_wrap_mode_get_type()), F: marshalWrapMode},
+		{T: externglib.Type(C.pango_alignment_get_type()), F: marshalAlignment},
+		{T: externglib.Type(C.pango_attr_type_get_type()), F: marshalAttrType},
+		{T: externglib.Type(C.pango_bidi_type_get_type()), F: marshalBidiType},
+		{T: externglib.Type(C.pango_coverage_level_get_type()), F: marshalCoverageLevel},
+		{T: externglib.Type(C.pango_direction_get_type()), F: marshalDirection},
+		{T: externglib.Type(C.pango_ellipsize_mode_get_type()), F: marshalEllipsizeMode},
+		{T: externglib.Type(C.pango_gravity_get_type()), F: marshalGravity},
+		{T: externglib.Type(C.pango_gravity_hint_get_type()), F: marshalGravityHint},
+		{T: externglib.Type(C.pango_overline_get_type()), F: marshalOverline},
+		{T: externglib.Type(C.pango_render_part_get_type()), F: marshalRenderPart},
+		{T: externglib.Type(C.pango_script_get_type()), F: marshalScript},
+		{T: externglib.Type(C.pango_stretch_get_type()), F: marshalStretch},
+		{T: externglib.Type(C.pango_style_get_type()), F: marshalStyle},
+		{T: externglib.Type(C.pango_tab_align_get_type()), F: marshalTabAlign},
+		{T: externglib.Type(C.pango_underline_get_type()), F: marshalUnderline},
+		{T: externglib.Type(C.pango_variant_get_type()), F: marshalVariant},
+		{T: externglib.Type(C.pango_weight_get_type()), F: marshalWeight},
+		{T: externglib.Type(C.pango_wrap_mode_get_type()), F: marshalWrapMode},
 
 		// Objects/Classes
 	})
@@ -1327,7 +1327,7 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext
 // @possible_values. The list is slash-separated, eg. "none/start/middle/end".
 // If failed and @possible_values is not nil, returned string should be freed
 // using g_free().
-func ParseEnum(_type glib.Type, str string, warn bool) (int, string, bool)
+func ParseEnum(_type externglib.Type, str string, warn bool) (int, string, bool)
 
 // ParseMarkup: parses marked-up text to create a plain-text string and an
 // attribute list.
@@ -2888,11 +2888,11 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray
 //
 // To obtain a `PangoContext`, use [method@Pango.FontMap.create_context].
 type Context struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapContext(obj *glib.Object) *Context {
-	return &Context{*glib.Object{obj}}
+	return &Context{*externglib.Object{obj}}
 }
 
 func marshalContext(p uintptr) (interface{}, error) {
@@ -2909,11 +2909,11 @@ func marshalContext(p uintptr) (interface{}, error) {
 // character. The Coverage is a data structure that is used to represent that
 // information. It is an opaque structure with no public fields.
 type Coverage struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapCoverage(obj *glib.Object) *Coverage {
-	return &Coverage{*glib.Object{obj}}
+	return &Coverage{*externglib.Object{obj}}
 }
 
 func marshalCoverage(p uintptr) (interface{}, error) {
@@ -2925,11 +2925,11 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 // Font: a `PangoFont` is used to represent a font in a
 // rendering-system-independent manner.
 type Font struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFont(obj *glib.Object) *Font {
-	return &Font{*glib.Object{obj}}
+	return &Font{*externglib.Object{obj}}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
@@ -2941,11 +2941,11 @@ func marshalFont(p uintptr) (interface{}, error) {
 // FontFace: a `PangoFontFace` is used to represent a group of fonts with the
 // same family, slant, weight, and width, but varying sizes.
 type FontFace struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFontFace(obj *glib.Object) *FontFace {
-	return &FontFace{*glib.Object{obj}}
+	return &FontFace{*externglib.Object{obj}}
 }
 
 func marshalFontFace(p uintptr) (interface{}, error) {
@@ -2960,11 +2960,11 @@ func marshalFontFace(p uintptr) (interface{}, error) {
 // The font faces in a family share a common design, but differ in slant,
 // weight, width or other aspects.
 type FontFamily struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFontFamily(obj *glib.Object) *FontFamily {
-	return &FontFamily{*glib.Object{obj}}
+	return &FontFamily{*externglib.Object{obj}}
 }
 
 func marshalFontFamily(p uintptr) (interface{}, error) {
@@ -2979,11 +2979,11 @@ func marshalFontFamily(p uintptr) (interface{}, error) {
 // This is a virtual object with implementations being specific to particular
 // rendering systems.
 type FontMap struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFontMap(obj *glib.Object) *FontMap {
-	return &FontMap{*glib.Object{obj}}
+	return &FontMap{*externglib.Object{obj}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
@@ -3000,11 +3000,11 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // for a particular Unicode character, and for finding a composite set of
 // metrics for the entire fontset.
 type Fontset struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFontset(obj *glib.Object) *Fontset {
-	return &Fontset{*glib.Object{obj}}
+	return &Fontset{*externglib.Object{obj}}
 }
 
 func marshalFontset(p uintptr) (interface{}, error) {
@@ -3023,7 +3023,7 @@ type FontsetSimple struct {
 }
 
 func wrapFontsetSimple(obj *glib.Object) *FontsetSimple {
-	return &FontsetSimple{Fontset{*glib.Object{obj}}}
+	return &FontsetSimple{Fontset{*externglib.Object{obj}}}
 }
 
 func marshalFontsetSimple(p uintptr) (interface{}, error) {
@@ -3056,11 +3056,11 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 // It is possible, as well, to ignore the 2-D setup, and simply treat the
 // results of a `PangoLayout` as a list of lines.
 type Layout struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapLayout(obj *glib.Object) *Layout {
-	return &Layout{*glib.Object{obj}}
+	return &Layout{*externglib.Object{obj}}
 }
 
 func marshalLayout(p uintptr) (interface{}, error) {
@@ -3076,11 +3076,11 @@ func marshalLayout(p uintptr) (interface{}, error) {
 // and @draw_rectangle, renderers for particular font backends and destinations
 // can be created.
 type Renderer struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapRenderer(obj *glib.Object) *Renderer {
-	return &Renderer{*glib.Object{obj}}
+	return &Renderer{*externglib.Object{obj}}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {

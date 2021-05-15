@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
@@ -14,7 +14,7 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 
 		// Objects/Classes
 	})

@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
 	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: pangoot
@@ -17,7 +18,7 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		// Enums
 		// Skipped TableType.
 
@@ -238,11 +239,11 @@ func (r *RulesetDescription) Native() unsafe.Pointer {
 }
 
 type Info struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapInfo(obj *glib.Object) *Info {
-	return &Info{*glib.Object{obj}}
+	return &Info{*externglib.Object{obj}}
 }
 
 func marshalInfo(p uintptr) (interface{}, error) {
@@ -258,11 +259,11 @@ func marshalInfo(p uintptr) (interface{}, error) {
 // are added to it with pango_ot_ruleset_add_feature(), then it is applied to a
 // GlyphString with pango_ot_ruleset_shape().
 type Ruleset struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapRuleset(obj *glib.Object) *Ruleset {
-	return &Ruleset{*glib.Object{obj}}
+	return &Ruleset{*externglib.Object{obj}}
 }
 
 func marshalRuleset(p uintptr) (interface{}, error) {

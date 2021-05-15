@@ -12,7 +12,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -21,101 +21,101 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		// Enums
-		{T: glib.Type(C.gtk_accessible_autocomplete_get_type()), F: marshalAccessibleAutocomplete},
-		{T: glib.Type(C.gtk_accessible_invalid_state_get_type()), F: marshalAccessibleInvalidState},
-		{T: glib.Type(C.gtk_accessible_property_get_type()), F: marshalAccessibleProperty},
-		{T: glib.Type(C.gtk_accessible_relation_get_type()), F: marshalAccessibleRelation},
-		{T: glib.Type(C.gtk_accessible_role_get_type()), F: marshalAccessibleRole},
-		{T: glib.Type(C.gtk_accessible_sort_get_type()), F: marshalAccessibleSort},
-		{T: glib.Type(C.gtk_accessible_state_get_type()), F: marshalAccessibleState},
-		{T: glib.Type(C.gtk_accessible_tristate_get_type()), F: marshalAccessibleTristate},
-		{T: glib.Type(C.gtk_align_get_type()), F: marshalAlign},
-		{T: glib.Type(C.gtk_arrow_type_get_type()), F: marshalArrowType},
-		{T: glib.Type(C.gtk_assistant_page_type_get_type()), F: marshalAssistantPageType},
-		{T: glib.Type(C.gtk_baseline_position_get_type()), F: marshalBaselinePosition},
-		{T: glib.Type(C.gtk_border_style_get_type()), F: marshalBorderStyle},
-		{T: glib.Type(C.gtk_builder_error_get_type()), F: marshalBuilderError},
-		{T: glib.Type(C.gtk_buttons_type_get_type()), F: marshalButtonsType},
-		{T: glib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
-		{T: glib.Type(C.gtk_cell_renderer_mode_get_type()), F: marshalCellRendererMode},
-		{T: glib.Type(C.gtk_constraint_attribute_get_type()), F: marshalConstraintAttribute},
-		{T: glib.Type(C.gtk_constraint_relation_get_type()), F: marshalConstraintRelation},
-		{T: glib.Type(C.gtk_constraint_strength_get_type()), F: marshalConstraintStrength},
-		{T: glib.Type(C.gtk_constraint_vfl_parser_error_get_type()), F: marshalConstraintVflParserError},
-		{T: glib.Type(C.gtk_corner_type_get_type()), F: marshalCornerType},
+		{T: externglib.Type(C.gtk_accessible_autocomplete_get_type()), F: marshalAccessibleAutocomplete},
+		{T: externglib.Type(C.gtk_accessible_invalid_state_get_type()), F: marshalAccessibleInvalidState},
+		{T: externglib.Type(C.gtk_accessible_property_get_type()), F: marshalAccessibleProperty},
+		{T: externglib.Type(C.gtk_accessible_relation_get_type()), F: marshalAccessibleRelation},
+		{T: externglib.Type(C.gtk_accessible_role_get_type()), F: marshalAccessibleRole},
+		{T: externglib.Type(C.gtk_accessible_sort_get_type()), F: marshalAccessibleSort},
+		{T: externglib.Type(C.gtk_accessible_state_get_type()), F: marshalAccessibleState},
+		{T: externglib.Type(C.gtk_accessible_tristate_get_type()), F: marshalAccessibleTristate},
+		{T: externglib.Type(C.gtk_align_get_type()), F: marshalAlign},
+		{T: externglib.Type(C.gtk_arrow_type_get_type()), F: marshalArrowType},
+		{T: externglib.Type(C.gtk_assistant_page_type_get_type()), F: marshalAssistantPageType},
+		{T: externglib.Type(C.gtk_baseline_position_get_type()), F: marshalBaselinePosition},
+		{T: externglib.Type(C.gtk_border_style_get_type()), F: marshalBorderStyle},
+		{T: externglib.Type(C.gtk_builder_error_get_type()), F: marshalBuilderError},
+		{T: externglib.Type(C.gtk_buttons_type_get_type()), F: marshalButtonsType},
+		{T: externglib.Type(C.gtk_cell_renderer_accel_mode_get_type()), F: marshalCellRendererAccelMode},
+		{T: externglib.Type(C.gtk_cell_renderer_mode_get_type()), F: marshalCellRendererMode},
+		{T: externglib.Type(C.gtk_constraint_attribute_get_type()), F: marshalConstraintAttribute},
+		{T: externglib.Type(C.gtk_constraint_relation_get_type()), F: marshalConstraintRelation},
+		{T: externglib.Type(C.gtk_constraint_strength_get_type()), F: marshalConstraintStrength},
+		{T: externglib.Type(C.gtk_constraint_vfl_parser_error_get_type()), F: marshalConstraintVflParserError},
+		{T: externglib.Type(C.gtk_corner_type_get_type()), F: marshalCornerType},
 		// Skipped CssParserError.
 		// Skipped CssParserWarning.
-		{T: glib.Type(C.gtk_delete_type_get_type()), F: marshalDeleteType},
-		{T: glib.Type(C.gtk_direction_type_get_type()), F: marshalDirectionType},
-		{T: glib.Type(C.gtk_editable_properties_get_type()), F: marshalEditableProperties},
-		{T: glib.Type(C.gtk_entry_icon_position_get_type()), F: marshalEntryIconPosition},
-		{T: glib.Type(C.gtk_event_sequence_state_get_type()), F: marshalEventSequenceState},
-		{T: glib.Type(C.gtk_file_chooser_action_get_type()), F: marshalFileChooserAction},
-		{T: glib.Type(C.gtk_file_chooser_error_get_type()), F: marshalFileChooserError},
-		{T: glib.Type(C.gtk_filter_change_get_type()), F: marshalFilterChange},
-		{T: glib.Type(C.gtk_filter_match_get_type()), F: marshalFilterMatch},
-		{T: glib.Type(C.gtk_icon_size_get_type()), F: marshalIconSize},
-		{T: glib.Type(C.gtk_icon_theme_error_get_type()), F: marshalIconThemeError},
-		{T: glib.Type(C.gtk_icon_view_drop_position_get_type()), F: marshalIconViewDropPosition},
-		{T: glib.Type(C.gtk_image_type_get_type()), F: marshalImageType},
-		{T: glib.Type(C.gtk_input_purpose_get_type()), F: marshalInputPurpose},
-		{T: glib.Type(C.gtk_justification_get_type()), F: marshalJustification},
-		{T: glib.Type(C.gtk_level_bar_mode_get_type()), F: marshalLevelBarMode},
-		{T: glib.Type(C.gtk_license_get_type()), F: marshalLicense},
-		{T: glib.Type(C.gtk_message_type_get_type()), F: marshalMessageType},
-		{T: glib.Type(C.gtk_movement_step_get_type()), F: marshalMovementStep},
-		{T: glib.Type(C.gtk_notebook_tab_get_type()), F: marshalNotebookTab},
-		{T: glib.Type(C.gtk_number_up_layout_get_type()), F: marshalNumberUpLayout},
-		{T: glib.Type(C.gtk_ordering_get_type()), F: marshalOrdering},
-		{T: glib.Type(C.gtk_orientation_get_type()), F: marshalOrientation},
-		{T: glib.Type(C.gtk_overflow_get_type()), F: marshalOverflow},
-		{T: glib.Type(C.gtk_pack_type_get_type()), F: marshalPackType},
-		{T: glib.Type(C.gtk_pad_action_type_get_type()), F: marshalPadActionType},
-		{T: glib.Type(C.gtk_page_orientation_get_type()), F: marshalPageOrientation},
-		{T: glib.Type(C.gtk_page_set_get_type()), F: marshalPageSet},
-		{T: glib.Type(C.gtk_pan_direction_get_type()), F: marshalPanDirection},
-		{T: glib.Type(C.gtk_policy_type_get_type()), F: marshalPolicyType},
-		{T: glib.Type(C.gtk_position_type_get_type()), F: marshalPositionType},
-		{T: glib.Type(C.gtk_print_duplex_get_type()), F: marshalPrintDuplex},
-		{T: glib.Type(C.gtk_print_error_get_type()), F: marshalPrintError},
-		{T: glib.Type(C.gtk_print_operation_action_get_type()), F: marshalPrintOperationAction},
-		{T: glib.Type(C.gtk_print_operation_result_get_type()), F: marshalPrintOperationResult},
-		{T: glib.Type(C.gtk_print_pages_get_type()), F: marshalPrintPages},
-		{T: glib.Type(C.gtk_print_quality_get_type()), F: marshalPrintQuality},
-		{T: glib.Type(C.gtk_print_status_get_type()), F: marshalPrintStatus},
-		{T: glib.Type(C.gtk_propagation_limit_get_type()), F: marshalPropagationLimit},
-		{T: glib.Type(C.gtk_propagation_phase_get_type()), F: marshalPropagationPhase},
-		{T: glib.Type(C.gtk_recent_manager_error_get_type()), F: marshalRecentManagerError},
-		{T: glib.Type(C.gtk_response_type_get_type()), F: marshalResponseType},
-		{T: glib.Type(C.gtk_revealer_transition_type_get_type()), F: marshalRevealerTransitionType},
-		{T: glib.Type(C.gtk_scroll_step_get_type()), F: marshalScrollStep},
-		{T: glib.Type(C.gtk_scroll_type_get_type()), F: marshalScrollType},
-		{T: glib.Type(C.gtk_scrollable_policy_get_type()), F: marshalScrollablePolicy},
-		{T: glib.Type(C.gtk_selection_mode_get_type()), F: marshalSelectionMode},
-		{T: glib.Type(C.gtk_sensitivity_type_get_type()), F: marshalSensitivityType},
-		{T: glib.Type(C.gtk_shortcut_scope_get_type()), F: marshalShortcutScope},
-		{T: glib.Type(C.gtk_shortcut_type_get_type()), F: marshalShortcutType},
-		{T: glib.Type(C.gtk_size_group_mode_get_type()), F: marshalSizeGroupMode},
-		{T: glib.Type(C.gtk_size_request_mode_get_type()), F: marshalSizeRequestMode},
-		{T: glib.Type(C.gtk_sort_type_get_type()), F: marshalSortType},
-		{T: glib.Type(C.gtk_sorter_change_get_type()), F: marshalSorterChange},
-		{T: glib.Type(C.gtk_sorter_order_get_type()), F: marshalSorterOrder},
-		{T: glib.Type(C.gtk_spin_button_update_policy_get_type()), F: marshalSpinButtonUpdatePolicy},
-		{T: glib.Type(C.gtk_spin_type_get_type()), F: marshalSpinType},
-		{T: glib.Type(C.gtk_stack_transition_type_get_type()), F: marshalStackTransitionType},
-		{T: glib.Type(C.gtk_string_filter_match_mode_get_type()), F: marshalStringFilterMatchMode},
-		{T: glib.Type(C.gtk_system_setting_get_type()), F: marshalSystemSetting},
-		{T: glib.Type(C.gtk_text_direction_get_type()), F: marshalTextDirection},
-		{T: glib.Type(C.gtk_text_extend_selection_get_type()), F: marshalTextExtendSelection},
-		{T: glib.Type(C.gtk_text_view_layer_get_type()), F: marshalTextViewLayer},
-		{T: glib.Type(C.gtk_text_window_type_get_type()), F: marshalTextWindowType},
-		{T: glib.Type(C.gtk_tree_view_column_sizing_get_type()), F: marshalTreeViewColumnSizing},
-		{T: glib.Type(C.gtk_tree_view_drop_position_get_type()), F: marshalTreeViewDropPosition},
-		{T: glib.Type(C.gtk_tree_view_grid_lines_get_type()), F: marshalTreeViewGridLines},
-		{T: glib.Type(C.gtk_unit_get_type()), F: marshalUnit},
-		{T: glib.Type(C.gtk_wrap_mode_get_type()), F: marshalWrapMode},
+		{T: externglib.Type(C.gtk_delete_type_get_type()), F: marshalDeleteType},
+		{T: externglib.Type(C.gtk_direction_type_get_type()), F: marshalDirectionType},
+		{T: externglib.Type(C.gtk_editable_properties_get_type()), F: marshalEditableProperties},
+		{T: externglib.Type(C.gtk_entry_icon_position_get_type()), F: marshalEntryIconPosition},
+		{T: externglib.Type(C.gtk_event_sequence_state_get_type()), F: marshalEventSequenceState},
+		{T: externglib.Type(C.gtk_file_chooser_action_get_type()), F: marshalFileChooserAction},
+		{T: externglib.Type(C.gtk_file_chooser_error_get_type()), F: marshalFileChooserError},
+		{T: externglib.Type(C.gtk_filter_change_get_type()), F: marshalFilterChange},
+		{T: externglib.Type(C.gtk_filter_match_get_type()), F: marshalFilterMatch},
+		{T: externglib.Type(C.gtk_icon_size_get_type()), F: marshalIconSize},
+		{T: externglib.Type(C.gtk_icon_theme_error_get_type()), F: marshalIconThemeError},
+		{T: externglib.Type(C.gtk_icon_view_drop_position_get_type()), F: marshalIconViewDropPosition},
+		{T: externglib.Type(C.gtk_image_type_get_type()), F: marshalImageType},
+		{T: externglib.Type(C.gtk_input_purpose_get_type()), F: marshalInputPurpose},
+		{T: externglib.Type(C.gtk_justification_get_type()), F: marshalJustification},
+		{T: externglib.Type(C.gtk_level_bar_mode_get_type()), F: marshalLevelBarMode},
+		{T: externglib.Type(C.gtk_license_get_type()), F: marshalLicense},
+		{T: externglib.Type(C.gtk_message_type_get_type()), F: marshalMessageType},
+		{T: externglib.Type(C.gtk_movement_step_get_type()), F: marshalMovementStep},
+		{T: externglib.Type(C.gtk_notebook_tab_get_type()), F: marshalNotebookTab},
+		{T: externglib.Type(C.gtk_number_up_layout_get_type()), F: marshalNumberUpLayout},
+		{T: externglib.Type(C.gtk_ordering_get_type()), F: marshalOrdering},
+		{T: externglib.Type(C.gtk_orientation_get_type()), F: marshalOrientation},
+		{T: externglib.Type(C.gtk_overflow_get_type()), F: marshalOverflow},
+		{T: externglib.Type(C.gtk_pack_type_get_type()), F: marshalPackType},
+		{T: externglib.Type(C.gtk_pad_action_type_get_type()), F: marshalPadActionType},
+		{T: externglib.Type(C.gtk_page_orientation_get_type()), F: marshalPageOrientation},
+		{T: externglib.Type(C.gtk_page_set_get_type()), F: marshalPageSet},
+		{T: externglib.Type(C.gtk_pan_direction_get_type()), F: marshalPanDirection},
+		{T: externglib.Type(C.gtk_policy_type_get_type()), F: marshalPolicyType},
+		{T: externglib.Type(C.gtk_position_type_get_type()), F: marshalPositionType},
+		{T: externglib.Type(C.gtk_print_duplex_get_type()), F: marshalPrintDuplex},
+		{T: externglib.Type(C.gtk_print_error_get_type()), F: marshalPrintError},
+		{T: externglib.Type(C.gtk_print_operation_action_get_type()), F: marshalPrintOperationAction},
+		{T: externglib.Type(C.gtk_print_operation_result_get_type()), F: marshalPrintOperationResult},
+		{T: externglib.Type(C.gtk_print_pages_get_type()), F: marshalPrintPages},
+		{T: externglib.Type(C.gtk_print_quality_get_type()), F: marshalPrintQuality},
+		{T: externglib.Type(C.gtk_print_status_get_type()), F: marshalPrintStatus},
+		{T: externglib.Type(C.gtk_propagation_limit_get_type()), F: marshalPropagationLimit},
+		{T: externglib.Type(C.gtk_propagation_phase_get_type()), F: marshalPropagationPhase},
+		{T: externglib.Type(C.gtk_recent_manager_error_get_type()), F: marshalRecentManagerError},
+		{T: externglib.Type(C.gtk_response_type_get_type()), F: marshalResponseType},
+		{T: externglib.Type(C.gtk_revealer_transition_type_get_type()), F: marshalRevealerTransitionType},
+		{T: externglib.Type(C.gtk_scroll_step_get_type()), F: marshalScrollStep},
+		{T: externglib.Type(C.gtk_scroll_type_get_type()), F: marshalScrollType},
+		{T: externglib.Type(C.gtk_scrollable_policy_get_type()), F: marshalScrollablePolicy},
+		{T: externglib.Type(C.gtk_selection_mode_get_type()), F: marshalSelectionMode},
+		{T: externglib.Type(C.gtk_sensitivity_type_get_type()), F: marshalSensitivityType},
+		{T: externglib.Type(C.gtk_shortcut_scope_get_type()), F: marshalShortcutScope},
+		{T: externglib.Type(C.gtk_shortcut_type_get_type()), F: marshalShortcutType},
+		{T: externglib.Type(C.gtk_size_group_mode_get_type()), F: marshalSizeGroupMode},
+		{T: externglib.Type(C.gtk_size_request_mode_get_type()), F: marshalSizeRequestMode},
+		{T: externglib.Type(C.gtk_sort_type_get_type()), F: marshalSortType},
+		{T: externglib.Type(C.gtk_sorter_change_get_type()), F: marshalSorterChange},
+		{T: externglib.Type(C.gtk_sorter_order_get_type()), F: marshalSorterOrder},
+		{T: externglib.Type(C.gtk_spin_button_update_policy_get_type()), F: marshalSpinButtonUpdatePolicy},
+		{T: externglib.Type(C.gtk_spin_type_get_type()), F: marshalSpinType},
+		{T: externglib.Type(C.gtk_stack_transition_type_get_type()), F: marshalStackTransitionType},
+		{T: externglib.Type(C.gtk_string_filter_match_mode_get_type()), F: marshalStringFilterMatchMode},
+		{T: externglib.Type(C.gtk_system_setting_get_type()), F: marshalSystemSetting},
+		{T: externglib.Type(C.gtk_text_direction_get_type()), F: marshalTextDirection},
+		{T: externglib.Type(C.gtk_text_extend_selection_get_type()), F: marshalTextExtendSelection},
+		{T: externglib.Type(C.gtk_text_view_layer_get_type()), F: marshalTextViewLayer},
+		{T: externglib.Type(C.gtk_text_window_type_get_type()), F: marshalTextWindowType},
+		{T: externglib.Type(C.gtk_tree_view_column_sizing_get_type()), F: marshalTreeViewColumnSizing},
+		{T: externglib.Type(C.gtk_tree_view_drop_position_get_type()), F: marshalTreeViewDropPosition},
+		{T: externglib.Type(C.gtk_tree_view_grid_lines_get_type()), F: marshalTreeViewGridLines},
+		{T: externglib.Type(C.gtk_unit_get_type()), F: marshalUnit},
+		{T: externglib.Type(C.gtk_wrap_mode_get_type()), F: marshalWrapMode},
 
 		// Objects/Classes
 	})
@@ -3078,11 +3078,11 @@ func AcceleratorParseWithKeycode(accelerator string, display *gdkx11.X11Display)
 // instance, use the K_KEY_Control_L keyval as an accelerator.
 func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool
 
-func AccessiblePropertyInitValue(property AccessibleProperty, value *glib.Value)
+func AccessiblePropertyInitValue(property AccessibleProperty, value *externglib.Value)
 
-func AccessibleRelationInitValue(relation AccessibleRelation, value *glib.Value)
+func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.Value)
 
-func AccessibleStateInitValue(state AccessibleState, value *glib.Value)
+func AccessibleStateInitValue(state AccessibleState, value *externglib.Value)
 
 // BitsetIterInitAt: initializes @iter to point to @target. If @target is not
 // found, finds the next value after it. If no value >= @target exists in @set,
@@ -3421,7 +3421,7 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool
 
 // TestListAllTypes: return the type ids that have been registered after calling
 // gtk_test_register_all_types().
-func TestListAllTypes() (uint, []glib.Type)
+func TestListAllTypes() (uint, []externglib.Type)
 
 // TestRegisterAllTypes: force registration of all core GTK object types.
 //
@@ -3445,39 +3445,39 @@ func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) *gdk.ContentP
 // GTK_TYPE_TREE_ROW_DATA.
 //
 // The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(value *glib.Value) (TreeModel, *TreePath, bool)
+func TreeGetRowDragData(value *externglib.Value) (TreeModel, *TreePath, bool)
 
 // TreeRowReferenceDeleted: lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::row-deleted signal.
-func TreeRowReferenceDeleted(proxy *glib.Object, path *TreePath)
+func TreeRowReferenceDeleted(proxy *externglib.Object, path *TreePath)
 
 // TreeRowReferenceInserted: lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::row-inserted signal.
-func TreeRowReferenceInserted(proxy *glib.Object, path *TreePath)
+func TreeRowReferenceInserted(proxy *externglib.Object, path *TreePath)
 
 // TreeRowReferenceReordered: lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::rows-reordered signal.
-func TreeRowReferenceReordered(proxy *glib.Object, path *TreePath, iter *TreeIter, newOrder []int)
+func TreeRowReferenceReordered(proxy *externglib.Object, path *TreePath, iter *TreeIter, newOrder []int)
 
 // ValueDupExpression: retrieves the Expression stored inside the given @value,
 // and acquires a reference to it.
-func ValueDupExpression(value *glib.Value) *Expression
+func ValueDupExpression(value *externglib.Value) *Expression
 
 // ValueGetExpression: retrieves the Expression stored inside the given @value.
-func ValueGetExpression(value *glib.Value) *Expression
+func ValueGetExpression(value *externglib.Value) *Expression
 
 // ValueSetExpression: stores the given Expression inside @value.
 //
 // The #GValue will acquire a reference to the @expression.
-func ValueSetExpression(value *glib.Value, expression *Expression)
+func ValueSetExpression(value *externglib.Value, expression *Expression)
 
 // ValueTakeExpression: stores the given Expression inside @value.
 //
 // This function transfers the ownership of the @expression to the #GValue.
-func ValueTakeExpression(value *glib.Value, expression *Expression)
+func ValueTakeExpression(value *externglib.Value, expression *Expression)
 
 // Bitset: gtkBitset is a data structure for representing a set of unsigned
 // integers. Another name for this data structure is "bitmap".
@@ -4006,7 +4006,7 @@ type SettingsValue struct {
 	Origin string
 	// Value: valid types are LONG, DOUBLE and STRING corresponding to the token
 	// parsed, or a GSTRING holding an unparsed statement
-	Value *glib.Value
+	Value *externglib.Value
 
 	native *C.GtkSettingsValue
 }
@@ -4172,7 +4172,7 @@ func (t *TreeRowReference) Native() unsafe.Pointer {
 
 func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference
 
-func NewTreeRowReference(proxy *glib.Object, model TreeModel, path *TreePath) *TreeRowReference
+func NewTreeRowReference(proxy *externglib.Object, model TreeModel, path *TreePath) *TreeRowReference
 
 // ATContext: gtkATContext is an abstract class provided by GTK to communicate
 // to platform-specific assistive technologies API.
@@ -4181,11 +4181,11 @@ func NewTreeRowReference(proxy *glib.Object, model TreeModel, path *TreePath) *T
 // responsible for updating the accessible state in response to state changes in
 // Accessible.
 type ATContext struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapATContext(obj *glib.Object) *ATContext {
-	return &ATContext{*glib.Object{obj}}
+	return &ATContext{*externglib.Object{obj}}
 }
 
 func marshalATContext(p uintptr) (interface{}, error) {
@@ -4238,7 +4238,7 @@ type AboutDialog struct {
 }
 
 func wrapAboutDialog(obj *glib.Object) *AboutDialog {
-	return &AboutDialog{Window{Widget{glib.InitiallyUnowned{obj}}}}
+	return &AboutDialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalAboutDialog(p uintptr) (interface{}, error) {
@@ -4265,7 +4265,7 @@ type ActionBar struct {
 }
 
 func wrapActionBar(obj *glib.Object) *ActionBar {
-	return &ActionBar{Widget{glib.InitiallyUnowned{obj}}}
+	return &ActionBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalActionBar(p uintptr) (interface{}, error) {
@@ -4280,7 +4280,7 @@ type ActivateAction struct {
 }
 
 func wrapActivateAction(obj *glib.Object) *ActivateAction {
-	return &ActivateAction{ShortcutAction{*glib.Object{obj}}}
+	return &ActivateAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalActivateAction(p uintptr) (interface{}, error) {
@@ -4297,11 +4297,11 @@ func marshalActivateAction(p uintptr) (interface{}, error) {
 // The Adjustment object does not update the value itself. Instead it is left up
 // to the owner of the Adjustment to control the value.
 type Adjustment struct {
-	glib.InitiallyUnowned
+	externglib.InitiallyUnowned
 }
 
 func wrapAdjustment(obj *glib.Object) *Adjustment {
-	return &Adjustment{glib.InitiallyUnowned{obj}}
+	return &Adjustment{externglib.InitiallyUnowned{obj}}
 }
 
 func marshalAdjustment(p uintptr) (interface{}, error) {
@@ -4317,7 +4317,7 @@ type AlternativeTrigger struct {
 }
 
 func wrapAlternativeTrigger(obj *glib.Object) *AlternativeTrigger {
-	return &AlternativeTrigger{ShortcutTrigger{*glib.Object{obj}}}
+	return &AlternativeTrigger{ShortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
@@ -4331,7 +4331,7 @@ type AnyFilter struct {
 }
 
 func wrapAnyFilter(obj *glib.Object) *AnyFilter {
-	return &AnyFilter{MultiFilter{Filter{*glib.Object{obj}}}}
+	return &AnyFilter{MultiFilter{Filter{*externglib.Object{obj}}}}
 }
 
 func marshalAnyFilter(p uintptr) (interface{}, error) {
@@ -4371,7 +4371,7 @@ type AppChooserButton struct {
 }
 
 func wrapAppChooserButton(obj *glib.Object) *AppChooserButton {
-	return &AppChooserButton{Widget{glib.InitiallyUnowned{obj}}}
+	return &AppChooserButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalAppChooserButton(p uintptr) (interface{}, error) {
@@ -4395,7 +4395,7 @@ type AppChooserDialog struct {
 }
 
 func wrapAppChooserDialog(obj *glib.Object) *AppChooserDialog {
-	return &AppChooserDialog{Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}}
+	return &AppChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
 }
 
 func marshalAppChooserDialog(p uintptr) (interface{}, error) {
@@ -4428,7 +4428,7 @@ type AppChooserWidget struct {
 }
 
 func wrapAppChooserWidget(obj *glib.Object) *AppChooserWidget {
-	return &AppChooserWidget{Widget{glib.InitiallyUnowned{obj}}}
+	return &AppChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalAppChooserWidget(p uintptr) (interface{}, error) {
@@ -4507,7 +4507,7 @@ type Application struct {
 }
 
 func wrapApplication(obj *glib.Object) *Application {
-	return &Application{Application{*glib.Object{obj}}}
+	return &Application{Application{*externglib.Object{obj}}}
 }
 
 func marshalApplication(p uintptr) (interface{}, error) {
@@ -4588,7 +4588,7 @@ type ApplicationWindow struct {
 }
 
 func wrapApplicationWindow(obj *glib.Object) *ApplicationWindow {
-	return &ApplicationWindow{Window{Widget{glib.InitiallyUnowned{obj}}}}
+	return &ApplicationWindow{Window{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalApplicationWindow(p uintptr) (interface{}, error) {
@@ -4613,7 +4613,7 @@ type AspectFrame struct {
 }
 
 func wrapAspectFrame(obj *glib.Object) *AspectFrame {
-	return &AspectFrame{Widget{glib.InitiallyUnowned{obj}}}
+	return &AspectFrame{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalAspectFrame(p uintptr) (interface{}, error) {
@@ -4662,7 +4662,7 @@ type Assistant struct {
 }
 
 func wrapAssistant(obj *glib.Object) *Assistant {
-	return &Assistant{Window{Widget{glib.InitiallyUnowned{obj}}}}
+	return &Assistant{Window{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalAssistant(p uintptr) (interface{}, error) {
@@ -4672,11 +4672,11 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 }
 
 type AssistantPage struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapAssistantPage(obj *glib.Object) *AssistantPage {
-	return &AssistantPage{*glib.Object{obj}}
+	return &AssistantPage{*externglib.Object{obj}}
 }
 
 func marshalAssistantPage(p uintptr) (interface{}, error) {
@@ -4695,7 +4695,7 @@ type BinLayout struct {
 }
 
 func wrapBinLayout(obj *glib.Object) *BinLayout {
-	return &BinLayout{LayoutManager{*glib.Object{obj}}}
+	return &BinLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalBinLayout(p uintptr) (interface{}, error) {
@@ -4711,11 +4711,11 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 // The Infos in the list have some attributes in the recent namespace added:
 // recent::private (boolean) and recent:applications (stringv).
 type BookmarkList struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapBookmarkList(obj *glib.Object) *BookmarkList {
-	return &BookmarkList{*glib.Object{obj}}
+	return &BookmarkList{*externglib.Object{obj}}
 }
 
 func marshalBookmarkList(p uintptr) (interface{}, error) {
@@ -4731,7 +4731,7 @@ type BoolFilter struct {
 }
 
 func wrapBoolFilter(obj *glib.Object) *BoolFilter {
-	return &BoolFilter{Filter{*glib.Object{obj}}}
+	return &BoolFilter{Filter{*externglib.Object{obj}}}
 }
 
 func marshalBoolFilter(p uintptr) (interface{}, error) {
@@ -4775,7 +4775,7 @@ type Box struct {
 }
 
 func wrapBox(obj *glib.Object) *Box {
-	return &Box{Widget{glib.InitiallyUnowned{obj}}}
+	return &Box{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalBox(p uintptr) (interface{}, error) {
@@ -4800,7 +4800,7 @@ type BoxLayout struct {
 }
 
 func wrapBoxLayout(obj *glib.Object) *BoxLayout {
-	return &BoxLayout{LayoutManager{*glib.Object{obj}}}
+	return &BoxLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalBoxLayout(p uintptr) (interface{}, error) {
@@ -4976,11 +4976,11 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 // format allowing one to define a widget class’s components. See the [GtkWidget
 // documentation][composite-templates] for details.
 type Builder struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapBuilder(obj *glib.Object) *Builder {
-	return &Builder{*glib.Object{obj}}
+	return &Builder{*externglib.Object{obj}}
 }
 
 func marshalBuilder(p uintptr) (interface{}, error) {
@@ -4990,11 +4990,11 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 }
 
 type BuilderCScope struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapBuilderCScope(obj *glib.Object) *BuilderCScope {
-	return &BuilderCScope{*glib.Object{obj}}
+	return &BuilderCScope{*externglib.Object{obj}}
 }
 
 func marshalBuilderCScope(p uintptr) (interface{}, error) {
@@ -5028,7 +5028,7 @@ type BuilderListItemFactory struct {
 }
 
 func wrapBuilderListItemFactory(obj *glib.Object) *BuilderListItemFactory {
-	return &BuilderListItemFactory{ListItemFactory{*glib.Object{obj}}}
+	return &BuilderListItemFactory{ListItemFactory{*externglib.Object{obj}}}
 }
 
 func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
@@ -5069,7 +5069,7 @@ type Button struct {
 }
 
 func wrapButton(obj *glib.Object) *Button {
-	return &Button{Widget{glib.InitiallyUnowned{obj}}}
+	return &Button{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalButton(p uintptr) (interface{}, error) {
@@ -5138,7 +5138,7 @@ type Calendar struct {
 }
 
 func wrapCalendar(obj *glib.Object) *Calendar {
-	return &Calendar{Widget{glib.InitiallyUnowned{obj}}}
+	return &Calendar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCalendar(p uintptr) (interface{}, error) {
@@ -5153,7 +5153,7 @@ type CallbackAction struct {
 }
 
 func wrapCallbackAction(obj *glib.Object) *CallbackAction {
-	return &CallbackAction{ShortcutAction{*glib.Object{obj}}}
+	return &CallbackAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalCallbackAction(p uintptr) (interface{}, error) {
@@ -5456,11 +5456,11 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 // value of a cell property, use gtk_cell_area_cell_get_property(),
 // gtk_cell_area_cell_get() or gtk_cell_area_cell_get_valist().
 type CellArea struct {
-	glib.InitiallyUnowned
+	externglib.InitiallyUnowned
 }
 
 func wrapCellArea(obj *glib.Object) *CellArea {
-	return &CellArea{glib.InitiallyUnowned{obj}}
+	return &CellArea{externglib.InitiallyUnowned{obj}}
 }
 
 func marshalCellArea(p uintptr) (interface{}, error) {
@@ -5489,7 +5489,7 @@ type CellAreaBox struct {
 }
 
 func wrapCellAreaBox(obj *glib.Object) *CellAreaBox {
-	return &CellAreaBox{CellArea{glib.InitiallyUnowned{obj}}}
+	return &CellAreaBox{CellArea{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellAreaBox(p uintptr) (interface{}, error) {
@@ -5509,11 +5509,11 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 // the same row when calling other CellArea APIs such as gtk_cell_area_render()
 // and gtk_cell_area_event().
 type CellAreaContext struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapCellAreaContext(obj *glib.Object) *CellAreaContext {
-	return &CellAreaContext{*glib.Object{obj}}
+	return &CellAreaContext{*externglib.Object{obj}}
 }
 
 func marshalCellAreaContext(p uintptr) (interface{}, error) {
@@ -5555,11 +5555,11 @@ func marshalCellAreaContext(p uintptr) (interface{}, error) {
 // “set” properties reflect whether a property has been set or not. You should
 // not set them independently.
 type CellRenderer struct {
-	glib.InitiallyUnowned
+	externglib.InitiallyUnowned
 }
 
 func wrapCellRenderer(obj *glib.Object) *CellRenderer {
-	return &CellRenderer{glib.InitiallyUnowned{obj}}
+	return &CellRenderer{externglib.InitiallyUnowned{obj}}
 }
 
 func marshalCellRenderer(p uintptr) (interface{}, error) {
@@ -5576,7 +5576,7 @@ type CellRendererAccel struct {
 }
 
 func wrapCellRendererAccel(obj *glib.Object) *CellRendererAccel {
-	return &CellRendererAccel{CellRendererText{CellRenderer{glib.InitiallyUnowned{obj}}}}
+	return &CellRendererAccel{CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalCellRendererAccel(p uintptr) (interface{}, error) {
@@ -5600,7 +5600,7 @@ type CellRendererCombo struct {
 }
 
 func wrapCellRendererCombo(obj *glib.Object) *CellRendererCombo {
-	return &CellRendererCombo{CellRendererText{CellRenderer{glib.InitiallyUnowned{obj}}}}
+	return &CellRendererCombo{CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalCellRendererCombo(p uintptr) (interface{}, error) {
@@ -5626,7 +5626,7 @@ type CellRendererPixbuf struct {
 }
 
 func wrapCellRendererPixbuf(obj *glib.Object) *CellRendererPixbuf {
-	return &CellRendererPixbuf{CellRenderer{glib.InitiallyUnowned{obj}}}
+	return &CellRendererPixbuf{CellRenderer{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
@@ -5643,7 +5643,7 @@ type CellRendererProgress struct {
 }
 
 func wrapCellRendererProgress(obj *glib.Object) *CellRendererProgress {
-	return &CellRendererProgress{CellRenderer{glib.InitiallyUnowned{obj}}}
+	return &CellRendererProgress{CellRenderer{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellRendererProgress(p uintptr) (interface{}, error) {
@@ -5671,7 +5671,7 @@ type CellRendererSpin struct {
 }
 
 func wrapCellRendererSpin(obj *glib.Object) *CellRendererSpin {
-	return &CellRendererSpin{CellRendererText{CellRenderer{glib.InitiallyUnowned{obj}}}}
+	return &CellRendererSpin{CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalCellRendererSpin(p uintptr) (interface{}, error) {
@@ -5695,7 +5695,7 @@ type CellRendererSpinner struct {
 }
 
 func wrapCellRendererSpinner(obj *glib.Object) *CellRendererSpinner {
-	return &CellRendererSpinner{CellRenderer{glib.InitiallyUnowned{obj}}}
+	return &CellRendererSpinner{CellRenderer{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
@@ -5716,7 +5716,7 @@ type CellRendererText struct {
 }
 
 func wrapCellRendererText(obj *glib.Object) *CellRendererText {
-	return &CellRendererText{CellRenderer{glib.InitiallyUnowned{obj}}}
+	return &CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellRendererText(p uintptr) (interface{}, error) {
@@ -5734,7 +5734,7 @@ type CellRendererToggle struct {
 }
 
 func wrapCellRendererToggle(obj *glib.Object) *CellRendererToggle {
-	return &CellRendererToggle{CellRenderer{glib.InitiallyUnowned{obj}}}
+	return &CellRendererToggle{CellRenderer{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellRendererToggle(p uintptr) (interface{}, error) {
@@ -5765,7 +5765,7 @@ type CellView struct {
 }
 
 func wrapCellView(obj *glib.Object) *CellView {
-	return &CellView{Widget{glib.InitiallyUnowned{obj}}}
+	return &CellView{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellView(p uintptr) (interface{}, error) {
@@ -5811,7 +5811,7 @@ type CenterBox struct {
 }
 
 func wrapCenterBox(obj *glib.Object) *CenterBox {
-	return &CenterBox{Widget{glib.InitiallyUnowned{obj}}}
+	return &CenterBox{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCenterBox(p uintptr) (interface{}, error) {
@@ -5830,7 +5830,7 @@ type CenterLayout struct {
 }
 
 func wrapCenterLayout(obj *glib.Object) *CenterLayout {
-	return &CenterLayout{LayoutManager{*glib.Object{obj}}}
+	return &CenterLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalCenterLayout(p uintptr) (interface{}, error) {
@@ -5861,7 +5861,7 @@ type CheckButton struct {
 }
 
 func wrapCheckButton(obj *glib.Object) *CheckButton {
-	return &CheckButton{Widget{glib.InitiallyUnowned{obj}}}
+	return &CheckButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCheckButton(p uintptr) (interface{}, error) {
@@ -5902,7 +5902,7 @@ type ColorButton struct {
 }
 
 func wrapColorButton(obj *glib.Object) *ColorButton {
-	return &ColorButton{Widget{glib.InitiallyUnowned{obj}}}
+	return &ColorButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalColorButton(p uintptr) (interface{}, error) {
@@ -5918,7 +5918,7 @@ type ColorChooserDialog struct {
 }
 
 func wrapColorChooserDialog(obj *glib.Object) *ColorChooserDialog {
-	return &ColorChooserDialog{Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}}
+	return &ColorChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
 }
 
 func marshalColorChooserDialog(p uintptr) (interface{}, error) {
@@ -5952,7 +5952,7 @@ type ColorChooserWidget struct {
 }
 
 func wrapColorChooserWidget(obj *glib.Object) *ColorChooserWidget {
-	return &ColorChooserWidget{Widget{glib.InitiallyUnowned{obj}}}
+	return &ColorChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalColorChooserWidget(p uintptr) (interface{}, error) {
@@ -6028,7 +6028,7 @@ type ColumnView struct {
 }
 
 func wrapColumnView(obj *glib.Object) *ColumnView {
-	return &ColumnView{Widget{glib.InitiallyUnowned{obj}}}
+	return &ColumnView{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalColumnView(p uintptr) (interface{}, error) {
@@ -6047,11 +6047,11 @@ func marshalColumnView(p uintptr) (interface{}, error) {
 // gtk_column_view_column_set_sorter(), to let users influence sorting by
 // clicking on the column header.
 type ColumnViewColumn struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapColumnViewColumn(obj *glib.Object) *ColumnViewColumn {
-	return &ColumnViewColumn{*glib.Object{obj}}
+	return &ColumnViewColumn{*externglib.Object{obj}}
 }
 
 func marshalColumnViewColumn(p uintptr) (interface{}, error) {
@@ -6118,7 +6118,7 @@ type ComboBox struct {
 }
 
 func wrapComboBox(obj *glib.Object) *ComboBox {
-	return &ComboBox{Widget{glib.InitiallyUnowned{obj}}}
+	return &ComboBox{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalComboBox(p uintptr) (interface{}, error) {
@@ -6178,7 +6178,7 @@ type ComboBoxText struct {
 }
 
 func wrapComboBoxText(obj *glib.Object) *ComboBoxText {
-	return &ComboBoxText{ComboBox{Widget{glib.InitiallyUnowned{obj}}}}
+	return &ComboBoxText{ComboBox{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalComboBoxText(p uintptr) (interface{}, error) {
@@ -6214,11 +6214,11 @@ func marshalConstantExpression(p uintptr) (interface{}, error) {
 // The source and target widgets, as well as their attributes, of a Constraint
 // instance are immutable after creation.
 type Constraint struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapConstraint(obj *glib.Object) *Constraint {
-	return &Constraint{*glib.Object{obj}}
+	return &Constraint{*externglib.Object{obj}}
 }
 
 func marshalConstraint(p uintptr) (interface{}, error) {
@@ -6233,11 +6233,11 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 //
 // Unlike a Widget, a ConstraintGuide will not be drawn.
 type ConstraintGuide struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapConstraintGuide(obj *glib.Object) *ConstraintGuide {
-	return &ConstraintGuide{*glib.Object{obj}}
+	return &ConstraintGuide{*externglib.Object{obj}}
 }
 
 func marshalConstraintGuide(p uintptr) (interface{}, error) {
@@ -6407,7 +6407,7 @@ type ConstraintLayout struct {
 }
 
 func wrapConstraintLayout(obj *glib.Object) *ConstraintLayout {
-	return &ConstraintLayout{LayoutManager{*glib.Object{obj}}}
+	return &ConstraintLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalConstraintLayout(p uintptr) (interface{}, error) {
@@ -6422,7 +6422,7 @@ type ConstraintLayoutChild struct {
 }
 
 func wrapConstraintLayoutChild(obj *glib.Object) *ConstraintLayoutChild {
-	return &ConstraintLayoutChild{LayoutChild{*glib.Object{obj}}}
+	return &ConstraintLayoutChild{LayoutChild{*externglib.Object{obj}}}
 }
 
 func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
@@ -6455,11 +6455,11 @@ func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
 // found for the current version, GTK tries older versions all the way back to
 // 4.0.
 type CSSProvider struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapCSSProvider(obj *glib.Object) *CSSProvider {
-	return &CSSProvider{*glib.Object{obj}}
+	return &CSSProvider{*externglib.Object{obj}}
 }
 
 func marshalCSSProvider(p uintptr) (interface{}, error) {
@@ -6475,7 +6475,7 @@ type CustomFilter struct {
 }
 
 func wrapCustomFilter(obj *glib.Object) *CustomFilter {
-	return &CustomFilter{Filter{*glib.Object{obj}}}
+	return &CustomFilter{Filter{*externglib.Object{obj}}}
 }
 
 func marshalCustomFilter(p uintptr) (interface{}, error) {
@@ -6496,7 +6496,7 @@ type CustomLayout struct {
 }
 
 func wrapCustomLayout(obj *glib.Object) *CustomLayout {
-	return &CustomLayout{LayoutManager{*glib.Object{obj}}}
+	return &CustomLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalCustomLayout(p uintptr) (interface{}, error) {
@@ -6512,7 +6512,7 @@ type CustomSorter struct {
 }
 
 func wrapCustomSorter(obj *glib.Object) *CustomSorter {
-	return &CustomSorter{Sorter{*glib.Object{obj}}}
+	return &CustomSorter{Sorter{*externglib.Object{obj}}}
 }
 
 func marshalCustomSorter(p uintptr) (interface{}, error) {
@@ -6620,7 +6620,7 @@ type Dialog struct {
 }
 
 func wrapDialog(obj *glib.Object) *Dialog {
-	return &Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}
+	return &Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalDialog(p uintptr) (interface{}, error) {
@@ -6649,11 +6649,11 @@ func marshalDialog(p uintptr) (interface{}, error) {
 // means you do not need access to the DirectoryList but can access the #GFile
 // directly from the Info when operating with a ListView or similar.
 type DirectoryList struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDirectoryList(obj *glib.Object) *DirectoryList {
-	return &DirectoryList{*glib.Object{obj}}
+	return &DirectoryList{*externglib.Object{obj}}
 }
 
 func marshalDirectoryList(p uintptr) (interface{}, error) {
@@ -6677,7 +6677,7 @@ type DragIcon struct {
 }
 
 func wrapDragIcon(obj *glib.Object) *DragIcon {
-	return &DragIcon{Widget{glib.InitiallyUnowned{obj}}}
+	return &DragIcon{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalDragIcon(p uintptr) (interface{}, error) {
@@ -6758,7 +6758,7 @@ type DragSource struct {
 }
 
 func wrapDragSource(obj *glib.Object) *DragSource {
-	return &DragSource{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+	return &DragSource{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalDragSource(p uintptr) (interface{}, error) {
@@ -6846,7 +6846,7 @@ type DrawingArea struct {
 }
 
 func wrapDrawingArea(obj *glib.Object) *DrawingArea {
-	return &DrawingArea{Widget{glib.InitiallyUnowned{obj}}}
+	return &DrawingArea{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalDrawingArea(p uintptr) (interface{}, error) {
@@ -6869,7 +6869,7 @@ type DropControllerMotion struct {
 }
 
 func wrapDropControllerMotion(obj *glib.Object) *DropControllerMotion {
-	return &DropControllerMotion{EventController{*glib.Object{obj}}}
+	return &DropControllerMotion{EventController{*externglib.Object{obj}}}
 }
 
 func marshalDropControllerMotion(p uintptr) (interface{}, error) {
@@ -6908,7 +6908,7 @@ type DropDown struct {
 }
 
 func wrapDropDown(obj *glib.Object) *DropDown {
-	return &DropDown{Widget{glib.InitiallyUnowned{obj}}}
+	return &DropDown{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalDropDown(p uintptr) (interface{}, error) {
@@ -6984,7 +6984,7 @@ type DropTarget struct {
 }
 
 func wrapDropTarget(obj *glib.Object) *DropTarget {
-	return &DropTarget{EventController{*glib.Object{obj}}}
+	return &DropTarget{EventController{*externglib.Object{obj}}}
 }
 
 func marshalDropTarget(p uintptr) (interface{}, error) {
@@ -7028,7 +7028,7 @@ type DropTargetAsync struct {
 }
 
 func wrapDropTargetAsync(obj *glib.Object) *DropTargetAsync {
-	return &DropTargetAsync{EventController{*glib.Object{obj}}}
+	return &DropTargetAsync{EventController{*externglib.Object{obj}}}
 }
 
 func marshalDropTargetAsync(p uintptr) (interface{}, error) {
@@ -7063,7 +7063,7 @@ type EditableLabel struct {
 }
 
 func wrapEditableLabel(obj *glib.Object) *EditableLabel {
-	return &EditableLabel{Widget{glib.InitiallyUnowned{obj}}}
+	return &EditableLabel{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalEditableLabel(p uintptr) (interface{}, error) {
@@ -7097,7 +7097,7 @@ type EmojiChooser struct {
 }
 
 func wrapEmojiChooser(obj *glib.Object) *EmojiChooser {
-	return &EmojiChooser{Popover{Widget{glib.InitiallyUnowned{obj}}}}
+	return &EmojiChooser{Popover{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalEmojiChooser(p uintptr) (interface{}, error) {
@@ -7187,7 +7187,7 @@ type Entry struct {
 }
 
 func wrapEntry(obj *glib.Object) *Entry {
-	return &Entry{Widget{glib.InitiallyUnowned{obj}}}
+	return &Entry{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalEntry(p uintptr) (interface{}, error) {
@@ -7208,11 +7208,11 @@ func marshalEntry(p uintptr) (interface{}, error) {
 // case of important passwords. Or a derived class could integrate with an
 // application’s concept of undo/redo.
 type EntryBuffer struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapEntryBuffer(obj *glib.Object) *EntryBuffer {
-	return &EntryBuffer{*glib.Object{obj}}
+	return &EntryBuffer{*externglib.Object{obj}}
 }
 
 func marshalEntryBuffer(p uintptr) (interface{}, error) {
@@ -7254,11 +7254,11 @@ func marshalEntryBuffer(p uintptr) (interface{}, error) {
 // gtk_tree_model_filter_get_model(). Don’t forget to use
 // gtk_tree_model_filter_convert_iter_to_child_iter() to obtain a matching iter.
 type EntryCompletion struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapEntryCompletion(obj *glib.Object) *EntryCompletion {
-	return &EntryCompletion{*glib.Object{obj}}
+	return &EntryCompletion{*externglib.Object{obj}}
 }
 
 func marshalEntryCompletion(p uintptr) (interface{}, error) {
@@ -7271,11 +7271,11 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 // event controllers. Those react to a series of Events, and possibly trigger
 // actions as a consequence of those.
 type EventController struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapEventController(obj *glib.Object) *EventController {
-	return &EventController{*glib.Object{obj}}
+	return &EventController{*externglib.Object{obj}}
 }
 
 func marshalEventController(p uintptr) (interface{}, error) {
@@ -7291,7 +7291,7 @@ type EventControllerFocus struct {
 }
 
 func wrapEventControllerFocus(obj *glib.Object) *EventControllerFocus {
-	return &EventControllerFocus{EventController{*glib.Object{obj}}}
+	return &EventControllerFocus{EventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerFocus(p uintptr) (interface{}, error) {
@@ -7307,7 +7307,7 @@ type EventControllerKey struct {
 }
 
 func wrapEventControllerKey(obj *glib.Object) *EventControllerKey {
-	return &EventControllerKey{EventController{*glib.Object{obj}}}
+	return &EventControllerKey{EventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerKey(p uintptr) (interface{}, error) {
@@ -7324,7 +7324,7 @@ type EventControllerLegacy struct {
 }
 
 func wrapEventControllerLegacy(obj *glib.Object) *EventControllerLegacy {
-	return &EventControllerLegacy{EventController{*glib.Object{obj}}}
+	return &EventControllerLegacy{EventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
@@ -7340,7 +7340,7 @@ type EventControllerMotion struct {
 }
 
 func wrapEventControllerMotion(obj *glib.Object) *EventControllerMotion {
-	return &EventControllerMotion{EventController{*glib.Object{obj}}}
+	return &EventControllerMotion{EventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerMotion(p uintptr) (interface{}, error) {
@@ -7386,7 +7386,7 @@ type EventControllerScroll struct {
 }
 
 func wrapEventControllerScroll(obj *glib.Object) *EventControllerScroll {
-	return &EventControllerScroll{EventController{*glib.Object{obj}}}
+	return &EventControllerScroll{EventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerScroll(p uintptr) (interface{}, error) {
@@ -7400,7 +7400,7 @@ type EveryFilter struct {
 }
 
 func wrapEveryFilter(obj *glib.Object) *EveryFilter {
-	return &EveryFilter{MultiFilter{Filter{*glib.Object{obj}}}}
+	return &EveryFilter{MultiFilter{Filter{*externglib.Object{obj}}}}
 }
 
 func marshalEveryFilter(p uintptr) (interface{}, error) {
@@ -7497,7 +7497,7 @@ type Expander struct {
 }
 
 func wrapExpander(obj *glib.Object) *Expander {
-	return &Expander{Widget{glib.InitiallyUnowned{obj}}}
+	return &Expander{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalExpander(p uintptr) (interface{}, error) {
@@ -7672,7 +7672,7 @@ type FileChooserDialog struct {
 }
 
 func wrapFileChooserDialog(obj *glib.Object) *FileChooserDialog {
-	return &FileChooserDialog{Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}}
+	return &FileChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
 }
 
 func marshalFileChooserDialog(p uintptr) (interface{}, error) {
@@ -7827,7 +7827,7 @@ type FileChooserNative struct {
 }
 
 func wrapFileChooserNative(obj *glib.Object) *FileChooserNative {
-	return &FileChooserNative{NativeDialog{*glib.Object{obj}}}
+	return &FileChooserNative{NativeDialog{*externglib.Object{obj}}}
 }
 
 func marshalFileChooserNative(p uintptr) (interface{}, error) {
@@ -7849,7 +7849,7 @@ type FileChooserWidget struct {
 }
 
 func wrapFileChooserWidget(obj *glib.Object) *FileChooserWidget {
-	return &FileChooserWidget{Widget{glib.InitiallyUnowned{obj}}}
+	return &FileChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFileChooserWidget(p uintptr) (interface{}, error) {
@@ -7898,7 +7898,7 @@ type FileFilter struct {
 }
 
 func wrapFileFilter(obj *glib.Object) *FileFilter {
-	return &FileFilter{Filter{*glib.Object{obj}}}
+	return &FileFilter{Filter{*externglib.Object{obj}}}
 }
 
 func marshalFileFilter(p uintptr) (interface{}, error) {
@@ -7926,11 +7926,11 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 // However, in particular for large lists or complex search methods, it is also
 // possible to subclass Filter and provide one's own filter.
 type Filter struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFilter(obj *glib.Object) *Filter {
-	return &Filter{*glib.Object{obj}}
+	return &Filter{*externglib.Object{obj}}
 }
 
 func marshalFilter(p uintptr) (interface{}, error) {
@@ -7947,11 +7947,11 @@ func marshalFilter(p uintptr) (interface{}, error) {
 // lists doesn't block the UI. See gtk_filter_list_model_set_incremental() for
 // details.
 type FilterListModel struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFilterListModel(obj *glib.Object) *FilterListModel {
-	return &FilterListModel{*glib.Object{obj}}
+	return &FilterListModel{*externglib.Object{obj}}
 }
 
 func marshalFilterListModel(p uintptr) (interface{}, error) {
@@ -7999,7 +7999,7 @@ type Fixed struct {
 }
 
 func wrapFixed(obj *glib.Object) *Fixed {
-	return &Fixed{Widget{glib.InitiallyUnowned{obj}}}
+	return &Fixed{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFixed(p uintptr) (interface{}, error) {
@@ -8042,7 +8042,7 @@ type FixedLayout struct {
 }
 
 func wrapFixedLayout(obj *glib.Object) *FixedLayout {
-	return &FixedLayout{LayoutManager{*glib.Object{obj}}}
+	return &FixedLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalFixedLayout(p uintptr) (interface{}, error) {
@@ -8056,7 +8056,7 @@ type FixedLayoutChild struct {
 }
 
 func wrapFixedLayoutChild(obj *glib.Object) *FixedLayoutChild {
-	return &FixedLayoutChild{LayoutChild{*glib.Object{obj}}}
+	return &FixedLayoutChild{LayoutChild{*externglib.Object{obj}}}
 }
 
 func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
@@ -8071,11 +8071,11 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 // Another term for this is concatenation: FlattenListModel takes a list of
 // lists and concatenates them into a single list.
 type FlattenListModel struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFlattenListModel(obj *glib.Object) *FlattenListModel {
-	return &FlattenListModel{*glib.Object{obj}}
+	return &FlattenListModel{*externglib.Object{obj}}
 }
 
 func marshalFlattenListModel(p uintptr) (interface{}, error) {
@@ -8132,7 +8132,7 @@ type FlowBox struct {
 }
 
 func wrapFlowBox(obj *glib.Object) *FlowBox {
-	return &FlowBox{Widget{glib.InitiallyUnowned{obj}}}
+	return &FlowBox{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFlowBox(p uintptr) (interface{}, error) {
@@ -8146,7 +8146,7 @@ type FlowBoxChild struct {
 }
 
 func wrapFlowBoxChild(obj *glib.Object) *FlowBoxChild {
-	return &FlowBoxChild{Widget{glib.InitiallyUnowned{obj}}}
+	return &FlowBoxChild{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFlowBoxChild(p uintptr) (interface{}, error) {
@@ -8172,7 +8172,7 @@ type FontButton struct {
 }
 
 func wrapFontButton(obj *glib.Object) *FontButton {
-	return &FontButton{Widget{glib.InitiallyUnowned{obj}}}
+	return &FontButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFontButton(p uintptr) (interface{}, error) {
@@ -8194,7 +8194,7 @@ type FontChooserDialog struct {
 }
 
 func wrapFontChooserDialog(obj *glib.Object) *FontChooserDialog {
-	return &FontChooserDialog{Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}}
+	return &FontChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
 }
 
 func marshalFontChooserDialog(p uintptr) (interface{}, error) {
@@ -8225,7 +8225,7 @@ type FontChooserWidget struct {
 }
 
 func wrapFontChooserWidget(obj *glib.Object) *FontChooserWidget {
-	return &FontChooserWidget{Widget{glib.InitiallyUnowned{obj}}}
+	return &FontChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFontChooserWidget(p uintptr) (interface{}, error) {
@@ -8274,7 +8274,7 @@ type Frame struct {
 }
 
 func wrapFrame(obj *glib.Object) *Frame {
-	return &Frame{Widget{glib.InitiallyUnowned{obj}}}
+	return &Frame{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFrame(p uintptr) (interface{}, error) {
@@ -8388,7 +8388,7 @@ type GLArea struct {
 }
 
 func wrapGLArea(obj *glib.Object) *GLArea {
-	return &GLArea{Widget{glib.InitiallyUnowned{obj}}}
+	return &GLArea{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalGLArea(p uintptr) (interface{}, error) {
@@ -8482,7 +8482,7 @@ type Gesture struct {
 }
 
 func wrapGesture(obj *glib.Object) *Gesture {
-	return &Gesture{EventController{*glib.Object{obj}}}
+	return &Gesture{EventController{*externglib.Object{obj}}}
 }
 
 func marshalGesture(p uintptr) (interface{}, error) {
@@ -8501,7 +8501,7 @@ type GestureClick struct {
 }
 
 func wrapGestureClick(obj *glib.Object) *GestureClick {
-	return &GestureClick{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+	return &GestureClick{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureClick(p uintptr) (interface{}, error) {
@@ -8520,7 +8520,7 @@ type GestureDrag struct {
 }
 
 func wrapGestureDrag(obj *glib.Object) *GestureDrag {
-	return &GestureDrag{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+	return &GestureDrag{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureDrag(p uintptr) (interface{}, error) {
@@ -8541,7 +8541,7 @@ type GestureLongPress struct {
 }
 
 func wrapGestureLongPress(obj *glib.Object) *GestureLongPress {
-	return &GestureLongPress{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+	return &GestureLongPress{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureLongPress(p uintptr) (interface{}, error) {
@@ -8567,7 +8567,7 @@ type GesturePan struct {
 }
 
 func wrapGesturePan(obj *glib.Object) *GesturePan {
-	return &GesturePan{GestureDrag{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}}
+	return &GesturePan{GestureDrag{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}}
 }
 
 func marshalGesturePan(p uintptr) (interface{}, error) {
@@ -8584,7 +8584,7 @@ type GestureRotate struct {
 }
 
 func wrapGestureRotate(obj *glib.Object) *GestureRotate {
-	return &GestureRotate{Gesture{EventController{*glib.Object{obj}}}}
+	return &GestureRotate{Gesture{EventController{*externglib.Object{obj}}}}
 }
 
 func marshalGestureRotate(p uintptr) (interface{}, error) {
@@ -8610,7 +8610,7 @@ type GestureSingle struct {
 }
 
 func wrapGestureSingle(obj *glib.Object) *GestureSingle {
-	return &GestureSingle{Gesture{EventController{*glib.Object{obj}}}}
+	return &GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}
 }
 
 func marshalGestureSingle(p uintptr) (interface{}, error) {
@@ -8627,7 +8627,7 @@ type GestureStylus struct {
 }
 
 func wrapGestureStylus(obj *glib.Object) *GestureStylus {
-	return &GestureStylus{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+	return &GestureStylus{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureStylus(p uintptr) (interface{}, error) {
@@ -8651,7 +8651,7 @@ type GestureSwipe struct {
 }
 
 func wrapGestureSwipe(obj *glib.Object) *GestureSwipe {
-	return &GestureSwipe{GestureSingle{Gesture{EventController{*glib.Object{obj}}}}}
+	return &GestureSwipe{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureSwipe(p uintptr) (interface{}, error) {
@@ -8669,7 +8669,7 @@ type GestureZoom struct {
 }
 
 func wrapGestureZoom(obj *glib.Object) *GestureZoom {
-	return &GestureZoom{Gesture{EventController{*glib.Object{obj}}}}
+	return &GestureZoom{Gesture{EventController{*externglib.Object{obj}}}}
 }
 
 func marshalGestureZoom(p uintptr) (interface{}, error) {
@@ -8701,7 +8701,7 @@ type Grid struct {
 }
 
 func wrapGrid(obj *glib.Object) *Grid {
-	return &Grid{Widget{glib.InitiallyUnowned{obj}}}
+	return &Grid{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalGrid(p uintptr) (interface{}, error) {
@@ -8729,7 +8729,7 @@ type GridLayout struct {
 }
 
 func wrapGridLayout(obj *glib.Object) *GridLayout {
-	return &GridLayout{LayoutManager{*glib.Object{obj}}}
+	return &GridLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalGridLayout(p uintptr) (interface{}, error) {
@@ -8744,7 +8744,7 @@ type GridLayoutChild struct {
 }
 
 func wrapGridLayoutChild(obj *glib.Object) *GridLayoutChild {
-	return &GridLayoutChild{LayoutChild{*glib.Object{obj}}}
+	return &GridLayoutChild{LayoutChild{*externglib.Object{obj}}}
 }
 
 func marshalGridLayoutChild(p uintptr) (interface{}, error) {
@@ -8791,7 +8791,7 @@ type GridView struct {
 }
 
 func wrapGridView(obj *glib.Object) *GridView {
-	return &GridView{ListBase{Widget{glib.InitiallyUnowned{obj}}}}
+	return &GridView{ListBase{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalGridView(p uintptr) (interface{}, error) {
@@ -8866,7 +8866,7 @@ type HeaderBar struct {
 }
 
 func wrapHeaderBar(obj *glib.Object) *HeaderBar {
-	return &HeaderBar{Widget{glib.InitiallyUnowned{obj}}}
+	return &HeaderBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalHeaderBar(p uintptr) (interface{}, error) {
@@ -8937,11 +8937,11 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 // [gtk-query-immodules-3.0][gtk-query-immodules-3.0], in order for the new
 // input method to become available to GTK applications.
 type IMContext struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapIMContext(obj *glib.Object) *IMContext {
-	return &IMContext{*glib.Object{obj}}
+	return &IMContext{*externglib.Object{obj}}
 }
 
 func marshalIMContext(p uintptr) (interface{}, error) {
@@ -8972,7 +8972,7 @@ type IMContextSimple struct {
 }
 
 func wrapIMContextSimple(obj *glib.Object) *IMContextSimple {
-	return &IMContextSimple{IMContext{*glib.Object{obj}}}
+	return &IMContextSimple{IMContext{*externglib.Object{obj}}}
 }
 
 func marshalIMContextSimple(p uintptr) (interface{}, error) {
@@ -8986,7 +8986,7 @@ type IMMulticontext struct {
 }
 
 func wrapIMMulticontext(obj *glib.Object) *IMMulticontext {
-	return &IMMulticontext{IMContext{*glib.Object{obj}}}
+	return &IMMulticontext{IMContext{*externglib.Object{obj}}}
 }
 
 func marshalIMMulticontext(p uintptr) (interface{}, error) {
@@ -8998,11 +8998,11 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 // IconPaintable: contains information found when looking up an icon in an icon
 // theme and supports painting it as a Paintable.
 type IconPaintable struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapIconPaintable(obj *glib.Object) *IconPaintable {
-	return &IconPaintable{*glib.Object{obj}}
+	return &IconPaintable{*externglib.Object{obj}}
 }
 
 func marshalIconPaintable(p uintptr) (interface{}, error) {
@@ -9040,11 +9040,11 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 //     g_object_unref (icon);
 //
 type IconTheme struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapIconTheme(obj *glib.Object) *IconTheme {
-	return &IconTheme{*glib.Object{obj}}
+	return &IconTheme{*externglib.Object{obj}}
 }
 
 func marshalIconTheme(p uintptr) (interface{}, error) {
@@ -9076,7 +9076,7 @@ type IconView struct {
 }
 
 func wrapIconView(obj *glib.Object) *IconView {
-	return &IconView{Widget{glib.InitiallyUnowned{obj}}}
+	return &IconView{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalIconView(p uintptr) (interface{}, error) {
@@ -9120,7 +9120,7 @@ type Image struct {
 }
 
 func wrapImage(obj *glib.Object) *Image {
-	return &Image{Widget{glib.InitiallyUnowned{obj}}}
+	return &Image{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalImage(p uintptr) (interface{}, error) {
@@ -9189,7 +9189,7 @@ type InfoBar struct {
 }
 
 func wrapInfoBar(obj *glib.Object) *InfoBar {
-	return &InfoBar{Widget{glib.InitiallyUnowned{obj}}}
+	return &InfoBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalInfoBar(p uintptr) (interface{}, error) {
@@ -9205,7 +9205,7 @@ type KeyvalTrigger struct {
 }
 
 func wrapKeyvalTrigger(obj *glib.Object) *KeyvalTrigger {
-	return &KeyvalTrigger{ShortcutTrigger{*glib.Object{obj}}}
+	return &KeyvalTrigger{ShortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
@@ -9380,7 +9380,7 @@ type Label struct {
 }
 
 func wrapLabel(obj *glib.Object) *Label {
-	return &Label{Widget{glib.InitiallyUnowned{obj}}}
+	return &Label{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalLabel(p uintptr) (interface{}, error) {
@@ -9397,11 +9397,11 @@ func marshalLabel(p uintptr) (interface{}, error) {
 //
 // A LayoutChild instance is only ever valid while a widget is part of a layout.
 type LayoutChild struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapLayoutChild(obj *glib.Object) *LayoutChild {
-	return &LayoutChild{*glib.Object{obj}}
+	return &LayoutChild{*externglib.Object{obj}}
 }
 
 func marshalLayoutChild(p uintptr) (interface{}, error) {
@@ -9456,11 +9456,11 @@ func marshalLayoutChild(p uintptr) (interface{}, error) {
 // gtk_layout_manager_layout_changed() every time a property is updated, in
 // order to queue a new size measuring and allocation.
 type LayoutManager struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapLayoutManager(obj *glib.Object) *LayoutManager {
-	return &LayoutManager{*glib.Object{obj}}
+	return &LayoutManager{*externglib.Object{obj}}
 }
 
 func marshalLayoutManager(p uintptr) (interface{}, error) {
@@ -9568,7 +9568,7 @@ type LevelBar struct {
 }
 
 func wrapLevelBar(obj *glib.Object) *LevelBar {
-	return &LevelBar{Widget{glib.InitiallyUnowned{obj}}}
+	return &LevelBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalLevelBar(p uintptr) (interface{}, error) {
@@ -9607,7 +9607,7 @@ type LinkButton struct {
 }
 
 func wrapLinkButton(obj *glib.Object) *LinkButton {
-	return &LinkButton{Button{Widget{glib.InitiallyUnowned{obj}}}}
+	return &LinkButton{Button{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalLinkButton(p uintptr) (interface{}, error) {
@@ -9622,7 +9622,7 @@ type ListBase struct {
 }
 
 func wrapListBase(obj *glib.Object) *ListBase {
-	return &ListBase{Widget{glib.InitiallyUnowned{obj}}}
+	return &ListBase{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalListBase(p uintptr) (interface{}, error) {
@@ -9681,7 +9681,7 @@ type ListBox struct {
 }
 
 func wrapListBox(obj *glib.Object) *ListBox {
-	return &ListBox{Widget{glib.InitiallyUnowned{obj}}}
+	return &ListBox{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalListBox(p uintptr) (interface{}, error) {
@@ -9695,7 +9695,7 @@ type ListBoxRow struct {
 }
 
 func wrapListBoxRow(obj *glib.Object) *ListBoxRow {
-	return &ListBoxRow{Widget{glib.InitiallyUnowned{obj}}}
+	return &ListBoxRow{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalListBoxRow(p uintptr) (interface{}, error) {
@@ -9719,11 +9719,11 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 // 2. The bound stage where the listitem references an item from the list. The
 // ListItem:item property is not nil.
 type ListItem struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapListItem(obj *glib.Object) *ListItem {
-	return &ListItem{*glib.Object{obj}}
+	return &ListItem{*externglib.Object{obj}}
 }
 
 func marshalListItem(p uintptr) (interface{}, error) {
@@ -9774,11 +9774,11 @@ func marshalListItem(p uintptr) (interface{}, error) {
 // view widget you want to use it with, such as via gtk_list_view_set_factory().
 // Reusing factories across different views is allowed, but very uncommon.
 type ListItemFactory struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapListItemFactory(obj *glib.Object) *ListItemFactory {
-	return &ListItemFactory{*glib.Object{obj}}
+	return &ListItemFactory{*externglib.Object{obj}}
 }
 
 func marshalListItemFactory(p uintptr) (interface{}, error) {
@@ -9897,11 +9897,11 @@ func marshalListItemFactory(p uintptr) (interface{}, error) {
 //      </data>
 //    </object>
 type ListStore struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapListStore(obj *glib.Object) *ListStore {
-	return &ListStore{*glib.Object{obj}}
+	return &ListStore{*externglib.Object{obj}}
 }
 
 func marshalListStore(p uintptr) (interface{}, error) {
@@ -9993,7 +9993,7 @@ type ListView struct {
 }
 
 func wrapListView(obj *glib.Object) *ListView {
-	return &ListView{ListBase{Widget{glib.InitiallyUnowned{obj}}}}
+	return &ListView{ListBase{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalListView(p uintptr) (interface{}, error) {
@@ -10037,7 +10037,7 @@ type LockButton struct {
 }
 
 func wrapLockButton(obj *glib.Object) *LockButton {
-	return &LockButton{Button{Widget{glib.InitiallyUnowned{obj}}}}
+	return &LockButton{Button{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalLockButton(p uintptr) (interface{}, error) {
@@ -10067,11 +10067,11 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 //    MapListModel will attempt to discard the mapped objects as soon as
 //    they are no longer needed and recreate them if necessary.
 type MapListModel struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapMapListModel(obj *glib.Object) *MapListModel {
-	return &MapListModel{*glib.Object{obj}}
+	return &MapListModel{*externglib.Object{obj}}
 }
 
 func marshalMapListModel(p uintptr) (interface{}, error) {
@@ -10087,7 +10087,7 @@ type MediaControls struct {
 }
 
 func wrapMediaControls(obj *glib.Object) *MediaControls {
-	return &MediaControls{Widget{glib.InitiallyUnowned{obj}}}
+	return &MediaControls{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalMediaControls(p uintptr) (interface{}, error) {
@@ -10109,7 +10109,7 @@ type MediaFile struct {
 }
 
 func wrapMediaFile(obj *glib.Object) *MediaFile {
-	return &MediaFile{MediaStream{*glib.Object{obj}}}
+	return &MediaFile{MediaStream{*externglib.Object{obj}}}
 }
 
 func marshalMediaFile(p uintptr) (interface{}, error) {
@@ -10132,11 +10132,11 @@ func marshalMediaFile(p uintptr) (interface{}, error) {
 // gtk_media_stream_seek_failed(), gtk_media_stream_gerror(),
 // gtk_media_stream_error(), gtk_media_stream_error_valist().
 type MediaStream struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapMediaStream(obj *glib.Object) *MediaStream {
-	return &MediaStream{*glib.Object{obj}}
+	return &MediaStream{*externglib.Object{obj}}
 }
 
 func marshalMediaStream(p uintptr) (interface{}, error) {
@@ -10239,7 +10239,7 @@ type MenuButton struct {
 }
 
 func wrapMenuButton(obj *glib.Object) *MenuButton {
-	return &MenuButton{Widget{glib.InitiallyUnowned{obj}}}
+	return &MenuButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalMenuButton(p uintptr) (interface{}, error) {
@@ -10298,7 +10298,7 @@ type MessageDialog struct {
 }
 
 func wrapMessageDialog(obj *glib.Object) *MessageDialog {
-	return &MessageDialog{Dialog{Window{Widget{glib.InitiallyUnowned{obj}}}}}
+	return &MessageDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
 }
 
 func marshalMessageDialog(p uintptr) (interface{}, error) {
@@ -10313,7 +10313,7 @@ type MnemonicAction struct {
 }
 
 func wrapMnemonicAction(obj *glib.Object) *MnemonicAction {
-	return &MnemonicAction{ShortcutAction{*glib.Object{obj}}}
+	return &MnemonicAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalMnemonicAction(p uintptr) (interface{}, error) {
@@ -10329,7 +10329,7 @@ type MnemonicTrigger struct {
 }
 
 func wrapMnemonicTrigger(obj *glib.Object) *MnemonicTrigger {
-	return &MnemonicTrigger{ShortcutTrigger{*glib.Object{obj}}}
+	return &MnemonicTrigger{ShortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
@@ -10345,7 +10345,7 @@ type MountOperation struct {
 }
 
 func wrapMountOperation(obj *glib.Object) *MountOperation {
-	return &MountOperation{MountOperation{*glib.Object{obj}}}
+	return &MountOperation{MountOperation{*externglib.Object{obj}}}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
@@ -10367,7 +10367,7 @@ type MultiFilter struct {
 }
 
 func wrapMultiFilter(obj *glib.Object) *MultiFilter {
-	return &MultiFilter{Filter{*glib.Object{obj}}}
+	return &MultiFilter{Filter{*externglib.Object{obj}}}
 }
 
 func marshalMultiFilter(p uintptr) (interface{}, error) {
@@ -10379,11 +10379,11 @@ func marshalMultiFilter(p uintptr) (interface{}, error) {
 // MultiSelection: gtkMultiSelection is an implementation of the SelectionModel
 // interface that allows selecting multiple elements.
 type MultiSelection struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapMultiSelection(obj *glib.Object) *MultiSelection {
-	return &MultiSelection{*glib.Object{obj}}
+	return &MultiSelection{*externglib.Object{obj}}
 }
 
 func marshalMultiSelection(p uintptr) (interface{}, error) {
@@ -10400,7 +10400,7 @@ type MultiSorter struct {
 }
 
 func wrapMultiSorter(obj *glib.Object) *MultiSorter {
-	return &MultiSorter{Sorter{*glib.Object{obj}}}
+	return &MultiSorter{Sorter{*externglib.Object{obj}}}
 }
 
 func marshalMultiSorter(p uintptr) (interface{}, error) {
@@ -10415,7 +10415,7 @@ type NamedAction struct {
 }
 
 func wrapNamedAction(obj *glib.Object) *NamedAction {
-	return &NamedAction{ShortcutAction{*glib.Object{obj}}}
+	return &NamedAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalNamedAction(p uintptr) (interface{}, error) {
@@ -10439,11 +10439,11 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 // GTK does not keep them alive. It is your responsibility to keep a reference
 // until you are done with the object.
 type NativeDialog struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapNativeDialog(obj *glib.Object) *NativeDialog {
-	return &NativeDialog{*glib.Object{obj}}
+	return &NativeDialog{*externglib.Object{obj}}
 }
 
 func marshalNativeDialog(p uintptr) (interface{}, error) {
@@ -10458,7 +10458,7 @@ type NeverTrigger struct {
 }
 
 func wrapNeverTrigger(obj *glib.Object) *NeverTrigger {
-	return &NeverTrigger{ShortcutTrigger{*glib.Object{obj}}}
+	return &NeverTrigger{ShortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalNeverTrigger(p uintptr) (interface{}, error) {
@@ -10473,11 +10473,11 @@ func marshalNeverTrigger(p uintptr) (interface{}, error) {
 // This model is meant to be used as a simple wrapper to Models when a
 // SelectionModel is required.
 type NoSelection struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapNoSelection(obj *glib.Object) *NoSelection {
-	return &NoSelection{*glib.Object{obj}}
+	return &NoSelection{*externglib.Object{obj}}
 }
 
 func marshalNoSelection(p uintptr) (interface{}, error) {
@@ -10576,7 +10576,7 @@ type Notebook struct {
 }
 
 func wrapNotebook(obj *glib.Object) *Notebook {
-	return &Notebook{Widget{glib.InitiallyUnowned{obj}}}
+	return &Notebook{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalNotebook(p uintptr) (interface{}, error) {
@@ -10589,11 +10589,11 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 //
 // The `GtkNotebookPage` structure only contains private data.
 type NotebookPage struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapNotebookPage(obj *glib.Object) *NotebookPage {
-	return &NotebookPage{*glib.Object{obj}}
+	return &NotebookPage{*externglib.Object{obj}}
 }
 
 func marshalNotebookPage(p uintptr) (interface{}, error) {
@@ -10608,7 +10608,7 @@ type NothingAction struct {
 }
 
 func wrapNothingAction(obj *glib.Object) *NothingAction {
-	return &NothingAction{ShortcutAction{*glib.Object{obj}}}
+	return &NothingAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalNothingAction(p uintptr) (interface{}, error) {
@@ -10625,7 +10625,7 @@ type NumericSorter struct {
 }
 
 func wrapNumericSorter(obj *glib.Object) *NumericSorter {
-	return &NumericSorter{Sorter{*glib.Object{obj}}}
+	return &NumericSorter{Sorter{*externglib.Object{obj}}}
 }
 
 func marshalNumericSorter(p uintptr) (interface{}, error) {
@@ -10681,7 +10681,7 @@ type Overlay struct {
 }
 
 func wrapOverlay(obj *glib.Object) *Overlay {
-	return &Overlay{Widget{glib.InitiallyUnowned{obj}}}
+	return &Overlay{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalOverlay(p uintptr) (interface{}, error) {
@@ -10700,7 +10700,7 @@ type OverlayLayout struct {
 }
 
 func wrapOverlayLayout(obj *glib.Object) *OverlayLayout {
-	return &OverlayLayout{LayoutManager{*glib.Object{obj}}}
+	return &OverlayLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalOverlayLayout(p uintptr) (interface{}, error) {
@@ -10714,7 +10714,7 @@ type OverlayLayoutChild struct {
 }
 
 func wrapOverlayLayoutChild(obj *glib.Object) *OverlayLayoutChild {
-	return &OverlayLayoutChild{LayoutChild{*glib.Object{obj}}}
+	return &OverlayLayoutChild{LayoutChild{*externglib.Object{obj}}}
 }
 
 func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
@@ -10766,7 +10766,7 @@ type PadController struct {
 }
 
 func wrapPadController(obj *glib.Object) *PadController {
-	return &PadController{EventController{*glib.Object{obj}}}
+	return &PadController{EventController{*externglib.Object{obj}}}
 }
 
 func marshalPadController(p uintptr) (interface{}, error) {
@@ -10813,11 +10813,11 @@ func marshalPadController(p uintptr) (interface{}, error) {
 //    }
 //
 type PageSetup struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapPageSetup(obj *glib.Object) *PageSetup {
-	return &PageSetup{*glib.Object{obj}}
+	return &PageSetup{*externglib.Object{obj}}
 }
 
 func marshalPageSetup(p uintptr) (interface{}, error) {
@@ -10890,7 +10890,7 @@ type Paned struct {
 }
 
 func wrapPaned(obj *glib.Object) *Paned {
-	return &Paned{Widget{glib.InitiallyUnowned{obj}}}
+	return &Paned{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalPaned(p uintptr) (interface{}, error) {
@@ -10932,7 +10932,7 @@ type PasswordEntry struct {
 }
 
 func wrapPasswordEntry(obj *glib.Object) *PasswordEntry {
-	return &PasswordEntry{Widget{glib.InitiallyUnowned{obj}}}
+	return &PasswordEntry{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalPasswordEntry(p uintptr) (interface{}, error) {
@@ -10987,7 +10987,7 @@ type Picture struct {
 }
 
 func wrapPicture(obj *glib.Object) *Picture {
-	return &Picture{Widget{glib.InitiallyUnowned{obj}}}
+	return &Picture{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalPicture(p uintptr) (interface{}, error) {
@@ -11069,7 +11069,7 @@ type Popover struct {
 }
 
 func wrapPopover(obj *glib.Object) *Popover {
-	return &Popover{Widget{glib.InitiallyUnowned{obj}}}
+	return &Popover{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalPopover(p uintptr) (interface{}, error) {
@@ -11168,7 +11168,7 @@ type PopoverMenu struct {
 }
 
 func wrapPopoverMenu(obj *glib.Object) *PopoverMenu {
-	return &PopoverMenu{Popover{Widget{glib.InitiallyUnowned{obj}}}}
+	return &PopoverMenu{Popover{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalPopoverMenu(p uintptr) (interface{}, error) {
@@ -11206,7 +11206,7 @@ type PopoverMenuBar struct {
 }
 
 func wrapPopoverMenuBar(obj *glib.Object) *PopoverMenuBar {
-	return &PopoverMenuBar{Widget{glib.InitiallyUnowned{obj}}}
+	return &PopoverMenuBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
@@ -11280,11 +11280,11 @@ func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
 //    }
 //
 type PrintContext struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapPrintContext(obj *glib.Object) *PrintContext {
-	return &PrintContext{*glib.Object{obj}}
+	return &PrintContext{*externglib.Object{obj}}
 }
 
 func marshalPrintContext(p uintptr) (interface{}, error) {
@@ -11352,11 +11352,11 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 // gtk_print_operation_preview_is_selected() are useful when implementing a
 // print preview.
 type PrintOperation struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapPrintOperation(obj *glib.Object) *PrintOperation {
-	return &PrintOperation{*glib.Object{obj}}
+	return &PrintOperation{*externglib.Object{obj}}
 }
 
 func marshalPrintOperation(p uintptr) (interface{}, error) {
@@ -11376,11 +11376,11 @@ func marshalPrintOperation(p uintptr) (interface{}, error) {
 // The predefined keys try to use shared values as much as possible so that
 // moving such a document between systems still works.
 type PrintSettings struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapPrintSettings(obj *glib.Object) *PrintSettings {
-	return &PrintSettings{*glib.Object{obj}}
+	return &PrintSettings{*externglib.Object{obj}}
 }
 
 func marshalPrintSettings(p uintptr) (interface{}, error) {
@@ -11436,7 +11436,7 @@ type ProgressBar struct {
 }
 
 func wrapProgressBar(obj *glib.Object) *ProgressBar {
-	return &ProgressBar{Widget{glib.InitiallyUnowned{obj}}}
+	return &ProgressBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalProgressBar(p uintptr) (interface{}, error) {
@@ -11470,7 +11470,7 @@ type Range struct {
 }
 
 func wrapRange(obj *glib.Object) *Range {
-	return &Range{Widget{glib.InitiallyUnowned{obj}}}
+	return &Range{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
@@ -11533,11 +11533,11 @@ func marshalRange(p uintptr) (interface{}, error) {
 // Note that the maximum age of the recently used files list is controllable
 // through the Settings:gtk-recent-files-max-age property.
 type RecentManager struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapRecentManager(obj *glib.Object) *RecentManager {
-	return &RecentManager{*glib.Object{obj}}
+	return &RecentManager{*externglib.Object{obj}}
 }
 
 func marshalRecentManager(p uintptr) (interface{}, error) {
@@ -11574,7 +11574,7 @@ type Revealer struct {
 }
 
 func wrapRevealer(obj *glib.Object) *Revealer {
-	return &Revealer{Widget{glib.InitiallyUnowned{obj}}}
+	return &Revealer{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalRevealer(p uintptr) (interface{}, error) {
@@ -11663,7 +11663,7 @@ type Scale struct {
 }
 
 func wrapScale(obj *glib.Object) *Scale {
-	return &Scale{Range{Widget{glib.InitiallyUnowned{obj}}}}
+	return &Scale{Range{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalScale(p uintptr) (interface{}, error) {
@@ -11687,7 +11687,7 @@ type ScaleButton struct {
 }
 
 func wrapScaleButton(obj *glib.Object) *ScaleButton {
-	return &ScaleButton{Widget{glib.InitiallyUnowned{obj}}}
+	return &ScaleButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalScaleButton(p uintptr) (interface{}, error) {
@@ -11737,7 +11737,7 @@ type Scrollbar struct {
 }
 
 func wrapScrollbar(obj *glib.Object) *Scrollbar {
-	return &Scrollbar{Widget{glib.InitiallyUnowned{obj}}}
+	return &Scrollbar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalScrollbar(p uintptr) (interface{}, error) {
@@ -11835,7 +11835,7 @@ type ScrolledWindow struct {
 }
 
 func wrapScrolledWindow(obj *glib.Object) *ScrolledWindow {
-	return &ScrolledWindow{Widget{glib.InitiallyUnowned{obj}}}
+	return &ScrolledWindow{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalScrolledWindow(p uintptr) (interface{}, error) {
@@ -11888,7 +11888,7 @@ type SearchBar struct {
 }
 
 func wrapSearchBar(obj *glib.Object) *SearchBar {
-	return &SearchBar{Widget{glib.InitiallyUnowned{obj}}}
+	return &SearchBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSearchBar(p uintptr) (interface{}, error) {
@@ -11936,7 +11936,7 @@ type SearchEntry struct {
 }
 
 func wrapSearchEntry(obj *glib.Object) *SearchEntry {
-	return &SearchEntry{Widget{glib.InitiallyUnowned{obj}}}
+	return &SearchEntry{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSearchEntry(p uintptr) (interface{}, error) {
@@ -11948,11 +11948,11 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 // SelectionFilterModel: gtkSelectionFilterModel is a list model that presents
 // the selected items in a SelectionModel as its own list model.
 type SelectionFilterModel struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSelectionFilterModel(obj *glib.Object) *SelectionFilterModel {
-	return &SelectionFilterModel{*glib.Object{obj}}
+	return &SelectionFilterModel{*externglib.Object{obj}}
 }
 
 func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
@@ -11981,7 +11981,7 @@ type Separator struct {
 }
 
 func wrapSeparator(obj *glib.Object) *Separator {
-	return &Separator{Widget{glib.InitiallyUnowned{obj}}}
+	return &Separator{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSeparator(p uintptr) (interface{}, error) {
@@ -12017,11 +12017,11 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 // gtk_settings_get_for_display(), but in many cases, it is more convenient to
 // use gtk_widget_get_settings().
 type Settings struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSettings(obj *glib.Object) *Settings {
-	return &Settings{*glib.Object{obj}}
+	return &Settings{*externglib.Object{obj}}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
@@ -12046,11 +12046,11 @@ func marshalSettings(p uintptr) (interface{}, error) {
 // shortcuts, either by providing informational strings for display purposes or
 // by allowing shortcuts to be configured.
 type Shortcut struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapShortcut(obj *glib.Object) *Shortcut {
-	return &Shortcut{*glib.Object{obj}}
+	return &Shortcut{*externglib.Object{obj}}
 }
 
 func marshalShortcut(p uintptr) (interface{}, error) {
@@ -12085,11 +12085,11 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 //
 // GtkShortcut
 type ShortcutAction struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapShortcutAction(obj *glib.Object) *ShortcutAction {
-	return &ShortcutAction{*glib.Object{obj}}
+	return &ShortcutAction{*externglib.Object{obj}}
 }
 
 func marshalShortcutAction(p uintptr) (interface{}, error) {
@@ -12142,7 +12142,7 @@ type ShortcutController struct {
 }
 
 func wrapShortcutController(obj *glib.Object) *ShortcutController {
-	return &ShortcutController{EventController{*glib.Object{obj}}}
+	return &ShortcutController{EventController{*externglib.Object{obj}}}
 }
 
 func marshalShortcutController(p uintptr) (interface{}, error) {
@@ -12158,7 +12158,7 @@ type ShortcutLabel struct {
 }
 
 func wrapShortcutLabel(obj *glib.Object) *ShortcutLabel {
-	return &ShortcutLabel{Widget{glib.InitiallyUnowned{obj}}}
+	return &ShortcutLabel{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalShortcutLabel(p uintptr) (interface{}, error) {
@@ -12178,11 +12178,11 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 // during construction. If you want to change a trigger, you have to replace it
 // with a new one.
 type ShortcutTrigger struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapShortcutTrigger(obj *glib.Object) *ShortcutTrigger {
-	return &ShortcutTrigger{*glib.Object{obj}}
+	return &ShortcutTrigger{*externglib.Object{obj}}
 }
 
 func marshalShortcutTrigger(p uintptr) (interface{}, error) {
@@ -12202,7 +12202,7 @@ type ShortcutsGroup struct {
 }
 
 func wrapShortcutsGroup(obj *glib.Object) *ShortcutsGroup {
-	return &ShortcutsGroup{Box{Widget{glib.InitiallyUnowned{obj}}}}
+	return &ShortcutsGroup{Box{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalShortcutsGroup(p uintptr) (interface{}, error) {
@@ -12226,7 +12226,7 @@ type ShortcutsSection struct {
 }
 
 func wrapShortcutsSection(obj *glib.Object) *ShortcutsSection {
-	return &ShortcutsSection{Box{Widget{glib.InitiallyUnowned{obj}}}}
+	return &ShortcutsSection{Box{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalShortcutsSection(p uintptr) (interface{}, error) {
@@ -12243,7 +12243,7 @@ type ShortcutsShortcut struct {
 }
 
 func wrapShortcutsShortcut(obj *glib.Object) *ShortcutsShortcut {
-	return &ShortcutsShortcut{Widget{glib.InitiallyUnowned{obj}}}
+	return &ShortcutsShortcut{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
@@ -12300,7 +12300,7 @@ type ShortcutsWindow struct {
 }
 
 func wrapShortcutsWindow(obj *glib.Object) *ShortcutsWindow {
-	return &ShortcutsWindow{Window{Widget{glib.InitiallyUnowned{obj}}}}
+	return &ShortcutsWindow{Window{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalShortcutsWindow(p uintptr) (interface{}, error) {
@@ -12318,7 +12318,7 @@ type SignalAction struct {
 }
 
 func wrapSignalAction(obj *glib.Object) *SignalAction {
-	return &SignalAction{ShortcutAction{*glib.Object{obj}}}
+	return &SignalAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalSignalAction(p uintptr) (interface{}, error) {
@@ -12369,7 +12369,7 @@ type SignalListItemFactory struct {
 }
 
 func wrapSignalListItemFactory(obj *glib.Object) *SignalListItemFactory {
-	return &SignalListItemFactory{ListItemFactory{*glib.Object{obj}}}
+	return &SignalListItemFactory{ListItemFactory{*externglib.Object{obj}}}
 }
 
 func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
@@ -12387,11 +12387,11 @@ func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 // particular, this means that changing the sort order of an underlying sort
 // model will preserve the selection.
 type SingleSelection struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSingleSelection(obj *glib.Object) *SingleSelection {
-	return &SingleSelection{*glib.Object{obj}}
+	return &SingleSelection{*externglib.Object{obj}}
 }
 
 func marshalSingleSelection(p uintptr) (interface{}, error) {
@@ -12463,11 +12463,11 @@ func marshalSingleSelection(p uintptr) (interface{}, error) {
 //      </widgets>
 //    </object>
 type SizeGroup struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSizeGroup(obj *glib.Object) *SizeGroup {
-	return &SizeGroup{*glib.Object{obj}}
+	return &SizeGroup{*externglib.Object{obj}}
 }
 
 func marshalSizeGroup(p uintptr) (interface{}, error) {
@@ -12483,11 +12483,11 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 // elements per page and updating the offset whenever a different page is
 // opened.
 type SliceListModel struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSliceListModel(obj *glib.Object) *SliceListModel {
-	return &SliceListModel{*glib.Object{obj}}
+	return &SliceListModel{*externglib.Object{obj}}
 }
 
 func marshalSliceListModel(p uintptr) (interface{}, error) {
@@ -12513,7 +12513,7 @@ type Snapshot struct {
 }
 
 func wrapSnapshot(obj *glib.Object) *Snapshot {
-	return &Snapshot{Snapshot{*glib.Object{obj}}}
+	return &Snapshot{Snapshot{*externglib.Object{obj}}}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
@@ -12533,11 +12533,11 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 // with SortListModel, it is strongly recommended that you write your own
 // sorting list model.
 type SortListModel struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSortListModel(obj *glib.Object) *SortListModel {
-	return &SortListModel{*glib.Object{obj}}
+	return &SortListModel{*externglib.Object{obj}}
 }
 
 func marshalSortListModel(p uintptr) (interface{}, error) {
@@ -12565,11 +12565,11 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 // Of course, in particular for large lists, it is also possible to subclass
 // Sorter and provide one's own sorter.
 type Sorter struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSorter(obj *glib.Object) *Sorter {
-	return &Sorter{*glib.Object{obj}}
+	return &Sorter{*externglib.Object{obj}}
 }
 
 func marshalSorter(p uintptr) (interface{}, error) {
@@ -12684,7 +12684,7 @@ type SpinButton struct {
 }
 
 func wrapSpinButton(obj *glib.Object) *SpinButton {
-	return &SpinButton{Widget{glib.InitiallyUnowned{obj}}}
+	return &SpinButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSpinButton(p uintptr) (interface{}, error) {
@@ -12710,7 +12710,7 @@ type Spinner struct {
 }
 
 func wrapSpinner(obj *glib.Object) *Spinner {
-	return &Spinner{Widget{glib.InitiallyUnowned{obj}}}
+	return &Spinner{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSpinner(p uintptr) (interface{}, error) {
@@ -12763,7 +12763,7 @@ type Stack struct {
 }
 
 func wrapStack(obj *glib.Object) *Stack {
-	return &Stack{Widget{glib.InitiallyUnowned{obj}}}
+	return &Stack{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalStack(p uintptr) (interface{}, error) {
@@ -12773,11 +12773,11 @@ func marshalStack(p uintptr) (interface{}, error) {
 }
 
 type StackPage struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapStackPage(obj *glib.Object) *StackPage {
-	return &StackPage{*glib.Object{obj}}
+	return &StackPage{*externglib.Object{obj}}
 }
 
 func marshalStackPage(p uintptr) (interface{}, error) {
@@ -12806,7 +12806,7 @@ type StackSidebar struct {
 }
 
 func wrapStackSidebar(obj *glib.Object) *StackSidebar {
-	return &StackSidebar{Widget{glib.InitiallyUnowned{obj}}}
+	return &StackSidebar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalStackSidebar(p uintptr) (interface{}, error) {
@@ -12845,7 +12845,7 @@ type StackSwitcher struct {
 }
 
 func wrapStackSwitcher(obj *glib.Object) *StackSwitcher {
-	return &StackSwitcher{Widget{glib.InitiallyUnowned{obj}}}
+	return &StackSwitcher{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalStackSwitcher(p uintptr) (interface{}, error) {
@@ -12891,7 +12891,7 @@ type Statusbar struct {
 }
 
 func wrapStatusbar(obj *glib.Object) *Statusbar {
-	return &Statusbar{Widget{glib.InitiallyUnowned{obj}}}
+	return &Statusbar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalStatusbar(p uintptr) (interface{}, error) {
@@ -12911,7 +12911,7 @@ type StringFilter struct {
 }
 
 func wrapStringFilter(obj *glib.Object) *StringFilter {
-	return &StringFilter{Filter{*glib.Object{obj}}}
+	return &StringFilter{Filter{*externglib.Object{obj}}}
 }
 
 func marshalStringFilter(p uintptr) (interface{}, error) {
@@ -12944,11 +12944,11 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 //      </items>
 //    </object>
 type StringList struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapStringList(obj *glib.Object) *StringList {
-	return &StringList{*glib.Object{obj}}
+	return &StringList{*externglib.Object{obj}}
 }
 
 func marshalStringList(p uintptr) (interface{}, error) {
@@ -12958,11 +12958,11 @@ func marshalStringList(p uintptr) (interface{}, error) {
 }
 
 type StringObject struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapStringObject(obj *glib.Object) *StringObject {
-	return &StringObject{*glib.Object{obj}}
+	return &StringObject{*externglib.Object{obj}}
 }
 
 func marshalStringObject(p uintptr) (interface{}, error) {
@@ -12982,7 +12982,7 @@ type StringSorter struct {
 }
 
 func wrapStringSorter(obj *glib.Object) *StringSorter {
-	return &StringSorter{Sorter{*glib.Object{obj}}}
+	return &StringSorter{Sorter{*externglib.Object{obj}}}
 }
 
 func marshalStringSorter(p uintptr) (interface{}, error) {
@@ -13031,11 +13031,11 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 // still take precedence over your changes, as it uses the
 // GTK_STYLE_PROVIDER_PRIORITY_USER priority.
 type StyleContext struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapStyleContext(obj *glib.Object) *StyleContext {
-	return &StyleContext{*glib.Object{obj}}
+	return &StyleContext{*externglib.Object{obj}}
 }
 
 func marshalStyleContext(p uintptr) (interface{}, error) {
@@ -13071,7 +13071,7 @@ type Switch struct {
 }
 
 func wrapSwitch(obj *glib.Object) *Switch {
-	return &Switch{Widget{glib.InitiallyUnowned{obj}}}
+	return &Switch{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSwitch(p uintptr) (interface{}, error) {
@@ -13140,7 +13140,7 @@ type Text struct {
 }
 
 func wrapText(obj *glib.Object) *Text {
-	return &Text{Widget{glib.InitiallyUnowned{obj}}}
+	return &Text{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalText(p uintptr) (interface{}, error) {
@@ -13153,11 +13153,11 @@ func marshalText(p uintptr) (interface{}, error) {
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
 type TextBuffer struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTextBuffer(obj *glib.Object) *TextBuffer {
-	return &TextBuffer{*glib.Object{obj}}
+	return &TextBuffer{*externglib.Object{obj}}
 }
 
 func marshalTextBuffer(p uintptr) (interface{}, error) {
@@ -13170,11 +13170,11 @@ func marshalTextBuffer(p uintptr) (interface{}, error) {
 // widgets can be “anchored” (inserted inline, as if they were characters). The
 // anchor can have multiple widgets anchored, to allow for multiple views.
 type TextChildAnchor struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTextChildAnchor(obj *glib.Object) *TextChildAnchor {
-	return &TextChildAnchor{*glib.Object{obj}}
+	return &TextChildAnchor{*externglib.Object{obj}}
 }
 
 func marshalTextChildAnchor(p uintptr) (interface{}, error) {
@@ -13211,11 +13211,11 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 //
 // Marks are typically created using the gtk_text_buffer_create_mark() function.
 type TextMark struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTextMark(obj *glib.Object) *TextMark {
-	return &TextMark{*glib.Object{obj}}
+	return &TextMark{*externglib.Object{obj}}
 }
 
 func marshalTextMark(p uintptr) (interface{}, error) {
@@ -13239,11 +13239,11 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 // been set or not. They are maintained by GTK+ and you should not set them
 // independently.
 type TextTag struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTextTag(obj *glib.Object) *TextTag {
-	return &TextTag{*glib.Object{obj}}
+	return &TextTag{*externglib.Object{obj}}
 }
 
 func marshalTextTag(p uintptr) (interface{}, error) {
@@ -13269,11 +13269,11 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 //     </child>
 //    </object>
 type TextTagTable struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTextTagTable(obj *glib.Object) *TextTagTable {
-	return &TextTagTable{*glib.Object{obj}}
+	return &TextTagTable{*externglib.Object{obj}}
 }
 
 func marshalTextTagTable(p uintptr) (interface{}, error) {
@@ -13316,7 +13316,7 @@ type TextView struct {
 }
 
 func wrapTextView(obj *glib.Object) *TextView {
-	return &TextView{Widget{glib.InitiallyUnowned{obj}}}
+	return &TextView{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalTextView(p uintptr) (interface{}, error) {
@@ -13385,7 +13385,7 @@ type ToggleButton struct {
 }
 
 func wrapToggleButton(obj *glib.Object) *ToggleButton {
-	return &ToggleButton{Button{Widget{glib.InitiallyUnowned{obj}}}}
+	return &ToggleButton{Button{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalToggleButton(p uintptr) (interface{}, error) {
@@ -13417,11 +13417,11 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 // Return true from your query-tooltip handler. This causes the tooltip to be
 // show. If you return false, it will not be shown.
 type Tooltip struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTooltip(obj *glib.Object) *Tooltip {
-	return &Tooltip{*glib.Object{obj}}
+	return &Tooltip{*externglib.Object{obj}}
 }
 
 func marshalTooltip(p uintptr) (interface{}, error) {
@@ -13472,7 +13472,7 @@ type TreeExpander struct {
 }
 
 func wrapTreeExpander(obj *glib.Object) *TreeExpander {
-	return &TreeExpander{Widget{glib.InitiallyUnowned{obj}}}
+	return &TreeExpander{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalTreeExpander(p uintptr) (interface{}, error) {
@@ -13484,11 +13484,11 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 // TreeListModel: gtkTreeListModel is a Model implementation that can expand
 // rows by creating new child list models on demand.
 type TreeListModel struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTreeListModel(obj *glib.Object) *TreeListModel {
-	return &TreeListModel{*glib.Object{obj}}
+	return &TreeListModel{*externglib.Object{obj}}
 }
 
 func marshalTreeListModel(p uintptr) (interface{}, error) {
@@ -13508,11 +13508,11 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 // collapse a row or TreeListRowSorter that makes it possible to sort trees
 // properly.
 type TreeListRow struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTreeListRow(obj *glib.Object) *TreeListRow {
-	return &TreeListRow{*glib.Object{obj}}
+	return &TreeListRow{*externglib.Object{obj}}
 }
 
 func marshalTreeListRow(p uintptr) (interface{}, error) {
@@ -13539,7 +13539,7 @@ type TreeListRowSorter struct {
 }
 
 func wrapTreeListRowSorter(obj *glib.Object) *TreeListRowSorter {
-	return &TreeListRowSorter{Sorter{*glib.Object{obj}}}
+	return &TreeListRowSorter{Sorter{*externglib.Object{obj}}}
 }
 
 func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
@@ -13610,11 +13610,11 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 // reference counting, or for models that do implement reference counting,
 // obtain references on these child levels yourself.
 type TreeModelFilter struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTreeModelFilter(obj *glib.Object) *TreeModelFilter {
-	return &TreeModelFilter{*glib.Object{obj}}
+	return &TreeModelFilter{*externglib.Object{obj}}
 }
 
 func marshalTreeModelFilter(p uintptr) (interface{}, error) {
@@ -13715,11 +13715,11 @@ func marshalTreeModelFilter(p uintptr) (interface{}, error) {
 //    }
 //
 type TreeModelSort struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTreeModelSort(obj *glib.Object) *TreeModelSort {
-	return &TreeModelSort{*glib.Object{obj}}
+	return &TreeModelSort{*externglib.Object{obj}}
 }
 
 func marshalTreeModelSort(p uintptr) (interface{}, error) {
@@ -13751,11 +13751,11 @@ func marshalTreeModelSort(p uintptr) (interface{}, error) {
 // happened (mostly as a result of programmers calling select_row on an already
 // selected row).
 type TreeSelection struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTreeSelection(obj *glib.Object) *TreeSelection {
-	return &TreeSelection{*glib.Object{obj}}
+	return &TreeSelection{*externglib.Object{obj}}
 }
 
 func marshalTreeSelection(p uintptr) (interface{}, error) {
@@ -13787,11 +13787,11 @@ func marshalTreeSelection(p uintptr) (interface{}, error) {
 //      </columns>
 //    </object>
 type TreeStore struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTreeStore(obj *glib.Object) *TreeStore {
-	return &TreeStore{*glib.Object{obj}}
+	return &TreeStore{*externglib.Object{obj}}
 }
 
 func marshalTreeStore(p uintptr) (interface{}, error) {
@@ -13882,7 +13882,7 @@ type TreeView struct {
 }
 
 func wrapTreeView(obj *glib.Object) *TreeView {
-	return &TreeView{Widget{glib.InitiallyUnowned{obj}}}
+	return &TreeView{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalTreeView(p uintptr) (interface{}, error) {
@@ -13900,11 +13900,11 @@ func marshalTreeView(p uintptr) (interface{}, error) {
 // overview of all the objects and data types related to the tree widget and how
 // they work together.
 type TreeViewColumn struct {
-	glib.InitiallyUnowned
+	externglib.InitiallyUnowned
 }
 
 func wrapTreeViewColumn(obj *glib.Object) *TreeViewColumn {
-	return &TreeViewColumn{glib.InitiallyUnowned{obj}}
+	return &TreeViewColumn{externglib.InitiallyUnowned{obj}}
 }
 
 func marshalTreeViewColumn(p uintptr) (interface{}, error) {
@@ -13928,7 +13928,7 @@ type Video struct {
 }
 
 func wrapVideo(obj *glib.Object) *Video {
-	return &Video{Widget{glib.InitiallyUnowned{obj}}}
+	return &Video{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalVideo(p uintptr) (interface{}, error) {
@@ -13958,7 +13958,7 @@ type Viewport struct {
 }
 
 func wrapViewport(obj *glib.Object) *Viewport {
-	return &Viewport{Widget{glib.InitiallyUnowned{obj}}}
+	return &Viewport{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalViewport(p uintptr) (interface{}, error) {
@@ -13975,7 +13975,7 @@ type VolumeButton struct {
 }
 
 func wrapVolumeButton(obj *glib.Object) *VolumeButton {
-	return &VolumeButton{ScaleButton{Widget{glib.InitiallyUnowned{obj}}}}
+	return &VolumeButton{ScaleButton{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalVolumeButton(p uintptr) (interface{}, error) {
@@ -14316,11 +14316,11 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 //    }
 //
 type Widget struct {
-	glib.InitiallyUnowned
+	externglib.InitiallyUnowned
 }
 
 func wrapWidget(obj *glib.Object) *Widget {
-	return &Widget{glib.InitiallyUnowned{obj}}
+	return &Widget{externglib.InitiallyUnowned{obj}}
 }
 
 func marshalWidget(p uintptr) (interface{}, error) {
@@ -14349,11 +14349,11 @@ func marshalWidget(p uintptr) (interface{}, error) {
 // Picture:can-shrink property is set to true or you might end up with an
 // infinitely growing widget.
 type WidgetPaintable struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapWidgetPaintable(obj *glib.Object) *WidgetPaintable {
-	return &WidgetPaintable{*glib.Object{obj}}
+	return &WidgetPaintable{*externglib.Object{obj}}
 }
 
 func marshalWidgetPaintable(p uintptr) (interface{}, error) {
@@ -14409,7 +14409,7 @@ type Window struct {
 }
 
 func wrapWindow(obj *glib.Object) *Window {
-	return &Window{Widget{glib.InitiallyUnowned{obj}}}
+	return &Window{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalWindow(p uintptr) (interface{}, error) {
@@ -14467,7 +14467,7 @@ type WindowControls struct {
 }
 
 func wrapWindowControls(obj *glib.Object) *WindowControls {
-	return &WindowControls{Widget{glib.InitiallyUnowned{obj}}}
+	return &WindowControls{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalWindowControls(p uintptr) (interface{}, error) {
@@ -14491,11 +14491,11 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 // window group and drop their references on the window group; when all window
 // have been removed, the window group will be freed.
 type WindowGroup struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapWindowGroup(obj *glib.Object) *WindowGroup {
-	return &WindowGroup{*glib.Object{obj}}
+	return &WindowGroup{*externglib.Object{obj}}
 }
 
 func marshalWindowGroup(p uintptr) (interface{}, error) {
@@ -14522,7 +14522,7 @@ type WindowHandle struct {
 }
 
 func wrapWindowHandle(obj *glib.Object) *WindowHandle {
-	return &WindowHandle{Widget{glib.InitiallyUnowned{obj}}}
+	return &WindowHandle{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalWindowHandle(p uintptr) (interface{}, error) {

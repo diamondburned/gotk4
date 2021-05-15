@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: pangofc
@@ -15,7 +16,7 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 
 		// Objects/Classes
 	})
@@ -31,11 +32,11 @@ func init() {
 // individual character to glyph conversions. Pango gets that information via
 // the #get_charset and #get_glyph callbacks into your object implementation.
 type Decoder struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDecoder(obj *glib.Object) *Decoder {
-	return &Decoder{*glib.Object{obj}}
+	return &Decoder{*externglib.Object{obj}}
 }
 
 func marshalDecoder(p uintptr) (interface{}, error) {
@@ -56,7 +57,7 @@ type Font struct {
 }
 
 func wrapFont(obj *glib.Object) *Font {
-	return &Font{Font{*glib.Object{obj}}}
+	return &Font{Font{*externglib.Object{obj}}}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
@@ -77,7 +78,7 @@ type FontMap struct {
 }
 
 func wrapFontMap(obj *glib.Object) *FontMap {
-	return &FontMap{FontMap{*glib.Object{obj}}}
+	return &FontMap{FontMap{*externglib.Object{obj}}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {

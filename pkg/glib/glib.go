@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: glib-2.0
@@ -15,7 +15,7 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		// Enums
 		// Skipped BookmarkFileError.
 		// Skipped ChecksumType.
@@ -6362,7 +6362,7 @@ func StrvContains(strv string, str string) bool
 // Two empty arrays are considered equal. Neither @strv1 not @strv2 may be nil.
 func StrvEqual(strv1 string, strv2 string) bool
 
-func StrvGetType() glib.Type
+func StrvGetType() externglib.Type
 
 // StrvLength: returns the length of the given nil-terminated string array
 // @str_array. @str_array must not be nil.
@@ -7878,7 +7878,7 @@ func UuidStringIsValid(str string) bool
 // pads.
 func UuidStringRandom() string
 
-func VariantGetGtype() glib.Type
+func VariantGetGtype() externglib.Type
 
 // VariantIsObjectPath: determines if a given string is a valid D-Bus object
 // path. You should ensure that a string is a valid D-Bus object path before

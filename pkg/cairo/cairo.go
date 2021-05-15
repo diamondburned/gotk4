@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: cairo-gobject
@@ -15,30 +15,30 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		// Enums
-		{T: glib.Type(C.cairo_gobject_status_get_type()), F: marshalStatus},
-		{T: glib.Type(C.cairo_gobject_content_get_type()), F: marshalContent},
-		{T: glib.Type(C.cairo_gobject_operator_get_type()), F: marshalOperator},
-		{T: glib.Type(C.cairo_gobject_antialias_get_type()), F: marshalAntialias},
-		{T: glib.Type(C.cairo_gobject_fill_rule_get_type()), F: marshalFillRule},
-		{T: glib.Type(C.cairo_gobject_line_cap_get_type()), F: marshalLineCap},
-		{T: glib.Type(C.cairo_gobject_line_join_get_type()), F: marshalLineJoin},
-		{T: glib.Type(C.cairo_gobject_text_cluster_flags_get_type()), F: marshalTextClusterFlags},
-		{T: glib.Type(C.cairo_gobject_font_slant_get_type()), F: marshalFontSlant},
-		{T: glib.Type(C.cairo_gobject_font_weight_get_type()), F: marshalFontWeight},
-		{T: glib.Type(C.cairo_gobject_subpixel_order_get_type()), F: marshalSubpixelOrder},
-		{T: glib.Type(C.cairo_gobject_hint_style_get_type()), F: marshalHintStyle},
-		{T: glib.Type(C.cairo_gobject_hint_metrics_get_type()), F: marshalHintMetrics},
-		{T: glib.Type(C.cairo_gobject_font_type_get_type()), F: marshalFontType},
-		{T: glib.Type(C.cairo_gobject_path_data_type_get_type()), F: marshalPathDataType},
-		{T: glib.Type(C.cairo_gobject_device_type_get_type()), F: marshalDeviceType},
-		{T: glib.Type(C.cairo_gobject_surface_type_get_type()), F: marshalSurfaceType},
-		{T: glib.Type(C.cairo_gobject_format_get_type()), F: marshalFormat},
-		{T: glib.Type(C.cairo_gobject_pattern_type_get_type()), F: marshalPatternType},
-		{T: glib.Type(C.cairo_gobject_extend_get_type()), F: marshalExtend},
-		{T: glib.Type(C.cairo_gobject_filter_get_type()), F: marshalFilter},
-		{T: glib.Type(C.cairo_gobject_region_overlap_get_type()), F: marshalRegionOverlap},
+		{T: externglib.Type(C.cairo_gobject_status_get_type()), F: marshalStatus},
+		{T: externglib.Type(C.cairo_gobject_content_get_type()), F: marshalContent},
+		{T: externglib.Type(C.cairo_gobject_operator_get_type()), F: marshalOperator},
+		{T: externglib.Type(C.cairo_gobject_antialias_get_type()), F: marshalAntialias},
+		{T: externglib.Type(C.cairo_gobject_fill_rule_get_type()), F: marshalFillRule},
+		{T: externglib.Type(C.cairo_gobject_line_cap_get_type()), F: marshalLineCap},
+		{T: externglib.Type(C.cairo_gobject_line_join_get_type()), F: marshalLineJoin},
+		{T: externglib.Type(C.cairo_gobject_text_cluster_flags_get_type()), F: marshalTextClusterFlags},
+		{T: externglib.Type(C.cairo_gobject_font_slant_get_type()), F: marshalFontSlant},
+		{T: externglib.Type(C.cairo_gobject_font_weight_get_type()), F: marshalFontWeight},
+		{T: externglib.Type(C.cairo_gobject_subpixel_order_get_type()), F: marshalSubpixelOrder},
+		{T: externglib.Type(C.cairo_gobject_hint_style_get_type()), F: marshalHintStyle},
+		{T: externglib.Type(C.cairo_gobject_hint_metrics_get_type()), F: marshalHintMetrics},
+		{T: externglib.Type(C.cairo_gobject_font_type_get_type()), F: marshalFontType},
+		{T: externglib.Type(C.cairo_gobject_path_data_type_get_type()), F: marshalPathDataType},
+		{T: externglib.Type(C.cairo_gobject_device_type_get_type()), F: marshalDeviceType},
+		{T: externglib.Type(C.cairo_gobject_surface_type_get_type()), F: marshalSurfaceType},
+		{T: externglib.Type(C.cairo_gobject_format_get_type()), F: marshalFormat},
+		{T: externglib.Type(C.cairo_gobject_pattern_type_get_type()), F: marshalPatternType},
+		{T: externglib.Type(C.cairo_gobject_extend_get_type()), F: marshalExtend},
+		{T: externglib.Type(C.cairo_gobject_filter_get_type()), F: marshalFilter},
+		{T: externglib.Type(C.cairo_gobject_region_overlap_get_type()), F: marshalRegionOverlap},
 
 		// Objects/Classes
 	})

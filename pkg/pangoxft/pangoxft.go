@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/xft"
 	"github.com/diamondburned/gotk4/pkg/xlib"
 	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: pangoxft
@@ -18,7 +19,7 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 
 		// Objects/Classes
 	})
@@ -75,7 +76,7 @@ type Font struct {
 }
 
 func wrapFont(obj *glib.Object) *Font {
-	return &Font{Font{Font{*glib.Object{obj}}}}
+	return &Font{Font{Font{*externglib.Object{obj}}}}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
@@ -91,7 +92,7 @@ type FontMap struct {
 }
 
 func wrapFontMap(obj *glib.Object) *FontMap {
-	return &FontMap{FontMap{FontMap{*glib.Object{obj}}}}
+	return &FontMap{FontMap{FontMap{*externglib.Object{obj}}}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
@@ -108,7 +109,7 @@ type Renderer struct {
 }
 
 func wrapRenderer(obj *glib.Object) *Renderer {
-	return &Renderer{Renderer{*glib.Object{obj}}}
+	return &Renderer{Renderer{*externglib.Object{obj}}}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {

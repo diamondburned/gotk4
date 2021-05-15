@@ -130,6 +130,7 @@ func (g *Generator) UseNamespace(namespace string) *NamespaceGenerator {
 		body: &buf,
 
 		imports: map[string]string{},
+		pkgPath: g.ImportPath(gir.GoNamespace(res.Namespace)),
 		gen:     g,
 		current: res,
 	}
@@ -140,6 +141,7 @@ type NamespaceGenerator struct {
 	pen  *pen.Pen
 	body *bytes.Buffer
 
+	pkgPath string            // package name
 	imports map[string]string // optional alias value
 
 	gen     *Generator
@@ -181,10 +183,10 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 			// Only use the import alias if it's provided and does not match the
 			// base name of the import path for idiomaticity.
 			if alias != "" && alias != path.Base(imp) {
-				pen.Words(alias, "")
+				pen.Words(alias, "", strconv.Quote(imp))
+			} else {
+				pen.Words(strconv.Quote(imp))
 			}
-
-			pen.Words(strconv.Quote(imp))
 		}
 		pen.Block(")")
 		pen.Line()

@@ -7,6 +7,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/gdk"
 	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4-wayland
@@ -15,7 +16,7 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 
 		// Objects/Classes
 	})
@@ -26,7 +27,7 @@ type WaylandDevice struct {
 }
 
 func wrapWaylandDevice(obj *glib.Object) *WaylandDevice {
-	return &WaylandDevice{Device{*glib.Object{obj}}}
+	return &WaylandDevice{Device{*externglib.Object{obj}}}
 }
 
 func marshalWaylandDevice(p uintptr) (interface{}, error) {
@@ -40,7 +41,7 @@ type WaylandDisplay struct {
 }
 
 func wrapWaylandDisplay(obj *glib.Object) *WaylandDisplay {
-	return &WaylandDisplay{Display{*glib.Object{obj}}}
+	return &WaylandDisplay{Display{*externglib.Object{obj}}}
 }
 
 func marshalWaylandDisplay(p uintptr) (interface{}, error) {
@@ -54,7 +55,7 @@ type WaylandMonitor struct {
 }
 
 func wrapWaylandMonitor(obj *glib.Object) *WaylandMonitor {
-	return &WaylandMonitor{Monitor{*glib.Object{obj}}}
+	return &WaylandMonitor{Monitor{*externglib.Object{obj}}}
 }
 
 func marshalWaylandMonitor(p uintptr) (interface{}, error) {
@@ -68,7 +69,7 @@ type WaylandPopup struct {
 }
 
 func wrapWaylandPopup(obj *glib.Object) *WaylandPopup {
-	return &WaylandPopup{WaylandSurface{Surface{*glib.Object{obj}}}}
+	return &WaylandPopup{WaylandSurface{Surface{*externglib.Object{obj}}}}
 }
 
 func marshalWaylandPopup(p uintptr) (interface{}, error) {
@@ -82,7 +83,7 @@ type WaylandSeat struct {
 }
 
 func wrapWaylandSeat(obj *glib.Object) *WaylandSeat {
-	return &WaylandSeat{Seat{*glib.Object{obj}}}
+	return &WaylandSeat{Seat{*externglib.Object{obj}}}
 }
 
 func marshalWaylandSeat(p uintptr) (interface{}, error) {
@@ -96,7 +97,7 @@ type WaylandSurface struct {
 }
 
 func wrapWaylandSurface(obj *glib.Object) *WaylandSurface {
-	return &WaylandSurface{Surface{*glib.Object{obj}}}
+	return &WaylandSurface{Surface{*externglib.Object{obj}}}
 }
 
 func marshalWaylandSurface(p uintptr) (interface{}, error) {
@@ -110,7 +111,7 @@ type WaylandToplevel struct {
 }
 
 func wrapWaylandToplevel(obj *glib.Object) *WaylandToplevel {
-	return &WaylandToplevel{WaylandSurface{Surface{*glib.Object{obj}}}}
+	return &WaylandToplevel{WaylandSurface{Surface{*externglib.Object{obj}}}}
 }
 
 func marshalWaylandToplevel(p uintptr) (interface{}, error) {

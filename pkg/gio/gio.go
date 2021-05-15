@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/glib"
-	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0
@@ -26,50 +26,50 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		// Enums
-		{T: glib.Type(C.g_bus_type_get_type()), F: marshalBusType},
-		{T: glib.Type(C.g_converter_result_get_type()), F: marshalConverterResult},
-		{T: glib.Type(C.g_credentials_type_get_type()), F: marshalCredentialsType},
-		{T: glib.Type(C.g_dbus_error_get_type()), F: marshalDBusError},
-		{T: glib.Type(C.g_dbus_message_byte_order_get_type()), F: marshalDBusMessageByteOrder},
-		{T: glib.Type(C.g_dbus_message_header_field_get_type()), F: marshalDBusMessageHeaderField},
-		{T: glib.Type(C.g_dbus_message_type_get_type()), F: marshalDBusMessageType},
-		{T: glib.Type(C.g_data_stream_byte_order_get_type()), F: marshalDataStreamByteOrder},
-		{T: glib.Type(C.g_data_stream_newline_type_get_type()), F: marshalDataStreamNewlineType},
-		{T: glib.Type(C.g_drive_start_stop_type_get_type()), F: marshalDriveStartStopType},
-		{T: glib.Type(C.g_emblem_origin_get_type()), F: marshalEmblemOrigin},
-		{T: glib.Type(C.g_file_attribute_status_get_type()), F: marshalFileAttributeStatus},
-		{T: glib.Type(C.g_file_attribute_type_get_type()), F: marshalFileAttributeType},
-		{T: glib.Type(C.g_file_monitor_event_get_type()), F: marshalFileMonitorEvent},
-		{T: glib.Type(C.g_file_type_get_type()), F: marshalFileType},
-		{T: glib.Type(C.g_filesystem_preview_type_get_type()), F: marshalFilesystemPreviewType},
-		{T: glib.Type(C.g_io_error_enum_get_type()), F: marshalIOErrorEnum},
-		{T: glib.Type(C.g_io_module_scope_flags_get_type()), F: marshalIOModuleScopeFlags},
-		{T: glib.Type(C.g_memory_monitor_warning_level_get_type()), F: marshalMemoryMonitorWarningLevel},
-		{T: glib.Type(C.g_mount_operation_result_get_type()), F: marshalMountOperationResult},
-		{T: glib.Type(C.g_network_connectivity_get_type()), F: marshalNetworkConnectivity},
-		{T: glib.Type(C.g_notification_priority_get_type()), F: marshalNotificationPriority},
-		{T: glib.Type(C.g_password_save_get_type()), F: marshalPasswordSave},
-		{T: glib.Type(C.g_pollable_return_get_type()), F: marshalPollableReturn},
-		{T: glib.Type(C.g_resolver_error_get_type()), F: marshalResolverError},
-		{T: glib.Type(C.g_resolver_record_type_get_type()), F: marshalResolverRecordType},
-		{T: glib.Type(C.g_resource_error_get_type()), F: marshalResourceError},
-		{T: glib.Type(C.g_socket_client_event_get_type()), F: marshalSocketClientEvent},
-		{T: glib.Type(C.g_socket_family_get_type()), F: marshalSocketFamily},
-		{T: glib.Type(C.g_socket_listener_event_get_type()), F: marshalSocketListenerEvent},
-		{T: glib.Type(C.g_socket_protocol_get_type()), F: marshalSocketProtocol},
-		{T: glib.Type(C.g_socket_type_get_type()), F: marshalSocketType},
-		{T: glib.Type(C.g_tls_authentication_mode_get_type()), F: marshalTlsAuthenticationMode},
-		{T: glib.Type(C.g_tls_certificate_request_flags_get_type()), F: marshalTlsCertificateRequestFlags},
-		{T: glib.Type(C.g_tls_channel_binding_error_get_type()), F: marshalTlsChannelBindingError},
-		{T: glib.Type(C.g_tls_channel_binding_type_get_type()), F: marshalTlsChannelBindingType},
-		{T: glib.Type(C.g_tls_database_lookup_flags_get_type()), F: marshalTlsDatabaseLookupFlags},
-		{T: glib.Type(C.g_tls_error_get_type()), F: marshalTlsError},
-		{T: glib.Type(C.g_tls_interaction_result_get_type()), F: marshalTlsInteractionResult},
-		{T: glib.Type(C.g_tls_rehandshake_mode_get_type()), F: marshalTlsRehandshakeMode},
-		{T: glib.Type(C.g_unix_socket_address_type_get_type()), F: marshalUnixSocketAddressType},
-		{T: glib.Type(C.g_zlib_compressor_format_get_type()), F: marshalZlibCompressorFormat},
+		{T: externglib.Type(C.g_bus_type_get_type()), F: marshalBusType},
+		{T: externglib.Type(C.g_converter_result_get_type()), F: marshalConverterResult},
+		{T: externglib.Type(C.g_credentials_type_get_type()), F: marshalCredentialsType},
+		{T: externglib.Type(C.g_dbus_error_get_type()), F: marshalDBusError},
+		{T: externglib.Type(C.g_dbus_message_byte_order_get_type()), F: marshalDBusMessageByteOrder},
+		{T: externglib.Type(C.g_dbus_message_header_field_get_type()), F: marshalDBusMessageHeaderField},
+		{T: externglib.Type(C.g_dbus_message_type_get_type()), F: marshalDBusMessageType},
+		{T: externglib.Type(C.g_data_stream_byte_order_get_type()), F: marshalDataStreamByteOrder},
+		{T: externglib.Type(C.g_data_stream_newline_type_get_type()), F: marshalDataStreamNewlineType},
+		{T: externglib.Type(C.g_drive_start_stop_type_get_type()), F: marshalDriveStartStopType},
+		{T: externglib.Type(C.g_emblem_origin_get_type()), F: marshalEmblemOrigin},
+		{T: externglib.Type(C.g_file_attribute_status_get_type()), F: marshalFileAttributeStatus},
+		{T: externglib.Type(C.g_file_attribute_type_get_type()), F: marshalFileAttributeType},
+		{T: externglib.Type(C.g_file_monitor_event_get_type()), F: marshalFileMonitorEvent},
+		{T: externglib.Type(C.g_file_type_get_type()), F: marshalFileType},
+		{T: externglib.Type(C.g_filesystem_preview_type_get_type()), F: marshalFilesystemPreviewType},
+		{T: externglib.Type(C.g_io_error_enum_get_type()), F: marshalIOErrorEnum},
+		{T: externglib.Type(C.g_io_module_scope_flags_get_type()), F: marshalIOModuleScopeFlags},
+		{T: externglib.Type(C.g_memory_monitor_warning_level_get_type()), F: marshalMemoryMonitorWarningLevel},
+		{T: externglib.Type(C.g_mount_operation_result_get_type()), F: marshalMountOperationResult},
+		{T: externglib.Type(C.g_network_connectivity_get_type()), F: marshalNetworkConnectivity},
+		{T: externglib.Type(C.g_notification_priority_get_type()), F: marshalNotificationPriority},
+		{T: externglib.Type(C.g_password_save_get_type()), F: marshalPasswordSave},
+		{T: externglib.Type(C.g_pollable_return_get_type()), F: marshalPollableReturn},
+		{T: externglib.Type(C.g_resolver_error_get_type()), F: marshalResolverError},
+		{T: externglib.Type(C.g_resolver_record_type_get_type()), F: marshalResolverRecordType},
+		{T: externglib.Type(C.g_resource_error_get_type()), F: marshalResourceError},
+		{T: externglib.Type(C.g_socket_client_event_get_type()), F: marshalSocketClientEvent},
+		{T: externglib.Type(C.g_socket_family_get_type()), F: marshalSocketFamily},
+		{T: externglib.Type(C.g_socket_listener_event_get_type()), F: marshalSocketListenerEvent},
+		{T: externglib.Type(C.g_socket_protocol_get_type()), F: marshalSocketProtocol},
+		{T: externglib.Type(C.g_socket_type_get_type()), F: marshalSocketType},
+		{T: externglib.Type(C.g_tls_authentication_mode_get_type()), F: marshalTlsAuthenticationMode},
+		{T: externglib.Type(C.g_tls_certificate_request_flags_get_type()), F: marshalTlsCertificateRequestFlags},
+		{T: externglib.Type(C.g_tls_channel_binding_error_get_type()), F: marshalTlsChannelBindingError},
+		{T: externglib.Type(C.g_tls_channel_binding_type_get_type()), F: marshalTlsChannelBindingType},
+		{T: externglib.Type(C.g_tls_database_lookup_flags_get_type()), F: marshalTlsDatabaseLookupFlags},
+		{T: externglib.Type(C.g_tls_error_get_type()), F: marshalTlsError},
+		{T: externglib.Type(C.g_tls_interaction_result_get_type()), F: marshalTlsInteractionResult},
+		{T: externglib.Type(C.g_tls_rehandshake_mode_get_type()), F: marshalTlsRehandshakeMode},
+		{T: externglib.Type(C.g_unix_socket_address_type_get_type()), F: marshalUnixSocketAddressType},
+		{T: externglib.Type(C.g_zlib_compressor_format_get_type()), F: marshalZlibCompressorFormat},
 
 		// Objects/Classes
 	})
@@ -2352,11 +2352,11 @@ func BusOwnNameOnConnection(connection *DBusConnection, name string, flags BusNa
 
 // BusOwnNameOnConnectionWithClosures: version of g_bus_own_name_on_connection()
 // using closures instead of callbacks for easier binding in other languages.
-func BusOwnNameOnConnectionWithClosures(connection *DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredClosure *glib.Closure, nameLostClosure *glib.Closure) uint
+func BusOwnNameOnConnectionWithClosures(connection *DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredClosure *externglib.Closure, nameLostClosure *externglib.Closure) uint
 
 // BusOwnNameWithClosures: version of g_bus_own_name() using closures instead of
 // callbacks for easier binding in other languages.
-func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredClosure *glib.Closure, nameAcquiredClosure *glib.Closure, nameLostClosure *glib.Closure) uint
+func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredClosure *externglib.Closure, nameAcquiredClosure *externglib.Closure, nameLostClosure *externglib.Closure) uint
 
 // BusUnownName: stops owning a name.
 //
@@ -2412,11 +2412,11 @@ func BusWatchNameOnConnection(connection *DBusConnection, name string, flags Bus
 // BusWatchNameOnConnectionWithClosures: version of
 // g_bus_watch_name_on_connection() using closures instead of callbacks for
 // easier binding in other languages.
-func BusWatchNameOnConnectionWithClosures(connection *DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedClosure *glib.Closure, nameVanishedClosure *glib.Closure) uint
+func BusWatchNameOnConnectionWithClosures(connection *DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedClosure *externglib.Closure, nameVanishedClosure *externglib.Closure) uint
 
 // BusWatchNameWithClosures: version of g_bus_watch_name() using closures
 // instead of callbacks for easier binding in other languages.
-func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcherFlags, nameAppearedClosure *glib.Closure, nameVanishedClosure *glib.Closure) uint
+func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcherFlags, nameAppearedClosure *externglib.Closure, nameVanishedClosure *externglib.Closure) uint
 
 // ContentTypeCanBeExecutable: checks if a content type can be executable. Note
 // that for instance things like text files can be executables (i.e. scripts and
@@ -2669,7 +2669,7 @@ func DbusGenerateGuid() string
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DbusGvalueToGvariant(gvalue *glib.Value, _type *glib.VariantType) *glib.Variant
+func DbusGvalueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *glib.Variant
 
 // DbusGvariantToGvalue: converts a #GVariant to a #GValue. If @value is
 // floating, it is consumed.
@@ -2682,7 +2682,7 @@ func DbusGvalueToGvariant(gvalue *glib.Value, _type *glib.VariantType) *glib.Var
 //
 // The conversion never fails - a valid #GValue is always returned in
 // @out_gvalue.
-func DbusGvariantToGvalue(value *glib.Variant) glib.Value
+func DbusGvariantToGvalue(value *glib.Variant) externglib.Value
 
 // DbusIsAddress: checks if @string is a [D-Bus
 // address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
@@ -2814,7 +2814,7 @@ func IOErrorQuark() glib.Quark
 //
 // If @type has already been registered as an extension for this extension
 // point, the existing OExtension object is returned.
-func IOExtensionPointImplement(extensionPointName string, _type glib.Type, extensionName string, priority int) *IOExtension
+func IOExtensionPointImplement(extensionPointName string, _type externglib.Type, extensionName string, priority int) *IOExtension
 
 // IOExtensionPointLookup: looks up an existing extension point.
 func IOExtensionPointLookup(name string) *IOExtensionPoint
@@ -2956,7 +2956,7 @@ func NewNullSettingsBackend() *SettingsBackend
 // SourceFunc. The new source does not actually do anything on its own; use
 // g_source_add_child_source() to add other sources to it to cause it to
 // trigger.
-func NewPollableSource(pollableStream *glib.Object) *glib.Source
+func NewPollableSource(pollableStream *externglib.Object) *glib.Source
 
 // PollableSourceNewFull: utility method for InputStream and OutputStream
 // implementations. Creates a new #GSource, as with g_pollable_source_new(), but
@@ -3091,13 +3091,13 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource
 // SimpleAsyncReportGerrorInIdle: reports an error in an idle function. Similar
 // to g_simple_async_report_error_in_idle(), but takes a #GError rather than
 // building a new one.
-func SimpleAsyncReportGerrorInIdle(object *glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
+func SimpleAsyncReportGerrorInIdle(object *externglib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
 
 // SimpleAsyncReportTakeGerrorInIdle: reports an error in an idle function.
 // Similar to g_simple_async_report_gerror_in_idle(), but takes over the
 // caller's ownership of @error, so the caller does not have to free it any
 // more.
-func SimpleAsyncReportTakeGerrorInIdle(object *glib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
+func SimpleAsyncReportTakeGerrorInIdle(object *externglib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error)
 
 // SrvTargetListSort: sorts @targets in place according to the algorithm in RFC
 // 2782.
@@ -4532,11 +4532,11 @@ func (u *UnixMountPoint) Native() unsafe.Pointer {
 // installed applications often come in groups (like during system updates) and
 // rescanning the list on every change is pointless and expensive.
 type AppInfoMonitor struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapAppInfoMonitor(obj *glib.Object) *AppInfoMonitor {
-	return &AppInfoMonitor{*glib.Object{obj}}
+	return &AppInfoMonitor{*externglib.Object{obj}}
 }
 
 func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
@@ -4549,11 +4549,11 @@ func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
 // is used to handle for instance startup notification and launching the new
 // application on the same screen as the launching window.
 type AppLaunchContext struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapAppLaunchContext(obj *glib.Object) *AppLaunchContext {
-	return &AppLaunchContext{*glib.Object{obj}}
+	return &AppLaunchContext{*externglib.Object{obj}}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
@@ -4669,11 +4669,11 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 // For an example of using extra D-Bus hooks with GApplication, see
 // [gapplication-example-dbushooks.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
 type Application struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapApplication(obj *glib.Object) *Application {
-	return &Application{*glib.Object{obj}}
+	return &Application{*externglib.Object{obj}}
 }
 
 func marshalApplication(p uintptr) (interface{}, error) {
@@ -4784,11 +4784,11 @@ func marshalApplication(p uintptr) (interface{}, error) {
 // The complete example can be found here:
 // [gapplication-example-cmdline3.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c)
 type ApplicationCommandLine struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapApplicationCommandLine(obj *glib.Object) *ApplicationCommandLine {
-	return &ApplicationCommandLine{*glib.Object{obj}}
+	return &ApplicationCommandLine{*externglib.Object{obj}}
 }
 
 func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
@@ -4816,7 +4816,7 @@ type BufferedInputStream struct {
 }
 
 func wrapBufferedInputStream(obj *glib.Object) *BufferedInputStream {
-	return &BufferedInputStream{FilterInputStream{InputStream{*glib.Object{obj}}}}
+	return &BufferedInputStream{FilterInputStream{InputStream{*externglib.Object{obj}}}}
 }
 
 func marshalBufferedInputStream(p uintptr) (interface{}, error) {
@@ -4844,7 +4844,7 @@ type BufferedOutputStream struct {
 }
 
 func wrapBufferedOutputStream(obj *glib.Object) *BufferedOutputStream {
-	return &BufferedOutputStream{FilterOutputStream{OutputStream{*glib.Object{obj}}}}
+	return &BufferedOutputStream{FilterOutputStream{OutputStream{*externglib.Object{obj}}}}
 }
 
 func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
@@ -4856,11 +4856,11 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 // BytesIcon: GBytesIcon specifies an image held in memory in a common format
 // (usually png) to be used as icon.
 type BytesIcon struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapBytesIcon(obj *glib.Object) *BytesIcon {
-	return &BytesIcon{*glib.Object{obj}}
+	return &BytesIcon{*externglib.Object{obj}}
 }
 
 func marshalBytesIcon(p uintptr) (interface{}, error) {
@@ -4873,11 +4873,11 @@ func marshalBytesIcon(p uintptr) (interface{}, error) {
 // throughout GIO to allow for cancellation of synchronous and asynchronous
 // operations.
 type Cancellable struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapCancellable(obj *glib.Object) *Cancellable {
-	return &Cancellable{*glib.Object{obj}}
+	return &Cancellable{*externglib.Object{obj}}
 }
 
 func marshalCancellable(p uintptr) (interface{}, error) {
@@ -4889,11 +4889,11 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 // CharsetConverter: GCharsetConverter is an implementation of #GConverter based
 // on GIConv.
 type CharsetConverter struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapCharsetConverter(obj *glib.Object) *CharsetConverter {
-	return &CharsetConverter{*glib.Object{obj}}
+	return &CharsetConverter{*externglib.Object{obj}}
 }
 
 func marshalCharsetConverter(p uintptr) (interface{}, error) {
@@ -4911,7 +4911,7 @@ type ConverterInputStream struct {
 }
 
 func wrapConverterInputStream(obj *glib.Object) *ConverterInputStream {
-	return &ConverterInputStream{FilterInputStream{InputStream{*glib.Object{obj}}}}
+	return &ConverterInputStream{FilterInputStream{InputStream{*externglib.Object{obj}}}}
 }
 
 func marshalConverterInputStream(p uintptr) (interface{}, error) {
@@ -4929,7 +4929,7 @@ type ConverterOutputStream struct {
 }
 
 func wrapConverterOutputStream(obj *glib.Object) *ConverterOutputStream {
-	return &ConverterOutputStream{FilterOutputStream{OutputStream{*glib.Object{obj}}}}
+	return &ConverterOutputStream{FilterOutputStream{OutputStream{*externglib.Object{obj}}}}
 }
 
 func marshalConverterOutputStream(p uintptr) (interface{}, error) {
@@ -4969,11 +4969,11 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 // On Solaris (including OpenSolaris and its derivatives), the native credential
 // type is a `ucred_t`. This corresponds to G_CREDENTIALS_TYPE_SOLARIS_UCRED.
 type Credentials struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapCredentials(obj *glib.Object) *Credentials {
-	return &Credentials{*glib.Object{obj}}
+	return &Credentials{*externglib.Object{obj}}
 }
 
 func marshalCredentials(p uintptr) (interface{}, error) {
@@ -4986,11 +4986,11 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 // that can be used as a proxy for an action group that is exported over D-Bus
 // with g_dbus_connection_export_action_group().
 type DBusActionGroup struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusActionGroup(obj *glib.Object) *DBusActionGroup {
-	return &DBusActionGroup{*glib.Object{obj}}
+	return &DBusActionGroup{*externglib.Object{obj}}
 }
 
 func marshalDBusActionGroup(p uintptr) (interface{}, error) {
@@ -5057,11 +5057,11 @@ func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 //    }
 //
 type DBusAuthObserver struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusAuthObserver(obj *glib.Object) *DBusAuthObserver {
-	return &DBusAuthObserver{*glib.Object{obj}}
+	return &DBusAuthObserver{*externglib.Object{obj}}
 }
 
 func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
@@ -5118,11 +5118,11 @@ func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
 // Here is an example for exporting a #GObject:
 // [gdbus-example-export.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c)
 type DBusConnection struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusConnection(obj *glib.Object) *DBusConnection {
-	return &DBusConnection{*glib.Object{obj}}
+	return &DBusConnection{*externglib.Object{obj}}
 }
 
 func marshalDBusConnection(p uintptr) (interface{}, error) {
@@ -5134,11 +5134,11 @@ func marshalDBusConnection(p uintptr) (interface{}, error) {
 // DBusInterfaceSkeleton: abstract base class for D-Bus interfaces on the
 // service side.
 type DBusInterfaceSkeleton struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusInterfaceSkeleton(obj *glib.Object) *DBusInterfaceSkeleton {
-	return &DBusInterfaceSkeleton{*glib.Object{obj}}
+	return &DBusInterfaceSkeleton{*externglib.Object{obj}}
 }
 
 func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
@@ -5155,7 +5155,7 @@ type DBusMenuModel struct {
 }
 
 func wrapDBusMenuModel(obj *glib.Object) *DBusMenuModel {
-	return &DBusMenuModel{MenuModel{*glib.Object{obj}}}
+	return &DBusMenuModel{MenuModel{*externglib.Object{obj}}}
 }
 
 func marshalDBusMenuModel(p uintptr) (interface{}, error) {
@@ -5167,11 +5167,11 @@ func marshalDBusMenuModel(p uintptr) (interface{}, error) {
 // DBusMessage: a type for representing D-Bus messages that can be sent or
 // received on a BusConnection.
 type DBusMessage struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusMessage(obj *glib.Object) *DBusMessage {
-	return &DBusMessage{*glib.Object{obj}}
+	return &DBusMessage{*externglib.Object{obj}}
 }
 
 func marshalDBusMessage(p uintptr) (interface{}, error) {
@@ -5188,11 +5188,11 @@ func marshalDBusMessage(p uintptr) (interface{}, error) {
 // argument to the handle_method_call() function in a BusInterfaceVTable that
 // was passed to g_dbus_connection_register_object().
 type DBusMethodInvocation struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusMethodInvocation(obj *glib.Object) *DBusMethodInvocation {
-	return &DBusMethodInvocation{*glib.Object{obj}}
+	return &DBusMethodInvocation{*externglib.Object{obj}}
 }
 
 func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
@@ -5265,11 +5265,11 @@ func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 // the same context and, consequently, will deliver signals in the same main
 // loop.
 type DBusObjectManagerClient struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusObjectManagerClient(obj *glib.Object) *DBusObjectManagerClient {
-	return &DBusObjectManagerClient{*glib.Object{obj}}
+	return &DBusObjectManagerClient{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
@@ -5299,11 +5299,11 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 // used with BusObjectManagerServer or any D-Bus object implementing the
 // org.freedesktop.DBus.ObjectManager interface.
 type DBusObjectManagerServer struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusObjectManagerServer(obj *glib.Object) *DBusObjectManagerServer {
-	return &DBusObjectManagerServer{*glib.Object{obj}}
+	return &DBusObjectManagerServer{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
@@ -5317,11 +5317,11 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 // BusObjectProxy yourself - typically BusObjectManagerClient is used to obtain
 // it.
 type DBusObjectProxy struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusObjectProxy(obj *glib.Object) *DBusObjectProxy {
-	return &DBusObjectProxy{*glib.Object{obj}}
+	return &DBusObjectProxy{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
@@ -5336,11 +5336,11 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 //
 // This type is intended to be used with BusObjectManager.
 type DBusObjectSkeleton struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusObjectSkeleton(obj *glib.Object) *DBusObjectSkeleton {
-	return &DBusObjectSkeleton{*glib.Object{obj}}
+	return &DBusObjectSkeleton{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
@@ -5385,11 +5385,11 @@ func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 // An example using a proxy for a well-known name can be found in
 // [gdbus-example-watch-proxy.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c)
 type DBusProxy struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusProxy(obj *glib.Object) *DBusProxy {
-	return &DBusProxy{*glib.Object{obj}}
+	return &DBusProxy{*externglib.Object{obj}}
 }
 
 func marshalDBusProxy(p uintptr) (interface{}, error) {
@@ -5415,11 +5415,11 @@ func marshalDBusProxy(p uintptr) (interface{}, error) {
 // connections that have successfully authenticated as the same user that is
 // running the BusServer.
 type DBusServer struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDBusServer(obj *glib.Object) *DBusServer {
-	return &DBusServer{*glib.Object{obj}}
+	return &DBusServer{*externglib.Object{obj}}
 }
 
 func marshalDBusServer(p uintptr) (interface{}, error) {
@@ -5435,7 +5435,7 @@ type DataInputStream struct {
 }
 
 func wrapDataInputStream(obj *glib.Object) *DataInputStream {
-	return &DataInputStream{BufferedInputStream{FilterInputStream{InputStream{*glib.Object{obj}}}}}
+	return &DataInputStream{BufferedInputStream{FilterInputStream{InputStream{*externglib.Object{obj}}}}}
 }
 
 func marshalDataInputStream(p uintptr) (interface{}, error) {
@@ -5451,7 +5451,7 @@ type DataOutputStream struct {
 }
 
 func wrapDataOutputStream(obj *glib.Object) *DataOutputStream {
-	return &DataOutputStream{FilterOutputStream{OutputStream{*glib.Object{obj}}}}
+	return &DataOutputStream{FilterOutputStream{OutputStream{*externglib.Object{obj}}}}
 }
 
 func marshalDataOutputStream(p uintptr) (interface{}, error) {
@@ -5467,11 +5467,11 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
 // using it.
 type DesktopAppInfo struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDesktopAppInfo(obj *glib.Object) *DesktopAppInfo {
-	return &DesktopAppInfo{*glib.Object{obj}}
+	return &DesktopAppInfo{*externglib.Object{obj}}
 }
 
 func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
@@ -5487,11 +5487,11 @@ func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
 // Currently, only metainformation about the emblem's origin is supported. More
 // may be added in the future.
 type Emblem struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapEmblem(obj *glib.Object) *Emblem {
-	return &Emblem{*glib.Object{obj}}
+	return &Emblem{*externglib.Object{obj}}
 }
 
 func marshalEmblem(p uintptr) (interface{}, error) {
@@ -5507,11 +5507,11 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 // Note that Icon allows no control over the position of the emblems. See also
 // #GEmblem for more information.
 type EmblemedIcon struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapEmblemedIcon(obj *glib.Object) *EmblemedIcon {
-	return &EmblemedIcon{*glib.Object{obj}}
+	return &EmblemedIcon{*externglib.Object{obj}}
 }
 
 func marshalEmblemedIcon(p uintptr) (interface{}, error) {
@@ -5545,11 +5545,11 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 // further actions may be performed on it, and it should be freed with
 // g_object_unref().
 type FileEnumerator struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFileEnumerator(obj *glib.Object) *FileEnumerator {
-	return &FileEnumerator{*glib.Object{obj}}
+	return &FileEnumerator{*externglib.Object{obj}}
 }
 
 func marshalFileEnumerator(p uintptr) (interface{}, error) {
@@ -5580,7 +5580,7 @@ type FileIOStream struct {
 }
 
 func wrapFileIOStream(obj *glib.Object) *FileIOStream {
-	return &FileIOStream{IOStream{*glib.Object{obj}}}
+	return &FileIOStream{IOStream{*externglib.Object{obj}}}
 }
 
 func marshalFileIOStream(p uintptr) (interface{}, error) {
@@ -5592,11 +5592,11 @@ func marshalFileIOStream(p uintptr) (interface{}, error) {
 // FileIcon: GFileIcon specifies an icon by pointing to an image file to be used
 // as icon.
 type FileIcon struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFileIcon(obj *glib.Object) *FileIcon {
-	return &FileIcon{*glib.Object{obj}}
+	return &FileIcon{*externglib.Object{obj}}
 }
 
 func marshalFileIcon(p uintptr) (interface{}, error) {
@@ -5629,11 +5629,11 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 //
 // AttributeMatcher allows for searching through a Info for attributes.
 type FileInfo struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFileInfo(obj *glib.Object) *FileInfo {
-	return &FileInfo{*glib.Object{obj}}
+	return &FileInfo{*externglib.Object{obj}}
 }
 
 func marshalFileInfo(p uintptr) (interface{}, error) {
@@ -5656,7 +5656,7 @@ type FileInputStream struct {
 }
 
 func wrapFileInputStream(obj *glib.Object) *FileInputStream {
-	return &FileInputStream{InputStream{*glib.Object{obj}}}
+	return &FileInputStream{InputStream{*externglib.Object{obj}}}
 }
 
 func marshalFileInputStream(p uintptr) (interface{}, error) {
@@ -5677,11 +5677,11 @@ func marshalFileInputStream(p uintptr) (interface{}, error) {
 // context is blocked, this may cause notifications to be blocked even if the
 // thread-default context is still running).
 type FileMonitor struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFileMonitor(obj *glib.Object) *FileMonitor {
-	return &FileMonitor{*glib.Object{obj}}
+	return &FileMonitor{*externglib.Object{obj}}
 }
 
 func marshalFileMonitor(p uintptr) (interface{}, error) {
@@ -5707,7 +5707,7 @@ type FileOutputStream struct {
 }
 
 func wrapFileOutputStream(obj *glib.Object) *FileOutputStream {
-	return &FileOutputStream{OutputStream{*glib.Object{obj}}}
+	return &FileOutputStream{OutputStream{*externglib.Object{obj}}}
 }
 
 func marshalFileOutputStream(p uintptr) (interface{}, error) {
@@ -5720,11 +5720,11 @@ func marshalFileOutputStream(p uintptr) (interface{}, error) {
 // string by looking in the file system for clues. Can return a list of possible
 // completion strings for widget implementations.
 type FilenameCompleter struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFilenameCompleter(obj *glib.Object) *FilenameCompleter {
-	return &FilenameCompleter{*glib.Object{obj}}
+	return &FilenameCompleter{*externglib.Object{obj}}
 }
 
 func marshalFilenameCompleter(p uintptr) (interface{}, error) {
@@ -5742,7 +5742,7 @@ type FilterInputStream struct {
 }
 
 func wrapFilterInputStream(obj *glib.Object) *FilterInputStream {
-	return &FilterInputStream{InputStream{*glib.Object{obj}}}
+	return &FilterInputStream{InputStream{*externglib.Object{obj}}}
 }
 
 func marshalFilterInputStream(p uintptr) (interface{}, error) {
@@ -5760,7 +5760,7 @@ type FilterOutputStream struct {
 }
 
 func wrapFilterOutputStream(obj *glib.Object) *FilterOutputStream {
-	return &FilterOutputStream{OutputStream{*glib.Object{obj}}}
+	return &FilterOutputStream{OutputStream{*externglib.Object{obj}}}
 }
 
 func marshalFilterOutputStream(p uintptr) (interface{}, error) {
@@ -5814,11 +5814,11 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 // state the wrapper stream leaves the base stream in (though they are
 // guaranteed not to crash).
 type IOStream struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapIOStream(obj *glib.Object) *IOStream {
-	return &IOStream{*glib.Object{obj}}
+	return &IOStream{*externglib.Object{obj}}
 }
 
 func marshalIOStream(p uintptr) (interface{}, error) {
@@ -5835,11 +5835,11 @@ func marshalIOStream(p uintptr) (interface{}, error) {
 // To actually connect to a remote host, you will need a SocketAddress (which
 // includes a Address as well as a port number).
 type InetAddress struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapInetAddress(obj *glib.Object) *InetAddress {
-	return &InetAddress{*glib.Object{obj}}
+	return &InetAddress{*externglib.Object{obj}}
 }
 
 func marshalInetAddress(p uintptr) (interface{}, error) {
@@ -5853,11 +5853,11 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 // of the base address are relevant for matching purposes. These are often given
 // in string form. Eg, "10.0.0.0/8", or "fe80::/10".
 type InetAddressMask struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapInetAddressMask(obj *glib.Object) *InetAddressMask {
-	return &InetAddressMask{*glib.Object{obj}}
+	return &InetAddressMask{*externglib.Object{obj}}
 }
 
 func marshalInetAddressMask(p uintptr) (interface{}, error) {
@@ -5873,7 +5873,7 @@ type InetSocketAddress struct {
 }
 
 func wrapInetSocketAddress(obj *glib.Object) *InetSocketAddress {
-	return &InetSocketAddress{SocketAddress{*glib.Object{obj}}}
+	return &InetSocketAddress{SocketAddress{*externglib.Object{obj}}}
 }
 
 func marshalInetSocketAddress(p uintptr) (interface{}, error) {
@@ -5894,11 +5894,11 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 //
 // All of these functions have async variants too.
 type InputStream struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapInputStream(obj *glib.Object) *InputStream {
-	return &InputStream{*glib.Object{obj}}
+	return &InputStream{*externglib.Object{obj}}
 }
 
 func marshalInputStream(p uintptr) (interface{}, error) {
@@ -5913,11 +5913,11 @@ func marshalInputStream(p uintptr) (interface{}, error) {
 // It provides insertions, deletions, and lookups in logarithmic time with a
 // fast path for the common case of iterating the list linearly.
 type ListStore struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapListStore(obj *glib.Object) *ListStore {
-	return &ListStore{*glib.Object{obj}}
+	return &ListStore{*externglib.Object{obj}}
 }
 
 func marshalListStore(p uintptr) (interface{}, error) {
@@ -5935,7 +5935,7 @@ type MemoryInputStream struct {
 }
 
 func wrapMemoryInputStream(obj *glib.Object) *MemoryInputStream {
-	return &MemoryInputStream{InputStream{*glib.Object{obj}}}
+	return &MemoryInputStream{InputStream{*externglib.Object{obj}}}
 }
 
 func marshalMemoryInputStream(p uintptr) (interface{}, error) {
@@ -5954,7 +5954,7 @@ type MemoryOutputStream struct {
 }
 
 func wrapMemoryOutputStream(obj *glib.Object) *MemoryOutputStream {
-	return &MemoryOutputStream{OutputStream{*glib.Object{obj}}}
+	return &MemoryOutputStream{OutputStream{*externglib.Object{obj}}}
 }
 
 func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
@@ -5975,7 +5975,7 @@ type Menu struct {
 }
 
 func wrapMenu(obj *glib.Object) *Menu {
-	return &Menu{MenuModel{*glib.Object{obj}}}
+	return &Menu{MenuModel{*externglib.Object{obj}}}
 }
 
 func marshalMenu(p uintptr) (interface{}, error) {
@@ -5987,11 +5987,11 @@ func marshalMenu(p uintptr) (interface{}, error) {
 // MenuAttributeIter: GMenuAttributeIter is an opaque structure type. You must
 // access it using the functions below.
 type MenuAttributeIter struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapMenuAttributeIter(obj *glib.Object) *MenuAttributeIter {
-	return &MenuAttributeIter{*glib.Object{obj}}
+	return &MenuAttributeIter{*externglib.Object{obj}}
 }
 
 func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
@@ -6003,11 +6003,11 @@ func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 // MenuItem: GMenuItem is an opaque structure type. You must access it using the
 // functions below.
 type MenuItem struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapMenuItem(obj *glib.Object) *MenuItem {
-	return &MenuItem{*glib.Object{obj}}
+	return &MenuItem{*externglib.Object{obj}}
 }
 
 func marshalMenuItem(p uintptr) (interface{}, error) {
@@ -6019,11 +6019,11 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 // MenuLinkIter: GMenuLinkIter is an opaque structure type. You must access it
 // using the functions below.
 type MenuLinkIter struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapMenuLinkIter(obj *glib.Object) *MenuLinkIter {
-	return &MenuLinkIter{*glib.Object{obj}}
+	return &MenuLinkIter{*externglib.Object{obj}}
 }
 
 func marshalMenuLinkIter(p uintptr) (interface{}, error) {
@@ -6142,11 +6142,11 @@ func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 // rendered as "selected" when the state of the action is equal to the target
 // value of the menu item.
 type MenuModel struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapMenuModel(obj *glib.Object) *MenuModel {
-	return &MenuModel{*glib.Object{obj}}
+	return &MenuModel{*externglib.Object{obj}}
 }
 
 func marshalMenuModel(p uintptr) (interface{}, error) {
@@ -6176,11 +6176,11 @@ func marshalMenuModel(p uintptr) (interface{}, error) {
 // with Windows. [VeraCrypt](https://www.veracrypt.fr/) is a maintained fork of
 // TrueCrypt with various improvements and auditing fixes.
 type MountOperation struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapMountOperation(obj *glib.Object) *MountOperation {
-	return &MountOperation{*glib.Object{obj}}
+	return &MountOperation{*externglib.Object{obj}}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
@@ -6195,7 +6195,7 @@ type NativeSocketAddress struct {
 }
 
 func wrapNativeSocketAddress(obj *glib.Object) *NativeSocketAddress {
-	return &NativeSocketAddress{SocketAddress{*glib.Object{obj}}}
+	return &NativeSocketAddress{SocketAddress{*externglib.Object{obj}}}
 }
 
 func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
@@ -6209,7 +6209,7 @@ type NativeVolumeMonitor struct {
 }
 
 func wrapNativeVolumeMonitor(obj *glib.Object) *NativeVolumeMonitor {
-	return &NativeVolumeMonitor{VolumeMonitor{*glib.Object{obj}}}
+	return &NativeVolumeMonitor{VolumeMonitor{*externglib.Object{obj}}}
 }
 
 func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
@@ -6227,11 +6227,11 @@ func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
 //
 // See Connectable for an example of using the connectable interface.
 type NetworkAddress struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapNetworkAddress(obj *glib.Object) *NetworkAddress {
-	return &NetworkAddress{*glib.Object{obj}}
+	return &NetworkAddress{*externglib.Object{obj}}
 }
 
 func marshalNetworkAddress(p uintptr) (interface{}, error) {
@@ -6248,11 +6248,11 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 // See Target for more information about SRV records, and see Connectable for an
 // example of using the connectable interface.
 type NetworkService struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapNetworkService(obj *glib.Object) *NetworkService {
-	return &NetworkService{*glib.Object{obj}}
+	return &NetworkService{*externglib.Object{obj}}
 }
 
 func marshalNetworkService(p uintptr) (interface{}, error) {
@@ -6282,11 +6282,11 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 //
 // A notification can be sent with g_application_send_notification().
 type Notification struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapNotification(obj *glib.Object) *Notification {
-	return &Notification{*glib.Object{obj}}
+	return &Notification{*externglib.Object{obj}}
 }
 
 func marshalNotification(p uintptr) (interface{}, error) {
@@ -6307,11 +6307,11 @@ func marshalNotification(p uintptr) (interface{}, error) {
 //
 // All of these functions have async variants too.
 type OutputStream struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapOutputStream(obj *glib.Object) *OutputStream {
-	return &OutputStream{*glib.Object{obj}}
+	return &OutputStream{*externglib.Object{obj}}
 }
 
 func marshalOutputStream(p uintptr) (interface{}, error) {
@@ -6334,11 +6334,11 @@ func marshalOutputStream(p uintptr) (interface{}, error) {
 // decide if it is appropriate to show a "Click here to unlock" button in a
 // dialog and to provide the mechanism to invoke when that button is clicked.
 type Permission struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapPermission(obj *glib.Object) *Permission {
-	return &Permission{*glib.Object{obj}}
+	return &Permission{*externglib.Object{obj}}
 }
 
 func marshalPermission(p uintptr) (interface{}, error) {
@@ -6396,11 +6396,11 @@ func marshalPermission(p uintptr) (interface{}, error) {
 // setting stored in #GSettings, see g_settings_create_action() instead, and
 // possibly combine its use with g_settings_bind().
 type PropertyAction struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapPropertyAction(obj *glib.Object) *PropertyAction {
-	return &PropertyAction{*glib.Object{obj}}
+	return &PropertyAction{*externglib.Object{obj}}
 }
 
 func marshalPropertyAction(p uintptr) (interface{}, error) {
@@ -6415,7 +6415,7 @@ type ProxyAddress struct {
 }
 
 func wrapProxyAddress(obj *glib.Object) *ProxyAddress {
-	return &ProxyAddress{InetSocketAddress{SocketAddress{*glib.Object{obj}}}}
+	return &ProxyAddress{InetSocketAddress{SocketAddress{*externglib.Object{obj}}}}
 }
 
 func marshalProxyAddress(p uintptr) (interface{}, error) {
@@ -6438,7 +6438,7 @@ type ProxyAddressEnumerator struct {
 }
 
 func wrapProxyAddressEnumerator(obj *glib.Object) *ProxyAddressEnumerator {
-	return &ProxyAddressEnumerator{SocketAddressEnumerator{*glib.Object{obj}}}
+	return &ProxyAddressEnumerator{SocketAddressEnumerator{*externglib.Object{obj}}}
 }
 
 func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
@@ -6456,11 +6456,11 @@ func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
 // also implement Connectable, making it easy to connect to a remote
 // host/service.
 type Resolver struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapResolver(obj *glib.Object) *Resolver {
-	return &Resolver{*glib.Object{obj}}
+	return &Resolver{*externglib.Object{obj}}
 }
 
 func marshalResolver(p uintptr) (interface{}, error) {
@@ -6703,11 +6703,11 @@ func marshalResolver(p uintptr) (interface{}, error) {
 // rules. It should not be committed to version control or included in
 // `EXTRA_DIST`.
 type Settings struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSettings(obj *glib.Object) *Settings {
-	return &Settings{*glib.Object{obj}}
+	return &Settings{*externglib.Object{obj}}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
@@ -6740,11 +6740,11 @@ func marshalSettings(p uintptr) (interface{}, error) {
 // reason, you have to define the C preprocessor symbol
 // G_SETTINGS_ENABLE_BACKEND before including `gio/gsettingsbackend.h`.
 type SettingsBackend struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSettingsBackend(obj *glib.Object) *SettingsBackend {
-	return &SettingsBackend{*glib.Object{obj}}
+	return &SettingsBackend{*externglib.Object{obj}}
 }
 
 func marshalSettingsBackend(p uintptr) (interface{}, error) {
@@ -6759,11 +6759,11 @@ func marshalSettingsBackend(p uintptr) (interface{}, error) {
 //
 // See also Action.
 type SimpleAction struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSimpleAction(obj *glib.Object) *SimpleAction {
-	return &SimpleAction{*glib.Object{obj}}
+	return &SimpleAction{*externglib.Object{obj}}
 }
 
 func marshalSimpleAction(p uintptr) (interface{}, error) {
@@ -6775,11 +6775,11 @@ func marshalSimpleAction(p uintptr) (interface{}, error) {
 // SimpleActionGroup: GSimpleActionGroup is a hash table filled with #GAction
 // objects, implementing the Group and Map interfaces.
 type SimpleActionGroup struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSimpleActionGroup(obj *glib.Object) *SimpleActionGroup {
-	return &SimpleActionGroup{*glib.Object{obj}}
+	return &SimpleActionGroup{*externglib.Object{obj}}
 }
 
 func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
@@ -6947,11 +6947,11 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 //    }
 //
 type SimpleAsyncResult struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSimpleAsyncResult(obj *glib.Object) *SimpleAsyncResult {
-	return &SimpleAsyncResult{*glib.Object{obj}}
+	return &SimpleAsyncResult{*externglib.Object{obj}}
 }
 
 func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
@@ -6973,7 +6973,7 @@ type SimpleIOStream struct {
 }
 
 func wrapSimpleIOStream(obj *glib.Object) *SimpleIOStream {
-	return &SimpleIOStream{IOStream{*glib.Object{obj}}}
+	return &SimpleIOStream{IOStream{*externglib.Object{obj}}}
 }
 
 func marshalSimpleIOStream(p uintptr) (interface{}, error) {
@@ -6992,7 +6992,7 @@ type SimplePermission struct {
 }
 
 func wrapSimplePermission(obj *glib.Object) *SimplePermission {
-	return &SimplePermission{Permission{*glib.Object{obj}}}
+	return &SimplePermission{Permission{*externglib.Object{obj}}}
 }
 
 func marshalSimplePermission(p uintptr) (interface{}, error) {
@@ -7009,11 +7009,11 @@ func marshalSimplePermission(p uintptr) (interface{}, error) {
 // base class for another proxy resolver implementation, or it can be created
 // and used manually, such as with g_socket_client_set_proxy_resolver().
 type SimpleProxyResolver struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSimpleProxyResolver(obj *glib.Object) *SimpleProxyResolver {
-	return &SimpleProxyResolver{*glib.Object{obj}}
+	return &SimpleProxyResolver{*externglib.Object{obj}}
 }
 
 func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
@@ -7071,11 +7071,11 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 // a #GSocket concurrently from multiple threads, you must implement your own
 // locking.
 type Socket struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSocket(obj *glib.Object) *Socket {
-	return &Socket{*glib.Object{obj}}
+	return &Socket{*externglib.Object{obj}}
 }
 
 func marshalSocket(p uintptr) (interface{}, error) {
@@ -7088,11 +7088,11 @@ func marshalSocket(p uintptr) (interface{}, error) {
 // sockets API. This is an abstract class; use SocketAddress for internet
 // sockets, or SocketAddress for UNIX domain sockets.
 type SocketAddress struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSocketAddress(obj *glib.Object) *SocketAddress {
-	return &SocketAddress{*glib.Object{obj}}
+	return &SocketAddress{*externglib.Object{obj}}
 }
 
 func marshalSocketAddress(p uintptr) (interface{}, error) {
@@ -7114,11 +7114,11 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 // g_socket_address_enumerator_next() has returned nil, further enumeration with
 // that AddressEnumerator is not possible, and it can be unreffed.
 type SocketAddressEnumerator struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSocketAddressEnumerator(obj *glib.Object) *SocketAddressEnumerator {
-	return &SocketAddressEnumerator{*glib.Object{obj}}
+	return &SocketAddressEnumerator{*externglib.Object{obj}}
 }
 
 func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
@@ -7140,11 +7140,11 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 // As Client is a lightweight object, you don't need to cache it. You can just
 // create a new one any time you need one.
 type SocketClient struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSocketClient(obj *glib.Object) *SocketClient {
-	return &SocketClient{*glib.Object{obj}}
+	return &SocketClient{*externglib.Object{obj}}
 }
 
 func marshalSocketClient(p uintptr) (interface{}, error) {
@@ -7173,7 +7173,7 @@ type SocketConnection struct {
 }
 
 func wrapSocketConnection(obj *glib.Object) *SocketConnection {
-	return &SocketConnection{IOStream{*glib.Object{obj}}}
+	return &SocketConnection{IOStream{*externglib.Object{obj}}}
 }
 
 func marshalSocketConnection(p uintptr) (interface{}, error) {
@@ -7201,11 +7201,11 @@ func marshalSocketConnection(p uintptr) (interface{}, error) {
 // registered with the GType typesystem before calling
 // g_socket_receive_message() to read such a message.
 type SocketControlMessage struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSocketControlMessage(obj *glib.Object) *SocketControlMessage {
-	return &SocketControlMessage{*glib.Object{obj}}
+	return &SocketControlMessage{*externglib.Object{obj}}
 }
 
 func marshalSocketControlMessage(p uintptr) (interface{}, error) {
@@ -7227,11 +7227,11 @@ func marshalSocketControlMessage(p uintptr) (interface{}, error) {
 // If you want to implement a network server, also look at Service and
 // SocketService which are subclasses of Listener that make this even easier.
 type SocketListener struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSocketListener(obj *glib.Object) *SocketListener {
-	return &SocketListener{*glib.Object{obj}}
+	return &SocketListener{*externglib.Object{obj}}
 }
 
 func marshalSocketListener(p uintptr) (interface{}, error) {
@@ -7267,7 +7267,7 @@ type SocketService struct {
 }
 
 func wrapSocketService(obj *glib.Object) *SocketService {
-	return &SocketService{SocketListener{*glib.Object{obj}}}
+	return &SocketService{SocketListener{*externglib.Object{obj}}}
 }
 
 func marshalSocketService(p uintptr) (interface{}, error) {
@@ -7326,11 +7326,11 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 // g_subprocess_get_if_exited() (which are similar to the familiar
 // WIFEXITED-style POSIX macros).
 type Subprocess struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSubprocess(obj *glib.Object) *Subprocess {
-	return &Subprocess{*glib.Object{obj}}
+	return &Subprocess{*externglib.Object{obj}}
 }
 
 func marshalSubprocess(p uintptr) (interface{}, error) {
@@ -7347,11 +7347,11 @@ func marshalSubprocess(p uintptr) (interface{}, error) {
 // use of this class allows access to more advanced options. It can also be used
 // to launch multiple subprocesses with a similar configuration.
 type SubprocessLauncher struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSubprocessLauncher(obj *glib.Object) *SubprocessLauncher {
-	return &SubprocessLauncher{*glib.Object{obj}}
+	return &SubprocessLauncher{*externglib.Object{obj}}
 }
 
 func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
@@ -7776,11 +7776,11 @@ func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
 //    function (for "short-circuit" results, such as when passing
 //    0 to g_input_stream_read_async())
 type Task struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTask(obj *glib.Object) *Task {
-	return &Task{*glib.Object{obj}}
+	return &Task{*externglib.Object{obj}}
 }
 
 func marshalTask(p uintptr) (interface{}, error) {
@@ -7796,7 +7796,7 @@ type TcpConnection struct {
 }
 
 func wrapTcpConnection(obj *glib.Object) *TcpConnection {
-	return &TcpConnection{SocketConnection{IOStream{*glib.Object{obj}}}}
+	return &TcpConnection{SocketConnection{IOStream{*externglib.Object{obj}}}}
 }
 
 func marshalTcpConnection(p uintptr) (interface{}, error) {
@@ -7814,7 +7814,7 @@ type TcpWrapperConnection struct {
 }
 
 func wrapTcpWrapperConnection(obj *glib.Object) *TcpWrapperConnection {
-	return &TcpWrapperConnection{TcpConnection{SocketConnection{IOStream{*glib.Object{obj}}}}}
+	return &TcpWrapperConnection{TcpConnection{SocketConnection{IOStream{*externglib.Object{obj}}}}}
 }
 
 func marshalTcpWrapperConnection(p uintptr) (interface{}, error) {
@@ -7886,11 +7886,11 @@ func marshalTcpWrapperConnection(p uintptr) (interface{}, error) {
 //        CLEANFILES += gschemas.compiled
 //
 type TestDBus struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTestDBus(obj *glib.Object) *TestDBus {
-	return &TestDBus{*glib.Object{obj}}
+	return &TestDBus{*externglib.Object{obj}}
 }
 
 func marshalTestDBus(p uintptr) (interface{}, error) {
@@ -7906,11 +7906,11 @@ func marshalTestDBus(p uintptr) (interface{}, error) {
 // gtk_icon_theme_choose_icon() should be used to resolve the list of names so
 // that fallback icons work nicely with themes that inherit other themes.
 type ThemedIcon struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapThemedIcon(obj *glib.Object) *ThemedIcon {
-	return &ThemedIcon{*glib.Object{obj}}
+	return &ThemedIcon{*externglib.Object{obj}}
 }
 
 func marshalThemedIcon(p uintptr) (interface{}, error) {
@@ -7937,7 +7937,7 @@ type ThreadedSocketService struct {
 }
 
 func wrapThreadedSocketService(obj *glib.Object) *ThreadedSocketService {
-	return &ThreadedSocketService{SocketService{SocketListener{*glib.Object{obj}}}}
+	return &ThreadedSocketService{SocketService{SocketListener{*externglib.Object{obj}}}}
 }
 
 func marshalThreadedSocketService(p uintptr) (interface{}, error) {
@@ -7951,11 +7951,11 @@ func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 // a client from a server), or the combination of a certificate and a private
 // key (which is needed when acting as a ServerConnection).
 type TlsCertificate struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTlsCertificate(obj *glib.Object) *TlsCertificate {
-	return &TlsCertificate{*glib.Object{obj}}
+	return &TlsCertificate{*externglib.Object{obj}}
 }
 
 func marshalTlsCertificate(p uintptr) (interface{}, error) {
@@ -7975,7 +7975,7 @@ type TlsConnection struct {
 }
 
 func wrapTlsConnection(obj *glib.Object) *TlsConnection {
-	return &TlsConnection{IOStream{*glib.Object{obj}}}
+	return &TlsConnection{IOStream{*externglib.Object{obj}}}
 }
 
 func marshalTlsConnection(p uintptr) (interface{}, error) {
@@ -7994,11 +7994,11 @@ func marshalTlsConnection(p uintptr) (interface{}, error) {
 // Most common client applications will not directly interact with Database. It
 // is used internally by Connection.
 type TlsDatabase struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTlsDatabase(obj *glib.Object) *TlsDatabase {
-	return &TlsDatabase{*glib.Object{obj}}
+	return &TlsDatabase{*externglib.Object{obj}}
 }
 
 func marshalTlsDatabase(p uintptr) (interface{}, error) {
@@ -8028,11 +8028,11 @@ func marshalTlsDatabase(p uintptr) (interface{}, error) {
 // G_TLS_INTERACTION_UNHANDLED. If a derived class implements an async method,
 // it must also implement the corresponding finish method.
 type TlsInteraction struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTlsInteraction(obj *glib.Object) *TlsInteraction {
-	return &TlsInteraction{*glib.Object{obj}}
+	return &TlsInteraction{*externglib.Object{obj}}
 }
 
 func marshalTlsInteraction(p uintptr) (interface{}, error) {
@@ -8043,11 +8043,11 @@ func marshalTlsInteraction(p uintptr) (interface{}, error) {
 
 // TlsPassword: holds a password used in TLS.
 type TlsPassword struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTlsPassword(obj *glib.Object) *TlsPassword {
-	return &TlsPassword{*glib.Object{obj}}
+	return &TlsPassword{*externglib.Object{obj}}
 }
 
 func marshalTlsPassword(p uintptr) (interface{}, error) {
@@ -8070,7 +8070,7 @@ type UnixConnection struct {
 }
 
 func wrapUnixConnection(obj *glib.Object) *UnixConnection {
-	return &UnixConnection{SocketConnection{IOStream{*glib.Object{obj}}}}
+	return &UnixConnection{SocketConnection{IOStream{*externglib.Object{obj}}}}
 }
 
 func marshalUnixConnection(p uintptr) (interface{}, error) {
@@ -8093,7 +8093,7 @@ type UnixCredentialsMessage struct {
 }
 
 func wrapUnixCredentialsMessage(obj *glib.Object) *UnixCredentialsMessage {
-	return &UnixCredentialsMessage{SocketControlMessage{*glib.Object{obj}}}
+	return &UnixCredentialsMessage{SocketControlMessage{*externglib.Object{obj}}}
 }
 
 func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
@@ -8112,11 +8112,11 @@ func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 // Note that `<gio/gunixfdlist.h>` belongs to the UNIX-specific GIO interfaces,
 // thus you have to use the `gio-unix-2.0.pc` pkg-config file when using it.
 type UnixFDList struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapUnixFDList(obj *glib.Object) *UnixFDList {
-	return &UnixFDList{*glib.Object{obj}}
+	return &UnixFDList{*externglib.Object{obj}}
 }
 
 func marshalUnixFDList(p uintptr) (interface{}, error) {
@@ -8142,7 +8142,7 @@ type UnixFDMessage struct {
 }
 
 func wrapUnixFDMessage(obj *glib.Object) *UnixFDMessage {
-	return &UnixFDMessage{SocketControlMessage{*glib.Object{obj}}}
+	return &UnixFDMessage{SocketControlMessage{*externglib.Object{obj}}}
 }
 
 func marshalUnixFDMessage(p uintptr) (interface{}, error) {
@@ -8165,7 +8165,7 @@ type UnixInputStream struct {
 }
 
 func wrapUnixInputStream(obj *glib.Object) *UnixInputStream {
-	return &UnixInputStream{InputStream{*glib.Object{obj}}}
+	return &UnixInputStream{InputStream{*externglib.Object{obj}}}
 }
 
 func marshalUnixInputStream(p uintptr) (interface{}, error) {
@@ -8176,11 +8176,11 @@ func marshalUnixInputStream(p uintptr) (interface{}, error) {
 
 // UnixMountMonitor: watches Mounts for changes.
 type UnixMountMonitor struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapUnixMountMonitor(obj *glib.Object) *UnixMountMonitor {
-	return &UnixMountMonitor{*glib.Object{obj}}
+	return &UnixMountMonitor{*externglib.Object{obj}}
 }
 
 func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
@@ -8203,7 +8203,7 @@ type UnixOutputStream struct {
 }
 
 func wrapUnixOutputStream(obj *glib.Object) *UnixOutputStream {
-	return &UnixOutputStream{OutputStream{*glib.Object{obj}}}
+	return &UnixOutputStream{OutputStream{*externglib.Object{obj}}}
 }
 
 func marshalUnixOutputStream(p uintptr) (interface{}, error) {
@@ -8230,7 +8230,7 @@ type UnixSocketAddress struct {
 }
 
 func wrapUnixSocketAddress(obj *glib.Object) *UnixSocketAddress {
-	return &UnixSocketAddress{SocketAddress{*glib.Object{obj}}}
+	return &UnixSocketAddress{SocketAddress{*externglib.Object{obj}}}
 }
 
 func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
@@ -8241,11 +8241,11 @@ func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 
 // Vfs: entry point for using GIO functionality.
 type Vfs struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapVfs(obj *glib.Object) *Vfs {
-	return &Vfs{*glib.Object{obj}}
+	return &Vfs{*externglib.Object{obj}}
 }
 
 func marshalVfs(p uintptr) (interface{}, error) {
@@ -8265,11 +8265,11 @@ func marshalVfs(p uintptr) (interface{}, error) {
 // In order to receive updates about volumes and mounts monitored through GVFS,
 // a main loop must be running.
 type VolumeMonitor struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapVolumeMonitor(obj *glib.Object) *VolumeMonitor {
-	return &VolumeMonitor{*glib.Object{obj}}
+	return &VolumeMonitor{*externglib.Object{obj}}
 }
 
 func marshalVolumeMonitor(p uintptr) (interface{}, error) {
@@ -8280,11 +8280,11 @@ func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 
 // ZlibCompressor: zlib decompression
 type ZlibCompressor struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapZlibCompressor(obj *glib.Object) *ZlibCompressor {
-	return &ZlibCompressor{*glib.Object{obj}}
+	return &ZlibCompressor{*externglib.Object{obj}}
 }
 
 func marshalZlibCompressor(p uintptr) (interface{}, error) {
@@ -8295,11 +8295,11 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 
 // ZlibDecompressor: zlib decompression
 type ZlibDecompressor struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapZlibDecompressor(obj *glib.Object) *ZlibDecompressor {
-	return &ZlibDecompressor{*glib.Object{obj}}
+	return &ZlibDecompressor{*externglib.Object{obj}}
 }
 
 func marshalZlibDecompressor(p uintptr) (interface{}, error) {

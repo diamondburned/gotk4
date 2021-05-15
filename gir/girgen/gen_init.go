@@ -4,12 +4,12 @@ import "github.com/diamondburned/gotk4/gir"
 
 var initTmpl = newGoTemplate(`
 	func init() {
-		glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+		externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 			{{ if .Enums -}}
 			// Enums
 			{{- range .Enums }}
 			{{- if .GLibGetType }}
-			{T: glib.Type(C.{{.GLibGetType}}()), F: marshal{{.Name}}},
+			{T: externglib.Type(C.{{.GLibGetType}}()), F: marshal{{.Name}}},
 			{{- else }}
 			// Skipped {{.Name}}.
 			{{- end -}}
@@ -27,6 +27,7 @@ type initGenerator struct {
 }
 
 func (ng *NamespaceGenerator) generateInit() {
+	ng.addImportAlias("github.com/gotk3/gotk3/glib", "externglib")
 	ng.pen.BlockTmpl(initTmpl, initGenerator{
 		Namespace: *ng.current.Namespace,
 		Ng:        ng,

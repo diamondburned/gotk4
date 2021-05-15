@@ -12,6 +12,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -20,26 +21,26 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		// Enums
-		{T: glib.Type(C.gdk_axis_use_get_type()), F: marshalAxisUse},
-		{T: glib.Type(C.gdk_crossing_mode_get_type()), F: marshalCrossingMode},
-		{T: glib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
-		{T: glib.Type(C.gdk_device_tool_type_get_type()), F: marshalDeviceToolType},
-		{T: glib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
-		{T: glib.Type(C.gdk_event_type_get_type()), F: marshalEventType},
-		{T: glib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
-		{T: glib.Type(C.gdk_gl_error_get_type()), F: marshalGLError},
-		{T: glib.Type(C.gdk_gravity_get_type()), F: marshalGravity},
-		{T: glib.Type(C.gdk_input_source_get_type()), F: marshalInputSource},
-		{T: glib.Type(C.gdk_key_match_get_type()), F: marshalKeyMatch},
-		{T: glib.Type(C.gdk_memory_format_get_type()), F: marshalMemoryFormat},
-		{T: glib.Type(C.gdk_notify_type_get_type()), F: marshalNotifyType},
-		{T: glib.Type(C.gdk_scroll_direction_get_type()), F: marshalScrollDirection},
-		{T: glib.Type(C.gdk_subpixel_layout_get_type()), F: marshalSubpixelLayout},
-		{T: glib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
-		{T: glib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
-		{T: glib.Type(C.gdk_vulkan_error_get_type()), F: marshalVulkanError},
+		{T: externglib.Type(C.gdk_axis_use_get_type()), F: marshalAxisUse},
+		{T: externglib.Type(C.gdk_crossing_mode_get_type()), F: marshalCrossingMode},
+		{T: externglib.Type(C.gdk_device_pad_feature_get_type()), F: marshalDevicePadFeature},
+		{T: externglib.Type(C.gdk_device_tool_type_get_type()), F: marshalDeviceToolType},
+		{T: externglib.Type(C.gdk_drag_cancel_reason_get_type()), F: marshalDragCancelReason},
+		{T: externglib.Type(C.gdk_event_type_get_type()), F: marshalEventType},
+		{T: externglib.Type(C.gdk_fullscreen_mode_get_type()), F: marshalFullscreenMode},
+		{T: externglib.Type(C.gdk_gl_error_get_type()), F: marshalGLError},
+		{T: externglib.Type(C.gdk_gravity_get_type()), F: marshalGravity},
+		{T: externglib.Type(C.gdk_input_source_get_type()), F: marshalInputSource},
+		{T: externglib.Type(C.gdk_key_match_get_type()), F: marshalKeyMatch},
+		{T: externglib.Type(C.gdk_memory_format_get_type()), F: marshalMemoryFormat},
+		{T: externglib.Type(C.gdk_notify_type_get_type()), F: marshalNotifyType},
+		{T: externglib.Type(C.gdk_scroll_direction_get_type()), F: marshalScrollDirection},
+		{T: externglib.Type(C.gdk_subpixel_layout_get_type()), F: marshalSubpixelLayout},
+		{T: externglib.Type(C.gdk_surface_edge_get_type()), F: marshalSurfaceEdge},
+		{T: externglib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
+		{T: externglib.Type(C.gdk_vulkan_error_get_type()), F: marshalVulkanError},
 
 		// Objects/Classes
 	})
@@ -874,24 +875,24 @@ func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA)
 // deserialize it, asynchronously. When the operation is finished, @callback
 // will be called. You can then call gdk_content_deserialize_finish() to get the
 // result of the operation.
-func ContentDeserializeAsync(stream *gio.InputStream, mimeType string, _type glib.Type, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func ContentDeserializeAsync(stream *gio.InputStream, mimeType string, _type externglib.Type, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
 
 // ContentDeserializeFinish: finishes a content deserialization operation.
-func ContentDeserializeFinish(result gio.AsyncResult, value *glib.Value) bool
+func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) bool
 
 // ContentRegisterDeserializer: registers a function to create objects of a
 // given @type from a serialized representation with the given mime type.
-func ContentRegisterDeserializer(mimeType string, _type glib.Type, deserialize ContentDeserializeFunc, data unsafe.Pointer, notify unsafe.Pointer)
+func ContentRegisterDeserializer(mimeType string, _type externglib.Type, deserialize ContentDeserializeFunc, data unsafe.Pointer, notify unsafe.Pointer)
 
 // ContentRegisterSerializer: registers a function to convert objects of the
 // given @type to a serialized representation with the given mime type.
-func ContentRegisterSerializer(_type glib.Type, mimeType string, serialize ContentSerializeFunc, data unsafe.Pointer, notify unsafe.Pointer)
+func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize ContentSerializeFunc, data unsafe.Pointer, notify unsafe.Pointer)
 
 // ContentSerializeAsync: serialize content and write it to the given output
 // stream, asynchronously. When the operation is finished, @callback will be
 // called. You can then call gdk_content_serialize_finish() to get the result of
 // the operation.
-func ContentSerializeAsync(stream *gio.OutputStream, mimeType string, value *glib.Value, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func ContentSerializeAsync(stream *gio.OutputStream, mimeType string, value *externglib.Value, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
 
 // ContentSerializeFinish: finishes a content serialization operation.
 func ContentSerializeFinish(result gio.AsyncResult) bool
@@ -1027,7 +1028,7 @@ func PixbufGetFromTexture(texture *Texture) *gdkpixbuf.Pixbuf
 // gtk_init_check() in order to take effect.
 func SetAllowedBackends(backends string)
 
-func ToplevelSizeGetType() glib.Type
+func ToplevelSizeGetType() externglib.Type
 
 // UnicodeToKeyval: convert from a ISO10646 character to a key symbol.
 func UnicodeToKeyval(wc uint32) uint
@@ -1090,7 +1091,7 @@ func (c *ContentFormats) Native() unsafe.Pointer {
 
 func NewContentFormats(mimeTypes []string, nMimeTypes uint) *ContentFormats
 
-func NewContentFormats(_type glib.Type) *ContentFormats
+func NewContentFormats(_type externglib.Type) *ContentFormats
 
 // ContentFormatsBuilder: a ContentFormatsBuilder struct is an opaque struct. It
 // is meant to not be kept around and only be used to create new ContentFormats
@@ -1468,7 +1469,7 @@ type AppLaunchContext struct {
 }
 
 func wrapAppLaunchContext(obj *glib.Object) *AppLaunchContext {
-	return &AppLaunchContext{AppLaunchContext{*glib.Object{obj}}}
+	return &AppLaunchContext{AppLaunchContext{*externglib.Object{obj}}}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
@@ -1503,7 +1504,7 @@ type CairoContext struct {
 }
 
 func wrapCairoContext(obj *glib.Object) *CairoContext {
-	return &CairoContext{DrawContext{*glib.Object{obj}}}
+	return &CairoContext{DrawContext{*externglib.Object{obj}}}
 }
 
 func marshalCairoContext(p uintptr) (interface{}, error) {
@@ -1527,11 +1528,11 @@ func marshalCairoContext(p uintptr) (interface{}, error) {
 // gdk_clipboard_read_text_async() or gdk_clipboard_read_texture_async(). For
 // other data, use gdk_clipboard_read_async(), which provides a Stream object.
 type Clipboard struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapClipboard(obj *glib.Object) *Clipboard {
-	return &Clipboard{*glib.Object{obj}}
+	return &Clipboard{*externglib.Object{obj}}
 }
 
 func marshalClipboard(p uintptr) (interface{}, error) {
@@ -1543,11 +1544,11 @@ func marshalClipboard(p uintptr) (interface{}, error) {
 // ContentDeserializer: a GdkContentDeserializer is used to deserialize content
 // received via inter-application data transfers.
 type ContentDeserializer struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapContentDeserializer(obj *glib.Object) *ContentDeserializer {
-	return &ContentDeserializer{*glib.Object{obj}}
+	return &ContentDeserializer{*externglib.Object{obj}}
 }
 
 func marshalContentDeserializer(p uintptr) (interface{}, error) {
@@ -1566,11 +1567,11 @@ func marshalContentDeserializer(p uintptr) (interface{}, error) {
 // ContentSerializer and ContentDeserializer if you want to add support for
 // application-specific data formats.
 type ContentProvider struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapContentProvider(obj *glib.Object) *ContentProvider {
-	return &ContentProvider{*glib.Object{obj}}
+	return &ContentProvider{*externglib.Object{obj}}
 }
 
 func marshalContentProvider(p uintptr) (interface{}, error) {
@@ -1582,11 +1583,11 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 // ContentSerializer: a GdkContentSerializer is used to serialize content for
 // inter-application data transfers.
 type ContentSerializer struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapContentSerializer(obj *glib.Object) *ContentSerializer {
-	return &ContentSerializer{*glib.Object{obj}}
+	return &ContentSerializer{*externglib.Object{obj}}
 }
 
 func marshalContentSerializer(p uintptr) (interface{}, error) {
@@ -1615,11 +1616,11 @@ func marshalCrossingEvent(p uintptr) (interface{}, error) {
 // Cursors are immutable objects, so they can not change after they have been
 // constructed.
 type Cursor struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapCursor(obj *glib.Object) *Cursor {
-	return &Cursor{*glib.Object{obj}}
+	return &Cursor{*externglib.Object{obj}}
 }
 
 func marshalCursor(p uintptr) (interface{}, error) {
@@ -1664,11 +1665,11 @@ func marshalDeleteEvent(p uintptr) (interface{}, error) {
 // See the Seat documentation for more information about the various kinds of
 // devices, and their relationships.
 type Device struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDevice(obj *glib.Object) *Device {
-	return &Device{*glib.Object{obj}}
+	return &Device{*externglib.Object{obj}}
 }
 
 func marshalDevice(p uintptr) (interface{}, error) {
@@ -1679,11 +1680,11 @@ func marshalDevice(p uintptr) (interface{}, error) {
 
 // DeviceTool: a physical tool associated to a Device.
 type DeviceTool struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDeviceTool(obj *glib.Object) *DeviceTool {
-	return &DeviceTool{*glib.Object{obj}}
+	return &DeviceTool{*externglib.Object{obj}}
 }
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {
@@ -1705,11 +1706,11 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 // Output devices are represented by Monitor objects, which can be accessed with
 // gdk_display_get_monitor_at_surface() and similar APIs.
 type Display struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDisplay(obj *glib.Object) *Display {
-	return &Display{*glib.Object{obj}}
+	return &Display{*externglib.Object{obj}}
 }
 
 func marshalDisplay(p uintptr) (interface{}, error) {
@@ -1754,11 +1755,11 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 //    #endif
 //      g_error ("Unsupported GDK backend");
 type DisplayManager struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDisplayManager(obj *glib.Object) *DisplayManager {
-	return &DisplayManager{*glib.Object{obj}}
+	return &DisplayManager{*externglib.Object{obj}}
 }
 
 func marshalDisplayManager(p uintptr) (interface{}, error) {
@@ -1770,11 +1771,11 @@ func marshalDisplayManager(p uintptr) (interface{}, error) {
 // Drag: the GdkDrag struct contains only private fields and should not be
 // accessed directly.
 type Drag struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDrag(obj *glib.Object) *Drag {
-	return &Drag{*glib.Object{obj}}
+	return &Drag{*externglib.Object{obj}}
 }
 
 func marshalDrag(p uintptr) (interface{}, error) {
@@ -1791,11 +1792,11 @@ func marshalDrag(p uintptr) (interface{}, error) {
 //
 // A GdkDrawContext is always associated with a single toplevel surface.
 type DrawContext struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDrawContext(obj *glib.Object) *DrawContext {
-	return &DrawContext{*glib.Object{obj}}
+	return &DrawContext{*externglib.Object{obj}}
 }
 
 func marshalDrawContext(p uintptr) (interface{}, error) {
@@ -1807,11 +1808,11 @@ func marshalDrawContext(p uintptr) (interface{}, error) {
 // Drop: the GdkDrop struct contains only private fields and should not be
 // accessed directly.
 type Drop struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapDrop(obj *glib.Object) *Drop {
-	return &Drop{*glib.Object{obj}}
+	return &Drop{*externglib.Object{obj}}
 }
 
 func marshalDrop(p uintptr) (interface{}, error) {
@@ -1865,11 +1866,11 @@ func marshalFocusEvent(p uintptr) (interface{}, error) {
 // gdk_frame_clock_get_frame_time() and the value inside the FrameClock::update
 // signal of the clock, they will stay exactly synchronized.
 type FrameClock struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapFrameClock(obj *glib.Object) *FrameClock {
-	return &FrameClock{*glib.Object{obj}}
+	return &FrameClock{*externglib.Object{obj}}
 }
 
 func marshalFrameClock(p uintptr) (interface{}, error) {
@@ -1929,7 +1930,7 @@ type GLContext struct {
 }
 
 func wrapGLContext(obj *glib.Object) *GLContext {
-	return &GLContext{DrawContext{*glib.Object{obj}}}
+	return &GLContext{DrawContext{*externglib.Object{obj}}}
 }
 
 func marshalGLContext(p uintptr) (interface{}, error) {
@@ -1944,7 +1945,7 @@ type GLTexture struct {
 }
 
 func wrapGLTexture(obj *glib.Object) *GLTexture {
-	return &GLTexture{Texture{*glib.Object{obj}}}
+	return &GLTexture{Texture{*externglib.Object{obj}}}
 }
 
 func marshalGLTexture(p uintptr) (interface{}, error) {
@@ -1989,7 +1990,7 @@ type MemoryTexture struct {
 }
 
 func wrapMemoryTexture(obj *glib.Object) *MemoryTexture {
-	return &MemoryTexture{Texture{*glib.Object{obj}}}
+	return &MemoryTexture{Texture{*externglib.Object{obj}}}
 }
 
 func marshalMemoryTexture(p uintptr) (interface{}, error) {
@@ -2003,11 +2004,11 @@ func marshalMemoryTexture(p uintptr) (interface{}, error) {
 // monitors with gdk_display_get_monitors(). You can use
 // gdk_display_get_monitor_at_surface() to find a particular monitor.
 type Monitor struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapMonitor(obj *glib.Object) *Monitor {
-	return &Monitor{*glib.Object{obj}}
+	return &Monitor{*externglib.Object{obj}}
 }
 
 func marshalMonitor(p uintptr) (interface{}, error) {
@@ -2079,11 +2080,11 @@ func marshalScrollEvent(p uintptr) (interface{}, error) {
 // Seat: the Seat object represents a collection of input devices that belong to
 // a user.
 type Seat struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSeat(obj *glib.Object) *Seat {
-	return &Seat{*glib.Object{obj}}
+	return &Seat{*externglib.Object{obj}}
 }
 
 func marshalSeat(p uintptr) (interface{}, error) {
@@ -2094,11 +2095,11 @@ func marshalSeat(p uintptr) (interface{}, error) {
 
 // Snapshot: base type for snapshot operations.
 type Snapshot struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSnapshot(obj *glib.Object) *Snapshot {
-	return &Snapshot{*glib.Object{obj}}
+	return &Snapshot{*externglib.Object{obj}}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
@@ -2116,11 +2117,11 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 // Other, more specialized surface types exist, but you will rarely interact
 // with them directly.
 type Surface struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapSurface(obj *glib.Object) *Surface {
-	return &Surface{*glib.Object{obj}}
+	return &Surface{*externglib.Object{obj}}
 }
 
 func marshalSurface(p uintptr) (interface{}, error) {
@@ -2131,11 +2132,11 @@ func marshalSurface(p uintptr) (interface{}, error) {
 
 // Texture: the `GdkTexture` structure contains only private data.
 type Texture struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapTexture(obj *glib.Object) *Texture {
-	return &Texture{*glib.Object{obj}}
+	return &Texture{*externglib.Object{obj}}
 }
 
 func marshalTexture(p uintptr) (interface{}, error) {
@@ -2188,7 +2189,7 @@ type VulkanContext struct {
 }
 
 func wrapVulkanContext(obj *glib.Object) *VulkanContext {
-	return &VulkanContext{DrawContext{*glib.Object{obj}}}
+	return &VulkanContext{DrawContext{*externglib.Object{obj}}}
 }
 
 func marshalVulkanContext(p uintptr) (interface{}, error) {

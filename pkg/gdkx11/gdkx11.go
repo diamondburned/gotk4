@@ -8,6 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk"
 	"github.com/diamondburned/gotk4/pkg/xlib"
 	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4-x11
@@ -16,7 +17,7 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		// Enums
 		// Skipped X11DeviceType.
 
@@ -79,7 +80,7 @@ type X11AppLaunchContext struct {
 }
 
 func wrapX11AppLaunchContext(obj *glib.Object) *X11AppLaunchContext {
-	return &X11AppLaunchContext{AppLaunchContext{AppLaunchContext{*glib.Object{obj}}}}
+	return &X11AppLaunchContext{AppLaunchContext{AppLaunchContext{*externglib.Object{obj}}}}
 }
 
 func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
@@ -89,11 +90,11 @@ func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
 }
 
 type X11DeviceManagerXI2 struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapX11DeviceManagerXI2(obj *glib.Object) *X11DeviceManagerXI2 {
-	return &X11DeviceManagerXI2{*glib.Object{obj}}
+	return &X11DeviceManagerXI2{*externglib.Object{obj}}
 }
 
 func marshalX11DeviceManagerXI2(p uintptr) (interface{}, error) {
@@ -107,7 +108,7 @@ type X11DeviceXI2 struct {
 }
 
 func wrapX11DeviceXI2(obj *glib.Object) *X11DeviceXI2 {
-	return &X11DeviceXI2{Device{*glib.Object{obj}}}
+	return &X11DeviceXI2{Device{*externglib.Object{obj}}}
 }
 
 func marshalX11DeviceXI2(p uintptr) (interface{}, error) {
@@ -121,7 +122,7 @@ type X11Display struct {
 }
 
 func wrapX11Display(obj *glib.Object) *X11Display {
-	return &X11Display{Display{*glib.Object{obj}}}
+	return &X11Display{Display{*externglib.Object{obj}}}
 }
 
 func marshalX11Display(p uintptr) (interface{}, error) {
@@ -135,7 +136,7 @@ type X11Drag struct {
 }
 
 func wrapX11Drag(obj *glib.Object) *X11Drag {
-	return &X11Drag{Drag{*glib.Object{obj}}}
+	return &X11Drag{Drag{*externglib.Object{obj}}}
 }
 
 func marshalX11Drag(p uintptr) (interface{}, error) {
@@ -149,7 +150,7 @@ type X11Monitor struct {
 }
 
 func wrapX11Monitor(obj *glib.Object) *X11Monitor {
-	return &X11Monitor{Monitor{*glib.Object{obj}}}
+	return &X11Monitor{Monitor{*externglib.Object{obj}}}
 }
 
 func marshalX11Monitor(p uintptr) (interface{}, error) {
@@ -159,11 +160,11 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 }
 
 type X11Screen struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapX11Screen(obj *glib.Object) *X11Screen {
-	return &X11Screen{*glib.Object{obj}}
+	return &X11Screen{*externglib.Object{obj}}
 }
 
 func marshalX11Screen(p uintptr) (interface{}, error) {
@@ -177,7 +178,7 @@ type X11Surface struct {
 }
 
 func wrapX11Surface(obj *glib.Object) *X11Surface {
-	return &X11Surface{Surface{*glib.Object{obj}}}
+	return &X11Surface{Surface{*externglib.Object{obj}}}
 }
 
 func marshalX11Surface(p uintptr) (interface{}, error) {

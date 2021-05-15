@@ -9,6 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
 	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: pangoft2
@@ -17,7 +18,7 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 
 		// Objects/Classes
 	})
@@ -92,7 +93,7 @@ type FontMap struct {
 }
 
 func wrapFontMap(obj *glib.Object) *FontMap {
-	return &FontMap{FontMap{FontMap{*glib.Object{obj}}}}
+	return &FontMap{FontMap{FontMap{*externglib.Object{obj}}}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {

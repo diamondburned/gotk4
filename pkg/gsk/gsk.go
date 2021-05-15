@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk"
 	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/graphene"
-	"github.com/gotk3/gotk3/glib"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gtk4
@@ -18,15 +18,15 @@ import (
 import "C"
 
 func init() {
-	glib.RegisterGValueMarshalers([]glib.TypeMarshaler{
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		// Enums
-		{T: glib.Type(C.gsk_blend_mode_get_type()), F: marshalBlendMode},
-		{T: glib.Type(C.gsk_corner_get_type()), F: marshalCorner},
-		{T: glib.Type(C.gsk_gl_uniform_type_get_type()), F: marshalGLUniformType},
-		{T: glib.Type(C.gsk_render_node_type_get_type()), F: marshalRenderNodeType},
-		{T: glib.Type(C.gsk_scaling_filter_get_type()), F: marshalScalingFilter},
-		{T: glib.Type(C.gsk_serialization_error_get_type()), F: marshalSerializationError},
-		{T: glib.Type(C.gsk_transform_category_get_type()), F: marshalTransformCategory},
+		{T: externglib.Type(C.gsk_blend_mode_get_type()), F: marshalBlendMode},
+		{T: externglib.Type(C.gsk_corner_get_type()), F: marshalCorner},
+		{T: externglib.Type(C.gsk_gl_uniform_type_get_type()), F: marshalGLUniformType},
+		{T: externglib.Type(C.gsk_render_node_type_get_type()), F: marshalRenderNodeType},
+		{T: externglib.Type(C.gsk_scaling_filter_get_type()), F: marshalScalingFilter},
+		{T: externglib.Type(C.gsk_serialization_error_get_type()), F: marshalSerializationError},
+		{T: externglib.Type(C.gsk_transform_category_get_type()), F: marshalTransformCategory},
 
 		// Objects/Classes
 	})
@@ -573,7 +573,7 @@ type CairoRenderer struct {
 }
 
 func wrapCairoRenderer(obj *glib.Object) *CairoRenderer {
-	return &CairoRenderer{Renderer{*glib.Object{obj}}}
+	return &CairoRenderer{Renderer{*externglib.Object{obj}}}
 }
 
 func marshalCairoRenderer(p uintptr) (interface{}, error) {
@@ -694,7 +694,7 @@ type GLRenderer struct {
 }
 
 func wrapGLRenderer(obj *glib.Object) *GLRenderer {
-	return &GLRenderer{Renderer{*glib.Object{obj}}}
+	return &GLRenderer{Renderer{*externglib.Object{obj}}}
 }
 
 func marshalGLRenderer(p uintptr) (interface{}, error) {
@@ -705,11 +705,11 @@ func marshalGLRenderer(p uintptr) (interface{}, error) {
 
 // GLShader: an object representing a GL shader program.
 type GLShader struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapGLShader(obj *glib.Object) *GLShader {
-	return &GLShader{*glib.Object{obj}}
+	return &GLShader{*externglib.Object{obj}}
 }
 
 func marshalGLShader(p uintptr) (interface{}, error) {
@@ -812,11 +812,11 @@ func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 // Renderer: base type for the object managing the rendering pipeline for a
 // Surface.
 type Renderer struct {
-	*glib.Object
+	*externglib.Object
 }
 
 func wrapRenderer(obj *glib.Object) *Renderer {
-	return &Renderer{*glib.Object{obj}}
+	return &Renderer{*externglib.Object{obj}}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
@@ -952,7 +952,7 @@ type VulkanRenderer struct {
 }
 
 func wrapVulkanRenderer(obj *glib.Object) *VulkanRenderer {
-	return &VulkanRenderer{Renderer{*glib.Object{obj}}}
+	return &VulkanRenderer{Renderer{*externglib.Object{obj}}}
 }
 
 func marshalVulkanRenderer(p uintptr) (interface{}, error) {

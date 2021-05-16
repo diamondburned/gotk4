@@ -20,7 +20,8 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 
-		// Objects/Classes
+		// Classes
+		{T: externglib.Type(C.pango_ft2_font_map_get_type()), F: marshalFontMap},
 	})
 }
 

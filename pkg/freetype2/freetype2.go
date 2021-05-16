@@ -16,7 +16,11 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 
-		// Objects/Classes
+		// Records
+		// Skipped Bitmap.
+		// Skipped Face.
+		// Skipped Library.
+
 	})
 }
 

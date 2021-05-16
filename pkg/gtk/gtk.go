@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk"
 	"github.com/diamondburned/gotk4/pkg/gdkx11"
 	"github.com/diamondburned/gotk4/pkg/gio"
-	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -117,7 +116,478 @@ func init() {
 		{T: externglib.Type(C.gtk_unit_get_type()), F: marshalUnit},
 		{T: externglib.Type(C.gtk_wrap_mode_get_type()), F: marshalWrapMode},
 
-		// Objects/Classes
+		// Records
+		// Skipped ATContextClass.
+		// Skipped AccessibleInterface.
+		// Skipped ActionableInterface.
+		// Skipped ActivateActionClass.
+		// Skipped AdjustmentClass.
+		// Skipped AlternativeTriggerClass.
+		// Skipped AnyFilterClass.
+		// Skipped ApplicationClass.
+		// Skipped ApplicationWindowClass.
+		// Skipped BinLayoutClass.
+		{T: externglib.Type(C.gtk_bitset_get_type()), F: marshalBitset},
+		// Skipped BitsetIter.
+		// Skipped BookmarkListClass.
+		// Skipped BoolFilterClass.
+		{T: externglib.Type(C.gtk_border_get_type()), F: marshalBorder},
+		// Skipped BoxClass.
+		// Skipped BoxLayoutClass.
+		// Skipped BuildableIface.
+		// Skipped BuildableParseContext.
+		// Skipped BuildableParser.
+		// Skipped BuilderCScopeClass.
+		// Skipped BuilderClass.
+		// Skipped BuilderListItemFactoryClass.
+		// Skipped BuilderScopeInterface.
+		// Skipped ButtonClass.
+		// Skipped ButtonPrivate.
+		// Skipped CallbackActionClass.
+		// Skipped CellAreaClass.
+		// Skipped CellAreaContextClass.
+		// Skipped CellAreaContextPrivate.
+		// Skipped CellEditableIface.
+		// Skipped CellLayoutIface.
+		// Skipped CellRendererClass.
+		// Skipped CellRendererClassPrivate.
+		// Skipped CellRendererPrivate.
+		// Skipped CellRendererTextClass.
+		// Skipped CenterBoxClass.
+		// Skipped CenterLayoutClass.
+		// Skipped CheckButtonClass.
+		// Skipped ColorChooserInterface.
+		// Skipped ColumnViewClass.
+		// Skipped ColumnViewColumnClass.
+		// Skipped ComboBoxClass.
+		// Skipped ConstraintClass.
+		// Skipped ConstraintGuideClass.
+		// Skipped ConstraintLayoutChildClass.
+		// Skipped ConstraintLayoutClass.
+		// Skipped ConstraintTargetInterface.
+		// Skipped CssLocation.
+		// Skipped CssProviderClass.
+		// Skipped CssProviderPrivate.
+		{T: externglib.Type(C.gtk_css_section_get_type()), F: marshalCSSSection},
+		// Skipped CssStyleChange.
+		// Skipped CustomFilterClass.
+		// Skipped CustomLayoutClass.
+		// Skipped CustomSorterClass.
+		// Skipped DialogClass.
+		// Skipped DirectoryListClass.
+		// Skipped DragIconClass.
+		// Skipped DragSourceClass.
+		// Skipped DrawingAreaClass.
+		// Skipped DropControllerMotionClass.
+		// Skipped DropDownClass.
+		// Skipped DropTargetAsyncClass.
+		// Skipped DropTargetClass.
+		// Skipped EditableInterface.
+		// Skipped EditableLabelClass.
+		// Skipped EmojiChooserClass.
+		// Skipped EntryBufferClass.
+		// Skipped EntryClass.
+		// Skipped EventControllerClass.
+		// Skipped EventControllerFocusClass.
+		// Skipped EventControllerKeyClass.
+		// Skipped EventControllerLegacyClass.
+		// Skipped EventControllerMotionClass.
+		// Skipped EventControllerScrollClass.
+		// Skipped EveryFilterClass.
+		// Skipped ExpressionWatch.
+		// Skipped FileChooserNativeClass.
+		// Skipped FilterClass.
+		// Skipped FilterListModelClass.
+		// Skipped FixedClass.
+		// Skipped FixedLayoutChildClass.
+		// Skipped FixedLayoutClass.
+		// Skipped FlattenListModelClass.
+		// Skipped FlowBoxChildClass.
+		// Skipped FontChooserIface.
+		// Skipped FrameClass.
+		// Skipped GLAreaClass.
+		// Skipped GestureClass.
+		// Skipped GestureClickClass.
+		// Skipped GestureDragClass.
+		// Skipped GestureLongPressClass.
+		// Skipped GesturePanClass.
+		// Skipped GestureRotateClass.
+		// Skipped GestureSingleClass.
+		// Skipped GestureStylusClass.
+		// Skipped GestureSwipeClass.
+		// Skipped GestureZoomClass.
+		// Skipped GridClass.
+		// Skipped GridLayoutChildClass.
+		// Skipped GridLayoutClass.
+		// Skipped GridViewClass.
+		// Skipped IMContextClass.
+		// Skipped IMContextSimpleClass.
+		// Skipped IMContextSimplePrivate.
+		// Skipped IMMulticontextClass.
+		// Skipped IMMulticontextPrivate.
+		// Skipped KeyvalTriggerClass.
+		// Skipped LayoutChildClass.
+		// Skipped LayoutManagerClass.
+		// Skipped ListBaseClass.
+		// Skipped ListBoxRowClass.
+		// Skipped ListItemClass.
+		// Skipped ListItemFactoryClass.
+		// Skipped ListStoreClass.
+		// Skipped ListStorePrivate.
+		// Skipped ListViewClass.
+		// Skipped MapListModelClass.
+		// Skipped MediaControlsClass.
+		// Skipped MediaFileClass.
+		// Skipped MediaStreamClass.
+		// Skipped MessageDialogClass.
+		// Skipped MnemonicActionClass.
+		// Skipped MnemonicTriggerClass.
+		// Skipped MountOperationClass.
+		// Skipped MountOperationPrivate.
+		// Skipped MultiFilterClass.
+		// Skipped MultiSelectionClass.
+		// Skipped MultiSorterClass.
+		// Skipped NamedActionClass.
+		// Skipped NativeDialogClass.
+		// Skipped NativeInterface.
+		// Skipped NeverTriggerClass.
+		// Skipped NoSelectionClass.
+		// Skipped NothingActionClass.
+		// Skipped NumericSorterClass.
+		// Skipped OrientableIface.
+		// Skipped OverlayLayoutChildClass.
+		// Skipped OverlayLayoutClass.
+		// Skipped PadActionEntry.
+		// Skipped PadControllerClass.
+		// Skipped PageRange.
+		{T: externglib.Type(C.gtk_paper_size_get_type()), F: marshalPaperSize},
+		// Skipped PasswordEntryClass.
+		// Skipped PictureClass.
+		// Skipped PopoverClass.
+		// Skipped PrintOperationClass.
+		// Skipped PrintOperationPreviewIface.
+		// Skipped PrintOperationPrivate.
+		// Skipped RangeClass.
+		// Skipped RecentData.
+		{T: externglib.Type(C.gtk_recent_info_get_type()), F: marshalRecentInfo},
+		// Skipped RecentManagerClass.
+		// Skipped RecentManagerPrivate.
+		// Skipped RequestedSize.
+		{T: externglib.Type(C.gtk_requisition_get_type()), F: marshalRequisition},
+		// Skipped RootInterface.
+		// Skipped ScaleButtonClass.
+		// Skipped ScaleClass.
+		// Skipped ScrollableInterface.
+		// Skipped SelectionFilterModelClass.
+		// Skipped SelectionModelInterface.
+		// Skipped SettingsValue.
+		// Skipped ShortcutActionClass.
+		// Skipped ShortcutClass.
+		// Skipped ShortcutControllerClass.
+		// Skipped ShortcutLabelClass.
+		// Skipped ShortcutManagerInterface.
+		// Skipped ShortcutTriggerClass.
+		// Skipped ShortcutsGroupClass.
+		// Skipped ShortcutsSectionClass.
+		// Skipped ShortcutsShortcutClass.
+		// Skipped SignalActionClass.
+		// Skipped SignalListItemFactoryClass.
+		// Skipped SingleSelectionClass.
+		// Skipped SliceListModelClass.
+		// Skipped SnapshotClass.
+		// Skipped SortListModelClass.
+		// Skipped SorterClass.
+		// Skipped StringFilterClass.
+		// Skipped StringListClass.
+		// Skipped StringObjectClass.
+		// Skipped StringSorterClass.
+		// Skipped StyleContextClass.
+		// Skipped TextBTree.
+		// Skipped TextBufferClass.
+		// Skipped TextBufferPrivate.
+		// Skipped TextChildAnchorClass.
+		{T: externglib.Type(C.gtk_text_iter_get_type()), F: marshalTextIter},
+		// Skipped TextMarkClass.
+		// Skipped TextTagClass.
+		// Skipped TextTagPrivate.
+		// Skipped TextViewClass.
+		// Skipped TextViewPrivate.
+		// Skipped ToggleButtonClass.
+		// Skipped TreeDragDestIface.
+		// Skipped TreeDragSourceIface.
+		// Skipped TreeExpanderClass.
+		{T: externglib.Type(C.gtk_tree_iter_get_type()), F: marshalTreeIter},
+		// Skipped TreeListModelClass.
+		// Skipped TreeListRowClass.
+		// Skipped TreeListRowSorterClass.
+		// Skipped TreeModelFilterClass.
+		// Skipped TreeModelFilterPrivate.
+		// Skipped TreeModelIface.
+		// Skipped TreeModelSortClass.
+		// Skipped TreeModelSortPrivate.
+		{T: externglib.Type(C.gtk_tree_path_get_type()), F: marshalTreePath},
+		{T: externglib.Type(C.gtk_tree_row_reference_get_type()), F: marshalTreeRowReference},
+		// Skipped TreeSortableIface.
+		// Skipped TreeStoreClass.
+		// Skipped TreeStorePrivate.
+		// Skipped TreeViewClass.
+		// Skipped VideoClass.
+		// Skipped WidgetClass.
+		// Skipped WidgetClassPrivate.
+		// Skipped WidgetPaintableClass.
+		// Skipped WidgetPrivate.
+		// Skipped WindowClass.
+		// Skipped WindowControlsClass.
+		// Skipped WindowGroupClass.
+		// Skipped WindowGroupPrivate.
+		// Skipped WindowHandleClass.
+
+		// Classes
+		{T: externglib.Type(C.gtk_at_context_get_type()), F: marshalATContext},
+		{T: externglib.Type(C.gtk_about_dialog_get_type()), F: marshalAboutDialog},
+		{T: externglib.Type(C.gtk_action_bar_get_type()), F: marshalActionBar},
+		{T: externglib.Type(C.gtk_activate_action_get_type()), F: marshalActivateAction},
+		{T: externglib.Type(C.gtk_adjustment_get_type()), F: marshalAdjustment},
+		{T: externglib.Type(C.gtk_alternative_trigger_get_type()), F: marshalAlternativeTrigger},
+		{T: externglib.Type(C.gtk_any_filter_get_type()), F: marshalAnyFilter},
+		{T: externglib.Type(C.gtk_app_chooser_button_get_type()), F: marshalAppChooserButton},
+		{T: externglib.Type(C.gtk_app_chooser_dialog_get_type()), F: marshalAppChooserDialog},
+		{T: externglib.Type(C.gtk_app_chooser_widget_get_type()), F: marshalAppChooserWidget},
+		{T: externglib.Type(C.gtk_application_get_type()), F: marshalApplication},
+		{T: externglib.Type(C.gtk_application_window_get_type()), F: marshalApplicationWindow},
+		{T: externglib.Type(C.gtk_aspect_frame_get_type()), F: marshalAspectFrame},
+		{T: externglib.Type(C.gtk_assistant_get_type()), F: marshalAssistant},
+		{T: externglib.Type(C.gtk_assistant_page_get_type()), F: marshalAssistantPage},
+		{T: externglib.Type(C.gtk_bin_layout_get_type()), F: marshalBinLayout},
+		{T: externglib.Type(C.gtk_bookmark_list_get_type()), F: marshalBookmarkList},
+		{T: externglib.Type(C.gtk_bool_filter_get_type()), F: marshalBoolFilter},
+		{T: externglib.Type(C.gtk_box_get_type()), F: marshalBox},
+		{T: externglib.Type(C.gtk_box_layout_get_type()), F: marshalBoxLayout},
+		{T: externglib.Type(C.gtk_builder_get_type()), F: marshalBuilder},
+		{T: externglib.Type(C.gtk_builder_cscope_get_type()), F: marshalBuilderCScope},
+		{T: externglib.Type(C.gtk_builder_list_item_factory_get_type()), F: marshalBuilderListItemFactory},
+		{T: externglib.Type(C.gtk_button_get_type()), F: marshalButton},
+		{T: externglib.Type(C.gtk_cclosure_expression_get_type()), F: marshalCClosureExpression},
+		{T: externglib.Type(C.gtk_calendar_get_type()), F: marshalCalendar},
+		{T: externglib.Type(C.gtk_callback_action_get_type()), F: marshalCallbackAction},
+		{T: externglib.Type(C.gtk_cell_area_get_type()), F: marshalCellArea},
+		{T: externglib.Type(C.gtk_cell_area_box_get_type()), F: marshalCellAreaBox},
+		{T: externglib.Type(C.gtk_cell_area_context_get_type()), F: marshalCellAreaContext},
+		{T: externglib.Type(C.gtk_cell_renderer_get_type()), F: marshalCellRenderer},
+		{T: externglib.Type(C.gtk_cell_renderer_accel_get_type()), F: marshalCellRendererAccel},
+		{T: externglib.Type(C.gtk_cell_renderer_combo_get_type()), F: marshalCellRendererCombo},
+		{T: externglib.Type(C.gtk_cell_renderer_pixbuf_get_type()), F: marshalCellRendererPixbuf},
+		{T: externglib.Type(C.gtk_cell_renderer_progress_get_type()), F: marshalCellRendererProgress},
+		{T: externglib.Type(C.gtk_cell_renderer_spin_get_type()), F: marshalCellRendererSpin},
+		{T: externglib.Type(C.gtk_cell_renderer_spinner_get_type()), F: marshalCellRendererSpinner},
+		{T: externglib.Type(C.gtk_cell_renderer_text_get_type()), F: marshalCellRendererText},
+		{T: externglib.Type(C.gtk_cell_renderer_toggle_get_type()), F: marshalCellRendererToggle},
+		{T: externglib.Type(C.gtk_cell_view_get_type()), F: marshalCellView},
+		{T: externglib.Type(C.gtk_center_box_get_type()), F: marshalCenterBox},
+		{T: externglib.Type(C.gtk_center_layout_get_type()), F: marshalCenterLayout},
+		{T: externglib.Type(C.gtk_check_button_get_type()), F: marshalCheckButton},
+		{T: externglib.Type(C.gtk_closure_expression_get_type()), F: marshalClosureExpression},
+		{T: externglib.Type(C.gtk_color_button_get_type()), F: marshalColorButton},
+		{T: externglib.Type(C.gtk_color_chooser_dialog_get_type()), F: marshalColorChooserDialog},
+		{T: externglib.Type(C.gtk_color_chooser_widget_get_type()), F: marshalColorChooserWidget},
+		{T: externglib.Type(C.gtk_column_view_get_type()), F: marshalColumnView},
+		{T: externglib.Type(C.gtk_column_view_column_get_type()), F: marshalColumnViewColumn},
+		{T: externglib.Type(C.gtk_combo_box_get_type()), F: marshalComboBox},
+		{T: externglib.Type(C.gtk_combo_box_text_get_type()), F: marshalComboBoxText},
+		{T: externglib.Type(C.gtk_constant_expression_get_type()), F: marshalConstantExpression},
+		{T: externglib.Type(C.gtk_constraint_get_type()), F: marshalConstraint},
+		{T: externglib.Type(C.gtk_constraint_guide_get_type()), F: marshalConstraintGuide},
+		{T: externglib.Type(C.gtk_constraint_layout_get_type()), F: marshalConstraintLayout},
+		{T: externglib.Type(C.gtk_constraint_layout_child_get_type()), F: marshalConstraintLayoutChild},
+		{T: externglib.Type(C.gtk_css_provider_get_type()), F: marshalCSSProvider},
+		{T: externglib.Type(C.gtk_custom_filter_get_type()), F: marshalCustomFilter},
+		{T: externglib.Type(C.gtk_custom_layout_get_type()), F: marshalCustomLayout},
+		{T: externglib.Type(C.gtk_custom_sorter_get_type()), F: marshalCustomSorter},
+		{T: externglib.Type(C.gtk_dialog_get_type()), F: marshalDialog},
+		{T: externglib.Type(C.gtk_directory_list_get_type()), F: marshalDirectoryList},
+		{T: externglib.Type(C.gtk_drag_icon_get_type()), F: marshalDragIcon},
+		{T: externglib.Type(C.gtk_drag_source_get_type()), F: marshalDragSource},
+		{T: externglib.Type(C.gtk_drawing_area_get_type()), F: marshalDrawingArea},
+		{T: externglib.Type(C.gtk_drop_controller_motion_get_type()), F: marshalDropControllerMotion},
+		{T: externglib.Type(C.gtk_drop_down_get_type()), F: marshalDropDown},
+		{T: externglib.Type(C.gtk_drop_target_get_type()), F: marshalDropTarget},
+		{T: externglib.Type(C.gtk_drop_target_async_get_type()), F: marshalDropTargetAsync},
+		{T: externglib.Type(C.gtk_editable_label_get_type()), F: marshalEditableLabel},
+		{T: externglib.Type(C.gtk_emoji_chooser_get_type()), F: marshalEmojiChooser},
+		{T: externglib.Type(C.gtk_entry_get_type()), F: marshalEntry},
+		{T: externglib.Type(C.gtk_entry_buffer_get_type()), F: marshalEntryBuffer},
+		{T: externglib.Type(C.gtk_entry_completion_get_type()), F: marshalEntryCompletion},
+		{T: externglib.Type(C.gtk_event_controller_get_type()), F: marshalEventController},
+		{T: externglib.Type(C.gtk_event_controller_focus_get_type()), F: marshalEventControllerFocus},
+		{T: externglib.Type(C.gtk_event_controller_key_get_type()), F: marshalEventControllerKey},
+		{T: externglib.Type(C.gtk_event_controller_legacy_get_type()), F: marshalEventControllerLegacy},
+		{T: externglib.Type(C.gtk_event_controller_motion_get_type()), F: marshalEventControllerMotion},
+		{T: externglib.Type(C.gtk_event_controller_scroll_get_type()), F: marshalEventControllerScroll},
+		{T: externglib.Type(C.gtk_every_filter_get_type()), F: marshalEveryFilter},
+		{T: externglib.Type(C.gtk_expander_get_type()), F: marshalExpander},
+		// Skipped Expression.
+		{T: externglib.Type(C.gtk_file_chooser_dialog_get_type()), F: marshalFileChooserDialog},
+		{T: externglib.Type(C.gtk_file_chooser_native_get_type()), F: marshalFileChooserNative},
+		{T: externglib.Type(C.gtk_file_chooser_widget_get_type()), F: marshalFileChooserWidget},
+		{T: externglib.Type(C.gtk_file_filter_get_type()), F: marshalFileFilter},
+		{T: externglib.Type(C.gtk_filter_get_type()), F: marshalFilter},
+		{T: externglib.Type(C.gtk_filter_list_model_get_type()), F: marshalFilterListModel},
+		{T: externglib.Type(C.gtk_fixed_get_type()), F: marshalFixed},
+		{T: externglib.Type(C.gtk_fixed_layout_get_type()), F: marshalFixedLayout},
+		{T: externglib.Type(C.gtk_fixed_layout_child_get_type()), F: marshalFixedLayoutChild},
+		{T: externglib.Type(C.gtk_flatten_list_model_get_type()), F: marshalFlattenListModel},
+		{T: externglib.Type(C.gtk_flow_box_get_type()), F: marshalFlowBox},
+		{T: externglib.Type(C.gtk_flow_box_child_get_type()), F: marshalFlowBoxChild},
+		{T: externglib.Type(C.gtk_font_button_get_type()), F: marshalFontButton},
+		{T: externglib.Type(C.gtk_font_chooser_dialog_get_type()), F: marshalFontChooserDialog},
+		{T: externglib.Type(C.gtk_font_chooser_widget_get_type()), F: marshalFontChooserWidget},
+		{T: externglib.Type(C.gtk_frame_get_type()), F: marshalFrame},
+		{T: externglib.Type(C.gtk_gl_area_get_type()), F: marshalGLArea},
+		{T: externglib.Type(C.gtk_gesture_get_type()), F: marshalGesture},
+		{T: externglib.Type(C.gtk_gesture_click_get_type()), F: marshalGestureClick},
+		{T: externglib.Type(C.gtk_gesture_drag_get_type()), F: marshalGestureDrag},
+		{T: externglib.Type(C.gtk_gesture_long_press_get_type()), F: marshalGestureLongPress},
+		{T: externglib.Type(C.gtk_gesture_pan_get_type()), F: marshalGesturePan},
+		{T: externglib.Type(C.gtk_gesture_rotate_get_type()), F: marshalGestureRotate},
+		{T: externglib.Type(C.gtk_gesture_single_get_type()), F: marshalGestureSingle},
+		{T: externglib.Type(C.gtk_gesture_stylus_get_type()), F: marshalGestureStylus},
+		{T: externglib.Type(C.gtk_gesture_swipe_get_type()), F: marshalGestureSwipe},
+		{T: externglib.Type(C.gtk_gesture_zoom_get_type()), F: marshalGestureZoom},
+		{T: externglib.Type(C.gtk_grid_get_type()), F: marshalGrid},
+		{T: externglib.Type(C.gtk_grid_layout_get_type()), F: marshalGridLayout},
+		{T: externglib.Type(C.gtk_grid_layout_child_get_type()), F: marshalGridLayoutChild},
+		{T: externglib.Type(C.gtk_grid_view_get_type()), F: marshalGridView},
+		{T: externglib.Type(C.gtk_header_bar_get_type()), F: marshalHeaderBar},
+		{T: externglib.Type(C.gtk_im_context_get_type()), F: marshalIMContext},
+		{T: externglib.Type(C.gtk_im_context_simple_get_type()), F: marshalIMContextSimple},
+		{T: externglib.Type(C.gtk_im_multicontext_get_type()), F: marshalIMMulticontext},
+		{T: externglib.Type(C.gtk_icon_paintable_get_type()), F: marshalIconPaintable},
+		{T: externglib.Type(C.gtk_icon_theme_get_type()), F: marshalIconTheme},
+		{T: externglib.Type(C.gtk_icon_view_get_type()), F: marshalIconView},
+		{T: externglib.Type(C.gtk_image_get_type()), F: marshalImage},
+		{T: externglib.Type(C.gtk_info_bar_get_type()), F: marshalInfoBar},
+		{T: externglib.Type(C.gtk_keyval_trigger_get_type()), F: marshalKeyvalTrigger},
+		{T: externglib.Type(C.gtk_label_get_type()), F: marshalLabel},
+		{T: externglib.Type(C.gtk_layout_child_get_type()), F: marshalLayoutChild},
+		{T: externglib.Type(C.gtk_layout_manager_get_type()), F: marshalLayoutManager},
+		{T: externglib.Type(C.gtk_level_bar_get_type()), F: marshalLevelBar},
+		{T: externglib.Type(C.gtk_link_button_get_type()), F: marshalLinkButton},
+		{T: externglib.Type(C.gtk_list_base_get_type()), F: marshalListBase},
+		{T: externglib.Type(C.gtk_list_box_get_type()), F: marshalListBox},
+		{T: externglib.Type(C.gtk_list_box_row_get_type()), F: marshalListBoxRow},
+		{T: externglib.Type(C.gtk_list_item_get_type()), F: marshalListItem},
+		{T: externglib.Type(C.gtk_list_item_factory_get_type()), F: marshalListItemFactory},
+		{T: externglib.Type(C.gtk_list_store_get_type()), F: marshalListStore},
+		{T: externglib.Type(C.gtk_list_view_get_type()), F: marshalListView},
+		{T: externglib.Type(C.gtk_lock_button_get_type()), F: marshalLockButton},
+		{T: externglib.Type(C.gtk_map_list_model_get_type()), F: marshalMapListModel},
+		{T: externglib.Type(C.gtk_media_controls_get_type()), F: marshalMediaControls},
+		{T: externglib.Type(C.gtk_media_file_get_type()), F: marshalMediaFile},
+		{T: externglib.Type(C.gtk_media_stream_get_type()), F: marshalMediaStream},
+		{T: externglib.Type(C.gtk_menu_button_get_type()), F: marshalMenuButton},
+		{T: externglib.Type(C.gtk_message_dialog_get_type()), F: marshalMessageDialog},
+		{T: externglib.Type(C.gtk_mnemonic_action_get_type()), F: marshalMnemonicAction},
+		{T: externglib.Type(C.gtk_mnemonic_trigger_get_type()), F: marshalMnemonicTrigger},
+		{T: externglib.Type(C.gtk_mount_operation_get_type()), F: marshalMountOperation},
+		{T: externglib.Type(C.gtk_multi_filter_get_type()), F: marshalMultiFilter},
+		{T: externglib.Type(C.gtk_multi_selection_get_type()), F: marshalMultiSelection},
+		{T: externglib.Type(C.gtk_multi_sorter_get_type()), F: marshalMultiSorter},
+		{T: externglib.Type(C.gtk_named_action_get_type()), F: marshalNamedAction},
+		{T: externglib.Type(C.gtk_native_dialog_get_type()), F: marshalNativeDialog},
+		{T: externglib.Type(C.gtk_never_trigger_get_type()), F: marshalNeverTrigger},
+		{T: externglib.Type(C.gtk_no_selection_get_type()), F: marshalNoSelection},
+		{T: externglib.Type(C.gtk_notebook_get_type()), F: marshalNotebook},
+		{T: externglib.Type(C.gtk_notebook_page_get_type()), F: marshalNotebookPage},
+		{T: externglib.Type(C.gtk_nothing_action_get_type()), F: marshalNothingAction},
+		{T: externglib.Type(C.gtk_numeric_sorter_get_type()), F: marshalNumericSorter},
+		{T: externglib.Type(C.gtk_object_expression_get_type()), F: marshalObjectExpression},
+		{T: externglib.Type(C.gtk_overlay_get_type()), F: marshalOverlay},
+		{T: externglib.Type(C.gtk_overlay_layout_get_type()), F: marshalOverlayLayout},
+		{T: externglib.Type(C.gtk_overlay_layout_child_get_type()), F: marshalOverlayLayoutChild},
+		{T: externglib.Type(C.gtk_pad_controller_get_type()), F: marshalPadController},
+		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetup},
+		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPaned},
+		// Skipped ParamSpecExpression.
+		{T: externglib.Type(C.gtk_password_entry_get_type()), F: marshalPasswordEntry},
+		{T: externglib.Type(C.gtk_picture_get_type()), F: marshalPicture},
+		{T: externglib.Type(C.gtk_popover_get_type()), F: marshalPopover},
+		{T: externglib.Type(C.gtk_popover_menu_get_type()), F: marshalPopoverMenu},
+		{T: externglib.Type(C.gtk_popover_menu_bar_get_type()), F: marshalPopoverMenuBar},
+		{T: externglib.Type(C.gtk_print_context_get_type()), F: marshalPrintContext},
+		{T: externglib.Type(C.gtk_print_operation_get_type()), F: marshalPrintOperation},
+		{T: externglib.Type(C.gtk_print_settings_get_type()), F: marshalPrintSettings},
+		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBar},
+		{T: externglib.Type(C.gtk_property_expression_get_type()), F: marshalPropertyExpression},
+		{T: externglib.Type(C.gtk_range_get_type()), F: marshalRange},
+		{T: externglib.Type(C.gtk_recent_manager_get_type()), F: marshalRecentManager},
+		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealer},
+		{T: externglib.Type(C.gtk_scale_get_type()), F: marshalScale},
+		{T: externglib.Type(C.gtk_scale_button_get_type()), F: marshalScaleButton},
+		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbar},
+		{T: externglib.Type(C.gtk_scrolled_window_get_type()), F: marshalScrolledWindow},
+		{T: externglib.Type(C.gtk_search_bar_get_type()), F: marshalSearchBar},
+		{T: externglib.Type(C.gtk_search_entry_get_type()), F: marshalSearchEntry},
+		{T: externglib.Type(C.gtk_selection_filter_model_get_type()), F: marshalSelectionFilterModel},
+		{T: externglib.Type(C.gtk_separator_get_type()), F: marshalSeparator},
+		{T: externglib.Type(C.gtk_settings_get_type()), F: marshalSettings},
+		{T: externglib.Type(C.gtk_shortcut_get_type()), F: marshalShortcut},
+		{T: externglib.Type(C.gtk_shortcut_action_get_type()), F: marshalShortcutAction},
+		{T: externglib.Type(C.gtk_shortcut_controller_get_type()), F: marshalShortcutController},
+		{T: externglib.Type(C.gtk_shortcut_label_get_type()), F: marshalShortcutLabel},
+		{T: externglib.Type(C.gtk_shortcut_trigger_get_type()), F: marshalShortcutTrigger},
+		{T: externglib.Type(C.gtk_shortcuts_group_get_type()), F: marshalShortcutsGroup},
+		{T: externglib.Type(C.gtk_shortcuts_section_get_type()), F: marshalShortcutsSection},
+		{T: externglib.Type(C.gtk_shortcuts_shortcut_get_type()), F: marshalShortcutsShortcut},
+		{T: externglib.Type(C.gtk_shortcuts_window_get_type()), F: marshalShortcutsWindow},
+		{T: externglib.Type(C.gtk_signal_action_get_type()), F: marshalSignalAction},
+		{T: externglib.Type(C.gtk_signal_list_item_factory_get_type()), F: marshalSignalListItemFactory},
+		{T: externglib.Type(C.gtk_single_selection_get_type()), F: marshalSingleSelection},
+		{T: externglib.Type(C.gtk_size_group_get_type()), F: marshalSizeGroup},
+		{T: externglib.Type(C.gtk_slice_list_model_get_type()), F: marshalSliceListModel},
+		{T: externglib.Type(C.gtk_snapshot_get_type()), F: marshalSnapshot},
+		{T: externglib.Type(C.gtk_sort_list_model_get_type()), F: marshalSortListModel},
+		{T: externglib.Type(C.gtk_sorter_get_type()), F: marshalSorter},
+		{T: externglib.Type(C.gtk_spin_button_get_type()), F: marshalSpinButton},
+		{T: externglib.Type(C.gtk_spinner_get_type()), F: marshalSpinner},
+		{T: externglib.Type(C.gtk_stack_get_type()), F: marshalStack},
+		{T: externglib.Type(C.gtk_stack_page_get_type()), F: marshalStackPage},
+		{T: externglib.Type(C.gtk_stack_sidebar_get_type()), F: marshalStackSidebar},
+		{T: externglib.Type(C.gtk_stack_switcher_get_type()), F: marshalStackSwitcher},
+		{T: externglib.Type(C.gtk_statusbar_get_type()), F: marshalStatusbar},
+		{T: externglib.Type(C.gtk_string_filter_get_type()), F: marshalStringFilter},
+		{T: externglib.Type(C.gtk_string_list_get_type()), F: marshalStringList},
+		{T: externglib.Type(C.gtk_string_object_get_type()), F: marshalStringObject},
+		{T: externglib.Type(C.gtk_string_sorter_get_type()), F: marshalStringSorter},
+		{T: externglib.Type(C.gtk_style_context_get_type()), F: marshalStyleContext},
+		{T: externglib.Type(C.gtk_switch_get_type()), F: marshalSwitch},
+		{T: externglib.Type(C.gtk_text_get_type()), F: marshalText},
+		{T: externglib.Type(C.gtk_text_buffer_get_type()), F: marshalTextBuffer},
+		{T: externglib.Type(C.gtk_text_child_anchor_get_type()), F: marshalTextChildAnchor},
+		{T: externglib.Type(C.gtk_text_mark_get_type()), F: marshalTextMark},
+		{T: externglib.Type(C.gtk_text_tag_get_type()), F: marshalTextTag},
+		{T: externglib.Type(C.gtk_text_tag_table_get_type()), F: marshalTextTagTable},
+		{T: externglib.Type(C.gtk_text_view_get_type()), F: marshalTextView},
+		{T: externglib.Type(C.gtk_toggle_button_get_type()), F: marshalToggleButton},
+		{T: externglib.Type(C.gtk_tooltip_get_type()), F: marshalTooltip},
+		{T: externglib.Type(C.gtk_tree_expander_get_type()), F: marshalTreeExpander},
+		{T: externglib.Type(C.gtk_tree_list_model_get_type()), F: marshalTreeListModel},
+		{T: externglib.Type(C.gtk_tree_list_row_get_type()), F: marshalTreeListRow},
+		{T: externglib.Type(C.gtk_tree_list_row_sorter_get_type()), F: marshalTreeListRowSorter},
+		{T: externglib.Type(C.gtk_tree_model_filter_get_type()), F: marshalTreeModelFilter},
+		{T: externglib.Type(C.gtk_tree_model_sort_get_type()), F: marshalTreeModelSort},
+		{T: externglib.Type(C.gtk_tree_selection_get_type()), F: marshalTreeSelection},
+		{T: externglib.Type(C.gtk_tree_store_get_type()), F: marshalTreeStore},
+		{T: externglib.Type(C.gtk_tree_view_get_type()), F: marshalTreeView},
+		{T: externglib.Type(C.gtk_tree_view_column_get_type()), F: marshalTreeViewColumn},
+		{T: externglib.Type(C.gtk_video_get_type()), F: marshalVideo},
+		{T: externglib.Type(C.gtk_viewport_get_type()), F: marshalViewport},
+		{T: externglib.Type(C.gtk_volume_button_get_type()), F: marshalVolumeButton},
+		{T: externglib.Type(C.gtk_widget_get_type()), F: marshalWidget},
+		{T: externglib.Type(C.gtk_widget_paintable_get_type()), F: marshalWidgetPaintable},
+		{T: externglib.Type(C.gtk_window_get_type()), F: marshalWindow},
+		{T: externglib.Type(C.gtk_window_controls_get_type()), F: marshalWindowControls},
+		{T: externglib.Type(C.gtk_window_group_get_type()), F: marshalWindowGroup},
+		{T: externglib.Type(C.gtk_window_handle_get_type()), F: marshalWindowHandle},
 	})
 }
 
@@ -3259,7 +3729,7 @@ func InitCheck() bool
 func IsInitialized() bool
 
 // NativeGetForSurface: finds the GtkNative associated with the surface.
-func NativeGetForSurface(surface *gdkx11.X11Surface) Native
+func NativeGetForSurface(surface *gdk.Surface) Native
 
 // PaperSizeGetDefault: returns the name of the default paper size, which
 // depends on the current locale.

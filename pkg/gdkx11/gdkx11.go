@@ -21,7 +21,27 @@ func init() {
 		// Enums
 		// Skipped X11DeviceType.
 
-		// Objects/Classes
+		// Records
+		// Skipped X11AppLaunchContextClass.
+		// Skipped X11DeviceManagerXI2Class.
+		// Skipped X11DeviceXI2Class.
+		// Skipped X11DisplayClass.
+		// Skipped X11DragClass.
+		// Skipped X11GLContextClass.
+		// Skipped X11MonitorClass.
+		// Skipped X11ScreenClass.
+		// Skipped X11SurfaceClass.
+
+		// Classes
+		{T: externglib.Type(C.gdk_x11_app_launch_context_get_type()), F: marshalX11AppLaunchContext},
+		{T: externglib.Type(C.gdk_x11_device_manager_xi2_get_type()), F: marshalX11DeviceManagerXI2},
+		{T: externglib.Type(C.gdk_x11_device_xi2_get_type()), F: marshalX11DeviceXI2},
+		{T: externglib.Type(C.gdk_x11_display_get_type()), F: marshalX11Display},
+		{T: externglib.Type(C.gdk_x11_drag_get_type()), F: marshalX11Drag},
+		// Skipped X11GLContext.
+		{T: externglib.Type(C.gdk_x11_monitor_get_type()), F: marshalX11Monitor},
+		{T: externglib.Type(C.gdk_x11_screen_get_type()), F: marshalX11Screen},
+		{T: externglib.Type(C.gdk_x11_surface_get_type()), F: marshalX11Surface},
 	})
 }
 
@@ -50,7 +70,7 @@ func X11FreeCompoundText(ctext uint8)
 func X11FreeTextList(list string)
 
 // X11GetServerTime: routine to get the current X server time stamp.
-func X11GetServerTime(surface *X11Surface) uint32
+func X11GetServerTime(surface *gdk.Surface) uint32
 
 // X11GetXatomByNameForDisplay: returns the X atom for a Display corresponding
 // to @atom_name. This function caches the result, so if called repeatedly it is

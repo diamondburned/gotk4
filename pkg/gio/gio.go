@@ -71,7 +71,338 @@ func init() {
 		{T: externglib.Type(C.g_unix_socket_address_type_get_type()), F: marshalUnixSocketAddressType},
 		{T: externglib.Type(C.g_zlib_compressor_format_get_type()), F: marshalZlibCompressorFormat},
 
-		// Objects/Classes
+		// Records
+		// Skipped ActionEntry.
+		// Skipped ActionGroupInterface.
+		// Skipped ActionInterface.
+		// Skipped ActionMapInterface.
+		// Skipped AppInfoIface.
+		// Skipped AppLaunchContextClass.
+		// Skipped AppLaunchContextPrivate.
+		// Skipped ApplicationClass.
+		// Skipped ApplicationCommandLineClass.
+		// Skipped ApplicationCommandLinePrivate.
+		// Skipped ApplicationPrivate.
+		// Skipped AsyncInitableIface.
+		// Skipped AsyncResultIface.
+		// Skipped BufferedInputStreamClass.
+		// Skipped BufferedInputStreamPrivate.
+		// Skipped BufferedOutputStreamClass.
+		// Skipped BufferedOutputStreamPrivate.
+		// Skipped CancellableClass.
+		// Skipped CancellablePrivate.
+		// Skipped CharsetConverterClass.
+		// Skipped ConverterIface.
+		// Skipped ConverterInputStreamClass.
+		// Skipped ConverterInputStreamPrivate.
+		// Skipped ConverterOutputStreamClass.
+		// Skipped ConverterOutputStreamPrivate.
+		// Skipped CredentialsClass.
+		{T: externglib.Type(C.g_dbus_annotation_info_get_type()), F: marshalDBusAnnotationInfo},
+		{T: externglib.Type(C.g_dbus_arg_info_get_type()), F: marshalDBusArgInfo},
+		// Skipped DBusErrorEntry.
+		// Skipped DBusInterfaceIface.
+		{T: externglib.Type(C.g_dbus_interface_info_get_type()), F: marshalDBusInterfaceInfo},
+		// Skipped DBusInterfaceSkeletonClass.
+		// Skipped DBusInterfaceSkeletonPrivate.
+		// Skipped DBusInterfaceVTable.
+		{T: externglib.Type(C.g_dbus_method_info_get_type()), F: marshalDBusMethodInfo},
+		{T: externglib.Type(C.g_dbus_node_info_get_type()), F: marshalDBusNodeInfo},
+		// Skipped DBusObjectIface.
+		// Skipped DBusObjectManagerClientClass.
+		// Skipped DBusObjectManagerClientPrivate.
+		// Skipped DBusObjectManagerIface.
+		// Skipped DBusObjectManagerServerClass.
+		// Skipped DBusObjectManagerServerPrivate.
+		// Skipped DBusObjectProxyClass.
+		// Skipped DBusObjectProxyPrivate.
+		// Skipped DBusObjectSkeletonClass.
+		// Skipped DBusObjectSkeletonPrivate.
+		{T: externglib.Type(C.g_dbus_property_info_get_type()), F: marshalDBusPropertyInfo},
+		// Skipped DBusProxyClass.
+		// Skipped DBusProxyPrivate.
+		{T: externglib.Type(C.g_dbus_signal_info_get_type()), F: marshalDBusSignalInfo},
+		// Skipped DBusSubtreeVTable.
+		// Skipped DataInputStreamClass.
+		// Skipped DataInputStreamPrivate.
+		// Skipped DataOutputStreamClass.
+		// Skipped DataOutputStreamPrivate.
+		// Skipped DatagramBasedInterface.
+		// Skipped DesktopAppInfoClass.
+		// Skipped DesktopAppInfoLookupIface.
+		// Skipped DriveIface.
+		// Skipped DtlsClientConnectionInterface.
+		// Skipped DtlsConnectionInterface.
+		// Skipped DtlsServerConnectionInterface.
+		// Skipped EmblemClass.
+		// Skipped EmblemedIconClass.
+		// Skipped EmblemedIconPrivate.
+		// Skipped FileAttributeInfo.
+		{T: externglib.Type(C.g_file_attribute_info_list_get_type()), F: marshalFileAttributeInfoList},
+		{T: externglib.Type(C.g_file_attribute_matcher_get_type()), F: marshalFileAttributeMatcher},
+		// Skipped FileDescriptorBasedIface.
+		// Skipped FileEnumeratorClass.
+		// Skipped FileEnumeratorPrivate.
+		// Skipped FileIOStreamClass.
+		// Skipped FileIOStreamPrivate.
+		// Skipped FileIconClass.
+		// Skipped FileIface.
+		// Skipped FileInfoClass.
+		// Skipped FileInputStreamClass.
+		// Skipped FileInputStreamPrivate.
+		// Skipped FileMonitorClass.
+		// Skipped FileMonitorPrivate.
+		// Skipped FileOutputStreamClass.
+		// Skipped FileOutputStreamPrivate.
+		// Skipped FilenameCompleterClass.
+		// Skipped FilterInputStreamClass.
+		// Skipped FilterOutputStreamClass.
+		// Skipped IOExtension.
+		// Skipped IOExtensionPoint.
+		// Skipped IOModuleClass.
+		// Skipped IOModuleScope.
+		// Skipped IOSchedulerJob.
+		// Skipped IOStreamAdapter.
+		// Skipped IOStreamClass.
+		// Skipped IOStreamPrivate.
+		// Skipped IconIface.
+		// Skipped InetAddressClass.
+		// Skipped InetAddressMaskClass.
+		// Skipped InetAddressMaskPrivate.
+		// Skipped InetAddressPrivate.
+		// Skipped InetSocketAddressClass.
+		// Skipped InetSocketAddressPrivate.
+		// Skipped InitableIface.
+		// Skipped InputMessage.
+		// Skipped InputStreamClass.
+		// Skipped InputStreamPrivate.
+		// Skipped InputVector.
+		// Skipped ListModelInterface.
+		// Skipped ListStoreClass.
+		// Skipped LoadableIconIface.
+		// Skipped MemoryInputStreamClass.
+		// Skipped MemoryInputStreamPrivate.
+		// Skipped MemoryMonitorInterface.
+		// Skipped MemoryOutputStreamClass.
+		// Skipped MemoryOutputStreamPrivate.
+		// Skipped MenuAttributeIterClass.
+		// Skipped MenuAttributeIterPrivate.
+		// Skipped MenuLinkIterClass.
+		// Skipped MenuLinkIterPrivate.
+		// Skipped MenuModelClass.
+		// Skipped MenuModelPrivate.
+		// Skipped MountIface.
+		// Skipped MountOperationClass.
+		// Skipped MountOperationPrivate.
+		// Skipped NativeSocketAddressClass.
+		// Skipped NativeSocketAddressPrivate.
+		// Skipped NativeVolumeMonitorClass.
+		// Skipped NetworkAddressClass.
+		// Skipped NetworkAddressPrivate.
+		// Skipped NetworkMonitorInterface.
+		// Skipped NetworkServiceClass.
+		// Skipped NetworkServicePrivate.
+		// Skipped OutputMessage.
+		// Skipped OutputStreamClass.
+		// Skipped OutputStreamPrivate.
+		// Skipped OutputVector.
+		// Skipped PermissionClass.
+		// Skipped PermissionPrivate.
+		// Skipped PollableInputStreamInterface.
+		// Skipped PollableOutputStreamInterface.
+		// Skipped ProxyAddressClass.
+		// Skipped ProxyAddressEnumeratorClass.
+		// Skipped ProxyAddressEnumeratorPrivate.
+		// Skipped ProxyAddressPrivate.
+		// Skipped ProxyInterface.
+		// Skipped ProxyResolverInterface.
+		// Skipped RemoteActionGroupInterface.
+		// Skipped ResolverClass.
+		// Skipped ResolverPrivate.
+		{T: externglib.Type(C.g_resource_get_type()), F: marshalResource},
+		// Skipped SeekableIface.
+		// Skipped SettingsBackendClass.
+		// Skipped SettingsBackendPrivate.
+		// Skipped SettingsClass.
+		// Skipped SettingsPrivate.
+		{T: externglib.Type(C.g_settings_schema_get_type()), F: marshalSettingsSchema},
+		{T: externglib.Type(C.g_settings_schema_key_get_type()), F: marshalSettingsSchemaKey},
+		{T: externglib.Type(C.g_settings_schema_source_get_type()), F: marshalSettingsSchemaSource},
+		// Skipped SimpleActionGroupClass.
+		// Skipped SimpleActionGroupPrivate.
+		// Skipped SimpleAsyncResultClass.
+		// Skipped SimpleProxyResolverClass.
+		// Skipped SimpleProxyResolverPrivate.
+		// Skipped SocketAddressClass.
+		// Skipped SocketAddressEnumeratorClass.
+		// Skipped SocketClass.
+		// Skipped SocketClientClass.
+		// Skipped SocketClientPrivate.
+		// Skipped SocketConnectableIface.
+		// Skipped SocketConnectionClass.
+		// Skipped SocketConnectionPrivate.
+		// Skipped SocketControlMessageClass.
+		// Skipped SocketControlMessagePrivate.
+		// Skipped SocketListenerClass.
+		// Skipped SocketListenerPrivate.
+		// Skipped SocketPrivate.
+		// Skipped SocketServiceClass.
+		// Skipped SocketServicePrivate.
+		{T: externglib.Type(C.g_srv_target_get_type()), F: marshalSrvTarget},
+		// Skipped StaticResource.
+		// Skipped TaskClass.
+		// Skipped TcpConnectionClass.
+		// Skipped TcpConnectionPrivate.
+		// Skipped TcpWrapperConnectionClass.
+		// Skipped TcpWrapperConnectionPrivate.
+		// Skipped ThemedIconClass.
+		// Skipped ThreadedSocketServiceClass.
+		// Skipped ThreadedSocketServicePrivate.
+		// Skipped TlsBackendInterface.
+		// Skipped TlsCertificateClass.
+		// Skipped TlsCertificatePrivate.
+		// Skipped TlsClientConnectionInterface.
+		// Skipped TlsConnectionClass.
+		// Skipped TlsConnectionPrivate.
+		// Skipped TlsDatabaseClass.
+		// Skipped TlsDatabasePrivate.
+		// Skipped TlsFileDatabaseInterface.
+		// Skipped TlsInteractionClass.
+		// Skipped TlsInteractionPrivate.
+		// Skipped TlsPasswordClass.
+		// Skipped TlsPasswordPrivate.
+		// Skipped TlsServerConnectionInterface.
+		// Skipped UnixConnectionClass.
+		// Skipped UnixConnectionPrivate.
+		// Skipped UnixCredentialsMessageClass.
+		// Skipped UnixCredentialsMessagePrivate.
+		// Skipped UnixFDListClass.
+		// Skipped UnixFDListPrivate.
+		// Skipped UnixFDMessageClass.
+		// Skipped UnixFDMessagePrivate.
+		// Skipped UnixInputStreamClass.
+		// Skipped UnixInputStreamPrivate.
+		{T: externglib.Type(C.g_unix_mount_entry_get_type()), F: marshalUnixMountEntry},
+		// Skipped UnixMountMonitorClass.
+		{T: externglib.Type(C.g_unix_mount_point_get_type()), F: marshalUnixMountPoint},
+		// Skipped UnixOutputStreamClass.
+		// Skipped UnixOutputStreamPrivate.
+		// Skipped UnixSocketAddressClass.
+		// Skipped UnixSocketAddressPrivate.
+		// Skipped VfsClass.
+		// Skipped VolumeIface.
+		// Skipped VolumeMonitorClass.
+		// Skipped ZlibCompressorClass.
+		// Skipped ZlibDecompressorClass.
+
+		// Classes
+		{T: externglib.Type(C.g_app_info_monitor_get_type()), F: marshalAppInfoMonitor},
+		{T: externglib.Type(C.g_app_launch_context_get_type()), F: marshalAppLaunchContext},
+		{T: externglib.Type(C.g_application_get_type()), F: marshalApplication},
+		{T: externglib.Type(C.g_application_command_line_get_type()), F: marshalApplicationCommandLine},
+		{T: externglib.Type(C.g_buffered_input_stream_get_type()), F: marshalBufferedInputStream},
+		{T: externglib.Type(C.g_buffered_output_stream_get_type()), F: marshalBufferedOutputStream},
+		{T: externglib.Type(C.g_bytes_icon_get_type()), F: marshalBytesIcon},
+		{T: externglib.Type(C.g_cancellable_get_type()), F: marshalCancellable},
+		{T: externglib.Type(C.g_charset_converter_get_type()), F: marshalCharsetConverter},
+		{T: externglib.Type(C.g_converter_input_stream_get_type()), F: marshalConverterInputStream},
+		{T: externglib.Type(C.g_converter_output_stream_get_type()), F: marshalConverterOutputStream},
+		{T: externglib.Type(C.g_credentials_get_type()), F: marshalCredentials},
+		{T: externglib.Type(C.g_dbus_action_group_get_type()), F: marshalDBusActionGroup},
+		{T: externglib.Type(C.g_dbus_auth_observer_get_type()), F: marshalDBusAuthObserver},
+		{T: externglib.Type(C.g_dbus_connection_get_type()), F: marshalDBusConnection},
+		{T: externglib.Type(C.g_dbus_interface_skeleton_get_type()), F: marshalDBusInterfaceSkeleton},
+		{T: externglib.Type(C.g_dbus_menu_model_get_type()), F: marshalDBusMenuModel},
+		{T: externglib.Type(C.g_dbus_message_get_type()), F: marshalDBusMessage},
+		{T: externglib.Type(C.g_dbus_method_invocation_get_type()), F: marshalDBusMethodInvocation},
+		{T: externglib.Type(C.g_dbus_object_manager_client_get_type()), F: marshalDBusObjectManagerClient},
+		{T: externglib.Type(C.g_dbus_object_manager_server_get_type()), F: marshalDBusObjectManagerServer},
+		{T: externglib.Type(C.g_dbus_object_proxy_get_type()), F: marshalDBusObjectProxy},
+		{T: externglib.Type(C.g_dbus_object_skeleton_get_type()), F: marshalDBusObjectSkeleton},
+		{T: externglib.Type(C.g_dbus_proxy_get_type()), F: marshalDBusProxy},
+		{T: externglib.Type(C.g_dbus_server_get_type()), F: marshalDBusServer},
+		{T: externglib.Type(C.g_data_input_stream_get_type()), F: marshalDataInputStream},
+		{T: externglib.Type(C.g_data_output_stream_get_type()), F: marshalDataOutputStream},
+		{T: externglib.Type(C.g_desktop_app_info_get_type()), F: marshalDesktopAppInfo},
+		{T: externglib.Type(C.g_emblem_get_type()), F: marshalEmblem},
+		{T: externglib.Type(C.g_emblemed_icon_get_type()), F: marshalEmblemedIcon},
+		{T: externglib.Type(C.g_file_enumerator_get_type()), F: marshalFileEnumerator},
+		{T: externglib.Type(C.g_file_io_stream_get_type()), F: marshalFileIOStream},
+		{T: externglib.Type(C.g_file_icon_get_type()), F: marshalFileIcon},
+		{T: externglib.Type(C.g_file_info_get_type()), F: marshalFileInfo},
+		{T: externglib.Type(C.g_file_input_stream_get_type()), F: marshalFileInputStream},
+		{T: externglib.Type(C.g_file_monitor_get_type()), F: marshalFileMonitor},
+		{T: externglib.Type(C.g_file_output_stream_get_type()), F: marshalFileOutputStream},
+		{T: externglib.Type(C.g_filename_completer_get_type()), F: marshalFilenameCompleter},
+		{T: externglib.Type(C.g_filter_input_stream_get_type()), F: marshalFilterInputStream},
+		{T: externglib.Type(C.g_filter_output_stream_get_type()), F: marshalFilterOutputStream},
+		// Skipped IOModule.
+		{T: externglib.Type(C.g_io_stream_get_type()), F: marshalIOStream},
+		{T: externglib.Type(C.g_inet_address_get_type()), F: marshalInetAddress},
+		{T: externglib.Type(C.g_inet_address_mask_get_type()), F: marshalInetAddressMask},
+		{T: externglib.Type(C.g_inet_socket_address_get_type()), F: marshalInetSocketAddress},
+		{T: externglib.Type(C.g_input_stream_get_type()), F: marshalInputStream},
+		{T: externglib.Type(C.g_list_store_get_type()), F: marshalListStore},
+		{T: externglib.Type(C.g_memory_input_stream_get_type()), F: marshalMemoryInputStream},
+		{T: externglib.Type(C.g_memory_output_stream_get_type()), F: marshalMemoryOutputStream},
+		{T: externglib.Type(C.g_menu_get_type()), F: marshalMenu},
+		{T: externglib.Type(C.g_menu_attribute_iter_get_type()), F: marshalMenuAttributeIter},
+		{T: externglib.Type(C.g_menu_item_get_type()), F: marshalMenuItem},
+		{T: externglib.Type(C.g_menu_link_iter_get_type()), F: marshalMenuLinkIter},
+		{T: externglib.Type(C.g_menu_model_get_type()), F: marshalMenuModel},
+		{T: externglib.Type(C.g_mount_operation_get_type()), F: marshalMountOperation},
+		{T: externglib.Type(C.g_native_socket_address_get_type()), F: marshalNativeSocketAddress},
+		{T: externglib.Type(C.g_native_volume_monitor_get_type()), F: marshalNativeVolumeMonitor},
+		{T: externglib.Type(C.g_network_address_get_type()), F: marshalNetworkAddress},
+		{T: externglib.Type(C.g_network_service_get_type()), F: marshalNetworkService},
+		{T: externglib.Type(C.g_notification_get_type()), F: marshalNotification},
+		{T: externglib.Type(C.g_output_stream_get_type()), F: marshalOutputStream},
+		{T: externglib.Type(C.g_permission_get_type()), F: marshalPermission},
+		{T: externglib.Type(C.g_property_action_get_type()), F: marshalPropertyAction},
+		{T: externglib.Type(C.g_proxy_address_get_type()), F: marshalProxyAddress},
+		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumerator},
+		{T: externglib.Type(C.g_resolver_get_type()), F: marshalResolver},
+		{T: externglib.Type(C.g_settings_get_type()), F: marshalSettings},
+		{T: externglib.Type(C.g_settings_backend_get_type()), F: marshalSettingsBackend},
+		{T: externglib.Type(C.g_simple_action_get_type()), F: marshalSimpleAction},
+		{T: externglib.Type(C.g_simple_action_group_get_type()), F: marshalSimpleActionGroup},
+		{T: externglib.Type(C.g_simple_async_result_get_type()), F: marshalSimpleAsyncResult},
+		{T: externglib.Type(C.g_simple_io_stream_get_type()), F: marshalSimpleIOStream},
+		{T: externglib.Type(C.g_simple_permission_get_type()), F: marshalSimplePermission},
+		{T: externglib.Type(C.g_simple_proxy_resolver_get_type()), F: marshalSimpleProxyResolver},
+		{T: externglib.Type(C.g_socket_get_type()), F: marshalSocket},
+		{T: externglib.Type(C.g_socket_address_get_type()), F: marshalSocketAddress},
+		{T: externglib.Type(C.g_socket_address_enumerator_get_type()), F: marshalSocketAddressEnumerator},
+		{T: externglib.Type(C.g_socket_client_get_type()), F: marshalSocketClient},
+		{T: externglib.Type(C.g_socket_connection_get_type()), F: marshalSocketConnection},
+		{T: externglib.Type(C.g_socket_control_message_get_type()), F: marshalSocketControlMessage},
+		{T: externglib.Type(C.g_socket_listener_get_type()), F: marshalSocketListener},
+		{T: externglib.Type(C.g_socket_service_get_type()), F: marshalSocketService},
+		{T: externglib.Type(C.g_subprocess_get_type()), F: marshalSubprocess},
+		{T: externglib.Type(C.g_subprocess_launcher_get_type()), F: marshalSubprocessLauncher},
+		{T: externglib.Type(C.g_task_get_type()), F: marshalTask},
+		{T: externglib.Type(C.g_tcp_connection_get_type()), F: marshalTcpConnection},
+		{T: externglib.Type(C.g_tcp_wrapper_connection_get_type()), F: marshalTcpWrapperConnection},
+		{T: externglib.Type(C.g_test_dbus_get_type()), F: marshalTestDBus},
+		{T: externglib.Type(C.g_themed_icon_get_type()), F: marshalThemedIcon},
+		{T: externglib.Type(C.g_threaded_socket_service_get_type()), F: marshalThreadedSocketService},
+		{T: externglib.Type(C.g_tls_certificate_get_type()), F: marshalTlsCertificate},
+		{T: externglib.Type(C.g_tls_connection_get_type()), F: marshalTlsConnection},
+		{T: externglib.Type(C.g_tls_database_get_type()), F: marshalTlsDatabase},
+		{T: externglib.Type(C.g_tls_interaction_get_type()), F: marshalTlsInteraction},
+		{T: externglib.Type(C.g_tls_password_get_type()), F: marshalTlsPassword},
+		{T: externglib.Type(C.g_unix_connection_get_type()), F: marshalUnixConnection},
+		{T: externglib.Type(C.g_unix_credentials_message_get_type()), F: marshalUnixCredentialsMessage},
+		{T: externglib.Type(C.g_unix_fd_list_get_type()), F: marshalUnixFDList},
+		{T: externglib.Type(C.g_unix_fd_message_get_type()), F: marshalUnixFDMessage},
+		{T: externglib.Type(C.g_unix_input_stream_get_type()), F: marshalUnixInputStream},
+		{T: externglib.Type(C.g_unix_mount_monitor_get_type()), F: marshalUnixMountMonitor},
+		{T: externglib.Type(C.g_unix_output_stream_get_type()), F: marshalUnixOutputStream},
+		{T: externglib.Type(C.g_unix_socket_address_get_type()), F: marshalUnixSocketAddress},
+		{T: externglib.Type(C.g_vfs_get_type()), F: marshalVfs},
+		{T: externglib.Type(C.g_volume_monitor_get_type()), F: marshalVolumeMonitor},
+		{T: externglib.Type(C.g_zlib_compressor_get_type()), F: marshalZlibCompressor},
+		{T: externglib.Type(C.g_zlib_decompressor_get_type()), F: marshalZlibDecompressor},
 	})
 }
 

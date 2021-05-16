@@ -37,7 +37,61 @@ func init() {
 		{T: externglib.Type(C.pango_weight_get_type()), F: marshalWeight},
 		{T: externglib.Type(C.pango_wrap_mode_get_type()), F: marshalWrapMode},
 
-		// Objects/Classes
+		// Records
+		// Skipped Analysis.
+		// Skipped AttrClass.
+		// Skipped AttrColor.
+		// Skipped AttrFloat.
+		// Skipped AttrFontDesc.
+		// Skipped AttrFontFeatures.
+		// Skipped AttrInt.
+		{T: externglib.Type(C.pango_attr_iterator_get_type()), F: marshalAttrIterator},
+		// Skipped AttrLanguage.
+		{T: externglib.Type(C.pango_attr_list_get_type()), F: marshalAttrList},
+		// Skipped AttrShape.
+		// Skipped AttrSize.
+		// Skipped AttrString.
+		{T: externglib.Type(C.pango_attribute_get_type()), F: marshalAttribute},
+		{T: externglib.Type(C.pango_color_get_type()), F: marshalColor},
+		// Skipped ContextClass.
+		// Skipped FontClass.
+		{T: externglib.Type(C.pango_font_description_get_type()), F: marshalFontDescription},
+		// Skipped FontFaceClass.
+		// Skipped FontFamilyClass.
+		// Skipped FontMapClass.
+		{T: externglib.Type(C.pango_font_metrics_get_type()), F: marshalFontMetrics},
+		// Skipped FontsetClass.
+		// Skipped FontsetSimpleClass.
+		// Skipped GlyphGeometry.
+		// Skipped GlyphInfo.
+		{T: externglib.Type(C.pango_glyph_item_get_type()), F: marshalGlyphItem},
+		{T: externglib.Type(C.pango_glyph_item_iter_get_type()), F: marshalGlyphItemIter},
+		{T: externglib.Type(C.pango_glyph_string_get_type()), F: marshalGlyphString},
+		// Skipped GlyphVisAttr.
+		{T: externglib.Type(C.pango_item_get_type()), F: marshalItem},
+		{T: externglib.Type(C.pango_language_get_type()), F: marshalLanguage},
+		// Skipped LayoutClass.
+		{T: externglib.Type(C.pango_layout_iter_get_type()), F: marshalLayoutIter},
+		{T: externglib.Type(C.pango_layout_line_get_type()), F: marshalLayoutLine},
+		// Skipped LogAttr.
+		{T: externglib.Type(C.pango_matrix_get_type()), F: marshalMatrix},
+		// Skipped Rectangle.
+		// Skipped RendererClass.
+		// Skipped RendererPrivate.
+		{T: externglib.Type(C.pango_script_iter_get_type()), F: marshalScriptIter},
+		{T: externglib.Type(C.pango_tab_array_get_type()), F: marshalTabArray},
+
+		// Classes
+		{T: externglib.Type(C.pango_context_get_type()), F: marshalContext},
+		{T: externglib.Type(C.pango_coverage_get_type()), F: marshalCoverage},
+		{T: externglib.Type(C.pango_font_get_type()), F: marshalFont},
+		{T: externglib.Type(C.pango_font_face_get_type()), F: marshalFontFace},
+		{T: externglib.Type(C.pango_font_family_get_type()), F: marshalFontFamily},
+		{T: externglib.Type(C.pango_font_map_get_type()), F: marshalFontMap},
+		{T: externglib.Type(C.pango_fontset_get_type()), F: marshalFontset},
+		{T: externglib.Type(C.pango_fontset_simple_get_type()), F: marshalFontsetSimple},
+		{T: externglib.Type(C.pango_layout_get_type()), F: marshalLayout},
+		{T: externglib.Type(C.pango_renderer_get_type()), F: marshalRenderer},
 	})
 }
 

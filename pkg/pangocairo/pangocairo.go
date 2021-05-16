@@ -16,10 +16,7 @@ import (
 import "C"
 
 func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-
-		// Objects/Classes
-	})
+	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{})
 }
 
 // ContextGetFontOptions: retrieves any font rendering options previously set

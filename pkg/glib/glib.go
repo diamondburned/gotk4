@@ -56,7 +56,83 @@ func init() {
 		// Skipped VariantClass.
 		// Skipped VariantParseError.
 
-		// Objects/Classes
+		// Records
+		{T: externglib.Type(C.g_array_get_type()), F: marshalArray},
+		// Skipped AsyncQueue.
+		// Skipped BookmarkFile.
+		{T: externglib.Type(C.g_byte_array_get_type()), F: marshalByteArray},
+		{T: externglib.Type(C.g_bytes_get_type()), F: marshalBytes},
+		{T: externglib.Type(C.g_checksum_get_type()), F: marshalChecksum},
+		// Skipped Cond.
+		// Skipped Data.
+		{T: externglib.Type(C.g_date_get_type()), F: marshalDate},
+		{T: externglib.Type(C.g_date_time_get_type()), F: marshalDateTime},
+		// Skipped DebugKey.
+		// Skipped Dir.
+		{T: externglib.Type(C.g_error_get_type()), F: marshalError},
+		{T: externglib.Type(C.g_hash_table_get_type()), F: marshalHashTable},
+		// Skipped HashTableIter.
+		// Skipped Hmac.
+		// Skipped Hook.
+		// Skipped HookList.
+		// Skipped IConv.
+		{T: externglib.Type(C.g_io_channel_get_type()), F: marshalIOChannel},
+		// Skipped IOFuncs.
+		{T: externglib.Type(C.g_key_file_get_type()), F: marshalKeyFile},
+		// Skipped List.
+		// Skipped LogField.
+		{T: externglib.Type(C.g_main_context_get_type()), F: marshalMainContext},
+		{T: externglib.Type(C.g_main_loop_get_type()), F: marshalMainLoop},
+		{T: externglib.Type(C.g_mapped_file_get_type()), F: marshalMappedFile},
+		{T: externglib.Type(C.g_markup_parse_context_get_type()), F: marshalMarkupParseContext},
+		// Skipped MarkupParser.
+		{T: externglib.Type(C.g_match_info_get_type()), F: marshalMatchInfo},
+		// Skipped MemVTable.
+		// Skipped Node.
+		// Skipped Once.
+		// Skipped OptionContext.
+		// Skipped OptionEntry.
+		{T: externglib.Type(C.g_option_group_get_type()), F: marshalOptionGroup},
+		// Skipped PatternSpec.
+		{T: externglib.Type(C.g_pollfd_get_type()), F: marshalPollFD},
+		// Skipped Private.
+		{T: externglib.Type(C.g_ptr_array_get_type()), F: marshalPtrArray},
+		// Skipped Queue.
+		// Skipped RWLock.
+		// Skipped Rand.
+		// Skipped RecMutex.
+		{T: externglib.Type(C.g_regex_get_type()), F: marshalRegex},
+		// Skipped SList.
+		// Skipped Scanner.
+		// Skipped ScannerConfig.
+		// Skipped Sequence.
+		// Skipped SequenceIter.
+		{T: externglib.Type(C.g_source_get_type()), F: marshalSource},
+		// Skipped SourceCallbackFuncs.
+		// Skipped SourceFuncs.
+		// Skipped SourcePrivate.
+		// Skipped StatBuf.
+		{T: externglib.Type(C.g_gstring_get_type()), F: marshalString},
+		// Skipped StringChunk.
+		// Skipped TestCase.
+		// Skipped TestConfig.
+		// Skipped TestLogBuffer.
+		// Skipped TestLogMsg.
+		// Skipped TestSuite.
+		{T: externglib.Type(C.g_thread_get_type()), F: marshalThread},
+		// Skipped ThreadPool.
+		// Skipped TimeVal.
+		{T: externglib.Type(C.g_time_zone_get_type()), F: marshalTimeZone},
+		// Skipped Timer.
+		// Skipped TrashStack.
+		// Skipped Tree.
+		{T: externglib.Type(C.g_uri_get_type()), F: marshalURI},
+		// Skipped UriParamsIter.
+		{T: externglib.Type(C.intern()), F: marshalVariant},
+		{T: externglib.Type(C.g_variant_builder_get_type()), F: marshalVariantBuilder},
+		{T: externglib.Type(C.g_variant_dict_get_type()), F: marshalVariantDict},
+		// Skipped VariantIter.
+		{T: externglib.Type(C.g_variant_type_get_gtype()), F: marshalVariantType},
 	})
 }
 

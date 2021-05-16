@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib"
+	"github.com/gotk3/gotk3/glib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,7 +24,18 @@ func init() {
 		{T: externglib.Type(C.gdk_pixbuf_error_get_type()), F: marshalPixbufError},
 		{T: externglib.Type(C.gdk_pixbuf_rotation_get_type()), F: marshalPixbufRotation},
 
-		// Objects/Classes
+		// Records
+		{T: externglib.Type(C.gdk_pixbuf_format_get_type()), F: marshalPixbufFormat},
+		// Skipped PixbufLoaderClass.
+		// Skipped PixbufSimpleAnimClass.
+
+		// Classes
+		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbuf},
+		{T: externglib.Type(C.gdk_pixbuf_animation_get_type()), F: marshalPixbufAnimation},
+		{T: externglib.Type(C.gdk_pixbuf_animation_iter_get_type()), F: marshalPixbufAnimationIter},
+		{T: externglib.Type(C.gdk_pixbuf_loader_get_type()), F: marshalPixbufLoader},
+		{T: externglib.Type(C.gdk_pixbuf_simple_anim_get_type()), F: marshalPixbufSimpleAnim},
+		{T: externglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type()), F: marshalPixbufSimpleAnimIter},
 	})
 }
 

@@ -20,7 +20,26 @@ func init() {
 		// Skipped EulerOrder.
 		// Skipped RayIntersectionKind.
 
-		// Objects/Classes
+		// Records
+		{T: externglib.Type(C.graphene_box_get_type()), F: marshalBox},
+		{T: externglib.Type(C.graphene_euler_get_type()), F: marshalEuler},
+		{T: externglib.Type(C.graphene_frustum_get_type()), F: marshalFrustum},
+		{T: externglib.Type(C.graphene_matrix_get_type()), F: marshalMatrix},
+		{T: externglib.Type(C.graphene_plane_get_type()), F: marshalPlane},
+		{T: externglib.Type(C.graphene_point_get_type()), F: marshalPoint},
+		{T: externglib.Type(C.graphene_point3d_get_type()), F: marshalPoint3D},
+		{T: externglib.Type(C.graphene_quad_get_type()), F: marshalQuad},
+		{T: externglib.Type(C.graphene_quaternion_get_type()), F: marshalQuaternion},
+		{T: externglib.Type(C.graphene_ray_get_type()), F: marshalRay},
+		{T: externglib.Type(C.graphene_rect_get_type()), F: marshalRect},
+		// Skipped Simd4F.
+		// Skipped Simd4X4F.
+		{T: externglib.Type(C.graphene_size_get_type()), F: marshalSize},
+		{T: externglib.Type(C.graphene_sphere_get_type()), F: marshalSphere},
+		{T: externglib.Type(C.graphene_triangle_get_type()), F: marshalTriangle},
+		{T: externglib.Type(C.graphene_vec2_get_type()), F: marshalVec2},
+		{T: externglib.Type(C.graphene_vec3_get_type()), F: marshalVec3},
+		{T: externglib.Type(C.graphene_vec4_get_type()), F: marshalVec4},
 	})
 }
 

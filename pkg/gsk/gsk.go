@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gdk"
-	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -28,7 +27,51 @@ func init() {
 		{T: externglib.Type(C.gsk_serialization_error_get_type()), F: marshalSerializationError},
 		{T: externglib.Type(C.gsk_transform_category_get_type()), F: marshalTransformCategory},
 
-		// Objects/Classes
+		// Records
+		// Skipped CairoRendererClass.
+		// Skipped ColorStop.
+		// Skipped GLRendererClass.
+		// Skipped GLShaderClass.
+		// Skipped ParseLocation.
+		// Skipped RendererClass.
+		// Skipped RoundedRect.
+		{T: externglib.Type(C.gsk_shader_args_builder_get_type()), F: marshalShaderArgsBuilder},
+		// Skipped Shadow.
+		{T: externglib.Type(C.gsk_transform_get_type()), F: marshalTransform},
+		// Skipped VulkanRendererClass.
+
+		// Classes
+		{T: externglib.Type(C.gsk_blend_node_get_type()), F: marshalBlendNode},
+		{T: externglib.Type(C.gsk_blur_node_get_type()), F: marshalBlurNode},
+		{T: externglib.Type(C.gsk_border_node_get_type()), F: marshalBorderNode},
+		{T: externglib.Type(C.gsk_cairo_node_get_type()), F: marshalCairoNode},
+		{T: externglib.Type(C.gsk_cairo_renderer_get_type()), F: marshalCairoRenderer},
+		{T: externglib.Type(C.gsk_clip_node_get_type()), F: marshalClipNode},
+		{T: externglib.Type(C.gsk_color_matrix_node_get_type()), F: marshalColorMatrixNode},
+		{T: externglib.Type(C.gsk_color_node_get_type()), F: marshalColorNode},
+		{T: externglib.Type(C.gsk_conic_gradient_node_get_type()), F: marshalConicGradientNode},
+		{T: externglib.Type(C.gsk_container_node_get_type()), F: marshalContainerNode},
+		{T: externglib.Type(C.gsk_cross_fade_node_get_type()), F: marshalCrossFadeNode},
+		{T: externglib.Type(C.gsk_debug_node_get_type()), F: marshalDebugNode},
+		{T: externglib.Type(C.gsk_gl_renderer_get_type()), F: marshalGLRenderer},
+		{T: externglib.Type(C.gsk_gl_shader_get_type()), F: marshalGLShader},
+		{T: externglib.Type(C.gsk_gl_shader_node_get_type()), F: marshalGLShaderNode},
+		{T: externglib.Type(C.gsk_inset_shadow_node_get_type()), F: marshalInsetShadowNode},
+		{T: externglib.Type(C.gsk_linear_gradient_node_get_type()), F: marshalLinearGradientNode},
+		{T: externglib.Type(C.gsk_opacity_node_get_type()), F: marshalOpacityNode},
+		{T: externglib.Type(C.gsk_outset_shadow_node_get_type()), F: marshalOutsetShadowNode},
+		{T: externglib.Type(C.gsk_radial_gradient_node_get_type()), F: marshalRadialGradientNode},
+		// Skipped RenderNode.
+		{T: externglib.Type(C.gsk_renderer_get_type()), F: marshalRenderer},
+		{T: externglib.Type(C.gsk_repeat_node_get_type()), F: marshalRepeatNode},
+		{T: externglib.Type(C.gsk_repeating_linear_gradient_node_get_type()), F: marshalRepeatingLinearGradientNode},
+		{T: externglib.Type(C.gsk_repeating_radial_gradient_node_get_type()), F: marshalRepeatingRadialGradientNode},
+		{T: externglib.Type(C.gsk_rounded_clip_node_get_type()), F: marshalRoundedClipNode},
+		{T: externglib.Type(C.gsk_shadow_node_get_type()), F: marshalShadowNode},
+		{T: externglib.Type(C.gsk_text_node_get_type()), F: marshalTextNode},
+		{T: externglib.Type(C.gsk_texture_node_get_type()), F: marshalTextureNode},
+		{T: externglib.Type(C.gsk_transform_node_get_type()), F: marshalTransformNode},
+		{T: externglib.Type(C.gsk_vulkan_renderer_get_type()), F: marshalVulkanRenderer},
 	})
 }
 

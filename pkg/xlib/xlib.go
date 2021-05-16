@@ -16,7 +16,17 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 
-		// Objects/Classes
+		// Records
+		// Skipped Display.
+		// Skipped Screen.
+		// Skipped Visual.
+		// Skipped XConfigureEvent.
+		// Skipped XImage.
+		// Skipped XFontStruct.
+		// Skipped XTrapezoid.
+		// Skipped XVisualInfo.
+		// Skipped XWindowAttributes.
+
 	})
 }
 

@@ -8,7 +8,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
-	"github.com/diamondburned/gotk4/pkg/gdkx11"
 	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/gotk3/gotk3/glib"
@@ -42,7 +41,73 @@ func init() {
 		{T: externglib.Type(C.gdk_touchpad_gesture_phase_get_type()), F: marshalTouchpadGesturePhase},
 		{T: externglib.Type(C.gdk_vulkan_error_get_type()), F: marshalVulkanError},
 
-		// Objects/Classes
+		// Records
+		{T: externglib.Type(C.gdk_content_formats_get_type()), F: marshalContentFormats},
+		{T: externglib.Type(C.gdk_content_formats_builder_get_type()), F: marshalContentFormatsBuilder},
+		// Skipped ContentProviderClass.
+		// Skipped DevicePadInterface.
+		// Skipped DragSurfaceInterface.
+		// Skipped DrawingContext.
+		{T: externglib.Type(C.gdk_event_sequence_get_type()), F: marshalEventSequence},
+		// Skipped FrameClockClass.
+		// Skipped FrameClockPrivate.
+		{T: externglib.Type(C.gdk_frame_timings_get_type()), F: marshalFrameTimings},
+		// Skipped GLTextureClass.
+		// Skipped KeymapKey.
+		// Skipped MemoryTextureClass.
+		// Skipped MonitorClass.
+		// Skipped PaintableInterface.
+		// Skipped PopupInterface.
+		{T: externglib.Type(C.gdk_popup_layout_get_type()), F: marshalPopupLayout},
+		{T: externglib.Type(C.gdk_rgba_get_type()), F: marshalRGBA},
+		{T: externglib.Type(C.gdk_rectangle_get_type()), F: marshalRectangle},
+		// Skipped SnapshotClass.
+		// Skipped SurfaceClass.
+		// Skipped TextureClass.
+		// Skipped TimeCoord.
+		// Skipped ToplevelInterface.
+		{T: externglib.Type(C.gdk_toplevel_layout_get_type()), F: marshalToplevelLayout},
+		// Skipped ToplevelSize.
+
+		// Classes
+		{T: externglib.Type(C.gdk_app_launch_context_get_type()), F: marshalAppLaunchContext},
+		{T: externglib.Type(C.gdk_button_event_get_type()), F: marshalButtonEvent},
+		{T: externglib.Type(C.gdk_cairo_context_get_type()), F: marshalCairoContext},
+		{T: externglib.Type(C.gdk_clipboard_get_type()), F: marshalClipboard},
+		{T: externglib.Type(C.gdk_content_deserializer_get_type()), F: marshalContentDeserializer},
+		{T: externglib.Type(C.gdk_content_provider_get_type()), F: marshalContentProvider},
+		{T: externglib.Type(C.gdk_content_serializer_get_type()), F: marshalContentSerializer},
+		{T: externglib.Type(C.gdk_crossing_event_get_type()), F: marshalCrossingEvent},
+		{T: externglib.Type(C.gdk_cursor_get_type()), F: marshalCursor},
+		{T: externglib.Type(C.gdk_dnd_event_get_type()), F: marshalDNDEvent},
+		{T: externglib.Type(C.gdk_delete_event_get_type()), F: marshalDeleteEvent},
+		{T: externglib.Type(C.gdk_device_get_type()), F: marshalDevice},
+		{T: externglib.Type(C.gdk_device_tool_get_type()), F: marshalDeviceTool},
+		{T: externglib.Type(C.gdk_display_get_type()), F: marshalDisplay},
+		{T: externglib.Type(C.gdk_display_manager_get_type()), F: marshalDisplayManager},
+		{T: externglib.Type(C.gdk_drag_get_type()), F: marshalDrag},
+		{T: externglib.Type(C.gdk_draw_context_get_type()), F: marshalDrawContext},
+		{T: externglib.Type(C.gdk_drop_get_type()), F: marshalDrop},
+		// Skipped Event.
+		{T: externglib.Type(C.gdk_focus_event_get_type()), F: marshalFocusEvent},
+		{T: externglib.Type(C.gdk_frame_clock_get_type()), F: marshalFrameClock},
+		{T: externglib.Type(C.gdk_gl_context_get_type()), F: marshalGLContext},
+		{T: externglib.Type(C.gdk_gl_texture_get_type()), F: marshalGLTexture},
+		{T: externglib.Type(C.gdk_grab_broken_event_get_type()), F: marshalGrabBrokenEvent},
+		{T: externglib.Type(C.gdk_key_event_get_type()), F: marshalKeyEvent},
+		{T: externglib.Type(C.gdk_memory_texture_get_type()), F: marshalMemoryTexture},
+		{T: externglib.Type(C.gdk_monitor_get_type()), F: marshalMonitor},
+		{T: externglib.Type(C.gdk_motion_event_get_type()), F: marshalMotionEvent},
+		{T: externglib.Type(C.gdk_pad_event_get_type()), F: marshalPadEvent},
+		{T: externglib.Type(C.gdk_proximity_event_get_type()), F: marshalProximityEvent},
+		{T: externglib.Type(C.gdk_scroll_event_get_type()), F: marshalScrollEvent},
+		{T: externglib.Type(C.gdk_seat_get_type()), F: marshalSeat},
+		{T: externglib.Type(C.gdk_snapshot_get_type()), F: marshalSnapshot},
+		{T: externglib.Type(C.gdk_surface_get_type()), F: marshalSurface},
+		{T: externglib.Type(C.gdk_texture_get_type()), F: marshalTexture},
+		{T: externglib.Type(C.gdk_touch_event_get_type()), F: marshalTouchEvent},
+		{T: externglib.Type(C.gdk_touchpad_event_get_type()), F: marshalTouchpadEvent},
+		{T: externglib.Type(C.gdk_vulkan_context_get_type()), F: marshalVulkanContext},
 	})
 }
 
@@ -847,7 +912,7 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGl(cr *cairo.Context, surface *gdkx11.X11Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
+func CairoDrawFromGl(cr *cairo.Context, surface *Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
 
 // CairoRectangle: adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle)

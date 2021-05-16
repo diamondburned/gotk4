@@ -40,7 +40,19 @@ func init() {
 		{T: externglib.Type(C.cairo_gobject_filter_get_type()), F: marshalFilter},
 		{T: externglib.Type(C.cairo_gobject_region_overlap_get_type()), F: marshalRegionOverlap},
 
-		// Objects/Classes
+		// Records
+		{T: externglib.Type(C.cairo_gobject_context_get_type()), F: marshalContext},
+		{T: externglib.Type(C.cairo_gobject_device_get_type()), F: marshalDevice},
+		{T: externglib.Type(C.cairo_gobject_surface_get_type()), F: marshalSurface},
+		// Skipped Matrix.
+		{T: externglib.Type(C.cairo_gobject_pattern_get_type()), F: marshalPattern},
+		{T: externglib.Type(C.cairo_gobject_region_get_type()), F: marshalRegion},
+		{T: externglib.Type(C.cairo_gobject_font_options_get_type()), F: marshalFontOptions},
+		{T: externglib.Type(C.cairo_gobject_font_face_get_type()), F: marshalFontFace},
+		{T: externglib.Type(C.cairo_gobject_scaled_font_get_type()), F: marshalScaledFont},
+		// Skipped Path.
+		{T: externglib.Type(C.cairo_gobject_rectangle_get_type()), F: marshalRectangle},
+		{T: externglib.Type(C.cairo_gobject_rectangle_int_get_type()), F: marshalRectangleInt},
 	})
 }
 

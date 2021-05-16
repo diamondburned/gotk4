@@ -21,7 +21,14 @@ import "C"
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 
-		// Objects/Classes
+		// Records
+		// Skipped RendererClass.
+		// Skipped RendererPrivate.
+
+		// Classes
+		{T: externglib.Type(C.pango_xft_font_get_type()), F: marshalFont},
+		{T: externglib.Type(C.pango_xft_font_map_get_type()), F: marshalFontMap},
+		{T: externglib.Type(C.pango_xft_renderer_get_type()), F: marshalRenderer},
 	})
 }
 

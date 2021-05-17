@@ -11,15 +11,21 @@ var classTmpl = newGoTemplate(`
 		{{ $.Ng.GoType (index .TypeTree 0) }}
 	}
 
-	func wrap{{ .GoName }}(obj *glib.Object) *{{ .GoName }} {
+	func wrap{{ .GoName }}(obj *externglib.Object) *{{ .GoName }} {
 		return {{ .Wrap "obj" }}
 	}
 
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
 		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-		obj := glib.Take(unsafe.Pointer(val))
+		obj := externglib.Take(unsafe.Pointer(val))
 		return wrapWidget(obj), nil
 	}
+
+	{{ range .Constructors }}
+	{{ with $tail := ($.CtorCall .CallableAttrs) }}
+	func New{{ $.GoName }}{{ $tail }}
+	{{ end }}
+	{{ end }}
 `)
 
 type classGenerator struct {
@@ -62,6 +68,16 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.GoName = PascalToGo(class.Name)
 
 	return true
+}
+
+// CtorCall generates a FnCall for a constructor.
+func (cg *classGenerator) CtorCall(attrs gir.CallableAttrs) string {
+	args, ok := cg.Ng.FnArgs(attrs)
+	if !ok {
+		return ""
+	}
+
+	return "(" + args + ") *" + cg.GoName
 }
 
 // Wrap returns the wrap string around the given variable name of type

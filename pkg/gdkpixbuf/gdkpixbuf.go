@@ -6,7 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/gotk3/gotk3/glib"
+	"github.com/diamondburned/gotk4/pkg/gio"
+	"github.com/diamondburned/gotk4/pkg/glib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -201,30 +202,64 @@ type Pixbuf struct {
 	*externglib.Object
 }
 
-func wrapPixbuf(obj *glib.Object) *Pixbuf {
+func wrapPixbuf(obj *externglib.Object) *Pixbuf {
 	return &Pixbuf{*externglib.Object{obj}}
 }
 
 func marshalPixbuf(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int) *Pixbuf
+
+func NewPixbuf(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) *Pixbuf
+
+func NewPixbuf(data []uint8, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int, destroyFn PixbufDestroyNotify, destroyFnData unsafe.Pointer) *Pixbuf
+
+func NewPixbuf(filename string) *Pixbuf
+
+func NewPixbuf(filename string, width int, height int, preserveAspectRatio bool) *Pixbuf
+
+func NewPixbuf(filename string, width int, height int) *Pixbuf
+
+func NewPixbuf(dataLength int, data []uint8, copyPixels bool) *Pixbuf
+
+func NewPixbuf(resourcePath string) *Pixbuf
+
+func NewPixbuf(resourcePath string, width int, height int, preserveAspectRatio bool) *Pixbuf
+
+func NewPixbuf(stream *gio.InputStream, cancellable *gio.Cancellable) *Pixbuf
+
+func NewPixbuf(stream *gio.InputStream, width int, height int, preserveAspectRatio bool, cancellable *gio.Cancellable) *Pixbuf
+
+func NewPixbuf(asyncResult gio.AsyncResult) *Pixbuf
+
+func NewPixbuf(data []string) *Pixbuf
 
 // PixbufAnimation: an opaque struct representing an animation.
 type PixbufAnimation struct {
 	*externglib.Object
 }
 
-func wrapPixbufAnimation(obj *glib.Object) *PixbufAnimation {
+func wrapPixbufAnimation(obj *externglib.Object) *PixbufAnimation {
 	return &PixbufAnimation{*externglib.Object{obj}}
 }
 
 func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewPixbufAnimation(filename string) *PixbufAnimation
+
+func NewPixbufAnimation(resourcePath string) *PixbufAnimation
+
+func NewPixbufAnimation(stream *gio.InputStream, cancellable *gio.Cancellable) *PixbufAnimation
+
+func NewPixbufAnimation(asyncResult gio.AsyncResult) *PixbufAnimation
 
 // PixbufAnimationIter: an opaque struct representing an iterator which points
 // to a certain position in an animation.
@@ -232,13 +267,13 @@ type PixbufAnimationIter struct {
 	*externglib.Object
 }
 
-func wrapPixbufAnimationIter(obj *glib.Object) *PixbufAnimationIter {
+func wrapPixbufAnimationIter(obj *externglib.Object) *PixbufAnimationIter {
 	return &PixbufAnimationIter{*externglib.Object{obj}}
 }
 
 func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -247,41 +282,49 @@ type PixbufLoader struct {
 	*externglib.Object
 }
 
-func wrapPixbufLoader(obj *glib.Object) *PixbufLoader {
+func wrapPixbufLoader(obj *externglib.Object) *PixbufLoader {
 	return &PixbufLoader{*externglib.Object{obj}}
 }
 
 func marshalPixbufLoader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewPixbufLoader() *PixbufLoader
+
+func NewPixbufLoader(mimeType string) *PixbufLoader
+
+func NewPixbufLoader(imageType string) *PixbufLoader
 
 // PixbufSimpleAnim: an opaque struct representing a simple animation.
 type PixbufSimpleAnim struct {
 	PixbufAnimation
 }
 
-func wrapPixbufSimpleAnim(obj *glib.Object) *PixbufSimpleAnim {
+func wrapPixbufSimpleAnim(obj *externglib.Object) *PixbufSimpleAnim {
 	return &PixbufSimpleAnim{PixbufAnimation{*externglib.Object{obj}}}
 }
 
 func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewPixbufSimpleAnim(width int, height int, rate float32) *PixbufSimpleAnim
 
 type PixbufSimpleAnimIter struct {
 	PixbufAnimationIter
 }
 
-func wrapPixbufSimpleAnimIter(obj *glib.Object) *PixbufSimpleAnimIter {
+func wrapPixbufSimpleAnimIter(obj *externglib.Object) *PixbufSimpleAnimIter {
 	return &PixbufSimpleAnimIter{PixbufAnimationIter{*externglib.Object{obj}}}
 }
 
 func marshalPixbufSimpleAnimIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }

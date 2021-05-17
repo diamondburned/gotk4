@@ -8,7 +8,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
-	"github.com/gotk3/gotk3/glib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -250,13 +249,13 @@ type Info struct {
 	*externglib.Object
 }
 
-func wrapInfo(obj *glib.Object) *Info {
+func wrapInfo(obj *externglib.Object) *Info {
 	return &Info{*externglib.Object{obj}}
 }
 
 func marshalInfo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -270,12 +269,18 @@ type Ruleset struct {
 	*externglib.Object
 }
 
-func wrapRuleset(obj *glib.Object) *Ruleset {
+func wrapRuleset(obj *externglib.Object) *Ruleset {
 	return &Ruleset{*externglib.Object{obj}}
 }
 
 func marshalRuleset(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewRuleset(info *Info) *Ruleset
+
+func NewRuleset(info *Info, script pango.Script, language *pango.Language) *Ruleset
+
+func NewRuleset(info *Info, desc *RulesetDescription) *Ruleset

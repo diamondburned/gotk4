@@ -42,14 +42,14 @@ func (fg *functionGenerator) Use(fn gir.Function) bool {
 	var ok bool
 
 	if fn.ReturnValue != nil {
-		fg.Return, ok = fg.ng.fnReturns(fn.CallableAttrs)
+		fg.Return, ok = fg.ng.FnReturns(fn.CallableAttrs)
 		if !ok {
 			return false
 		}
 	}
 
 	if fn.Parameters != nil {
-		fg.Args, ok = fg.ng.fnArgs(fn.CallableAttrs)
+		fg.Args, ok = fg.ng.FnArgs(fn.CallableAttrs)
 		if !ok {
 			return false
 		}
@@ -65,12 +65,12 @@ func (fg *functionGenerator) Use(fn gir.Function) bool {
 //                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // An empty string is returned if the function cannot be generated.
 func (ng *NamespaceGenerator) FnCall(attrs gir.CallableAttrs) string {
-	args, ok := ng.fnArgs(attrs)
+	args, ok := ng.FnArgs(attrs)
 	if !ok {
 		return ""
 	}
 
-	returns, ok := ng.fnReturns(attrs)
+	returns, ok := ng.FnReturns(attrs)
 	if !ok {
 		return ""
 	}
@@ -78,9 +78,9 @@ func (ng *NamespaceGenerator) FnCall(attrs gir.CallableAttrs) string {
 	return "(" + args + ") " + returns
 }
 
-// fnArgs returns the function arguments as a Go string and true. It returns
+// FnArgs returns the function arguments as a Go string and true. It returns
 // false if the argument types cannot be fully resolved.
-func (ng *NamespaceGenerator) fnArgs(attrs gir.CallableAttrs) (string, bool) {
+func (ng *NamespaceGenerator) FnArgs(attrs gir.CallableAttrs) (string, bool) {
 	if attrs.Parameters == nil || len(attrs.Parameters.Parameters) == 0 {
 		return "", true
 	}
@@ -105,9 +105,9 @@ func (ng *NamespaceGenerator) fnArgs(attrs gir.CallableAttrs) (string, bool) {
 	return strings.Join(goArgs, ", "), true
 }
 
-// fnReturns returns the function return type and true. It returns false if the
+// FnReturns returns the function return type and true. It returns false if the
 // function's return type cannot be resolved.
-func (ng *NamespaceGenerator) fnReturns(attrs gir.CallableAttrs) (string, bool) {
+func (ng *NamespaceGenerator) FnReturns(attrs gir.CallableAttrs) (string, bool) {
 	var returns []string
 
 	if attrs.Parameters != nil {

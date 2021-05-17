@@ -9,7 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/pangofc"
 	"github.com/diamondburned/gotk4/pkg/xft"
 	"github.com/diamondburned/gotk4/pkg/xlib"
-	"github.com/gotk3/gotk3/glib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -82,13 +81,13 @@ type Font struct {
 	pangofc.Font
 }
 
-func wrapFont(obj *glib.Object) *Font {
+func wrapFont(obj *externglib.Object) *Font {
 	return &Font{Font{Font{*externglib.Object{obj}}}}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -98,13 +97,13 @@ type FontMap struct {
 	pangofc.FontMap
 }
 
-func wrapFontMap(obj *glib.Object) *FontMap {
+func wrapFontMap(obj *externglib.Object) *FontMap {
 	return &FontMap{FontMap{FontMap{*externglib.Object{obj}}}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -115,12 +114,14 @@ type Renderer struct {
 	pango.Renderer
 }
 
-func wrapRenderer(obj *glib.Object) *Renderer {
+func wrapRenderer(obj *externglib.Object) *Renderer {
 	return &Renderer{Renderer{*externglib.Object{obj}}}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewRenderer(display *xlib.Display, screen int) *Renderer

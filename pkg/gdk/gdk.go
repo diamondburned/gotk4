@@ -8,9 +8,10 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
+	"github.com/diamondburned/gotk4/pkg/gdkx11"
 	"github.com/diamondburned/gotk4/pkg/gio"
+	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/gotk3/gotk3/glib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -912,7 +913,7 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGl(cr *cairo.Context, surface *Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
+func CairoDrawFromGl(cr *cairo.Context, surface *gdkx11.X11Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
 
 // CairoRectangle: adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle)
@@ -1533,13 +1534,13 @@ type AppLaunchContext struct {
 	gio.AppLaunchContext
 }
 
-func wrapAppLaunchContext(obj *glib.Object) *AppLaunchContext {
+func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{AppLaunchContext{*externglib.Object{obj}}}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1548,13 +1549,13 @@ type ButtonEvent struct {
 	Event
 }
 
-func wrapButtonEvent(obj *glib.Object) *ButtonEvent {
+func wrapButtonEvent(obj *externglib.Object) *ButtonEvent {
 	return &ButtonEvent{Event{obj}}
 }
 
 func marshalButtonEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1568,13 +1569,13 @@ type CairoContext struct {
 	DrawContext
 }
 
-func wrapCairoContext(obj *glib.Object) *CairoContext {
+func wrapCairoContext(obj *externglib.Object) *CairoContext {
 	return &CairoContext{DrawContext{*externglib.Object{obj}}}
 }
 
 func marshalCairoContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1596,13 +1597,13 @@ type Clipboard struct {
 	*externglib.Object
 }
 
-func wrapClipboard(obj *glib.Object) *Clipboard {
+func wrapClipboard(obj *externglib.Object) *Clipboard {
 	return &Clipboard{*externglib.Object{obj}}
 }
 
 func marshalClipboard(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1612,13 +1613,13 @@ type ContentDeserializer struct {
 	*externglib.Object
 }
 
-func wrapContentDeserializer(obj *glib.Object) *ContentDeserializer {
+func wrapContentDeserializer(obj *externglib.Object) *ContentDeserializer {
 	return &ContentDeserializer{*externglib.Object{obj}}
 }
 
 func marshalContentDeserializer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1635,15 +1636,21 @@ type ContentProvider struct {
 	*externglib.Object
 }
 
-func wrapContentProvider(obj *glib.Object) *ContentProvider {
+func wrapContentProvider(obj *externglib.Object) *ContentProvider {
 	return &ContentProvider{*externglib.Object{obj}}
 }
 
 func marshalContentProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewContentProvider(mimeType string, bytes *glib.Bytes) *ContentProvider
+
+func NewContentProvider(value *externglib.Value) *ContentProvider
+
+func NewContentProvider(providers []*ContentProvider, nProviders uint) *ContentProvider
 
 // ContentSerializer: a GdkContentSerializer is used to serialize content for
 // inter-application data transfers.
@@ -1651,13 +1658,13 @@ type ContentSerializer struct {
 	*externglib.Object
 }
 
-func wrapContentSerializer(obj *glib.Object) *ContentSerializer {
+func wrapContentSerializer(obj *externglib.Object) *ContentSerializer {
 	return &ContentSerializer{*externglib.Object{obj}}
 }
 
 func marshalContentSerializer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1666,13 +1673,13 @@ type CrossingEvent struct {
 	Event
 }
 
-func wrapCrossingEvent(obj *glib.Object) *CrossingEvent {
+func wrapCrossingEvent(obj *externglib.Object) *CrossingEvent {
 	return &CrossingEvent{Event{obj}}
 }
 
 func marshalCrossingEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1684,28 +1691,32 @@ type Cursor struct {
 	*externglib.Object
 }
 
-func wrapCursor(obj *glib.Object) *Cursor {
+func wrapCursor(obj *externglib.Object) *Cursor {
 	return &Cursor{*externglib.Object{obj}}
 }
 
 func marshalCursor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewCursor(name string, fallback *Cursor) *Cursor
+
+func NewCursor(texture *Texture, hotspotX int, hotspotY int, fallback *Cursor) *Cursor
 
 // DNDEvent: an event related to drag and drop operations.
 type DNDEvent struct {
 	Event
 }
 
-func wrapDNDEvent(obj *glib.Object) *DNDEvent {
+func wrapDNDEvent(obj *externglib.Object) *DNDEvent {
 	return &DNDEvent{Event{obj}}
 }
 
 func marshalDNDEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1714,13 +1725,13 @@ type DeleteEvent struct {
 	Event
 }
 
-func wrapDeleteEvent(obj *glib.Object) *DeleteEvent {
+func wrapDeleteEvent(obj *externglib.Object) *DeleteEvent {
 	return &DeleteEvent{Event{obj}}
 }
 
 func marshalDeleteEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1733,13 +1744,13 @@ type Device struct {
 	*externglib.Object
 }
 
-func wrapDevice(obj *glib.Object) *Device {
+func wrapDevice(obj *externglib.Object) *Device {
 	return &Device{*externglib.Object{obj}}
 }
 
 func marshalDevice(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1748,13 +1759,13 @@ type DeviceTool struct {
 	*externglib.Object
 }
 
-func wrapDeviceTool(obj *glib.Object) *DeviceTool {
+func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
 	return &DeviceTool{*externglib.Object{obj}}
 }
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1774,13 +1785,13 @@ type Display struct {
 	*externglib.Object
 }
 
-func wrapDisplay(obj *glib.Object) *Display {
+func wrapDisplay(obj *externglib.Object) *Display {
 	return &Display{*externglib.Object{obj}}
 }
 
 func marshalDisplay(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1823,13 +1834,13 @@ type DisplayManager struct {
 	*externglib.Object
 }
 
-func wrapDisplayManager(obj *glib.Object) *DisplayManager {
+func wrapDisplayManager(obj *externglib.Object) *DisplayManager {
 	return &DisplayManager{*externglib.Object{obj}}
 }
 
 func marshalDisplayManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1839,13 +1850,13 @@ type Drag struct {
 	*externglib.Object
 }
 
-func wrapDrag(obj *glib.Object) *Drag {
+func wrapDrag(obj *externglib.Object) *Drag {
 	return &Drag{*externglib.Object{obj}}
 }
 
 func marshalDrag(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1860,13 +1871,13 @@ type DrawContext struct {
 	*externglib.Object
 }
 
-func wrapDrawContext(obj *glib.Object) *DrawContext {
+func wrapDrawContext(obj *externglib.Object) *DrawContext {
 	return &DrawContext{*externglib.Object{obj}}
 }
 
 func marshalDrawContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1876,13 +1887,13 @@ type Drop struct {
 	*externglib.Object
 }
 
-func wrapDrop(obj *glib.Object) *Drop {
+func wrapDrop(obj *externglib.Object) *Drop {
 	return &Drop{*externglib.Object{obj}}
 }
 
 func marshalDrop(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1891,13 +1902,13 @@ type FocusEvent struct {
 	Event
 }
 
-func wrapFocusEvent(obj *glib.Object) *FocusEvent {
+func wrapFocusEvent(obj *externglib.Object) *FocusEvent {
 	return &FocusEvent{Event{obj}}
 }
 
 func marshalFocusEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1934,13 +1945,13 @@ type FrameClock struct {
 	*externglib.Object
 }
 
-func wrapFrameClock(obj *glib.Object) *FrameClock {
+func wrapFrameClock(obj *externglib.Object) *FrameClock {
 	return &FrameClock{*externglib.Object{obj}}
 }
 
 func marshalFrameClock(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -1994,13 +2005,13 @@ type GLContext struct {
 	DrawContext
 }
 
-func wrapGLContext(obj *glib.Object) *GLContext {
+func wrapGLContext(obj *externglib.Object) *GLContext {
 	return &GLContext{DrawContext{*externglib.Object{obj}}}
 }
 
 func marshalGLContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2009,28 +2020,30 @@ type GLTexture struct {
 	Texture
 }
 
-func wrapGLTexture(obj *glib.Object) *GLTexture {
+func wrapGLTexture(obj *externglib.Object) *GLTexture {
 	return &GLTexture{Texture{*externglib.Object{obj}}}
 }
 
 func marshalGLTexture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewGLTexture(context *GLContext, id uint, width int, height int, destroy unsafe.Pointer, data unsafe.Pointer) *GLTexture
 
 // GrabBrokenEvent: an event related to a broken windowing system grab.
 type GrabBrokenEvent struct {
 	Event
 }
 
-func wrapGrabBrokenEvent(obj *glib.Object) *GrabBrokenEvent {
+func wrapGrabBrokenEvent(obj *externglib.Object) *GrabBrokenEvent {
 	return &GrabBrokenEvent{Event{obj}}
 }
 
 func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2039,13 +2052,13 @@ type KeyEvent struct {
 	Event
 }
 
-func wrapKeyEvent(obj *glib.Object) *KeyEvent {
+func wrapKeyEvent(obj *externglib.Object) *KeyEvent {
 	return &KeyEvent{Event{obj}}
 }
 
 func marshalKeyEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2054,15 +2067,17 @@ type MemoryTexture struct {
 	Texture
 }
 
-func wrapMemoryTexture(obj *glib.Object) *MemoryTexture {
+func wrapMemoryTexture(obj *externglib.Object) *MemoryTexture {
 	return &MemoryTexture{Texture{*externglib.Object{obj}}}
 }
 
 func marshalMemoryTexture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) *MemoryTexture
 
 // Monitor: gdkMonitor objects represent the individual outputs that are
 // associated with a Display. GdkDisplay keeps a Model to enumerate and monitor
@@ -2072,13 +2087,13 @@ type Monitor struct {
 	*externglib.Object
 }
 
-func wrapMonitor(obj *glib.Object) *Monitor {
+func wrapMonitor(obj *externglib.Object) *Monitor {
 	return &Monitor{*externglib.Object{obj}}
 }
 
 func marshalMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2087,13 +2102,13 @@ type MotionEvent struct {
 	Event
 }
 
-func wrapMotionEvent(obj *glib.Object) *MotionEvent {
+func wrapMotionEvent(obj *externglib.Object) *MotionEvent {
 	return &MotionEvent{Event{obj}}
 }
 
 func marshalMotionEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2102,13 +2117,13 @@ type PadEvent struct {
 	Event
 }
 
-func wrapPadEvent(obj *glib.Object) *PadEvent {
+func wrapPadEvent(obj *externglib.Object) *PadEvent {
 	return &PadEvent{Event{obj}}
 }
 
 func marshalPadEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2117,13 +2132,13 @@ type ProximityEvent struct {
 	Event
 }
 
-func wrapProximityEvent(obj *glib.Object) *ProximityEvent {
+func wrapProximityEvent(obj *externglib.Object) *ProximityEvent {
 	return &ProximityEvent{Event{obj}}
 }
 
 func marshalProximityEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2132,13 +2147,13 @@ type ScrollEvent struct {
 	Event
 }
 
-func wrapScrollEvent(obj *glib.Object) *ScrollEvent {
+func wrapScrollEvent(obj *externglib.Object) *ScrollEvent {
 	return &ScrollEvent{Event{obj}}
 }
 
 func marshalScrollEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2148,13 +2163,13 @@ type Seat struct {
 	*externglib.Object
 }
 
-func wrapSeat(obj *glib.Object) *Seat {
+func wrapSeat(obj *externglib.Object) *Seat {
 	return &Seat{*externglib.Object{obj}}
 }
 
 func marshalSeat(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2163,13 +2178,13 @@ type Snapshot struct {
 	*externglib.Object
 }
 
-func wrapSnapshot(obj *glib.Object) *Snapshot {
+func wrapSnapshot(obj *externglib.Object) *Snapshot {
 	return &Snapshot{*externglib.Object{obj}}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2185,43 +2200,53 @@ type Surface struct {
 	*externglib.Object
 }
 
-func wrapSurface(obj *glib.Object) *Surface {
+func wrapSurface(obj *externglib.Object) *Surface {
 	return &Surface{*externglib.Object{obj}}
 }
 
 func marshalSurface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSurface(parent *gdkx11.X11Surface, autohide bool) *Surface
+
+func NewSurface(display *gdkx11.X11Display) *Surface
 
 // Texture: the `GdkTexture` structure contains only private data.
 type Texture struct {
 	*externglib.Object
 }
 
-func wrapTexture(obj *glib.Object) *Texture {
+func wrapTexture(obj *externglib.Object) *Texture {
 	return &Texture{*externglib.Object{obj}}
 }
 
 func marshalTexture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewTexture(pixbuf *gdkpixbuf.Pixbuf) *Texture
+
+func NewTexture(file gio.File) *Texture
+
+func NewTexture(resourcePath string) *Texture
 
 // TouchEvent: an event related to a touch-based device.
 type TouchEvent struct {
 	Event
 }
 
-func wrapTouchEvent(obj *glib.Object) *TouchEvent {
+func wrapTouchEvent(obj *externglib.Object) *TouchEvent {
 	return &TouchEvent{Event{obj}}
 }
 
 func marshalTouchEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2230,13 +2255,13 @@ type TouchpadEvent struct {
 	Event
 }
 
-func wrapTouchpadEvent(obj *glib.Object) *TouchpadEvent {
+func wrapTouchpadEvent(obj *externglib.Object) *TouchpadEvent {
 	return &TouchpadEvent{Event{obj}}
 }
 
 func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2253,12 +2278,12 @@ type VulkanContext struct {
 	DrawContext
 }
 
-func wrapVulkanContext(obj *glib.Object) *VulkanContext {
+func wrapVulkanContext(obj *externglib.Object) *VulkanContext {
 	return &VulkanContext{DrawContext{*externglib.Object{obj}}}
 }
 
 func marshalVulkanContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }

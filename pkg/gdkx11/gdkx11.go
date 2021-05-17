@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/gdk"
 	"github.com/diamondburned/gotk4/pkg/xlib"
-	"github.com/gotk3/gotk3/glib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -70,7 +69,7 @@ func X11FreeCompoundText(ctext uint8)
 func X11FreeTextList(list string)
 
 // X11GetServerTime: routine to get the current X server time stamp.
-func X11GetServerTime(surface *gdk.Surface) uint32
+func X11GetServerTime(surface *X11Surface) uint32
 
 // X11GetXatomByNameForDisplay: returns the X atom for a Display corresponding
 // to @atom_name. This function caches the result, so if called repeatedly it is
@@ -99,13 +98,13 @@ type X11AppLaunchContext struct {
 	gdk.AppLaunchContext
 }
 
-func wrapX11AppLaunchContext(obj *glib.Object) *X11AppLaunchContext {
+func wrapX11AppLaunchContext(obj *externglib.Object) *X11AppLaunchContext {
 	return &X11AppLaunchContext{AppLaunchContext{AppLaunchContext{*externglib.Object{obj}}}}
 }
 
 func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -113,13 +112,13 @@ type X11DeviceManagerXI2 struct {
 	*externglib.Object
 }
 
-func wrapX11DeviceManagerXI2(obj *glib.Object) *X11DeviceManagerXI2 {
+func wrapX11DeviceManagerXI2(obj *externglib.Object) *X11DeviceManagerXI2 {
 	return &X11DeviceManagerXI2{*externglib.Object{obj}}
 }
 
 func marshalX11DeviceManagerXI2(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -127,13 +126,13 @@ type X11DeviceXI2 struct {
 	gdk.Device
 }
 
-func wrapX11DeviceXI2(obj *glib.Object) *X11DeviceXI2 {
+func wrapX11DeviceXI2(obj *externglib.Object) *X11DeviceXI2 {
 	return &X11DeviceXI2{Device{*externglib.Object{obj}}}
 }
 
 func marshalX11DeviceXI2(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -141,13 +140,13 @@ type X11Display struct {
 	gdk.Display
 }
 
-func wrapX11Display(obj *glib.Object) *X11Display {
+func wrapX11Display(obj *externglib.Object) *X11Display {
 	return &X11Display{Display{*externglib.Object{obj}}}
 }
 
 func marshalX11Display(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -155,13 +154,13 @@ type X11Drag struct {
 	gdk.Drag
 }
 
-func wrapX11Drag(obj *glib.Object) *X11Drag {
+func wrapX11Drag(obj *externglib.Object) *X11Drag {
 	return &X11Drag{Drag{*externglib.Object{obj}}}
 }
 
 func marshalX11Drag(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -169,13 +168,13 @@ type X11Monitor struct {
 	gdk.Monitor
 }
 
-func wrapX11Monitor(obj *glib.Object) *X11Monitor {
+func wrapX11Monitor(obj *externglib.Object) *X11Monitor {
 	return &X11Monitor{Monitor{*externglib.Object{obj}}}
 }
 
 func marshalX11Monitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -183,13 +182,13 @@ type X11Screen struct {
 	*externglib.Object
 }
 
-func wrapX11Screen(obj *glib.Object) *X11Screen {
+func wrapX11Screen(obj *externglib.Object) *X11Screen {
 	return &X11Screen{*externglib.Object{obj}}
 }
 
 func marshalX11Screen(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -197,12 +196,12 @@ type X11Surface struct {
 	gdk.Surface
 }
 
-func wrapX11Surface(obj *glib.Object) *X11Surface {
+func wrapX11Surface(obj *externglib.Object) *X11Surface {
 	return &X11Surface{Surface{*externglib.Object{obj}}}
 }
 
 func marshalX11Surface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }

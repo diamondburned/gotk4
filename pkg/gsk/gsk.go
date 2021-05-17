@@ -7,7 +7,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gdk"
+	"github.com/diamondburned/gotk4/pkg/gdkx11"
+	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/graphene"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -556,89 +559,101 @@ type BlendNode struct {
 	RenderNode
 }
 
-func wrapBlendNode(obj *glib.Object) *BlendNode {
+func wrapBlendNode(obj *externglib.Object) *BlendNode {
 	return &BlendNode{RenderNode{obj}}
 }
 
 func marshalBlendNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewBlendNode(bottom *RenderNode, top *RenderNode, blendMode BlendMode) *BlendNode
 
 // BlurNode: a render node applying a blur effect to its single child.
 type BlurNode struct {
 	RenderNode
 }
 
-func wrapBlurNode(obj *glib.Object) *BlurNode {
+func wrapBlurNode(obj *externglib.Object) *BlurNode {
 	return &BlurNode{RenderNode{obj}}
 }
 
 func marshalBlurNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewBlurNode(child *RenderNode, radius float32) *BlurNode
 
 // BorderNode: a render node for a border.
 type BorderNode struct {
 	RenderNode
 }
 
-func wrapBorderNode(obj *glib.Object) *BorderNode {
+func wrapBorderNode(obj *externglib.Object) *BorderNode {
 	return &BorderNode{RenderNode{obj}}
 }
 
 func marshalBorderNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) *BorderNode
 
 // CairoNode: a render node for a Cairo surface.
 type CairoNode struct {
 	RenderNode
 }
 
-func wrapCairoNode(obj *glib.Object) *CairoNode {
+func wrapCairoNode(obj *externglib.Object) *CairoNode {
 	return &CairoNode{RenderNode{obj}}
 }
 
 func marshalCairoNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewCairoNode(bounds *graphene.Rect) *CairoNode
 
 type CairoRenderer struct {
 	Renderer
 }
 
-func wrapCairoRenderer(obj *glib.Object) *CairoRenderer {
+func wrapCairoRenderer(obj *externglib.Object) *CairoRenderer {
 	return &CairoRenderer{Renderer{*externglib.Object{obj}}}
 }
 
 func marshalCairoRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewCairoRenderer() *CairoRenderer
 
 // ClipNode: a render node applying a rectangular clip to its single child node.
 type ClipNode struct {
 	RenderNode
 }
 
-func wrapClipNode(obj *glib.Object) *ClipNode {
+func wrapClipNode(obj *externglib.Object) *ClipNode {
 	return &ClipNode{RenderNode{obj}}
 }
 
 func marshalClipNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewClipNode(child *RenderNode, clip *graphene.Rect) *ClipNode
 
 // ColorMatrixNode: a render node controlling the color matrix of its single
 // child node.
@@ -646,75 +661,85 @@ type ColorMatrixNode struct {
 	RenderNode
 }
 
-func wrapColorMatrixNode(obj *glib.Object) *ColorMatrixNode {
+func wrapColorMatrixNode(obj *externglib.Object) *ColorMatrixNode {
 	return &ColorMatrixNode{RenderNode{obj}}
 }
 
 func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewColorMatrixNode(child *RenderNode, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) *ColorMatrixNode
 
 // ColorNode: a render node for a solid color.
 type ColorNode struct {
 	RenderNode
 }
 
-func wrapColorNode(obj *glib.Object) *ColorNode {
+func wrapColorNode(obj *externglib.Object) *ColorNode {
 	return &ColorNode{RenderNode{obj}}
 }
 
 func marshalColorNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) *ColorNode
 
 // ConicGradientNode: a render node for a conic gradient.
 type ConicGradientNode struct {
 	RenderNode
 }
 
-func wrapConicGradientNode(obj *glib.Object) *ConicGradientNode {
+func wrapConicGradientNode(obj *externglib.Object) *ConicGradientNode {
 	return &ConicGradientNode{RenderNode{obj}}
 }
 
 func marshalConicGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop, nColorStops uint) *ConicGradientNode
 
 // ContainerNode: a render node that can contain other render nodes.
 type ContainerNode struct {
 	RenderNode
 }
 
-func wrapContainerNode(obj *glib.Object) *ContainerNode {
+func wrapContainerNode(obj *externglib.Object) *ContainerNode {
 	return &ContainerNode{RenderNode{obj}}
 }
 
 func marshalContainerNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewContainerNode(children []*RenderNode, nChildren uint) *ContainerNode
 
 // CrossFadeNode: a render node cross fading between two child nodes.
 type CrossFadeNode struct {
 	RenderNode
 }
 
-func wrapCrossFadeNode(obj *glib.Object) *CrossFadeNode {
+func wrapCrossFadeNode(obj *externglib.Object) *CrossFadeNode {
 	return &CrossFadeNode{RenderNode{obj}}
 }
 
 func marshalCrossFadeNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewCrossFadeNode(start *RenderNode, end *RenderNode, progress float32) *CrossFadeNode
 
 // DebugNode: a render node that emits a debugging message when drawing its
 // child node.
@@ -722,44 +747,52 @@ type DebugNode struct {
 	RenderNode
 }
 
-func wrapDebugNode(obj *glib.Object) *DebugNode {
+func wrapDebugNode(obj *externglib.Object) *DebugNode {
 	return &DebugNode{RenderNode{obj}}
 }
 
 func marshalDebugNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDebugNode(child *RenderNode, message string) *DebugNode
 
 type GLRenderer struct {
 	Renderer
 }
 
-func wrapGLRenderer(obj *glib.Object) *GLRenderer {
+func wrapGLRenderer(obj *externglib.Object) *GLRenderer {
 	return &GLRenderer{Renderer{*externglib.Object{obj}}}
 }
 
 func marshalGLRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewGLRenderer() *GLRenderer
 
 // GLShader: an object representing a GL shader program.
 type GLShader struct {
 	*externglib.Object
 }
 
-func wrapGLShader(obj *glib.Object) *GLShader {
+func wrapGLShader(obj *externglib.Object) *GLShader {
 	return &GLShader{*externglib.Object{obj}}
 }
 
 func marshalGLShader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewGLShader(sourcecode *glib.Bytes) *GLShader
+
+func NewGLShader(resourcePath string) *GLShader
 
 // GLShaderNode: a render node using a GL shader when drawing its children
 // nodes.
@@ -767,90 +800,102 @@ type GLShaderNode struct {
 	RenderNode
 }
 
-func wrapGLShaderNode(obj *glib.Object) *GLShaderNode {
+func wrapGLShaderNode(obj *externglib.Object) *GLShaderNode {
 	return &GLShaderNode{RenderNode{obj}}
 }
 
 func marshalGLShaderNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewGLShaderNode(shader *GLShader, bounds *graphene.Rect, args *glib.Bytes, children []*RenderNode, nChildren uint) *GLShaderNode
 
 // InsetShadowNode: a render node for an inset shadow.
 type InsetShadowNode struct {
 	RenderNode
 }
 
-func wrapInsetShadowNode(obj *glib.Object) *InsetShadowNode {
+func wrapInsetShadowNode(obj *externglib.Object) *InsetShadowNode {
 	return &InsetShadowNode{RenderNode{obj}}
 }
 
 func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) *InsetShadowNode
 
 // LinearGradientNode: a render node for a linear gradient.
 type LinearGradientNode struct {
 	RenderNode
 }
 
-func wrapLinearGradientNode(obj *glib.Object) *LinearGradientNode {
+func wrapLinearGradientNode(obj *externglib.Object) *LinearGradientNode {
 	return &LinearGradientNode{RenderNode{obj}}
 }
 
 func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop, nColorStops uint) *LinearGradientNode
 
 // OpacityNode: a render node controlling the opacity of its single child node.
 type OpacityNode struct {
 	RenderNode
 }
 
-func wrapOpacityNode(obj *glib.Object) *OpacityNode {
+func wrapOpacityNode(obj *externglib.Object) *OpacityNode {
 	return &OpacityNode{RenderNode{obj}}
 }
 
 func marshalOpacityNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewOpacityNode(child *RenderNode, opacity float32) *OpacityNode
 
 // OutsetShadowNode: a render node for an outset shadow.
 type OutsetShadowNode struct {
 	RenderNode
 }
 
-func wrapOutsetShadowNode(obj *glib.Object) *OutsetShadowNode {
+func wrapOutsetShadowNode(obj *externglib.Object) *OutsetShadowNode {
 	return &OutsetShadowNode{RenderNode{obj}}
 }
 
 func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) *OutsetShadowNode
 
 // RadialGradientNode: a render node for a radial gradient.
 type RadialGradientNode struct {
 	RenderNode
 }
 
-func wrapRadialGradientNode(obj *glib.Object) *RadialGradientNode {
+func wrapRadialGradientNode(obj *externglib.Object) *RadialGradientNode {
 	return &RadialGradientNode{RenderNode{obj}}
 }
 
 func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop, nColorStops uint) *RadialGradientNode
 
 // Renderer: base type for the object managing the rendering pipeline for a
 // Surface.
@@ -858,60 +903,68 @@ type Renderer struct {
 	*externglib.Object
 }
 
-func wrapRenderer(obj *glib.Object) *Renderer {
+func wrapRenderer(obj *externglib.Object) *Renderer {
 	return &Renderer{*externglib.Object{obj}}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewRenderer(surface *gdkx11.X11Surface) *Renderer
 
 // RepeatNode: a render node repeating its single child node.
 type RepeatNode struct {
 	RenderNode
 }
 
-func wrapRepeatNode(obj *glib.Object) *RepeatNode {
+func wrapRepeatNode(obj *externglib.Object) *RepeatNode {
 	return &RepeatNode{RenderNode{obj}}
 }
 
 func marshalRepeatNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewRepeatNode(bounds *graphene.Rect, child *RenderNode, childBounds *graphene.Rect) *RepeatNode
 
 // RepeatingLinearGradientNode: a render node for a repeating linear gradient.
 type RepeatingLinearGradientNode struct {
 	RenderNode
 }
 
-func wrapRepeatingLinearGradientNode(obj *glib.Object) *RepeatingLinearGradientNode {
+func wrapRepeatingLinearGradientNode(obj *externglib.Object) *RepeatingLinearGradientNode {
 	return &RepeatingLinearGradientNode{RenderNode{obj}}
 }
 
 func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop, nColorStops uint) *RepeatingLinearGradientNode
 
 // RepeatingRadialGradientNode: a render node for a repeating radial gradient.
 type RepeatingRadialGradientNode struct {
 	RenderNode
 }
 
-func wrapRepeatingRadialGradientNode(obj *glib.Object) *RepeatingRadialGradientNode {
+func wrapRepeatingRadialGradientNode(obj *externglib.Object) *RepeatingRadialGradientNode {
 	return &RepeatingRadialGradientNode{RenderNode{obj}}
 }
 
 func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop, nColorStops uint) *RepeatingRadialGradientNode
 
 // RoundedClipNode: a render node applying a rounded rectangle clip to its
 // single child.
@@ -919,15 +972,17 @@ type RoundedClipNode struct {
 	RenderNode
 }
 
-func wrapRoundedClipNode(obj *glib.Object) *RoundedClipNode {
+func wrapRoundedClipNode(obj *externglib.Object) *RoundedClipNode {
 	return &RoundedClipNode{RenderNode{obj}}
 }
 
 func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewRoundedClipNode(child *RenderNode, clip *RoundedRect) *RoundedClipNode
 
 // ShadowNode: a render node drawing one or more shadows behind its single child
 // node.
@@ -935,71 +990,81 @@ type ShadowNode struct {
 	RenderNode
 }
 
-func wrapShadowNode(obj *glib.Object) *ShadowNode {
+func wrapShadowNode(obj *externglib.Object) *ShadowNode {
 	return &ShadowNode{RenderNode{obj}}
 }
 
 func marshalShadowNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewShadowNode(child *RenderNode, shadows []Shadow, nShadows uint) *ShadowNode
 
 // TextNode: a render node drawing a set of glyphs.
 type TextNode struct {
 	RenderNode
 }
 
-func wrapTextNode(obj *glib.Object) *TextNode {
+func wrapTextNode(obj *externglib.Object) *TextNode {
 	return &TextNode{RenderNode{obj}}
 }
 
 func marshalTextNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewTextNode(font *pango.Font, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) *TextNode
 
 // TextureNode: a render node for a Texture.
 type TextureNode struct {
 	RenderNode
 }
 
-func wrapTextureNode(obj *glib.Object) *TextureNode {
+func wrapTextureNode(obj *externglib.Object) *TextureNode {
 	return &TextureNode{RenderNode{obj}}
 }
 
 func marshalTextureNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewTextureNode(texture *gdk.Texture, bounds *graphene.Rect) *TextureNode
 
 // TransformNode: a render node applying a Transform to its single child node.
 type TransformNode struct {
 	RenderNode
 }
 
-func wrapTransformNode(obj *glib.Object) *TransformNode {
+func wrapTransformNode(obj *externglib.Object) *TransformNode {
 	return &TransformNode{RenderNode{obj}}
 }
 
 func marshalTransformNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewTransformNode(child *RenderNode, transform *Transform) *TransformNode
 
 type VulkanRenderer struct {
 	Renderer
 }
 
-func wrapVulkanRenderer(obj *glib.Object) *VulkanRenderer {
+func wrapVulkanRenderer(obj *externglib.Object) *VulkanRenderer {
 	return &VulkanRenderer{Renderer{*externglib.Object{obj}}}
 }
 
 func marshalVulkanRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewVulkanRenderer() *VulkanRenderer

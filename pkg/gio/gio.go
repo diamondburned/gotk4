@@ -4866,13 +4866,13 @@ type AppInfoMonitor struct {
 	*externglib.Object
 }
 
-func wrapAppInfoMonitor(obj *glib.Object) *AppInfoMonitor {
+func wrapAppInfoMonitor(obj *externglib.Object) *AppInfoMonitor {
 	return &AppInfoMonitor{*externglib.Object{obj}}
 }
 
 func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -4883,15 +4883,17 @@ type AppLaunchContext struct {
 	*externglib.Object
 }
 
-func wrapAppLaunchContext(obj *glib.Object) *AppLaunchContext {
+func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
 	return &AppLaunchContext{*externglib.Object{obj}}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewAppLaunchContext() *AppLaunchContext
 
 // Application: a #GApplication is the foundation of an application. It wraps
 // some low-level platform-specific services and is intended to act as the
@@ -5003,15 +5005,17 @@ type Application struct {
 	*externglib.Object
 }
 
-func wrapApplication(obj *glib.Object) *Application {
+func wrapApplication(obj *externglib.Object) *Application {
 	return &Application{*externglib.Object{obj}}
 }
 
 func marshalApplication(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewApplication(applicationID string, flags ApplicationFlags) *Application
 
 // ApplicationCommandLine: GApplicationCommandLine represents a command-line
 // invocation of an application. It is created by #GApplication and emitted in
@@ -5118,13 +5122,13 @@ type ApplicationCommandLine struct {
 	*externglib.Object
 }
 
-func wrapApplicationCommandLine(obj *glib.Object) *ApplicationCommandLine {
+func wrapApplicationCommandLine(obj *externglib.Object) *ApplicationCommandLine {
 	return &ApplicationCommandLine{*externglib.Object{obj}}
 }
 
 func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -5146,15 +5150,19 @@ type BufferedInputStream struct {
 	FilterInputStream
 }
 
-func wrapBufferedInputStream(obj *glib.Object) *BufferedInputStream {
+func wrapBufferedInputStream(obj *externglib.Object) *BufferedInputStream {
 	return &BufferedInputStream{FilterInputStream{InputStream{*externglib.Object{obj}}}}
 }
 
 func marshalBufferedInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewBufferedInputStream(baseStream *InputStream) *BufferedInputStream
+
+func NewBufferedInputStream(baseStream *InputStream, size uint) *BufferedInputStream
 
 // BufferedOutputStream: buffered output stream implements OutputStream and
 // provides for buffered writes.
@@ -5174,15 +5182,19 @@ type BufferedOutputStream struct {
 	FilterOutputStream
 }
 
-func wrapBufferedOutputStream(obj *glib.Object) *BufferedOutputStream {
+func wrapBufferedOutputStream(obj *externglib.Object) *BufferedOutputStream {
 	return &BufferedOutputStream{FilterOutputStream{OutputStream{*externglib.Object{obj}}}}
 }
 
 func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewBufferedOutputStream(baseStream *OutputStream) *BufferedOutputStream
+
+func NewBufferedOutputStream(baseStream *OutputStream, size uint) *BufferedOutputStream
 
 // BytesIcon: GBytesIcon specifies an image held in memory in a common format
 // (usually png) to be used as icon.
@@ -5190,15 +5202,17 @@ type BytesIcon struct {
 	*externglib.Object
 }
 
-func wrapBytesIcon(obj *glib.Object) *BytesIcon {
+func wrapBytesIcon(obj *externglib.Object) *BytesIcon {
 	return &BytesIcon{*externglib.Object{obj}}
 }
 
 func marshalBytesIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewBytesIcon(bytes *glib.Bytes) *BytesIcon
 
 // Cancellable: GCancellable is a thread-safe operation cancellation stack used
 // throughout GIO to allow for cancellation of synchronous and asynchronous
@@ -5207,15 +5221,17 @@ type Cancellable struct {
 	*externglib.Object
 }
 
-func wrapCancellable(obj *glib.Object) *Cancellable {
+func wrapCancellable(obj *externglib.Object) *Cancellable {
 	return &Cancellable{*externglib.Object{obj}}
 }
 
 func marshalCancellable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewCancellable() *Cancellable
 
 // CharsetConverter: GCharsetConverter is an implementation of #GConverter based
 // on GIConv.
@@ -5223,15 +5239,17 @@ type CharsetConverter struct {
 	*externglib.Object
 }
 
-func wrapCharsetConverter(obj *glib.Object) *CharsetConverter {
+func wrapCharsetConverter(obj *externglib.Object) *CharsetConverter {
 	return &CharsetConverter{*externglib.Object{obj}}
 }
 
 func marshalCharsetConverter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewCharsetConverter(toCharset string, fromCharset string) *CharsetConverter
 
 // ConverterInputStream: converter input stream implements Stream and allows
 // conversion of data of various types during reading.
@@ -5241,15 +5259,17 @@ type ConverterInputStream struct {
 	FilterInputStream
 }
 
-func wrapConverterInputStream(obj *glib.Object) *ConverterInputStream {
+func wrapConverterInputStream(obj *externglib.Object) *ConverterInputStream {
 	return &ConverterInputStream{FilterInputStream{InputStream{*externglib.Object{obj}}}}
 }
 
 func marshalConverterInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewConverterInputStream(baseStream *InputStream, converter Converter) *ConverterInputStream
 
 // ConverterOutputStream: converter output stream implements Stream and allows
 // conversion of data of various types during reading.
@@ -5259,15 +5279,17 @@ type ConverterOutputStream struct {
 	FilterOutputStream
 }
 
-func wrapConverterOutputStream(obj *glib.Object) *ConverterOutputStream {
+func wrapConverterOutputStream(obj *externglib.Object) *ConverterOutputStream {
 	return &ConverterOutputStream{FilterOutputStream{OutputStream{*externglib.Object{obj}}}}
 }
 
 func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewConverterOutputStream(baseStream *OutputStream, converter Converter) *ConverterOutputStream
 
 // Credentials: the #GCredentials type is a reference-counted wrapper for native
 // credentials. This information is typically used for identifying,
@@ -5303,15 +5325,17 @@ type Credentials struct {
 	*externglib.Object
 }
 
-func wrapCredentials(obj *glib.Object) *Credentials {
+func wrapCredentials(obj *externglib.Object) *Credentials {
 	return &Credentials{*externglib.Object{obj}}
 }
 
 func marshalCredentials(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewCredentials() *Credentials
 
 // DBusActionGroup: GDBusActionGroup is an implementation of the Group interface
 // that can be used as a proxy for an action group that is exported over D-Bus
@@ -5320,13 +5344,13 @@ type DBusActionGroup struct {
 	*externglib.Object
 }
 
-func wrapDBusActionGroup(obj *glib.Object) *DBusActionGroup {
+func wrapDBusActionGroup(obj *externglib.Object) *DBusActionGroup {
 	return &DBusActionGroup{*externglib.Object{obj}}
 }
 
 func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -5391,15 +5415,17 @@ type DBusAuthObserver struct {
 	*externglib.Object
 }
 
-func wrapDBusAuthObserver(obj *glib.Object) *DBusAuthObserver {
+func wrapDBusAuthObserver(obj *externglib.Object) *DBusAuthObserver {
 	return &DBusAuthObserver{*externglib.Object{obj}}
 }
 
 func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDBusAuthObserver() *DBusAuthObserver
 
 // DBusConnection: the BusConnection type is used for D-Bus connections to
 // remote peers such as a message buses. It is a low-level API that offers a lot
@@ -5452,15 +5478,23 @@ type DBusConnection struct {
 	*externglib.Object
 }
 
-func wrapDBusConnection(obj *glib.Object) *DBusConnection {
+func wrapDBusConnection(obj *externglib.Object) *DBusConnection {
 	return &DBusConnection{*externglib.Object{obj}}
 }
 
 func marshalDBusConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDBusConnection(res AsyncResult) *DBusConnection
+
+func NewDBusConnection(res AsyncResult) *DBusConnection
+
+func NewDBusConnection(address string, flags DBusConnectionFlags, observer *DBusAuthObserver, cancellable *Cancellable) *DBusConnection
+
+func NewDBusConnection(stream *IOStream, guid string, flags DBusConnectionFlags, observer *DBusAuthObserver, cancellable *Cancellable) *DBusConnection
 
 // DBusInterfaceSkeleton: abstract base class for D-Bus interfaces on the
 // service side.
@@ -5468,13 +5502,13 @@ type DBusInterfaceSkeleton struct {
 	*externglib.Object
 }
 
-func wrapDBusInterfaceSkeleton(obj *glib.Object) *DBusInterfaceSkeleton {
+func wrapDBusInterfaceSkeleton(obj *externglib.Object) *DBusInterfaceSkeleton {
 	return &DBusInterfaceSkeleton{*externglib.Object{obj}}
 }
 
 func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -5485,13 +5519,13 @@ type DBusMenuModel struct {
 	MenuModel
 }
 
-func wrapDBusMenuModel(obj *glib.Object) *DBusMenuModel {
+func wrapDBusMenuModel(obj *externglib.Object) *DBusMenuModel {
 	return &DBusMenuModel{MenuModel{*externglib.Object{obj}}}
 }
 
 func marshalDBusMenuModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -5501,15 +5535,23 @@ type DBusMessage struct {
 	*externglib.Object
 }
 
-func wrapDBusMessage(obj *glib.Object) *DBusMessage {
+func wrapDBusMessage(obj *externglib.Object) *DBusMessage {
 	return &DBusMessage{*externglib.Object{obj}}
 }
 
 func marshalDBusMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDBusMessage() *DBusMessage
+
+func NewDBusMessage(blob []uint8, blobLen uint, capabilities DBusCapabilityFlags) *DBusMessage
+
+func NewDBusMessage(name string, path string, interface_ string, method string) *DBusMessage
+
+func NewDBusMessage(path string, interface_ string, signal string) *DBusMessage
 
 // DBusMethodInvocation: instances of the BusMethodInvocation class are used
 // when handling D-Bus method calls. It provides a way to asynchronously return
@@ -5522,13 +5564,13 @@ type DBusMethodInvocation struct {
 	*externglib.Object
 }
 
-func wrapDBusMethodInvocation(obj *glib.Object) *DBusMethodInvocation {
+func wrapDBusMethodInvocation(obj *externglib.Object) *DBusMethodInvocation {
 	return &DBusMethodInvocation{*externglib.Object{obj}}
 }
 
 func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -5599,15 +5641,23 @@ type DBusObjectManagerClient struct {
 	*externglib.Object
 }
 
-func wrapDBusObjectManagerClient(obj *glib.Object) *DBusObjectManagerClient {
+func wrapDBusObjectManagerClient(obj *externglib.Object) *DBusObjectManagerClient {
 	return &DBusObjectManagerClient{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDBusObjectManagerClient(res AsyncResult) *DBusObjectManagerClient
+
+func NewDBusObjectManagerClient(res AsyncResult) *DBusObjectManagerClient
+
+func NewDBusObjectManagerClient(busType BusType, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, getProxyTypeUserData unsafe.Pointer, getProxyTypeDestroyNotify unsafe.Pointer, cancellable *Cancellable) *DBusObjectManagerClient
+
+func NewDBusObjectManagerClient(connection *DBusConnection, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, getProxyTypeUserData unsafe.Pointer, getProxyTypeDestroyNotify unsafe.Pointer, cancellable *Cancellable) *DBusObjectManagerClient
 
 // DBusObjectManagerServer: GDBusObjectManagerServer is used to export BusObject
 // instances using the standardized
@@ -5633,15 +5683,17 @@ type DBusObjectManagerServer struct {
 	*externglib.Object
 }
 
-func wrapDBusObjectManagerServer(obj *glib.Object) *DBusObjectManagerServer {
+func wrapDBusObjectManagerServer(obj *externglib.Object) *DBusObjectManagerServer {
 	return &DBusObjectManagerServer{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDBusObjectManagerServer(objectPath string) *DBusObjectManagerServer
 
 // DBusObjectProxy: a BusObjectProxy is an object used to represent a remote
 // object with one or more D-Bus interfaces. Normally, you don't instantiate a
@@ -5651,15 +5703,17 @@ type DBusObjectProxy struct {
 	*externglib.Object
 }
 
-func wrapDBusObjectProxy(obj *glib.Object) *DBusObjectProxy {
+func wrapDBusObjectProxy(obj *externglib.Object) *DBusObjectProxy {
 	return &DBusObjectProxy{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDBusObjectProxy(connection *DBusConnection, objectPath string) *DBusObjectProxy
 
 // DBusObjectSkeleton: a BusObjectSkeleton instance is essentially a group of
 // D-Bus interfaces. The set of exported interfaces on the object may be dynamic
@@ -5670,15 +5724,17 @@ type DBusObjectSkeleton struct {
 	*externglib.Object
 }
 
-func wrapDBusObjectSkeleton(obj *glib.Object) *DBusObjectSkeleton {
+func wrapDBusObjectSkeleton(obj *externglib.Object) *DBusObjectSkeleton {
 	return &DBusObjectSkeleton{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton
 
 // DBusProxy: GDBusProxy is a base class used for proxies to access a D-Bus
 // interface on a remote object. A BusProxy can be constructed for both
@@ -5719,15 +5775,23 @@ type DBusProxy struct {
 	*externglib.Object
 }
 
-func wrapDBusProxy(obj *glib.Object) *DBusProxy {
+func wrapDBusProxy(obj *externglib.Object) *DBusProxy {
 	return &DBusProxy{*externglib.Object{obj}}
 }
 
 func marshalDBusProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDBusProxy(res AsyncResult) *DBusProxy
+
+func NewDBusProxy(res AsyncResult) *DBusProxy
+
+func NewDBusProxy(busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable *Cancellable) *DBusProxy
+
+func NewDBusProxy(connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable *Cancellable) *DBusProxy
 
 // DBusServer: GDBusServer is a helper for listening to and accepting D-Bus
 // connections. This can be used to create a new D-Bus server, allowing two
@@ -5749,15 +5813,17 @@ type DBusServer struct {
 	*externglib.Object
 }
 
-func wrapDBusServer(obj *glib.Object) *DBusServer {
+func wrapDBusServer(obj *externglib.Object) *DBusServer {
 	return &DBusServer{*externglib.Object{obj}}
 }
 
 func marshalDBusServer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDBusServer(address string, flags DBusServerFlags, guid string, observer *DBusAuthObserver, cancellable *Cancellable) *DBusServer
 
 // DataInputStream: data input stream implements Stream and includes functions
 // for reading structured data directly from a binary input stream.
@@ -5765,15 +5831,17 @@ type DataInputStream struct {
 	BufferedInputStream
 }
 
-func wrapDataInputStream(obj *glib.Object) *DataInputStream {
+func wrapDataInputStream(obj *externglib.Object) *DataInputStream {
 	return &DataInputStream{BufferedInputStream{FilterInputStream{InputStream{*externglib.Object{obj}}}}}
 }
 
 func marshalDataInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDataInputStream(baseStream *InputStream) *DataInputStream
 
 // DataOutputStream: data output stream implements Stream and includes functions
 // for writing data directly to an output stream.
@@ -5781,15 +5849,17 @@ type DataOutputStream struct {
 	FilterOutputStream
 }
 
-func wrapDataOutputStream(obj *glib.Object) *DataOutputStream {
+func wrapDataOutputStream(obj *externglib.Object) *DataOutputStream {
 	return &DataOutputStream{FilterOutputStream{OutputStream{*externglib.Object{obj}}}}
 }
 
 func marshalDataOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDataOutputStream(baseStream *OutputStream) *DataOutputStream
 
 // DesktopAppInfo: GDesktopAppInfo is an implementation of Info based on desktop
 // files.
@@ -5801,15 +5871,21 @@ type DesktopAppInfo struct {
 	*externglib.Object
 }
 
-func wrapDesktopAppInfo(obj *glib.Object) *DesktopAppInfo {
+func wrapDesktopAppInfo(obj *externglib.Object) *DesktopAppInfo {
 	return &DesktopAppInfo{*externglib.Object{obj}}
 }
 
 func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewDesktopAppInfo(desktopID string) *DesktopAppInfo
+
+func NewDesktopAppInfo(filename string) *DesktopAppInfo
+
+func NewDesktopAppInfo(keyFile *glib.KeyFile) *DesktopAppInfo
 
 // Emblem: GEmblem is an implementation of #GIcon that supports having an
 // emblem, which is an icon with additional properties. It can than be added to
@@ -5821,15 +5897,19 @@ type Emblem struct {
 	*externglib.Object
 }
 
-func wrapEmblem(obj *glib.Object) *Emblem {
+func wrapEmblem(obj *externglib.Object) *Emblem {
 	return &Emblem{*externglib.Object{obj}}
 }
 
 func marshalEmblem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewEmblem(icon Icon) *Emblem
+
+func NewEmblem(icon Icon, origin EmblemOrigin) *Emblem
 
 // EmblemedIcon: GEmblemedIcon is an implementation of #GIcon that supports
 // adding an emblem to an icon. Adding multiple emblems to an icon is ensured
@@ -5841,15 +5921,17 @@ type EmblemedIcon struct {
 	*externglib.Object
 }
 
-func wrapEmblemedIcon(obj *glib.Object) *EmblemedIcon {
+func wrapEmblemedIcon(obj *externglib.Object) *EmblemedIcon {
 	return &EmblemedIcon{*externglib.Object{obj}}
 }
 
 func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewEmblemedIcon(icon Icon, emblem *Emblem) *EmblemedIcon
 
 // FileEnumerator: GFileEnumerator allows you to operate on a set of #GFiles,
 // returning a Info structure for each file enumerated (e.g.
@@ -5879,13 +5961,13 @@ type FileEnumerator struct {
 	*externglib.Object
 }
 
-func wrapFileEnumerator(obj *glib.Object) *FileEnumerator {
+func wrapFileEnumerator(obj *externglib.Object) *FileEnumerator {
 	return &FileEnumerator{*externglib.Object{obj}}
 }
 
 func marshalFileEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -5910,13 +5992,13 @@ type FileIOStream struct {
 	IOStream
 }
 
-func wrapFileIOStream(obj *glib.Object) *FileIOStream {
+func wrapFileIOStream(obj *externglib.Object) *FileIOStream {
 	return &FileIOStream{IOStream{*externglib.Object{obj}}}
 }
 
 func marshalFileIOStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -5926,15 +6008,17 @@ type FileIcon struct {
 	*externglib.Object
 }
 
-func wrapFileIcon(obj *glib.Object) *FileIcon {
+func wrapFileIcon(obj *externglib.Object) *FileIcon {
 	return &FileIcon{*externglib.Object{obj}}
 }
 
 func marshalFileIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewFileIcon(file File) *FileIcon
 
 // FileInfo: functionality for manipulating basic metadata for files. Info
 // implements methods for getting information that all files should contain, and
@@ -5963,15 +6047,17 @@ type FileInfo struct {
 	*externglib.Object
 }
 
-func wrapFileInfo(obj *glib.Object) *FileInfo {
+func wrapFileInfo(obj *externglib.Object) *FileInfo {
 	return &FileInfo{*externglib.Object{obj}}
 }
 
 func marshalFileInfo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewFileInfo() *FileInfo
 
 // FileInputStream: GFileInputStream provides input streams that take their
 // content from a file.
@@ -5986,13 +6072,13 @@ type FileInputStream struct {
 	InputStream
 }
 
-func wrapFileInputStream(obj *glib.Object) *FileInputStream {
+func wrapFileInputStream(obj *externglib.Object) *FileInputStream {
 	return &FileInputStream{InputStream{*externglib.Object{obj}}}
 }
 
 func marshalFileInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6011,13 +6097,13 @@ type FileMonitor struct {
 	*externglib.Object
 }
 
-func wrapFileMonitor(obj *glib.Object) *FileMonitor {
+func wrapFileMonitor(obj *externglib.Object) *FileMonitor {
 	return &FileMonitor{*externglib.Object{obj}}
 }
 
 func marshalFileMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6037,13 +6123,13 @@ type FileOutputStream struct {
 	OutputStream
 }
 
-func wrapFileOutputStream(obj *glib.Object) *FileOutputStream {
+func wrapFileOutputStream(obj *externglib.Object) *FileOutputStream {
 	return &FileOutputStream{OutputStream{*externglib.Object{obj}}}
 }
 
 func marshalFileOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6054,15 +6140,17 @@ type FilenameCompleter struct {
 	*externglib.Object
 }
 
-func wrapFilenameCompleter(obj *glib.Object) *FilenameCompleter {
+func wrapFilenameCompleter(obj *externglib.Object) *FilenameCompleter {
 	return &FilenameCompleter{*externglib.Object{obj}}
 }
 
 func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewFilenameCompleter() *FilenameCompleter
 
 // FilterInputStream: base class for input stream implementations that perform
 // some kind of filtering operation on a base stream. Typical examples of
@@ -6072,13 +6160,13 @@ type FilterInputStream struct {
 	InputStream
 }
 
-func wrapFilterInputStream(obj *glib.Object) *FilterInputStream {
+func wrapFilterInputStream(obj *externglib.Object) *FilterInputStream {
 	return &FilterInputStream{InputStream{*externglib.Object{obj}}}
 }
 
 func marshalFilterInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6090,13 +6178,13 @@ type FilterOutputStream struct {
 	OutputStream
 }
 
-func wrapFilterOutputStream(obj *glib.Object) *FilterOutputStream {
+func wrapFilterOutputStream(obj *externglib.Object) *FilterOutputStream {
 	return &FilterOutputStream{OutputStream{*externglib.Object{obj}}}
 }
 
 func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6148,13 +6236,13 @@ type IOStream struct {
 	*externglib.Object
 }
 
-func wrapIOStream(obj *glib.Object) *IOStream {
+func wrapIOStream(obj *externglib.Object) *IOStream {
 	return &IOStream{*externglib.Object{obj}}
 }
 
 func marshalIOStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6169,15 +6257,23 @@ type InetAddress struct {
 	*externglib.Object
 }
 
-func wrapInetAddress(obj *glib.Object) *InetAddress {
+func wrapInetAddress(obj *externglib.Object) *InetAddress {
 	return &InetAddress{*externglib.Object{obj}}
 }
 
 func marshalInetAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewInetAddress(family SocketFamily) *InetAddress
+
+func NewInetAddress(bytes []uint8, family SocketFamily) *InetAddress
+
+func NewInetAddress(string string) *InetAddress
+
+func NewInetAddress(family SocketFamily) *InetAddress
 
 // InetAddressMask: GInetAddressMask represents a range of IPv4 or IPv6
 // addresses described by a base address and a length indicating how many bits
@@ -6187,15 +6283,19 @@ type InetAddressMask struct {
 	*externglib.Object
 }
 
-func wrapInetAddressMask(obj *glib.Object) *InetAddressMask {
+func wrapInetAddressMask(obj *externglib.Object) *InetAddressMask {
 	return &InetAddressMask{*externglib.Object{obj}}
 }
 
 func marshalInetAddressMask(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewInetAddressMask(addr *InetAddress, length uint) *InetAddressMask
+
+func NewInetAddressMask(maskString string) *InetAddressMask
 
 // InetSocketAddress: an IPv4 or IPv6 socket address; that is, the combination
 // of a Address and a port number.
@@ -6203,15 +6303,19 @@ type InetSocketAddress struct {
 	SocketAddress
 }
 
-func wrapInetSocketAddress(obj *glib.Object) *InetSocketAddress {
+func wrapInetSocketAddress(obj *externglib.Object) *InetSocketAddress {
 	return &InetSocketAddress{SocketAddress{*externglib.Object{obj}}}
 }
 
 func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress
+
+func NewInetSocketAddress(address string, port uint) *InetSocketAddress
 
 // InputStream: GInputStream has functions to read from a stream
 // (g_input_stream_read()), to close a stream (g_input_stream_close()) and to
@@ -6228,13 +6332,13 @@ type InputStream struct {
 	*externglib.Object
 }
 
-func wrapInputStream(obj *glib.Object) *InputStream {
+func wrapInputStream(obj *externglib.Object) *InputStream {
 	return &InputStream{*externglib.Object{obj}}
 }
 
 func marshalInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6247,15 +6351,17 @@ type ListStore struct {
 	*externglib.Object
 }
 
-func wrapListStore(obj *glib.Object) *ListStore {
+func wrapListStore(obj *externglib.Object) *ListStore {
 	return &ListStore{*externglib.Object{obj}}
 }
 
 func marshalListStore(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewListStore(itemType externglib.Type) *ListStore
 
 // MemoryInputStream: GMemoryInputStream is a class for using arbitrary memory
 // chunks as input for GIO streaming input operations.
@@ -6265,15 +6371,21 @@ type MemoryInputStream struct {
 	InputStream
 }
 
-func wrapMemoryInputStream(obj *glib.Object) *MemoryInputStream {
+func wrapMemoryInputStream(obj *externglib.Object) *MemoryInputStream {
 	return &MemoryInputStream{InputStream{*externglib.Object{obj}}}
 }
 
 func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewMemoryInputStream() *MemoryInputStream
+
+func NewMemoryInputStream(bytes *glib.Bytes) *MemoryInputStream
+
+func NewMemoryInputStream(data []uint8, len int, destroy unsafe.Pointer) *MemoryInputStream
 
 // MemoryOutputStream: GMemoryOutputStream is a class for using arbitrary memory
 // chunks as output for GIO streaming output operations.
@@ -6284,15 +6396,19 @@ type MemoryOutputStream struct {
 	OutputStream
 }
 
-func wrapMemoryOutputStream(obj *glib.Object) *MemoryOutputStream {
+func wrapMemoryOutputStream(obj *externglib.Object) *MemoryOutputStream {
 	return &MemoryOutputStream{OutputStream{*externglib.Object{obj}}}
 }
 
 func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewMemoryOutputStream(data unsafe.Pointer, size uint, reallocFunction ReallocFunc, destroyFunction unsafe.Pointer) *MemoryOutputStream
+
+func NewMemoryOutputStream() *MemoryOutputStream
 
 // Menu: GMenu is a simple implementation of Model. You populate a #GMenu by
 // adding Item instances to it.
@@ -6305,15 +6421,17 @@ type Menu struct {
 	MenuModel
 }
 
-func wrapMenu(obj *glib.Object) *Menu {
+func wrapMenu(obj *externglib.Object) *Menu {
 	return &Menu{MenuModel{*externglib.Object{obj}}}
 }
 
 func marshalMenu(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewMenu() *Menu
 
 // MenuAttributeIter: GMenuAttributeIter is an opaque structure type. You must
 // access it using the functions below.
@@ -6321,13 +6439,13 @@ type MenuAttributeIter struct {
 	*externglib.Object
 }
 
-func wrapMenuAttributeIter(obj *glib.Object) *MenuAttributeIter {
+func wrapMenuAttributeIter(obj *externglib.Object) *MenuAttributeIter {
 	return &MenuAttributeIter{*externglib.Object{obj}}
 }
 
 func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6337,15 +6455,23 @@ type MenuItem struct {
 	*externglib.Object
 }
 
-func wrapMenuItem(obj *glib.Object) *MenuItem {
+func wrapMenuItem(obj *externglib.Object) *MenuItem {
 	return &MenuItem{*externglib.Object{obj}}
 }
 
 func marshalMenuItem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewMenuItem(label string, detailedAction string) *MenuItem
+
+func NewMenuItem(model *MenuModel, itemIndex int) *MenuItem
+
+func NewMenuItem(label string, section *MenuModel) *MenuItem
+
+func NewMenuItem(label string, submenu *MenuModel) *MenuItem
 
 // MenuLinkIter: GMenuLinkIter is an opaque structure type. You must access it
 // using the functions below.
@@ -6353,13 +6479,13 @@ type MenuLinkIter struct {
 	*externglib.Object
 }
 
-func wrapMenuLinkIter(obj *glib.Object) *MenuLinkIter {
+func wrapMenuLinkIter(obj *externglib.Object) *MenuLinkIter {
 	return &MenuLinkIter{*externglib.Object{obj}}
 }
 
 func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6476,13 +6602,13 @@ type MenuModel struct {
 	*externglib.Object
 }
 
-func wrapMenuModel(obj *glib.Object) *MenuModel {
+func wrapMenuModel(obj *externglib.Object) *MenuModel {
 	return &MenuModel{*externglib.Object{obj}}
 }
 
 func marshalMenuModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6510,42 +6636,46 @@ type MountOperation struct {
 	*externglib.Object
 }
 
-func wrapMountOperation(obj *glib.Object) *MountOperation {
+func wrapMountOperation(obj *externglib.Object) *MountOperation {
 	return &MountOperation{*externglib.Object{obj}}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewMountOperation() *MountOperation
 
 // NativeSocketAddress: a socket address of some unknown native type.
 type NativeSocketAddress struct {
 	SocketAddress
 }
 
-func wrapNativeSocketAddress(obj *glib.Object) *NativeSocketAddress {
+func wrapNativeSocketAddress(obj *externglib.Object) *NativeSocketAddress {
 	return &NativeSocketAddress{SocketAddress{*externglib.Object{obj}}}
 }
 
 func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewNativeSocketAddress(native unsafe.Pointer, len uint) *NativeSocketAddress
 
 type NativeVolumeMonitor struct {
 	VolumeMonitor
 }
 
-func wrapNativeVolumeMonitor(obj *glib.Object) *NativeVolumeMonitor {
+func wrapNativeVolumeMonitor(obj *externglib.Object) *NativeVolumeMonitor {
 	return &NativeVolumeMonitor{VolumeMonitor{*externglib.Object{obj}}}
 }
 
 func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6561,15 +6691,19 @@ type NetworkAddress struct {
 	*externglib.Object
 }
 
-func wrapNetworkAddress(obj *glib.Object) *NetworkAddress {
+func wrapNetworkAddress(obj *externglib.Object) *NetworkAddress {
 	return &NetworkAddress{*externglib.Object{obj}}
 }
 
 func marshalNetworkAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewNetworkAddress(hostname string, port uint16) *NetworkAddress
+
+func NewNetworkAddress(port uint16) *NetworkAddress
 
 // NetworkService: like Address does with hostnames, Service provides an easy
 // way to resolve a SRV record, and then attempt to connect to one of the hosts
@@ -6582,15 +6716,17 @@ type NetworkService struct {
 	*externglib.Object
 }
 
-func wrapNetworkService(obj *glib.Object) *NetworkService {
+func wrapNetworkService(obj *externglib.Object) *NetworkService {
 	return &NetworkService{*externglib.Object{obj}}
 }
 
 func marshalNetworkService(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewNetworkService(service string, protocol string, domain string) *NetworkService
 
 // Notification: GNotification is a mechanism for creating a notification to be
 // shown to the user -- typically as a pop-up notification presented by the
@@ -6616,15 +6752,17 @@ type Notification struct {
 	*externglib.Object
 }
 
-func wrapNotification(obj *glib.Object) *Notification {
+func wrapNotification(obj *externglib.Object) *Notification {
 	return &Notification{*externglib.Object{obj}}
 }
 
 func marshalNotification(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewNotification(title string) *Notification
 
 // OutputStream: GOutputStream has functions to write to a stream
 // (g_output_stream_write()), to close a stream (g_output_stream_close()) and to
@@ -6641,13 +6779,13 @@ type OutputStream struct {
 	*externglib.Object
 }
 
-func wrapOutputStream(obj *glib.Object) *OutputStream {
+func wrapOutputStream(obj *externglib.Object) *OutputStream {
 	return &OutputStream{*externglib.Object{obj}}
 }
 
 func marshalOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6668,13 +6806,13 @@ type Permission struct {
 	*externglib.Object
 }
 
-func wrapPermission(obj *glib.Object) *Permission {
+func wrapPermission(obj *externglib.Object) *Permission {
 	return &Permission{*externglib.Object{obj}}
 }
 
 func marshalPermission(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6730,30 +6868,34 @@ type PropertyAction struct {
 	*externglib.Object
 }
 
-func wrapPropertyAction(obj *glib.Object) *PropertyAction {
+func wrapPropertyAction(obj *externglib.Object) *PropertyAction {
 	return &PropertyAction{*externglib.Object{obj}}
 }
 
 func marshalPropertyAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewPropertyAction(name string, object unsafe.Pointer, propertyName string) *PropertyAction
 
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress struct {
 	InetSocketAddress
 }
 
-func wrapProxyAddress(obj *glib.Object) *ProxyAddress {
+func wrapProxyAddress(obj *externglib.Object) *ProxyAddress {
 	return &ProxyAddress{InetSocketAddress{SocketAddress{*externglib.Object{obj}}}}
 }
 
 func marshalProxyAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) *ProxyAddress
 
 // ProxyAddressEnumerator: GProxyAddressEnumerator is a wrapper around
 // AddressEnumerator which takes the Address instances returned by the
@@ -6768,13 +6910,13 @@ type ProxyAddressEnumerator struct {
 	SocketAddressEnumerator
 }
 
-func wrapProxyAddressEnumerator(obj *glib.Object) *ProxyAddressEnumerator {
+func wrapProxyAddressEnumerator(obj *externglib.Object) *ProxyAddressEnumerator {
 	return &ProxyAddressEnumerator{SocketAddressEnumerator{*externglib.Object{obj}}}
 }
 
 func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -6790,13 +6932,13 @@ type Resolver struct {
 	*externglib.Object
 }
 
-func wrapResolver(obj *glib.Object) *Resolver {
+func wrapResolver(obj *externglib.Object) *Resolver {
 	return &Resolver{*externglib.Object{obj}}
 }
 
 func marshalResolver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -7037,15 +7179,25 @@ type Settings struct {
 	*externglib.Object
 }
 
-func wrapSettings(obj *glib.Object) *Settings {
+func wrapSettings(obj *externglib.Object) *Settings {
 	return &Settings{*externglib.Object{obj}}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSettings(schemaID string) *Settings
+
+func NewSettings(schema *SettingsSchema, backend *SettingsBackend, path string) *Settings
+
+func NewSettings(schemaID string, backend *SettingsBackend) *Settings
+
+func NewSettings(schemaID string, backend *SettingsBackend, path string) *Settings
+
+func NewSettings(schemaID string, path string) *Settings
 
 // SettingsBackend: the Backend interface defines a generic interface for
 // non-strictly-typed data that is stored in a hierarchy. To implement an
@@ -7074,13 +7226,13 @@ type SettingsBackend struct {
 	*externglib.Object
 }
 
-func wrapSettingsBackend(obj *glib.Object) *SettingsBackend {
+func wrapSettingsBackend(obj *externglib.Object) *SettingsBackend {
 	return &SettingsBackend{*externglib.Object{obj}}
 }
 
 func marshalSettingsBackend(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -7093,15 +7245,19 @@ type SimpleAction struct {
 	*externglib.Object
 }
 
-func wrapSimpleAction(obj *glib.Object) *SimpleAction {
+func wrapSimpleAction(obj *externglib.Object) *SimpleAction {
 	return &SimpleAction{*externglib.Object{obj}}
 }
 
 func marshalSimpleAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
+
+func NewSimpleAction(name string, parameterType *glib.VariantType, state *glib.Variant) *SimpleAction
 
 // SimpleActionGroup: GSimpleActionGroup is a hash table filled with #GAction
 // objects, implementing the Group and Map interfaces.
@@ -7109,15 +7265,17 @@ type SimpleActionGroup struct {
 	*externglib.Object
 }
 
-func wrapSimpleActionGroup(obj *glib.Object) *SimpleActionGroup {
+func wrapSimpleActionGroup(obj *externglib.Object) *SimpleActionGroup {
 	return &SimpleActionGroup{*externglib.Object{obj}}
 }
 
 func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSimpleActionGroup() *SimpleActionGroup
 
 // SimpleAsyncResult: as of GLib 2.46, AsyncResult is deprecated in favor of
 // #GTask, which provides a simpler API.
@@ -7281,15 +7439,21 @@ type SimpleAsyncResult struct {
 	*externglib.Object
 }
 
-func wrapSimpleAsyncResult(obj *glib.Object) *SimpleAsyncResult {
+func wrapSimpleAsyncResult(obj *externglib.Object) *SimpleAsyncResult {
 	return &SimpleAsyncResult{*externglib.Object{obj}}
 }
 
 func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, sourceTag unsafe.Pointer) *SimpleAsyncResult
+
+func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error) *SimpleAsyncResult
+
+func NewSimpleAsyncResult(sourceObject *externglib.Object, callback AsyncReadyCallback, userData unsafe.Pointer, error *glib.Error) *SimpleAsyncResult
 
 // SimpleIOStream: GSimpleIOStream creates a OStream from an arbitrary Stream
 // and Stream. This allows any pair of input and output streams to be used with
@@ -7303,15 +7467,17 @@ type SimpleIOStream struct {
 	IOStream
 }
 
-func wrapSimpleIOStream(obj *glib.Object) *SimpleIOStream {
+func wrapSimpleIOStream(obj *externglib.Object) *SimpleIOStream {
 	return &SimpleIOStream{IOStream{*externglib.Object{obj}}}
 }
 
 func marshalSimpleIOStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSimpleIOStream(inputStream *InputStream, outputStream *OutputStream) *SimpleIOStream
 
 // SimplePermission: GSimplePermission is a trivial implementation of
 // #GPermission that represents a permission that is either always or never
@@ -7322,15 +7488,17 @@ type SimplePermission struct {
 	Permission
 }
 
-func wrapSimplePermission(obj *glib.Object) *SimplePermission {
+func wrapSimplePermission(obj *externglib.Object) *SimplePermission {
 	return &SimplePermission{Permission{*externglib.Object{obj}}}
 }
 
 func marshalSimplePermission(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSimplePermission(allowed bool) *SimplePermission
 
 // SimpleProxyResolver: GSimpleProxyResolver is a simple Resolver implementation
 // that handles a single default proxy, multiple URI-scheme-specific proxies,
@@ -7343,13 +7511,13 @@ type SimpleProxyResolver struct {
 	*externglib.Object
 }
 
-func wrapSimpleProxyResolver(obj *glib.Object) *SimpleProxyResolver {
+func wrapSimpleProxyResolver(obj *externglib.Object) *SimpleProxyResolver {
 	return &SimpleProxyResolver{*externglib.Object{obj}}
 }
 
 func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -7405,15 +7573,19 @@ type Socket struct {
 	*externglib.Object
 }
 
-func wrapSocket(obj *glib.Object) *Socket {
+func wrapSocket(obj *externglib.Object) *Socket {
 	return &Socket{*externglib.Object{obj}}
 }
 
 func marshalSocket(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSocket(family SocketFamily, _type SocketType, protocol SocketProtocol) *Socket
+
+func NewSocket(fd int) *Socket
 
 // SocketAddress: GSocketAddress is the equivalent of struct sockaddr in the BSD
 // sockets API. This is an abstract class; use SocketAddress for internet
@@ -7422,15 +7594,17 @@ type SocketAddress struct {
 	*externglib.Object
 }
 
-func wrapSocketAddress(obj *glib.Object) *SocketAddress {
+func wrapSocketAddress(obj *externglib.Object) *SocketAddress {
 	return &SocketAddress{*externglib.Object{obj}}
 }
 
 func marshalSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSocketAddress(native unsafe.Pointer, len uint) *SocketAddress
 
 // SocketAddressEnumerator: GSocketAddressEnumerator is an enumerator type for
 // Address instances. It is returned by enumeration functions such as
@@ -7448,13 +7622,13 @@ type SocketAddressEnumerator struct {
 	*externglib.Object
 }
 
-func wrapSocketAddressEnumerator(obj *glib.Object) *SocketAddressEnumerator {
+func wrapSocketAddressEnumerator(obj *externglib.Object) *SocketAddressEnumerator {
 	return &SocketAddressEnumerator{*externglib.Object{obj}}
 }
 
 func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -7474,15 +7648,17 @@ type SocketClient struct {
 	*externglib.Object
 }
 
-func wrapSocketClient(obj *glib.Object) *SocketClient {
+func wrapSocketClient(obj *externglib.Object) *SocketClient {
 	return &SocketClient{*externglib.Object{obj}}
 }
 
 func marshalSocketClient(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSocketClient() *SocketClient
 
 // SocketConnection: GSocketConnection is a OStream for a connected socket. They
 // can be created either by Client when connecting to a host, or by Listener
@@ -7503,13 +7679,13 @@ type SocketConnection struct {
 	IOStream
 }
 
-func wrapSocketConnection(obj *glib.Object) *SocketConnection {
+func wrapSocketConnection(obj *externglib.Object) *SocketConnection {
 	return &SocketConnection{IOStream{*externglib.Object{obj}}}
 }
 
 func marshalSocketConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -7535,13 +7711,13 @@ type SocketControlMessage struct {
 	*externglib.Object
 }
 
-func wrapSocketControlMessage(obj *glib.Object) *SocketControlMessage {
+func wrapSocketControlMessage(obj *externglib.Object) *SocketControlMessage {
 	return &SocketControlMessage{*externglib.Object{obj}}
 }
 
 func marshalSocketControlMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -7561,15 +7737,17 @@ type SocketListener struct {
 	*externglib.Object
 }
 
-func wrapSocketListener(obj *glib.Object) *SocketListener {
+func wrapSocketListener(obj *externglib.Object) *SocketListener {
 	return &SocketListener{*externglib.Object{obj}}
 }
 
 func marshalSocketListener(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSocketListener() *SocketListener
 
 // SocketService: a Service is an object that represents a service that is
 // provided to the network or over local sockets. When a new connection is made
@@ -7597,15 +7775,17 @@ type SocketService struct {
 	SocketListener
 }
 
-func wrapSocketService(obj *glib.Object) *SocketService {
+func wrapSocketService(obj *externglib.Object) *SocketService {
 	return &SocketService{SocketListener{*externglib.Object{obj}}}
 }
 
 func marshalSocketService(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSocketService() *SocketService
 
 // Subprocess: GSubprocess allows the creation of and interaction with child
 // processes.
@@ -7660,15 +7840,17 @@ type Subprocess struct {
 	*externglib.Object
 }
 
-func wrapSubprocess(obj *glib.Object) *Subprocess {
+func wrapSubprocess(obj *externglib.Object) *Subprocess {
 	return &Subprocess{*externglib.Object{obj}}
 }
 
 func marshalSubprocess(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSubprocess(argv []string, flags SubprocessFlags) *Subprocess
 
 // SubprocessLauncher: this class contains a set of options for launching child
 // processes, such as where its standard input and output will be directed, the
@@ -7681,15 +7863,17 @@ type SubprocessLauncher struct {
 	*externglib.Object
 }
 
-func wrapSubprocessLauncher(obj *glib.Object) *SubprocessLauncher {
+func wrapSubprocessLauncher(obj *externglib.Object) *SubprocessLauncher {
 	return &SubprocessLauncher{*externglib.Object{obj}}
 }
 
 func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewSubprocessLauncher(flags SubprocessFlags) *SubprocessLauncher
 
 // Task: a #GTask represents and manages a cancellable "task".
 //
@@ -8110,15 +8294,17 @@ type Task struct {
 	*externglib.Object
 }
 
-func wrapTask(obj *glib.Object) *Task {
+func wrapTask(obj *externglib.Object) *Task {
 	return &Task{*externglib.Object{obj}}
 }
 
 func marshalTask(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewTask(sourceObject unsafe.Pointer, cancellable *Cancellable, callback AsyncReadyCallback, callbackData unsafe.Pointer) *Task
 
 // TcpConnection: this is the subclass of Connection that is created for TCP/IP
 // sockets.
@@ -8126,13 +8312,13 @@ type TcpConnection struct {
 	SocketConnection
 }
 
-func wrapTcpConnection(obj *glib.Object) *TcpConnection {
+func wrapTcpConnection(obj *externglib.Object) *TcpConnection {
 	return &TcpConnection{SocketConnection{IOStream{*externglib.Object{obj}}}}
 }
 
 func marshalTcpConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -8144,15 +8330,17 @@ type TcpWrapperConnection struct {
 	TcpConnection
 }
 
-func wrapTcpWrapperConnection(obj *glib.Object) *TcpWrapperConnection {
+func wrapTcpWrapperConnection(obj *externglib.Object) *TcpWrapperConnection {
 	return &TcpWrapperConnection{TcpConnection{SocketConnection{IOStream{*externglib.Object{obj}}}}}
 }
 
 func marshalTcpWrapperConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewTcpWrapperConnection(baseIOStream *IOStream, socket *Socket) *TcpWrapperConnection
 
 // TestDBus: a helper class for testing code which uses D-Bus without touching
 // the user's session bus.
@@ -8220,15 +8408,17 @@ type TestDBus struct {
 	*externglib.Object
 }
 
-func wrapTestDBus(obj *glib.Object) *TestDBus {
+func wrapTestDBus(obj *externglib.Object) *TestDBus {
 	return &TestDBus{*externglib.Object{obj}}
 }
 
 func marshalTestDBus(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewTestDBus(flags TestDBusFlags) *TestDBus
 
 // ThemedIcon: GThemedIcon is an implementation of #GIcon that supports icon
 // themes. Icon contains a list of all of the icons present in an icon theme, so
@@ -8240,15 +8430,21 @@ type ThemedIcon struct {
 	*externglib.Object
 }
 
-func wrapThemedIcon(obj *glib.Object) *ThemedIcon {
+func wrapThemedIcon(obj *externglib.Object) *ThemedIcon {
 	return &ThemedIcon{*externglib.Object{obj}}
 }
 
 func marshalThemedIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewThemedIcon(iconname string) *ThemedIcon
+
+func NewThemedIcon(iconnames []string, len int) *ThemedIcon
+
+func NewThemedIcon(iconname string) *ThemedIcon
 
 // ThreadedSocketService: a SocketService is a simple subclass of Service that
 // handles incoming connections by creating a worker thread and dispatching the
@@ -8267,15 +8463,17 @@ type ThreadedSocketService struct {
 	SocketService
 }
 
-func wrapThreadedSocketService(obj *glib.Object) *ThreadedSocketService {
+func wrapThreadedSocketService(obj *externglib.Object) *ThreadedSocketService {
 	return &ThreadedSocketService{SocketService{SocketListener{*externglib.Object{obj}}}}
 }
 
 func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewThreadedSocketService(maxThreads int) *ThreadedSocketService
 
 // TlsCertificate: a certificate used for TLS authentication and encryption.
 // This can represent either a certificate only (eg, the certificate received by
@@ -8285,15 +8483,21 @@ type TlsCertificate struct {
 	*externglib.Object
 }
 
-func wrapTlsCertificate(obj *glib.Object) *TlsCertificate {
+func wrapTlsCertificate(obj *externglib.Object) *TlsCertificate {
 	return &TlsCertificate{*externglib.Object{obj}}
 }
 
 func marshalTlsCertificate(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewTlsCertificate(file string) *TlsCertificate
+
+func NewTlsCertificate(certFile string, keyFile string) *TlsCertificate
+
+func NewTlsCertificate(data string, length int) *TlsCertificate
 
 // TlsConnection: GTlsConnection is the base TLS connection class type, which
 // wraps a OStream and provides TLS encryption on top of it. Its subclasses,
@@ -8305,13 +8509,13 @@ type TlsConnection struct {
 	IOStream
 }
 
-func wrapTlsConnection(obj *glib.Object) *TlsConnection {
+func wrapTlsConnection(obj *externglib.Object) *TlsConnection {
 	return &TlsConnection{IOStream{*externglib.Object{obj}}}
 }
 
 func marshalTlsConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -8328,13 +8532,13 @@ type TlsDatabase struct {
 	*externglib.Object
 }
 
-func wrapTlsDatabase(obj *glib.Object) *TlsDatabase {
+func wrapTlsDatabase(obj *externglib.Object) *TlsDatabase {
 	return &TlsDatabase{*externglib.Object{obj}}
 }
 
 func marshalTlsDatabase(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -8362,13 +8566,13 @@ type TlsInteraction struct {
 	*externglib.Object
 }
 
-func wrapTlsInteraction(obj *glib.Object) *TlsInteraction {
+func wrapTlsInteraction(obj *externglib.Object) *TlsInteraction {
 	return &TlsInteraction{*externglib.Object{obj}}
 }
 
 func marshalTlsInteraction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -8377,15 +8581,17 @@ type TlsPassword struct {
 	*externglib.Object
 }
 
-func wrapTlsPassword(obj *glib.Object) *TlsPassword {
+func wrapTlsPassword(obj *externglib.Object) *TlsPassword {
 	return &TlsPassword{*externglib.Object{obj}}
 }
 
 func marshalTlsPassword(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewTlsPassword(flags TlsPasswordFlags, description string) *TlsPassword
 
 // UnixConnection: this is the subclass of Connection that is created for UNIX
 // domain sockets.
@@ -8400,13 +8606,13 @@ type UnixConnection struct {
 	SocketConnection
 }
 
-func wrapUnixConnection(obj *glib.Object) *UnixConnection {
+func wrapUnixConnection(obj *externglib.Object) *UnixConnection {
 	return &UnixConnection{SocketConnection{IOStream{*externglib.Object{obj}}}}
 }
 
 func marshalUnixConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -8423,15 +8629,19 @@ type UnixCredentialsMessage struct {
 	SocketControlMessage
 }
 
-func wrapUnixCredentialsMessage(obj *glib.Object) *UnixCredentialsMessage {
+func wrapUnixCredentialsMessage(obj *externglib.Object) *UnixCredentialsMessage {
 	return &UnixCredentialsMessage{SocketControlMessage{*externglib.Object{obj}}}
 }
 
 func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewUnixCredentialsMessage() *UnixCredentialsMessage
+
+func NewUnixCredentialsMessage(credentials *Credentials) *UnixCredentialsMessage
 
 // UnixFDList: a FDList contains a list of file descriptors. It owns the file
 // descriptors that it contains, closing them when finalized.
@@ -8446,15 +8656,19 @@ type UnixFDList struct {
 	*externglib.Object
 }
 
-func wrapUnixFDList(obj *glib.Object) *UnixFDList {
+func wrapUnixFDList(obj *externglib.Object) *UnixFDList {
 	return &UnixFDList{*externglib.Object{obj}}
 }
 
 func marshalUnixFDList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewUnixFDList() *UnixFDList
+
+func NewUnixFDList(fds []int, nFds int) *UnixFDList
 
 // UnixFDMessage: this ControlMessage contains a FDList. It may be sent using
 // g_socket_send_message() and received using g_socket_receive_message() over
@@ -8472,15 +8686,19 @@ type UnixFDMessage struct {
 	SocketControlMessage
 }
 
-func wrapUnixFDMessage(obj *glib.Object) *UnixFDMessage {
+func wrapUnixFDMessage(obj *externglib.Object) *UnixFDMessage {
 	return &UnixFDMessage{SocketControlMessage{*externglib.Object{obj}}}
 }
 
 func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewUnixFDMessage() *UnixFDMessage
+
+func NewUnixFDMessage(fdList *UnixFDList) *UnixFDMessage
 
 // UnixInputStream: GUnixInputStream implements Stream for reading from a UNIX
 // file descriptor, including asynchronous operations. (If the file descriptor
@@ -8495,30 +8713,34 @@ type UnixInputStream struct {
 	InputStream
 }
 
-func wrapUnixInputStream(obj *glib.Object) *UnixInputStream {
+func wrapUnixInputStream(obj *externglib.Object) *UnixInputStream {
 	return &UnixInputStream{InputStream{*externglib.Object{obj}}}
 }
 
 func marshalUnixInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewUnixInputStream(fd int, closeFd bool) *UnixInputStream
 
 // UnixMountMonitor: watches Mounts for changes.
 type UnixMountMonitor struct {
 	*externglib.Object
 }
 
-func wrapUnixMountMonitor(obj *glib.Object) *UnixMountMonitor {
+func wrapUnixMountMonitor(obj *externglib.Object) *UnixMountMonitor {
 	return &UnixMountMonitor{*externglib.Object{obj}}
 }
 
 func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewUnixMountMonitor() *UnixMountMonitor
 
 // UnixOutputStream: GUnixOutputStream implements Stream for writing to a UNIX
 // file descriptor, including asynchronous operations. (If the file descriptor
@@ -8533,15 +8755,17 @@ type UnixOutputStream struct {
 	OutputStream
 }
 
-func wrapUnixOutputStream(obj *glib.Object) *UnixOutputStream {
+func wrapUnixOutputStream(obj *externglib.Object) *UnixOutputStream {
 	return &UnixOutputStream{OutputStream{*externglib.Object{obj}}}
 }
 
 func marshalUnixOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewUnixOutputStream(fd int, closeFd bool) *UnixOutputStream
 
 // UnixSocketAddress: support for UNIX-domain (also known as local) sockets.
 //
@@ -8560,28 +8784,34 @@ type UnixSocketAddress struct {
 	SocketAddress
 }
 
-func wrapUnixSocketAddress(obj *glib.Object) *UnixSocketAddress {
+func wrapUnixSocketAddress(obj *externglib.Object) *UnixSocketAddress {
 	return &UnixSocketAddress{SocketAddress{*externglib.Object{obj}}}
 }
 
 func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewUnixSocketAddress(path string) *UnixSocketAddress
+
+func NewUnixSocketAddress(path []byte, pathLen int) *UnixSocketAddress
+
+func NewUnixSocketAddress(path []byte, pathLen int, _type UnixSocketAddressType) *UnixSocketAddress
 
 // Vfs: entry point for using GIO functionality.
 type Vfs struct {
 	*externglib.Object
 }
 
-func wrapVfs(obj *glib.Object) *Vfs {
+func wrapVfs(obj *externglib.Object) *Vfs {
 	return &Vfs{*externglib.Object{obj}}
 }
 
 func marshalVfs(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -8599,13 +8829,13 @@ type VolumeMonitor struct {
 	*externglib.Object
 }
 
-func wrapVolumeMonitor(obj *glib.Object) *VolumeMonitor {
+func wrapVolumeMonitor(obj *externglib.Object) *VolumeMonitor {
 	return &VolumeMonitor{*externglib.Object{obj}}
 }
 
 func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -8614,27 +8844,31 @@ type ZlibCompressor struct {
 	*externglib.Object
 }
 
-func wrapZlibCompressor(obj *glib.Object) *ZlibCompressor {
+func wrapZlibCompressor(obj *externglib.Object) *ZlibCompressor {
 	return &ZlibCompressor{*externglib.Object{obj}}
 }
 
 func marshalZlibCompressor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewZlibCompressor(format ZlibCompressorFormat, level int) *ZlibCompressor
 
 // ZlibDecompressor: zlib decompression
 type ZlibDecompressor struct {
 	*externglib.Object
 }
 
-func wrapZlibDecompressor(obj *glib.Object) *ZlibDecompressor {
+func wrapZlibDecompressor(obj *externglib.Object) *ZlibDecompressor {
 	return &ZlibDecompressor{*externglib.Object{obj}}
 }
 
 func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewZlibDecompressor(format ZlibCompressorFormat) *ZlibDecompressor

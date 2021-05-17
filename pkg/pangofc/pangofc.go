@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/gotk3/gotk3/glib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,13 +43,13 @@ type Decoder struct {
 	*externglib.Object
 }
 
-func wrapDecoder(obj *glib.Object) *Decoder {
+func wrapDecoder(obj *externglib.Object) *Decoder {
 	return &Decoder{*externglib.Object{obj}}
 }
 
 func marshalDecoder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -65,13 +64,13 @@ type Font struct {
 	pango.Font
 }
 
-func wrapFont(obj *glib.Object) *Font {
+func wrapFont(obj *externglib.Object) *Font {
 	return &Font{Font{*externglib.Object{obj}}}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -86,12 +85,12 @@ type FontMap struct {
 	pango.FontMap
 }
 
-func wrapFontMap(obj *glib.Object) *FontMap {
+func wrapFontMap(obj *externglib.Object) *FontMap {
 	return &FontMap{FontMap{*externglib.Object{obj}}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }

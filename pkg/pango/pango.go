@@ -2945,15 +2945,17 @@ type Context struct {
 	*externglib.Object
 }
 
-func wrapContext(obj *glib.Object) *Context {
+func wrapContext(obj *externglib.Object) *Context {
 	return &Context{*externglib.Object{obj}}
 }
 
 func marshalContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewContext() *Context
 
 // Coverage: a Coverage structure is a map from Unicode characters to
 // CoverageLevel values.
@@ -2966,15 +2968,17 @@ type Coverage struct {
 	*externglib.Object
 }
 
-func wrapCoverage(obj *glib.Object) *Coverage {
+func wrapCoverage(obj *externglib.Object) *Coverage {
 	return &Coverage{*externglib.Object{obj}}
 }
 
 func marshalCoverage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewCoverage() *Coverage
 
 // Font: a `PangoFont` is used to represent a font in a
 // rendering-system-independent manner.
@@ -2982,13 +2986,13 @@ type Font struct {
 	*externglib.Object
 }
 
-func wrapFont(obj *glib.Object) *Font {
+func wrapFont(obj *externglib.Object) *Font {
 	return &Font{*externglib.Object{obj}}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -2998,13 +3002,13 @@ type FontFace struct {
 	*externglib.Object
 }
 
-func wrapFontFace(obj *glib.Object) *FontFace {
+func wrapFontFace(obj *externglib.Object) *FontFace {
 	return &FontFace{*externglib.Object{obj}}
 }
 
 func marshalFontFace(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -3017,13 +3021,13 @@ type FontFamily struct {
 	*externglib.Object
 }
 
-func wrapFontFamily(obj *glib.Object) *FontFamily {
+func wrapFontFamily(obj *externglib.Object) *FontFamily {
 	return &FontFamily{*externglib.Object{obj}}
 }
 
 func marshalFontFamily(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -3036,13 +3040,13 @@ type FontMap struct {
 	*externglib.Object
 }
 
-func wrapFontMap(obj *glib.Object) *FontMap {
+func wrapFontMap(obj *externglib.Object) *FontMap {
 	return &FontMap{*externglib.Object{obj}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -3057,13 +3061,13 @@ type Fontset struct {
 	*externglib.Object
 }
 
-func wrapFontset(obj *glib.Object) *Fontset {
+func wrapFontset(obj *externglib.Object) *Fontset {
 	return &Fontset{*externglib.Object{obj}}
 }
 
 func marshalFontset(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
 
@@ -3076,15 +3080,17 @@ type FontsetSimple struct {
 	Fontset
 }
 
-func wrapFontsetSimple(obj *glib.Object) *FontsetSimple {
+func wrapFontsetSimple(obj *externglib.Object) *FontsetSimple {
 	return &FontsetSimple{Fontset{*externglib.Object{obj}}}
 }
 
 func marshalFontsetSimple(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewFontsetSimple(language *Language) *FontsetSimple
 
 // Layout: a `PangoLayout` structure represents an entire paragraph of text.
 //
@@ -3113,15 +3119,17 @@ type Layout struct {
 	*externglib.Object
 }
 
-func wrapLayout(obj *glib.Object) *Layout {
+func wrapLayout(obj *externglib.Object) *Layout {
 	return &Layout{*externglib.Object{obj}}
 }
 
 func marshalLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewLayout(context *Context) *Layout
 
 // Renderer: `PangoRenderer` is a base class for objects that can render text
 // provided as `PangoGlyphString` or `PangoLayout`.
@@ -3133,12 +3141,12 @@ type Renderer struct {
 	*externglib.Object
 }
 
-func wrapRenderer(obj *glib.Object) *Renderer {
+func wrapRenderer(obj *externglib.Object) *Renderer {
 	return &Renderer{*externglib.Object{obj}}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }

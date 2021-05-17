@@ -8,7 +8,6 @@ import (
 	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
-	"github.com/gotk3/gotk3/glib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -93,12 +92,14 @@ type FontMap struct {
 	pangofc.FontMap
 }
 
-func wrapFontMap(obj *glib.Object) *FontMap {
+func wrapFontMap(obj *externglib.Object) *FontMap {
 	return &FontMap{FontMap{FontMap{*externglib.Object{obj}}}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := glib.Take(unsafe.Pointer(val))
+	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func NewFontMap() *FontMap

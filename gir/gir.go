@@ -226,13 +226,13 @@ func (res *TypeFindResult) Info() (name, ctype string) {
 	case res.Enum != nil:
 		return res.Enum.Name, res.Enum.CType
 	case res.Function != nil:
-		return res.Function.Name, res.Function.CType
+		return res.Function.Name, ""
 	case res.Union != nil:
 		return res.Union.Name, res.Union.CType
 	case res.Bitfield != nil:
 		return res.Bitfield.Name, res.Bitfield.CType
 	case res.Callback != nil:
-		return res.Callback.Name, res.Callback.CType
+		return res.Callback.Name, ""
 	}
 
 	panic("TypeFindResult has all fields nil")

@@ -61,16 +61,15 @@ type CInclude struct {
 }
 
 type CallableAttrs struct {
-	Name        string `xml:"name,attr"`
-	CType       string `xml:"http://www.gtk.org/introspection/c/1.0 type,attr"`
-	CIdentifier string `xml:"http://www.gtk.org/introspection/c/1.0 identifier,attr"`
-
-	Deprecated        int    `xml:"deprecated,attr"`
-	DeprecatedVersion string `xml:"deprecated-version,attr"`
-
-	Parameters  *Parameters
+	Name        string       `xml:"name,attr"`
+	CIdentifier string       `xml:"http://www.gtk.org/introspection/c/1.0 identifier,attr"`
+	ShadowedBy  string       `xml:"shadowed-by,attr"`
+	Shadows     string       `xml:"shadows,attr"`
+	Throws      bool         `xml:"throws,attr"`
+	MovedTo     string       `xml:"moved-to,attr"`
+	Parameters  *Parameters  `xml:"http://www.gtk.org/introspection/core/1.0 parameters"`
 	ReturnValue *ReturnValue `xml:"http://www.gtk.org/introspection/core/1.0 return-value"`
-	Doc         *Doc
+	InfoAttrs
 }
 
 type Callback struct {
@@ -94,10 +93,11 @@ type Class struct {
 	InfoAttrs
 	InfoElements
 
-	Implements   []Implements  `xml:"http://www.gtk.org/introspection/core/1.0 implements"`
-	Constructors []Constructor `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
-	Methods      []Method      `xml:"http://www.gtk.org/introspection/core/1.0 method"`
-	Fields       []Field       `xml:"http://www.gtk.org/introspection/core/1.0 field"`
+	Implements     []Implements    `xml:"http://www.gtk.org/introspection/core/1.0 implements"`
+	Constructors   []Constructor   `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
+	Methods        []Method        `xml:"http://www.gtk.org/introspection/core/1.0 method"`
+	VirtualMethods []VirtualMethod `xml:"http://www.gtk.org/introspection/core/1.0 virtual-method"`
+	Fields         []Field         `xml:"http://www.gtk.org/introspection/core/1.0 field"`
 }
 
 type Constant struct{}
@@ -105,6 +105,7 @@ type Constant struct{}
 type Constructor struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
 	CallableAttrs
+	InfoElements
 }
 
 type Doc struct {
@@ -145,6 +146,7 @@ type Field struct {
 type Function struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 function"`
 	CallableAttrs
+	DocElements
 }
 
 type Implements struct {
@@ -207,10 +209,10 @@ type Member struct {
 }
 
 type Method struct {
-	XMLName     xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 method"`
-	Name        string   `xml:"name,attr"`
-	CIdentifier string   `xml:"http://www.gtk.org/introspection/c/1.0 identifier,attr"`
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 method"`
+
 	CallableAttrs
+	InfoElements
 }
 
 type Namespace struct {
@@ -341,4 +343,13 @@ type Union struct {
 
 type VarArgs struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 varargs"`
+}
+
+type VirtualMethod struct {
+	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 virtual-method"`
+
+	Invoker string `xml:"name,attr"`
+
+	CallableAttrs
+	InfoElements
 }

@@ -498,8 +498,8 @@ const (
 	IOChannelErrorFailed IOChannelError = 8
 )
 
-// IOError: GIOError is only used by the deprecated functions
-// g_io_channel_read(), g_io_channel_write(), and g_io_channel_seek().
+// IOError is only used by the deprecated functions g_io_channel_read(),
+// g_io_channel_write(), and g_io_channel_seek().
 type IOError int
 
 const (
@@ -10212,8 +10212,7 @@ func (t *TimeVal) Native() unsafe.Pointer {
 	return unsafe.Pointer(t.native)
 }
 
-// TimeZone: GTimeZone is an opaque structure whose members cannot be accessed
-// directly.
+// TimeZone is an opaque structure whose members cannot be accessed directly.
 type TimeZone struct {
 	native *C.GTimeZone
 }
@@ -10452,8 +10451,8 @@ func (u *URIParamsIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(u.native)
 }
 
-// Variant: GVariant is a variant datatype; it can contain one or more values
-// along with information about the type of the values.
+// Variant is a variant datatype; it can contain one or more values along with
+// information about the type of the values.
 //
 // A #GVariant may contain simple types, like an integer, or a boolean value; or
 // complex types, like an array of two strings, or a dictionary of key value
@@ -10795,7 +10794,7 @@ func (v *VariantBuilder) Native() unsafe.Pointer {
 
 func NewVariantBuilder(_type *VariantType) *VariantBuilder
 
-// VariantDict: GVariantDict is a mutable interface to #GVariant dictionaries.
+// VariantDict is a mutable interface to #GVariant dictionaries.
 //
 // It can be used for doing a sequence of dictionary lookups in an efficient way
 // on an existing #GVariant dictionary or it can be used to construct new
@@ -10906,8 +10905,8 @@ func (v *VariantDict) Native() unsafe.Pointer {
 
 func NewVariantDict(fromAsv *Variant) *VariantDict
 
-// VariantIter: GVariantIter is an opaque data structure and can only be
-// accessed using the following functions.
+// VariantIter is an opaque data structure and can only be accessed using the
+// following functions.
 type VariantIter struct {
 	native *C.GVariantIter
 }

@@ -38,16 +38,31 @@ func GoDoc(doc *gir.Doc, indentLvl int, self string) string {
 	return CommentReflowLinesIndent(indentLvl, self, doc.String)
 }
 
+func nthWordIs(p, word string, n int) bool {
+	words := strings.SplitN(p, " ", n+2)
+	if len(words) < n+2 {
+		return false
+	}
+	return words[n] == word
+}
+
 // CommentReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go
 // comment strings. It is automatically indented.
 func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
-	// Trim the word "this" away to make the sentence gramatically correct.
-	cmt = strings.TrimPrefix(cmt, "this ")
-	cmt = strings.TrimPrefix(cmt, "#")
+	// hasIs checks if the paragraph already starts with "something is..."
+	hasIs := strings.HasPrefix(cmt, "#") && nthWordIs(cmt, "is", 1)
 
-	// Wipe the namespace.
+	if hasIs {
+		// Trim the first word away and replace it with the Go name.
+		cmt = self + " " + strings.SplitN(cmt, " ", 2)[1]
+	} else {
+		// Trim the word "this" away to make the sentence gramatically correct.
+		cmt = strings.TrimPrefix(cmt, "this ")
+	}
+
+	// Wipe the namespace prefix syntax.
 	cmt = cmtNamespaceRegex.ReplaceAllStringFunc(cmt, func(str string) string {
-		// Return only the last character.
+		// Replace "#?" with just "?".
 		return str[len(str)-1:]
 	})
 
@@ -138,7 +153,7 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 		// Normal paragraphs.
 		default:
 			paragraph = strings.TrimSpace(cmtWhitespaceProc.Replace(paragraph))
-			if i == 0 {
+			if i == 0 && !hasIs {
 				// Prefix the paragraph with the current entity.
 				paragraph = fmt.Sprintf("%s: %s", self, lowerFirstLetter(paragraph))
 			}

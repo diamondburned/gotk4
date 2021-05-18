@@ -205,3 +205,24 @@ func UpdateContext(cr *cairo.Context, context *pango.Context)
 // with [func@create_layout] to match the current transformation and target
 // surface of a Cairo context.
 func UpdateLayout(cr *cairo.Context, layout *pango.Layout)
+
+// Font: `PangoCairoFont` is an interface exported by fonts for use with Cairo.
+//
+// The actual type of the font will depend on the particular font technology
+// Cairo was compiled to use.
+type Font interface {
+	GetScaledFont() *cairo.ScaledFont
+}
+
+// FontMap: `PangoCairoFontMap` is an interface exported by font maps for use
+// with Cairo.
+//
+// The actual type of the font map will depend on the particular font technology
+// Cairo was compiled to use.
+type FontMap interface {
+	CreateContext() *pango.Context
+	GetFontType() cairo.FontType
+	GetResolution() float64
+	SetDefault()
+	SetResolution(dpi float64)
+}

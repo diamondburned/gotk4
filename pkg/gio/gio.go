@@ -678,8 +678,8 @@ func marshalDBusMessageType(p uintptr) (interface{}, error) {
 	return DBusMessageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DataStreamByteOrder: GDataStreamByteOrder is used to ensure proper endianness
-// of streaming data sources across various machine architectures.
+// DataStreamByteOrder is used to ensure proper endianness of streaming data
+// sources across various machine architectures.
 type DataStreamByteOrder int
 
 const (
@@ -696,8 +696,8 @@ func marshalDataStreamByteOrder(p uintptr) (interface{}, error) {
 	return DataStreamByteOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DataStreamNewlineType: GDataStreamNewlineType is used when checking for or
-// setting the line endings for a given file.
+// DataStreamNewlineType is used when checking for or setting the line endings
+// for a given file.
 type DataStreamNewlineType int
 
 const (
@@ -1083,8 +1083,8 @@ func marshalMemoryMonitorWarningLevel(p uintptr) (interface{}, error) {
 	return MemoryMonitorWarningLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MountOperationResult: GMountOperationResult is returned as a result when a
-// request for information is send by the mounting operation.
+// MountOperationResult is returned as a result when a request for information
+// is send by the mounting operation.
 type MountOperationResult int
 
 const (
@@ -1153,8 +1153,7 @@ func marshalNotificationPriority(p uintptr) (interface{}, error) {
 	return NotificationPriority(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PasswordSave: GPasswordSave is used to indicate the lifespan of a saved
-// password.
+// PasswordSave is used to indicate the lifespan of a saved password.
 //
 // #Gvfs stores passwords in the Gnome keyring when this flag allows it to, and
 // later retrieves it again from there
@@ -1541,8 +1540,8 @@ func marshalTlsError(p uintptr) (interface{}, error) {
 	return TlsError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TlsInteractionResult: GTlsInteractionResult is returned by various functions
-// in Interaction when finishing an interaction request.
+// TlsInteractionResult is returned by various functions in Interaction when
+// finishing an interaction request.
 type TlsInteractionResult int
 
 const (
@@ -1700,8 +1699,8 @@ func marshalApplicationFlags(p uintptr) (interface{}, error) {
 	return ApplicationFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AskPasswordFlags: GAskPasswordFlags are used to request specific information
-// from the user, or to notify the user of their choices in an authentication
+// AskPasswordFlags: passwordFlags are used to request specific information from
+// the user, or to notify the user of their choices in an authentication
 // situation.
 type AskPasswordFlags int
 
@@ -3592,6 +3591,1202 @@ func UnixMountsChangedSince(time uint64) bool
 // checking if the mounts have changed with g_unix_mounts_changed_since().
 func UnixMountsGet() (uint64, *glib.List)
 
+// #GAction represents a single named action
+//
+// The main interface to an action is that it can be activated with
+// g_action_activate(). This results in the 'activate' signal being emitted. An
+// activation has a #GVariant parameter (which may be nil). The correct type for
+// the parameter is determined by a static parameter type (which is given at
+// construction time).
+//
+// An action may optionally have a state, in which case the state may be set
+// with g_action_change_state(). This call takes a #GVariant. The correct type
+// for the state is determined by a static state type (which is given at
+// construction time).
+//
+// The state may have a hint associated with it, specifying its valid range.
+//
+// #GAction is merely the interface to the concept of an action, as described
+// above. Various implementations of actions exist, including Action
+//
+// In all cases, the implementing class is responsible for storing the name of
+// the action, the parameter type, the enabled state, the optional state type
+// and the state and emitting the appropriate signals when these change. The
+// implementor is responsible for filtering calls to g_action_activate() and
+// g_action_change_state() for type safety and for the state being enabled.
+//
+// Probably the only useful thing to do with a #GAction is to put it inside of a
+// ActionGroup.
+type Action interface {
+	Activate(parameter *glib.Variant)
+	ChangeState(value *glib.Variant)
+	GetEnabled() bool
+	GetName() string
+	GetParameterType() *glib.VariantType
+	GetState() *glib.Variant
+	GetStateHint() *glib.Variant
+	GetStateType() *glib.VariantType
+}
+
+// ActionGroup: group represents a group of actions. Actions can be used to
+// expose functionality in a structured way, either from one part of a program
+// to another, or to the outside world. Action groups are often used together
+// with a Model that provides additional representation data for displaying the
+// actions to the user, e.g. in a menu.
+//
+// The main way to interact with the actions in a GActionGroup is to activate
+// them with g_action_group_activate_action(). Activating an action may require
+// a #GVariant parameter. The required type of the parameter can be inquired
+// with g_action_group_get_action_parameter_type(). Actions may be disabled, see
+// g_action_group_get_action_enabled(). Activating a disabled action has no
+// effect.
+//
+// Actions may optionally have a state in the form of a #GVariant. The current
+// state of an action can be inquired with g_action_group_get_action_state().
+// Activating a stateful action may change its state, but it is also possible to
+// set the state by calling g_action_group_change_action_state().
+//
+// As typical example, consider a text editing application which has an option
+// to change the current font to 'bold'. A good way to represent this would be a
+// stateful action, with a boolean state. Activating the action would toggle the
+// state.
+//
+// Each action in the group has a unique name (which is a string). All method
+// calls, except g_action_group_list_actions() take the name of an action as an
+// argument.
+//
+// The Group API is meant to be the 'public' API to the action group. The calls
+// here are exactly the interaction that 'external forces' (eg: UI, incoming
+// D-Bus messages, etc.) are supposed to have with actions. 'Internal' APIs (ie:
+// ones meant only to be accessed by the action group implementation) are found
+// on subclasses. This is why you will find - for example -
+// g_action_group_get_action_enabled() but not an equivalent set() call.
+//
+// Signals are emitted on the action group in response to state changes on
+// individual actions.
+//
+// Implementations of Group should provide implementations for the virtual
+// functions g_action_group_list_actions() and g_action_group_query_action().
+// The other virtual functions should not be implemented - their "wrappers" are
+// actually implemented with calls to g_action_group_query_action().
+type ActionGroup interface {
+	ActionAdded(actionName string)
+	ActionEnabledChanged(actionName string, enabled bool)
+	ActionRemoved(actionName string)
+	ActionStateChanged(actionName string, state *glib.Variant)
+	ActivateAction(actionName string, parameter *glib.Variant)
+	ChangeActionState(actionName string, value *glib.Variant)
+	GetActionEnabled(actionName string) bool
+	GetActionParameterType(actionName string) *glib.VariantType
+	GetActionState(actionName string) *glib.Variant
+	GetActionStateHint(actionName string) *glib.Variant
+	GetActionStateType(actionName string) *glib.VariantType
+	HasAction(actionName string) bool
+	ListActions() []string
+	QueryAction(actionName string) (bool, *glib.VariantType, *glib.VariantType, *glib.Variant, *glib.Variant, bool)
+}
+
+// ActionMap: the GActionMap interface is implemented by Group implementations
+// that operate by containing a number of named #GAction instances, such as
+// ActionGroup.
+//
+// One useful application of this interface is to map the names of actions from
+// various action groups to unique, prefixed names (e.g. by prepending "app." or
+// "win."). This is the motivation for the 'Map' part of the interface name.
+type ActionMap interface {
+	AddAction(action Action)
+	AddActionEntries(entries []ActionEntry, nEntries int, userData unsafe.Pointer)
+	LookupAction(actionName string) Action
+	RemoveAction(actionName string)
+}
+
+// AppInfo: info and LaunchContext are used for describing and launching
+// applications installed on the system.
+//
+// As of GLib 2.20, URIs will always be converted to POSIX paths (using
+// g_file_get_path()) when using g_app_info_launch() even if the application
+// requested an URI and not a POSIX path. For example for a desktop-file based
+// application with Exec key `totem U` and a single URI, `sftp://foo/file.avi`,
+// then `/home/user/.gvfs/sftp on foo/file.avi` will be passed. This will only
+// work if a set of suitable GIO extensions (such as gvfs 2.26 compiled with
+// FUSE support), is available and operational; if this is not the case, the URI
+// will be passed unmodified to the application. Some URIs, such as `mailto:`,
+// of course cannot be mapped to a POSIX path (in gvfs there's no FUSE mount for
+// it); such URIs will be passed unmodified to the application.
+//
+// Specifically for gvfs 2.26 and later, the POSIX URI will be mapped back to
+// the GIO URI in the #GFile constructors (since gvfs implements the #GVfs
+// extension point). As such, if the application needs to examine the URI, it
+// needs to use g_file_get_uri() or similar on #GFile. In other words, an
+// application cannot assume that the URI passed to e.g.
+// g_file_new_for_commandline_arg() is equal to the result of g_file_get_uri().
+// The following snippet illustrates this:
+//
+//
+//    GFile *f;
+//    char *uri;
+//
+//    file = g_file_new_for_commandline_arg (uri_from_commandline);
+//
+//    uri = g_file_get_uri (file);
+//    strcmp (uri, uri_from_commandline) == 0;
+//    g_free (uri);
+//
+//    if (g_file_has_uri_scheme (file, "cdda"))
+//      {
+//        // do something special with uri
+//      }
+//    g_object_unref (file);
+//
+//
+// This code will work when both `cdda://sr0/Track 1.wav` and
+// `/home/user/.gvfs/cdda on sr0/Track 1.wav` is passed to the application. It
+// should be noted that it's generally not safe for applications to rely on the
+// format of a particular URIs. Different launcher applications (e.g. file
+// managers) may have different ideas of what a given URI means.
+type AppInfo interface {
+	AddSupportsType(contentType string) bool
+	CanDelete() bool
+	CanRemoveSupportsType() bool
+	Delete() bool
+	Dup() AppInfo
+	Equal(appinfo2 AppInfo) bool
+	GetCommandline() string
+	GetDescription() string
+	GetDisplayName() string
+	GetExecutable() string
+	GetIcon() Icon
+	GetID() string
+	GetName() string
+	GetSupportedTypes() []string
+	Launch(files *glib.List, context *AppLaunchContext) bool
+	LaunchUris(uris *glib.List, context *AppLaunchContext) bool
+	LaunchUrisAsync(uris *glib.List, context *AppLaunchContext, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	LaunchUrisFinish(result AsyncResult) bool
+	RemoveSupportsType(contentType string) bool
+	SetAsDefaultForExtension(extension string) bool
+	SetAsDefaultForType(contentType string) bool
+	SetAsLastUsedForType(contentType string) bool
+	ShouldShow() bool
+	SupportsFiles() bool
+	SupportsUris() bool
+}
+
+// AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
+// same in all ways except that initialization is asynchronous. For more details
+// see the descriptions on #GInitable.
+//
+// A class may implement both the #GInitable and Initable interfaces.
+//
+// Users of objects implementing this are not intended to use the interface
+// method directly; instead it will be used automatically in various ways. For C
+// applications you generally just call g_async_initable_new_async() directly,
+// or indirectly via a foo_thing_new_async() wrapper. This will call
+// g_async_initable_init_async() under the cover, calling back with nil and a
+// set GError on failure.
+//
+// A typical implementation might look something like this:
+//
+//    enum {
+//       NOT_INITIALIZED,
+//       INITIALIZING,
+//       INITIALIZED
+//    };
+//
+//    static void
+//    _foo_ready_cb (Foo *self)
+//    {
+//      GList *l;
+//
+//      self->priv->state = INITIALIZED;
+//
+//      for (l = self->priv->init_results; l != NULL; l = l->next)
+//        {
+//          GTask *task = l->data;
+//
+//          if (self->priv->success)
+//            g_task_return_boolean (task, TRUE);
+//          else
+//            g_task_return_new_error (task, ...);
+//          g_object_unref (task);
+//        }
+//
+//      g_list_free (self->priv->init_results);
+//      self->priv->init_results = NULL;
+//    }
+//
+//    static void
+//    foo_init_async (GAsyncInitable       *initable,
+//                    int                   io_priority,
+//                    GCancellable         *cancellable,
+//                    GAsyncReadyCallback   callback,
+//                    gpointer              user_data)
+//    {
+//      Foo *self = FOO (initable);
+//      GTask *task;
+//
+//      task = g_task_new (initable, cancellable, callback, user_data);
+//      g_task_set_name (task, G_STRFUNC);
+//
+//      switch (self->priv->state)
+//        {
+//          case NOT_INITIALIZED:
+//            _foo_get_ready (self);
+//            self->priv->init_results = g_list_append (self->priv->init_results,
+//                                                      task);
+//            self->priv->state = INITIALIZING;
+//            break;
+//          case INITIALIZING:
+//            self->priv->init_results = g_list_append (self->priv->init_results,
+//                                                      task);
+//            break;
+//          case INITIALIZED:
+//            if (!self->priv->success)
+//              g_task_return_new_error (task, ...);
+//            else
+//              g_task_return_boolean (task, TRUE);
+//            g_object_unref (task);
+//            break;
+//        }
+//    }
+//
+//    static gboolean
+//    foo_init_finish (GAsyncInitable       *initable,
+//                     GAsyncResult         *result,
+//                     GError              **error)
+//    {
+//      g_return_val_if_fail (g_task_is_valid (result, initable), FALSE);
+//
+//      return g_task_propagate_boolean (G_TASK (result), error);
+//    }
+//
+//    static void
+//    foo_async_initable_iface_init (gpointer g_iface,
+//                                   gpointer data)
+//    {
+//      GAsyncInitableIface *iface = g_iface;
+//
+//      iface->init_async = foo_init_async;
+//      iface->init_finish = foo_init_finish;
+//    }
+//
+type AsyncInitable interface {
+	InitAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	InitFinish(res AsyncResult) bool
+	NewFinish(res AsyncResult) *externglib.Object
+}
+
+// AsyncResult: provides a base class for implementing asynchronous function
+// results.
+//
+// Asynchronous operations are broken up into two separate operations which are
+// chained together by a ReadyCallback. To begin an asynchronous operation,
+// provide a ReadyCallback to the asynchronous function. This callback will be
+// triggered when the operation has completed, and must be run in a later
+// iteration of the [thread-default main
+// context][g-main-context-push-thread-default] from where the operation was
+// initiated. It will be passed a Result instance filled with the details of the
+// operation's success or failure, the object the asynchronous function was
+// started for and any error codes returned. The asynchronous callback function
+// is then expected to call the corresponding "_finish()" function, passing the
+// object the function was called for, the Result instance, and (optionally) an
+// @error to grab any error conditions that may have occurred.
+//
+// The "_finish()" function for an operation takes the generic result (of type
+// Result) and returns the specific result that the operation in question yields
+// (e.g. a Enumerator for a "enumerate children" operation). If the result or
+// error status of the operation is not needed, there is no need to call the
+// "_finish()" function; GIO will take care of cleaning up the result and error
+// information after the ReadyCallback returns. You can pass nil for the
+// ReadyCallback if you don't need to take any action at all after the operation
+// completes. Applications may also take a reference to the Result and call
+// "_finish()" later; however, the "_finish()" function may be called at most
+// once.
+//
+// Example of a typical asynchronous operation flow: |[<!-- language="C" -->
+// void _theoretical_frobnitz_async (Theoretical *t, GCancellable *c,
+// GAsyncReadyCallback cb, gpointer u);
+//
+// gboolean _theoretical_frobnitz_finish (Theoretical *t, GAsyncResult *res,
+// GError **e);
+//
+// static void frobnitz_result_func (GObject *source_object, GAsyncResult *res,
+// gpointer user_data) { gboolean success = FALSE;
+//
+// success = _theoretical_frobnitz_finish (source_object, res, NULL);
+//
+// if (success) g_printf ("Hurray!\n"); else g_printf ("Uh oh!\n");
+//
+// ...
+//
+// }
+//
+// int main (int argc, void *argv[]) { ...
+//
+// _theoretical_frobnitz_async (theoretical_data, NULL, frobnitz_result_func,
+// NULL);
+//
+//       ...
+//    }
+//
+//
+//    The callback for an asynchronous operation is called only once, and is
+//    always called, even in the case of a cancelled operation. On cancellation
+//    the result is a G_IO_ERROR_CANCELLED error.
+//
+//    ## I/O Priority # {#io-priority}
+//
+//    Many I/O-related asynchronous operations have a priority parameter,
+//    which is used in certain cases to determine the order in which
+//    operations are executed. They are not used to determine system-wide
+//    I/O scheduling. Priorities are integers, with lower numbers indicating
+//    higher priority. It is recommended to choose priorities between
+//    G_PRIORITY_LOW and G_PRIORITY_HIGH, with G_PRIORITY_DEFAULT
+//    as a default.
+type AsyncResult interface {
+	GetSourceObject() *externglib.Object
+	GetUserData() unsafe.Pointer
+	IsTagged(sourceTag unsafe.Pointer) bool
+	LegacyPropagateError() bool
+}
+
+// Converter is implemented by objects that convert binary data in various ways.
+// The conversion can be stateful and may fail at any place.
+//
+// Some example conversions are: character set conversion, compression,
+// decompression and regular expression replace.
+type Converter interface {
+	Convert(inbuf []uint8, inbufSize uint, outbuf []uint8, outbufSize uint, flags ConverterFlags) (uint, uint, ConverterResult)
+	Reset()
+}
+
+// DBusInterface: the BusInterface type is the base type for D-Bus interfaces
+// both on the service side (see BusInterfaceSkeleton) and client side (see
+// BusProxy).
+type DBusInterface interface {
+	DupObject() DBusObject
+	GetInfo() *DBusInterfaceInfo
+	GetObject() DBusObject
+	SetObject(object DBusObject)
+}
+
+// DBusObject: the BusObject type is the base type for D-Bus objects on both the
+// service side (see BusObjectSkeleton) and the client side (see
+// BusObjectProxy). It is essentially just a container of interfaces.
+type DBusObject interface {
+	GetInterface(interfaceName string) DBusInterface
+	GetInterfaces() *glib.List
+	GetObjectPath() string
+}
+
+// DBusObjectManager: the BusObjectManager type is the base type for service-
+// and client-side implementations of the standardized
+// [org.freedesktop.DBus.ObjectManager](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
+// interface.
+//
+// See BusObjectManagerClient for the client-side implementation and
+// BusObjectManagerServer for the service-side implementation.
+type DBusObjectManager interface {
+	GetInterface(objectPath string, interfaceName string) DBusInterface
+	GetObject(objectPath string) DBusObject
+	GetObjectPath() string
+	GetObjects() *glib.List
+}
+
+// DatagramBased: a Based is a networking interface for representing
+// datagram-based communications. It is a more or less direct mapping of the
+// core parts of the BSD socket API in a portable GObject interface. It is
+// implemented by #GSocket, which wraps the UNIX socket API on UNIX and winsock2
+// on Windows.
+//
+// Based is entirely platform independent, and is intended to be used alongside
+// higher-level networking APIs such as OStream.
+//
+// It uses vectored scatter/gather I/O by default, allowing for many messages to
+// be sent or received in a single call. Where possible, implementations of the
+// interface should take advantage of vectored I/O to minimise processing or
+// system calls. For example, #GSocket uses recvmmsg() and sendmmsg() where
+// possible. Callers should take advantage of scatter/gather I/O (the use of
+// multiple buffers per message) to avoid unnecessary copying of data to
+// assemble or disassemble a message.
+//
+// Each Based operation has a timeout parameter which may be negative for
+// blocking behaviour, zero for non-blocking behaviour, or positive for timeout
+// behaviour. A blocking operation blocks until finished or there is an error. A
+// non-blocking operation will return immediately with a G_IO_ERROR_WOULD_BLOCK
+// error if it cannot make progress. A timeout operation will block until the
+// operation is complete or the timeout expires; if the timeout expires it will
+// return what progress it made, or G_IO_ERROR_TIMED_OUT if no progress was
+// made. To know when a call would successfully run you can call
+// g_datagram_based_condition_check() or g_datagram_based_condition_wait(). You
+// can also use g_datagram_based_create_source() and attach it to a Context to
+// get callbacks when I/O is possible.
+//
+// When running a non-blocking operation applications should always be able to
+// handle getting a G_IO_ERROR_WOULD_BLOCK error even when some other function
+// said that I/O was possible. This can easily happen in case of a race
+// condition in the application, but it can also happen for other reasons. For
+// instance, on Windows a socket is always seen as writable until a write
+// returns G_IO_ERROR_WOULD_BLOCK.
+//
+// As with #GSocket, Baseds can be either connection oriented (for example,
+// SCTP) or connectionless (for example, UDP). Baseds must be datagram-based,
+// not stream-based. The interface does not cover connection establishment — use
+// methods on the underlying type to establish a connection before sending and
+// receiving data through the Based API. For connectionless socket types the
+// target/source address is specified or received in each I/O operation.
+//
+// Like most other APIs in GLib, Based is not inherently thread safe. To use a
+// Based concurrently from multiple threads, you must implement your own
+// locking.
+type DatagramBased interface {
+	ConditionCheck(condition glib.IOCondition) glib.IOCondition
+	ConditionWait(condition glib.IOCondition, timeout int64, cancellable *Cancellable) bool
+	CreateSource(condition glib.IOCondition, cancellable *Cancellable) *glib.Source
+	ReceiveMessages(messages []InputMessage, numMessages uint, flags int, timeout int64, cancellable *Cancellable) int
+	SendMessages(messages []OutputMessage, numMessages uint, flags int, timeout int64, cancellable *Cancellable) int
+}
+
+// DesktopAppInfoLookup is an opaque data structure and can only be accessed
+// using the following functions.
+type DesktopAppInfoLookup interface {
+	GetDefaultForURIScheme(uriScheme string) AppInfo
+}
+
+// #GDrive - this represent a piece of hardware connected to the machine. It's
+// generally only created for removable hardware or hardware with removable
+// media
+//
+// #GDrive is a container class for #GVolume objects that stem from the same
+// piece of media. As such, #GDrive abstracts a drive with (or without)
+// removable media and provides operations for querying whether media is
+// available, determining whether media change is automatically detected and
+// ejecting the media
+//
+// If the #GDrive reports that media isn't automatically detected, one can poll
+// for media; typically one should not do this periodically as a poll for media
+// operation is potentially expensive and may spin up the drive creating noise.
+//
+// #GDrive supports starting and stopping drives with authentication support for
+// the former. This can be used to support a diverse set of use cases including
+// connecting/disconnecting iSCSI devices, powering down external disk
+// enclosures and starting/stopping multi-disk devices such as RAID devices.
+// Note that the actual semantics and side-effects of starting/stopping a
+// #GDrive may vary according to implementation. To choose the correct verbs in
+// e.g. a file manager, use g_drive_get_start_stop_type()
+//
+// For porting from GnomeVFS note that there is no equivalent of #GDrive in that
+// API.
+type Drive interface {
+	CanEject() bool
+	CanPollForMedia() bool
+	CanStart() bool
+	CanStartDegraded() bool
+	CanStop() bool
+	Eject(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	EjectFinish(result AsyncResult) bool
+	EjectWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	EjectWithOperationFinish(result AsyncResult) bool
+	EnumerateIdentifiers() []string
+	GetIcon() Icon
+	GetIdentifier(kind string) string
+	GetName() string
+	GetSortKey() string
+	GetStartStopType() DriveStartStopType
+	GetSymbolicIcon() Icon
+	GetVolumes() *glib.List
+	HasMedia() bool
+	HasVolumes() bool
+	IsMediaCheckAutomatic() bool
+	IsMediaRemovable() bool
+	IsRemovable() bool
+	PollForMedia(cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	PollForMediaFinish(result AsyncResult) bool
+	Start(flags DriveStartFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	StartFinish(result AsyncResult) bool
+	Stop(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	StopFinish(result AsyncResult) bool
+}
+
+// DtlsClientConnection is the client-side subclass of Connection, representing
+// a client-side DTLS connection.
+type DtlsClientConnection interface {
+	GetAcceptedCas() *glib.List
+	GetServerIdentity() SocketConnectable
+	GetValidationFlags() TlsCertificateFlags
+	SetServerIdentity(identity SocketConnectable)
+	SetValidationFlags(flags TlsCertificateFlags)
+}
+
+// DtlsConnection is the base DTLS connection class type, which wraps a Based
+// and provides DTLS encryption on top of it. Its subclasses, ClientConnection
+// and ServerConnection, implement client-side and server-side DTLS,
+// respectively.
+//
+// For TLS support, see Connection.
+//
+// As DTLS is datagram based, Connection implements Based, presenting a
+// datagram-socket-like API for the encrypted connection. This operates over a
+// base datagram connection, which is also a Based (Connection:base-socket).
+//
+// To close a DTLS connection, use g_dtls_connection_close().
+//
+// Neither ServerConnection or ClientConnection set the peer address on their
+// base Based if it is a #GSocket — it is up to the caller to do that if they
+// wish. If they do not, and g_socket_close() is called on the base socket, the
+// Connection will not raise a G_IO_ERROR_NOT_CONNECTED error on further I/O.
+type DtlsConnection interface {
+	Close(cancellable *Cancellable) bool
+	CloseAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	CloseFinish(result AsyncResult) bool
+	EmitAcceptCertificate(peerCert *TlsCertificate, errors TlsCertificateFlags) bool
+	GetCertificate() *TlsCertificate
+	GetChannelBindingData(_type TlsChannelBindingType) ([]uint8, bool)
+	GetDatabase() TlsFileDatabase
+	GetInteraction() *TlsInteraction
+	GetNegotiatedProtocol() string
+	GetPeerCertificate() *TlsCertificate
+	GetPeerCertificateErrors() TlsCertificateFlags
+	GetRehandshakeMode() TlsRehandshakeMode
+	GetRequireCloseNotify() bool
+	Handshake(cancellable *Cancellable) bool
+	HandshakeAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	HandshakeFinish(result AsyncResult) bool
+	SetAdvertisedProtocols(protocols []string)
+	SetCertificate(certificate *TlsCertificate)
+	SetDatabase(database TlsFileDatabase)
+	SetInteraction(interaction *TlsInteraction)
+	SetRehandshakeMode(mode TlsRehandshakeMode)
+	SetRequireCloseNotify(requireCloseNotify bool)
+	Shutdown(shutdownRead bool, shutdownWrite bool, cancellable *Cancellable) bool
+	ShutdownAsync(shutdownRead bool, shutdownWrite bool, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	ShutdownFinish(result AsyncResult) bool
+}
+
+// File is a high level abstraction for manipulating files on a virtual file
+// system. #GFiles are lightweight, immutable objects that do no I/O upon
+// creation. It is necessary to understand that #GFile objects do not represent
+// files, merely an identifier for a file. All file content I/O is implemented
+// as streaming operations (see Stream and Stream).
+//
+// To construct a #GFile, you can use: - g_file_new_for_path() if you have a
+// path. - g_file_new_for_uri() if you have a URI. -
+// g_file_new_for_commandline_arg() for a command line argument. -
+// g_file_new_tmp() to create a temporary file from a template. -
+// g_file_parse_name() from a UTF-8 string gotten from g_file_get_parse_name().
+// - g_file_new_build_filename() to create a file from path elements.
+//
+// One way to think of a #GFile is as an abstraction of a pathname. For normal
+// files the system pathname is what is stored internally, but as #GFiles are
+// extensible it could also be something else that corresponds to a pathname in
+// a userspace implementation of a filesystem.
+//
+// #GFiles make up hierarchies of directories and files that correspond to the
+// files on a filesystem. You can move through the file system with #GFile using
+// g_file_get_parent() to get an identifier for the parent directory,
+// g_file_get_child() to get a child within a directory,
+// g_file_resolve_relative_path() to resolve a relative path between two
+// #GFiles. There can be multiple hierarchies, so you may not end up at the same
+// root if you repeatedly call g_file_get_parent() on two different files
+//
+// All #GFiles have a basename (get with g_file_get_basename()). These names are
+// byte strings that are used to identify the file on the filesystem (relative
+// to its parent directory) and there is no guarantees that they have any
+// particular charset encoding or even make any sense at all. If you want to use
+// filenames in a user interface you should use the display name that you can
+// get by requesting the G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME attribute with
+// g_file_query_info(). This is guaranteed to be in UTF-8 and can be used in a
+// user interface. But always store the real basename or the #GFile to use to
+// actually access the file, because there is no way to go from a display name
+// to the actual name.
+//
+// Using #GFile as an identifier has the same weaknesses as using a path in that
+// there may be multiple aliases for the same file. For instance, hard or soft
+// links may cause two different #GFiles to refer to the same file. Other
+// possible causes for aliases are: case insensitive filesystems, short and long
+// names on FAT/NTFS, or bind mounts in Linux. If you want to check if two
+// #GFiles point to the same file you can query for the G_FILE_ATTRIBUTE_ID_FILE
+// attribute. Note that #GFile does some trivial canonicalization of pathnames
+// passed in, so that trivial differences in the path string used at creation
+// (duplicated slashes, slash at end of path, "." or ".." path segments, etc)
+// does not create different #GFiles.
+//
+// Many #GFile operations have both synchronous and asynchronous versions to
+// suit your application. Asynchronous versions of synchronous functions simply
+// have _async() appended to their function names. The asynchronous I/O
+// functions call a ReadyCallback which is then used to finalize the operation,
+// producing a GAsyncResult which is then passed to the function's matching
+// _finish() operation.
+//
+// It is highly recommended to use asynchronous calls when running within a
+// shared main loop, such as in the main thread of an application. This avoids
+// I/O operations blocking other sources on the main loop from being dispatched.
+// Synchronous I/O operations should be performed from worker threads. See the
+// [introduction to asynchronous programming section][async-programming] for
+// more.
+//
+// Some #GFile operations almost always take a noticeable amount of time, and so
+// do not have synchronous analogs. Notable cases include: -
+// g_file_mount_mountable() to mount a mountable file. -
+// g_file_unmount_mountable_with_operation() to unmount a mountable file. -
+// g_file_eject_mountable_with_operation() to eject a mountable file.
+//
+// Entity Tags {#gfile-etag}
+//
+// One notable feature of #GFiles are entity tags, or "etags" for short. Entity
+// tags are somewhat like a more abstract version of the traditional mtime, and
+// can be used to quickly determine if the file has been modified from the
+// version on the file system. See the HTTP 1.1
+// [specification](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html) for
+// HTTP Etag headers, which are a very similar concept.
+type File interface {
+	AppendTo(flags FileCreateFlags, cancellable *Cancellable) *FileOutputStream
+	AppendToAsync(flags FileCreateFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	AppendToFinish(res AsyncResult) *FileOutputStream
+	Copy(destination File, flags FileCopyFlags, cancellable *Cancellable, progressCallback FileProgressCallback, progressCallbackData unsafe.Pointer) bool
+	CopyAsync(destination File, flags FileCopyFlags, ioPriority int, cancellable *Cancellable, progressCallback FileProgressCallback, progressCallbackData unsafe.Pointer, callback AsyncReadyCallback, userData unsafe.Pointer)
+	CopyAttributes(destination File, flags FileCopyFlags, cancellable *Cancellable) bool
+	CopyFinish(res AsyncResult) bool
+	Create(flags FileCreateFlags, cancellable *Cancellable) *FileOutputStream
+	CreateAsync(flags FileCreateFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	CreateFinish(res AsyncResult) *FileOutputStream
+	CreateReadwrite(flags FileCreateFlags, cancellable *Cancellable) *FileIOStream
+	CreateReadwriteAsync(flags FileCreateFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	CreateReadwriteFinish(res AsyncResult) *FileIOStream
+	Delete(cancellable *Cancellable) bool
+	DeleteAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	DeleteFinish(result AsyncResult) bool
+	Dup() File
+	EjectMountable(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	EjectMountableFinish(result AsyncResult) bool
+	EjectMountableWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	EjectMountableWithOperationFinish(result AsyncResult) bool
+	EnumerateChildren(attributes string, flags FileQueryInfoFlags, cancellable *Cancellable) *FileEnumerator
+	EnumerateChildrenAsync(attributes string, flags FileQueryInfoFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	EnumerateChildrenFinish(res AsyncResult) *FileEnumerator
+	Equal(file2 File) bool
+	FindEnclosingMount(cancellable *Cancellable) Mount
+	FindEnclosingMountAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	FindEnclosingMountFinish(res AsyncResult) Mount
+	GetBasename() string
+	GetChild(name string) File
+	GetChildForDisplayName(displayName string) File
+	GetParent() File
+	GetParseName() string
+	GetPath() string
+	GetRelativePath(descendant File) string
+	GetURI() string
+	GetURIScheme() string
+	HasParent(parent File) bool
+	HasPrefix(prefix File) bool
+	HasURIScheme(uriScheme string) bool
+	Hash() uint
+	IsNative() bool
+	LoadBytes(cancellable *Cancellable) (string, *glib.Bytes)
+	LoadBytesAsync(cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	LoadBytesFinish(result AsyncResult) (string, *glib.Bytes)
+	LoadContents(cancellable *Cancellable) ([]uint8, uint, string, bool)
+	LoadContentsAsync(cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	LoadContentsFinish(res AsyncResult) ([]uint8, uint, string, bool)
+	LoadPartialContentsAsync(cancellable *Cancellable, readMoreCallback FileReadMoreCallback, callback AsyncReadyCallback, userData unsafe.Pointer)
+	LoadPartialContentsFinish(res AsyncResult) ([]uint8, uint, string, bool)
+	MakeDirectory(cancellable *Cancellable) bool
+	MakeDirectoryAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	MakeDirectoryFinish(result AsyncResult) bool
+	MakeDirectoryWithParents(cancellable *Cancellable) bool
+	MakeSymbolicLink(symlinkValue string, cancellable *Cancellable) bool
+	MeasureDiskUsage(flags FileMeasureFlags, cancellable *Cancellable, progressCallback FileMeasureProgressCallback, progressData unsafe.Pointer) (uint64, uint64, uint64, bool)
+	MeasureDiskUsageAsync(flags FileMeasureFlags, ioPriority int, cancellable *Cancellable, progressCallback FileMeasureProgressCallback, progressData unsafe.Pointer, callback AsyncReadyCallback, userData unsafe.Pointer)
+	MeasureDiskUsageFinish(result AsyncResult) (uint64, uint64, uint64, bool)
+	Monitor(flags FileMonitorFlags, cancellable *Cancellable) *FileMonitor
+	MonitorDirectory(flags FileMonitorFlags, cancellable *Cancellable) *FileMonitor
+	MonitorFile(flags FileMonitorFlags, cancellable *Cancellable) *FileMonitor
+	MountEnclosingVolume(flags MountMountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	MountEnclosingVolumeFinish(result AsyncResult) bool
+	MountMountable(flags MountMountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	MountMountableFinish(result AsyncResult) File
+	Move(destination File, flags FileCopyFlags, cancellable *Cancellable, progressCallback FileProgressCallback, progressCallbackData unsafe.Pointer) bool
+	OpenReadwrite(cancellable *Cancellable) *FileIOStream
+	OpenReadwriteAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	OpenReadwriteFinish(res AsyncResult) *FileIOStream
+	PeekPath() string
+	PollMountable(cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	PollMountableFinish(result AsyncResult) bool
+	QueryDefaultHandler(cancellable *Cancellable) AppInfo
+	QueryDefaultHandlerAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	QueryDefaultHandlerFinish(result AsyncResult) AppInfo
+	QueryExists(cancellable *Cancellable) bool
+	QueryFileType(flags FileQueryInfoFlags, cancellable *Cancellable) FileType
+	QueryFilesystemInfo(attributes string, cancellable *Cancellable) *FileInfo
+	QueryFilesystemInfoAsync(attributes string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	QueryFilesystemInfoFinish(res AsyncResult) *FileInfo
+	QueryInfo(attributes string, flags FileQueryInfoFlags, cancellable *Cancellable) *FileInfo
+	QueryInfoAsync(attributes string, flags FileQueryInfoFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	QueryInfoFinish(res AsyncResult) *FileInfo
+	QuerySettableAttributes(cancellable *Cancellable) *FileAttributeInfoList
+	QueryWritableNamespaces(cancellable *Cancellable) *FileAttributeInfoList
+	Read(cancellable *Cancellable) *FileInputStream
+	ReadAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	ReadFinish(res AsyncResult) *FileInputStream
+	Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable *Cancellable) *FileOutputStream
+	ReplaceAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	ReplaceContents(contents []uint8, length uint, etag string, makeBackup bool, flags FileCreateFlags, cancellable *Cancellable) (string, bool)
+	ReplaceContentsAsync(contents []uint8, length uint, etag string, makeBackup bool, flags FileCreateFlags, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	ReplaceContentsBytesAsync(contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	ReplaceContentsFinish(res AsyncResult) (string, bool)
+	ReplaceFinish(res AsyncResult) *FileOutputStream
+	ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable *Cancellable) *FileIOStream
+	ReplaceReadwriteAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	ReplaceReadwriteFinish(res AsyncResult) *FileIOStream
+	ResolveRelativePath(relativePath string) File
+	SetAttribute(attribute string, _type FileAttributeType, valueP unsafe.Pointer, flags FileQueryInfoFlags, cancellable *Cancellable) bool
+	SetAttributeByteString(attribute string, value string, flags FileQueryInfoFlags, cancellable *Cancellable) bool
+	SetAttributeInt32(attribute string, value int32, flags FileQueryInfoFlags, cancellable *Cancellable) bool
+	SetAttributeInt64(attribute string, value int64, flags FileQueryInfoFlags, cancellable *Cancellable) bool
+	SetAttributeString(attribute string, value string, flags FileQueryInfoFlags, cancellable *Cancellable) bool
+	SetAttributeUint32(attribute string, value uint32, flags FileQueryInfoFlags, cancellable *Cancellable) bool
+	SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable *Cancellable) bool
+	SetAttributesAsync(info *FileInfo, flags FileQueryInfoFlags, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	SetAttributesFinish(result AsyncResult) (*FileInfo, bool)
+	SetAttributesFromInfo(info *FileInfo, flags FileQueryInfoFlags, cancellable *Cancellable) bool
+	SetDisplayName(displayName string, cancellable *Cancellable) File
+	SetDisplayNameAsync(displayName string, ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	SetDisplayNameFinish(res AsyncResult) File
+	StartMountable(flags DriveStartFlags, startOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	StartMountableFinish(result AsyncResult) bool
+	StopMountable(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	StopMountableFinish(result AsyncResult) bool
+	SupportsThreadContexts() bool
+	Trash(cancellable *Cancellable) bool
+	TrashAsync(ioPriority int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	TrashFinish(result AsyncResult) bool
+	UnmountMountable(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	UnmountMountableFinish(result AsyncResult) bool
+	UnmountMountableWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	UnmountMountableWithOperationFinish(result AsyncResult) bool
+}
+
+// FileDescriptorBased is implemented by streams (implementations of Stream or
+// Stream) that are based on file descriptors.
+//
+// Note that `<gio/gfiledescriptorbased.h>` belongs to the UNIX-specific GIO
+// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
+// using it.
+type FileDescriptorBased interface {
+	GetFd() int
+}
+
+// Icon is a very minimal interface for icons. It provides functions for
+// checking the equality of two icons, hashing of icons and serializing an icon
+// to and from strings.
+//
+// #GIcon does not provide the actual pixmap for the icon as this is out of
+// GIO's scope, however implementations of #GIcon may contain the name of an
+// icon (see Icon), or the path to an icon (see Icon)
+//
+// To obtain a hash of a #GIcon, see g_icon_hash().
+//
+// To check if two #GIcons are equal, see g_icon_equal().
+//
+// For serializing a #GIcon, use g_icon_serialize() and g_icon_deserialize().
+//
+// If you want to consume #GIcon (for example, in a toolkit) you must be
+// prepared to handle at least the three following cases: Icon, Icon and Icon.
+// It may also make sense to have fast-paths for other cases (like handling
+// Pixbuf directly, for example) but all compliant #GIcon implementations
+// outside of GIO must implement Icon.
+//
+// If your application or library provides one or more #GIcon implementations
+// you need to ensure that your new implementation also implements Icon.
+// Additionally, you must provide an implementation of g_icon_serialize() that
+// gives a result that is understood by g_icon_deserialize(), yielding one of
+// the built-in icon types.
+type Icon interface {
+	Equal(icon2 Icon) bool
+	Serialize() *glib.Variant
+	ToString() string
+}
+
+// Initable is implemented by objects that can fail during initialization. If an
+// object implements this interface then it must be initialized as the first
+// thing after construction, either via g_initable_init() or
+// g_async_initable_init_async() (the latter is only available if it also
+// implements Initable).
+//
+// If the object is not initialized, or initialization returns with an error,
+// then all operations on the object except g_object_ref() and g_object_unref()
+// are considered to be invalid, and have undefined behaviour. They will often
+// fail with g_critical() or g_warning(), but this must not be relied on.
+//
+// Users of objects implementing this are not intended to use the interface
+// method directly, instead it will be used automatically in various ways. For C
+// applications you generally just call g_initable_new() directly, or indirectly
+// via a foo_thing_new() wrapper. This will call g_initable_init() under the
+// cover, returning nil and setting a #GError on failure (at which point the
+// instance is unreferenced).
+//
+// For bindings in languages where the native constructor supports exceptions
+// the binding could check for objects implementing GInitable during normal
+// construction and automatically initialize them, throwing an exception on
+// failure.
+type Initable interface {
+	Init(cancellable *Cancellable) bool
+}
+
+// ListModel is an interface that represents a mutable list of #GObjects. Its
+// main intention is as a model for various widgets in user interfaces, such as
+// list views, but it can also be used as a convenient method of returning lists
+// of data, with support for updates.
+//
+// Each object in the list may also report changes in itself via some mechanism
+// (normally the #GObject::notify signal). Taken together with the
+// Model::items-changed signal, this provides for a list that can change its
+// membership, and in which the members can change their individual properties.
+//
+// A good example would be the list of visible wireless network access points,
+// where each access point can report dynamic properties such as signal
+// strength.
+//
+// It is important to note that the Model itself does not report changes to the
+// individual items. It only reports changes to the list membership. If you want
+// to observe changes to the objects themselves then you need to connect signals
+// to the objects that you are interested in.
+//
+// All items in a Model are of (or derived from) the same type.
+// g_list_model_get_item_type() returns that type. The type may be an interface,
+// in which case all objects in the list must implement it.
+//
+// The semantics are close to that of an array: g_list_model_get_n_items()
+// returns the number of items in the list and g_list_model_get_item() returns
+// an item at a (0-based) position. In order to allow implementations to
+// calculate the list length lazily, you can also iterate over items: starting
+// from 0, repeatedly call g_list_model_get_item() until it returns nil.
+//
+// An implementation may create objects lazily, but must take care to return the
+// same object for a given position until all references to it are gone.
+//
+// On the other side, a consumer is expected only to hold references on objects
+// that are currently "user visible", in order to facilitate the maximum level
+// of laziness in the implementation of the list and to reduce the required
+// number of signal connections at a given time.
+//
+// This interface is intended only to be used from a single thread. The thread
+// in which it is appropriate to use it depends on the particular
+// implementation, but typically it will be from the thread that owns the
+// [thread-default main context][g-main-context-push-thread-default] in effect
+// at the time that the model was created.
+type ListModel interface {
+	GetItem(position uint) unsafe.Pointer
+	GetItemType() externglib.Type
+	GetNItems() uint
+	GetObject(position uint) *externglib.Object
+	ItemsChanged(position uint, removed uint, added uint)
+}
+
+// LoadableIcon: extends the #GIcon interface and adds the ability to load icons
+// from streams.
+type LoadableIcon interface {
+	Load(size int, cancellable *Cancellable) (string, *InputStream)
+	LoadAsync(size int, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	LoadFinish(res AsyncResult) (string, *InputStream)
+}
+
+// Mount: the #GMount interface represents user-visible mounts. Note, when
+// porting from GnomeVFS, #GMount is the moral equivalent of VFSVolume.
+//
+// #GMount is a "mounted" filesystem that you can access. Mounted is in quotes
+// because it's not the same as a unix mount, it might be a gvfs mount, but you
+// can still access the files on it if you use GIO. Might or might not be
+// related to a volume object
+//
+// Unmounting a #GMount instance is an asynchronous operation. For more
+// information about asynchronous operations, see Result and #GTask. To unmount
+// a #GMount instance, first call g_mount_unmount_with_operation() with (at
+// least) the #GMount instance and a ReadyCallback. The callback will be fired
+// when the operation has resolved (either with success or failure), and a
+// Result structure will be passed to the callback. That callback should then
+// call g_mount_unmount_with_operation_finish() with the #GMount and the Result
+// data to see if the operation was completed successfully. If an @error is
+// present when g_mount_unmount_with_operation_finish() is called, then it will
+// be filled with any error information.
+type Mount interface {
+	CanEject() bool
+	CanUnmount() bool
+	Eject(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	EjectFinish(result AsyncResult) bool
+	EjectWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	EjectWithOperationFinish(result AsyncResult) bool
+	GetDefaultLocation() File
+	GetDrive() Drive
+	GetIcon() Icon
+	GetName() string
+	GetRoot() File
+	GetSortKey() string
+	GetSymbolicIcon() Icon
+	GetUuid() string
+	GetVolume() Volume
+	GuessContentType(forceRescan bool, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	GuessContentTypeFinish(result AsyncResult) []string
+	GuessContentTypeSync(forceRescan bool, cancellable *Cancellable) []string
+	IsShadowed() bool
+	Remount(flags MountMountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	RemountFinish(result AsyncResult) bool
+	Shadow()
+	Unmount(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	UnmountFinish(result AsyncResult) bool
+	UnmountWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	UnmountWithOperationFinish(result AsyncResult) bool
+	Unshadow()
+}
+
+// NetworkMonitor: monitor provides an easy-to-use cross-platform API for
+// monitoring network connectivity. On Linux, the available implementations are
+// based on the kernel's netlink interface and on NetworkManager.
+//
+// There is also an implementation for use inside Flatpak sandboxes.
+type NetworkMonitor interface {
+	CanReach(connectable SocketConnectable, cancellable *Cancellable) bool
+	CanReachAsync(connectable SocketConnectable, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	CanReachFinish(result AsyncResult) bool
+	GetConnectivity() NetworkConnectivity
+	GetNetworkAvailable() bool
+	GetNetworkMetered() bool
+}
+
+// PollableInputStream is implemented by Streams that can be polled for
+// readiness to read. This can be used when interfacing with a non-GIO API that
+// expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
+type PollableInputStream interface {
+	CanPoll() bool
+	CreateSource(cancellable *Cancellable) *glib.Source
+	IsReadable() bool
+	ReadNonblocking(buffer []uint8, count uint, cancellable *Cancellable) int
+}
+
+// PollableOutputStream is implemented by Streams that can be polled for
+// readiness to write. This can be used when interfacing with a non-GIO API that
+// expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
+type PollableOutputStream interface {
+	CanPoll() bool
+	CreateSource(cancellable *Cancellable) *glib.Source
+	IsWritable() bool
+	WriteNonblocking(buffer []uint8, count uint, cancellable *Cancellable) int
+	WritevNonblocking(vectors []OutputVector, nVectors uint, cancellable *Cancellable) (uint, PollableReturn)
+}
+
+// Proxy: a #GProxy handles connecting to a remote host via a given type of
+// proxy server. It is implemented by the 'gio-proxy' extension point. The
+// extensions are named after their proxy protocol name. As an example, a SOCKS5
+// proxy implementation can be retrieved with the name 'socks5' using the
+// function g_io_extension_point_get_extension_by_name().
+type Proxy interface {
+	Connect(connection *IOStream, proxyAddress *ProxyAddress, cancellable *Cancellable) *IOStream
+	ConnectAsync(connection *IOStream, proxyAddress *ProxyAddress, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	ConnectFinish(result AsyncResult) *IOStream
+	SupportsHostname() bool
+}
+
+// ProxyResolver: resolver provides synchronous and asynchronous network proxy
+// resolution. Resolver is used within Client through the method
+// g_socket_connectable_proxy_enumerate().
+//
+// Implementations of Resolver based on libproxy and GNOME settings can be found
+// in glib-networking. GIO comes with an implementation for use inside Flatpak
+// portals.
+type ProxyResolver interface {
+	IsSupported() bool
+	Lookup(uri string, cancellable *Cancellable) []string
+	LookupAsync(uri string, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	LookupFinish(result AsyncResult) []string
+}
+
+// RemoteActionGroup: the GRemoteActionGroup interface is implemented by Group
+// instances that either transmit action invocations to other processes or
+// receive action invocations in the local process from other processes.
+//
+// The interface has `_full` variants of the two methods on Group used to
+// activate actions: g_action_group_activate_action() and
+// g_action_group_change_action_state(). These variants allow a "platform data"
+// #GVariant to be specified: a dictionary providing context for the action
+// invocation (for example: timestamps, startup notification IDs, etc).
+//
+// BusActionGroup implements ActionGroup. This provides a mechanism to send
+// platform data for action invocations over D-Bus.
+//
+// Additionally, g_dbus_connection_export_action_group() will check if the
+// exported Group implements ActionGroup and use the `_full` variants of the
+// calls if available. This provides a mechanism by which to receive platform
+// data for action invocations that arrive by way of D-Bus.
+type RemoteActionGroup interface {
+	ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant)
+	ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant)
+}
+
+// Seekable is implemented by streams (implementations of Stream or Stream) that
+// support seeking.
+//
+// Seekable streams largely fall into two categories: resizable and fixed-size.
+//
+// #GSeekable on fixed-sized streams is approximately the same as POSIX lseek()
+// on a block device (for example: attempting to seek past the end of the device
+// is an error). Fixed streams typically cannot be truncated
+//
+// #GSeekable on resizable streams is approximately the same as POSIX lseek() on
+// a normal file. Seeking past the end and writing data will usually cause the
+// stream to resize by introducing zero bytes
+type Seekable interface {
+	CanSeek() bool
+	CanTruncate() bool
+	Seek(offset int64, _type glib.SeekType, cancellable *Cancellable) bool
+	Tell() int64
+	Truncate(offset int64, cancellable *Cancellable) bool
+}
+
+// SocketConnectable: objects that describe one or more potential socket
+// endpoints implement Connectable. Callers can then use
+// g_socket_connectable_enumerate() to get a AddressEnumerator to try out each
+// socket address in turn until one succeeds, as shown in the sample code below.
+//
+//    MyConnectionType *
+//    connect_to_host (const char    *hostname,
+//                     guint16        port,
+//                     GCancellable  *cancellable,
+//                     GError       **error)
+//    {
+//      MyConnection *conn = NULL;
+//      GSocketConnectable *addr;
+//      GSocketAddressEnumerator *enumerator;
+//      GSocketAddress *sockaddr;
+//      GError *conn_error = NULL;
+//
+//      addr = g_network_address_new (hostname, port);
+//      enumerator = g_socket_connectable_enumerate (addr);
+//      g_object_unref (addr);
+//
+//      // Try each sockaddr until we succeed. Record the first connection error,
+//      // but not any further ones (since they'll probably be basically the same
+//      // as the first).
+//      while (!conn && (sockaddr = g_socket_address_enumerator_next (enumerator, cancellable, error))
+//        {
+//          conn = connect_to_sockaddr (sockaddr, conn_error ? NULL : &conn_error);
+//          g_object_unref (sockaddr);
+//        }
+//      g_object_unref (enumerator);
+//
+//      if (conn)
+//        {
+//          if (conn_error)
+//            {
+//              // We couldn't connect to the first address, but we succeeded
+//              // in connecting to a later address.
+//              g_error_free (conn_error);
+//            }
+//          return conn;
+//        }
+//      else if (error)
+//        {
+//          /// Either initial lookup failed, or else the caller cancelled us.
+//          if (conn_error)
+//            g_error_free (conn_error);
+//          return NULL;
+//        }
+//      else
+//        {
+//          g_error_propagate (error, conn_error);
+//          return NULL;
+//        }
+//    }
+//
+type SocketConnectable interface {
+	Enumerate() *SocketAddressEnumerator
+	ProxyEnumerate() *SocketAddressEnumerator
+	ToString() string
+}
+
+// TlsBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
+type TlsBackend interface {
+	GetCertificateType() externglib.Type
+	GetClientConnectionType() externglib.Type
+	GetDefaultDatabase() TlsFileDatabase
+	GetDtlsClientConnectionType() externglib.Type
+	GetDtlsServerConnectionType() externglib.Type
+	GetFileDatabaseType() externglib.Type
+	GetServerConnectionType() externglib.Type
+	SetDefaultDatabase(database TlsFileDatabase)
+	SupportsDtls() bool
+	SupportsTls() bool
+}
+
+// TlsClientConnection is the client-side subclass of Connection, representing a
+// client-side TLS connection.
+type TlsClientConnection interface {
+	CopySessionState(source TlsClientConnection)
+	GetAcceptedCas() *glib.List
+	GetServerIdentity() SocketConnectable
+	GetUseSsl3() bool
+	GetValidationFlags() TlsCertificateFlags
+	SetServerIdentity(identity SocketConnectable)
+	SetUseSsl3(useSsl3 bool)
+	SetValidationFlags(flags TlsCertificateFlags)
+}
+
+// Volume: the #GVolume interface represents user-visible objects that can be
+// mounted. Note, when porting from GnomeVFS, #GVolume is the moral equivalent
+// of VFSDrive.
+//
+// Mounting a #GVolume instance is an asynchronous operation. For more
+// information about asynchronous operations, see Result and #GTask. To mount a
+// #GVolume, first call g_volume_mount() with (at least) the #GVolume instance,
+// optionally a Operation object and a ReadyCallback.
+//
+// Typically, one will only want to pass nil for the Operation if automounting
+// all volumes when a desktop session starts since it's not desirable to put up
+// a lot of dialogs asking for credentials.
+//
+// The callback will be fired when the operation has resolved (either with
+// success or failure), and a Result instance will be passed to the callback.
+// That callback should then call g_volume_mount_finish() with the #GVolume
+// instance and the Result data to see if the operation was completed
+// successfully. If an @error is present when g_volume_mount_finish() is called,
+// then it will be filled with any error information.
+//
+// Volume Identifiers {#volume-identifier}
+//
+// It is sometimes necessary to directly access the underlying operating system
+// object behind a volume (e.g. for passing a volume to an application via the
+// commandline). For this purpose, GIO allows to obtain an 'identifier' for the
+// volume. There can be different kinds of identifiers, such as Hal UDIs,
+// filesystem labels, traditional Unix devices (e.g. `/dev/sda2`), UUIDs. GIO
+// uses predefined strings as names for the different kinds of identifiers:
+// VOLUME_IDENTIFIER_KIND_UUID, VOLUME_IDENTIFIER_KIND_LABEL, etc. Use
+// g_volume_get_identifier() to obtain an identifier for a volume.
+//
+// Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs
+// hal volume monitor is in use. Other volume monitors will generally be able to
+// provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used
+// to obtain a hal device by means of libhal_manager_find_device_string_match().
+type Volume interface {
+	CanEject() bool
+	CanMount() bool
+	Eject(flags MountUnmountFlags, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	EjectFinish(result AsyncResult) bool
+	EjectWithOperation(flags MountUnmountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	EjectWithOperationFinish(result AsyncResult) bool
+	EnumerateIdentifiers() []string
+	GetActivationRoot() File
+	GetDrive() Drive
+	GetIcon() Icon
+	GetIdentifier(kind string) string
+	GetMount() Mount
+	GetName() string
+	GetSortKey() string
+	GetSymbolicIcon() Icon
+	GetUuid() string
+	Mount(flags MountMountFlags, mountOperation *MountOperation, cancellable *Cancellable, callback AsyncReadyCallback, userData unsafe.Pointer)
+	MountFinish(result AsyncResult) bool
+	ShouldAutomount() bool
+}
+
 // ActionEntry: this struct defines a single action. It is for use with
 // g_action_map_add_action_entries().
 //
@@ -4652,8 +5847,8 @@ func (s *SettingsSchema) Native() unsafe.Pointer {
 	return unsafe.Pointer(s.native)
 }
 
-// SettingsSchemaKey: GSettingsSchemaKey is an opaque data structure and can
-// only be accessed using the following functions.
+// SettingsSchemaKey is an opaque data structure and can only be accessed using
+// the following functions.
 type SettingsSchemaKey struct {
 	native *C.GSettingsSchemaKey
 }
@@ -4756,8 +5951,8 @@ func (s *SrvTarget) Native() unsafe.Pointer {
 
 func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) *SrvTarget
 
-// StaticResource: GStaticResource is an opaque data structure and can only be
-// accessed using the following functions.
+// StaticResource is an opaque data structure and can only be accessed using the
+// following functions.
 type StaticResource struct {
 	native *C.GStaticResource
 }
@@ -4846,9 +6041,8 @@ func (u *UnixMountPoint) Native() unsafe.Pointer {
 	return unsafe.Pointer(u.native)
 }
 
-// AppInfoMonitor: GAppInfoMonitor is a very simple object used for monitoring
-// the app info database for changes (ie: newly installed or removed
-// applications).
+// AppInfoMonitor is a very simple object used for monitoring the app info
+// database for changes (ie: newly installed or removed applications).
 //
 // Call g_app_info_monitor_get() to get a InfoMonitor and connect to the
 // "changed" signal.
@@ -5017,9 +6211,9 @@ func marshalApplication(p uintptr) (interface{}, error) {
 
 func NewApplication(applicationID string, flags ApplicationFlags) *Application
 
-// ApplicationCommandLine: GApplicationCommandLine represents a command-line
-// invocation of an application. It is created by #GApplication and emitted in
-// the #GApplication::command-line signal and virtual function.
+// ApplicationCommandLine: commandLine represents a command-line invocation of
+// an application. It is created by #GApplication and emitted in the
+// #GApplication::command-line signal and virtual function.
 //
 // The class contains the list of arguments that the program was invoked with.
 // It is also possible to query if the commandline invocation was local (ie: the
@@ -5196,8 +6390,8 @@ func NewBufferedOutputStream(baseStream *OutputStream) *BufferedOutputStream
 
 func NewBufferedOutputStream(baseStream *OutputStream, size uint) *BufferedOutputStream
 
-// BytesIcon: GBytesIcon specifies an image held in memory in a common format
-// (usually png) to be used as icon.
+// BytesIcon: icon specifies an image held in memory in a common format (usually
+// png) to be used as icon.
 type BytesIcon struct {
 	*externglib.Object
 }
@@ -5233,8 +6427,7 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 
 func NewCancellable() *Cancellable
 
-// CharsetConverter: GCharsetConverter is an implementation of #GConverter based
-// on GIConv.
+// CharsetConverter is an implementation of #GConverter based on GIConv.
 type CharsetConverter struct {
 	*externglib.Object
 }
@@ -5337,9 +6530,9 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 
 func NewCredentials() *Credentials
 
-// DBusActionGroup: GDBusActionGroup is an implementation of the Group interface
-// that can be used as a proxy for an action group that is exported over D-Bus
-// with g_dbus_connection_export_action_group().
+// DBusActionGroup is an implementation of the Group interface that can be used
+// as a proxy for an action group that is exported over D-Bus with
+// g_dbus_connection_export_action_group().
 type DBusActionGroup struct {
 	*externglib.Object
 }
@@ -5512,8 +6705,8 @@ func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// DBusMenuModel: GDBusMenuModel is an implementation of Model that can be used
-// as a proxy for a menu model that is exported over D-Bus with
+// DBusMenuModel is an implementation of Model that can be used as a proxy for a
+// menu model that is exported over D-Bus with
 // g_dbus_connection_export_menu_model().
 type DBusMenuModel struct {
 	MenuModel
@@ -5574,9 +6767,9 @@ func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// DBusObjectManagerClient: GDBusObjectManagerClient is used to create, monitor
-// and delete object proxies for remote objects exported by a
-// BusObjectManagerServer (or any code implementing the
+// DBusObjectManagerClient is used to create, monitor and delete object proxies
+// for remote objects exported by a BusObjectManagerServer (or any code
+// implementing the
 // [org.freedesktop.DBus.ObjectManager](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
 // interface).
 //
@@ -5659,8 +6852,8 @@ func NewDBusObjectManagerClient(busType BusType, flags DBusObjectManagerClientFl
 
 func NewDBusObjectManagerClient(connection *DBusConnection, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, getProxyTypeUserData unsafe.Pointer, getProxyTypeDestroyNotify unsafe.Pointer, cancellable *Cancellable) *DBusObjectManagerClient
 
-// DBusObjectManagerServer: GDBusObjectManagerServer is used to export BusObject
-// instances using the standardized
+// DBusObjectManagerServer is used to export BusObject instances using the
+// standardized
 // [org.freedesktop.DBus.ObjectManager](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
 // interface. For example, remote D-Bus clients can get all objects and
 // properties in a single call. Additionally, any change in the object hierarchy
@@ -5736,9 +6929,9 @@ func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 
 func NewDBusObjectSkeleton(objectPath string) *DBusObjectSkeleton
 
-// DBusProxy: GDBusProxy is a base class used for proxies to access a D-Bus
-// interface on a remote object. A BusProxy can be constructed for both
-// well-known and unique names.
+// DBusProxy is a base class used for proxies to access a D-Bus interface on a
+// remote object. A BusProxy can be constructed for both well-known and unique
+// names.
 //
 // By default, BusProxy will cache all properties (and listen to changes) of the
 // remote object, and proxy all signals that get emitted. This behaviour can be
@@ -5793,11 +6986,11 @@ func NewDBusProxy(busType BusType, flags DBusProxyFlags, info *DBusInterfaceInfo
 
 func NewDBusProxy(connection *DBusConnection, flags DBusProxyFlags, info *DBusInterfaceInfo, name string, objectPath string, interfaceName string, cancellable *Cancellable) *DBusProxy
 
-// DBusServer: GDBusServer is a helper for listening to and accepting D-Bus
-// connections. This can be used to create a new D-Bus server, allowing two
-// peers to use the D-Bus protocol for their own specialized communication. A
-// server instance provided in this way will not perform message routing or
-// implement the org.freedesktop.DBus interface.
+// DBusServer is a helper for listening to and accepting D-Bus connections. This
+// can be used to create a new D-Bus server, allowing two peers to use the D-Bus
+// protocol for their own specialized communication. A server instance provided
+// in this way will not perform message routing or implement the
+// org.freedesktop.DBus interface.
 //
 // To just export an object on a well-known name on a message bus, such as the
 // session or system bus, you should instead use g_bus_own_name().
@@ -5861,8 +7054,7 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 
 func NewDataOutputStream(baseStream *OutputStream) *DataOutputStream
 
-// DesktopAppInfo: GDesktopAppInfo is an implementation of Info based on desktop
-// files.
+// DesktopAppInfo is an implementation of Info based on desktop files.
 //
 // Note that `<gio/gdesktopappinfo.h>` belongs to the UNIX-specific GIO
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
@@ -5887,9 +7079,8 @@ func NewDesktopAppInfo(filename string) *DesktopAppInfo
 
 func NewDesktopAppInfo(keyFile *glib.KeyFile) *DesktopAppInfo
 
-// Emblem: GEmblem is an implementation of #GIcon that supports having an
-// emblem, which is an icon with additional properties. It can than be added to
-// a Icon.
+// Emblem is an implementation of #GIcon that supports having an emblem, which
+// is an icon with additional properties. It can than be added to a Icon.
 //
 // Currently, only metainformation about the emblem's origin is supported. More
 // may be added in the future.
@@ -5911,9 +7102,9 @@ func NewEmblem(icon Icon) *Emblem
 
 func NewEmblem(icon Icon, origin EmblemOrigin) *Emblem
 
-// EmblemedIcon: GEmblemedIcon is an implementation of #GIcon that supports
-// adding an emblem to an icon. Adding multiple emblems to an icon is ensured
-// via g_emblemed_icon_add_emblem().
+// EmblemedIcon is an implementation of #GIcon that supports adding an emblem to
+// an icon. Adding multiple emblems to an icon is ensured via
+// g_emblemed_icon_add_emblem().
 //
 // Note that Icon allows no control over the position of the emblems. See also
 // #GEmblem for more information.
@@ -5933,7 +7124,7 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 
 func NewEmblemedIcon(icon Icon, emblem *Emblem) *EmblemedIcon
 
-// FileEnumerator: GFileEnumerator allows you to operate on a set of #GFiles,
+// FileEnumerator: enumerator allows you to operate on a set of #GFiles,
 // returning a Info structure for each file enumerated (e.g.
 // g_file_enumerate_children() will return a Enumerator for each of the children
 // within a directory).
@@ -6002,8 +7193,8 @@ func marshalFileIOStream(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// FileIcon: GFileIcon specifies an icon by pointing to an image file to be used
-// as icon.
+// FileIcon: icon specifies an icon by pointing to an image file to be used as
+// icon.
 type FileIcon struct {
 	*externglib.Object
 }
@@ -6246,7 +7437,7 @@ func marshalIOStream(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// InetAddress: GInetAddress represents an IPv4 or IPv6 internet address. Use
+// InetAddress: address represents an IPv4 or IPv6 internet address. Use
 // g_resolver_lookup_by_name() or g_resolver_lookup_by_name_async() to look up
 // the Address for a hostname. Use g_resolver_lookup_by_address() or
 // g_resolver_lookup_by_address_async() to look up the hostname for a Address.
@@ -6275,10 +7466,10 @@ func NewInetAddress(string string) *InetAddress
 
 func NewInetAddress(family SocketFamily) *InetAddress
 
-// InetAddressMask: GInetAddressMask represents a range of IPv4 or IPv6
-// addresses described by a base address and a length indicating how many bits
-// of the base address are relevant for matching purposes. These are often given
-// in string form. Eg, "10.0.0.0/8", or "fe80::/10".
+// InetAddressMask: addressMask represents a range of IPv4 or IPv6 addresses
+// described by a base address and a length indicating how many bits of the base
+// address are relevant for matching purposes. These are often given in string
+// form. Eg, "10.0.0.0/8", or "fe80::/10".
 type InetAddressMask struct {
 	*externglib.Object
 }
@@ -6317,7 +7508,7 @@ func NewInetSocketAddress(address *InetAddress, port uint16) *InetSocketAddress
 
 func NewInetSocketAddress(address string, port uint) *InetSocketAddress
 
-// InputStream: GInputStream has functions to read from a stream
+// InputStream: stream has functions to read from a stream
 // (g_input_stream_read()), to close a stream (g_input_stream_close()) and to
 // skip some content (g_input_stream_skip()).
 //
@@ -6342,8 +7533,8 @@ func marshalInputStream(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// ListStore: GListStore is a simple implementation of Model that stores all
-// items in memory.
+// ListStore is a simple implementation of Model that stores all items in
+// memory.
 //
 // It provides insertions, deletions, and lookups in logarithmic time with a
 // fast path for the common case of iterating the list linearly.
@@ -6363,8 +7554,8 @@ func marshalListStore(p uintptr) (interface{}, error) {
 
 func NewListStore(itemType externglib.Type) *ListStore
 
-// MemoryInputStream: GMemoryInputStream is a class for using arbitrary memory
-// chunks as input for GIO streaming input operations.
+// MemoryInputStream is a class for using arbitrary memory chunks as input for
+// GIO streaming input operations.
 //
 // As of GLib 2.34, InputStream implements InputStream.
 type MemoryInputStream struct {
@@ -6387,8 +7578,8 @@ func NewMemoryInputStream(bytes *glib.Bytes) *MemoryInputStream
 
 func NewMemoryInputStream(data []uint8, len int, destroy unsafe.Pointer) *MemoryInputStream
 
-// MemoryOutputStream: GMemoryOutputStream is a class for using arbitrary memory
-// chunks as output for GIO streaming output operations.
+// MemoryOutputStream is a class for using arbitrary memory chunks as output for
+// GIO streaming output operations.
 //
 // As of GLib 2.34, OutputStream trivially implements OutputStream: it always
 // polls as ready.
@@ -6410,8 +7601,8 @@ func NewMemoryOutputStream(data unsafe.Pointer, size uint, reallocFunction Reall
 
 func NewMemoryOutputStream() *MemoryOutputStream
 
-// Menu: GMenu is a simple implementation of Model. You populate a #GMenu by
-// adding Item instances to it.
+// Menu is a simple implementation of Model. You populate a #GMenu by adding
+// Item instances to it.
 //
 // There are some convenience functions to allow you to directly add items
 // (avoiding Item) for the common cases. To add a regular item, use
@@ -6433,8 +7624,8 @@ func marshalMenu(p uintptr) (interface{}, error) {
 
 func NewMenu() *Menu
 
-// MenuAttributeIter: GMenuAttributeIter is an opaque structure type. You must
-// access it using the functions below.
+// MenuAttributeIter is an opaque structure type. You must access it using the
+// functions below.
 type MenuAttributeIter struct {
 	*externglib.Object
 }
@@ -6449,8 +7640,8 @@ func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// MenuItem: GMenuItem is an opaque structure type. You must access it using the
-// functions below.
+// MenuItem is an opaque structure type. You must access it using the functions
+// below.
 type MenuItem struct {
 	*externglib.Object
 }
@@ -6473,8 +7664,8 @@ func NewMenuItem(label string, section *MenuModel) *MenuItem
 
 func NewMenuItem(label string, submenu *MenuModel) *MenuItem
 
-// MenuLinkIter: GMenuLinkIter is an opaque structure type. You must access it
-// using the functions below.
+// MenuLinkIter is an opaque structure type. You must access it using the
+// functions below.
 type MenuLinkIter struct {
 	*externglib.Object
 }
@@ -6489,13 +7680,13 @@ func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// MenuModel: GMenuModel represents the contents of a menu -- an ordered list of
-// menu items. The items are associated with actions, which can be activated
-// through them. Items can be grouped in sections, and may have submenus
-// associated with them. Both items and sections usually have some
-// representation data, such as labels or icons. The type of the associated
-// action (ie whether it is stateful, and what kind of state it has) can
-// influence the representation of the item.
+// MenuModel: model represents the contents of a menu -- an ordered list of menu
+// items. The items are associated with actions, which can be activated through
+// them. Items can be grouped in sections, and may have submenus associated with
+// them. Both items and sections usually have some representation data, such as
+// labels or icons. The type of the associated action (ie whether it is
+// stateful, and what kind of state it has) can influence the representation of
+// the item.
 //
 // The conceptual model of menus in Model is hierarchical: sections and submenus
 // are again represented by Models. Menus themselves do not define their own
@@ -6612,11 +7803,11 @@ func marshalMenuModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// MountOperation: GMountOperation provides a mechanism for interacting with the
-// user. It can be used for authenticating mountable operations, such as loop
-// mounting files, hard drive partitions or server locations. It can also be
-// used to ask the user questions or show a list of applications preventing
-// unmount or eject operations from completing.
+// MountOperation: operation provides a mechanism for interacting with the user.
+// It can be used for authenticating mountable operations, such as loop mounting
+// files, hard drive partitions or server locations. It can also be used to ask
+// the user questions or show a list of applications preventing unmount or eject
+// operations from completing.
 //
 // Note that Operation is used for more than just #GMount objects – for example
 // it is also used in g_drive_start() and g_drive_stop().
@@ -6679,9 +7870,9 @@ func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// NetworkAddress: GNetworkAddress provides an easy way to resolve a hostname
-// and then attempt to connect to that host, handling the possibility of
-// multiple IP addresses and multiple address families.
+// NetworkAddress: address provides an easy way to resolve a hostname and then
+// attempt to connect to that host, handling the possibility of multiple IP
+// addresses and multiple address families.
 //
 // The enumeration results of resolved addresses *may* be cached as long as this
 // object is kept alive which may have unexpected results if alive for too long.
@@ -6728,9 +7919,9 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 
 func NewNetworkService(service string, protocol string, domain string) *NetworkService
 
-// Notification: GNotification is a mechanism for creating a notification to be
-// shown to the user -- typically as a pop-up notification presented by the
-// desktop environment shell.
+// Notification is a mechanism for creating a notification to be shown to the
+// user -- typically as a pop-up notification presented by the desktop
+// environment shell.
 //
 // The key difference between #GNotification and other similar APIs is that, if
 // supported by the desktop environment, notifications sent with #GNotification
@@ -6764,7 +7955,7 @@ func marshalNotification(p uintptr) (interface{}, error) {
 
 func NewNotification(title string) *Notification
 
-// OutputStream: GOutputStream has functions to write to a stream
+// OutputStream: stream has functions to write to a stream
 // (g_output_stream_write()), to close a stream (g_output_stream_close()) and to
 // flush pending writes (g_output_stream_flush()).
 //
@@ -6897,10 +8088,9 @@ func marshalProxyAddress(p uintptr) (interface{}, error) {
 
 func NewProxyAddress(inetaddr *InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) *ProxyAddress
 
-// ProxyAddressEnumerator: GProxyAddressEnumerator is a wrapper around
-// AddressEnumerator which takes the Address instances returned by the
-// AddressEnumerator and wraps them in Address instances, using the given
-// AddressEnumerator:proxy-resolver.
+// ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
+// Address instances returned by the AddressEnumerator and wraps them in Address
+// instances, using the given AddressEnumerator:proxy-resolver.
 //
 // This enumerator will be returned (for example, by
 // g_socket_connectable_enumerate()) as appropriate when a proxy is configured;
@@ -6920,10 +8110,10 @@ func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// Resolver: GResolver provides cancellable synchronous and asynchronous DNS
-// resolution, for hostnames (g_resolver_lookup_by_address(),
-// g_resolver_lookup_by_name() and their async variants) and SRV (service)
-// records (g_resolver_lookup_service()).
+// #GResolver provides cancellable synchronous and asynchronous DNS resolution,
+// for hostnames (g_resolver_lookup_by_address(), g_resolver_lookup_by_name()
+// and their async variants) and SRV (service) records
+// (g_resolver_lookup_service())
 //
 // Address and Service provide wrappers around #GResolver functionality that
 // also implement Connectable, making it easy to connect to a remote
@@ -7259,8 +8449,8 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) *SimpleAction
 
 func NewSimpleAction(name string, parameterType *glib.VariantType, state *glib.Variant) *SimpleAction
 
-// SimpleActionGroup: GSimpleActionGroup is a hash table filled with #GAction
-// objects, implementing the Group and Map interfaces.
+// SimpleActionGroup is a hash table filled with #GAction objects, implementing
+// the Group and Map interfaces.
 type SimpleActionGroup struct {
 	*externglib.Object
 }
@@ -7479,9 +8669,9 @@ func marshalSimpleIOStream(p uintptr) (interface{}, error) {
 
 func NewSimpleIOStream(inputStream *InputStream, outputStream *OutputStream) *SimpleIOStream
 
-// SimplePermission: GSimplePermission is a trivial implementation of
-// #GPermission that represents a permission that is either always or never
-// allowed. The value is given at construction and doesn't change.
+// SimplePermission is a trivial implementation of #GPermission that represents
+// a permission that is either always or never allowed. The value is given at
+// construction and doesn't change.
 //
 // Calling request or release will result in errors.
 type SimplePermission struct {
@@ -7500,9 +8690,9 @@ func marshalSimplePermission(p uintptr) (interface{}, error) {
 
 func NewSimplePermission(allowed bool) *SimplePermission
 
-// SimpleProxyResolver: GSimpleProxyResolver is a simple Resolver implementation
-// that handles a single default proxy, multiple URI-scheme-specific proxies,
-// and a list of hosts that proxies should not be used for.
+// SimpleProxyResolver is a simple Resolver implementation that handles a single
+// default proxy, multiple URI-scheme-specific proxies, and a list of hosts that
+// proxies should not be used for.
 //
 // ProxyResolver is never the default proxy resolver, but it can be used as the
 // base class for another proxy resolver implementation, or it can be created
@@ -7587,9 +8777,9 @@ func NewSocket(family SocketFamily, _type SocketType, protocol SocketProtocol) *
 
 func NewSocket(fd int) *Socket
 
-// SocketAddress: GSocketAddress is the equivalent of struct sockaddr in the BSD
-// sockets API. This is an abstract class; use SocketAddress for internet
-// sockets, or SocketAddress for UNIX domain sockets.
+// SocketAddress is the equivalent of struct sockaddr in the BSD sockets API.
+// This is an abstract class; use SocketAddress for internet sockets, or
+// SocketAddress for UNIX domain sockets.
 type SocketAddress struct {
 	*externglib.Object
 }
@@ -7606,10 +8796,10 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 
 func NewSocketAddress(native unsafe.Pointer, len uint) *SocketAddress
 
-// SocketAddressEnumerator: GSocketAddressEnumerator is an enumerator type for
-// Address instances. It is returned by enumeration functions such as
-// g_socket_connectable_enumerate(), which returns a AddressEnumerator to list
-// each Address which could be used to connect to that Connectable.
+// SocketAddressEnumerator is an enumerator type for Address instances. It is
+// returned by enumeration functions such as g_socket_connectable_enumerate(),
+// which returns a AddressEnumerator to list each Address which could be used to
+// connect to that Connectable.
 //
 // Enumeration is typically a blocking operation, so the asynchronous methods
 // g_socket_address_enumerator_next_async() and
@@ -7632,8 +8822,8 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// SocketClient: GSocketClient is a lightweight high-level utility class for
-// connecting to a network host using a connection oriented socket type.
+// SocketClient is a lightweight high-level utility class for connecting to a
+// network host using a connection oriented socket type.
 //
 // You create a Client object, set any options you want, and then call a sync or
 // async connect operation, which returns a Connection subclass on success.
@@ -7660,9 +8850,9 @@ func marshalSocketClient(p uintptr) (interface{}, error) {
 
 func NewSocketClient() *SocketClient
 
-// SocketConnection: GSocketConnection is a OStream for a connected socket. They
-// can be created either by Client when connecting to a host, or by Listener
-// when accepting a new client.
+// SocketConnection is a OStream for a connected socket. They can be created
+// either by Client when connecting to a host, or by Listener when accepting a
+// new client.
 //
 // The type of the Connection object returned from these calls depends on the
 // type of the underlying socket that is in use. For instance, for a TCP/IP
@@ -7787,8 +8977,7 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 
 func NewSocketService() *SocketService
 
-// Subprocess: GSubprocess allows the creation of and interaction with child
-// processes.
+// #GSubprocess allows the creation of and interaction with child processes
 //
 // Processes can be communicated with using standard GIO-style APIs (ie: Stream,
 // Stream). There are GIO-style APIs to wait for process termination (ie:
@@ -8420,12 +9609,12 @@ func marshalTestDBus(p uintptr) (interface{}, error) {
 
 func NewTestDBus(flags TestDBusFlags) *TestDBus
 
-// ThemedIcon: GThemedIcon is an implementation of #GIcon that supports icon
-// themes. Icon contains a list of all of the icons present in an icon theme, so
-// that icons can be looked up quickly. Icon does not provide actual pixmaps for
-// icons, just the icon names. Ideally something like
-// gtk_icon_theme_choose_icon() should be used to resolve the list of names so
-// that fallback icons work nicely with themes that inherit other themes.
+// ThemedIcon is an implementation of #GIcon that supports icon themes. Icon
+// contains a list of all of the icons present in an icon theme, so that icons
+// can be looked up quickly. Icon does not provide actual pixmaps for icons,
+// just the icon names. Ideally something like gtk_icon_theme_choose_icon()
+// should be used to resolve the list of names so that fallback icons work
+// nicely with themes that inherit other themes.
 type ThemedIcon struct {
 	*externglib.Object
 }
@@ -8499,10 +9688,10 @@ func NewTlsCertificate(certFile string, keyFile string) *TlsCertificate
 
 func NewTlsCertificate(data string, length int) *TlsCertificate
 
-// TlsConnection: GTlsConnection is the base TLS connection class type, which
-// wraps a OStream and provides TLS encryption on top of it. Its subclasses,
-// ClientConnection and ServerConnection, implement client-side and server-side
-// TLS, respectively.
+// TlsConnection is the base TLS connection class type, which wraps a OStream
+// and provides TLS encryption on top of it. Its subclasses, ClientConnection
+// and ServerConnection, implement client-side and server-side TLS,
+// respectively.
 //
 // For DTLS (Datagram TLS) support, see Connection.
 type TlsConnection struct {
@@ -8519,9 +9708,9 @@ func marshalTlsConnection(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// TlsDatabase: GTlsDatabase is used to look up certificates and other
-// information from a certificate or key store. It is an abstract base class
-// which TLS library specific subtypes override.
+// TlsDatabase is used to look up certificates and other information from a
+// certificate or key store. It is an abstract base class which TLS library
+// specific subtypes override.
 //
 // A Database may be accessed from multiple threads by the TLS backend. All
 // implementations are required to be fully thread-safe.
@@ -8542,9 +9731,9 @@ func marshalTlsDatabase(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// TlsInteraction: GTlsInteraction provides a mechanism for the TLS connection
-// and database code to interact with the user. It can be used to ask the user
-// for passwords.
+// TlsInteraction: interaction provides a mechanism for the TLS connection and
+// database code to interact with the user. It can be used to ask the user for
+// passwords.
 //
 // To use a Interaction with a TLS connection use
 // g_tls_connection_set_interaction().
@@ -8700,10 +9889,10 @@ func NewUnixFDMessage() *UnixFDMessage
 
 func NewUnixFDMessage(fdList *UnixFDList) *UnixFDMessage
 
-// UnixInputStream: GUnixInputStream implements Stream for reading from a UNIX
-// file descriptor, including asynchronous operations. (If the file descriptor
-// refers to a socket or pipe, this will use poll() to do asynchronous I/O. If
-// it refers to a regular file, it will fall back to doing asynchronous I/O in
+// UnixInputStream: inputStream implements Stream for reading from a UNIX file
+// descriptor, including asynchronous operations. (If the file descriptor refers
+// to a socket or pipe, this will use poll() to do asynchronous I/O. If it
+// refers to a regular file, it will fall back to doing asynchronous I/O in
 // another thread.)
 //
 // Note that `<gio/gunixinputstream.h>` belongs to the UNIX-specific GIO
@@ -8742,10 +9931,10 @@ func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
 
 func NewUnixMountMonitor() *UnixMountMonitor
 
-// UnixOutputStream: GUnixOutputStream implements Stream for writing to a UNIX
-// file descriptor, including asynchronous operations. (If the file descriptor
-// refers to a socket or pipe, this will use poll() to do asynchronous I/O. If
-// it refers to a regular file, it will fall back to doing asynchronous I/O in
+// UnixOutputStream: outputStream implements Stream for writing to a UNIX file
+// descriptor, including asynchronous operations. (If the file descriptor refers
+// to a socket or pipe, this will use poll() to do asynchronous I/O. If it
+// refers to a regular file, it will fall back to doing asynchronous I/O in
 // another thread.)
 //
 // Note that `<gio/gunixoutputstream.h>` belongs to the UNIX-specific GIO
@@ -8815,9 +10004,9 @@ func marshalVfs(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// VolumeMonitor: GVolumeMonitor is for listing the user interesting devices and
-// volumes on the computer. In other words, what a file selector or file manager
-// would show in a sidebar.
+// VolumeMonitor is for listing the user interesting devices and volumes on the
+// computer. In other words, what a file selector or file manager would show in
+// a sidebar.
 //
 // Monitor is not [thread-default-context
 // aware][g-main-context-push-thread-default], and so should not be used other

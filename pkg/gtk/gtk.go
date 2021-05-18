@@ -11,6 +11,8 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	"github.com/diamondburned/gotk4/pkg/gdkx11"
 	"github.com/diamondburned/gotk4/pkg/gio"
+	"github.com/diamondburned/gotk4/pkg/glib"
+	"github.com/diamondburned/gotk4/pkg/gsk"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -1228,15 +1230,14 @@ const (
 	// BuilderErrorMissingAttribute: an attribute that is required by Builder
 	// was missing.
 	BuilderErrorMissingAttribute BuilderError = 2
-	// BuilderErrorInvalidAttribute: gtkBuilder found an attribute that it
-	// doesn’t understand.
-	BuilderErrorInvalidAttribute BuilderError = 3
-	// BuilderErrorInvalidTag: gtkBuilder found a tag that it doesn’t
+	// BuilderErrorInvalidAttribute: builder found an attribute that it doesn’t
 	// understand.
+	BuilderErrorInvalidAttribute BuilderError = 3
+	// BuilderErrorInvalidTag: builder found a tag that it doesn’t understand.
 	BuilderErrorInvalidTag BuilderError = 4
 	// BuilderErrorMissingPropertyValue: a required property value was missing.
 	BuilderErrorMissingPropertyValue BuilderError = 5
-	// BuilderErrorInvalidValue: gtkBuilder couldn’t parse some attribute value.
+	// BuilderErrorInvalidValue: builder couldn’t parse some attribute value.
 	BuilderErrorInvalidValue BuilderError = 6
 	// BuilderErrorVersionMismatch: the input file requires a newer version of
 	// GTK.
@@ -3950,8 +3951,818 @@ func ValueSetExpression(value *externglib.Value, expression *Expression)
 // This function transfers the ownership of the @expression to the #GValue.
 func ValueTakeExpression(value *externglib.Value, expression *Expression)
 
-// Bitset: gtkBitset is a data structure for representing a set of unsigned
-// integers. Another name for this data structure is "bitmap".
+// Accessible: gtkAccessible provides an interface for describing a UI element,
+// like a Widget, in a way that can be consumed by Assistive Technologies, or
+// “AT”. Every accessible implementation has:
+//
+// - a “role”, represented by a value of the AccessibleRole enumeration - an
+// “attribute”, represented by a set of AccessibleState, AccessibleProperty and
+// AccessibleRelation values
+//
+// The role cannot be changed after instantiating a Accessible implementation.
+//
+// The attributes are updated every time a UI element's state changes in a way
+// that should be reflected by assistive technologies. For instance, if a Widget
+// visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will also change to
+// reflect the Widget:visible property.
+type Accessible interface {
+	GetAccessibleRole() AccessibleRole
+	ResetProperty(property AccessibleProperty)
+	ResetRelation(relation AccessibleRelation)
+	ResetState(state AccessibleState)
+	UpdatePropertyValue(nProperties int, properties []AccessibleProperty, values []*externglib.Value)
+	UpdateRelationValue(nRelations int, relations []AccessibleRelation, values []*externglib.Value)
+	UpdateStateValue(nStates int, states []AccessibleState, values []*externglib.Value)
+}
+
+// Actionable: this interface provides a convenient way of associating widgets
+// with actions on a ApplicationWindow or Application.
+//
+// It primarily consists of two properties: Actionable:action-name and
+// Actionable:action-target. There are also some convenience APIs for setting
+// these properties.
+//
+// The action will be looked up in action groups that are found among the
+// widgets ancestors. Most commonly, these will be the actions with the “win.”
+// or “app.” prefix that are associated with the ApplicationWindow or
+// Application, but other action groups that are added with
+// gtk_widget_insert_action_group() will be consulted as well.
+type Actionable interface {
+	GetActionName() string
+	GetActionTargetValue() *glib.Variant
+	SetActionName(actionName string)
+	SetActionTargetValue(targetValue *glib.Variant)
+	SetDetailedActionName(detailedActionName string)
+}
+
+// AppChooser is an interface that can be implemented by widgets which allow the
+// user to choose an application (typically for the purpose of opening a file).
+// The main objects that implement this interface are AppChooserWidget,
+// AppChooserDialog and AppChooserButton.
+//
+// Applications are represented by GIO Info objects here. GIO has a concept of
+// recommended and fallback applications for a given content type. Recommended
+// applications are those that claim to handle the content type itself, while
+// fallback also includes applications that handle a more generic content type.
+// GIO also knows the default and last-used application for a given content
+// type. The AppChooserWidget provides detailed control over whether the shown
+// list of applications should include default, recommended or fallback
+// applications.
+//
+// To obtain the application that has been selected in a AppChooser, use
+// gtk_app_chooser_get_app_info().
+type AppChooser interface {
+	GetAppInfo() gio.AppInfo
+	GetContentType() string
+	Refresh()
+}
+
+// Buildable: gtkBuildable allows objects to extend and customize their
+// deserialization from [GtkBuilder UI descriptions][BUILDER-UI]. The interface
+// includes methods for setting names and properties of objects, parsing custom
+// tags and constructing child objects.
+//
+// The GtkBuildable interface is implemented by all widgets and many of the
+// non-widget objects that are provided by GTK. The main user of this interface
+// is Builder. There should be very little need for applications to call any of
+// these functions directly.
+//
+// An object only needs to implement this interface if it needs to extend the
+// Builder format or run any extra routines at deserialization time.
+type Buildable interface {
+	GetBuildableID() string
+}
+
+// CellEditable: the CellEditable interface must be implemented for widgets to
+// be usable to edit the contents of a TreeView cell. It provides a way to
+// specify how temporary widgets should be configured for editing, get the new
+// value, etc.
+type CellEditable interface {
+	EditingDone()
+	RemoveWidget()
+	StartEditing(event *gdk.Event)
+}
+
+// CellLayout is an interface to be implemented by all objects which want to
+// provide a TreeViewColumn like API for packing cells, setting attributes and
+// data funcs.
+//
+// One of the notable features provided by implementations of GtkCellLayout are
+// attributes. Attributes let you set the properties in flexible ways. They can
+// just be set to constant values like regular properties. But they can also be
+// mapped to a column of the underlying tree model with
+// gtk_cell_layout_set_attributes(), which means that the value of the attribute
+// can change from cell to cell as they are rendered by the cell renderer.
+// Finally, it is possible to specify a function with
+// gtk_cell_layout_set_cell_data_func() that is called to determine the value of
+// the attribute for each cell that is rendered.
+//
+//
+// GtkCellLayouts as GtkBuildable
+//
+// Implementations of GtkCellLayout which also implement the GtkBuildable
+// interface (CellView, IconView, ComboBox, EntryCompletion, TreeViewColumn)
+// accept GtkCellRenderer objects as <child> elements in UI definitions. They
+// support a custom <attributes> element for their children, which can contain
+// multiple <attribute> elements. Each <attribute> element has a name attribute
+// which specifies a property of the cell renderer; the content of the element
+// is the attribute value.
+//
+//
+//    <object class="GtkCellView">
+//      <child>
+//        <object class="GtkCellRendererText"/>
+//        <attributes>
+//          <attribute name="text">0</attribute>
+//        </attributes>
+//      </child>"
+//    </object>
+//
+// Furthermore for implementations of GtkCellLayout that use a CellArea to lay
+// out cells (all GtkCellLayouts in GTK use a GtkCellArea) [cell
+// properties][cell-properties] can also be defined in the format by specifying
+// the custom <cell-packing> attribute which can contain multiple <property>
+// elements defined in the normal way.
+//
+// Here is a UI definition fragment specifying cell properties:
+//
+//
+//    <object class="GtkTreeViewColumn">
+//      <child>
+//        <object class="GtkCellRendererText"/>
+//        <cell-packing>
+//          <property name="align">True</property>
+//          <property name="expand">False</property>
+//        </cell-packing>
+//      </child>"
+//    </object>
+//
+//
+// Subclassing GtkCellLayout implementations
+//
+// When subclassing a widget that implements CellLayout like IconView or
+// ComboBox, there are some considerations related to the fact that these
+// widgets internally use a CellArea. The cell area is exposed as a
+// construct-only property by these widgets. This means that it is possible to
+// e.g. do
+//
+//    combo = g_object_new (GTK_TYPE_COMBO_BOX, "cell-area", my_cell_area, NULL);
+//
+// to use a custom cell area with a combo box. But construct properties are only
+// initialized after instance init() functions have run, which means that using
+// functions which rely on the existence of the cell area in your subclass’
+// init() function will cause the default cell area to be instantiated. In this
+// case, a provided construct property value will be ignored (with a warning, to
+// alert you to the problem).
+//
+//    static void
+//    my_combo_box_init (MyComboBox *b)
+//    {
+//      GtkCellRenderer *cell;
+//
+//      cell = gtk_cell_renderer_pixbuf_new ();
+//      // The following call causes the default cell area for combo boxes,
+//      // a GtkCellAreaBox, to be instantiated
+//      gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (b), cell, FALSE);
+//      ...
+//    }
+//
+//    GtkWidget *
+//    my_combo_box_new (GtkCellArea *area)
+//    {
+//      // This call is going to cause a warning about area being ignored
+//      return g_object_new (MY_TYPE_COMBO_BOX, "cell-area", area, NULL);
+//    }
+//
+//
+// If supporting alternative cell areas with your derived widget is not
+// important, then this does not have to concern you. If you want to support
+// alternative cell areas, you can do so by moving the problematic calls out of
+// init() and into a constructor() for your class.
+type CellLayout interface {
+	AddAttribute(cell *CellRenderer, attribute string, column int)
+	Clear()
+	ClearAttributes(cell *CellRenderer)
+	GetArea() *CellArea
+	GetCells() *glib.List
+	PackEnd(cell *CellRenderer, expand bool)
+	PackStart(cell *CellRenderer, expand bool)
+	Reorder(cell *CellRenderer, position int)
+	SetCellDataFunc(cell *CellRenderer, _func CellLayoutDataFunc, funcData unsafe.Pointer, destroy unsafe.Pointer)
+}
+
+// ColorChooser is an interface that is implemented by widgets for choosing
+// colors. Depending on the situation, colors may be allowed to have alpha
+// (translucency).
+//
+// In GTK, the main widgets that implement this interface are
+// ColorChooserWidget, ColorChooserDialog and ColorButton.
+type ColorChooser interface {
+	AddPalette(orientation Orientation, colorsPerLine int, nColors int, colors []gdk.RGBA)
+	GetRgba() gdk.RGBA
+	GetUseAlpha() bool
+	SetRgba(color *gdk.RGBA)
+	SetUseAlpha(useAlpha bool)
+}
+
+// Editable: the Editable interface is an interface which should be implemented
+// by text editing widgets, such as Entry and SpinButton. It contains functions
+// for generically manipulating an editable widget, a large number of action
+// signals used for key bindings, and several signals that an application can
+// connect to modify the behavior of a widget.
+//
+// As an example of the latter usage, by connecting the following handler to
+// Editable::insert-text, an application can convert all entry into a widget
+// into uppercase.
+//
+// Forcing entry to uppercase
+//
+//    #include <ctype.h>
+//
+//    void
+//    insert_text_handler (GtkEditable *editable,
+//                         const char  *text,
+//                         int          length,
+//                         int         *position,
+//                         gpointer     data)
+//    {
+//      char *result = g_utf8_strup (text, length);
+//
+//      g_signal_handlers_block_by_func (editable,
+//                                   (gpointer) insert_text_handler, data);
+//      gtk_editable_insert_text (editable, result, length, position);
+//      g_signal_handlers_unblock_by_func (editable,
+//                                         (gpointer) insert_text_handler, data);
+//
+//      g_signal_stop_emission_by_name (editable, "insert_text");
+//
+//      g_free (result);
+//    }
+//
+//
+//
+// Implementing GtkEditable
+//
+// The most likely scenario for implementing GtkEditable on your own widget is
+// that you will embed a Text inside a complex widget, and want to delegate the
+// editable functionality to that text widget. GtkEditable provides some utility
+// functions to make this easy.
+//
+// In your class_init function, call gtk_editable_install_properties(), passing
+// the first available property ID:
+//
+//
+//    static void
+//    my_class_init (MyClass *class)
+//    {
+//       ...
+//       g_object_class_install_properties (object_class, NUM_PROPERTIES, props);
+//       gtk_editable_install_properties (object_clas, NUM_PROPERTIES);
+//       ...
+//    }
+//
+// In your interface_init function for the GtkEditable interface, provide an
+// implementation for the get_delegate vfunc that returns your text widget:
+//
+//
+//    GtkEditable *
+//    get_editable_delegate (GtkEditable *editable)
+//    {
+//      return GTK_EDITABLE (MY_WIDGET (editable)->text_widget);
+//    }
+//
+//    static void
+//    my_editable_init (GtkEditableInterface *iface)
+//    {
+//      iface->get_delegate = get_editable_delegate;
+//    }
+//
+//
+// You don't need to provide any other vfuncs. The default implementations work
+// by forwarding to the delegate that the EditableInterface.get_delegate() vfunc
+// returns.
+//
+// In your instance_init function, create your text widget, and then call
+// gtk_editable_init_delegate():
+//
+//
+//    static void
+//    my_widget_init (MyWidget *self)
+//    {
+//      ...
+//      self->text_widget = gtk_text_new ();
+//      gtk_editable_init_delegate (GTK_EDITABLE (self));
+//      ...
+//    }
+//
+// In your dispose function, call gtk_editable_finish_delegate() before
+// destroying your text widget:
+//
+//
+//    static void
+//    my_widget_dispose (GObject *object)
+//    {
+//      ...
+//      gtk_editable_finish_delegate (GTK_EDITABLE (self));
+//      g_clear_pointer (&self->text_widget, gtk_widget_unparent);
+//      ...
+//    }
+//
+// Finally, use gtk_editable_delegate_set_property() in your `set_property`
+// function (and similar for `get_property`), to set the editable properties:
+//
+//
+//      ...
+//      if (gtk_editable_delegate_set_property (object, prop_id, value, pspec))
+//        return;
+//
+//      switch (prop_id)
+//      ...
+//
+//
+// It is important to note that if you create a GtkEditable that uses a
+// delegate, the low level Editable::insert-text and Editable::delete-text
+// signals will be propagated from the "wrapper" editable to the delegate, but
+// they will not be propagated from the delegate to the "wrapper" editable, as
+// they would cause an infinite recursion. If you wish to connect to the
+// Editable::insert-text and Editable::delete-text signals, you will need to
+// connect to them on the delegate obtained via gtk_editable_get_delegate().
+type Editable interface {
+	DeleteSelection()
+	DeleteText(startPos int, endPos int)
+	FinishDelegate()
+	GetAlignment() float32
+	GetChars(startPos int, endPos int) string
+	GetDelegate() Editable
+	GetEditable() bool
+	GetEnableUndo() bool
+	GetMaxWidthChars() int
+	GetPosition() int
+	GetSelectionBounds() (int, int, bool)
+	GetText() string
+	GetWidthChars() int
+	InitDelegate()
+	InsertText(text string, length int, position int)
+	SelectRegion(startPos int, endPos int)
+	SetAlignment(xalign float32)
+	SetEditable(isEditable bool)
+	SetEnableUndo(enableUndo bool)
+	SetMaxWidthChars(nChars int)
+	SetPosition(position int)
+	SetText(text string)
+	SetWidthChars(nChars int)
+}
+
+// FileChooser is an interface that can be implemented by file selection
+// widgets. In GTK, the main objects that implement this interface are
+// FileChooserWidget and FileChooserDialog. You do not need to write an object
+// that implements the FileChooser interface unless you are trying to adapt an
+// existing file selector to expose a standard programming interface.
+//
+// FileChooser allows for shortcuts to various places in the filesystem. In the
+// default implementation these are displayed in the left pane. It may be a bit
+// confusing at first that these shortcuts come from various sources and in
+// various flavours, so lets explain the terminology here:
+//
+// - Bookmarks: are created by the user, by dragging folders from the right pane
+// to the left pane, or by using the “Add”. Bookmarks can be renamed and deleted
+// by the user.
+//
+// - Shortcuts: can be provided by the application. For example, a Paint program
+// may want to add a shortcut for a Clipart folder. Shortcuts cannot be modified
+// by the user.
+//
+// - Volumes: are provided by the underlying filesystem abstraction. They are
+// the “roots” of the filesystem.
+//
+//
+// File Names and Encodings
+//
+// When the user is finished selecting files in a FileChooser, your program can
+// get the selected filenames as #GFiles.
+//
+//
+// Adding options
+//
+// You can add extra widgets to a file chooser to provide options that are not
+// present in the default design, by using gtk_file_chooser_add_choice(). Each
+// choice has an identifier and a user visible label; additionally, each choice
+// can have multiple options. If a choice has no option, it will be rendered as
+// a check button with the given label; if a choice has options, it will be
+// rendered as a combo box.
+type FileChooser interface {
+	AddChoice(id string, label string, options []string, optionLabels []string)
+	AddFilter(filter *FileFilter)
+	AddShortcutFolder(folder gio.File) bool
+	GetAction() FileChooserAction
+	GetChoice(id string) string
+	GetCreateFolders() bool
+	GetCurrentFolder() gio.File
+	GetCurrentName() string
+	GetFile() gio.File
+	GetFiles() gio.ListModel
+	GetFilter() *FileFilter
+	GetFilters() gio.ListModel
+	GetSelectMultiple() bool
+	GetShortcutFolders() gio.ListModel
+	RemoveChoice(id string)
+	RemoveFilter(filter *FileFilter)
+	RemoveShortcutFolder(folder gio.File) bool
+	SetAction(action FileChooserAction)
+	SetChoice(id string, option string)
+	SetCreateFolders(createFolders bool)
+	SetCurrentFolder(file gio.File) bool
+	SetCurrentName(name string)
+	SetFile(file gio.File) bool
+	SetFilter(filter *FileFilter)
+	SetSelectMultiple(selectMultiple bool)
+}
+
+// FontChooser is an interface that can be implemented by widgets displaying the
+// list of fonts. In GTK, the main objects that implement this interface are
+// FontChooserWidget, FontChooserDialog and FontButton.
+type FontChooser interface {
+	GetFont() string
+	GetFontDesc() *pango.FontDescription
+	GetFontFace() *pango.FontFace
+	GetFontFamily() *pango.FontFamily
+	GetFontFeatures() string
+	GetFontMap() *pango.FontMap
+	GetFontSize() int
+	GetLanguage() string
+	GetLevel() FontChooserLevel
+	GetPreviewText() string
+	GetShowPreviewEntry() bool
+	SetFilterFunc(filter FontFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetFont(fontname string)
+	SetFontDesc(fontDesc *pango.FontDescription)
+	SetFontMap(fontmap *pango.FontMap)
+	SetLanguage(language string)
+	SetLevel(level FontChooserLevel)
+	SetPreviewText(text string)
+	SetShowPreviewEntry(showPreviewEntry bool)
+}
+
+// Native is the interface implemented by all widgets that can provide a
+// GdkSurface for widgets to render on.
+//
+// The obvious example of a Native is Window.
+type Native interface {
+	GetRenderer() *gsk.Renderer
+	GetSurface() *gdkx11.X11Surface
+	GetSurfaceTransform() (float64, float64)
+	Realize()
+	Unrealize()
+}
+
+// Orientable: the Orientable interface is implemented by all widgets that can
+// be oriented horizontally or vertically. Orientable is more flexible in that
+// it allows the orientation to be changed at runtime, allowing the widgets to
+// “flip”.
+type Orientable interface {
+	GetOrientation() Orientation
+	SetOrientation(orientation Orientation)
+}
+
+type PrintOperationPreview interface {
+	EndPreview()
+	IsSelected(pageNr int) bool
+	RenderPage(pageNr int)
+}
+
+// Root is the interface implemented by all widgets that can act as a toplevel
+// widget to a hierarchy of widgets. The root widget takes care of providing the
+// connection to the windowing system and manages layout, drawing and event
+// delivery for its widget hierarchy.
+//
+// The obvious example of a Root is Window.
+type Root interface {
+	GetDisplay() *gdkx11.X11Display
+	GetFocus() *Widget
+	SetFocus(focus *Widget)
+}
+
+// Scrollable is an interface that is implemented by widgets with native
+// scrolling ability.
+//
+// To implement this interface you should override the Scrollable:hadjustment
+// and Scrollable:vadjustment properties.
+//
+//
+// Creating a scrollable widget
+//
+// All scrollable widgets should do the following.
+//
+// - When a parent widget sets the scrollable child widget’s adjustments, the
+// widget should populate the adjustments’ Adjustment:lower, Adjustment:upper,
+// Adjustment:step-increment, Adjustment:page-increment and Adjustment:page-size
+// properties and connect to the Adjustment::value-changed signal.
+//
+// - Because its preferred size is the size for a fully expanded widget, the
+// scrollable widget must be able to cope with underallocations. This means that
+// it must accept any value passed to its WidgetClass.size_allocate() function.
+//
+// - When the parent allocates space to the scrollable child widget, the widget
+// should update the adjustments’ properties with new values.
+//
+// - When any of the adjustments emits the Adjustment::value-changed signal, the
+// scrollable widget should scroll its contents.
+type Scrollable interface {
+	GetBorder() (Border, bool)
+	GetHadjustment() *Adjustment
+	GetHscrollPolicy() ScrollablePolicy
+	GetVadjustment() *Adjustment
+	GetVscrollPolicy() ScrollablePolicy
+	SetHadjustment(hadjustment *Adjustment)
+	SetHscrollPolicy(policy ScrollablePolicy)
+	SetVadjustment(vadjustment *Adjustment)
+	SetVscrollPolicy(policy ScrollablePolicy)
+}
+
+// SelectionModel is an interface that extends the Model interface by adding
+// support for selections. This support is then used by widgets using list
+// models to add the ability to select and unselect various items.
+//
+// GTK provides default implementations of the most common selection modes such
+// as SingleSelection, so you will only need to implement this interface if you
+// want detailed control about how selections should be handled.
+//
+// A SelectionModel supports a single boolean per item indicating if an item is
+// selected or not. This can be queried via gtk_selection_model_is_selected().
+// When the selected state of one or more items changes, the model will emit the
+// SelectionModel::selection-changed signal by calling the
+// gtk_selection_model_selection_changed() function. The positions given in that
+// signal may have their selection state changed, though that is not a
+// requirement. If new items added to the model via the Model::items-changed
+// signal are selected or not is up to the implementation.
+//
+// Note that items added via Model::items-changed may already be selected and no
+// SelectionModel::selection-changed will be emitted for them. So to track which
+// items are selected, it is necessary to listen to both signals.
+//
+// Additionally, the interface can expose functionality to select and unselect
+// items. If these functions are implemented, GTK's list widgets will allow
+// users to select and unselect items. However, SelectionModels are free to only
+// implement them partially or not at all. In that case the widgets will not
+// support the unimplemented operations.
+//
+// When selecting or unselecting is supported by a model, the return values of
+// the selection functions do *not* indicate if selection or unselection
+// happened. They are only meant to indicate complete failure, like when this
+// mode of selecting is not supported by the model.
+//
+// Selections may happen asynchronously, so the only reliable way to find out
+// when an item was selected is to listen to the signals that indicate
+// selection.
+type SelectionModel interface {
+	GetSelection() *Bitset
+	GetSelectionInRange(position uint, nItems uint) *Bitset
+	IsSelected(position uint) bool
+	SelectAll() bool
+	SelectItem(position uint, unselectRest bool) bool
+	SelectRange(position uint, nItems uint, unselectRest bool) bool
+	SelectionChanged(position uint, nItems uint)
+	SetSelection(selected *Bitset, mask *Bitset) bool
+	UnselectAll() bool
+	UnselectItem(position uint) bool
+	UnselectRange(position uint, nItems uint) bool
+}
+
+type TreeDragDest interface {
+	DragDataReceived(dest *TreePath, value *externglib.Value) bool
+	RowDropPossible(destPath *TreePath, value *externglib.Value) bool
+}
+
+type TreeDragSource interface {
+	DragDataDelete(path *TreePath) bool
+	DragDataGet(path *TreePath) *gdk.ContentProvider
+	RowDraggable(path *TreePath) bool
+}
+
+// TreeModel: the TreeModel interface defines a generic tree interface for use
+// by the TreeView widget. It is an abstract interface, and is designed to be
+// usable with any appropriate data structure. The programmer just has to
+// implement this interface on their own data type for it to be viewable by a
+// TreeView widget.
+//
+// The model is represented as a hierarchical tree of strongly-typed, columned
+// data. In other words, the model can be seen as a tree where every node has
+// different values depending on which column is being queried. The type of data
+// found in a column is determined by using the GType system (ie. TYPE_INT,
+// K_TYPE_BUTTON, TYPE_POINTER, etc). The types are homogeneous per column
+// across all nodes. It is important to note that this interface only provides a
+// way of examining a model and observing changes. The implementation of each
+// individual model decides how and if changes are made.
+//
+// In order to make life simpler for programmers who do not need to write their
+// own specialized model, two generic models are provided — the TreeStore and
+// the ListStore. To use these, the developer simply pushes data into these
+// models as necessary. These models provide the data structure as well as all
+// appropriate tree interfaces. As a result, implementing drag and drop,
+// sorting, and storing data is trivial. For the vast majority of trees and
+// lists, these two models are sufficient.
+//
+// Models are accessed on a node/column level of granularity. One can query for
+// the value of a model at a certain node and a certain column on that node.
+// There are two structures used to reference a particular node in a model. They
+// are the TreePath-struct and the TreeIter-struct (“iter” is short for
+// iterator). Most of the interface consists of operations on a TreeIter-struct.
+//
+// A path is essentially a potential node. It is a location on a model that may
+// or may not actually correspond to a node on a specific model. The
+// TreePath-struct can be converted into either an array of unsigned integers or
+// a string. The string form is a list of numbers separated by a colon. Each
+// number refers to the offset at that level. Thus, the path `0` refers to the
+// root node and the path `2:4` refers to the fifth child of the third node.
+//
+// By contrast, a TreeIter-struct is a reference to a specific node on a
+// specific model. It is a generic struct with an integer and three generic
+// pointers. These are filled in by the model in a model-specific way. One can
+// convert a path to an iterator by calling gtk_tree_model_get_iter(). These
+// iterators are the primary way of accessing a model and are similar to the
+// iterators used by TextBuffer. They are generally statically allocated on the
+// stack and only used for a short time. The model interface defines a set of
+// operations using them for navigating the model.
+//
+// It is expected that models fill in the iterator with private data. For
+// example, the ListStore model, which is internally a simple linked list,
+// stores a list node in one of the pointers. The TreeModelSort stores an array
+// and an offset in two of the pointers. Additionally, there is an integer
+// field. This field is generally filled with a unique stamp per model. This
+// stamp is for catching errors resulting from using invalid iterators with a
+// model.
+//
+// The lifecycle of an iterator can be a little confusing at first. Iterators
+// are expected to always be valid for as long as the model is unchanged (and
+// doesn’t emit a signal). The model is considered to own all outstanding
+// iterators and nothing needs to be done to free them from the user’s point of
+// view. Additionally, some models guarantee that an iterator is valid for as
+// long as the node it refers to is valid (most notably the TreeStore and
+// ListStore). Although generally uninteresting, as one always has to allow for
+// the case where iterators do not persist beyond a signal, some very important
+// performance enhancements were made in the sort model. As a result, the
+// K_TREE_MODEL_ITERS_PERSIST flag was added to indicate this behavior.
+//
+// To help show some common operation of a model, some examples are provided.
+// The first example shows three ways of getting the iter at the location
+// `3:2:5`. While the first method shown is easier, the second is much more
+// common, as you often get paths from callbacks.
+//
+// Acquiring a TreeIter-struct
+//
+//    // Three ways of getting the iter pointing to the location
+//    GtkTreePath *path;
+//    GtkTreeIter iter;
+//    GtkTreeIter parent_iter;
+//
+//    // get the iterator from a string
+//    gtk_tree_model_get_iter_from_string (model,
+//                                         &iter,
+//                                         "3:2:5");
+//
+//    // get the iterator from a path
+//    path = gtk_tree_path_new_from_string ("3:2:5");
+//    gtk_tree_model_get_iter (model, &iter, path);
+//    gtk_tree_path_free (path);
+//
+//    // walk the tree to find the iterator
+//    gtk_tree_model_iter_nth_child (model, &iter,
+//                                   NULL, 3);
+//    parent_iter = iter;
+//    gtk_tree_model_iter_nth_child (model, &iter,
+//                                   &parent_iter, 2);
+//    parent_iter = iter;
+//    gtk_tree_model_iter_nth_child (model, &iter,
+//                                   &parent_iter, 5);
+//
+//
+// This second example shows a quick way of iterating through a list and getting
+// a string and an integer from each row. The populate_model() function used
+// below is not shown, as it is specific to the ListStore. For information on
+// how to write such a function, see the ListStore documentation.
+//
+// Reading data from a TreeModel
+//
+//    enum
+//    {
+//      STRING_COLUMN,
+//      INT_COLUMN,
+//      N_COLUMNS
+//    };
+//
+//    ...
+//
+//    GtkTreeModel *list_store;
+//    GtkTreeIter iter;
+//    gboolean valid;
+//    int row_count = 0;
+//
+//    // make a new list_store
+//    list_store = gtk_list_store_new (N_COLUMNS,
+//                                     G_TYPE_STRING,
+//                                     G_TYPE_INT);
+//
+//    // Fill the list store with data
+//    populate_model (list_store);
+//
+//    // Get the first iter in the list, check it is valid and walk
+//    // through the list, reading each row.
+//
+//    valid = gtk_tree_model_get_iter_first (list_store,
+//                                           &iter);
+//    while (valid)
+//     {
+//       char *str_data;
+//       int    int_data;
+//
+//       // Make sure you terminate calls to gtk_tree_model_get() with a “-1” value
+//       gtk_tree_model_get (list_store, &iter,
+//                           STRING_COLUMN, &str_data,
+//                           INT_COLUMN, &int_data,
+//                           -1);
+//
+//       // Do something with the data
+//       g_print ("Row d: (s,d)\n",
+//                row_count, str_data, int_data);
+//       g_free (str_data);
+//
+//       valid = gtk_tree_model_iter_next (list_store,
+//                                         &iter);
+//       row_count++;
+//     }
+//
+//
+// The TreeModel interface contains two methods for reference counting:
+// gtk_tree_model_ref_node() and gtk_tree_model_unref_node(). These two methods
+// are optional to implement. The reference counting is meant as a way for views
+// to let models know when nodes are being displayed. TreeView will take a
+// reference on a node when it is visible, which means the node is either in the
+// toplevel or expanded. Being displayed does not mean that the node is
+// currently directly visible to the user in the viewport. Based on this
+// reference counting scheme a caching model, for example, can decide whether or
+// not to cache a node based on the reference count. A file-system based model
+// would not want to keep the entire file hierarchy in memory, but just the
+// folders that are currently expanded in every current view.
+//
+// When working with reference counting, the following rules must be taken into
+// account:
+//
+// - Never take a reference on a node without owning a reference on its parent.
+// This means that all parent nodes of a referenced node must be referenced as
+// well.
+//
+// - Outstanding references on a deleted node are not released. This is not
+// possible because the node has already been deleted by the time the
+// row-deleted signal is received.
+//
+// - Models are not obligated to emit a signal on rows of which none of its
+// siblings are referenced. To phrase this differently, signals are only
+// required for levels in which nodes are referenced. For the root level
+// however, signals must be emitted at all times (however the root level is
+// always referenced when any view is attached).
+type TreeModel interface {
+	NewFilter(root *TreePath) TreeModel
+	Foreach(_func TreeModelForeachFunc, userData unsafe.Pointer)
+	GetColumnType(index_ int) externglib.Type
+	GetFlags() TreeModelFlags
+	GetIter(path *TreePath) (TreeIter, bool)
+	GetIterFirst() (TreeIter, bool)
+	GetIterFromString(pathString string) (TreeIter, bool)
+	GetNColumns() int
+	GetPath(iter *TreeIter) *TreePath
+	GetStringFromIter(iter *TreeIter) string
+	GetValue(iter *TreeIter, column int) externglib.Value
+	IterChildren(parent *TreeIter) (TreeIter, bool)
+	IterHasChild(iter *TreeIter) bool
+	IterNChildren(iter *TreeIter) int
+	IterNext(iter *TreeIter) bool
+	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
+	IterParent(child *TreeIter) (TreeIter, bool)
+	IterPrevious(iter *TreeIter) bool
+	RefNode(iter *TreeIter)
+	RowChanged(path *TreePath, iter *TreeIter)
+	RowDeleted(path *TreePath)
+	RowHasChildToggled(path *TreePath, iter *TreeIter)
+	RowInserted(path *TreePath, iter *TreeIter)
+	RowsReordered(path *TreePath, iter *TreeIter, newOrder int)
+	RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int, length int)
+	UnrefNode(iter *TreeIter)
+}
+
+// TreeSortable is an interface to be implemented by tree models which support
+// sorting. The TreeView uses the methods provided by this interface to sort the
+// model.
+type TreeSortable interface {
+	GetSortColumnID() (int, SortType, bool)
+	HasDefaultSortFunc() bool
+	SetDefaultSortFunc(sortFunc TreeIterCompareFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetSortColumnID(sortColumnID int, order SortType)
+	SetSortFunc(sortColumnID int, sortFunc TreeIterCompareFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SortColumnChanged()
+}
+
+// Bitset is a data structure for representing a set of unsigned integers.
+// Another name for this data structure is "bitmap".
 //
 // The current implementation is based on [roaring
 // bitmaps](https://roaringbitmap.org/).
@@ -4099,8 +4910,8 @@ func (b *BuildableParser) Native() unsafe.Pointer {
 	return unsafe.Pointer(b.native)
 }
 
-// CSSLocation: gtkCssLocation is used to present a location in a file - or
-// other source of data parsed by the CSS engine.
+// CSSLocation is used to present a location in a file - or other source of data
+// parsed by the CSS engine.
 //
 // The @bytes and @line_bytes offsets are meant to be used to programmatically
 // match data. The @lines and @line_chars offsets can be used for printing the
@@ -4363,7 +5174,7 @@ func (r *RecentData) Native() unsafe.Pointer {
 	return unsafe.Pointer(r.native)
 }
 
-// RecentInfo: gtkRecentInfo contains private data only, and should be accessed
+// RecentInfo: recentInfo contains private data only, and should be accessed
 // using the provided API.
 //
 // RecentInfo contains all the meta-data associated with an entry in the
@@ -4865,8 +5676,7 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 
 func NewAppChooserButton(contentType string) *AppChooserButton
 
-// AppChooserDialog: gtkAppChooserDialog shows a AppChooserWidget inside a
-// Dialog.
+// AppChooserDialog: appChooserDialog shows a AppChooserWidget inside a Dialog.
 //
 // Note that AppChooserDialog does not have any interesting methods of its own.
 // Instead, you should get the embedded AppChooserWidget using
@@ -4893,10 +5703,10 @@ func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.File) *AppC
 
 func NewAppChooserDialog(parent *Window, flags DialogFlags, contentType string) *AppChooserDialog
 
-// AppChooserWidget: gtkAppChooserWidget is a widget for selecting applications.
-// It is the main building block for AppChooserDialog. Most applications only
-// need to use the latter; but you can use this widget as part of a larger
-// widget if you have special needs.
+// AppChooserWidget is a widget for selecting applications. It is the main
+// building block for AppChooserDialog. Most applications only need to use the
+// latter; but you can use this widget as part of a larger widget if you have
+// special needs.
 //
 // AppChooserWidget offers detailed control over what applications are shown,
 // using the AppChooserWidget:show-default, AppChooserWidget:show-recommended,
@@ -4928,9 +5738,9 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 
 func NewAppChooserWidget(contentType string) *AppChooserWidget
 
-// Application: gtkApplication is a class that handles many important aspects of
-// a GTK+ application in a convenient fashion, without enforcing a
-// one-size-fits-all application model.
+// Application is a class that handles many important aspects of a GTK+
+// application in a convenient fashion, without enforcing a one-size-fits-all
+// application model.
 //
 // Currently, GtkApplication handles GTK initialization, application uniqueness,
 // session management, provides some basic scriptability and desktop shell
@@ -5009,10 +5819,9 @@ func marshalApplication(p uintptr) (interface{}, error) {
 
 func NewApplication(applicationID string, flags gio.ApplicationFlags) *Application
 
-// ApplicationWindow: gtkApplicationWindow is a Window subclass that offers some
-// extra functionality for better integration with Application features.
-// Notably, it can handle an application menubar. See
-// gtk_application_set_menubar().
+// ApplicationWindow is a Window subclass that offers some extra functionality
+// for better integration with Application features. Notably, it can handle an
+// application menubar. See gtk_application_set_menubar().
 //
 // This class implements the Group and Map interfaces, to let you add
 // window-specific actions that will be exported by the associated Application,
@@ -5205,9 +6014,8 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 
 func NewBinLayout() *BinLayout
 
-// BookmarkList: gtkBookmarkList is a list model that wraps GBookmarkFile. It
-// presents a Model and fills it asynchronously with the Infos returned from
-// that function.
+// BookmarkList is a list model that wraps GBookmarkFile. It presents a Model
+// and fills it asynchronously with the Infos returned from that function.
 //
 // The Infos in the list have some attributes in the recent namespace added:
 // recent::private (boolean) and recent:applications (stringv).
@@ -5522,10 +6330,9 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 
 func NewBuilderCScope() *BuilderCScope
 
-// BuilderListItemFactory: gtkBuilderListItemFactory is a ListItemFactory that
-// creates widgets by instantiating Builder UI templates. The templates must be
-// extending ListItem, and typically use Expressions to obtain data from the
-// items in the model.
+// BuilderListItemFactory is a ListItemFactory that creates widgets by
+// instantiating Builder UI templates. The templates must be extending ListItem,
+// and typically use Expressions to obtain data from the items in the model.
 //
 //
 //      <interface>
@@ -5623,8 +6430,8 @@ func marshalCClosureExpression(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// Calendar: gtkCalendar is a widget that displays a Gregorian calendar, one
-// month at a time. It can be created with gtk_calendar_new().
+// Calendar is a widget that displays a Gregorian calendar, one month at a time.
+// It can be created with gtk_calendar_new().
 //
 // The date that is currently displayed can be altered with
 // gtk_calendar_select_day().
@@ -6105,8 +6912,8 @@ func marshalCellRenderer(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// CellRendererAccel: gtkCellRendererAccel displays a keyboard accelerator (i.e.
-// a key combination like `Control + a`). If the cell renderer is editable, the
+// CellRendererAccel: cellRendererAccel displays a keyboard accelerator (i.e. a
+// key combination like `Control + a`). If the cell renderer is editable, the
 // accelerator can be changed by simply typing the new combination.
 type CellRendererAccel struct {
 	CellRendererText
@@ -6124,7 +6931,7 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 
 func NewCellRendererAccel() *CellRendererAccel
 
-// CellRendererCombo: gtkCellRendererCombo renders text in a cell like
+// CellRendererCombo: cellRendererCombo renders text in a cell like
 // CellRendererText from which it is derived. But while CellRendererText offers
 // a simple entry to edit the text, CellRendererCombo offers a ComboBox widget
 // to edit the text. The values to display in the combo box are taken from the
@@ -6178,7 +6985,7 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 
 func NewCellRendererPixbuf() *CellRendererPixbuf
 
-// CellRendererProgress: gtkCellRendererProgress renders a numeric value as a
+// CellRendererProgress: cellRendererProgress renders a numeric value as a
 // progress par in a cell. Additionally, it can display a text on top of the
 // progress bar.
 type CellRendererProgress struct {
@@ -6197,7 +7004,7 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 
 func NewCellRendererProgress() *CellRendererProgress
 
-// CellRendererSpin: gtkCellRendererSpin renders text in a cell like
+// CellRendererSpin: cellRendererSpin renders text in a cell like
 // CellRendererText from which it is derived. But while CellRendererText offers
 // a simple entry to edit the text, CellRendererSpin offers a SpinButton widget.
 // Of course, that means that the text has to be parseable as a floating point
@@ -6276,8 +7083,8 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 
 func NewCellRendererText() *CellRendererText
 
-// CellRendererToggle: gtkCellRendererToggle renders a toggle button in a cell.
-// The button is drawn as a radio or a checkbutton, depending on the
+// CellRendererToggle: cellRendererToggle renders a toggle button in a cell. The
+// button is drawn as a radio or a checkbutton, depending on the
 // CellRendererToggle:radio property. When activated, it emits the
 // CellRendererToggle::toggled signal.
 type CellRendererToggle struct {
@@ -6802,7 +7609,7 @@ func marshalConstantExpression(p uintptr) (interface{}, error) {
 
 func NewConstantExpression(value *externglib.Value) *ConstantExpression
 
-// Constraint: gtkConstraint describes a constraint between an attribute on a
+// Constraint: constraint describes a constraint between an attribute on a
 // widget and another attribute on another widget, expressed as a linear
 // equation like:
 //
@@ -7079,8 +7886,8 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 
 func NewCSSProvider() *CSSProvider
 
-// CustomFilter: gtkCustomFilter is a Filter that uses a callback to determine
-// whether to include an item or not.
+// CustomFilter is a Filter that uses a callback to determine whether to include
+// an item or not.
 type CustomFilter struct {
 	Filter
 }
@@ -7097,9 +7904,8 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 
 func NewCustomFilter(matchFunc CustomFilterFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) *CustomFilter
 
-// CustomLayout: gtkCustomLayout is a convenience type meant to be used as a
-// transition mechanism between Widgets implementing a layout policy, and
-// LayoutManager classes.
+// CustomLayout is a convenience type meant to be used as a transition mechanism
+// between Widgets implementing a layout policy, and LayoutManager classes.
 //
 // A CustomLayout uses closures matching to the old Widget virtual functions for
 // size negotiation, as a convenience API to ease the porting towards the
@@ -7248,9 +8054,9 @@ func marshalDialog(p uintptr) (interface{}, error) {
 
 func NewDialog() *Dialog
 
-// DirectoryList: gtkDirectoryList is a list model that wraps
-// g_file_enumerate_children_async(). It presents a Model and fills it
-// asynchronously with the Infos returned from that function.
+// DirectoryList is a list model that wraps g_file_enumerate_children_async().
+// It presents a Model and fills it asynchronously with the Infos returned from
+// that function.
 //
 // Enumeration will start automatically when a the DirectoryList:file property
 // is set.
@@ -7480,9 +8286,8 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 
 func NewDrawingArea() *DrawingArea
 
-// DropControllerMotion: gtkDropControllerMotion is an event controller meant
-// for tracking the pointer hovering over a widget during a drag and drop
-// operation.
+// DropControllerMotion is an event controller meant for tracking the pointer
+// hovering over a widget during a drag and drop operation.
 //
 // It is modeled after EventControllerMotion so if you have used that, this
 // should feel really familiar.
@@ -7866,10 +8671,10 @@ func marshalEntryBuffer(p uintptr) (interface{}, error) {
 
 func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer
 
-// EntryCompletion: gtkEntryCompletion is an auxiliary object to be used in
-// conjunction with Entry to provide the completion functionality. It implements
-// the CellLayout interface, to allow the user to add extra cells to the
-// TreeView with completion matches.
+// EntryCompletion is an auxiliary object to be used in conjunction with Entry
+// to provide the completion functionality. It implements the CellLayout
+// interface, to allow the user to add extra cells to the TreeView with
+// completion matches.
 //
 // “Completion functionality” means that when the user modifies the text in the
 // entry, EntryCompletion checks which rows in the model match the current
@@ -7916,9 +8721,9 @@ func NewEntryCompletion() *EntryCompletion
 
 func NewEntryCompletion(area *CellArea) *EntryCompletion
 
-// EventController: gtkEventController is a base, low-level implementation for
-// event controllers. Those react to a series of Events, and possibly trigger
-// actions as a consequence of those.
+// EventController is a base, low-level implementation for event controllers.
+// Those react to a series of Events, and possibly trigger actions as a
+// consequence of those.
 type EventController struct {
 	*externglib.Object
 }
@@ -7933,8 +8738,8 @@ func marshalEventController(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// EventControllerFocus: gtkEventControllerFocus is an event controller meant
-// for situations where you need to know where the focus is.
+// EventControllerFocus is an event controller meant for situations where you
+// need to know where the focus is.
 type EventControllerFocus struct {
 	EventController
 }
@@ -7951,8 +8756,8 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 
 func NewEventControllerFocus() *EventControllerFocus
 
-// EventControllerKey: gtkEventControllerKey is an event controller meant for
-// situations where you need access to key events.
+// EventControllerKey is an event controller meant for situations where you need
+// access to key events.
 type EventControllerKey struct {
 	EventController
 }
@@ -7969,9 +8774,9 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 
 func NewEventControllerKey() *EventControllerKey
 
-// EventControllerLegacy: gtkEventControllerLegacy is an event controller that
-// gives you direct access to the event stream. It should only be used as a last
-// resort if none of the other event controllers or gestures do the job.
+// EventControllerLegacy is an event controller that gives you direct access to
+// the event stream. It should only be used as a last resort if none of the
+// other event controllers or gestures do the job.
 type EventControllerLegacy struct {
 	EventController
 }
@@ -7988,8 +8793,8 @@ func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 
 func NewEventControllerLegacy() *EventControllerLegacy
 
-// EventControllerMotion: gtkEventControllerMotion is an event controller meant
-// for situations where you need to track the position of the pointer.
+// EventControllerMotion is an event controller meant for situations where you
+// need to track the position of the pointer.
 type EventControllerMotion struct {
 	EventController
 }
@@ -8006,9 +8811,9 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 
 func NewEventControllerMotion() *EventControllerMotion
 
-// EventControllerScroll: gtkEventControllerScroll is an event controller meant
-// to handle scroll events from mice and touchpads. It is capable of handling
-// both discrete and continuous scroll events, abstracting them both on the
+// EventControllerScroll is an event controller meant to handle scroll events
+// from mice and touchpads. It is capable of handling both discrete and
+// continuous scroll events, abstracting them both on the
 // EventControllerScroll::scroll signal (deltas in the discrete case are
 // multiples of 1).
 //
@@ -8171,11 +8976,10 @@ func NewExpander(label string) *Expander
 
 func NewExpander(label string) *Expander
 
-// FileChooserDialog: gtkFileChooserDialog is a dialog box suitable for use with
-// “File Open” or “File Save” commands. This widget works by putting a
-// FileChooserWidget inside a Dialog. It exposes the FileChooser interface, so
-// you can use all of the FileChooser functions on the file chooser dialog as
-// well as those for Dialog.
+// FileChooserDialog is a dialog box suitable for use with “File Open” or “File
+// Save” commands. This widget works by putting a FileChooserWidget inside a
+// Dialog. It exposes the FileChooser interface, so you can use all of the
+// FileChooser functions on the file chooser dialog as well as those for Dialog.
 //
 // Note that FileChooserDialog does not have any methods of its own. Instead,
 // you should use the functions that work on a FileChooser.
@@ -8346,14 +9150,14 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// FileChooserNative: gtkFileChooserNative is an abstraction of a dialog box
-// suitable for use with “File Open” or “File Save as” commands. By default,
-// this just uses a FileChooserDialog to implement the actual dialog. However,
-// on certain platforms, such as Windows and macOS, the native platform file
-// chooser is used instead. When the application is running in a sandboxed
-// environment without direct filesystem access (such as Flatpak),
-// FileChooserNative may call the proper APIs (portals) to let the user choose a
-// file and make it available to the application.
+// FileChooserNative is an abstraction of a dialog box suitable for use with
+// “File Open” or “File Save as” commands. By default, this just uses a
+// FileChooserDialog to implement the actual dialog. However, on certain
+// platforms, such as Windows and macOS, the native platform file chooser is
+// used instead. When the application is running in a sandboxed environment
+// without direct filesystem access (such as Flatpak), FileChooserNative may
+// call the proper APIs (portals) to let the user choose a file and make it
+// available to the application.
 //
 // While the API of FileChooserNative closely mirrors FileChooserDialog, the
 // main difference is that there is no access to any Window or Widget for the
@@ -8503,9 +9307,9 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 
 func NewFileChooserNative(title string, parent *Window, action FileChooserAction, acceptLabel string, cancelLabel string) *FileChooserNative
 
-// FileChooserWidget: gtkFileChooserWidget is a widget for choosing files. It
-// exposes the FileChooser interface, and you should use the methods of this
-// interface to interact with the widget.
+// FileChooserWidget is a widget for choosing files. It exposes the FileChooser
+// interface, and you should use the methods of this interface to interact with
+// the widget.
 //
 //
 // CSS nodes
@@ -8612,9 +9416,9 @@ func marshalFilter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// FilterListModel: gtkFilterListModel is a list model that filters a given
-// other listmodel. It hides some elements from the other model according to
-// criteria given by a Filter.
+// FilterListModel is a list model that filters a given other listmodel. It
+// hides some elements from the other model according to criteria given by a
+// Filter.
 //
 // The model can be set up to do incremental searching, so that filtering long
 // lists doesn't block the UI. See gtk_filter_list_model_set_incremental() for
@@ -8685,8 +9489,8 @@ func marshalFixed(p uintptr) (interface{}, error) {
 
 func NewFixed() *Fixed
 
-// FixedLayout: gtkFixedLayout is a layout manager which can place child widgets
-// at fixed positions, and with fixed sizes.
+// FixedLayout is a layout manager which can place child widgets at fixed
+// positions, and with fixed sizes.
 //
 // Most applications should never use this layout manager; fixed positioning and
 // sizing requires constant recalculations on where children need to be
@@ -8744,8 +9548,8 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// FlattenListModel: gtkFlattenListModel is a list model that takes a list model
-// containing list models and flattens it into a single model.
+// FlattenListModel is a list model that takes a list model containing list
+// models and flattens it into a single model.
 //
 // Another term for this is concatenation: FlattenListModel takes a list of
 // lists and concatenates them into a single list.
@@ -8978,7 +9782,7 @@ func marshalFrame(p uintptr) (interface{}, error) {
 
 func NewFrame(label string) *Frame
 
-// GLArea: gtkGLArea is a widget that allows drawing with OpenGL.
+// GLArea is a widget that allows drawing with OpenGL.
 //
 // GLArea sets up its own GLContext for the window it creates, and creates a
 // custom GL framebuffer that the widget will do GL rendering onto. It also
@@ -9094,10 +9898,10 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 
 func NewGLArea() *GLArea
 
-// Gesture: gtkGesture is the base object for gesture recognition, although this
-// object is quite generalized to serve as a base for multi-touch gestures, it
-// is suitable to implement single-touch and pointer-based gestures (using the
-// special nil EventSequence value for these).
+// Gesture is the base object for gesture recognition, although this object is
+// quite generalized to serve as a base for multi-touch gestures, it is suitable
+// to implement single-touch and pointer-based gestures (using the special nil
+// EventSequence value for these).
 //
 // The number of touches that a Gesture need to be recognized is controlled by
 // the Gesture:n-points property, if a gesture is keeping track of less or more
@@ -9188,11 +9992,10 @@ func marshalGesture(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// GestureClick: gtkGestureClick is a Gesture implementation able to recognize
-// multiple clicks on a nearby zone, which can be listened for through the
-// GestureClick::pressed signal. Whenever time or distance between clicks exceed
-// the GTK defaults, GestureClick::stopped is emitted, and the click counter is
-// reset.
+// GestureClick is a Gesture implementation able to recognize multiple clicks on
+// a nearby zone, which can be listened for through the GestureClick::pressed
+// signal. Whenever time or distance between clicks exceed the GTK defaults,
+// GestureClick::stopped is emitted, and the click counter is reset.
 type GestureClick struct {
 	GestureSingle
 }
@@ -9209,11 +10012,11 @@ func marshalGestureClick(p uintptr) (interface{}, error) {
 
 func NewGestureClick() *GestureClick
 
-// GestureDrag: gtkGestureDrag is a Gesture implementation that recognizes drag
-// operations. The drag operation itself can be tracked throughout the
-// GestureDrag::drag-begin, GestureDrag::drag-update and GestureDrag::drag-end
-// signals, or the relevant coordinates be extracted through
-// gtk_gesture_drag_get_offset() and gtk_gesture_drag_get_start_point().
+// GestureDrag is a Gesture implementation that recognizes drag operations. The
+// drag operation itself can be tracked throughout the GestureDrag::drag-begin,
+// GestureDrag::drag-update and GestureDrag::drag-end signals, or the relevant
+// coordinates be extracted through gtk_gesture_drag_get_offset() and
+// gtk_gesture_drag_get_start_point().
 type GestureDrag struct {
 	GestureSingle
 }
@@ -9230,9 +10033,8 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 
 func NewGestureDrag() *GestureDrag
 
-// GestureLongPress: gtkGestureLongPress is a Gesture implementation able to
-// recognize long presses, triggering the GestureLongPress::pressed after the
-// timeout is exceeded.
+// GestureLongPress is a Gesture implementation able to recognize long presses,
+// triggering the GestureLongPress::pressed after the timeout is exceeded.
 //
 // If the touchpoint is lifted before the timeout passes, or if it drifts too
 // far of the initial press point, the GestureLongPress::cancelled signal will
@@ -9253,10 +10055,10 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 
 func NewGestureLongPress() *GestureLongPress
 
-// GesturePan: gtkGesturePan is a Gesture implementation able to recognize pan
-// gestures, those are drags that are locked to happen along one axis. The axis
-// that a GesturePan handles is defined at construct time, and can be changed
-// through gtk_gesture_pan_set_orientation().
+// GesturePan is a Gesture implementation able to recognize pan gestures, those
+// are drags that are locked to happen along one axis. The axis that a
+// GesturePan handles is defined at construct time, and can be changed through
+// gtk_gesture_pan_set_orientation().
 //
 // When the gesture starts to be recognized, GesturePan will attempt to
 // determine as early as possible whether the sequence is moving in the expected
@@ -9281,9 +10083,9 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 
 func NewGesturePan(orientation Orientation) *GesturePan
 
-// GestureRotate: gtkGestureRotate is a Gesture implementation able to recognize
-// 2-finger rotations, whenever the angle between both handled sequences
-// changes, the GestureRotate::angle-changed signal is emitted.
+// GestureRotate is a Gesture implementation able to recognize 2-finger
+// rotations, whenever the angle between both handled sequences changes, the
+// GestureRotate::angle-changed signal is emitted.
 type GestureRotate struct {
 	Gesture
 }
@@ -9300,11 +10102,11 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 
 func NewGestureRotate() *GestureRotate
 
-// GestureSingle: gtkGestureSingle is a subclass of Gesture, optimized (although
-// not restricted) for dealing with mouse and single-touch gestures. Under
-// interaction, these gestures stick to the first interacting sequence, which is
-// accessible through gtk_gesture_single_get_current_sequence() while the
-// gesture is being interacted with.
+// GestureSingle is a subclass of Gesture, optimized (although not restricted)
+// for dealing with mouse and single-touch gestures. Under interaction, these
+// gestures stick to the first interacting sequence, which is accessible through
+// gtk_gesture_single_get_current_sequence() while the gesture is being
+// interacted with.
 //
 // By default gestures react to both GDK_BUTTON_PRIMARY and touch events,
 // gtk_gesture_single_set_touch_only() can be used to change the touch behavior.
@@ -9326,9 +10128,8 @@ func marshalGestureSingle(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// GestureStylus: gtkGestureStylus is a Gesture implementation specific to
-// stylus input. The provided signals just relay the basic information of the
-// stylus events.
+// GestureStylus is a Gesture implementation specific to stylus input. The
+// provided signals just relay the basic information of the stylus events.
 type GestureStylus struct {
 	GestureSingle
 }
@@ -9345,10 +10146,10 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 
 func NewGestureStylus() *GestureStylus
 
-// GestureSwipe: gtkGestureSwipe is a Gesture implementation able to recognize
-// swipes, after a press/move/.../move/release sequence happens, the
-// GestureSwipe::swipe signal will be emitted, providing the velocity and
-// directionality of the sequence at the time it was lifted.
+// GestureSwipe is a Gesture implementation able to recognize swipes, after a
+// press/move/.../move/release sequence happens, the GestureSwipe::swipe signal
+// will be emitted, providing the velocity and directionality of the sequence at
+// the time it was lifted.
 //
 // If the velocity is desired in intermediate points,
 // gtk_gesture_swipe_get_velocity() can be called on eg. a Gesture::update
@@ -9371,10 +10172,9 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 
 func NewGestureSwipe() *GestureSwipe
 
-// GestureZoom: gtkGestureZoom is a Gesture implementation able to recognize
-// pinch/zoom gestures, whenever the distance between both tracked sequences
-// changes, the GestureZoom::scale-changed signal is emitted to report the scale
-// factor.
+// GestureZoom is a Gesture implementation able to recognize pinch/zoom
+// gestures, whenever the distance between both tracked sequences changes, the
+// GestureZoom::scale-changed signal is emitted to report the scale factor.
 type GestureZoom struct {
 	Gesture
 }
@@ -9596,7 +10396,7 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 
 func NewHeaderBar() *HeaderBar
 
-// IMContext: gtkIMContext defines the interface for GTK input methods. An input
+// IMContext: IMContext defines the interface for GTK input methods. An input
 // method is used by GTK text input widgets like Entry to map from key events to
 // Unicode character strings.
 //
@@ -9738,7 +10538,7 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 
 func NewIconPaintable(file gio.File, size int, scale int) *IconPaintable
 
-// IconTheme: gtkIconTheme provides a facility for looking up icons by name and
+// IconTheme: iconTheme provides a facility for looking up icons by name and
 // size. The main reason for using a name rather than simply providing a
 // filename is to allow different icons to be used depending on what “icon
 // theme” is selected by the user. The operation of icon themes on Linux and
@@ -9782,9 +10582,9 @@ func marshalIconTheme(p uintptr) (interface{}, error) {
 
 func NewIconTheme() *IconTheme
 
-// IconView: gtkIconView provides an alternative view on a TreeModel. It
-// displays the model as a grid of icons with labels. Like TreeView, it allows
-// to select one or multiple items (depending on the selection mode, see
+// IconView: iconView provides an alternative view on a TreeModel. It displays
+// the model as a grid of icons with labels. Like TreeView, it allows to select
+// one or multiple items (depending on the selection mode, see
 // gtk_icon_view_set_selection_mode()). In addition to selection with the arrow
 // keys, IconView supports rubberband selection, which is controlled by dragging
 // the pointer.
@@ -9878,9 +10678,9 @@ func NewImage(pixbuf *gdkpixbuf.Pixbuf) *Image
 
 func NewImage(resourcePath string) *Image
 
-// InfoBar: gtkInfoBar is a widget that can be used to show messages to the user
-// without showing a dialog. It is often temporarily shown at the top or bottom
-// of a document. In contrast to Dialog, which has an action area at the bottom,
+// InfoBar is a widget that can be used to show messages to the user without
+// showing a dialog. It is often temporarily shown at the top or bottom of a
+// document. In contrast to Dialog, which has an action area at the bottom,
 // InfoBar has an action area at the side.
 //
 // The API of InfoBar is very similar to Dialog, allowing you to add buttons to
@@ -10146,11 +10946,10 @@ func NewLabel(str string) *Label
 
 func NewLabel(str string) *Label
 
-// LayoutChild: gtkLayoutChild is the base class for objects that are meant to
-// hold layout properties. If a LayoutManager has per-child properties, like
-// their packing type, or the horizontal and vertical span, or the icon name,
-// then the layout manager should use a LayoutChild implementation to store
-// those properties.
+// LayoutChild is the base class for objects that are meant to hold layout
+// properties. If a LayoutManager has per-child properties, like their packing
+// type, or the horizontal and vertical span, or the icon name, then the layout
+// manager should use a LayoutChild implementation to store those properties.
 //
 // A LayoutChild instance is only ever valid while a widget is part of a layout.
 type LayoutChild struct {
@@ -10473,9 +11272,9 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 
 func NewListBoxRow() *ListBoxRow
 
-// ListItem: gtkListItem is the object that list-handling containers such as
-// ListView use to represent items in a Model. They are managed by the container
-// and cannot be created by application code.
+// ListItem is the object that list-handling containers such as ListView use to
+// represent items in a Model. They are managed by the container and cannot be
+// created by application code.
 //
 // ListItems need to be populated by application code. This is done by calling
 // gtk_list_item_set_child().
@@ -10501,10 +11300,9 @@ func marshalListItem(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// ListItemFactory: gtkListItemFactory is one of the core concepts of handling
-// list widgets. It is the object tasked with creating widgets for items taken
-// from a Model when the views need them and updating them as the items
-// displayed by the view change.
+// ListItemFactory is one of the core concepts of handling list widgets. It is
+// the object tasked with creating widgets for items taken from a Model when the
+// views need them and updating them as the items displayed by the view change.
 //
 // A view is usually only able to display anything after both a factory and a
 // model have been set on the view. So it is important that you do not skip this
@@ -10821,9 +11619,8 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 
 func NewLockButton(permission *gio.Permission) *LockButton
 
-// MapListModel: gtkMapListModel is a list model that takes a list model and
-// maps the items in that model to different items according to a
-// MapListModelMapFunc.
+// MapListModel is a list model that takes a list model and maps the items in
+// that model to different items according to a MapListModelMapFunc.
 //
 // Example: Create a list of EventControllers |[ static gpointer
 // map_to_controllers (gpointer widget, gpointer data) { gpointer result =
@@ -10875,8 +11672,7 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 
 func NewMediaControls(stream *MediaStream) *MediaControls
 
-// MediaFile: gtkMediaFile is the implementation for media file usage with
-// MediaStream.
+// MediaFile is the implementation for media file usage with MediaStream.
 //
 // This provides a simple way to play back video files with GTK.
 //
@@ -10907,8 +11703,7 @@ func NewMediaFile(stream *gio.InputStream) *MediaFile
 
 func NewMediaFile(resourcePath string) *MediaFile
 
-// MediaStream: gtkMediaStream is the integration point for media playback
-// inside GTK.
+// MediaStream is the integration point for media playback inside GTK.
 //
 // GTK provides an implementation of the MediaStream interface that is called
 // MediaFile.
@@ -11039,8 +11834,8 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 
 func NewMenuButton() *MenuButton
 
-// MessageDialog: gtkMessageDialog presents a dialog with some message text.
-// It’s simply a convenience widget; you could construct the equivalent of
+// MessageDialog: messageDialog presents a dialog with some message text. It’s
+// simply a convenience widget; you could construct the equivalent of
 // MessageDialog from Dialog without too much effort, but MessageDialog saves
 // typing.
 //
@@ -11536,9 +12331,9 @@ func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// PadController: gtkPadController is an event controller for the pads found in
-// drawing tablets (The collection of buttons and tactile sensors often found
-// around the stylus-sensitive area).
+// PadController is an event controller for the pads found in drawing tablets
+// (The collection of buttons and tactile sensors often found around the
+// stylus-sensitive area).
 //
 // These buttons and sensors have no implicit meaning, and by default they
 // perform no action, this event controller is provided to map those to #GAction
@@ -11649,8 +12444,8 @@ func NewPageSetup(variant *glib.Variant) *PageSetup
 
 func NewPageSetup(keyFile *glib.KeyFile, groupName string) *PageSetup
 
-// Paned: gtkPaned has two panes, arranged either horizontally or vertically.
-// The division between the two panes is adjustable by the user by dragging a
+// Paned: paned has two panes, arranged either horizontally or vertically. The
+// division between the two panes is adjustable by the user by dragging a
 // handle.
 //
 // Child widgets are added to the panes of the widget with
@@ -11724,9 +12519,9 @@ func marshalPaned(p uintptr) (interface{}, error) {
 
 func NewPaned(orientation Orientation) *Paned
 
-// PasswordEntry: gtkPasswordEntry is entry that has been tailored for entering
-// secrets. It does not show its contents in clear text, does not allow to copy
-// it to the clipboard, and it shows a warning when Caps Lock is engaged. If the
+// PasswordEntry is entry that has been tailored for entering secrets. It does
+// not show its contents in clear text, does not allow to copy it to the
+// clipboard, and it shows a warning when Caps Lock is engaged. If the
 // underlying platform allows it, GtkPasswordEntry will also place the text in a
 // non-pageable memory area, to avoid it being written out to disk by the
 // operating system.
@@ -12320,8 +13115,8 @@ func marshalPropertyExpression(p uintptr) (interface{}, error) {
 
 func NewPropertyExpression(thisType externglib.Type, expression *Expression, propertyName string) *PropertyExpression
 
-// Range: gtkRange is the common base class for widgets which visualize an
-// adjustment, e.g Scale or Scrollbar.
+// Range is the common base class for widgets which visualize an adjustment, e.g
+// Scale or Scrollbar.
 //
 // Apart from signals for monitoring the parameters of the adjustment, Range
 // provides properties and methods for setting a “fill level” on range widgets.
@@ -12340,7 +13135,7 @@ func marshalRange(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// RecentManager: gtkRecentManager provides a facility for adding, removing and
+// RecentManager: recentManager provides a facility for adding, removing and
 // looking up recently used files. Each recently used file is identified by its
 // URI, and has meta-data associated to it, like the names and command lines of
 // the applications that have registered it, the number of time each application
@@ -12541,8 +13336,8 @@ func NewScale(orientation Orientation, adjustment *Adjustment) *Scale
 
 func NewScale(orientation Orientation, min float64, max float64, step float64) *Scale
 
-// ScaleButton: gtkScaleButton provides a button which pops up a scale widget.
-// This kind of widget is commonly used for volume controls in multimedia
+// ScaleButton: scaleButton provides a button which pops up a scale widget. This
+// kind of widget is commonly used for volume controls in multimedia
 // applications, and GTK provides a VolumeButton subclass that is tailored for
 // this use case.
 //
@@ -12719,10 +13514,10 @@ func marshalScrolledWindow(p uintptr) (interface{}, error) {
 
 func NewScrolledWindow() *ScrolledWindow
 
-// SearchBar: gtkSearchBar is a container made to have a search entry (possibly
-// with additional connex widgets, such as drop-down menus, or buttons)
-// built-in. The search bar would appear when a search is started through typing
-// on the keyboard, or the application’s search mode is toggled on.
+// SearchBar is a container made to have a search entry (possibly with
+// additional connex widgets, such as drop-down menus, or buttons) built-in. The
+// search bar would appear when a search is started through typing on the
+// keyboard, or the application’s search mode is toggled on.
 //
 // For keyboard presses to start a search, the search bar must be told of a
 // widget to capture key events from through
@@ -12774,9 +13569,9 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 
 func NewSearchBar() *SearchBar
 
-// SearchEntry: gtkSearchEntry is an entry widget that has been tailored for use
-// as a search entry. The main aPI for interacting with a GtkSearchEntry as
-// entry is the Editable interface.
+// SearchEntry is an entry widget that has been tailored for use as a search
+// entry. The main aPI for interacting with a GtkSearchEntry as entry is the
+// Editable interface.
 //
 // It will show an inactive symbolic “find” icon when the search entry is empty,
 // and a symbolic “clear” icon when there is text. Clicking on the “clear” icon
@@ -12824,8 +13619,8 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 
 func NewSearchEntry() *SearchEntry
 
-// SelectionFilterModel: gtkSelectionFilterModel is a list model that presents
-// the selected items in a SelectionModel as its own list model.
+// SelectionFilterModel is a list model that presents the selected items in a
+// SelectionModel as its own list model.
 type SelectionFilterModel struct {
 	*externglib.Object
 }
@@ -12944,8 +13739,8 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 
 func NewShortcut(trigger *ShortcutTrigger, action *ShortcutAction) *Shortcut
 
-// ShortcutAction: gtkShortcutAction is the object used to describe what a
-// Shortcut should do when triggered. To activate a ShortcutAction manually,
+// ShortcutAction is the object used to describe what a Shortcut should do when
+// triggered. To activate a ShortcutAction manually,
 // gtk_shortcut_action_activate() can be called.
 //
 // ShortcutActions contain functions that allow easy presentation to end users
@@ -12985,8 +13780,7 @@ func marshalShortcutAction(p uintptr) (interface{}, error) {
 
 func NewShortcutAction(string string) *ShortcutAction
 
-// ShortcutController: gtkShortcutController is an event controller that manages
-// shortcuts.
+// ShortcutController is an event controller that manages shortcuts.
 //
 // Most common shortcuts are using this controller implicitly, e.g. by adding a
 // mnemonic underline to a Label, or by installing a key binding using
@@ -13042,8 +13836,8 @@ func NewShortcutController() *ShortcutController
 
 func NewShortcutController(model gio.ListModel) *ShortcutController
 
-// ShortcutLabel: gtkShortcutLabel is a widget that represents a single keyboard
-// shortcut or gesture in the user interface.
+// ShortcutLabel is a widget that represents a single keyboard shortcut or
+// gesture in the user interface.
 type ShortcutLabel struct {
 	Widget
 }
@@ -13060,9 +13854,9 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 
 func NewShortcutLabel(accelerator string) *ShortcutLabel
 
-// ShortcutTrigger: gtkShortcutTrigger is the object used to track if a Shortcut
-// should be activated. For this purpose, gtk_shortcut_trigger_trigger() can be
-// called on a Event.
+// ShortcutTrigger is the object used to track if a Shortcut should be
+// activated. For this purpose, gtk_shortcut_trigger_trigger() can be called on
+// a Event.
 //
 // ShortcutTriggers contain functions that allow easy presentation to end users
 // as well as being printed for debugging.
@@ -13224,9 +14018,9 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 
 func NewSignalAction(signalName string) *SignalAction
 
-// SignalListItemFactory: gtkSignalListItemFactory is a ListItemFactory that
-// provides signals that user code can connect to to manage listitems. Signals
-// are emitted for every listitem in the same order:
+// SignalListItemFactory is a ListItemFactory that provides signals that user
+// code can connect to to manage listitems. Signals are emitted for every
+// listitem in the same order:
 //
 // 1. SignalListItemFactory::setup is emitted to set up permanent things on the
 // listitem. This usually means constructing the widgets used in the row and
@@ -13301,7 +14095,7 @@ func marshalSingleSelection(p uintptr) (interface{}, error) {
 
 func NewSingleSelection(model gio.ListModel) *SingleSelection
 
-// SizeGroup: gtkSizeGroup provides a mechanism for grouping a number of widgets
+// SizeGroup: sizeGroup provides a mechanism for grouping a number of widgets
 // together so they all request the same amount of space. This is typically
 // useful when you want a column of widgets to have the same size, but you can’t
 // use a Grid widget.
@@ -13379,8 +14173,8 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 
 func NewSizeGroup(mode SizeGroupMode) *SizeGroup
 
-// SliceListModel: gtkSliceListModel is a list model that takes a list model and
-// presents a slice of that model.
+// SliceListModel is a list model that takes a list model and presents a slice
+// of that model.
 //
 // This is useful when implementing paging by setting the size to the number of
 // elements per page and updating the offset whenever a different page is
@@ -13429,8 +14223,8 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 
 func NewSnapshot() *Snapshot
 
-// SortListModel: gtkSortListModel is a list model that takes a list model and
-// sorts its elements according to a Sorter.
+// SortListModel is a list model that takes a list model and sorts its elements
+// according to a Sorter.
 //
 // The model can be set up to do incremental sorting, so that sorting long lists
 // doesn't block the UI. See gtk_sort_list_model_set_incremental() for details.
@@ -13455,8 +14249,8 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 
 func NewSortListModel(model gio.ListModel, sorter *Sorter) *SortListModel
 
-// Sorter: gtkSorter is the way to describe sorting criteria. Its primary user
-// is SortListModel.
+// Sorter is the way to describe sorting criteria. Its primary user is
+// SortListModel.
 //
 // The model will use a sorter to determine the order in which its items should
 // appear by calling gtk_sorter_compare() for pairs of items.
@@ -13845,7 +14639,7 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 
 func NewStringFilter(expression *Expression) *StringFilter
 
-// StringList: gtkStringList is a list model that wraps an array of strings.
+// StringList is a list model that wraps an array of strings.
 //
 // The objects in the model have a "string" property.
 //
@@ -13922,8 +14716,7 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 
 func NewStringSorter(expression *Expression) *StringSorter
 
-// StyleContext: gtkStyleContext is an object that stores styling information
-// affecting a widget.
+// StyleContext is an object that stores styling information affecting a widget.
 //
 // In order to construct the final style information, StyleContext queries
 // information from all attached StyleProviders. Style providers can be either
@@ -13975,9 +14768,8 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// Switch: gtkSwitch is a widget that has two states: on or off. The user can
-// control which state should be active by clicking the empty area, or by
-// dragging the handle.
+// Switch is a widget that has two states: on or off. The user can control which
+// state should be active by clicking the empty area, or by dragging the handle.
 //
 // GtkSwitch can also handle situations where the underlying state changes with
 // a delay. See Switch::state-set for details.
@@ -14440,8 +15232,8 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 
 func NewTreeExpander() *TreeExpander
 
-// TreeListModel: gtkTreeListModel is a Model implementation that can expand
-// rows by creating new child list models on demand.
+// TreeListModel is a Model implementation that can expand rows by creating new
+// child list models on demand.
 type TreeListModel struct {
 	*externglib.Object
 }
@@ -14458,8 +15250,8 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 
 func NewTreeListModel(root gio.ListModel, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) *TreeListModel
 
-// TreeListRow: gtkTreeListRow is the object used by TreeListModel to represent
-// items. It allows navigating the model as a tree and modify the state of rows.
+// TreeListRow is the object used by TreeListModel to represent items. It allows
+// navigating the model as a tree and modify the state of rows.
 //
 // TreeListRow instances are created by a TreeListModel only when the
 // TreeListModel:passthrough property is not set.
@@ -14482,9 +15274,8 @@ func marshalTreeListRow(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// TreeListRowSorter: gtkTreeListRowSorter is a special-purpose sorter that will
-// apply a given sorter to the levels in a tree, while respecting the tree
-// structure.
+// TreeListRowSorter is a special-purpose sorter that will apply a given sorter
+// to the levels in a tree, while respecting the tree structure.
 //
 // Here is an example for setting up a column view with a tree model and a
 // GtkTreeListSorter:
@@ -14954,9 +15745,8 @@ func marshalViewport(p uintptr) (interface{}, error) {
 
 func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport
 
-// VolumeButton: gtkVolumeButton is a subclass of ScaleButton that has been
-// tailored for use as a volume control widget with suitable icons, tooltips and
-// accessible labels.
+// VolumeButton is a subclass of ScaleButton that has been tailored for use as a
+// volume control widget with suitable icons, tooltips and accessible labels.
 type VolumeButton struct {
 	ScaleButton
 }

@@ -436,8 +436,7 @@ func marshalKeyMatch(p uintptr) (interface{}, error) {
 	return KeyMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MemoryFormat: gdkMemoryFormat describes a format that bytes can have in
-// memory.
+// MemoryFormat: memoryFormat describes a format that bytes can have in memory.
 //
 // It describes formats by listing the contents of the memory passed to it. So
 // GDK_MEMORY_A8R8G8B8 will be 1 byte (8 bits) of alpha, followed by a byte each
@@ -729,9 +728,9 @@ func marshalDragAction(p uintptr) (interface{}, error) {
 	return DragAction(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FrameClockPhase: gdkFrameClockPhase is used to represent the different paint
-// clock phases that can be requested. The elements of the enumeration
-// correspond to the signals of FrameClock.
+// FrameClockPhase is used to represent the different paint clock phases that
+// can be requested. The elements of the enumeration correspond to the signals
+// of FrameClock.
 type FrameClockPhase int
 
 const (
@@ -1100,6 +1099,128 @@ func ToplevelSizeGetType() externglib.Type
 func UnicodeToKeyval(wc uint32) uint
 
 func VulkanErrorQuark() glib.Quark
+
+// DevicePad is an interface implemented by devices of type
+// GDK_SOURCE_TABLET_PAD, it allows querying the features provided by the pad
+// device.
+//
+// Tablet pads may contain one or more groups, each containing a subset of the
+// buttons/rings/strips available. gdk_device_pad_get_n_groups() can be used to
+// obtain the number of groups, gdk_device_pad_get_n_features() and
+// gdk_device_pad_get_feature_group() can be combined to find out the number of
+// buttons/rings/strips the device has, and how are they grouped.
+//
+// Each of those groups have different modes, which may be used to map each
+// individual pad feature to multiple actions. Only one mode is effective
+// (current) for each given group, different groups may have different current
+// modes. The number of available modes in a group can be found out through
+// gdk_device_pad_get_group_n_modes(), and the current mode for a given group
+// will be notified through events of type K_PAD_GROUP_MODE.
+type DevicePad interface {
+	GetFeatureGroup(feature DevicePadFeature, featureIdx int) int
+	GetGroupNModes(groupIdx int) int
+	GetNFeatures(feature DevicePadFeature) int
+	GetNGroups() int
+}
+
+// DragSurface: a DragSurface is an interface implemented by Surfaces used
+// during a DND operation.
+type DragSurface interface {
+	Present(width int, height int) bool
+}
+
+// Paintable is a simple interface used by GDK and GTK to represent objects that
+// can be painted anywhere at any size without requiring any sort of layout. The
+// interface is inspired by similar concepts elsewhere, such as
+// [ClutterContent](https://developer.gnome.org/clutter/stable/ClutterContent.html),
+// [HTML/CSS Paint Sources](https://www.w3.org/TR/css-images-4/#paint-source),
+// or [SVG Paint Servers](https://www.w3.org/TR/SVG2/pservers.html).
+//
+// A Paintable can be snapshot at any time and size using
+// gdk_paintable_snapshot(). How the paintable interprets that size and if it
+// scales or centers itself into the given rectangle is implementation defined,
+// though if you are implementing a Paintable and don't know what to do, it is
+// suggested that you scale your paintable ignoring any potential aspect ratio.
+//
+// The contents that a Paintable produces may depend on the Snapshot passed to
+// it. For example, paintables may decide to use more detailed images on higher
+// resolution screens or when OpenGL is available. A Paintable will however
+// always produce the same output for the same snapshot.
+//
+// A Paintable may change its contents, meaning that it will now produce a
+// different output with the same snapshot. Once that happens, it will call
+// gdk_paintable_invalidate_contents() which will emit the
+// Paintable::invalidate-contents signal. If a paintable is known to never
+// change its contents, it will set the GDK_PAINTABLE_STATIC_CONTENTS flag. If a
+// consumer cannot deal with changing contents, it may call
+// gdk_paintable_get_current_image() which will return a static paintable and
+// use that.
+//
+// A paintable can report an intrinsic (or preferred) size or aspect ratio it
+// wishes to be rendered at, though it doesn't have to. Consumers of the
+// interface can use this information to layout thepaintable appropriately. Just
+// like the contents, the size of a paintable can change. A paintable will
+// indicate this by calling gdk_paintable_invalidate_size() which will emit the
+// Paintable::invalidate-size signal. And just like for contents, if a paintable
+// is known to never change its size, it will set the GDK_PAINTABLE_STATIC_SIZE
+// flag.
+//
+// Besides API for applications, there are some functions that are only useful
+// for implementing subclasses and should not be used by applications:
+// gdk_paintable_invalidate_contents(), gdk_paintable_invalidate_size(),
+// gdk_paintable_new_empty().
+type Paintable interface {
+	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (float64, float64)
+	GetCurrentImage() Paintable
+	GetFlags() PaintableFlags
+	GetIntrinsicAspectRatio() float64
+	GetIntrinsicHeight() int
+	GetIntrinsicWidth() int
+	InvalidateContents()
+	InvalidateSize()
+	Snapshot(snapshot *Snapshot, width float64, height float64)
+}
+
+// Popup: a Popup is a surface that is attached to another surface, called its
+// Popup:parent, and is positioned relative to it.
+//
+// Popups are typically used to implement menus and similar popups. They can be
+// modal, which is indicated by the Popup:autohide property.
+type Popup interface {
+	GetAutohide() bool
+	GetParent() *gdkx11.X11Surface
+	GetPositionX() int
+	GetPositionY() int
+	GetRectAnchor() Gravity
+	GetSurfaceAnchor() Gravity
+	Present(width int, height int, layout *PopupLayout) bool
+}
+
+// Toplevel: a Toplevel is a freestanding toplevel surface.
+//
+// The Toplevel interface provides useful APIs for interacting with the
+// windowing system, such as controlling maximization and size of the surface,
+// setting icons and transient parents for dialogs.
+type Toplevel interface {
+	BeginMove(device *gdkx11.X11DeviceXI2, button int, x float64, y float64, timestamp uint32)
+	BeginResize(edge SurfaceEdge, device *gdkx11.X11DeviceXI2, button int, x float64, y float64, timestamp uint32)
+	Focus(timestamp uint32)
+	GetState() ToplevelState
+	InhibitSystemShortcuts(event *Event)
+	Lower() bool
+	Minimize() bool
+	Present(layout *ToplevelLayout)
+	RestoreSystemShortcuts()
+	SetDecorated(decorated bool)
+	SetDeletable(deletable bool)
+	SetIconList(surfaces *glib.List)
+	SetModal(modal bool)
+	SetStartupID(startupID string)
+	SetTitle(title string)
+	SetTransientFor(parent *gdkx11.X11Surface)
+	ShowWindowMenu(event *Event) bool
+	SupportsEdgeConstraints() bool
+}
 
 // ContentFormats: this section describes the ContentFormats structure that is
 // used to advertise and negotiate the format of content passed between
@@ -1559,8 +1680,7 @@ func marshalButtonEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// CairoContext: gdkCairoContext is an object representing the platform-specific
-// draw context.
+// CairoContext is an object representing the platform-specific draw context.
 //
 // CairoContexts are created for a Display using
 // gdk_surface_create_cairo_context(), and the context can then be used to draw
@@ -1860,9 +1980,9 @@ func marshalDrag(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// DrawContext: gdkDrawContext is the base object used by contexts implementing
-// different rendering methods, such as GLContext or VulkanContext. It provides
-// shared functionality between those contexts.
+// DrawContext is the base object used by contexts implementing different
+// rendering methods, such as GLContext or VulkanContext. It provides shared
+// functionality between those contexts.
 //
 // You will always interact with one of those subclasses.
 //
@@ -1955,8 +2075,8 @@ func marshalFrameClock(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// GLContext: gdkGLContext is an object representing the platform-specific
-// OpenGL draw context.
+// GLContext is an object representing the platform-specific OpenGL draw
+// context.
 //
 // GLContexts are created for a Surface using gdk_surface_create_gl_context(),
 // and the context will match the the characteristics of the surface.
@@ -2265,8 +2385,8 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// VulkanContext: gdkVulkanContext is an object representing the
-// platform-specific Vulkan draw context.
+// VulkanContext is an object representing the platform-specific Vulkan draw
+// context.
 //
 // VulkanContexts are created for a Surface using
 // gdk_surface_create_vulkan_context(), and the context will match the the

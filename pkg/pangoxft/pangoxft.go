@@ -75,8 +75,8 @@ func ShutdownDisplay(display *xlib.Display, screen int)
 // same input pattern, you must call this function.
 func SubstituteChanged(display *xlib.Display, screen int)
 
-// Font: pangoXftFont is an implementation of FcFont using the Xft library for
-// rendering. It is used in conjunction with XftFontMap.
+// Font is an implementation of FcFont using the Xft library for rendering. It
+// is used in conjunction with XftFontMap.
 type Font struct {
 	pangofc.Font
 }
@@ -91,8 +91,8 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// FontMap: pangoXftFontMap is an implementation of FcFontMap suitable for the
-// Xft library as the renderer. It is used in to create fonts of type XftFont.
+// FontMap is an implementation of FcFontMap suitable for the Xft library as the
+// renderer. It is used in to create fonts of type XftFont.
 type FontMap struct {
 	pangofc.FontMap
 }
@@ -107,9 +107,9 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// Renderer: pangoXftRenderer is a subclass of Renderer used for rendering with
-// Pango's Xft backend. It can be used directly, or it can be further subclassed
-// to modify exactly how drawing of individual elements occurs.
+// Renderer is a subclass of Renderer used for rendering with Pango's Xft
+// backend. It can be used directly, or it can be further subclassed to modify
+// exactly how drawing of individual elements occurs.
 type Renderer struct {
 	pango.Renderer
 }

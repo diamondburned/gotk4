@@ -17,11 +17,10 @@ import (
 func newGoTemplate(block string) *template.Template {
 	t := template.New("")
 	t.Funcs(template.FuncMap{
-		"PascalToGo":               PascalToGo,
-		"SnakeToGo":                SnakeToGo,
-		"FirstChar":                FirstChar,
-		"GoDoc":                    GoDoc,
-		"CommentReflowLinesIndent": CommentReflowLinesIndent,
+		"PascalToGo": PascalToGo,
+		"SnakeToGo":  SnakeToGo,
+		"FirstChar":  FirstChar,
+		"GoDoc":      GoDoc,
 	})
 	t = template.Must(t.Parse(block))
 	return t
@@ -163,6 +162,7 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 	ng.generateEnums()
 	ng.generateBitfields()
 	ng.generateFuncs()
+	ng.generateIfaces()
 	ng.generateRecords()
 	ng.generateClasses()
 

@@ -446,8 +446,8 @@ func marshalOverline(p uintptr) (interface{}, error) {
 	return Overline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RenderPart: pangoRenderPart defines different items to render for such
-// purposes as setting colors.
+// RenderPart: renderPart defines different items to render for such purposes as
+// setting colors.
 type RenderPart int
 
 const (
@@ -2646,9 +2646,9 @@ type LayoutLine struct {
 	Length int
 	// Runs: list of runs in the line, from left to right
 	Runs *glib.SList
-	// IsParagraphStart: TRUE if this is the first line of the paragraph
+	// IsParagraphStart: UE if this is the first line of the paragraph
 	IsParagraphStart uint
-	// ResolvedDir: resolved PangoDirection of line
+	// #Resolved PangoDirection of line
 	ResolvedDir uint
 
 	native *C.PangoLayoutLine

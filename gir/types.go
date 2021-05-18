@@ -190,6 +190,9 @@ type Interface struct {
 	Functions     []Function     `xml:"http://www.gtk.org/introspection/core/1.0 function"`
 	Methods       []Method       `xml:"http://www.gtk.org/introspection/core/1.0 method"` // translated to Go fns
 	Prerequisites []Prerequisite `xml:"http://www.gtk.org/introspection/core/1.0 prerequisite"`
+
+	InfoAttrs
+	InfoElements
 }
 
 type Member struct {

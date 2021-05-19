@@ -60,7 +60,7 @@ var recordTmpl = newGoTemplate(`
 		return wrap{{ .GoName }}(c)
 	}
 
-	{{ $recv := (FirstChar .GoName) }}
+	{{ $recv := (FirstLetter .GoName) }}
 
 	{{ if .NeedsNative }}
 	func ({{ $recv }} *{{ .GoName }}) free() {}
@@ -124,7 +124,7 @@ func (rg *recordGenerator) publicFields() []recordField {
 			continue
 		}
 
-		typ, ok := rg.Ng.ResolveAnyType(field.AnyType)
+		typ, ok := rg.Ng.ResolveAnyType(field.AnyType, true)
 		if !ok {
 			continue
 		}

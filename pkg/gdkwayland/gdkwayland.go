@@ -36,12 +36,31 @@ func init() {
 	})
 }
 
-type WaylandDevice struct {
+type WaylandDevice interface {
+	gdk.device
+
+	// GetNodePath: returns the `/dev/input/event*` path of this device.
+	//
+	// For Devices that possibly coalesce multiple hardware devices (eg. mouse,
+	// keyboard, touch,...), this function will return nil.
+	//
+	// This is most notably implemented for devices of type GDK_SOURCE_PEN,
+	// GDK_SOURCE_TABLET_PAD.
+	GetNodePath() string
+	// GetWlKeyboard: returns the Wayland wl_keyboard of a Device.
+	GetWlKeyboard() unsafe.Pointer
+	// GetWlPointer: returns the Wayland wl_pointer of a Device.
+	GetWlPointer() unsafe.Pointer
+	// GetWlSeat: returns the Wayland wl_seat of a Device.
+	GetWlSeat() unsafe.Pointer
+}
+
+type waylandDevice struct {
 	gdk.Device
 }
 
-func wrapWaylandDevice(obj *externglib.Object) *WaylandDevice {
-	return &WaylandDevice{Device{*externglib.Object{obj}}}
+func wrapWaylandDevice(obj *externglib.Object) WaylandDevice {
+	return &waylandDevice{gdk.Device{*externglib.Object{obj}}}
 }
 
 func marshalWaylandDevice(p uintptr) (interface{}, error) {
@@ -50,12 +69,48 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-type WaylandDisplay struct {
+func (w waylandDevice) GetNodePath() string
+
+func (w waylandDevice) GetWlKeyboard() unsafe.Pointer
+
+func (w waylandDevice) GetWlPointer() unsafe.Pointer
+
+func (w waylandDevice) GetWlSeat() unsafe.Pointer
+
+type WaylandDisplay interface {
+	gdk.display
+
+	// GetStartupNotificationID: gets the startup notification ID for a Wayland
+	// display, or nil if no ID has been defined.
+	GetStartupNotificationID() string
+	// GetWlCompositor: returns the Wayland global singleton compositor of a
+	// Display.
+	GetWlCompositor() unsafe.Pointer
+	// GetWlDisplay: returns the Wayland wl_display of a Display.
+	GetWlDisplay() unsafe.Pointer
+	// QueryRegistry: returns true if the the interface was found in the display
+	// `wl_registry.global` handler.
+	QueryRegistry(global string) bool
+	// SetCursorTheme: sets the cursor theme for the given @display.
+	SetCursorTheme(name string, size int)
+	// SetStartupNotificationID: sets the startup notification ID for a display.
+	//
+	// This is usually taken from the value of the DESKTOP_STARTUP_ID
+	// environment variable, but in some cases (such as the application not
+	// being launched using exec()) it can come from other sources.
+	//
+	// The startup ID is also what is used to signal that the startup is
+	// complete (for example, when opening a window or when calling
+	// gdk_display_notify_startup_complete()).
+	SetStartupNotificationID(startupID string)
+}
+
+type waylandDisplay struct {
 	gdk.Display
 }
 
-func wrapWaylandDisplay(obj *externglib.Object) *WaylandDisplay {
-	return &WaylandDisplay{Display{*externglib.Object{obj}}}
+func wrapWaylandDisplay(obj *externglib.Object) WaylandDisplay {
+	return &waylandDisplay{gdk.Display{*externglib.Object{obj}}}
 }
 
 func marshalWaylandDisplay(p uintptr) (interface{}, error) {
@@ -64,12 +119,31 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-type WaylandMonitor struct {
+func (w waylandDisplay) GetStartupNotificationID() string
+
+func (w waylandDisplay) GetWlCompositor() unsafe.Pointer
+
+func (w waylandDisplay) GetWlDisplay() unsafe.Pointer
+
+func (w waylandDisplay) QueryRegistry(global string) bool
+
+func (w waylandDisplay) SetCursorTheme(name string, size int)
+
+func (w waylandDisplay) SetStartupNotificationID(startupID string)
+
+type WaylandMonitor interface {
+	gdk.monitor
+
+	// GetWlOutput: returns the Wayland wl_output of a Monitor.
+	GetWlOutput() unsafe.Pointer
+}
+
+type waylandMonitor struct {
 	gdk.Monitor
 }
 
-func wrapWaylandMonitor(obj *externglib.Object) *WaylandMonitor {
-	return &WaylandMonitor{Monitor{*externglib.Object{obj}}}
+func wrapWaylandMonitor(obj *externglib.Object) WaylandMonitor {
+	return &waylandMonitor{gdk.Monitor{*externglib.Object{obj}}}
 }
 
 func marshalWaylandMonitor(p uintptr) (interface{}, error) {
@@ -78,12 +152,18 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-type WaylandPopup struct {
+func (w waylandMonitor) GetWlOutput() unsafe.Pointer
+
+type WaylandPopup interface {
+	waylandSurface
+}
+
+type waylandPopup struct {
 	WaylandSurface
 }
 
-func wrapWaylandPopup(obj *externglib.Object) *WaylandPopup {
-	return &WaylandPopup{WaylandSurface{Surface{*externglib.Object{obj}}}}
+func wrapWaylandPopup(obj *externglib.Object) WaylandPopup {
+	return &waylandPopup{WaylandSurface{gdk.Surface{*externglib.Object{obj}}}}
 }
 
 func marshalWaylandPopup(p uintptr) (interface{}, error) {
@@ -92,12 +172,19 @@ func marshalWaylandPopup(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-type WaylandSeat struct {
+type WaylandSeat interface {
+	gdk.seat
+
+	// GetWlSeat: returns the Wayland `wl_seat` of a Seat.
+	GetWlSeat() unsafe.Pointer
+}
+
+type waylandSeat struct {
 	gdk.Seat
 }
 
-func wrapWaylandSeat(obj *externglib.Object) *WaylandSeat {
-	return &WaylandSeat{Seat{*externglib.Object{obj}}}
+func wrapWaylandSeat(obj *externglib.Object) WaylandSeat {
+	return &waylandSeat{gdk.Seat{*externglib.Object{obj}}}
 }
 
 func marshalWaylandSeat(p uintptr) (interface{}, error) {
@@ -106,12 +193,21 @@ func marshalWaylandSeat(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-type WaylandSurface struct {
+func (w waylandSeat) GetWlSeat() unsafe.Pointer
+
+type WaylandSurface interface {
+	gdk.surface
+
+	// GetWlSurface: returns the Wayland surface of a Surface.
+	GetWlSurface() unsafe.Pointer
+}
+
+type waylandSurface struct {
 	gdk.Surface
 }
 
-func wrapWaylandSurface(obj *externglib.Object) *WaylandSurface {
-	return &WaylandSurface{Surface{*externglib.Object{obj}}}
+func wrapWaylandSurface(obj *externglib.Object) WaylandSurface {
+	return &waylandSurface{gdk.Surface{*externglib.Object{obj}}}
 }
 
 func marshalWaylandSurface(p uintptr) (interface{}, error) {
@@ -120,12 +216,56 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-type WaylandToplevel struct {
+func (w waylandSurface) GetWlSurface() unsafe.Pointer
+
+type WaylandToplevel interface {
+	waylandSurface
+
+	// ExportHandle: asynchronously obtains a handle for a surface that can be
+	// passed to other processes. When the handle has been obtained, @callback
+	// will be called.
+	//
+	// It is an error to call this function on a surface that is already
+	// exported.
+	//
+	// When the handle is no longer needed,
+	// gdk_wayland_toplevel_unexport_handle() should be called to clean up
+	// resources.
+	//
+	// The main purpose for obtaining a handle is to mark a surface from another
+	// surface as transient for this one, see
+	// gdk_wayland_toplevel_set_transient_for_exported().
+	//
+	// Note that this API depends on an unstable Wayland protocol, and thus may
+	// require changes in the future.
+	ExportHandle(callback WaylandToplevelExported, userData unsafe.Pointer, destroyFunc unsafe.Pointer) bool
+	// SetApplicationID: sets the application id on a Toplevel.
+	SetApplicationID(applicationID string)
+	// SetTransientForExported: marks @toplevel as transient for the surface to
+	// which the given @parent_handle_str refers. Typically, the handle will
+	// originate from a gdk_wayland_toplevel_export_handle() call in another
+	// process.
+	//
+	// Note that this API depends on an unstable Wayland protocol, and thus may
+	// require changes in the future.
+	SetTransientForExported(parentHandleStr string) bool
+	// UnexportHandle: destroys the handle that was obtained with
+	// gdk_wayland_toplevel_export_handle().
+	//
+	// It is an error to call this function on a surface that does not have a
+	// handle.
+	//
+	// Note that this API depends on an unstable Wayland protocol, and thus may
+	// require changes in the future.
+	UnexportHandle()
+}
+
+type waylandToplevel struct {
 	WaylandSurface
 }
 
-func wrapWaylandToplevel(obj *externglib.Object) *WaylandToplevel {
-	return &WaylandToplevel{WaylandSurface{Surface{*externglib.Object{obj}}}}
+func wrapWaylandToplevel(obj *externglib.Object) WaylandToplevel {
+	return &waylandToplevel{WaylandSurface{gdk.Surface{*externglib.Object{obj}}}}
 }
 
 func marshalWaylandToplevel(p uintptr) (interface{}, error) {
@@ -133,3 +273,11 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (w waylandToplevel) ExportHandle(callback WaylandToplevelExported, userData unsafe.Pointer, destroyFunc unsafe.Pointer) bool
+
+func (w waylandToplevel) SetApplicationID(applicationID string)
+
+func (w waylandToplevel) SetTransientForExported(parentHandleStr string) bool
+
+func (w waylandToplevel) UnexportHandle()

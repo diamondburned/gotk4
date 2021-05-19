@@ -6,9 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
-	"github.com/diamondburned/gotk4/pkg/gdkx11"
 	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -912,7 +911,7 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGl(cr *cairo.Context, surface *gdkx11.X11Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
+func CairoDrawFromGl(cr *cairo.Context, surface surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int)
 
 // CairoRectangle: adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle)
@@ -931,7 +930,7 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region
 //
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
-func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64)
+func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.pixbuf, pixbufX float64, pixbufY float64)
 
 // CairoSetSourceRgba: sets the specified RGBA as the source color of @cr.
 func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA)
@@ -940,7 +939,7 @@ func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA)
 // deserialize it, asynchronously. When the operation is finished, @callback
 // will be called. You can then call gdk_content_deserialize_finish() to get the
 // result of the operation.
-func ContentDeserializeAsync(stream *gio.InputStream, mimeType string, _type externglib.Type, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func ContentDeserializeAsync(stream gio.inputStream, mimeType string, _type externglib.Type, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
 
 // ContentDeserializeFinish: finishes a content deserialization operation.
 func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) bool
@@ -957,7 +956,7 @@ func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize
 // stream, asynchronously. When the operation is finished, @callback will be
 // called. You can then call gdk_content_serialize_finish() to get the result of
 // the operation.
-func ContentSerializeAsync(stream *gio.OutputStream, mimeType string, value *externglib.Value, ioPriority int, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func ContentSerializeAsync(stream gio.outputStream, mimeType string, value *externglib.Value, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
 
 // ContentSerializeFinish: finishes a content serialization operation.
 func ContentSerializeFinish(result gio.AsyncResult) bool
@@ -972,16 +971,16 @@ func DragActionIsUnique(action DragAction) bool
 // return true and return in @angle the relative angle from @event1 to @event2.
 // The rotation direction for positive angles is from the positive X axis
 // towards the positive Y axis.
-func EventsGetAngle(event1 *Event, event2 *Event) (float64, bool)
+func EventsGetAngle(event1 event, event2 event) (float64, bool)
 
 // EventsGetCenter: if both events contain X/Y information, the center of both
 // coordinates will be returned in @x and @y.
-func EventsGetCenter(event1 *Event, event2 *Event) (float64, float64, bool)
+func EventsGetCenter(event1 event, event2 event) (float64, float64, bool)
 
 // EventsGetDistance: if both events have X/Y information, the distance between
 // both coordinates (as in a straight line going from @event1 to @event2) will
 // be returned.
-func EventsGetDistance(event1 *Event, event2 *Event) (float64, bool)
+func EventsGetDistance(event1 event, event2 event) (float64, bool)
 
 func GlErrorQuark() glib.Quark
 
@@ -1041,7 +1040,7 @@ func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable
 // ranges, not ink extents. So the drawn layout may in fact touch areas out of
 // the clip region. The clip region is mainly useful for highlightling parts of
 // text, such as when text is selected.
-func PangoLayoutGetClipRegion(layout *pango.Layout, xOrigin int, yOrigin int, indexRanges int, nRanges int) *cairo.Region
+func PangoLayoutGetClipRegion(layout pango.layout, xOrigin int, yOrigin int, indexRanges int, nRanges int) *cairo.Region
 
 // PangoLayoutLineGetClipRegion: obtains a clip region which contains the areas
 // where the given ranges of text would be drawn. @x_origin and @y_origin are
@@ -1064,12 +1063,12 @@ func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin i
 //
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the @surface contains one.
-func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) *gdkpixbuf.Pixbuf
+func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) gdkpixbuf.pixbuf
 
 // PixbufGetFromTexture: creates a new pixbuf from @texture. This should
 // generally not be used in newly written code as later stages will almost
 // certainly convert the pixbuf back into a texture to draw it on screen.
-func PixbufGetFromTexture(texture *Texture) *gdkpixbuf.Pixbuf
+func PixbufGetFromTexture(texture texture) gdkpixbuf.pixbuf
 
 // SetAllowedBackends: sets a list of backends that GDK should try to use.
 //
@@ -1178,7 +1177,7 @@ type Paintable interface {
 	GetIntrinsicWidth() int
 	InvalidateContents()
 	InvalidateSize()
-	Snapshot(snapshot *Snapshot, width float64, height float64)
+	Snapshot(snapshot snapshot, width float64, height float64)
 }
 
 // Popup: a Popup is a surface that is attached to another surface, called its
@@ -1188,7 +1187,7 @@ type Paintable interface {
 // modal, which is indicated by the Popup:autohide property.
 type Popup interface {
 	GetAutohide() bool
-	GetParent() *gdkx11.X11Surface
+	GetParent() surface
 	GetPositionX() int
 	GetPositionY() int
 	GetRectAnchor() Gravity
@@ -1202,11 +1201,11 @@ type Popup interface {
 // windowing system, such as controlling maximization and size of the surface,
 // setting icons and transient parents for dialogs.
 type Toplevel interface {
-	BeginMove(device *gdkx11.X11DeviceXI2, button int, x float64, y float64, timestamp uint32)
-	BeginResize(edge SurfaceEdge, device *gdkx11.X11DeviceXI2, button int, x float64, y float64, timestamp uint32)
+	BeginMove(device device, button int, x float64, y float64, timestamp uint32)
+	BeginResize(edge SurfaceEdge, device device, button int, x float64, y float64, timestamp uint32)
 	Focus(timestamp uint32)
 	GetState() ToplevelState
-	InhibitSystemShortcuts(event *Event)
+	InhibitSystemShortcuts(event event)
 	Lower() bool
 	Minimize() bool
 	Present(layout *ToplevelLayout)
@@ -1217,8 +1216,8 @@ type Toplevel interface {
 	SetModal(modal bool)
 	SetStartupID(startupID string)
 	SetTitle(title string)
-	SetTransientFor(parent *gdkx11.X11Surface)
-	ShowWindowMenu(event *Event) bool
+	SetTransientFor(parent surface)
+	ShowWindowMenu(event event) bool
 	SupportsEdgeConstraints() bool
 }
 
@@ -1268,12 +1267,12 @@ func marshalContentFormats(p uintptr) (interface{}, error) {
 	return wrapContentFormats(c)
 }
 
-func (c *ContentFormats) free() {}
+func (C *ContentFormats) free() {}
 
 // Native returns the pointer to *C.GdkContentFormats. The caller is expected to
 // cast.
-func (c *ContentFormats) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+func (C *ContentFormats) Native() unsafe.Pointer {
+	return unsafe.Pointer(C.native)
 }
 
 func NewContentFormats(mimeTypes []string, nMimeTypes uint) *ContentFormats
@@ -1303,12 +1302,12 @@ func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 	return wrapContentFormatsBuilder(c)
 }
 
-func (c *ContentFormatsBuilder) free() {}
+func (C *ContentFormatsBuilder) free() {}
 
 // Native returns the pointer to *C.GdkContentFormatsBuilder. The caller is expected to
 // cast.
-func (c *ContentFormatsBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+func (C *ContentFormatsBuilder) Native() unsafe.Pointer {
+	return unsafe.Pointer(C.native)
 }
 
 func NewContentFormatsBuilder() *ContentFormatsBuilder
@@ -1335,12 +1334,12 @@ func marshalEventSequence(p uintptr) (interface{}, error) {
 	return wrapEventSequence(c)
 }
 
-func (e *EventSequence) free() {}
+func (E *EventSequence) free() {}
 
 // Native returns the pointer to *C.GdkEventSequence. The caller is expected to
 // cast.
-func (e *EventSequence) Native() unsafe.Pointer {
-	return unsafe.Pointer(e.native)
+func (E *EventSequence) Native() unsafe.Pointer {
+	return unsafe.Pointer(E.native)
 }
 
 // FrameTimings: a FrameTimings object holds timing information for a single
@@ -1369,12 +1368,12 @@ func marshalFrameTimings(p uintptr) (interface{}, error) {
 	return wrapFrameTimings(c)
 }
 
-func (f *FrameTimings) free() {}
+func (F *FrameTimings) free() {}
 
 // Native returns the pointer to *C.GdkFrameTimings. The caller is expected to
 // cast.
-func (f *FrameTimings) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
+func (F *FrameTimings) Native() unsafe.Pointer {
+	return unsafe.Pointer(F.native)
 }
 
 // KeymapKey: a KeymapKey is a hardware key that can be mapped to a keyval.
@@ -1418,8 +1417,8 @@ func marshalKeymapKey(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GdkKeymapKey. The caller is expected to
 // cast.
-func (k *KeymapKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(k.native)
+func (K *KeymapKey) Native() unsafe.Pointer {
+	return unsafe.Pointer(K.native)
 }
 
 // PopupLayout: popups are positioned relative to their parent surface. The
@@ -1474,12 +1473,12 @@ func marshalPopupLayout(p uintptr) (interface{}, error) {
 	return wrapPopupLayout(c)
 }
 
-func (p *PopupLayout) free() {}
+func (P *PopupLayout) free() {}
 
 // Native returns the pointer to *C.GdkPopupLayout. The caller is expected to
 // cast.
-func (p *PopupLayout) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *PopupLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }
 
 func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gravity) *PopupLayout
@@ -1520,8 +1519,8 @@ func marshalRGBA(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GdkRGBA. The caller is expected to
 // cast.
-func (r *RGBA) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *RGBA) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 // Rectangle: defines the position and size of a rectangle. It is identical to
@@ -1559,8 +1558,8 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GdkRectangle. The caller is expected to
 // cast.
-func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 // TimeCoord: a TimeCoord stores a single event in a motion history.
@@ -1593,8 +1592,8 @@ func marshalTimeCoord(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GdkTimeCoord. The caller is expected to
 // cast.
-func (t *TimeCoord) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TimeCoord) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 // ToplevelLayout: toplevel surfaces are sovereign windows that can be presented
@@ -1622,12 +1621,12 @@ func marshalToplevelLayout(p uintptr) (interface{}, error) {
 	return wrapToplevelLayout(c)
 }
 
-func (t *ToplevelLayout) free() {}
+func (T *ToplevelLayout) free() {}
 
 // Native returns the pointer to *C.GdkToplevelLayout. The caller is expected to
 // cast.
-func (t *ToplevelLayout) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *ToplevelLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 func NewToplevelLayout() *ToplevelLayout
@@ -1651,12 +1650,52 @@ func NewToplevelLayout() *ToplevelLayout
 //
 //    g_object_unref (context);
 //
-type AppLaunchContext struct {
+type AppLaunchContext interface {
+	gio.appLaunchContext
+
+	// GetDisplay: gets the Display that @context is for.
+	GetDisplay() display
+	// SetDesktop: sets the workspace on which applications will be launched
+	// when using this context when running under a window manager that supports
+	// multiple workspaces, as described in the [Extended Window Manager
+	// Hints](http://www.freedesktop.org/Standards/wm-spec).
+	//
+	// When the workspace is not specified or @desktop is set to -1, it is up to
+	// the window manager to pick one, typically it will be the current
+	// workspace.
+	SetDesktop(desktop int)
+	// SetIcon: sets the icon for applications that are launched with this
+	// context.
+	//
+	// Window Managers can use this information when displaying startup
+	// notification.
+	//
+	// See also gdk_app_launch_context_set_icon_name().
+	SetIcon(icon gio.Icon)
+	// SetIconName: sets the icon for applications that are launched with this
+	// context. The @icon_name will be interpreted in the same way as the Icon
+	// field in desktop files. See also gdk_app_launch_context_set_icon().
+	//
+	// If both @icon and @icon_name are set, the @icon_name takes priority. If
+	// neither @icon or @icon_name is set, the icon is taken from either the
+	// file that is passed to launched application or from the Info for the
+	// launched application itself.
+	SetIconName(iconName string)
+	// SetTimestamp: sets the timestamp of @context. The timestamp should
+	// ideally be taken from the event that triggered the launch.
+	//
+	// Window managers can use this information to avoid moving the focus to the
+	// newly launched application when the user is busy typing in another
+	// window. This is also known as 'focus stealing prevention'.
+	SetTimestamp(timestamp uint32)
+}
+
+type appLaunchContext struct {
 	gio.AppLaunchContext
 }
 
-func wrapAppLaunchContext(obj *externglib.Object) *AppLaunchContext {
-	return &AppLaunchContext{AppLaunchContext{*externglib.Object{obj}}}
+func wrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
+	return &appLaunchContext{gio.AppLaunchContext{*externglib.Object{obj}}}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
@@ -1665,13 +1704,30 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (a appLaunchContext) GetDisplay() display
+
+func (a appLaunchContext) SetDesktop(desktop int)
+
+func (a appLaunchContext) SetIcon(icon gio.Icon)
+
+func (a appLaunchContext) SetIconName(iconName string)
+
+func (a appLaunchContext) SetTimestamp(timestamp uint32)
+
 // ButtonEvent: an event related to a button on a pointer device/
-type ButtonEvent struct {
+type ButtonEvent interface {
+	event
+
+	// GetButton: extract the button number from a button event.
+	GetButton() uint
+}
+
+type buttonEvent struct {
 	Event
 }
 
-func wrapButtonEvent(obj *externglib.Object) *ButtonEvent {
-	return &ButtonEvent{Event{obj}}
+func wrapButtonEvent(obj *externglib.Object) ButtonEvent {
+	return &buttonEvent{Event{obj}}
 }
 
 func marshalButtonEvent(p uintptr) (interface{}, error) {
@@ -1680,17 +1736,31 @@ func marshalButtonEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (b buttonEvent) GetButton() uint
+
 // CairoContext is an object representing the platform-specific draw context.
 //
 // CairoContexts are created for a Display using
 // gdk_surface_create_cairo_context(), and the context can then be used to draw
 // on that Surface.
-type CairoContext struct {
+type CairoContext interface {
+	drawContext
+
+	// CairoCreate: retrieves a Cairo context to be used to draw on the Surface
+	// of @context. A call to gdk_draw_context_begin_frame() with this @context
+	// must have been done or this function will return nil.
+	//
+	// The returned context is guaranteed to be valid until
+	// gdk_draw_context_end_frame() is called.
+	CairoCreate() *cairo.Context
+}
+
+type cairoContext struct {
 	DrawContext
 }
 
-func wrapCairoContext(obj *externglib.Object) *CairoContext {
-	return &CairoContext{DrawContext{*externglib.Object{obj}}}
+func wrapCairoContext(obj *externglib.Object) CairoContext {
+	return &cairoContext{DrawContext{*externglib.Object{obj}}}
 }
 
 func marshalCairoContext(p uintptr) (interface{}, error) {
@@ -1698,6 +1768,8 @@ func marshalCairoContext(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (c cairoContext) CairoCreate() *cairo.Context
 
 // Clipboard: the Clipboard object represents a clipboard of data shared between
 // different applications or between different parts of the same application.
@@ -1713,12 +1785,106 @@ func marshalCairoContext(p uintptr) (interface{}, error) {
 // To read textual or image data from a clipboard, use
 // gdk_clipboard_read_text_async() or gdk_clipboard_read_texture_async(). For
 // other data, use gdk_clipboard_read_async(), which provides a Stream object.
-type Clipboard struct {
+type Clipboard interface {
+	gextras.Objector
+
+	// GetContent: returns the ContentProvider currently set on @clipboard. If
+	// the @clipboard is empty or its contents are not owned by the current
+	// process, nil will be returned.
+	GetContent() contentProvider
+	// GetDisplay: gets the Display that the clipboard was created for.
+	GetDisplay() display
+	// GetFormats: gets the formats that the clipboard can provide its current
+	// contents in.
+	GetFormats() *ContentFormats
+	// IsLocal: returns if the clipboard is local. A clipboard is considered
+	// local if it was last claimed by the running application.
+	//
+	// Note that gdk_clipboard_get_content() may return nil even on a local
+	// clipboard. In this case the clipboard is empty.
+	IsLocal() bool
+	// ReadAsync: asynchronously requests an input stream to read the
+	// @clipboard's contents from. When the operation is finished @callback will
+	// be called. You can then call gdk_clipboard_read_finish() to get the
+	// result of the operation.
+	//
+	// The clipboard will choose the most suitable mime type from the given list
+	// to fulfill the request, preferring the ones listed first.
+	ReadAsync(mimeTypes string, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	// ReadFinish: finishes an asynchronous clipboard read started with
+	// gdk_clipboard_read_async().
+	ReadFinish(result gio.AsyncResult) (string, gio.inputStream)
+	// ReadTextAsync: asynchronously request the @clipboard contents converted
+	// to a string. When the operation is finished @callback will be called. You
+	// can then call gdk_clipboard_read_text_finish() to get the result.
+	//
+	// This is a simple wrapper around gdk_clipboard_read_value_async(). Use
+	// that function or gdk_clipboard_read_async() directly if you need more
+	// control over the operation.
+	ReadTextAsync(cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	// ReadTextFinish: finishes an asynchronous clipboard read started with
+	// gdk_clipboard_read_text_async().
+	ReadTextFinish(result gio.AsyncResult) string
+	// ReadTextureAsync: asynchronously request the @clipboard contents
+	// converted to a Pixbuf. When the operation is finished @callback will be
+	// called. You can then call gdk_clipboard_read_texture_finish() to get the
+	// result.
+	//
+	// This is a simple wrapper around gdk_clipboard_read_value_async(). Use
+	// that function or gdk_clipboard_read_async() directly if you need more
+	// control over the operation.
+	ReadTextureAsync(cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	// ReadTextureFinish: finishes an asynchronous clipboard read started with
+	// gdk_clipboard_read_texture_async().
+	ReadTextureFinish(result gio.AsyncResult) texture
+	// ReadValueAsync: asynchronously request the @clipboard contents converted
+	// to the given @type. When the operation is finished @callback will be
+	// called. You can then call gdk_clipboard_read_value_finish() to get the
+	// resulting #GValue.
+	//
+	// For local clipboard contents that are available in the given #GType, the
+	// value will be copied directly. Otherwise, GDK will try to use
+	// gdk_content_deserialize_async() to convert the clipboard's data.
+	ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	// ReadValueFinish: finishes an asynchronous clipboard read started with
+	// gdk_clipboard_read_value_async().
+	ReadValueFinish(result gio.AsyncResult) *externglib.Value
+	// SetContent: sets a new content provider on @clipboard. The clipboard will
+	// claim the Display's resources and advertise these new contents to other
+	// applications.
+	//
+	// In the rare case of a failure, this function will return false. The
+	// clipboard will then continue reporting its old contents and ignore
+	// @provider.
+	//
+	// If the contents are read by either an external application or the
+	// @clipboard's read functions, @clipboard will select the best format to
+	// transfer the contents and then request that format from @provider.
+	SetContent(provider contentProvider) bool
+	// SetText: puts the given @text into the clipboard.
+	SetText(text string)
+	// SetTexture: puts the given @texture into the clipboard.
+	SetTexture(texture texture)
+	// SetValue: sets the @clipboard to contain the given @value.
+	SetValue(value *externglib.Value)
+	// StoreAsync: asynchronously instructs the @clipboard to store its contents
+	// remotely to preserve them for later usage. If the clipboard is not local,
+	// this function does nothing but report success.
+	//
+	// This function is called automatically when gtk_main() or Application
+	// exit, so you likely don't need to call it.
+	StoreAsync(ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	// StoreFinish: finishes an asynchronous clipboard store started with
+	// gdk_clipboard_store_async().
+	StoreFinish(result gio.AsyncResult) bool
+}
+
+type clipboard struct {
 	*externglib.Object
 }
 
-func wrapClipboard(obj *externglib.Object) *Clipboard {
-	return &Clipboard{*externglib.Object{obj}}
+func wrapClipboard(obj *externglib.Object) Clipboard {
+	return &clipboard{*externglib.Object{obj}}
 }
 
 func marshalClipboard(p uintptr) (interface{}, error) {
@@ -1727,14 +1893,84 @@ func marshalClipboard(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (c clipboard) GetContent() contentProvider
+
+func (c clipboard) GetDisplay() display
+
+func (c clipboard) GetFormats() *ContentFormats
+
+func (c clipboard) IsLocal() bool
+
+func (c clipboard) ReadAsync(mimeTypes string, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+
+func (c clipboard) ReadFinish(result gio.AsyncResult) (string, gio.inputStream)
+
+func (c clipboard) ReadTextAsync(cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+
+func (c clipboard) ReadTextFinish(result gio.AsyncResult) string
+
+func (c clipboard) ReadTextureAsync(cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+
+func (c clipboard) ReadTextureFinish(result gio.AsyncResult) texture
+
+func (c clipboard) ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+
+func (c clipboard) ReadValueFinish(result gio.AsyncResult) *externglib.Value
+
+func (c clipboard) SetContent(provider contentProvider) bool
+
+func (c clipboard) SetText(text string)
+
+func (c clipboard) SetTexture(texture texture)
+
+func (c clipboard) SetValue(value *externglib.Value)
+
+func (c clipboard) StoreAsync(ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+
+func (c clipboard) StoreFinish(result gio.AsyncResult) bool
+
 // ContentDeserializer: a GdkContentDeserializer is used to deserialize content
 // received via inter-application data transfers.
-type ContentDeserializer struct {
+type ContentDeserializer interface {
+	gextras.Objector
+
+	// GetCancellable: gets the cancellable that was passed to
+	// gdk_content_deserialize_async().
+	GetCancellable() gio.cancellable
+	// GetGtype: gets the GType to create an instance of.
+	GetGtype() externglib.Type
+	// GetInputStream: gets the input stream that was passed to
+	// gdk_content_deserialize_async().
+	GetInputStream() gio.inputStream
+	// GetMimeType: gets the mime type to deserialize from.
+	GetMimeType() string
+	// GetPriority: gets the io priority that was passed to
+	// gdk_content_deserialize_async().
+	GetPriority() int
+	// GetTaskData: gets the data that was associated with @deserializer via
+	// gdk_content_deserializer_set_task_data().
+	GetTaskData() unsafe.Pointer
+	// GetUserData: gets the user data that was passed when the deserializer was
+	// registered.
+	GetUserData() unsafe.Pointer
+	// GetValue: gets the #GValue to store the deserialized object in.
+	GetValue() *externglib.Value
+	// ReturnError: indicate that the deserialization has ended with an error.
+	// This function consumes @error.
+	ReturnError(error *glib.Error)
+	// ReturnSuccess: indicate that the deserialization has been successfully
+	// completed.
+	ReturnSuccess()
+	// SetTaskData: associate data with the current deserialization operation.
+	SetTaskData(data unsafe.Pointer, notify unsafe.Pointer)
+}
+
+type contentDeserializer struct {
 	*externglib.Object
 }
 
-func wrapContentDeserializer(obj *externglib.Object) *ContentDeserializer {
-	return &ContentDeserializer{*externglib.Object{obj}}
+func wrapContentDeserializer(obj *externglib.Object) ContentDeserializer {
+	return &contentDeserializer{*externglib.Object{obj}}
 }
 
 func marshalContentDeserializer(p uintptr) (interface{}, error) {
@@ -1742,6 +1978,28 @@ func marshalContentDeserializer(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (c contentDeserializer) GetCancellable() gio.cancellable
+
+func (c contentDeserializer) GetGtype() externglib.Type
+
+func (c contentDeserializer) GetInputStream() gio.inputStream
+
+func (c contentDeserializer) GetMimeType() string
+
+func (c contentDeserializer) GetPriority() int
+
+func (c contentDeserializer) GetTaskData() unsafe.Pointer
+
+func (c contentDeserializer) GetUserData() unsafe.Pointer
+
+func (c contentDeserializer) GetValue() *externglib.Value
+
+func (c contentDeserializer) ReturnError(error *glib.Error)
+
+func (c contentDeserializer) ReturnSuccess()
+
+func (c contentDeserializer) SetTaskData(data unsafe.Pointer, notify unsafe.Pointer)
 
 // ContentProvider: a GdkContentProvider is used to provide content for the
 // clipboard in a number of formats.
@@ -1752,12 +2010,51 @@ func marshalContentDeserializer(p uintptr) (interface{}, error) {
 // GDK knows how to handle common text and image formats out-of-the-box. See
 // ContentSerializer and ContentDeserializer if you want to add support for
 // application-specific data formats.
-type ContentProvider struct {
+type ContentProvider interface {
+	gextras.Objector
+
+	// ContentChanged: emits the ContentProvider::content-changed signal.
+	ContentChanged()
+	// GetValue: gets the contents of @provider stored in @value.
+	//
+	// The @value will have been initialized to the #GType the value should be
+	// provided in. This given #GType does not need to be listed in the formats
+	// returned by gdk_content_provider_ref_formats(). However, if the given
+	// #GType is not supported, this operation can fail and
+	// IO_ERROR_NOT_SUPPORTED will be reported.
+	GetValue(value *externglib.Value) bool
+	// RefFormats: gets the formats that the provider can provide its current
+	// contents in.
+	RefFormats() *ContentFormats
+	// RefStorableFormats: gets the formats that the provider suggests other
+	// applications to store the data in. An example of such an application
+	// would be a clipboard manager.
+	//
+	// This can be assumed to be a subset of gdk_content_provider_ref_formats().
+	RefStorableFormats() *ContentFormats
+	// WriteMimeTypeAsync: asynchronously writes the contents of @provider to
+	// @stream in the given @mime_type. When the operation is finished @callback
+	// will be called. You can then call
+	// gdk_content_provider_write_mime_type_finish() to get the result of the
+	// operation.
+	//
+	// The given mime type does not need to be listed in the formats returned by
+	// gdk_content_provider_ref_formats(). However, if the given #GType is not
+	// supported, IO_ERROR_NOT_SUPPORTED will be reported.
+	//
+	// The given @stream will not be closed.
+	WriteMimeTypeAsync(mimeType string, stream gio.outputStream, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	// WriteMimeTypeFinish: finishes an asynchronous write operation started
+	// with gdk_content_provider_write_mime_type_async().
+	WriteMimeTypeFinish(result gio.AsyncResult) bool
+}
+
+type contentProvider struct {
 	*externglib.Object
 }
 
-func wrapContentProvider(obj *externglib.Object) *ContentProvider {
-	return &ContentProvider{*externglib.Object{obj}}
+func wrapContentProvider(obj *externglib.Object) ContentProvider {
+	return &contentProvider{*externglib.Object{obj}}
 }
 
 func marshalContentProvider(p uintptr) (interface{}, error) {
@@ -1766,20 +2063,66 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewContentProvider(mimeType string, bytes *glib.Bytes) *ContentProvider
+func NewContentProvider(mimeType string, bytes *glib.Bytes) ContentProvider
 
-func NewContentProvider(value *externglib.Value) *ContentProvider
+func NewContentProvider(value *externglib.Value) ContentProvider
 
-func NewContentProvider(providers []*ContentProvider, nProviders uint) *ContentProvider
+func NewContentProvider(providers []contentProvider, nProviders uint) ContentProvider
+
+func (c contentProvider) ContentChanged()
+
+func (c contentProvider) GetValue(value *externglib.Value) bool
+
+func (c contentProvider) RefFormats() *ContentFormats
+
+func (c contentProvider) RefStorableFormats() *ContentFormats
+
+func (c contentProvider) WriteMimeTypeAsync(mimeType string, stream gio.outputStream, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+
+func (c contentProvider) WriteMimeTypeFinish(result gio.AsyncResult) bool
 
 // ContentSerializer: a GdkContentSerializer is used to serialize content for
 // inter-application data transfers.
-type ContentSerializer struct {
+type ContentSerializer interface {
+	gextras.Objector
+
+	// GetCancellable: gets the cancellable that was passed to
+	// gdk_content_serialize_async().
+	GetCancellable() gio.cancellable
+	// GetGtype: gets the GType to of the object to serialize.
+	GetGtype() externglib.Type
+	// GetMimeType: gets the mime type to serialize to.
+	GetMimeType() string
+	// GetOutputStream: gets the output stream that was passed to
+	// gdk_content_serialize_async().
+	GetOutputStream() gio.outputStream
+	// GetPriority: gets the io priority that was passed to
+	// gdk_content_serialize_async().
+	GetPriority() int
+	// GetTaskData: gets the data that was associated with @serializer via
+	// gdk_content_serializer_set_task_data().
+	GetTaskData() unsafe.Pointer
+	// GetUserData: gets the user data that was passed when the serializer was
+	// registered.
+	GetUserData() unsafe.Pointer
+	// GetValue: gets the #GValue to read the object to serialize from.
+	GetValue() *externglib.Value
+	// ReturnError: indicate that the serialization has ended with an error.
+	// This function consumes @error.
+	ReturnError(error *glib.Error)
+	// ReturnSuccess: indicate that the serialization has been successfully
+	// completed.
+	ReturnSuccess()
+	// SetTaskData: associate data with the current serialization operation.
+	SetTaskData(data unsafe.Pointer, notify unsafe.Pointer)
+}
+
+type contentSerializer struct {
 	*externglib.Object
 }
 
-func wrapContentSerializer(obj *externglib.Object) *ContentSerializer {
-	return &ContentSerializer{*externglib.Object{obj}}
+func wrapContentSerializer(obj *externglib.Object) ContentSerializer {
+	return &contentSerializer{*externglib.Object{obj}}
 }
 
 func marshalContentSerializer(p uintptr) (interface{}, error) {
@@ -1788,13 +2131,46 @@ func marshalContentSerializer(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (c contentSerializer) GetCancellable() gio.cancellable
+
+func (c contentSerializer) GetGtype() externglib.Type
+
+func (c contentSerializer) GetMimeType() string
+
+func (c contentSerializer) GetOutputStream() gio.outputStream
+
+func (c contentSerializer) GetPriority() int
+
+func (c contentSerializer) GetTaskData() unsafe.Pointer
+
+func (c contentSerializer) GetUserData() unsafe.Pointer
+
+func (c contentSerializer) GetValue() *externglib.Value
+
+func (c contentSerializer) ReturnError(error *glib.Error)
+
+func (c contentSerializer) ReturnSuccess()
+
+func (c contentSerializer) SetTaskData(data unsafe.Pointer, notify unsafe.Pointer)
+
 // CrossingEvent: an event caused by a pointing device moving between surfaces.
-type CrossingEvent struct {
+type CrossingEvent interface {
+	event
+
+	// GetDetail: extracts the notify detail from a crossing event.
+	GetDetail() NotifyType
+	// GetFocus: checks if the @event surface is the focus surface.
+	GetFocus() bool
+	// GetMode: extracts the crossing mode from a crossing event.
+	GetMode() CrossingMode
+}
+
+type crossingEvent struct {
 	Event
 }
 
-func wrapCrossingEvent(obj *externglib.Object) *CrossingEvent {
-	return &CrossingEvent{Event{obj}}
+func wrapCrossingEvent(obj *externglib.Object) CrossingEvent {
+	return &crossingEvent{Event{obj}}
 }
 
 func marshalCrossingEvent(p uintptr) (interface{}, error) {
@@ -1803,16 +2179,55 @@ func marshalCrossingEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (c crossingEvent) GetDetail() NotifyType
+
+func (c crossingEvent) GetFocus() bool
+
+func (c crossingEvent) GetMode() CrossingMode
+
 // Cursor: a Cursor represents a cursor. Its contents are private.
 //
 // Cursors are immutable objects, so they can not change after they have been
 // constructed.
-type Cursor struct {
+type Cursor interface {
+	gextras.Objector
+
+	// GetFallback: returns the fallback for this @cursor. The fallback will be
+	// used if this cursor is not available on a given Display.
+	//
+	// For named cursors, this can happen when using nonstandard names or when
+	// using an incomplete cursor theme. For textured cursors, this can happen
+	// when the texture is too large or when the Display it is used on does not
+	// support textured cursors.
+	GetFallback() cursor
+	// GetHotspotX: returns the horizontal offset of the hotspot. The hotspot
+	// indicates the pixel that will be directly above the cursor.
+	//
+	// Note that named cursors may have a nonzero hotspot, but this function
+	// will only return the hotspot position for cursors created with
+	// gdk_cursor_new_from_texture().
+	GetHotspotX() int
+	// GetHotspotY: returns the vertical offset of the hotspot. The hotspot
+	// indicates the pixel that will be directly above the cursor.
+	//
+	// Note that named cursors may have a nonzero hotspot, but this function
+	// will only return the hotspot position for cursors created with
+	// gdk_cursor_new_from_texture().
+	GetHotspotY() int
+	// GetName: returns the name of the cursor. If the cursor is not a named
+	// cursor, nil will be returned.
+	GetName() string
+	// GetTexture: returns the texture for the cursor. If the cursor is a named
+	// cursor, nil will be returned.
+	GetTexture() texture
+}
+
+type cursor struct {
 	*externglib.Object
 }
 
-func wrapCursor(obj *externglib.Object) *Cursor {
-	return &Cursor{*externglib.Object{obj}}
+func wrapCursor(obj *externglib.Object) Cursor {
+	return &cursor{*externglib.Object{obj}}
 }
 
 func marshalCursor(p uintptr) (interface{}, error) {
@@ -1821,17 +2236,34 @@ func marshalCursor(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCursor(name string, fallback *Cursor) *Cursor
+func NewCursor(name string, fallback cursor) Cursor
 
-func NewCursor(texture *Texture, hotspotX int, hotspotY int, fallback *Cursor) *Cursor
+func NewCursor(texture texture, hotspotX int, hotspotY int, fallback cursor) Cursor
+
+func (c cursor) GetFallback() cursor
+
+func (c cursor) GetHotspotX() int
+
+func (c cursor) GetHotspotY() int
+
+func (c cursor) GetName() string
+
+func (c cursor) GetTexture() texture
 
 // DNDEvent: an event related to drag and drop operations.
-type DNDEvent struct {
+type DNDEvent interface {
+	event
+
+	// GetDrop: gets the Drop from a DND event.
+	GetDrop() drop
+}
+
+type dNDEvent struct {
 	Event
 }
 
-func wrapDNDEvent(obj *externglib.Object) *DNDEvent {
-	return &DNDEvent{Event{obj}}
+func wrapDNDEvent(obj *externglib.Object) DNDEvent {
+	return &dNDEvent{Event{obj}}
 }
 
 func marshalDNDEvent(p uintptr) (interface{}, error) {
@@ -1840,13 +2272,19 @@ func marshalDNDEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (d dNDEvent) GetDrop() drop
+
 // DeleteEvent: an event related to closing a top-level surface.
-type DeleteEvent struct {
+type DeleteEvent interface {
+	event
+}
+
+type deleteEvent struct {
 	Event
 }
 
-func wrapDeleteEvent(obj *externglib.Object) *DeleteEvent {
-	return &DeleteEvent{Event{obj}}
+func wrapDeleteEvent(obj *externglib.Object) DeleteEvent {
+	return &deleteEvent{Event{obj}}
 }
 
 func marshalDeleteEvent(p uintptr) (interface{}, error) {
@@ -1860,12 +2298,92 @@ func marshalDeleteEvent(p uintptr) (interface{}, error) {
 //
 // See the Seat documentation for more information about the various kinds of
 // devices, and their relationships.
-type Device struct {
+type Device interface {
+	gextras.Objector
+
+	// GetCapsLockState: retrieves whether the Caps Lock modifier of the
+	// keyboard is locked, if @device is a keyboard device.
+	GetCapsLockState() bool
+	// GetDeviceTool: retrieves the DeviceTool associated to @device.
+	GetDeviceTool() deviceTool
+	// GetDirection: returns the direction of effective layout of the keyboard,
+	// if @device is a keyboard device.
+	//
+	// The direction of a layout is the direction of the majority of its
+	// symbols. See pango_unichar_direction().
+	GetDirection() pango.Direction
+	// GetDisplay: returns the Display to which @device pertains.
+	GetDisplay() display
+	// GetHasCursor: determines whether the pointer follows device motion. This
+	// is not meaningful for keyboard devices, which don't have a pointer.
+	GetHasCursor() bool
+	// GetModifierState: retrieves the current modifier state of the keyboard,
+	// if @device is a keyboard device.
+	GetModifierState() ModifierType
+	// GetName: determines the name of the device, suitable for showing in a
+	// user interface.
+	GetName() string
+	// GetNumLockState: retrieves whether the Num Lock modifier of the keyboard
+	// is locked, if @device is a keyboard device.
+	GetNumLockState() bool
+	// GetNumTouches: retrieves the number of touch points associated to
+	// @device.
+	GetNumTouches() uint
+	// GetProductID: returns the product ID of this device, or nil if this
+	// information couldn't be obtained. This ID is retrieved from the device,
+	// and is thus constant for it. See gdk_device_get_vendor_id() for more
+	// information.
+	GetProductID() string
+	// GetScrollLockState: retrieves whether the Scroll Lock modifier of the
+	// keyboard is locked, if @device is a keyboard device.
+	GetScrollLockState() bool
+	// GetSeat: returns the Seat the device belongs to.
+	GetSeat() seat
+	// GetSource: determines the type of the device.
+	GetSource() InputSource
+	// GetSurfaceAtPosition: obtains the surface underneath @device, returning
+	// the location of the device in @win_x and @win_y in double precision.
+	// Returns nil if the surface tree under @device is not known to GDK (for
+	// example, belongs to another application).
+	GetSurfaceAtPosition() (float64, float64, surface)
+	// GetVendorID: returns the vendor ID of this device, or nil if this
+	// information couldn't be obtained. This ID is retrieved from the device,
+	// and is thus constant for it.
+	//
+	// This function, together with gdk_device_get_product_id(), can be used to
+	// eg. compose #GSettings paths to store settings for this device.
+	//
+	//     static GSettings *
+	//     get_device_settings (GdkDevice *device)
+	//     {
+	//       const char *vendor, *product;
+	//       GSettings *settings;
+	//       GdkDevice *device;
+	//       char *path;
+	//
+	//       vendor = gdk_device_get_vendor_id (device);
+	//       product = gdk_device_get_product_id (device);
+	//
+	//       path = g_strdup_printf ("/org/example/app/devices/s:s/", vendor, product);
+	//       settings = g_settings_new_with_path (DEVICE_SCHEMA, path);
+	//       g_free (path);
+	//
+	//       return settings;
+	//     }
+	//
+	GetVendorID() string
+	// HasBidiLayouts: determines if keyboard layouts for both right-to-left and
+	// left-to-right languages are in use on the keyboard, if @device is a
+	// keyboard device.
+	HasBidiLayouts() bool
+}
+
+type device struct {
 	*externglib.Object
 }
 
-func wrapDevice(obj *externglib.Object) *Device {
-	return &Device{*externglib.Object{obj}}
+func wrapDevice(obj *externglib.Object) Device {
+	return &device{*externglib.Object{obj}}
 }
 
 func marshalDevice(p uintptr) (interface{}, error) {
@@ -1874,13 +2392,67 @@ func marshalDevice(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (d device) GetCapsLockState() bool
+
+func (d device) GetDeviceTool() deviceTool
+
+func (d device) GetDirection() pango.Direction
+
+func (d device) GetDisplay() display
+
+func (d device) GetHasCursor() bool
+
+func (d device) GetModifierState() ModifierType
+
+func (d device) GetName() string
+
+func (d device) GetNumLockState() bool
+
+func (d device) GetNumTouches() uint
+
+func (d device) GetProductID() string
+
+func (d device) GetScrollLockState() bool
+
+func (d device) GetSeat() seat
+
+func (d device) GetSource() InputSource
+
+func (d device) GetSurfaceAtPosition() (float64, float64, surface)
+
+func (d device) GetVendorID() string
+
+func (d device) HasBidiLayouts() bool
+
 // DeviceTool: a physical tool associated to a Device.
-type DeviceTool struct {
+type DeviceTool interface {
+	gextras.Objector
+
+	// GetAxes: gets the axes of the tool.
+	GetAxes() AxisFlags
+	// GetHardwareID: gets the hardware ID of this tool, or 0 if it's not known.
+	// When non-zero, the identificator is unique for the given tool model,
+	// meaning that two identical tools will share the same @hardware_id, but
+	// will have different serial numbers (see gdk_device_tool_get_serial()).
+	//
+	// This is a more concrete (and device specific) method to identify a
+	// DeviceTool than gdk_device_tool_get_tool_type(), as a tablet may support
+	// multiple devices with the same DeviceToolType, but having different
+	// hardware identificators.
+	GetHardwareID() uint64
+	// GetSerial: gets the serial of this tool, this value can be used to
+	// identify a physical tool (eg. a tablet pen) across program executions.
+	GetSerial() uint64
+	// GetToolType: gets the DeviceToolType of the tool.
+	GetToolType() DeviceToolType
+}
+
+type deviceTool struct {
 	*externglib.Object
 }
 
-func wrapDeviceTool(obj *externglib.Object) *DeviceTool {
-	return &DeviceTool{*externglib.Object{obj}}
+func wrapDeviceTool(obj *externglib.Object) DeviceTool {
+	return &deviceTool{*externglib.Object{obj}}
 }
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {
@@ -1888,6 +2460,14 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (d deviceTool) GetAxes() AxisFlags
+
+func (d deviceTool) GetHardwareID() uint64
+
+func (d deviceTool) GetSerial() uint64
+
+func (d deviceTool) GetToolType() DeviceToolType
 
 // Display: gdkDisplay objects are the GDK representation of a workstation.
 //
@@ -1901,12 +2481,165 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 //
 // Output devices are represented by Monitor objects, which can be accessed with
 // gdk_display_get_monitor_at_surface() and similar APIs.
-type Display struct {
+type Display interface {
+	gextras.Objector
+
+	// Beep: emits a short beep on @display
+	Beep()
+	// Close: closes the connection to the windowing system for the given
+	// display, and cleans up associated resources.
+	Close()
+	// DeviceIsGrabbed: returns true if there is an ongoing grab on @device for
+	// @display.
+	DeviceIsGrabbed(device device) bool
+	// Flush: flushes any requests queued for the windowing system; this happens
+	// automatically when the main loop blocks waiting for new events, but if
+	// your application is drawing without returning control to the main loop,
+	// you may need to call this function explicitly. A common case where this
+	// function needs to be called is when an application is executing drawing
+	// commands from a thread other than the thread where the main loop is
+	// running.
+	//
+	// This is most useful for X11. On windowing systems where requests are
+	// handled synchronously, this function will do nothing.
+	Flush()
+	// GetAppLaunchContext: returns a AppLaunchContext suitable for launching
+	// applications on the given display.
+	GetAppLaunchContext() appLaunchContext
+	// GetClipboard: gets the clipboard used for copy/paste operations.
+	GetClipboard() clipboard
+	// GetDefaultSeat: returns the default Seat for this display.
+	//
+	// Note that a display may not have a seat. In this case, this function will
+	// return nil.
+	GetDefaultSeat() seat
+	// GetMonitorAtSurface: gets the monitor in which the largest area of
+	// @surface resides, or a monitor close to @surface if it is outside of all
+	// monitors.
+	GetMonitorAtSurface(surface surface) monitor
+	// GetMonitors: gets the list of monitors associated with this display.
+	//
+	// Subsequent calls to this function will always return the same list for
+	// the same display.
+	//
+	// You can listen to the GListModel::items-changed signal on this list to
+	// monitor changes to the monitor of this display.
+	GetMonitors() gio.ListModel
+	// GetName: gets the name of the display.
+	GetName() string
+	// GetPrimaryClipboard: gets the clipboard used for the primary selection.
+	// On backends where the primary clipboard is not supported natively, GDK
+	// emulates this clipboard locally.
+	GetPrimaryClipboard() clipboard
+	// GetSetting: retrieves a desktop-wide setting such as double-click time
+	// for the @display.
+	GetSetting(name string, value *externglib.Value) bool
+	// GetStartupNotificationID: gets the startup notification ID for a Wayland
+	// display, or nil if no ID has been defined.
+	GetStartupNotificationID() string
+	// IsClosed: finds out if the display has been closed.
+	IsClosed() bool
+	// IsComposited: returns whether surfaces can reasonably be expected to have
+	// their alpha channel drawn correctly on the screen. Check
+	// gdk_display_is_rgba() for whether the display supports an alpha channel.
+	//
+	// On X11 this function returns whether a compositing manager is compositing
+	// on @display.
+	//
+	// On modern displays, this value is always true.
+	IsComposited() bool
+	// IsRgba: returns whether surfaces on this @display are created with an
+	// alpha channel.
+	//
+	// Even if a true is returned, it is possible that the surface’s alpha
+	// channel won’t be honored when displaying the surface on the screen: in
+	// particular, for X an appropriate windowing manager and compositing
+	// manager must be running to provide appropriate display. Use
+	// gdk_display_is_composited() to check if that is the case.
+	//
+	// On modern displays, this value is always true.
+	IsRgba() bool
+	// ListSeats: returns the list of seats known to @display.
+	ListSeats() *glib.List
+	// MapKeycode: returns the keyvals bound to @keycode. The Nth KeymapKey in
+	// @keys is bound to the Nth keyval in @keyvals.
+	//
+	// When a keycode is pressed by the user, the keyval from this list of
+	// entries is selected by considering the effective keyboard group and
+	// level.
+	//
+	// Free the returned arrays with g_free().
+	MapKeycode(keycode uint) ([]*KeymapKey, []uint, int, bool)
+	// MapKeyval: obtains a list of keycode/group/level combinations that will
+	// generate @keyval. Groups and levels are two kinds of keyboard mode; in
+	// general, the level determines whether the top or bottom symbol on a key
+	// is used, and the group determines whether the left or right symbol is
+	// used.
+	//
+	// On US keyboards, the shift key changes the keyboard level, and there are
+	// no groups. A group switch key might convert a keyboard between Hebrew to
+	// English modes, for example.
+	//
+	// EventKey contains a group field that indicates the active keyboard group.
+	// The level is computed from the modifier mask.
+	//
+	// The returned array should be freed with g_free().
+	MapKeyval(keyval uint) ([]*KeymapKey, int, bool)
+	// NotifyStartupComplete: indicates to the GUI environment that the
+	// application has finished loading, using a given identifier.
+	//
+	// GTK will call this function automatically for Window with custom
+	// startup-notification identifier unless
+	// gtk_window_set_auto_startup_notification() is called to disable that
+	// feature.
+	NotifyStartupComplete(startupID string)
+	// PutEvent: appends the given event onto the front of the event queue for
+	// @display.
+	//
+	// This function is only useful in very special situations and should not be
+	// used by applications.
+	PutEvent(event event)
+	// SupportsInputShapes: returns true if gdk_surface_set_input_region() can
+	// be used to modify the input shape of surfaces on @display.
+	//
+	// On modern displays, this value is always true.
+	SupportsInputShapes() bool
+	// Sync: flushes any requests queued for the windowing system and waits
+	// until all requests have been handled. This is often used for making sure
+	// that the display is synchronized with the current state of the program.
+	// Calling gdk_display_sync() before gdk_x11_display_error_trap_pop() makes
+	// sure that any errors generated from earlier requests are handled before
+	// the error trap is removed.
+	//
+	// This is most useful for X11. On windowing systems where requests are
+	// handled synchronously, this function will do nothing.
+	Sync()
+	// TranslateKey: translates the contents of a EventKey (ie @keycode, @state,
+	// and @group) into a keyval, effective group, and level. Modifiers that
+	// affected the translation and are thus unavailable for application use are
+	// returned in @consumed_modifiers.
+	//
+	// The @effective_group is the group that was actually used for the
+	// translation; some keys such as Enter are not affected by the active
+	// keyboard group. The @level is derived from @state.
+	//
+	// @consumed_modifiers gives modifiers that should be masked outfrom @state
+	// when comparing this key press to a keyboard shortcut. For instance, on a
+	// US keyboard, the `plus` symbol is shifted, so when comparing a key press
+	// to a `<Control>plus` accelerator `<Shift>` should be masked out.
+	//
+	// This function should rarely be needed, since EventKey already contains
+	// the translated keyval. It is exported for the benefit of virtualized test
+	// environments.
+	TranslateKey(keycode uint, state ModifierType, group int) (uint, int, int, ModifierType, bool)
+}
+
+type display struct {
 	*externglib.Object
 }
 
-func wrapDisplay(obj *externglib.Object) *Display {
-	return &Display{*externglib.Object{obj}}
+func wrapDisplay(obj *externglib.Object) Display {
+	return &display{*externglib.Object{obj}}
 }
 
 func marshalDisplay(p uintptr) (interface{}, error) {
@@ -1914,6 +2647,54 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (d display) Beep()
+
+func (d display) Close()
+
+func (d display) DeviceIsGrabbed(device device) bool
+
+func (d display) Flush()
+
+func (d display) GetAppLaunchContext() appLaunchContext
+
+func (d display) GetClipboard() clipboard
+
+func (d display) GetDefaultSeat() seat
+
+func (d display) GetMonitorAtSurface(surface surface) monitor
+
+func (d display) GetMonitors() gio.ListModel
+
+func (d display) GetName() string
+
+func (d display) GetPrimaryClipboard() clipboard
+
+func (d display) GetSetting(name string, value *externglib.Value) bool
+
+func (d display) GetStartupNotificationID() string
+
+func (d display) IsClosed() bool
+
+func (d display) IsComposited() bool
+
+func (d display) IsRgba() bool
+
+func (d display) ListSeats() *glib.List
+
+func (d display) MapKeycode(keycode uint) ([]*KeymapKey, []uint, int, bool)
+
+func (d display) MapKeyval(keyval uint) ([]*KeymapKey, int, bool)
+
+func (d display) NotifyStartupComplete(startupID string)
+
+func (d display) PutEvent(event event)
+
+func (d display) SupportsInputShapes() bool
+
+func (d display) Sync()
+
+func (d display) TranslateKey(keycode uint, state ModifierType, group int) (uint, int, int, ModifierType, bool)
 
 // DisplayManager: the purpose of the DisplayManager singleton object is to
 // offer notification when displays appear or disappear or the default display
@@ -1950,12 +2731,25 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 //      else
 //    #endif
 //      g_error ("Unsupported GDK backend");
-type DisplayManager struct {
+type DisplayManager interface {
+	gextras.Objector
+
+	// GetDefaultDisplay: gets the default Display.
+	GetDefaultDisplay() display
+	// ListDisplays: list all currently open displays.
+	ListDisplays() *glib.SList
+	// OpenDisplay: opens a display.
+	OpenDisplay(name string) display
+	// SetDefaultDisplay: sets @display as the default display.
+	SetDefaultDisplay(display display)
+}
+
+type displayManager struct {
 	*externglib.Object
 }
 
-func wrapDisplayManager(obj *externglib.Object) *DisplayManager {
-	return &DisplayManager{*externglib.Object{obj}}
+func wrapDisplayManager(obj *externglib.Object) DisplayManager {
+	return &displayManager{*externglib.Object{obj}}
 }
 
 func marshalDisplayManager(p uintptr) (interface{}, error) {
@@ -1964,14 +2758,62 @@ func marshalDisplayManager(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (d displayManager) GetDefaultDisplay() display
+
+func (d displayManager) ListDisplays() *glib.SList
+
+func (d displayManager) OpenDisplay(name string) display
+
+func (d displayManager) SetDefaultDisplay(display display)
+
 // Drag: the GdkDrag struct contains only private fields and should not be
 // accessed directly.
-type Drag struct {
+type Drag interface {
+	gextras.Objector
+
+	// DropDone: inform GDK if the drop ended successfully. Passing false for
+	// @success may trigger a drag cancellation animation.
+	//
+	// This function is called by the drag source, and should be the last call
+	// before dropping the reference to the @drag.
+	//
+	// The Drag will only take the first gdk_drag_drop_done() call as effective,
+	// if this function is called multiple times, all subsequent calls will be
+	// ignored.
+	DropDone(success bool)
+	// GetActions: determines the bitmask of possible actions proposed by the
+	// source.
+	GetActions() DragAction
+	// GetContent: returns the ContentProvider associated to the GdkDrag object.
+	GetContent() contentProvider
+	// GetDevice: returns the Device associated to the GdkDrag object.
+	GetDevice() device
+	// GetDisplay: gets the Display that the drag object was created for.
+	GetDisplay() display
+	// GetDragSurface: returns the surface on which the drag icon should be
+	// rendered during the drag operation. Note that the surface may not be
+	// available until the drag operation has begun. GDK will move the surface
+	// in accordance with the ongoing drag operation. The surface is owned by
+	// @drag and will be destroyed when the drag operation is over.
+	GetDragSurface() surface
+	// GetFormats: retrieves the formats supported by this GdkDrag object.
+	GetFormats() *ContentFormats
+	// GetSelectedAction: determines the action chosen by the drag destination.
+	GetSelectedAction() DragAction
+	// GetSurface: returns the Surface where the drag originates.
+	GetSurface() surface
+	// SetHotspot: sets the position of the drag surface that will be kept under
+	// the cursor hotspot. Initially, the hotspot is at the top left corner of
+	// the drag surface.
+	SetHotspot(hotX int, hotY int)
+}
+
+type drag struct {
 	*externglib.Object
 }
 
-func wrapDrag(obj *externglib.Object) *Drag {
-	return &Drag{*externglib.Object{obj}}
+func wrapDrag(obj *externglib.Object) Drag {
+	return &drag{*externglib.Object{obj}}
 }
 
 func marshalDrag(p uintptr) (interface{}, error) {
@@ -1980,6 +2822,26 @@ func marshalDrag(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (d drag) DropDone(success bool)
+
+func (d drag) GetActions() DragAction
+
+func (d drag) GetContent() contentProvider
+
+func (d drag) GetDevice() device
+
+func (d drag) GetDisplay() display
+
+func (d drag) GetDragSurface() surface
+
+func (d drag) GetFormats() *ContentFormats
+
+func (d drag) GetSelectedAction() DragAction
+
+func (d drag) GetSurface() surface
+
+func (d drag) SetHotspot(hotX int, hotY int)
+
 // DrawContext is the base object used by contexts implementing different
 // rendering methods, such as GLContext or VulkanContext. It provides shared
 // functionality between those contexts.
@@ -1987,12 +2849,68 @@ func marshalDrag(p uintptr) (interface{}, error) {
 // You will always interact with one of those subclasses.
 //
 // A GdkDrawContext is always associated with a single toplevel surface.
-type DrawContext struct {
+type DrawContext interface {
+	gextras.Objector
+
+	// BeginFrame: indicates that you are beginning the process of redrawing
+	// @region on the @context's surface.
+	//
+	// Calling this function begins a drawing operation using @context on the
+	// surface that @context was created from. The actual requirements and
+	// guarantees for the drawing operation vary for different implementations
+	// of drawing, so a CairoContext and a GLContext need to be treated
+	// differently.
+	//
+	// A call to this function is a requirement for drawing and must be followed
+	// by a call to gdk_draw_context_end_frame(), which will complete the
+	// drawing operation and ensure the contents become visible on screen.
+	//
+	// Note that the @region passed to this function is the minimum region that
+	// needs to be drawn and depending on implementation, windowing system and
+	// hardware in use, it might be necessary to draw a larger region. Drawing
+	// implementation must use gdk_draw_context_get_frame_region() to query the
+	// region that must be drawn.
+	//
+	// When using GTK, the widget system automatically places calls to
+	// gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
+	// use of Renderers, so application code does not need to call these
+	// functions explicitly.
+	BeginFrame(region *cairo.Region)
+	// EndFrame: ends a drawing operation started with
+	// gdk_draw_context_begin_frame() and makes the drawing available on screen.
+	// See that function for more details about drawing.
+	//
+	// When using a GLContext, this function may call `glFlush()` implicitly
+	// before returning; it is not recommended to call `glFlush()` explicitly
+	// before calling this function.
+	EndFrame()
+	// GetDisplay: retrieves the Display the @context is created for
+	GetDisplay() display
+	// GetFrameRegion: retrieves the region that is currently in the process of
+	// being repainted.
+	//
+	// After a call to gdk_draw_context_begin_frame() this function will return
+	// a union of the region passed to that function and the area of the surface
+	// that the @context determined needs to be repainted.
+	//
+	// If @context is not in between calls to gdk_draw_context_begin_frame() and
+	// gdk_draw_context_end_frame(), nil will be returned.
+	GetFrameRegion() *cairo.Region
+	// GetSurface: retrieves the Surface used by the @context.
+	GetSurface() surface
+	// IsInFrame: returns true if @context is in the process of drawing to its
+	// surface after a call to gdk_draw_context_begin_frame() and not yet having
+	// called gdk_draw_context_end_frame(). In this situation, drawing commands
+	// may be effecting the contents of a @context's surface.
+	IsInFrame() bool
+}
+
+type drawContext struct {
 	*externglib.Object
 }
 
-func wrapDrawContext(obj *externglib.Object) *DrawContext {
-	return &DrawContext{*externglib.Object{obj}}
+func wrapDrawContext(obj *externglib.Object) DrawContext {
+	return &drawContext{*externglib.Object{obj}}
 }
 
 func marshalDrawContext(p uintptr) (interface{}, error) {
@@ -2001,14 +2919,95 @@ func marshalDrawContext(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (d drawContext) BeginFrame(region *cairo.Region)
+
+func (d drawContext) EndFrame()
+
+func (d drawContext) GetDisplay() display
+
+func (d drawContext) GetFrameRegion() *cairo.Region
+
+func (d drawContext) GetSurface() surface
+
+func (d drawContext) IsInFrame() bool
+
 // Drop: the GdkDrop struct contains only private fields and should not be
 // accessed directly.
-type Drop struct {
+type Drop interface {
+	gextras.Objector
+
+	// Finish: ends the drag operation after a drop.
+	//
+	// The @action must be a single action selected from the actions available
+	// via gdk_drop_get_actions().
+	Finish(action DragAction)
+	// GetActions: returns the possible actions for this Drop. If this value
+	// contains multiple actions - ie gdk_drag_action_is_unique() returns false
+	// for the result - gdk_drop_finish() must choose the action to use when
+	// accepting the drop. This will only happen if you passed GDK_ACTION_ASK as
+	// one of the possible actions in gdk_drop_status(). GDK_ACTION_ASK itself
+	// will not be included in the actions returned by this function.
+	//
+	// This value may change over the lifetime of the Drop both as a response to
+	// source side actions as well as to calls to gdk_drop_status() or
+	// gdk_drop_finish(). The source side will not change this value anymore
+	// once a drop has started.
+	GetActions() DragAction
+	// GetDevice: returns the Device performing the drop.
+	GetDevice() device
+	// GetDisplay: gets the Display that @self was created for.
+	GetDisplay() display
+	// GetDrag: if this is an in-app drag-and-drop operation, returns the Drag
+	// that corresponds to this drop.
+	//
+	// If it is not, nil is returned.
+	GetDrag() drag
+	// GetFormats: returns the ContentFormats that the drop offers the data to
+	// be read in.
+	GetFormats() *ContentFormats
+	// GetSurface: returns the Surface performing the drop.
+	GetSurface() surface
+	// ReadAsync: asynchronously read the dropped data from a Drop in a format
+	// that complies with one of the mime types.
+	ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	// ReadFinish: finishes an async drop read operation, see
+	// gdk_drop_read_async().
+	ReadFinish(result gio.AsyncResult) (string, gio.inputStream)
+	// ReadValueAsync: asynchronously request the drag operation's contents
+	// converted to the given @type. When the operation is finished @callback
+	// will be called. You can then call gdk_drop_read_value_finish() to get the
+	// resulting #GValue.
+	//
+	// For local drag'n'drop operations that are available in the given #GType,
+	// the value will be copied directly. Otherwise, GDK will try to use
+	// gdk_content_deserialize_async() to convert the data.
+	ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	// ReadValueFinish: finishes an async drop read started with
+	// gdk_drop_read_value_async().
+	ReadValueFinish(result gio.AsyncResult) *externglib.Value
+	// Status: selects all actions that are potentially supported by the
+	// destination.
+	//
+	// When calling this function, do not restrict the passed in actions to the
+	// ones provided by gdk_drop_get_actions(). Those actions may change in the
+	// future, even depending on the actions you provide here.
+	//
+	// The @preferred action is a hint to the drag'n'drop mechanism about which
+	// action to use when multiple actions are possible.
+	//
+	// This function should be called by drag destinations in response to
+	// GDK_DRAG_ENTER or GDK_DRAG_MOTION events. If the destination does not yet
+	// know the exact actions it supports, it should set any possible actions
+	// first and then later call this function again.
+	Status(actions DragAction, preferred DragAction)
+}
+
+type drop struct {
 	*externglib.Object
 }
 
-func wrapDrop(obj *externglib.Object) *Drop {
-	return &Drop{*externglib.Object{obj}}
+func wrapDrop(obj *externglib.Object) Drop {
+	return &drop{*externglib.Object{obj}}
 }
 
 func marshalDrop(p uintptr) (interface{}, error) {
@@ -2017,13 +3016,45 @@ func marshalDrop(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (d drop) Finish(action DragAction)
+
+func (d drop) GetActions() DragAction
+
+func (d drop) GetDevice() device
+
+func (d drop) GetDisplay() display
+
+func (d drop) GetDrag() drag
+
+func (d drop) GetFormats() *ContentFormats
+
+func (d drop) GetSurface() surface
+
+func (d drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+
+func (d drop) ReadFinish(result gio.AsyncResult) (string, gio.inputStream)
+
+func (d drop) ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+
+func (d drop) ReadValueFinish(result gio.AsyncResult) *externglib.Value
+
+func (d drop) Status(actions DragAction, preferred DragAction)
+
 // FocusEvent: an event related to a focus change.
-type FocusEvent struct {
+type FocusEvent interface {
+	event
+
+	// GetIn: extracts whether this event is about focus entering or leaving the
+	// surface.
+	GetIn() bool
+}
+
+type focusEvent struct {
 	Event
 }
 
-func wrapFocusEvent(obj *externglib.Object) *FocusEvent {
-	return &FocusEvent{Event{obj}}
+func wrapFocusEvent(obj *externglib.Object) FocusEvent {
+	return &focusEvent{Event{obj}}
 }
 
 func marshalFocusEvent(p uintptr) (interface{}, error) {
@@ -2031,6 +3062,8 @@ func marshalFocusEvent(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (f focusEvent) GetIn() bool
 
 // FrameClock: a FrameClock tells the application when to update and repaint a
 // surface. This may be synced to the vertical refresh rate of the monitor, for
@@ -2061,12 +3094,65 @@ func marshalFocusEvent(p uintptr) (interface{}, error) {
 // looking at the difference in time between an initial value from
 // gdk_frame_clock_get_frame_time() and the value inside the FrameClock::update
 // signal of the clock, they will stay exactly synchronized.
-type FrameClock struct {
+type FrameClock interface {
+	gextras.Objector
+
+	// BeginUpdating: starts updates for an animation. Until a matching call to
+	// gdk_frame_clock_end_updating() is made, the frame clock will continually
+	// request a new frame with the GDK_FRAME_CLOCK_PHASE_UPDATE phase. This
+	// function may be called multiple times and frames will be requested until
+	// gdk_frame_clock_end_updating() is called the same number of times.
+	BeginUpdating()
+	// EndUpdating: stops updates for an animation. See the documentation for
+	// gdk_frame_clock_begin_updating().
+	EndUpdating()
+	// GetCurrentTimings: gets the frame timings for the current frame.
+	GetCurrentTimings() *FrameTimings
+	// GetFps: calculates the current frames-per-second, based on the frame
+	// timings of @frame_clock.
+	GetFps() float64
+	// GetFrameCounter: a FrameClock maintains a 64-bit counter that increments
+	// for each frame drawn.
+	GetFrameCounter() int64
+	// GetFrameTime: gets the time that should currently be used for animations.
+	// Inside the processing of a frame, it’s the time used to compute the
+	// animation position of everything in a frame. Outside of a frame, it's the
+	// time of the conceptual “previous frame,” which may be either the actual
+	// previous frame time, or if that’s too old, an updated time.
+	GetFrameTime() int64
+	// GetHistoryStart: frameClock internally keeps a history of FrameTimings
+	// objects for recent frames that can be retrieved with
+	// gdk_frame_clock_get_timings(). The set of stored frames is the set from
+	// the counter values given by gdk_frame_clock_get_history_start() and
+	// gdk_frame_clock_get_frame_counter(), inclusive.
+	GetHistoryStart() int64
+	// GetRefreshInfo: using the frame history stored in the frame clock, finds
+	// the last known presentation time and refresh interval, and assuming that
+	// presentation times are separated by the refresh interval, predicts a
+	// presentation time that is a multiple of the refresh interval after the
+	// last presentation time, and later than @base_time.
+	GetRefreshInfo(baseTime int64) (int64, int64)
+	// GetTimings: retrieves a FrameTimings object holding timing information
+	// for the current frame or a recent frame. The FrameTimings object may not
+	// yet be complete: see gdk_frame_timings_get_complete().
+	GetTimings(frameCounter int64) *FrameTimings
+	// RequestPhase: asks the frame clock to run a particular phase. The signal
+	// corresponding the requested phase will be emitted the next time the frame
+	// clock processes. Multiple calls to gdk_frame_clock_request_phase() will
+	// be combined together and only one frame processed. If you are displaying
+	// animated content and want to continually request the
+	// GDK_FRAME_CLOCK_PHASE_UPDATE phase for a period of time, you should use
+	// gdk_frame_clock_begin_updating() instead, since this allows GTK to adjust
+	// system parameters to get maximally smooth animations.
+	RequestPhase(phase FrameClockPhase)
+}
+
+type frameClock struct {
 	*externglib.Object
 }
 
-func wrapFrameClock(obj *externglib.Object) *FrameClock {
-	return &FrameClock{*externglib.Object{obj}}
+func wrapFrameClock(obj *externglib.Object) FrameClock {
+	return &frameClock{*externglib.Object{obj}}
 }
 
 func marshalFrameClock(p uintptr) (interface{}, error) {
@@ -2074,6 +3160,26 @@ func marshalFrameClock(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (f frameClock) BeginUpdating()
+
+func (f frameClock) EndUpdating()
+
+func (f frameClock) GetCurrentTimings() *FrameTimings
+
+func (f frameClock) GetFps() float64
+
+func (f frameClock) GetFrameCounter() int64
+
+func (f frameClock) GetFrameTime() int64
+
+func (f frameClock) GetHistoryStart() int64
+
+func (f frameClock) GetRefreshInfo(baseTime int64) (int64, int64)
+
+func (f frameClock) GetTimings(frameCounter int64) *FrameTimings
+
+func (f frameClock) RequestPhase(phase FrameClockPhase)
 
 // GLContext is an object representing the platform-specific OpenGL draw
 // context.
@@ -2121,12 +3227,102 @@ func marshalFrameClock(p uintptr) (interface{}, error) {
 // You can check which GLContext is the current one by using
 // gdk_gl_context_get_current(); you can also unset any GLContext that is
 // currently set by calling gdk_gl_context_clear_current().
-type GLContext struct {
+type GLContext interface {
+	drawContext
+
+	// GetDebugEnabled: retrieves the value set using
+	// gdk_gl_context_set_debug_enabled().
+	GetDebugEnabled() bool
+	// GetDisplay: retrieves the Display the @context is created for
+	GetDisplay() display
+	// GetForwardCompatible: retrieves the value set using
+	// gdk_gl_context_set_forward_compatible().
+	GetForwardCompatible() bool
+	// GetRequiredVersion: retrieves the major and minor version requested by
+	// calling gdk_gl_context_set_required_version().
+	GetRequiredVersion() (int, int)
+	// GetSharedContext: retrieves the GLContext that this @context share data
+	// with.
+	GetSharedContext() gLContext
+	// GetSurface: retrieves the Surface used by the @context.
+	GetSurface() surface
+	// GetUseEs: checks whether the @context is using an OpenGL or OpenGL ES
+	// profile.
+	GetUseEs() bool
+	// GetVersion: retrieves the OpenGL version of the @context.
+	//
+	// The @context must be realized prior to calling this function.
+	GetVersion() (int, int)
+	// IsLegacy: whether the GLContext is in legacy mode or not.
+	//
+	// The GLContext must be realized before calling this function.
+	//
+	// When realizing a GL context, GDK will try to use the OpenGL 3.2 core
+	// profile; this profile removes all the OpenGL API that was deprecated
+	// prior to the 3.2 version of the specification. If the realization is
+	// successful, this function will return false.
+	//
+	// If the underlying OpenGL implementation does not support core profiles,
+	// GDK will fall back to a pre-3.2 compatibility profile, and this function
+	// will return true.
+	//
+	// You can use the value returned by this function to decide which kind of
+	// OpenGL API to use, or whether to do extension discovery, or what kind of
+	// shader programs to load.
+	IsLegacy() bool
+	// MakeCurrent: makes the @context the current one.
+	MakeCurrent()
+	// Realize: realizes the given GLContext.
+	//
+	// It is safe to call this function on a realized GLContext.
+	Realize() bool
+	// SetDebugEnabled: sets whether the GLContext should perform extra
+	// validations and run time checking. This is useful during development, but
+	// has additional overhead.
+	//
+	// The GLContext must not be realized or made current prior to calling this
+	// function.
+	SetDebugEnabled(enabled bool)
+	// SetForwardCompatible: sets whether the GLContext should be forward
+	// compatible.
+	//
+	// Forward compatible contexts must not support OpenGL functionality that
+	// has been marked as deprecated in the requested version; non-forward
+	// compatible contexts, on the other hand, must support both deprecated and
+	// non deprecated functionality.
+	//
+	// The GLContext must not be realized or made current prior to calling this
+	// function.
+	SetForwardCompatible(compatible bool)
+	// SetRequiredVersion: sets the major and minor version of OpenGL to
+	// request.
+	//
+	// Setting @major and @minor to zero will use the default values.
+	//
+	// The GLContext must not be realized or made current prior to calling this
+	// function.
+	SetRequiredVersion(major int, minor int)
+	// SetUseEs: requests that GDK create an OpenGL ES context instead of an
+	// OpenGL one, if the platform and windowing system allows it.
+	//
+	// The @context must not have been realized.
+	//
+	// By default, GDK will attempt to automatically detect whether the
+	// underlying GL implementation is OpenGL or OpenGL ES once the @context is
+	// realized.
+	//
+	// You should check the return value of gdk_gl_context_get_use_es() after
+	// calling gdk_gl_context_realize() to decide whether to use the OpenGL or
+	// OpenGL ES API, extensions, or shaders.
+	SetUseEs(useEs int)
+}
+
+type gLContext struct {
 	DrawContext
 }
 
-func wrapGLContext(obj *externglib.Object) *GLContext {
-	return &GLContext{DrawContext{*externglib.Object{obj}}}
+func wrapGLContext(obj *externglib.Object) GLContext {
+	return &gLContext{DrawContext{*externglib.Object{obj}}}
 }
 
 func marshalGLContext(p uintptr) (interface{}, error) {
@@ -2135,13 +3331,54 @@ func marshalGLContext(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (g gLContext) GetDebugEnabled() bool
+
+func (g gLContext) GetDisplay() display
+
+func (g gLContext) GetForwardCompatible() bool
+
+func (g gLContext) GetRequiredVersion() (int, int)
+
+func (g gLContext) GetSharedContext() gLContext
+
+func (g gLContext) GetSurface() surface
+
+func (g gLContext) GetUseEs() bool
+
+func (g gLContext) GetVersion() (int, int)
+
+func (g gLContext) IsLegacy() bool
+
+func (g gLContext) MakeCurrent()
+
+func (g gLContext) Realize() bool
+
+func (g gLContext) SetDebugEnabled(enabled bool)
+
+func (g gLContext) SetForwardCompatible(compatible bool)
+
+func (g gLContext) SetRequiredVersion(major int, minor int)
+
+func (g gLContext) SetUseEs(useEs int)
+
 // GLTexture: a Texture representing a GL texture object.
-type GLTexture struct {
+type GLTexture interface {
+	texture
+
+	// Release: releases the GL resources held by a GLTexture that was created
+	// with gdk_gl_texture_new().
+	//
+	// The texture contents are still available via the gdk_texture_download()
+	// function, after this function has been called.
+	Release()
+}
+
+type gLTexture struct {
 	Texture
 }
 
-func wrapGLTexture(obj *externglib.Object) *GLTexture {
-	return &GLTexture{Texture{*externglib.Object{obj}}}
+func wrapGLTexture(obj *externglib.Object) GLTexture {
+	return &gLTexture{Texture{*externglib.Object{obj}}}
 }
 
 func marshalGLTexture(p uintptr) (interface{}, error) {
@@ -2150,15 +3387,27 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGLTexture(context *GLContext, id uint, width int, height int, destroy unsafe.Pointer, data unsafe.Pointer) *GLTexture
+func NewGLTexture(context gLContext, id uint, width int, height int, destroy unsafe.Pointer, data unsafe.Pointer) GLTexture
+
+func (g gLTexture) Release()
 
 // GrabBrokenEvent: an event related to a broken windowing system grab.
-type GrabBrokenEvent struct {
+type GrabBrokenEvent interface {
+	event
+
+	// GetGrabSurface: extracts the grab surface from a grab broken event.
+	GetGrabSurface() surface
+	// GetImplicit: checks whether the grab broken event is for an implicit
+	// grab.
+	GetImplicit() bool
+}
+
+type grabBrokenEvent struct {
 	Event
 }
 
-func wrapGrabBrokenEvent(obj *externglib.Object) *GrabBrokenEvent {
-	return &GrabBrokenEvent{Event{obj}}
+func wrapGrabBrokenEvent(obj *externglib.Object) GrabBrokenEvent {
+	return &grabBrokenEvent{Event{obj}}
 }
 
 func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
@@ -2167,13 +3416,43 @@ func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (g grabBrokenEvent) GetGrabSurface() surface
+
+func (g grabBrokenEvent) GetImplicit() bool
+
 // KeyEvent: an event related to a key-based device.
-type KeyEvent struct {
+type KeyEvent interface {
+	event
+
+	// GetConsumedModifiers: extracts the consumed modifiers from a key event.
+	GetConsumedModifiers() ModifierType
+	// GetKeycode: extracts the keycode from a key event.
+	GetKeycode() uint
+	// GetKeyval: extracts the keyval from a key event.
+	GetKeyval() uint
+	// GetLayout: extracts the layout from a key event.
+	GetLayout() uint
+	// GetLevel: extracts the shift level from a key event.
+	GetLevel() uint
+	// GetMatch: gets a keyval and modifier combination that will cause
+	// gdk_key_event_matches() to successfully match the given event.
+	GetMatch() (uint, ModifierType, bool)
+	// IsModifier: extracts whether the key event is for a modifier key.
+	IsModifier() bool
+	// Matches: matches a key event against a keyboard shortcut that is
+	// specified as a keyval and modifiers. Partial matches are possible where
+	// the combination matches if the currently active group is ignored.
+	//
+	// Note that we ignore Caps Lock for matching.
+	Matches(keyval uint, modifiers ModifierType) KeyMatch
+}
+
+type keyEvent struct {
 	Event
 }
 
-func wrapKeyEvent(obj *externglib.Object) *KeyEvent {
-	return &KeyEvent{Event{obj}}
+func wrapKeyEvent(obj *externglib.Object) KeyEvent {
+	return &keyEvent{Event{obj}}
 }
 
 func marshalKeyEvent(p uintptr) (interface{}, error) {
@@ -2182,13 +3461,33 @@ func marshalKeyEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (k keyEvent) GetConsumedModifiers() ModifierType
+
+func (k keyEvent) GetKeycode() uint
+
+func (k keyEvent) GetKeyval() uint
+
+func (k keyEvent) GetLayout() uint
+
+func (k keyEvent) GetLevel() uint
+
+func (k keyEvent) GetMatch() (uint, ModifierType, bool)
+
+func (k keyEvent) IsModifier() bool
+
+func (k keyEvent) Matches(keyval uint, modifiers ModifierType) KeyMatch
+
 // MemoryTexture: a Texture representing image data in memory.
-type MemoryTexture struct {
+type MemoryTexture interface {
+	texture
+}
+
+type memoryTexture struct {
 	Texture
 }
 
-func wrapMemoryTexture(obj *externglib.Object) *MemoryTexture {
-	return &MemoryTexture{Texture{*externglib.Object{obj}}}
+func wrapMemoryTexture(obj *externglib.Object) MemoryTexture {
+	return &memoryTexture{Texture{*externglib.Object{obj}}}
 }
 
 func marshalMemoryTexture(p uintptr) (interface{}, error) {
@@ -2197,18 +3496,65 @@ func marshalMemoryTexture(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) *MemoryTexture
+func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) MemoryTexture
 
 // Monitor: gdkMonitor objects represent the individual outputs that are
 // associated with a Display. GdkDisplay keeps a Model to enumerate and monitor
 // monitors with gdk_display_get_monitors(). You can use
 // gdk_display_get_monitor_at_surface() to find a particular monitor.
-type Monitor struct {
+type Monitor interface {
+	gextras.Objector
+
+	// GetConnector: gets the name of the monitor's connector, if available.
+	GetConnector() string
+	// GetDisplay: gets the display that this monitor belongs to.
+	GetDisplay() display
+	// GetGeometry: retrieves the size and position of an individual monitor
+	// within the display coordinate space. The returned geometry is in
+	// ”application pixels”, not in ”device pixels” (see
+	// gdk_monitor_get_scale_factor()).
+	GetGeometry() Rectangle
+	// GetHeightMm: gets the height in millimeters of the monitor.
+	GetHeightMm() int
+	// GetManufacturer: gets the name or PNP ID of the monitor's manufacturer,
+	// if available.
+	//
+	// Note that this value might also vary depending on actual display backend.
+	//
+	// PNP ID registry is located at https://uefi.org/pnp_id_list
+	GetManufacturer() string
+	// GetModel: gets the string identifying the monitor model, if available.
+	GetModel() string
+	// GetRefreshRate: gets the refresh rate of the monitor, if available.
+	//
+	// The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
+	// 60000.
+	GetRefreshRate() int
+	// GetScaleFactor: gets the internal scale factor that maps from monitor
+	// coordinates to the actual device pixels. On traditional systems this is
+	// 1, but on very high density outputs this can be a higher value (often 2).
+	//
+	// This can be used if you want to create pixel based data for a particular
+	// monitor, but most of the time you’re drawing to a surface where it is
+	// better to use gdk_surface_get_scale_factor() instead.
+	GetScaleFactor() int
+	// GetSubpixelLayout: gets information about the layout of red, green and
+	// blue primaries for each pixel in this monitor, if available.
+	GetSubpixelLayout() SubpixelLayout
+	// GetWidthMm: gets the width in millimeters of the monitor.
+	GetWidthMm() int
+	// IsValid: returns true if the @monitor object corresponds to a physical
+	// monitor. The @monitor becomes invalid when the physical monitor is
+	// unplugged or removed.
+	IsValid() bool
+}
+
+type monitor struct {
 	*externglib.Object
 }
 
-func wrapMonitor(obj *externglib.Object) *Monitor {
-	return &Monitor{*externglib.Object{obj}}
+func wrapMonitor(obj *externglib.Object) Monitor {
+	return &monitor{*externglib.Object{obj}}
 }
 
 func marshalMonitor(p uintptr) (interface{}, error) {
@@ -2217,13 +3563,39 @@ func marshalMonitor(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (m monitor) GetConnector() string
+
+func (m monitor) GetDisplay() display
+
+func (m monitor) GetGeometry() Rectangle
+
+func (m monitor) GetHeightMm() int
+
+func (m monitor) GetManufacturer() string
+
+func (m monitor) GetModel() string
+
+func (m monitor) GetRefreshRate() int
+
+func (m monitor) GetScaleFactor() int
+
+func (m monitor) GetSubpixelLayout() SubpixelLayout
+
+func (m monitor) GetWidthMm() int
+
+func (m monitor) IsValid() bool
+
 // MotionEvent: an event related to a pointer or touch device motion.
-type MotionEvent struct {
+type MotionEvent interface {
+	event
+}
+
+type motionEvent struct {
 	Event
 }
 
-func wrapMotionEvent(obj *externglib.Object) *MotionEvent {
-	return &MotionEvent{Event{obj}}
+func wrapMotionEvent(obj *externglib.Object) MotionEvent {
+	return &motionEvent{Event{obj}}
 }
 
 func marshalMotionEvent(p uintptr) (interface{}, error) {
@@ -2233,12 +3605,24 @@ func marshalMotionEvent(p uintptr) (interface{}, error) {
 }
 
 // PadEvent: an event related to a pad-based device.
-type PadEvent struct {
+type PadEvent interface {
+	event
+
+	// GetAxisValue: extracts the information from a pad strip or ring event.
+	GetAxisValue() (uint, float64)
+	// GetButton: extracts information about the pressed button from a pad
+	// event.
+	GetButton() uint
+	// GetGroupMode: extracts group and mode information from a pad event.
+	GetGroupMode() (uint, uint)
+}
+
+type padEvent struct {
 	Event
 }
 
-func wrapPadEvent(obj *externglib.Object) *PadEvent {
-	return &PadEvent{Event{obj}}
+func wrapPadEvent(obj *externglib.Object) PadEvent {
+	return &padEvent{Event{obj}}
 }
 
 func marshalPadEvent(p uintptr) (interface{}, error) {
@@ -2247,13 +3631,23 @@ func marshalPadEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (p padEvent) GetAxisValue() (uint, float64)
+
+func (p padEvent) GetButton() uint
+
+func (p padEvent) GetGroupMode() (uint, uint)
+
 // ProximityEvent: an event related to the proximity of a tool to a device.
-type ProximityEvent struct {
+type ProximityEvent interface {
+	event
+}
+
+type proximityEvent struct {
 	Event
 }
 
-func wrapProximityEvent(obj *externglib.Object) *ProximityEvent {
-	return &ProximityEvent{Event{obj}}
+func wrapProximityEvent(obj *externglib.Object) ProximityEvent {
+	return &proximityEvent{Event{obj}}
 }
 
 func marshalProximityEvent(p uintptr) (interface{}, error) {
@@ -2263,12 +3657,31 @@ func marshalProximityEvent(p uintptr) (interface{}, error) {
 }
 
 // ScrollEvent: an event related to a scrolling motion.
-type ScrollEvent struct {
+type ScrollEvent interface {
+	event
+
+	// GetDeltas: extracts the scroll deltas of a scroll event.
+	//
+	// The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
+	GetDeltas() (float64, float64)
+	// GetDirection: extracts the direction of a scroll event.
+	GetDirection() ScrollDirection
+	// IsStop: check whether a scroll event is a stop scroll event. Scroll
+	// sequences with smooth scroll information may provide a stop scroll event
+	// once the interaction with the device finishes, e.g. by lifting a finger.
+	// This stop scroll event is the signal that a widget may trigger kinetic
+	// scrolling based on the current velocity.
+	//
+	// Stop scroll events always have a delta of 0/0.
+	IsStop() bool
+}
+
+type scrollEvent struct {
 	Event
 }
 
-func wrapScrollEvent(obj *externglib.Object) *ScrollEvent {
-	return &ScrollEvent{Event{obj}}
+func wrapScrollEvent(obj *externglib.Object) ScrollEvent {
+	return &scrollEvent{Event{obj}}
 }
 
 func marshalScrollEvent(p uintptr) (interface{}, error) {
@@ -2277,14 +3690,37 @@ func marshalScrollEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (s scrollEvent) GetDeltas() (float64, float64)
+
+func (s scrollEvent) GetDirection() ScrollDirection
+
+func (s scrollEvent) IsStop() bool
+
 // Seat: the Seat object represents a collection of input devices that belong to
 // a user.
-type Seat struct {
+type Seat interface {
+	gextras.Objector
+
+	// GetCapabilities: returns the capabilities this Seat currently has.
+	GetCapabilities() SeatCapabilities
+	// GetDevices: returns the devices that match the given capabilities.
+	GetDevices(capabilities SeatCapabilities) *glib.List
+	// GetDisplay: returns the Display this seat belongs to.
+	GetDisplay() display
+	// GetKeyboard: returns the device that routes keyboard events.
+	GetKeyboard() device
+	// GetPointer: returns the device that routes pointer events.
+	GetPointer() device
+	// GetTools: returns all DeviceTools that are known to the application.
+	GetTools() *glib.List
+}
+
+type seat struct {
 	*externglib.Object
 }
 
-func wrapSeat(obj *externglib.Object) *Seat {
-	return &Seat{*externglib.Object{obj}}
+func wrapSeat(obj *externglib.Object) Seat {
+	return &seat{*externglib.Object{obj}}
 }
 
 func marshalSeat(p uintptr) (interface{}, error) {
@@ -2293,13 +3729,29 @@ func marshalSeat(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (s seat) GetCapabilities() SeatCapabilities
+
+func (s seat) GetDevices(capabilities SeatCapabilities) *glib.List
+
+func (s seat) GetDisplay() display
+
+func (s seat) GetKeyboard() device
+
+func (s seat) GetPointer() device
+
+func (s seat) GetTools() *glib.List
+
 // Snapshot: base type for snapshot operations.
-type Snapshot struct {
+type Snapshot interface {
+	gextras.Objector
+}
+
+type snapshot struct {
 	*externglib.Object
 }
 
-func wrapSnapshot(obj *externglib.Object) *Snapshot {
-	return &Snapshot{*externglib.Object{obj}}
+func wrapSnapshot(obj *externglib.Object) Snapshot {
+	return &snapshot{*externglib.Object{obj}}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
@@ -2316,12 +3768,165 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 // interfaces provide much of the required API to interact with these surfaces.
 // Other, more specialized surface types exist, but you will rarely interact
 // with them directly.
-type Surface struct {
+type Surface interface {
+	gextras.Objector
+
+	// Beep: emits a short beep associated to @surface in the appropriate
+	// display, if supported. Otherwise, emits a short beep on the display just
+	// as gdk_display_beep().
+	Beep()
+	// CreateCairoContext: creates a new CairoContext for rendering on @surface.
+	CreateCairoContext() cairoContext
+	// CreateGlContext: creates a new GLContext matching the framebuffer format
+	// to the visual of the Surface. The context is disconnected from any
+	// particular surface or surface.
+	//
+	// If the creation of the GLContext failed, @error will be set.
+	//
+	// Before using the returned GLContext, you will need to call
+	// gdk_gl_context_make_current() or gdk_gl_context_realize().
+	CreateGlContext() gLContext
+	// CreateSimilarSurface: create a new surface that is as compatible as
+	// possible with the given @surface. For example the new surface will have
+	// the same fallback resolution and font options as @surface. Generally, the
+	// new surface will also use the same backend as @surface, unless that is
+	// not possible for some reason. The type of the returned surface may be
+	// examined with cairo_surface_get_type().
+	//
+	// Initially the surface contents are all 0 (transparent if contents have
+	// transparency, black otherwise.)
+	CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
+	// CreateVulkanContext: creates a new VulkanContext for rendering on
+	// @surface.
+	//
+	// If the creation of the VulkanContext failed, @error will be set.
+	CreateVulkanContext() vulkanContext
+	// Destroy: destroys the window system resources associated with @surface
+	// and decrements @surface's reference count. The window system resources
+	// for all children of @surface are also destroyed, but the children’s
+	// reference counts are not decremented.
+	//
+	// Note that a surface will not be destroyed automatically when its
+	// reference count reaches zero. You must call this function yourself before
+	// that happens.
+	Destroy()
+	// GetCursor: retrieves a Cursor pointer for the cursor currently set on the
+	// specified Surface, or nil. If the return value is nil then there is no
+	// custom cursor set on the specified surface, and it is using the cursor
+	// for its parent surface.
+	GetCursor() cursor
+	// GetDeviceCursor: retrieves a Cursor pointer for the @device currently set
+	// on the specified Surface, or nil. If the return value is nil then there
+	// is no custom cursor set on the specified surface, and it is using the
+	// cursor for its parent surface.
+	GetDeviceCursor(device device) cursor
+	// GetDevicePosition: obtains the current device position in doubles and
+	// modifier state. The position is given in coordinates relative to the
+	// upper left corner of @surface.
+	GetDevicePosition(device device) (float64, float64, ModifierType, bool)
+	// GetDisplay: gets the Display associated with a Surface.
+	GetDisplay() display
+	// GetFrameClock: gets the frame clock for the surface. The frame clock for
+	// a surface never changes unless the surface is reparented to a new
+	// toplevel surface.
+	GetFrameClock() frameClock
+	// GetHeight: returns the height of the given @surface.
+	//
+	// Surface size is reported in ”application pixels”, not ”device pixels”
+	// (see gdk_surface_get_scale_factor()).
+	GetHeight() int
+	// GetMapped: checks whether the surface has been mapped (with
+	// gdk_toplevel_present() or gdk_popup_present()).
+	GetMapped() bool
+	// GetScaleFactor: returns the internal scale factor that maps from surface
+	// coordinates to the actual device pixels. On traditional systems this is
+	// 1, but on very high density outputs this can be a higher value (often 2).
+	//
+	// A higher value means that drawing is automatically scaled up to a higher
+	// resolution, so any code doing drawing will automatically look nicer.
+	// However, if you are supplying pixel-based data the scale value can be
+	// used to determine whether to use a pixel resource with higher resolution
+	// data.
+	//
+	// The scale of a surface may change during runtime.
+	GetScaleFactor() int
+	// GetWidth: returns the width of the given @surface.
+	//
+	// Surface size is reported in ”application pixels”, not ”device pixels”
+	// (see gdk_surface_get_scale_factor()).
+	GetWidth() int
+	// Hide: for toplevel surfaces, withdraws them, so they will no longer be
+	// known to the window manager; for all surfaces, unmaps them, so they won’t
+	// be displayed. Normally done automatically as part of gtk_widget_hide().
+	Hide()
+	// IsDestroyed: check to see if a surface is destroyed..
+	IsDestroyed() bool
+	// QueueRender: forces a Surface::render signal emission for @surface to be
+	// scheduled.
+	//
+	// This function is useful for implementations that track invalid regions on
+	// their own.
+	QueueRender()
+	// RequestLayout: request a GDK_FRAME_CLOCK_PHASE_LAYOUT from the surface's
+	// frame clock. See gdk_frame_clock_request_phase().
+	RequestLayout()
+	// SetCursor: sets the default mouse pointer for a Surface.
+	//
+	// Note that @cursor must be for the same display as @surface.
+	//
+	// Use gdk_cursor_new_from_name() or gdk_cursor_new_from_texture() to create
+	// the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR. Passing
+	// nil for the @cursor argument to gdk_surface_set_cursor() means that
+	// @surface will use the cursor of its parent surface. Most surfaces should
+	// use this default.
+	SetCursor(cursor cursor)
+	// SetDeviceCursor: sets a specific Cursor for a given device when it gets
+	// inside @surface. Use gdk_cursor_new_from_name() or
+	// gdk_cursor_new_from_texture() to create the cursor. To make the cursor
+	// invisible, use GDK_BLANK_CURSOR. Passing nil for the @cursor argument to
+	// gdk_surface_set_cursor() means that @surface will use the cursor of its
+	// parent surface. Most surfaces should use this default.
+	SetDeviceCursor(device device, cursor cursor)
+	// SetInputRegion: apply the region to the surface for the purpose of event
+	// handling. Mouse events which happen while the pointer position
+	// corresponds to an unset bit in the mask will be passed on the surface
+	// below @surface.
+	//
+	// An input region is typically used with RGBA surfaces. The alpha channel
+	// of the surface defines which pixels are invisible and allows for nicely
+	// antialiased borders, and the input region controls where the surface is
+	// “clickable”.
+	//
+	// Use gdk_display_supports_input_shapes() to find out if a particular
+	// backend supports input regions.
+	SetInputRegion(region *cairo.Region)
+	// SetOpaqueRegion: for optimisation purposes, compositing window managers
+	// may like to not draw obscured regions of surfaces, or turn off blending
+	// during for these regions. With RGB windows with no transparency, this is
+	// just the shape of the window, but with ARGB32 windows, the compositor
+	// does not know what regions of the window are transparent or not.
+	//
+	// This function only works for toplevel surfaces.
+	//
+	// GTK will update this property automatically if the @surface background is
+	// opaque, as we know where the opaque regions are. If your surface
+	// background is not opaque, please update this property in your
+	// WidgetClass.css_changed() handler.
+	SetOpaqueRegion(region *cairo.Region)
+	// TranslateCoordinates: translates the given coordinates from being
+	// relative to the @from surface to being relative to the @to surface.
+	//
+	// Note that this only works if @to and @from are popups or transient-for to
+	// the same toplevel (directly or indirectly).
+	TranslateCoordinates(to surface, x float64, y float64) bool
+}
+
+type surface struct {
 	*externglib.Object
 }
 
-func wrapSurface(obj *externglib.Object) *Surface {
-	return &Surface{*externglib.Object{obj}}
+func wrapSurface(obj *externglib.Object) Surface {
+	return &surface{*externglib.Object{obj}}
 }
 
 func marshalSurface(p uintptr) (interface{}, error) {
@@ -2330,17 +3935,97 @@ func marshalSurface(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSurface(parent *gdkx11.X11Surface, autohide bool) *Surface
+func NewSurface(parent surface, autohide bool) Surface
 
-func NewSurface(display *gdkx11.X11Display) *Surface
+func NewSurface(display display) Surface
+
+func (s surface) Beep()
+
+func (s surface) CreateCairoContext() cairoContext
+
+func (s surface) CreateGlContext() gLContext
+
+func (s surface) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
+
+func (s surface) CreateVulkanContext() vulkanContext
+
+func (s surface) Destroy()
+
+func (s surface) GetCursor() cursor
+
+func (s surface) GetDeviceCursor(device device) cursor
+
+func (s surface) GetDevicePosition(device device) (float64, float64, ModifierType, bool)
+
+func (s surface) GetDisplay() display
+
+func (s surface) GetFrameClock() frameClock
+
+func (s surface) GetHeight() int
+
+func (s surface) GetMapped() bool
+
+func (s surface) GetScaleFactor() int
+
+func (s surface) GetWidth() int
+
+func (s surface) Hide()
+
+func (s surface) IsDestroyed() bool
+
+func (s surface) QueueRender()
+
+func (s surface) RequestLayout()
+
+func (s surface) SetCursor(cursor cursor)
+
+func (s surface) SetDeviceCursor(device device, cursor cursor)
+
+func (s surface) SetInputRegion(region *cairo.Region)
+
+func (s surface) SetOpaqueRegion(region *cairo.Region)
+
+func (s surface) TranslateCoordinates(to surface, x float64, y float64) bool
 
 // Texture: the `GdkTexture` structure contains only private data.
-type Texture struct {
+type Texture interface {
+	gextras.Objector
+
+	// Download: downloads the @texture into local memory. This may be an
+	// expensive operation, as the actual texture data may reside on a GPU or on
+	// a remote display server.
+	//
+	// The data format of the downloaded data is equivalent to
+	// CAIRO_FORMAT_ARGB32, so every downloaded pixel requires 4 bytes of
+	// memory.
+	//
+	//    surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+	//                                          gdk_texture_get_width (texture),
+	//                                          gdk_texture_get_height (texture));
+	//    gdk_texture_download (texture,
+	//                          cairo_image_surface_get_data (surface),
+	//                          cairo_image_surface_get_stride (surface));
+	//    cairo_surface_mark_dirty (surface);
+	Download(data []uint8, stride uint)
+	// GetHeight: returns the height of the @texture, in pixels.
+	GetHeight() int
+	// GetWidth: returns the width of @texture, in pixels.
+	GetWidth() int
+	// SaveToPng: store the given @texture to the @filename as a PNG file.
+	//
+	// This is a utility function intended for debugging and testing. If you
+	// want more control over formats, proper error handling or want to store to
+	// a #GFile or other location, you might want to look into using the
+	// gdk-pixbuf library.
+	SaveToPng(filename string) bool
+}
+
+type texture struct {
 	*externglib.Object
 }
 
-func wrapTexture(obj *externglib.Object) *Texture {
-	return &Texture{*externglib.Object{obj}}
+func wrapTexture(obj *externglib.Object) Texture {
+	return &texture{*externglib.Object{obj}}
 }
 
 func marshalTexture(p uintptr) (interface{}, error) {
@@ -2349,19 +4034,35 @@ func marshalTexture(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTexture(pixbuf *gdkpixbuf.Pixbuf) *Texture
+func NewTexture(pixbuf gdkpixbuf.pixbuf) Texture
 
-func NewTexture(file gio.File) *Texture
+func NewTexture(file gio.File) Texture
 
-func NewTexture(resourcePath string) *Texture
+func NewTexture(resourcePath string) Texture
+
+func (t texture) Download(data []uint8, stride uint)
+
+func (t texture) GetHeight() int
+
+func (t texture) GetWidth() int
+
+func (t texture) SaveToPng(filename string) bool
 
 // TouchEvent: an event related to a touch-based device.
-type TouchEvent struct {
+type TouchEvent interface {
+	event
+
+	// GetEmulatingPointer: extracts whether a touch event is emulating a
+	// pointer event.
+	GetEmulatingPointer() bool
+}
+
+type touchEvent struct {
 	Event
 }
 
-func wrapTouchEvent(obj *externglib.Object) *TouchEvent {
-	return &TouchEvent{Event{obj}}
+func wrapTouchEvent(obj *externglib.Object) TouchEvent {
+	return &touchEvent{Event{obj}}
 }
 
 func marshalTouchEvent(p uintptr) (interface{}, error) {
@@ -2370,13 +4071,31 @@ func marshalTouchEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (t touchEvent) GetEmulatingPointer() bool
+
 // TouchpadEvent: an event related to a touchpad device.
-type TouchpadEvent struct {
+type TouchpadEvent interface {
+	event
+
+	// GetDeltas: extracts delta information from a touchpad event.
+	GetDeltas() (float64, float64)
+	// GetGesturePhase: extracts the touchpad gesture phase from a touchpad
+	// event.
+	GetGesturePhase() TouchpadGesturePhase
+	// GetNFingers: extracts the number of fingers from a touchpad event.
+	GetNFingers() uint
+	// GetPinchAngleDelta: extracts the angle delta from a touchpad pinch event.
+	GetPinchAngleDelta() float64
+	// GetPinchScale: extracts the scale from a touchpad pinch event.
+	GetPinchScale() float64
+}
+
+type touchpadEvent struct {
 	Event
 }
 
-func wrapTouchpadEvent(obj *externglib.Object) *TouchpadEvent {
-	return &TouchpadEvent{Event{obj}}
+func wrapTouchpadEvent(obj *externglib.Object) TouchpadEvent {
+	return &touchpadEvent{Event{obj}}
 }
 
 func marshalTouchpadEvent(p uintptr) (interface{}, error) {
@@ -2384,6 +4103,16 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (t touchpadEvent) GetDeltas() (float64, float64)
+
+func (t touchpadEvent) GetGesturePhase() TouchpadGesturePhase
+
+func (t touchpadEvent) GetNFingers() uint
+
+func (t touchpadEvent) GetPinchAngleDelta() float64
+
+func (t touchpadEvent) GetPinchScale() float64
 
 // VulkanContext is an object representing the platform-specific Vulkan draw
 // context.
@@ -2394,12 +4123,16 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 //
 // Support for VulkanContext is platform-specific, context creation can fail,
 // returning nil context.
-type VulkanContext struct {
+type VulkanContext interface {
+	drawContext
+}
+
+type vulkanContext struct {
 	DrawContext
 }
 
-func wrapVulkanContext(obj *externglib.Object) *VulkanContext {
-	return &VulkanContext{DrawContext{*externglib.Object{obj}}}
+func wrapVulkanContext(obj *externglib.Object) VulkanContext {
+	return &vulkanContext{DrawContext{*externglib.Object{obj}}}
 }
 
 func marshalVulkanContext(p uintptr) (interface{}, error) {

@@ -8098,8 +8098,8 @@ func marshalArray(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GArray. The caller is expected to
 // cast.
-func (a *Array) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *Array) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // ByteArray: contains the public fields of a GByteArray.
@@ -8131,8 +8131,8 @@ func marshalByteArray(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GByteArray. The caller is expected to
 // cast.
-func (b *ByteArray) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+func (B *ByteArray) Native() unsafe.Pointer {
+	return unsafe.Pointer(B.native)
 }
 
 // Bytes: a simple refcounted data type representing an immutable sequence of
@@ -8178,12 +8178,12 @@ func marshalBytes(p uintptr) (interface{}, error) {
 	return wrapBytes(c)
 }
 
-func (b *Bytes) free() {}
+func (B *Bytes) free() {}
 
 // Native returns the pointer to *C.GBytes. The caller is expected to
 // cast.
-func (b *Bytes) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+func (B *Bytes) Native() unsafe.Pointer {
+	return unsafe.Pointer(B.native)
 }
 
 func NewBytes(data []uint8, size uint) *Bytes
@@ -8217,12 +8217,12 @@ func marshalChecksum(p uintptr) (interface{}, error) {
 	return wrapChecksum(c)
 }
 
-func (c *Checksum) free() {}
+func (C *Checksum) free() {}
 
 // Native returns the pointer to *C.GChecksum. The caller is expected to
 // cast.
-func (c *Checksum) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+func (C *Checksum) Native() unsafe.Pointer {
+	return unsafe.Pointer(C.native)
 }
 
 func NewChecksum(checksumType ChecksumType) *Checksum
@@ -8291,12 +8291,12 @@ func marshalCond(p uintptr) (interface{}, error) {
 	return wrapCond(c)
 }
 
-func (c *Cond) free() {}
+func (C *Cond) free() {}
 
 // Native returns the pointer to *C.GCond. The caller is expected to
 // cast.
-func (c *Cond) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+func (C *Cond) Native() unsafe.Pointer {
+	return unsafe.Pointer(C.native)
 }
 
 // Date: represents a day between January 1, Year 1 and a few thousand years in
@@ -8350,8 +8350,8 @@ func marshalDate(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GDate. The caller is expected to
 // cast.
-func (d *Date) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+func (D *Date) Native() unsafe.Pointer {
+	return unsafe.Pointer(D.native)
 }
 
 func NewDate() *Date
@@ -8382,12 +8382,12 @@ func marshalDateTime(p uintptr) (interface{}, error) {
 	return wrapDateTime(c)
 }
 
-func (d *DateTime) free() {}
+func (D *DateTime) free() {}
 
 // Native returns the pointer to *C.GDateTime. The caller is expected to
 // cast.
-func (d *DateTime) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+func (D *DateTime) Native() unsafe.Pointer {
+	return unsafe.Pointer(D.native)
 }
 
 func NewDateTime(tz *TimeZone, year int, month int, day int, hour int, minute int, seconds float64) *DateTime
@@ -8441,8 +8441,8 @@ func marshalDebugKey(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GDebugKey. The caller is expected to
 // cast.
-func (d *DebugKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+func (D *DebugKey) Native() unsafe.Pointer {
+	return unsafe.Pointer(D.native)
 }
 
 // Error: the `GError` structure contains information about an error that has
@@ -8482,8 +8482,8 @@ func marshalError(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GError. The caller is expected to
 // cast.
-func (e *Error) Native() unsafe.Pointer {
-	return unsafe.Pointer(e.native)
+func (E *Error) Native() unsafe.Pointer {
+	return unsafe.Pointer(E.native)
 }
 
 func NewError(domain Quark, code int, message string) *Error
@@ -8511,12 +8511,12 @@ func marshalHashTable(p uintptr) (interface{}, error) {
 	return wrapHashTable(c)
 }
 
-func (h *HashTable) free() {}
+func (H *HashTable) free() {}
 
 // Native returns the pointer to *C.GHashTable. The caller is expected to
 // cast.
-func (h *HashTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
+func (H *HashTable) Native() unsafe.Pointer {
+	return unsafe.Pointer(H.native)
 }
 
 // HashTableIter: a GHashTableIter structure represents an iterator that can be
@@ -8546,12 +8546,12 @@ func marshalHashTableIter(p uintptr) (interface{}, error) {
 	return wrapHashTableIter(c)
 }
 
-func (h *HashTableIter) free() {}
+func (H *HashTableIter) free() {}
 
 // Native returns the pointer to *C.GHashTableIter. The caller is expected to
 // cast.
-func (h *HashTableIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
+func (H *HashTableIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(H.native)
 }
 
 // Hook: the #GHook struct represents a single hook function in a List.
@@ -8602,8 +8602,8 @@ func marshalHook(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GHook. The caller is expected to
 // cast.
-func (h *Hook) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
+func (H *Hook) Native() unsafe.Pointer {
+	return unsafe.Pointer(H.native)
 }
 
 // HookList: the List struct represents a list of hook functions.
@@ -8649,8 +8649,8 @@ func marshalHookList(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GHookList. The caller is expected to
 // cast.
-func (h *HookList) Native() unsafe.Pointer {
-	return unsafe.Pointer(h.native)
+func (H *HookList) Native() unsafe.Pointer {
+	return unsafe.Pointer(H.native)
 }
 
 // IOChannel: a data structure representing an IO Channel. The fields should be
@@ -8675,12 +8675,12 @@ func marshalIOChannel(p uintptr) (interface{}, error) {
 	return wrapIOChannel(c)
 }
 
-func (i *IOChannel) free() {}
+func (I *IOChannel) free() {}
 
 // Native returns the pointer to *C.GIOChannel. The caller is expected to
 // cast.
-func (i *IOChannel) Native() unsafe.Pointer {
-	return unsafe.Pointer(i.native)
+func (I *IOChannel) Native() unsafe.Pointer {
+	return unsafe.Pointer(I.native)
 }
 
 func NewIOChannel(filename string, mode string) *IOChannel
@@ -8708,8 +8708,8 @@ func marshalIOFuncs(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GIOFuncs. The caller is expected to
 // cast.
-func (i *IOFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(i.native)
+func (I *IOFuncs) Native() unsafe.Pointer {
+	return unsafe.Pointer(I.native)
 }
 
 // KeyFile: the GKeyFile struct contains only private data and should not be
@@ -8734,12 +8734,12 @@ func marshalKeyFile(p uintptr) (interface{}, error) {
 	return wrapKeyFile(c)
 }
 
-func (k *KeyFile) free() {}
+func (K *KeyFile) free() {}
 
 // Native returns the pointer to *C.GKeyFile. The caller is expected to
 // cast.
-func (k *KeyFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(k.native)
+func (K *KeyFile) Native() unsafe.Pointer {
+	return unsafe.Pointer(K.native)
 }
 
 func NewKeyFile() *KeyFile
@@ -8777,8 +8777,8 @@ func marshalList(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GList. The caller is expected to
 // cast.
-func (l *List) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+func (L *List) Native() unsafe.Pointer {
+	return unsafe.Pointer(L.native)
 }
 
 // LogField: structure representing a single field in a structured log entry.
@@ -8818,8 +8818,8 @@ func marshalLogField(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GLogField. The caller is expected to
 // cast.
-func (l *LogField) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+func (L *LogField) Native() unsafe.Pointer {
+	return unsafe.Pointer(L.native)
 }
 
 // MainContext: the `GMainContext` struct is an opaque data type representing a
@@ -8844,12 +8844,12 @@ func marshalMainContext(p uintptr) (interface{}, error) {
 	return wrapMainContext(c)
 }
 
-func (m *MainContext) free() {}
+func (M *MainContext) free() {}
 
 // Native returns the pointer to *C.GMainContext. The caller is expected to
 // cast.
-func (m *MainContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+func (M *MainContext) Native() unsafe.Pointer {
+	return unsafe.Pointer(M.native)
 }
 
 func NewMainContext() *MainContext
@@ -8876,12 +8876,12 @@ func marshalMainLoop(p uintptr) (interface{}, error) {
 	return wrapMainLoop(c)
 }
 
-func (m *MainLoop) free() {}
+func (M *MainLoop) free() {}
 
 // Native returns the pointer to *C.GMainLoop. The caller is expected to
 // cast.
-func (m *MainLoop) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+func (M *MainLoop) Native() unsafe.Pointer {
+	return unsafe.Pointer(M.native)
 }
 
 func NewMainLoop(context *MainContext, isRunning bool) *MainLoop
@@ -8909,12 +8909,12 @@ func marshalMappedFile(p uintptr) (interface{}, error) {
 	return wrapMappedFile(c)
 }
 
-func (m *MappedFile) free() {}
+func (M *MappedFile) free() {}
 
 // Native returns the pointer to *C.GMappedFile. The caller is expected to
 // cast.
-func (m *MappedFile) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+func (M *MappedFile) Native() unsafe.Pointer {
+	return unsafe.Pointer(M.native)
 }
 
 func NewMappedFile(filename string, writable bool) *MappedFile
@@ -8945,12 +8945,12 @@ func marshalMarkupParseContext(p uintptr) (interface{}, error) {
 	return wrapMarkupParseContext(c)
 }
 
-func (m *MarkupParseContext) free() {}
+func (M *MarkupParseContext) free() {}
 
 // Native returns the pointer to *C.GMarkupParseContext. The caller is expected to
 // cast.
-func (m *MarkupParseContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+func (M *MarkupParseContext) Native() unsafe.Pointer {
+	return unsafe.Pointer(M.native)
 }
 
 func NewMarkupParseContext(parser *MarkupParser, flags MarkupParseFlags, userData unsafe.Pointer, userDataDnotify unsafe.Pointer) *MarkupParseContext
@@ -8981,8 +8981,8 @@ func marshalMarkupParser(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GMarkupParser. The caller is expected to
 // cast.
-func (m *MarkupParser) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+func (M *MarkupParser) Native() unsafe.Pointer {
+	return unsafe.Pointer(M.native)
 }
 
 // MatchInfo: a GMatchInfo is an opaque struct used to return information about
@@ -9007,12 +9007,12 @@ func marshalMatchInfo(p uintptr) (interface{}, error) {
 	return wrapMatchInfo(c)
 }
 
-func (m *MatchInfo) free() {}
+func (M *MatchInfo) free() {}
 
 // Native returns the pointer to *C.GMatchInfo. The caller is expected to
 // cast.
-func (m *MatchInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+func (M *MatchInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(M.native)
 }
 
 // MemVTable: a set of functions used to perform memory allocation. The same
@@ -9040,8 +9040,8 @@ func marshalMemVTable(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GMemVTable. The caller is expected to
 // cast.
-func (m *MemVTable) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+func (M *MemVTable) Native() unsafe.Pointer {
+	return unsafe.Pointer(M.native)
 }
 
 // Node: the #GNode struct represents one node in a [n-ary
@@ -9085,8 +9085,8 @@ func marshalNode(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GNode. The caller is expected to
 // cast.
-func (n *Node) Native() unsafe.Pointer {
-	return unsafe.Pointer(n.native)
+func (N *Node) Native() unsafe.Pointer {
+	return unsafe.Pointer(N.native)
 }
 
 // Once: a #GOnce struct controls a one-time initialization function. Any
@@ -9119,8 +9119,8 @@ func marshalOnce(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GOnce. The caller is expected to
 // cast.
-func (o *Once) Native() unsafe.Pointer {
-	return unsafe.Pointer(o.native)
+func (O *Once) Native() unsafe.Pointer {
+	return unsafe.Pointer(O.native)
 }
 
 // OptionEntry: a GOptionEntry struct defines a single option. To have an
@@ -9189,8 +9189,8 @@ func marshalOptionEntry(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GOptionEntry. The caller is expected to
 // cast.
-func (o *OptionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(o.native)
+func (O *OptionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(O.native)
 }
 
 // OptionGroup: a `GOptionGroup` struct defines the options in a single group.
@@ -9220,12 +9220,12 @@ func marshalOptionGroup(p uintptr) (interface{}, error) {
 	return wrapOptionGroup(c)
 }
 
-func (o *OptionGroup) free() {}
+func (O *OptionGroup) free() {}
 
 // Native returns the pointer to *C.GOptionGroup. The caller is expected to
 // cast.
-func (o *OptionGroup) Native() unsafe.Pointer {
-	return unsafe.Pointer(o.native)
+func (O *OptionGroup) Native() unsafe.Pointer {
+	return unsafe.Pointer(O.native)
 }
 
 func NewOptionGroup(name string, description string, helpDescription string, userData unsafe.Pointer, destroy unsafe.Pointer) *OptionGroup
@@ -9266,8 +9266,8 @@ func marshalPollFD(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GPollFD. The caller is expected to
 // cast.
-func (p *PollFD) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *PollFD) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }
 
 // Private: the #GPrivate struct is an opaque data structure to represent a
@@ -9307,12 +9307,12 @@ func marshalPrivate(p uintptr) (interface{}, error) {
 	return wrapPrivate(c)
 }
 
-func (p *Private) free() {}
+func (P *Private) free() {}
 
 // Native returns the pointer to *C.GPrivate. The caller is expected to
 // cast.
-func (p *Private) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *Private) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }
 
 // PtrArray: contains the public fields of a pointer array.
@@ -9344,8 +9344,8 @@ func marshalPtrArray(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GPtrArray. The caller is expected to
 // cast.
-func (p *PtrArray) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *PtrArray) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }
 
 // Queue: contains the public fields of a [Queue][glib-Double-ended-Queues].
@@ -9379,8 +9379,8 @@ func marshalQueue(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GQueue. The caller is expected to
 // cast.
-func (q *Queue) Native() unsafe.Pointer {
-	return unsafe.Pointer(q.native)
+func (Q *Queue) Native() unsafe.Pointer {
+	return unsafe.Pointer(Q.native)
 }
 
 // RWLock: the GRWLock struct is an opaque data structure to represent a
@@ -9449,12 +9449,12 @@ func marshalRWLock(p uintptr) (interface{}, error) {
 	return wrapRWLock(c)
 }
 
-func (r *RWLock) free() {}
+func (R *RWLock) free() {}
 
 // Native returns the pointer to *C.GRWLock. The caller is expected to
 // cast.
-func (r *RWLock) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *RWLock) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 // RecMutex: the GRecMutex struct is an opaque data structure to represent a
@@ -9488,12 +9488,12 @@ func marshalRecMutex(p uintptr) (interface{}, error) {
 	return wrapRecMutex(c)
 }
 
-func (r *RecMutex) free() {}
+func (R *RecMutex) free() {}
 
 // Native returns the pointer to *C.GRecMutex. The caller is expected to
 // cast.
-func (r *RecMutex) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *RecMutex) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 // Regex: the g_regex_*() functions implement regular expression pattern
@@ -9574,12 +9574,12 @@ func marshalRegex(p uintptr) (interface{}, error) {
 	return wrapRegex(c)
 }
 
-func (r *Regex) free() {}
+func (R *Regex) free() {}
 
 // Native returns the pointer to *C.GRegex. The caller is expected to
 // cast.
-func (r *Regex) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *Regex) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 func NewRegex(pattern string, compileOptions RegexCompileFlags, matchOptions RegexMatchFlags) *Regex
@@ -9614,8 +9614,8 @@ func marshalSList(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GSList. The caller is expected to
 // cast.
-func (s *SList) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *SList) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 // Scanner: the data structure representing a lexical scanner.
@@ -9697,12 +9697,12 @@ func marshalScanner(p uintptr) (interface{}, error) {
 	return wrapScanner(c)
 }
 
-func (s *Scanner) free() {}
+func (S *Scanner) free() {}
 
 // Native returns the pointer to *C.GScanner. The caller is expected to
 // cast.
-func (s *Scanner) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *Scanner) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 // ScannerConfig: specifies the #GScanner parser configuration. Most settings
@@ -9835,12 +9835,12 @@ func marshalScannerConfig(p uintptr) (interface{}, error) {
 	return wrapScannerConfig(c)
 }
 
-func (s *ScannerConfig) free() {}
+func (S *ScannerConfig) free() {}
 
 // Native returns the pointer to *C.GScannerConfig. The caller is expected to
 // cast.
-func (s *ScannerConfig) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *ScannerConfig) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 // Source: the `GSource` struct is an opaque data type representing an event
@@ -9865,12 +9865,12 @@ func marshalSource(p uintptr) (interface{}, error) {
 	return wrapSource(c)
 }
 
-func (s *Source) free() {}
+func (S *Source) free() {}
 
 // Native returns the pointer to *C.GSource. The caller is expected to
 // cast.
-func (s *Source) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *Source) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source
@@ -9896,8 +9896,8 @@ func marshalSourceCallbackFuncs(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GSourceCallbackFuncs. The caller is expected to
 // cast.
-func (s *SourceCallbackFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *SourceCallbackFuncs) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 // SourceFuncs: the `GSourceFuncs` struct contains a table of functions used to
@@ -9940,12 +9940,12 @@ func marshalSourceFuncs(p uintptr) (interface{}, error) {
 	return wrapSourceFuncs(c)
 }
 
-func (s *SourceFuncs) free() {}
+func (S *SourceFuncs) free() {}
 
 // Native returns the pointer to *C.GSourceFuncs. The caller is expected to
 // cast.
-func (s *SourceFuncs) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *SourceFuncs) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 // String: the GString struct contains the public fields of a GString.
@@ -9982,8 +9982,8 @@ func marshalString(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GString. The caller is expected to
 // cast.
-func (s *String) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *String) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 type TestConfig struct {
@@ -10024,8 +10024,8 @@ func marshalTestConfig(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GTestConfig. The caller is expected to
 // cast.
-func (t *TestConfig) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TestConfig) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 type TestLogBuffer struct {
@@ -10048,12 +10048,12 @@ func marshalTestLogBuffer(p uintptr) (interface{}, error) {
 	return wrapTestLogBuffer(c)
 }
 
-func (t *TestLogBuffer) free() {}
+func (T *TestLogBuffer) free() {}
 
 // Native returns the pointer to *C.GTestLogBuffer. The caller is expected to
 // cast.
-func (t *TestLogBuffer) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TestLogBuffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 type TestLogMsg struct {
@@ -10091,8 +10091,8 @@ func marshalTestLogMsg(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GTestLogMsg. The caller is expected to
 // cast.
-func (t *TestLogMsg) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TestLogMsg) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 // Thread: the #GThread struct represents a running thread. This struct is
@@ -10125,12 +10125,12 @@ func marshalThread(p uintptr) (interface{}, error) {
 	return wrapThread(c)
 }
 
-func (t *Thread) free() {}
+func (T *Thread) free() {}
 
 // Native returns the pointer to *C.GThread. The caller is expected to
 // cast.
-func (t *Thread) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *Thread) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 func NewThread(name string, _func ThreadFunc, data unsafe.Pointer) *Thread
@@ -10170,8 +10170,8 @@ func marshalThreadPool(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GThreadPool. The caller is expected to
 // cast.
-func (t *ThreadPool) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *ThreadPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 // TimeVal: represents a precise time, with seconds and microseconds. Similar to
@@ -10208,8 +10208,8 @@ func marshalTimeVal(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GTimeVal. The caller is expected to
 // cast.
-func (t *TimeVal) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TimeVal) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 // TimeZone is an opaque structure whose members cannot be accessed directly.
@@ -10233,12 +10233,12 @@ func marshalTimeZone(p uintptr) (interface{}, error) {
 	return wrapTimeZone(c)
 }
 
-func (t *TimeZone) free() {}
+func (T *TimeZone) free() {}
 
 // Native returns the pointer to *C.GTimeZone. The caller is expected to
 // cast.
-func (t *TimeZone) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TimeZone) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 func NewTimeZone(identifier string) *TimeZone
@@ -10276,8 +10276,8 @@ func marshalTrashStack(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GTrashStack. The caller is expected to
 // cast.
-func (t *TrashStack) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TrashStack) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 // URI: the #GUri type and related functions can be used to parse URIs into
@@ -10405,12 +10405,12 @@ func marshalURI(p uintptr) (interface{}, error) {
 	return wrapURI(c)
 }
 
-func (u *URI) free() {}
+func (U *URI) free() {}
 
 // Native returns the pointer to *C.GUri. The caller is expected to
 // cast.
-func (u *URI) Native() unsafe.Pointer {
-	return unsafe.Pointer(u.native)
+func (U *URI) Native() unsafe.Pointer {
+	return unsafe.Pointer(U.native)
 }
 
 // URIParamsIter: many URI schemes include one or more attribute/value pairs as
@@ -10443,12 +10443,12 @@ func marshalURIParamsIter(p uintptr) (interface{}, error) {
 	return wrapURIParamsIter(c)
 }
 
-func (u *URIParamsIter) free() {}
+func (U *URIParamsIter) free() {}
 
 // Native returns the pointer to *C.GUriParamsIter. The caller is expected to
 // cast.
-func (u *URIParamsIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(u.native)
+func (U *URIParamsIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(U.native)
 }
 
 // Variant is a variant datatype; it can contain one or more values along with
@@ -10696,12 +10696,12 @@ func marshalVariant(p uintptr) (interface{}, error) {
 	return wrapVariant(c)
 }
 
-func (v *Variant) free() {}
+func (V *Variant) free() {}
 
 // Native returns the pointer to *C.GVariant. The caller is expected to
 // cast.
-func (v *Variant) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+func (V *Variant) Native() unsafe.Pointer {
+	return unsafe.Pointer(V.native)
 }
 
 func NewVariant(childType *VariantType, children []*Variant, nChildren uint) *Variant
@@ -10784,12 +10784,12 @@ func marshalVariantBuilder(p uintptr) (interface{}, error) {
 	return wrapVariantBuilder(c)
 }
 
-func (v *VariantBuilder) free() {}
+func (V *VariantBuilder) free() {}
 
 // Native returns the pointer to *C.GVariantBuilder. The caller is expected to
 // cast.
-func (v *VariantBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+func (V *VariantBuilder) Native() unsafe.Pointer {
+	return unsafe.Pointer(V.native)
 }
 
 func NewVariantBuilder(_type *VariantType) *VariantBuilder
@@ -10895,12 +10895,12 @@ func marshalVariantDict(p uintptr) (interface{}, error) {
 	return wrapVariantDict(c)
 }
 
-func (v *VariantDict) free() {}
+func (V *VariantDict) free() {}
 
 // Native returns the pointer to *C.GVariantDict. The caller is expected to
 // cast.
-func (v *VariantDict) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+func (V *VariantDict) Native() unsafe.Pointer {
+	return unsafe.Pointer(V.native)
 }
 
 func NewVariantDict(fromAsv *Variant) *VariantDict
@@ -10927,12 +10927,12 @@ func marshalVariantIter(p uintptr) (interface{}, error) {
 	return wrapVariantIter(c)
 }
 
-func (v *VariantIter) free() {}
+func (V *VariantIter) free() {}
 
 // Native returns the pointer to *C.GVariantIter. The caller is expected to
 // cast.
-func (v *VariantIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+func (V *VariantIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(V.native)
 }
 
 // VariantType: this section introduces the GVariant type system. It is based,
@@ -11085,12 +11085,12 @@ func marshalVariantType(p uintptr) (interface{}, error) {
 	return wrapVariantType(c)
 }
 
-func (v *VariantType) free() {}
+func (V *VariantType) free() {}
 
 // Native returns the pointer to *C.GVariantType. The caller is expected to
 // cast.
-func (v *VariantType) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+func (V *VariantType) Native() unsafe.Pointer {
+	return unsafe.Pointer(V.native)
 }
 
 func NewVariantType(typeString string) *VariantType

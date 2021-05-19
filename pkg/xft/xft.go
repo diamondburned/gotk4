@@ -47,12 +47,12 @@ func marshalColor(p uintptr) (interface{}, error) {
 	return wrapColor(c)
 }
 
-func (c *Color) free() {}
+func (C *Color) free() {}
 
 // Native returns the pointer to *C.XftColor. The caller is expected to
 // cast.
-func (c *Color) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+func (C *Color) Native() unsafe.Pointer {
+	return unsafe.Pointer(C.native)
 }
 
 type Draw struct {
@@ -75,12 +75,12 @@ func marshalDraw(p uintptr) (interface{}, error) {
 	return wrapDraw(c)
 }
 
-func (d *Draw) free() {}
+func (D *Draw) free() {}
 
 // Native returns the pointer to *C.XftDraw. The caller is expected to
 // cast.
-func (d *Draw) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+func (D *Draw) Native() unsafe.Pointer {
+	return unsafe.Pointer(D.native)
 }
 
 type Font struct {
@@ -103,12 +103,12 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return wrapFont(c)
 }
 
-func (f *Font) free() {}
+func (F *Font) free() {}
 
 // Native returns the pointer to *C.XftFont. The caller is expected to
 // cast.
-func (f *Font) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
+func (F *Font) Native() unsafe.Pointer {
+	return unsafe.Pointer(F.native)
 }
 
 type GlyphSpec struct {
@@ -131,10 +131,10 @@ func marshalGlyphSpec(p uintptr) (interface{}, error) {
 	return wrapGlyphSpec(c)
 }
 
-func (g *GlyphSpec) free() {}
+func (G *GlyphSpec) free() {}
 
 // Native returns the pointer to *C.XftGlyphSpec. The caller is expected to
 // cast.
-func (g *GlyphSpec) Native() unsafe.Pointer {
-	return unsafe.Pointer(g.native)
+func (G *GlyphSpec) Native() unsafe.Pointer {
+	return unsafe.Pointer(G.native)
 }

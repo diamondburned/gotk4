@@ -26,38 +26,38 @@ func init() {
 
 // FontGetCoverage: gets the Coverage for a `PangoFT2Font`. Use
 // pango_font_get_coverage() instead.
-func FontGetCoverage(font *pango.Font, language *pango.Language) *pango.Coverage
+func FontGetCoverage(font pango.font, language *pango.Language) pango.coverage
 
 // FontGetFace: returns the native FreeType2 `FT_Face` structure used for this
 // Font. This may be useful if you want to use FreeType2 functions directly.
 //
 // Use pango_fc_font_lock_face() instead; when you are done with a face from
 // pango_fc_font_lock_face() you must call pango_fc_font_unlock_face().
-func FontGetFace(font *pango.Font) freetype2.Face
+func FontGetFace(font pango.font) freetype2.Face
 
 // FontGetKerning: retrieves kerning information for a combination of two
 // glyphs.
 //
 // Use pango_fc_font_kern_glyphs() instead.
-func FontGetKerning(font *pango.Font, left pango.Glyph, right pango.Glyph) int
+func FontGetKerning(font pango.font, left pango.Glyph, right pango.Glyph) int
 
 // GetContext: retrieves a `PangoContext` for the default PangoFT2 fontmap (see
 // pango_ft2_font_map_for_display()) and sets the resolution for the default
 // fontmap to @dpi_x by @dpi_y.
-func GetContext(dpiX float64, dpiY float64) *pango.Context
+func GetContext(dpiX float64, dpiY float64) pango.context
 
 // GetUnknownGlyph: return the index of a glyph suitable for drawing unknown
 // characters with @font, or PANGO_GLYPH_EMPTY if no suitable glyph found.
 //
 // If you want to draw an unknown-box for a character that is not covered by the
 // font, use PANGO_GET_UNKNOWN_GLYPH() instead.
-func GetUnknownGlyph(font *pango.Font) pango.Glyph
+func GetUnknownGlyph(font pango.font) pango.Glyph
 
 // Render: renders a GlyphString onto a FreeType2 bitmap.
-func Render(bitmap *freetype2.Bitmap, font *pango.Font, glyphs *pango.GlyphString, x int, y int)
+func Render(bitmap *freetype2.Bitmap, font pango.font, glyphs *pango.GlyphString, x int, y int)
 
 // RenderLayout: render a Layout onto a FreeType2 bitmap
-func RenderLayout(bitmap *freetype2.Bitmap, layout *pango.Layout, x int, y int)
+func RenderLayout(bitmap *freetype2.Bitmap, layout pango.layout, x int, y int)
 
 // RenderLayoutLine: render a LayoutLine onto a FreeType2 bitmap
 func RenderLayoutLine(bitmap *freetype2.Bitmap, line *pango.LayoutLine, x int, y int)
@@ -72,14 +72,14 @@ func RenderLayoutLineSubpixel(bitmap *freetype2.Bitmap, line *pango.LayoutLine, 
 // location specified in fixed-point Pango units rather than pixels. (Using this
 // will avoid extra inaccuracies from rounding to integer pixels multiple times,
 // even if the final glyph positions are integers.)
-func RenderLayoutSubpixel(bitmap *freetype2.Bitmap, layout *pango.Layout, x int, y int)
+func RenderLayoutSubpixel(bitmap *freetype2.Bitmap, layout pango.layout, x int, y int)
 
 // RenderTransformed: renders a GlyphString onto a FreeType2 bitmap, possibly
 // transforming the layed-out coordinates through a transformation matrix. Note
 // that the transformation matrix for @font is not changed, so to produce
 // correct rendering results, the @font must have been loaded using a Context
 // with an identical transformation matrix to that passed in to this function.
-func RenderTransformed(bitmap *freetype2.Bitmap, matrix *pango.Matrix, font *pango.Font, glyphs *pango.GlyphString, x int, y int)
+func RenderTransformed(bitmap *freetype2.Bitmap, matrix *pango.Matrix, font pango.font, glyphs *pango.GlyphString, x int, y int)
 
 // ShutdownDisplay: free the global fontmap. (See
 // pango_ft2_font_map_for_display()) Use of the global PangoFT2 fontmap is
@@ -88,12 +88,36 @@ func ShutdownDisplay()
 
 // FontMap: the `PangoFT2FontMap` is the `PangoFontMap` implementation for
 // FreeType fonts.
-type FontMap struct {
+type FontMap interface {
+	pangofc.fontMap
+
+	// CreateContext: create a `PangoContext` for the given fontmap.
+	CreateContext() pango.context
+	// SetDefaultSubstitute: sets a function that will be called to do final
+	// configuration substitution on a `FcPattern` before it is used to load the
+	// font.
+	//
+	// This function can be used to do things like set hinting and antialiasing
+	// options.
+	SetDefaultSubstitute(_func SubstituteFunc, data unsafe.Pointer, notify unsafe.Pointer)
+	// SetResolution: sets the horizontal and vertical resolutions for the
+	// fontmap.
+	SetResolution(dpiX float64, dpiY float64)
+	// SubstituteChanged: call this function any time the results of the default
+	// substitution function set with
+	// pango_ft2_font_map_set_default_substitute() change.
+	//
+	// That is, if your substitution function will return different results for
+	// the same input pattern, you must call this function.
+	SubstituteChanged()
+}
+
+type fontMap struct {
 	pangofc.FontMap
 }
 
-func wrapFontMap(obj *externglib.Object) *FontMap {
-	return &FontMap{FontMap{FontMap{*externglib.Object{obj}}}}
+func wrapFontMap(obj *externglib.Object) FontMap {
+	return &fontMap{pangofc.FontMap{pango.FontMap{*externglib.Object{obj}}}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
@@ -102,4 +126,12 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFontMap() *FontMap
+func NewFontMap() FontMap
+
+func (f fontMap) CreateContext() pango.context
+
+func (f fontMap) SetDefaultSubstitute(_func SubstituteFunc, data unsafe.Pointer, notify unsafe.Pointer)
+
+func (f fontMap) SetResolution(dpiX float64, dpiY float64)
+
+func (f fontMap) SubstituteChanged()

@@ -288,12 +288,12 @@ func marshalBox(p uintptr) (interface{}, error) {
 	return wrapBox(c)
 }
 
-func (b *Box) free() {}
+func (B *Box) free() {}
 
 // Native returns the pointer to *C.graphene_box_t. The caller is expected to
 // cast.
-func (b *Box) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+func (B *Box) Native() unsafe.Pointer {
+	return unsafe.Pointer(B.native)
 }
 
 func NewBox() *Box
@@ -322,12 +322,12 @@ func marshalEuler(p uintptr) (interface{}, error) {
 	return wrapEuler(c)
 }
 
-func (e *Euler) free() {}
+func (E *Euler) free() {}
 
 // Native returns the pointer to *C.graphene_euler_t. The caller is expected to
 // cast.
-func (e *Euler) Native() unsafe.Pointer {
-	return unsafe.Pointer(e.native)
+func (E *Euler) Native() unsafe.Pointer {
+	return unsafe.Pointer(E.native)
 }
 
 func NewEuler() *Euler
@@ -356,12 +356,12 @@ func marshalFrustum(p uintptr) (interface{}, error) {
 	return wrapFrustum(c)
 }
 
-func (f *Frustum) free() {}
+func (F *Frustum) free() {}
 
 // Native returns the pointer to *C.graphene_frustum_t. The caller is expected to
 // cast.
-func (f *Frustum) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
+func (F *Frustum) Native() unsafe.Pointer {
+	return unsafe.Pointer(F.native)
 }
 
 func NewFrustum() *Frustum
@@ -390,12 +390,12 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 	return wrapMatrix(c)
 }
 
-func (m *Matrix) free() {}
+func (M *Matrix) free() {}
 
 // Native returns the pointer to *C.graphene_matrix_t. The caller is expected to
 // cast.
-func (m *Matrix) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+func (M *Matrix) Native() unsafe.Pointer {
+	return unsafe.Pointer(M.native)
 }
 
 func NewMatrix() *Matrix
@@ -424,12 +424,12 @@ func marshalPlane(p uintptr) (interface{}, error) {
 	return wrapPlane(c)
 }
 
-func (p *Plane) free() {}
+func (P *Plane) free() {}
 
 // Native returns the pointer to *C.graphene_plane_t. The caller is expected to
 // cast.
-func (p *Plane) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *Plane) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }
 
 func NewPlane() *Plane
@@ -462,8 +462,8 @@ func marshalPoint(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.graphene_point_t. The caller is expected to
 // cast.
-func (p *Point) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *Point) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }
 
 func NewPoint() *Point
@@ -499,8 +499,8 @@ func marshalPoint3D(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.graphene_point3d_t. The caller is expected to
 // cast.
-func (p *Point3D) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *Point3D) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }
 
 func NewPoint3D() *Point3D
@@ -529,12 +529,12 @@ func marshalQuad(p uintptr) (interface{}, error) {
 	return wrapQuad(c)
 }
 
-func (q *Quad) free() {}
+func (Q *Quad) free() {}
 
 // Native returns the pointer to *C.graphene_quad_t. The caller is expected to
 // cast.
-func (q *Quad) Native() unsafe.Pointer {
-	return unsafe.Pointer(q.native)
+func (Q *Quad) Native() unsafe.Pointer {
+	return unsafe.Pointer(Q.native)
 }
 
 func NewQuad() *Quad
@@ -563,12 +563,12 @@ func marshalQuaternion(p uintptr) (interface{}, error) {
 	return wrapQuaternion(c)
 }
 
-func (q *Quaternion) free() {}
+func (Q *Quaternion) free() {}
 
 // Native returns the pointer to *C.graphene_quaternion_t. The caller is expected to
 // cast.
-func (q *Quaternion) Native() unsafe.Pointer {
-	return unsafe.Pointer(q.native)
+func (Q *Quaternion) Native() unsafe.Pointer {
+	return unsafe.Pointer(Q.native)
 }
 
 func NewQuaternion() *Quaternion
@@ -597,12 +597,12 @@ func marshalRay(p uintptr) (interface{}, error) {
 	return wrapRay(c)
 }
 
-func (r *Ray) free() {}
+func (R *Ray) free() {}
 
 // Native returns the pointer to *C.graphene_ray_t. The caller is expected to
 // cast.
-func (r *Ray) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *Ray) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 func NewRay() *Ray
@@ -646,8 +646,8 @@ func marshalRect(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.graphene_rect_t. The caller is expected to
 // cast.
-func (r *Rect) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *Rect) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 type SIMD4F struct {
@@ -670,12 +670,12 @@ func marshalSIMD4F(p uintptr) (interface{}, error) {
 	return wrapSIMD4F(c)
 }
 
-func (s *SIMD4F) free() {}
+func (S *SIMD4F) free() {}
 
 // Native returns the pointer to *C.graphene_simd4f_t. The caller is expected to
 // cast.
-func (s *SIMD4F) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *SIMD4F) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 type SIMD4X4F struct {
@@ -698,12 +698,12 @@ func marshalSIMD4X4F(p uintptr) (interface{}, error) {
 	return wrapSIMD4X4F(c)
 }
 
-func (s *SIMD4X4F) free() {}
+func (S *SIMD4X4F) free() {}
 
 // Native returns the pointer to *C.graphene_simd4x4f_t. The caller is expected to
 // cast.
-func (s *SIMD4X4F) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *SIMD4X4F) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 // Size: a size.
@@ -734,8 +734,8 @@ func marshalSize(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.graphene_size_t. The caller is expected to
 // cast.
-func (s *Size) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *Size) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 func NewSize() *Size
@@ -761,12 +761,12 @@ func marshalSphere(p uintptr) (interface{}, error) {
 	return wrapSphere(c)
 }
 
-func (s *Sphere) free() {}
+func (S *Sphere) free() {}
 
 // Native returns the pointer to *C.graphene_sphere_t. The caller is expected to
 // cast.
-func (s *Sphere) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *Sphere) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 func NewSphere() *Sphere
@@ -792,12 +792,12 @@ func marshalTriangle(p uintptr) (interface{}, error) {
 	return wrapTriangle(c)
 }
 
-func (t *Triangle) free() {}
+func (T *Triangle) free() {}
 
 // Native returns the pointer to *C.graphene_triangle_t. The caller is expected to
 // cast.
-func (t *Triangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *Triangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 func NewTriangle() *Triangle
@@ -826,12 +826,12 @@ func marshalVec2(p uintptr) (interface{}, error) {
 	return wrapVec2(c)
 }
 
-func (v *Vec2) free() {}
+func (V *Vec2) free() {}
 
 // Native returns the pointer to *C.graphene_vec2_t. The caller is expected to
 // cast.
-func (v *Vec2) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+func (V *Vec2) Native() unsafe.Pointer {
+	return unsafe.Pointer(V.native)
 }
 
 func NewVec2() *Vec2
@@ -861,12 +861,12 @@ func marshalVec3(p uintptr) (interface{}, error) {
 	return wrapVec3(c)
 }
 
-func (v *Vec3) free() {}
+func (V *Vec3) free() {}
 
 // Native returns the pointer to *C.graphene_vec3_t. The caller is expected to
 // cast.
-func (v *Vec3) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+func (V *Vec3) Native() unsafe.Pointer {
+	return unsafe.Pointer(V.native)
 }
 
 func NewVec3() *Vec3
@@ -896,12 +896,12 @@ func marshalVec4(p uintptr) (interface{}, error) {
 	return wrapVec4(c)
 }
 
-func (v *Vec4) free() {}
+func (V *Vec4) free() {}
 
 // Native returns the pointer to *C.graphene_vec4_t. The caller is expected to
 // cast.
-func (v *Vec4) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+func (V *Vec4) Native() unsafe.Pointer {
+	return unsafe.Pointer(V.native)
 }
 
 func NewVec4() *Vec4

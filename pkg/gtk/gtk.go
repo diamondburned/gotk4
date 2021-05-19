@@ -6,12 +6,12 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
-	"github.com/diamondburned/gotk4/pkg/gdkx11"
 	"github.com/diamondburned/gotk4/pkg/gio"
 	"github.com/diamondburned/gotk4/pkg/glib"
+	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/gsk"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -3500,7 +3500,7 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 //
 // This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
-func AcceleratorGetLabelWithKeycode(display *gdkx11.X11Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
+func AcceleratorGetLabelWithKeycode(display gdk.display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
 
 // AcceleratorName: converts an accelerator keyval and modifier mask into a
 // string parseable by gtk_accelerator_parse(). For example, if you pass in
@@ -3515,7 +3515,7 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 // gtk_accelerator_name() but handling keycodes. This is only useful for
 // system-level components, applications should use gtk_accelerator_parse()
 // instead.
-func AcceleratorNameWithKeycode(display *gdkx11.X11Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
+func AcceleratorNameWithKeycode(display gdk.display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string
 
 // AcceleratorParse: parses a string representing an accelerator. The format
 // looks like “<Control>a” or “<Shift><Alt>F1”.
@@ -3542,7 +3542,7 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool)
 //
 // If the parse fails, @accelerator_key, @accelerator_mods and
 // @accelerator_codes will be set to 0 (zero).
-func AcceleratorParseWithKeycode(accelerator string, display *gdkx11.X11Display) (uint, []uint, gdk.ModifierType, bool)
+func AcceleratorParseWithKeycode(accelerator string, display gdk.display) (uint, []uint, gdk.ModifierType, bool)
 
 // AcceleratorValid: determines whether a given keyval and modifier mask
 // constitute a valid keyboard accelerator. For example, the K_KEY_a keyval plus
@@ -3731,7 +3731,7 @@ func InitCheck() bool
 func IsInitialized() bool
 
 // NativeGetForSurface: finds the GtkNative associated with the surface.
-func NativeGetForSurface(surface *gdkx11.X11Surface) Native
+func NativeGetForSurface(surface gdk.surface) Native
 
 // PaperSizeGetDefault: returns the name of the default paper size, which
 // depends on the current locale.
@@ -3750,7 +3750,7 @@ func PrintErrorQuark() glib.Quark
 //
 // Note that this function may use a recursive mainloop to show the page setup
 // dialog. See gtk_print_run_page_setup_dialog_async() if this is a problem.
-func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *PrintSettings) *PageSetup
+func PrintRunPageSetupDialog(parent window, pageSetup pageSetup, settings printSettings) pageSetup
 
 // PrintRunPageSetupDialogAsync: runs a page setup dialog, letting the user
 // modify the values from @page_setup.
@@ -3758,20 +3758,20 @@ func PrintRunPageSetupDialog(parent *Window, pageSetup *PageSetup, settings *Pri
 // In contrast to gtk_print_run_page_setup_dialog(), this function returns after
 // showing the page setup dialog on platforms that support this, and calls
 // @done_cb from a signal handler for the ::response signal of the dialog.
-func PrintRunPageSetupDialogAsync(parent *Window, pageSetup *PageSetup, settings *PrintSettings, doneCb PageSetupDoneFunc, data unsafe.Pointer)
+func PrintRunPageSetupDialogAsync(parent window, pageSetup pageSetup, settings printSettings, doneCb PageSetupDoneFunc, data unsafe.Pointer)
 
 func RecentManagerErrorQuark() glib.Quark
 
 // RenderActivity: renders an activity indicator (such as in Spinner). The state
 // GTK_STATE_FLAG_CHECKED determines whether there is activity going on.
-func RenderActivity(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+func RenderActivity(context styleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
 
 // RenderArrow: renders an arrow pointing to @angle.
 //
 // Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
 //
 // ![](arrows.png)
-func RenderArrow(context *StyleContext, cr *cairo.Context, angle float64, x float64, y float64, size float64)
+func RenderArrow(context styleContext, cr *cairo.Context, angle float64, x float64, y float64, size float64)
 
 // RenderBackground: renders the background of an element.
 //
@@ -3779,7 +3779,7 @@ func RenderArrow(context *StyleContext, cr *cairo.Context, angle float64, x floa
 // `border-width` and `border-radius`:
 //
 // ![](background.png)
-func RenderBackground(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+func RenderBackground(context styleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
 
 // RenderCheck: renders a checkmark (as in a CheckButton).
 //
@@ -3790,7 +3790,7 @@ func RenderBackground(context *StyleContext, cr *cairo.Context, x float64, y flo
 // Typical checkmark rendering:
 //
 // ![](checks.png)
-func RenderCheck(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+func RenderCheck(context styleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
 
 // RenderExpander: renders an expander (as used in TreeView and Expander) in the
 // area defined by @x, @y, @width, @height. The state GTK_STATE_FLAG_CHECKED
@@ -3799,7 +3799,7 @@ func RenderCheck(context *StyleContext, cr *cairo.Context, x float64, y float64,
 // Typical expander rendering:
 //
 // ![](expanders.png)
-func RenderExpander(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+func RenderExpander(context styleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
 
 // RenderFocus: renders a focus indicator on the rectangle determined by @x, @y,
 // @width, @height.
@@ -3807,7 +3807,7 @@ func RenderExpander(context *StyleContext, cr *cairo.Context, x float64, y float
 // Typical focus rendering:
 //
 // ![](focus.png)
-func RenderFocus(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+func RenderFocus(context styleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
 
 // RenderFrame: renders a frame around the rectangle defined by @x, @y, @width,
 // @height.
@@ -3816,7 +3816,7 @@ func RenderFocus(context *StyleContext, cr *cairo.Context, x float64, y float64,
 // `border-color`, `border-width`, `border-radius` and junctions:
 //
 // ![](frames.png)
-func RenderFrame(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+func RenderFrame(context styleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
 
 // RenderHandle: renders a handle (as in Paned and Window’s resize grip), in the
 // rectangle determined by @x, @y, @width, @height.
@@ -3824,7 +3824,7 @@ func RenderFrame(context *StyleContext, cr *cairo.Context, x float64, y float64,
 // Handles rendered for the paned and grip classes:
 //
 // ![](handles.png)
-func RenderHandle(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+func RenderHandle(context styleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
 
 // RenderIcon: renders the icon in @texture at the specified @x and @y
 // coordinates.
@@ -3832,13 +3832,13 @@ func RenderHandle(context *StyleContext, cr *cairo.Context, x float64, y float64
 // This function will render the icon in @texture at exactly its size,
 // regardless of scaling factors, which may not be appropriate when drawing on
 // displays with high pixel densities.
-func RenderIcon(context *StyleContext, cr *cairo.Context, texture *gdk.Texture, x float64, y float64)
+func RenderIcon(context styleContext, cr *cairo.Context, texture gdk.texture, x float64, y float64)
 
 // RenderLayout: renders @layout on the coordinates @x, @y
-func RenderLayout(context *StyleContext, cr *cairo.Context, x float64, y float64, layout *pango.Layout)
+func RenderLayout(context styleContext, cr *cairo.Context, x float64, y float64, layout pango.layout)
 
 // RenderLine: renders a line from (x0, y0) to (x1, y1).
-func RenderLine(context *StyleContext, cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64)
+func RenderLine(context styleContext, cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64)
 
 // RenderOption: renders an option mark (as in a radio button), the
 // GTK_STATE_FLAG_CHECKED state will determine whether the option is on or off,
@@ -3847,7 +3847,7 @@ func RenderLine(context *StyleContext, cr *cairo.Context, x0 float64, y0 float64
 // Typical option mark rendering:
 //
 // ![](options.png)
-func RenderOption(context *StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
+func RenderOption(context styleContext, cr *cairo.Context, x float64, y float64, width float64, height float64)
 
 // RgbToHsv: converts a color from RGB space to HSV.
 //
@@ -3860,7 +3860,7 @@ func SetDebugFlags(flags DebugFlags)
 
 // ShowURI: this function launches the default application for showing a given
 // uri, or shows an error dialog if that fails.
-func ShowURI(parent *Window, uri string, timestamp uint32)
+func ShowURI(parent window, uri string, timestamp uint32)
 
 // ShowURIFull: this function launches the default application for showing a
 // given uri.
@@ -3870,11 +3870,11 @@ func ShowURI(parent *Window, uri string, timestamp uint32)
 //
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
-func ShowURIFull(parent *Window, uri string, timestamp uint32, cancellable *gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func ShowURIFull(parent window, uri string, timestamp uint32, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
 
 // ShowURIFullFinish: finishes the gtk_show_uri() call and returns the result of
 // the operation.
-func ShowURIFullFinish(parent *Window, result gio.AsyncResult) bool
+func ShowURIFullFinish(parent window, result gio.AsyncResult) bool
 
 func TestAccessibleAssertionMessageRole(domain string, file string, line int, _func string, expr string, accessible Accessible, expectedRole AccessibleRole, actualRole AccessibleRole)
 
@@ -3907,11 +3907,11 @@ func TestRegisterAllTypes()
 //
 // This function is intended to be used for syncing with actions that depend on
 // @widget relayouting or on interaction with the display server.
-func TestWidgetWaitForDraw(widget *Widget)
+func TestWidgetWaitForDraw(widget widget)
 
 // TreeCreateRowDragContent: creates a content provider for dragging @path from
 // @tree_model.
-func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) *gdk.ContentProvider
+func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.contentProvider
 
 // TreeGetRowDragData: obtains a @tree_model and @path from value of target type
 // GTK_TYPE_TREE_ROW_DATA.
@@ -3922,34 +3922,34 @@ func TreeGetRowDragData(value *externglib.Value) (TreeModel, *TreePath, bool)
 // TreeRowReferenceDeleted: lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::row-deleted signal.
-func TreeRowReferenceDeleted(proxy *externglib.Object, path *TreePath)
+func TreeRowReferenceDeleted(proxy gextras.Objector, path *TreePath)
 
 // TreeRowReferenceInserted: lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::row-inserted signal.
-func TreeRowReferenceInserted(proxy *externglib.Object, path *TreePath)
+func TreeRowReferenceInserted(proxy gextras.Objector, path *TreePath)
 
 // TreeRowReferenceReordered: lets a set of row reference created by
 // gtk_tree_row_reference_new_proxy() know that the model emitted the
 // TreeModel::rows-reordered signal.
-func TreeRowReferenceReordered(proxy *externglib.Object, path *TreePath, iter *TreeIter, newOrder []int)
+func TreeRowReferenceReordered(proxy gextras.Objector, path *TreePath, iter *TreeIter, newOrder []int)
 
 // ValueDupExpression: retrieves the Expression stored inside the given @value,
 // and acquires a reference to it.
-func ValueDupExpression(value *externglib.Value) *Expression
+func ValueDupExpression(value *externglib.Value) expression
 
 // ValueGetExpression: retrieves the Expression stored inside the given @value.
-func ValueGetExpression(value *externglib.Value) *Expression
+func ValueGetExpression(value *externglib.Value) expression
 
 // ValueSetExpression: stores the given Expression inside @value.
 //
 // The #GValue will acquire a reference to the @expression.
-func ValueSetExpression(value *externglib.Value, expression *Expression)
+func ValueSetExpression(value *externglib.Value, expression expression)
 
 // ValueTakeExpression: stores the given Expression inside @value.
 //
 // This function transfers the ownership of the @expression to the #GValue.
-func ValueTakeExpression(value *externglib.Value, expression *Expression)
+func ValueTakeExpression(value *externglib.Value, expression expression)
 
 // Accessible: gtkAccessible provides an interface for describing a UI element,
 // like a Widget, in a way that can be consumed by Assistive Technologies, or
@@ -4040,7 +4040,7 @@ type Buildable interface {
 type CellEditable interface {
 	EditingDone()
 	RemoveWidget()
-	StartEditing(event *gdk.Event)
+	StartEditing(event gdk.event)
 }
 
 // CellLayout is an interface to be implemented by all objects which want to
@@ -4140,15 +4140,15 @@ type CellEditable interface {
 // alternative cell areas, you can do so by moving the problematic calls out of
 // init() and into a constructor() for your class.
 type CellLayout interface {
-	AddAttribute(cell *CellRenderer, attribute string, column int)
+	AddAttribute(cell cellRenderer, attribute string, column int)
 	Clear()
-	ClearAttributes(cell *CellRenderer)
-	GetArea() *CellArea
+	ClearAttributes(cell cellRenderer)
+	GetArea() cellArea
 	GetCells() *glib.List
-	PackEnd(cell *CellRenderer, expand bool)
-	PackStart(cell *CellRenderer, expand bool)
-	Reorder(cell *CellRenderer, position int)
-	SetCellDataFunc(cell *CellRenderer, _func CellLayoutDataFunc, funcData unsafe.Pointer, destroy unsafe.Pointer)
+	PackEnd(cell cellRenderer, expand bool)
+	PackStart(cell cellRenderer, expand bool)
+	Reorder(cell cellRenderer, position int)
+	SetCellDataFunc(cell cellRenderer, _func CellLayoutDataFunc, funcData unsafe.Pointer, destroy unsafe.Pointer)
 }
 
 // ColorChooser is an interface that is implemented by widgets for choosing
@@ -4352,7 +4352,7 @@ type Editable interface {
 // rendered as a combo box.
 type FileChooser interface {
 	AddChoice(id string, label string, options []string, optionLabels []string)
-	AddFilter(filter *FileFilter)
+	AddFilter(filter fileFilter)
 	AddShortcutFolder(folder gio.File) bool
 	GetAction() FileChooserAction
 	GetChoice(id string) string
@@ -4361,12 +4361,12 @@ type FileChooser interface {
 	GetCurrentName() string
 	GetFile() gio.File
 	GetFiles() gio.ListModel
-	GetFilter() *FileFilter
+	GetFilter() fileFilter
 	GetFilters() gio.ListModel
 	GetSelectMultiple() bool
 	GetShortcutFolders() gio.ListModel
 	RemoveChoice(id string)
-	RemoveFilter(filter *FileFilter)
+	RemoveFilter(filter fileFilter)
 	RemoveShortcutFolder(folder gio.File) bool
 	SetAction(action FileChooserAction)
 	SetChoice(id string, option string)
@@ -4374,7 +4374,7 @@ type FileChooser interface {
 	SetCurrentFolder(file gio.File) bool
 	SetCurrentName(name string)
 	SetFile(file gio.File) bool
-	SetFilter(filter *FileFilter)
+	SetFilter(filter fileFilter)
 	SetSelectMultiple(selectMultiple bool)
 }
 
@@ -4384,10 +4384,10 @@ type FileChooser interface {
 type FontChooser interface {
 	GetFont() string
 	GetFontDesc() *pango.FontDescription
-	GetFontFace() *pango.FontFace
-	GetFontFamily() *pango.FontFamily
+	GetFontFace() pango.fontFace
+	GetFontFamily() pango.fontFamily
 	GetFontFeatures() string
-	GetFontMap() *pango.FontMap
+	GetFontMap() pango.fontMap
 	GetFontSize() int
 	GetLanguage() string
 	GetLevel() FontChooserLevel
@@ -4396,7 +4396,7 @@ type FontChooser interface {
 	SetFilterFunc(filter FontFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
 	SetFont(fontname string)
 	SetFontDesc(fontDesc *pango.FontDescription)
-	SetFontMap(fontmap *pango.FontMap)
+	SetFontMap(fontmap pango.fontMap)
 	SetLanguage(language string)
 	SetLevel(level FontChooserLevel)
 	SetPreviewText(text string)
@@ -4408,8 +4408,8 @@ type FontChooser interface {
 //
 // The obvious example of a Native is Window.
 type Native interface {
-	GetRenderer() *gsk.Renderer
-	GetSurface() *gdkx11.X11Surface
+	GetRenderer() gsk.renderer
+	GetSurface() gdk.surface
 	GetSurfaceTransform() (float64, float64)
 	Realize()
 	Unrealize()
@@ -4437,9 +4437,9 @@ type PrintOperationPreview interface {
 //
 // The obvious example of a Root is Window.
 type Root interface {
-	GetDisplay() *gdkx11.X11Display
-	GetFocus() *Widget
-	SetFocus(focus *Widget)
+	GetDisplay() gdk.display
+	GetFocus() widget
+	SetFocus(focus widget)
 }
 
 // Scrollable is an interface that is implemented by widgets with native
@@ -4469,13 +4469,13 @@ type Root interface {
 // scrollable widget should scroll its contents.
 type Scrollable interface {
 	GetBorder() (Border, bool)
-	GetHadjustment() *Adjustment
+	GetHadjustment() adjustment
 	GetHscrollPolicy() ScrollablePolicy
-	GetVadjustment() *Adjustment
+	GetVadjustment() adjustment
 	GetVscrollPolicy() ScrollablePolicy
-	SetHadjustment(hadjustment *Adjustment)
+	SetHadjustment(hadjustment adjustment)
 	SetHscrollPolicy(policy ScrollablePolicy)
-	SetVadjustment(vadjustment *Adjustment)
+	SetVadjustment(vadjustment adjustment)
 	SetVscrollPolicy(policy ScrollablePolicy)
 }
 
@@ -4535,7 +4535,7 @@ type TreeDragDest interface {
 
 type TreeDragSource interface {
 	DragDataDelete(path *TreePath) bool
-	DragDataGet(path *TreePath) *gdk.ContentProvider
+	DragDataGet(path *TreePath) gdk.contentProvider
 	RowDraggable(path *TreePath) bool
 }
 
@@ -4796,12 +4796,12 @@ func marshalBitset(p uintptr) (interface{}, error) {
 	return wrapBitset(c)
 }
 
-func (b *Bitset) free() {}
+func (B *Bitset) free() {}
 
 // Native returns the pointer to *C.GtkBitset. The caller is expected to
 // cast.
-func (b *Bitset) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+func (B *Bitset) Native() unsafe.Pointer {
+	return unsafe.Pointer(B.native)
 }
 
 func NewBitset() *Bitset
@@ -4832,12 +4832,12 @@ func marshalBitsetIter(p uintptr) (interface{}, error) {
 	return wrapBitsetIter(c)
 }
 
-func (b *BitsetIter) free() {}
+func (B *BitsetIter) free() {}
 
 // Native returns the pointer to *C.GtkBitsetIter. The caller is expected to
 // cast.
-func (b *BitsetIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+func (B *BitsetIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(B.native)
 }
 
 // Border: a struct that specifies a border around a rectangular area that can
@@ -4875,8 +4875,8 @@ func marshalBorder(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkBorder. The caller is expected to
 // cast.
-func (b *Border) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+func (B *Border) Native() unsafe.Pointer {
+	return unsafe.Pointer(B.native)
 }
 
 func NewBorder() *Border
@@ -4902,12 +4902,12 @@ func marshalBuildableParser(p uintptr) (interface{}, error) {
 	return wrapBuildableParser(c)
 }
 
-func (b *BuildableParser) free() {}
+func (B *BuildableParser) free() {}
 
 // Native returns the pointer to *C.GtkBuildableParser. The caller is expected to
 // cast.
-func (b *BuildableParser) Native() unsafe.Pointer {
-	return unsafe.Pointer(b.native)
+func (B *BuildableParser) Native() unsafe.Pointer {
+	return unsafe.Pointer(B.native)
 }
 
 // CSSLocation is used to present a location in a file - or other source of data
@@ -4958,8 +4958,8 @@ func marshalCSSLocation(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkCssLocation. The caller is expected to
 // cast.
-func (c *CSSLocation) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+func (C *CSSLocation) Native() unsafe.Pointer {
+	return unsafe.Pointer(C.native)
 }
 
 // CSSSection: defines a part of a CSS document. Because sections are nested
@@ -4985,12 +4985,12 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 	return wrapCSSSection(c)
 }
 
-func (c *CSSSection) free() {}
+func (C *CSSSection) free() {}
 
 // Native returns the pointer to *C.GtkCssSection. The caller is expected to
 // cast.
-func (c *CSSSection) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+func (C *CSSSection) Native() unsafe.Pointer {
+	return unsafe.Pointer(C.native)
 }
 
 func NewCSSSection(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSection
@@ -5034,8 +5034,8 @@ func marshalPadActionEntry(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkPadActionEntry. The caller is expected to
 // cast.
-func (p *PadActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *PadActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }
 
 // PageRange: see also gtk_print_settings_set_page_ranges().
@@ -5066,8 +5066,8 @@ func marshalPageRange(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkPageRange. The caller is expected to
 // cast.
-func (p *PageRange) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *PageRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }
 
 // PaperSize: gtkPaperSize handles paper sizes. It uses the standard called [PWG
@@ -5100,12 +5100,12 @@ func marshalPaperSize(p uintptr) (interface{}, error) {
 	return wrapPaperSize(c)
 }
 
-func (p *PaperSize) free() {}
+func (P *PaperSize) free() {}
 
 // Native returns the pointer to *C.GtkPaperSize. The caller is expected to
 // cast.
-func (p *PaperSize) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *PaperSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }
 
 func NewPaperSize(name string) *PaperSize
@@ -5170,8 +5170,8 @@ func marshalRecentData(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkRecentData. The caller is expected to
 // cast.
-func (r *RecentData) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *RecentData) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 // RecentInfo: recentInfo contains private data only, and should be accessed
@@ -5199,12 +5199,12 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 	return wrapRecentInfo(c)
 }
 
-func (r *RecentInfo) free() {}
+func (R *RecentInfo) free() {}
 
 // Native returns the pointer to *C.GtkRecentInfo. The caller is expected to
 // cast.
-func (r *RecentInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *RecentInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 // RequestedSize: represents a request of a screen object in a given
@@ -5242,8 +5242,8 @@ func marshalRequestedSize(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkRequestedSize. The caller is expected to
 // cast.
-func (r *RequestedSize) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *RequestedSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 // Requisition: a Requisition-struct represents the desired size of a widget.
@@ -5276,8 +5276,8 @@ func marshalRequisition(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkRequisition. The caller is expected to
 // cast.
-func (r *Requisition) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *Requisition) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 func NewRequisition() *Requisition
@@ -5310,8 +5310,8 @@ func marshalSettingsValue(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkSettingsValue. The caller is expected to
 // cast.
-func (s *SettingsValue) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *SettingsValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 // TextIter: you may wish to begin by reading the [text widget conceptual
@@ -5337,12 +5337,12 @@ func marshalTextIter(p uintptr) (interface{}, error) {
 	return wrapTextIter(c)
 }
 
-func (t *TextIter) free() {}
+func (T *TextIter) free() {}
 
 // Native returns the pointer to *C.GtkTextIter. The caller is expected to
 // cast.
-func (t *TextIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TextIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 // TreeIter: the TreeIter is the primary structure for accessing a TreeModel.
@@ -5381,8 +5381,8 @@ func marshalTreeIter(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkTreeIter. The caller is expected to
 // cast.
-func (t *TreeIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TreeIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 type TreePath struct {
@@ -5405,12 +5405,12 @@ func marshalTreePath(p uintptr) (interface{}, error) {
 	return wrapTreePath(c)
 }
 
-func (t *TreePath) free() {}
+func (T *TreePath) free() {}
 
 // Native returns the pointer to *C.GtkTreePath. The caller is expected to
 // cast.
-func (t *TreePath) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TreePath) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 func NewTreePath() *TreePath
@@ -5444,17 +5444,17 @@ func marshalTreeRowReference(p uintptr) (interface{}, error) {
 	return wrapTreeRowReference(c)
 }
 
-func (t *TreeRowReference) free() {}
+func (T *TreeRowReference) free() {}
 
 // Native returns the pointer to *C.GtkTreeRowReference. The caller is expected to
 // cast.
-func (t *TreeRowReference) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TreeRowReference) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference
 
-func NewTreeRowReference(proxy *externglib.Object, model TreeModel, path *TreePath) *TreeRowReference
+func NewTreeRowReference(proxy gextras.Objector, model TreeModel, path *TreePath) *TreeRowReference
 
 // ATContext: gtkATContext is an abstract class provided by GTK to communicate
 // to platform-specific assistive technologies API.
@@ -5462,12 +5462,21 @@ func NewTreeRowReference(proxy *externglib.Object, model TreeModel, path *TreePa
 // Each platform supported by GTK implements a ATContext subclass, and is
 // responsible for updating the accessible state in response to state changes in
 // Accessible.
-type ATContext struct {
+type ATContext interface {
+	gextras.Objector
+
+	// GetAccessible: retrieves the Accessible using this context.
+	GetAccessible() Accessible
+	// GetAccessibleRole: retrieves the accessible role of this context.
+	GetAccessibleRole() AccessibleRole
+}
+
+type aTContext struct {
 	*externglib.Object
 }
 
-func wrapATContext(obj *externglib.Object) *ATContext {
-	return &ATContext{*externglib.Object{obj}}
+func wrapATContext(obj *externglib.Object) ATContext {
+	return &aTContext{*externglib.Object{obj}}
 }
 
 func marshalATContext(p uintptr) (interface{}, error) {
@@ -5476,7 +5485,11 @@ func marshalATContext(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewATContext(accessibleRole AccessibleRole, accessible Accessible, display *gdkx11.X11Display) *ATContext
+func NewATContext(accessibleRole AccessibleRole, accessible Accessible, display gdk.display) ATContext
+
+func (a aTContext) GetAccessible() Accessible
+
+func (a aTContext) GetAccessibleRole() AccessibleRole
 
 // AboutDialog: the GtkAboutDialog offers a simple way to display information
 // about a program like its logo, name, copyright, website and license. It is
@@ -5517,12 +5530,119 @@ func NewATContext(accessibleRole AccessibleRole, accessible Accessible, display 
 //
 //    GtkAboutDialog has a single CSS node with the name window and style
 //    class .aboutdialog.
-type AboutDialog struct {
+type AboutDialog interface {
+	window
+
+	// AddCreditSection: creates a new section in the Credits page.
+	AddCreditSection(sectionName string, people []string)
+	// GetArtists: returns the string which are displayed in the artists tab of
+	// the secondary credits dialog.
+	GetArtists() []string
+	// GetAuthors: returns the string which are displayed in the authors tab of
+	// the secondary credits dialog.
+	GetAuthors() []string
+	// GetComments: returns the comments string.
+	GetComments() string
+	// GetCopyright: returns the copyright string.
+	GetCopyright() string
+	// GetDocumenters: returns the string which are displayed in the documenters
+	// tab of the secondary credits dialog.
+	GetDocumenters() []string
+	// GetLicense: returns the license information.
+	GetLicense() string
+	// GetLicenseType: retrieves the license set using
+	// gtk_about_dialog_set_license_type()
+	GetLicenseType() License
+	// GetLogo: returns the paintable displayed as logo in the about dialog.
+	GetLogo() gdk.Paintable
+	// GetLogoIconName: returns the icon name displayed as logo in the about
+	// dialog.
+	GetLogoIconName() string
+	// GetProgramName: returns the program name displayed in the about dialog.
+	GetProgramName() string
+	// GetSystemInformation: returns the system information that is shown in the
+	// about dialog.
+	GetSystemInformation() string
+	// GetTranslatorCredits: returns the translator credits string which is
+	// displayed in the translators tab of the secondary credits dialog.
+	GetTranslatorCredits() string
+	// GetVersion: returns the version string.
+	GetVersion() string
+	// GetWebsite: returns the website URL.
+	GetWebsite() string
+	// GetWebsiteLabel: returns the label used for the website link.
+	GetWebsiteLabel() string
+	// GetWrapLicense: returns whether the license text in @about is
+	// automatically wrapped.
+	GetWrapLicense() bool
+	// SetArtists: sets the strings which are displayed in the artists tab of
+	// the secondary credits dialog.
+	SetArtists(artists []string)
+	// SetAuthors: sets the strings which are displayed in the authors tab of
+	// the secondary credits dialog.
+	SetAuthors(authors []string)
+	// SetComments: sets the comments string to display in the about dialog.
+	// This should be a short string of one or two lines.
+	SetComments(comments string)
+	// SetCopyright: sets the copyright string to display in the about dialog.
+	// This should be a short string of one or two lines.
+	SetCopyright(copyright string)
+	// SetDocumenters: sets the strings which are displayed in the documenters
+	// tab of the credits dialog.
+	SetDocumenters(documenters []string)
+	// SetLicense: sets the license information to be displayed in the secondary
+	// license dialog. If @license is nil, the license button is hidden.
+	SetLicense(license string)
+	// SetLicenseType: sets the license of the application showing the @about
+	// dialog from a list of known licenses.
+	//
+	// This function overrides the license set using
+	// gtk_about_dialog_set_license().
+	SetLicenseType(licenseType License)
+	// SetLogo: sets the logo in the about dialog.
+	SetLogo(logo gdk.Paintable)
+	// SetLogoIconName: sets the icon name to be displayed as logo in the about
+	// dialog.
+	SetLogoIconName(iconName string)
+	// SetProgramName: sets the name to display in the about dialog. If this is
+	// not set, it defaults to g_get_application_name().
+	SetProgramName(name string)
+	// SetSystemInformation: sets the system information to be displayed in the
+	// about dialog. If @system_information is nil, the system information tab
+	// is hidden.
+	//
+	// See AboutDialog:system-information.
+	SetSystemInformation(systemInformation string)
+	// SetTranslatorCredits: sets the translator credits string which is
+	// displayed in the translators tab of the secondary credits dialog.
+	//
+	// The intended use for this string is to display the translator of the
+	// language which is currently used in the user interface. Using gettext(),
+	// a simple way to achieve that is to mark the string for translation:
+	// |[<!-- language="C" --> GtkWidget *about = gtk_about_dialog_new ();
+	// gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
+	// _("translator-credits")); ]| It is a good idea to use the customary msgid
+	// “translator-credits” for this purpose, since translators will already
+	// know the purpose of that msgid, and since AboutDialog will detect if
+	// “translator-credits” is untranslated and hide the tab.
+	SetTranslatorCredits(translatorCredits string)
+	// SetVersion: sets the version string to display in the about dialog.
+	SetVersion(version string)
+	// SetWebsite: sets the URL to use for the website link.
+	SetWebsite(website string)
+	// SetWebsiteLabel: sets the label to be used for the website link.
+	SetWebsiteLabel(websiteLabel string)
+	// SetWrapLicense: sets whether the license text in @about is automatically
+	// wrapped.
+	SetWrapLicense(wrapLicense bool)
+}
+
+type aboutDialog struct {
 	Window
 }
 
-func wrapAboutDialog(obj *externglib.Object) *AboutDialog {
-	return &AboutDialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapAboutDialog(obj *externglib.Object) AboutDialog {
+	return &aboutDialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalAboutDialog(p uintptr) (interface{}, error) {
@@ -5531,7 +5651,73 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewAboutDialog() *AboutDialog
+func NewAboutDialog() AboutDialog
+
+func (a aboutDialog) AddCreditSection(sectionName string, people []string)
+
+func (a aboutDialog) GetArtists() []string
+
+func (a aboutDialog) GetAuthors() []string
+
+func (a aboutDialog) GetComments() string
+
+func (a aboutDialog) GetCopyright() string
+
+func (a aboutDialog) GetDocumenters() []string
+
+func (a aboutDialog) GetLicense() string
+
+func (a aboutDialog) GetLicenseType() License
+
+func (a aboutDialog) GetLogo() gdk.Paintable
+
+func (a aboutDialog) GetLogoIconName() string
+
+func (a aboutDialog) GetProgramName() string
+
+func (a aboutDialog) GetSystemInformation() string
+
+func (a aboutDialog) GetTranslatorCredits() string
+
+func (a aboutDialog) GetVersion() string
+
+func (a aboutDialog) GetWebsite() string
+
+func (a aboutDialog) GetWebsiteLabel() string
+
+func (a aboutDialog) GetWrapLicense() bool
+
+func (a aboutDialog) SetArtists(artists []string)
+
+func (a aboutDialog) SetAuthors(authors []string)
+
+func (a aboutDialog) SetComments(comments string)
+
+func (a aboutDialog) SetCopyright(copyright string)
+
+func (a aboutDialog) SetDocumenters(documenters []string)
+
+func (a aboutDialog) SetLicense(license string)
+
+func (a aboutDialog) SetLicenseType(licenseType License)
+
+func (a aboutDialog) SetLogo(logo gdk.Paintable)
+
+func (a aboutDialog) SetLogoIconName(iconName string)
+
+func (a aboutDialog) SetProgramName(name string)
+
+func (a aboutDialog) SetSystemInformation(systemInformation string)
+
+func (a aboutDialog) SetTranslatorCredits(translatorCredits string)
+
+func (a aboutDialog) SetVersion(version string)
+
+func (a aboutDialog) SetWebsite(website string)
+
+func (a aboutDialog) SetWebsiteLabel(websiteLabel string)
+
+func (a aboutDialog) SetWrapLicense(wrapLicense bool)
 
 // ActionBar: gtkActionBar is designed to present contextual actions. It is
 // expected to be displayed below the content and expand horizontally to fill
@@ -5546,12 +5732,38 @@ func NewAboutDialog() *AboutDialog
 // CSS nodes
 //
 // GtkActionBar has a single CSS node with name actionbar.
-type ActionBar struct {
+type ActionBar interface {
+	widget
+
+	// GetCenterWidget: retrieves the center bar widget of the bar.
+	GetCenterWidget() widget
+	// GetRevealed: gets the value of the ActionBar:revealed property.
+	GetRevealed() bool
+	// PackEnd: adds @child to @action_bar, packed with reference to the end of
+	// the @action_bar.
+	PackEnd(child widget)
+	// PackStart: adds @child to @action_bar, packed with reference to the start
+	// of the @action_bar.
+	PackStart(child widget)
+	// Remove: removes a child from @action_bar.
+	Remove(child widget)
+	// SetCenterWidget: sets the center widget for the ActionBar.
+	SetCenterWidget(centerWidget widget)
+	// SetRevealed: sets the ActionBar:revealed property to @revealed. Changing
+	// this will make @action_bar reveal (true) or conceal (false) itself via a
+	// sliding transition.
+	//
+	// Note: this does not show or hide @action_bar in the Widget:visible sense,
+	// so revealing has no effect if Widget:visible is false.
+	SetRevealed(revealed bool)
+}
+
+type actionBar struct {
 	Widget
 }
 
-func wrapActionBar(obj *externglib.Object) *ActionBar {
-	return &ActionBar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapActionBar(obj *externglib.Object) ActionBar {
+	return &actionBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalActionBar(p uintptr) (interface{}, error) {
@@ -5560,15 +5772,33 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewActionBar() *ActionBar
+func NewActionBar() ActionBar
+
+func (a actionBar) GetCenterWidget() widget
+
+func (a actionBar) GetRevealed() bool
+
+func (a actionBar) PackEnd(child widget)
+
+func (a actionBar) PackStart(child widget)
+
+func (a actionBar) Remove(child widget)
+
+func (a actionBar) SetCenterWidget(centerWidget widget)
+
+func (a actionBar) SetRevealed(revealed bool)
 
 // ActivateAction: a ShortcutAction that calls gtk_widget_activate().
-type ActivateAction struct {
+type ActivateAction interface {
+	shortcutAction
+}
+
+type activateAction struct {
 	ShortcutAction
 }
 
-func wrapActivateAction(obj *externglib.Object) *ActivateAction {
-	return &ActivateAction{ShortcutAction{*externglib.Object{obj}}}
+func wrapActivateAction(obj *externglib.Object) ActivateAction {
+	return &activateAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalActivateAction(p uintptr) (interface{}, error) {
@@ -5584,12 +5814,96 @@ func marshalActivateAction(p uintptr) (interface{}, error) {
 //
 // The Adjustment object does not update the value itself. Instead it is left up
 // to the owner of the Adjustment to control the value.
-type Adjustment struct {
+type Adjustment interface {
+	gextras.Objector
+
+	// ClampPage: updates the Adjustment:value property to ensure that the range
+	// between @lower and @upper is in the current page (i.e. between
+	// Adjustment:value and Adjustment:value + Adjustment:page-size). If the
+	// range is larger than the page size, then only the start of it will be in
+	// the current page.
+	//
+	// A Adjustment::value-changed signal will be emitted if the value is
+	// changed.
+	ClampPage(lower float64, upper float64)
+	// Configure: sets all properties of the adjustment at once.
+	//
+	// Use this function to avoid multiple emissions of the Adjustment::changed
+	// signal. See gtk_adjustment_set_lower() for an alternative way of
+	// compressing multiple emissions of Adjustment::changed into one.
+	Configure(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64)
+	// GetLower: retrieves the minimum value of the adjustment.
+	GetLower() float64
+	// GetMinimumIncrement: gets the smaller of step increment and page
+	// increment.
+	GetMinimumIncrement() float64
+	// GetPageIncrement: retrieves the page increment of the adjustment.
+	GetPageIncrement() float64
+	// GetPageSize: retrieves the page size of the adjustment.
+	GetPageSize() float64
+	// GetStepIncrement: retrieves the step increment of the adjustment.
+	GetStepIncrement() float64
+	// GetUpper: retrieves the maximum value of the adjustment.
+	GetUpper() float64
+	// GetValue: gets the current value of the adjustment. See
+	// gtk_adjustment_set_value().
+	GetValue() float64
+	// SetLower: sets the minimum value of the adjustment.
+	//
+	// When setting multiple adjustment properties via their individual setters,
+	// multiple Adjustment::changed signals will be emitted. However, since the
+	// emission of the Adjustment::changed signal is tied to the emission of the
+	// #GObject::notify signals of the changed properties, it’s possible to
+	// compress the Adjustment::changed signals into one by calling
+	// g_object_freeze_notify() and g_object_thaw_notify() around the calls to
+	// the individual setters.
+	//
+	// Alternatively, using a single g_object_set() for all the properties to
+	// change, or using gtk_adjustment_configure() has the same effect of
+	// compressing Adjustment::changed emissions.
+	SetLower(lower float64)
+	// SetPageIncrement: sets the page increment of the adjustment.
+	//
+	// See gtk_adjustment_set_lower() about how to compress multiple emissions
+	// of the Adjustment::changed signal when setting multiple adjustment
+	// properties.
+	SetPageIncrement(pageIncrement float64)
+	// SetPageSize: sets the page size of the adjustment.
+	//
+	// See gtk_adjustment_set_lower() about how to compress multiple emissions
+	// of the GtkAdjustment::changed signal when setting multiple adjustment
+	// properties.
+	SetPageSize(pageSize float64)
+	// SetStepIncrement: sets the step increment of the adjustment.
+	//
+	// See gtk_adjustment_set_lower() about how to compress multiple emissions
+	// of the Adjustment::changed signal when setting multiple adjustment
+	// properties.
+	SetStepIncrement(stepIncrement float64)
+	// SetUpper: sets the maximum value of the adjustment.
+	//
+	// Note that values will be restricted by `upper - page-size` if the
+	// page-size property is nonzero.
+	//
+	// See gtk_adjustment_set_lower() about how to compress multiple emissions
+	// of the Adjustment::changed signal when setting multiple adjustment
+	// properties.
+	SetUpper(upper float64)
+	// SetValue: sets the Adjustment value. The value is clamped to lie between
+	// Adjustment:lower and Adjustment:upper.
+	//
+	// Note that for adjustments which are used in a Scrollbar, the effective
+	// range of allowed values goes from Adjustment:lower to Adjustment:upper -
+	// Adjustment:page-size.
+	SetValue(value float64)
+}
+
+type adjustment struct {
 	externglib.InitiallyUnowned
 }
 
-func wrapAdjustment(obj *externglib.Object) *Adjustment {
-	return &Adjustment{externglib.InitiallyUnowned{obj}}
+func wrapAdjustment(obj *externglib.Object) Adjustment {
+	return &adjustment{externglib.InitiallyUnowned{obj}}
 }
 
 func marshalAdjustment(p uintptr) (interface{}, error) {
@@ -5598,16 +5912,58 @@ func marshalAdjustment(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewAdjustment(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) *Adjustment
+func NewAdjustment(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) Adjustment
+
+func (a adjustment) ClampPage(lower float64, upper float64)
+
+func (a adjustment) Configure(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64)
+
+func (a adjustment) GetLower() float64
+
+func (a adjustment) GetMinimumIncrement() float64
+
+func (a adjustment) GetPageIncrement() float64
+
+func (a adjustment) GetPageSize() float64
+
+func (a adjustment) GetStepIncrement() float64
+
+func (a adjustment) GetUpper() float64
+
+func (a adjustment) GetValue() float64
+
+func (a adjustment) SetLower(lower float64)
+
+func (a adjustment) SetPageIncrement(pageIncrement float64)
+
+func (a adjustment) SetPageSize(pageSize float64)
+
+func (a adjustment) SetStepIncrement(stepIncrement float64)
+
+func (a adjustment) SetUpper(upper float64)
+
+func (a adjustment) SetValue(value float64)
 
 // AlternativeTrigger: a ShortcutTrigger that triggers when either of two
 // ShortcutTriggers trigger.
-type AlternativeTrigger struct {
+type AlternativeTrigger interface {
+	shortcutTrigger
+
+	// GetFirst: gets the first of the two alternative triggers that may trigger
+	// @self. gtk_alternative_trigger_get_second() will return the other one.
+	GetFirst() shortcutTrigger
+	// GetSecond: gets the second of the two alternative triggers that may
+	// trigger @self. gtk_alternative_trigger_get_first() will return the other
+	// one.
+	GetSecond() shortcutTrigger
+}
+
+type alternativeTrigger struct {
 	ShortcutTrigger
 }
 
-func wrapAlternativeTrigger(obj *externglib.Object) *AlternativeTrigger {
-	return &AlternativeTrigger{ShortcutTrigger{*externglib.Object{obj}}}
+func wrapAlternativeTrigger(obj *externglib.Object) AlternativeTrigger {
+	return &alternativeTrigger{ShortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
@@ -5616,14 +5972,22 @@ func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewAlternativeTrigger(first *ShortcutTrigger, second *ShortcutTrigger) *AlternativeTrigger
+func NewAlternativeTrigger(first shortcutTrigger, second shortcutTrigger) AlternativeTrigger
 
-type AnyFilter struct {
+func (a alternativeTrigger) GetFirst() shortcutTrigger
+
+func (a alternativeTrigger) GetSecond() shortcutTrigger
+
+type AnyFilter interface {
+	multiFilter
+}
+
+type anyFilter struct {
 	MultiFilter
 }
 
-func wrapAnyFilter(obj *externglib.Object) *AnyFilter {
-	return &AnyFilter{MultiFilter{Filter{*externglib.Object{obj}}}}
+func wrapAnyFilter(obj *externglib.Object) AnyFilter {
+	return &anyFilter{MultiFilter{Filter{*externglib.Object{obj}}}}
 }
 
 func marshalAnyFilter(p uintptr) (interface{}, error) {
@@ -5632,7 +5996,7 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewAnyFilter() *AnyFilter
+func NewAnyFilter() AnyFilter
 
 // AppChooserButton: the AppChooserButton is a widget that lets the user select
 // an application. It implements the AppChooser interface.
@@ -5660,12 +6024,54 @@ func NewAnyFilter() *AnyFilter
 // CSS nodes
 //
 // GtkAppChooserButton has a single CSS node with the name “appchooserbutton”.
-type AppChooserButton struct {
+type AppChooserButton interface {
+	widget
+
+	// AppendCustomItem: appends a custom item to the list of applications that
+	// is shown in the popup; the item name must be unique per-widget. Clients
+	// can use the provided name as a detail for the
+	// AppChooserButton::custom-item-activated signal, to add a callback for the
+	// activation of a particular custom item in the list. See also
+	// gtk_app_chooser_button_append_separator().
+	AppendCustomItem(name string, label string, icon gio.Icon)
+	// AppendSeparator: appends a separator to the list of applications that is
+	// shown in the popup.
+	AppendSeparator()
+	// GetHeading: returns the text to display at the top of the dialog.
+	GetHeading() string
+	// GetModal: gets whether the dialog is modal.
+	GetModal() bool
+	// GetShowDefaultItem: returns the current value of the
+	// AppChooserButton:show-default-item property.
+	GetShowDefaultItem() bool
+	// GetShowDialogItem: returns the current value of the
+	// AppChooserButton:show-dialog-item property.
+	GetShowDialogItem() bool
+	// SetActiveCustomItem: selects a custom item previously added with
+	// gtk_app_chooser_button_append_custom_item().
+	//
+	// Use gtk_app_chooser_refresh() to bring the selection to its initial
+	// state.
+	SetActiveCustomItem(name string)
+	// SetHeading: sets the text to display at the top of the dialog. If the
+	// heading is not set, the dialog displays a default text.
+	SetHeading(heading string)
+	// SetModal: sets whether the dialog should be modal.
+	SetModal(modal bool)
+	// SetShowDefaultItem: sets whether the dropdown menu of this button should
+	// show the default application for the given content type at top.
+	SetShowDefaultItem(setting bool)
+	// SetShowDialogItem: sets whether the dropdown menu of this button should
+	// show an entry to trigger a AppChooserDialog.
+	SetShowDialogItem(setting bool)
+}
+
+type appChooserButton struct {
 	Widget
 }
 
-func wrapAppChooserButton(obj *externglib.Object) *AppChooserButton {
-	return &AppChooserButton{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapAppChooserButton(obj *externglib.Object) AppChooserButton {
+	return &appChooserButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalAppChooserButton(p uintptr) (interface{}, error) {
@@ -5674,7 +6080,29 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewAppChooserButton(contentType string) *AppChooserButton
+func NewAppChooserButton(contentType string) AppChooserButton
+
+func (a appChooserButton) AppendCustomItem(name string, label string, icon gio.Icon)
+
+func (a appChooserButton) AppendSeparator()
+
+func (a appChooserButton) GetHeading() string
+
+func (a appChooserButton) GetModal() bool
+
+func (a appChooserButton) GetShowDefaultItem() bool
+
+func (a appChooserButton) GetShowDialogItem() bool
+
+func (a appChooserButton) SetActiveCustomItem(name string)
+
+func (a appChooserButton) SetHeading(heading string)
+
+func (a appChooserButton) SetModal(modal bool)
+
+func (a appChooserButton) SetShowDefaultItem(setting bool)
+
+func (a appChooserButton) SetShowDialogItem(setting bool)
 
 // AppChooserDialog: appChooserDialog shows a AppChooserWidget inside a Dialog.
 //
@@ -5685,12 +6113,24 @@ func NewAppChooserButton(contentType string) *AppChooserButton
 //
 // To set the heading that is shown above the AppChooserWidget, use
 // gtk_app_chooser_dialog_set_heading().
-type AppChooserDialog struct {
+type AppChooserDialog interface {
+	dialog
+
+	// GetHeading: returns the text to display at the top of the dialog.
+	GetHeading() string
+	// GetWidget: returns the AppChooserWidget of this dialog.
+	GetWidget() widget
+	// SetHeading: sets the text to display at the top of the dialog. If the
+	// heading is not set, the dialog displays a default text.
+	SetHeading(heading string)
+}
+
+type appChooserDialog struct {
 	Dialog
 }
 
-func wrapAppChooserDialog(obj *externglib.Object) *AppChooserDialog {
-	return &AppChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
+func wrapAppChooserDialog(obj *externglib.Object) AppChooserDialog {
+	return &appChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
 }
 
 func marshalAppChooserDialog(p uintptr) (interface{}, error) {
@@ -5699,9 +6139,15 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewAppChooserDialog(parent *Window, flags DialogFlags, file gio.File) *AppChooserDialog
+func NewAppChooserDialog(parent window, flags DialogFlags, file gio.File) AppChooserDialog
 
-func NewAppChooserDialog(parent *Window, flags DialogFlags, contentType string) *AppChooserDialog
+func NewAppChooserDialog(parent window, flags DialogFlags, contentType string) AppChooserDialog
+
+func (a appChooserDialog) GetHeading() string
+
+func (a appChooserDialog) GetWidget() widget
+
+func (a appChooserDialog) SetHeading(heading string)
 
 // AppChooserWidget is a widget for selecting applications. It is the main
 // building block for AppChooserDialog. Most applications only need to use the
@@ -5722,12 +6168,53 @@ func NewAppChooserDialog(parent *Window, flags DialogFlags, contentType string) 
 // CSS nodes
 //
 // GtkAppChooserWidget has a single CSS node with name appchooser.
-type AppChooserWidget struct {
+type AppChooserWidget interface {
+	widget
+
+	// GetDefaultText: returns the text that is shown if there are not
+	// applications that can handle the content type.
+	GetDefaultText() string
+	// GetShowAll: returns the current value of the AppChooserWidget:show-all
+	// property.
+	GetShowAll() bool
+	// GetShowDefault: returns the current value of the
+	// AppChooserWidget:show-default property.
+	GetShowDefault() bool
+	// GetShowFallback: returns the current value of the
+	// AppChooserWidget:show-fallback property.
+	GetShowFallback() bool
+	// GetShowOther: returns the current value of the
+	// AppChooserWidget:show-other property.
+	GetShowOther() bool
+	// GetShowRecommended: returns the current value of the
+	// AppChooserWidget:show-recommended property.
+	GetShowRecommended() bool
+	// SetDefaultText: sets the text that is shown if there are not applications
+	// that can handle the content type.
+	SetDefaultText(text string)
+	// SetShowAll: sets whether the app chooser should show all applications in
+	// a flat list.
+	SetShowAll(setting bool)
+	// SetShowDefault: sets whether the app chooser should show the default
+	// handler for the content type in a separate section.
+	SetShowDefault(setting bool)
+	// SetShowFallback: sets whether the app chooser should show related
+	// applications for the content type in a separate section.
+	SetShowFallback(setting bool)
+	// SetShowOther: sets whether the app chooser should show applications which
+	// are unrelated to the content type.
+	SetShowOther(setting bool)
+	// SetShowRecommended: sets whether the app chooser should show recommended
+	// applications for the content type in a separate section.
+	SetShowRecommended(setting bool)
+}
+
+type appChooserWidget struct {
 	Widget
 }
 
-func wrapAppChooserWidget(obj *externglib.Object) *AppChooserWidget {
-	return &AppChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapAppChooserWidget(obj *externglib.Object) AppChooserWidget {
+	return &appChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalAppChooserWidget(p uintptr) (interface{}, error) {
@@ -5736,7 +6223,31 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewAppChooserWidget(contentType string) *AppChooserWidget
+func NewAppChooserWidget(contentType string) AppChooserWidget
+
+func (a appChooserWidget) GetDefaultText() string
+
+func (a appChooserWidget) GetShowAll() bool
+
+func (a appChooserWidget) GetShowDefault() bool
+
+func (a appChooserWidget) GetShowFallback() bool
+
+func (a appChooserWidget) GetShowOther() bool
+
+func (a appChooserWidget) GetShowRecommended() bool
+
+func (a appChooserWidget) SetDefaultText(text string)
+
+func (a appChooserWidget) SetShowAll(setting bool)
+
+func (a appChooserWidget) SetShowDefault(setting bool)
+
+func (a appChooserWidget) SetShowFallback(setting bool)
+
+func (a appChooserWidget) SetShowOther(setting bool)
+
+func (a appChooserWidget) SetShowRecommended(setting bool)
 
 // Application is a class that handles many important aspects of a GTK+
 // application in a convenient fashion, without enforcing a one-size-fits-all
@@ -5803,12 +6314,143 @@ func NewAppChooserWidget(contentType string) *AppChooserWidget
 // GtkApplication](https://wiki.gnome.org/HowDoI/GtkApplication), [Getting
 // Started with GTK:
 // Basics](https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
-type Application struct {
+type Application interface {
+	gio.application
+
+	// AddWindow: adds a window to @application.
+	//
+	// This call can only happen after the @application has started; typically,
+	// you should add new application windows in response to the emission of the
+	// #GApplication::activate signal.
+	//
+	// This call is equivalent to setting the Window:application property of
+	// @window to @application.
+	//
+	// Normally, the connection between the application and the window will
+	// remain until the window is destroyed, but you can explicitly remove it
+	// with gtk_application_remove_window().
+	//
+	// GTK+ will keep the @application running as long as it has any windows.
+	AddWindow(window window)
+	// GetAccelsForAction: gets the accelerators that are currently associated
+	// with the given action.
+	GetAccelsForAction(detailedActionName string) []string
+	// GetActionsForAccel: returns the list of actions (possibly empty) that
+	// @accel maps to. Each item in the list is a detailed action name in the
+	// usual form.
+	//
+	// This might be useful to discover if an accel already exists in order to
+	// prevent installation of a conflicting accelerator (from an accelerator
+	// editor or a plugin system, for example). Note that having more than one
+	// action per accelerator may not be a bad thing and might make sense in
+	// cases where the actions never appear in the same context.
+	//
+	// In case there are no actions for a given accelerator, an empty array is
+	// returned. nil is never returned.
+	//
+	// It is a programmer error to pass an invalid accelerator string. If you
+	// are unsure, check it with gtk_accelerator_parse() first.
+	GetActionsForAccel(accel string) []string
+	// GetActiveWindow: gets the “active” window for the application.
+	//
+	// The active window is the one that was most recently focused (within the
+	// application). This window may not have the focus at the moment if another
+	// application has it — this is just the most recently-focused window within
+	// this application.
+	GetActiveWindow() window
+	// GetMenuByID: gets a menu from automatically loaded resources. See
+	// [Automatic resources][automatic-resources] for more information.
+	GetMenuByID(id string) gio.menu
+	// GetMenubar: returns the menu model that has been set with
+	// gtk_application_set_menubar().
+	GetMenubar() gio.menuModel
+	// GetWindowByID: returns the ApplicationWindow with the given ID.
+	//
+	// The ID of a ApplicationWindow can be retrieved with
+	// gtk_application_window_get_id().
+	GetWindowByID(id uint) window
+	// GetWindows: gets a list of the Windows associated with @application.
+	//
+	// The list is sorted by most recently focused window, such that the first
+	// element is the currently focused window. (Useful for choosing a parent
+	// for a transient window.)
+	//
+	// The list that is returned should not be modified in any way. It will only
+	// remain valid until the next focus change or window creation or deletion.
+	GetWindows() *glib.List
+	// Inhibit: inform the session manager that certain types of actions should
+	// be inhibited. This is not guaranteed to work on all platforms and for all
+	// types of actions.
+	//
+	// Applications should invoke this method when they begin an operation that
+	// should not be interrupted, such as creating a CD or DVD. The types of
+	// actions that may be blocked are specified by the @flags parameter. When
+	// the application completes the operation it should call
+	// gtk_application_uninhibit() to remove the inhibitor. Note that an
+	// application can have multiple inhibitors, and all of them must be
+	// individually removed. Inhibitors are also cleared when the application
+	// exits.
+	//
+	// Applications should not expect that they will always be able to block the
+	// action. In most cases, users will be given the option to force the action
+	// to take place.
+	//
+	// Reasons should be short and to the point.
+	//
+	// If @window is given, the session manager may point the user to this
+	// window to find out more about why the action is inhibited.
+	Inhibit(window window, flags ApplicationInhibitFlags, reason string) uint
+	// ListActionDescriptions: lists the detailed action names which have
+	// associated accelerators. See gtk_application_set_accels_for_action().
+	ListActionDescriptions() []string
+	// RemoveWindow: remove a window from @application.
+	//
+	// If @window belongs to @application then this call is equivalent to
+	// setting the Window:application property of @window to nil.
+	//
+	// The application may stop running as a result of a call to this function.
+	RemoveWindow(window window)
+	// SetAccelsForAction: sets zero or more keyboard accelerators that will
+	// trigger the given action. The first item in @accels will be the primary
+	// accelerator, which may be displayed in the UI.
+	//
+	// To remove all accelerators for an action, use an empty, zero-terminated
+	// array for @accels.
+	//
+	// For the @detailed_action_name, see g_action_parse_detailed_name() and
+	// g_action_print_detailed_name().
+	SetAccelsForAction(detailedActionName string, accels []string)
+	// SetMenubar: sets or unsets the menubar for windows of @application.
+	//
+	// This is a menubar in the traditional sense.
+	//
+	// This can only be done in the primary instance of the application, after
+	// it has been registered. #GApplication::startup is a good place to call
+	// this.
+	//
+	// Depending on the desktop environment, this may appear at the top of each
+	// window, or at the top of the screen. In some environments, if both the
+	// application menu and the menubar are set, the application menu will be
+	// presented as if it were the first item of the menubar. Other environments
+	// treat the two as completely separate — for example, the application menu
+	// may be rendered by the desktop shell while the menubar (if set) remains
+	// in each individual window.
+	//
+	// Use the base Map interface to add actions, to respond to the user
+	// selecting these menu items.
+	SetMenubar(menubar gio.menuModel)
+	// Uninhibit: removes an inhibitor that has been established with
+	// gtk_application_inhibit(). Inhibitors are also cleared when the
+	// application exits.
+	Uninhibit(cookie uint)
+}
+
+type application struct {
 	gio.Application
 }
 
-func wrapApplication(obj *externglib.Object) *Application {
-	return &Application{Application{*externglib.Object{obj}}}
+func wrapApplication(obj *externglib.Object) Application {
+	return &application{gio.Application{*externglib.Object{obj}}}
 }
 
 func marshalApplication(p uintptr) (interface{}, error) {
@@ -5817,7 +6459,35 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewApplication(applicationID string, flags gio.ApplicationFlags) *Application
+func NewApplication(applicationID string, flags gio.ApplicationFlags) Application
+
+func (a application) AddWindow(window window)
+
+func (a application) GetAccelsForAction(detailedActionName string) []string
+
+func (a application) GetActionsForAccel(accel string) []string
+
+func (a application) GetActiveWindow() window
+
+func (a application) GetMenuByID(id string) gio.menu
+
+func (a application) GetMenubar() gio.menuModel
+
+func (a application) GetWindowByID(id uint) window
+
+func (a application) GetWindows() *glib.List
+
+func (a application) Inhibit(window window, flags ApplicationInhibitFlags, reason string) uint
+
+func (a application) ListActionDescriptions() []string
+
+func (a application) RemoveWindow(window window)
+
+func (a application) SetAccelsForAction(detailedActionName string, accels []string)
+
+func (a application) SetMenubar(menubar gio.menuModel)
+
+func (a application) Uninhibit(cookie uint)
 
 // ApplicationWindow is a Window subclass that offers some extra functionality
 // for better integration with Application features. Notably, it can handle an
@@ -5885,12 +6555,35 @@ func NewApplication(applicationID string, flags gio.ApplicationFlags) *Applicati
 //
 //    GtkWidget *window = gtk_application_window_new (app);
 //
-type ApplicationWindow struct {
+type ApplicationWindow interface {
+	window
+
+	// GetHelpOverlay: gets the ShortcutsWindow that has been set up with a
+	// prior call to gtk_application_window_set_help_overlay().
+	GetHelpOverlay() shortcutsWindow
+	// GetID: returns the unique ID of the window. If the window has not yet
+	// been added to a Application, returns `0`.
+	GetID() uint
+	// GetShowMenubar: returns whether the window will display a menubar for the
+	// app menu and menubar as needed.
+	GetShowMenubar() bool
+	// SetHelpOverlay: associates a shortcuts window with the application
+	// window, and sets up an action with the name win.show-help-overlay to
+	// present it.
+	//
+	// @window takes responsibility for destroying @help_overlay.
+	SetHelpOverlay(helpOverlay shortcutsWindow)
+	// SetShowMenubar: sets whether the window will display a menubar for the
+	// app menu and menubar as needed.
+	SetShowMenubar(showMenubar bool)
+}
+
+type applicationWindow struct {
 	Window
 }
 
-func wrapApplicationWindow(obj *externglib.Object) *ApplicationWindow {
-	return &ApplicationWindow{Window{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
+	return &applicationWindow{Window{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalApplicationWindow(p uintptr) (interface{}, error) {
@@ -5899,7 +6592,17 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewApplicationWindow(application *Application) *ApplicationWindow
+func NewApplicationWindow(application application) ApplicationWindow
+
+func (a applicationWindow) GetHelpOverlay() shortcutsWindow
+
+func (a applicationWindow) GetID() uint
+
+func (a applicationWindow) GetShowMenubar() bool
+
+func (a applicationWindow) SetHelpOverlay(helpOverlay shortcutsWindow)
+
+func (a applicationWindow) SetShowMenubar(showMenubar bool)
 
 // AspectFrame: gtkAspectFrame is useful when you want pack a widget so that it
 // can resize while retaining the same aspect ratio. For instance, one might be
@@ -5912,12 +6615,44 @@ func NewApplicationWindow(application *Application) *ApplicationWindow
 // CSS nodes
 //
 // GtkAspectFrame uses a CSS node with name `frame`.
-type AspectFrame struct {
+type AspectFrame interface {
+	widget
+
+	// GetChild: gets the child widget of @self.
+	GetChild() widget
+	// GetObeyChild: returns whether the child's size request should override
+	// the set aspect ratio of the AspectFrame.
+	GetObeyChild() bool
+	// GetRatio: returns the desired aspect ratio of the child set using
+	// gtk_aspect_frame_set_ratio().
+	GetRatio() float32
+	// GetXalign: returns the horizontal alignment of the child within the
+	// allocation of the AspectFrame.
+	GetXalign() float32
+	// GetYalign: returns the vertical alignment of the child within the
+	// allocation of the AspectFrame.
+	GetYalign() float32
+	// SetChild: sets the child widget of @self.
+	SetChild(child widget)
+	// SetObeyChild: sets whether the aspect ratio of the child's size request
+	// should override the set aspect ratio of the AspectFrame.
+	SetObeyChild(obeyChild bool)
+	// SetRatio: sets the desired aspect ratio of the child.
+	SetRatio(ratio float32)
+	// SetXalign: sets the horizontal alignment of the child within the
+	// allocation of the AspectFrame.
+	SetXalign(xalign float32)
+	// SetYalign: sets the vertical alignment of the child within the allocation
+	// of the AspectFrame.
+	SetYalign(yalign float32)
+}
+
+type aspectFrame struct {
 	Widget
 }
 
-func wrapAspectFrame(obj *externglib.Object) *AspectFrame {
-	return &AspectFrame{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapAspectFrame(obj *externglib.Object) AspectFrame {
+	return &aspectFrame{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalAspectFrame(p uintptr) (interface{}, error) {
@@ -5926,7 +6661,27 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool) *AspectFrame
+func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame
+
+func (a aspectFrame) GetChild() widget
+
+func (a aspectFrame) GetObeyChild() bool
+
+func (a aspectFrame) GetRatio() float32
+
+func (a aspectFrame) GetXalign() float32
+
+func (a aspectFrame) GetYalign() float32
+
+func (a aspectFrame) SetChild(child widget)
+
+func (a aspectFrame) SetObeyChild(obeyChild bool)
+
+func (a aspectFrame) SetRatio(ratio float32)
+
+func (a aspectFrame) SetXalign(xalign float32)
+
+func (a aspectFrame) SetYalign(yalign float32)
 
 // Assistant: a Assistant is a widget used to represent a generally complex
 // operation split up into several steps. Each step consists of one or more
@@ -5963,12 +6718,105 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 //
 // GtkAssistant has a single CSS node with the name window and style class
 // .assistant.
-type Assistant struct {
+type Assistant interface {
+	window
+
+	// AddActionWidget: adds a widget to the action area of a Assistant.
+	AddActionWidget(child widget)
+	// AppendPage: appends a page to the @assistant.
+	AppendPage(page widget) int
+	// Commit: erases the visited page history so the back button is not shown
+	// on the current page, and removes the cancel button from subsequent pages.
+	//
+	// Use this when the information provided up to the current page is
+	// hereafter deemed permanent and cannot be modified or undone. For example,
+	// showing a progress page to track a long-running, unreversible operation
+	// after the user has clicked apply on a confirmation page.
+	Commit()
+	// GetCurrentPage: returns the page number of the current page.
+	GetCurrentPage() int
+	// GetNPages: returns the number of pages in the @assistant
+	GetNPages() int
+	// GetNthPage: returns the child widget contained in page number @page_num.
+	GetNthPage(pageNum int) widget
+	// GetPage: returns the AssistantPage object for @child.
+	GetPage(child widget) assistantPage
+	// GetPageComplete: gets whether @page is complete.
+	GetPageComplete(page widget) bool
+	// GetPageTitle: gets the title for @page.
+	GetPageTitle(page widget) string
+	// GetPageType: gets the page type of @page.
+	GetPageType(page widget) AssistantPageType
+	// GetPages: gets a list model of the assistant pages.
+	GetPages() gio.ListModel
+	// InsertPage: inserts a page in the @assistant at a given position.
+	InsertPage(page widget, position int) int
+	// NextPage: navigate to the next page.
+	//
+	// It is a programming error to call this function when there is no next
+	// page.
+	//
+	// This function is for use when creating pages of the
+	// K_ASSISTANT_PAGE_CUSTOM type.
+	NextPage()
+	// PrependPage: prepends a page to the @assistant.
+	PrependPage(page widget) int
+	// PreviousPage: navigate to the previous visited page.
+	//
+	// It is a programming error to call this function when no previous page is
+	// available.
+	//
+	// This function is for use when creating pages of the
+	// K_ASSISTANT_PAGE_CUSTOM type.
+	PreviousPage()
+	// RemoveActionWidget: removes a widget from the action area of a Assistant.
+	RemoveActionWidget(child widget)
+	// RemovePage: removes the @page_num’s page from @assistant.
+	RemovePage(pageNum int)
+	// SetCurrentPage: switches the page to @page_num.
+	//
+	// Note that this will only be necessary in custom buttons, as the
+	// @assistant flow can be set with gtk_assistant_set_forward_page_func().
+	SetCurrentPage(pageNum int)
+	// SetForwardPageFunc: sets the page forwarding function to be @page_func.
+	//
+	// This function will be used to determine what will be the next page when
+	// the user presses the forward button. Setting @page_func to nil will make
+	// the assistant to use the default forward function, which just goes to the
+	// next visible page.
+	SetForwardPageFunc(pageFunc AssistantPageFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+	// SetPageComplete: sets whether @page contents are complete.
+	//
+	// This will make @assistant update the buttons state to be able to continue
+	// the task.
+	SetPageComplete(page widget, complete bool)
+	// SetPageTitle: sets a title for @page.
+	//
+	// The title is displayed in the header area of the assistant when @page is
+	// the current page.
+	SetPageTitle(page widget, title string)
+	// SetPageType: sets the page type for @page.
+	//
+	// The page type determines the page behavior in the @assistant.
+	SetPageType(page widget, _type AssistantPageType)
+	// UpdateButtonsState: forces @assistant to recompute the buttons state.
+	//
+	// GTK automatically takes care of this in most situations, e.g. when the
+	// user goes to a different page, or when the visibility or completeness of
+	// a page changes.
+	//
+	// One situation where it can be necessary to call this function is when
+	// changing a value on the current page affects the future page flow of the
+	// assistant.
+	UpdateButtonsState()
+}
+
+type assistant struct {
 	Window
 }
 
-func wrapAssistant(obj *externglib.Object) *Assistant {
-	return &Assistant{Window{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapAssistant(obj *externglib.Object) Assistant {
+	return &assistant{Window{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalAssistant(p uintptr) (interface{}, error) {
@@ -5977,14 +6825,67 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewAssistant() *Assistant
+func NewAssistant() Assistant
 
-type AssistantPage struct {
+func (a assistant) AddActionWidget(child widget)
+
+func (a assistant) AppendPage(page widget) int
+
+func (a assistant) Commit()
+
+func (a assistant) GetCurrentPage() int
+
+func (a assistant) GetNPages() int
+
+func (a assistant) GetNthPage(pageNum int) widget
+
+func (a assistant) GetPage(child widget) assistantPage
+
+func (a assistant) GetPageComplete(page widget) bool
+
+func (a assistant) GetPageTitle(page widget) string
+
+func (a assistant) GetPageType(page widget) AssistantPageType
+
+func (a assistant) GetPages() gio.ListModel
+
+func (a assistant) InsertPage(page widget, position int) int
+
+func (a assistant) NextPage()
+
+func (a assistant) PrependPage(page widget) int
+
+func (a assistant) PreviousPage()
+
+func (a assistant) RemoveActionWidget(child widget)
+
+func (a assistant) RemovePage(pageNum int)
+
+func (a assistant) SetCurrentPage(pageNum int)
+
+func (a assistant) SetForwardPageFunc(pageFunc AssistantPageFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+
+func (a assistant) SetPageComplete(page widget, complete bool)
+
+func (a assistant) SetPageTitle(page widget, title string)
+
+func (a assistant) SetPageType(page widget, _type AssistantPageType)
+
+func (a assistant) UpdateButtonsState()
+
+type AssistantPage interface {
+	gextras.Objector
+
+	// GetChild: returns the child to which @page belongs.
+	GetChild() widget
+}
+
+type assistantPage struct {
 	*externglib.Object
 }
 
-func wrapAssistantPage(obj *externglib.Object) *AssistantPage {
-	return &AssistantPage{*externglib.Object{obj}}
+func wrapAssistantPage(obj *externglib.Object) AssistantPage {
+	return &assistantPage{*externglib.Object{obj}}
 }
 
 func marshalAssistantPage(p uintptr) (interface{}, error) {
@@ -5993,17 +6894,23 @@ func marshalAssistantPage(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (a assistantPage) GetChild() widget
+
 // BinLayout: gtkBinLayout is a LayoutManager subclass useful for create "bins"
 // of widgets. GtkBinLayout will stack each child of a widget on top of each
 // other, using the Widget:hexpand, Widget:vexpand, Widget:halign, and
 // Widget:valign properties of each child to determine where they should be
 // positioned.
-type BinLayout struct {
+type BinLayout interface {
+	layoutManager
+}
+
+type binLayout struct {
 	LayoutManager
 }
 
-func wrapBinLayout(obj *externglib.Object) *BinLayout {
-	return &BinLayout{LayoutManager{*externglib.Object{obj}}}
+func wrapBinLayout(obj *externglib.Object) BinLayout {
+	return &binLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalBinLayout(p uintptr) (interface{}, error) {
@@ -6012,19 +6919,47 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewBinLayout() *BinLayout
+func NewBinLayout() BinLayout
 
 // BookmarkList is a list model that wraps GBookmarkFile. It presents a Model
 // and fills it asynchronously with the Infos returned from that function.
 //
 // The Infos in the list have some attributes in the recent namespace added:
 // recent::private (boolean) and recent:applications (stringv).
-type BookmarkList struct {
+type BookmarkList interface {
+	gextras.Objector
+
+	// GetAttributes: gets the attributes queried on the children.
+	GetAttributes() string
+	// GetFilename: returns the filename of the bookmark file that this list is
+	// loading.
+	GetFilename() string
+	// GetIOPriority: gets the IO priority set via
+	// gtk_bookmark_list_set_io_priority().
+	GetIOPriority() int
+	// IsLoading: returns true if the files are currently being loaded.
+	//
+	// Files will be added to @self from time to time while loading is going on.
+	// The order in which are added is undefined and may change in between runs.
+	IsLoading() bool
+	// SetAttributes: sets the @attributes to be enumerated and starts the
+	// enumeration.
+	//
+	// If @attributes is nil, no attributes will be queried, but a list of Infos
+	// will still be created.
+	SetAttributes(attributes string)
+	// SetIOPriority: sets the IO priority to use while loading files.
+	//
+	// The default IO priority is G_PRIORITY_DEFAULT.
+	SetIOPriority(ioPriority int)
+}
+
+type bookmarkList struct {
 	*externglib.Object
 }
 
-func wrapBookmarkList(obj *externglib.Object) *BookmarkList {
-	return &BookmarkList{*externglib.Object{obj}}
+func wrapBookmarkList(obj *externglib.Object) BookmarkList {
+	return &bookmarkList{*externglib.Object{obj}}
 }
 
 func marshalBookmarkList(p uintptr) (interface{}, error) {
@@ -6033,16 +6968,44 @@ func marshalBookmarkList(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewBookmarkList(filename string, attributes string) *BookmarkList
+func NewBookmarkList(filename string, attributes string) BookmarkList
+
+func (b bookmarkList) GetAttributes() string
+
+func (b bookmarkList) GetFilename() string
+
+func (b bookmarkList) GetIOPriority() int
+
+func (b bookmarkList) IsLoading() bool
+
+func (b bookmarkList) SetAttributes(attributes string)
+
+func (b bookmarkList) SetIOPriority(ioPriority int)
 
 // BoolFilter: gtkBoolFilter is a simple filter that takes a boolean Expression
 // to determine whether to include items.
-type BoolFilter struct {
+type BoolFilter interface {
+	filter
+
+	// GetExpression: gets the expression that the filter uses to evaluate if an
+	// item should be filtered.
+	GetExpression() expression
+	// GetInvert: returns whether the filter inverts the expression.
+	GetInvert() bool
+	// SetExpression: sets the expression that the filter uses to check if items
+	// should be filtered. The expression must have a value type of
+	// TYPE_BOOLEAN.
+	SetExpression(expression expression)
+	// SetInvert: sets whether the filter should invert the expression.
+	SetInvert(invert bool)
+}
+
+type boolFilter struct {
 	Filter
 }
 
-func wrapBoolFilter(obj *externglib.Object) *BoolFilter {
-	return &BoolFilter{Filter{*externglib.Object{obj}}}
+func wrapBoolFilter(obj *externglib.Object) BoolFilter {
+	return &boolFilter{Filter{*externglib.Object{obj}}}
 }
 
 func marshalBoolFilter(p uintptr) (interface{}, error) {
@@ -6051,7 +7014,15 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewBoolFilter(expression *Expression) *BoolFilter
+func NewBoolFilter(expression expression) BoolFilter
+
+func (b boolFilter) GetExpression() expression
+
+func (b boolFilter) GetInvert() bool
+
+func (b boolFilter) SetExpression(expression expression)
+
+func (b boolFilter) SetInvert(invert bool)
 
 // Box: the GtkBox widget arranges child widgets into a single row or column,
 // depending upon the value of its Orientable:orientation property. Within the
@@ -6083,12 +7054,52 @@ func NewBoolFilter(expression *Expression) *BoolFilter
 // Accessibility
 //
 // GtkBox uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type Box struct {
+type Box interface {
+	widget
+
+	// Append: adds @child as the last child to @box.
+	Append(child widget)
+	// GetBaselinePosition: gets the value set by
+	// gtk_box_set_baseline_position().
+	GetBaselinePosition() BaselinePosition
+	// GetHomogeneous: returns whether the box is homogeneous (all children are
+	// the same size). See gtk_box_set_homogeneous().
+	GetHomogeneous() bool
+	// GetSpacing: gets the value set by gtk_box_set_spacing().
+	GetSpacing() int
+	// InsertChildAfter: inserts @child in the position after @sibling in the
+	// list of @box children. If @sibling is nil, insert @child at the first
+	// position.
+	InsertChildAfter(child widget, sibling widget)
+	// Prepend: adds @child as the first child to @box.
+	Prepend(child widget)
+	// Remove: removes a child widget from @box, after it has been added with
+	// gtk_box_append(), gtk_box_prepend(), or gtk_box_insert_child_after().
+	Remove(child widget)
+	// ReorderChildAfter: moves @child to the position after @sibling in the
+	// list of @box children. If @sibling is nil, move @child to the first
+	// position.
+	ReorderChildAfter(child widget, sibling widget)
+	// SetBaselinePosition: sets the baseline position of a box. This affects
+	// only horizontal boxes with at least one baseline aligned child. If there
+	// is more vertical space available than requested, and the baseline is not
+	// allocated by the parent then @position is used to allocate the baseline
+	// wrt the extra space available.
+	SetBaselinePosition(position BaselinePosition)
+	// SetHomogeneous: sets the Box:homogeneous property of @box, controlling
+	// whether or not all children of @box are given equal space in the box.
+	SetHomogeneous(homogeneous bool)
+	// SetSpacing: sets the Box:spacing property of @box, which is the number of
+	// pixels to place between children of @box.
+	SetSpacing(spacing int)
+}
+
+type box struct {
 	Widget
 }
 
-func wrapBox(obj *externglib.Object) *Box {
-	return &Box{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapBox(obj *externglib.Object) Box {
+	return &box{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalBox(p uintptr) (interface{}, error) {
@@ -6097,7 +7108,29 @@ func marshalBox(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewBox(orientation Orientation, spacing int) *Box
+func NewBox(orientation Orientation, spacing int) Box
+
+func (b box) Append(child widget)
+
+func (b box) GetBaselinePosition() BaselinePosition
+
+func (b box) GetHomogeneous() bool
+
+func (b box) GetSpacing() int
+
+func (b box) InsertChildAfter(child widget, sibling widget)
+
+func (b box) Prepend(child widget)
+
+func (b box) Remove(child widget)
+
+func (b box) ReorderChildAfter(child widget, sibling widget)
+
+func (b box) SetBaselinePosition(position BaselinePosition)
+
+func (b box) SetHomogeneous(homogeneous bool)
+
+func (b box) SetSpacing(spacing int)
 
 // BoxLayout: a GtkBoxLayout is a layout manager that arranges the children of
 // any widget using it into a single row or column, depending on the value of
@@ -6110,12 +7143,37 @@ func NewBox(orientation Orientation, spacing int) *Box
 //
 // If you want to specify the amount of space placed between each child, you can
 // use the BoxLayout:spacing property.
-type BoxLayout struct {
+type BoxLayout interface {
+	layoutManager
+
+	// GetBaselinePosition: gets the value set by
+	// gtk_box_layout_set_baseline_position().
+	GetBaselinePosition() BaselinePosition
+	// GetHomogeneous: returns whether the layout is set to be homogeneous.
+	GetHomogeneous() bool
+	// GetSpacing: returns the space that @box_layout puts between children.
+	GetSpacing() uint
+	// SetBaselinePosition: sets the baseline position of a box layout.
+	//
+	// The baseline position affects only horizontal boxes with at least one
+	// baseline aligned child. If there is more vertical space available than
+	// requested, and the baseline is not allocated by the parent then the given
+	// @position is used to allocate the baseline within the extra space
+	// available.
+	SetBaselinePosition(position BaselinePosition)
+	// SetHomogeneous: sets whether the box layout will allocate the same size
+	// to all children.
+	SetHomogeneous(homogeneous bool)
+	// SetSpacing: sets how much spacing to put between children.
+	SetSpacing(spacing uint)
+}
+
+type boxLayout struct {
 	LayoutManager
 }
 
-func wrapBoxLayout(obj *externglib.Object) *BoxLayout {
-	return &BoxLayout{LayoutManager{*externglib.Object{obj}}}
+func wrapBoxLayout(obj *externglib.Object) BoxLayout {
+	return &boxLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalBoxLayout(p uintptr) (interface{}, error) {
@@ -6124,7 +7182,19 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewBoxLayout(orientation Orientation) *BoxLayout
+func NewBoxLayout(orientation Orientation) BoxLayout
+
+func (b boxLayout) GetBaselinePosition() BaselinePosition
+
+func (b boxLayout) GetHomogeneous() bool
+
+func (b boxLayout) GetSpacing() uint
+
+func (b boxLayout) SetBaselinePosition(position BaselinePosition)
+
+func (b boxLayout) SetHomogeneous(homogeneous bool)
+
+func (b boxLayout) SetSpacing(spacing uint)
 
 // Builder: a GtkBuilder is an auxiliary object that reads textual descriptions
 // of a user interface and instantiates the described objects. To create a
@@ -6292,12 +7362,163 @@ func NewBoxLayout(orientation Orientation) *BoxLayout
 // Additionally, since 3.10 a special <template> tag has been added to the
 // format allowing one to define a widget class’s components. See the [GtkWidget
 // documentation][composite-templates] for details.
-type Builder struct {
+type Builder interface {
+	gextras.Objector
+
+	// AddFromFile: parses a file containing a [GtkBuilder UI
+	// definition][BUILDER-UI] and merges it with the current contents of
+	// @builder.
+	//
+	// This function is useful if you need to call
+	// gtk_builder_set_current_object() to add user data to callbacks before
+	// loading GtkBuilder UI. Otherwise, you probably want
+	// gtk_builder_new_from_file() instead.
+	//
+	// If an error occurs, 0 will be returned and @error will be assigned a
+	// #GError from the K_BUILDER_ERROR, MARKUP_ERROR or FILE_ERROR domain.
+	//
+	// It’s not really reasonable to attempt to handle failures of this call.
+	// You should not use this function with untrusted files (ie: files that are
+	// not part of your application). Broken Builder files can easily crash your
+	// program, and it’s possible that memory was leaked leading up to the
+	// reported failure. The only reasonable thing to do when an error is
+	// detected is to call g_error().
+	AddFromFile(filename string) bool
+	// AddFromResource: parses a resource file containing a [GtkBuilder UI
+	// definition][BUILDER-UI] and merges it with the current contents of
+	// @builder.
+	//
+	// This function is useful if you need to call
+	// gtk_builder_set_current_object() to add user data to callbacks before
+	// loading GtkBuilder UI. Otherwise, you probably want
+	// gtk_builder_new_from_resource() instead.
+	//
+	// If an error occurs, 0 will be returned and @error will be assigned a
+	// #GError from the K_BUILDER_ERROR, MARKUP_ERROR or RESOURCE_ERROR domain.
+	//
+	// It’s not really reasonable to attempt to handle failures of this call.
+	// The only reasonable thing to do when an error is detected is to call
+	// g_error().
+	AddFromResource(resourcePath string) bool
+	// AddFromString: parses a string containing a [GtkBuilder UI
+	// definition][BUILDER-UI] and merges it with the current contents of
+	// @builder.
+	//
+	// This function is useful if you need to call
+	// gtk_builder_set_current_object() to add user data to callbacks before
+	// loading GtkBuilder UI. Otherwise, you probably want
+	// gtk_builder_new_from_string() instead.
+	//
+	// Upon errors false will be returned and @error will be assigned a #GError
+	// from the K_BUILDER_ERROR, MARKUP_ERROR or VARIANT_PARSE_ERROR domain.
+	//
+	// It’s not really reasonable to attempt to handle failures of this call.
+	// The only reasonable thing to do when an error is detected is to call
+	// g_error().
+	AddFromString(buffer string, length int) bool
+	// AddObjectsFromFile: parses a file containing a [GtkBuilder UI
+	// definition][BUILDER-UI] building only the requested objects and merges
+	// them with the current contents of @builder.
+	//
+	// Upon errors 0 will be returned and @error will be assigned a #GError from
+	// the K_BUILDER_ERROR, MARKUP_ERROR or FILE_ERROR domain.
+	//
+	// If you are adding an object that depends on an object that is not its
+	// child (for instance a TreeView that depends on its TreeModel), you have
+	// to explicitly list all of them in @object_ids.
+	AddObjectsFromFile(filename string, objectIds []string) bool
+	// AddObjectsFromResource: parses a resource file containing a [GtkBuilder
+	// UI definition][BUILDER-UI] building only the requested objects and merges
+	// them with the current contents of @builder.
+	//
+	// Upon errors 0 will be returned and @error will be assigned a #GError from
+	// the K_BUILDER_ERROR, MARKUP_ERROR or RESOURCE_ERROR domain.
+	//
+	// If you are adding an object that depends on an object that is not its
+	// child (for instance a TreeView that depends on its TreeModel), you have
+	// to explicitly list all of them in @object_ids.
+	AddObjectsFromResource(resourcePath string, objectIds []string) bool
+	// AddObjectsFromString: parses a string containing a [GtkBuilder UI
+	// definition][BUILDER-UI] building only the requested objects and merges
+	// them with the current contents of @builder.
+	//
+	// Upon errors false will be returned and @error will be assigned a #GError
+	// from the K_BUILDER_ERROR or MARKUP_ERROR domain.
+	//
+	// If you are adding an object that depends on an object that is not its
+	// child (for instance a TreeView that depends on its TreeModel), you have
+	// to explicitly list all of them in @object_ids.
+	AddObjectsFromString(buffer string, length int, objectIds []string) bool
+	// CreateClosure: creates a closure to invoke the function called
+	// @function_name, by using the create_closure() implementation of
+	// @builder's BuilderScope.
+	//
+	// If no closure could be created, nil will be returned and @error will be
+	// set.
+	CreateClosure(functionName string, flags BuilderClosureFlags, object gextras.Objector) *externglib.Closure
+	// ExposeObject: add @object to the @builder object pool so it can be
+	// referenced just like any other object built by builder.
+	ExposeObject(name string, object gextras.Objector)
+	// ExtendWithTemplate: main private entry point for building composite
+	// container components from template XML.
+	//
+	// This is exported purely to let gtk-builder-tool validate templates,
+	// applications have no need to call this function.
+	ExtendWithTemplate(object gextras.Objector, templateType externglib.Type, buffer string, length int) bool
+	// GetCurrentObject: gets the current object set via
+	// gtk_builder_set_current_object().
+	GetCurrentObject() gextras.Objector
+	// GetObject: gets the object named @name. Note that this function does not
+	// increment the reference count of the returned object.
+	GetObject(name string) gextras.Objector
+	// GetObjects: gets all objects that have been constructed by @builder. Note
+	// that this function does not increment the reference counts of the
+	// returned objects.
+	GetObjects() *glib.SList
+	// GetScope: gets the scope in use that was set via gtk_builder_set_scope().
+	//
+	// See the BuilderScope documentation for details.
+	GetScope() BuilderScope
+	// GetTranslationDomain: gets the translation domain of @builder.
+	GetTranslationDomain() string
+	// GetTypeFromName: looks up a type by name, using the virtual function that
+	// Builder has for that purpose. This is mainly used when implementing the
+	// Buildable interface on a type.
+	GetTypeFromName(typeName string) externglib.Type
+	// SetCurrentObject: sets the current object for the @builder. The current
+	// object can be thought of as the `this` object that the builder is working
+	// for and will often be used as the default object when an object is
+	// optional.
+	//
+	// gtk_widget_init_template() for example will set the current object to the
+	// widget the template is inited for. For functions like
+	// gtk_builder_new_from_resource(), the current object will be nil.
+	SetCurrentObject(currentObject gextras.Objector)
+	// SetScope: sets the scope the builder should operate in.
+	//
+	// If @scope is nil a new BuilderCScope will be created.
+	//
+	// See the BuilderScope documentation for details.
+	SetScope(scope BuilderScope)
+	// SetTranslationDomain: sets the translation domain of @builder. See
+	// Builder:translation-domain.
+	SetTranslationDomain(domain string)
+	// ValueFromStringType: like gtk_builder_value_from_string(), this function
+	// demarshals a value from a string, but takes a #GType instead of Spec.
+	// This function calls g_value_init() on the @value argument, so it need not
+	// be initialised beforehand.
+	//
+	// Upon errors false will be returned and @error will be assigned a #GError
+	// from the K_BUILDER_ERROR domain.
+	ValueFromStringType(_type externglib.Type, string string) (externglib.Value, bool)
+}
+
+type builder struct {
 	*externglib.Object
 }
 
-func wrapBuilder(obj *externglib.Object) *Builder {
-	return &Builder{*externglib.Object{obj}}
+func wrapBuilder(obj *externglib.Object) Builder {
+	return &builder{*externglib.Object{obj}}
 }
 
 func marshalBuilder(p uintptr) (interface{}, error) {
@@ -6306,20 +7527,74 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewBuilder() *Builder
+func NewBuilder() Builder
 
-func NewBuilder(filename string) *Builder
+func NewBuilder(filename string) Builder
 
-func NewBuilder(resourcePath string) *Builder
+func NewBuilder(resourcePath string) Builder
 
-func NewBuilder(string string, length int) *Builder
+func NewBuilder(string string, length int) Builder
 
-type BuilderCScope struct {
+func (b builder) AddFromFile(filename string) bool
+
+func (b builder) AddFromResource(resourcePath string) bool
+
+func (b builder) AddFromString(buffer string, length int) bool
+
+func (b builder) AddObjectsFromFile(filename string, objectIds []string) bool
+
+func (b builder) AddObjectsFromResource(resourcePath string, objectIds []string) bool
+
+func (b builder) AddObjectsFromString(buffer string, length int, objectIds []string) bool
+
+func (b builder) CreateClosure(functionName string, flags BuilderClosureFlags, object gextras.Objector) *externglib.Closure
+
+func (b builder) ExposeObject(name string, object gextras.Objector)
+
+func (b builder) ExtendWithTemplate(object gextras.Objector, templateType externglib.Type, buffer string, length int) bool
+
+func (b builder) GetCurrentObject() gextras.Objector
+
+func (b builder) GetObject(name string) gextras.Objector
+
+func (b builder) GetObjects() *glib.SList
+
+func (b builder) GetScope() BuilderScope
+
+func (b builder) GetTranslationDomain() string
+
+func (b builder) GetTypeFromName(typeName string) externglib.Type
+
+func (b builder) SetCurrentObject(currentObject gextras.Objector)
+
+func (b builder) SetScope(scope BuilderScope)
+
+func (b builder) SetTranslationDomain(domain string)
+
+func (b builder) ValueFromStringType(_type externglib.Type, string string) (externglib.Value, bool)
+
+type BuilderCScope interface {
+	gextras.Objector
+
+	// AddCallbackSymbol: adds the @callback_symbol to the scope of @builder
+	// under the given @callback_name.
+	//
+	// Using this function overrides the behavior of
+	// gtk_builder_create_closure() for any callback symbols that are added.
+	// Using this method allows for better encapsulation as it does not require
+	// that callback symbols be declared in the global namespace.
+	AddCallbackSymbol(callbackName string, callbackSymbol interface{})
+	// LookupCallbackSymbol: fetches a symbol previously added to @self with
+	// gtk_builder_cscope_add_callback_symbol().
+	LookupCallbackSymbol(callbackName string) interface{}
+}
+
+type builderCScope struct {
 	*externglib.Object
 }
 
-func wrapBuilderCScope(obj *externglib.Object) *BuilderCScope {
-	return &BuilderCScope{*externglib.Object{obj}}
+func wrapBuilderCScope(obj *externglib.Object) BuilderCScope {
+	return &builderCScope{*externglib.Object{obj}}
 }
 
 func marshalBuilderCScope(p uintptr) (interface{}, error) {
@@ -6328,7 +7603,11 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewBuilderCScope() *BuilderCScope
+func NewBuilderCScope() BuilderCScope
+
+func (b builderCScope) AddCallbackSymbol(callbackName string, callbackSymbol interface{})
+
+func (b builderCScope) LookupCallbackSymbol(callbackName string) interface{}
 
 // BuilderListItemFactory is a ListItemFactory that creates widgets by
 // instantiating Builder UI templates. The templates must be extending ListItem,
@@ -6349,12 +7628,25 @@ func NewBuilderCScope() *BuilderCScope
 //          </property>
 //        </template>
 //      </interface>
-type BuilderListItemFactory struct {
+type BuilderListItemFactory interface {
+	listItemFactory
+
+	// GetBytes: gets the data used as the Builder UI template for constructing
+	// listitems.
+	GetBytes() *glib.Bytes
+	// GetResource: if the data references a resource, gets the path of that
+	// resource.
+	GetResource() string
+	// GetScope: gets the scope used when constructing listitems.
+	GetScope() BuilderScope
+}
+
+type builderListItemFactory struct {
 	ListItemFactory
 }
 
-func wrapBuilderListItemFactory(obj *externglib.Object) *BuilderListItemFactory {
-	return &BuilderListItemFactory{ListItemFactory{*externglib.Object{obj}}}
+func wrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactory {
+	return &builderListItemFactory{ListItemFactory{*externglib.Object{obj}}}
 }
 
 func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
@@ -6363,9 +7655,15 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewBuilderListItemFactory(scope BuilderScope, bytes *glib.Bytes) *BuilderListItemFactory
+func NewBuilderListItemFactory(scope BuilderScope, bytes *glib.Bytes) BuilderListItemFactory
 
-func NewBuilderListItemFactory(scope BuilderScope, resourcePath string) *BuilderListItemFactory
+func NewBuilderListItemFactory(scope BuilderScope, resourcePath string) BuilderListItemFactory
+
+func (b builderListItemFactory) GetBytes() *glib.Bytes
+
+func (b builderListItemFactory) GetResource() string
+
+func (b builderListItemFactory) GetScope() BuilderScope
 
 // Button: the Button widget is generally used to trigger a callback function
 // that is called when the button is pressed. The various signals and how to use
@@ -6394,12 +7692,48 @@ func NewBuilderListItemFactory(scope BuilderScope, resourcePath string) *Builder
 // Accessibility
 //
 // GtkButton uses the K_ACCESSIBLE_ROLE_BUTTON role.
-type Button struct {
+type Button interface {
+	widget
+
+	// GetChild: gets the child widget of @button.
+	GetChild() widget
+	// GetHasFrame: returns whether the button has a frame.
+	GetHasFrame() bool
+	// GetIconName: returns the icon name set via gtk_button_set_icon_name().
+	GetIconName() string
+	// GetLabel: fetches the text from the label of the button, as set by
+	// gtk_button_set_label(). If the label text has not been set the return
+	// value will be nil. This will be the case if you create an empty button
+	// with gtk_button_new() to use as a container.
+	GetLabel() string
+	// GetUseUnderline: returns whether an embedded underline in the button
+	// label indicates a mnemonic. See gtk_button_set_use_underline().
+	GetUseUnderline() bool
+	// SetChild: sets the child widget of @button.
+	SetChild(child widget)
+	// SetHasFrame: sets the style of the button. Buttons can has a flat
+	// appearance or have a frame drawn around them.
+	SetHasFrame(hasFrame bool)
+	// SetIconName: adds a Image with the given icon name as a child. If @button
+	// already contains a child widget, that child widget will be removed and
+	// replaced with the image.
+	SetIconName(iconName string)
+	// SetLabel: sets the text of the label of the button to @label.
+	//
+	// This will also clear any previously set labels.
+	SetLabel(label string)
+	// SetUseUnderline: if true, an underline in the text of the button label
+	// indicates the next character should be used for the mnemonic accelerator
+	// key.
+	SetUseUnderline(useUnderline bool)
+}
+
+type button struct {
 	Widget
 }
 
-func wrapButton(obj *externglib.Object) *Button {
-	return &Button{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapButton(obj *externglib.Object) Button {
+	return &button{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalButton(p uintptr) (interface{}, error) {
@@ -6408,20 +7742,44 @@ func marshalButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewButton() *Button
+func NewButton() Button
 
-func NewButton(iconName string) *Button
+func NewButton(iconName string) Button
 
-func NewButton(label string) *Button
+func NewButton(label string) Button
 
-func NewButton(label string) *Button
+func NewButton(label string) Button
 
-type CClosureExpression struct {
+func (b button) GetChild() widget
+
+func (b button) GetHasFrame() bool
+
+func (b button) GetIconName() string
+
+func (b button) GetLabel() string
+
+func (b button) GetUseUnderline() bool
+
+func (b button) SetChild(child widget)
+
+func (b button) SetHasFrame(hasFrame bool)
+
+func (b button) SetIconName(iconName string)
+
+func (b button) SetLabel(label string)
+
+func (b button) SetUseUnderline(useUnderline bool)
+
+type CClosureExpression interface {
+	expression
+}
+
+type cClosureExpression struct {
 	Expression
 }
 
-func wrapCClosureExpression(obj *externglib.Object) *CClosureExpression {
-	return &CClosureExpression{Expression{obj}}
+func wrapCClosureExpression(obj *externglib.Object) CClosureExpression {
+	return &cClosureExpression{Expression{obj}}
 }
 
 func marshalCClosureExpression(p uintptr) (interface{}, error) {
@@ -6471,12 +7829,48 @@ func marshalCClosureExpression(p uintptr) (interface{}, error) {
 // style class. The label of the current day get the .today style class.
 //
 // Marked day labels get the :selected state assigned.
-type Calendar struct {
+type Calendar interface {
+	widget
+
+	// ClearMarks: remove all visual markers.
+	ClearMarks()
+	// GetDate: returns a Time representing the shown year, month and the
+	// selected day, in the local time zone.
+	GetDate() *glib.DateTime
+	// GetDayIsMarked: returns if the @day of the @calendar is already marked.
+	GetDayIsMarked(day uint) bool
+	// GetShowDayNames: returns whether @self is currently showing the names of
+	// the week days above the day numbers, i.e. the value of the
+	// Calendar:show-day-names property.
+	GetShowDayNames() bool
+	// GetShowHeading: returns whether @self is currently showing the heading,
+	// i.e. the value of the Calendar:show-heading property.
+	GetShowHeading() bool
+	// GetShowWeekNumbers: returns whether @self is showing week numbers right
+	// now, i.e. the value of the Calendar:show-week-numbers property.
+	GetShowWeekNumbers() bool
+	// MarkDay: places a visual marker on a particular day.
+	MarkDay(day uint)
+	// SelectDay: will switch to @date's year and month and select its day.
+	SelectDay(date *glib.DateTime)
+	// SetShowDayNames: sets whether the calendar shows day names.
+	SetShowDayNames(value bool)
+	// SetShowHeading: sets whether the calendar should show a heading
+	// containing the current year and month as well as buttons for changing
+	// both.
+	SetShowHeading(value bool)
+	// SetShowWeekNumbers: sets whether week numbers are shown in the calendar.
+	SetShowWeekNumbers(value bool)
+	// UnmarkDay: removes the visual marker from a particular day.
+	UnmarkDay(day uint)
+}
+
+type calendar struct {
 	Widget
 }
 
-func wrapCalendar(obj *externglib.Object) *Calendar {
-	return &Calendar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapCalendar(obj *externglib.Object) Calendar {
+	return &calendar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCalendar(p uintptr) (interface{}, error) {
@@ -6485,15 +7879,43 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCalendar() *Calendar
+func NewCalendar() Calendar
+
+func (c calendar) ClearMarks()
+
+func (c calendar) GetDate() *glib.DateTime
+
+func (c calendar) GetDayIsMarked(day uint) bool
+
+func (c calendar) GetShowDayNames() bool
+
+func (c calendar) GetShowHeading() bool
+
+func (c calendar) GetShowWeekNumbers() bool
+
+func (c calendar) MarkDay(day uint)
+
+func (c calendar) SelectDay(date *glib.DateTime)
+
+func (c calendar) SetShowDayNames(value bool)
+
+func (c calendar) SetShowHeading(value bool)
+
+func (c calendar) SetShowWeekNumbers(value bool)
+
+func (c calendar) UnmarkDay(day uint)
 
 // CallbackAction: a ShortcutAction that invokes a callback.
-type CallbackAction struct {
+type CallbackAction interface {
+	shortcutAction
+}
+
+type callbackAction struct {
 	ShortcutAction
 }
 
-func wrapCallbackAction(obj *externglib.Object) *CallbackAction {
-	return &CallbackAction{ShortcutAction{*externglib.Object{obj}}}
+func wrapCallbackAction(obj *externglib.Object) CallbackAction {
+	return &callbackAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalCallbackAction(p uintptr) (interface{}, error) {
@@ -6502,7 +7924,7 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCallbackAction(callback ShortcutFunc, data unsafe.Pointer, destroy unsafe.Pointer) *CallbackAction
+func NewCallbackAction(callback ShortcutFunc, data unsafe.Pointer, destroy unsafe.Pointer) CallbackAction
 
 // CellArea: the CellArea is an abstract class for CellLayout widgets (also
 // referred to as "layouting widgets") to interface with an arbitrary number of
@@ -6797,12 +8219,203 @@ func NewCallbackAction(callback ShortcutFunc, data unsafe.Pointer, destroy unsaf
 // gtk_cell_area_cell_set() or gtk_cell_area_cell_set_valist(). To obtain the
 // value of a cell property, use gtk_cell_area_cell_get_property(),
 // gtk_cell_area_cell_get() or gtk_cell_area_cell_get_valist().
-type CellArea struct {
+type CellArea interface {
+	gextras.Objector
+
+	// Activate: activates @area, usually by activating the currently focused
+	// cell, however some subclasses which embed widgets in the area can also
+	// activate a widget if it currently has the focus.
+	Activate(context cellAreaContext, widget widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+	// ActivateCell: this is used by CellArea subclasses when handling events to
+	// activate cells, the base CellArea class activates cells for keyboard
+	// events for free in its own GtkCellArea->activate() implementation.
+	ActivateCell(widget widget, renderer cellRenderer, event gdk.event, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	// Add: adds @renderer to @area with the default child cell properties.
+	Add(renderer cellRenderer)
+	// AddFocusSibling: adds @sibling to @renderer’s focusable area, focus will
+	// be drawn around @renderer and all of its siblings if @renderer can focus
+	// for a given row.
+	//
+	// Events handled by focus siblings can also activate the given focusable
+	// @renderer.
+	AddFocusSibling(renderer cellRenderer, sibling cellRenderer)
+	// ApplyAttributes: applies any connected attributes to the renderers in
+	// @area by pulling the values from @tree_model.
+	ApplyAttributes(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool)
+	// AttributeConnect: connects an @attribute to apply values from @column for
+	// the TreeModel in use.
+	AttributeConnect(renderer cellRenderer, attribute string, column int)
+	// AttributeDisconnect: disconnects @attribute for the @renderer in @area so
+	// that attribute will no longer be updated with values from the model.
+	AttributeDisconnect(renderer cellRenderer, attribute string)
+	// AttributeGetColumn: returns the model column that an attribute has been
+	// mapped to, or -1 if the attribute is not mapped.
+	AttributeGetColumn(renderer cellRenderer, attribute string) int
+	// CellGetProperty: gets the value of a cell property for @renderer in
+	// @area.
+	CellGetProperty(renderer cellRenderer, propertyName string, value *externglib.Value)
+	// CellSetProperty: sets a cell property for @renderer in @area.
+	CellSetProperty(renderer cellRenderer, propertyName string, value *externglib.Value)
+	// CopyContext: this is sometimes needed for cases where rows need to share
+	// alignments in one orientation but may be separately grouped in the
+	// opposing orientation.
+	//
+	// For instance, IconView creates all icons (rows) to have the same width
+	// and the cells theirin to have the same horizontal alignments. However
+	// each row of icons may have a separate collective height. IconView uses
+	// this to request the heights of each row based on a context which was
+	// already used to request all the row widths that are to be displayed.
+	CopyContext(context cellAreaContext) cellAreaContext
+	// CreateContext: creates a CellAreaContext to be used with @area for all
+	// purposes. CellAreaContext stores geometry information for rows for which
+	// it was operated on, it is important to use the same context for the same
+	// row of data at all times (i.e. one should render and handle events with
+	// the same CellAreaContext which was used to request the size of those rows
+	// of data).
+	CreateContext() cellAreaContext
+	// Event: delegates event handling to a CellArea.
+	Event(context cellAreaContext, widget widget, event gdk.event, cellArea *gdk.Rectangle, flags CellRendererState) int
+	// Focus: this should be called by the @area’s owning layout widget when
+	// focus is to be passed to @area, or moved within @area for a given
+	// @direction and row data.
+	//
+	// Implementing CellArea classes should implement this method to receive and
+	// navigate focus in its own way particular to how it lays out cells.
+	Focus(direction DirectionType) bool
+	// Foreach: calls @callback for every CellRenderer in @area.
+	Foreach(callback CellCallback, callbackData unsafe.Pointer)
+	// ForeachAlloc: calls @callback for every CellRenderer in @area with the
+	// allocated rectangle inside @cell_area.
+	ForeachAlloc(context cellAreaContext, widget widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback, callbackData unsafe.Pointer)
+	// GetCellAllocation: derives the allocation of @renderer inside @area if
+	// @area were to be renderered in @cell_area.
+	GetCellAllocation(context cellAreaContext, widget widget, renderer cellRenderer, cellArea *gdk.Rectangle) gdk.Rectangle
+	// GetCellAtPosition: gets the CellRenderer at @x and @y coordinates inside
+	// @area and optionally returns the full cell allocation for it inside
+	// @cell_area.
+	GetCellAtPosition(context cellAreaContext, widget widget, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, cellRenderer)
+	// GetCurrentPathString: gets the current TreePath string for the currently
+	// applied TreeIter, this is implicitly updated when
+	// gtk_cell_area_apply_attributes() is called and can be used to interact
+	// with renderers from CellArea subclasses.
+	GetCurrentPathString() string
+	// GetEditWidget: gets the CellEditable widget currently used to edit the
+	// currently edited cell.
+	GetEditWidget() CellEditable
+	// GetEditedCell: gets the CellRenderer in @area that is currently being
+	// edited.
+	GetEditedCell() cellRenderer
+	// GetFocusCell: retrieves the currently focused cell for @area
+	GetFocusCell() cellRenderer
+	// GetFocusFromSibling: gets the CellRenderer which is expected to be
+	// focusable for which @renderer is, or may be a sibling.
+	//
+	// This is handy for CellArea subclasses when handling events, after
+	// determining the renderer at the event location it can then chose to
+	// activate the focus cell for which the event cell may have been a sibling.
+	GetFocusFromSibling(renderer cellRenderer) cellRenderer
+	// GetFocusSiblings: gets the focus sibling cell renderers for @renderer.
+	GetFocusSiblings(renderer cellRenderer) *glib.List
+	// GetPreferredHeight: retrieves a cell area’s initial minimum and natural
+	// height.
+	//
+	// @area will store some geometrical information in @context along the way;
+	// when requesting sizes over an arbitrary number of rows, it’s not
+	// important to check the @minimum_height and @natural_height of this call
+	// but rather to consult gtk_cell_area_context_get_preferred_height() after
+	// a series of requests.
+	GetPreferredHeight(context cellAreaContext, widget widget) (int, int)
+	// GetPreferredHeightForWidth: retrieves a cell area’s minimum and natural
+	// height if it would be given the specified @width.
+	//
+	// @area stores some geometrical information in @context along the way while
+	// calling gtk_cell_area_get_preferred_width(). It’s important to perform a
+	// series of gtk_cell_area_get_preferred_width() requests with @context
+	// first and then call gtk_cell_area_get_preferred_height_for_width() on
+	// each cell area individually to get the height for width of each fully
+	// requested row.
+	//
+	// If at some point, the width of a single row changes, it should be
+	// requested with gtk_cell_area_get_preferred_width() again and then the
+	// full width of the requested rows checked again with
+	// gtk_cell_area_context_get_preferred_width().
+	GetPreferredHeightForWidth(context cellAreaContext, widget widget, width int) (int, int)
+	// GetPreferredWidth: retrieves a cell area’s initial minimum and natural
+	// width.
+	//
+	// @area will store some geometrical information in @context along the way;
+	// when requesting sizes over an arbitrary number of rows, it’s not
+	// important to check the @minimum_width and @natural_width of this call but
+	// rather to consult gtk_cell_area_context_get_preferred_width() after a
+	// series of requests.
+	GetPreferredWidth(context cellAreaContext, widget widget) (int, int)
+	// GetPreferredWidthForHeight: retrieves a cell area’s minimum and natural
+	// width if it would be given the specified @height.
+	//
+	// @area stores some geometrical information in @context along the way while
+	// calling gtk_cell_area_get_preferred_height(). It’s important to perform a
+	// series of gtk_cell_area_get_preferred_height() requests with @context
+	// first and then call gtk_cell_area_get_preferred_width_for_height() on
+	// each cell area individually to get the height for width of each fully
+	// requested row.
+	//
+	// If at some point, the height of a single row changes, it should be
+	// requested with gtk_cell_area_get_preferred_height() again and then the
+	// full height of the requested rows checked again with
+	// gtk_cell_area_context_get_preferred_height().
+	GetPreferredWidthForHeight(context cellAreaContext, widget widget, height int) (int, int)
+	// GetRequestMode: gets whether the area prefers a height-for-width layout
+	// or a width-for-height layout.
+	GetRequestMode() SizeRequestMode
+	// HasRenderer: checks if @area contains @renderer.
+	HasRenderer(renderer cellRenderer) bool
+	// InnerCellArea: this is a convenience function for CellArea
+	// implementations to get the inner area where a given CellRenderer will be
+	// rendered. It removes any padding previously added by
+	// gtk_cell_area_request_renderer().
+	InnerCellArea(widget widget, cellArea *gdk.Rectangle) gdk.Rectangle
+	// IsActivatable: returns whether the area can do anything when activated,
+	// after applying new attributes to @area.
+	IsActivatable() bool
+	// IsFocusSibling: returns whether @sibling is one of @renderer’s focus
+	// siblings (see gtk_cell_area_add_focus_sibling()).
+	IsFocusSibling(renderer cellRenderer, sibling cellRenderer) bool
+	// Remove: removes @renderer from @area.
+	Remove(renderer cellRenderer)
+	// RemoveFocusSibling: removes @sibling from @renderer’s focus sibling list
+	// (see gtk_cell_area_add_focus_sibling()).
+	RemoveFocusSibling(renderer cellRenderer, sibling cellRenderer)
+	// RequestRenderer: this is a convenience function for CellArea
+	// implementations to request size for cell renderers. It’s important to use
+	// this function to request size and then use
+	// gtk_cell_area_inner_cell_area() at render and event time since this
+	// function will add padding around the cell for focus painting.
+	RequestRenderer(renderer cellRenderer, orientation Orientation, widget widget, forSize int) (int, int)
+	// SetFocusCell: explicitly sets the currently focused cell to @renderer.
+	//
+	// This is generally called by implementations of CellAreaClass.focus() or
+	// CellAreaClass.event(), however it can also be used to implement functions
+	// such as gtk_tree_view_set_cursor_on_cell().
+	SetFocusCell(renderer cellRenderer)
+	// Snapshot: snapshots @area’s cells according to @area’s layout onto at the
+	// given coordinates.
+	Snapshot(context cellAreaContext, widget widget, snapshot snapshot, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
+	// StopEditing: explicitly stops the editing of the currently edited cell.
+	//
+	// If @canceled is true, the currently edited cell renderer will emit the
+	// ::editing-canceled signal, otherwise the the ::editing-done signal will
+	// be emitted on the current edit widget.
+	//
+	// See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget().
+	StopEditing(canceled bool)
+}
+
+type cellArea struct {
 	externglib.InitiallyUnowned
 }
 
-func wrapCellArea(obj *externglib.Object) *CellArea {
-	return &CellArea{externglib.InitiallyUnowned{obj}}
+func wrapCellArea(obj *externglib.Object) CellArea {
+	return &cellArea{externglib.InitiallyUnowned{obj}}
 }
 
 func marshalCellArea(p uintptr) (interface{}, error) {
@@ -6810,6 +8423,84 @@ func marshalCellArea(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (c cellArea) Activate(context cellAreaContext, widget widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+
+func (c cellArea) ActivateCell(widget widget, renderer cellRenderer, event gdk.event, cellArea *gdk.Rectangle, flags CellRendererState) bool
+
+func (c cellArea) Add(renderer cellRenderer)
+
+func (c cellArea) AddFocusSibling(renderer cellRenderer, sibling cellRenderer)
+
+func (c cellArea) ApplyAttributes(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool)
+
+func (c cellArea) AttributeConnect(renderer cellRenderer, attribute string, column int)
+
+func (c cellArea) AttributeDisconnect(renderer cellRenderer, attribute string)
+
+func (c cellArea) AttributeGetColumn(renderer cellRenderer, attribute string) int
+
+func (c cellArea) CellGetProperty(renderer cellRenderer, propertyName string, value *externglib.Value)
+
+func (c cellArea) CellSetProperty(renderer cellRenderer, propertyName string, value *externglib.Value)
+
+func (c cellArea) CopyContext(context cellAreaContext) cellAreaContext
+
+func (c cellArea) CreateContext() cellAreaContext
+
+func (c cellArea) Event(context cellAreaContext, widget widget, event gdk.event, cellArea *gdk.Rectangle, flags CellRendererState) int
+
+func (c cellArea) Focus(direction DirectionType) bool
+
+func (c cellArea) Foreach(callback CellCallback, callbackData unsafe.Pointer)
+
+func (c cellArea) ForeachAlloc(context cellAreaContext, widget widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback, callbackData unsafe.Pointer)
+
+func (c cellArea) GetCellAllocation(context cellAreaContext, widget widget, renderer cellRenderer, cellArea *gdk.Rectangle) gdk.Rectangle
+
+func (c cellArea) GetCellAtPosition(context cellAreaContext, widget widget, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, cellRenderer)
+
+func (c cellArea) GetCurrentPathString() string
+
+func (c cellArea) GetEditWidget() CellEditable
+
+func (c cellArea) GetEditedCell() cellRenderer
+
+func (c cellArea) GetFocusCell() cellRenderer
+
+func (c cellArea) GetFocusFromSibling(renderer cellRenderer) cellRenderer
+
+func (c cellArea) GetFocusSiblings(renderer cellRenderer) *glib.List
+
+func (c cellArea) GetPreferredHeight(context cellAreaContext, widget widget) (int, int)
+
+func (c cellArea) GetPreferredHeightForWidth(context cellAreaContext, widget widget, width int) (int, int)
+
+func (c cellArea) GetPreferredWidth(context cellAreaContext, widget widget) (int, int)
+
+func (c cellArea) GetPreferredWidthForHeight(context cellAreaContext, widget widget, height int) (int, int)
+
+func (c cellArea) GetRequestMode() SizeRequestMode
+
+func (c cellArea) HasRenderer(renderer cellRenderer) bool
+
+func (c cellArea) InnerCellArea(widget widget, cellArea *gdk.Rectangle) gdk.Rectangle
+
+func (c cellArea) IsActivatable() bool
+
+func (c cellArea) IsFocusSibling(renderer cellRenderer, sibling cellRenderer) bool
+
+func (c cellArea) Remove(renderer cellRenderer)
+
+func (c cellArea) RemoveFocusSibling(renderer cellRenderer, sibling cellRenderer)
+
+func (c cellArea) RequestRenderer(renderer cellRenderer, orientation Orientation, widget widget, forSize int) (int, int)
+
+func (c cellArea) SetFocusCell(renderer cellRenderer)
+
+func (c cellArea) Snapshot(context cellAreaContext, widget widget, snapshot snapshot, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
+
+func (c cellArea) StopEditing(canceled bool)
 
 // CellAreaBox: the CellAreaBox renders cell renderers into a row or a column
 // depending on its Orientation.
@@ -6826,12 +8517,33 @@ func marshalCellArea(p uintptr) (interface{}, error) {
 // configuring the CellAreaBox align child cell property with
 // gtk_cell_area_cell_set_property() or by specifying the "align" argument to
 // gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end().
-type CellAreaBox struct {
+type CellAreaBox interface {
+	cellArea
+
+	// GetSpacing: gets the spacing added between cell renderers.
+	GetSpacing() int
+	// PackEnd: adds @renderer to @box, packed with reference to the end of
+	// @box.
+	//
+	// The @renderer is packed after (away from end of) any other CellRenderer
+	// packed with reference to the end of @box.
+	PackEnd(renderer cellRenderer, expand bool, align bool, fixed bool)
+	// PackStart: adds @renderer to @box, packed with reference to the start of
+	// @box.
+	//
+	// The @renderer is packed after any other CellRenderer packed with
+	// reference to the start of @box.
+	PackStart(renderer cellRenderer, expand bool, align bool, fixed bool)
+	// SetSpacing: sets the spacing to add between cell renderers in @box.
+	SetSpacing(spacing int)
+}
+
+type cellAreaBox struct {
 	CellArea
 }
 
-func wrapCellAreaBox(obj *externglib.Object) *CellAreaBox {
-	return &CellAreaBox{CellArea{externglib.InitiallyUnowned{obj}}}
+func wrapCellAreaBox(obj *externglib.Object) CellAreaBox {
+	return &cellAreaBox{CellArea{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellAreaBox(p uintptr) (interface{}, error) {
@@ -6840,7 +8552,15 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCellAreaBox() *CellAreaBox
+func NewCellAreaBox() CellAreaBox
+
+func (c cellAreaBox) GetSpacing() int
+
+func (c cellAreaBox) PackEnd(renderer cellRenderer, expand bool, align bool, fixed bool)
+
+func (c cellAreaBox) PackStart(renderer cellRenderer, expand bool, align bool, fixed bool)
+
+func (c cellAreaBox) SetSpacing(spacing int)
 
 // CellAreaContext: the CellAreaContext object is created by a given CellArea
 // implementation via its CellAreaClass.create_context() virtual method and is
@@ -6852,12 +8572,103 @@ func NewCellAreaBox() *CellAreaBox
 // which was used to request sizes for a given TreeModel row also be used for
 // the same row when calling other CellArea APIs such as gtk_cell_area_render()
 // and gtk_cell_area_event().
-type CellAreaContext struct {
+type CellAreaContext interface {
+	gextras.Objector
+
+	// Allocate: allocates a width and/or a height for all rows which are to be
+	// rendered with @context.
+	//
+	// Usually allocation is performed only horizontally or sometimes vertically
+	// since a group of rows are usually rendered side by side vertically or
+	// horizontally and share either the same width or the same height.
+	// Sometimes they are allocated in both horizontal and vertical orientations
+	// producing a homogeneous effect of the rows. This is generally the case
+	// for TreeView when TreeView:fixed-height-mode is enabled.
+	Allocate(width int, height int)
+	// GetAllocation: fetches the current allocation size for @context.
+	//
+	// If the context was not allocated in width or height, or if the context
+	// was recently reset with gtk_cell_area_context_reset(), the returned value
+	// will be -1.
+	GetAllocation() (int, int)
+	// GetArea: fetches the CellArea this @context was created by.
+	//
+	// This is generally unneeded by layouting widgets; however, it is important
+	// for the context implementation itself to fetch information about the area
+	// it is being used for.
+	//
+	// For instance at CellAreaContextClass.allocate() time it’s important to
+	// know details about any cell spacing that the CellArea is configured with
+	// in order to compute a proper allocation.
+	GetArea() cellArea
+	// GetPreferredHeight: gets the accumulative preferred height for all rows
+	// which have been requested with this context.
+	//
+	// After gtk_cell_area_context_reset() is called and/or before ever
+	// requesting the size of a CellArea, the returned values are 0.
+	GetPreferredHeight() (int, int)
+	// GetPreferredHeightForWidth: gets the accumulative preferred height for
+	// @width for all rows which have been requested for the same said @width
+	// with this context.
+	//
+	// After gtk_cell_area_context_reset() is called and/or before ever
+	// requesting the size of a CellArea, the returned values are -1.
+	GetPreferredHeightForWidth(width int) (int, int)
+	// GetPreferredWidth: gets the accumulative preferred width for all rows
+	// which have been requested with this context.
+	//
+	// After gtk_cell_area_context_reset() is called and/or before ever
+	// requesting the size of a CellArea, the returned values are 0.
+	GetPreferredWidth() (int, int)
+	// GetPreferredWidthForHeight: gets the accumulative preferred width for
+	// @height for all rows which have been requested for the same said @height
+	// with this context.
+	//
+	// After gtk_cell_area_context_reset() is called and/or before ever
+	// requesting the size of a CellArea, the returned values are -1.
+	GetPreferredWidthForHeight(height int) (int, int)
+	// PushPreferredHeight: causes the minimum and/or natural height to grow if
+	// the new proposed sizes exceed the current minimum and natural height.
+	//
+	// This is used by CellAreaContext implementations during the request
+	// process over a series of TreeModel rows to progressively push the
+	// requested height over a series of gtk_cell_area_get_preferred_height()
+	// requests.
+	PushPreferredHeight(minimumHeight int, naturalHeight int)
+	// PushPreferredWidth: causes the minimum and/or natural width to grow if
+	// the new proposed sizes exceed the current minimum and natural width.
+	//
+	// This is used by CellAreaContext implementations during the request
+	// process over a series of TreeModel rows to progressively push the
+	// requested width over a series of gtk_cell_area_get_preferred_width()
+	// requests.
+	PushPreferredWidth(minimumWidth int, naturalWidth int)
+	// Reset: resets any previously cached request and allocation data.
+	//
+	// When underlying TreeModel data changes its important to reset the context
+	// if the content size is allowed to shrink. If the content size is only
+	// allowed to grow (this is usually an option for views rendering large data
+	// stores as a measure of optimization), then only the row that changed or
+	// was inserted needs to be (re)requested with
+	// gtk_cell_area_get_preferred_width().
+	//
+	// When the new overall size of the context requires that the allocated size
+	// changes (or whenever this allocation changes at all), the variable row
+	// sizes need to be re-requested for every row.
+	//
+	// For instance, if the rows are displayed all with the same width from top
+	// to bottom then a change in the allocated width necessitates a
+	// recalculation of all the displayed row heights using
+	// gtk_cell_area_get_preferred_height_for_width().
+	Reset()
+}
+
+type cellAreaContext struct {
 	*externglib.Object
 }
 
-func wrapCellAreaContext(obj *externglib.Object) *CellAreaContext {
-	return &CellAreaContext{*externglib.Object{obj}}
+func wrapCellAreaContext(obj *externglib.Object) CellAreaContext {
+	return &cellAreaContext{*externglib.Object{obj}}
 }
 
 func marshalCellAreaContext(p uintptr) (interface{}, error) {
@@ -6865,6 +8676,26 @@ func marshalCellAreaContext(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (c cellAreaContext) Allocate(width int, height int)
+
+func (c cellAreaContext) GetAllocation() (int, int)
+
+func (c cellAreaContext) GetArea() cellArea
+
+func (c cellAreaContext) GetPreferredHeight() (int, int)
+
+func (c cellAreaContext) GetPreferredHeightForWidth(width int) (int, int)
+
+func (c cellAreaContext) GetPreferredWidth() (int, int)
+
+func (c cellAreaContext) GetPreferredWidthForHeight(height int) (int, int)
+
+func (c cellAreaContext) PushPreferredHeight(minimumHeight int, naturalHeight int)
+
+func (c cellAreaContext) PushPreferredWidth(minimumWidth int, naturalWidth int)
+
+func (c cellAreaContext) Reset()
 
 // CellRenderer: the CellRenderer is a base class of a set of objects used for
 // rendering a cell to a #cairo_t. These objects are used primarily by the
@@ -6898,12 +8729,99 @@ func marshalCellAreaContext(p uintptr) (interface{}, error) {
 // property, e.g. “cell-background-set” corresponds to “cell-background”. These
 // “set” properties reflect whether a property has been set or not. You should
 // not set them independently.
-type CellRenderer struct {
+type CellRenderer interface {
+	gextras.Objector
+
+	// Activate: passes an activate event to the cell renderer for possible
+	// processing. Some cell renderers may use events; for example,
+	// CellRendererToggle toggles when it gets a mouse click.
+	Activate(event gdk.event, widget widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	// GetAlignedArea: gets the aligned area used by @cell inside @cell_area.
+	// Used for finding the appropriate edit and focus rectangle.
+	GetAlignedArea(widget widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
+	// GetAlignment: fills in @xalign and @yalign with the appropriate values of
+	// @cell.
+	GetAlignment() (float32, float32)
+	// GetFixedSize: fills in @width and @height with the appropriate size of
+	// @cell.
+	GetFixedSize() (int, int)
+	// GetIsExpanded: checks whether the given CellRenderer is expanded.
+	GetIsExpanded() bool
+	// GetIsExpander: checks whether the given CellRenderer is an expander.
+	GetIsExpander() bool
+	// GetPadding: fills in @xpad and @ypad with the appropriate values of
+	// @cell.
+	GetPadding() (int, int)
+	// GetPreferredHeight: retrieves a renderer’s natural size when rendered to
+	// @widget.
+	GetPreferredHeight(widget widget) (int, int)
+	// GetPreferredHeightForWidth: retrieves a cell renderers’s minimum and
+	// natural height if it were rendered to @widget with the specified @width.
+	GetPreferredHeightForWidth(widget widget, width int) (int, int)
+	// GetPreferredSize: retrieves the minimum and natural size of a cell taking
+	// into account the widget’s preference for height-for-width management.
+	GetPreferredSize(widget widget) (Requisition, Requisition)
+	// GetPreferredWidth: retrieves a renderer’s natural size when rendered to
+	// @widget.
+	GetPreferredWidth(widget widget) (int, int)
+	// GetPreferredWidthForHeight: retrieves a cell renderers’s minimum and
+	// natural width if it were rendered to @widget with the specified @height.
+	GetPreferredWidthForHeight(widget widget, height int) (int, int)
+	// GetRequestMode: gets whether the cell renderer prefers a height-for-width
+	// layout or a width-for-height layout.
+	GetRequestMode() SizeRequestMode
+	// GetSensitive: returns the cell renderer’s sensitivity.
+	GetSensitive() bool
+	// GetState: translates the cell renderer state to StateFlags, based on the
+	// cell renderer and widget sensitivity, and the given CellRendererState.
+	GetState(widget widget, cellState CellRendererState) StateFlags
+	// GetVisible: returns the cell renderer’s visibility.
+	GetVisible() bool
+	// IsActivatable: checks whether the cell renderer can do something when
+	// activated.
+	IsActivatable() bool
+	// SetAlignment: sets the renderer’s alignment within its available space.
+	SetAlignment(xalign float32, yalign float32)
+	// SetFixedSize: sets the renderer size to be explicit, independent of the
+	// properties set.
+	SetFixedSize(width int, height int)
+	// SetIsExpanded: sets whether the given CellRenderer is expanded.
+	SetIsExpanded(isExpanded bool)
+	// SetIsExpander: sets whether the given CellRenderer is an expander.
+	SetIsExpander(isExpander bool)
+	// SetPadding: sets the renderer’s padding.
+	SetPadding(xpad int, ypad int)
+	// SetSensitive: sets the cell renderer’s sensitivity.
+	SetSensitive(sensitive bool)
+	// SetVisible: sets the cell renderer’s visibility.
+	SetVisible(visible bool)
+	// Snapshot: invokes the virtual render function of the CellRenderer. The
+	// three passed-in rectangles are areas in @cr. Most renderers will draw
+	// within @cell_area; the xalign, yalign, xpad, and ypad fields of the
+	// CellRenderer should be honored with respect to @cell_area.
+	// @background_area includes the blank space around the cell, and also the
+	// area containing the tree expander; so the @background_area rectangles for
+	// all cells tile to cover the entire @window.
+	Snapshot(snapshot snapshot, widget widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+	// StartEditing: starts editing the contents of this @cell, through a new
+	// CellEditable widget created by the CellRendererClass.start_editing
+	// virtual function.
+	StartEditing(event gdk.event, widget widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable
+	// StopEditing: informs the cell renderer that the editing is stopped. If
+	// @canceled is true, the cell renderer will emit the
+	// CellRenderer::editing-canceled signal.
+	//
+	// This function should be called by cell renderer implementations in
+	// response to the CellEditable::editing-done signal of CellEditable.
+	StopEditing(canceled bool)
+}
+
+type cellRenderer struct {
 	externglib.InitiallyUnowned
 }
 
-func wrapCellRenderer(obj *externglib.Object) *CellRenderer {
-	return &CellRenderer{externglib.InitiallyUnowned{obj}}
+func wrapCellRenderer(obj *externglib.Object) CellRenderer {
+	return &cellRenderer{externglib.InitiallyUnowned{obj}}
 }
 
 func marshalCellRenderer(p uintptr) (interface{}, error) {
@@ -6912,15 +8830,73 @@ func marshalCellRenderer(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (c cellRenderer) Activate(event gdk.event, widget widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
+
+func (c cellRenderer) GetAlignedArea(widget widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
+
+func (c cellRenderer) GetAlignment() (float32, float32)
+
+func (c cellRenderer) GetFixedSize() (int, int)
+
+func (c cellRenderer) GetIsExpanded() bool
+
+func (c cellRenderer) GetIsExpander() bool
+
+func (c cellRenderer) GetPadding() (int, int)
+
+func (c cellRenderer) GetPreferredHeight(widget widget) (int, int)
+
+func (c cellRenderer) GetPreferredHeightForWidth(widget widget, width int) (int, int)
+
+func (c cellRenderer) GetPreferredSize(widget widget) (Requisition, Requisition)
+
+func (c cellRenderer) GetPreferredWidth(widget widget) (int, int)
+
+func (c cellRenderer) GetPreferredWidthForHeight(widget widget, height int) (int, int)
+
+func (c cellRenderer) GetRequestMode() SizeRequestMode
+
+func (c cellRenderer) GetSensitive() bool
+
+func (c cellRenderer) GetState(widget widget, cellState CellRendererState) StateFlags
+
+func (c cellRenderer) GetVisible() bool
+
+func (c cellRenderer) IsActivatable() bool
+
+func (c cellRenderer) SetAlignment(xalign float32, yalign float32)
+
+func (c cellRenderer) SetFixedSize(width int, height int)
+
+func (c cellRenderer) SetIsExpanded(isExpanded bool)
+
+func (c cellRenderer) SetIsExpander(isExpander bool)
+
+func (c cellRenderer) SetPadding(xpad int, ypad int)
+
+func (c cellRenderer) SetSensitive(sensitive bool)
+
+func (c cellRenderer) SetVisible(visible bool)
+
+func (c cellRenderer) Snapshot(snapshot snapshot, widget widget, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState)
+
+func (c cellRenderer) StartEditing(event gdk.event, widget widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable
+
+func (c cellRenderer) StopEditing(canceled bool)
+
 // CellRendererAccel: cellRendererAccel displays a keyboard accelerator (i.e. a
 // key combination like `Control + a`). If the cell renderer is editable, the
 // accelerator can be changed by simply typing the new combination.
-type CellRendererAccel struct {
+type CellRendererAccel interface {
+	cellRendererText
+}
+
+type cellRendererAccel struct {
 	CellRendererText
 }
 
-func wrapCellRendererAccel(obj *externglib.Object) *CellRendererAccel {
-	return &CellRendererAccel{CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}}
+func wrapCellRendererAccel(obj *externglib.Object) CellRendererAccel {
+	return &cellRendererAccel{CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalCellRendererAccel(p uintptr) (interface{}, error) {
@@ -6929,7 +8905,7 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCellRendererAccel() *CellRendererAccel
+func NewCellRendererAccel() CellRendererAccel
 
 // CellRendererCombo: cellRendererCombo renders text in a cell like
 // CellRendererText from which it is derived. But while CellRendererText offers
@@ -6941,12 +8917,16 @@ func NewCellRendererAccel() *CellRendererAccel
 // combo box and sets it to display the column specified by its
 // CellRendererCombo:text-column property. Further properties of the combo box
 // can be set in a handler for the CellRenderer::editing-started signal.
-type CellRendererCombo struct {
+type CellRendererCombo interface {
+	cellRendererText
+}
+
+type cellRendererCombo struct {
 	CellRendererText
 }
 
-func wrapCellRendererCombo(obj *externglib.Object) *CellRendererCombo {
-	return &CellRendererCombo{CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}}
+func wrapCellRendererCombo(obj *externglib.Object) CellRendererCombo {
+	return &cellRendererCombo{CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalCellRendererCombo(p uintptr) (interface{}, error) {
@@ -6955,7 +8935,7 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCellRendererCombo() *CellRendererCombo
+func NewCellRendererCombo() CellRendererCombo
 
 // CellRendererPixbuf: a CellRendererPixbuf can be used to render an image in a
 // cell. It allows to render either a given Pixbuf (set via the
@@ -6969,12 +8949,16 @@ func NewCellRendererCombo() *CellRendererCombo
 // renders that pixbuf, if the CellRenderer:is-expanded property is false and
 // the CellRendererPixbuf:pixbuf-expander-closed property is set to a pixbuf, it
 // renders that one.
-type CellRendererPixbuf struct {
+type CellRendererPixbuf interface {
+	cellRenderer
+}
+
+type cellRendererPixbuf struct {
 	CellRenderer
 }
 
-func wrapCellRendererPixbuf(obj *externglib.Object) *CellRendererPixbuf {
-	return &CellRendererPixbuf{CellRenderer{externglib.InitiallyUnowned{obj}}}
+func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuf {
+	return &cellRendererPixbuf{CellRenderer{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
@@ -6983,17 +8967,21 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCellRendererPixbuf() *CellRendererPixbuf
+func NewCellRendererPixbuf() CellRendererPixbuf
 
 // CellRendererProgress: cellRendererProgress renders a numeric value as a
 // progress par in a cell. Additionally, it can display a text on top of the
 // progress bar.
-type CellRendererProgress struct {
+type CellRendererProgress interface {
+	cellRenderer
+}
+
+type cellRendererProgress struct {
 	CellRenderer
 }
 
-func wrapCellRendererProgress(obj *externglib.Object) *CellRendererProgress {
-	return &CellRendererProgress{CellRenderer{externglib.InitiallyUnowned{obj}}}
+func wrapCellRendererProgress(obj *externglib.Object) CellRendererProgress {
+	return &cellRendererProgress{CellRenderer{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellRendererProgress(p uintptr) (interface{}, error) {
@@ -7002,7 +8990,7 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCellRendererProgress() *CellRendererProgress
+func NewCellRendererProgress() CellRendererProgress
 
 // CellRendererSpin: cellRendererSpin renders text in a cell like
 // CellRendererText from which it is derived. But while CellRendererText offers
@@ -7018,12 +9006,16 @@ func NewCellRendererProgress() *CellRendererProgress
 // a handler for the CellRenderer::editing-started signal.
 //
 // The CellRendererSpin cell renderer was added in GTK 2.10.
-type CellRendererSpin struct {
+type CellRendererSpin interface {
+	cellRendererText
+}
+
+type cellRendererSpin struct {
 	CellRendererText
 }
 
-func wrapCellRendererSpin(obj *externglib.Object) *CellRendererSpin {
-	return &CellRendererSpin{CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}}
+func wrapCellRendererSpin(obj *externglib.Object) CellRendererSpin {
+	return &cellRendererSpin{CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalCellRendererSpin(p uintptr) (interface{}, error) {
@@ -7032,7 +9024,7 @@ func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCellRendererSpin() *CellRendererSpin
+func NewCellRendererSpin() CellRendererSpin
 
 // CellRendererSpinner: gtkCellRendererSpinner renders a spinning animation in a
 // cell, very similar to Spinner. It can often be used as an alternative to a
@@ -7044,12 +9036,16 @@ func NewCellRendererSpin() *CellRendererSpin
 // intervals. The usual way to set the cell renderer properties for each cell is
 // to bind them to columns in your tree model using e.g.
 // gtk_tree_view_column_add_attribute().
-type CellRendererSpinner struct {
+type CellRendererSpinner interface {
+	cellRenderer
+}
+
+type cellRendererSpinner struct {
 	CellRenderer
 }
 
-func wrapCellRendererSpinner(obj *externglib.Object) *CellRendererSpinner {
-	return &CellRendererSpinner{CellRenderer{externglib.InitiallyUnowned{obj}}}
+func wrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
+	return &cellRendererSpinner{CellRenderer{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
@@ -7058,7 +9054,7 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCellRendererSpinner() *CellRendererSpinner
+func NewCellRendererSpinner() CellRendererSpinner
 
 // CellRendererText: a CellRendererText renders a given text in its cell, using
 // the font, color and style information provided by its properties. The text
@@ -7067,12 +9063,26 @@ func NewCellRendererSpinner() *CellRendererSpinner
 //
 // If the CellRenderer:mode is GTK_CELL_RENDERER_MODE_EDITABLE, the
 // CellRendererText allows to edit its text using an entry.
-type CellRendererText struct {
+type CellRendererText interface {
+	cellRenderer
+
+	// SetFixedHeightFromFont: sets the height of a renderer to explicitly be
+	// determined by the “font” and “y_pad” property set on it. Further changes
+	// in these properties do not affect the height, so they must be accompanied
+	// by a subsequent call to this function. Using this function is inflexible,
+	// and should really only be used if calculating the size of a cell is too
+	// slow (ie, a massive number of cells displayed). If @number_of_rows is -1,
+	// then the fixed height is unset, and the height is determined by the
+	// properties again.
+	SetFixedHeightFromFont(numberOfRows int)
+}
+
+type cellRendererText struct {
 	CellRenderer
 }
 
-func wrapCellRendererText(obj *externglib.Object) *CellRendererText {
-	return &CellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}
+func wrapCellRendererText(obj *externglib.Object) CellRendererText {
+	return &cellRendererText{CellRenderer{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellRendererText(p uintptr) (interface{}, error) {
@@ -7081,18 +9091,45 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCellRendererText() *CellRendererText
+func NewCellRendererText() CellRendererText
+
+func (c cellRendererText) SetFixedHeightFromFont(numberOfRows int)
 
 // CellRendererToggle: cellRendererToggle renders a toggle button in a cell. The
 // button is drawn as a radio or a checkbutton, depending on the
 // CellRendererToggle:radio property. When activated, it emits the
 // CellRendererToggle::toggled signal.
-type CellRendererToggle struct {
+type CellRendererToggle interface {
+	cellRenderer
+
+	// GetActivatable: returns whether the cell renderer is activatable. See
+	// gtk_cell_renderer_toggle_set_activatable().
+	GetActivatable() bool
+	// GetActive: returns whether the cell renderer is active. See
+	// gtk_cell_renderer_toggle_set_active().
+	GetActive() bool
+	// GetRadio: returns whether we’re rendering radio toggles rather than
+	// checkboxes.
+	GetRadio() bool
+	// SetActivatable: makes the cell renderer activatable.
+	SetActivatable(setting bool)
+	// SetActive: activates or deactivates a cell renderer.
+	SetActive(setting bool)
+	// SetRadio: if @radio is true, the cell renderer renders a radio toggle
+	// (i.e. a toggle in a group of mutually-exclusive toggles). If false, it
+	// renders a check toggle (a standalone boolean option). This can be set
+	// globally for the cell renderer, or changed just before rendering each
+	// cell in the model (for TreeView, you set up a per-row setting using
+	// TreeViewColumn to associate model columns with cell renderer properties).
+	SetRadio(radio bool)
+}
+
+type cellRendererToggle struct {
 	CellRenderer
 }
 
-func wrapCellRendererToggle(obj *externglib.Object) *CellRendererToggle {
-	return &CellRendererToggle{CellRenderer{externglib.InitiallyUnowned{obj}}}
+func wrapCellRendererToggle(obj *externglib.Object) CellRendererToggle {
+	return &cellRendererToggle{CellRenderer{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellRendererToggle(p uintptr) (interface{}, error) {
@@ -7101,7 +9138,19 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCellRendererToggle() *CellRendererToggle
+func NewCellRendererToggle() CellRendererToggle
+
+func (c cellRendererToggle) GetActivatable() bool
+
+func (c cellRendererToggle) GetActive() bool
+
+func (c cellRendererToggle) GetRadio() bool
+
+func (c cellRendererToggle) SetActivatable(setting bool)
+
+func (c cellRendererToggle) SetActive(setting bool)
+
+func (c cellRendererToggle) SetRadio(radio bool)
 
 // CellView: a CellView displays a single row of a TreeModel using a CellArea
 // and CellAreaContext. A CellAreaContext can be provided to the CellView at
@@ -7120,12 +9169,51 @@ func NewCellRendererToggle() *CellRendererToggle
 // CSS nodes
 //
 // GtkCellView has a single CSS node with name cellview.
-type CellView struct {
+type CellView interface {
+	widget
+
+	// GetDisplayedRow: returns a TreePath referring to the currently displayed
+	// row. If no row is currently displayed, nil is returned.
+	GetDisplayedRow() *TreePath
+	// GetDrawSensitive: gets whether @cell_view is configured to draw all of
+	// its cells in a sensitive state.
+	GetDrawSensitive() bool
+	// GetFitModel: gets whether @cell_view is configured to request space to
+	// fit the entire TreeModel.
+	GetFitModel() bool
+	// GetModel: returns the model for @cell_view. If no model is used nil is
+	// returned.
+	GetModel() TreeModel
+	// SetDisplayedRow: sets the row of the model that is currently displayed by
+	// the CellView. If the path is unset, then the contents of the cellview
+	// “stick” at their last value; this is not normally a desired result, but
+	// may be a needed intermediate state if say, the model for the CellView
+	// becomes temporarily empty.
+	SetDisplayedRow(path *TreePath)
+	// SetDrawSensitive: sets whether @cell_view should draw all of its cells in
+	// a sensitive state, this is used by ComboBox menus to ensure that rows
+	// with insensitive cells that contain children appear sensitive in the
+	// parent menu item.
+	SetDrawSensitive(drawSensitive bool)
+	// SetFitModel: sets whether @cell_view should request space to fit the
+	// entire TreeModel.
+	//
+	// This is used by ComboBox to ensure that the cell view displayed on the
+	// combo box’s button always gets enough space and does not resize when
+	// selection changes.
+	SetFitModel(fitModel bool)
+	// SetModel: sets the model for @cell_view. If @cell_view already has a
+	// model set, it will remove it before setting the new model. If @model is
+	// nil, then it will unset the old model.
+	SetModel(model TreeModel)
+}
+
+type cellView struct {
 	Widget
 }
 
-func wrapCellView(obj *externglib.Object) *CellView {
-	return &CellView{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapCellView(obj *externglib.Object) CellView {
+	return &cellView{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCellView(p uintptr) (interface{}, error) {
@@ -7134,15 +9222,31 @@ func marshalCellView(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCellView() *CellView
+func NewCellView() CellView
 
-func NewCellView(area *CellArea, context *CellAreaContext) *CellView
+func NewCellView(area cellArea, context cellAreaContext) CellView
 
-func NewCellView(markup string) *CellView
+func NewCellView(markup string) CellView
 
-func NewCellView(text string) *CellView
+func NewCellView(text string) CellView
 
-func NewCellView(texture *gdk.Texture) *CellView
+func NewCellView(texture gdk.texture) CellView
+
+func (c cellView) GetDisplayedRow() *TreePath
+
+func (c cellView) GetDrawSensitive() bool
+
+func (c cellView) GetFitModel() bool
+
+func (c cellView) GetModel() TreeModel
+
+func (c cellView) SetDisplayedRow(path *TreePath)
+
+func (c cellView) SetDrawSensitive(drawSensitive bool)
+
+func (c cellView) SetFitModel(fitModel bool)
+
+func (c cellView) SetModel(model TreeModel)
 
 // CenterBox: the GtkCenterBox widget arranges three children in a horizontal or
 // vertical arrangement, keeping the middle child centered as well as possible.
@@ -7176,12 +9280,42 @@ func NewCellView(texture *gdk.Texture) *CellView
 // Accessibility
 //
 // GtkCenterBox uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type CenterBox struct {
+type CenterBox interface {
+	widget
+
+	// GetBaselinePosition: gets the value set by
+	// gtk_center_box_set_baseline_position().
+	GetBaselinePosition() BaselinePosition
+	// GetCenterWidget: gets the center widget, or nil if there is none.
+	GetCenterWidget() widget
+	// GetEndWidget: gets the end widget, or nil if there is none.
+	GetEndWidget() widget
+	// GetStartWidget: gets the start widget, or nil if there is none.
+	GetStartWidget() widget
+	// SetBaselinePosition: sets the baseline position of a center box.
+	//
+	// This affects only horizontal boxes with at least one baseline aligned
+	// child. If there is more vertical space available than requested, and the
+	// baseline is not allocated by the parent then @position is used to
+	// allocate the baseline wrt. the extra space available.
+	SetBaselinePosition(position BaselinePosition)
+	// SetCenterWidget: sets the center widget. To remove the existing center
+	// widget, pas nil.
+	SetCenterWidget(child widget)
+	// SetEndWidget: sets the end widget. To remove the existing end widget,
+	// pass nil.
+	SetEndWidget(child widget)
+	// SetStartWidget: sets the start widget. To remove the existing start
+	// widget, pass nil.
+	SetStartWidget(child widget)
+}
+
+type centerBox struct {
 	Widget
 }
 
-func wrapCenterBox(obj *externglib.Object) *CenterBox {
-	return &CenterBox{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapCenterBox(obj *externglib.Object) CenterBox {
+	return &centerBox{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCenterBox(p uintptr) (interface{}, error) {
@@ -7190,19 +9324,66 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCenterBox() *CenterBox
+func NewCenterBox() CenterBox
+
+func (c centerBox) GetBaselinePosition() BaselinePosition
+
+func (c centerBox) GetCenterWidget() widget
+
+func (c centerBox) GetEndWidget() widget
+
+func (c centerBox) GetStartWidget() widget
+
+func (c centerBox) SetBaselinePosition(position BaselinePosition)
+
+func (c centerBox) SetCenterWidget(child widget)
+
+func (c centerBox) SetEndWidget(child widget)
+
+func (c centerBox) SetStartWidget(child widget)
 
 // CenterLayout: a CenterLayout is a layout manager that manages up to three
 // children. The start widget is allocated at the start of the layout (left in
 // LRT layouts and right in RTL ones), and the end widget at the end.
 //
 // The center widget is centered regarding the full width of the layout's.
-type CenterLayout struct {
+type CenterLayout interface {
+	layoutManager
+
+	// GetBaselinePosition: returns the baseline position of the layout.
+	GetBaselinePosition() BaselinePosition
+	// GetCenterWidget: returns the center widget of the layout.
+	GetCenterWidget() widget
+	// GetEndWidget: returns the end widget of the layout.
+	GetEndWidget() widget
+	// GetOrientation: gets the current orienration of the layout manager.
+	GetOrientation() Orientation
+	// GetStartWidget: returns the start widget fo the layout.
+	GetStartWidget() widget
+	// SetBaselinePosition: sets the new baseline position of @self
+	SetBaselinePosition(baselinePosition BaselinePosition)
+	// SetCenterWidget: sets the new center widget of @self.
+	//
+	// To remove the existing center widget, pass nil.
+	SetCenterWidget(widget widget)
+	// SetEndWidget: sets the new end widget of @self.
+	//
+	// To remove the existing center widget, pass nil.
+	SetEndWidget(widget widget)
+	// SetOrientation: sets the orientation of @self.
+	SetOrientation(orientation Orientation)
+	// SetStartWidget: sets the new start widget of @self.
+	//
+	// To remove the existing start widget, pass nil.
+	SetStartWidget(widget widget)
+}
+
+type centerLayout struct {
 	LayoutManager
 }
 
-func wrapCenterLayout(obj *externglib.Object) *CenterLayout {
-	return &CenterLayout{LayoutManager{*externglib.Object{obj}}}
+func wrapCenterLayout(obj *externglib.Object) CenterLayout {
+	return &centerLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalCenterLayout(p uintptr) (interface{}, error) {
@@ -7211,7 +9392,27 @@ func marshalCenterLayout(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCenterLayout() *CenterLayout
+func NewCenterLayout() CenterLayout
+
+func (c centerLayout) GetBaselinePosition() BaselinePosition
+
+func (c centerLayout) GetCenterWidget() widget
+
+func (c centerLayout) GetEndWidget() widget
+
+func (c centerLayout) GetOrientation() Orientation
+
+func (c centerLayout) GetStartWidget() widget
+
+func (c centerLayout) SetBaselinePosition(baselinePosition BaselinePosition)
+
+func (c centerLayout) SetCenterWidget(widget widget)
+
+func (c centerLayout) SetEndWidget(widget widget)
+
+func (c centerLayout) SetOrientation(orientation Orientation)
+
+func (c centerLayout) SetStartWidget(widget widget)
 
 // CheckButton: a CheckButton places a label next to an indicator.
 //
@@ -7230,12 +9431,65 @@ func NewCenterLayout() *CenterLayout
 // Accessibility
 //
 // GtkCheckButton uses the K_ACCESSIBLE_ROLE_CHECKBOX role.
-type CheckButton struct {
+type CheckButton interface {
+	widget
+
+	// GetActive: returns the current value of the CheckButton:active property.
+	GetActive() bool
+	// GetInconsistent: returns whether the check button is in an inconsistent
+	// state.
+	GetInconsistent() bool
+	// GetLabel: returns the label of the checkbutton.
+	GetLabel() string
+	// GetUseUnderline: returns the current value of the
+	// CheckButton:use-underline property.
+	GetUseUnderline() bool
+	// SetActive: sets the new value of the CheckButton:active property. See
+	// also gtk_check_button_get_active().
+	//
+	// Setting CheckButton:active to true will add the `:checked:` state to both
+	// the checkbutton and the indicator CSS node.
+	SetActive(setting bool)
+	// SetGroup: adds @self to the group of @group. In a group of multiple check
+	// buttons, only one button can be active at a time.
+	//
+	// Setting the group of a check button also changes the css name of the
+	// indicator widget's CSS node to 'radio'.
+	//
+	// The behavior of a checkbutton in a group is also commonly known as a
+	// 'radio button'.
+	//
+	// Note that the same effect can be achieved via the Actionable api, by
+	// using the same action with parameter type and state type 's' for all
+	// buttons in the group, and giving each button its own target value.
+	SetGroup(group checkButton)
+	// SetInconsistent: if the user has selected a range of elements (such as
+	// some text or spreadsheet cells) that are affected by a check button, and
+	// the current values in that range are inconsistent, you may want to
+	// display the toggle in an "in between" state. Normally you would turn off
+	// the inconsistent state again if the user checks the check button. This
+	// has to be done manually, gtk_check_button_set_inconsistent only affects
+	// visual appearance, not the semantics of the button.
+	SetInconsistent(inconsistent bool)
+	// SetLabel: sets the text of @self. If CheckButton:use-underline is true,
+	// the underscore in @label is interpreted as mnemonic indicator, see
+	// gtk_check_button_set_use_underline() for details on this behavior.
+	SetLabel(label string)
+	// SetUseUnderline: sets the new value of the CheckButton:use-underline
+	// property. See also gtk_check_button_get_use_underline().
+	//
+	// If @setting is true, an underscore character in @self's label indicates a
+	// mnemonic accelerator key. This behavior is similar to
+	// Label:use-underline.
+	SetUseUnderline(setting bool)
+}
+
+type checkButton struct {
 	Widget
 }
 
-func wrapCheckButton(obj *externglib.Object) *CheckButton {
-	return &CheckButton{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapCheckButton(obj *externglib.Object) CheckButton {
+	return &checkButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalCheckButton(p uintptr) (interface{}, error) {
@@ -7244,18 +9498,40 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCheckButton() *CheckButton
+func NewCheckButton() CheckButton
 
-func NewCheckButton(label string) *CheckButton
+func NewCheckButton(label string) CheckButton
 
-func NewCheckButton(label string) *CheckButton
+func NewCheckButton(label string) CheckButton
 
-type ClosureExpression struct {
+func (c checkButton) GetActive() bool
+
+func (c checkButton) GetInconsistent() bool
+
+func (c checkButton) GetLabel() string
+
+func (c checkButton) GetUseUnderline() bool
+
+func (c checkButton) SetActive(setting bool)
+
+func (c checkButton) SetGroup(group checkButton)
+
+func (c checkButton) SetInconsistent(inconsistent bool)
+
+func (c checkButton) SetLabel(label string)
+
+func (c checkButton) SetUseUnderline(setting bool)
+
+type ClosureExpression interface {
+	expression
+}
+
+type closureExpression struct {
 	Expression
 }
 
-func wrapClosureExpression(obj *externglib.Object) *ClosureExpression {
-	return &ClosureExpression{Expression{obj}}
+func wrapClosureExpression(obj *externglib.Object) ClosureExpression {
+	return &closureExpression{Expression{obj}}
 }
 
 func marshalClosureExpression(p uintptr) (interface{}, error) {
@@ -7264,7 +9540,7 @@ func marshalClosureExpression(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewClosureExpression(valueType externglib.Type, closure *externglib.Closure, nParams uint, params []*Expression) *ClosureExpression
+func NewClosureExpression(valueType externglib.Type, closure *externglib.Closure, nParams uint, params []expression) ClosureExpression
 
 // ColorButton: the ColorButton is a button which displays the currently
 // selected color and allows to open a color selection dialog to change the
@@ -7279,12 +9555,25 @@ func NewClosureExpression(valueType externglib.Type, closure *externglib.Closure
 // GtkColorButton has a single CSS node with name colorbutton which contains a
 // button node. To differentiate it from a plain Button, it gets the .color
 // style class.
-type ColorButton struct {
+type ColorButton interface {
+	widget
+
+	// GetModal: gets whether the dialog is modal.
+	GetModal() bool
+	// GetTitle: gets the title of the color selection dialog.
+	GetTitle() string
+	// SetModal: sets whether the dialog should be modal.
+	SetModal(modal bool)
+	// SetTitle: sets the title for the color selection dialog.
+	SetTitle(title string)
+}
+
+type colorButton struct {
 	Widget
 }
 
-func wrapColorButton(obj *externglib.Object) *ColorButton {
-	return &ColorButton{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapColorButton(obj *externglib.Object) ColorButton {
+	return &colorButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalColorButton(p uintptr) (interface{}, error) {
@@ -7293,18 +9582,30 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewColorButton() *ColorButton
+func NewColorButton() ColorButton
 
-func NewColorButton(rgba *gdk.RGBA) *ColorButton
+func NewColorButton(rgba *gdk.RGBA) ColorButton
+
+func (c colorButton) GetModal() bool
+
+func (c colorButton) GetTitle() string
+
+func (c colorButton) SetModal(modal bool)
+
+func (c colorButton) SetTitle(title string)
 
 // ColorChooserDialog: the ColorChooserDialog widget is a dialog for choosing a
 // color. It implements the ColorChooser interface.
-type ColorChooserDialog struct {
+type ColorChooserDialog interface {
+	dialog
+}
+
+type colorChooserDialog struct {
 	Dialog
 }
 
-func wrapColorChooserDialog(obj *externglib.Object) *ColorChooserDialog {
-	return &ColorChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
+func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
+	return &colorChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
 }
 
 func marshalColorChooserDialog(p uintptr) (interface{}, error) {
@@ -7313,7 +9614,7 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog
+func NewColorChooserDialog(title string, parent window) ColorChooserDialog
 
 // ColorChooserWidget: the ColorChooserWidget widget lets the user select a
 // color. By default, the chooser presents a predefined palette of colors, plus
@@ -7335,12 +9636,16 @@ func NewColorChooserDialog(title string, parent *Window) *ColorChooserDialog
 // CSS names
 //
 // GtkColorChooserWidget has a single CSS node with name colorchooser.
-type ColorChooserWidget struct {
+type ColorChooserWidget interface {
+	widget
+}
+
+type colorChooserWidget struct {
 	Widget
 }
 
-func wrapColorChooserWidget(obj *externglib.Object) *ColorChooserWidget {
-	return &ColorChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidget {
+	return &colorChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalColorChooserWidget(p uintptr) (interface{}, error) {
@@ -7349,7 +9654,7 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewColorChooserWidget() *ColorChooserWidget
+func NewColorChooserWidget() ColorChooserWidget
 
 // ColumnView: gtkColumnView is a widget to present a view into a large dynamic
 // list of items using multiple columns with headers.
@@ -7413,12 +9718,94 @@ func NewColorChooserWidget() *ColorChooserWidget
 // are using the K_ACCESSIBLE_ROLE_COLUMN_HEADER role. The row widgets are using
 // the K_ACCESSIBLE_ROLE_ROW role, and individual cells are using the
 // K_ACCESSIBLE_ROLE_GRID_CELL role
-type ColumnView struct {
+type ColumnView interface {
+	widget
+
+	// AppendColumn: appends the @column to the end of the columns in @self.
+	AppendColumn(column columnViewColumn)
+	// GetColumns: gets the list of columns in this column view. This list is
+	// constant over the lifetime of @self and can be used to monitor changes to
+	// the columns of @self by connecting to the Model:items-changed signal.
+	GetColumns() gio.ListModel
+	// GetEnableRubberband: returns whether rows can be selected by dragging
+	// with the mouse.
+	GetEnableRubberband() bool
+	// GetModel: gets the model that's currently used to read the items
+	// displayed.
+	GetModel() SelectionModel
+	// GetReorderable: returns whether columns are reorderable.
+	GetReorderable() bool
+	// GetShowColumnSeparators: returns whether the list should show separators
+	// between columns.
+	GetShowColumnSeparators() bool
+	// GetShowRowSeparators: returns whether the list should show separators
+	// between rows.
+	GetShowRowSeparators() bool
+	// GetSingleClickActivate: returns whether rows will be activated on single
+	// click and selected on hover.
+	GetSingleClickActivate() bool
+	// GetSorter: returns a special sorter that reflects the users sorting
+	// choices in the column view.
+	//
+	// To allow users to customizable sorting by clicking on column headers,
+	// this sorter needs to be set on the sort model underneath the model that
+	// is displayed by the view.
+	//
+	// See gtk_column_view_column_set_sorter() for setting up per-column
+	// sorting.
+	//
+	//
+	//      gtk_column_view_column_set_sorter (column, sorter);
+	//      gtk_column_view_append_column (view, column);
+	//      sorter = g_object_ref (gtk_column_view_get_sorter (view)));
+	//      model = gtk_sort_list_model_new (store, sorter);
+	//      selection = gtk_no_selection_new (model);
+	//      gtk_column_view_set_model (view, selection);
+	GetSorter() sorter
+	// InsertColumn: inserts a column at the given position in the columns of
+	// @self.
+	//
+	// If @column is already a column of @self, it will be repositioned.
+	InsertColumn(position uint, column columnViewColumn)
+	// RemoveColumn: removes the @column from the list of columns of @self.
+	RemoveColumn(column columnViewColumn)
+	// SetEnableRubberband: sets whether selections can be changed by dragging
+	// with the mouse.
+	SetEnableRubberband(enableRubberband bool)
+	// SetModel: sets the SelectionModel to use.
+	SetModel(model SelectionModel)
+	// SetReorderable: sets whether columns should be reorderable by dragging.
+	SetReorderable(reorderable bool)
+	// SetShowColumnSeparators: sets whether the list should show separators
+	// between columns.
+	SetShowColumnSeparators(showColumnSeparators bool)
+	// SetShowRowSeparators: sets whether the list should show separators
+	// between rows.
+	SetShowRowSeparators(showRowSeparators bool)
+	// SetSingleClickActivate: sets whether rows should be activated on single
+	// click and selected on hover.
+	SetSingleClickActivate(singleClickActivate bool)
+	// SortByColumn: sets the sorting of the view.
+	//
+	// This function should be used to set up the initial sorting. At runtime,
+	// users can change the sorting of a column view by clicking on the list
+	// headers.
+	//
+	// This call only has an effect if the sorter returned by
+	// gtk_column_view_get_sorter() is set on a sort model, and
+	// gtk_column_view_column_set_sorter() has been called on @column to
+	// associate a sorter with the column.
+	//
+	// If @column is nil, the view will be unsorted.
+	SortByColumn(column columnViewColumn, direction SortType)
+}
+
+type columnView struct {
 	Widget
 }
 
-func wrapColumnView(obj *externglib.Object) *ColumnView {
-	return &ColumnView{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapColumnView(obj *externglib.Object) ColumnView {
+	return &columnView{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalColumnView(p uintptr) (interface{}, error) {
@@ -7427,7 +9814,43 @@ func marshalColumnView(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewColumnView(model SelectionModel) *ColumnView
+func NewColumnView(model SelectionModel) ColumnView
+
+func (c columnView) AppendColumn(column columnViewColumn)
+
+func (c columnView) GetColumns() gio.ListModel
+
+func (c columnView) GetEnableRubberband() bool
+
+func (c columnView) GetModel() SelectionModel
+
+func (c columnView) GetReorderable() bool
+
+func (c columnView) GetShowColumnSeparators() bool
+
+func (c columnView) GetShowRowSeparators() bool
+
+func (c columnView) GetSingleClickActivate() bool
+
+func (c columnView) GetSorter() sorter
+
+func (c columnView) InsertColumn(position uint, column columnViewColumn)
+
+func (c columnView) RemoveColumn(column columnViewColumn)
+
+func (c columnView) SetEnableRubberband(enableRubberband bool)
+
+func (c columnView) SetModel(model SelectionModel)
+
+func (c columnView) SetReorderable(reorderable bool)
+
+func (c columnView) SetShowColumnSeparators(showColumnSeparators bool)
+
+func (c columnView) SetShowRowSeparators(showRowSeparators bool)
+
+func (c columnView) SetSingleClickActivate(singleClickActivate bool)
+
+func (c columnView) SortByColumn(column columnViewColumn, direction SortType)
 
 // ColumnViewColumn: gtkColumnViewColumn represents the columns being added to
 // ColumnView.
@@ -7438,12 +9861,76 @@ func NewColumnView(model SelectionModel) *ColumnView
 // A sorter can be associated with a column using
 // gtk_column_view_column_set_sorter(), to let users influence sorting by
 // clicking on the column header.
-type ColumnViewColumn struct {
+type ColumnViewColumn interface {
+	gextras.Objector
+
+	// GetColumnView: gets the column view that's currently displaying this
+	// column.
+	//
+	// If @self has not been added to a column view yet, nil is returned.
+	GetColumnView() columnView
+	// GetExpand: returns whether this column should expand.
+	GetExpand() bool
+	// GetFactory: gets the factory that's currently used to populate list items
+	// for this column.
+	GetFactory() listItemFactory
+	// GetFixedWidth: gets the fixed width of the column.
+	GetFixedWidth() int
+	// GetHeaderMenu: gets the menu model that is used to create the context
+	// menu for the column header.
+	GetHeaderMenu() gio.menuModel
+	// GetResizable: returns whether this column is resizable.
+	GetResizable() bool
+	// GetSorter: returns the sorter that is associated with the column.
+	GetSorter() sorter
+	// GetTitle: returns the title set with gtk_column_view_column_set_title().
+	GetTitle() string
+	// GetVisible: returns whether this column is visible.
+	GetVisible() bool
+	// SetExpand: sets the column to take available extra space.
+	//
+	// The extra space is shared equally amongst all columns that have the
+	// expand set to true.
+	SetExpand(expand bool)
+	// SetFactory: sets the ListItemFactory to use for populating list items for
+	// this column.
+	SetFactory(factory listItemFactory)
+	// SetFixedWidth: if @fixed_width is not -1, sets the fixed width of
+	// @column; otherwise unsets it.
+	//
+	// Setting a fixed width overrides the automatically calculated width.
+	// Interactive resizing also sets the “fixed-width” property.
+	SetFixedWidth(fixedWidth int)
+	// SetHeaderMenu: sets the menu model that is used to create the context
+	// menu for the column header.
+	SetHeaderMenu(menu gio.menuModel)
+	// SetResizable: sets whether this column should be resizable by dragging.
+	SetResizable(resizable bool)
+	// SetSorter: associates a sorter with the column.
+	//
+	// If @sorter is nil, the column will not let users change the sorting by
+	// clicking on its header.
+	//
+	// This sorter can be made active by clicking on the column header, or by
+	// calling gtk_column_view_sort_by_column().
+	//
+	// See gtk_column_view_get_sorter() for the necessary steps for setting up
+	// customizable sorting for ColumnView.
+	SetSorter(sorter sorter)
+	// SetTitle: sets the title of this column. The title is displayed in the
+	// header of a ColumnView for this column and is therefore user-facing text
+	// that should be translated.
+	SetTitle(title string)
+	// SetVisible: sets whether this column should be visible in views.
+	SetVisible(visible bool)
+}
+
+type columnViewColumn struct {
 	*externglib.Object
 }
 
-func wrapColumnViewColumn(obj *externglib.Object) *ColumnViewColumn {
-	return &ColumnViewColumn{*externglib.Object{obj}}
+func wrapColumnViewColumn(obj *externglib.Object) ColumnViewColumn {
+	return &columnViewColumn{*externglib.Object{obj}}
 }
 
 func marshalColumnViewColumn(p uintptr) (interface{}, error) {
@@ -7452,7 +9939,41 @@ func marshalColumnViewColumn(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColumn
+func NewColumnViewColumn(title string, factory listItemFactory) ColumnViewColumn
+
+func (c columnViewColumn) GetColumnView() columnView
+
+func (c columnViewColumn) GetExpand() bool
+
+func (c columnViewColumn) GetFactory() listItemFactory
+
+func (c columnViewColumn) GetFixedWidth() int
+
+func (c columnViewColumn) GetHeaderMenu() gio.menuModel
+
+func (c columnViewColumn) GetResizable() bool
+
+func (c columnViewColumn) GetSorter() sorter
+
+func (c columnViewColumn) GetTitle() string
+
+func (c columnViewColumn) GetVisible() bool
+
+func (c columnViewColumn) SetExpand(expand bool)
+
+func (c columnViewColumn) SetFactory(factory listItemFactory)
+
+func (c columnViewColumn) SetFixedWidth(fixedWidth int)
+
+func (c columnViewColumn) SetHeaderMenu(menu gio.menuModel)
+
+func (c columnViewColumn) SetResizable(resizable bool)
+
+func (c columnViewColumn) SetSorter(sorter sorter)
+
+func (c columnViewColumn) SetTitle(title string)
+
+func (c columnViewColumn) SetVisible(visible bool)
 
 // ComboBox: a GtkComboBox is a widget that allows the user to choose from a
 // list of valid choices. The GtkComboBox displays the selected choice. When
@@ -7507,12 +10028,122 @@ func NewColumnViewColumn(title string, factory *ListItemFactory) *ColumnViewColu
 // Accessibility
 //
 // GtkComboBox uses the K_ACCESSIBLE_ROLE_COMBO_BOX role.
-type ComboBox struct {
+type ComboBox interface {
+	widget
+
+	// GetActive: returns the index of the currently active item, or -1 if
+	// there’s no active item. If the model is a non-flat treemodel, and the
+	// active item is not an immediate child of the root of the tree, this
+	// function returns `gtk_tree_path_get_indices (path)[0]`, where `path` is
+	// the TreePath of the active item.
+	GetActive() int
+	// GetActiveID: returns the ID of the active row of @combo_box. This value
+	// is taken from the active row and the column specified by the
+	// ComboBox:id-column property of @combo_box (see
+	// gtk_combo_box_set_id_column()).
+	//
+	// The returned value is an interned string which means that you can compare
+	// the pointer by value to other interned strings and that you must not free
+	// it.
+	//
+	// If the ComboBox:id-column property of @combo_box is not set, or if no row
+	// is active, or if the active row has a nil ID value, then nil is returned.
+	GetActiveID() string
+	// GetActiveIter: sets @iter to point to the currently active item, if any
+	// item is active. Otherwise, @iter is left unchanged.
+	GetActiveIter() (TreeIter, bool)
+	// GetButtonSensitivity: returns whether the combo box sets the dropdown
+	// button sensitive or not when there are no items in the model.
+	GetButtonSensitivity() SensitivityType
+	// GetChild: gets the child widget of @combo_box.
+	GetChild() widget
+	// GetEntryTextColumn: returns the column which @combo_box is using to get
+	// the strings from to display in the internal entry.
+	GetEntryTextColumn() int
+	// GetHasEntry: returns whether the combo box has an entry.
+	GetHasEntry() bool
+	// GetIDColumn: returns the column which @combo_box is using to get string
+	// IDs for values from.
+	GetIDColumn() int
+	// GetModel: returns the TreeModel which is acting as data source for
+	// @combo_box.
+	GetModel() TreeModel
+	// GetPopupFixedWidth: gets whether the popup uses a fixed width matching
+	// the allocated width of the combo box.
+	GetPopupFixedWidth() bool
+	// GetRowSeparatorFunc: returns the current row separator function.
+	GetRowSeparatorFunc() TreeViewRowSeparatorFunc
+	// Popdown: hides the menu or dropdown list of @combo_box.
+	//
+	// This function is mostly intended for use by accessibility technologies;
+	// applications should have little use for it.
+	Popdown()
+	// Popup: pops up the menu or dropdown list of @combo_box.
+	//
+	// This function is mostly intended for use by accessibility technologies;
+	// applications should have little use for it.
+	//
+	// Before calling this, @combo_box must be mapped, or nothing will happen.
+	Popup()
+	// PopupForDevice: pops up the menu of @combo_box. Note that currently this
+	// does not do anything with the device, as it was previously only used for
+	// list-mode combo boxes, and those were removed in GTK 4. However, it is
+	// retained in case similar functionality is added back later.
+	PopupForDevice(device gdk.device)
+	// SetActive: sets the active item of @combo_box to be the item at @index.
+	SetActive(index_ int)
+	// SetActiveID: changes the active row of @combo_box to the one that has an
+	// ID equal to @active_id, or unsets the active row if @active_id is nil.
+	// Rows having a nil ID string cannot be made active by this function.
+	//
+	// If the ComboBox:id-column property of @combo_box is unset or if no row
+	// has the given ID then the function does nothing and returns false.
+	SetActiveID(activeID string) bool
+	// SetActiveIter: sets the current active item to be the one referenced by
+	// @iter, or unsets the active item if @iter is nil.
+	SetActiveIter(iter *TreeIter)
+	// SetButtonSensitivity: sets whether the dropdown button of the combo box
+	// should be always sensitive (GTK_SENSITIVITY_ON), never sensitive
+	// (GTK_SENSITIVITY_OFF) or only if there is at least one item to display
+	// (GTK_SENSITIVITY_AUTO).
+	SetButtonSensitivity(sensitivity SensitivityType)
+	// SetChild: sets the child widget of @combo_box.
+	SetChild(child widget)
+	// SetEntryTextColumn: sets the model column which @combo_box should use to
+	// get strings from to be @text_column. The column @text_column in the model
+	// of @combo_box must be of type G_TYPE_STRING.
+	//
+	// This is only relevant if @combo_box has been created with
+	// ComboBox:has-entry as true.
+	SetEntryTextColumn(textColumn int)
+	// SetIDColumn: sets the model column which @combo_box should use to get
+	// string IDs for values from. The column @id_column in the model of
+	// @combo_box must be of type G_TYPE_STRING.
+	SetIDColumn(idColumn int)
+	// SetModel: sets the model used by @combo_box to be @model. Will unset a
+	// previously set model (if applicable). If model is nil, then it will unset
+	// the model.
+	//
+	// Note that this function does not clear the cell renderers, you have to
+	// call gtk_cell_layout_clear() yourself if you need to set up different
+	// cell renderers for the new model.
+	SetModel(model TreeModel)
+	// SetPopupFixedWidth: specifies whether the popup’s width should be a fixed
+	// width matching the allocated width of the combo box.
+	SetPopupFixedWidth(fixed bool)
+	// SetRowSeparatorFunc: sets the row separator function, which is used to
+	// determine whether a row should be drawn as a separator. If the row
+	// separator function is nil, no separators are drawn. This is the default
+	// value.
+	SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+}
+
+type comboBox struct {
 	Widget
 }
 
-func wrapComboBox(obj *externglib.Object) *ComboBox {
-	return &ComboBox{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapComboBox(obj *externglib.Object) ComboBox {
+	return &comboBox{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalComboBox(p uintptr) (interface{}, error) {
@@ -7521,13 +10152,61 @@ func marshalComboBox(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewComboBox() *ComboBox
+func NewComboBox() ComboBox
 
-func NewComboBox() *ComboBox
+func NewComboBox() ComboBox
 
-func NewComboBox(model TreeModel) *ComboBox
+func NewComboBox(model TreeModel) ComboBox
 
-func NewComboBox(model TreeModel) *ComboBox
+func NewComboBox(model TreeModel) ComboBox
+
+func (c comboBox) GetActive() int
+
+func (c comboBox) GetActiveID() string
+
+func (c comboBox) GetActiveIter() (TreeIter, bool)
+
+func (c comboBox) GetButtonSensitivity() SensitivityType
+
+func (c comboBox) GetChild() widget
+
+func (c comboBox) GetEntryTextColumn() int
+
+func (c comboBox) GetHasEntry() bool
+
+func (c comboBox) GetIDColumn() int
+
+func (c comboBox) GetModel() TreeModel
+
+func (c comboBox) GetPopupFixedWidth() bool
+
+func (c comboBox) GetRowSeparatorFunc() TreeViewRowSeparatorFunc
+
+func (c comboBox) Popdown()
+
+func (c comboBox) Popup()
+
+func (c comboBox) PopupForDevice(device gdk.device)
+
+func (c comboBox) SetActive(index_ int)
+
+func (c comboBox) SetActiveID(activeID string) bool
+
+func (c comboBox) SetActiveIter(iter *TreeIter)
+
+func (c comboBox) SetButtonSensitivity(sensitivity SensitivityType)
+
+func (c comboBox) SetChild(child widget)
+
+func (c comboBox) SetEntryTextColumn(textColumn int)
+
+func (c comboBox) SetIDColumn(idColumn int)
+
+func (c comboBox) SetModel(model TreeModel)
+
+func (c comboBox) SetPopupFixedWidth(fixed bool)
+
+func (c comboBox) SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc, data unsafe.Pointer, destroy unsafe.Pointer)
 
 // ComboBoxText: a GtkComboBoxText is a simple variant of ComboBox that hides
 // the model-view complexity for simple text-only use cases.
@@ -7575,12 +10254,62 @@ func NewComboBox(model TreeModel) *ComboBox
 // GtkComboBoxText has a single CSS node with name combobox. It adds the style
 // class .combo to the main CSS nodes of its entry and button children, and the
 // .linked class to the node of its internal box.
-type ComboBoxText struct {
+type ComboBoxText interface {
+	comboBox
+
+	// Append: appends @text to the list of strings stored in @combo_box. If @id
+	// is non-nil then it is used as the ID of the row.
+	//
+	// This is the same as calling gtk_combo_box_text_insert() with a position
+	// of -1.
+	Append(id string, text string)
+	// AppendText: appends @text to the list of strings stored in @combo_box.
+	//
+	// This is the same as calling gtk_combo_box_text_insert_text() with a
+	// position of -1.
+	AppendText(text string)
+	// GetActiveText: returns the currently active string in @combo_box, or nil
+	// if none is selected. If @combo_box contains an entry, this function will
+	// return its contents (which will not necessarily be an item from the
+	// list).
+	GetActiveText() string
+	// Insert: inserts @text at @position in the list of strings stored in
+	// @combo_box. If @id is non-nil then it is used as the ID of the row. See
+	// ComboBox:id-column.
+	//
+	// If @position is negative then @text is appended.
+	Insert(position int, id string, text string)
+	// InsertText: inserts @text at @position in the list of strings stored in
+	// @combo_box.
+	//
+	// If @position is negative then @text is appended.
+	//
+	// This is the same as calling gtk_combo_box_text_insert() with a nil ID
+	// string.
+	InsertText(position int, text string)
+	// Prepend: prepends @text to the list of strings stored in @combo_box. If
+	// @id is non-nil then it is used as the ID of the row.
+	//
+	// This is the same as calling gtk_combo_box_text_insert() with a position
+	// of 0.
+	Prepend(id string, text string)
+	// PrependText: prepends @text to the list of strings stored in @combo_box.
+	//
+	// This is the same as calling gtk_combo_box_text_insert_text() with a
+	// position of 0.
+	PrependText(text string)
+	// Remove: removes the string at @position from @combo_box.
+	Remove(position int)
+	// RemoveAll: removes all the text entries from the combo box.
+	RemoveAll()
+}
+
+type comboBoxText struct {
 	ComboBox
 }
 
-func wrapComboBoxText(obj *externglib.Object) *ComboBoxText {
-	return &ComboBoxText{ComboBox{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapComboBoxText(obj *externglib.Object) ComboBoxText {
+	return &comboBoxText{ComboBox{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalComboBoxText(p uintptr) (interface{}, error) {
@@ -7589,16 +10318,41 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewComboBoxText() *ComboBoxText
+func NewComboBoxText() ComboBoxText
 
-func NewComboBoxText() *ComboBoxText
+func NewComboBoxText() ComboBoxText
 
-type ConstantExpression struct {
+func (c comboBoxText) Append(id string, text string)
+
+func (c comboBoxText) AppendText(text string)
+
+func (c comboBoxText) GetActiveText() string
+
+func (c comboBoxText) Insert(position int, id string, text string)
+
+func (c comboBoxText) InsertText(position int, text string)
+
+func (c comboBoxText) Prepend(id string, text string)
+
+func (c comboBoxText) PrependText(text string)
+
+func (c comboBoxText) Remove(position int)
+
+func (c comboBoxText) RemoveAll()
+
+type ConstantExpression interface {
+	expression
+
+	// GetValue: gets the value that a constant expression evaluates to.
+	GetValue() *externglib.Value
+}
+
+type constantExpression struct {
 	Expression
 }
 
-func wrapConstantExpression(obj *externglib.Object) *ConstantExpression {
-	return &ConstantExpression{Expression{obj}}
+func wrapConstantExpression(obj *externglib.Object) ConstantExpression {
+	return &constantExpression{Expression{obj}}
 }
 
 func marshalConstantExpression(p uintptr) (interface{}, error) {
@@ -7607,7 +10361,9 @@ func marshalConstantExpression(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewConstantExpression(value *externglib.Value) *ConstantExpression
+func NewConstantExpression(value *externglib.Value) ConstantExpression
+
+func (c constantExpression) GetValue() *externglib.Value
 
 // Constraint: constraint describes a constraint between an attribute on a
 // widget and another attribute on another widget, expressed as a linear
@@ -7621,12 +10377,54 @@ func NewConstantExpression(value *externglib.Value) *ConstantExpression
 //
 // The source and target widgets, as well as their attributes, of a Constraint
 // instance are immutable after creation.
-type Constraint struct {
+type Constraint interface {
+	gextras.Objector
+
+	// GetConstant: retrieves the constant factor added to the source
+	// attributes' value.
+	GetConstant() float64
+	// GetMultiplier: retrieves the multiplication factor applied to the source
+	// attribute's value.
+	GetMultiplier() float64
+	// GetRelation: the order relation between the terms of the @constraint.
+	GetRelation() ConstraintRelation
+	// GetSource: retrieves the ConstraintTarget used as the source for
+	// @constraint.
+	//
+	// If the Constraint:source property is set to nil, the @constraint will use
+	// the ConstraintLayout's widget.
+	GetSource() ConstraintTarget
+	// GetSourceAttribute: retrieves the attribute of the source to be read by
+	// the @constraint.
+	GetSourceAttribute() ConstraintAttribute
+	// GetStrength: retrieves the strength of the constraint.
+	GetStrength() int
+	// GetTarget: retrieves the ConstraintTarget used as the target for
+	// @constraint.
+	//
+	// If the Constraint:target property is set to nil, the @constraint will use
+	// the ConstraintLayout's widget.
+	GetTarget() ConstraintTarget
+	// GetTargetAttribute: retrieves the attribute of the target to be set by
+	// the @constraint.
+	GetTargetAttribute() ConstraintAttribute
+	// IsAttached: checks whether the @constraint is attached to a
+	// ConstraintLayout, and it is contributing to the layout.
+	IsAttached() bool
+	// IsConstant: checks whether the @constraint describes a relation between
+	// an attribute on the Constraint:target and a constant value.
+	IsConstant() bool
+	// IsRequired: checks whether the @constraint is a required relation for
+	// solving the constraint layout.
+	IsRequired() bool
+}
+
+type constraint struct {
 	*externglib.Object
 }
 
-func wrapConstraint(obj *externglib.Object) *Constraint {
-	return &Constraint{*externglib.Object{obj}}
+func wrapConstraint(obj *externglib.Object) Constraint {
+	return &constraint{*externglib.Object{obj}}
 }
 
 func marshalConstraint(p uintptr) (interface{}, error) {
@@ -7635,21 +10433,81 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewConstraint(target unsafe.Pointer, targetAttribute ConstraintAttribute, relation ConstraintRelation, source unsafe.Pointer, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) *Constraint
+func NewConstraint(target unsafe.Pointer, targetAttribute ConstraintAttribute, relation ConstraintRelation, source unsafe.Pointer, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint
 
-func NewConstraint(target unsafe.Pointer, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) *Constraint
+func NewConstraint(target unsafe.Pointer, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) Constraint
+
+func (c constraint) GetConstant() float64
+
+func (c constraint) GetMultiplier() float64
+
+func (c constraint) GetRelation() ConstraintRelation
+
+func (c constraint) GetSource() ConstraintTarget
+
+func (c constraint) GetSourceAttribute() ConstraintAttribute
+
+func (c constraint) GetStrength() int
+
+func (c constraint) GetTarget() ConstraintTarget
+
+func (c constraint) GetTargetAttribute() ConstraintAttribute
+
+func (c constraint) IsAttached() bool
+
+func (c constraint) IsConstant() bool
+
+func (c constraint) IsRequired() bool
 
 // ConstraintGuide: a ConstraintGuide is an invisible layout element that can be
 // used by widgets inside a ConstraintLayout as a source or a target of a
 // Constraint. Guides can be used like guidelines or as flexible space.
 //
 // Unlike a Widget, a ConstraintGuide will not be drawn.
-type ConstraintGuide struct {
+type ConstraintGuide interface {
+	gextras.Objector
+
+	// GetMaxSize: gets the maximum size of @guide.
+	GetMaxSize(width int, height int)
+	// GetMinSize: gets the minimum size of @guide.
+	GetMinSize(width int, height int)
+	// GetName: retrieves the name set using gtk_constraint_guide_set_name().
+	GetName() string
+	// GetNatSize: gets the natural size of @guide.
+	GetNatSize(width int, height int)
+	// GetStrength: retrieves the strength set using
+	// gtk_constraint_guide_set_strength().
+	GetStrength() ConstraintStrength
+	// SetMaxSize: sets the maximum size of @guide.
+	//
+	// If @guide is attached to a ConstraintLayout, the constraints will be
+	// updated to reflect the new size.
+	SetMaxSize(width int, height int)
+	// SetMinSize: sets the minimum size of @guide.
+	//
+	// If @guide is attached to a ConstraintLayout, the constraints will be
+	// updated to reflect the new size.
+	SetMinSize(width int, height int)
+	// SetName: sets a name for the given ConstraintGuide.
+	//
+	// The name is useful for debugging purposes.
+	SetName(name string)
+	// SetNatSize: sets the natural size of @guide.
+	//
+	// If @guide is attached to a ConstraintLayout, the constraints will be
+	// updated to reflect the new size.
+	SetNatSize(width int, height int)
+	// SetStrength: sets the strength of the constraint on the natural size of
+	// the given ConstraintGuide.
+	SetStrength(strength ConstraintStrength)
+}
+
+type constraintGuide struct {
 	*externglib.Object
 }
 
-func wrapConstraintGuide(obj *externglib.Object) *ConstraintGuide {
-	return &ConstraintGuide{*externglib.Object{obj}}
+func wrapConstraintGuide(obj *externglib.Object) ConstraintGuide {
+	return &constraintGuide{*externglib.Object{obj}}
 }
 
 func marshalConstraintGuide(p uintptr) (interface{}, error) {
@@ -7658,7 +10516,27 @@ func marshalConstraintGuide(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewConstraintGuide() *ConstraintGuide
+func NewConstraintGuide() ConstraintGuide
+
+func (c constraintGuide) GetMaxSize(width int, height int)
+
+func (c constraintGuide) GetMinSize(width int, height int)
+
+func (c constraintGuide) GetName() string
+
+func (c constraintGuide) GetNatSize(width int, height int)
+
+func (c constraintGuide) GetStrength() ConstraintStrength
+
+func (c constraintGuide) SetMaxSize(width int, height int)
+
+func (c constraintGuide) SetMinSize(width int, height int)
+
+func (c constraintGuide) SetName(name string)
+
+func (c constraintGuide) SetNatSize(width int, height int)
+
+func (c constraintGuide) SetStrength(strength ConstraintStrength)
 
 // ConstraintLayout: gtkConstraintLayout is a layout manager that uses relations
 // between widget attributes, expressed via Constraint instances, to measure and
@@ -7816,12 +10694,140 @@ func NewConstraintGuide() *ConstraintGuide
 //      // width of button1 must be equal to width of button2
 //      // divided by 2 plus 12
 //      [button1(button2 / 2 + 12)]
-type ConstraintLayout struct {
+type ConstraintLayout interface {
+	layoutManager
+
+	// AddConstraint: adds a Constraint to the layout manager.
+	//
+	// The Constraint:source and Constraint:target properties of @constraint can
+	// be:
+	//
+	// - set to nil to indicate that the constraint refers to the widget using
+	// @layout - set to the Widget using @layout - set to a child of the Widget
+	// using @layout - set to a guide that is part of @layout
+	//
+	// The @layout acquires the ownership of @constraint after calling this
+	// function.
+	AddConstraint(constraint constraint)
+	// AddConstraintsFromDescriptionv: creates a list of constraints from a
+	// formal description using a compact description syntax called VFL, or
+	// "Visual Format Language".
+	//
+	// The Visual Format Language is based on Apple's AutoLayout
+	// [VFL](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/VisualFormatLanguage.html).
+	//
+	// The @views dictionary is used to match ConstraintTargets to the symbolic
+	// view name inside the VFL.
+	//
+	// The VFL grammar is:
+	//
+	//         <visualFormatString> = (<orientation>)?
+	//                                (<superview><connection>)?
+	//                                <view>(<connection><view>)*
+	//                                (<connection><superview>)?
+	//                <orientation> = 'H' | 'V'
+	//                  <superview> = '|'
+	//                 <connection> = '' | '-' <predicateList> '-' | '-'
+	//              <predicateList> = <simplePredicate> | <predicateListWithParens>
+	//            <simplePredicate> = <metricName> | <positiveNumber>
+	//    <predicateListWithParens> = '(' <predicate> (',' <predicate>)* ')'
+	//                  <predicate> = (<relation>)? <objectOfPredicate> (<operatorList>)? ('@' <priority>)?
+	//                   <relation> = '==' | '<=' | '>='
+	//          <objectOfPredicate> = <constant> | <viewName> | ('.' <attributeName>)?
+	//                   <priority> = <positiveNumber> | 'required' | 'strong' | 'medium' | 'weak'
+	//                   <constant> = <number>
+	//               <operatorList> = (<multiplyOperator>)? (<addOperator>)?
+	//           <multiplyOperator> = [ '*' | '/' ] <positiveNumber>
+	//                <addOperator> = [ '+' | '-' ] <positiveNumber>
+	//                   <viewName> = [A-Za-z_]([A-Za-z0-9_]*) // A C identifier
+	//                 <metricName> = [A-Za-z_]([A-Za-z0-9_]*) // A C identifier
+	//              <attributeName> = 'top' | 'bottom' | 'left' | 'right' | 'width' | 'height' |
+	//                                'start' | 'end' | 'centerX' | 'centerY' | 'baseline'
+	//             <positiveNumber> // A positive real number parseable by g_ascii_strtod()
+	//                     <number> // A real number parseable by g_ascii_strtod()
+	//
+	// **Note**: The VFL grammar used by GTK is slightly different than the one
+	// defined by Apple, as it can use symbolic values for the constraint's
+	// strength instead of numeric values; additionally, GTK allows adding
+	// simple arithmetic operations inside predicates.
+	//
+	// Examples of VFL descriptions are:
+	//
+	//      // Default spacing
+	//      [button]-[textField]
+	//
+	//      // Width constraint
+	//      [button(>=50)]
+	//
+	//      // Connection to super view
+	//      |-50-[purpleBox]-50-|
+	//
+	//      // Vertical layout
+	//      V:[topField]-10-[bottomField]
+	//
+	//      // Flush views
+	//      [maroonView][blueView]
+	//
+	//      // Priority
+	//      [button(100@strong)]
+	//
+	//      // Equal widths
+	//      [button1(==button2)]
+	//
+	//      // Multiple predicates
+	//      [flexibleButton(>=70,<=100)]
+	//
+	//      // A complete line of layout
+	//      |-[find]-[findNext]-[findField(>=20)]-|
+	//
+	//      // Operators
+	//      [button1(button2 / 3 + 50)]
+	//
+	//      // Named attributes
+	//      [button1(==button2.height)]
+	//
+	AddConstraintsFromDescriptionv(lines []string, nLines uint, hspacing int, vspacing int, views *glib.HashTable) *glib.List
+	// AddGuide: adds a guide to @layout. A guide can be used as the source or
+	// target of constraints, like a widget, but it is not visible.
+	//
+	// The @layout acquires the ownership of @guide after calling this function.
+	AddGuide(guide constraintGuide)
+	// ObserveConstraints: returns a Model to track the constraints that are
+	// part of @layout.
+	//
+	// Calling this function will enable extra internal bookkeeping to track
+	// constraints and emit signals on the returned listmodel. It may slow down
+	// operations a lot.
+	//
+	// Applications should try hard to avoid calling this function because of
+	// the slowdowns.
+	ObserveConstraints() gio.ListModel
+	// ObserveGuides: returns a Model to track the guides that are part of
+	// @layout.
+	//
+	// Calling this function will enable extra internal bookkeeping to track
+	// guides and emit signals on the returned listmodel. It may slow down
+	// operations a lot.
+	//
+	// Applications should try hard to avoid calling this function because of
+	// the slowdowns.
+	ObserveGuides() gio.ListModel
+	// RemoveAllConstraints: removes all constraints from the layout manager.
+	RemoveAllConstraints()
+	// RemoveConstraint: removes @constraint from the layout manager, so that it
+	// no longer influences the layout.
+	RemoveConstraint(constraint constraint)
+	// RemoveGuide: removes @guide from the layout manager, so that it no longer
+	// influences the layout.
+	RemoveGuide(guide constraintGuide)
+}
+
+type constraintLayout struct {
 	LayoutManager
 }
 
-func wrapConstraintLayout(obj *externglib.Object) *ConstraintLayout {
-	return &ConstraintLayout{LayoutManager{*externglib.Object{obj}}}
+func wrapConstraintLayout(obj *externglib.Object) ConstraintLayout {
+	return &constraintLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalConstraintLayout(p uintptr) (interface{}, error) {
@@ -7830,15 +10836,35 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewConstraintLayout() *ConstraintLayout
+func NewConstraintLayout() ConstraintLayout
+
+func (c constraintLayout) AddConstraint(constraint constraint)
+
+func (c constraintLayout) AddConstraintsFromDescriptionv(lines []string, nLines uint, hspacing int, vspacing int, views *glib.HashTable) *glib.List
+
+func (c constraintLayout) AddGuide(guide constraintGuide)
+
+func (c constraintLayout) ObserveConstraints() gio.ListModel
+
+func (c constraintLayout) ObserveGuides() gio.ListModel
+
+func (c constraintLayout) RemoveAllConstraints()
+
+func (c constraintLayout) RemoveConstraint(constraint constraint)
+
+func (c constraintLayout) RemoveGuide(guide constraintGuide)
 
 // ConstraintLayoutChild: a LayoutChild in a ConstraintLayout.
-type ConstraintLayoutChild struct {
+type ConstraintLayoutChild interface {
+	layoutChild
+}
+
+type constraintLayoutChild struct {
 	LayoutChild
 }
 
-func wrapConstraintLayoutChild(obj *externglib.Object) *ConstraintLayoutChild {
-	return &ConstraintLayoutChild{LayoutChild{*externglib.Object{obj}}}
+func wrapConstraintLayoutChild(obj *externglib.Object) ConstraintLayoutChild {
+	return &constraintLayoutChild{LayoutChild{*externglib.Object{obj}}}
 }
 
 func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
@@ -7870,12 +10896,45 @@ func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
 // environment variable), and `VERSION` is the GTK version number. If no file is
 // found for the current version, GTK tries older versions all the way back to
 // 4.0.
-type CSSProvider struct {
+type CSSProvider interface {
+	gextras.Objector
+
+	// LoadFromData: loads @data into @css_provider, and by doing so clears any
+	// previously loaded information.
+	LoadFromData(data []uint8, length int)
+	// LoadFromFile: loads the data contained in @file into @css_provider,
+	// making it clear any previously loaded information.
+	LoadFromFile(file gio.File)
+	// LoadFromPath: loads the data contained in @path into @css_provider,
+	// making it clear any previously loaded information.
+	LoadFromPath(path string)
+	// LoadFromResource: loads the data contained in the resource at
+	// @resource_path into the CssProvider, clearing any previously loaded
+	// information.
+	//
+	// To track errors while loading CSS, connect to the
+	// CssProvider::parsing-error signal.
+	LoadFromResource(resourcePath string)
+	// LoadNamed: loads a theme from the usual theme paths. The actual process
+	// of finding the theme might change between releases, but it is guaranteed
+	// that this function uses the same mechanism to load the theme that GTK
+	// uses for loading its own theme.
+	LoadNamed(name string, variant string)
+	// ToString: converts the @provider into a string representation in CSS
+	// format.
+	//
+	// Using gtk_css_provider_load_from_data() with the return value from this
+	// function on a new provider created with gtk_css_provider_new() will
+	// basically create a duplicate of this @provider.
+	ToString() string
+}
+
+type cSSProvider struct {
 	*externglib.Object
 }
 
-func wrapCSSProvider(obj *externglib.Object) *CSSProvider {
-	return &CSSProvider{*externglib.Object{obj}}
+func wrapCSSProvider(obj *externglib.Object) CSSProvider {
+	return &cSSProvider{*externglib.Object{obj}}
 }
 
 func marshalCSSProvider(p uintptr) (interface{}, error) {
@@ -7884,16 +10943,42 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCSSProvider() *CSSProvider
+func NewCSSProvider() CSSProvider
+
+func (c cSSProvider) LoadFromData(data []uint8, length int)
+
+func (c cSSProvider) LoadFromFile(file gio.File)
+
+func (c cSSProvider) LoadFromPath(path string)
+
+func (c cSSProvider) LoadFromResource(resourcePath string)
+
+func (c cSSProvider) LoadNamed(name string, variant string)
+
+func (c cSSProvider) ToString() string
 
 // CustomFilter is a Filter that uses a callback to determine whether to include
 // an item or not.
-type CustomFilter struct {
+type CustomFilter interface {
+	filter
+
+	// SetFilterFunc: sets (or unsets) the function used for filtering items.
+	//
+	// If @match_func is nil, the filter matches all items.
+	//
+	// If the filter func changes its filtering behavior, gtk_filter_changed()
+	// needs to be called.
+	//
+	// If a previous function was set, its @user_destroy will be called now.
+	SetFilterFunc(matchFunc CustomFilterFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
+}
+
+type customFilter struct {
 	Filter
 }
 
-func wrapCustomFilter(obj *externglib.Object) *CustomFilter {
-	return &CustomFilter{Filter{*externglib.Object{obj}}}
+func wrapCustomFilter(obj *externglib.Object) CustomFilter {
+	return &customFilter{Filter{*externglib.Object{obj}}}
 }
 
 func marshalCustomFilter(p uintptr) (interface{}, error) {
@@ -7902,7 +10987,9 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCustomFilter(matchFunc CustomFilterFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) *CustomFilter
+func NewCustomFilter(matchFunc CustomFilterFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) CustomFilter
+
+func (c customFilter) SetFilterFunc(matchFunc CustomFilterFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
 
 // CustomLayout is a convenience type meant to be used as a transition mechanism
 // between Widgets implementing a layout policy, and LayoutManager classes.
@@ -7910,12 +10997,16 @@ func NewCustomFilter(matchFunc CustomFilterFunc, userData unsafe.Pointer, userDe
 // A CustomLayout uses closures matching to the old Widget virtual functions for
 // size negotiation, as a convenience API to ease the porting towards the
 // corresponding LayoutManager virtual functions.
-type CustomLayout struct {
+type CustomLayout interface {
+	layoutManager
+}
+
+type customLayout struct {
 	LayoutManager
 }
 
-func wrapCustomLayout(obj *externglib.Object) *CustomLayout {
-	return &CustomLayout{LayoutManager{*externglib.Object{obj}}}
+func wrapCustomLayout(obj *externglib.Object) CustomLayout {
+	return &customLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalCustomLayout(p uintptr) (interface{}, error) {
@@ -7924,16 +11015,30 @@ func marshalCustomLayout(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCustomLayout(requestMode CustomRequestModeFunc, measure CustomMeasureFunc, allocate CustomAllocateFunc) *CustomLayout
+func NewCustomLayout(requestMode CustomRequestModeFunc, measure CustomMeasureFunc, allocate CustomAllocateFunc) CustomLayout
 
 // CustomSorter: gtkCustomSorter is a Sorter implementation that sorts via a
 // traditional DataFunc callback.
-type CustomSorter struct {
+type CustomSorter interface {
+	sorter
+
+	// SetSortFunc: sets (or unsets) the function used for sorting items.
+	//
+	// If @sort_func is nil, all items are considered equal.
+	//
+	// If the sort func changes its sorting behavior, gtk_sorter_changed() needs
+	// to be called.
+	//
+	// If a previous function was set, its @user_destroy will be called now.
+	SetSortFunc(sortFunc glib.CompareDataFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
+}
+
+type customSorter struct {
 	Sorter
 }
 
-func wrapCustomSorter(obj *externglib.Object) *CustomSorter {
-	return &CustomSorter{Sorter{*externglib.Object{obj}}}
+func wrapCustomSorter(obj *externglib.Object) CustomSorter {
+	return &customSorter{Sorter{*externglib.Object{obj}}}
 }
 
 func marshalCustomSorter(p uintptr) (interface{}, error) {
@@ -7942,7 +11047,9 @@ func marshalCustomSorter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCustomSorter(sortFunc glib.CompareDataFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) *CustomSorter
+func NewCustomSorter(sortFunc glib.CompareDataFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) CustomSorter
+
+func (c customSorter) SetSortFunc(sortFunc glib.CompareDataFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
 
 // Dialog: dialogs are a convenient way to prompt the user for a small amount of
 // input, e.g. to display a message, ask a question, or anything else that does
@@ -8038,12 +11145,52 @@ func NewCustomSorter(sortFunc glib.CompareDataFunc, userData unsafe.Pointer, use
 // Accessibility
 //
 // GtkDialog uses the K_ACCESSIBLE_ROLE_DIALOG role.
-type Dialog struct {
+type Dialog interface {
+	window
+
+	// AddActionWidget: adds an activatable widget to the action area of a
+	// Dialog, connecting a signal handler that will emit the Dialog::response
+	// signal on the dialog when the widget is activated. The widget is appended
+	// to the end of the dialog’s action area. If you want to add a
+	// non-activatable widget, simply pack it into the @action_area field of the
+	// Dialog struct.
+	AddActionWidget(child widget, responseID int)
+	// AddButton: adds a button with the given text and sets things up so that
+	// clicking the button will emit the Dialog::response signal with the given
+	// @response_id. The button is appended to the end of the dialog’s action
+	// area. The button widget is returned, but usually you don’t need it.
+	AddButton(buttonText string, responseID int) widget
+	// GetContentArea: returns the content area of @dialog.
+	GetContentArea() widget
+	// GetHeaderBar: returns the header bar of @dialog. Note that the headerbar
+	// is only used by the dialog if the Dialog:use-header-bar property is true.
+	GetHeaderBar() widget
+	// GetResponseForWidget: gets the response id of a widget in the action area
+	// of a dialog.
+	GetResponseForWidget(widget widget) int
+	// GetWidgetForResponse: gets the widget button that uses the given response
+	// ID in the action area of a dialog.
+	GetWidgetForResponse(responseID int) widget
+	// Response: emits the Dialog::response signal with the given response ID.
+	//
+	// Used to indicate that the user has responded to the dialog in some way.
+	Response(responseID int)
+	// SetDefaultResponse: sets the last widget in the dialog’s action area with
+	// the given @response_id as the default widget for the dialog. Pressing
+	// “Enter” normally activates the default widget.
+	SetDefaultResponse(responseID int)
+	// SetResponseSensitive: calls `gtk_widget_set_sensitive (widget, @setting)`
+	// for each widget in the dialog’s action area with the given @response_id.
+	// A convenient way to sensitize/desensitize dialog buttons.
+	SetResponseSensitive(responseID int, setting bool)
+}
+
+type dialog struct {
 	Window
 }
 
-func wrapDialog(obj *externglib.Object) *Dialog {
-	return &Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapDialog(obj *externglib.Object) Dialog {
+	return &dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalDialog(p uintptr) (interface{}, error) {
@@ -8052,7 +11199,25 @@ func marshalDialog(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewDialog() *Dialog
+func NewDialog() Dialog
+
+func (d dialog) AddActionWidget(child widget, responseID int)
+
+func (d dialog) AddButton(buttonText string, responseID int) widget
+
+func (d dialog) GetContentArea() widget
+
+func (d dialog) GetHeaderBar() widget
+
+func (d dialog) GetResponseForWidget(widget widget) int
+
+func (d dialog) GetWidgetForResponse(responseID int) widget
+
+func (d dialog) Response(responseID int)
+
+func (d dialog) SetDefaultResponse(responseID int)
+
+func (d dialog) SetResponseSensitive(responseID int, setting bool)
 
 // DirectoryList is a list model that wraps g_file_enumerate_children_async().
 // It presents a Model and fills it asynchronously with the Infos returned from
@@ -8073,12 +11238,70 @@ func NewDialog() *Dialog
 // referred to in the same way you would via g_file_enumerator_get_child(). This
 // means you do not need access to the DirectoryList but can access the #GFile
 // directly from the Info when operating with a ListView or similar.
-type DirectoryList struct {
+type DirectoryList interface {
+	gextras.Objector
+
+	// GetAttributes: gets the attributes queried on the children.
+	GetAttributes() string
+	// GetError: gets the loading error, if any.
+	//
+	// If an error occurs during the loading process, the loading process will
+	// finish and this property allows querying the error that happened. This
+	// error will persist until a file is loaded again.
+	//
+	// An error being set does not mean that no files were loaded, and all
+	// successfully queried files will remain in the list.
+	GetError() *glib.Error
+	// GetFile: gets the file whose children are currently enumerated.
+	GetFile() gio.File
+	// GetIOPriority: gets the IO priority set via
+	// gtk_directory_list_set_io_priority().
+	GetIOPriority() int
+	// GetMonitored: returns whether the directory list is monitoring the
+	// directory for changes.
+	GetMonitored() bool
+	// IsLoading: returns true if the children enumeration is currently in
+	// progress.
+	//
+	// Files will be added to @self from time to time while loading is going on.
+	// The order in which are added is undefined and may change in between runs.
+	IsLoading() bool
+	// SetAttributes: sets the @attributes to be enumerated and starts the
+	// enumeration.
+	//
+	// If @attributes is nil, no attributes will be queried, but a list of Infos
+	// will still be created.
+	SetAttributes(attributes string)
+	// SetFile: sets the @file to be enumerated and starts the enumeration.
+	//
+	// If @file is nil, the result will be an empty list.
+	SetFile(file gio.File)
+	// SetIOPriority: sets the IO priority to use while loading directories.
+	//
+	// Setting the priority while @self is loading will reprioritize the ongoing
+	// load as soon as possible.
+	//
+	// The default IO priority is G_PRIORITY_DEFAULT, which is higher than the
+	// GTK redraw priority. If you are loading a lot of directories in parallel,
+	// lowering it to something like G_PRIORITY_DEFAULT_IDLE may increase
+	// responsiveness.
+	SetIOPriority(ioPriority int)
+	// SetMonitored: sets whether the directory list will monitor the directory
+	// for changes. If monitoring is enabled, the Model::items-changed signal
+	// will be emitted when the directory contents change.
+	//
+	// When monitoring is turned on after the initial creation of the directory
+	// list, the directory is reloaded to avoid missing files that appeared
+	// between the initial loading and when monitoring was turned on.
+	SetMonitored(monitored bool)
+}
+
+type directoryList struct {
 	*externglib.Object
 }
 
-func wrapDirectoryList(obj *externglib.Object) *DirectoryList {
-	return &DirectoryList{*externglib.Object{obj}}
+func wrapDirectoryList(obj *externglib.Object) DirectoryList {
+	return &directoryList{*externglib.Object{obj}}
 }
 
 func marshalDirectoryList(p uintptr) (interface{}, error) {
@@ -8087,7 +11310,27 @@ func marshalDirectoryList(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewDirectoryList(attributes string, file gio.File) *DirectoryList
+func NewDirectoryList(attributes string, file gio.File) DirectoryList
+
+func (d directoryList) GetAttributes() string
+
+func (d directoryList) GetError() *glib.Error
+
+func (d directoryList) GetFile() gio.File
+
+func (d directoryList) GetIOPriority() int
+
+func (d directoryList) GetMonitored() bool
+
+func (d directoryList) IsLoading() bool
+
+func (d directoryList) SetAttributes(attributes string)
+
+func (d directoryList) SetFile(file gio.File)
+
+func (d directoryList) SetIOPriority(ioPriority int)
+
+func (d directoryList) SetMonitored(monitored bool)
 
 // DragIcon: gtkDragIcon is a Root implementation with the sole purpose to serve
 // as a drag icon during DND operations. A drag icon moves with the pointer
@@ -8099,12 +11342,21 @@ func NewDirectoryList(attributes string, file gio.File) *DirectoryList
 // widget should be used for the drag icon.
 //
 // Keep in mind that drag icons do not allow user input.
-type DragIcon struct {
+type DragIcon interface {
+	widget
+
+	// GetChild: gets the widget currently used as drag icon.
+	GetChild() widget
+	// SetChild: sets the widget to display as the drag icon.
+	SetChild(child widget)
+}
+
+type dragIcon struct {
 	Widget
 }
 
-func wrapDragIcon(obj *externglib.Object) *DragIcon {
-	return &DragIcon{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapDragIcon(obj *externglib.Object) DragIcon {
+	return &dragIcon{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalDragIcon(p uintptr) (interface{}, error) {
@@ -8112,6 +11364,10 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (d dragIcon) GetChild() widget
+
+func (d dragIcon) SetChild(child widget)
 
 // DragSource: gtkDragSource is an auxiliary object that is used to initiate
 // Drag-And-Drop operations. It can be set up with the necessary ingredients for
@@ -8180,12 +11436,55 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 // actions include GDK_ACTION_MOVE, you need to listen for the
 // DragSource::drag-end signal and delete the data after it has been
 // transferred.
-type DragSource struct {
+type DragSource interface {
+	gestureSingle
+
+	// DragCancel: cancels a currently ongoing drag operation.
+	DragCancel()
+	// GetActions: gets the actions that are currently set on the DragSource.
+	GetActions() gdk.DragAction
+	// GetContent: gets the current content provider of a DragSource.
+	GetContent() gdk.contentProvider
+	// GetDrag: returns the underlying Drag object for an ongoing drag.
+	GetDrag() gdk.drag
+	// SetActions: sets the actions on the DragSource.
+	//
+	// During a DND operation, the actions are offered to potential drop
+	// targets. If @actions include GDK_ACTION_MOVE, you need to listen to the
+	// DragSource::drag-end signal and handle @delete_data being true.
+	//
+	// This function can be called before a drag is started, or in a handler for
+	// the DragSource::prepare signal.
+	SetActions(actions gdk.DragAction)
+	// SetContent: sets a content provider on a DragSource.
+	//
+	// When the data is requested in the cause of a DND operation, it will be
+	// obtained from the content provider.
+	//
+	// This function can be called before a drag is started, or in a handler for
+	// the DragSource::prepare signal.
+	//
+	// You may consider setting the content provider back to nil in a
+	// DragSource::drag-end signal handler.
+	SetContent(content gdk.contentProvider)
+	// SetIcon: sets a paintable to use as icon during DND operations.
+	//
+	// The hotspot coordinates determine the point on the icon that gets aligned
+	// with the hotspot of the cursor.
+	//
+	// If @paintable is nil, a default icon is used.
+	//
+	// This function can be called before a drag is started, or in a
+	// DragSource::prepare or DragSource::drag-begin signal handler.
+	SetIcon(paintable gdk.Paintable, hotX int, hotY int)
+}
+
+type dragSource struct {
 	GestureSingle
 }
 
-func wrapDragSource(obj *externglib.Object) *DragSource {
-	return &DragSource{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
+func wrapDragSource(obj *externglib.Object) DragSource {
+	return &dragSource{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalDragSource(p uintptr) (interface{}, error) {
@@ -8194,7 +11493,21 @@ func marshalDragSource(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewDragSource() *DragSource
+func NewDragSource() DragSource
+
+func (d dragSource) DragCancel()
+
+func (d dragSource) GetActions() gdk.DragAction
+
+func (d dragSource) GetContent() gdk.contentProvider
+
+func (d dragSource) GetDrag() gdk.drag
+
+func (d dragSource) SetActions(actions gdk.DragAction)
+
+func (d dragSource) SetContent(content gdk.contentProvider)
+
+func (d dragSource) SetIcon(paintable gdk.Paintable, hotX int, hotY int)
 
 // DrawingArea: the DrawingArea widget is used for creating custom user
 // interface elements. It’s essentially a blank widget; you can draw on it.
@@ -8270,12 +11583,52 @@ func NewDragSource() *DragSource
 //
 // If you need more complex control over your widget, you should consider
 // creating your own Widget subclass.
-type DrawingArea struct {
+type DrawingArea interface {
+	widget
+
+	// GetContentHeight: retrieves the value previously set via
+	// gtk_drawing_area_set_content_height().
+	GetContentHeight() int
+	// GetContentWidth: retrieves the value previously set via
+	// gtk_drawing_area_set_content_width().
+	GetContentWidth() int
+	// SetContentHeight: sets the desired height of the contents of the drawing
+	// area. Note that because widgets may be allocated larger sizes than they
+	// requested, it is possible that the actual height passed to your draw
+	// function is larger than the height set here. You can use
+	// gtk_widget_set_valign() to avoid that.
+	//
+	// If the height is set to 0 (the default), the drawing area may disappear.
+	SetContentHeight(height int)
+	// SetContentWidth: sets the desired width of the contents of the drawing
+	// area. Note that because widgets may be allocated larger sizes than they
+	// requested, it is possible that the actual width passed to your draw
+	// function is larger than the width set here. You can use
+	// gtk_widget_set_halign() to avoid that.
+	//
+	// If the width is set to 0 (the default), the drawing area may disappear.
+	SetContentWidth(width int)
+	// SetDrawFunc: setting a draw function is the main thing you want to do
+	// when using a drawing area. It is called whenever GTK needs to draw the
+	// contents of the drawing area to the screen.
+	//
+	// The draw function will be called during the drawing stage of GTK. In the
+	// drawing stage it is not allowed to change properties of any GTK widgets
+	// or call any functions that would cause any properties to be changed. You
+	// should restrict yourself exclusively to drawing your contents in the draw
+	// function.
+	//
+	// If what you are drawing does change, call gtk_widget_queue_draw() on the
+	// drawing area. This will cause a redraw and will call @draw_func again.
+	SetDrawFunc(drawFunc DrawingAreaDrawFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+}
+
+type drawingArea struct {
 	Widget
 }
 
-func wrapDrawingArea(obj *externglib.Object) *DrawingArea {
-	return &DrawingArea{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapDrawingArea(obj *externglib.Object) DrawingArea {
+	return &drawingArea{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalDrawingArea(p uintptr) (interface{}, error) {
@@ -8284,7 +11637,17 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewDrawingArea() *DrawingArea
+func NewDrawingArea() DrawingArea
+
+func (d drawingArea) GetContentHeight() int
+
+func (d drawingArea) GetContentWidth() int
+
+func (d drawingArea) SetContentHeight(height int)
+
+func (d drawingArea) SetContentWidth(width int)
+
+func (d drawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
 
 // DropControllerMotion is an event controller meant for tracking the pointer
 // hovering over a widget during a drag and drop operation.
@@ -8294,12 +11657,25 @@ func NewDrawingArea() *DrawingArea
 //
 // The drop controller is not able to accept drops, use DropTarget for that
 // purpose.
-type DropControllerMotion struct {
+type DropControllerMotion interface {
+	eventController
+
+	// ContainsPointer: returns the value of the
+	// GtkDropControllerMotion:contains-pointer property.
+	ContainsPointer() bool
+	// GetDrop: returns the value of the GtkDropControllerMotion:drop property.
+	GetDrop() gdk.drop
+	// IsPointer: returns the value of the GtkDropControllerMotion:is-pointer
+	// property.
+	IsPointer() bool
+}
+
+type dropControllerMotion struct {
 	EventController
 }
 
-func wrapDropControllerMotion(obj *externglib.Object) *DropControllerMotion {
-	return &DropControllerMotion{EventController{*externglib.Object{obj}}}
+func wrapDropControllerMotion(obj *externglib.Object) DropControllerMotion {
+	return &dropControllerMotion{EventController{*externglib.Object{obj}}}
 }
 
 func marshalDropControllerMotion(p uintptr) (interface{}, error) {
@@ -8308,7 +11684,13 @@ func marshalDropControllerMotion(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewDropControllerMotion() *DropControllerMotion
+func NewDropControllerMotion() DropControllerMotion
+
+func (d dropControllerMotion) ContainsPointer() bool
+
+func (d dropControllerMotion) GetDrop() gdk.drop
+
+func (d dropControllerMotion) IsPointer() bool
 
 // DropDown: gtkDropDown is a widget that allows the user to choose an item from
 // a list of options. The GtkDropDown displays the selected choice.
@@ -8335,12 +11717,57 @@ func NewDropControllerMotion() *DropControllerMotion
 // Accessibility
 //
 // GtkDropDown uses the K_ACCESSIBLE_ROLE_COMBO_BOX role.
-type DropDown struct {
+type DropDown interface {
+	widget
+
+	// GetEnableSearch: returns whether search is enabled.
+	GetEnableSearch() bool
+	// GetExpression: gets the expression set with
+	// gtk_drop_down_set_expression().
+	GetExpression() expression
+	// GetFactory: gets the factory that's currently used to populate list
+	// items.
+	//
+	// The factory returned by this function is always used for the item in the
+	// button. It is also used for items in the popup if DropDown:list-factory
+	// is not set.
+	GetFactory() listItemFactory
+	// GetListFactory: gets the factory that's currently used to populate list
+	// items in the popup.
+	GetListFactory() listItemFactory
+	// GetModel: gets the model that provides the displayed items.
+	GetModel() gio.ListModel
+	// GetSelected: gets the position of the selected item.
+	GetSelected() uint
+	// GetSelectedItem: gets the selected item. If no item is selected, nil is
+	// returned.
+	GetSelectedItem() unsafe.Pointer
+	// SetEnableSearch: sets whether a search entry will be shown in the popup
+	// that allows to search for items in the list.
+	//
+	// Note that DropDown:expression must be set for search to work.
+	SetEnableSearch(enableSearch bool)
+	// SetExpression: sets the expression that gets evaluated to obtain strings
+	// from items when searching in the popup. The expression must have a value
+	// type of TYPE_STRING.
+	SetExpression(expression expression)
+	// SetFactory: sets the ListItemFactory to use for populating list items.
+	SetFactory(factory listItemFactory)
+	// SetListFactory: sets the ListItemFactory to use for populating list items
+	// in the popup.
+	SetListFactory(factory listItemFactory)
+	// SetModel: sets the Model to use.
+	SetModel(model gio.ListModel)
+	// SetSelected: selects the item at the given position.
+	SetSelected(position uint)
+}
+
+type dropDown struct {
 	Widget
 }
 
-func wrapDropDown(obj *externglib.Object) *DropDown {
-	return &DropDown{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapDropDown(obj *externglib.Object) DropDown {
+	return &dropDown{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalDropDown(p uintptr) (interface{}, error) {
@@ -8349,9 +11776,35 @@ func marshalDropDown(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewDropDown(model gio.ListModel, expression *Expression) *DropDown
+func NewDropDown(model gio.ListModel, expression expression) DropDown
 
-func NewDropDown(strings []string) *DropDown
+func NewDropDown(strings []string) DropDown
+
+func (d dropDown) GetEnableSearch() bool
+
+func (d dropDown) GetExpression() expression
+
+func (d dropDown) GetFactory() listItemFactory
+
+func (d dropDown) GetListFactory() listItemFactory
+
+func (d dropDown) GetModel() gio.ListModel
+
+func (d dropDown) GetSelected() uint
+
+func (d dropDown) GetSelectedItem() unsafe.Pointer
+
+func (d dropDown) SetEnableSearch(enableSearch bool)
+
+func (d dropDown) SetExpression(expression expression)
+
+func (d dropDown) SetFactory(factory listItemFactory)
+
+func (d dropDown) SetListFactory(factory listItemFactory)
+
+func (d dropDown) SetModel(model gio.ListModel)
+
+func (d dropDown) SetSelected(position uint)
 
 // DropTarget: gtkDropTarget is an event controller implementing a simple way to
 // receive Drag-and-Drop operations.
@@ -8415,12 +11868,48 @@ func NewDropDown(strings []string) *DropDown
 // While a pointer is dragged over the drop target's widget and the drop has not
 // been rejected, that widget will receive the GTK_STATE_FLAG_DROP_ACTIVE state,
 // which can be used to style the widget.
-type DropTarget struct {
+type DropTarget interface {
+	eventController
+
+	// GetActions: gets the actions that this drop target supports.
+	GetActions() gdk.DragAction
+	// GetDrop: gets the currently handled drop operation.
+	//
+	// If no drop operation is going on, nil is returned.
+	GetDrop() gdk.drop
+	// GetFormats: gets the data formats that this drop target accepts.
+	//
+	// If the result is nil, all formats are expected to be supported.
+	GetFormats() *gdk.ContentFormats
+	// GetGtypes: gets the list of supported #GTypes for @self. If no type have
+	// been set, nil will be returned.
+	GetGtypes() (uint, []externglib.Type)
+	// GetPreload: gets the value of the GtkDropTarget:preload property.
+	GetPreload() bool
+	// GetValue: gets the value of the GtkDropTarget:value property.
+	GetValue() *externglib.Value
+	// Reject: rejects the ongoing drop operation.
+	//
+	// If no drop operation is ongoing - when GdkDropTarget:drop returns nil -
+	// this function does nothing.
+	//
+	// This function should be used when delaying the decision on whether to
+	// accept a drag or not until after reading the data.
+	Reject()
+	// SetActions: sets the actions that this drop target supports.
+	SetActions(actions gdk.DragAction)
+	// SetGtypes: sets the supported #GTypes for this drop target.
+	SetGtypes(types []externglib.Type, nTypes uint)
+	// SetPreload: sets the GtkDropTarget:preload property.
+	SetPreload(preload bool)
+}
+
+type dropTarget struct {
 	EventController
 }
 
-func wrapDropTarget(obj *externglib.Object) *DropTarget {
-	return &DropTarget{EventController{*externglib.Object{obj}}}
+func wrapDropTarget(obj *externglib.Object) DropTarget {
+	return &dropTarget{EventController{*externglib.Object{obj}}}
 }
 
 func marshalDropTarget(p uintptr) (interface{}, error) {
@@ -8429,7 +11918,27 @@ func marshalDropTarget(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewDropTarget(_type externglib.Type, actions gdk.DragAction) *DropTarget
+func NewDropTarget(_type externglib.Type, actions gdk.DragAction) DropTarget
+
+func (d dropTarget) GetActions() gdk.DragAction
+
+func (d dropTarget) GetDrop() gdk.drop
+
+func (d dropTarget) GetFormats() *gdk.ContentFormats
+
+func (d dropTarget) GetGtypes() (uint, []externglib.Type)
+
+func (d dropTarget) GetPreload() bool
+
+func (d dropTarget) GetValue() *externglib.Value
+
+func (d dropTarget) Reject()
+
+func (d dropTarget) SetActions(actions gdk.DragAction)
+
+func (d dropTarget) SetGtypes(types []externglib.Type, nTypes uint)
+
+func (d dropTarget) SetPreload(preload bool)
 
 // DropTargetAsync: gtkDropTargetAsync is an auxiliary object that can be used
 // to receive Drag-and-Drop operations. It is the more complete but also more
@@ -8461,12 +11970,32 @@ func NewDropTarget(_type externglib.Type, actions gdk.DragAction) *DropTarget
 // Between the ::drag-enter and ::drag-leave signals the widget is a current
 // drop target, and will receive the GTK_STATE_FLAG_DROP_ACTIVE state, which can
 // be used by themes to style the widget as a drop target.
-type DropTargetAsync struct {
+type DropTargetAsync interface {
+	eventController
+
+	// GetActions: gets the actions that this drop target supports.
+	GetActions() gdk.DragAction
+	// GetFormats: gets the data formats that this drop target accepts.
+	//
+	// If the result is nil, all formats are expected to be supported.
+	GetFormats() *gdk.ContentFormats
+	// RejectDrop: sets the @drop as not accepted on this drag site.
+	//
+	// This function should be used when delaying the decision on whether to
+	// accept a drag or not until after reading the data.
+	RejectDrop(drop gdk.drop)
+	// SetActions: sets the actions that this drop target supports.
+	SetActions(actions gdk.DragAction)
+	// SetFormats: sets the data formats that this drop target will accept.
+	SetFormats(formats *gdk.ContentFormats)
+}
+
+type dropTargetAsync struct {
 	EventController
 }
 
-func wrapDropTargetAsync(obj *externglib.Object) *DropTargetAsync {
-	return &DropTargetAsync{EventController{*externglib.Object{obj}}}
+func wrapDropTargetAsync(obj *externglib.Object) DropTargetAsync {
+	return &dropTargetAsync{EventController{*externglib.Object{obj}}}
 }
 
 func marshalDropTargetAsync(p uintptr) (interface{}, error) {
@@ -8475,7 +12004,17 @@ func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *DropTargetAsync
+func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) DropTargetAsync
+
+func (d dropTargetAsync) GetActions() gdk.DragAction
+
+func (d dropTargetAsync) GetFormats() *gdk.ContentFormats
+
+func (d dropTargetAsync) RejectDrop(drop gdk.drop)
+
+func (d dropTargetAsync) SetActions(actions gdk.DragAction)
+
+func (d dropTargetAsync) SetFormats(formats *gdk.ContentFormats)
 
 // EditableLabel: a GtkEditableLabel is a Label that allows users to edit the
 // text by switching the widget to an “edit mode”.
@@ -8498,12 +12037,26 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) *Dr
 // is in editing mode, it gets the .editing style class.
 //
 // For all the subnodes added to the text node in various situations, see Text.
-type EditableLabel struct {
+type EditableLabel interface {
+	widget
+
+	// GetEditing: returns whether the label is currently in “editing mode”.
+	GetEditing() bool
+	// StartEditing: switches the label into “editing mode”.
+	StartEditing()
+	// StopEditing: switches the label out of “editing mode”. If @commit is
+	// true, the resulting text is kept as the Editable:text property value,
+	// otherwise the resulting text is discarded and the label will keep its
+	// previous Editable:text property value.
+	StopEditing(commit bool)
+}
+
+type editableLabel struct {
 	Widget
 }
 
-func wrapEditableLabel(obj *externglib.Object) *EditableLabel {
-	return &EditableLabel{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapEditableLabel(obj *externglib.Object) EditableLabel {
+	return &editableLabel{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalEditableLabel(p uintptr) (interface{}, error) {
@@ -8512,7 +12065,13 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEditableLabel(str string) *EditableLabel
+func NewEditableLabel(str string) EditableLabel
+
+func (e editableLabel) GetEditing() bool
+
+func (e editableLabel) StartEditing()
+
+func (e editableLabel) StopEditing(commit bool)
 
 // EmojiChooser: the EmojiChooser popover is used by text widgets such as Entry
 // or TextView to offer users a convenient way to insert Emoji characters.
@@ -8534,12 +12093,16 @@ func NewEditableLabel(str string) *EditableLabel
 // .emoji-searchbar style class itself. The bottom toolbar used to switch
 // between different emoji categories consists of buttons with the
 // .emoji-section style class and gets the .emoji-toolbar style class itself.
-type EmojiChooser struct {
+type EmojiChooser interface {
+	popover
+}
+
+type emojiChooser struct {
 	Popover
 }
 
-func wrapEmojiChooser(obj *externglib.Object) *EmojiChooser {
-	return &EmojiChooser{Popover{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapEmojiChooser(obj *externglib.Object) EmojiChooser {
+	return &emojiChooser{Popover{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalEmojiChooser(p uintptr) (interface{}, error) {
@@ -8548,7 +12111,7 @@ func marshalEmojiChooser(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEmojiChooser() *EmojiChooser
+func NewEmojiChooser() EmojiChooser
 
 // Entry: the Entry widget is a single line text entry widget. A fairly large
 // set of key bindings are supported by default. If the entered text is longer
@@ -8626,12 +12189,263 @@ func NewEmojiChooser() *EmojiChooser
 // Accessibility
 //
 // GtkEntry uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
-type Entry struct {
+type Entry interface {
+	widget
+
+	// GetActivatesDefault: retrieves the value set by
+	// gtk_entry_set_activates_default().
+	GetActivatesDefault() bool
+	// GetAlignment: gets the value set by gtk_entry_set_alignment().
+	GetAlignment() float32
+	// GetAttributes: gets the attribute list that was set on the entry using
+	// gtk_entry_set_attributes(), if any.
+	GetAttributes() *pango.AttrList
+	// GetBuffer: get the EntryBuffer object which holds the text for this
+	// widget.
+	GetBuffer() entryBuffer
+	// GetCompletion: returns the auxiliary completion object currently in use
+	// by @entry.
+	GetCompletion() entryCompletion
+	// GetCurrentIconDragSource: returns the index of the icon which is the
+	// source of the current DND operation, or -1.
+	GetCurrentIconDragSource() int
+	// GetExtraMenu: gets the menu model set with gtk_entry_set_extra_menu().
+	GetExtraMenu() gio.menuModel
+	// GetHasFrame: gets the value set by gtk_entry_set_has_frame().
+	GetHasFrame() bool
+	// GetIconActivatable: returns whether the icon is activatable.
+	GetIconActivatable(iconPos EntryIconPosition) bool
+	// GetIconArea: gets the area where entry’s icon at @icon_pos is drawn. This
+	// function is useful when drawing something to the entry in a draw
+	// callback.
+	//
+	// If the entry is not realized or has no icon at the given position,
+	// @icon_area is filled with zeros. Otherwise, @icon_area will be filled
+	// with the icon's allocation, relative to @entry's allocation.
+	GetIconArea(iconPos EntryIconPosition) gdk.Rectangle
+	// GetIconAtPos: finds the icon at the given position and return its index.
+	// The position’s coordinates are relative to the @entry’s top left corner.
+	// If @x, @y doesn’t lie inside an icon, -1 is returned. This function is
+	// intended for use in a Widget::query-tooltip signal handler.
+	GetIconAtPos(x int, y int) int
+	// GetIconGicon: retrieves the #GIcon used for the icon, or nil if there is
+	// no icon or if the icon was set by some other method (e.g., by paintable
+	// or icon name).
+	GetIconGicon(iconPos EntryIconPosition) gio.Icon
+	// GetIconName: retrieves the icon name used for the icon, or nil if there
+	// is no icon or if the icon was set by some other method (e.g., by
+	// paintable or gicon).
+	GetIconName(iconPos EntryIconPosition) string
+	// GetIconPaintable: retrieves the Paintable used for the icon.
+	//
+	// If no Paintable was used for the icon, nil is returned.
+	GetIconPaintable(iconPos EntryIconPosition) gdk.Paintable
+	// GetIconSensitive: returns whether the icon appears sensitive or
+	// insensitive.
+	GetIconSensitive(iconPos EntryIconPosition) bool
+	// GetIconStorageType: gets the type of representation being used by the
+	// icon to store image data. If the icon has no image data, the return value
+	// will be GTK_IMAGE_EMPTY.
+	GetIconStorageType(iconPos EntryIconPosition) ImageType
+	// GetIconTooltipMarkup: gets the contents of the tooltip on the icon at the
+	// specified position in @entry.
+	GetIconTooltipMarkup(iconPos EntryIconPosition) string
+	// GetIconTooltipText: gets the contents of the tooltip on the icon at the
+	// specified position in @entry.
+	GetIconTooltipText(iconPos EntryIconPosition) string
+	// GetInputHints: gets the value of the Entry:input-hints property.
+	GetInputHints() InputHints
+	// GetInputPurpose: gets the value of the Entry:input-purpose property.
+	GetInputPurpose() InputPurpose
+	// GetInvisibleChar: retrieves the character displayed in place of the real
+	// characters for entries with visibility set to false. See
+	// gtk_entry_set_invisible_char().
+	GetInvisibleChar() uint32
+	// GetMaxLength: retrieves the maximum allowed length of the text in @entry.
+	// See gtk_entry_set_max_length().
+	//
+	// This is equivalent to getting @entry's EntryBuffer and calling
+	// gtk_entry_buffer_get_max_length() on it.
+	GetMaxLength() int
+	// GetOverwriteMode: gets the value set by gtk_entry_set_overwrite_mode().
+	GetOverwriteMode() bool
+	// GetPlaceholderText: retrieves the text that will be displayed when @entry
+	// is empty and unfocused
+	GetPlaceholderText() string
+	// GetProgressFraction: returns the current fraction of the task that’s been
+	// completed. See gtk_entry_set_progress_fraction().
+	GetProgressFraction() float64
+	// GetProgressPulseStep: retrieves the pulse step set with
+	// gtk_entry_set_progress_pulse_step().
+	GetProgressPulseStep() float64
+	// GetTabs: gets the tabstops that were set on the entry using
+	// gtk_entry_set_tabs(), if any.
+	GetTabs() *pango.TabArray
+	// GetTextLength: retrieves the current length of the text in @entry.
+	//
+	// This is equivalent to getting @entry's EntryBuffer and calling
+	// gtk_entry_buffer_get_length() on it.
+	GetTextLength() uint16
+	// GetVisibility: retrieves whether the text in @entry is visible. See
+	// gtk_entry_set_visibility().
+	GetVisibility() bool
+	// GrabFocusWithoutSelecting: causes @entry to have keyboard focus.
+	//
+	// It behaves like gtk_widget_grab_focus(), except that it doesn't select
+	// the contents of the entry. You only want to call this on some special
+	// entries which the user usually doesn't want to replace all text in, such
+	// as search-as-you-type entries.
+	GrabFocusWithoutSelecting() bool
+	// ProgressPulse: indicates that some progress is made, but you don’t know
+	// how much. Causes the entry’s progress indicator to enter “activity mode,”
+	// where a block bounces back and forth. Each call to
+	// gtk_entry_progress_pulse() causes the block to move by a little bit (the
+	// amount of movement per pulse is determined by
+	// gtk_entry_set_progress_pulse_step()).
+	ProgressPulse()
+	// ResetImContext: reset the input method context of the entry if needed.
+	//
+	// This can be necessary in the case where modifying the buffer would
+	// confuse on-going input method behavior.
+	ResetImContext()
+	// SetActivatesDefault: if @setting is true, pressing Enter in the @entry
+	// will activate the default widget for the window containing the entry.
+	// This usually means that the dialog box containing the entry will be
+	// closed, since the default widget is usually one of the dialog buttons.
+	SetActivatesDefault(setting bool)
+	// SetAlignment: sets the alignment for the contents of the entry. This
+	// controls the horizontal positioning of the contents when the displayed
+	// text is shorter than the width of the entry.
+	SetAlignment(xalign float32)
+	// SetAttributes: sets a AttrList; the attributes in the list are applied to
+	// the entry text.
+	SetAttributes(attrs *pango.AttrList)
+	// SetBuffer: set the EntryBuffer object which holds the text for this
+	// widget.
+	SetBuffer(buffer entryBuffer)
+	// SetCompletion: sets @completion to be the auxiliary completion object to
+	// use with @entry. All further configuration of the completion mechanism is
+	// done on @completion using the EntryCompletion API. Completion is disabled
+	// if @completion is set to nil.
+	SetCompletion(completion entryCompletion)
+	// SetExtraMenu: sets a menu model to add when constructing the context menu
+	// for @entry.
+	SetExtraMenu(model gio.menuModel)
+	// SetHasFrame: sets whether the entry has a beveled frame around it.
+	SetHasFrame(setting bool)
+	// SetIconActivatable: sets whether the icon is activatable.
+	SetIconActivatable(iconPos EntryIconPosition, activatable bool)
+	// SetIconDragSource: sets up the icon at the given position so that GTK
+	// will start a drag operation when the user clicks and drags the icon.
+	SetIconDragSource(iconPos EntryIconPosition, provider gdk.contentProvider, actions gdk.DragAction)
+	// SetIconFromGicon: sets the icon shown in the entry at the specified
+	// position from the current icon theme. If the icon isn’t known, a “broken
+	// image” icon will be displayed instead.
+	//
+	// If @icon is nil, no icon will be shown in the specified position.
+	SetIconFromGicon(iconPos EntryIconPosition, icon gio.Icon)
+	// SetIconFromIconName: sets the icon shown in the entry at the specified
+	// position from the current icon theme.
+	//
+	// If the icon name isn’t known, a “broken image” icon will be displayed
+	// instead.
+	//
+	// If @icon_name is nil, no icon will be shown in the specified position.
+	SetIconFromIconName(iconPos EntryIconPosition, iconName string)
+	// SetIconFromPaintable: sets the icon shown in the specified position using
+	// a Paintable
+	//
+	// If @paintable is nil, no icon will be shown in the specified position.
+	SetIconFromPaintable(iconPos EntryIconPosition, paintable gdk.Paintable)
+	// SetIconSensitive: sets the sensitivity for the specified icon.
+	SetIconSensitive(iconPos EntryIconPosition, sensitive bool)
+	// SetIconTooltipMarkup: sets @tooltip as the contents of the tooltip for
+	// the icon at the specified position. @tooltip is assumed to be marked up
+	// with the [Pango text markup language][PangoMarkupFormat].
+	//
+	// Use nil for @tooltip to remove an existing tooltip.
+	//
+	// See also gtk_widget_set_tooltip_markup() and
+	// gtk_entry_set_icon_tooltip_text().
+	SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string)
+	// SetIconTooltipText: sets @tooltip as the contents of the tooltip for the
+	// icon at the specified position.
+	//
+	// Use nil for @tooltip to remove an existing tooltip.
+	//
+	// See also gtk_widget_set_tooltip_text() and
+	// gtk_entry_set_icon_tooltip_markup().
+	//
+	// If you unset the widget tooltip via gtk_widget_set_tooltip_text() or
+	// gtk_widget_set_tooltip_markup(), this sets GtkWidget:has-tooltip to
+	// false, which suppresses icon tooltips too. You can resolve this by then
+	// calling gtk_widget_set_has_tooltip() to set GtkWidget:has-tooltip back to
+	// true, or setting at least one non-empty tooltip on any icon achieves the
+	// same result.
+	SetIconTooltipText(iconPos EntryIconPosition, tooltip string)
+	// SetInputHints: sets the Entry:input-hints property, which allows input
+	// methods to fine-tune their behaviour.
+	SetInputHints(hints InputHints)
+	// SetInputPurpose: sets the Entry:input-purpose property which can be used
+	// by on-screen keyboards and other input methods to adjust their behaviour.
+	SetInputPurpose(purpose InputPurpose)
+	// SetInvisibleChar: sets the character to use in place of the actual text
+	// when gtk_entry_set_visibility() has been called to set text visibility to
+	// false. i.e. this is the character used in “password mode” to show the
+	// user how many characters have been typed. By default, GTK picks the best
+	// invisible char available in the current font. If you set the invisible
+	// char to 0, then the user will get no feedback at all; there will be no
+	// text on the screen as they type.
+	SetInvisibleChar(ch uint32)
+	// SetMaxLength: sets the maximum allowed length of the contents of the
+	// widget. If the current contents are longer than the given length, then
+	// they will be truncated to fit.
+	//
+	// This is equivalent to getting @entry's EntryBuffer and calling
+	// gtk_entry_buffer_set_max_length() on it.
+	SetMaxLength(max int)
+	// SetOverwriteMode: sets whether the text is overwritten when typing in the
+	// Entry.
+	SetOverwriteMode(overwrite bool)
+	// SetPlaceholderText: sets text to be displayed in @entry when it is empty.
+	// This can be used to give a visual hint of the expected contents of the
+	// Entry.
+	SetPlaceholderText(text string)
+	// SetProgressFraction: causes the entry’s progress indicator to “fill in”
+	// the given fraction of the bar. The fraction should be between 0.0 and
+	// 1.0, inclusive.
+	SetProgressFraction(fraction float64)
+	// SetProgressPulseStep: sets the fraction of total entry width to move the
+	// progress bouncing block for each call to gtk_entry_progress_pulse().
+	SetProgressPulseStep(fraction float64)
+	// SetTabs: sets a TabArray; the tabstops in the array are applied to the
+	// entry text.
+	SetTabs(tabs *pango.TabArray)
+	// SetVisibility: sets whether the contents of the entry are visible or not.
+	// When visibility is set to false, characters are displayed as the
+	// invisible char, and will also appear that way when the text in the entry
+	// widget is copied elsewhere.
+	//
+	// By default, GTK picks the best invisible character available in the
+	// current font, but it can be changed with gtk_entry_set_invisible_char().
+	//
+	// Note that you probably want to set Entry:input-purpose to
+	// GTK_INPUT_PURPOSE_PASSWORD or GTK_INPUT_PURPOSE_PIN to inform input
+	// methods about the purpose of this entry, in addition to setting
+	// visibility to false.
+	SetVisibility(visible bool)
+	// UnsetInvisibleChar: unsets the invisible char previously set with
+	// gtk_entry_set_invisible_char(). So that the default invisible char is
+	// used again.
+	UnsetInvisibleChar()
+}
+
+type entry struct {
 	Widget
 }
 
-func wrapEntry(obj *externglib.Object) *Entry {
-	return &Entry{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapEntry(obj *externglib.Object) Entry {
+	return &entry{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalEntry(p uintptr) (interface{}, error) {
@@ -8640,9 +12454,125 @@ func marshalEntry(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEntry() *Entry
+func NewEntry() Entry
 
-func NewEntry(buffer *EntryBuffer) *Entry
+func NewEntry(buffer entryBuffer) Entry
+
+func (e entry) GetActivatesDefault() bool
+
+func (e entry) GetAlignment() float32
+
+func (e entry) GetAttributes() *pango.AttrList
+
+func (e entry) GetBuffer() entryBuffer
+
+func (e entry) GetCompletion() entryCompletion
+
+func (e entry) GetCurrentIconDragSource() int
+
+func (e entry) GetExtraMenu() gio.menuModel
+
+func (e entry) GetHasFrame() bool
+
+func (e entry) GetIconActivatable(iconPos EntryIconPosition) bool
+
+func (e entry) GetIconArea(iconPos EntryIconPosition) gdk.Rectangle
+
+func (e entry) GetIconAtPos(x int, y int) int
+
+func (e entry) GetIconGicon(iconPos EntryIconPosition) gio.Icon
+
+func (e entry) GetIconName(iconPos EntryIconPosition) string
+
+func (e entry) GetIconPaintable(iconPos EntryIconPosition) gdk.Paintable
+
+func (e entry) GetIconSensitive(iconPos EntryIconPosition) bool
+
+func (e entry) GetIconStorageType(iconPos EntryIconPosition) ImageType
+
+func (e entry) GetIconTooltipMarkup(iconPos EntryIconPosition) string
+
+func (e entry) GetIconTooltipText(iconPos EntryIconPosition) string
+
+func (e entry) GetInputHints() InputHints
+
+func (e entry) GetInputPurpose() InputPurpose
+
+func (e entry) GetInvisibleChar() uint32
+
+func (e entry) GetMaxLength() int
+
+func (e entry) GetOverwriteMode() bool
+
+func (e entry) GetPlaceholderText() string
+
+func (e entry) GetProgressFraction() float64
+
+func (e entry) GetProgressPulseStep() float64
+
+func (e entry) GetTabs() *pango.TabArray
+
+func (e entry) GetTextLength() uint16
+
+func (e entry) GetVisibility() bool
+
+func (e entry) GrabFocusWithoutSelecting() bool
+
+func (e entry) ProgressPulse()
+
+func (e entry) ResetImContext()
+
+func (e entry) SetActivatesDefault(setting bool)
+
+func (e entry) SetAlignment(xalign float32)
+
+func (e entry) SetAttributes(attrs *pango.AttrList)
+
+func (e entry) SetBuffer(buffer entryBuffer)
+
+func (e entry) SetCompletion(completion entryCompletion)
+
+func (e entry) SetExtraMenu(model gio.menuModel)
+
+func (e entry) SetHasFrame(setting bool)
+
+func (e entry) SetIconActivatable(iconPos EntryIconPosition, activatable bool)
+
+func (e entry) SetIconDragSource(iconPos EntryIconPosition, provider gdk.contentProvider, actions gdk.DragAction)
+
+func (e entry) SetIconFromGicon(iconPos EntryIconPosition, icon gio.Icon)
+
+func (e entry) SetIconFromIconName(iconPos EntryIconPosition, iconName string)
+
+func (e entry) SetIconFromPaintable(iconPos EntryIconPosition, paintable gdk.Paintable)
+
+func (e entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool)
+
+func (e entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string)
+
+func (e entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string)
+
+func (e entry) SetInputHints(hints InputHints)
+
+func (e entry) SetInputPurpose(purpose InputPurpose)
+
+func (e entry) SetInvisibleChar(ch uint32)
+
+func (e entry) SetMaxLength(max int)
+
+func (e entry) SetOverwriteMode(overwrite bool)
+
+func (e entry) SetPlaceholderText(text string)
+
+func (e entry) SetProgressFraction(fraction float64)
+
+func (e entry) SetProgressPulseStep(fraction float64)
+
+func (e entry) SetTabs(tabs *pango.TabArray)
+
+func (e entry) SetVisibility(visible bool)
+
+func (e entry) UnsetInvisibleChar()
 
 // EntryBuffer: the EntryBuffer class contains the actual text displayed in a
 // Entry widget.
@@ -8655,12 +12585,64 @@ func NewEntry(buffer *EntryBuffer) *Entry
 // stored in an alternate location, such as non-pageable memory, useful in the
 // case of important passwords. Or a derived class could integrate with an
 // application’s concept of undo/redo.
-type EntryBuffer struct {
+type EntryBuffer interface {
+	gextras.Objector
+
+	// DeleteText: deletes a sequence of characters from the buffer. @n_chars
+	// characters are deleted starting at @position. If @n_chars is negative,
+	// then all characters until the end of the text are deleted.
+	//
+	// If @position or @n_chars are out of bounds, then they are coerced to sane
+	// values.
+	//
+	// Note that the positions are specified in characters, not bytes.
+	DeleteText(position uint, nChars int) uint
+	// EmitDeletedText: used when subclassing EntryBuffer
+	EmitDeletedText(position uint, nChars uint)
+	// EmitInsertedText: used when subclassing EntryBuffer
+	EmitInsertedText(position uint, chars string, nChars uint)
+	// GetBytes: retrieves the length in bytes of the buffer. See
+	// gtk_entry_buffer_get_length().
+	GetBytes() uint
+	// GetLength: retrieves the length in characters of the buffer.
+	GetLength() uint
+	// GetMaxLength: retrieves the maximum allowed length of the text in
+	// @buffer. See gtk_entry_buffer_set_max_length().
+	GetMaxLength() int
+	// GetText: retrieves the contents of the buffer.
+	//
+	// The memory pointer returned by this call will not change unless this
+	// object emits a signal, or is finalized.
+	GetText() string
+	// InsertText: inserts @n_chars characters of @chars into the contents of
+	// the buffer, at position @position.
+	//
+	// If @n_chars is negative, then characters from chars will be inserted
+	// until a null-terminator is found. If @position or @n_chars are out of
+	// bounds, or the maximum buffer text length is exceeded, then they are
+	// coerced to sane values.
+	//
+	// Note that the position and length are in characters, not in bytes.
+	InsertText(position uint, chars string, nChars int) uint
+	// SetMaxLength: sets the maximum allowed length of the contents of the
+	// buffer. If the current contents are longer than the given length, then
+	// they will be truncated to fit.
+	SetMaxLength(maxLength int)
+	// SetText: sets the text in the buffer.
+	//
+	// This is roughly equivalent to calling gtk_entry_buffer_delete_text() and
+	// gtk_entry_buffer_insert_text().
+	//
+	// Note that @n_chars is in characters, not in bytes.
+	SetText(chars string, nChars int)
+}
+
+type entryBuffer struct {
 	*externglib.Object
 }
 
-func wrapEntryBuffer(obj *externglib.Object) *EntryBuffer {
-	return &EntryBuffer{*externglib.Object{obj}}
+func wrapEntryBuffer(obj *externglib.Object) EntryBuffer {
+	return &entryBuffer{*externglib.Object{obj}}
 }
 
 func marshalEntryBuffer(p uintptr) (interface{}, error) {
@@ -8669,7 +12651,27 @@ func marshalEntryBuffer(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer
+func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer
+
+func (e entryBuffer) DeleteText(position uint, nChars int) uint
+
+func (e entryBuffer) EmitDeletedText(position uint, nChars uint)
+
+func (e entryBuffer) EmitInsertedText(position uint, chars string, nChars uint)
+
+func (e entryBuffer) GetBytes() uint
+
+func (e entryBuffer) GetLength() uint
+
+func (e entryBuffer) GetMaxLength() int
+
+func (e entryBuffer) GetText() string
+
+func (e entryBuffer) InsertText(position uint, chars string, nChars int) uint
+
+func (e entryBuffer) SetMaxLength(maxLength int)
+
+func (e entryBuffer) SetText(chars string, nChars int)
 
 // EntryCompletion is an auxiliary object to be used in conjunction with Entry
 // to provide the completion functionality. It implements the CellLayout
@@ -8703,12 +12705,97 @@ func NewEntryBuffer(initialChars string, nInitialChars int) *EntryBuffer
 // difference to you. If for some reason, you need the original model, use
 // gtk_tree_model_filter_get_model(). Don’t forget to use
 // gtk_tree_model_filter_convert_iter_to_child_iter() to obtain a matching iter.
-type EntryCompletion struct {
+type EntryCompletion interface {
+	gextras.Objector
+
+	// Complete: requests a completion operation, or in other words a
+	// refiltering of the current list with completions, using the current key.
+	// The completion list view will be updated accordingly.
+	Complete()
+	// ComputePrefix: computes the common prefix that is shared by all rows in
+	// @completion that start with @key. If no row matches @key, nil will be
+	// returned. Note that a text column must have been set for this function to
+	// work, see gtk_entry_completion_set_text_column() for details.
+	ComputePrefix(key string) string
+	// GetCompletionPrefix: get the original text entered by the user that
+	// triggered the completion or nil if there’s no completion ongoing.
+	GetCompletionPrefix() string
+	// GetEntry: gets the entry @completion has been attached to.
+	GetEntry() widget
+	// GetInlineCompletion: returns whether the common prefix of the possible
+	// completions should be automatically inserted in the entry.
+	GetInlineCompletion() bool
+	// GetInlineSelection: returns true if inline-selection mode is turned on.
+	GetInlineSelection() bool
+	// GetMinimumKeyLength: returns the minimum key length as set for
+	// @completion.
+	GetMinimumKeyLength() int
+	// GetModel: returns the model the EntryCompletion is using as data source.
+	// Returns nil if the model is unset.
+	GetModel() TreeModel
+	// GetPopupCompletion: returns whether the completions should be presented
+	// in a popup window.
+	GetPopupCompletion() bool
+	// GetPopupSetWidth: returns whether the completion popup window will be
+	// resized to the width of the entry.
+	GetPopupSetWidth() bool
+	// GetPopupSingleMatch: returns whether the completion popup window will
+	// appear even if there is only a single match.
+	GetPopupSingleMatch() bool
+	// GetTextColumn: returns the column in the model of @completion to get
+	// strings from.
+	GetTextColumn() int
+	// InsertPrefix: requests a prefix insertion.
+	InsertPrefix()
+	// SetInlineCompletion: sets whether the common prefix of the possible
+	// completions should be automatically inserted in the entry.
+	SetInlineCompletion(inlineCompletion bool)
+	// SetInlineSelection: sets whether it is possible to cycle through the
+	// possible completions inside the entry.
+	SetInlineSelection(inlineSelection bool)
+	// SetMatchFunc: sets the match function for @completion to be @func. The
+	// match function is used to determine if a row should or should not be in
+	// the completion list.
+	SetMatchFunc(_func EntryCompletionMatchFunc, funcData unsafe.Pointer, funcNotify unsafe.Pointer)
+	// SetMinimumKeyLength: requires the length of the search key for
+	// @completion to be at least @length. This is useful for long lists, where
+	// completing using a small key takes a lot of time and will come up with
+	// meaningless results anyway (ie, a too large dataset).
+	SetMinimumKeyLength(length int)
+	// SetModel: sets the model for a EntryCompletion. If @completion already
+	// has a model set, it will remove it before setting the new model. If model
+	// is nil, then it will unset the model.
+	SetModel(model TreeModel)
+	// SetPopupCompletion: sets whether the completions should be presented in a
+	// popup window.
+	SetPopupCompletion(popupCompletion bool)
+	// SetPopupSetWidth: sets whether the completion popup window will be
+	// resized to be the same width as the entry.
+	SetPopupSetWidth(popupSetWidth bool)
+	// SetPopupSingleMatch: sets whether the completion popup window will appear
+	// even if there is only a single match. You may want to set this to false
+	// if you are using [inline
+	// completion][GtkEntryCompletion--inline-completion].
+	SetPopupSingleMatch(popupSingleMatch bool)
+	// SetTextColumn: convenience function for setting up the most used case of
+	// this code: a completion list with just strings. This function will set up
+	// @completion to have a list displaying all (and just) strings in the
+	// completion list, and to get those strings from @column in the model of
+	// @completion.
+	//
+	// This functions creates and adds a CellRendererText for the selected
+	// column. If you need to set the text column, but don't want the cell
+	// renderer, use g_object_set() to set the EntryCompletion:text-column
+	// property directly.
+	SetTextColumn(column int)
+}
+
+type entryCompletion struct {
 	*externglib.Object
 }
 
-func wrapEntryCompletion(obj *externglib.Object) *EntryCompletion {
-	return &EntryCompletion{*externglib.Object{obj}}
+func wrapEntryCompletion(obj *externglib.Object) EntryCompletion {
+	return &entryCompletion{*externglib.Object{obj}}
 }
 
 func marshalEntryCompletion(p uintptr) (interface{}, error) {
@@ -8717,19 +12804,109 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEntryCompletion() *EntryCompletion
+func NewEntryCompletion() EntryCompletion
 
-func NewEntryCompletion(area *CellArea) *EntryCompletion
+func NewEntryCompletion(area cellArea) EntryCompletion
+
+func (e entryCompletion) Complete()
+
+func (e entryCompletion) ComputePrefix(key string) string
+
+func (e entryCompletion) GetCompletionPrefix() string
+
+func (e entryCompletion) GetEntry() widget
+
+func (e entryCompletion) GetInlineCompletion() bool
+
+func (e entryCompletion) GetInlineSelection() bool
+
+func (e entryCompletion) GetMinimumKeyLength() int
+
+func (e entryCompletion) GetModel() TreeModel
+
+func (e entryCompletion) GetPopupCompletion() bool
+
+func (e entryCompletion) GetPopupSetWidth() bool
+
+func (e entryCompletion) GetPopupSingleMatch() bool
+
+func (e entryCompletion) GetTextColumn() int
+
+func (e entryCompletion) InsertPrefix()
+
+func (e entryCompletion) SetInlineCompletion(inlineCompletion bool)
+
+func (e entryCompletion) SetInlineSelection(inlineSelection bool)
+
+func (e entryCompletion) SetMatchFunc(_func EntryCompletionMatchFunc, funcData unsafe.Pointer, funcNotify unsafe.Pointer)
+
+func (e entryCompletion) SetMinimumKeyLength(length int)
+
+func (e entryCompletion) SetModel(model TreeModel)
+
+func (e entryCompletion) SetPopupCompletion(popupCompletion bool)
+
+func (e entryCompletion) SetPopupSetWidth(popupSetWidth bool)
+
+func (e entryCompletion) SetPopupSingleMatch(popupSingleMatch bool)
+
+func (e entryCompletion) SetTextColumn(column int)
 
 // EventController is a base, low-level implementation for event controllers.
 // Those react to a series of Events, and possibly trigger actions as a
 // consequence of those.
-type EventController struct {
+type EventController interface {
+	gextras.Objector
+
+	// GetCurrentEvent: returns the event that is currently being handled by the
+	// controller, and nil at other times.
+	GetCurrentEvent() gdk.event
+	// GetCurrentEventDevice: returns the device of the event that is currently
+	// being handled by the controller, and nil otherwise.
+	GetCurrentEventDevice() gdk.device
+	// GetCurrentEventState: returns the modifier state of the event that is
+	// currently being handled by the controller, and 0 otherwise.
+	GetCurrentEventState() gdk.ModifierType
+	// GetCurrentEventTime: returns the timestamp of the event that is currently
+	// being handled by the controller, and 0 otherwise.
+	GetCurrentEventTime() uint32
+	// GetName: gets the name of @controller.
+	GetName() string
+	// GetPropagationLimit: gets the propagation limit of the event controller.
+	GetPropagationLimit() PropagationLimit
+	// GetPropagationPhase: gets the propagation phase at which @controller
+	// handles events.
+	GetPropagationPhase() PropagationPhase
+	// GetWidget: returns the Widget this controller relates to.
+	GetWidget() widget
+	// Reset: resets the @controller to a clean state. Every interaction the
+	// controller did through gtk_event_controller_handle_event() will be
+	// dropped at this point.
+	Reset()
+	// SetName: sets a name on the controller that can be used for debugging.
+	SetName(name string)
+	// SetPropagationLimit: sets the event propagation limit on the event
+	// controller.
+	//
+	// If the limit is set to GTK_LIMIT_SAME_NATIVE, the controller won't handle
+	// events that are targeted at widgets on a different surface, such as
+	// popovers.
+	SetPropagationLimit(limit PropagationLimit)
+	// SetPropagationPhase: sets the propagation phase at which a controller
+	// handles events.
+	//
+	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
+	// performed, but other additional gesture maintenance will. In that phase,
+	// the events can be managed by calling gtk_event_controller_handle_event().
+	SetPropagationPhase(phase PropagationPhase)
+}
+
+type eventController struct {
 	*externglib.Object
 }
 
-func wrapEventController(obj *externglib.Object) *EventController {
-	return &EventController{*externglib.Object{obj}}
+func wrapEventController(obj *externglib.Object) EventController {
+	return &eventController{*externglib.Object{obj}}
 }
 
 func marshalEventController(p uintptr) (interface{}, error) {
@@ -8738,14 +12915,49 @@ func marshalEventController(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (e eventController) GetCurrentEvent() gdk.event
+
+func (e eventController) GetCurrentEventDevice() gdk.device
+
+func (e eventController) GetCurrentEventState() gdk.ModifierType
+
+func (e eventController) GetCurrentEventTime() uint32
+
+func (e eventController) GetName() string
+
+func (e eventController) GetPropagationLimit() PropagationLimit
+
+func (e eventController) GetPropagationPhase() PropagationPhase
+
+func (e eventController) GetWidget() widget
+
+func (e eventController) Reset()
+
+func (e eventController) SetName(name string)
+
+func (e eventController) SetPropagationLimit(limit PropagationLimit)
+
+func (e eventController) SetPropagationPhase(phase PropagationPhase)
+
 // EventControllerFocus is an event controller meant for situations where you
 // need to know where the focus is.
-type EventControllerFocus struct {
+type EventControllerFocus interface {
+	eventController
+
+	// ContainsFocus: returns the value of the
+	// GtkEventControllerFocus:contains-focus property.
+	ContainsFocus() bool
+	// IsFocus: returns the value of the GtkEventControllerFocus:is-focus
+	// property.
+	IsFocus() bool
+}
+
+type eventControllerFocus struct {
 	EventController
 }
 
-func wrapEventControllerFocus(obj *externglib.Object) *EventControllerFocus {
-	return &EventControllerFocus{EventController{*externglib.Object{obj}}}
+func wrapEventControllerFocus(obj *externglib.Object) EventControllerFocus {
+	return &eventControllerFocus{EventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerFocus(p uintptr) (interface{}, error) {
@@ -8754,16 +12966,38 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEventControllerFocus() *EventControllerFocus
+func NewEventControllerFocus() EventControllerFocus
+
+func (e eventControllerFocus) ContainsFocus() bool
+
+func (e eventControllerFocus) IsFocus() bool
 
 // EventControllerKey is an event controller meant for situations where you need
 // access to key events.
-type EventControllerKey struct {
+type EventControllerKey interface {
+	eventController
+
+	// Forward: forwards the current event of this @controller to a @widget.
+	//
+	// This function can only be used in handlers for the
+	// EventControllerKey::key-pressed, EventControllerKey::key-released or
+	// EventControllerKey::modifiers signals.
+	Forward(widget widget) bool
+	// GetGroup: gets the key group of the current event of this @controller.
+	// See gdk_key_event_get_group().
+	GetGroup() uint
+	// GetImContext: gets the input method context of the key @controller.
+	GetImContext() iMContext
+	// SetImContext: sets the input method context of the key @controller.
+	SetImContext(imContext iMContext)
+}
+
+type eventControllerKey struct {
 	EventController
 }
 
-func wrapEventControllerKey(obj *externglib.Object) *EventControllerKey {
-	return &EventControllerKey{EventController{*externglib.Object{obj}}}
+func wrapEventControllerKey(obj *externglib.Object) EventControllerKey {
+	return &eventControllerKey{EventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerKey(p uintptr) (interface{}, error) {
@@ -8772,17 +13006,29 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEventControllerKey() *EventControllerKey
+func NewEventControllerKey() EventControllerKey
+
+func (e eventControllerKey) Forward(widget widget) bool
+
+func (e eventControllerKey) GetGroup() uint
+
+func (e eventControllerKey) GetImContext() iMContext
+
+func (e eventControllerKey) SetImContext(imContext iMContext)
 
 // EventControllerLegacy is an event controller that gives you direct access to
 // the event stream. It should only be used as a last resort if none of the
 // other event controllers or gestures do the job.
-type EventControllerLegacy struct {
+type EventControllerLegacy interface {
+	eventController
+}
+
+type eventControllerLegacy struct {
 	EventController
 }
 
-func wrapEventControllerLegacy(obj *externglib.Object) *EventControllerLegacy {
-	return &EventControllerLegacy{EventController{*externglib.Object{obj}}}
+func wrapEventControllerLegacy(obj *externglib.Object) EventControllerLegacy {
+	return &eventControllerLegacy{EventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
@@ -8791,16 +13037,27 @@ func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEventControllerLegacy() *EventControllerLegacy
+func NewEventControllerLegacy() EventControllerLegacy
 
 // EventControllerMotion is an event controller meant for situations where you
 // need to track the position of the pointer.
-type EventControllerMotion struct {
+type EventControllerMotion interface {
+	eventController
+
+	// ContainsPointer: returns the value of the
+	// GtkEventControllerMotion:contains-pointer property.
+	ContainsPointer() bool
+	// IsPointer: returns the value of the GtkEventControllerMotion:is-pointer
+	// property.
+	IsPointer() bool
+}
+
+type eventControllerMotion struct {
 	EventController
 }
 
-func wrapEventControllerMotion(obj *externglib.Object) *EventControllerMotion {
-	return &EventControllerMotion{EventController{*externglib.Object{obj}}}
+func wrapEventControllerMotion(obj *externglib.Object) EventControllerMotion {
+	return &eventControllerMotion{EventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerMotion(p uintptr) (interface{}, error) {
@@ -8809,7 +13066,11 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEventControllerMotion() *EventControllerMotion
+func NewEventControllerMotion() EventControllerMotion
+
+func (e eventControllerMotion) ContainsPointer() bool
+
+func (e eventControllerMotion) IsPointer() bool
 
 // EventControllerScroll is an event controller meant to handle scroll events
 // from mice and touchpads. It is capable of handling both discrete and
@@ -8843,12 +13104,21 @@ func NewEventControllerMotion() *EventControllerMotion
 // EventControllerScroll::decelerate signal, emitted at the end of scrolling
 // with two X/Y velocity arguments that are consistent with the motion that was
 // received.
-type EventControllerScroll struct {
+type EventControllerScroll interface {
+	eventController
+
+	// GetFlags: gets the flags conditioning the scroll controller behavior.
+	GetFlags() EventControllerScrollFlags
+	// SetFlags: sets the flags conditioning scroll controller behavior.
+	SetFlags(flags EventControllerScrollFlags)
+}
+
+type eventControllerScroll struct {
 	EventController
 }
 
-func wrapEventControllerScroll(obj *externglib.Object) *EventControllerScroll {
-	return &EventControllerScroll{EventController{*externglib.Object{obj}}}
+func wrapEventControllerScroll(obj *externglib.Object) EventControllerScroll {
+	return &eventControllerScroll{EventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerScroll(p uintptr) (interface{}, error) {
@@ -8857,14 +13127,22 @@ func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEventControllerScroll(flags EventControllerScrollFlags) *EventControllerScroll
+func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerScroll
 
-type EveryFilter struct {
+func (e eventControllerScroll) GetFlags() EventControllerScrollFlags
+
+func (e eventControllerScroll) SetFlags(flags EventControllerScrollFlags)
+
+type EveryFilter interface {
+	multiFilter
+}
+
+type everyFilter struct {
 	MultiFilter
 }
 
-func wrapEveryFilter(obj *externglib.Object) *EveryFilter {
-	return &EveryFilter{MultiFilter{Filter{*externglib.Object{obj}}}}
+func wrapEveryFilter(obj *externglib.Object) EveryFilter {
+	return &everyFilter{MultiFilter{Filter{*externglib.Object{obj}}}}
 }
 
 func marshalEveryFilter(p uintptr) (interface{}, error) {
@@ -8873,7 +13151,7 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewEveryFilter() *EveryFilter
+func NewEveryFilter() EveryFilter
 
 // Expander: a Expander allows the user to hide or show its child by clicking on
 // an expander triangle similar to the triangles used in a TreeView.
@@ -8958,12 +13236,72 @@ func NewEveryFilter() *EveryFilter
 // Accessibility
 //
 // GtkExpander uses the K_ACCESSIBLE_ROLE_BUTTON role.
-type Expander struct {
+type Expander interface {
+	widget
+
+	// GetChild: gets the child widget of @expander.
+	GetChild() widget
+	// GetExpanded: queries a Expander and returns its current state. Returns
+	// true if the child widget is revealed.
+	//
+	// See gtk_expander_set_expanded().
+	GetExpanded() bool
+	// GetLabel: fetches the text from a label widget including any embedded
+	// underlines indicating mnemonics and Pango markup, as set by
+	// gtk_expander_set_label(). If the label text has not been set the return
+	// value will be nil. This will be the case if you create an empty button
+	// with gtk_button_new() to use as a container.
+	//
+	// Note that this function behaved differently in versions prior to 2.14 and
+	// used to return the label text stripped of embedded underlines indicating
+	// mnemonics and Pango markup. This problem can be avoided by fetching the
+	// label text directly from the label widget.
+	GetLabel() string
+	// GetLabelWidget: retrieves the label widget for the frame. See
+	// gtk_expander_set_label_widget().
+	GetLabelWidget() widget
+	// GetResizeToplevel: returns whether the expander will resize the toplevel
+	// widget containing the expander upon resizing and collpasing.
+	GetResizeToplevel() bool
+	// GetUseMarkup: returns whether the label’s text is interpreted as marked
+	// up with the [Pango text markup language][PangoMarkupFormat]. See
+	// gtk_expander_set_use_markup().
+	GetUseMarkup() bool
+	// GetUseUnderline: returns whether an embedded underline in the expander
+	// label indicates a mnemonic. See gtk_expander_set_use_underline().
+	GetUseUnderline() bool
+	// SetChild: sets the child widget of @expander.
+	SetChild(child widget)
+	// SetExpanded: sets the state of the expander. Set to true, if you want the
+	// child widget to be revealed, and false if you want the child widget to be
+	// hidden.
+	SetExpanded(expanded bool)
+	// SetLabel: sets the text of the label of the expander to @label.
+	//
+	// This will also clear any previously set labels.
+	SetLabel(label string)
+	// SetLabelWidget: set the label widget for the expander. This is the widget
+	// that will appear embedded alongside the expander arrow.
+	SetLabelWidget(labelWidget widget)
+	// SetResizeToplevel: sets whether the expander will resize the toplevel
+	// widget containing the expander upon resizing and collpasing.
+	SetResizeToplevel(resizeToplevel bool)
+	// SetUseMarkup: sets whether the text of the label contains markup in
+	// [Pango’s text markup language][PangoMarkupFormat]. See
+	// gtk_label_set_markup().
+	SetUseMarkup(useMarkup bool)
+	// SetUseUnderline: if true, an underline in the text of the expander label
+	// indicates the next character should be used for the mnemonic accelerator
+	// key.
+	SetUseUnderline(useUnderline bool)
+}
+
+type expander struct {
 	Widget
 }
 
-func wrapExpander(obj *externglib.Object) *Expander {
-	return &Expander{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapExpander(obj *externglib.Object) Expander {
+	return &expander{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalExpander(p uintptr) (interface{}, error) {
@@ -8972,9 +13310,37 @@ func marshalExpander(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewExpander(label string) *Expander
+func NewExpander(label string) Expander
 
-func NewExpander(label string) *Expander
+func NewExpander(label string) Expander
+
+func (e expander) GetChild() widget
+
+func (e expander) GetExpanded() bool
+
+func (e expander) GetLabel() string
+
+func (e expander) GetLabelWidget() widget
+
+func (e expander) GetResizeToplevel() bool
+
+func (e expander) GetUseMarkup() bool
+
+func (e expander) GetUseUnderline() bool
+
+func (e expander) SetChild(child widget)
+
+func (e expander) SetExpanded(expanded bool)
+
+func (e expander) SetLabel(label string)
+
+func (e expander) SetLabelWidget(labelWidget widget)
+
+func (e expander) SetResizeToplevel(resizeToplevel bool)
+
+func (e expander) SetUseMarkup(useMarkup bool)
+
+func (e expander) SetUseUnderline(useUnderline bool)
 
 // FileChooserDialog is a dialog box suitable for use with “File Open” or “File
 // Save” commands. This widget works by putting a FileChooserWidget inside a
@@ -9136,12 +13502,16 @@ func NewExpander(label string) *Expander
 // To summarize, make sure you use a [predefined response
 // code][gtkfilechooserdialog-responses] when you use FileChooserDialog to
 // ensure proper operation.
-type FileChooserDialog struct {
+type FileChooserDialog interface {
+	dialog
+}
+
+type fileChooserDialog struct {
 	Dialog
 }
 
-func wrapFileChooserDialog(obj *externglib.Object) *FileChooserDialog {
-	return &FileChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
+func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
+	return &fileChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
 }
 
 func marshalFileChooserDialog(p uintptr) (interface{}, error) {
@@ -9291,12 +13661,37 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 // supported:
 //
 // * Shortcut folders.
-type FileChooserNative struct {
+type FileChooserNative interface {
+	nativeDialog
+
+	// GetAcceptLabel: retrieves the custom label text for the accept button.
+	GetAcceptLabel() string
+	// GetCancelLabel: retrieves the custom label text for the cancel button.
+	GetCancelLabel() string
+	// SetAcceptLabel: sets the custom label text for the accept button.
+	//
+	// If characters in @label are preceded by an underscore, they are
+	// underlined. If you need a literal underscore character in a label, use
+	// “__” (two underscores). The first underlined character represents a
+	// keyboard accelerator called a mnemonic. Pressing Alt and that key
+	// activates the button.
+	SetAcceptLabel(acceptLabel string)
+	// SetCancelLabel: sets the custom label text for the cancel button.
+	//
+	// If characters in @label are preceded by an underscore, they are
+	// underlined. If you need a literal underscore character in a label, use
+	// “__” (two underscores). The first underlined character represents a
+	// keyboard accelerator called a mnemonic. Pressing Alt and that key
+	// activates the button.
+	SetCancelLabel(cancelLabel string)
+}
+
+type fileChooserNative struct {
 	NativeDialog
 }
 
-func wrapFileChooserNative(obj *externglib.Object) *FileChooserNative {
-	return &FileChooserNative{NativeDialog{*externglib.Object{obj}}}
+func wrapFileChooserNative(obj *externglib.Object) FileChooserNative {
+	return &fileChooserNative{NativeDialog{*externglib.Object{obj}}}
 }
 
 func marshalFileChooserNative(p uintptr) (interface{}, error) {
@@ -9305,7 +13700,15 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFileChooserNative(title string, parent *Window, action FileChooserAction, acceptLabel string, cancelLabel string) *FileChooserNative
+func NewFileChooserNative(title string, parent window, action FileChooserAction, acceptLabel string, cancelLabel string) FileChooserNative
+
+func (f fileChooserNative) GetAcceptLabel() string
+
+func (f fileChooserNative) GetCancelLabel() string
+
+func (f fileChooserNative) SetAcceptLabel(acceptLabel string)
+
+func (f fileChooserNative) SetCancelLabel(cancelLabel string)
 
 // FileChooserWidget is a widget for choosing files. It exposes the FileChooser
 // interface, and you should use the methods of this interface to interact with
@@ -9315,12 +13718,16 @@ func NewFileChooserNative(title string, parent *Window, action FileChooserAction
 // CSS nodes
 //
 // GtkFileChooserWidget has a single CSS node with name filechooser.
-type FileChooserWidget struct {
+type FileChooserWidget interface {
+	widget
+}
+
+type fileChooserWidget struct {
 	Widget
 }
 
-func wrapFileChooserWidget(obj *externglib.Object) *FileChooserWidget {
-	return &FileChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidget {
+	return &fileChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFileChooserWidget(p uintptr) (interface{}, error) {
@@ -9329,7 +13736,7 @@ func marshalFileChooserWidget(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget
+func NewFileChooserWidget(action FileChooserAction) FileChooserWidget
 
 // FileFilter: a GtkFileFilter can be used to restrict the files being shown in
 // a FileChooser. Files can be filtered based on their name (with
@@ -9366,12 +13773,42 @@ func NewFileChooserWidget(action FileChooserAction) *FileChooserWidget
 //        <pattern>*.png</pattern>
 //      </patterns>
 //    </object>
-type FileFilter struct {
+type FileFilter interface {
+	filter
+
+	// AddMimeType: adds a rule allowing a given mime type to @filter.
+	AddMimeType(mimeType string)
+	// AddPattern: adds a rule allowing a shell style glob to a filter.
+	AddPattern(pattern string)
+	// AddPixbufFormats: adds a rule allowing image files in the formats
+	// supported by GdkPixbuf.
+	//
+	// This is equivalent to calling gtk_file_filter_add_mime_type() for all the
+	// supported mime types.
+	AddPixbufFormats()
+	// GetAttributes: gets the attributes that need to be filled in for the Info
+	// passed to this filter.
+	//
+	// This function will not typically be used by applications; it is intended
+	// principally for use in the implementation of FileChooser.
+	GetAttributes() []string
+	// GetName: gets the human-readable name for the filter. See
+	// gtk_file_filter_set_name().
+	GetName() string
+	// SetName: sets a human-readable name of the filter; this is the string
+	// that will be displayed in the file chooser if there is a selectable list
+	// of filters.
+	SetName(name string)
+	// ToGvariant: serialize a file filter to an a{sv} variant.
+	ToGvariant() *glib.Variant
+}
+
+type fileFilter struct {
 	Filter
 }
 
-func wrapFileFilter(obj *externglib.Object) *FileFilter {
-	return &FileFilter{Filter{*externglib.Object{obj}}}
+func wrapFileFilter(obj *externglib.Object) FileFilter {
+	return &fileFilter{Filter{*externglib.Object{obj}}}
 }
 
 func marshalFileFilter(p uintptr) (interface{}, error) {
@@ -9380,9 +13817,23 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFileFilter() *FileFilter
+func NewFileFilter() FileFilter
 
-func NewFileFilter(variant *glib.Variant) *FileFilter
+func NewFileFilter(variant *glib.Variant) FileFilter
+
+func (f fileFilter) AddMimeType(mimeType string)
+
+func (f fileFilter) AddPattern(pattern string)
+
+func (f fileFilter) AddPixbufFormats()
+
+func (f fileFilter) GetAttributes() []string
+
+func (f fileFilter) GetName() string
+
+func (f fileFilter) SetName(name string)
+
+func (f fileFilter) ToGvariant() *glib.Variant
 
 // Filter: a Filter object describes the filtering to be performed by a
 // FilterListModel.
@@ -9402,12 +13853,37 @@ func NewFileFilter(variant *glib.Variant) *FileFilter
 //
 // However, in particular for large lists or complex search methods, it is also
 // possible to subclass Filter and provide one's own filter.
-type Filter struct {
+type Filter interface {
+	gextras.Objector
+
+	// Changed: emits the Filter::changed signal to notify all users of the
+	// filter that the filter changed. Users of the filter should then check
+	// items again via gtk_filter_match().
+	//
+	// Depending on the @change parameter, not all items need to be changed, but
+	// only some. Refer to the FilterChange documentation for details.
+	//
+	// This function is intended for implementors of Filter subclasses and
+	// should not be called from other functions.
+	Changed(change FilterChange)
+	// GetStrictness: gets the known strictness of @filters. If the strictness
+	// is not known, GTK_FILTER_MATCH_SOME is returned.
+	//
+	// This value may change after emission of the Filter::changed signal.
+	//
+	// This function is meant purely for optimization purposes, filters can
+	// choose to omit implementing it, but FilterListModel uses it.
+	GetStrictness() FilterMatch
+	// Match: checks if the given @item is matched by the filter or not.
+	Match(item unsafe.Pointer) bool
+}
+
+type filter struct {
 	*externglib.Object
 }
 
-func wrapFilter(obj *externglib.Object) *Filter {
-	return &Filter{*externglib.Object{obj}}
+func wrapFilter(obj *externglib.Object) Filter {
+	return &filter{*externglib.Object{obj}}
 }
 
 func marshalFilter(p uintptr) (interface{}, error) {
@@ -9416,6 +13892,12 @@ func marshalFilter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (f filter) Changed(change FilterChange)
+
+func (f filter) GetStrictness() FilterMatch
+
+func (f filter) Match(item unsafe.Pointer) bool
+
 // FilterListModel is a list model that filters a given other listmodel. It
 // hides some elements from the other model according to criteria given by a
 // Filter.
@@ -9423,12 +13905,62 @@ func marshalFilter(p uintptr) (interface{}, error) {
 // The model can be set up to do incremental searching, so that filtering long
 // lists doesn't block the UI. See gtk_filter_list_model_set_incremental() for
 // details.
-type FilterListModel struct {
+type FilterListModel interface {
+	gextras.Objector
+
+	// GetFilter: gets the Filter currently set on @self.
+	GetFilter() filter
+	// GetIncremental: returns whether incremental filtering was enabled via
+	// gtk_filter_list_model_set_incremental().
+	GetIncremental() bool
+	// GetModel: gets the model currently filtered or nil if none.
+	GetModel() gio.ListModel
+	// GetPending: returns the number of items that have not been filtered yet.
+	//
+	// You can use this value to check if @self is busy filtering by comparing
+	// the return value to 0 or you can compute the percentage of the filter
+	// remaining by dividing the return value by the total number of items in
+	// the underlying model:
+	//
+	//
+	//      pending = gtk_filter_list_model_get_pending (self);
+	//      model = gtk_filter_list_model_get_model (self);
+	//      percentage = pending / (double) g_list_model_get_n_items (model);
+	//
+	// If no filter operation is ongoing - in particular when
+	// FilterListModel:incremental is false - this function returns 0.
+	GetPending() uint
+	// SetFilter: sets the filter used to filter items.
+	SetFilter(filter filter)
+	// SetIncremental: when incremental filtering is enabled, the
+	// GtkFilterListModel will not run filters immediately, but will instead
+	// queue an idle handler that incrementally filters the items and adds them
+	// to the list. This of course means that items are not instantly added to
+	// the list, but only appear incrementally.
+	//
+	// When your filter blocks the UI while filtering, you might consider
+	// turning this on. Depending on your model and filters, this may become
+	// interesting around 10,000 to 100,000 items.
+	//
+	// By default, incremental filtering is disabled.
+	//
+	// See gtk_filter_list_model_get_pending() for progress information about an
+	// ongoing incremental filtering operation.
+	SetIncremental(incremental bool)
+	// SetModel: sets the model to be filtered.
+	//
+	// Note that GTK makes no effort to ensure that @model conforms to the item
+	// type of @self. It assumes that the caller knows what they are doing and
+	// have set up an appropriate filter to ensure that item types match.
+	SetModel(model gio.ListModel)
+}
+
+type filterListModel struct {
 	*externglib.Object
 }
 
-func wrapFilterListModel(obj *externglib.Object) *FilterListModel {
-	return &FilterListModel{*externglib.Object{obj}}
+func wrapFilterListModel(obj *externglib.Object) FilterListModel {
+	return &filterListModel{*externglib.Object{obj}}
 }
 
 func marshalFilterListModel(p uintptr) (interface{}, error) {
@@ -9437,7 +13969,21 @@ func marshalFilterListModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFilterListModel(model gio.ListModel, filter *Filter) *FilterListModel
+func NewFilterListModel(model gio.ListModel, filter filter) FilterListModel
+
+func (f filterListModel) GetFilter() filter
+
+func (f filterListModel) GetIncremental() bool
+
+func (f filterListModel) GetModel() gio.ListModel
+
+func (f filterListModel) GetPending() uint
+
+func (f filterListModel) SetFilter(filter filter)
+
+func (f filterListModel) SetIncremental(incremental bool)
+
+func (f filterListModel) SetModel(model gio.ListModel)
 
 // Fixed: the Fixed widget is a container which can place child widgets at fixed
 // positions and with fixed sizes, given in pixels. Fixed performs no automatic
@@ -9473,12 +14019,40 @@ func NewFilterListModel(model gio.ListModel, filter *Filter) *FilterListModel
 // If you know none of these things are an issue for your application, and
 // prefer the simplicity of Fixed, by all means use the widget. But you should
 // be aware of the tradeoffs.
-type Fixed struct {
+type Fixed interface {
+	widget
+
+	// GetChildPosition: retrieves the translation transformation of the given
+	// child Widget in the given Fixed container.
+	//
+	// See also: gtk_fixed_get_child_transform().
+	GetChildPosition(widget widget) (float64, float64)
+	// GetChildTransform: retrieves the transformation for @widget set using
+	// gtk_fixed_set_child_transform().
+	GetChildTransform(widget widget) *gsk.Transform
+	// Move: sets a translation transformation to the given @x and @y
+	// coordinates to the child @widget of the given Fixed container.
+	Move(widget widget, x float64, y float64)
+	// Put: adds a widget to a Fixed container and assigns a translation
+	// transformation to the given @x and @y coordinates to it.
+	Put(widget widget, x float64, y float64)
+	// Remove: removes a child from @fixed, after it has been added with
+	// gtk_fixed_put().
+	Remove(widget widget)
+	// SetChildTransform: sets the transformation for @widget.
+	//
+	// This is a convenience function that retrieves the FixedLayoutChild
+	// instance associated to @widget and calls
+	// gtk_fixed_layout_child_set_transform().
+	SetChildTransform(widget widget, transform *gsk.Transform)
+}
+
+type fixed struct {
 	Widget
 }
 
-func wrapFixed(obj *externglib.Object) *Fixed {
-	return &Fixed{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapFixed(obj *externglib.Object) Fixed {
+	return &fixed{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFixed(p uintptr) (interface{}, error) {
@@ -9487,7 +14061,19 @@ func marshalFixed(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFixed() *Fixed
+func NewFixed() Fixed
+
+func (f fixed) GetChildPosition(widget widget) (float64, float64)
+
+func (f fixed) GetChildTransform(widget widget) *gsk.Transform
+
+func (f fixed) Move(widget widget, x float64, y float64)
+
+func (f fixed) Put(widget widget, x float64, y float64)
+
+func (f fixed) Remove(widget widget)
+
+func (f fixed) SetChildTransform(widget widget, transform *gsk.Transform)
 
 // FixedLayout is a layout manager which can place child widgets at fixed
 // positions, and with fixed sizes.
@@ -9518,12 +14104,16 @@ func NewFixed() *Fixed
 // Finally, fixed positioning makes it kind of annoying to add/remove GUI
 // elements, since you have to reposition all the other elements. This is a
 // long-term maintenance problem for your application.
-type FixedLayout struct {
+type FixedLayout interface {
+	layoutManager
+}
+
+type fixedLayout struct {
 	LayoutManager
 }
 
-func wrapFixedLayout(obj *externglib.Object) *FixedLayout {
-	return &FixedLayout{LayoutManager{*externglib.Object{obj}}}
+func wrapFixedLayout(obj *externglib.Object) FixedLayout {
+	return &fixedLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalFixedLayout(p uintptr) (interface{}, error) {
@@ -9532,14 +14122,23 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFixedLayout() *FixedLayout
+func NewFixedLayout() FixedLayout
 
-type FixedLayoutChild struct {
+type FixedLayoutChild interface {
+	layoutChild
+
+	// GetTransform: retrieves the transformation of the child of a FixedLayout.
+	GetTransform() *gsk.Transform
+	// SetTransform: sets the transformation of the child of a FixedLayout.
+	SetTransform(transform *gsk.Transform)
+}
+
+type fixedLayoutChild struct {
 	LayoutChild
 }
 
-func wrapFixedLayoutChild(obj *externglib.Object) *FixedLayoutChild {
-	return &FixedLayoutChild{LayoutChild{*externglib.Object{obj}}}
+func wrapFixedLayoutChild(obj *externglib.Object) FixedLayoutChild {
+	return &fixedLayoutChild{LayoutChild{*externglib.Object{obj}}}
 }
 
 func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
@@ -9548,17 +14147,33 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (f fixedLayoutChild) GetTransform() *gsk.Transform
+
+func (f fixedLayoutChild) SetTransform(transform *gsk.Transform)
+
 // FlattenListModel is a list model that takes a list model containing list
 // models and flattens it into a single model.
 //
 // Another term for this is concatenation: FlattenListModel takes a list of
 // lists and concatenates them into a single list.
-type FlattenListModel struct {
+type FlattenListModel interface {
+	gextras.Objector
+
+	// GetModel: gets the model set via gtk_flatten_list_model_set_model().
+	GetModel() gio.ListModel
+	// GetModelForItem: returns the model containing the item at the given
+	// position.
+	GetModelForItem(position uint) gio.ListModel
+	// SetModel: sets a new model to be flattened.
+	SetModel(model gio.ListModel)
+}
+
+type flattenListModel struct {
 	*externglib.Object
 }
 
-func wrapFlattenListModel(obj *externglib.Object) *FlattenListModel {
-	return &FlattenListModel{*externglib.Object{obj}}
+func wrapFlattenListModel(obj *externglib.Object) FlattenListModel {
+	return &flattenListModel{*externglib.Object{obj}}
 }
 
 func marshalFlattenListModel(p uintptr) (interface{}, error) {
@@ -9567,7 +14182,13 @@ func marshalFlattenListModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFlattenListModel(model gio.ListModel) *FlattenListModel
+func NewFlattenListModel(model gio.ListModel) FlattenListModel
+
+func (f flattenListModel) GetModel() gio.ListModel
+
+func (f flattenListModel) GetModelForItem(position uint) gio.ListModel
+
+func (f flattenListModel) SetModel(model gio.ListModel)
 
 // FlowBox: a GtkFlowBox positions child widgets in sequence according to its
 // orientation.
@@ -9612,12 +14233,159 @@ func NewFlattenListModel(model gio.ListModel) *FlattenListModel
 //
 // GtkFlowBox uses the K_ACCESSIBLE_ROLE_GRID role, and GtkFlowBoxChild uses the
 // K_ACCESSIBLE_ROLE_GRID_CELL role.
-type FlowBox struct {
+type FlowBox interface {
+	widget
+
+	// BindModel: binds @model to @box.
+	//
+	// If @box was already bound to a model, that previous binding is destroyed.
+	//
+	// The contents of @box are cleared and then filled with widgets that
+	// represent items from @model. @box is updated whenever @model changes. If
+	// @model is nil, @box is left empty.
+	//
+	// It is undefined to add or remove widgets directly (for example, with
+	// gtk_flow_box_insert()) while @box is bound to a model.
+	//
+	// Note that using a model is incompatible with the filtering and sorting
+	// functionality in GtkFlowBox. When using a model, filtering and sorting
+	// should be implemented by the model.
+	BindModel(model gio.ListModel, createWidgetFunc FlowBoxCreateWidgetFunc, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer)
+	// GetActivateOnSingleClick: returns whether children activate on single
+	// clicks.
+	GetActivateOnSingleClick() bool
+	// GetChildAtIndex: gets the nth child in the @box.
+	GetChildAtIndex(idx int) flowBoxChild
+	// GetChildAtPos: gets the child in the (@x, @y) position. Both @x and @y
+	// are assumed to be relative to the origin of @box.
+	GetChildAtPos(x int, y int) flowBoxChild
+	// GetColumnSpacing: gets the horizontal spacing.
+	GetColumnSpacing() uint
+	// GetHomogeneous: returns whether the box is homogeneous (all children are
+	// the same size). See gtk_box_set_homogeneous().
+	GetHomogeneous() bool
+	// GetMaxChildrenPerLine: gets the maximum number of children per line.
+	GetMaxChildrenPerLine() uint
+	// GetMinChildrenPerLine: gets the minimum number of children per line.
+	GetMinChildrenPerLine() uint
+	// GetRowSpacing: gets the vertical spacing.
+	GetRowSpacing() uint
+	// GetSelectedChildren: creates a list of all selected children.
+	GetSelectedChildren() *glib.List
+	// GetSelectionMode: gets the selection mode of @box.
+	GetSelectionMode() SelectionMode
+	// Insert: inserts the @widget into @box at @position.
+	//
+	// If a sort function is set, the widget will actually be inserted at the
+	// calculated position.
+	//
+	// If @position is -1, or larger than the total number of children in the
+	// @box, then the @widget will be appended to the end.
+	Insert(widget widget, position int)
+	// InvalidateFilter: updates the filtering for all children.
+	//
+	// Call this function when the result of the filter function on the @box is
+	// changed due ot an external factor. For instance, this would be used if
+	// the filter function just looked for a specific search term, and the entry
+	// with the string has changed.
+	InvalidateFilter()
+	// InvalidateSort: updates the sorting for all children.
+	//
+	// Call this when the result of the sort function on @box is changed due to
+	// an external factor.
+	InvalidateSort()
+	// Remove: removes a child from @box.
+	Remove(widget widget)
+	// SelectAll: select all children of @box, if the selection mode allows it.
+	SelectAll()
+	// SelectChild: selects a single child of @box, if the selection mode allows
+	// it.
+	SelectChild(child flowBoxChild)
+	// SelectedForeach: calls a function for each selected child.
+	//
+	// Note that the selection cannot be modified from within this function.
+	SelectedForeach(_func FlowBoxForeachFunc, data unsafe.Pointer)
+	// SetActivateOnSingleClick: if @single is true, children will be activated
+	// when you click on them, otherwise you need to double-click.
+	SetActivateOnSingleClick(single bool)
+	// SetColumnSpacing: sets the horizontal space to add between children. See
+	// the FlowBox:column-spacing property.
+	SetColumnSpacing(spacing uint)
+	// SetFilterFunc: by setting a filter function on the @box one can decide
+	// dynamically which of the children to show. For instance, to implement a
+	// search function that only shows the children matching the search terms.
+	//
+	// The @filter_func will be called for each child after the call, and it
+	// will continue to be called each time a child changes (via
+	// gtk_flow_box_child_changed()) or when gtk_flow_box_invalidate_filter() is
+	// called.
+	//
+	// Note that using a filter function is incompatible with using a model (see
+	// gtk_flow_box_bind_model()).
+	SetFilterFunc(filterFunc FlowBoxFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	// SetHadjustment: hooks up an adjustment to focus handling in @box. The
+	// adjustment is also used for autoscrolling during rubberband selection.
+	// See gtk_scrolled_window_get_hadjustment() for a typical way of obtaining
+	// the adjustment, and gtk_flow_box_set_vadjustment()for setting the
+	// vertical adjustment.
+	//
+	// The adjustments have to be in pixel units and in the same coordinate
+	// system as the allocation for immediate children of the box.
+	SetHadjustment(adjustment adjustment)
+	// SetHomogeneous: sets the FlowBox:homogeneous property of @box,
+	// controlling whether or not all children of @box are given equal space in
+	// the box.
+	SetHomogeneous(homogeneous bool)
+	// SetMaxChildrenPerLine: sets the maximum number of children to request and
+	// allocate space for in @box’s orientation.
+	//
+	// Setting the maximum number of children per line limits the overall
+	// natural size request to be no more than @n_children children long in the
+	// given orientation.
+	SetMaxChildrenPerLine(nChildren uint)
+	// SetMinChildrenPerLine: sets the minimum number of children to line up in
+	// @box’s orientation before flowing.
+	SetMinChildrenPerLine(nChildren uint)
+	// SetRowSpacing: sets the vertical space to add between children. See the
+	// FlowBox:row-spacing property.
+	SetRowSpacing(spacing uint)
+	// SetSelectionMode: sets how selection works in @box. See SelectionMode for
+	// details.
+	SetSelectionMode(mode SelectionMode)
+	// SetSortFunc: by setting a sort function on the @box, one can dynamically
+	// reorder the children of the box, based on the contents of the children.
+	//
+	// The @sort_func will be called for each child after the call, and will
+	// continue to be called each time a child changes (via
+	// gtk_flow_box_child_changed()) and when gtk_flow_box_invalidate_sort() is
+	// called.
+	//
+	// Note that using a sort function is incompatible with using a model (see
+	// gtk_flow_box_bind_model()).
+	SetSortFunc(sortFunc FlowBoxSortFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	// SetVadjustment: hooks up an adjustment to focus handling in @box. The
+	// adjustment is also used for autoscrolling during rubberband selection.
+	// See gtk_scrolled_window_get_vadjustment() for a typical way of obtaining
+	// the adjustment, and gtk_flow_box_set_hadjustment()for setting the
+	// horizontal adjustment.
+	//
+	// The adjustments have to be in pixel units and in the same coordinate
+	// system as the allocation for immediate children of the box.
+	SetVadjustment(adjustment adjustment)
+	// UnselectAll: unselect all children of @box, if the selection mode allows
+	// it.
+	UnselectAll()
+	// UnselectChild: unselects a single child of @box, if the selection mode
+	// allows it.
+	UnselectChild(child flowBoxChild)
+}
+
+type flowBox struct {
 	Widget
 }
 
-func wrapFlowBox(obj *externglib.Object) *FlowBox {
-	return &FlowBox{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapFlowBox(obj *externglib.Object) FlowBox {
+	return &flowBox{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFlowBox(p uintptr) (interface{}, error) {
@@ -9626,14 +14394,106 @@ func marshalFlowBox(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFlowBox() *FlowBox
+func NewFlowBox() FlowBox
 
-type FlowBoxChild struct {
+func (f flowBox) BindModel(model gio.ListModel, createWidgetFunc FlowBoxCreateWidgetFunc, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer)
+
+func (f flowBox) GetActivateOnSingleClick() bool
+
+func (f flowBox) GetChildAtIndex(idx int) flowBoxChild
+
+func (f flowBox) GetChildAtPos(x int, y int) flowBoxChild
+
+func (f flowBox) GetColumnSpacing() uint
+
+func (f flowBox) GetHomogeneous() bool
+
+func (f flowBox) GetMaxChildrenPerLine() uint
+
+func (f flowBox) GetMinChildrenPerLine() uint
+
+func (f flowBox) GetRowSpacing() uint
+
+func (f flowBox) GetSelectedChildren() *glib.List
+
+func (f flowBox) GetSelectionMode() SelectionMode
+
+func (f flowBox) Insert(widget widget, position int)
+
+func (f flowBox) InvalidateFilter()
+
+func (f flowBox) InvalidateSort()
+
+func (f flowBox) Remove(widget widget)
+
+func (f flowBox) SelectAll()
+
+func (f flowBox) SelectChild(child flowBoxChild)
+
+func (f flowBox) SelectedForeach(_func FlowBoxForeachFunc, data unsafe.Pointer)
+
+func (f flowBox) SetActivateOnSingleClick(single bool)
+
+func (f flowBox) SetColumnSpacing(spacing uint)
+
+func (f flowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+
+func (f flowBox) SetHadjustment(adjustment adjustment)
+
+func (f flowBox) SetHomogeneous(homogeneous bool)
+
+func (f flowBox) SetMaxChildrenPerLine(nChildren uint)
+
+func (f flowBox) SetMinChildrenPerLine(nChildren uint)
+
+func (f flowBox) SetRowSpacing(spacing uint)
+
+func (f flowBox) SetSelectionMode(mode SelectionMode)
+
+func (f flowBox) SetSortFunc(sortFunc FlowBoxSortFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+
+func (f flowBox) SetVadjustment(adjustment adjustment)
+
+func (f flowBox) UnselectAll()
+
+func (f flowBox) UnselectChild(child flowBoxChild)
+
+type FlowBoxChild interface {
+	widget
+
+	// Changed: marks @child as changed, causing any state that depends on this
+	// to be updated. This affects sorting and filtering.
+	//
+	// Note that calls to this method must be in sync with the data used for the
+	// sorting and filtering functions. For instance, if the list is mirroring
+	// some external data set, and *two* children changed in the external data
+	// set when you call gtk_flow_box_child_changed() on the first child, the
+	// sort function must only read the new data for the first of the two
+	// changed children, otherwise the resorting of the children will be wrong.
+	//
+	// This generally means that if you don’t fully control the data model, you
+	// have to duplicate the data that affects the sorting and filtering
+	// functions into the widgets themselves. Another alternative is to call
+	// gtk_flow_box_invalidate_sort() on any model change, but that is more
+	// expensive.
+	Changed()
+	// GetChild: gets the child widget of @self.
+	GetChild() widget
+	// GetIndex: gets the current index of the @child in its FlowBox container.
+	GetIndex() int
+	// IsSelected: returns whether the @child is currently selected in its
+	// FlowBox container.
+	IsSelected() bool
+	// SetChild: sets the child widget of @self.
+	SetChild(child widget)
+}
+
+type flowBoxChild struct {
 	Widget
 }
 
-func wrapFlowBoxChild(obj *externglib.Object) *FlowBoxChild {
-	return &FlowBoxChild{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapFlowBoxChild(obj *externglib.Object) FlowBoxChild {
+	return &flowBoxChild{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFlowBoxChild(p uintptr) (interface{}, error) {
@@ -9642,7 +14502,17 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFlowBoxChild() *FlowBoxChild
+func NewFlowBoxChild() FlowBoxChild
+
+func (f flowBoxChild) Changed()
+
+func (f flowBoxChild) GetChild() widget
+
+func (f flowBoxChild) GetIndex() int
+
+func (f flowBoxChild) IsSelected() bool
+
+func (f flowBoxChild) SetChild(child widget)
 
 // FontButton: the FontButton is a button which displays the currently selected
 // font an allows to open a font chooser dialog to change the font. It is
@@ -9656,12 +14526,35 @@ func NewFlowBoxChild() *FlowBoxChild
 //
 // GtkFontButton has a single CSS node with name fontbutton which contains a
 // button node with the .font style class.
-type FontButton struct {
+type FontButton interface {
+	widget
+
+	// GetModal: gets whether the dialog is modal.
+	GetModal() bool
+	// GetTitle: retrieves the title of the font chooser dialog.
+	GetTitle() string
+	// GetUseFont: returns whether the selected font is used in the label.
+	GetUseFont() bool
+	// GetUseSize: returns whether the selected size is used in the label.
+	GetUseSize() bool
+	// SetModal: sets whether the dialog should be modal.
+	SetModal(modal bool)
+	// SetTitle: sets the title for the font chooser dialog.
+	SetTitle(title string)
+	// SetUseFont: if @use_font is true, the font name will be written using the
+	// selected font.
+	SetUseFont(useFont bool)
+	// SetUseSize: if @use_size is true, the font name will be written using the
+	// selected size.
+	SetUseSize(useSize bool)
+}
+
+type fontButton struct {
 	Widget
 }
 
-func wrapFontButton(obj *externglib.Object) *FontButton {
-	return &FontButton{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapFontButton(obj *externglib.Object) FontButton {
+	return &fontButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFontButton(p uintptr) (interface{}, error) {
@@ -9670,9 +14563,25 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFontButton() *FontButton
+func NewFontButton() FontButton
 
-func NewFontButton(fontname string) *FontButton
+func NewFontButton(fontname string) FontButton
+
+func (f fontButton) GetModal() bool
+
+func (f fontButton) GetTitle() string
+
+func (f fontButton) GetUseFont() bool
+
+func (f fontButton) GetUseSize() bool
+
+func (f fontButton) SetModal(modal bool)
+
+func (f fontButton) SetTitle(title string)
+
+func (f fontButton) SetUseFont(useFont bool)
+
+func (f fontButton) SetUseSize(useSize bool)
 
 // FontChooserDialog: the FontChooserDialog widget is a dialog for selecting a
 // font. It implements the FontChooser interface.
@@ -9682,12 +14591,16 @@ func NewFontButton(fontname string) *FontButton
 //
 // The GtkFontChooserDialog implementation of the Buildable interface exposes
 // the buttons with the names “select_button” and “cancel_button”.
-type FontChooserDialog struct {
+type FontChooserDialog interface {
+	dialog
+}
+
+type fontChooserDialog struct {
 	Dialog
 }
 
-func wrapFontChooserDialog(obj *externglib.Object) *FontChooserDialog {
-	return &FontChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
+func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
+	return &fontChooserDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
 }
 
 func marshalFontChooserDialog(p uintptr) (interface{}, error) {
@@ -9696,7 +14609,7 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog
+func NewFontChooserDialog(title string, parent window) FontChooserDialog
 
 // FontChooserWidget: the FontChooserWidget widget lists the available fonts,
 // styles and sizes, allowing the user to select a font. It is used in the
@@ -9715,12 +14628,16 @@ func NewFontChooserDialog(title string, parent *Window) *FontChooserDialog
 // CSS nodes
 //
 // GtkFontChooserWidget has a single CSS node with name fontchooser.
-type FontChooserWidget struct {
+type FontChooserWidget interface {
+	widget
+}
+
+type fontChooserWidget struct {
 	Widget
 }
 
-func wrapFontChooserWidget(obj *externglib.Object) *FontChooserWidget {
-	return &FontChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidget {
+	return &fontChooserWidget{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFontChooserWidget(p uintptr) (interface{}, error) {
@@ -9729,7 +14646,7 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFontChooserWidget() *FontChooserWidget
+func NewFontChooserWidget() FontChooserWidget
 
 // Frame: the frame widget is a widget that surrounds its child with a
 // decorative frame and an optional label. If present, the label is drawn inside
@@ -9766,12 +14683,40 @@ func NewFontChooserWidget() *FontChooserWidget
 // GtkFrame has a main CSS node with name “frame”, which is used to draw the
 // visible border. You can set the appearance of the border using CSS properties
 // like “border-style” on this node.
-type Frame struct {
+type Frame interface {
+	widget
+
+	// GetChild: gets the child widget of @frame.
+	GetChild() widget
+	// GetLabel: if the frame’s label widget is a Label, returns the text in the
+	// label widget. (The frame will have a Label for the label widget if a
+	// non-nil argument was passed to gtk_frame_new().)
+	GetLabel() string
+	// GetLabelAlign: retrieves the X alignment of the frame’s label. See
+	// gtk_frame_set_label_align().
+	GetLabelAlign() float32
+	// GetLabelWidget: retrieves the label widget for the frame. See
+	// gtk_frame_set_label_widget().
+	GetLabelWidget() widget
+	// SetChild: sets the child widget of @frame.
+	SetChild(child widget)
+	// SetLabel: removes the current Frame:label-widget. If @label is not nil,
+	// creates a new Label with that text and adds it as the Frame:label-widget.
+	SetLabel(label string)
+	// SetLabelAlign: sets the X alignment of the frame widget’s label. The
+	// default value for a newly created frame is 0.0.
+	SetLabelAlign(xalign float32)
+	// SetLabelWidget: sets the Frame:label-widget for the frame. This is the
+	// widget that will appear embedded in the top edge of the frame as a title.
+	SetLabelWidget(labelWidget widget)
+}
+
+type frame struct {
 	Widget
 }
 
-func wrapFrame(obj *externglib.Object) *Frame {
-	return &Frame{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapFrame(obj *externglib.Object) Frame {
+	return &frame{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalFrame(p uintptr) (interface{}, error) {
@@ -9780,7 +14725,23 @@ func marshalFrame(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFrame(label string) *Frame
+func NewFrame(label string) Frame
+
+func (f frame) GetChild() widget
+
+func (f frame) GetLabel() string
+
+func (f frame) GetLabelAlign() float32
+
+func (f frame) GetLabelWidget() widget
+
+func (f frame) SetChild(child widget)
+
+func (f frame) SetLabel(label string)
+
+func (f frame) SetLabelAlign(xalign float32)
+
+func (f frame) SetLabelWidget(labelWidget widget)
 
 // GLArea is a widget that allows drawing with OpenGL.
 //
@@ -9882,12 +14843,86 @@ func NewFrame(label string) *Frame
 //
 // If you need to change the options for creating the GLContext you should use
 // the GLArea::create-context signal.
-type GLArea struct {
+type GLArea interface {
+	widget
+
+	// AttachBuffers: ensures that the @area framebuffer object is made the
+	// current draw and read target, and that all the required buffers for the
+	// @area are created and bound to the framebuffer.
+	//
+	// This function is automatically called before emitting the GLArea::render
+	// signal, and doesn't normally need to be called by application code.
+	AttachBuffers()
+	// GetAutoRender: returns whether the area is in auto render mode or not.
+	GetAutoRender() bool
+	// GetContext: retrieves the GLContext used by @area.
+	GetContext() gdk.gLContext
+	// GetError: gets the current error set on the @area.
+	GetError() *glib.Error
+	// GetHasDepthBuffer: returns whether the area has a depth buffer.
+	GetHasDepthBuffer() bool
+	// GetHasStencilBuffer: returns whether the area has a stencil buffer.
+	GetHasStencilBuffer() bool
+	// GetRequiredVersion: retrieves the required version of OpenGL set using
+	// gtk_gl_area_set_required_version().
+	GetRequiredVersion() (int, int)
+	// GetUseEs: retrieves the value set by gtk_gl_area_set_use_es().
+	GetUseEs() bool
+	// MakeCurrent: ensures that the GLContext used by @area is associated with
+	// the GLArea.
+	//
+	// This function is automatically called before emitting the GLArea::render
+	// signal, and doesn't normally need to be called by application code.
+	MakeCurrent()
+	// QueueRender: marks the currently rendered data (if any) as invalid, and
+	// queues a redraw of the widget, ensuring that the GLArea::render signal is
+	// emitted during the draw.
+	//
+	// This is only needed when the gtk_gl_area_set_auto_render() has been
+	// called with a false value. The default behaviour is to emit
+	// GLArea::render on each draw.
+	QueueRender()
+	// SetAutoRender: if @auto_render is true the GLArea::render signal will be
+	// emitted every time the widget draws. This is the default and is useful if
+	// drawing the widget is faster.
+	//
+	// If @auto_render is false the data from previous rendering is kept around
+	// and will be used for drawing the widget the next time, unless the window
+	// is resized. In order to force a rendering gtk_gl_area_queue_render() must
+	// be called. This mode is useful when the scene changes seldom, but takes a
+	// long time to redraw.
+	SetAutoRender(autoRender bool)
+	// SetError: sets an error on the area which will be shown instead of the GL
+	// rendering. This is useful in the GLArea::create-context signal if GL
+	// context creation fails.
+	SetError(error *glib.Error)
+	// SetHasDepthBuffer: if @has_depth_buffer is true the widget will allocate
+	// and enable a depth buffer for the target framebuffer. Otherwise there
+	// will be none.
+	SetHasDepthBuffer(hasDepthBuffer bool)
+	// SetHasStencilBuffer: if @has_stencil_buffer is true the widget will
+	// allocate and enable a stencil buffer for the target framebuffer.
+	// Otherwise there will be none.
+	SetHasStencilBuffer(hasStencilBuffer bool)
+	// SetRequiredVersion: sets the required version of OpenGL to be used when
+	// creating the context for the widget.
+	//
+	// This function must be called before the area has been realized.
+	SetRequiredVersion(major int, minor int)
+	// SetUseEs: sets whether the @area should create an OpenGL or an OpenGL ES
+	// context.
+	//
+	// You should check the capabilities of the GLContext before drawing with
+	// either API.
+	SetUseEs(useEs bool)
+}
+
+type gLArea struct {
 	Widget
 }
 
-func wrapGLArea(obj *externglib.Object) *GLArea {
-	return &GLArea{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapGLArea(obj *externglib.Object) GLArea {
+	return &gLArea{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalGLArea(p uintptr) (interface{}, error) {
@@ -9896,7 +14931,39 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGLArea() *GLArea
+func NewGLArea() GLArea
+
+func (g gLArea) AttachBuffers()
+
+func (g gLArea) GetAutoRender() bool
+
+func (g gLArea) GetContext() gdk.gLContext
+
+func (g gLArea) GetError() *glib.Error
+
+func (g gLArea) GetHasDepthBuffer() bool
+
+func (g gLArea) GetHasStencilBuffer() bool
+
+func (g gLArea) GetRequiredVersion() (int, int)
+
+func (g gLArea) GetUseEs() bool
+
+func (g gLArea) MakeCurrent()
+
+func (g gLArea) QueueRender()
+
+func (g gLArea) SetAutoRender(autoRender bool)
+
+func (g gLArea) SetError(error *glib.Error)
+
+func (g gLArea) SetHasDepthBuffer(hasDepthBuffer bool)
+
+func (g gLArea) SetHasStencilBuffer(hasStencilBuffer bool)
+
+func (g gLArea) SetRequiredVersion(major int, minor int)
+
+func (g gLArea) SetUseEs(useEs bool)
 
 // Gesture is the base object for gesture recognition, although this object is
 // quite generalized to serve as a base for multi-touch gestures, it is suitable
@@ -9978,12 +15045,126 @@ func NewGLArea() *GLArea
 // this support are: - Enabling GDK_TOUCHPAD_GESTURE_MASK on their Surfaces - If
 // the gesture has GTK_PHASE_NONE, ensuring events of type GDK_TOUCHPAD_SWIPE
 // and GDK_TOUCHPAD_PINCH are handled by the Gesture
-type Gesture struct {
+type Gesture interface {
+	eventController
+
+	// GetBoundingBox: if there are touch sequences being currently handled by
+	// @gesture, this function returns true and fills in @rect with the bounding
+	// box containing all active touches. Otherwise, false will be returned.
+	//
+	// Note: This function will yield unexpected results on touchpad gestures.
+	// Since there is no correlation between physical and pixel distances, these
+	// will look as if constrained in an infinitely small area, @rect width and
+	// height will thus be 0 regardless of the number of touchpoints.
+	GetBoundingBox() (gdk.Rectangle, bool)
+	// GetBoundingBoxCenter: if there are touch sequences being currently
+	// handled by @gesture, this function returns true and fills in @x and @y
+	// with the center of the bounding box containing all active touches.
+	// Otherwise, false will be returned.
+	GetBoundingBoxCenter() (float64, float64, bool)
+	// GetDevice: returns the logical Device that is currently operating on
+	// @gesture, or nil if the gesture is not being interacted.
+	GetDevice() gdk.device
+	// GetGroup: returns all gestures in the group of @gesture
+	GetGroup() *glib.List
+	// GetLastEvent: returns the last event that was processed for @sequence.
+	//
+	// Note that the returned pointer is only valid as long as the @sequence is
+	// still interpreted by the @gesture. If in doubt, you should make a copy of
+	// the event.
+	GetLastEvent(sequence *gdk.EventSequence) gdk.event
+	// GetLastUpdatedSequence: returns the EventSequence that was last updated
+	// on @gesture.
+	GetLastUpdatedSequence() *gdk.EventSequence
+	// GetPoint: if @sequence is currently being interpreted by @gesture, this
+	// function returns true and fills in @x and @y with the last coordinates
+	// stored for that event sequence. The coordinates are always relative to
+	// the widget allocation.
+	GetPoint(sequence *gdk.EventSequence) (float64, float64, bool)
+	// GetSequenceState: returns the @sequence state, as seen by @gesture.
+	GetSequenceState(sequence *gdk.EventSequence) EventSequenceState
+	// GetSequences: returns the list of EventSequences currently being
+	// interpreted by @gesture.
+	GetSequences() *glib.List
+	// Group: adds @gesture to the same group than @group_gesture. Gestures are
+	// by default isolated in their own groups.
+	//
+	// Both gestures must have been added to the same widget before they can be
+	// grouped.
+	//
+	// When gestures are grouped, the state of EventSequences is kept in sync
+	// for all of those, so calling gtk_gesture_set_sequence_state(), on one
+	// will transfer the same value to the others.
+	//
+	// Groups also perform an "implicit grabbing" of sequences, if a
+	// EventSequence state is set to K_EVENT_SEQUENCE_CLAIMED on one group,
+	// every other gesture group attached to the same Widget will switch the
+	// state for that sequence to K_EVENT_SEQUENCE_DENIED.
+	Group(gesture gesture)
+	// HandlesSequence: returns true if @gesture is currently handling events
+	// corresponding to @sequence.
+	HandlesSequence(sequence *gdk.EventSequence) bool
+	// IsActive: returns true if the gesture is currently active. A gesture is
+	// active meanwhile there are touch sequences interacting with it.
+	IsActive() bool
+	// IsGroupedWith: returns true if both gestures pertain to the same group.
+	IsGroupedWith(other gesture) bool
+	// IsRecognized: returns true if the gesture is currently recognized. A
+	// gesture is recognized if there are as many interacting touch sequences as
+	// required by @gesture.
+	IsRecognized() bool
+	// SetSequenceState: sets the state of @sequence in @gesture. Sequences
+	// start in state K_EVENT_SEQUENCE_NONE, and whenever they change state,
+	// they can never go back to that state. Likewise, sequences in state
+	// K_EVENT_SEQUENCE_DENIED cannot turn back to a not denied state. With
+	// these rules, the lifetime of an event sequence is constrained to the next
+	// four:
+	//
+	// * None * None → Denied * None → Claimed * None → Claimed → Denied
+	//
+	// Note: Due to event handling ordering, it may be unsafe to set the state
+	// on another gesture within a Gesture::begin signal handler, as the
+	// callback might be executed before the other gesture knows about the
+	// sequence. A safe way to perform this could be:
+	//
+	//
+	//    static void
+	//    first_gesture_begin_cb (GtkGesture       *first_gesture,
+	//                            GdkEventSequence *sequence,
+	//                            gpointer          user_data)
+	//    {
+	//      gtk_gesture_set_sequence_state (first_gesture, sequence, GTK_EVENT_SEQUENCE_CLAIMED);
+	//      gtk_gesture_set_sequence_state (second_gesture, sequence, GTK_EVENT_SEQUENCE_DENIED);
+	//    }
+	//
+	//    static void
+	//    second_gesture_begin_cb (GtkGesture       *second_gesture,
+	//                             GdkEventSequence *sequence,
+	//                             gpointer          user_data)
+	//    {
+	//      if (gtk_gesture_get_sequence_state (first_gesture, sequence) == GTK_EVENT_SEQUENCE_CLAIMED)
+	//        gtk_gesture_set_sequence_state (second_gesture, sequence, GTK_EVENT_SEQUENCE_DENIED);
+	//    }
+	//
+	//
+	// If both gestures are in the same group, just set the state on the gesture
+	// emitting the event, the sequence will be already be initialized to the
+	// group's global state when the second gesture processes the event.
+	SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool
+	// SetState: sets the state of all sequences that @gesture is currently
+	// interacting with. See gtk_gesture_set_sequence_state() for more details
+	// on sequence states.
+	SetState(state EventSequenceState) bool
+	// Ungroup: separates @gesture into an isolated group.
+	Ungroup()
+}
+
+type gesture struct {
 	EventController
 }
 
-func wrapGesture(obj *externglib.Object) *Gesture {
-	return &Gesture{EventController{*externglib.Object{obj}}}
+func wrapGesture(obj *externglib.Object) Gesture {
+	return &gesture{EventController{*externglib.Object{obj}}}
 }
 
 func marshalGesture(p uintptr) (interface{}, error) {
@@ -9992,16 +15173,54 @@ func marshalGesture(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (g gesture) GetBoundingBox() (gdk.Rectangle, bool)
+
+func (g gesture) GetBoundingBoxCenter() (float64, float64, bool)
+
+func (g gesture) GetDevice() gdk.device
+
+func (g gesture) GetGroup() *glib.List
+
+func (g gesture) GetLastEvent(sequence *gdk.EventSequence) gdk.event
+
+func (g gesture) GetLastUpdatedSequence() *gdk.EventSequence
+
+func (g gesture) GetPoint(sequence *gdk.EventSequence) (float64, float64, bool)
+
+func (g gesture) GetSequenceState(sequence *gdk.EventSequence) EventSequenceState
+
+func (g gesture) GetSequences() *glib.List
+
+func (g gesture) Group(gesture gesture)
+
+func (g gesture) HandlesSequence(sequence *gdk.EventSequence) bool
+
+func (g gesture) IsActive() bool
+
+func (g gesture) IsGroupedWith(other gesture) bool
+
+func (g gesture) IsRecognized() bool
+
+func (g gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool
+
+func (g gesture) SetState(state EventSequenceState) bool
+
+func (g gesture) Ungroup()
+
 // GestureClick is a Gesture implementation able to recognize multiple clicks on
 // a nearby zone, which can be listened for through the GestureClick::pressed
 // signal. Whenever time or distance between clicks exceed the GTK defaults,
 // GestureClick::stopped is emitted, and the click counter is reset.
-type GestureClick struct {
+type GestureClick interface {
+	gestureSingle
+}
+
+type gestureClick struct {
 	GestureSingle
 }
 
-func wrapGestureClick(obj *externglib.Object) *GestureClick {
-	return &GestureClick{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
+func wrapGestureClick(obj *externglib.Object) GestureClick {
+	return &gestureClick{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureClick(p uintptr) (interface{}, error) {
@@ -10010,19 +15229,32 @@ func marshalGestureClick(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGestureClick() *GestureClick
+func NewGestureClick() GestureClick
 
 // GestureDrag is a Gesture implementation that recognizes drag operations. The
 // drag operation itself can be tracked throughout the GestureDrag::drag-begin,
 // GestureDrag::drag-update and GestureDrag::drag-end signals, or the relevant
 // coordinates be extracted through gtk_gesture_drag_get_offset() and
 // gtk_gesture_drag_get_start_point().
-type GestureDrag struct {
+type GestureDrag interface {
+	gestureSingle
+
+	// GetOffset: if the @gesture is active, this function returns true and
+	// fills in @x and @y with the coordinates of the current point, as an
+	// offset to the starting drag point.
+	GetOffset() (float64, float64, bool)
+	// GetStartPoint: if the @gesture is active, this function returns true and
+	// fills in @x and @y with the drag start coordinates, in window-relative
+	// coordinates.
+	GetStartPoint() (float64, float64, bool)
+}
+
+type gestureDrag struct {
 	GestureSingle
 }
 
-func wrapGestureDrag(obj *externglib.Object) *GestureDrag {
-	return &GestureDrag{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
+func wrapGestureDrag(obj *externglib.Object) GestureDrag {
+	return &gestureDrag{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureDrag(p uintptr) (interface{}, error) {
@@ -10031,7 +15263,11 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGestureDrag() *GestureDrag
+func NewGestureDrag() GestureDrag
+
+func (g gestureDrag) GetOffset() (float64, float64, bool)
+
+func (g gestureDrag) GetStartPoint() (float64, float64, bool)
 
 // GestureLongPress is a Gesture implementation able to recognize long presses,
 // triggering the GestureLongPress::pressed after the timeout is exceeded.
@@ -10039,12 +15275,24 @@ func NewGestureDrag() *GestureDrag
 // If the touchpoint is lifted before the timeout passes, or if it drifts too
 // far of the initial press point, the GestureLongPress::cancelled signal will
 // be emitted.
-type GestureLongPress struct {
+type GestureLongPress interface {
+	gestureSingle
+
+	// GetDelayFactor: returns the delay factor as set by
+	// gtk_gesture_long_press_set_delay_factor().
+	GetDelayFactor() float64
+	// SetDelayFactor: applies the given delay factor. The default long press
+	// time will be multiplied by this value. Valid values are in the range
+	// [0.5..2.0].
+	SetDelayFactor(delayFactor float64)
+}
+
+type gestureLongPress struct {
 	GestureSingle
 }
 
-func wrapGestureLongPress(obj *externglib.Object) *GestureLongPress {
-	return &GestureLongPress{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
+func wrapGestureLongPress(obj *externglib.Object) GestureLongPress {
+	return &gestureLongPress{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureLongPress(p uintptr) (interface{}, error) {
@@ -10053,7 +15301,11 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGestureLongPress() *GestureLongPress
+func NewGestureLongPress() GestureLongPress
+
+func (g gestureLongPress) GetDelayFactor() float64
+
+func (g gestureLongPress) SetDelayFactor(delayFactor float64)
 
 // GesturePan is a Gesture implementation able to recognize pan gestures, those
 // are drags that are locked to happen along one axis. The axis that a
@@ -10067,12 +15319,22 @@ func NewGestureLongPress() *GestureLongPress
 // Once a panning gesture along the expected axis is recognized, the
 // GesturePan::pan signal will be emitted as input events are received,
 // containing the offset in the given axis.
-type GesturePan struct {
+type GesturePan interface {
+	gestureDrag
+
+	// GetOrientation: returns the orientation of the pan gestures that this
+	// @gesture expects.
+	GetOrientation() Orientation
+	// SetOrientation: sets the orientation to be expected on pan gestures.
+	SetOrientation(orientation Orientation)
+}
+
+type gesturePan struct {
 	GestureDrag
 }
 
-func wrapGesturePan(obj *externglib.Object) *GesturePan {
-	return &GesturePan{GestureDrag{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}}
+func wrapGesturePan(obj *externglib.Object) GesturePan {
+	return &gesturePan{GestureDrag{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}}
 }
 
 func marshalGesturePan(p uintptr) (interface{}, error) {
@@ -10081,17 +15343,30 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGesturePan(orientation Orientation) *GesturePan
+func NewGesturePan(orientation Orientation) GesturePan
+
+func (g gesturePan) GetOrientation() Orientation
+
+func (g gesturePan) SetOrientation(orientation Orientation)
 
 // GestureRotate is a Gesture implementation able to recognize 2-finger
 // rotations, whenever the angle between both handled sequences changes, the
 // GestureRotate::angle-changed signal is emitted.
-type GestureRotate struct {
+type GestureRotate interface {
+	gesture
+
+	// GetAngleDelta: if @gesture is active, this function returns the angle
+	// difference in radians since the gesture was first recognized. If @gesture
+	// is not active, 0 is returned.
+	GetAngleDelta() float64
+}
+
+type gestureRotate struct {
 	Gesture
 }
 
-func wrapGestureRotate(obj *externglib.Object) *GestureRotate {
-	return &GestureRotate{Gesture{EventController{*externglib.Object{obj}}}}
+func wrapGestureRotate(obj *externglib.Object) GestureRotate {
+	return &gestureRotate{Gesture{EventController{*externglib.Object{obj}}}}
 }
 
 func marshalGestureRotate(p uintptr) (interface{}, error) {
@@ -10100,7 +15375,9 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGestureRotate() *GestureRotate
+func NewGestureRotate() GestureRotate
+
+func (g gestureRotate) GetAngleDelta() float64
 
 // GestureSingle is a subclass of Gesture, optimized (although not restricted)
 // for dealing with mouse and single-touch gestures. Under interaction, these
@@ -10114,12 +15391,45 @@ func NewGestureRotate() *GestureRotate
 // through gtk_gesture_single_set_button(), or react to any mouse button by
 // setting 0. While the gesture is active, the button being currently pressed
 // can be known through gtk_gesture_single_get_current_button().
-type GestureSingle struct {
+type GestureSingle interface {
+	gesture
+
+	// GetButton: returns the button number @gesture listens for, or 0 if
+	// @gesture reacts to any button press.
+	GetButton() uint
+	// GetCurrentButton: returns the button number currently interacting with
+	// @gesture, or 0 if there is none.
+	GetCurrentButton() uint
+	// GetCurrentSequence: returns the event sequence currently interacting with
+	// @gesture. This is only meaningful if gtk_gesture_is_active() returns
+	// true.
+	GetCurrentSequence() *gdk.EventSequence
+	// GetExclusive: gets whether a gesture is exclusive. For more information,
+	// see gtk_gesture_single_set_exclusive().
+	GetExclusive() bool
+	// GetTouchOnly: returns true if the gesture is only triggered by touch
+	// events.
+	GetTouchOnly() bool
+	// SetButton: sets the button number @gesture listens to. If non-0, every
+	// button press from a different button number will be ignored. Touch events
+	// implicitly match with button 1.
+	SetButton(button uint)
+	// SetExclusive: sets whether @gesture is exclusive. An exclusive gesture
+	// will only handle pointer and "pointer emulated" touch events, so at any
+	// given time, there is only one sequence able to interact with those.
+	SetExclusive(exclusive bool)
+	// SetTouchOnly: if @touch_only is true, @gesture will only handle events of
+	// type K_TOUCH_BEGIN, K_TOUCH_UPDATE or K_TOUCH_END. If false, mouse events
+	// will be handled too.
+	SetTouchOnly(touchOnly bool)
+}
+
+type gestureSingle struct {
 	Gesture
 }
 
-func wrapGestureSingle(obj *externglib.Object) *GestureSingle {
-	return &GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}
+func wrapGestureSingle(obj *externglib.Object) GestureSingle {
+	return &gestureSingle{Gesture{EventController{*externglib.Object{obj}}}}
 }
 
 func marshalGestureSingle(p uintptr) (interface{}, error) {
@@ -10128,14 +15438,63 @@ func marshalGestureSingle(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (g gestureSingle) GetButton() uint
+
+func (g gestureSingle) GetCurrentButton() uint
+
+func (g gestureSingle) GetCurrentSequence() *gdk.EventSequence
+
+func (g gestureSingle) GetExclusive() bool
+
+func (g gestureSingle) GetTouchOnly() bool
+
+func (g gestureSingle) SetButton(button uint)
+
+func (g gestureSingle) SetExclusive(exclusive bool)
+
+func (g gestureSingle) SetTouchOnly(touchOnly bool)
+
 // GestureStylus is a Gesture implementation specific to stylus input. The
 // provided signals just relay the basic information of the stylus events.
-type GestureStylus struct {
+type GestureStylus interface {
+	gestureSingle
+
+	// GetAxes: returns the current values for the requested @axes. This
+	// function must be called from either the GestureStylus::down,
+	// GestureStylus::motion, GestureStylus::up or GestureStylus::proximity
+	// signals.
+	GetAxes(axes []gdk.AxisUse) ([]float64, bool)
+	// GetAxis: returns the current value for the requested @axis.
+	//
+	// This function must be called from the handler of one of the
+	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
+	// GestureStylus::proximity signals.
+	GetAxis(axis gdk.AxisUse) (float64, bool)
+	// GetBacklog: by default, GTK will limit rate of input events. On stylus
+	// input where accuracy of strokes is paramount, this function returns the
+	// accumulated coordinate/timing state before the emission of the current
+	// GestureStylus::motion signal.
+	//
+	// This function may only be called within a GestureStylus::motion signal
+	// handler, the state given in this signal and obtainable through
+	// gtk_gesture_stylus_get_axis() call express the latest (most up-to-date)
+	// state in motion history.
+	//
+	// The @backlog is provided in chronological order.
+	GetBacklog() ([]*gdk.TimeCoord, uint, bool)
+	// GetDeviceTool: returns the DeviceTool currently driving input through
+	// this gesture. This function must be called from either the
+	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
+	// GestureStylus::proximity signal handlers.
+	GetDeviceTool() gdk.deviceTool
+}
+
+type gestureStylus struct {
 	GestureSingle
 }
 
-func wrapGestureStylus(obj *externglib.Object) *GestureStylus {
-	return &GestureStylus{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
+func wrapGestureStylus(obj *externglib.Object) GestureStylus {
+	return &gestureStylus{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureStylus(p uintptr) (interface{}, error) {
@@ -10144,7 +15503,15 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGestureStylus() *GestureStylus
+func NewGestureStylus() GestureStylus
+
+func (g gestureStylus) GetAxes(axes []gdk.AxisUse) ([]float64, bool)
+
+func (g gestureStylus) GetAxis(axis gdk.AxisUse) (float64, bool)
+
+func (g gestureStylus) GetBacklog() ([]*gdk.TimeCoord, uint, bool)
+
+func (g gestureStylus) GetDeviceTool() gdk.deviceTool
 
 // GestureSwipe is a Gesture implementation able to recognize swipes, after a
 // press/move/.../move/release sequence happens, the GestureSwipe::swipe signal
@@ -10156,12 +15523,21 @@ func NewGestureStylus() *GestureStylus
 // handler.
 //
 // All velocities are reported in pixels/sec units.
-type GestureSwipe struct {
+type GestureSwipe interface {
+	gestureSingle
+
+	// GetVelocity: if the gesture is recognized, this function returns true and
+	// fill in @velocity_x and @velocity_y with the recorded velocity, as per
+	// the last event(s) processed.
+	GetVelocity() (float64, float64, bool)
+}
+
+type gestureSwipe struct {
 	GestureSingle
 }
 
-func wrapGestureSwipe(obj *externglib.Object) *GestureSwipe {
-	return &GestureSwipe{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
+func wrapGestureSwipe(obj *externglib.Object) GestureSwipe {
+	return &gestureSwipe{GestureSingle{Gesture{EventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureSwipe(p uintptr) (interface{}, error) {
@@ -10170,17 +15546,28 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGestureSwipe() *GestureSwipe
+func NewGestureSwipe() GestureSwipe
+
+func (g gestureSwipe) GetVelocity() (float64, float64, bool)
 
 // GestureZoom is a Gesture implementation able to recognize pinch/zoom
 // gestures, whenever the distance between both tracked sequences changes, the
 // GestureZoom::scale-changed signal is emitted to report the scale factor.
-type GestureZoom struct {
+type GestureZoom interface {
+	gesture
+
+	// GetScaleDelta: if @gesture is active, this function returns the zooming
+	// difference since the gesture was recognized (hence the starting point is
+	// considered 1:1). If @gesture is not active, 1 is returned.
+	GetScaleDelta() float64
+}
+
+type gestureZoom struct {
 	Gesture
 }
 
-func wrapGestureZoom(obj *externglib.Object) *GestureZoom {
-	return &GestureZoom{Gesture{EventController{*externglib.Object{obj}}}}
+func wrapGestureZoom(obj *externglib.Object) GestureZoom {
+	return &gestureZoom{Gesture{EventController{*externglib.Object{obj}}}}
 }
 
 func marshalGestureZoom(p uintptr) (interface{}, error) {
@@ -10189,7 +15576,9 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGestureZoom() *GestureZoom
+func NewGestureZoom() GestureZoom
+
+func (g gestureZoom) GetScaleDelta() float64
 
 // Grid: gtkGrid is a container which arranges its child widgets in rows and
 // columns, with arbitrary positions and horizontal/vertical spans.
@@ -10209,12 +15598,107 @@ func NewGestureZoom() *GestureZoom
 // Accessibility
 //
 // GtkGrid uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type Grid struct {
+type Grid interface {
+	widget
+
+	// Attach: adds a widget to the grid.
+	//
+	// The position of @child is determined by @column and @row. The number of
+	// “cells” that @child will occupy is determined by @width and @height.
+	Attach(child widget, column int, row int, width int, height int)
+	// AttachNextTo: adds a widget to the grid.
+	//
+	// The widget is placed next to @sibling, on the side determined by @side.
+	// When @sibling is nil, the widget is placed in row (for left or right
+	// placement) or column 0 (for top or bottom placement), at the end
+	// indicated by @side.
+	//
+	// Attaching widgets labeled [1], [2], [3] with @sibling == nil and @side ==
+	// GTK_POS_LEFT yields a layout of [3][2][1].
+	AttachNextTo(child widget, sibling widget, side PositionType, width int, height int)
+	// GetBaselineRow: returns which row defines the global baseline of @grid.
+	GetBaselineRow() int
+	// GetChildAt: gets the child of @grid whose area covers the grid cell at
+	// @column, @row.
+	GetChildAt(column int, row int) widget
+	// GetColumnHomogeneous: returns whether all columns of @grid have the same
+	// width.
+	GetColumnHomogeneous() bool
+	// GetColumnSpacing: returns the amount of space between the columns of
+	// @grid.
+	GetColumnSpacing() uint
+	// GetRowBaselinePosition: returns the baseline position of @row as set by
+	// gtk_grid_set_row_baseline_position() or the default value
+	// GTK_BASELINE_POSITION_CENTER.
+	GetRowBaselinePosition(row int) BaselinePosition
+	// GetRowHomogeneous: returns whether all rows of @grid have the same
+	// height.
+	GetRowHomogeneous() bool
+	// GetRowSpacing: returns the amount of space between the rows of @grid.
+	GetRowSpacing() uint
+	// InsertColumn: inserts a column at the specified position.
+	//
+	// Children which are attached at or to the right of this position are moved
+	// one column to the right. Children which span across this position are
+	// grown to span the new column.
+	InsertColumn(position int)
+	// InsertNextTo: inserts a row or column at the specified position.
+	//
+	// The new row or column is placed next to @sibling, on the side determined
+	// by @side. If @side is GTK_POS_TOP or GTK_POS_BOTTOM, a row is inserted.
+	// If @side is GTK_POS_LEFT of GTK_POS_RIGHT, a column is inserted.
+	InsertNextTo(sibling widget, side PositionType)
+	// InsertRow: inserts a row at the specified position.
+	//
+	// Children which are attached at or below this position are moved one row
+	// down. Children which span across this position are grown to span the new
+	// row.
+	InsertRow(position int)
+	// QueryChild: queries the attach points and spans of @child inside the
+	// given Grid.
+	QueryChild(child widget) (int, int, int, int)
+	// Remove: removes a child from @grid, after it has been added with
+	// gtk_grid_attach() or gtk_grid_attach_next_to().
+	Remove(child widget)
+	// RemoveColumn: removes a column from the grid.
+	//
+	// Children that are placed in this column are removed, spanning children
+	// that overlap this column have their width reduced by one, and children
+	// after the column are moved to the left.
+	RemoveColumn(position int)
+	// RemoveRow: removes a row from the grid.
+	//
+	// Children that are placed in this row are removed, spanning children that
+	// overlap this row have their height reduced by one, and children below the
+	// row are moved up.
+	RemoveRow(position int)
+	// SetBaselineRow: sets which row defines the global baseline for the entire
+	// grid. Each row in the grid can have its own local baseline, but only one
+	// of those is global, meaning it will be the baseline in the parent of the
+	// @grid.
+	SetBaselineRow(row int)
+	// SetColumnHomogeneous: sets whether all columns of @grid will have the
+	// same width.
+	SetColumnHomogeneous(homogeneous bool)
+	// SetColumnSpacing: sets the amount of space between columns of @grid.
+	SetColumnSpacing(spacing uint)
+	// SetRowBaselinePosition: sets how the baseline should be positioned on
+	// @row of the grid, in case that row is assigned more space than is
+	// requested.
+	SetRowBaselinePosition(row int, pos BaselinePosition)
+	// SetRowHomogeneous: sets whether all rows of @grid will have the same
+	// height.
+	SetRowHomogeneous(homogeneous bool)
+	// SetRowSpacing: sets the amount of space between rows of @grid.
+	SetRowSpacing(spacing uint)
+}
+
+type grid struct {
 	Widget
 }
 
-func wrapGrid(obj *externglib.Object) *Grid {
-	return &Grid{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapGrid(obj *externglib.Object) Grid {
+	return &grid{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalGrid(p uintptr) (interface{}, error) {
@@ -10223,7 +15707,51 @@ func marshalGrid(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGrid() *Grid
+func NewGrid() Grid
+
+func (g grid) Attach(child widget, column int, row int, width int, height int)
+
+func (g grid) AttachNextTo(child widget, sibling widget, side PositionType, width int, height int)
+
+func (g grid) GetBaselineRow() int
+
+func (g grid) GetChildAt(column int, row int) widget
+
+func (g grid) GetColumnHomogeneous() bool
+
+func (g grid) GetColumnSpacing() uint
+
+func (g grid) GetRowBaselinePosition(row int) BaselinePosition
+
+func (g grid) GetRowHomogeneous() bool
+
+func (g grid) GetRowSpacing() uint
+
+func (g grid) InsertColumn(position int)
+
+func (g grid) InsertNextTo(sibling widget, side PositionType)
+
+func (g grid) InsertRow(position int)
+
+func (g grid) QueryChild(child widget) (int, int, int, int)
+
+func (g grid) Remove(child widget)
+
+func (g grid) RemoveColumn(position int)
+
+func (g grid) RemoveRow(position int)
+
+func (g grid) SetBaselineRow(row int)
+
+func (g grid) SetColumnHomogeneous(homogeneous bool)
+
+func (g grid) SetColumnSpacing(spacing uint)
+
+func (g grid) SetRowBaselinePosition(row int, pos BaselinePosition)
+
+func (g grid) SetRowHomogeneous(homogeneous bool)
+
+func (g grid) SetRowSpacing(spacing uint)
 
 // GridLayout: gtkGridLayout is a layout manager which arranges child widgets in
 // rows and columns, with arbitrary positions and horizontal/vertical spans.
@@ -10239,12 +15767,59 @@ func NewGrid() *Grid
 // GtkGridLayout can be used like a BoxLayout if all children are attached to
 // the same row or column; however, if you only ever need a single row or
 // column, you should consider using BoxLayout.
-type GridLayout struct {
+type GridLayout interface {
+	layoutManager
+
+	// GetBaselineRow: retrieves the row set with
+	// gtk_grid_layout_set_baseline_row().
+	GetBaselineRow() int
+	// GetColumnHomogeneous: checks whether all columns of @grid should have the
+	// same width.
+	GetColumnHomogeneous() bool
+	// GetColumnSpacing: retrieves the spacing set with
+	// gtk_grid_layout_set_column_spacing().
+	GetColumnSpacing() uint
+	// GetRowBaselinePosition: returns the baseline position of @row as set by
+	// gtk_grid_layout_set_row_baseline_position(), or the default value of
+	// GTK_BASELINE_POSITION_CENTER.
+	GetRowBaselinePosition(row int) BaselinePosition
+	// GetRowHomogeneous: checks whether all rows of @grid should have the same
+	// height.
+	GetRowHomogeneous() bool
+	// GetRowSpacing: retrieves the spacing set with
+	// gtk_grid_layout_set_row_spacing().
+	GetRowSpacing() uint
+	// SetBaselineRow: sets which row defines the global baseline for the entire
+	// grid.
+	//
+	// Each row in the grid can have its own local baseline, but only one of
+	// those is global, meaning it will be the baseline in the parent of the
+	// @grid.
+	SetBaselineRow(row int)
+	// SetColumnHomogeneous: sets whether all columns of @grid should have the
+	// same width.
+	SetColumnHomogeneous(homogeneous bool)
+	// SetColumnSpacing: sets the amount of space to insert between consecutive
+	// columns.
+	SetColumnSpacing(spacing uint)
+	// SetRowBaselinePosition: sets how the baseline should be positioned on
+	// @row of the grid, in case that row is assigned more space than is
+	// requested.
+	SetRowBaselinePosition(row int, pos BaselinePosition)
+	// SetRowHomogeneous: sets whether all rows of @grid should have the same
+	// height.
+	SetRowHomogeneous(homogeneous bool)
+	// SetRowSpacing: sets the amount of space to insert between consecutive
+	// rows.
+	SetRowSpacing(spacing uint)
+}
+
+type gridLayout struct {
 	LayoutManager
 }
 
-func wrapGridLayout(obj *externglib.Object) *GridLayout {
-	return &GridLayout{LayoutManager{*externglib.Object{obj}}}
+func wrapGridLayout(obj *externglib.Object) GridLayout {
+	return &gridLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalGridLayout(p uintptr) (interface{}, error) {
@@ -10253,15 +15828,61 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGridLayout() *GridLayout
+func NewGridLayout() GridLayout
+
+func (g gridLayout) GetBaselineRow() int
+
+func (g gridLayout) GetColumnHomogeneous() bool
+
+func (g gridLayout) GetColumnSpacing() uint
+
+func (g gridLayout) GetRowBaselinePosition(row int) BaselinePosition
+
+func (g gridLayout) GetRowHomogeneous() bool
+
+func (g gridLayout) GetRowSpacing() uint
+
+func (g gridLayout) SetBaselineRow(row int)
+
+func (g gridLayout) SetColumnHomogeneous(homogeneous bool)
+
+func (g gridLayout) SetColumnSpacing(spacing uint)
+
+func (g gridLayout) SetRowBaselinePosition(row int, pos BaselinePosition)
+
+func (g gridLayout) SetRowHomogeneous(homogeneous bool)
+
+func (g gridLayout) SetRowSpacing(spacing uint)
 
 // GridLayoutChild: layout properties for children of GridLayout.
-type GridLayoutChild struct {
+type GridLayoutChild interface {
+	layoutChild
+
+	// GetColumn: retrieves the column number to which @child attaches its left
+	// side.
+	GetColumn() int
+	// GetColumnSpan: retrieves the number of columns that @child spans to.
+	GetColumnSpan() int
+	// GetRow: retrieves the row number to which @child attaches its top side.
+	GetRow() int
+	// GetRowSpan: retrieves the number of rows that @child spans to.
+	GetRowSpan() int
+	// SetColumn: sets the column number to attach the left side of @child.
+	SetColumn(column int)
+	// SetColumnSpan: sets the number of columns @child spans to.
+	SetColumnSpan(span int)
+	// SetRow: sets the row to place @child in.
+	SetRow(row int)
+	// SetRowSpan: sets the number of rows @child spans to.
+	SetRowSpan(span int)
+}
+
+type gridLayoutChild struct {
 	LayoutChild
 }
 
-func wrapGridLayoutChild(obj *externglib.Object) *GridLayoutChild {
-	return &GridLayoutChild{LayoutChild{*externglib.Object{obj}}}
+func wrapGridLayoutChild(obj *externglib.Object) GridLayoutChild {
+	return &gridLayoutChild{LayoutChild{*externglib.Object{obj}}}
 }
 
 func marshalGridLayoutChild(p uintptr) (interface{}, error) {
@@ -10269,6 +15890,22 @@ func marshalGridLayoutChild(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (g gridLayoutChild) GetColumn() int
+
+func (g gridLayoutChild) GetColumnSpan() int
+
+func (g gridLayoutChild) GetRow() int
+
+func (g gridLayoutChild) GetRowSpan() int
+
+func (g gridLayoutChild) SetColumn(column int)
+
+func (g gridLayoutChild) SetColumnSpan(span int)
+
+func (g gridLayoutChild) SetRow(row int)
+
+func (g gridLayoutChild) SetRowSpan(span int)
 
 // GridView: gtkGridView is a widget to present a view into a large dynamic grid
 // of items.
@@ -10303,12 +15940,55 @@ func marshalGridLayoutChild(p uintptr) (interface{}, error) {
 //
 // GtkGridView uses the K_ACCESSIBLE_ROLE_GRID role, and the items use the
 // K_ACCESSIBLE_ROLE_GRID_CELL role.
-type GridView struct {
+type GridView interface {
+	listBase
+
+	// GetEnableRubberband: returns whether rows can be selected by dragging
+	// with the mouse.
+	GetEnableRubberband() bool
+	// GetFactory: gets the factory that's currently used to populate list
+	// items.
+	GetFactory() listItemFactory
+	// GetMaxColumns: gets the maximum number of columns that the grid will use.
+	GetMaxColumns() uint
+	// GetMinColumns: gets the minimum number of columns that the grid will use.
+	GetMinColumns() uint
+	// GetModel: gets the model that's currently used to read the items
+	// displayed.
+	GetModel() SelectionModel
+	// GetSingleClickActivate: returns whether items will be activated on single
+	// click and selected on hover.
+	GetSingleClickActivate() bool
+	// SetEnableRubberband: sets whether selections can be changed by dragging
+	// with the mouse.
+	SetEnableRubberband(enableRubberband bool)
+	// SetFactory: sets the ListItemFactory to use for populating list items.
+	SetFactory(factory listItemFactory)
+	// SetMaxColumns: sets the maximum number of columns to use. This number
+	// must be at least 1.
+	//
+	// If @max_columns is smaller than the minimum set via
+	// gtk_grid_view_set_min_columns(), that value is used instead.
+	SetMaxColumns(maxColumns uint)
+	// SetMinColumns: sets the minimum number of columns to use. This number
+	// must be at least 1.
+	//
+	// If @min_columns is smaller than the minimum set via
+	// gtk_grid_view_set_max_columns(), that value is ignored.
+	SetMinColumns(minColumns uint)
+	// SetModel: sets the SelectionModel to use for
+	SetModel(model SelectionModel)
+	// SetSingleClickActivate: sets whether items should be activated on single
+	// click and selected on hover.
+	SetSingleClickActivate(singleClickActivate bool)
+}
+
+type gridView struct {
 	ListBase
 }
 
-func wrapGridView(obj *externglib.Object) *GridView {
-	return &GridView{ListBase{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapGridView(obj *externglib.Object) GridView {
+	return &gridView{ListBase{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalGridView(p uintptr) (interface{}, error) {
@@ -10317,7 +15997,31 @@ func marshalGridView(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGridView(model SelectionModel, factory *ListItemFactory) *GridView
+func NewGridView(model SelectionModel, factory listItemFactory) GridView
+
+func (g gridView) GetEnableRubberband() bool
+
+func (g gridView) GetFactory() listItemFactory
+
+func (g gridView) GetMaxColumns() uint
+
+func (g gridView) GetMinColumns() uint
+
+func (g gridView) GetModel() SelectionModel
+
+func (g gridView) GetSingleClickActivate() bool
+
+func (g gridView) SetEnableRubberband(enableRubberband bool)
+
+func (g gridView) SetFactory(factory listItemFactory)
+
+func (g gridView) SetMaxColumns(maxColumns uint)
+
+func (g gridView) SetMinColumns(minColumns uint)
+
+func (g gridView) SetModel(model SelectionModel)
+
+func (g gridView) SetSingleClickActivate(singleClickActivate bool)
 
 // HeaderBar: gtkHeaderBar is similar to a horizontal Box. It allows children to
 // be placed at the start or the end. In addition, it allows the window title to
@@ -10380,12 +16084,66 @@ func NewGridView(model SelectionModel, factory *ListItemFactory) *GridView
 // Accessibility
 //
 // GtkHeaderBar uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type HeaderBar struct {
+type HeaderBar interface {
+	widget
+
+	// GetDecorationLayout: gets the decoration layout set with
+	// gtk_header_bar_set_decoration_layout().
+	GetDecorationLayout() string
+	// GetShowTitleButtons: returns whether this header bar shows the standard
+	// window title buttons.
+	GetShowTitleButtons() bool
+	// GetTitleWidget: retrieves the title widget of the header. See
+	// gtk_header_bar_set_title_widget().
+	GetTitleWidget() widget
+	// PackEnd: adds @child to @bar, packed with reference to the end of the
+	// @bar.
+	PackEnd(child widget)
+	// PackStart: adds @child to @bar, packed with reference to the start of the
+	// @bar.
+	PackStart(child widget)
+	// Remove: removes a child from @bar, after it has been added with
+	// gtk_header_bar_pack_start(), gtk_header_bar_pack_end() or
+	// gtk_header_bar_set_title_widget().
+	Remove(child widget)
+	// SetDecorationLayout: sets the decoration layout for this header bar,
+	// overriding the Settings:gtk-decoration-layout setting.
+	//
+	// There can be valid reasons for overriding the setting, such as a header
+	// bar design that does not allow for buttons to take room on the right, or
+	// only offers room for a single close button. Split header bars are another
+	// example for overriding the setting.
+	//
+	// The format of the string is button names, separated by commas. A colon
+	// separates the buttons that should appear on the left from those on the
+	// right. Recognized button names are minimize, maximize, close and icon
+	// (the window icon).
+	//
+	// For example, “icon:minimize,maximize,close” specifies a icon on the left,
+	// and minimize, maximize and close buttons on the right.
+	SetDecorationLayout(layout string)
+	// SetShowTitleButtons: sets whether this header bar shows the standard
+	// window title buttons including close, maximize, and minimize.
+	SetShowTitleButtons(setting bool)
+	// SetTitleWidget: sets the title for the HeaderBar.
+	//
+	// When set to nil, the headerbar will display the title of the window it is
+	// contained in.
+	//
+	// The title should help a user identify the current view. To achieve the
+	// same style as the builtin title, use the “title” style class.
+	//
+	// You should set the title widget to nil, for the window title label to be
+	// visible again.
+	SetTitleWidget(titleWidget widget)
+}
+
+type headerBar struct {
 	Widget
 }
 
-func wrapHeaderBar(obj *externglib.Object) *HeaderBar {
-	return &HeaderBar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapHeaderBar(obj *externglib.Object) HeaderBar {
+	return &headerBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalHeaderBar(p uintptr) (interface{}, error) {
@@ -10394,7 +16152,25 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewHeaderBar() *HeaderBar
+func NewHeaderBar() HeaderBar
+
+func (h headerBar) GetDecorationLayout() string
+
+func (h headerBar) GetShowTitleButtons() bool
+
+func (h headerBar) GetTitleWidget() widget
+
+func (h headerBar) PackEnd(child widget)
+
+func (h headerBar) PackStart(child widget)
+
+func (h headerBar) Remove(child widget)
+
+func (h headerBar) SetDecorationLayout(layout string)
+
+func (h headerBar) SetShowTitleButtons(setting bool)
+
+func (h headerBar) SetTitleWidget(titleWidget widget)
 
 // IMContext: IMContext defines the interface for GTK input methods. An input
 // method is used by GTK text input widgets like Entry to map from key events to
@@ -10457,12 +16233,89 @@ func NewHeaderBar() *HeaderBar
 // the configuration file `gtk.immodules` needs to be regenerated by
 // [gtk-query-immodules-3.0][gtk-query-immodules-3.0], in order for the new
 // input method to become available to GTK applications.
-type IMContext struct {
+type IMContext interface {
+	gextras.Objector
+
+	// DeleteSurrounding: asks the widget that the input context is attached to
+	// delete characters around the cursor position by emitting the
+	// GtkIMContext::delete_surrounding signal. Note that @offset and @n_chars
+	// are in characters not in bytes which differs from the usage other places
+	// in IMContext.
+	//
+	// In order to use this function, you should first call
+	// gtk_im_context_get_surrounding() to get the current context, and call
+	// this function immediately afterwards to make sure that you know what you
+	// are deleting. You should also account for the fact that even if the
+	// signal was handled, the input context might not have deleted all the
+	// characters that were requested to be deleted.
+	//
+	// This function is used by an input method that wants to make subsitutions
+	// in the existing text in response to new input. It is not useful for
+	// applications.
+	DeleteSurrounding(offset int, nChars int) bool
+	// FilterKey: allow an input method to forward key press and release events
+	// to another input method, without necessarily having a GdkEvent available.
+	FilterKey(press bool, surface gdk.surface, device gdk.device, time uint32, keycode uint, state gdk.ModifierType, group int) bool
+	// FilterKeypress: allow an input method to internally handle key press and
+	// release events. If this function returns true, then no further processing
+	// should be done for this key event.
+	FilterKeypress(event gdk.event) bool
+	// FocusIn: notify the input method that the widget to which this input
+	// context corresponds has gained focus. The input method may, for example,
+	// change the displayed feedback to reflect this change.
+	FocusIn()
+	// FocusOut: notify the input method that the widget to which this input
+	// context corresponds has lost focus. The input method may, for example,
+	// change the displayed feedback or reset the contexts state to reflect this
+	// change.
+	FocusOut()
+	// GetPreeditString: retrieve the current preedit string for the input
+	// context, and a list of attributes to apply to the string. This string
+	// should be displayed inserted at the insertion point.
+	GetPreeditString() (string, *pango.AttrList, int)
+	// GetSurrounding: retrieves context around the insertion point. Input
+	// methods typically want context in order to constrain input text based on
+	// existing text; this is important for languages such as Thai where only
+	// some sequences of characters are allowed.
+	//
+	// This function is implemented by emitting the
+	// GtkIMContext::retrieve_surrounding signal on the input method; in
+	// response to this signal, a widget should provide as much context as is
+	// available, up to an entire paragraph, by calling
+	// gtk_im_context_set_surrounding(). Note that there is no obligation for a
+	// widget to respond to the ::retrieve_surrounding signal, so input methods
+	// must be prepared to function without context.
+	GetSurrounding() (string, int, bool)
+	// Reset: notify the input method that a change such as a change in cursor
+	// position has been made. This will typically cause the input method to
+	// clear the preedit state.
+	Reset()
+	// SetClientWidget: set the client window for the input context; this is the
+	// Widget holding the input focus. This widget is used in order to correctly
+	// position status windows, and may also be used for purposes internal to
+	// the input method.
+	SetClientWidget(widget widget)
+	// SetCursorLocation: notify the input method that a change in cursor
+	// position has been made. The location is relative to the client window.
+	SetCursorLocation(area *gdk.Rectangle)
+	// SetSurrounding: sets surrounding context around the insertion point and
+	// preedit string. This function is expected to be called in response to the
+	// GtkIMContext::retrieve_surrounding signal, and will likely have no effect
+	// if called at other times.
+	SetSurrounding(text string, len int, cursorIndex int)
+	// SetUsePreedit: sets whether the IM context should use the preedit string
+	// to display feedback. If @use_preedit is FALSE (default is TRUE), then the
+	// IM context may use some other method to display feedback, such as
+	// displaying it in a child of the root window.
+	SetUsePreedit(usePreedit bool)
+}
+
+type iMContext struct {
 	*externglib.Object
 }
 
-func wrapIMContext(obj *externglib.Object) *IMContext {
-	return &IMContext{*externglib.Object{obj}}
+func wrapIMContext(obj *externglib.Object) IMContext {
+	return &iMContext{*externglib.Object{obj}}
 }
 
 func marshalIMContext(p uintptr) (interface{}, error) {
@@ -10470,6 +16323,30 @@ func marshalIMContext(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (i iMContext) DeleteSurrounding(offset int, nChars int) bool
+
+func (i iMContext) FilterKey(press bool, surface gdk.surface, device gdk.device, time uint32, keycode uint, state gdk.ModifierType, group int) bool
+
+func (i iMContext) FilterKeypress(event gdk.event) bool
+
+func (i iMContext) FocusIn()
+
+func (i iMContext) FocusOut()
+
+func (i iMContext) GetPreeditString() (string, *pango.AttrList, int)
+
+func (i iMContext) GetSurrounding() (string, int, bool)
+
+func (i iMContext) Reset()
+
+func (i iMContext) SetClientWidget(widget widget)
+
+func (i iMContext) SetCursorLocation(area *gdk.Rectangle)
+
+func (i iMContext) SetSurrounding(text string, len int, cursorIndex int)
+
+func (i iMContext) SetUsePreedit(usePreedit bool)
 
 // IMContextSimple: gtkIMContextSimple is a simple input method context
 // supporting table-based input methods. It has a built-in table of compose
@@ -10488,12 +16365,28 @@ func marshalIMContext(p uintptr) (interface{}, error) {
 // typing Ctrl-Shift-u, followed by a hexadecimal Unicode codepoint. For
 // example, Ctrl-Shift-u 1 2 3 Enter yields U+0123 LATIN SMALL LETTER G WITH
 // CEDILLA, i.e. ģ.
-type IMContextSimple struct {
+type IMContextSimple interface {
+	iMContext
+
+	// AddComposeFile: adds an additional table from the X11 compose file.
+	AddComposeFile(composeFile string)
+	// AddTable: adds an additional table to search to the input context. Each
+	// row of the table consists of @max_seq_len key symbols followed by two
+	// #guint16 interpreted as the high and low words of a #gunicode value.
+	// Tables are searched starting from the last added.
+	//
+	// The table must be sorted in dictionary order on the numeric value of the
+	// key symbol fields. (Values beyond the length of the sequence should be
+	// zero.)
+	AddTable(data []uint16, maxSeqLen int, nSeqs int)
+}
+
+type iMContextSimple struct {
 	IMContext
 }
 
-func wrapIMContextSimple(obj *externglib.Object) *IMContextSimple {
-	return &IMContextSimple{IMContext{*externglib.Object{obj}}}
+func wrapIMContextSimple(obj *externglib.Object) IMContextSimple {
+	return &iMContextSimple{IMContext{*externglib.Object{obj}}}
 }
 
 func marshalIMContextSimple(p uintptr) (interface{}, error) {
@@ -10502,14 +16395,31 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewIMContextSimple() *IMContextSimple
+func NewIMContextSimple() IMContextSimple
 
-type IMMulticontext struct {
+func (i iMContextSimple) AddComposeFile(composeFile string)
+
+func (i iMContextSimple) AddTable(data []uint16, maxSeqLen int, nSeqs int)
+
+type IMMulticontext interface {
+	iMContext
+
+	// GetContextID: gets the id of the currently active delegate of the
+	// @context.
+	GetContextID() string
+	// SetContextID: sets the context id for @context.
+	//
+	// This causes the currently active delegate of @context to be replaced by
+	// the delegate corresponding to the new context id.
+	SetContextID(contextID string)
+}
+
+type iMMulticontext struct {
 	IMContext
 }
 
-func wrapIMMulticontext(obj *externglib.Object) *IMMulticontext {
-	return &IMMulticontext{IMContext{*externglib.Object{obj}}}
+func wrapIMMulticontext(obj *externglib.Object) IMMulticontext {
+	return &iMMulticontext{IMContext{*externglib.Object{obj}}}
 }
 
 func marshalIMMulticontext(p uintptr) (interface{}, error) {
@@ -10518,16 +16428,44 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewIMMulticontext() *IMMulticontext
+func NewIMMulticontext() IMMulticontext
+
+func (i iMMulticontext) GetContextID() string
+
+func (i iMMulticontext) SetContextID(contextID string)
 
 // IconPaintable: contains information found when looking up an icon in an icon
 // theme and supports painting it as a Paintable.
-type IconPaintable struct {
+type IconPaintable interface {
+	gextras.Objector
+
+	// GetFile: gets the #GFile that was used to load the icon, or nil if the
+	// icon was not loaded from a file.
+	GetFile() gio.File
+	// GetIconName: get the icon name being used for this icon.
+	//
+	// When an icon looked up in the icon theme was not available, the icon
+	// theme may use fallback icons - either those specified to
+	// gtk_icon_theme_lookup_icon() or the always-available "image-missing". The
+	// icon chosen is returned by this function.
+	//
+	// If the icon was created without an icon theme, this function returns nil.
+	GetIconName() string
+	// IsSymbolic: checks if the icon is symbolic or not. This currently uses
+	// only the file name and not the file contents for determining this. This
+	// behaviour may change in the future.
+	//
+	// Note that to render a symbolic IconPaintable properly (with recoloring),
+	// you have to set its icon name on a Image.
+	IsSymbolic() bool
+}
+
+type iconPaintable struct {
 	*externglib.Object
 }
 
-func wrapIconPaintable(obj *externglib.Object) *IconPaintable {
-	return &IconPaintable{*externglib.Object{obj}}
+func wrapIconPaintable(obj *externglib.Object) IconPaintable {
+	return &iconPaintable{*externglib.Object{obj}}
 }
 
 func marshalIconPaintable(p uintptr) (interface{}, error) {
@@ -10536,7 +16474,13 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewIconPaintable(file gio.File, size int, scale int) *IconPaintable
+func NewIconPaintable(file gio.File, size int, scale int) IconPaintable
+
+func (i iconPaintable) GetFile() gio.File
+
+func (i iconPaintable) GetIconName() string
+
+func (i iconPaintable) IsSymbolic() bool
 
 // IconTheme: iconTheme provides a facility for looking up icons by name and
 // size. The main reason for using a name rather than simply providing a
@@ -10566,12 +16510,100 @@ func NewIconPaintable(file gio.File, size int, scale int) *IconPaintable
 //     // Use the paintable
 //     g_object_unref (icon);
 //
-type IconTheme struct {
+type IconTheme interface {
+	gextras.Objector
+
+	// AddResourcePath: adds a resource path that will be looked at when looking
+	// for icons, similar to search paths.
+	//
+	// See gtk_icon_theme_set_resource_path().
+	//
+	// This function should be used to make application-specific icons available
+	// as part of the icon theme.
+	AddResourcePath(path string)
+	// AddSearchPath: appends a directory to the search path. See
+	// gtk_icon_theme_set_search_path().
+	AddSearchPath(path string)
+	// GetDisplay: returns the display that the GtkIconTheme object was created
+	// for.
+	GetDisplay() gdk.display
+	// GetIconNames: lists the names of icons in the current icon theme.
+	GetIconNames() []string
+	// GetIconSizes: returns an array of integers describing the sizes at which
+	// the icon is available without scaling. A size of -1 means that the icon
+	// is available in a scalable format. The array is zero-terminated.
+	GetIconSizes(iconName string) []int
+	// GetResourcePath: gets the current resource path.
+	//
+	// See gtk_icon_theme_set_resource_path().
+	GetResourcePath() []string
+	// GetSearchPath: gets the current search path. See
+	// gtk_icon_theme_set_search_path().
+	GetSearchPath() []string
+	// GetThemeName: gets the current icon theme name.
+	//
+	// Returns (transfer full): the current icon theme name,
+	GetThemeName() string
+	// HasIcon: checks whether an icon theme includes an icon for a particular
+	// name.
+	HasIcon(iconName string) bool
+	// LookupByGicon: looks up a icon for a desired size and window scale,
+	// returning a IconPaintable. The icon can then be rendered by using it as a
+	// Paintable, or you can get information such as the filename and size.
+	LookupByGicon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) iconPaintable
+	// LookupIcon: looks up a named icon for a desired size and window scale,
+	// returning a IconPaintable. The icon can then be rendered by using it as a
+	// Paintable, or you can get information such as the filename and size.
+	//
+	// If the available @icon_name is not available and @fallbacks are provided,
+	// they will be tried in order.
+	//
+	// If no matching icon is found, then a paintable that renders the "missing
+	// icon" icon is returned. If you need to do something else for missing
+	// icons you need to use gtk_icon_theme_has_icon().
+	//
+	// Note that you probably want to listen for icon theme changes and update
+	// the icon. This is usually done by overriding the
+	// WidgetClass.css-changed() function.
+	LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) iconPaintable
+	// SetResourcePath: sets the resource paths that will be looked at when
+	// looking for icons, similar to search paths.
+	//
+	// The resources are considered as part of the hicolor icon theme and must
+	// be located in subdirectories that are defined in the hicolor icon theme,
+	// such as `@path/16x16/actions/run.png` or
+	// `@path/scalable/actions/run.svg`.
+	//
+	// Icons that are directly placed in the resource path instead of a
+	// subdirectory are also considered as ultimate fallback, but they are
+	// treated like unthemed icons.
+	SetResourcePath(path string)
+	// SetSearchPath: sets the search path for the icon theme object. When
+	// looking for an icon theme, GTK will search for a subdirectory of one or
+	// more of the directories in @path with the same name as the icon theme
+	// containing an index.theme file. (Themes from multiple of the path
+	// elements are combined to allow themes to be extended by adding icons in
+	// the user’s home directory.)
+	//
+	// In addition if an icon found isn’t found either in the current icon theme
+	// or the default icon theme, and an image file with the right name is found
+	// directly in one of the elements of @path, then that image will be used
+	// for the icon name. (This is legacy feature, and new icons should be put
+	// into the fallback icon theme, which is called hicolor, rather than
+	// directly on the icon path.)
+	SetSearchPath(path []string)
+	// SetThemeName: sets the name of the icon theme that the IconTheme object
+	// uses overriding system configuration. This function cannot be called on
+	// the icon theme objects returned from gtk_icon_theme_get_for_display().
+	SetThemeName(themeName string)
+}
+
+type iconTheme struct {
 	*externglib.Object
 }
 
-func wrapIconTheme(obj *externglib.Object) *IconTheme {
-	return &IconTheme{*externglib.Object{obj}}
+func wrapIconTheme(obj *externglib.Object) IconTheme {
+	return &iconTheme{*externglib.Object{obj}}
 }
 
 func marshalIconTheme(p uintptr) (interface{}, error) {
@@ -10580,7 +16612,35 @@ func marshalIconTheme(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewIconTheme() *IconTheme
+func NewIconTheme() IconTheme
+
+func (i iconTheme) AddResourcePath(path string)
+
+func (i iconTheme) AddSearchPath(path string)
+
+func (i iconTheme) GetDisplay() gdk.display
+
+func (i iconTheme) GetIconNames() []string
+
+func (i iconTheme) GetIconSizes(iconName string) []int
+
+func (i iconTheme) GetResourcePath() []string
+
+func (i iconTheme) GetSearchPath() []string
+
+func (i iconTheme) GetThemeName() string
+
+func (i iconTheme) HasIcon(iconName string) bool
+
+func (i iconTheme) LookupByGicon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) iconPaintable
+
+func (i iconTheme) LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) iconPaintable
+
+func (i iconTheme) SetResourcePath(path string)
+
+func (i iconTheme) SetSearchPath(path []string)
+
+func (i iconTheme) SetThemeName(themeName string)
 
 // IconView: iconView provides an alternative view on a TreeModel. It displays
 // the model as a grid of icons with labels. Like TreeView, it allows to select
@@ -10600,12 +16660,249 @@ func NewIconTheme() *IconTheme
 //
 // GtkIconView has a single CSS node with name iconview and style class .view.
 // For rubberband selection, a subnode with name rubberband is used.
-type IconView struct {
+type IconView interface {
+	widget
+
+	// CreateDragIcon: creates a #cairo_surface_t representation of the item at
+	// @path. This image is used for a drag icon.
+	CreateDragIcon(path *TreePath) gdk.Paintable
+	// EnableModelDragDest: turns @icon_view into a drop destination for
+	// automatic DND. Calling this method sets IconView:reorderable to false.
+	EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction)
+	// EnableModelDragSource: turns @icon_view into a drag source for automatic
+	// DND. Calling this method sets IconView:reorderable to false.
+	EnableModelDragSource(startButtonMask gdk.ModifierType, formats *gdk.ContentFormats, actions gdk.DragAction)
+	// GetActivateOnSingleClick: gets the setting set by
+	// gtk_icon_view_set_activate_on_single_click().
+	GetActivateOnSingleClick() bool
+	// GetCellRect: fills the bounding rectangle in widget coordinates for the
+	// cell specified by @path and @cell. If @cell is nil the main cell area is
+	// used.
+	//
+	// This function is only valid if @icon_view is realized.
+	GetCellRect(path *TreePath, cell cellRenderer) (gdk.Rectangle, bool)
+	// GetColumnSpacing: returns the value of the ::column-spacing property.
+	GetColumnSpacing() int
+	// GetColumns: returns the value of the ::columns property.
+	GetColumns() int
+	// GetCursor: fills in @path and @cell with the current cursor path and
+	// cell. If the cursor isn’t currently set, then *@path will be nil. If no
+	// cell currently has focus, then *@cell will be nil.
+	//
+	// The returned TreePath must be freed with gtk_tree_path_free().
+	GetCursor() (*TreePath, cellRenderer, bool)
+	// GetDestItemAtPos: determines the destination item for a given position.
+	GetDestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool)
+	// GetDragDestItem: gets information about the item that is highlighted for
+	// feedback.
+	GetDragDestItem() (*TreePath, IconViewDropPosition)
+	// GetItemAtPos: gets the path and cell for the icon at the given position.
+	GetItemAtPos(x int, y int) (*TreePath, cellRenderer, bool)
+	// GetItemColumn: gets the column in which the item @path is currently
+	// displayed. Column numbers start at 0.
+	GetItemColumn(path *TreePath) int
+	// GetItemOrientation: returns the value of the ::item-orientation property
+	// which determines whether the labels are drawn beside the icons instead of
+	// below.
+	GetItemOrientation() Orientation
+	// GetItemPadding: returns the value of the ::item-padding property.
+	GetItemPadding() int
+	// GetItemRow: gets the row in which the item @path is currently displayed.
+	// Row numbers start at 0.
+	GetItemRow(path *TreePath) int
+	// GetItemWidth: returns the value of the ::item-width property.
+	GetItemWidth() int
+	// GetMargin: returns the value of the ::margin property.
+	GetMargin() int
+	// GetMarkupColumn: returns the column with markup text for @icon_view.
+	GetMarkupColumn() int
+	// GetModel: returns the model the IconView is based on. Returns nil if the
+	// model is unset.
+	GetModel() TreeModel
+	// GetPathAtPos: gets the path for the icon at the given position.
+	GetPathAtPos(x int, y int) *TreePath
+	// GetPixbufColumn: returns the column with pixbufs for @icon_view.
+	GetPixbufColumn() int
+	// GetReorderable: retrieves whether the user can reorder the list via
+	// drag-and-drop. See gtk_icon_view_set_reorderable().
+	GetReorderable() bool
+	// GetRowSpacing: returns the value of the ::row-spacing property.
+	GetRowSpacing() int
+	// GetSelectedItems: creates a list of paths of all selected items.
+	// Additionally, if you are planning on modifying the model after calling
+	// this function, you may want to convert the returned list into a list of
+	// TreeRowReferences. To do this, you can use gtk_tree_row_reference_new().
+	//
+	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
+	GetSelectedItems() *glib.List
+	// GetSelectionMode: gets the selection mode of the @icon_view.
+	GetSelectionMode() SelectionMode
+	// GetSpacing: returns the value of the ::spacing property.
+	GetSpacing() int
+	// GetTextColumn: returns the column with text for @icon_view.
+	GetTextColumn() int
+	// GetTooltipColumn: returns the column of @icon_view’s model which is being
+	// used for displaying tooltips on @icon_view’s rows.
+	GetTooltipColumn() int
+	// GetTooltipContext: this function is supposed to be used in a
+	// Widget::query-tooltip signal handler for IconView. The @x, @y and
+	// @keyboard_tip values which are received in the signal handler, should be
+	// passed to this function without modification.
+	//
+	// The return value indicates whether there is an icon view item at the
+	// given coordinates (true) or not (false) for mouse tooltips. For keyboard
+	// tooltips the item returned will be the cursor item. When true, then any
+	// of @model, @path and @iter which have been provided will be set to point
+	// to that row and the corresponding model.
+	GetTooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool)
+	// GetVisibleRange: sets @start_path and @end_path to be the first and last
+	// visible path. Note that there may be invisible paths in between.
+	//
+	// Both paths should be freed with gtk_tree_path_free() after use.
+	GetVisibleRange() (*TreePath, *TreePath, bool)
+	// ItemActivated: activates the item determined by @path.
+	ItemActivated(path *TreePath)
+	// PathIsSelected: returns true if the icon pointed to by @path is currently
+	// selected. If @path does not point to a valid location, false is returned.
+	PathIsSelected(path *TreePath) bool
+	// ScrollToPath: moves the alignments of @icon_view to the position
+	// specified by @path. @row_align determines where the row is placed, and
+	// @col_align determines where @column is placed. Both are expected to be
+	// between 0.0 and 1.0. 0.0 means left/top alignment, 1.0 means right/bottom
+	// alignment, 0.5 means center.
+	//
+	// If @use_align is false, then the alignment arguments are ignored, and the
+	// tree does the minimum amount of work to scroll the item onto the screen.
+	// This means that the item will be scrolled to the edge closest to its
+	// current position. If the item is currently visible on the screen, nothing
+	// is done.
+	//
+	// This function only works if the model is set, and @path is a valid row on
+	// the model. If the model changes before the @icon_view is realized, the
+	// centered path will be modified to reflect this change.
+	ScrollToPath(path *TreePath, useAlign bool, rowAlign float32, colAlign float32)
+	// SelectAll: selects all the icons. @icon_view must has its selection mode
+	// set to K_SELECTION_MULTIPLE.
+	SelectAll()
+	// SelectPath: selects the row at @path.
+	SelectPath(path *TreePath)
+	// SelectedForeach: calls a function for each selected icon. Note that the
+	// model or selection cannot be modified from within this function.
+	SelectedForeach(_func IconViewForeachFunc, data unsafe.Pointer)
+	// SetActivateOnSingleClick: causes the IconView::item-activated signal to
+	// be emitted on a single click instead of a double click.
+	SetActivateOnSingleClick(single bool)
+	// SetColumnSpacing: sets the ::column-spacing property which specifies the
+	// space which is inserted between the columns of the icon view.
+	SetColumnSpacing(columnSpacing int)
+	// SetColumns: sets the ::columns property which determines in how many
+	// columns the icons are arranged. If @columns is -1, the number of columns
+	// will be chosen automatically to fill the available area.
+	SetColumns(columns int)
+	// SetCursor: sets the current keyboard focus to be at @path, and selects
+	// it. This is useful when you want to focus the user’s attention on a
+	// particular item. If @cell is not nil, then focus is given to the cell
+	// specified by it. Additionally, if @start_editing is true, then editing
+	// should be started in the specified cell.
+	//
+	// This function is often followed by `gtk_widget_grab_focus (icon_view)` in
+	// order to give keyboard focus to the widget. Please note that editing can
+	// only happen when the widget is realized.
+	SetCursor(path *TreePath, cell cellRenderer, startEditing bool)
+	// SetDragDestItem: sets the item that is highlighted for feedback.
+	SetDragDestItem(path *TreePath, pos IconViewDropPosition)
+	// SetItemOrientation: sets the ::item-orientation property which determines
+	// whether the labels are drawn beside the icons instead of below.
+	SetItemOrientation(orientation Orientation)
+	// SetItemPadding: sets the IconView:item-padding property which specifies
+	// the padding around each of the icon view’s items.
+	SetItemPadding(itemPadding int)
+	// SetItemWidth: sets the ::item-width property which specifies the width to
+	// use for each item. If it is set to -1, the icon view will automatically
+	// determine a suitable item size.
+	SetItemWidth(itemWidth int)
+	// SetMargin: sets the ::margin property which specifies the space which is
+	// inserted at the top, bottom, left and right of the icon view.
+	SetMargin(margin int)
+	// SetMarkupColumn: sets the column with markup information for @icon_view
+	// to be @column. The markup column must be of type TYPE_STRING. If the
+	// markup column is set to something, it overrides the text column set by
+	// gtk_icon_view_set_text_column().
+	SetMarkupColumn(column int)
+	// SetModel: sets the model for a IconView. If the @icon_view already has a
+	// model set, it will remove it before setting the new model. If @model is
+	// nil, then it will unset the old model.
+	SetModel(model TreeModel)
+	// SetPixbufColumn: sets the column with pixbufs for @icon_view to be
+	// @column. The pixbuf column must be of type K_TYPE_PIXBUF
+	SetPixbufColumn(column int)
+	// SetReorderable: this function is a convenience function to allow you to
+	// reorder models that support the TreeDragSourceIface and the
+	// TreeDragDestIface. Both TreeStore and ListStore support these. If
+	// @reorderable is true, then the user can reorder the model by dragging and
+	// dropping rows. The developer can listen to these changes by connecting to
+	// the model's row_inserted and row_deleted signals. The reordering is
+	// implemented by setting up the icon view as a drag source and destination.
+	// Therefore, drag and drop can not be used in a reorderable view for any
+	// other purpose.
+	//
+	// This function does not give you any degree of control over the order --
+	// any reordering is allowed. If more control is needed, you should probably
+	// handle drag and drop manually.
+	SetReorderable(reorderable bool)
+	// SetRowSpacing: sets the ::row-spacing property which specifies the space
+	// which is inserted between the rows of the icon view.
+	SetRowSpacing(rowSpacing int)
+	// SetSelectionMode: sets the selection mode of the @icon_view.
+	SetSelectionMode(mode SelectionMode)
+	// SetSpacing: sets the ::spacing property which specifies the space which
+	// is inserted between the cells (i.e. the icon and the text) of an item.
+	SetSpacing(spacing int)
+	// SetTextColumn: sets the column with text for @icon_view to be @column.
+	// The text column must be of type TYPE_STRING.
+	SetTextColumn(column int)
+	// SetTooltipCell: sets the tip area of @tooltip to the area which @cell
+	// occupies in the item pointed to by @path. See also
+	// gtk_tooltip_set_tip_area().
+	//
+	// See also gtk_icon_view_set_tooltip_column() for a simpler alternative.
+	SetTooltipCell(tooltip tooltip, path *TreePath, cell cellRenderer)
+	// SetTooltipColumn: if you only plan to have simple (text-only) tooltips on
+	// full items, you can use this function to have IconView handle these
+	// automatically for you. @column should be set to the column in
+	// @icon_view’s model containing the tooltip texts, or -1 to disable this
+	// feature.
+	//
+	// When enabled, Widget:has-tooltip will be set to true and @icon_view will
+	// connect a Widget::query-tooltip signal handler.
+	//
+	// Note that the signal handler sets the text with gtk_tooltip_set_markup(),
+	// so &, <, etc have to be escaped in the text.
+	SetTooltipColumn(column int)
+	// SetTooltipItem: sets the tip area of @tooltip to be the area covered by
+	// the item at @path. See also gtk_icon_view_set_tooltip_column() for a
+	// simpler alternative. See also gtk_tooltip_set_tip_area().
+	SetTooltipItem(tooltip tooltip, path *TreePath)
+	// UnselectAll: unselects all the icons.
+	UnselectAll()
+	// UnselectPath: unselects the row at @path.
+	UnselectPath(path *TreePath)
+	// UnsetModelDragDest: undoes the effect of
+	// gtk_icon_view_enable_model_drag_dest(). Calling this method sets
+	// IconView:reorderable to false.
+	UnsetModelDragDest()
+	// UnsetModelDragSource: undoes the effect of
+	// gtk_icon_view_enable_model_drag_source(). Calling this method sets
+	// IconView:reorderable to false.
+	UnsetModelDragSource()
+}
+
+type iconView struct {
 	Widget
 }
 
-func wrapIconView(obj *externglib.Object) *IconView {
-	return &IconView{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapIconView(obj *externglib.Object) IconView {
+	return &iconView{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalIconView(p uintptr) (interface{}, error) {
@@ -10614,11 +16911,131 @@ func marshalIconView(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewIconView() *IconView
+func NewIconView() IconView
 
-func NewIconView(area *CellArea) *IconView
+func NewIconView(area cellArea) IconView
 
-func NewIconView(model TreeModel) *IconView
+func NewIconView(model TreeModel) IconView
+
+func (i iconView) CreateDragIcon(path *TreePath) gdk.Paintable
+
+func (i iconView) EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction)
+
+func (i iconView) EnableModelDragSource(startButtonMask gdk.ModifierType, formats *gdk.ContentFormats, actions gdk.DragAction)
+
+func (i iconView) GetActivateOnSingleClick() bool
+
+func (i iconView) GetCellRect(path *TreePath, cell cellRenderer) (gdk.Rectangle, bool)
+
+func (i iconView) GetColumnSpacing() int
+
+func (i iconView) GetColumns() int
+
+func (i iconView) GetCursor() (*TreePath, cellRenderer, bool)
+
+func (i iconView) GetDestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool)
+
+func (i iconView) GetDragDestItem() (*TreePath, IconViewDropPosition)
+
+func (i iconView) GetItemAtPos(x int, y int) (*TreePath, cellRenderer, bool)
+
+func (i iconView) GetItemColumn(path *TreePath) int
+
+func (i iconView) GetItemOrientation() Orientation
+
+func (i iconView) GetItemPadding() int
+
+func (i iconView) GetItemRow(path *TreePath) int
+
+func (i iconView) GetItemWidth() int
+
+func (i iconView) GetMargin() int
+
+func (i iconView) GetMarkupColumn() int
+
+func (i iconView) GetModel() TreeModel
+
+func (i iconView) GetPathAtPos(x int, y int) *TreePath
+
+func (i iconView) GetPixbufColumn() int
+
+func (i iconView) GetReorderable() bool
+
+func (i iconView) GetRowSpacing() int
+
+func (i iconView) GetSelectedItems() *glib.List
+
+func (i iconView) GetSelectionMode() SelectionMode
+
+func (i iconView) GetSpacing() int
+
+func (i iconView) GetTextColumn() int
+
+func (i iconView) GetTooltipColumn() int
+
+func (i iconView) GetTooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool)
+
+func (i iconView) GetVisibleRange() (*TreePath, *TreePath, bool)
+
+func (i iconView) ItemActivated(path *TreePath)
+
+func (i iconView) PathIsSelected(path *TreePath) bool
+
+func (i iconView) ScrollToPath(path *TreePath, useAlign bool, rowAlign float32, colAlign float32)
+
+func (i iconView) SelectAll()
+
+func (i iconView) SelectPath(path *TreePath)
+
+func (i iconView) SelectedForeach(_func IconViewForeachFunc, data unsafe.Pointer)
+
+func (i iconView) SetActivateOnSingleClick(single bool)
+
+func (i iconView) SetColumnSpacing(columnSpacing int)
+
+func (i iconView) SetColumns(columns int)
+
+func (i iconView) SetCursor(path *TreePath, cell cellRenderer, startEditing bool)
+
+func (i iconView) SetDragDestItem(path *TreePath, pos IconViewDropPosition)
+
+func (i iconView) SetItemOrientation(orientation Orientation)
+
+func (i iconView) SetItemPadding(itemPadding int)
+
+func (i iconView) SetItemWidth(itemWidth int)
+
+func (i iconView) SetMargin(margin int)
+
+func (i iconView) SetMarkupColumn(column int)
+
+func (i iconView) SetModel(model TreeModel)
+
+func (i iconView) SetPixbufColumn(column int)
+
+func (i iconView) SetReorderable(reorderable bool)
+
+func (i iconView) SetRowSpacing(rowSpacing int)
+
+func (i iconView) SetSelectionMode(mode SelectionMode)
+
+func (i iconView) SetSpacing(spacing int)
+
+func (i iconView) SetTextColumn(column int)
+
+func (i iconView) SetTooltipCell(tooltip tooltip, path *TreePath, cell cellRenderer)
+
+func (i iconView) SetTooltipColumn(column int)
+
+func (i iconView) SetTooltipItem(tooltip tooltip, path *TreePath)
+
+func (i iconView) UnselectAll()
+
+func (i iconView) UnselectPath(path *TreePath)
+
+func (i iconView) UnsetModelDragDest()
+
+func (i iconView) UnsetModelDragSource()
 
 // Image: the Image widget displays an image. Various kinds of object can be
 // displayed as an image; most typically, you would load a Texture from a file,
@@ -10650,12 +17067,77 @@ func NewIconView(model TreeModel) *IconView
 // Accessibility
 //
 // GtkImage uses the K_ACCESSIBLE_ROLE_IMG role.
-type Image struct {
+type Image interface {
+	widget
+
+	// Clear: resets the image to be empty.
+	Clear()
+	// GetGicon: gets the #GIcon and size being displayed by the Image. The
+	// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
+	// gtk_image_get_storage_type()). The caller of this function does not own a
+	// reference to the returned #GIcon.
+	//
+	// Note: This function was changed in 3.94 not to use out parameters
+	// anymore, but return the GIcon directly. See gtk_image_get_icon_size() for
+	// a way to get the icon size.
+	GetGicon() gio.Icon
+	// GetIconName: gets the icon name and size being displayed by the Image.
+	// The storage type of the image must be GTK_IMAGE_EMPTY or
+	// GTK_IMAGE_ICON_NAME (see gtk_image_get_storage_type()). The returned
+	// string is owned by the Image and should not be freed.
+	//
+	// Note: This function was changed in 3.94 not to use out parameters
+	// anymore, but return the icon name directly. See gtk_image_get_icon_size()
+	// for a way to get the icon size.
+	GetIconName() string
+	// GetIconSize: gets the icon size used by the @image when rendering icons.
+	GetIconSize() IconSize
+	// GetPaintable: gets the image Paintable being displayed by the Image. The
+	// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PAINTABLE
+	// (see gtk_image_get_storage_type()). The caller of this function does not
+	// own a reference to the returned paintable.
+	GetPaintable() gdk.Paintable
+	// GetPixelSize: gets the pixel size used for named icons.
+	GetPixelSize() int
+	// GetStorageType: gets the type of representation being used by the Image
+	// to store image data. If the Image has no image data, the return value
+	// will be GTK_IMAGE_EMPTY.
+	GetStorageType() ImageType
+	// SetFromFile: see gtk_image_new_from_file() for details.
+	SetFromFile(filename string)
+	// SetFromGicon: see gtk_image_new_from_gicon() for details.
+	//
+	// Note: Before 3.94, this function was taking an extra icon size argument.
+	// See gtk_image_set_icon_size() for another way to set the icon size.
+	SetFromGicon(icon gio.Icon)
+	// SetFromIconName: see gtk_image_new_from_icon_name() for details.
+	//
+	// Note: Before 3.94, this function was taking an extra icon size argument.
+	// See gtk_image_set_icon_size() for another way to set the icon size.
+	SetFromIconName(iconName string)
+	// SetFromPaintable: see gtk_image_new_from_paintable() for details.
+	SetFromPaintable(paintable gdk.Paintable)
+	// SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
+	//
+	// Note: This is a helper for gtk_image_set_from_paintable(), and you can't
+	// get back the exact pixbuf once this is called, only a paintable.
+	SetFromPixbuf(pixbuf gdkpixbuf.pixbuf)
+	// SetFromResource: see gtk_image_new_from_resource() for details.
+	SetFromResource(resourcePath string)
+	// SetIconSize: suggests an icon size to the theme for named icons.
+	SetIconSize(iconSize IconSize)
+	// SetPixelSize: sets the pixel size to use for named icons. If the pixel
+	// size is set to a value != -1, it is used instead of the icon size set by
+	// gtk_image_set_from_icon_name().
+	SetPixelSize(pixelSize int)
+}
+
+type image struct {
 	Widget
 }
 
-func wrapImage(obj *externglib.Object) *Image {
-	return &Image{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapImage(obj *externglib.Object) Image {
+	return &image{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalImage(p uintptr) (interface{}, error) {
@@ -10664,19 +17146,49 @@ func marshalImage(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewImage() *Image
+func NewImage() Image
 
-func NewImage(filename string) *Image
+func NewImage(filename string) Image
 
-func NewImage(icon gio.Icon) *Image
+func NewImage(icon gio.Icon) Image
 
-func NewImage(iconName string) *Image
+func NewImage(iconName string) Image
 
-func NewImage(paintable gdk.Paintable) *Image
+func NewImage(paintable gdk.Paintable) Image
 
-func NewImage(pixbuf *gdkpixbuf.Pixbuf) *Image
+func NewImage(pixbuf gdkpixbuf.pixbuf) Image
 
-func NewImage(resourcePath string) *Image
+func NewImage(resourcePath string) Image
+
+func (i image) Clear()
+
+func (i image) GetGicon() gio.Icon
+
+func (i image) GetIconName() string
+
+func (i image) GetIconSize() IconSize
+
+func (i image) GetPaintable() gdk.Paintable
+
+func (i image) GetPixelSize() int
+
+func (i image) GetStorageType() ImageType
+
+func (i image) SetFromFile(filename string)
+
+func (i image) SetFromGicon(icon gio.Icon)
+
+func (i image) SetFromIconName(iconName string)
+
+func (i image) SetFromPaintable(paintable gdk.Paintable)
+
+func (i image) SetFromPixbuf(pixbuf gdkpixbuf.pixbuf)
+
+func (i image) SetFromResource(resourcePath string)
+
+func (i image) SetIconSize(iconSize IconSize)
+
+func (i image) SetPixelSize(pixelSize int)
 
 // InfoBar is a widget that can be used to show messages to the user without
 // showing a dialog. It is often temporarily shown at the top or bottom of a
@@ -10733,12 +17245,70 @@ func NewImage(resourcePath string) *Image
 //    on the message type.
 //    If the info bar shows a close button, that button will have the .close
 //    style class applied.
-type InfoBar struct {
+type InfoBar interface {
+	widget
+
+	// AddActionWidget: add an activatable widget to the action area of a
+	// InfoBar, connecting a signal handler that will emit the InfoBar::response
+	// signal on the message area when the widget is activated. The widget is
+	// appended to the end of the message areas action area.
+	AddActionWidget(child widget, responseID int)
+	// AddButton: adds a button with the given text and sets things up so that
+	// clicking the button will emit the “response” signal with the given
+	// response_id. The button is appended to the end of the info bars's action
+	// area. The button widget is returned, but usually you don't need it.
+	AddButton(buttonText string, responseID int) widget
+	// AddChild: adds a widget to the content area of the info bar.
+	AddChild(widget widget)
+	// GetMessageType: returns the message type of the message area.
+	GetMessageType() MessageType
+	// GetRevealed: returns whether the info bar is currently revealed.
+	GetRevealed() bool
+	// GetShowCloseButton: returns whether the widget will display a standard
+	// close button.
+	GetShowCloseButton() bool
+	// RemoveActionWidget: removes a widget from the action area of @info_bar,
+	// after it been put there by a call to gtk_info_bar_add_action_widget() or
+	// gtk_info_bar_add_button().
+	RemoveActionWidget(widget widget)
+	// RemoveChild: removes a widget from the content area of the info bar,
+	// after it has been added with gtk_info_bar_add_child().
+	RemoveChild(widget widget)
+	// Response: emits the “response” signal with the given @response_id.
+	Response(responseID int)
+	// SetDefaultResponse: sets the last widget in the info bar’s action area
+	// with the given response_id as the default widget for the dialog. Pressing
+	// “Enter” normally activates the default widget.
+	//
+	// Note that this function currently requires @info_bar to be added to a
+	// widget hierarchy.
+	SetDefaultResponse(responseID int)
+	// SetMessageType: sets the message type of the message area.
+	//
+	// GTK uses this type to determine how the message is displayed.
+	SetMessageType(messageType MessageType)
+	// SetResponseSensitive: calls gtk_widget_set_sensitive (widget, setting)
+	// for each widget in the info bars’s action area with the given
+	// response_id. A convenient way to sensitize/desensitize dialog buttons.
+	SetResponseSensitive(responseID int, setting bool)
+	// SetRevealed: sets the InfoBar:revealed property to @revealed. Changing
+	// this will make @info_bar reveal (true) or conceal (false) itself via a
+	// sliding transition.
+	//
+	// Note: this does not show or hide @info_bar in the Widget:visible sense,
+	// so revealing has no effect if Widget:visible is false.
+	SetRevealed(revealed bool)
+	// SetShowCloseButton: if true, a standard close button is shown. When
+	// clicked it emits the response GTK_RESPONSE_CLOSE.
+	SetShowCloseButton(setting bool)
+}
+
+type infoBar struct {
 	Widget
 }
 
-func wrapInfoBar(obj *externglib.Object) *InfoBar {
-	return &InfoBar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapInfoBar(obj *externglib.Object) InfoBar {
+	return &infoBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalInfoBar(p uintptr) (interface{}, error) {
@@ -10747,16 +17317,55 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewInfoBar() *InfoBar
+func NewInfoBar() InfoBar
+
+func (i infoBar) AddActionWidget(child widget, responseID int)
+
+func (i infoBar) AddButton(buttonText string, responseID int) widget
+
+func (i infoBar) AddChild(widget widget)
+
+func (i infoBar) GetMessageType() MessageType
+
+func (i infoBar) GetRevealed() bool
+
+func (i infoBar) GetShowCloseButton() bool
+
+func (i infoBar) RemoveActionWidget(widget widget)
+
+func (i infoBar) RemoveChild(widget widget)
+
+func (i infoBar) Response(responseID int)
+
+func (i infoBar) SetDefaultResponse(responseID int)
+
+func (i infoBar) SetMessageType(messageType MessageType)
+
+func (i infoBar) SetResponseSensitive(responseID int, setting bool)
+
+func (i infoBar) SetRevealed(revealed bool)
+
+func (i infoBar) SetShowCloseButton(setting bool)
 
 // KeyvalTrigger: a ShortcutTrigger that triggers when a specific keyval and
 // (optionally) modifiers are pressed.
-type KeyvalTrigger struct {
+type KeyvalTrigger interface {
+	shortcutTrigger
+
+	// GetKeyval: gets the keyval that must be pressed to succeed triggering
+	// @self.
+	GetKeyval() uint
+	// GetModifiers: gets the modifiers that must be present to succeed
+	// triggering @self.
+	GetModifiers() gdk.ModifierType
+}
+
+type keyvalTrigger struct {
 	ShortcutTrigger
 }
 
-func wrapKeyvalTrigger(obj *externglib.Object) *KeyvalTrigger {
-	return &KeyvalTrigger{ShortcutTrigger{*externglib.Object{obj}}}
+func wrapKeyvalTrigger(obj *externglib.Object) KeyvalTrigger {
+	return &keyvalTrigger{ShortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
@@ -10765,7 +17374,11 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger
+func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) KeyvalTrigger
+
+func (k keyvalTrigger) GetKeyval() uint
+
+func (k keyvalTrigger) GetModifiers() gdk.ModifierType
 
 // Label: the Label widget displays a small amount of text. As the name implies,
 // most labels are used to label another widget such as a Button.
@@ -10928,12 +17541,237 @@ func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) *KeyvalTrigger
 //
 // It is possible to implement custom handling for links and their tooltips with
 // the Label::activate-link signal and the gtk_label_get_current_uri() function.
-type Label struct {
+type Label interface {
+	widget
+
+	// GetAttributes: gets the attribute list that was set on the label using
+	// gtk_label_set_attributes(), if any. This function does not reflect
+	// attributes that come from the labels markup (see gtk_label_set_markup()).
+	// If you want to get the effective attributes for the label, use
+	// pango_layout_get_attribute (gtk_label_get_layout (self)).
+	GetAttributes() *pango.AttrList
+	// GetCurrentURI: returns the URI for the currently active link in the
+	// label. The active link is the one under the mouse pointer or, in a
+	// selectable label, the link in which the text cursor is currently
+	// positioned.
+	//
+	// This function is intended for use in a Label::activate-link handler or
+	// for use in a Widget::query-tooltip handler.
+	GetCurrentURI() string
+	// GetEllipsize: returns the ellipsizing position of the label. See
+	// gtk_label_set_ellipsize().
+	GetEllipsize() pango.EllipsizeMode
+	// GetExtraMenu: gets the menu model set with gtk_label_set_extra_menu().
+	GetExtraMenu() gio.menuModel
+	// GetJustify: returns the justification of the label. See
+	// gtk_label_set_justify().
+	GetJustify() Justification
+	// GetLabel: fetches the text from a label widget including any embedded
+	// underlines indicating mnemonics and Pango markup. (See
+	// gtk_label_get_text()).
+	GetLabel() string
+	// GetLayout: gets the Layout used to display the label. The layout is
+	// useful to e.g. convert text positions to pixel positions, in combination
+	// with gtk_label_get_layout_offsets(). The returned layout is owned by the
+	// @label so need not be freed by the caller. The @label is free to recreate
+	// its layout at any time, so it should be considered read-only.
+	GetLayout() pango.layout
+	// GetLayoutOffsets: obtains the coordinates where the label will draw the
+	// Layout representing the text in the label; useful to convert mouse events
+	// into coordinates inside the Layout, e.g. to take some action if some part
+	// of the label is clicked. Remember when using the Layout functions you
+	// need to convert to and from pixels using PANGO_PIXELS() or NGO_SCALE.
+	GetLayoutOffsets() (int, int)
+	// GetLines: gets the number of lines to which an ellipsized, wrapping label
+	// should be limited. See gtk_label_set_lines().
+	GetLines() int
+	// GetMaxWidthChars: retrieves the desired maximum width of @label, in
+	// characters. See gtk_label_set_width_chars().
+	GetMaxWidthChars() int
+	// GetMnemonicKeyval: if the label has been set so that it has a mnemonic
+	// key this function returns the keyval used for the mnemonic accelerator.
+	// If there is no mnemonic set up it returns K_KEY_VoidSymbol.
+	GetMnemonicKeyval() uint
+	// GetMnemonicWidget: retrieves the target of the mnemonic (keyboard
+	// shortcut) of this label. See gtk_label_set_mnemonic_widget().
+	GetMnemonicWidget() widget
+	// GetSelectable: gets the value set by gtk_label_set_selectable().
+	GetSelectable() bool
+	// GetSelectionBounds: gets the selected range of characters in the label,
+	// returning true if there’s a selection.
+	GetSelectionBounds() (int, int, bool)
+	// GetSingleLineMode: returns whether the label is in single line mode.
+	GetSingleLineMode() bool
+	// GetText: fetches the text from a label widget, as displayed on the
+	// screen. This does not include any embedded underlines indicating
+	// mnemonics or Pango markup. (See gtk_label_get_label())
+	GetText() string
+	// GetUseMarkup: returns whether the label’s text is interpreted as marked
+	// up with the [Pango text markup language][PangoMarkupFormat]. See
+	// gtk_label_set_use_markup ().
+	GetUseMarkup() bool
+	// GetUseUnderline: returns whether an embedded underline in the label
+	// indicates a mnemonic. See gtk_label_set_use_underline().
+	GetUseUnderline() bool
+	// GetWidthChars: retrieves the desired width of @label, in characters. See
+	// gtk_label_set_width_chars().
+	GetWidthChars() int
+	// GetWrap: returns whether lines in the label are automatically wrapped.
+	// See gtk_label_set_wrap().
+	GetWrap() bool
+	// GetWrapMode: returns line wrap mode used by the label. See
+	// gtk_label_set_wrap_mode().
+	GetWrapMode() pango.WrapMode
+	// GetXalign: gets the Label:xalign property for @label.
+	GetXalign() float32
+	// GetYalign: gets the Label:yalign property for @label.
+	GetYalign() float32
+	// SelectRegion: selects a range of characters in the label, if the label is
+	// selectable. See gtk_label_set_selectable(). If the label is not
+	// selectable, this function has no effect. If @start_offset or @end_offset
+	// are -1, then the end of the label will be substituted.
+	SelectRegion(startOffset int, endOffset int)
+	// SetAttributes: sets a AttrList; the attributes in the list are applied to
+	// the label text.
+	//
+	// The attributes set with this function will be applied and merged with any
+	// other attributes previously effected by way of the Label:use-underline or
+	// Label:use-markup properties. While it is not recommended to mix markup
+	// strings with manually set attributes, if you must; know that the
+	// attributes will be applied to the label after the markup string is
+	// parsed.
+	SetAttributes(attrs *pango.AttrList)
+	// SetEllipsize: sets the mode used to ellipsize (add an ellipsis: "...") to
+	// the text if there is not enough space to render the entire string.
+	SetEllipsize(mode pango.EllipsizeMode)
+	// SetExtraMenu: sets a menu model to add when constructing the context menu
+	// for @label.
+	SetExtraMenu(model gio.menuModel)
+	// SetJustify: sets the alignment of the lines in the text of the label
+	// relative to each other. GTK_JUSTIFY_LEFT is the default value when the
+	// widget is first created with gtk_label_new(). If you instead want to set
+	// the alignment of the label as a whole, use gtk_widget_set_halign()
+	// instead. gtk_label_set_justify() has no effect on labels containing only
+	// a single line.
+	SetJustify(jtype Justification)
+	// SetLabel: sets the text of the label. The label is interpreted as
+	// including embedded underlines and/or Pango markup depending on the values
+	// of the Label:use-underline and Label:use-markup properties.
+	SetLabel(str string)
+	// SetLines: sets the number of lines to which an ellipsized, wrapping label
+	// should be limited. This has no effect if the label is not wrapping or
+	// ellipsized. Set this to -1 if you don’t want to limit the number of
+	// lines.
+	SetLines(lines int)
+	// SetMarkup: parses @str which is marked up with the [Pango text markup
+	// language][PangoMarkupFormat], setting the label’s text and attribute list
+	// based on the parse results.
+	//
+	// If the @str is external data, you may need to escape it with
+	// g_markup_escape_text() or g_markup_printf_escaped():
+	//
+	//    GtkWidget *self = gtk_label_new (NULL);
+	//    const char *str = "...";
+	//    const char *format = "<span style=\"italic\">\s</span>";
+	//    char *markup;
+	//
+	//    markup = g_markup_printf_escaped (format, str);
+	//    gtk_label_set_markup (GTK_LABEL (self), markup);
+	//    g_free (markup);
+	//
+	//
+	// This function will set the Label:use-markup property to true as a side
+	// effect.
+	//
+	// If you set the label contents using the Label:label property you should
+	// also ensure that you set the Label:use-markup property accordingly.
+	//
+	// See also: gtk_label_set_text()
+	SetMarkup(str string)
+	// SetMarkupWithMnemonic: parses @str which is marked up with the [Pango
+	// text markup language][PangoMarkupFormat], setting the label’s text and
+	// attribute list based on the parse results. If characters in @str are
+	// preceded by an underscore, they are underlined indicating that they
+	// represent a keyboard accelerator called a mnemonic.
+	//
+	// The mnemonic key can be used to activate another widget, chosen
+	// automatically, or explicitly using gtk_label_set_mnemonic_widget().
+	SetMarkupWithMnemonic(str string)
+	// SetMaxWidthChars: sets the desired maximum width in characters of @label
+	// to @n_chars.
+	SetMaxWidthChars(nChars int)
+	// SetMnemonicWidget: if the label has been set so that it has a mnemonic
+	// key (using i.e. gtk_label_set_markup_with_mnemonic(),
+	// gtk_label_set_text_with_mnemonic(), gtk_label_new_with_mnemonic() or the
+	// “use_underline” property) the label can be associated with a widget that
+	// is the target of the mnemonic. When the label is inside a widget (like a
+	// Button or a Notebook tab) it is automatically associated with the correct
+	// widget, but sometimes (i.e. when the target is a Entry next to the label)
+	// you need to set it explicitly using this function.
+	//
+	// The target widget will be accelerated by emitting the
+	// GtkWidget::mnemonic-activate signal on it. The default handler for this
+	// signal will activate the widget if there are no mnemonic collisions and
+	// toggle focus between the colliding widgets otherwise.
+	SetMnemonicWidget(widget widget)
+	// SetSelectable: selectable labels allow the user to select text from the
+	// label, for copy-and-paste.
+	SetSelectable(setting bool)
+	// SetSingleLineMode: sets whether the label is in single line mode.
+	SetSingleLineMode(singleLineMode bool)
+	// SetText: sets the text within the Label widget. It overwrites any text
+	// that was there before.
+	//
+	// This function will clear any previously set mnemonic accelerators, and
+	// set the Label:use-underline property to false as a side effect.
+	//
+	// This function will set the Label:use-markup property to false as a side
+	// effect.
+	//
+	// See also: gtk_label_set_markup()
+	SetText(str string)
+	// SetTextWithMnemonic: sets the label’s text from the string @str. If
+	// characters in @str are preceded by an underscore, they are underlined
+	// indicating that they represent a keyboard accelerator called a mnemonic.
+	// The mnemonic key can be used to activate another widget, chosen
+	// automatically, or explicitly using gtk_label_set_mnemonic_widget().
+	SetTextWithMnemonic(str string)
+	// SetUseMarkup: sets whether the text of the label contains markup in
+	// [Pango’s text markup language][PangoMarkupFormat]. See
+	// gtk_label_set_markup().
+	SetUseMarkup(setting bool)
+	// SetUseUnderline: if true, an underline in the text indicates the next
+	// character should be used for the mnemonic accelerator key.
+	SetUseUnderline(setting bool)
+	// SetWidthChars: sets the desired width in characters of @label to
+	// @n_chars.
+	SetWidthChars(nChars int)
+	// SetWrap: toggles line wrapping within the Label widget. true makes it
+	// break lines if text exceeds the widget’s size. false lets the text get
+	// cut off by the edge of the widget if it exceeds the widget size.
+	//
+	// Note that setting line wrapping to true does not make the label wrap at
+	// its parent container’s width, because GTK widgets conceptually can’t make
+	// their requisition depend on the parent container’s size. For a label that
+	// wraps at a specific position, set the label’s width using
+	// gtk_widget_set_size_request().
+	SetWrap(wrap bool)
+	// SetWrapMode: if line wrapping is on (see gtk_label_set_wrap()) this
+	// controls how the line wrapping is done. The default is PANGO_WRAP_WORD
+	// which means wrap on word boundaries.
+	SetWrapMode(wrapMode pango.WrapMode)
+	// SetXalign: sets the Label:xalign property for @label.
+	SetXalign(xalign float32)
+	// SetYalign: sets the Label:yalign property for @label.
+	SetYalign(yalign float32)
+}
+
+type label struct {
 	Widget
 }
 
-func wrapLabel(obj *externglib.Object) *Label {
-	return &Label{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapLabel(obj *externglib.Object) Label {
+	return &label{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalLabel(p uintptr) (interface{}, error) {
@@ -10942,9 +17780,99 @@ func marshalLabel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewLabel(str string) *Label
+func NewLabel(str string) Label
 
-func NewLabel(str string) *Label
+func NewLabel(str string) Label
+
+func (l label) GetAttributes() *pango.AttrList
+
+func (l label) GetCurrentURI() string
+
+func (l label) GetEllipsize() pango.EllipsizeMode
+
+func (l label) GetExtraMenu() gio.menuModel
+
+func (l label) GetJustify() Justification
+
+func (l label) GetLabel() string
+
+func (l label) GetLayout() pango.layout
+
+func (l label) GetLayoutOffsets() (int, int)
+
+func (l label) GetLines() int
+
+func (l label) GetMaxWidthChars() int
+
+func (l label) GetMnemonicKeyval() uint
+
+func (l label) GetMnemonicWidget() widget
+
+func (l label) GetSelectable() bool
+
+func (l label) GetSelectionBounds() (int, int, bool)
+
+func (l label) GetSingleLineMode() bool
+
+func (l label) GetText() string
+
+func (l label) GetUseMarkup() bool
+
+func (l label) GetUseUnderline() bool
+
+func (l label) GetWidthChars() int
+
+func (l label) GetWrap() bool
+
+func (l label) GetWrapMode() pango.WrapMode
+
+func (l label) GetXalign() float32
+
+func (l label) GetYalign() float32
+
+func (l label) SelectRegion(startOffset int, endOffset int)
+
+func (l label) SetAttributes(attrs *pango.AttrList)
+
+func (l label) SetEllipsize(mode pango.EllipsizeMode)
+
+func (l label) SetExtraMenu(model gio.menuModel)
+
+func (l label) SetJustify(jtype Justification)
+
+func (l label) SetLabel(str string)
+
+func (l label) SetLines(lines int)
+
+func (l label) SetMarkup(str string)
+
+func (l label) SetMarkupWithMnemonic(str string)
+
+func (l label) SetMaxWidthChars(nChars int)
+
+func (l label) SetMnemonicWidget(widget widget)
+
+func (l label) SetSelectable(setting bool)
+
+func (l label) SetSingleLineMode(singleLineMode bool)
+
+func (l label) SetText(str string)
+
+func (l label) SetTextWithMnemonic(str string)
+
+func (l label) SetUseMarkup(setting bool)
+
+func (l label) SetUseUnderline(setting bool)
+
+func (l label) SetWidthChars(nChars int)
+
+func (l label) SetWrap(wrap bool)
+
+func (l label) SetWrapMode(wrapMode pango.WrapMode)
+
+func (l label) SetXalign(xalign float32)
+
+func (l label) SetYalign(yalign float32)
 
 // LayoutChild is the base class for objects that are meant to hold layout
 // properties. If a LayoutManager has per-child properties, like their packing
@@ -10952,12 +17880,23 @@ func NewLabel(str string) *Label
 // manager should use a LayoutChild implementation to store those properties.
 //
 // A LayoutChild instance is only ever valid while a widget is part of a layout.
-type LayoutChild struct {
+type LayoutChild interface {
+	gextras.Objector
+
+	// GetChildWidget: retrieves the Widget associated to the given
+	// @layout_child.
+	GetChildWidget() widget
+	// GetLayoutManager: retrieves the LayoutManager instance that created the
+	// given @layout_child.
+	GetLayoutManager() layoutManager
+}
+
+type layoutChild struct {
 	*externglib.Object
 }
 
-func wrapLayoutChild(obj *externglib.Object) *LayoutChild {
-	return &LayoutChild{*externglib.Object{obj}}
+func wrapLayoutChild(obj *externglib.Object) LayoutChild {
+	return &layoutChild{*externglib.Object{obj}}
 }
 
 func marshalLayoutChild(p uintptr) (interface{}, error) {
@@ -10965,6 +17904,10 @@ func marshalLayoutChild(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (l layoutChild) GetChildWidget() widget
+
+func (l layoutChild) GetLayoutManager() layoutManager
 
 // LayoutManager: layout managers are delegate classes that handle the preferred
 // size and the allocation of a container widget.
@@ -11011,12 +17954,45 @@ func marshalLayoutChild(p uintptr) (interface{}, error) {
 // properties; each LayoutChild instance should call
 // gtk_layout_manager_layout_changed() every time a property is updated, in
 // order to queue a new size measuring and allocation.
-type LayoutManager struct {
+type LayoutManager interface {
+	gextras.Objector
+
+	// Allocate: this function assigns the given @width, @height, and @baseline
+	// to a @widget, and computes the position and sizes of the children of the
+	// @widget using the layout management policy of @manager.
+	Allocate(widget widget, width int, height int, baseline int)
+	// GetLayoutChild: retrieves a LayoutChild instance for the LayoutManager,
+	// creating one if necessary.
+	//
+	// The @child widget must be a child of the widget using @manager.
+	//
+	// The LayoutChild instance is owned by the LayoutManager, and is guaranteed
+	// to exist as long as @child is a child of the Widget using the given
+	// LayoutManager.
+	GetLayoutChild(child widget) layoutChild
+	// GetRequestMode: retrieves the request mode of @manager.
+	GetRequestMode() SizeRequestMode
+	// GetWidget: retrieves the Widget using the given LayoutManager.
+	GetWidget() widget
+	// LayoutChanged: queues a resize on the Widget using @manager, if any.
+	//
+	// This function should be called by subclasses of LayoutManager in response
+	// to changes to their layout management policies.
+	LayoutChanged()
+	// Measure: measures the size of the @widget using @manager, for the given
+	// @orientation and size.
+	//
+	// See [GtkWidget's geometry management section][geometry-management] for
+	// more details.
+	Measure(widget widget, orientation Orientation, forSize int) (int, int, int, int)
+}
+
+type layoutManager struct {
 	*externglib.Object
 }
 
-func wrapLayoutManager(obj *externglib.Object) *LayoutManager {
-	return &LayoutManager{*externglib.Object{obj}}
+func wrapLayoutManager(obj *externglib.Object) LayoutManager {
+	return &layoutManager{*externglib.Object{obj}}
 }
 
 func marshalLayoutManager(p uintptr) (interface{}, error) {
@@ -11024,6 +18000,18 @@ func marshalLayoutManager(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (l layoutManager) Allocate(widget widget, width int, height int, baseline int)
+
+func (l layoutManager) GetLayoutChild(child widget) layoutChild
+
+func (l layoutManager) GetRequestMode() SizeRequestMode
+
+func (l layoutManager) GetWidget() widget
+
+func (l layoutManager) LayoutChanged()
+
+func (l layoutManager) Measure(widget widget, orientation Orientation, forSize int) (int, int, int, int)
 
 // LevelBar: the LevelBar is a bar widget that can be used as a level indicator.
 // Typical use cases are displaying the strength of a password, or showing the
@@ -11119,12 +18107,56 @@ func marshalLayoutManager(p uintptr) (interface{}, error) {
 // Accessibility
 //
 // GtkLevelBar uses the K_ACCESSIBLE_ROLE_METER role.
-type LevelBar struct {
+type LevelBar interface {
+	widget
+
+	// AddOffsetValue: adds a new offset marker on @self at the position
+	// specified by @value. When the bar value is in the interval topped by
+	// @value (or between @value and LevelBar:max-value in case the offset is
+	// the last one on the bar) a style class named `level-`@name will be
+	// applied when rendering the level bar fill. If another offset marker named
+	// @name exists, its value will be replaced by @value.
+	AddOffsetValue(name string, value float64)
+	// GetInverted: return the value of the LevelBar:inverted property.
+	GetInverted() bool
+	// GetMaxValue: returns the value of the LevelBar:max-value property.
+	GetMaxValue() float64
+	// GetMinValue: returns the value of the LevelBar:min-value property.
+	GetMinValue() float64
+	// GetMode: returns the value of the LevelBar:mode property.
+	GetMode() LevelBarMode
+	// GetOffsetValue: fetches the value specified for the offset marker @name
+	// in @self, returning true in case an offset named @name was found.
+	GetOffsetValue(name string) (float64, bool)
+	// GetValue: returns the value of the LevelBar:value property.
+	GetValue() float64
+	// RemoveOffsetValue: removes an offset marker previously added with
+	// gtk_level_bar_add_offset_value().
+	RemoveOffsetValue(name string)
+	// SetInverted: sets the value of the LevelBar:inverted property.
+	SetInverted(inverted bool)
+	// SetMaxValue: sets the value of the LevelBar:max-value property.
+	//
+	// You probably want to update preexisting level offsets after calling this
+	// function.
+	SetMaxValue(value float64)
+	// SetMinValue: sets the value of the LevelBar:min-value property.
+	//
+	// You probably want to update preexisting level offsets after calling this
+	// function.
+	SetMinValue(value float64)
+	// SetMode: sets the value of the LevelBar:mode property.
+	SetMode(mode LevelBarMode)
+	// SetValue: sets the value of the LevelBar:value property.
+	SetValue(value float64)
+}
+
+type levelBar struct {
 	Widget
 }
 
-func wrapLevelBar(obj *externglib.Object) *LevelBar {
-	return &LevelBar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapLevelBar(obj *externglib.Object) LevelBar {
+	return &levelBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalLevelBar(p uintptr) (interface{}, error) {
@@ -11133,9 +18165,35 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewLevelBar() *LevelBar
+func NewLevelBar() LevelBar
 
-func NewLevelBar(minValue float64, maxValue float64) *LevelBar
+func NewLevelBar(minValue float64, maxValue float64) LevelBar
+
+func (l levelBar) AddOffsetValue(name string, value float64)
+
+func (l levelBar) GetInverted() bool
+
+func (l levelBar) GetMaxValue() float64
+
+func (l levelBar) GetMinValue() float64
+
+func (l levelBar) GetMode() LevelBarMode
+
+func (l levelBar) GetOffsetValue(name string) (float64, bool)
+
+func (l levelBar) GetValue() float64
+
+func (l levelBar) RemoveOffsetValue(name string)
+
+func (l levelBar) SetInverted(inverted bool)
+
+func (l levelBar) SetMaxValue(value float64)
+
+func (l levelBar) SetMinValue(value float64)
+
+func (l levelBar) SetMode(mode LevelBarMode)
+
+func (l levelBar) SetValue(value float64)
 
 // LinkButton: a GtkLinkButton is a Button with a hyperlink, similar to the one
 // used by web browsers, which triggers an action when clicked. It is useful to
@@ -11162,12 +18220,31 @@ func NewLevelBar(minValue float64, maxValue float64) *LevelBar
 // Accessibility
 //
 // GtkLinkButton uses the K_ACCESSIBLE_ROLE_LINK role.
-type LinkButton struct {
+type LinkButton interface {
+	button
+
+	// GetURI: retrieves the URI set using gtk_link_button_set_uri().
+	GetURI() string
+	// GetVisited: retrieves the “visited” state of the URI where the LinkButton
+	// points. The button becomes visited when it is clicked. If the URI is
+	// changed on the button, the “visited” state is unset again.
+	//
+	// The state may also be changed using gtk_link_button_set_visited().
+	GetVisited() bool
+	// SetURI: sets @uri as the URI where the LinkButton points. As a
+	// side-effect this unsets the “visited” state of the button.
+	SetURI(uri string)
+	// SetVisited: sets the “visited” state of the URI where the LinkButton
+	// points. See gtk_link_button_get_visited() for more details.
+	SetVisited(visited bool)
+}
+
+type linkButton struct {
 	Button
 }
 
-func wrapLinkButton(obj *externglib.Object) *LinkButton {
-	return &LinkButton{Button{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapLinkButton(obj *externglib.Object) LinkButton {
+	return &linkButton{Button{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalLinkButton(p uintptr) (interface{}, error) {
@@ -11176,17 +18253,29 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewLinkButton(uri string) *LinkButton
+func NewLinkButton(uri string) LinkButton
 
-func NewLinkButton(uri string, label string) *LinkButton
+func NewLinkButton(uri string, label string) LinkButton
+
+func (l linkButton) GetURI() string
+
+func (l linkButton) GetVisited() bool
+
+func (l linkButton) SetURI(uri string)
+
+func (l linkButton) SetVisited(visited bool)
 
 // ListBase: gtkListBase is the abstract base class for GTK's list widgets.
-type ListBase struct {
+type ListBase interface {
+	widget
+}
+
+type listBase struct {
 	Widget
 }
 
-func wrapListBase(obj *externglib.Object) *ListBase {
-	return &ListBase{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapListBase(obj *externglib.Object) ListBase {
+	return &listBase{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalListBase(p uintptr) (interface{}, error) {
@@ -11240,12 +18329,174 @@ func marshalListBase(p uintptr) (interface{}, error) {
 //
 // GtkListBox uses the K_ACCESSIBLE_ROLE_LIST role and GtkListBoxRow uses the
 // K_ACCESSIBLE_ROLE_LIST_ITEM role.
-type ListBox struct {
+type ListBox interface {
+	widget
+
+	// Append: append a widget to the list. If a sort function is set, the
+	// widget will actually be inserted at the calculated position.
+	Append(child widget)
+	// BindModel: binds @model to @box.
+	//
+	// If @box was already bound to a model, that previous binding is destroyed.
+	//
+	// The contents of @box are cleared and then filled with widgets that
+	// represent items from @model. @box is updated whenever @model changes. If
+	// @model is nil, @box is left empty.
+	//
+	// It is undefined to add or remove widgets directly (for example, with
+	// gtk_list_box_insert()) while @box is bound to a model.
+	//
+	// Note that using a model is incompatible with the filtering and sorting
+	// functionality in GtkListBox. When using a model, filtering and sorting
+	// should be implemented by the model.
+	BindModel(model gio.ListModel, createWidgetFunc ListBoxCreateWidgetFunc, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer)
+	// DragHighlightRow: this is a helper function for implementing DnD onto a
+	// ListBox. The passed in @row will be highlighted by setting the
+	// K_STATE_FLAG_DROP_ACTIVE state and any previously highlighted row will be
+	// unhighlighted.
+	//
+	// The row will also be unhighlighted when the widget gets a drag leave
+	// event.
+	DragHighlightRow(row listBoxRow)
+	// DragUnhighlightRow: if a row has previously been highlighted via
+	// gtk_list_box_drag_highlight_row() it will have the highlight removed.
+	DragUnhighlightRow()
+	// GetActivateOnSingleClick: returns whether rows activate on single clicks.
+	GetActivateOnSingleClick() bool
+	// GetAdjustment: gets the adjustment (if any) that the widget uses to for
+	// vertical scrolling.
+	GetAdjustment() adjustment
+	// GetRowAtIndex: gets the n-th child in the list (not counting headers). If
+	// @_index is negative or larger than the number of items in the list, nil
+	// is returned.
+	GetRowAtIndex(index_ int) listBoxRow
+	// GetRowAtY: gets the row at the @y position.
+	GetRowAtY(y int) listBoxRow
+	// GetSelectedRow: gets the selected row.
+	//
+	// Note that the box may allow multiple selection, in which case you should
+	// use gtk_list_box_selected_foreach() to find all selected rows.
+	GetSelectedRow() listBoxRow
+	// GetSelectedRows: creates a list of all selected children.
+	GetSelectedRows() *glib.List
+	// GetSelectionMode: gets the selection mode of the listbox.
+	GetSelectionMode() SelectionMode
+	// GetShowSeparators: returns whether the list box should show separators
+	// between rows.
+	GetShowSeparators() bool
+	// Insert: insert the @child into the @box at @position. If a sort function
+	// is set, the widget will actually be inserted at the calculated position.
+	//
+	// If @position is -1, or larger than the total number of items in the @box,
+	// then the @child will be appended to the end.
+	Insert(child widget, position int)
+	// InvalidateFilter: update the filtering for all rows. Call this when
+	// result of the filter function on the @box is changed due to an external
+	// factor. For instance, this would be used if the filter function just
+	// looked for a specific search string and the entry with the search string
+	// has changed.
+	InvalidateFilter()
+	// InvalidateHeaders: update the separators for all rows. Call this when
+	// result of the header function on the @box is changed due to an external
+	// factor.
+	InvalidateHeaders()
+	// InvalidateSort: update the sorting for all rows. Call this when result of
+	// the sort function on the @box is changed due to an external factor.
+	InvalidateSort()
+	// Prepend: prepend a widget to the list. If a sort function is set, the
+	// widget will actually be inserted at the calculated position.
+	Prepend(child widget)
+	// Remove: removes a child from @box.
+	Remove(child widget)
+	// SelectAll: select all children of @box, if the selection mode allows it.
+	SelectAll()
+	// SelectRow: make @row the currently selected row.
+	SelectRow(row listBoxRow)
+	// SelectedForeach: calls a function for each selected child.
+	//
+	// Note that the selection cannot be modified from within this function.
+	SelectedForeach(_func ListBoxForeachFunc, data unsafe.Pointer)
+	// SetActivateOnSingleClick: if @single is true, rows will be activated when
+	// you click on them, otherwise you need to double-click.
+	SetActivateOnSingleClick(single bool)
+	// SetAdjustment: sets the adjustment (if any) that the widget uses to for
+	// vertical scrolling. For instance, this is used to get the page size for
+	// PageUp/Down key handling.
+	//
+	// In the normal case when the @box is packed inside a ScrolledWindow the
+	// adjustment from that will be picked up automatically, so there is no need
+	// to manually do that.
+	SetAdjustment(adjustment adjustment)
+	// SetFilterFunc: by setting a filter function on the @box one can decide
+	// dynamically which of the rows to show. For instance, to implement a
+	// search function on a list that filters the original list to only show the
+	// matching rows.
+	//
+	// The @filter_func will be called for each row after the call, and it will
+	// continue to be called each time a row changes (via
+	// gtk_list_box_row_changed()) or when gtk_list_box_invalidate_filter() is
+	// called.
+	//
+	// Note that using a filter function is incompatible with using a model (see
+	// gtk_list_box_bind_model()).
+	SetFilterFunc(filterFunc ListBoxFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	// SetHeaderFunc: by setting a header function on the @box one can
+	// dynamically add headers in front of rows, depending on the contents of
+	// the row and its position in the list. For instance, one could use it to
+	// add headers in front of the first item of a new kind, in a list sorted by
+	// the kind.
+	//
+	// The @update_header can look at the current header widget using
+	// gtk_list_box_row_get_header() and either update the state of the widget
+	// as needed, or set a new one using gtk_list_box_row_set_header(). If no
+	// header is needed, set the header to nil.
+	//
+	// Note that you may get many calls @update_header to this for a particular
+	// row when e.g. changing things that don’t affect the header. In this case
+	// it is important for performance to not blindly replace an existing header
+	// with an identical one.
+	//
+	// The @update_header function will be called for each row after the call,
+	// and it will continue to be called each time a row changes (via
+	// gtk_list_box_row_changed()) and when the row before changes (either by
+	// gtk_list_box_row_changed() on the previous row, or when the previous row
+	// becomes a different row). It is also called for all rows when
+	// gtk_list_box_invalidate_headers() is called.
+	SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	// SetPlaceholder: sets the placeholder widget that is shown in the list
+	// when it doesn't display any visible children.
+	SetPlaceholder(placeholder widget)
+	// SetSelectionMode: sets how selection works in the listbox. See
+	// SelectionMode for details.
+	SetSelectionMode(mode SelectionMode)
+	// SetShowSeparators: sets whether the list box should show separators
+	// between rows.
+	SetShowSeparators(showSeparators bool)
+	// SetSortFunc: by setting a sort function on the @box one can dynamically
+	// reorder the rows of the list, based on the contents of the rows.
+	//
+	// The @sort_func will be called for each row after the call, and will
+	// continue to be called each time a row changes (via
+	// gtk_list_box_row_changed()) and when gtk_list_box_invalidate_sort() is
+	// called.
+	//
+	// Note that using a sort function is incompatible with using a model (see
+	// gtk_list_box_bind_model()).
+	SetSortFunc(sortFunc ListBoxSortFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	// UnselectAll: unselect all children of @box, if the selection mode allows
+	// it.
+	UnselectAll()
+	// UnselectRow: unselects a single row of @box, if the selection mode allows
+	// it.
+	UnselectRow(row listBoxRow)
+}
+
+type listBox struct {
 	Widget
 }
 
-func wrapListBox(obj *externglib.Object) *ListBox {
-	return &ListBox{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapListBox(obj *externglib.Object) ListBox {
+	return &listBox{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalListBox(p uintptr) (interface{}, error) {
@@ -11254,14 +18505,124 @@ func marshalListBox(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewListBox() *ListBox
+func NewListBox() ListBox
 
-type ListBoxRow struct {
+func (l listBox) Append(child widget)
+
+func (l listBox) BindModel(model gio.ListModel, createWidgetFunc ListBoxCreateWidgetFunc, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer)
+
+func (l listBox) DragHighlightRow(row listBoxRow)
+
+func (l listBox) DragUnhighlightRow()
+
+func (l listBox) GetActivateOnSingleClick() bool
+
+func (l listBox) GetAdjustment() adjustment
+
+func (l listBox) GetRowAtIndex(index_ int) listBoxRow
+
+func (l listBox) GetRowAtY(y int) listBoxRow
+
+func (l listBox) GetSelectedRow() listBoxRow
+
+func (l listBox) GetSelectedRows() *glib.List
+
+func (l listBox) GetSelectionMode() SelectionMode
+
+func (l listBox) GetShowSeparators() bool
+
+func (l listBox) Insert(child widget, position int)
+
+func (l listBox) InvalidateFilter()
+
+func (l listBox) InvalidateHeaders()
+
+func (l listBox) InvalidateSort()
+
+func (l listBox) Prepend(child widget)
+
+func (l listBox) Remove(child widget)
+
+func (l listBox) SelectAll()
+
+func (l listBox) SelectRow(row listBoxRow)
+
+func (l listBox) SelectedForeach(_func ListBoxForeachFunc, data unsafe.Pointer)
+
+func (l listBox) SetActivateOnSingleClick(single bool)
+
+func (l listBox) SetAdjustment(adjustment adjustment)
+
+func (l listBox) SetFilterFunc(filterFunc ListBoxFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+
+func (l listBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+
+func (l listBox) SetPlaceholder(placeholder widget)
+
+func (l listBox) SetSelectionMode(mode SelectionMode)
+
+func (l listBox) SetShowSeparators(showSeparators bool)
+
+func (l listBox) SetSortFunc(sortFunc ListBoxSortFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+
+func (l listBox) UnselectAll()
+
+func (l listBox) UnselectRow(row listBoxRow)
+
+type ListBoxRow interface {
+	widget
+
+	// Changed: marks @row as changed, causing any state that depends on this to
+	// be updated. This affects sorting, filtering and headers.
+	//
+	// Note that calls to this method must be in sync with the data used for the
+	// row functions. For instance, if the list is mirroring some external data
+	// set, and *two* rows changed in the external data set then when you call
+	// gtk_list_box_row_changed() on the first row the sort function must only
+	// read the new data for the first of the two changed rows, otherwise the
+	// resorting of the rows will be wrong.
+	//
+	// This generally means that if you don’t fully control the data model you
+	// have to duplicate the data that affects the listbox row functions into
+	// the row widgets themselves. Another alternative is to call
+	// gtk_list_box_invalidate_sort() on any model change, but that is more
+	// expensive.
+	Changed()
+	// GetActivatable: gets the value of the ListBoxRow:activatable property for
+	// this row.
+	GetActivatable() bool
+	// GetChild: gets the child widget of @row.
+	GetChild() widget
+	// GetHeader: returns the current header of the @row. This can be used in a
+	// ListBoxUpdateHeaderFunc to see if there is a header set already, and if
+	// so to update the state of it.
+	GetHeader() widget
+	// GetIndex: gets the current index of the @row in its ListBox container.
+	GetIndex() int
+	// GetSelectable: gets the value of the ListBoxRow:selectable property for
+	// this row.
+	GetSelectable() bool
+	// IsSelected: returns whether the child is currently selected in its
+	// ListBox container.
+	IsSelected() bool
+	// SetActivatable: set the ListBoxRow:activatable property for this row.
+	SetActivatable(activatable bool)
+	// SetChild: sets the child widget of @self.
+	SetChild(child widget)
+	// SetHeader: sets the current header of the @row. This is only allowed to
+	// be called from a ListBoxUpdateHeaderFunc. It will replace any existing
+	// header in the row, and be shown in front of the row in the listbox.
+	SetHeader(header widget)
+	// SetSelectable: set the ListBoxRow:selectable property for this row.
+	SetSelectable(selectable bool)
+}
+
+type listBoxRow struct {
 	Widget
 }
 
-func wrapListBoxRow(obj *externglib.Object) *ListBoxRow {
-	return &ListBoxRow{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapListBoxRow(obj *externglib.Object) ListBoxRow {
+	return &listBoxRow{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalListBoxRow(p uintptr) (interface{}, error) {
@@ -11270,7 +18631,29 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewListBoxRow() *ListBoxRow
+func NewListBoxRow() ListBoxRow
+
+func (l listBoxRow) Changed()
+
+func (l listBoxRow) GetActivatable() bool
+
+func (l listBoxRow) GetChild() widget
+
+func (l listBoxRow) GetHeader() widget
+
+func (l listBoxRow) GetIndex() int
+
+func (l listBoxRow) GetSelectable() bool
+
+func (l listBoxRow) IsSelected() bool
+
+func (l listBoxRow) SetActivatable(activatable bool)
+
+func (l listBoxRow) SetChild(child widget)
+
+func (l listBoxRow) SetHeader(header widget)
+
+func (l listBoxRow) SetSelectable(selectable bool)
 
 // ListItem is the object that list-handling containers such as ListView use to
 // represent items in a Model. They are managed by the container and cannot be
@@ -11286,12 +18669,64 @@ func NewListBoxRow() *ListBoxRow
 //
 // 2. The bound stage where the listitem references an item from the list. The
 // ListItem:item property is not nil.
-type ListItem struct {
+type ListItem interface {
+	gextras.Objector
+
+	// GetActivatable: checks if a list item has been set to be activatable via
+	// gtk_list_item_set_activatable().
+	GetActivatable() bool
+	// GetChild: gets the child previously set via gtk_list_item_set_child() or
+	// nil if none was set.
+	GetChild() widget
+	// GetItem: gets the item that is currently displayed in model that @self is
+	// currently bound to or nil if @self is unbound.
+	GetItem() unsafe.Pointer
+	// GetPosition: gets the position in the model that @self currently
+	// displays. If @self is unbound, GTK_INVALID_LIST_POSITION is returned.
+	GetPosition() uint
+	// GetSelectable: checks if a list item has been set to be selectable via
+	// gtk_list_item_set_selectable().
+	//
+	// Do not confuse this function with gtk_list_item_get_selected().
+	GetSelectable() bool
+	// GetSelected: checks if the item is displayed as selected. The selected
+	// state is maintained by the container and its list model and cannot be set
+	// otherwise.
+	GetSelected() bool
+	// SetActivatable: sets @self to be activatable.
+	//
+	// If an item is activatable, double-clicking on the item, using the Return
+	// key or calling gtk_widget_activate() will activate the item. Activating
+	// instructs the containing view to handle activation. ListView for example
+	// will be emitting the ListView::activate signal.
+	//
+	// By default, list items are activatable
+	SetActivatable(activatable bool)
+	// SetChild: sets the child to be used for this listitem.
+	//
+	// This function is typically called by applications when setting up a
+	// listitem so that the widget can be reused when binding it multiple times.
+	SetChild(child widget)
+	// SetSelectable: sets @self to be selectable. If an item is selectable,
+	// clicking on the item or using the keyboard will try to select or unselect
+	// the item. If this succeeds is up to the model to determine, as it is
+	// managing the selected state.
+	//
+	// Note that this means that making an item non-selectable has no influence
+	// on the selected state at all. A non-selectable item may still be
+	// selected.
+	//
+	// By default, list items are selectable. When rebinding them to a new item,
+	// they will also be reset to be selectable by GTK.
+	SetSelectable(selectable bool)
+}
+
+type listItem struct {
 	*externglib.Object
 }
 
-func wrapListItem(obj *externglib.Object) *ListItem {
-	return &ListItem{*externglib.Object{obj}}
+func wrapListItem(obj *externglib.Object) ListItem {
+	return &listItem{*externglib.Object{obj}}
 }
 
 func marshalListItem(p uintptr) (interface{}, error) {
@@ -11299,6 +18734,24 @@ func marshalListItem(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (l listItem) GetActivatable() bool
+
+func (l listItem) GetChild() widget
+
+func (l listItem) GetItem() unsafe.Pointer
+
+func (l listItem) GetPosition() uint
+
+func (l listItem) GetSelectable() bool
+
+func (l listItem) GetSelected() bool
+
+func (l listItem) SetActivatable(activatable bool)
+
+func (l listItem) SetChild(child widget)
+
+func (l listItem) SetSelectable(selectable bool)
 
 // ListItemFactory is one of the core concepts of handling list widgets. It is
 // the object tasked with creating widgets for items taken from a Model when the
@@ -11340,12 +18793,16 @@ func marshalListItem(p uintptr) (interface{}, error) {
 // Once you have chosen your factory and created it, you need to set it on the
 // view widget you want to use it with, such as via gtk_list_view_set_factory().
 // Reusing factories across different views is allowed, but very uncommon.
-type ListItemFactory struct {
+type ListItemFactory interface {
+	gextras.Objector
+}
+
+type listItemFactory struct {
 	*externglib.Object
 }
 
-func wrapListItemFactory(obj *externglib.Object) *ListItemFactory {
-	return &ListItemFactory{*externglib.Object{obj}}
+func wrapListItemFactory(obj *externglib.Object) ListItemFactory {
+	return &listItemFactory{*externglib.Object{obj}}
 }
 
 func marshalListItemFactory(p uintptr) (interface{}, error) {
@@ -11463,12 +18920,87 @@ func marshalListItemFactory(p uintptr) (interface{}, error) {
 //        </row>
 //      </data>
 //    </object>
-type ListStore struct {
+type ListStore interface {
+	gextras.Objector
+
+	// Append: appends a new row to @list_store. @iter will be changed to point
+	// to this new row. The row will be empty after this function is called. To
+	// fill in values, you need to call gtk_list_store_set() or
+	// gtk_list_store_set_value().
+	Append() TreeIter
+	// Clear: removes all rows from the list store.
+	Clear()
+	// Insert: creates a new row at @position. @iter will be changed to point to
+	// this new row. If @position is -1 or is larger than the number of rows on
+	// the list, then the new row will be appended to the list. The row will be
+	// empty after this function is called. To fill in values, you need to call
+	// gtk_list_store_set() or gtk_list_store_set_value().
+	Insert(position int) TreeIter
+	// InsertAfter: inserts a new row after @sibling. If @sibling is nil, then
+	// the row will be prepended to the beginning of the list. @iter will be
+	// changed to point to this new row. The row will be empty after this
+	// function is called. To fill in values, you need to call
+	// gtk_list_store_set() or gtk_list_store_set_value().
+	InsertAfter(sibling *TreeIter) TreeIter
+	// InsertBefore: inserts a new row before @sibling. If @sibling is nil, then
+	// the row will be appended to the end of the list. @iter will be changed to
+	// point to this new row. The row will be empty after this function is
+	// called. To fill in values, you need to call gtk_list_store_set() or
+	// gtk_list_store_set_value().
+	InsertBefore(sibling *TreeIter) TreeIter
+	// InsertWithValuesv: a variant of gtk_list_store_insert_with_values() which
+	// takes the columns and values as two arrays, instead of varargs. This
+	// function is mainly intended for language-bindings.
+	InsertWithValuesv(position int, columns []int, values []*externglib.Value, nValues int) TreeIter
+	// IterIsValid: > This function is slow. Only use it for debugging and/or
+	// testing > purposes.
+	//
+	// Checks if the given iter is a valid iter for this ListStore.
+	IterIsValid(iter *TreeIter) bool
+	// MoveAfter: moves @iter in @store to the position after @position. Note
+	// that this function only works with unsorted stores. If @position is nil,
+	// @iter will be moved to the start of the list.
+	MoveAfter(iter *TreeIter, position *TreeIter)
+	// MoveBefore: moves @iter in @store to the position before @position. Note
+	// that this function only works with unsorted stores. If @position is nil,
+	// @iter will be moved to the end of the list.
+	MoveBefore(iter *TreeIter, position *TreeIter)
+	// Prepend: prepends a new row to @list_store. @iter will be changed to
+	// point to this new row. The row will be empty after this function is
+	// called. To fill in values, you need to call gtk_list_store_set() or
+	// gtk_list_store_set_value().
+	Prepend() TreeIter
+	// Remove: removes the given row from the list store. After being removed,
+	// @iter is set to be the next valid row, or invalidated if it pointed to
+	// the last row in @list_store.
+	Remove(iter *TreeIter) bool
+	// Reorder: reorders @store to follow the order indicated by @new_order.
+	// Note that this function only works with unsorted stores.
+	Reorder(newOrder []int)
+	// SetColumnTypes: this function is meant primarily for #GObjects that
+	// inherit from ListStore, and should only be used when constructing a new
+	// ListStore. It will not function after a row has been added, or a method
+	// on the TreeModel interface is called.
+	SetColumnTypes(nColumns int, types []externglib.Type)
+	// SetValue: sets the data in the cell specified by @iter and @column. The
+	// type of @value must be convertible to the type of the column.
+	SetValue(iter *TreeIter, column int, value *externglib.Value)
+	// SetValuesv: a variant of gtk_list_store_set_valist() which takes the
+	// columns and values as two arrays, instead of varargs. This function is
+	// mainly intended for language-bindings and in case the number of columns
+	// to change is not known until run-time.
+	SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value, nValues int)
+	// Swap: swaps @a and @b in @store. Note that this function only works with
+	// unsorted stores.
+	Swap(a *TreeIter, b *TreeIter)
+}
+
+type listStore struct {
 	*externglib.Object
 }
 
-func wrapListStore(obj *externglib.Object) *ListStore {
-	return &ListStore{*externglib.Object{obj}}
+func wrapListStore(obj *externglib.Object) ListStore {
+	return &listStore{*externglib.Object{obj}}
 }
 
 func marshalListStore(p uintptr) (interface{}, error) {
@@ -11477,7 +19009,39 @@ func marshalListStore(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewListStore(nColumns int, types []externglib.Type) *ListStore
+func NewListStore(nColumns int, types []externglib.Type) ListStore
+
+func (l listStore) Append() TreeIter
+
+func (l listStore) Clear()
+
+func (l listStore) Insert(position int) TreeIter
+
+func (l listStore) InsertAfter(sibling *TreeIter) TreeIter
+
+func (l listStore) InsertBefore(sibling *TreeIter) TreeIter
+
+func (l listStore) InsertWithValuesv(position int, columns []int, values []*externglib.Value, nValues int) TreeIter
+
+func (l listStore) IterIsValid(iter *TreeIter) bool
+
+func (l listStore) MoveAfter(iter *TreeIter, position *TreeIter)
+
+func (l listStore) MoveBefore(iter *TreeIter, position *TreeIter)
+
+func (l listStore) Prepend() TreeIter
+
+func (l listStore) Remove(iter *TreeIter) bool
+
+func (l listStore) Reorder(newOrder []int)
+
+func (l listStore) SetColumnTypes(nColumns int, types []externglib.Type)
+
+func (l listStore) SetValue(iter *TreeIter, column int, value *externglib.Value)
+
+func (l listStore) SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value, nValues int)
+
+func (l listStore) Swap(a *TreeIter, b *TreeIter)
 
 // ListView: gtkListView is a widget to present a view into a large dynamic list
 // of items.
@@ -11557,12 +19121,45 @@ func NewListStore(nColumns int, types []externglib.Type) *ListStore
 //
 //    GtkListView uses the K_ACCESSIBLE_ROLE_LIST role, and the list
 //    items use the K_ACCESSIBLE_ROLE_LIST_ITEM role.
-type ListView struct {
+type ListView interface {
+	listBase
+
+	// GetEnableRubberband: returns whether rows can be selected by dragging
+	// with the mouse.
+	GetEnableRubberband() bool
+	// GetFactory: gets the factory that's currently used to populate list
+	// items.
+	GetFactory() listItemFactory
+	// GetModel: gets the model that's currently used to read the items
+	// displayed.
+	GetModel() SelectionModel
+	// GetShowSeparators: returns whether the list box should show separators
+	// between rows.
+	GetShowSeparators() bool
+	// GetSingleClickActivate: returns whether rows will be activated on single
+	// click and selected on hover.
+	GetSingleClickActivate() bool
+	// SetEnableRubberband: sets whether selections can be changed by dragging
+	// with the mouse.
+	SetEnableRubberband(enableRubberband bool)
+	// SetFactory: sets the ListItemFactory to use for populating list items.
+	SetFactory(factory listItemFactory)
+	// SetModel: sets the SelectionModel to use.
+	SetModel(model SelectionModel)
+	// SetShowSeparators: sets whether the list box should show separators
+	// between rows.
+	SetShowSeparators(showSeparators bool)
+	// SetSingleClickActivate: sets whether rows should be activated on single
+	// click and selected on hover.
+	SetSingleClickActivate(singleClickActivate bool)
+}
+
+type listView struct {
 	ListBase
 }
 
-func wrapListView(obj *externglib.Object) *ListView {
-	return &ListView{ListBase{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapListView(obj *externglib.Object) ListView {
+	return &listView{ListBase{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalListView(p uintptr) (interface{}, error) {
@@ -11571,7 +19168,27 @@ func marshalListView(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewListView(model SelectionModel, factory *ListItemFactory) *ListView
+func NewListView(model SelectionModel, factory listItemFactory) ListView
+
+func (l listView) GetEnableRubberband() bool
+
+func (l listView) GetFactory() listItemFactory
+
+func (l listView) GetModel() SelectionModel
+
+func (l listView) GetShowSeparators() bool
+
+func (l listView) GetSingleClickActivate() bool
+
+func (l listView) SetEnableRubberband(enableRubberband bool)
+
+func (l listView) SetFactory(factory listItemFactory)
+
+func (l listView) SetModel(model SelectionModel)
+
+func (l listView) SetShowSeparators(showSeparators bool)
+
+func (l listView) SetSingleClickActivate(singleClickActivate bool)
 
 // LockButton: gtkLockButton is a widget that can be used in control panels or
 // preference dialogs to allow users to obtain and revoke authorizations needed
@@ -11603,12 +19220,21 @@ func NewListView(model SelectionModel, factory *ListItemFactory) *ListView
 // with the LockButton:text-lock, LockButton:text-unlock,
 // LockButton:tooltip-lock, LockButton:tooltip-unlock and
 // LockButton:tooltip-not-authorized properties.
-type LockButton struct {
+type LockButton interface {
+	button
+
+	// GetPermission: obtains the #GPermission object that controls @button.
+	GetPermission() gio.permission
+	// SetPermission: sets the #GPermission object that controls @button.
+	SetPermission(permission gio.permission)
+}
+
+type lockButton struct {
 	Button
 }
 
-func wrapLockButton(obj *externglib.Object) *LockButton {
-	return &LockButton{Button{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapLockButton(obj *externglib.Object) LockButton {
+	return &lockButton{Button{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalLockButton(p uintptr) (interface{}, error) {
@@ -11617,7 +19243,11 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewLockButton(permission *gio.Permission) *LockButton
+func NewLockButton(permission gio.permission) LockButton
+
+func (l lockButton) GetPermission() gio.permission
+
+func (l lockButton) SetPermission(permission gio.permission)
 
 // MapListModel is a list model that takes a list model and maps the items in
 // that model to different items according to a MapListModelMapFunc.
@@ -11638,12 +19268,38 @@ func NewLockButton(permission *gio.Permission) *LockButton
 //
 //    MapListModel will attempt to discard the mapped objects as soon as
 //    they are no longer needed and recreate them if necessary.
-type MapListModel struct {
+type MapListModel interface {
+	gextras.Objector
+
+	// GetModel: gets the model that is currently being mapped or nil if none.
+	GetModel() gio.ListModel
+	// HasMap: checks if a map function is currently set on @self
+	HasMap() bool
+	// SetMapFunc: sets the function used to map items. The function will be
+	// called whenever an item needs to be mapped and must return the item to
+	// use for the given input item.
+	//
+	// Note that MapListModel may call this function multiple times on the same
+	// item, because it may delete items it doesn't need anymore.
+	//
+	// GTK makes no effort to ensure that @map_func conforms to the item type of
+	// @self. It assumes that the caller knows what they are doing and the map
+	// function returns items of the appropriate type.
+	SetMapFunc(mapFunc MapListModelMapFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
+	// SetModel: sets the model to be mapped.
+	//
+	// GTK makes no effort to ensure that @model conforms to the item type
+	// expected by the map function. It assumes that the caller knows what they
+	// are doing and have set up an appropriate map function.
+	SetModel(model gio.ListModel)
+}
+
+type mapListModel struct {
 	*externglib.Object
 }
 
-func wrapMapListModel(obj *externglib.Object) *MapListModel {
-	return &MapListModel{*externglib.Object{obj}}
+func wrapMapListModel(obj *externglib.Object) MapListModel {
+	return &mapListModel{*externglib.Object{obj}}
 }
 
 func marshalMapListModel(p uintptr) (interface{}, error) {
@@ -11652,16 +19308,34 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewMapListModel(model gio.ListModel, mapFunc MapListModelMapFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) *MapListModel
+func NewMapListModel(model gio.ListModel, mapFunc MapListModelMapFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) MapListModel
+
+func (m mapListModel) GetModel() gio.ListModel
+
+func (m mapListModel) HasMap() bool
+
+func (m mapListModel) SetMapFunc(mapFunc MapListModelMapFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
+
+func (m mapListModel) SetModel(model gio.ListModel)
 
 // MediaControls: gtkMediaControls is a widget to show controls for a
 // MediaStream and giving users a way to use it.
-type MediaControls struct {
+type MediaControls interface {
+	widget
+
+	// GetMediaStream: gets the media stream managed by @controls or nil if
+	// none.
+	GetMediaStream() mediaStream
+	// SetMediaStream: sets the stream that is controlled by @controls.
+	SetMediaStream(stream mediaStream)
+}
+
+type mediaControls struct {
 	Widget
 }
 
-func wrapMediaControls(obj *externglib.Object) *MediaControls {
-	return &MediaControls{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapMediaControls(obj *externglib.Object) MediaControls {
+	return &mediaControls{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalMediaControls(p uintptr) (interface{}, error) {
@@ -11670,7 +19344,11 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewMediaControls(stream *MediaStream) *MediaControls
+func NewMediaControls(stream mediaStream) MediaControls
+
+func (m mediaControls) GetMediaStream() mediaStream
+
+func (m mediaControls) SetMediaStream(stream mediaStream)
 
 // MediaFile is the implementation for media file usage with MediaStream.
 //
@@ -11679,12 +19357,43 @@ func NewMediaControls(stream *MediaStream) *MediaControls
 // GTK provides a GIO extension point for MediaFile implementations to allow for
 // external implementations using various media frameworks. GTK itself includes
 // implementations using GStreamer and ffmpeg.
-type MediaFile struct {
+type MediaFile interface {
+	mediaStream
+
+	// Clear: resets the media file to be empty.
+	Clear()
+	// GetFile: returns the file that @self is currently playing from.
+	//
+	// When @self is not playing or not playing from a file, nil is returned.
+	GetFile() gio.File
+	// GetInputStream: returns the stream that @self is currently playing from.
+	//
+	// When @self is not playing or not playing from a stream, nil is returned.
+	GetInputStream() gio.inputStream
+	// SetFile: if any file is still playing, stop playing it.
+	//
+	// Then start playing the given @file.
+	SetFile(file gio.File)
+	// SetFilename: this is a utility function that converts the given @filename
+	// to a #GFile and calls gtk_media_file_set_file().
+	SetFilename(filename string)
+	// SetInputStream: if anything is still playing, stop playing it. Then start
+	// playing the given @stream.
+	//
+	// Full control about the @stream is assumed for the duration of playback.
+	// The stream will not bt be closed.
+	SetInputStream(stream gio.inputStream)
+	// SetResource: this is a utility function that converts the given
+	// @resource_path to a #GFile and calls gtk_media_file_set_file().
+	SetResource(resourcePath string)
+}
+
+type mediaFile struct {
 	MediaStream
 }
 
-func wrapMediaFile(obj *externglib.Object) *MediaFile {
-	return &MediaFile{MediaStream{*externglib.Object{obj}}}
+func wrapMediaFile(obj *externglib.Object) MediaFile {
+	return &mediaFile{MediaStream{*externglib.Object{obj}}}
 }
 
 func marshalMediaFile(p uintptr) (interface{}, error) {
@@ -11693,15 +19402,29 @@ func marshalMediaFile(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewMediaFile() *MediaFile
+func NewMediaFile() MediaFile
 
-func NewMediaFile(file gio.File) *MediaFile
+func NewMediaFile(file gio.File) MediaFile
 
-func NewMediaFile(filename string) *MediaFile
+func NewMediaFile(filename string) MediaFile
 
-func NewMediaFile(stream *gio.InputStream) *MediaFile
+func NewMediaFile(stream gio.inputStream) MediaFile
 
-func NewMediaFile(resourcePath string) *MediaFile
+func NewMediaFile(resourcePath string) MediaFile
+
+func (m mediaFile) Clear()
+
+func (m mediaFile) GetFile() gio.File
+
+func (m mediaFile) GetInputStream() gio.inputStream
+
+func (m mediaFile) SetFile(file gio.File)
+
+func (m mediaFile) SetFilename(filename string)
+
+func (m mediaFile) SetInputStream(stream gio.inputStream)
+
+func (m mediaFile) SetResource(resourcePath string)
 
 // MediaStream is the integration point for media playback inside GTK.
 //
@@ -11715,12 +19438,174 @@ func NewMediaFile(resourcePath string) *MediaFile
 // gtk_media_stream_ended(), gtk_media_stream_seek_success(),
 // gtk_media_stream_seek_failed(), gtk_media_stream_gerror(),
 // gtk_media_stream_error(), gtk_media_stream_error_valist().
-type MediaStream struct {
+type MediaStream interface {
+	gextras.Objector
+
+	// Ended: pauses the media stream and marks it as ended. This is a hint
+	// only, calls to GtkMediaStream.play() may still happen.
+	Ended()
+	// Gerror: sets @self into an error state. This will pause the stream (you
+	// can check for an error via gtk_media_stream_get_error() in your
+	// GtkMediaStream.pause() implementation), abort pending seeks and mark the
+	// stream as prepared.
+	//
+	// if the stream is already in an error state, this call will be ignored and
+	// the existing error will be retained. FIXME: Or do we want to set the new
+	// error?
+	//
+	// To unset an error, the stream must be reset via a call to
+	// gtk_media_stream_unprepared().
+	Gerror(error *glib.Error)
+	// GetDuration: gets the duration of the stream. If the duration is not
+	// known, 0 will be returned.
+	GetDuration() int64
+	// GetEnded: returns whether the streams playback is finished.
+	GetEnded() bool
+	// GetError: if the stream is in an error state, returns the #GError
+	// explaining that state. Any type of error can be reported here depending
+	// on the implementation of the media stream.
+	//
+	// A media stream in an error cannot be operated on, calls like
+	// gtk_media_stream_play() or gtk_media_stream_seek() will not have any
+	// effect.
+	//
+	// MediaStream itself does not provide a way to unset an error, but
+	// implementations may provide options. For example, a MediaFile will unset
+	// errors when a new source is set with ie gtk_media_file_set_file().
+	GetError() *glib.Error
+	// GetLoop: returns whether the stream is set to loop. See
+	// gtk_media_stream_set_loop() for details.
+	GetLoop() bool
+	// GetMuted: returns whether the audio for the stream is muted. See
+	// gtk_media_stream_set_muted() for details.
+	GetMuted() bool
+	// GetPlaying: return whether the stream is currently playing.
+	GetPlaying() bool
+	// GetTimestamp: returns the current presentation timestamp in microseconds.
+	GetTimestamp() int64
+	// GetVolume: returns the volume of the audio for the stream. See
+	// gtk_media_stream_set_volume() for details.
+	GetVolume() float64
+	// HasAudio: returns whether the stream has audio.
+	HasAudio() bool
+	// HasVideo: returns whether the stream has video.
+	HasVideo() bool
+	// IsPrepared: returns whether the stream has finished initializing and
+	// existence of audio and video is known.
+	IsPrepared() bool
+	// IsSeekable: checks if a stream may be seekable.
+	//
+	// This is meant to be a hint. Streams may not allow seeking even if this
+	// function returns true. However, if this function returns false, streams
+	// are guaranteed to not be seekable and user interfaces may hide controls
+	// that allow seeking.
+	//
+	// It is allowed to call gtk_media_stream_seek() on a non-seekable stream,
+	// though it will not do anything.
+	IsSeekable() bool
+	// IsSeeking: checks if there is currently a seek operation going on.
+	IsSeeking() bool
+	// Pause: pauses playback of the stream. If the stream is not playing, do
+	// nothing.
+	Pause()
+	// Play: starts playing the stream. If the stream is in error or already
+	// playing, do nothing.
+	Play()
+	// Prepared: called by MediaStream implementations to advertise the stream
+	// being ready to play and providing details about the stream.
+	//
+	// Note that the arguments are hints. If the stream implementation cannot
+	// determine the correct values, it is better to err on the side of caution
+	// and return true. User interfaces will use those values to determine what
+	// controls to show.
+	//
+	// This function may not be called again until the stream has been reset via
+	// gtk_media_stream_unprepared().
+	Prepared(hasAudio bool, hasVideo bool, seekable bool, duration int64)
+	// Realize: called by users to attach the media stream to a Surface they
+	// manage. The stream can then access the resources of @surface for its
+	// rendering purposes. In particular, media streams might want to create
+	// GLContexts or sync to the FrameClock.
+	//
+	// Whoever calls this function is responsible for calling
+	// gtk_media_stream_unrealize() before either the stream or @surface get
+	// destroyed.
+	//
+	// Multiple calls to this function may happen from different users of the
+	// video, even with the same @surface. Each of these calls must be followed
+	// by its own call to gtk_media_stream_unrealize().
+	//
+	// It is not required to call this function to make a media stream work.
+	Realize(surface gdk.surface)
+	// Seek: start a seek operation on @self to @timestamp. If @timestamp is out
+	// of range, it will be clamped.
+	//
+	// Seek operations may not finish instantly. While a seek operation is in
+	// process, the GtkMediaStream:seeking property will be set.
+	//
+	// When calling gtk_media_stream_seek() during an ongoing seek operation,
+	// the new seek will override any pending seek.
+	Seek(timestamp int64)
+	// SeekFailed: ends a seek operation started via GtkMediaStream.seek() as a
+	// failure. This will not cause an error on the stream and will assume that
+	// playback continues as if no seek had happened.
+	//
+	// See gtk_media_stream_seek_success() for the other way of ending a seek.
+	SeekFailed()
+	// SeekSuccess: ends a seek operation started via GtkMediaStream.seek()
+	// successfully. This function will unset the GtkMediaStream:ended property
+	// if it was set.
+	//
+	// See gtk_media_stream_seek_failed() for the other way of ending a seek.
+	SeekSuccess()
+	// SetLoop: sets whether the stream should loop, ie restart playback from
+	// the beginning instead of stopping at the end.
+	//
+	// Not all streams may support looping, in particular non-seekable streams.
+	// Those streams will ignore the loop setting and just end.
+	SetLoop(loop bool)
+	// SetMuted: sets whether the audio stream should be muted. Muting a stream
+	// will cause no audio to be played, but it does not modify the volume. This
+	// means that muting and then unmuting the stream will restore the volume
+	// settings.
+	//
+	// If the stream has no audio, calling this function will still work but it
+	// will not have an audible effect.
+	SetMuted(muted bool)
+	// SetPlaying: starts or pauses playback of the stream.
+	SetPlaying(playing bool)
+	// SetVolume: sets the volume of the audio stream. This function call will
+	// work even if the stream is muted.
+	//
+	// The given @volume should range from 0.0 for silence to 1.0 for as loud as
+	// possible. Values outside of this range will be clamped to the nearest
+	// value.
+	//
+	// If the stream has no audio or is muted, calling this function will still
+	// work but it will not have an immediate audible effect. When the stream is
+	// unmuted, the new volume setting will take effect.
+	SetVolume(volume float64)
+	// Unprepared: resets a given media stream implementation.
+	// gtk_media_stream_prepared() can now be called again.
+	//
+	// This function will also reset any error state the stream was in.
+	Unprepared()
+	// Unrealize: undoes a previous call to gtk_media_stream_realize() and
+	// causes the stream to release all resources it had allocated from
+	// @surface.
+	Unrealize(surface gdk.surface)
+	// Update: media stream implementations should regularly call this function
+	// to update the timestamp reported by the stream. It is up to
+	// implementations to call this at the frequency they deem appropriate.
+	Update(timestamp int64)
+}
+
+type mediaStream struct {
 	*externglib.Object
 }
 
-func wrapMediaStream(obj *externglib.Object) *MediaStream {
-	return &MediaStream{*externglib.Object{obj}}
+func wrapMediaStream(obj *externglib.Object) MediaStream {
+	return &mediaStream{*externglib.Object{obj}}
 }
 
 func marshalMediaStream(p uintptr) (interface{}, error) {
@@ -11728,6 +19613,64 @@ func marshalMediaStream(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (m mediaStream) Ended()
+
+func (m mediaStream) Gerror(error *glib.Error)
+
+func (m mediaStream) GetDuration() int64
+
+func (m mediaStream) GetEnded() bool
+
+func (m mediaStream) GetError() *glib.Error
+
+func (m mediaStream) GetLoop() bool
+
+func (m mediaStream) GetMuted() bool
+
+func (m mediaStream) GetPlaying() bool
+
+func (m mediaStream) GetTimestamp() int64
+
+func (m mediaStream) GetVolume() float64
+
+func (m mediaStream) HasAudio() bool
+
+func (m mediaStream) HasVideo() bool
+
+func (m mediaStream) IsPrepared() bool
+
+func (m mediaStream) IsSeekable() bool
+
+func (m mediaStream) IsSeeking() bool
+
+func (m mediaStream) Pause()
+
+func (m mediaStream) Play()
+
+func (m mediaStream) Prepared(hasAudio bool, hasVideo bool, seekable bool, duration int64)
+
+func (m mediaStream) Realize(surface gdk.surface)
+
+func (m mediaStream) Seek(timestamp int64)
+
+func (m mediaStream) SeekFailed()
+
+func (m mediaStream) SeekSuccess()
+
+func (m mediaStream) SetLoop(loop bool)
+
+func (m mediaStream) SetMuted(muted bool)
+
+func (m mediaStream) SetPlaying(playing bool)
+
+func (m mediaStream) SetVolume(volume float64)
+
+func (m mediaStream) Unprepared()
+
+func (m mediaStream) Unrealize(surface gdk.surface)
+
+func (m mediaStream) Update(timestamp int64)
 
 // MenuButton: the MenuButton widget is used to display a popup when clicked on.
 // This popup can be provided either as a Popover or as an abstract Model.
@@ -11818,12 +19761,85 @@ func marshalMediaStream(p uintptr) (interface{}, error) {
 // Accessibility
 //
 // GtkMenuButton uses the K_ACCESSIBLE_ROLE_BUTTON role.
-type MenuButton struct {
+type MenuButton interface {
+	widget
+
+	// GetDirection: returns the direction the popup will be pointing at when
+	// popped up.
+	GetDirection() ArrowType
+	// GetHasFrame: returns whether the button has a frame.
+	GetHasFrame() bool
+	// GetIconName: gets the name of the icon shown in the button.
+	GetIconName() string
+	// GetLabel: gets the label shown in the button
+	GetLabel() string
+	// GetMenuModel: returns the Model used to generate the popup.
+	GetMenuModel() gio.menuModel
+	// GetPopover: returns the Popover that pops out of the button. If the
+	// button is not using a Popover, this function returns nil.
+	GetPopover() popover
+	// GetUseUnderline: returns whether an embedded underline in the text
+	// indicates a mnemonic. See gtk_menu_button_set_use_underline().
+	GetUseUnderline() bool
+	// Popdown: dismiss the menu.
+	Popdown()
+	// Popup: pop up the menu.
+	Popup()
+	// SetCreatePopupFunc: sets @func to be called when a popup is about to be
+	// shown. @func should use one of
+	//
+	// - gtk_menu_button_set_popover() - gtk_menu_button_set_menu_model()
+	//
+	// to set a popup for @menu_button. If @func is non-nil, @menu_button will
+	// always be sensitive.
+	//
+	// Using this function will not reset the menu widget attached to
+	// @menu_button. Instead, this can be done manually in @func.
+	SetCreatePopupFunc(_func MenuButtonCreatePopupFunc, userData unsafe.Pointer, destroyNotify unsafe.Pointer)
+	// SetDirection: sets the direction in which the popup will be popped up, as
+	// well as changing the arrow’s direction. The child will not be changed to
+	// an arrow if it was customized.
+	//
+	// If the does not fit in the available space in the given direction, GTK
+	// will its best to keep it inside the screen and fully visible.
+	//
+	// If you pass GTK_ARROW_NONE for a @direction, the popup will behave as if
+	// you passed GTK_ARROW_DOWN (although you won’t see any arrows).
+	SetDirection(direction ArrowType)
+	// SetHasFrame: sets the style of the button.
+	SetHasFrame(hasFrame bool)
+	// SetIconName: sets the name of an icon to show inside the menu button.
+	SetIconName(iconName string)
+	// SetLabel: sets the label to show inside the menu button.
+	SetLabel(label string)
+	// SetMenuModel: sets the Model from which the popup will be constructed, or
+	// nil to dissociate any existing menu model and disable the button.
+	//
+	// A Popover will be created from the menu model with
+	// gtk_popover_menu_new_from_model(). Actions will be connected as
+	// documented for this function.
+	//
+	// If MenuButton:popover is already set, it will be dissociated from the
+	// @menu_button, and the property is set to nil.
+	SetMenuModel(menuModel gio.menuModel)
+	// SetPopover: sets the Popover that will be popped up when the @menu_button
+	// is clicked, or nil to dissociate any existing popover and disable the
+	// button.
+	//
+	// If MenuButton:menu-model is set, the menu model is dissociated from the
+	// @menu_button, and the property is set to nil.
+	SetPopover(popover widget)
+	// SetUseUnderline: if true, an underline in the text indicates the next
+	// character should be used for the mnemonic accelerator key.
+	SetUseUnderline(useUnderline bool)
+}
+
+type menuButton struct {
 	Widget
 }
 
-func wrapMenuButton(obj *externglib.Object) *MenuButton {
-	return &MenuButton{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapMenuButton(obj *externglib.Object) MenuButton {
+	return &menuButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalMenuButton(p uintptr) (interface{}, error) {
@@ -11832,7 +19848,41 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewMenuButton() *MenuButton
+func NewMenuButton() MenuButton
+
+func (m menuButton) GetDirection() ArrowType
+
+func (m menuButton) GetHasFrame() bool
+
+func (m menuButton) GetIconName() string
+
+func (m menuButton) GetLabel() string
+
+func (m menuButton) GetMenuModel() gio.menuModel
+
+func (m menuButton) GetPopover() popover
+
+func (m menuButton) GetUseUnderline() bool
+
+func (m menuButton) Popdown()
+
+func (m menuButton) Popup()
+
+func (m menuButton) SetCreatePopupFunc(_func MenuButtonCreatePopupFunc, userData unsafe.Pointer, destroyNotify unsafe.Pointer)
+
+func (m menuButton) SetDirection(direction ArrowType)
+
+func (m menuButton) SetHasFrame(hasFrame bool)
+
+func (m menuButton) SetIconName(iconName string)
+
+func (m menuButton) SetLabel(label string)
+
+func (m menuButton) SetMenuModel(menuModel gio.menuModel)
+
+func (m menuButton) SetPopover(popover widget)
+
+func (m menuButton) SetUseUnderline(useUnderline bool)
 
 // MessageDialog: messageDialog presents a dialog with some message text. It’s
 // simply a convenience widget; you could construct the equivalent of
@@ -11879,12 +19929,26 @@ func NewMenuButton() *MenuButton
 //
 //    The GtkMessageDialog implementation of the GtkBuildable interface exposes
 //    the message area as an internal child with the name “message_area”.
-type MessageDialog struct {
+type MessageDialog interface {
+	dialog
+
+	// GetMessageArea: returns the message area of the dialog. This is the box
+	// where the dialog’s primary and secondary labels are packed. You can add
+	// your own extra content to that box and it will appear below those labels.
+	// See gtk_dialog_get_content_area() for the corresponding function in the
+	// parent Dialog.
+	GetMessageArea() widget
+	// SetMarkup: sets the text of the message dialog to be @str, which is
+	// marked up with the [Pango text markup language][PangoMarkupFormat].
+	SetMarkup(str string)
+}
+
+type messageDialog struct {
 	Dialog
 }
 
-func wrapMessageDialog(obj *externglib.Object) *MessageDialog {
-	return &MessageDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
+func wrapMessageDialog(obj *externglib.Object) MessageDialog {
+	return &messageDialog{Dialog{Window{Widget{externglib.InitiallyUnowned{obj}}}}}
 }
 
 func marshalMessageDialog(p uintptr) (interface{}, error) {
@@ -11893,13 +19957,21 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (m messageDialog) GetMessageArea() widget
+
+func (m messageDialog) SetMarkup(str string)
+
 // MnemonicAction: a ShortcutAction that calls gtk_widget_mnemonic_activate().
-type MnemonicAction struct {
+type MnemonicAction interface {
+	shortcutAction
+}
+
+type mnemonicAction struct {
 	ShortcutAction
 }
 
-func wrapMnemonicAction(obj *externglib.Object) *MnemonicAction {
-	return &MnemonicAction{ShortcutAction{*externglib.Object{obj}}}
+func wrapMnemonicAction(obj *externglib.Object) MnemonicAction {
+	return &mnemonicAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalMnemonicAction(p uintptr) (interface{}, error) {
@@ -11910,12 +19982,20 @@ func marshalMnemonicAction(p uintptr) (interface{}, error) {
 
 // MnemonicTrigger: a ShortcutTrigger that triggers when a specific mnemonic is
 // pressed.
-type MnemonicTrigger struct {
+type MnemonicTrigger interface {
+	shortcutTrigger
+
+	// GetKeyval: gets the keyval that must be pressed to succeed triggering
+	// @self.
+	GetKeyval() uint
+}
+
+type mnemonicTrigger struct {
 	ShortcutTrigger
 }
 
-func wrapMnemonicTrigger(obj *externglib.Object) *MnemonicTrigger {
-	return &MnemonicTrigger{ShortcutTrigger{*externglib.Object{obj}}}
+func wrapMnemonicTrigger(obj *externglib.Object) MnemonicTrigger {
+	return &mnemonicTrigger{ShortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
@@ -11924,16 +20004,36 @@ func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewMnemonicTrigger(keyval uint) *MnemonicTrigger
+func NewMnemonicTrigger(keyval uint) MnemonicTrigger
+
+func (m mnemonicTrigger) GetKeyval() uint
 
 // MountOperation: this should not be accessed directly. Use the accessor
 // functions below.
-type MountOperation struct {
+type MountOperation interface {
+	gio.mountOperation
+
+	// GetDisplay: gets the display on which windows of the MountOperation will
+	// be shown.
+	GetDisplay() gdk.display
+	// GetParent: gets the transient parent used by the MountOperation
+	GetParent() window
+	// IsShowing: returns whether the MountOperation is currently displaying a
+	// window.
+	IsShowing() bool
+	// SetDisplay: sets the display to show windows of the MountOperation on.
+	SetDisplay(display gdk.display)
+	// SetParent: sets the transient parent for windows shown by the
+	// MountOperation.
+	SetParent(parent window)
+}
+
+type mountOperation struct {
 	gio.MountOperation
 }
 
-func wrapMountOperation(obj *externglib.Object) *MountOperation {
-	return &MountOperation{MountOperation{*externglib.Object{obj}}}
+func wrapMountOperation(obj *externglib.Object) MountOperation {
+	return &mountOperation{gio.MountOperation{*externglib.Object{obj}}}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
@@ -11942,7 +20042,17 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewMountOperation(parent *Window) *MountOperation
+func NewMountOperation(parent window) MountOperation
+
+func (m mountOperation) GetDisplay() gdk.display
+
+func (m mountOperation) GetParent() window
+
+func (m mountOperation) IsShowing() bool
+
+func (m mountOperation) SetDisplay(display gdk.display)
+
+func (m mountOperation) SetParent(parent window)
 
 // MultiFilter: gtkMultiFilter is the base type that implements support for
 // handling multiple filters.
@@ -11952,12 +20062,23 @@ func NewMountOperation(parent *Window) *MountOperation
 //
 // GtkEveryFilter is a subclass of GtkMultiFilter that matches an item when each
 // of its filters matches.
-type MultiFilter struct {
+type MultiFilter interface {
+	filter
+
+	// Append: adds a @filter to @self to use for matching.
+	Append(filter filter)
+	// Remove: removes the filter at the given @position from the list of
+	// filters used by @self. If @position is larger than the number of filters,
+	// nothing happens and the function returns.
+	Remove(position uint)
+}
+
+type multiFilter struct {
 	Filter
 }
 
-func wrapMultiFilter(obj *externglib.Object) *MultiFilter {
-	return &MultiFilter{Filter{*externglib.Object{obj}}}
+func wrapMultiFilter(obj *externglib.Object) MultiFilter {
+	return &multiFilter{Filter{*externglib.Object{obj}}}
 }
 
 func marshalMultiFilter(p uintptr) (interface{}, error) {
@@ -11966,14 +20087,28 @@ func marshalMultiFilter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (m multiFilter) Append(filter filter)
+
+func (m multiFilter) Remove(position uint)
+
 // MultiSelection: gtkMultiSelection is an implementation of the SelectionModel
 // interface that allows selecting multiple elements.
-type MultiSelection struct {
+type MultiSelection interface {
+	gextras.Objector
+
+	// GetModel: returns the underlying model of @self.
+	GetModel() gio.ListModel
+	// SetModel: sets the model that @self should wrap. If @model is nil, @self
+	// will be empty.
+	SetModel(model gio.ListModel)
+}
+
+type multiSelection struct {
 	*externglib.Object
 }
 
-func wrapMultiSelection(obj *externglib.Object) *MultiSelection {
-	return &MultiSelection{*externglib.Object{obj}}
+func wrapMultiSelection(obj *externglib.Object) MultiSelection {
+	return &multiSelection{*externglib.Object{obj}}
 }
 
 func marshalMultiSelection(p uintptr) (interface{}, error) {
@@ -11982,17 +20117,34 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewMultiSelection(model gio.ListModel) *MultiSelection
+func NewMultiSelection(model gio.ListModel) MultiSelection
+
+func (m multiSelection) GetModel() gio.ListModel
+
+func (m multiSelection) SetModel(model gio.ListModel)
 
 // MultiSorter: gtkMultiSorter combines multiple sorters by trying them in turn.
 // If the first sorter compares two items as equal, the second is tried next,
 // and so on.
-type MultiSorter struct {
+type MultiSorter interface {
+	sorter
+
+	// Append: add @sorter to @self to use for sorting at the end. @self will
+	// consult all existing sorters before it will sort with the given @sorter.
+	Append(sorter sorter)
+	// Remove: removes the sorter at the given @position from the list of sorter
+	// used by @self.
+	//
+	// If @position is larger than the number of sorters, nothing happens.
+	Remove(position uint)
+}
+
+type multiSorter struct {
 	Sorter
 }
 
-func wrapMultiSorter(obj *externglib.Object) *MultiSorter {
-	return &MultiSorter{Sorter{*externglib.Object{obj}}}
+func wrapMultiSorter(obj *externglib.Object) MultiSorter {
+	return &multiSorter{Sorter{*externglib.Object{obj}}}
 }
 
 func marshalMultiSorter(p uintptr) (interface{}, error) {
@@ -12001,15 +20153,26 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewMultiSorter() *MultiSorter
+func NewMultiSorter() MultiSorter
+
+func (m multiSorter) Append(sorter sorter)
+
+func (m multiSorter) Remove(position uint)
 
 // NamedAction: a ShortcutAction that activates an action by name.
-type NamedAction struct {
+type NamedAction interface {
+	shortcutAction
+
+	// GetActionName: returns the name of the action that will be activated.
+	GetActionName() string
+}
+
+type namedAction struct {
 	ShortcutAction
 }
 
-func wrapNamedAction(obj *externglib.Object) *NamedAction {
-	return &NamedAction{ShortcutAction{*externglib.Object{obj}}}
+func wrapNamedAction(obj *externglib.Object) NamedAction {
+	return &namedAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalNamedAction(p uintptr) (interface{}, error) {
@@ -12018,7 +20181,9 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewNamedAction(name string) *NamedAction
+func NewNamedAction(name string) NamedAction
+
+func (n namedAction) GetActionName() string
 
 // NativeDialog: native dialogs are platform dialogs that don't use Dialog or
 // Window. They are used in order to integrate better with a platform, by
@@ -12034,12 +20199,66 @@ func NewNamedAction(name string) *NamedAction
 // Note that unlike Dialog, NativeDialog objects are not toplevel widgets, and
 // GTK does not keep them alive. It is your responsibility to keep a reference
 // until you are done with the object.
-type NativeDialog struct {
+type NativeDialog interface {
+	gextras.Objector
+
+	// Destroy: destroys a dialog.
+	//
+	// When a dialog is destroyed, it will break any references it holds to
+	// other objects. If it is visible it will be hidden and any underlying
+	// window system resources will be destroyed.
+	//
+	// Note that this does not release any reference to the object (as opposed
+	// to destroying a GtkWindow) because there is no reference from the
+	// windowing system to the NativeDialog.
+	Destroy()
+	// GetModal: returns whether the dialog is modal. See
+	// gtk_native_dialog_set_modal().
+	GetModal() bool
+	// GetTitle: gets the title of the NativeDialog.
+	GetTitle() string
+	// GetTransientFor: fetches the transient parent for this window. See
+	// gtk_native_dialog_set_transient_for().
+	GetTransientFor() window
+	// GetVisible: determines whether the dialog is visible.
+	GetVisible() bool
+	// Hide: hides the dialog if it is visilbe, aborting any interaction. Once
+	// this is called the NativeDialog::response signal will not be emitted
+	// until after the next call to gtk_native_dialog_show().
+	//
+	// If the dialog is not visible this does nothing.
+	Hide()
+	// SetModal: sets a dialog modal or non-modal. Modal dialogs prevent
+	// interaction with other windows in the same application. To keep modal
+	// dialogs on top of main application windows, use
+	// gtk_native_dialog_set_transient_for() to make the dialog transient for
+	// the parent; most [window managers][gtk-X11-arch] will then disallow
+	// lowering the dialog below the parent.
+	SetModal(modal bool)
+	// SetTitle: sets the title of the NativeDialog.
+	SetTitle(title string)
+	// SetTransientFor: dialog windows should be set transient for the main
+	// application window they were spawned from. This allows [window
+	// managers][gtk-X11-arch] to e.g. keep the dialog on top of the main
+	// window, or center the dialog over the main window.
+	//
+	// Passing nil for @parent unsets the current transient window.
+	SetTransientFor(parent window)
+	// Show: shows the dialog on the display, allowing the user to interact with
+	// it. When the user accepts the state of the dialog the dialog will be
+	// automatically hidden and the NativeDialog::response signal will be
+	// emitted.
+	//
+	// Multiple calls while the dialog is visible will be ignored.
+	Show()
+}
+
+type nativeDialog struct {
 	*externglib.Object
 }
 
-func wrapNativeDialog(obj *externglib.Object) *NativeDialog {
-	return &NativeDialog{*externglib.Object{obj}}
+func wrapNativeDialog(obj *externglib.Object) NativeDialog {
+	return &nativeDialog{*externglib.Object{obj}}
 }
 
 func marshalNativeDialog(p uintptr) (interface{}, error) {
@@ -12048,13 +20267,37 @@ func marshalNativeDialog(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (n nativeDialog) Destroy()
+
+func (n nativeDialog) GetModal() bool
+
+func (n nativeDialog) GetTitle() string
+
+func (n nativeDialog) GetTransientFor() window
+
+func (n nativeDialog) GetVisible() bool
+
+func (n nativeDialog) Hide()
+
+func (n nativeDialog) SetModal(modal bool)
+
+func (n nativeDialog) SetTitle(title string)
+
+func (n nativeDialog) SetTransientFor(parent window)
+
+func (n nativeDialog) Show()
+
 // NeverTrigger: a ShortcutTrigger that never triggers.
-type NeverTrigger struct {
+type NeverTrigger interface {
+	shortcutTrigger
+}
+
+type neverTrigger struct {
 	ShortcutTrigger
 }
 
-func wrapNeverTrigger(obj *externglib.Object) *NeverTrigger {
-	return &NeverTrigger{ShortcutTrigger{*externglib.Object{obj}}}
+func wrapNeverTrigger(obj *externglib.Object) NeverTrigger {
+	return &neverTrigger{ShortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalNeverTrigger(p uintptr) (interface{}, error) {
@@ -12068,12 +20311,22 @@ func marshalNeverTrigger(p uintptr) (interface{}, error) {
 //
 // This model is meant to be used as a simple wrapper to Models when a
 // SelectionModel is required.
-type NoSelection struct {
+type NoSelection interface {
+	gextras.Objector
+
+	// GetModel: gets the model that @self is wrapping.
+	GetModel() gio.ListModel
+	// SetModel: sets the model that @self should wrap. If @model is nil, this
+	// model will be empty.
+	SetModel(model gio.ListModel)
+}
+
+type noSelection struct {
 	*externglib.Object
 }
 
-func wrapNoSelection(obj *externglib.Object) *NoSelection {
-	return &NoSelection{*externglib.Object{obj}}
+func wrapNoSelection(obj *externglib.Object) NoSelection {
+	return &noSelection{*externglib.Object{obj}}
 }
 
 func marshalNoSelection(p uintptr) (interface{}, error) {
@@ -12082,7 +20335,11 @@ func marshalNoSelection(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewNoSelection(model gio.ListModel) *NoSelection
+func NewNoSelection(model gio.ListModel) NoSelection
+
+func (n noSelection) GetModel() gio.ListModel
+
+func (n noSelection) SetModel(model gio.ListModel)
 
 // Notebook: the Notebook widget is a layout container whose children are pages
 // that can be switched between using tab labels along one edge.
@@ -12169,12 +20426,193 @@ func NewNoSelection(model gio.ListModel) *NoSelection
 // - GTK_ACCESSIBLE_ROLE_GROUP for the notebook widget -
 // GTK_ACCESSIBLE_ROLE_TAB_LIST for the list of tabs - GTK_ACCESSIBLE_ROLE_TAB
 // role for each tab - GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page
-type Notebook struct {
+type Notebook interface {
+	widget
+
+	// AppendPage: appends a page to @notebook.
+	AppendPage(child widget, tabLabel widget) int
+	// AppendPageMenu: appends a page to @notebook, specifying the widget to use
+	// as the label in the popup menu.
+	AppendPageMenu(child widget, tabLabel widget, menuLabel widget) int
+	// DetachTab: removes the child from the notebook.
+	//
+	// This function is very similar to gtk_notebook_remove_page(), but
+	// additionally informs the notebook that the removal is happening as part
+	// of a tab DND operation, which should not be cancelled.
+	DetachTab(child widget)
+	// GetActionWidget: gets one of the action widgets. See
+	// gtk_notebook_set_action_widget().
+	GetActionWidget(packType PackType) widget
+	// GetCurrentPage: returns the page number of the current page.
+	GetCurrentPage() int
+	// GetGroupName: gets the current group name for @notebook.
+	GetGroupName() string
+	// GetMenuLabel: retrieves the menu label widget of the page containing
+	// @child.
+	GetMenuLabel(child widget) widget
+	// GetMenuLabelText: retrieves the text of the menu label for the page
+	// containing @child.
+	GetMenuLabelText(child widget) string
+	// GetNPages: gets the number of pages in a notebook.
+	GetNPages() int
+	// GetNthPage: returns the child widget contained in page number @page_num.
+	GetNthPage(pageNum int) widget
+	// GetPage: returns the NotebookPage for @child.
+	GetPage(child widget) notebookPage
+	// GetPages: returns a Model that contains the pages of the notebook, and
+	// can be used to keep an up-to-date view.
+	GetPages() gio.ListModel
+	// GetScrollable: returns whether the tab label area has arrows for
+	// scrolling. See gtk_notebook_set_scrollable().
+	GetScrollable() bool
+	// GetShowBorder: returns whether a bevel will be drawn around the notebook
+	// pages. See gtk_notebook_set_show_border().
+	GetShowBorder() bool
+	// GetShowTabs: returns whether the tabs of the notebook are shown. See
+	// gtk_notebook_set_show_tabs().
+	GetShowTabs() bool
+	// GetTabDetachable: returns whether the tab contents can be detached from
+	// @notebook.
+	GetTabDetachable(child widget) bool
+	// GetTabLabel: returns the tab label widget for the page @child. nil is
+	// returned if @child is not in @notebook or if no tab label has
+	// specifically been set for @child.
+	GetTabLabel(child widget) widget
+	// GetTabLabelText: retrieves the text of the tab label for the page
+	// containing @child.
+	GetTabLabelText(child widget) string
+	// GetTabPos: gets the edge at which the tabs for switching pages in the
+	// notebook are drawn.
+	GetTabPos() PositionType
+	// GetTabReorderable: gets whether the tab can be reordered via drag and
+	// drop or not.
+	GetTabReorderable(child widget) bool
+	// InsertPage: insert a page into @notebook at the given position.
+	InsertPage(child widget, tabLabel widget, position int) int
+	// InsertPageMenu: insert a page into @notebook at the given position,
+	// specifying the widget to use as the label in the popup menu.
+	InsertPageMenu(child widget, tabLabel widget, menuLabel widget, position int) int
+	// NextPage: switches to the next page. Nothing happens if the current page
+	// is the last page.
+	NextPage()
+	// PageNum: finds the index of the page which contains the given child
+	// widget.
+	PageNum(child widget) int
+	// PopupDisable: disables the popup menu.
+	PopupDisable()
+	// PopupEnable: enables the popup menu: if the user clicks with the right
+	// mouse button on the tab labels, a menu with all the pages will be popped
+	// up.
+	PopupEnable()
+	// PrependPage: prepends a page to @notebook.
+	PrependPage(child widget, tabLabel widget) int
+	// PrependPageMenu: prepends a page to @notebook, specifying the widget to
+	// use as the label in the popup menu.
+	PrependPageMenu(child widget, tabLabel widget, menuLabel widget) int
+	// PrevPage: switches to the previous page. Nothing happens if the current
+	// page is the first page.
+	PrevPage()
+	// RemovePage: removes a page from the notebook given its index in the
+	// notebook.
+	RemovePage(pageNum int)
+	// ReorderChild: reorders the page containing @child, so that it appears in
+	// position @position. If @position is greater than or equal to the number
+	// of children in the list or negative, @child will be moved to the end of
+	// the list.
+	ReorderChild(child widget, position int)
+	// SetActionWidget: sets @widget as one of the action widgets. Depending on
+	// the pack type the widget will be placed before or after the tabs. You can
+	// use a Box if you need to pack more than one widget on the same side.
+	SetActionWidget(widget widget, packType PackType)
+	// SetCurrentPage: switches to the page number @page_num.
+	//
+	// Note that due to historical reasons, GtkNotebook refuses to switch to a
+	// page unless the child widget is visible. Therefore, it is recommended to
+	// show child widgets before adding them to a notebook.
+	SetCurrentPage(pageNum int)
+	// SetGroupName: sets a group name for @notebook.
+	//
+	// Notebooks with the same name will be able to exchange tabs via drag and
+	// drop. A notebook with a nil group name will not be able to exchange tabs
+	// with any other notebook.
+	SetGroupName(groupName string)
+	// SetMenuLabel: changes the menu label for the page containing @child.
+	SetMenuLabel(child widget, menuLabel widget)
+	// SetMenuLabelText: creates a new label and sets it as the menu label of
+	// @child.
+	SetMenuLabelText(child widget, menuText string)
+	// SetScrollable: sets whether the tab label area will have arrows for
+	// scrolling if there are too many tabs to fit in the area.
+	SetScrollable(scrollable bool)
+	// SetShowBorder: sets whether a bevel will be drawn around the notebook
+	// pages. This only has a visual effect when the tabs are not shown. See
+	// gtk_notebook_set_show_tabs().
+	SetShowBorder(showBorder bool)
+	// SetShowTabs: sets whether to show the tabs for the notebook or not.
+	SetShowTabs(showTabs bool)
+	// SetTabDetachable: sets whether the tab can be detached from @notebook to
+	// another notebook or widget.
+	//
+	// Note that 2 notebooks must share a common group identificator (see
+	// gtk_notebook_set_group_name()) to allow automatic tabs interchange
+	// between them.
+	//
+	// If you want a widget to interact with a notebook through DnD (i.e.:
+	// accept dragged tabs from it) it must be set as a drop destination and
+	// accept the target “GTK_NOTEBOOK_TAB”. The notebook will fill the
+	// selection with a GtkWidget** pointing to the child widget that
+	// corresponds to the dropped tab.
+	//
+	// Note that you should use gtk_notebook_detach_tab() instead of
+	// gtk_notebook_remove_page() if you want to remove the tab from the source
+	// notebook as part of accepting a drop. Otherwise, the source notebook will
+	// think that the dragged tab was removed from underneath the ongoing drag
+	// operation, and will initiate a drag cancel animation.
+	//
+	//     static void
+	//     on_drag_data_received (GtkWidget        *widget,
+	//                            GdkDrop          *drop,
+	//                            GtkSelectionData *data,
+	//                            guint             time,
+	//                            gpointer          user_data)
+	//     {
+	//       GtkDrag *drag;
+	//       GtkWidget *notebook;
+	//       GtkWidget **child;
+	//
+	//       drag = gtk_drop_get_drag (drop);
+	//       notebook = g_object_get_data (drag, "gtk-notebook-drag-origin");
+	//       child = (void*) gtk_selection_data_get_data (data);
+	//
+	//       // process_widget (*child);
+	//
+	//       gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
+	//     }
+	//
+	//
+	// If you want a notebook to accept drags from other widgets, you will have
+	// to set your own DnD code to do it.
+	SetTabDetachable(child widget, detachable bool)
+	// SetTabLabel: changes the tab label for @child. If nil is specified for
+	// @tab_label, then the page will have the label “page N”.
+	SetTabLabel(child widget, tabLabel widget)
+	// SetTabLabelText: creates a new label and sets it as the tab label for the
+	// page containing @child.
+	SetTabLabelText(child widget, tabText string)
+	// SetTabPos: sets the edge at which the tabs for switching pages in the
+	// notebook are drawn.
+	SetTabPos(pos PositionType)
+	// SetTabReorderable: sets whether the notebook tab can be reordered via
+	// drag and drop or not.
+	SetTabReorderable(child widget, reorderable bool)
+}
+
+type notebook struct {
 	Widget
 }
 
-func wrapNotebook(obj *externglib.Object) *Notebook {
-	return &Notebook{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapNotebook(obj *externglib.Object) Notebook {
+	return &notebook{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalNotebook(p uintptr) (interface{}, error) {
@@ -12183,17 +20621,112 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewNotebook() *Notebook
+func NewNotebook() Notebook
+
+func (n notebook) AppendPage(child widget, tabLabel widget) int
+
+func (n notebook) AppendPageMenu(child widget, tabLabel widget, menuLabel widget) int
+
+func (n notebook) DetachTab(child widget)
+
+func (n notebook) GetActionWidget(packType PackType) widget
+
+func (n notebook) GetCurrentPage() int
+
+func (n notebook) GetGroupName() string
+
+func (n notebook) GetMenuLabel(child widget) widget
+
+func (n notebook) GetMenuLabelText(child widget) string
+
+func (n notebook) GetNPages() int
+
+func (n notebook) GetNthPage(pageNum int) widget
+
+func (n notebook) GetPage(child widget) notebookPage
+
+func (n notebook) GetPages() gio.ListModel
+
+func (n notebook) GetScrollable() bool
+
+func (n notebook) GetShowBorder() bool
+
+func (n notebook) GetShowTabs() bool
+
+func (n notebook) GetTabDetachable(child widget) bool
+
+func (n notebook) GetTabLabel(child widget) widget
+
+func (n notebook) GetTabLabelText(child widget) string
+
+func (n notebook) GetTabPos() PositionType
+
+func (n notebook) GetTabReorderable(child widget) bool
+
+func (n notebook) InsertPage(child widget, tabLabel widget, position int) int
+
+func (n notebook) InsertPageMenu(child widget, tabLabel widget, menuLabel widget, position int) int
+
+func (n notebook) NextPage()
+
+func (n notebook) PageNum(child widget) int
+
+func (n notebook) PopupDisable()
+
+func (n notebook) PopupEnable()
+
+func (n notebook) PrependPage(child widget, tabLabel widget) int
+
+func (n notebook) PrependPageMenu(child widget, tabLabel widget, menuLabel widget) int
+
+func (n notebook) PrevPage()
+
+func (n notebook) RemovePage(pageNum int)
+
+func (n notebook) ReorderChild(child widget, position int)
+
+func (n notebook) SetActionWidget(widget widget, packType PackType)
+
+func (n notebook) SetCurrentPage(pageNum int)
+
+func (n notebook) SetGroupName(groupName string)
+
+func (n notebook) SetMenuLabel(child widget, menuLabel widget)
+
+func (n notebook) SetMenuLabelText(child widget, menuText string)
+
+func (n notebook) SetScrollable(scrollable bool)
+
+func (n notebook) SetShowBorder(showBorder bool)
+
+func (n notebook) SetShowTabs(showTabs bool)
+
+func (n notebook) SetTabDetachable(child widget, detachable bool)
+
+func (n notebook) SetTabLabel(child widget, tabLabel widget)
+
+func (n notebook) SetTabLabelText(child widget, tabText string)
+
+func (n notebook) SetTabPos(pos PositionType)
+
+func (n notebook) SetTabReorderable(child widget, reorderable bool)
 
 // NotebookPage: a page in the Notebook.
 //
 // The `GtkNotebookPage` structure only contains private data.
-type NotebookPage struct {
+type NotebookPage interface {
+	gextras.Objector
+
+	// GetChild: returns the notebook child to which @page belongs.
+	GetChild() widget
+}
+
+type notebookPage struct {
 	*externglib.Object
 }
 
-func wrapNotebookPage(obj *externglib.Object) *NotebookPage {
-	return &NotebookPage{*externglib.Object{obj}}
+func wrapNotebookPage(obj *externglib.Object) NotebookPage {
+	return &notebookPage{*externglib.Object{obj}}
 }
 
 func marshalNotebookPage(p uintptr) (interface{}, error) {
@@ -12202,13 +20735,19 @@ func marshalNotebookPage(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (n notebookPage) GetChild() widget
+
 // NothingAction: a ShortcutAction that does nothing.
-type NothingAction struct {
+type NothingAction interface {
+	shortcutAction
+}
+
+type nothingAction struct {
 	ShortcutAction
 }
 
-func wrapNothingAction(obj *externglib.Object) *NothingAction {
-	return &NothingAction{ShortcutAction{*externglib.Object{obj}}}
+func wrapNothingAction(obj *externglib.Object) NothingAction {
+	return &nothingAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalNothingAction(p uintptr) (interface{}, error) {
@@ -12220,12 +20759,33 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 // NumericSorter: gtkNumericSorter is a Sorter that compares numbers.
 //
 // To obtain the numbers to compare, this sorter evaluates a Expression.
-type NumericSorter struct {
+type NumericSorter interface {
+	sorter
+
+	// GetExpression: gets the expression that is evaluated to obtain numbers
+	// from items.
+	GetExpression() expression
+	// GetSortOrder: gets whether this sorter will sort smaller numbers first.
+	GetSortOrder() SortType
+	// SetExpression: sets the expression that is evaluated to obtain numbers
+	// from items.
+	//
+	// Unless an expression is set on @self, the sorter will always compare
+	// items as invalid.
+	//
+	// The expression must have a return type that can be compared numerically,
+	// such as TYPE_INT or TYPE_DOUBLE.
+	SetExpression(expression expression)
+	// SetSortOrder: sets whether to sort smaller numbers before larger ones.
+	SetSortOrder(sortOrder SortType)
+}
+
+type numericSorter struct {
 	Sorter
 }
 
-func wrapNumericSorter(obj *externglib.Object) *NumericSorter {
-	return &NumericSorter{Sorter{*externglib.Object{obj}}}
+func wrapNumericSorter(obj *externglib.Object) NumericSorter {
+	return &numericSorter{Sorter{*externglib.Object{obj}}}
 }
 
 func marshalNumericSorter(p uintptr) (interface{}, error) {
@@ -12234,14 +20794,29 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewNumericSorter(expression *Expression) *NumericSorter
+func NewNumericSorter(expression expression) NumericSorter
 
-type ObjectExpression struct {
+func (n numericSorter) GetExpression() expression
+
+func (n numericSorter) GetSortOrder() SortType
+
+func (n numericSorter) SetExpression(expression expression)
+
+func (n numericSorter) SetSortOrder(sortOrder SortType)
+
+type ObjectExpression interface {
+	expression
+
+	// GetObject: gets the object that the expression evaluates to.
+	GetObject() gextras.Objector
+}
+
+type objectExpression struct {
 	Expression
 }
 
-func wrapObjectExpression(obj *externglib.Object) *ObjectExpression {
-	return &ObjectExpression{Expression{obj}}
+func wrapObjectExpression(obj *externglib.Object) ObjectExpression {
+	return &objectExpression{Expression{obj}}
 }
 
 func marshalObjectExpression(p uintptr) (interface{}, error) {
@@ -12250,7 +20825,9 @@ func marshalObjectExpression(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewObjectExpression(object *externglib.Object) *ObjectExpression
+func NewObjectExpression(object gextras.Objector) ObjectExpression
+
+func (o objectExpression) GetObject() gextras.Objector
 
 // Overlay: gtkOverlay is a container which contains a single main child, on top
 // of which it can place “overlay” widgets. The position of each overlay widget
@@ -12280,12 +20857,46 @@ func NewObjectExpression(object *externglib.Object) *ObjectExpression
 // GtkOverlay has a single CSS node with the name “overlay”. Overlay children
 // whose alignments cause them to be positioned at an edge get the style classes
 // “.left”, “.right”, “.top”, and/or “.bottom” according to their position.
-type Overlay struct {
+type Overlay interface {
+	widget
+
+	// AddOverlay: adds @widget to @overlay.
+	//
+	// The widget will be stacked on top of the main widget added with
+	// gtk_overlay_set_child().
+	//
+	// The position at which @widget is placed is determined from its
+	// Widget:halign and Widget:valign properties.
+	AddOverlay(widget widget)
+	// GetChild: gets the child widget of @overlay.
+	GetChild() widget
+	// GetClipOverlay: gets whether @widget should be clipped within the parent.
+	GetClipOverlay(widget widget) bool
+	// GetMeasureOverlay: gets whether @widget's size is included in the
+	// measurement of @overlay.
+	GetMeasureOverlay(widget widget) bool
+	// RemoveOverlay: removes an overlay that was added with
+	// gtk_overlay_add_overlay().
+	RemoveOverlay(widget widget)
+	// SetChild: sets the child widget of @overlay.
+	SetChild(child widget)
+	// SetClipOverlay: sets whether @widget should be clipped within the parent.
+	SetClipOverlay(widget widget, clipOverlay bool)
+	// SetMeasureOverlay: sets whether @widget is included in the measured size
+	// of @overlay.
+	//
+	// The overlay will request the size of the largest child that has this
+	// property set to true. Children who are not included may be drawn outside
+	// of @overlay's allocation if they are too large.
+	SetMeasureOverlay(widget widget, measure bool)
+}
+
+type overlay struct {
 	Widget
 }
 
-func wrapOverlay(obj *externglib.Object) *Overlay {
-	return &Overlay{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapOverlay(obj *externglib.Object) Overlay {
+	return &overlay{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalOverlay(p uintptr) (interface{}, error) {
@@ -12294,19 +20905,39 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewOverlay() *Overlay
+func NewOverlay() Overlay
+
+func (o overlay) AddOverlay(widget widget)
+
+func (o overlay) GetChild() widget
+
+func (o overlay) GetClipOverlay(widget widget) bool
+
+func (o overlay) GetMeasureOverlay(widget widget) bool
+
+func (o overlay) RemoveOverlay(widget widget)
+
+func (o overlay) SetChild(child widget)
+
+func (o overlay) SetClipOverlay(widget widget, clipOverlay bool)
+
+func (o overlay) SetMeasureOverlay(widget widget, measure bool)
 
 // OverlayLayout: gtkOverlayLayout is the layout manager used by Overlay. It
 // places widgets as overlays on top of the main child.
 //
 // This is not a reusable layout manager, since it expects its widget to be a
 // Overlay. It only listed here so that its layout properties get documented.
-type OverlayLayout struct {
+type OverlayLayout interface {
+	layoutManager
+}
+
+type overlayLayout struct {
 	LayoutManager
 }
 
-func wrapOverlayLayout(obj *externglib.Object) *OverlayLayout {
-	return &OverlayLayout{LayoutManager{*externglib.Object{obj}}}
+func wrapOverlayLayout(obj *externglib.Object) OverlayLayout {
+	return &overlayLayout{LayoutManager{*externglib.Object{obj}}}
 }
 
 func marshalOverlayLayout(p uintptr) (interface{}, error) {
@@ -12315,14 +20946,27 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewOverlayLayout() *OverlayLayout
+func NewOverlayLayout() OverlayLayout
 
-type OverlayLayoutChild struct {
+type OverlayLayoutChild interface {
+	layoutChild
+
+	// GetClipOverlay: retrieves whether the child is clipped.
+	GetClipOverlay() bool
+	// GetMeasure: retrieves whether the child is measured.
+	GetMeasure() bool
+	// SetClipOverlay: sets whether to clip this child.
+	SetClipOverlay(clipOverlay bool)
+	// SetMeasure: sets whether to measure this child.
+	SetMeasure(measure bool)
+}
+
+type overlayLayoutChild struct {
 	LayoutChild
 }
 
-func wrapOverlayLayoutChild(obj *externglib.Object) *OverlayLayoutChild {
-	return &OverlayLayoutChild{LayoutChild{*externglib.Object{obj}}}
+func wrapOverlayLayoutChild(obj *externglib.Object) OverlayLayoutChild {
+	return &overlayLayoutChild{LayoutChild{*externglib.Object{obj}}}
 }
 
 func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
@@ -12330,6 +20974,14 @@ func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (o overlayLayoutChild) GetClipOverlay() bool
+
+func (o overlayLayoutChild) GetMeasure() bool
+
+func (o overlayLayoutChild) SetClipOverlay(clipOverlay bool)
+
+func (o overlayLayoutChild) SetMeasure(measure bool)
 
 // PadController is an event controller for the pads found in drawing tablets
 // (The collection of buttons and tactile sensors often found around the
@@ -12369,12 +21021,30 @@ func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 //    The actions belonging to rings/strips will be activated with a parameter
 //    of type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it
 //    is required that those are made stateful and accepting this Type.
-type PadController struct {
+type PadController interface {
+	eventController
+
+	// SetAction: adds an individual action to @controller. This action will
+	// only be activated if the given button/ring/strip number in @index is
+	// interacted while the current mode is @mode. -1 may be used for simple
+	// cases, so the action is triggered on all modes.
+	//
+	// The given @label should be considered user-visible, so
+	// internationalization rules apply. Some windowing systems may be able to
+	// use those for user feedback.
+	SetAction(_type PadActionType, index int, mode int, label string, actionName string)
+	// SetActionEntries: this is a convenience function to add a group of action
+	// entries on @controller. See PadActionEntry and
+	// gtk_pad_controller_set_action().
+	SetActionEntries(entries []PadActionEntry, nEntries int)
+}
+
+type padController struct {
 	EventController
 }
 
-func wrapPadController(obj *externglib.Object) *PadController {
-	return &PadController{EventController{*externglib.Object{obj}}}
+func wrapPadController(obj *externglib.Object) PadController {
+	return &padController{EventController{*externglib.Object{obj}}}
 }
 
 func marshalPadController(p uintptr) (interface{}, error) {
@@ -12383,7 +21053,11 @@ func marshalPadController(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPadController(group gio.ActionGroup, pad *gdkx11.X11DeviceXI2) *PadController
+func NewPadController(group gio.ActionGroup, pad gdk.device) PadController
+
+func (p padController) SetAction(_type PadActionType, index int, mode int, label string, actionName string)
+
+func (p padController) SetActionEntries(entries []PadActionEntry, nEntries int)
 
 // PageSetup: a GtkPageSetup object stores the page size, orientation and
 // margins. The idea is that you can get one of these from the page setup dialog
@@ -12422,12 +21096,79 @@ func NewPadController(group gio.ActionGroup, pad *gdkx11.X11DeviceXI2) *PadContr
 //      page_setup = new_page_setup;
 //    }
 //
-type PageSetup struct {
+type PageSetup interface {
+	gextras.Objector
+
+	// Copy: copies a PageSetup.
+	Copy() pageSetup
+	// GetBottomMargin: gets the bottom margin in units of @unit.
+	GetBottomMargin(unit Unit) float64
+	// GetLeftMargin: gets the left margin in units of @unit.
+	GetLeftMargin(unit Unit) float64
+	// GetOrientation: gets the page orientation of the PageSetup.
+	GetOrientation() PageOrientation
+	// GetPageHeight: returns the page height in units of @unit.
+	//
+	// Note that this function takes orientation and margins into consideration.
+	// See gtk_page_setup_get_paper_height().
+	GetPageHeight(unit Unit) float64
+	// GetPageWidth: returns the page width in units of @unit.
+	//
+	// Note that this function takes orientation and margins into consideration.
+	// See gtk_page_setup_get_paper_width().
+	GetPageWidth(unit Unit) float64
+	// GetPaperHeight: returns the paper height in units of @unit.
+	//
+	// Note that this function takes orientation, but not margins into
+	// consideration. See gtk_page_setup_get_page_height().
+	GetPaperHeight(unit Unit) float64
+	// GetPaperSize: gets the paper size of the PageSetup.
+	GetPaperSize() *PaperSize
+	// GetPaperWidth: returns the paper width in units of @unit.
+	//
+	// Note that this function takes orientation, but not margins into
+	// consideration. See gtk_page_setup_get_page_width().
+	GetPaperWidth(unit Unit) float64
+	// GetRightMargin: gets the right margin in units of @unit.
+	GetRightMargin(unit Unit) float64
+	// GetTopMargin: gets the top margin in units of @unit.
+	GetTopMargin(unit Unit) float64
+	// LoadFile: reads the page setup from the file @file_name. See
+	// gtk_page_setup_to_file().
+	LoadFile(fileName string) bool
+	// LoadKeyFile: reads the page setup from the group @group_name in the key
+	// file @key_file.
+	LoadKeyFile(keyFile *glib.KeyFile, groupName string) bool
+	// SetBottomMargin: sets the bottom margin of the PageSetup.
+	SetBottomMargin(margin float64, unit Unit)
+	// SetLeftMargin: sets the left margin of the PageSetup.
+	SetLeftMargin(margin float64, unit Unit)
+	// SetOrientation: sets the page orientation of the PageSetup.
+	SetOrientation(orientation PageOrientation)
+	// SetPaperSize: sets the paper size of the PageSetup without changing the
+	// margins. See gtk_page_setup_set_paper_size_and_default_margins().
+	SetPaperSize(size *PaperSize)
+	// SetPaperSizeAndDefaultMargins: sets the paper size of the PageSetup and
+	// modifies the margins according to the new paper size.
+	SetPaperSizeAndDefaultMargins(size *PaperSize)
+	// SetRightMargin: sets the right margin of the PageSetup.
+	SetRightMargin(margin float64, unit Unit)
+	// SetTopMargin: sets the top margin of the PageSetup.
+	SetTopMargin(margin float64, unit Unit)
+	// ToFile: this function saves the information from @setup to @file_name.
+	ToFile(fileName string) bool
+	// ToGvariant: serialize page setup to an a{sv} variant.
+	ToGvariant() *glib.Variant
+	// ToKeyFile: this function adds the page setup from @setup to @key_file.
+	ToKeyFile(keyFile *glib.KeyFile, groupName string)
+}
+
+type pageSetup struct {
 	*externglib.Object
 }
 
-func wrapPageSetup(obj *externglib.Object) *PageSetup {
-	return &PageSetup{*externglib.Object{obj}}
+func wrapPageSetup(obj *externglib.Object) PageSetup {
+	return &pageSetup{*externglib.Object{obj}}
 }
 
 func marshalPageSetup(p uintptr) (interface{}, error) {
@@ -12436,13 +21177,59 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPageSetup() *PageSetup
+func NewPageSetup() PageSetup
 
-func NewPageSetup(fileName string) *PageSetup
+func NewPageSetup(fileName string) PageSetup
 
-func NewPageSetup(variant *glib.Variant) *PageSetup
+func NewPageSetup(variant *glib.Variant) PageSetup
 
-func NewPageSetup(keyFile *glib.KeyFile, groupName string) *PageSetup
+func NewPageSetup(keyFile *glib.KeyFile, groupName string) PageSetup
+
+func (p pageSetup) Copy() pageSetup
+
+func (p pageSetup) GetBottomMargin(unit Unit) float64
+
+func (p pageSetup) GetLeftMargin(unit Unit) float64
+
+func (p pageSetup) GetOrientation() PageOrientation
+
+func (p pageSetup) GetPageHeight(unit Unit) float64
+
+func (p pageSetup) GetPageWidth(unit Unit) float64
+
+func (p pageSetup) GetPaperHeight(unit Unit) float64
+
+func (p pageSetup) GetPaperSize() *PaperSize
+
+func (p pageSetup) GetPaperWidth(unit Unit) float64
+
+func (p pageSetup) GetRightMargin(unit Unit) float64
+
+func (p pageSetup) GetTopMargin(unit Unit) float64
+
+func (p pageSetup) LoadFile(fileName string) bool
+
+func (p pageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) bool
+
+func (p pageSetup) SetBottomMargin(margin float64, unit Unit)
+
+func (p pageSetup) SetLeftMargin(margin float64, unit Unit)
+
+func (p pageSetup) SetOrientation(orientation PageOrientation)
+
+func (p pageSetup) SetPaperSize(size *PaperSize)
+
+func (p pageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize)
+
+func (p pageSetup) SetRightMargin(margin float64, unit Unit)
+
+func (p pageSetup) SetTopMargin(margin float64, unit Unit)
+
+func (p pageSetup) ToFile(fileName string) bool
+
+func (p pageSetup) ToGvariant() *glib.Variant
+
+func (p pageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string)
 
 // Paned: paned has two panes, arranged either horizontally or vertically. The
 // division between the two panes is adjustable by the user by dragging a
@@ -12503,12 +21290,53 @@ func NewPageSetup(keyFile *glib.KeyFile, groupName string) *PageSetup
 //    gtk_paned_set_end_child_shrink (GTK_PANED (hpaned), FALSE);
 //    gtk_widget_set_size_request (frame2, 50, -1);
 //
-type Paned struct {
+type Paned interface {
+	widget
+
+	// GetEndChild: retrieves the end child of the given Paned.
+	//
+	// See also: Paned:end-child
+	GetEndChild() widget
+	// GetPosition: obtains the position of the divider between the two panes.
+	GetPosition() int
+	// GetResizeEndChild: returns whether the end child can be resized.
+	GetResizeEndChild() bool
+	// GetResizeStartChild: returns whether the start child can be resized.
+	GetResizeStartChild() bool
+	// GetShrinkEndChild: returns whether the end child can be shrunk.
+	GetShrinkEndChild() bool
+	// GetShrinkStartChild: returns whether the start child can be shrunk.
+	GetShrinkStartChild() bool
+	// GetStartChild: retrieves the start child of the given Paned.
+	//
+	// See also: Paned:start-child
+	GetStartChild() widget
+	// GetWideHandle: gets the Paned:wide-handle property.
+	GetWideHandle() bool
+	// SetEndChild: sets the end child of @paned to @child.
+	SetEndChild(child widget)
+	// SetPosition: sets the position of the divider between the two panes.
+	SetPosition(position int)
+	// SetResizeEndChild: sets the Paned:resize-end-child property
+	SetResizeEndChild(resize bool)
+	// SetResizeStartChild: sets the Paned:resize-start-child property
+	SetResizeStartChild(resize bool)
+	// SetShrinkEndChild: sets the Paned:shrink-end-child property
+	SetShrinkEndChild(resize bool)
+	// SetShrinkStartChild: sets the Paned:shrink-start-child property
+	SetShrinkStartChild(resize bool)
+	// SetStartChild: sets the start child of @paned to @child.
+	SetStartChild(child widget)
+	// SetWideHandle: sets the Paned:wide-handle property.
+	SetWideHandle(wide bool)
+}
+
+type paned struct {
 	Widget
 }
 
-func wrapPaned(obj *externglib.Object) *Paned {
-	return &Paned{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapPaned(obj *externglib.Object) Paned {
+	return &paned{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalPaned(p uintptr) (interface{}, error) {
@@ -12517,7 +21345,39 @@ func marshalPaned(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPaned(orientation Orientation) *Paned
+func NewPaned(orientation Orientation) Paned
+
+func (p paned) GetEndChild() widget
+
+func (p paned) GetPosition() int
+
+func (p paned) GetResizeEndChild() bool
+
+func (p paned) GetResizeStartChild() bool
+
+func (p paned) GetShrinkEndChild() bool
+
+func (p paned) GetShrinkStartChild() bool
+
+func (p paned) GetStartChild() widget
+
+func (p paned) GetWideHandle() bool
+
+func (p paned) SetEndChild(child widget)
+
+func (p paned) SetPosition(position int)
+
+func (p paned) SetResizeEndChild(resize bool)
+
+func (p paned) SetResizeStartChild(resize bool)
+
+func (p paned) SetShrinkEndChild(resize bool)
+
+func (p paned) SetShrinkStartChild(resize bool)
+
+func (p paned) SetStartChild(child widget)
+
+func (p paned) SetWideHandle(wide bool)
 
 // PasswordEntry is entry that has been tailored for entering secrets. It does
 // not show its contents in clear text, does not allow to copy it to the
@@ -12547,12 +21407,31 @@ func NewPaned(orientation Orientation) *Paned
 // Accessibility
 //
 // GtkPasswordEntry uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
-type PasswordEntry struct {
+type PasswordEntry interface {
+	widget
+
+	// GetExtraMenu: gets the menu model set with
+	// gtk_password_entry_set_extra_menu().
+	GetExtraMenu() gio.menuModel
+	// GetShowPeekIcon: returns whether the entry is showing a clickable icon to
+	// reveal the contents of the entry in clear text.
+	GetShowPeekIcon() bool
+	// SetExtraMenu: sets a menu model to add when constructing the context menu
+	// for @entry.
+	SetExtraMenu(model gio.menuModel)
+	// SetShowPeekIcon: sets whether the entry should have a clickable icon to
+	// show the contents of the entry in clear text.
+	//
+	// Setting this to false also hides the text again.
+	SetShowPeekIcon(showPeekIcon bool)
+}
+
+type passwordEntry struct {
 	Widget
 }
 
-func wrapPasswordEntry(obj *externglib.Object) *PasswordEntry {
-	return &PasswordEntry{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapPasswordEntry(obj *externglib.Object) PasswordEntry {
+	return &passwordEntry{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalPasswordEntry(p uintptr) (interface{}, error) {
@@ -12561,7 +21440,15 @@ func marshalPasswordEntry(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPasswordEntry() *PasswordEntry
+func NewPasswordEntry() PasswordEntry
+
+func (p passwordEntry) GetExtraMenu() gio.menuModel
+
+func (p passwordEntry) GetShowPeekIcon() bool
+
+func (p passwordEntry) SetExtraMenu(model gio.menuModel)
+
+func (p passwordEntry) SetShowPeekIcon(showPeekIcon bool)
 
 // Picture: the Picture widget displays a Paintable. Many convenience functions
 // are provided to make pictures simple to use. For example, if you want to load
@@ -12604,12 +21491,78 @@ func NewPasswordEntry() *PasswordEntry
 // Accessibility
 //
 // GtkPicture uses the K_ACCESSIBLE_ROLE_IMG role.
-type Picture struct {
+type Picture interface {
+	widget
+
+	// GetAlternativeText: gets the alternative textual description of the
+	// picture or returns nil if the picture cannot be described textually.
+	GetAlternativeText() string
+	// GetCanShrink: gets the value set via gtk_picture_set_can_shrink().
+	GetCanShrink() bool
+	// GetFile: gets the #GFile currently displayed if @self is displaying a
+	// file. If @self is not displaying a file, for example when
+	// gtk_picture_set_paintable() was used, then nil is returned.
+	GetFile() gio.File
+	// GetKeepAspectRatio: gets the value set via
+	// gtk_picture_set_keep_aspect_ratio().
+	GetKeepAspectRatio() bool
+	// GetPaintable: gets the Paintable being displayed by the Picture.
+	GetPaintable() gdk.Paintable
+	// SetAlternativeText: sets an alternative textual description for the
+	// picture contents. It is equivalent to the "alt" attribute for images on
+	// websites.
+	//
+	// This text will be made available to accessibility tools.
+	//
+	// If the picture cannot be described textually, set this property to nil.
+	SetAlternativeText(alternativeText string)
+	// SetCanShrink: if set to true, the @self can be made smaller than its
+	// contents. The contents will then be scaled down when rendering.
+	//
+	// If you want to still force a minimum size manually, consider using
+	// gtk_widget_set_size_request().
+	//
+	// Also of note is that a similar function for growing does not exist
+	// because the grow behavior can be controlled via gtk_widget_set_halign()
+	// and gtk_widget_set_valign().
+	SetCanShrink(canShrink bool)
+	// SetFile: makes @self load and display @file.
+	//
+	// See gtk_picture_new_for_file() for details.
+	SetFile(file gio.File)
+	// SetFilename: makes @self load and display the given @filename.
+	//
+	// This is a utility function that calls gtk_picture_set_file().
+	SetFilename(filename string)
+	// SetKeepAspectRatio: if set to true, the @self will render its contents
+	// according to their aspect ratio. That means that empty space may show up
+	// at the top/bottom or left/right of @self.
+	//
+	// If set to false or if the contents provide no aspect ratio, the contents
+	// will be stretched over the picture's whole area.
+	SetKeepAspectRatio(keepAspectRatio bool)
+	// SetPaintable: makes @self display the given @paintable. If @paintable is
+	// nil, nothing will be displayed.
+	//
+	// See gtk_picture_new_for_paintable() for details.
+	SetPaintable(paintable gdk.Paintable)
+	// SetPixbuf: see gtk_picture_new_for_pixbuf() for details.
+	//
+	// This is a utility function that calls gtk_picture_set_paintable(),
+	SetPixbuf(pixbuf gdkpixbuf.pixbuf)
+	// SetResource: makes @self load and display the resource at the given
+	// @resource_path.
+	//
+	// This is a utility function that calls gtk_picture_set_file(),
+	SetResource(resourcePath string)
+}
+
+type picture struct {
 	Widget
 }
 
-func wrapPicture(obj *externglib.Object) *Picture {
-	return &Picture{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapPicture(obj *externglib.Object) Picture {
+	return &picture{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalPicture(p uintptr) (interface{}, error) {
@@ -12618,17 +21571,43 @@ func marshalPicture(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPicture() *Picture
+func NewPicture() Picture
 
-func NewPicture(file gio.File) *Picture
+func NewPicture(file gio.File) Picture
 
-func NewPicture(filename string) *Picture
+func NewPicture(filename string) Picture
 
-func NewPicture(paintable gdk.Paintable) *Picture
+func NewPicture(paintable gdk.Paintable) Picture
 
-func NewPicture(pixbuf *gdkpixbuf.Pixbuf) *Picture
+func NewPicture(pixbuf gdkpixbuf.pixbuf) Picture
 
-func NewPicture(resourcePath string) *Picture
+func NewPicture(resourcePath string) Picture
+
+func (p picture) GetAlternativeText() string
+
+func (p picture) GetCanShrink() bool
+
+func (p picture) GetFile() gio.File
+
+func (p picture) GetKeepAspectRatio() bool
+
+func (p picture) GetPaintable() gdk.Paintable
+
+func (p picture) SetAlternativeText(alternativeText string)
+
+func (p picture) SetCanShrink(canShrink bool)
+
+func (p picture) SetFile(file gio.File)
+
+func (p picture) SetFilename(filename string)
+
+func (p picture) SetKeepAspectRatio(keepAspectRatio bool)
+
+func (p picture) SetPaintable(paintable gdk.Paintable)
+
+func (p picture) SetPixbuf(pixbuf gdkpixbuf.pixbuf)
+
+func (p picture) SetResource(resourcePath string)
 
 // Popover: gtkPopover is a bubble-like context window, primarily meant to
 // provide context-dependent information or options. Popovers are attached to a
@@ -12698,12 +21677,89 @@ func NewPicture(resourcePath string) *Picture
 // content node and the arrow node should be the same. The arrow also does not
 // support any border shape other than solid, no border-radius, only one border
 // width (border-bottom-width is used) and no box-shadow.
-type Popover struct {
+type Popover interface {
+	widget
+
+	// GetAutohide: returns whether the popover is modal.
+	//
+	// See gtk_popover_set_autohide() for the implications of this.
+	GetAutohide() bool
+	// GetCascadePopdown: returns whether the popover will close after a modal
+	// child is closed.
+	GetCascadePopdown() bool
+	// GetChild: gets the child widget of @popover.
+	GetChild() widget
+	// GetHasArrow: gets whether this popover is showing an arrow pointing at
+	// the widget that it is relative to.
+	GetHasArrow() bool
+	// GetMnemonicsVisible: gets the value of the Popover:mnemonics-visible
+	// property.
+	GetMnemonicsVisible() bool
+	// GetOffset: gets the offset previous set with gtk_popover_set_offset().
+	GetOffset() (int, int)
+	// GetPointingTo: if a rectangle to point to has been set, this function
+	// will return true and fill in @rect with such rectangle, otherwise it will
+	// return false and fill in @rect with the attached widget coordinates.
+	GetPointingTo() (gdk.Rectangle, bool)
+	// GetPosition: returns the preferred position of @popover.
+	GetPosition() PositionType
+	// Popdown: pops @popover down.This is different than a gtk_widget_hide()
+	// call in that it shows the popover with a transition. If you want to hide
+	// the popover without a transition, use gtk_widget_hide().
+	Popdown()
+	// Popup: pops @popover up. This is different than a gtk_widget_show() call
+	// in that it shows the popover with a transition. If you want to show the
+	// popover without a transition, use gtk_widget_show().
+	Popup()
+	// Present: presents the popover to the user.
+	Present()
+	// SetAutohide: sets whether @popover is modal.
+	//
+	// A modal popover will grab the keyboard focus on it when being displayed.
+	// Clicking outside the popover area or pressing Esc will dismiss the
+	// popover.
+	//
+	// Called this function on an already showing popup with a new autohide
+	// value different from the current one, will cause the popup to be hidden.
+	SetAutohide(autohide bool)
+	// SetCascadePopdown: if @cascade_popdown is UE, the popover will be closed
+	// when a child modal popover is closed. If LSE, @popover will stay visible.
+	SetCascadePopdown(cascadePopdown bool)
+	// SetChild: sets the child widget of @popover.
+	SetChild(child widget)
+	// SetDefaultWidget: the default widget is the widget that’s activated when
+	// the user presses Enter in a dialog (for example). This function sets or
+	// unsets the default widget for a Popover.
+	SetDefaultWidget(widget widget)
+	// SetHasArrow: sets whether this popover should draw an arrow pointing at
+	// the widget it is relative to.
+	SetHasArrow(hasArrow bool)
+	// SetMnemonicsVisible: sets the Popover:mnemonics-visible property.
+	SetMnemonicsVisible(mnemonicsVisible bool)
+	// SetOffset: sets the offset to use when calculating the position of the
+	// popover.
+	//
+	// These values are used when preparing the PopupLayout for positioning the
+	// popover.
+	SetOffset(xOffset int, yOffset int)
+	// SetPointingTo: sets the rectangle that @popover will point to, in the
+	// coordinate space of the @popover parent.
+	SetPointingTo(rect *gdk.Rectangle)
+	// SetPosition: sets the preferred position for @popover to appear. If the
+	// @popover is currently visible, it will be immediately updated.
+	//
+	// This preference will be respected where possible, although on lack of
+	// space (eg. if close to the window edges), the Popover may choose to
+	// appear on the opposite side
+	SetPosition(position PositionType)
+}
+
+type popover struct {
 	Widget
 }
 
-func wrapPopover(obj *externglib.Object) *Popover {
-	return &Popover{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapPopover(obj *externglib.Object) Popover {
+	return &popover{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalPopover(p uintptr) (interface{}, error) {
@@ -12712,7 +21768,47 @@ func marshalPopover(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPopover() *Popover
+func NewPopover() Popover
+
+func (p popover) GetAutohide() bool
+
+func (p popover) GetCascadePopdown() bool
+
+func (p popover) GetChild() widget
+
+func (p popover) GetHasArrow() bool
+
+func (p popover) GetMnemonicsVisible() bool
+
+func (p popover) GetOffset() (int, int)
+
+func (p popover) GetPointingTo() (gdk.Rectangle, bool)
+
+func (p popover) GetPosition() PositionType
+
+func (p popover) Popdown()
+
+func (p popover) Popup()
+
+func (p popover) Present()
+
+func (p popover) SetAutohide(autohide bool)
+
+func (p popover) SetCascadePopdown(cascadePopdown bool)
+
+func (p popover) SetChild(child widget)
+
+func (p popover) SetDefaultWidget(widget widget)
+
+func (p popover) SetHasArrow(hasArrow bool)
+
+func (p popover) SetMnemonicsVisible(mnemonicsVisible bool)
+
+func (p popover) SetOffset(xOffset int, yOffset int)
+
+func (p popover) SetPointingTo(rect *gdk.Rectangle)
+
+func (p popover) SetPosition(position PositionType)
 
 // PopoverMenu: gtkPopoverMenu is a subclass of Popover that treats its children
 // like menus and allows switching between them. It can open submenus as
@@ -12799,12 +21895,32 @@ func NewPopover() *Popover
 // K_ACCESSIBLE_ROLE_MENU_ITEM, K_ACCESSIBLE_ROLE_MENU_ITEM_CHECKBOX or
 // K_ACCESSIBLE_ROLE_MENU_ITEM_RADIO roles, depending on the action they are
 // connected to.
-type PopoverMenu struct {
+type PopoverMenu interface {
+	popover
+
+	// AddChild: adds a custom widget to a generated menu.
+	//
+	// For this to work, the menu model of @popover must have an item with a
+	// `custom` attribute that matches @id.
+	AddChild(child widget, id string) bool
+	// GetMenuModel: returns the menu model used to populate the popover.
+	GetMenuModel() gio.menuModel
+	// RemoveChild: removes a widget that has previously been added with
+	// gtk_popover_menu_add_child().
+	RemoveChild(child widget) bool
+	// SetMenuModel: sets a new menu model on @popover.
+	//
+	// The existing contents of @popover are removed, and the @popover is
+	// populated with new contents according to @model.
+	SetMenuModel(model gio.menuModel)
+}
+
+type popoverMenu struct {
 	Popover
 }
 
-func wrapPopoverMenu(obj *externglib.Object) *PopoverMenu {
-	return &PopoverMenu{Popover{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapPopoverMenu(obj *externglib.Object) PopoverMenu {
+	return &popoverMenu{Popover{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalPopoverMenu(p uintptr) (interface{}, error) {
@@ -12813,9 +21929,17 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPopoverMenu(model *gio.MenuModel) *PopoverMenu
+func NewPopoverMenu(model gio.menuModel) PopoverMenu
 
-func NewPopoverMenu(model *gio.MenuModel, flags PopoverMenuFlags) *PopoverMenu
+func NewPopoverMenu(model gio.menuModel, flags PopoverMenuFlags) PopoverMenu
+
+func (p popoverMenu) AddChild(child widget, id string) bool
+
+func (p popoverMenu) GetMenuModel() gio.menuModel
+
+func (p popoverMenu) RemoveChild(child widget) bool
+
+func (p popoverMenu) SetMenuModel(model gio.menuModel)
 
 // PopoverMenuBar: gtkPopoverMenuBar presents a horizontal bar of items that pop
 // up popover menus when clicked.
@@ -12841,12 +21965,30 @@ func NewPopoverMenu(model *gio.MenuModel, flags PopoverMenuFlags) *PopoverMenu
 // GtkPopoverMenuBar uses the K_ACCESSIBLE_ROLE_MENU_BAR role, the menu items
 // use the K_ACCESSIBLE_ROLE_MENU_ITEM role and the menus use the
 // K_ACCESSIBLE_ROLE_MENU role.
-type PopoverMenuBar struct {
+type PopoverMenuBar interface {
+	widget
+
+	// AddChild: adds a custom widget to a generated menubar.
+	//
+	// For this to work, the menu model of @bar must have an item with a
+	// `custom` attribute that matches @id.
+	AddChild(child widget, id string) bool
+	// GetMenuModel: returns the model from which the contents of @bar are
+	// taken.
+	GetMenuModel() gio.menuModel
+	// RemoveChild: removes a widget that has previously been added with
+	// gtk_popover_menu_bar_add_child().
+	RemoveChild(child widget) bool
+	// SetMenuModel: sets a menu model from which @bar should take its contents.
+	SetMenuModel(model gio.menuModel)
+}
+
+type popoverMenuBar struct {
 	Widget
 }
 
-func wrapPopoverMenuBar(obj *externglib.Object) *PopoverMenuBar {
-	return &PopoverMenuBar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapPopoverMenuBar(obj *externglib.Object) PopoverMenuBar {
+	return &popoverMenuBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
@@ -12855,7 +21997,15 @@ func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPopoverMenuBar(model *gio.MenuModel) *PopoverMenuBar
+func NewPopoverMenuBar(model gio.menuModel) PopoverMenuBar
+
+func (p popoverMenuBar) AddChild(child widget, id string) bool
+
+func (p popoverMenuBar) GetMenuModel() gio.menuModel
+
+func (p popoverMenuBar) RemoveChild(child widget) bool
+
+func (p popoverMenuBar) SetMenuModel(model gio.menuModel)
 
 // PrintContext: a GtkPrintContext encapsulates context information that is
 // required when drawing pages for printing, such as the cairo context and
@@ -12921,12 +22071,51 @@ func NewPopoverMenuBar(model *gio.MenuModel) *PopoverMenuBar
 //      g_object_unref (layout);
 //    }
 //
-type PrintContext struct {
+type PrintContext interface {
+	gextras.Objector
+
+	// CreatePangoContext: creates a new Context that can be used with the
+	// PrintContext.
+	CreatePangoContext() pango.context
+	// CreatePangoLayout: creates a new Layout that is suitable for use with the
+	// PrintContext.
+	CreatePangoLayout() pango.layout
+	// GetCairoContext: obtains the cairo context that is associated with the
+	// PrintContext.
+	GetCairoContext() *cairo.Context
+	// GetDPIX: obtains the horizontal resolution of the PrintContext, in dots
+	// per inch.
+	GetDPIX() float64
+	// GetDPIY: obtains the vertical resolution of the PrintContext, in dots per
+	// inch.
+	GetDPIY() float64
+	// GetHardMargins: obtains the hardware printer margins of the PrintContext,
+	// in units.
+	GetHardMargins() (float64, float64, float64, float64, bool)
+	// GetHeight: obtains the height of the PrintContext, in pixels.
+	GetHeight() float64
+	// GetPageSetup: obtains the PageSetup that determines the page dimensions
+	// of the PrintContext.
+	GetPageSetup() pageSetup
+	// GetPangoFontmap: returns a FontMap that is suitable for use with the
+	// PrintContext.
+	GetPangoFontmap() pango.fontMap
+	// GetWidth: obtains the width of the PrintContext, in pixels.
+	GetWidth() float64
+	// SetCairoContext: sets a new cairo context on a print context.
+	//
+	// This function is intended to be used when implementing an internal print
+	// preview, it is not needed for printing, since GTK itself creates a
+	// suitable cairo context in that case.
+	SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
+}
+
+type printContext struct {
 	*externglib.Object
 }
 
-func wrapPrintContext(obj *externglib.Object) *PrintContext {
-	return &PrintContext{*externglib.Object{obj}}
+func wrapPrintContext(obj *externglib.Object) PrintContext {
+	return &printContext{*externglib.Object{obj}}
 }
 
 func marshalPrintContext(p uintptr) (interface{}, error) {
@@ -12934,6 +22123,28 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (p printContext) CreatePangoContext() pango.context
+
+func (p printContext) CreatePangoLayout() pango.layout
+
+func (p printContext) GetCairoContext() *cairo.Context
+
+func (p printContext) GetDPIX() float64
+
+func (p printContext) GetDPIY() float64
+
+func (p printContext) GetHardMargins() (float64, float64, float64, float64, bool)
+
+func (p printContext) GetHeight() float64
+
+func (p printContext) GetPageSetup() pageSetup
+
+func (p printContext) GetPangoFontmap() pango.fontMap
+
+func (p printContext) GetWidth() float64
+
+func (p printContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64)
 
 // PrintOperation: gtkPrintOperation is the high-level, portable printing API.
 // It looks a bit different than other GTK dialogs such as the FileChooser,
@@ -12993,12 +22204,217 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 // gtk_print_operation_preview_end_preview() and
 // gtk_print_operation_preview_is_selected() are useful when implementing a
 // print preview.
-type PrintOperation struct {
+type PrintOperation interface {
+	gextras.Objector
+
+	// Cancel: cancels a running print operation. This function may be called
+	// from a PrintOperation::begin-print, PrintOperation::paginate or
+	// PrintOperation::draw-page signal handler to stop the currently running
+	// print operation.
+	Cancel()
+	// DrawPageFinish: signalize that drawing of particular page is complete.
+	//
+	// It is called after completion of page drawing (e.g. drawing in another
+	// thread). If gtk_print_operation_set_defer_drawing() was called before,
+	// then this function has to be called by application. In another case it is
+	// called by the library itself.
+	DrawPageFinish()
+	// GetDefaultPageSetup: returns the default page setup, see
+	// gtk_print_operation_set_default_page_setup().
+	GetDefaultPageSetup() pageSetup
+	// GetEmbedPageSetup: gets the value of PrintOperation:embed-page-setup
+	// property.
+	GetEmbedPageSetup() bool
+	// GetError: call this when the result of a print operation is
+	// GTK_PRINT_OPERATION_RESULT_ERROR, either as returned by
+	// gtk_print_operation_run(), or in the PrintOperation::done signal handler.
+	// The returned #GError will contain more details on what went wrong.
+	GetError()
+	// GetHasSelection: gets the value of PrintOperation:has-selection property.
+	GetHasSelection() bool
+	// GetNPagesToPrint: returns the number of pages that will be printed.
+	//
+	// Note that this value is set during print preparation phase
+	// (GTK_PRINT_STATUS_PREPARING), so this function should never be called
+	// before the data generation phase (GTK_PRINT_STATUS_GENERATING_DATA). You
+	// can connect to the PrintOperation::status-changed signal and call
+	// gtk_print_operation_get_n_pages_to_print() when print status is
+	// GTK_PRINT_STATUS_GENERATING_DATA. This is typically used to track the
+	// progress of print operation.
+	GetNPagesToPrint() int
+	// GetPrintSettings: returns the current print settings.
+	//
+	// Note that the return value is nil until either
+	// gtk_print_operation_set_print_settings() or gtk_print_operation_run()
+	// have been called.
+	GetPrintSettings() printSettings
+	// GetStatus: returns the status of the print operation. Also see
+	// gtk_print_operation_get_status_string().
+	GetStatus() PrintStatus
+	// GetStatusString: returns a string representation of the status of the
+	// print operation. The string is translated and suitable for displaying the
+	// print status e.g. in a Statusbar.
+	//
+	// Use gtk_print_operation_get_status() to obtain a status value that is
+	// suitable for programmatic use.
+	GetStatusString() string
+	// GetSupportSelection: gets the value of PrintOperation:support-selection
+	// property.
+	GetSupportSelection() bool
+	// IsFinished: a convenience function to find out if the print operation is
+	// finished, either successfully (GTK_PRINT_STATUS_FINISHED) or
+	// unsuccessfully (GTK_PRINT_STATUS_FINISHED_ABORTED).
+	//
+	// Note: when you enable print status tracking the print operation can be in
+	// a non-finished state even after done has been called, as the operation
+	// status then tracks the print job status on the printer.
+	IsFinished() bool
+	// Run: runs the print operation, by first letting the user modify print
+	// settings in the print dialog, and then print the document.
+	//
+	// Normally that this function does not return until the rendering of all
+	// pages is complete. You can connect to the PrintOperation::status-changed
+	// signal on @op to obtain some information about the progress of the print
+	// operation. Furthermore, it may use a recursive mainloop to show the print
+	// dialog.
+	//
+	//    if (settings != NULL)
+	//      gtk_print_operation_set_print_settings (print, settings);
+	//
+	//    if (page_setup != NULL)
+	//      gtk_print_operation_set_default_page_setup (print, page_setup);
+	//
+	//    g_signal_connect (print, "begin-print",
+	//                      G_CALLBACK (begin_print), &data);
+	//    g_signal_connect (print, "draw-page",
+	//                      G_CALLBACK (draw_page), &data);
+	//
+	//    res = gtk_print_operation_run (print,
+	//                                   GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
+	//                                   parent,
+	//                                   &error);
+	//
+	//    if (res == GTK_PRINT_OPERATION_RESULT_ERROR)
+	//     {
+	//       error_dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
+	//      			                     GTK_DIALOG_DESTROY_WITH_PARENT,
+	//    					     GTK_MESSAGE_ERROR,
+	//    					     GTK_BUTTONS_CLOSE,
+	//    					     "Error printing file:\ns",
+	//    					     error->message);
+	//       g_signal_connect (error_dialog, "response",
+	//                         G_CALLBACK (gtk_window_destroy), NULL);
+	//       gtk_widget_show (error_dialog);
+	//       g_error_free (error);
+	//     }
+	//    else if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
+	//     {
+	//       if (settings != NULL)
+	//    g_object_unref (settings);
+	//       settings = g_object_ref (gtk_print_operation_get_print_settings (print));
+	//     }
+	//
+	// Note that gtk_print_operation_run() can only be called once on a given
+	// PrintOperation.
+	Run(action PrintOperationAction, parent window) PrintOperationResult
+	// SetAllowAsync: sets whether the gtk_print_operation_run() may return
+	// before the print operation is completed. Note that some platforms may not
+	// allow asynchronous operation.
+	SetAllowAsync(allowAsync bool)
+	// SetCurrentPage: sets the current page.
+	//
+	// If this is called before gtk_print_operation_run(), the user will be able
+	// to select to print only the current page.
+	//
+	// Note that this only makes sense for pre-paginated documents.
+	SetCurrentPage(currentPage int)
+	// SetCustomTabLabel: sets the label for the tab holding custom widgets.
+	SetCustomTabLabel(label string)
+	// SetDefaultPageSetup: makes @default_page_setup the default page setup for
+	// @op.
+	//
+	// This page setup will be used by gtk_print_operation_run(), but it can be
+	// overridden on a per-page basis by connecting to the
+	// PrintOperation::request-page-setup signal.
+	SetDefaultPageSetup(defaultPageSetup pageSetup)
+	// SetDeferDrawing: sets up the PrintOperation to wait for calling of
+	// gtk_print_operation_draw_page_finish() from application. It can be used
+	// for drawing page in another thread.
+	//
+	// This function must be called in the callback of “draw-page” signal.
+	SetDeferDrawing()
+	// SetEmbedPageSetup: embed page size combo box and orientation combo box
+	// into page setup page. Selected page setup is stored as default page setup
+	// in PrintOperation.
+	SetEmbedPageSetup(embed bool)
+	// SetExportFilename: sets up the PrintOperation to generate a file instead
+	// of showing the print dialog. The intended use of this function is for
+	// implementing “Export to PDF” actions. Currently, PDF is the only
+	// supported format.
+	//
+	// “Print to PDF” support is independent of this and is done by letting the
+	// user pick the “Print to PDF” item from the list of printers in the print
+	// dialog.
+	SetExportFilename(filename string)
+	// SetHasSelection: sets whether there is a selection to print.
+	//
+	// Application has to set number of pages to which the selection will draw
+	// by gtk_print_operation_set_n_pages() in a callback of
+	// PrintOperation::begin-print.
+	SetHasSelection(hasSelection bool)
+	// SetJobName: sets the name of the print job. The name is used to identify
+	// the job (e.g. in monitoring applications like eggcups).
+	//
+	// If you don’t set a job name, GTK picks a default one by numbering
+	// successive print jobs.
+	SetJobName(jobName string)
+	// SetNPages: sets the number of pages in the document.
+	//
+	// This must be set to a positive number before the rendering starts. It may
+	// be set in a PrintOperation::begin-print signal handler.
+	//
+	// Note that the page numbers passed to the
+	// PrintOperation::request-page-setup and PrintOperation::draw-page signals
+	// are 0-based, i.e. if the user chooses to print all pages, the last
+	// ::draw-page signal will be for page @n_pages - 1.
+	SetNPages(nPages int)
+	// SetPrintSettings: sets the print settings for @op. This is typically used
+	// to re-establish print settings from a previous print operation, see
+	// gtk_print_operation_run().
+	SetPrintSettings(printSettings printSettings)
+	// SetShowProgress: if @show_progress is true, the print operation will show
+	// a progress dialog during the print operation.
+	SetShowProgress(showProgress bool)
+	// SetSupportSelection: sets whether selection is supported by
+	// PrintOperation.
+	SetSupportSelection(supportSelection bool)
+	// SetTrackPrintStatus: if track_status is true, the print operation will
+	// try to continue report on the status of the print job in the printer
+	// queues and printer. This can allow your application to show things like
+	// “out of paper” issues, and when the print job actually reaches the
+	// printer.
+	//
+	// This function is often implemented using some form of polling, so it
+	// should not be enabled unless needed.
+	SetTrackPrintStatus(trackStatus bool)
+	// SetUnit: sets up the transformation for the cairo context obtained from
+	// PrintContext in such a way that distances are measured in units of @unit.
+	SetUnit(unit Unit)
+	// SetUseFullPage: if @full_page is true, the transformation for the cairo
+	// context obtained from PrintContext puts the origin at the top left corner
+	// of the page (which may not be the top left corner of the sheet, depending
+	// on page orientation and the number of pages per sheet). Otherwise, the
+	// origin is at the top left corner of the imageable area (i.e. inside the
+	// margins).
+	SetUseFullPage(fullPage bool)
+}
+
+type printOperation struct {
 	*externglib.Object
 }
 
-func wrapPrintOperation(obj *externglib.Object) *PrintOperation {
-	return &PrintOperation{*externglib.Object{obj}}
+func wrapPrintOperation(obj *externglib.Object) PrintOperation {
+	return &printOperation{*externglib.Object{obj}}
 }
 
 func marshalPrintOperation(p uintptr) (interface{}, error) {
@@ -13007,7 +22423,65 @@ func marshalPrintOperation(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPrintOperation() *PrintOperation
+func NewPrintOperation() PrintOperation
+
+func (p printOperation) Cancel()
+
+func (p printOperation) DrawPageFinish()
+
+func (p printOperation) GetDefaultPageSetup() pageSetup
+
+func (p printOperation) GetEmbedPageSetup() bool
+
+func (p printOperation) GetError()
+
+func (p printOperation) GetHasSelection() bool
+
+func (p printOperation) GetNPagesToPrint() int
+
+func (p printOperation) GetPrintSettings() printSettings
+
+func (p printOperation) GetStatus() PrintStatus
+
+func (p printOperation) GetStatusString() string
+
+func (p printOperation) GetSupportSelection() bool
+
+func (p printOperation) IsFinished() bool
+
+func (p printOperation) Run(action PrintOperationAction, parent window) PrintOperationResult
+
+func (p printOperation) SetAllowAsync(allowAsync bool)
+
+func (p printOperation) SetCurrentPage(currentPage int)
+
+func (p printOperation) SetCustomTabLabel(label string)
+
+func (p printOperation) SetDefaultPageSetup(defaultPageSetup pageSetup)
+
+func (p printOperation) SetDeferDrawing()
+
+func (p printOperation) SetEmbedPageSetup(embed bool)
+
+func (p printOperation) SetExportFilename(filename string)
+
+func (p printOperation) SetHasSelection(hasSelection bool)
+
+func (p printOperation) SetJobName(jobName string)
+
+func (p printOperation) SetNPages(nPages int)
+
+func (p printOperation) SetPrintSettings(printSettings printSettings)
+
+func (p printOperation) SetShowProgress(showProgress bool)
+
+func (p printOperation) SetSupportSelection(supportSelection bool)
+
+func (p printOperation) SetTrackPrintStatus(trackStatus bool)
+
+func (p printOperation) SetUnit(unit Unit)
+
+func (p printOperation) SetUseFullPage(fullPage bool)
 
 // PrintSettings: a GtkPrintSettings object represents the settings of a print
 // dialog in a system-independent way. The main use for this object is that once
@@ -13019,12 +22493,191 @@ func NewPrintOperation() *PrintOperation
 // settings for the next time your app runs, or even store them in a document.
 // The predefined keys try to use shared values as much as possible so that
 // moving such a document between systems still works.
-type PrintSettings struct {
+type PrintSettings interface {
+	gextras.Objector
+
+	// Copy: copies a PrintSettings object.
+	Copy() printSettings
+	// Foreach: calls @func for each key-value pair of @settings.
+	Foreach(_func PrintSettingsFunc, userData unsafe.Pointer)
+	// Get: looks up the string value associated with @key.
+	Get(key string) string
+	// GetBool: returns the boolean represented by the value that is associated
+	// with @key.
+	//
+	// The string “true” represents true, any other string false.
+	GetBool(key string) bool
+	// GetCollate: gets the value of GTK_PRINT_SETTINGS_COLLATE.
+	GetCollate() bool
+	// GetDefaultSource: gets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
+	GetDefaultSource() string
+	// GetDither: gets the value of GTK_PRINT_SETTINGS_DITHER.
+	GetDither() string
+	// GetDouble: returns the double value associated with @key, or 0.
+	GetDouble(key string) float64
+	// GetDoubleWithDefault: returns the floating point number represented by
+	// the value that is associated with @key, or @default_val if the value does
+	// not represent a floating point number.
+	//
+	// Floating point numbers are parsed with g_ascii_strtod().
+	GetDoubleWithDefault(key string, def float64) float64
+	// GetDuplex: gets the value of GTK_PRINT_SETTINGS_DUPLEX.
+	GetDuplex() PrintDuplex
+	// GetFinishings: gets the value of GTK_PRINT_SETTINGS_FINISHINGS.
+	GetFinishings() string
+	// GetInt: returns the integer value of @key, or 0.
+	GetInt(key string) int
+	// GetIntWithDefault: returns the value of @key, interpreted as an integer,
+	// or the default value.
+	GetIntWithDefault(key string, def int) int
+	// GetLength: returns the value associated with @key, interpreted as a
+	// length. The returned value is converted to @units.
+	GetLength(key string, unit Unit) float64
+	// GetMediaType: gets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
+	//
+	// The set of media types is defined in PWG 5101.1-2002 PWG.
+	GetMediaType() string
+	// GetNCopies: gets the value of GTK_PRINT_SETTINGS_N_COPIES.
+	GetNCopies() int
+	// GetNumberUp: gets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
+	GetNumberUp() int
+	// GetNumberUpLayout: gets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
+	GetNumberUpLayout() NumberUpLayout
+	// GetOrientation: get the value of GTK_PRINT_SETTINGS_ORIENTATION,
+	// converted to a PageOrientation.
+	GetOrientation() PageOrientation
+	// GetOutputBin: gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
+	GetOutputBin() string
+	// GetPageRanges: gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
+	GetPageRanges() (int, []PageRange)
+	// GetPageSet: gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
+	GetPageSet() PageSet
+	// GetPaperHeight: gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT,
+	// converted to @unit.
+	GetPaperHeight(unit Unit) float64
+	// GetPaperSize: gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT,
+	// converted to a PaperSize.
+	GetPaperSize() *PaperSize
+	// GetPaperWidth: gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH,
+	// converted to @unit.
+	GetPaperWidth(unit Unit) float64
+	// GetPrintPages: gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
+	GetPrintPages() PrintPages
+	// GetPrinter: convenience function to obtain the value of
+	// GTK_PRINT_SETTINGS_PRINTER.
+	GetPrinter() string
+	// GetPrinterLpi: gets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
+	GetPrinterLpi() float64
+	// GetQuality: gets the value of GTK_PRINT_SETTINGS_QUALITY.
+	GetQuality() PrintQuality
+	// GetResolution: gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
+	GetResolution() int
+	// GetResolutionX: gets the value of GTK_PRINT_SETTINGS_RESOLUTION_X.
+	GetResolutionX() int
+	// GetResolutionY: gets the value of GTK_PRINT_SETTINGS_RESOLUTION_Y.
+	GetResolutionY() int
+	// GetReverse: gets the value of GTK_PRINT_SETTINGS_REVERSE.
+	GetReverse() bool
+	// GetScale: gets the value of GTK_PRINT_SETTINGS_SCALE.
+	GetScale() float64
+	// GetUseColor: gets the value of GTK_PRINT_SETTINGS_USE_COLOR.
+	GetUseColor() bool
+	// HasKey: returns true, if a value is associated with @key.
+	HasKey(key string) bool
+	// LoadFile: reads the print settings from @file_name. If the file could not
+	// be loaded then error is set to either a Error or FileError. See
+	// gtk_print_settings_to_file().
+	LoadFile(fileName string) bool
+	// LoadKeyFile: reads the print settings from the group @group_name in
+	// @key_file. If the file could not be loaded then error is set to either a
+	// Error or FileError.
+	LoadKeyFile(keyFile *glib.KeyFile, groupName string) bool
+	// Set: associates @value with @key.
+	Set(key string, value string)
+	// SetBool: sets @key to a boolean value.
+	SetBool(key string, value bool)
+	// SetCollate: sets the value of GTK_PRINT_SETTINGS_COLLATE.
+	SetCollate(collate bool)
+	// SetDefaultSource: sets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
+	SetDefaultSource(defaultSource string)
+	// SetDither: sets the value of GTK_PRINT_SETTINGS_DITHER.
+	SetDither(dither string)
+	// SetDouble: sets @key to a double value.
+	SetDouble(key string, value float64)
+	// SetDuplex: sets the value of GTK_PRINT_SETTINGS_DUPLEX.
+	SetDuplex(duplex PrintDuplex)
+	// SetFinishings: sets the value of GTK_PRINT_SETTINGS_FINISHINGS.
+	SetFinishings(finishings string)
+	// SetInt: sets @key to an integer value.
+	SetInt(key string, value int)
+	// SetLength: associates a length in units of @unit with @key.
+	SetLength(key string, value float64, unit Unit)
+	// SetMediaType: sets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
+	//
+	// The set of media types is defined in PWG 5101.1-2002 PWG.
+	SetMediaType(mediaType string)
+	// SetNCopies: sets the value of GTK_PRINT_SETTINGS_N_COPIES.
+	SetNCopies(numCopies int)
+	// SetNumberUp: sets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
+	SetNumberUp(numberUp int)
+	// SetNumberUpLayout: sets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
+	SetNumberUpLayout(numberUpLayout NumberUpLayout)
+	// SetOrientation: sets the value of GTK_PRINT_SETTINGS_ORIENTATION.
+	SetOrientation(orientation PageOrientation)
+	// SetOutputBin: sets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
+	SetOutputBin(outputBin string)
+	// SetPageRanges: sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
+	SetPageRanges(pageRanges []PageRange, numRanges int)
+	// SetPageSet: sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
+	SetPageSet(pageSet PageSet)
+	// SetPaperHeight: sets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT.
+	SetPaperHeight(height float64, unit Unit)
+	// SetPaperSize: sets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT,
+	// GTK_PRINT_SETTINGS_PAPER_WIDTH and GTK_PRINT_SETTINGS_PAPER_HEIGHT.
+	SetPaperSize(paperSize *PaperSize)
+	// SetPaperWidth: sets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH.
+	SetPaperWidth(width float64, unit Unit)
+	// SetPrintPages: sets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
+	SetPrintPages(pages PrintPages)
+	// SetPrinter: convenience function to set GTK_PRINT_SETTINGS_PRINTER to
+	// @printer.
+	SetPrinter(printer string)
+	// SetPrinterLpi: sets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
+	SetPrinterLpi(lpi float64)
+	// SetQuality: sets the value of GTK_PRINT_SETTINGS_QUALITY.
+	SetQuality(quality PrintQuality)
+	// SetResolution: sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
+	// GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
+	SetResolution(resolution int)
+	// SetResolutionXY: sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
+	// GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
+	SetResolutionXY(resolutionX int, resolutionY int)
+	// SetReverse: sets the value of GTK_PRINT_SETTINGS_REVERSE.
+	SetReverse(reverse bool)
+	// SetScale: sets the value of GTK_PRINT_SETTINGS_SCALE.
+	SetScale(scale float64)
+	// SetUseColor: sets the value of GTK_PRINT_SETTINGS_USE_COLOR.
+	SetUseColor(useColor bool)
+	// ToFile: this function saves the print settings from @settings to
+	// @file_name. If the file could not be loaded then error is set to either a
+	// Error or FileError.
+	ToFile(fileName string) bool
+	// ToGvariant: serialize print settings to an a{sv} variant.
+	ToGvariant() *glib.Variant
+	// ToKeyFile: this function adds the print settings from @settings to
+	// @key_file.
+	ToKeyFile(keyFile *glib.KeyFile, groupName string)
+	// Unset: removes any value associated with @key. This has the same effect
+	// as setting the value to nil.
+	Unset(key string)
+}
+
+type printSettings struct {
 	*externglib.Object
 }
 
-func wrapPrintSettings(obj *externglib.Object) *PrintSettings {
-	return &PrintSettings{*externglib.Object{obj}}
+func wrapPrintSettings(obj *externglib.Object) PrintSettings {
+	return &printSettings{*externglib.Object{obj}}
 }
 
 func marshalPrintSettings(p uintptr) (interface{}, error) {
@@ -13033,13 +22686,157 @@ func marshalPrintSettings(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPrintSettings() *PrintSettings
+func NewPrintSettings() PrintSettings
 
-func NewPrintSettings(fileName string) *PrintSettings
+func NewPrintSettings(fileName string) PrintSettings
 
-func NewPrintSettings(variant *glib.Variant) *PrintSettings
+func NewPrintSettings(variant *glib.Variant) PrintSettings
 
-func NewPrintSettings(keyFile *glib.KeyFile, groupName string) *PrintSettings
+func NewPrintSettings(keyFile *glib.KeyFile, groupName string) PrintSettings
+
+func (p printSettings) Copy() printSettings
+
+func (p printSettings) Foreach(_func PrintSettingsFunc, userData unsafe.Pointer)
+
+func (p printSettings) Get(key string) string
+
+func (p printSettings) GetBool(key string) bool
+
+func (p printSettings) GetCollate() bool
+
+func (p printSettings) GetDefaultSource() string
+
+func (p printSettings) GetDither() string
+
+func (p printSettings) GetDouble(key string) float64
+
+func (p printSettings) GetDoubleWithDefault(key string, def float64) float64
+
+func (p printSettings) GetDuplex() PrintDuplex
+
+func (p printSettings) GetFinishings() string
+
+func (p printSettings) GetInt(key string) int
+
+func (p printSettings) GetIntWithDefault(key string, def int) int
+
+func (p printSettings) GetLength(key string, unit Unit) float64
+
+func (p printSettings) GetMediaType() string
+
+func (p printSettings) GetNCopies() int
+
+func (p printSettings) GetNumberUp() int
+
+func (p printSettings) GetNumberUpLayout() NumberUpLayout
+
+func (p printSettings) GetOrientation() PageOrientation
+
+func (p printSettings) GetOutputBin() string
+
+func (p printSettings) GetPageRanges() (int, []PageRange)
+
+func (p printSettings) GetPageSet() PageSet
+
+func (p printSettings) GetPaperHeight(unit Unit) float64
+
+func (p printSettings) GetPaperSize() *PaperSize
+
+func (p printSettings) GetPaperWidth(unit Unit) float64
+
+func (p printSettings) GetPrintPages() PrintPages
+
+func (p printSettings) GetPrinter() string
+
+func (p printSettings) GetPrinterLpi() float64
+
+func (p printSettings) GetQuality() PrintQuality
+
+func (p printSettings) GetResolution() int
+
+func (p printSettings) GetResolutionX() int
+
+func (p printSettings) GetResolutionY() int
+
+func (p printSettings) GetReverse() bool
+
+func (p printSettings) GetScale() float64
+
+func (p printSettings) GetUseColor() bool
+
+func (p printSettings) HasKey(key string) bool
+
+func (p printSettings) LoadFile(fileName string) bool
+
+func (p printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) bool
+
+func (p printSettings) Set(key string, value string)
+
+func (p printSettings) SetBool(key string, value bool)
+
+func (p printSettings) SetCollate(collate bool)
+
+func (p printSettings) SetDefaultSource(defaultSource string)
+
+func (p printSettings) SetDither(dither string)
+
+func (p printSettings) SetDouble(key string, value float64)
+
+func (p printSettings) SetDuplex(duplex PrintDuplex)
+
+func (p printSettings) SetFinishings(finishings string)
+
+func (p printSettings) SetInt(key string, value int)
+
+func (p printSettings) SetLength(key string, value float64, unit Unit)
+
+func (p printSettings) SetMediaType(mediaType string)
+
+func (p printSettings) SetNCopies(numCopies int)
+
+func (p printSettings) SetNumberUp(numberUp int)
+
+func (p printSettings) SetNumberUpLayout(numberUpLayout NumberUpLayout)
+
+func (p printSettings) SetOrientation(orientation PageOrientation)
+
+func (p printSettings) SetOutputBin(outputBin string)
+
+func (p printSettings) SetPageRanges(pageRanges []PageRange, numRanges int)
+
+func (p printSettings) SetPageSet(pageSet PageSet)
+
+func (p printSettings) SetPaperHeight(height float64, unit Unit)
+
+func (p printSettings) SetPaperSize(paperSize *PaperSize)
+
+func (p printSettings) SetPaperWidth(width float64, unit Unit)
+
+func (p printSettings) SetPrintPages(pages PrintPages)
+
+func (p printSettings) SetPrinter(printer string)
+
+func (p printSettings) SetPrinterLpi(lpi float64)
+
+func (p printSettings) SetQuality(quality PrintQuality)
+
+func (p printSettings) SetResolution(resolution int)
+
+func (p printSettings) SetResolutionXY(resolutionX int, resolutionY int)
+
+func (p printSettings) SetReverse(reverse bool)
+
+func (p printSettings) SetScale(scale float64)
+
+func (p printSettings) SetUseColor(useColor bool)
+
+func (p printSettings) ToFile(fileName string) bool
+
+func (p printSettings) ToGvariant() *glib.Variant
+
+func (p printSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string)
+
+func (p printSettings) Unset(key string)
 
 // ProgressBar: the ProgressBar is typically used to display the progress of a
 // long running operation. It provides a visual clue that processing is
@@ -13083,12 +22880,73 @@ func NewPrintSettings(keyFile *glib.KeyFile, groupName string) *PrintSettings
 // Accessibility
 //
 // GtkProgressBar uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
-type ProgressBar struct {
+type ProgressBar interface {
+	widget
+
+	// GetEllipsize: returns the ellipsizing position of the progress bar. See
+	// gtk_progress_bar_set_ellipsize().
+	GetEllipsize() pango.EllipsizeMode
+	// GetFraction: returns the current fraction of the task that’s been
+	// completed.
+	GetFraction() float64
+	// GetInverted: gets the value set by gtk_progress_bar_set_inverted().
+	GetInverted() bool
+	// GetPulseStep: retrieves the pulse step set with
+	// gtk_progress_bar_set_pulse_step().
+	GetPulseStep() float64
+	// GetShowText: gets the value of the ProgressBar:show-text property. See
+	// gtk_progress_bar_set_show_text().
+	GetShowText() bool
+	// GetText: retrieves the text that is displayed with the progress bar, if
+	// any, otherwise nil. The return value is a reference to the text, not a
+	// copy of it, so will become invalid if you change the text in the progress
+	// bar.
+	GetText() string
+	// Pulse: indicates that some progress has been made, but you don’t know how
+	// much. Causes the progress bar to enter “activity mode,” where a block
+	// bounces back and forth. Each call to gtk_progress_bar_pulse() causes the
+	// block to move by a little bit (the amount of movement per pulse is
+	// determined by gtk_progress_bar_set_pulse_step()).
+	Pulse()
+	// SetEllipsize: sets the mode used to ellipsize (add an ellipsis: "...")
+	// the text if there is not enough space to render the entire string.
+	SetEllipsize(mode pango.EllipsizeMode)
+	// SetFraction: causes the progress bar to “fill in” the given fraction of
+	// the bar. The fraction should be between 0.0 and 1.0, inclusive.
+	SetFraction(fraction float64)
+	// SetInverted: progress bars normally grow from top to bottom or left to
+	// right. Inverted progress bars grow in the opposite direction.
+	SetInverted(inverted bool)
+	// SetPulseStep: sets the fraction of total progress bar length to move the
+	// bouncing block for each call to gtk_progress_bar_pulse().
+	SetPulseStep(fraction float64)
+	// SetShowText: sets whether the progress bar will show text next to the
+	// bar. The shown text is either the value of the ProgressBar:text property
+	// or, if that is nil, the ProgressBar:fraction value, as a percentage.
+	//
+	// To make a progress bar that is styled and sized suitably for containing
+	// text (even if the actual text is blank), set ProgressBar:show-text to
+	// true and ProgressBar:text to the empty string (not nil).
+	SetShowText(showText bool)
+	// SetText: causes the given @text to appear next to the progress bar.
+	//
+	// If @text is nil and ProgressBar:show-text is true, the current value of
+	// ProgressBar:fraction will be displayed as a percentage.
+	//
+	// If @text is non-nil and ProgressBar:show-text is true, the text will be
+	// displayed. In this case, it will not display the progress percentage. If
+	// @text is the empty string, the progress bar will still be styled and
+	// sized suitably for containing text, as long as ProgressBar:show-text is
+	// true.
+	SetText(text string)
+}
+
+type progressBar struct {
 	Widget
 }
 
-func wrapProgressBar(obj *externglib.Object) *ProgressBar {
-	return &ProgressBar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapProgressBar(obj *externglib.Object) ProgressBar {
+	return &progressBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalProgressBar(p uintptr) (interface{}, error) {
@@ -13097,14 +22955,48 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewProgressBar() *ProgressBar
+func NewProgressBar() ProgressBar
 
-type PropertyExpression struct {
+func (p progressBar) GetEllipsize() pango.EllipsizeMode
+
+func (p progressBar) GetFraction() float64
+
+func (p progressBar) GetInverted() bool
+
+func (p progressBar) GetPulseStep() float64
+
+func (p progressBar) GetShowText() bool
+
+func (p progressBar) GetText() string
+
+func (p progressBar) Pulse()
+
+func (p progressBar) SetEllipsize(mode pango.EllipsizeMode)
+
+func (p progressBar) SetFraction(fraction float64)
+
+func (p progressBar) SetInverted(inverted bool)
+
+func (p progressBar) SetPulseStep(fraction float64)
+
+func (p progressBar) SetShowText(showText bool)
+
+func (p progressBar) SetText(text string)
+
+type PropertyExpression interface {
+	expression
+
+	// GetExpression: gets the expression specifying the object of a property
+	// expression.
+	GetExpression() expression
+}
+
+type propertyExpression struct {
 	Expression
 }
 
-func wrapPropertyExpression(obj *externglib.Object) *PropertyExpression {
-	return &PropertyExpression{Expression{obj}}
+func wrapPropertyExpression(obj *externglib.Object) PropertyExpression {
+	return &propertyExpression{Expression{obj}}
 }
 
 func marshalPropertyExpression(p uintptr) (interface{}, error) {
@@ -13113,7 +23005,9 @@ func marshalPropertyExpression(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPropertyExpression(thisType externglib.Type, expression *Expression, propertyName string) *PropertyExpression
+func NewPropertyExpression(thisType externglib.Type, expression expression, propertyName string) PropertyExpression
+
+func (p propertyExpression) GetExpression() expression
 
 // Range is the common base class for widgets which visualize an adjustment, e.g
 // Scale or Scrollbar.
@@ -13121,12 +23015,117 @@ func NewPropertyExpression(thisType externglib.Type, expression *Expression, pro
 // Apart from signals for monitoring the parameters of the adjustment, Range
 // provides properties and methods for setting a “fill level” on range widgets.
 // See gtk_range_set_fill_level().
-type Range struct {
+type Range interface {
+	widget
+
+	// GetAdjustment: get the Adjustment which is the “model” object for Range.
+	// See gtk_range_set_adjustment() for details. The return value does not
+	// have a reference added, so should not be unreferenced.
+	GetAdjustment() adjustment
+	// GetFillLevel: gets the current position of the fill level indicator.
+	GetFillLevel() float64
+	// GetFlippable: gets the value set by gtk_range_set_flippable().
+	GetFlippable() bool
+	// GetInverted: gets the value set by gtk_range_set_inverted().
+	GetInverted() bool
+	// GetRangeRect: this function returns the area that contains the range’s
+	// trough, in coordinates relative to @range's origin.
+	//
+	// This function is useful mainly for Range subclasses.
+	GetRangeRect() gdk.Rectangle
+	// GetRestrictToFillLevel: gets whether the range is restricted to the fill
+	// level.
+	GetRestrictToFillLevel() bool
+	// GetRoundDigits: gets the number of digits to round the value to when it
+	// changes. See Range::change-value.
+	GetRoundDigits() int
+	// GetShowFillLevel: gets whether the range displays the fill level
+	// graphically.
+	GetShowFillLevel() bool
+	// GetSliderRange: this function returns sliders range along the long
+	// dimension, in widget->window coordinates.
+	//
+	// This function is useful mainly for Range subclasses.
+	GetSliderRange() (int, int)
+	// GetSliderSizeFixed: this function is useful mainly for Range subclasses.
+	//
+	// See gtk_range_set_slider_size_fixed().
+	GetSliderSizeFixed() bool
+	// GetValue: gets the current value of the range.
+	GetValue() float64
+	// SetAdjustment: sets the adjustment to be used as the “model” object for
+	// this range widget. The adjustment indicates the current range value, the
+	// minimum and maximum range values, the step/page increments used for
+	// keybindings and scrolling, and the page size. The page size is normally 0
+	// for Scale and nonzero for Scrollbar, and indicates the size of the
+	// visible area of the widget being scrolled. The page size affects the size
+	// of the scrollbar slider.
+	SetAdjustment(adjustment adjustment)
+	// SetFillLevel: set the new position of the fill level indicator.
+	//
+	// The “fill level” is probably best described by its most prominent use
+	// case, which is an indicator for the amount of pre-buffering in a
+	// streaming media player. In that use case, the value of the range would
+	// indicate the current play position, and the fill level would be the
+	// position up to which the file/stream has been downloaded.
+	//
+	// This amount of prebuffering can be displayed on the range’s trough and is
+	// themeable separately from the trough. To enable fill level display, use
+	// gtk_range_set_show_fill_level(). The range defaults to not showing the
+	// fill level.
+	//
+	// Additionally, it’s possible to restrict the range’s slider position to
+	// values which are smaller than the fill level. This is controller by
+	// gtk_range_set_restrict_to_fill_level() and is by default enabled.
+	SetFillLevel(fillLevel float64)
+	// SetFlippable: if a range is flippable, it will switch its direction if it
+	// is horizontal and its direction is GTK_TEXT_DIR_RTL.
+	//
+	// See gtk_widget_get_direction().
+	SetFlippable(flippable bool)
+	// SetIncrements: sets the step and page sizes for the range. The step size
+	// is used when the user clicks the Scrollbar arrows or moves Scale via
+	// arrow keys. The page size is used for example when moving via Page Up or
+	// Page Down keys.
+	SetIncrements(step float64, page float64)
+	// SetInverted: ranges normally move from lower to higher values as the
+	// slider moves from top to bottom or left to right. Inverted ranges have
+	// higher values at the top or on the right rather than on the bottom or
+	// left.
+	SetInverted(setting bool)
+	// SetRange: sets the allowable values in the Range, and clamps the range
+	// value to be between @min and @max. (If the range has a non-zero page
+	// size, it is clamped between @min and @max - page-size.)
+	SetRange(min float64, max float64)
+	// SetRestrictToFillLevel: sets whether the slider is restricted to the fill
+	// level. See gtk_range_set_fill_level() for a general description of the
+	// fill level concept.
+	SetRestrictToFillLevel(restrictToFillLevel bool)
+	// SetRoundDigits: sets the number of digits to round the value to when it
+	// changes. See Range::change-value.
+	SetRoundDigits(roundDigits int)
+	// SetShowFillLevel: sets whether a graphical fill level is show on the
+	// trough. See gtk_range_set_fill_level() for a general description of the
+	// fill level concept.
+	SetShowFillLevel(showFillLevel bool)
+	// SetSliderSizeFixed: sets whether the range’s slider has a fixed size, or
+	// a size that depends on its adjustment’s page size.
+	//
+	// This function is useful mainly for Range subclasses.
+	SetSliderSizeFixed(sizeFixed bool)
+	// SetValue: sets the current value of the range; if the value is outside
+	// the minimum or maximum range values, it will be clamped to fit inside
+	// them. The range emits the Range::value-changed signal if the value
+	// changes.
+	SetValue(value float64)
+}
+
+type _range struct {
 	Widget
 }
 
-func wrapRange(obj *externglib.Object) *Range {
-	return &Range{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapRange(obj *externglib.Object) Range {
+	return &_range{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
@@ -13134,6 +23133,50 @@ func marshalRange(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (_ _range) GetAdjustment() adjustment
+
+func (_ _range) GetFillLevel() float64
+
+func (_ _range) GetFlippable() bool
+
+func (_ _range) GetInverted() bool
+
+func (_ _range) GetRangeRect() gdk.Rectangle
+
+func (_ _range) GetRestrictToFillLevel() bool
+
+func (_ _range) GetRoundDigits() int
+
+func (_ _range) GetShowFillLevel() bool
+
+func (_ _range) GetSliderRange() (int, int)
+
+func (_ _range) GetSliderSizeFixed() bool
+
+func (_ _range) GetValue() float64
+
+func (_ _range) SetAdjustment(adjustment adjustment)
+
+func (_ _range) SetFillLevel(fillLevel float64)
+
+func (_ _range) SetFlippable(flippable bool)
+
+func (_ _range) SetIncrements(step float64, page float64)
+
+func (_ _range) SetInverted(setting bool)
+
+func (_ _range) SetRange(min float64, max float64)
+
+func (_ _range) SetRestrictToFillLevel(restrictToFillLevel bool)
+
+func (_ _range) SetRoundDigits(roundDigits int)
+
+func (_ _range) SetShowFillLevel(showFillLevel bool)
+
+func (_ _range) SetSliderSizeFixed(sizeFixed bool)
+
+func (_ _range) SetValue(value float64)
 
 // RecentManager: recentManager provides a facility for adding, removing and
 // looking up recently used files. Each recently used file is identified by its
@@ -13188,12 +23231,65 @@ func marshalRange(p uintptr) (interface{}, error) {
 //
 // Note that the maximum age of the recently used files list is controllable
 // through the Settings:gtk-recent-files-max-age property.
-type RecentManager struct {
+type RecentManager interface {
+	gextras.Objector
+
+	// AddFull: adds a new resource, pointed by @uri, into the recently used
+	// resources list, using the metadata specified inside the RecentData passed
+	// in @recent_data.
+	//
+	// The passed URI will be used to identify this resource inside the list.
+	//
+	// In order to register the new recently used resource, metadata about the
+	// resource must be passed as well as the URI; the metadata is stored in a
+	// RecentData, which must contain the MIME type of the resource pointed by
+	// the URI; the name of the application that is registering the item, and a
+	// command line to be used when launching the item.
+	//
+	// Optionally, a RecentData might contain a UTF-8 string to be used when
+	// viewing the item instead of the last component of the URI; a short
+	// description of the item; whether the item should be considered private -
+	// that is, should be displayed only by the applications that have
+	// registered it.
+	AddFull(uri string, recentData *RecentData) bool
+	// AddItem: adds a new resource, pointed by @uri, into the recently used
+	// resources list.
+	//
+	// This function automatically retrieves some of the needed metadata and
+	// setting other metadata to common default values; it then feeds the data
+	// to gtk_recent_manager_add_full().
+	//
+	// See gtk_recent_manager_add_full() if you want to explicitly define the
+	// metadata for the resource pointed by @uri.
+	AddItem(uri string) bool
+	// GetItems: gets the list of recently used resources.
+	GetItems() *glib.List
+	// HasItem: checks whether there is a recently used resource registered with
+	// @uri inside the recent manager.
+	HasItem(uri string) bool
+	// LookupItem: searches for a URI inside the recently used resources list,
+	// and returns a RecentInfo containing information about the resource like
+	// its MIME type, or its display name.
+	LookupItem(uri string) *RecentInfo
+	// MoveItem: changes the location of a recently used resource from @uri to
+	// @new_uri.
+	//
+	// Please note that this function will not affect the resource pointed by
+	// the URIs, but only the URI used in the recently used resources list.
+	MoveItem(uri string, newURI string) bool
+	// PurgeItems: purges every item from the recently used resources list.
+	PurgeItems() int
+	// RemoveItem: removes a resource pointed by @uri from the recently used
+	// resources list handled by a recent manager.
+	RemoveItem(uri string) bool
+}
+
+type recentManager struct {
 	*externglib.Object
 }
 
-func wrapRecentManager(obj *externglib.Object) *RecentManager {
-	return &RecentManager{*externglib.Object{obj}}
+func wrapRecentManager(obj *externglib.Object) RecentManager {
+	return &recentManager{*externglib.Object{obj}}
 }
 
 func marshalRecentManager(p uintptr) (interface{}, error) {
@@ -13202,7 +23298,23 @@ func marshalRecentManager(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRecentManager() *RecentManager
+func NewRecentManager() RecentManager
+
+func (r recentManager) AddFull(uri string, recentData *RecentData) bool
+
+func (r recentManager) AddItem(uri string) bool
+
+func (r recentManager) GetItems() *glib.List
+
+func (r recentManager) HasItem(uri string) bool
+
+func (r recentManager) LookupItem(uri string) *RecentInfo
+
+func (r recentManager) MoveItem(uri string, newURI string) bool
+
+func (r recentManager) PurgeItems() int
+
+func (r recentManager) RemoveItem(uri string) bool
 
 // Revealer: the GtkRevealer widget is a container which animates the transition
 // of its child from invisible to visible.
@@ -13227,12 +23339,48 @@ func NewRecentManager() *RecentManager
 //
 // The child of GtkRevealer, if set, is always available in the accessibility
 // tree, regardless of the state of the revealer widget.
-type Revealer struct {
+type Revealer interface {
+	widget
+
+	// GetChild: gets the child widget of @revealer.
+	GetChild() widget
+	// GetChildRevealed: returns whether the child is fully revealed, in other
+	// words whether the transition to the revealed state is completed.
+	GetChildRevealed() bool
+	// GetRevealChild: returns whether the child is currently revealed. See
+	// gtk_revealer_set_reveal_child().
+	//
+	// This function returns true as soon as the transition is to the revealed
+	// state is started. To learn whether the child is fully revealed (ie the
+	// transition is completed), use gtk_revealer_get_child_revealed().
+	GetRevealChild() bool
+	// GetTransitionDuration: returns the amount of time (in milliseconds) that
+	// transitions will take.
+	GetTransitionDuration() uint
+	// GetTransitionType: gets the type of animation that will be used for
+	// transitions in @revealer.
+	GetTransitionType() RevealerTransitionType
+	// SetChild: sets the child widget of @revealer.
+	SetChild(child widget)
+	// SetRevealChild: tells the Revealer to reveal or conceal its child.
+	//
+	// The transition will be animated with the current transition type of
+	// @revealer.
+	SetRevealChild(revealChild bool)
+	// SetTransitionDuration: sets the duration that transitions will take.
+	SetTransitionDuration(duration uint)
+	// SetTransitionType: sets the type of animation that will be used for
+	// transitions in @revealer. Available types include various kinds of fades
+	// and slides.
+	SetTransitionType(transition RevealerTransitionType)
+}
+
+type revealer struct {
 	Widget
 }
 
-func wrapRevealer(obj *externglib.Object) *Revealer {
-	return &Revealer{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapRevealer(obj *externglib.Object) Revealer {
+	return &revealer{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalRevealer(p uintptr) (interface{}, error) {
@@ -13241,7 +23389,25 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRevealer() *Revealer
+func NewRevealer() Revealer
+
+func (r revealer) GetChild() widget
+
+func (r revealer) GetChildRevealed() bool
+
+func (r revealer) GetRevealChild() bool
+
+func (r revealer) GetTransitionDuration() uint
+
+func (r revealer) GetTransitionType() RevealerTransitionType
+
+func (r revealer) SetChild(child widget)
+
+func (r revealer) SetRevealChild(revealChild bool)
+
+func (r revealer) SetTransitionDuration(duration uint)
+
+func (r revealer) SetTransitionType(transition RevealerTransitionType)
 
 // Scale: a GtkScale is a slider control used to select a numeric value. To use
 // it, you’ll probably want to investigate the methods on its base class, Range,
@@ -13318,12 +23484,80 @@ func NewRevealer() *Revealer
 // Accessibility
 //
 // GtkScale uses the K_ACCESSIBLE_ROLE_SLIDER role.
-type Scale struct {
+type Scale interface {
+	_range
+
+	// AddMark: adds a mark at @value.
+	//
+	// A mark is indicated visually by drawing a tick mark next to the scale,
+	// and GTK makes it easy for the user to position the scale exactly at the
+	// marks value.
+	//
+	// If @markup is not nil, text is shown next to the tick mark.
+	//
+	// To remove marks from a scale, use gtk_scale_clear_marks().
+	AddMark(value float64, position PositionType, markup string)
+	// ClearMarks: removes any marks that have been added with
+	// gtk_scale_add_mark().
+	ClearMarks()
+	// GetDigits: gets the number of decimal places that are displayed in the
+	// value.
+	GetDigits() int
+	// GetDrawValue: returns whether the current value is displayed as a string
+	// next to the slider.
+	GetDrawValue() bool
+	// GetHasOrigin: returns whether the scale has an origin.
+	GetHasOrigin() bool
+	// GetLayout: gets the Layout used to display the scale. The returned object
+	// is owned by the scale so does not need to be freed by the caller.
+	GetLayout() pango.layout
+	// GetLayoutOffsets: obtains the coordinates where the scale will draw the
+	// Layout representing the text in the scale. Remember when using the Layout
+	// function you need to convert to and from pixels using PANGO_PIXELS() or
+	// NGO_SCALE.
+	//
+	// If the Scale:draw-value property is false, the return values are
+	// undefined.
+	GetLayoutOffsets() (int, int)
+	// GetValuePos: gets the position in which the current value is displayed.
+	GetValuePos() PositionType
+	// SetDigits: sets the number of decimal places that are displayed in the
+	// value. Also causes the value of the adjustment to be rounded to this
+	// number of digits, so the retrieved value matches the displayed one, if
+	// Scale:draw-value is true when the value changes. If you want to enforce
+	// rounding the value when Scale:draw-value is false, you can set
+	// Range:round-digits instead.
+	//
+	// Note that rounding to a small number of digits can interfere with the
+	// smooth autoscrolling that is built into Scale. As an alternative, you can
+	// use gtk_scale_set_format_value_func() to format the displayed value
+	// yourself.
+	SetDigits(digits int)
+	// SetDrawValue: specifies whether the current value is displayed as a
+	// string next to the slider.
+	SetDrawValue(drawValue bool)
+	// SetFormatValueFunc: @func allows you to change how the scale value is
+	// displayed. The given function will return an allocated string
+	// representing @value. That string will then be used to display the scale's
+	// value.
+	//
+	// If LL is passed as @func, the value will be displayed on its own, rounded
+	// according to the value of the Scale:digits property.
+	SetFormatValueFunc(_func ScaleFormatValueFunc, userData unsafe.Pointer, destroyNotify unsafe.Pointer)
+	// SetHasOrigin: if Scale:has-origin is set to true (the default), the scale
+	// will highlight the part of the trough between the origin (bottom or left
+	// side) and the current value.
+	SetHasOrigin(hasOrigin bool)
+	// SetValuePos: sets the position in which the current value is displayed.
+	SetValuePos(pos PositionType)
+}
+
+type scale struct {
 	Range
 }
 
-func wrapScale(obj *externglib.Object) *Scale {
-	return &Scale{Range{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapScale(obj *externglib.Object) Scale {
+	return &scale{Range{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalScale(p uintptr) (interface{}, error) {
@@ -13332,9 +23566,35 @@ func marshalScale(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewScale(orientation Orientation, adjustment *Adjustment) *Scale
+func NewScale(orientation Orientation, adjustment adjustment) Scale
 
-func NewScale(orientation Orientation, min float64, max float64, step float64) *Scale
+func NewScale(orientation Orientation, min float64, max float64, step float64) Scale
+
+func (s scale) AddMark(value float64, position PositionType, markup string)
+
+func (s scale) ClearMarks()
+
+func (s scale) GetDigits() int
+
+func (s scale) GetDrawValue() bool
+
+func (s scale) GetHasOrigin() bool
+
+func (s scale) GetLayout() pango.layout
+
+func (s scale) GetLayoutOffsets() (int, int)
+
+func (s scale) GetValuePos() PositionType
+
+func (s scale) SetDigits(digits int)
+
+func (s scale) SetDrawValue(drawValue bool)
+
+func (s scale) SetFormatValueFunc(_func ScaleFormatValueFunc, userData unsafe.Pointer, destroyNotify unsafe.Pointer)
+
+func (s scale) SetHasOrigin(hasOrigin bool)
+
+func (s scale) SetValuePos(pos PositionType)
 
 // ScaleButton: scaleButton provides a button which pops up a scale widget. This
 // kind of widget is commonly used for volume controls in multimedia
@@ -13346,12 +23606,39 @@ func NewScale(orientation Orientation, min float64, max float64, step float64) *
 //
 // GtkScaleButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .scale style class.
-type ScaleButton struct {
+type ScaleButton interface {
+	widget
+
+	// GetAdjustment: gets the Adjustment associated with the ScaleButton’s
+	// scale. See gtk_range_get_adjustment() for details.
+	GetAdjustment() adjustment
+	// GetMinusButton: retrieves the minus button of the ScaleButton.
+	GetMinusButton() widget
+	// GetPlusButton: retrieves the plus button of the ScaleButton.
+	GetPlusButton() widget
+	// GetPopup: retrieves the popup of the ScaleButton.
+	GetPopup() widget
+	// GetValue: gets the current value of the scale button.
+	GetValue() float64
+	// SetAdjustment: sets the Adjustment to be used as a model for the
+	// ScaleButton’s scale. See gtk_range_set_adjustment() for details.
+	SetAdjustment(adjustment adjustment)
+	// SetIcons: sets the icons to be used by the scale button. For details, see
+	// the ScaleButton:icons property.
+	SetIcons(icons []string)
+	// SetValue: sets the current value of the scale; if the value is outside
+	// the minimum or maximum range values, it will be clamped to fit inside
+	// them. The scale button emits the ScaleButton::value-changed signal if the
+	// value changes.
+	SetValue(value float64)
+}
+
+type scaleButton struct {
 	Widget
 }
 
-func wrapScaleButton(obj *externglib.Object) *ScaleButton {
-	return &ScaleButton{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapScaleButton(obj *externglib.Object) ScaleButton {
+	return &scaleButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalScaleButton(p uintptr) (interface{}, error) {
@@ -13360,7 +23647,23 @@ func marshalScaleButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewScaleButton(min float64, max float64, step float64, icons []string) *ScaleButton
+func NewScaleButton(min float64, max float64, step float64, icons []string) ScaleButton
+
+func (s scaleButton) GetAdjustment() adjustment
+
+func (s scaleButton) GetMinusButton() widget
+
+func (s scaleButton) GetPlusButton() widget
+
+func (s scaleButton) GetPopup() widget
+
+func (s scaleButton) GetValue() float64
+
+func (s scaleButton) SetAdjustment(adjustment adjustment)
+
+func (s scaleButton) SetIcons(icons []string)
+
+func (s scaleButton) SetValue(value float64)
 
 // Scrollbar: the Scrollbar widget is a horizontal or vertical scrollbar,
 // depending on the value of the Orientable:orientation property.
@@ -13398,12 +23701,21 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) *Sca
 // Accessibility
 //
 // GtkScrollbar uses the K_ACCESSIBLE_ROLE_SCROLLBAR role.
-type Scrollbar struct {
+type Scrollbar interface {
+	widget
+
+	// GetAdjustment: returns the scrollbar's adjustment.
+	GetAdjustment() adjustment
+	// SetAdjustment: makes the scrollbar use the given adjustment.
+	SetAdjustment(adjustment adjustment)
+}
+
+type scrollbar struct {
 	Widget
 }
 
-func wrapScrollbar(obj *externglib.Object) *Scrollbar {
-	return &Scrollbar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapScrollbar(obj *externglib.Object) Scrollbar {
+	return &scrollbar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalScrollbar(p uintptr) (interface{}, error) {
@@ -13412,7 +23724,11 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar
+func NewScrollbar(orientation Orientation, adjustment adjustment) Scrollbar
+
+func (s scrollbar) GetAdjustment() adjustment
+
+func (s scrollbar) SetAdjustment(adjustment adjustment)
 
 // ScrolledWindow: gtkScrolledWindow is a container that accepts a single child
 // widget, makes that child scrollable using either internally added scrollbars
@@ -13498,12 +23814,143 @@ func NewScrollbar(orientation Orientation, adjustment *Adjustment) *Scrollbar
 // Accessibility
 //
 // GtkScrolledWindow uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type ScrolledWindow struct {
+type ScrolledWindow interface {
+	widget
+
+	// GetChild: gets the child widget of @scrolled_window.
+	GetChild() widget
+	// GetHadjustment: returns the horizontal scrollbar’s adjustment, used to
+	// connect the horizontal scrollbar to the child widget’s horizontal scroll
+	// functionality.
+	GetHadjustment() adjustment
+	// GetHasFrame: gets whether the scrolled window draws a frame. See
+	// gtk_scrolled_window_set_has_frame().
+	GetHasFrame() bool
+	// GetHscrollbar: returns the horizontal scrollbar of @scrolled_window.
+	GetHscrollbar() widget
+	// GetKineticScrolling: returns the specified kinetic scrolling behavior.
+	GetKineticScrolling() bool
+	// GetMaxContentHeight: returns the maximum content height set.
+	GetMaxContentHeight() int
+	// GetMaxContentWidth: returns the maximum content width set.
+	GetMaxContentWidth() int
+	// GetMinContentHeight: gets the minimal content height of @scrolled_window,
+	// or -1 if not set.
+	GetMinContentHeight() int
+	// GetMinContentWidth: gets the minimum content width of @scrolled_window,
+	// or -1 if not set.
+	GetMinContentWidth() int
+	// GetOverlayScrolling: returns whether overlay scrolling is enabled for
+	// this scrolled window.
+	GetOverlayScrolling() bool
+	// GetPlacement: gets the placement of the contents with respect to the
+	// scrollbars for the scrolled window. See
+	// gtk_scrolled_window_set_placement().
+	GetPlacement() CornerType
+	// GetPolicy: retrieves the current policy values for the horizontal and
+	// vertical scrollbars. See gtk_scrolled_window_set_policy().
+	GetPolicy() (PolicyType, PolicyType)
+	// GetPropagateNaturalHeight: reports whether the natural height of the
+	// child will be calculated and propagated through the scrolled window’s
+	// requested natural height.
+	GetPropagateNaturalHeight() bool
+	// GetPropagateNaturalWidth: reports whether the natural width of the child
+	// will be calculated and propagated through the scrolled window’s requested
+	// natural width.
+	GetPropagateNaturalWidth() bool
+	// GetVadjustment: returns the vertical scrollbar’s adjustment, used to
+	// connect the vertical scrollbar to the child widget’s vertical scroll
+	// functionality.
+	GetVadjustment() adjustment
+	// GetVscrollbar: returns the vertical scrollbar of @scrolled_window.
+	GetVscrollbar() widget
+	// SetChild: sets the child widget of @scrolled_window.
+	SetChild(child widget)
+	// SetHadjustment: sets the Adjustment for the horizontal scrollbar.
+	SetHadjustment(hadjustment adjustment)
+	// SetHasFrame: changes the frame drawn around the contents of
+	// @scrolled_window.
+	SetHasFrame(hasFrame bool)
+	// SetKineticScrolling: turns kinetic scrolling on or off. Kinetic scrolling
+	// only applies to devices with source GDK_SOURCE_TOUCHSCREEN.
+	SetKineticScrolling(kineticScrolling bool)
+	// SetMaxContentHeight: sets the maximum height that @scrolled_window should
+	// keep visible. The @scrolled_window will grow up to this height before it
+	// starts scrolling the content.
+	//
+	// It is a programming error to set the maximum content height to a value
+	// smaller than ScrolledWindow:min-content-height.
+	SetMaxContentHeight(height int)
+	// SetMaxContentWidth: sets the maximum width that @scrolled_window should
+	// keep visible. The @scrolled_window will grow up to this width before it
+	// starts scrolling the content.
+	//
+	// It is a programming error to set the maximum content width to a value
+	// smaller than ScrolledWindow:min-content-width.
+	SetMaxContentWidth(width int)
+	// SetMinContentHeight: sets the minimum height that @scrolled_window should
+	// keep visible. Note that this can and (usually will) be smaller than the
+	// minimum size of the content.
+	//
+	// It is a programming error to set the minimum content height to a value
+	// greater than ScrolledWindow:max-content-height.
+	SetMinContentHeight(height int)
+	// SetMinContentWidth: sets the minimum width that @scrolled_window should
+	// keep visible. Note that this can and (usually will) be smaller than the
+	// minimum size of the content.
+	//
+	// It is a programming error to set the minimum content width to a value
+	// greater than ScrolledWindow:max-content-width.
+	SetMinContentWidth(width int)
+	// SetOverlayScrolling: enables or disables overlay scrolling for this
+	// scrolled window.
+	SetOverlayScrolling(overlayScrolling bool)
+	// SetPlacement: sets the placement of the contents with respect to the
+	// scrollbars for the scrolled window.
+	//
+	// The default is GTK_CORNER_TOP_LEFT, meaning the child is in the top left,
+	// with the scrollbars underneath and to the right. Other values in
+	// CornerType are GTK_CORNER_TOP_RIGHT, GTK_CORNER_BOTTOM_LEFT, and
+	// GTK_CORNER_BOTTOM_RIGHT.
+	//
+	// See also gtk_scrolled_window_get_placement() and
+	// gtk_scrolled_window_unset_placement().
+	SetPlacement(windowPlacement CornerType)
+	// SetPolicy: sets the scrollbar policy for the horizontal and vertical
+	// scrollbars.
+	//
+	// The policy determines when the scrollbar should appear; it is a value
+	// from the PolicyType enumeration. If GTK_POLICY_ALWAYS, the scrollbar is
+	// always present; if GTK_POLICY_NEVER, the scrollbar is never present; if
+	// GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed (that is,
+	// if the slider part of the bar would be smaller than the trough — the
+	// display is larger than the page size).
+	SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
+	// SetPropagateNaturalHeight: sets whether the natural height of the child
+	// should be calculated and propagated through the scrolled window’s
+	// requested natural height.
+	SetPropagateNaturalHeight(propagate bool)
+	// SetPropagateNaturalWidth: sets whether the natural width of the child
+	// should be calculated and propagated through the scrolled window’s
+	// requested natural width.
+	SetPropagateNaturalWidth(propagate bool)
+	// SetVadjustment: sets the Adjustment for the vertical scrollbar.
+	SetVadjustment(vadjustment adjustment)
+	// UnsetPlacement: unsets the placement of the contents with respect to the
+	// scrollbars for the scrolled window. If no window placement is set for a
+	// scrolled window, it defaults to GTK_CORNER_TOP_LEFT.
+	//
+	// See also gtk_scrolled_window_set_placement() and
+	// gtk_scrolled_window_get_placement().
+	UnsetPlacement()
+}
+
+type scrolledWindow struct {
 	Widget
 }
 
-func wrapScrolledWindow(obj *externglib.Object) *ScrolledWindow {
-	return &ScrolledWindow{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapScrolledWindow(obj *externglib.Object) ScrolledWindow {
+	return &scrolledWindow{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalScrolledWindow(p uintptr) (interface{}, error) {
@@ -13512,7 +23959,69 @@ func marshalScrolledWindow(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewScrolledWindow() *ScrolledWindow
+func NewScrolledWindow() ScrolledWindow
+
+func (s scrolledWindow) GetChild() widget
+
+func (s scrolledWindow) GetHadjustment() adjustment
+
+func (s scrolledWindow) GetHasFrame() bool
+
+func (s scrolledWindow) GetHscrollbar() widget
+
+func (s scrolledWindow) GetKineticScrolling() bool
+
+func (s scrolledWindow) GetMaxContentHeight() int
+
+func (s scrolledWindow) GetMaxContentWidth() int
+
+func (s scrolledWindow) GetMinContentHeight() int
+
+func (s scrolledWindow) GetMinContentWidth() int
+
+func (s scrolledWindow) GetOverlayScrolling() bool
+
+func (s scrolledWindow) GetPlacement() CornerType
+
+func (s scrolledWindow) GetPolicy() (PolicyType, PolicyType)
+
+func (s scrolledWindow) GetPropagateNaturalHeight() bool
+
+func (s scrolledWindow) GetPropagateNaturalWidth() bool
+
+func (s scrolledWindow) GetVadjustment() adjustment
+
+func (s scrolledWindow) GetVscrollbar() widget
+
+func (s scrolledWindow) SetChild(child widget)
+
+func (s scrolledWindow) SetHadjustment(hadjustment adjustment)
+
+func (s scrolledWindow) SetHasFrame(hasFrame bool)
+
+func (s scrolledWindow) SetKineticScrolling(kineticScrolling bool)
+
+func (s scrolledWindow) SetMaxContentHeight(height int)
+
+func (s scrolledWindow) SetMaxContentWidth(width int)
+
+func (s scrolledWindow) SetMinContentHeight(height int)
+
+func (s scrolledWindow) SetMinContentWidth(width int)
+
+func (s scrolledWindow) SetOverlayScrolling(overlayScrolling bool)
+
+func (s scrolledWindow) SetPlacement(windowPlacement CornerType)
+
+func (s scrolledWindow) SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
+
+func (s scrolledWindow) SetPropagateNaturalHeight(propagate bool)
+
+func (s scrolledWindow) SetPropagateNaturalWidth(propagate bool)
+
+func (s scrolledWindow) SetVadjustment(vadjustment adjustment)
+
+func (s scrolledWindow) UnsetPlacement()
 
 // SearchBar is a container made to have a search entry (possibly with
 // additional connex widgets, such as drop-down menus, or buttons) built-in. The
@@ -13553,12 +24062,45 @@ func NewScrolledWindow() *ScrolledWindow
 // Accessibility
 //
 // GtkSearchBar uses the GTK_ACCESSIBLE_ROLE_SEARCH role.
-type SearchBar struct {
+type SearchBar interface {
+	widget
+
+	// ConnectEntry: connects the Entry widget passed as the one to be used in
+	// this search bar. The entry should be a descendant of the search bar. This
+	// is only required if the entry isn’t the direct child of the search bar
+	// (as in our main example).
+	ConnectEntry(entry Editable)
+	// GetChild: gets the child widget of @bar.
+	GetChild() widget
+	// GetKeyCaptureWidget: gets the widget that @bar is capturing key events
+	// from.
+	GetKeyCaptureWidget() widget
+	// GetSearchMode: returns whether the search mode is on or off.
+	GetSearchMode() bool
+	// GetShowCloseButton: returns whether the close button is shown.
+	GetShowCloseButton() bool
+	// SetChild: sets the child widget of @bar.
+	SetChild(child widget)
+	// SetKeyCaptureWidget: sets @widget as the widget that @bar will capture
+	// key events from.
+	//
+	// If key events are handled by the search bar, the bar will be shown, and
+	// the entry populated with the entered text.
+	SetKeyCaptureWidget(widget widget)
+	// SetSearchMode: switches the search mode on or off.
+	SetSearchMode(searchMode bool)
+	// SetShowCloseButton: shows or hides the close button. Applications that
+	// already have a “search” toggle button should not show a close button in
+	// their search bar, as it duplicates the role of the toggle button.
+	SetShowCloseButton(visible bool)
+}
+
+type searchBar struct {
 	Widget
 }
 
-func wrapSearchBar(obj *externglib.Object) *SearchBar {
-	return &SearchBar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapSearchBar(obj *externglib.Object) SearchBar {
+	return &searchBar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSearchBar(p uintptr) (interface{}, error) {
@@ -13567,7 +24109,25 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSearchBar() *SearchBar
+func NewSearchBar() SearchBar
+
+func (s searchBar) ConnectEntry(entry Editable)
+
+func (s searchBar) GetChild() widget
+
+func (s searchBar) GetKeyCaptureWidget() widget
+
+func (s searchBar) GetSearchMode() bool
+
+func (s searchBar) GetShowCloseButton() bool
+
+func (s searchBar) SetChild(child widget)
+
+func (s searchBar) SetKeyCaptureWidget(widget widget)
+
+func (s searchBar) SetSearchMode(searchMode bool)
+
+func (s searchBar) SetShowCloseButton(visible bool)
 
 // SearchEntry is an entry widget that has been tailored for use as a search
 // entry. The main aPI for interacting with a GtkSearchEntry as entry is the
@@ -13603,12 +24163,30 @@ func NewSearchBar() *SearchBar
 // Accessibility
 //
 // GtkSearchEntry uses the K_ACCESSIBLE_ROLE_SEARCH_BOX role.
-type SearchEntry struct {
+type SearchEntry interface {
+	widget
+
+	// GetKeyCaptureWidget: gets the widget that @entry is capturing key events
+	// from.
+	GetKeyCaptureWidget() widget
+	// SetKeyCaptureWidget: sets @widget as the widget that @entry will capture
+	// key events from.
+	//
+	// Key events are consumed by the search entry to start or continue a
+	// search.
+	//
+	// If the entry is part of a SearchBar, it is preferable to call
+	// gtk_search_bar_set_key_capture_widget() instead, which will reveal the
+	// entry in addition to triggering the search entry.
+	SetKeyCaptureWidget(widget widget)
+}
+
+type searchEntry struct {
 	Widget
 }
 
-func wrapSearchEntry(obj *externglib.Object) *SearchEntry {
-	return &SearchEntry{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapSearchEntry(obj *externglib.Object) SearchEntry {
+	return &searchEntry{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSearchEntry(p uintptr) (interface{}, error) {
@@ -13617,16 +24195,33 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSearchEntry() *SearchEntry
+func NewSearchEntry() SearchEntry
+
+func (s searchEntry) GetKeyCaptureWidget() widget
+
+func (s searchEntry) SetKeyCaptureWidget(widget widget)
 
 // SelectionFilterModel is a list model that presents the selected items in a
 // SelectionModel as its own list model.
-type SelectionFilterModel struct {
+type SelectionFilterModel interface {
+	gextras.Objector
+
+	// GetModel: gets the model currently filtered or nil if none.
+	GetModel() SelectionModel
+	// SetModel: sets the model to be filtered.
+	//
+	// Note that GTK makes no effort to ensure that @model conforms to the item
+	// type of @self. It assumes that the caller knows what they are doing and
+	// have set up an appropriate filter to ensure that item types match.
+	SetModel(model SelectionModel)
+}
+
+type selectionFilterModel struct {
 	*externglib.Object
 }
 
-func wrapSelectionFilterModel(obj *externglib.Object) *SelectionFilterModel {
-	return &SelectionFilterModel{*externglib.Object{obj}}
+func wrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModel {
+	return &selectionFilterModel{*externglib.Object{obj}}
 }
 
 func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
@@ -13635,7 +24230,11 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSelectionFilterModel(model SelectionModel) *SelectionFilterModel
+func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel
+
+func (s selectionFilterModel) GetModel() SelectionModel
+
+func (s selectionFilterModel) SetModel(model SelectionModel)
 
 // Separator: gtkSeparator is a horizontal or vertical separator widget,
 // depending on the value of the Orientable:orientation property, used to group
@@ -13652,12 +24251,16 @@ func NewSelectionFilterModel(model SelectionModel) *SelectionFilterModel
 // Accessibility
 //
 // GtkSeparator uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
-type Separator struct {
+type Separator interface {
+	widget
+}
+
+type separator struct {
 	Widget
 }
 
-func wrapSeparator(obj *externglib.Object) *Separator {
-	return &Separator{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapSeparator(obj *externglib.Object) Separator {
+	return &separator{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSeparator(p uintptr) (interface{}, error) {
@@ -13666,7 +24269,7 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSeparator(orientation Orientation) *Separator
+func NewSeparator(orientation Orientation) Separator
 
 // Settings: gtkSettings provide a mechanism to share global settings between
 // applications.
@@ -13694,12 +24297,21 @@ func NewSeparator(orientation Orientation) *Separator
 // There is one GtkSettings instance per display. It can be obtained with
 // gtk_settings_get_for_display(), but in many cases, it is more convenient to
 // use gtk_widget_get_settings().
-type Settings struct {
+type Settings interface {
+	gextras.Objector
+
+	// ResetProperty: undoes the effect of calling g_object_set() to install an
+	// application-specific value for a setting. After this call, the setting
+	// will again follow the session-wide value for this setting.
+	ResetProperty(name string)
+}
+
+type settings struct {
 	*externglib.Object
 }
 
-func wrapSettings(obj *externglib.Object) *Settings {
-	return &Settings{*externglib.Object{obj}}
+func wrapSettings(obj *externglib.Object) Settings {
+	return &settings{*externglib.Object{obj}}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
@@ -13707,6 +24319,8 @@ func marshalSettings(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (s settings) ResetProperty(name string)
 
 // Shortcut: gtkShortcut is the low level object used for managing keyboard
 // shortcuts.
@@ -13723,12 +24337,30 @@ func marshalSettings(p uintptr) (interface{}, error) {
 // Shortcut does provide functionality to make it easy for users to work with
 // shortcuts, either by providing informational strings for display purposes or
 // by allowing shortcuts to be configured.
-type Shortcut struct {
+type Shortcut interface {
+	gextras.Objector
+
+	// GetAction: gets the action that is activated by this shortcut.
+	GetAction() shortcutAction
+	// GetArguments: gets the arguments that are passed when activating the
+	// shortcut.
+	GetArguments() *glib.Variant
+	// GetTrigger: gets the trigger used to trigger @self.
+	GetTrigger() shortcutTrigger
+	// SetAction: sets the new action for @self to be @action.
+	SetAction(action shortcutAction)
+	// SetArguments: sets the arguments to pass when activating the shortcut.
+	SetArguments(args *glib.Variant)
+	// SetTrigger: sets the new trigger for @self to be @trigger.
+	SetTrigger(trigger shortcutTrigger)
+}
+
+type shortcut struct {
 	*externglib.Object
 }
 
-func wrapShortcut(obj *externglib.Object) *Shortcut {
-	return &Shortcut{*externglib.Object{obj}}
+func wrapShortcut(obj *externglib.Object) Shortcut {
+	return &shortcut{*externglib.Object{obj}}
 }
 
 func marshalShortcut(p uintptr) (interface{}, error) {
@@ -13737,7 +24369,19 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewShortcut(trigger *ShortcutTrigger, action *ShortcutAction) *Shortcut
+func NewShortcut(trigger shortcutTrigger, action shortcutAction) Shortcut
+
+func (s shortcut) GetAction() shortcutAction
+
+func (s shortcut) GetArguments() *glib.Variant
+
+func (s shortcut) GetTrigger() shortcutTrigger
+
+func (s shortcut) SetAction(action shortcutAction)
+
+func (s shortcut) SetArguments(args *glib.Variant)
+
+func (s shortcut) SetTrigger(trigger shortcutTrigger)
 
 // ShortcutAction is the object used to describe what a Shortcut should do when
 // triggered. To activate a ShortcutAction manually,
@@ -13764,12 +24408,34 @@ func NewShortcut(trigger *ShortcutTrigger, action *ShortcutAction) *Shortcut
 // GtkShortcutAction as GtkBuildable
 //
 // GtkShortcut
-type ShortcutAction struct {
+type ShortcutAction interface {
+	gextras.Objector
+
+	// Activate: activates the action on the @widget with the given @args.
+	//
+	// Note that some actions ignore the passed in @flags, @widget or @args.
+	//
+	// Activation of an action can fail for various reasons. If the action is
+	// not supported by the @widget, if the @args don't match the action or if
+	// the activation otherwise had no effect, false will be returned.
+	Activate(flags ShortcutActionFlags, widget widget, args *glib.Variant) bool
+	// Print: prints the given action into a string for the developer. This is
+	// meant for debugging and logging.
+	//
+	// The form of the representation may change at any time and is not
+	// guaranteed to stay identical.
+	Print(string *glib.String)
+	// ToString: prints the given action into a human-readable string. This is a
+	// small wrapper around gtk_shortcut_action_print() to help when debugging.
+	ToString() string
+}
+
+type shortcutAction struct {
 	*externglib.Object
 }
 
-func wrapShortcutAction(obj *externglib.Object) *ShortcutAction {
-	return &ShortcutAction{*externglib.Object{obj}}
+func wrapShortcutAction(obj *externglib.Object) ShortcutAction {
+	return &shortcutAction{*externglib.Object{obj}}
 }
 
 func marshalShortcutAction(p uintptr) (interface{}, error) {
@@ -13778,7 +24444,13 @@ func marshalShortcutAction(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewShortcutAction(string string) *ShortcutAction
+func NewShortcutAction(string string) ShortcutAction
+
+func (s shortcutAction) Activate(flags ShortcutActionFlags, widget widget, args *glib.Variant) bool
+
+func (s shortcutAction) Print(string *glib.String)
+
+func (s shortcutAction) ToString() string
 
 // ShortcutController is an event controller that manages shortcuts.
 //
@@ -13818,12 +24490,59 @@ func NewShortcutAction(string string) *ShortcutAction
 // the GtkButton. See gtk_shortcut_action_parse_string() for the syntax for
 // other kinds of ShortcutAction. See gtk_shortcut_trigger_parse_string() to
 // learn more about the syntax for triggers.
-type ShortcutController struct {
+type ShortcutController interface {
+	eventController
+
+	// AddShortcut: adds @shortcut to the list of shortcuts handled by @self.
+	//
+	// If this controller uses an external shortcut list, this function does
+	// nothing.
+	AddShortcut(shortcut shortcut)
+	// GetMnemonicsModifiers: gets the mnemonics modifiers for when this
+	// controller activates its shortcuts. See
+	// gtk_shortcut_controller_set_mnemonics_modifiers() for details.
+	GetMnemonicsModifiers() gdk.ModifierType
+	// GetScope: gets the scope for when this controller activates its
+	// shortcuts. See gtk_shortcut_controller_set_scope() for details.
+	GetScope() ShortcutScope
+	// RemoveShortcut: removes @shortcut from the list of shortcuts handled by
+	// @self.
+	//
+	// If @shortcut had not been added to @controller or this controller uses an
+	// external shortcut list, this function does nothing.
+	RemoveShortcut(shortcut shortcut)
+	// SetMnemonicsModifiers: sets the controller to have the given
+	// @mnemonics_modifiers.
+	//
+	// The mnemonics modifiers determines which modifiers need to be pressed to
+	// allow activation of shortcuts with mnemonics triggers.
+	//
+	// GTK normally uses the Alt modifier for mnemonics, except in PopoverMenus,
+	// where mnemonics can be triggered without any modifiers. It should be very
+	// rarely necessary to change this, and doing so is likely to interfere with
+	// other shortcuts.
+	//
+	// This value is only relevant for local shortcut controllers. Global and
+	// managed shortcut controllers will have their shortcuts activated from
+	// other places which have their own modifiers for activating mnemonics.
+	SetMnemonicsModifiers(modifiers gdk.ModifierType)
+	// SetScope: sets the controller to have the given @scope.
+	//
+	// The scope allows shortcuts to be activated outside of the normal event
+	// propagation. In particular, it allows installing global keyboard
+	// shortcuts that can be activated even when a widget does not have focus.
+	//
+	// With GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated when the
+	// widget has focus.
+	SetScope(scope ShortcutScope)
+}
+
+type shortcutController struct {
 	EventController
 }
 
-func wrapShortcutController(obj *externglib.Object) *ShortcutController {
-	return &ShortcutController{EventController{*externglib.Object{obj}}}
+func wrapShortcutController(obj *externglib.Object) ShortcutController {
+	return &shortcutController{EventController{*externglib.Object{obj}}}
 }
 
 func marshalShortcutController(p uintptr) (interface{}, error) {
@@ -13832,18 +24551,45 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewShortcutController() *ShortcutController
+func NewShortcutController() ShortcutController
 
-func NewShortcutController(model gio.ListModel) *ShortcutController
+func NewShortcutController(model gio.ListModel) ShortcutController
+
+func (s shortcutController) AddShortcut(shortcut shortcut)
+
+func (s shortcutController) GetMnemonicsModifiers() gdk.ModifierType
+
+func (s shortcutController) GetScope() ShortcutScope
+
+func (s shortcutController) RemoveShortcut(shortcut shortcut)
+
+func (s shortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType)
+
+func (s shortcutController) SetScope(scope ShortcutScope)
 
 // ShortcutLabel is a widget that represents a single keyboard shortcut or
 // gesture in the user interface.
-type ShortcutLabel struct {
+type ShortcutLabel interface {
+	widget
+
+	// GetAccelerator: retrieves the current accelerator of @self.
+	GetAccelerator() string
+	// GetDisabledText: retrieves the text that is displayed when no accelerator
+	// is set.
+	GetDisabledText() string
+	// SetAccelerator: sets the accelerator to be displayed by @self.
+	SetAccelerator(accelerator string)
+	// SetDisabledText: sets the text to be displayed by @self when no
+	// accelerator is set.
+	SetDisabledText(disabledText string)
+}
+
+type shortcutLabel struct {
 	Widget
 }
 
-func wrapShortcutLabel(obj *externglib.Object) *ShortcutLabel {
-	return &ShortcutLabel{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapShortcutLabel(obj *externglib.Object) ShortcutLabel {
+	return &shortcutLabel{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalShortcutLabel(p uintptr) (interface{}, error) {
@@ -13852,7 +24598,15 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewShortcutLabel(accelerator string) *ShortcutLabel
+func NewShortcutLabel(accelerator string) ShortcutLabel
+
+func (s shortcutLabel) GetAccelerator() string
+
+func (s shortcutLabel) GetDisabledText() string
+
+func (s shortcutLabel) SetAccelerator(accelerator string)
+
+func (s shortcutLabel) SetDisabledText(disabledText string)
 
 // ShortcutTrigger is the object used to track if a Shortcut should be
 // activated. For this purpose, gtk_shortcut_trigger_trigger() can be called on
@@ -13864,12 +24618,71 @@ func NewShortcutLabel(accelerator string) *ShortcutLabel
 // All ShortcutTriggers are immutable, you can only specify their properties
 // during construction. If you want to change a trigger, you have to replace it
 // with a new one.
-type ShortcutTrigger struct {
+type ShortcutTrigger interface {
+	gextras.Objector
+
+	// Compare: the types of @trigger1 and @trigger2 are #gconstpointer only to
+	// allow use of this function as a Func. They must each be a
+	// ShortcutTrigger.
+	Compare(trigger2 unsafe.Pointer) int
+	// Equal: checks if @trigger1 and @trigger2 trigger under the same
+	// conditions.
+	//
+	// The types of @one and @two are #gconstpointer only to allow use of this
+	// function with Table. They must each be a ShortcutTrigger.
+	Equal(trigger2 unsafe.Pointer) bool
+	// Hash: generates a hash value for a ShortcutTrigger.
+	//
+	// The output of this function is guaranteed to be the same for a given
+	// value only per-process. It may change between different processor
+	// architectures or even different versions of GTK. Do not use this function
+	// as a basis for building protocols or file formats.
+	//
+	// The types of @trigger is #gconstpointer only to allow use of this
+	// function with Table. They must each be a ShortcutTrigger.
+	Hash() uint
+	// Print: prints the given trigger into a string for the developer. This is
+	// meant for debugging and logging.
+	//
+	// The form of the representation may change at any time and is not
+	// guaranteed to stay identical.
+	Print(string *glib.String)
+	// PrintLabel: prints the given trigger into a string. This function is
+	// returning a translated string for presentation to end users for example
+	// in menu items or in help texts.
+	//
+	// The @display in use may influence the resulting string in various forms,
+	// such as resolving hardware keycodes or by causing display-specific
+	// modifier names.
+	//
+	// The form of the representation may change at any time and is not
+	// guaranteed to stay identical.
+	PrintLabel(display gdk.display, string *glib.String) bool
+	// ToLabel: gets textual representation for the given trigger. This function
+	// is returning a translated string for presentation to end users for
+	// example in menu items or in help texts.
+	//
+	// The @display in use may influence the resulting string in various forms,
+	// such as resolving hardware keycodes or by causing display-specific
+	// modifier names.
+	//
+	// The form of the representation may change at any time and is not
+	// guaranteed to stay identical.
+	ToLabel(display gdk.display) string
+	// ToString: prints the given trigger into a human-readable string. This is
+	// a small wrapper around gtk_shortcut_trigger_print() to help when
+	// debugging.
+	ToString() string
+	// Trigger: checks if the given @event triggers @self.
+	Trigger(event gdk.event, enableMnemonics bool) gdk.KeyMatch
+}
+
+type shortcutTrigger struct {
 	*externglib.Object
 }
 
-func wrapShortcutTrigger(obj *externglib.Object) *ShortcutTrigger {
-	return &ShortcutTrigger{*externglib.Object{obj}}
+func wrapShortcutTrigger(obj *externglib.Object) ShortcutTrigger {
+	return &shortcutTrigger{*externglib.Object{obj}}
 }
 
 func marshalShortcutTrigger(p uintptr) (interface{}, error) {
@@ -13878,7 +24691,23 @@ func marshalShortcutTrigger(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewShortcutTrigger(string string) *ShortcutTrigger
+func NewShortcutTrigger(string string) ShortcutTrigger
+
+func (s shortcutTrigger) Compare(trigger2 unsafe.Pointer) int
+
+func (s shortcutTrigger) Equal(trigger2 unsafe.Pointer) bool
+
+func (s shortcutTrigger) Hash() uint
+
+func (s shortcutTrigger) Print(string *glib.String)
+
+func (s shortcutTrigger) PrintLabel(display gdk.display, string *glib.String) bool
+
+func (s shortcutTrigger) ToLabel(display gdk.display) string
+
+func (s shortcutTrigger) ToString() string
+
+func (s shortcutTrigger) Trigger(event gdk.event, enableMnemonics bool) gdk.KeyMatch
 
 // ShortcutsGroup: a GtkShortcutsGroup represents a group of related keyboard
 // shortcuts or gestures. The group has a title. It may optionally be associated
@@ -13886,12 +24715,16 @@ func NewShortcutTrigger(string string) *ShortcutTrigger
 // shortcuts depending on the application context.
 //
 // This widget is only meant to be used with ShortcutsWindow.
-type ShortcutsGroup struct {
+type ShortcutsGroup interface {
+	box
+}
+
+type shortcutsGroup struct {
 	Box
 }
 
-func wrapShortcutsGroup(obj *externglib.Object) *ShortcutsGroup {
-	return &ShortcutsGroup{Box{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapShortcutsGroup(obj *externglib.Object) ShortcutsGroup {
+	return &shortcutsGroup{Box{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalShortcutsGroup(p uintptr) (interface{}, error) {
@@ -13910,12 +24743,16 @@ func marshalShortcutsGroup(p uintptr) (interface{}, error) {
 // groups in the section are distributed over pages and columns.
 //
 // This widget is only meant to be used with ShortcutsWindow.
-type ShortcutsSection struct {
+type ShortcutsSection interface {
+	box
+}
+
+type shortcutsSection struct {
 	Box
 }
 
-func wrapShortcutsSection(obj *externglib.Object) *ShortcutsSection {
-	return &ShortcutsSection{Box{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapShortcutsSection(obj *externglib.Object) ShortcutsSection {
+	return &shortcutsSection{Box{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalShortcutsSection(p uintptr) (interface{}, error) {
@@ -13927,12 +24764,16 @@ func marshalShortcutsSection(p uintptr) (interface{}, error) {
 // ShortcutsShortcut: a GtkShortcutsShortcut represents a single keyboard
 // shortcut or gesture with a short text. This widget is only meant to be used
 // with ShortcutsWindow.
-type ShortcutsShortcut struct {
+type ShortcutsShortcut interface {
+	widget
+}
+
+type shortcutsShortcut struct {
 	Widget
 }
 
-func wrapShortcutsShortcut(obj *externglib.Object) *ShortcutsShortcut {
-	return &ShortcutsShortcut{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcut {
+	return &shortcutsShortcut{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
@@ -13984,12 +24825,16 @@ func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
 //
 // The .ui file for this example can be found
 // [here](https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
-type ShortcutsWindow struct {
+type ShortcutsWindow interface {
+	window
+}
+
+type shortcutsWindow struct {
 	Window
 }
 
-func wrapShortcutsWindow(obj *externglib.Object) *ShortcutsWindow {
-	return &ShortcutsWindow{Window{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
+	return &shortcutsWindow{Window{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalShortcutsWindow(p uintptr) (interface{}, error) {
@@ -14002,12 +24847,19 @@ func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 //
 // Signals that are used in this way are referred to as keybinding signals, and
 // they are expected to be defined with the G_SIGNAL_ACTION flag.
-type SignalAction struct {
+type SignalAction interface {
+	shortcutAction
+
+	// GetSignalName: returns the name of the signal that will be emitted.
+	GetSignalName() string
+}
+
+type signalAction struct {
 	ShortcutAction
 }
 
-func wrapSignalAction(obj *externglib.Object) *SignalAction {
-	return &SignalAction{ShortcutAction{*externglib.Object{obj}}}
+func wrapSignalAction(obj *externglib.Object) SignalAction {
+	return &signalAction{ShortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalSignalAction(p uintptr) (interface{}, error) {
@@ -14016,7 +24868,9 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSignalAction(signalName string) *SignalAction
+func NewSignalAction(signalName string) SignalAction
+
+func (s signalAction) GetSignalName() string
 
 // SignalListItemFactory is a ListItemFactory that provides signals that user
 // code can connect to to manage listitems. Signals are emitted for every
@@ -14055,12 +24909,16 @@ func NewSignalAction(signalName string) *SignalAction
 // ListItem::notify signal is recommended. The signal can be connected in the
 // SignalListItemFactory::setup signal and removed again during
 // SignalListItemFactory::teardown.
-type SignalListItemFactory struct {
+type SignalListItemFactory interface {
+	listItemFactory
+}
+
+type signalListItemFactory struct {
 	ListItemFactory
 }
 
-func wrapSignalListItemFactory(obj *externglib.Object) *SignalListItemFactory {
-	return &SignalListItemFactory{ListItemFactory{*externglib.Object{obj}}}
+func wrapSignalListItemFactory(obj *externglib.Object) SignalListItemFactory {
+	return &signalListItemFactory{ListItemFactory{*externglib.Object{obj}}}
 }
 
 func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
@@ -14069,7 +24927,7 @@ func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSignalListItemFactory() *SignalListItemFactory
+func NewSignalListItemFactory() SignalListItemFactory
 
 // SingleSelection: gtkSingleSelection is an implementation of the
 // SelectionModel interface that allows selecting a single element. It is the
@@ -14079,12 +24937,54 @@ func NewSignalListItemFactory() *SignalListItemFactory
 // and re-added in the same Model::items-changed emission, it stays selected. In
 // particular, this means that changing the sort order of an underlying sort
 // model will preserve the selection.
-type SingleSelection struct {
+type SingleSelection interface {
+	gextras.Objector
+
+	// GetAutoselect: checks if autoselect has been enabled or disabled via
+	// gtk_single_selection_set_autoselect().
+	GetAutoselect() bool
+	// GetCanUnselect: if true, gtk_selection_model_unselect_item() is supported
+	// and allows unselecting the selected item.
+	GetCanUnselect() bool
+	// GetModel: gets the model that @self is wrapping.
+	GetModel() gio.ListModel
+	// GetSelected: gets the position of the selected item. If no item is
+	// selected, K_INVALID_LIST_POSITION is returned.
+	GetSelected() uint
+	// GetSelectedItem: gets the selected item.
+	//
+	// If no item is selected, nil is returned.
+	GetSelectedItem() unsafe.Pointer
+	// SetAutoselect: if @autoselect is true, @self will enforce that an item is
+	// always selected. It will select a new item when the currently selected
+	// item is deleted and it will disallow unselecting the current item.
+	SetAutoselect(autoselect bool)
+	// SetCanUnselect: if true, unselecting the current item via
+	// gtk_selection_model_unselect_item() is supported.
+	//
+	// Note that setting SingleSelection:autoselect will cause the unselecting
+	// to not work, so it practically makes no sense to set both at the same
+	// time the same time.
+	SetCanUnselect(canUnselect bool)
+	// SetModel: sets the model that @self should wrap. If @model is nil, @self
+	// will be empty.
+	SetModel(model gio.ListModel)
+	// SetSelected: selects the item at the given position.
+	//
+	// If the list does not have an item at @position or K_INVALID_LIST_POSITION
+	// is given, the behavior depends on the value of the
+	// SingleSelection:autoselect property: If it is set, no change will occur
+	// and the old item will stay selected. If it is unset, the selection will
+	// be unset and no item will be selected.
+	SetSelected(position uint)
+}
+
+type singleSelection struct {
 	*externglib.Object
 }
 
-func wrapSingleSelection(obj *externglib.Object) *SingleSelection {
-	return &SingleSelection{*externglib.Object{obj}}
+func wrapSingleSelection(obj *externglib.Object) SingleSelection {
+	return &singleSelection{*externglib.Object{obj}}
 }
 
 func marshalSingleSelection(p uintptr) (interface{}, error) {
@@ -14093,7 +24993,25 @@ func marshalSingleSelection(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSingleSelection(model gio.ListModel) *SingleSelection
+func NewSingleSelection(model gio.ListModel) SingleSelection
+
+func (s singleSelection) GetAutoselect() bool
+
+func (s singleSelection) GetCanUnselect() bool
+
+func (s singleSelection) GetModel() gio.ListModel
+
+func (s singleSelection) GetSelected() uint
+
+func (s singleSelection) GetSelectedItem() unsafe.Pointer
+
+func (s singleSelection) SetAutoselect(autoselect bool)
+
+func (s singleSelection) SetCanUnselect(canUnselect bool)
+
+func (s singleSelection) SetModel(model gio.ListModel)
+
+func (s singleSelection) SetSelected(position uint)
 
 // SizeGroup: sizeGroup provides a mechanism for grouping a number of widgets
 // together so they all request the same amount of space. This is typically
@@ -14157,12 +25075,39 @@ func NewSingleSelection(model gio.ListModel) *SingleSelection
 //        <widget name="radio2"/>
 //      </widgets>
 //    </object>
-type SizeGroup struct {
+type SizeGroup interface {
+	gextras.Objector
+
+	// AddWidget: adds a widget to a SizeGroup. In the future, the requisition
+	// of the widget will be determined as the maximum of its requisition and
+	// the requisition of the other widgets in the size group. Whether this
+	// applies horizontally, vertically, or in both directions depends on the
+	// mode of the size group. See gtk_size_group_set_mode().
+	//
+	// When the widget is destroyed or no longer referenced elsewhere, it will
+	// be removed from the size group.
+	AddWidget(widget widget)
+	// GetMode: gets the current mode of the size group. See
+	// gtk_size_group_set_mode().
+	GetMode() SizeGroupMode
+	// GetWidgets: returns the list of widgets associated with @size_group.
+	GetWidgets() *glib.SList
+	// RemoveWidget: removes a widget from a SizeGroup.
+	RemoveWidget(widget widget)
+	// SetMode: sets the SizeGroupMode of the size group. The mode of the size
+	// group determines whether the widgets in the size group should all have
+	// the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL) all have the
+	// same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should all have
+	// the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
+	SetMode(mode SizeGroupMode)
+}
+
+type sizeGroup struct {
 	*externglib.Object
 }
 
-func wrapSizeGroup(obj *externglib.Object) *SizeGroup {
-	return &SizeGroup{*externglib.Object{obj}}
+func wrapSizeGroup(obj *externglib.Object) SizeGroup {
+	return &sizeGroup{*externglib.Object{obj}}
 }
 
 func marshalSizeGroup(p uintptr) (interface{}, error) {
@@ -14171,7 +25116,17 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSizeGroup(mode SizeGroupMode) *SizeGroup
+func NewSizeGroup(mode SizeGroupMode) SizeGroup
+
+func (s sizeGroup) AddWidget(widget widget)
+
+func (s sizeGroup) GetMode() SizeGroupMode
+
+func (s sizeGroup) GetWidgets() *glib.SList
+
+func (s sizeGroup) RemoveWidget(widget widget)
+
+func (s sizeGroup) SetMode(mode SizeGroupMode)
 
 // SliceListModel is a list model that takes a list model and presents a slice
 // of that model.
@@ -14179,12 +25134,36 @@ func NewSizeGroup(mode SizeGroupMode) *SizeGroup
 // This is useful when implementing paging by setting the size to the number of
 // elements per page and updating the offset whenever a different page is
 // opened.
-type SliceListModel struct {
+type SliceListModel interface {
+	gextras.Objector
+
+	// GetModel: gets the model that is currently being used or nil if none.
+	GetModel() gio.ListModel
+	// GetOffset: gets the offset set via gtk_slice_list_model_set_offset()
+	GetOffset() uint
+	// GetSize: gets the size set via gtk_slice_list_model_set_size().
+	GetSize() uint
+	// SetModel: sets the model to show a slice of. The model's item type must
+	// conform to @self's item type.
+	SetModel(model gio.ListModel)
+	// SetOffset: sets the offset into the original model for this slice.
+	//
+	// If the offset is too large for the sliced model, @self will end up empty.
+	SetOffset(offset uint)
+	// SetSize: sets the maximum size. @self will never have more items than
+	// @size.
+	//
+	// It can however have fewer items if the offset is too large or the model
+	// sliced from doesn't have enough items.
+	SetSize(size uint)
+}
+
+type sliceListModel struct {
 	*externglib.Object
 }
 
-func wrapSliceListModel(obj *externglib.Object) *SliceListModel {
-	return &SliceListModel{*externglib.Object{obj}}
+func wrapSliceListModel(obj *externglib.Object) SliceListModel {
+	return &sliceListModel{*externglib.Object{obj}}
 }
 
 func marshalSliceListModel(p uintptr) (interface{}, error) {
@@ -14193,7 +25172,19 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSliceListModel(model gio.ListModel, offset uint, size uint) *SliceListModel
+func NewSliceListModel(model gio.ListModel, offset uint, size uint) SliceListModel
+
+func (s sliceListModel) GetModel() gio.ListModel
+
+func (s sliceListModel) GetOffset() uint
+
+func (s sliceListModel) GetSize() uint
+
+func (s sliceListModel) SetModel(model gio.ListModel)
+
+func (s sliceListModel) SetOffset(offset uint)
+
+func (s sliceListModel) SetSize(size uint)
 
 // Snapshot: gtkSnapshot is an auxiliary object that assists in creating
 // RenderNodes in the PaintableInterface.snapshot() vfunc. It functions in a
@@ -14207,12 +25198,221 @@ func NewSliceListModel(model gio.ListModel, offset uint, size uint) *SliceListMo
 // The typical way to obtain a GtkSnapshot object is as an argument to the
 // WidgetClass.snapshot() vfunc. If you need to create your own GtkSnapshot, use
 // gtk_snapshot_new().
-type Snapshot struct {
+type Snapshot interface {
+	gdk.snapshot
+
+	// AppendBorder: appends a stroked border rectangle inside the given
+	// @outline. The 4 sides of the border can have different widths and colors.
+	AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA)
+	// AppendCairo: creates a new render node and appends it to the current
+	// render node of @snapshot, without changing the current node.
+	AppendCairo(bounds *graphene.Rect) *cairo.Context
+	// AppendColor: creates a new render node drawing the @color into the given
+	// @bounds and appends it to the current render node of @snapshot.
+	//
+	// You should try to avoid calling this function if @color is transparent.
+	AppendColor(color *gdk.RGBA, bounds *graphene.Rect)
+	// AppendConicGradient: appends a conic gradient node with the given stops
+	// to @snapshot.
+	AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop, nStops uint)
+	// AppendInsetShadow: appends an inset shadow into the box given by
+	// @outline.
+	AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+
+	AppendLayout(layout pango.layout, color *gdk.RGBA)
+	// AppendLinearGradient: appends a linear gradient node with the given stops
+	// to @snapshot.
+	AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop, nStops uint)
+	// AppendNode: appends @node to the current render node of @snapshot,
+	// without changing the current node. If @snapshot does not have a current
+	// node yet, @node will become the initial node.
+	AppendNode(node gsk.renderNode)
+	// AppendOutsetShadow: appends an outset shadow node around the box given by
+	// @outline.
+	AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+	// AppendRadialGradient: appends a radial gradient node with the given stops
+	// to @snapshot.
+	AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop, nStops uint)
+	// AppendRepeatingLinearGradient: appends a repeating linear gradient node
+	// with the given stops to @snapshot.
+	AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop, nStops uint)
+	// AppendRepeatingRadialGradient: appends a repeating radial gradient node
+	// with the given stops to @snapshot.
+	AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop, nStops uint)
+	// AppendTexture: creates a new render node drawing the @texture into the
+	// given @bounds and appends it to the current render node of @snapshot.
+	AppendTexture(texture gdk.texture, bounds *graphene.Rect)
+	// FreeToNode: returns the node that was constructed by @snapshot and frees
+	// @snapshot.
+	FreeToNode() gsk.renderNode
+	// FreeToPaintable: returns a paintable for the node that was constructed by
+	// @snapshot and frees @snapshot.
+	FreeToPaintable(size *graphene.Size) gdk.Paintable
+	// GlShaderPopTexture: removes the top element from the stack of render
+	// nodes and adds it to the nearest GskGLShaderNode below it. This must be
+	// called the same number of times as the number of textures is needed for
+	// the shader in gtk_snapshot_push_gl_shader().
+	GlShaderPopTexture()
+	// Perspective: applies a perspective projection transform.
+	//
+	// See gsk_transform_perspective() for a discussion on the details.
+	Perspective(depth float32)
+	// Pop: removes the top element from the stack of render nodes, and appends
+	// it to the node underneath it.
+	Pop()
+	// PushBlend: blends together 2 images with the given blend mode.
+	//
+	// Until the first call to gtk_snapshot_pop(), the bottom image for the
+	// blend operation will be recorded. After that call, the top image to be
+	// blended will be recorded until the second call to gtk_snapshot_pop().
+	//
+	// Calling this function requires 2 subsequent calls to gtk_snapshot_pop().
+	PushBlend(blendMode gsk.BlendMode)
+	// PushBlur: blurs an image.
+	//
+	// The image is recorded until the next call to gtk_snapshot_pop().
+	PushBlur(radius float64)
+	// PushClip: clips an image to a rectangle.
+	//
+	// The image is recorded until the next call to gtk_snapshot_pop().
+	PushClip(bounds *graphene.Rect)
+	// PushColorMatrix: modifies the colors of an image by applying an affine
+	// transformation in RGB space.
+	//
+	// The image is recorded until the next call to gtk_snapshot_pop().
+	PushColorMatrix(colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4)
+	// PushCrossFade: snapshots a cross-fade operation between two images with
+	// the given @progress.
+	//
+	// Until the first call to gtk_snapshot_pop(), the start image will be
+	// snapshot. After that call, the end image will be recorded until the
+	// second call to gtk_snapshot_pop().
+	//
+	// Calling this function requires 2 calls to gtk_snapshot_pop().
+	PushCrossFade(progress float64)
+	// PushGlShader: push a GLShaderNode with a specific GLShader and a set of
+	// uniform values to use while rendering. Additionally this takes a list of
+	// @n_children other nodes which will be passed to the GLShaderNode.
+	//
+	// The @take_args argument is a block of data to use for uniform arguments,
+	// as per types and offsets defined by the @shader. Normally this is
+	// generated by gsk_gl_shader_format_args() or GLShaderArgBuilder. The
+	// snapshotter takes ownership of @take_args, so the caller should not free
+	// it after this.
+	//
+	// If the renderer doesn't support GL shaders, or if there is any problem
+	// when compiling the shader, then the node will draw pink. You should use
+	// gsk_gl_shader_compile() to ensure the @shader will work for the renderer
+	// before using it.
+	//
+	// If the shader requires textures (see gsk_gl_shader_get_n_textures()),
+	// then it is expected that you call gtk_snapshot_gl_shader_pop_texture()
+	// the number of times that are required. Each of these calls will generate
+	// a node that is added as a child to the gl shader node, which in turn will
+	// render these offscreen and pass as a texture to the shader.
+	//
+	// Once all textures (if any) are pop:ed, you must call the regular
+	// gtk_snapshot_pop().
+	//
+	// If you want to use pre-existing textures as input to the shader rather
+	// than rendering new ones, use gtk_snapshot_append_texture() to push a
+	// texture node. These will be used directly rather than being re-rendered.
+	//
+	// For details on how to write shaders, see GLShader.
+	PushGlShader(shader gsk.gLShader, bounds *graphene.Rect, takeArgs *glib.Bytes)
+	// PushOpacity: modifies the opacity of an image.
+	//
+	// The image is recorded until the next call to gtk_snapshot_pop().
+	PushOpacity(opacity float64)
+	// PushRepeat: creates a node that repeats the child node.
+	//
+	// The child is recorded until the next call to gtk_snapshot_pop().
+	PushRepeat(bounds *graphene.Rect, childBounds *graphene.Rect)
+	// PushRoundedClip: clips an image to a rounded rectangle.
+	//
+	// The image is recorded until the next call to gtk_snapshot_pop().
+	PushRoundedClip(bounds *gsk.RoundedRect)
+	// PushShadow: applies a shadow to an image.
+	//
+	// The image is recorded until the next call to gtk_snapshot_pop().
+	PushShadow(shadow *gsk.Shadow, nShadows uint)
+	// RenderBackground: creates a render node for the CSS background according
+	// to @context, and appends it to the current node of @snapshot, without
+	// changing the current node.
+	RenderBackground(context styleContext, x float64, y float64, width float64, height float64)
+	// RenderFocus: creates a render node for the focus outline according to
+	// @context, and appends it to the current node of @snapshot, without
+	// changing the current node.
+	RenderFocus(context styleContext, x float64, y float64, width float64, height float64)
+	// RenderFrame: creates a render node for the CSS border according to
+	// @context, and appends it to the current node of @snapshot, without
+	// changing the current node.
+	RenderFrame(context styleContext, x float64, y float64, width float64, height float64)
+	// RenderInsertionCursor: draws a text caret using @snapshot at the
+	// specified index of @layout.
+	RenderInsertionCursor(context styleContext, x float64, y float64, layout pango.layout, index int, direction pango.Direction)
+	// RenderLayout: creates a render node for rendering @layout according to
+	// the style information in @context, and appends it to the current node of
+	// @snapshot, without changing the current node.
+	RenderLayout(context styleContext, x float64, y float64, layout pango.layout)
+	// Restore: restores @snapshot to the state saved by a preceding call to
+	// gtk_snapshot_save() and removes that state from the stack of saved
+	// states.
+	Restore()
+	// Rotate: rotates @@snapshot's coordinate system by @angle degrees in 2D
+	// space - or in 3D speak, rotates around the z axis.
+	Rotate(angle float32)
+	// Rotate3D: rotates @snapshot's coordinate system by @angle degrees around
+	// @axis.
+	//
+	// For a rotation in 2D space, use gsk_transform_rotate().
+	Rotate3D(angle float32, axis *graphene.Vec3)
+	// Save: makes a copy of the current state of @snapshot and saves it on an
+	// internal stack of saved states for @snapshot. When gtk_snapshot_restore()
+	// is called, @snapshot will be restored to the saved state. Multiple calls
+	// to gtk_snapshot_save() and gtk_snapshot_restore() can be nested; each
+	// call to gtk_snapshot_restore() restores the state from the matching
+	// paired gtk_snapshot_save().
+	//
+	// It is necessary to clear all saved states with corresponding calls to
+	// gtk_snapshot_restore().
+	Save()
+	// Scale: scales @snapshot's coordinate system in 2-dimensional space by the
+	// given factors.
+	//
+	// Use gtk_snapshot_scale_3d() to scale in all 3 dimensions.
+	Scale(factorX float32, factorY float32)
+	// Scale3D: scales @snapshot's coordinate system by the given factors.
+	Scale3D(factorX float32, factorY float32, factorZ float32)
+	// ToNode: returns the render node that was constructed by @snapshot. After
+	// calling this function, it is no longer possible to add more nodes to
+	// @snapshot. The only function that should be called after this is
+	// g_object_unref().
+	ToNode() gsk.renderNode
+	// ToPaintable: returns a paintable encapsulating the render node that was
+	// constructed by @snapshot. After calling this function, it is no longer
+	// possible to add more nodes to @snapshot. The only function that should be
+	// called after this is g_object_unref().
+	ToPaintable(size *graphene.Size) gdk.Paintable
+	// Transform: transforms @snapshot's coordinate system with the given
+	// @transform.
+	Transform(transform *gsk.Transform)
+	// TransformMatrix: transforms @snapshot's coordinate system with the given
+	// @matrix.
+	TransformMatrix(matrix *graphene.Matrix)
+	// Translate: translates @snapshot's coordinate system by @point in
+	// 2-dimensional space.
+	Translate(point *graphene.Point)
+	// Translate3D: translates @snapshot's coordinate system by @point.
+	Translate3D(point *graphene.Point3D)
+}
+
+type snapshot struct {
 	gdk.Snapshot
 }
 
-func wrapSnapshot(obj *externglib.Object) *Snapshot {
-	return &Snapshot{Snapshot{*externglib.Object{obj}}}
+func wrapSnapshot(obj *externglib.Object) Snapshot {
+	return &snapshot{gdk.Snapshot{*externglib.Object{obj}}}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
@@ -14221,7 +25421,97 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSnapshot() *Snapshot
+func NewSnapshot() Snapshot
+
+func (s snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA)
+
+func (s snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context
+
+func (s snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect)
+
+func (s snapshot) AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop, nStops uint)
+
+func (s snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+
+func (s snapshot) AppendLayout(layout pango.layout, color *gdk.RGBA)
+
+func (s snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop, nStops uint)
+
+func (s snapshot) AppendNode(node gsk.renderNode)
+
+func (s snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+
+func (s snapshot) AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop, nStops uint)
+
+func (s snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop, nStops uint)
+
+func (s snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop, nStops uint)
+
+func (s snapshot) AppendTexture(texture gdk.texture, bounds *graphene.Rect)
+
+func (s snapshot) FreeToNode() gsk.renderNode
+
+func (s snapshot) FreeToPaintable(size *graphene.Size) gdk.Paintable
+
+func (s snapshot) GlShaderPopTexture()
+
+func (s snapshot) Perspective(depth float32)
+
+func (s snapshot) Pop()
+
+func (s snapshot) PushBlend(blendMode gsk.BlendMode)
+
+func (s snapshot) PushBlur(radius float64)
+
+func (s snapshot) PushClip(bounds *graphene.Rect)
+
+func (s snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4)
+
+func (s snapshot) PushCrossFade(progress float64)
+
+func (s snapshot) PushGlShader(shader gsk.gLShader, bounds *graphene.Rect, takeArgs *glib.Bytes)
+
+func (s snapshot) PushOpacity(opacity float64)
+
+func (s snapshot) PushRepeat(bounds *graphene.Rect, childBounds *graphene.Rect)
+
+func (s snapshot) PushRoundedClip(bounds *gsk.RoundedRect)
+
+func (s snapshot) PushShadow(shadow *gsk.Shadow, nShadows uint)
+
+func (s snapshot) RenderBackground(context styleContext, x float64, y float64, width float64, height float64)
+
+func (s snapshot) RenderFocus(context styleContext, x float64, y float64, width float64, height float64)
+
+func (s snapshot) RenderFrame(context styleContext, x float64, y float64, width float64, height float64)
+
+func (s snapshot) RenderInsertionCursor(context styleContext, x float64, y float64, layout pango.layout, index int, direction pango.Direction)
+
+func (s snapshot) RenderLayout(context styleContext, x float64, y float64, layout pango.layout)
+
+func (s snapshot) Restore()
+
+func (s snapshot) Rotate(angle float32)
+
+func (s snapshot) Rotate3D(angle float32, axis *graphene.Vec3)
+
+func (s snapshot) Save()
+
+func (s snapshot) Scale(factorX float32, factorY float32)
+
+func (s snapshot) Scale3D(factorX float32, factorY float32, factorZ float32)
+
+func (s snapshot) ToNode() gsk.renderNode
+
+func (s snapshot) ToPaintable(size *graphene.Size) gdk.Paintable
+
+func (s snapshot) Transform(transform *gsk.Transform)
+
+func (s snapshot) TransformMatrix(matrix *graphene.Matrix)
+
+func (s snapshot) Translate(point *graphene.Point)
+
+func (s snapshot) Translate3D(point *graphene.Point3D)
 
 // SortListModel is a list model that takes a list model and sorts its elements
 // according to a Sorter.
@@ -14233,12 +25523,59 @@ func NewSnapshot() *Snapshot
 // of any external knowledge when sorting. If you run into performance issues
 // with SortListModel, it is strongly recommended that you write your own
 // sorting list model.
-type SortListModel struct {
+type SortListModel interface {
+	gextras.Objector
+
+	// GetIncremental: returns whether incremental sorting was enabled via
+	// gtk_sort_list_model_set_incremental().
+	GetIncremental() bool
+	// GetModel: gets the model currently sorted or nil if none.
+	GetModel() gio.ListModel
+	// GetPending: estimates progress of an ongoing sorting operation
+	//
+	// The estimate is the number of items that would still need to be sorted to
+	// finish the sorting operation if this was a linear algorithm. So this
+	// number is not related to how many items are already correctly sorted.
+	//
+	//    pending = gtk_sort_list_model_get_pending (self);
+	//    model = gtk_sort_list_model_get_model (self);
+	//    progress = 1.0 - pending / (double) MAX (1, g_list_model_get_n_items (model));
+	//
+	// If no sort operation is ongoing - in particular when
+	// SortListModel:incremental is false - this function returns 0.
+	GetPending() uint
+	// GetSorter: gets the sorter that is used to sort @self.
+	GetSorter() sorter
+	// SetIncremental: sets the sort model to do an incremental sort.
+	//
+	// When incremental sorting is enabled, the sortlistmodel will not do a
+	// complete sort immediately, but will instead queue an idle handler that
+	// incrementally sorts the items towards their correct position. This of
+	// course means that items do not instantly appear in the right place. It
+	// also means that the total sorting time is a lot slower.
+	//
+	// When your filter blocks the UI while sorting, you might consider turning
+	// this on. Depending on your model and sorters, this may become interesting
+	// around 10,000 to 100,000 items.
+	//
+	// By default, incremental sorting is disabled.
+	//
+	// See gtk_sort_list_model_get_pending() for progress information about an
+	// ongoing incremental sorting operation.
+	SetIncremental(incremental bool)
+	// SetModel: sets the model to be sorted. The @model's item type must
+	// conform to the item type of @self.
+	SetModel(model gio.ListModel)
+	// SetSorter: sets a new sorter on @self.
+	SetSorter(sorter sorter)
+}
+
+type sortListModel struct {
 	*externglib.Object
 }
 
-func wrapSortListModel(obj *externglib.Object) *SortListModel {
-	return &SortListModel{*externglib.Object{obj}}
+func wrapSortListModel(obj *externglib.Object) SortListModel {
+	return &sortListModel{*externglib.Object{obj}}
 }
 
 func marshalSortListModel(p uintptr) (interface{}, error) {
@@ -14247,7 +25584,21 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSortListModel(model gio.ListModel, sorter *Sorter) *SortListModel
+func NewSortListModel(model gio.ListModel, sorter sorter) SortListModel
+
+func (s sortListModel) GetIncremental() bool
+
+func (s sortListModel) GetModel() gio.ListModel
+
+func (s sortListModel) GetPending() uint
+
+func (s sortListModel) GetSorter() sorter
+
+func (s sortListModel) SetIncremental(incremental bool)
+
+func (s sortListModel) SetModel(model gio.ListModel)
+
+func (s sortListModel) SetSorter(sorter sorter)
 
 // Sorter is the way to describe sorting criteria. Its primary user is
 // SortListModel.
@@ -14267,12 +25618,43 @@ func NewSortListModel(model gio.ListModel, sorter *Sorter) *SortListModel
 //
 // Of course, in particular for large lists, it is also possible to subclass
 // Sorter and provide one's own sorter.
-type Sorter struct {
+type Sorter interface {
+	gextras.Objector
+
+	// Changed: emits the Sorter::changed signal to notify all users of the
+	// sorter that it has changed. Users of the sorter should then update the
+	// sort order via gtk_sorter_compare().
+	//
+	// Depending on the @change parameter, it may be possible to update the sort
+	// order without a full resorting. Refer to the SorterChange documentation
+	// for details.
+	//
+	// This function is intended for implementors of Sorter subclasses and
+	// should not be called from other functions.
+	Changed(change SorterChange)
+	// Compare: compares two given items according to the sort order implemented
+	// by the sorter.
+	//
+	// Sorters implement a partial order: * It is reflexive, ie a = a * It is
+	// antisymmetric, ie if a < b and b < a, then a = b * It is transitive, ie
+	// given any 3 items with a ≤ b and b ≤ c, then a ≤ c
+	//
+	// The sorter may signal it conforms to additional constraints via the
+	// return value of gtk_sorter_get_order().
+	Compare(item1 unsafe.Pointer, item2 unsafe.Pointer) Ordering
+	// GetOrder: gets the order that @self conforms to. See SorterOrder for
+	// details of the possible return values.
+	//
+	// This function is intended to allow optimizations.
+	GetOrder() SorterOrder
+}
+
+type sorter struct {
 	*externglib.Object
 }
 
-func wrapSorter(obj *externglib.Object) *Sorter {
-	return &Sorter{*externglib.Object{obj}}
+func wrapSorter(obj *externglib.Object) Sorter {
+	return &sorter{*externglib.Object{obj}}
 }
 
 func marshalSorter(p uintptr) (interface{}, error) {
@@ -14280,6 +25662,12 @@ func marshalSorter(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (s sorter) Changed(change SorterChange)
+
+func (s sorter) Compare(item1 unsafe.Pointer, item2 unsafe.Pointer) Ordering
+
+func (s sorter) GetOrder() SorterOrder
 
 // SpinButton: a SpinButton is an ideal way to allow the user to set the value
 // of some attribute. Rather than having to directly type a number into a Entry,
@@ -14382,12 +25770,90 @@ func marshalSorter(p uintptr) (interface{}, error) {
 // Accessiblity
 //
 // GtkSpinButton uses the K_ACCESSIBLE_ROLE_SPIN_BUTTON role.
-type SpinButton struct {
+type SpinButton interface {
+	widget
+
+	// Configure: changes the properties of an existing spin button. The
+	// adjustment, climb rate, and number of decimal places are updated
+	// accordingly.
+	Configure(adjustment adjustment, climbRate float64, digits uint)
+	// GetAdjustment: get the adjustment associated with a SpinButton
+	GetAdjustment() adjustment
+	// GetClimbRate: returns the acceleration rate for repeated changes.
+	GetClimbRate() float64
+	// GetDigits: fetches the precision of @spin_button. See
+	// gtk_spin_button_set_digits().
+	GetDigits() uint
+	// GetIncrements: gets the current step and page the increments used by
+	// @spin_button. See gtk_spin_button_set_increments().
+	GetIncrements() (float64, float64)
+	// GetNumeric: returns whether non-numeric text can be typed into the spin
+	// button. See gtk_spin_button_set_numeric().
+	GetNumeric() bool
+	// GetRange: gets the range allowed for @spin_button. See
+	// gtk_spin_button_set_range().
+	GetRange() (float64, float64)
+	// GetSnapToTicks: returns whether the values are corrected to the nearest
+	// step. See gtk_spin_button_set_snap_to_ticks().
+	GetSnapToTicks() bool
+	// GetUpdatePolicy: gets the update behavior of a spin button. See
+	// gtk_spin_button_set_update_policy().
+	GetUpdatePolicy() SpinButtonUpdatePolicy
+	// GetValue: get the value in the @spin_button.
+	GetValue() float64
+	// GetValueAsInt: get the value @spin_button represented as an integer.
+	GetValueAsInt() int
+	// GetWrap: returns whether the spin button’s value wraps around to the
+	// opposite limit when the upper or lower limit of the range is exceeded.
+	// See gtk_spin_button_set_wrap().
+	GetWrap() bool
+	// SetAdjustment: replaces the Adjustment associated with @spin_button.
+	SetAdjustment(adjustment adjustment)
+	// SetClimbRate: sets the acceleration rate for repeated changes when you
+	// hold down a button or key.
+	SetClimbRate(climbRate float64)
+	// SetDigits: set the precision to be displayed by @spin_button. Up to 20
+	// digit precision is allowed.
+	SetDigits(digits uint)
+	// SetIncrements: sets the step and page increments for spin_button. This
+	// affects how quickly the value changes when the spin button’s arrows are
+	// activated.
+	SetIncrements(step float64, page float64)
+	// SetNumeric: sets the flag that determines if non-numeric text can be
+	// typed into the spin button.
+	SetNumeric(numeric bool)
+	// SetRange: sets the minimum and maximum allowable values for @spin_button.
+	//
+	// If the current value is outside this range, it will be adjusted to fit
+	// within the range, otherwise it will remain unchanged.
+	SetRange(min float64, max float64)
+	// SetSnapToTicks: sets the policy as to whether values are corrected to the
+	// nearest step increment when a spin button is activated after providing an
+	// invalid value.
+	SetSnapToTicks(snapToTicks bool)
+	// SetUpdatePolicy: sets the update behavior of a spin button. This
+	// determines whether the spin button is always updated or only when a valid
+	// value is set.
+	SetUpdatePolicy(policy SpinButtonUpdatePolicy)
+	// SetValue: sets the value of @spin_button.
+	SetValue(value float64)
+	// SetWrap: sets the flag that determines if a spin button value wraps
+	// around to the opposite limit when the upper or lower limit of the range
+	// is exceeded.
+	SetWrap(wrap bool)
+	// Spin: increment or decrement a spin button’s value in a specified
+	// direction by a specified amount.
+	Spin(direction SpinType, increment float64)
+	// Update: manually force an update of the spin button.
+	Update()
+}
+
+type spinButton struct {
 	Widget
 }
 
-func wrapSpinButton(obj *externglib.Object) *SpinButton {
-	return &SpinButton{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapSpinButton(obj *externglib.Object) SpinButton {
+	return &spinButton{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSpinButton(p uintptr) (interface{}, error) {
@@ -14396,9 +25862,57 @@ func marshalSpinButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSpinButton(adjustment *Adjustment, climbRate float64, digits uint) *SpinButton
+func NewSpinButton(adjustment adjustment, climbRate float64, digits uint) SpinButton
 
-func NewSpinButton(min float64, max float64, step float64) *SpinButton
+func NewSpinButton(min float64, max float64, step float64) SpinButton
+
+func (s spinButton) Configure(adjustment adjustment, climbRate float64, digits uint)
+
+func (s spinButton) GetAdjustment() adjustment
+
+func (s spinButton) GetClimbRate() float64
+
+func (s spinButton) GetDigits() uint
+
+func (s spinButton) GetIncrements() (float64, float64)
+
+func (s spinButton) GetNumeric() bool
+
+func (s spinButton) GetRange() (float64, float64)
+
+func (s spinButton) GetSnapToTicks() bool
+
+func (s spinButton) GetUpdatePolicy() SpinButtonUpdatePolicy
+
+func (s spinButton) GetValue() float64
+
+func (s spinButton) GetValueAsInt() int
+
+func (s spinButton) GetWrap() bool
+
+func (s spinButton) SetAdjustment(adjustment adjustment)
+
+func (s spinButton) SetClimbRate(climbRate float64)
+
+func (s spinButton) SetDigits(digits uint)
+
+func (s spinButton) SetIncrements(step float64, page float64)
+
+func (s spinButton) SetNumeric(numeric bool)
+
+func (s spinButton) SetRange(min float64, max float64)
+
+func (s spinButton) SetSnapToTicks(snapToTicks bool)
+
+func (s spinButton) SetUpdatePolicy(policy SpinButtonUpdatePolicy)
+
+func (s spinButton) SetValue(value float64)
+
+func (s spinButton) SetWrap(wrap bool)
+
+func (s spinButton) Spin(direction SpinType, increment float64)
+
+func (s spinButton) Update()
 
 // Spinner: a GtkSpinner widget displays an icon-size spinning animation. It is
 // often used as an alternative to a ProgressBar for displaying indefinite
@@ -14412,12 +25926,25 @@ func NewSpinButton(min float64, max float64, step float64) *SpinButton
 //
 // GtkSpinner has a single CSS node with the name spinner. When the animation is
 // active, the :checked pseudoclass is added to this node.
-type Spinner struct {
+type Spinner interface {
+	widget
+
+	// GetSpinning: returns whether the spinner is spinning.
+	GetSpinning() bool
+	// SetSpinning: sets the activity of the spinner.
+	SetSpinning(spinning bool)
+	// Start: starts the animation of the spinner.
+	Start()
+	// Stop: stops the animation of the spinner.
+	Stop()
+}
+
+type spinner struct {
 	Widget
 }
 
-func wrapSpinner(obj *externglib.Object) *Spinner {
-	return &Spinner{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapSpinner(obj *externglib.Object) Spinner {
+	return &spinner{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSpinner(p uintptr) (interface{}, error) {
@@ -14426,7 +25953,15 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSpinner() *Spinner
+func NewSpinner() Spinner
+
+func (s spinner) GetSpinning() bool
+
+func (s spinner) SetSpinning(spinning bool)
+
+func (s spinner) Start()
+
+func (s spinner) Stop()
 
 // Stack: the GtkStack widget is a container which only shows one of its
 // children at a time. In contrast to GtkNotebook, GtkStack does not provide a
@@ -14467,12 +26002,110 @@ func NewSpinner() *Spinner
 //
 // GtkStack uses the K_ACCESSIBLE_ROLE_TAB_PANEL for the stack pages, which are
 // the accessible parent objects of the child widgets.
-type Stack struct {
+type Stack interface {
+	widget
+
+	// AddChild: adds a child to @stack.
+	AddChild(child widget) stackPage
+	// AddNamed: adds a child to @stack. The child is identified by the @name.
+	AddNamed(child widget, name string) stackPage
+	// AddTitled: adds a child to @stack. The child is identified by the @name.
+	// The @title will be used by StackSwitcher to represent @child in a tab
+	// bar, so it should be short.
+	AddTitled(child widget, name string, title string) stackPage
+	// GetChildByName: finds the child of the Stack with the name given as the
+	// argument. Returns nil if there is no child with this name.
+	GetChildByName(name string) widget
+	// GetHhomogeneous: gets whether @stack is horizontally homogeneous. See
+	// gtk_stack_set_hhomogeneous().
+	GetHhomogeneous() bool
+	// GetInterpolateSize: returns whether the Stack is set up to interpolate
+	// between the sizes of children on page switch.
+	GetInterpolateSize() bool
+	// GetPage: returns the StackPage object for @child.
+	GetPage(child widget) stackPage
+	// GetPages: returns a Model that contains the pages of the stack, and can
+	// be used to keep an up-to-date view. The model also implements
+	// SelectionModel and can be used to track and modify the visible page.
+	GetPages() SelectionModel
+	// GetTransitionDuration: returns the amount of time (in milliseconds) that
+	// transitions between pages in @stack will take.
+	GetTransitionDuration() uint
+	// GetTransitionRunning: returns whether the @stack is currently in a
+	// transition from one page to another.
+	GetTransitionRunning() bool
+	// GetTransitionType: gets the type of animation that will be used for
+	// transitions between pages in @stack.
+	GetTransitionType() StackTransitionType
+	// GetVhomogeneous: gets whether @stack is vertically homogeneous. See
+	// gtk_stack_set_vhomogeneous().
+	GetVhomogeneous() bool
+	// GetVisibleChild: gets the currently visible child of @stack, or nil if
+	// there are no visible children.
+	GetVisibleChild() widget
+	// GetVisibleChildName: returns the name of the currently visible child of
+	// @stack, or nil if there is no visible child.
+	GetVisibleChildName() string
+	// Remove: removes a child widget from @stack.
+	Remove(child widget)
+	// SetHhomogeneous: sets the Stack to be horizontally homogeneous or not. If
+	// it is homogeneous, the Stack will request the same width for all its
+	// children. If it isn't, the stack may change width when a different child
+	// becomes visible.
+	SetHhomogeneous(hhomogeneous bool)
+	// SetInterpolateSize: sets whether or not @stack will interpolate its size
+	// when changing the visible child. If the Stack:interpolate-size property
+	// is set to true, @stack will interpolate its size between the current one
+	// and the one it'll take after changing the visible child, according to the
+	// set transition duration.
+	SetInterpolateSize(interpolateSize bool)
+	// SetTransitionDuration: sets the duration that transitions between pages
+	// in @stack will take.
+	SetTransitionDuration(duration uint)
+	// SetTransitionType: sets the type of animation that will be used for
+	// transitions between pages in @stack. Available types include various
+	// kinds of fades and slides.
+	//
+	// The transition type can be changed without problems at runtime, so it is
+	// possible to change the animation based on the page that is about to
+	// become current.
+	SetTransitionType(transition StackTransitionType)
+	// SetVhomogeneous: sets the Stack to be vertically homogeneous or not. If
+	// it is homogeneous, the Stack will request the same height for all its
+	// children. If it isn't, the stack may change height when a different child
+	// becomes visible.
+	SetVhomogeneous(vhomogeneous bool)
+	// SetVisibleChild: makes @child the visible child of @stack.
+	//
+	// If @child is different from the currently visible child, the transition
+	// between the two will be animated with the current transition type of
+	// @stack.
+	//
+	// Note that the @child widget has to be visible itself (see
+	// gtk_widget_show()) in order to become the visible child of @stack.
+	SetVisibleChild(child widget)
+	// SetVisibleChildFull: makes the child with the given name visible.
+	//
+	// Note that the child widget has to be visible itself (see
+	// gtk_widget_show()) in order to become the visible child of @stack.
+	SetVisibleChildFull(name string, transition StackTransitionType)
+	// SetVisibleChildName: makes the child with the given name visible.
+	//
+	// If @child is different from the currently visible child, the transition
+	// between the two will be animated with the current transition type of
+	// @stack.
+	//
+	// Note that the child widget has to be visible itself (see
+	// gtk_widget_show()) in order to become the visible child of @stack.
+	SetVisibleChildName(name string)
+}
+
+type stack struct {
 	Widget
 }
 
-func wrapStack(obj *externglib.Object) *Stack {
-	return &Stack{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapStack(obj *externglib.Object) Stack {
+	return &stack{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalStack(p uintptr) (interface{}, error) {
@@ -14481,14 +26114,101 @@ func marshalStack(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewStack() *Stack
+func NewStack() Stack
 
-type StackPage struct {
+func (s stack) AddChild(child widget) stackPage
+
+func (s stack) AddNamed(child widget, name string) stackPage
+
+func (s stack) AddTitled(child widget, name string, title string) stackPage
+
+func (s stack) GetChildByName(name string) widget
+
+func (s stack) GetHhomogeneous() bool
+
+func (s stack) GetInterpolateSize() bool
+
+func (s stack) GetPage(child widget) stackPage
+
+func (s stack) GetPages() SelectionModel
+
+func (s stack) GetTransitionDuration() uint
+
+func (s stack) GetTransitionRunning() bool
+
+func (s stack) GetTransitionType() StackTransitionType
+
+func (s stack) GetVhomogeneous() bool
+
+func (s stack) GetVisibleChild() widget
+
+func (s stack) GetVisibleChildName() string
+
+func (s stack) Remove(child widget)
+
+func (s stack) SetHhomogeneous(hhomogeneous bool)
+
+func (s stack) SetInterpolateSize(interpolateSize bool)
+
+func (s stack) SetTransitionDuration(duration uint)
+
+func (s stack) SetTransitionType(transition StackTransitionType)
+
+func (s stack) SetVhomogeneous(vhomogeneous bool)
+
+func (s stack) SetVisibleChild(child widget)
+
+func (s stack) SetVisibleChildFull(name string, transition StackTransitionType)
+
+func (s stack) SetVisibleChildName(name string)
+
+type StackPage interface {
+	gextras.Objector
+
+	// GetChild: returns the stack child to which @self belongs.
+	GetChild() widget
+	// GetIconName: returns the current value of the StackPage:icon-name
+	// property.
+	GetIconName() string
+	// GetName: returns the current value of the StackPage:name property.
+	GetName() string
+	// GetNeedsAttention: returns the current value of the
+	// StackPage:needs-attention property.
+	GetNeedsAttention() bool
+	// GetTitle: returns the current value of the StackPage:title property.
+	GetTitle() string
+	// GetUseUnderline: returns the current value of the StackPage:use-underline
+	// property.
+	GetUseUnderline() bool
+	// GetVisible: returns whether @page is visible in its Stack. This is
+	// independent from the Widget:visible value of its Widget.
+	GetVisible() bool
+	// SetIconName: sets the new value of the StackPage:icon-name property. See
+	// also gtk_stack_page_get_icon_name()
+	SetIconName(setting string)
+	// SetName: sets the new value of the StackPage:name property. See also
+	// gtk_stack_page_get_name()
+	SetName(setting string)
+	// SetNeedsAttention: sets the new value of the StackPage:needs-attention
+	// property. See also gtk_stack_page_get_needs_attention()
+	SetNeedsAttention(setting bool)
+	// SetTitle: sets the new value of the StackPage:title property. See also
+	// gtk_stack_page_get_title()
+	SetTitle(setting string)
+	// SetUseUnderline: sets the new value of the StackPage:use-underline
+	// property. See also gtk_stack_page_get_use_underline()
+	SetUseUnderline(setting bool)
+	// SetVisible: sets the new value of the StackPage:visible property to
+	// @visible.
+	SetVisible(visible bool)
+}
+
+type stackPage struct {
 	*externglib.Object
 }
 
-func wrapStackPage(obj *externglib.Object) *StackPage {
-	return &StackPage{*externglib.Object{obj}}
+func wrapStackPage(obj *externglib.Object) StackPage {
+	return &stackPage{*externglib.Object{obj}}
 }
 
 func marshalStackPage(p uintptr) (interface{}, error) {
@@ -14496,6 +26216,32 @@ func marshalStackPage(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (s stackPage) GetChild() widget
+
+func (s stackPage) GetIconName() string
+
+func (s stackPage) GetName() string
+
+func (s stackPage) GetNeedsAttention() bool
+
+func (s stackPage) GetTitle() string
+
+func (s stackPage) GetUseUnderline() bool
+
+func (s stackPage) GetVisible() bool
+
+func (s stackPage) SetIconName(setting string)
+
+func (s stackPage) SetName(setting string)
+
+func (s stackPage) SetNeedsAttention(setting bool)
+
+func (s stackPage) SetTitle(setting string)
+
+func (s stackPage) SetUseUnderline(setting bool)
+
+func (s stackPage) SetVisible(visible bool)
 
 // StackSidebar: a GtkStackSidebar enables you to quickly and easily provide a
 // consistent "sidebar" object for your user interface.
@@ -14512,12 +26258,24 @@ func marshalStackPage(p uintptr) (interface{}, error) {
 //
 // When circumstances require it, GtkStackSidebar adds the .needs-attention
 // style class to the widgets representing the stack pages.
-type StackSidebar struct {
+type StackSidebar interface {
+	widget
+
+	// GetStack: retrieves the stack. See gtk_stack_sidebar_set_stack().
+	GetStack() stack
+	// SetStack: set the Stack associated with this StackSidebar.
+	//
+	// The sidebar widget will automatically update according to the order
+	// (packing) and items within the given Stack.
+	SetStack(stack stack)
+}
+
+type stackSidebar struct {
 	Widget
 }
 
-func wrapStackSidebar(obj *externglib.Object) *StackSidebar {
-	return &StackSidebar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapStackSidebar(obj *externglib.Object) StackSidebar {
+	return &stackSidebar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalStackSidebar(p uintptr) (interface{}, error) {
@@ -14526,7 +26284,11 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewStackSidebar() *StackSidebar
+func NewStackSidebar() StackSidebar
+
+func (s stackSidebar) GetStack() stack
+
+func (s stackSidebar) SetStack(stack stack)
 
 // StackSwitcher: the GtkStackSwitcher widget acts as a controller for a Stack;
 // it shows a row of buttons to switch between the various pages of the
@@ -14553,12 +26315,21 @@ func NewStackSidebar() *StackSidebar
 //
 // GtkStackSwitcher uses the K_ACCESSIBLE_ROLE_TAB_LIST role and uses the
 // K_ACCESSIBLE_ROLE_TAB for its buttons.
-type StackSwitcher struct {
+type StackSwitcher interface {
+	widget
+
+	// GetStack: retrieves the stack. See gtk_stack_switcher_set_stack().
+	GetStack() stack
+	// SetStack: sets the stack to control.
+	SetStack(stack stack)
+}
+
+type stackSwitcher struct {
 	Widget
 }
 
-func wrapStackSwitcher(obj *externglib.Object) *StackSwitcher {
-	return &StackSwitcher{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapStackSwitcher(obj *externglib.Object) StackSwitcher {
+	return &stackSwitcher{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalStackSwitcher(p uintptr) (interface{}, error) {
@@ -14567,7 +26338,11 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewStackSwitcher() *StackSwitcher
+func NewStackSwitcher() StackSwitcher
+
+func (s stackSwitcher) GetStack() stack
+
+func (s stackSwitcher) SetStack(stack stack)
 
 // Statusbar: a Statusbar is usually placed along the bottom of an application's
 // main Window. It may provide a regular commentary of the application's status
@@ -14601,12 +26376,34 @@ func NewStackSwitcher() *StackSwitcher
 // CSS node
 //
 // GtkStatusbar has a single CSS node with name statusbar.
-type Statusbar struct {
+type Statusbar interface {
+	widget
+
+	// GetContextID: returns a new context identifier, given a description of
+	// the actual context. Note that the description is not shown in the UI.
+	GetContextID(contextDescription string) uint
+	// Pop: removes the first message in the Statusbar’s stack with the given
+	// context id.
+	//
+	// Note that this may not change the displayed message, if the message at
+	// the top of the stack has a different context id.
+	Pop(contextID uint)
+	// Push: pushes a new message onto a statusbar’s stack.
+	Push(contextID uint, text string) uint
+	// Remove: forces the removal of a message from a statusbar’s stack. The
+	// exact @context_id and @message_id must be specified.
+	Remove(contextID uint, messageID uint)
+	// RemoveAll: forces the removal of all messages from a statusbar's stack
+	// with the exact @context_id.
+	RemoveAll(contextID uint)
+}
+
+type statusbar struct {
 	Widget
 }
 
-func wrapStatusbar(obj *externglib.Object) *Statusbar {
-	return &Statusbar{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapStatusbar(obj *externglib.Object) Statusbar {
+	return &statusbar{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalStatusbar(p uintptr) (interface{}, error) {
@@ -14615,7 +26412,17 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewStatusbar() *Statusbar
+func NewStatusbar() Statusbar
+
+func (s statusbar) GetContextID(contextDescription string) uint
+
+func (s statusbar) Pop(contextID uint)
+
+func (s statusbar) Push(contextID uint, text string) uint
+
+func (s statusbar) Remove(contextID uint, messageID uint)
+
+func (s statusbar) RemoveAll(contextID uint)
 
 // StringFilter: gtkStringFilter determines whether to include items by looking
 // at strings and comparing them to a fixed search term. The strings are
@@ -14623,12 +26430,35 @@ func NewStatusbar() *Statusbar
 //
 // GtkStringFilter has several different modes of comparison - it can match the
 // whole string, just a prefix, or any substring.
-type StringFilter struct {
+type StringFilter interface {
+	filter
+
+	// GetExpression: gets the expression that the string filter uses to obtain
+	// strings from items.
+	GetExpression() expression
+	// GetIgnoreCase: returns whether the filter ignores case differences.
+	GetIgnoreCase() bool
+	// GetMatchMode: returns the match mode that the filter is using.
+	GetMatchMode() StringFilterMatchMode
+	// GetSearch: gets the search string set via gtk_string_filter_set_search().
+	GetSearch() string
+	// SetExpression: sets the expression that the string filter uses to obtain
+	// strings from items. The expression must have a value type of TYPE_STRING.
+	SetExpression(expression expression)
+	// SetIgnoreCase: sets whether the filter ignores case differences.
+	SetIgnoreCase(ignoreCase bool)
+	// SetMatchMode: sets the match mode for the filter.
+	SetMatchMode(mode StringFilterMatchMode)
+	// SetSearch: sets the string to search for.
+	SetSearch(search string)
+}
+
+type stringFilter struct {
 	Filter
 }
 
-func wrapStringFilter(obj *externglib.Object) *StringFilter {
-	return &StringFilter{Filter{*externglib.Object{obj}}}
+func wrapStringFilter(obj *externglib.Object) StringFilter {
+	return &stringFilter{Filter{*externglib.Object{obj}}}
 }
 
 func marshalStringFilter(p uintptr) (interface{}, error) {
@@ -14637,7 +26467,23 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewStringFilter(expression *Expression) *StringFilter
+func NewStringFilter(expression expression) StringFilter
+
+func (s stringFilter) GetExpression() expression
+
+func (s stringFilter) GetIgnoreCase() bool
+
+func (s stringFilter) GetMatchMode() StringFilterMatchMode
+
+func (s stringFilter) GetSearch() string
+
+func (s stringFilter) SetExpression(expression expression)
+
+func (s stringFilter) SetIgnoreCase(ignoreCase bool)
+
+func (s stringFilter) SetMatchMode(mode StringFilterMatchMode)
+
+func (s stringFilter) SetSearch(search string)
 
 // StringList is a list model that wraps an array of strings.
 //
@@ -14662,12 +26508,52 @@ func NewStringFilter(expression *Expression) *StringFilter
 //        <item translatable="yes">Subway</item>
 //      </items>
 //    </object>
-type StringList struct {
+type StringList interface {
+	gextras.Objector
+
+	// Append: appends @string to @self.
+	//
+	// The @string will be copied. See gtk_string_list_take() for a way to avoid
+	// that.
+	Append(string string)
+	// GetString: gets the string that is at @position in @self. If @self does
+	// not contain @position items, nil is returned.
+	//
+	// This function returns the const char *. To get the object wrapping it,
+	// use g_list_model_get_item().
+	GetString(position uint) string
+	// Remove: removes the string at @position from @self. @position must be
+	// smaller than the current length of the list.
+	Remove(position uint)
+	// Splice: changes @self by removing @n_removals strings and adding
+	// @additions to it.
+	//
+	// This function is more efficient than gtk_string_list_append() and
+	// gtk_string_list_remove(), because it only emits Model::items-changed once
+	// for the change.
+	//
+	// This function copies the strings in @additions.
+	//
+	// The parameters @position and @n_removals must be correct (ie: @position +
+	// @n_removals must be less than or equal to the length of the list at the
+	// time this function is called).
+	Splice(position uint, nRemovals uint, additions []string)
+	// Take: adds @string to self at the end, and takes ownership of it.
+	//
+	// This variant of gtk_string_list_append() is convenient for formatting
+	// strings:
+	//
+	//
+	//    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
+	Take(string string)
+}
+
+type stringList struct {
 	*externglib.Object
 }
 
-func wrapStringList(obj *externglib.Object) *StringList {
-	return &StringList{*externglib.Object{obj}}
+func wrapStringList(obj *externglib.Object) StringList {
+	return &stringList{*externglib.Object{obj}}
 }
 
 func marshalStringList(p uintptr) (interface{}, error) {
@@ -14676,14 +26562,31 @@ func marshalStringList(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewStringList(strings []string) *StringList
+func NewStringList(strings []string) StringList
 
-type StringObject struct {
+func (s stringList) Append(string string)
+
+func (s stringList) GetString(position uint) string
+
+func (s stringList) Remove(position uint)
+
+func (s stringList) Splice(position uint, nRemovals uint, additions []string)
+
+func (s stringList) Take(string string)
+
+type StringObject interface {
+	gextras.Objector
+
+	// GetString: returns the string contained in a StringObject.
+	GetString() string
+}
+
+type stringObject struct {
 	*externglib.Object
 }
 
-func wrapStringObject(obj *externglib.Object) *StringObject {
-	return &StringObject{*externglib.Object{obj}}
+func wrapStringObject(obj *externglib.Object) StringObject {
+	return &stringObject{*externglib.Object{obj}}
 }
 
 func marshalStringObject(p uintptr) (interface{}, error) {
@@ -14692,7 +26595,9 @@ func marshalStringObject(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewStringObject(string string) *StringObject
+func NewStringObject(string string) StringObject
+
+func (s stringObject) GetString() string
 
 // StringSorter: gtkStringSorter is a Sorter that compares strings. It does the
 // comparison in a linguistically correct way using the current locale by
@@ -14700,12 +26605,29 @@ func NewStringObject(string string) *StringObject
 // the comparison.
 //
 // To obtain the strings to compare, this sorter evaluates a Expression.
-type StringSorter struct {
+type StringSorter interface {
+	sorter
+
+	// GetExpression: gets the expression that is evaluated to obtain strings
+	// from items.
+	GetExpression() expression
+	// GetIgnoreCase: gets whether the sorter ignores case differences.
+	GetIgnoreCase() bool
+	// SetExpression: sets the expression that is evaluated to obtain strings
+	// from items.
+	//
+	// The expression must have the type G_TYPE_STRING.
+	SetExpression(expression expression)
+	// SetIgnoreCase: sets whether the sorter will ignore case differences.
+	SetIgnoreCase(ignoreCase bool)
+}
+
+type stringSorter struct {
 	Sorter
 }
 
-func wrapStringSorter(obj *externglib.Object) *StringSorter {
-	return &StringSorter{Sorter{*externglib.Object{obj}}}
+func wrapStringSorter(obj *externglib.Object) StringSorter {
+	return &stringSorter{Sorter{*externglib.Object{obj}}}
 }
 
 func marshalStringSorter(p uintptr) (interface{}, error) {
@@ -14714,7 +26636,15 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewStringSorter(expression *Expression) *StringSorter
+func NewStringSorter(expression expression) StringSorter
+
+func (s stringSorter) GetExpression() expression
+
+func (s stringSorter) GetIgnoreCase() bool
+
+func (s stringSorter) SetExpression(expression expression)
+
+func (s stringSorter) SetIgnoreCase(ignoreCase bool)
 
 // StyleContext is an object that stores styling information affecting a widget.
 //
@@ -14754,12 +26684,102 @@ func NewStringSorter(expression *Expression) *StringSorter
 // in mind that the user settings in `XDG_CONFIG_HOME/gtk-4.0/gtk.css` will
 // still take precedence over your changes, as it uses the
 // GTK_STYLE_PROVIDER_PRIORITY_USER priority.
-type StyleContext struct {
+type StyleContext interface {
+	gextras.Objector
+
+	// AddClass: adds a style class to @context, so later uses of the style
+	// context will make use of this new class for styling.
+	//
+	// In the CSS file format, a Entry defining a “search” class, would be
+	// matched by:
+	//
+	//     <!-- language="CSS" -->
+	//    entry.search { ... }
+	//
+	//     <!-- language="CSS" -->
+	//    .search { ... }
+	AddClass(className string)
+	// AddProvider: adds a style provider to @context, to be used in style
+	// construction. Note that a style provider added by this function only
+	// affects the style of the widget to which @context belongs. If you want to
+	// affect the style of all widgets, use
+	// gtk_style_context_add_provider_for_display().
+	//
+	// Note: If both priorities are the same, a StyleProvider added through this
+	// function takes precedence over another added through
+	// gtk_style_context_add_provider_for_display().
+	AddProvider(provider StyleProvider, priority uint)
+	// GetBorder: gets the border for a given state as a Border.
+	GetBorder() Border
+	// GetColor: gets the foreground color for a given state.
+	GetColor() gdk.RGBA
+	// GetDisplay: returns the Display to which @context is attached.
+	GetDisplay() gdk.display
+	// GetMargin: gets the margin for a given state as a Border.
+	GetMargin() Border
+	// GetPadding: gets the padding for a given state as a Border.
+	GetPadding() Border
+	// GetScale: returns the scale used for assets.
+	GetScale() int
+	// GetState: returns the state used for style matching.
+	//
+	// This method should only be used to retrieve the StateFlags to pass to
+	// StyleContext methods, like gtk_style_context_get_padding(). If you need
+	// to retrieve the current state of a Widget, use
+	// gtk_widget_get_state_flags().
+	GetState() StateFlags
+	// HasClass: returns true if @context currently has defined the given class
+	// name.
+	HasClass(className string) bool
+	// LookupColor: looks up and resolves a color name in the @context color
+	// map.
+	LookupColor(colorName string) (gdk.RGBA, bool)
+	// RemoveClass: removes @class_name from @context.
+	RemoveClass(className string)
+	// RemoveProvider: removes @provider from the style providers list in
+	// @context.
+	RemoveProvider(provider StyleProvider)
+	// Restore: restores @context state to a previous stage. See
+	// gtk_style_context_save().
+	Restore()
+	// Save: saves the @context state, so temporary modifications done through
+	// gtk_style_context_add_class(), gtk_style_context_remove_class(),
+	// gtk_style_context_set_state(), etc. can quickly be reverted in one go
+	// through gtk_style_context_restore().
+	//
+	// The matching call to gtk_style_context_restore() must be done before GTK
+	// returns to the main loop.
+	Save()
+	// SetDisplay: attaches @context to the given display.
+	//
+	// The display is used to add style information from “global” style
+	// providers, such as the display's Settings instance.
+	//
+	// If you are using a StyleContext returned from
+	// gtk_widget_get_style_context(), you do not need to call this yourself.
+	SetDisplay(display gdk.display)
+	// SetScale: sets the scale to use when getting image assets for the style.
+	SetScale(scale int)
+	// SetState: sets the state to be used for style matching.
+	SetState(flags StateFlags)
+	// ToString: converts the style context into a string representation.
+	//
+	// The string representation always includes information about the name,
+	// state, id, visibility and style classes of the CSS node that is backing
+	// @context. Depending on the flags, more information may be included.
+	//
+	// This function is intended for testing and debugging of the CSS
+	// implementation in GTK. There are no guarantees about the format of the
+	// returned string, it may change.
+	ToString(flags StyleContextPrintFlags) string
+}
+
+type styleContext struct {
 	*externglib.Object
 }
 
-func wrapStyleContext(obj *externglib.Object) *StyleContext {
-	return &StyleContext{*externglib.Object{obj}}
+func wrapStyleContext(obj *externglib.Object) StyleContext {
+	return &styleContext{*externglib.Object{obj}}
 }
 
 func marshalStyleContext(p uintptr) (interface{}, error) {
@@ -14767,6 +26787,44 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (s styleContext) AddClass(className string)
+
+func (s styleContext) AddProvider(provider StyleProvider, priority uint)
+
+func (s styleContext) GetBorder() Border
+
+func (s styleContext) GetColor() gdk.RGBA
+
+func (s styleContext) GetDisplay() gdk.display
+
+func (s styleContext) GetMargin() Border
+
+func (s styleContext) GetPadding() Border
+
+func (s styleContext) GetScale() int
+
+func (s styleContext) GetState() StateFlags
+
+func (s styleContext) HasClass(className string) bool
+
+func (s styleContext) LookupColor(colorName string) (gdk.RGBA, bool)
+
+func (s styleContext) RemoveClass(className string)
+
+func (s styleContext) RemoveProvider(provider StyleProvider)
+
+func (s styleContext) Restore()
+
+func (s styleContext) Save()
+
+func (s styleContext) SetDisplay(display gdk.display)
+
+func (s styleContext) SetScale(scale int)
+
+func (s styleContext) SetState(flags StateFlags)
+
+func (s styleContext) ToString(flags StyleContextPrintFlags) string
 
 // Switch is a widget that has two states: on or off. The user can control which
 // state should be active by clicking the empty area, or by dragging the handle.
@@ -14789,12 +26847,31 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 // Accessibility
 //
 // GtkSwitch uses the K_ACCESSIBLE_ROLE_SWITCH role.
-type Switch struct {
+type Switch interface {
+	widget
+
+	// GetActive: gets whether the Switch is in its “on” or “off” state.
+	GetActive() bool
+	// GetState: gets the underlying state of the Switch.
+	GetState() bool
+	// SetActive: changes the state of @self to the desired one.
+	SetActive(isActive bool)
+	// SetState: sets the underlying state of the Switch.
+	//
+	// Normally, this is the same as Switch:active, unless the switch is set up
+	// for delayed state changes. This function is typically called from a
+	// Switch::state-set signal handler.
+	//
+	// See Switch::state-set for details.
+	SetState(state bool)
+}
+
+type _switch struct {
 	Widget
 }
 
-func wrapSwitch(obj *externglib.Object) *Switch {
-	return &Switch{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapSwitch(obj *externglib.Object) Switch {
+	return &_switch{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalSwitch(p uintptr) (interface{}, error) {
@@ -14803,7 +26880,15 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewSwitch() *Switch
+func NewSwitch() Switch
+
+func (_ _switch) GetActive() bool
+
+func (_ _switch) GetState() bool
+
+func (_ _switch) SetActive(isActive bool)
+
+func (_ _switch) SetState(state bool)
 
 // Text: the Text widget is a single line text entry widget.
 //
@@ -14860,12 +26945,152 @@ func NewSwitch() *Switch
 // for accessibility. This is because GtkText is expected to be used as a
 // delegate for a Editable implementation that will be represented to
 // accessibility.
-type Text struct {
+type Text interface {
+	widget
+
+	// GetActivatesDefault: retrieves the value set by
+	// gtk_text_set_activates_default().
+	GetActivatesDefault() bool
+	// GetAttributes: gets the attribute list that was set on the self using
+	// gtk_text_set_attributes(), if any.
+	GetAttributes() *pango.AttrList
+	// GetBuffer: get the EntryBuffer object which holds the text for this self.
+	GetBuffer() entryBuffer
+	// GetEnableEmojiCompletion: returns whether Emoji completion is enabled for
+	// this GtkText widget.
+	GetEnableEmojiCompletion() bool
+	// GetExtraMenu: gets the menu model set with gtk_text_set_extra_menu().
+	GetExtraMenu() gio.menuModel
+	// GetInputHints: gets the value of the Text:input-hints property.
+	GetInputHints() InputHints
+	// GetInputPurpose: gets the value of the Text:input-purpose property.
+	GetInputPurpose() InputPurpose
+	// GetInvisibleChar: retrieves the character displayed in place of the real
+	// characters for entries with visibility set to false. Note that GTK does
+	// not compute this value unless it needs it, so the value returned by this
+	// function is not very useful unless it has been explicitly set with
+	// gtk_text_set_invisible_char()
+	GetInvisibleChar() uint32
+	// GetMaxLength: retrieves the maximum allowed length of the text in @self.
+	// See gtk_text_set_max_length().
+	//
+	// This is equivalent to getting @self's EntryBuffer and calling
+	// gtk_entry_buffer_get_max_length() on it.
+	GetMaxLength() int
+	// GetOverwriteMode: gets the value set by gtk_text_set_overwrite_mode().
+	GetOverwriteMode() bool
+	// GetPlaceholderText: retrieves the text that will be displayed when @self
+	// is empty and unfocused
+	GetPlaceholderText() string
+	// GetPropagateTextWidth: returns whether the Text will grow and shrink with
+	// the content.
+	GetPropagateTextWidth() bool
+	// GetTabs: gets the tabstops that were set on the self using
+	// gtk_text_set_tabs(), if any.
+	GetTabs() *pango.TabArray
+	// GetTextLength: retrieves the current length of the text in @self.
+	//
+	// This is equivalent to getting @self's EntryBuffer and calling
+	// gtk_entry_buffer_get_length() on it.
+	GetTextLength() uint16
+	// GetTruncateMultiline: returns whether the Text will truncate multi-line
+	// text that is pasted into the widget
+	GetTruncateMultiline() bool
+	// GetVisibility: retrieves whether the text in @self is visible. See
+	// gtk_text_set_visibility().
+	GetVisibility() bool
+	// GrabFocusWithoutSelecting: causes @self to have keyboard focus.
+	//
+	// It behaves like gtk_widget_grab_focus(), except that it doesn't select
+	// the contents of @self. You only want to call this on some special entries
+	// which the user usually doesn't want to replace all text in, such as
+	// search-as-you-type entries.
+	GrabFocusWithoutSelecting() bool
+	// SetActivatesDefault: if @activates is true, pressing Enter in the @self
+	// will activate the default widget for the window containing the self. This
+	// usually means that the dialog box containing the self will be closed,
+	// since the default widget is usually one of the dialog buttons.
+	SetActivatesDefault(activates bool)
+	// SetAttributes: sets a AttrList; the attributes in the list are applied to
+	// the text.
+	SetAttributes(attrs *pango.AttrList)
+	// SetBuffer: set the EntryBuffer object which holds the text for this
+	// widget.
+	SetBuffer(buffer entryBuffer)
+	// SetEnableEmojiCompletion: sets whether Emoji completion is enabled. If it
+	// is, typing ':', followed by a recognized keyword, will pop up a window
+	// with suggested Emojis matching the keyword.
+	SetEnableEmojiCompletion(enableEmojiCompletion bool)
+	// SetExtraMenu: sets a menu model to add when constructing the context menu
+	// for @self.
+	SetExtraMenu(model gio.menuModel)
+	// SetInputHints: sets the Text:input-hints property, which allows input
+	// methods to fine-tune their behaviour.
+	SetInputHints(hints InputHints)
+	// SetInputPurpose: sets the Text:input-purpose property which can be used
+	// by on-screen keyboards and other input methods to adjust their behaviour.
+	SetInputPurpose(purpose InputPurpose)
+	// SetInvisibleChar: sets the character to use in place of the actual text
+	// when gtk_text_set_visibility() has been called to set text visibility to
+	// false. i.e. this is the character used in “password mode” to show the
+	// user how many characters have been typed.
+	//
+	// By default, GTK picks the best invisible char available in the current
+	// font. If you set the invisible char to 0, then the user will get no
+	// feedback at all; there will be no text on the screen as they type.
+	SetInvisibleChar(ch uint32)
+	// SetMaxLength: sets the maximum allowed length of the contents of the
+	// widget.
+	//
+	// If the current contents are longer than the given length, then they will
+	// be truncated to fit.
+	//
+	//    This is equivalent to getting @self's EntryBuffer and
+	//    calling gtk_entry_buffer_set_max_length() on it.
+	//
+	SetMaxLength(length int)
+	// SetOverwriteMode: sets whether the text is overwritten when typing in the
+	// Text.
+	SetOverwriteMode(overwrite bool)
+	// SetPlaceholderText: sets text to be displayed in @self when it is empty.
+	//
+	// This can be used to give a visual hint of the expected contents of the
+	// self.
+	SetPlaceholderText(text string)
+	// SetPropagateTextWidth: sets whether the GtkText should grow and shrink
+	// with the content.
+	SetPropagateTextWidth(propagateTextWidth bool)
+	// SetTabs: sets a TabArray; the tabstops in the array are applied to the
+	// self text.
+	SetTabs(tabs *pango.TabArray)
+	// SetTruncateMultiline: sets whether the GtkText should truncate multi-line
+	// text that is pasted into the widget.
+	SetTruncateMultiline(truncateMultiline bool)
+	// SetVisibility: sets whether the contents of the self are visible or not.
+	// When visibility is set to false, characters are displayed as the
+	// invisible char, and will also appear that way when the text in the self
+	// widget is copied to the clipboard.
+	//
+	// By default, GTK picks the best invisible character available in the
+	// current font, but it can be changed with gtk_text_set_invisible_char().
+	//
+	// Note that you probably want to set Text:input-purpose to
+	// GTK_INPUT_PURPOSE_PASSWORD or GTK_INPUT_PURPOSE_PIN to inform input
+	// methods about the purpose of this self, in addition to setting visibility
+	// to false.
+	SetVisibility(visible bool)
+	// UnsetInvisibleChar: unsets the invisible char previously set with
+	// gtk_text_set_invisible_char(). So that the default invisible char is used
+	// again.
+	UnsetInvisibleChar()
+}
+
+type text struct {
 	Widget
 }
 
-func wrapText(obj *externglib.Object) *Text {
-	return &Text{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapText(obj *externglib.Object) Text {
+	return &text{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalText(p uintptr) (interface{}, error) {
@@ -14874,19 +27099,482 @@ func marshalText(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewText() *Text
+func NewText() Text
 
-func NewText(buffer *EntryBuffer) *Text
+func NewText(buffer entryBuffer) Text
+
+func (t text) GetActivatesDefault() bool
+
+func (t text) GetAttributes() *pango.AttrList
+
+func (t text) GetBuffer() entryBuffer
+
+func (t text) GetEnableEmojiCompletion() bool
+
+func (t text) GetExtraMenu() gio.menuModel
+
+func (t text) GetInputHints() InputHints
+
+func (t text) GetInputPurpose() InputPurpose
+
+func (t text) GetInvisibleChar() uint32
+
+func (t text) GetMaxLength() int
+
+func (t text) GetOverwriteMode() bool
+
+func (t text) GetPlaceholderText() string
+
+func (t text) GetPropagateTextWidth() bool
+
+func (t text) GetTabs() *pango.TabArray
+
+func (t text) GetTextLength() uint16
+
+func (t text) GetTruncateMultiline() bool
+
+func (t text) GetVisibility() bool
+
+func (t text) GrabFocusWithoutSelecting() bool
+
+func (t text) SetActivatesDefault(activates bool)
+
+func (t text) SetAttributes(attrs *pango.AttrList)
+
+func (t text) SetBuffer(buffer entryBuffer)
+
+func (t text) SetEnableEmojiCompletion(enableEmojiCompletion bool)
+
+func (t text) SetExtraMenu(model gio.menuModel)
+
+func (t text) SetInputHints(hints InputHints)
+
+func (t text) SetInputPurpose(purpose InputPurpose)
+
+func (t text) SetInvisibleChar(ch uint32)
+
+func (t text) SetMaxLength(length int)
+
+func (t text) SetOverwriteMode(overwrite bool)
+
+func (t text) SetPlaceholderText(text string)
+
+func (t text) SetPropagateTextWidth(propagateTextWidth bool)
+
+func (t text) SetTabs(tabs *pango.TabArray)
+
+func (t text) SetTruncateMultiline(truncateMultiline bool)
+
+func (t text) SetVisibility(visible bool)
+
+func (t text) UnsetInvisibleChar()
 
 // TextBuffer: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
 // types related to the text widget and how they work together.
-type TextBuffer struct {
+type TextBuffer interface {
+	gextras.Objector
+
+	// AddMark: adds the mark at position @where. The mark must not be added to
+	// another buffer, and if its name is not nil then there must not be another
+	// mark in the buffer with the same name.
+	//
+	// Emits the TextBuffer::mark-set signal as notification of the mark's
+	// initial placement.
+	AddMark(mark textMark, where *TextIter)
+	// AddSelectionClipboard: adds @clipboard to the list of clipboards in which
+	// the selection contents of @buffer are available. In most cases,
+	// @clipboard will be the Clipboard returned by
+	// gtk_widget_get_primary_clipboard() for a view of @buffer.
+	AddSelectionClipboard(clipboard gdk.clipboard)
+	// ApplyTag: emits the “apply-tag” signal on @buffer. The default handler
+	// for the signal applies @tag to the given range. @start and @end do not
+	// have to be in order.
+	ApplyTag(tag textTag, start *TextIter, end *TextIter)
+	// ApplyTagByName: calls gtk_text_tag_table_lookup() on the buffer’s tag
+	// table to get a TextTag, then calls gtk_text_buffer_apply_tag().
+	ApplyTagByName(name string, start *TextIter, end *TextIter)
+	// Backspace: performs the appropriate action as if the user hit the delete
+	// key with the cursor at the position specified by @iter. In the normal
+	// case a single character will be deleted, but when combining accents are
+	// involved, more than one character can be deleted, and when precomposed
+	// character and accent combinations are involved, less than one character
+	// will be deleted.
+	//
+	// Because the buffer is modified, all outstanding iterators become invalid
+	// after calling this function; however, the @iter will be re-initialized to
+	// point to the location where text was deleted.
+	Backspace(iter *TextIter, interactive bool, defaultEditable bool) bool
+	// BeginIrreversibleAction: denotes the beginning of an action that may not
+	// be undone. This will cause any previous operations in the undo/redo queue
+	// to be cleared.
+	//
+	// This should be paired with a call to
+	// gtk_text_buffer_end_irreversible_action() after the irreversible action
+	// has completed.
+	//
+	// You may nest calls to gtk_text_buffer_begin_irreversible_action() and
+	// gtk_text_buffer_end_irreversible_action() pairs.
+	BeginIrreversibleAction()
+	// BeginUserAction: called to indicate that the buffer operations between
+	// here and a call to gtk_text_buffer_end_user_action() are part of a single
+	// user-visible operation. The operations between
+	// gtk_text_buffer_begin_user_action() and gtk_text_buffer_end_user_action()
+	// can then be grouped when creating an undo stack. TextBuffer maintains a
+	// count of calls to gtk_text_buffer_begin_user_action() that have not been
+	// closed with a call to gtk_text_buffer_end_user_action(), and emits the
+	// “begin-user-action” and “end-user-action” signals only for the outermost
+	// pair of calls. This allows you to build user actions from other user
+	// actions.
+	//
+	// The “interactive” buffer mutation functions, such as
+	// gtk_text_buffer_insert_interactive(), automatically call begin/end user
+	// action around the buffer operations they perform, so there's no need to
+	// add extra calls if you user action consists solely of a single call to
+	// one of those functions.
+	BeginUserAction()
+	// CopyClipboard: copies the currently-selected text to a clipboard.
+	CopyClipboard(clipboard gdk.clipboard)
+	// CreateChildAnchor: this is a convenience function which simply creates a
+	// child anchor with gtk_text_child_anchor_new() and inserts it into the
+	// buffer with gtk_text_buffer_insert_child_anchor(). The new anchor is
+	// owned by the buffer; no reference count is returned to the caller of
+	// gtk_text_buffer_create_child_anchor().
+	CreateChildAnchor(iter *TextIter) textChildAnchor
+	// CreateMark: creates a mark at position @where. If @mark_name is nil, the
+	// mark is anonymous; otherwise, the mark can be retrieved by name using
+	// gtk_text_buffer_get_mark(). If a mark has left gravity, and text is
+	// inserted at the mark’s current location, the mark will be moved to the
+	// left of the newly-inserted text. If the mark has right gravity
+	// (@left_gravity = false), the mark will end up on the right of
+	// newly-inserted text. The standard left-to-right cursor is a mark with
+	// right gravity (when you type, the cursor stays on the right side of the
+	// text you’re typing).
+	//
+	// The caller of this function does not own a reference to the returned
+	// TextMark, so you can ignore the return value if you like. Marks are owned
+	// by the buffer and go away when the buffer does.
+	//
+	// Emits the TextBuffer::mark-set signal as notification of the mark's
+	// initial placement.
+	CreateMark(markName string, where *TextIter, leftGravity bool) textMark
+	// CutClipboard: copies the currently-selected text to a clipboard, then
+	// deletes said text if it’s editable.
+	CutClipboard(clipboard gdk.clipboard, defaultEditable bool)
+	// Delete: deletes text between @start and @end. The order of @start and
+	// @end is not actually relevant; gtk_text_buffer_delete() will reorder
+	// them. This function actually emits the “delete-range” signal, and the
+	// default handler of that signal deletes the text. Because the buffer is
+	// modified, all outstanding iterators become invalid after calling this
+	// function; however, the @start and @end will be re-initialized to point to
+	// the location where text was deleted.
+	Delete(start *TextIter, end *TextIter)
+	// DeleteInteractive: deletes all editable text in the given range. Calls
+	// gtk_text_buffer_delete() for each editable sub-range of [@start,@end).
+	// @start and @end are revalidated to point to the location of the last
+	// deleted range, or left untouched if no text was deleted.
+	DeleteInteractive(startIter *TextIter, endIter *TextIter, defaultEditable bool) bool
+	// DeleteMark: deletes @mark, so that it’s no longer located anywhere in the
+	// buffer. Removes the reference the buffer holds to the mark, so if you
+	// haven’t called g_object_ref() on the mark, it will be freed. Even if the
+	// mark isn’t freed, most operations on @mark become invalid, until it gets
+	// added to a buffer again with gtk_text_buffer_add_mark(). Use
+	// gtk_text_mark_get_deleted() to find out if a mark has been removed from
+	// its buffer. The TextBuffer::mark-deleted signal will be emitted as
+	// notification after the mark is deleted.
+	DeleteMark(mark textMark)
+	// DeleteMarkByName: deletes the mark named @name; the mark must exist. See
+	// gtk_text_buffer_delete_mark() for details.
+	DeleteMarkByName(name string)
+	// DeleteSelection: deletes the range between the “insert” and
+	// “selection_bound” marks, that is, the currently-selected text. If
+	// @interactive is true, the editability of the selection will be considered
+	// (users can’t delete uneditable text).
+	DeleteSelection(interactive bool, defaultEditable bool) bool
+	// EndIrreversibleAction: denotes the end of an action that may not be
+	// undone. This will cause any previous operations in the undo/redo queue to
+	// be cleared.
+	//
+	// This should be called after completing modifications to the text buffer
+	// after gtk_text_buffer_begin_irreversible_action() was called.
+	//
+	// You may nest calls to gtk_text_buffer_begin_irreversible_action() and
+	// gtk_text_buffer_end_irreversible_action() pairs.
+	EndIrreversibleAction()
+	// EndUserAction: should be paired with a call to
+	// gtk_text_buffer_begin_user_action(). See that function for a full
+	// explanation.
+	EndUserAction()
+	// GetBounds: retrieves the first and last iterators in the buffer, i.e. the
+	// entire buffer lies within the range [@start,@end).
+	GetBounds() (TextIter, TextIter)
+	// GetCanRedo: gets whether there is a redoable action in the history.
+	GetCanRedo() bool
+	// GetCanUndo: gets whether there is an undoable action in the history.
+	GetCanUndo() bool
+	// GetCharCount: gets the number of characters in the buffer; note that
+	// characters and bytes are not the same, you can’t e.g. expect the contents
+	// of the buffer in string form to be this many bytes long. The character
+	// count is cached, so this function is very fast.
+	GetCharCount() int
+	// GetEnableUndo: gets whether the buffer is saving modifications to the
+	// buffer to allow for undo and redo actions.
+	//
+	// See gtk_text_buffer_begin_irreversible_action() and
+	// gtk_text_buffer_end_irreversible_action() to create changes to the buffer
+	// that cannot be undone.
+	GetEnableUndo() bool
+	// GetEndIter: initializes @iter with the “end iterator,” one past the last
+	// valid character in the text buffer. If dereferenced with
+	// gtk_text_iter_get_char(), the end iterator has a character value of 0.
+	// The entire buffer lies in the range from the first position in the buffer
+	// (call gtk_text_buffer_get_start_iter() to get character position 0) to
+	// the end iterator.
+	GetEndIter() TextIter
+	// GetHasSelection: indicates whether the buffer has some text currently
+	// selected.
+	GetHasSelection() bool
+	// GetInsert: returns the mark that represents the cursor (insertion point).
+	// Equivalent to calling gtk_text_buffer_get_mark() to get the mark named
+	// “insert”, but very slightly more efficient, and involves less typing.
+	GetInsert() textMark
+	// GetIterAtChildAnchor: obtains the location of @anchor within @buffer.
+	GetIterAtChildAnchor(anchor textChildAnchor) TextIter
+	// GetIterAtLine: initializes @iter to the start of the given line. If
+	// @line_number is greater than the number of lines in the @buffer, the end
+	// iterator is returned.
+	GetIterAtLine(lineNumber int) (TextIter, bool)
+	// GetIterAtLineIndex: obtains an iterator pointing to @byte_index within
+	// the given line. @byte_index must be the start of a UTF-8 character. Note
+	// bytes, not characters; UTF-8 may encode one character as multiple bytes.
+	//
+	// If @line_number is greater than the number of lines in the @buffer, the
+	// end iterator is returned. And if @byte_index is off the end of the line,
+	// the iterator at the end of the line is returned.
+	GetIterAtLineIndex(lineNumber int, byteIndex int) (TextIter, bool)
+	// GetIterAtLineOffset: obtains an iterator pointing to @char_offset within
+	// the given line. Note characters, not bytes; UTF-8 may encode one
+	// character as multiple bytes.
+	//
+	// Before the 3.20 version, it was not allowed to pass an invalid location.
+	//
+	// If @line_number is greater than the number of lines in the @buffer, the
+	// end iterator is returned. And if @char_offset is off the end of the line,
+	// the iterator at the end of the line is returned.
+	GetIterAtLineOffset(lineNumber int, charOffset int) (TextIter, bool)
+	// GetIterAtMark: initializes @iter with the current position of @mark.
+	GetIterAtMark(mark textMark) TextIter
+	// GetIterAtOffset: initializes @iter to a position @char_offset chars from
+	// the start of the entire buffer. If @char_offset is -1 or greater than the
+	// number of characters in the buffer, @iter is initialized to the end
+	// iterator, the iterator one past the last valid character in the buffer.
+	GetIterAtOffset(charOffset int) TextIter
+	// GetLineCount: obtains the number of lines in the buffer. This value is
+	// cached, so the function is very fast.
+	GetLineCount() int
+	// GetMark: returns the mark named @name in buffer @buffer, or nil if no
+	// such mark exists in the buffer.
+	GetMark(name string) textMark
+	// GetMaxUndoLevels: gets the maximum number of undo levels to perform. If
+	// 0, unlimited undo actions may be performed. Note that this may have a
+	// memory usage impact as it requires storing an additional copy of the
+	// inserted or removed text within the text buffer.
+	GetMaxUndoLevels() uint
+	// GetModified: indicates whether the buffer has been modified since the
+	// last call to gtk_text_buffer_set_modified() set the modification flag to
+	// false. Used for example to enable a “save” function in a text editor.
+	GetModified() bool
+	// GetSelectionBound: returns the mark that represents the selection bound.
+	// Equivalent to calling gtk_text_buffer_get_mark() to get the mark named
+	// “selection_bound”, but very slightly more efficient, and involves less
+	// typing.
+	//
+	// The currently-selected text in @buffer is the region between the
+	// “selection_bound” and “insert” marks. If “selection_bound” and “insert”
+	// are in the same place, then there is no current selection.
+	// gtk_text_buffer_get_selection_bounds() is another convenient function for
+	// handling the selection, if you just want to know whether there’s a
+	// selection and what its bounds are.
+	GetSelectionBound() textMark
+	// GetSelectionBounds: returns true if some text is selected; places the
+	// bounds of the selection in @start and @end (if the selection has length
+	// 0, then @start and @end are filled in with the same value). @start and
+	// @end will be in ascending order. If @start and @end are NULL, then they
+	// are not filled in, but the return value still indicates whether text is
+	// selected.
+	GetSelectionBounds() (TextIter, TextIter, bool)
+	// GetSelectionContent: get a content provider for this buffer. It can be
+	// used to make the content of @buffer available in a Clipboard, see
+	// gdk_clipboard_set_content().
+	GetSelectionContent() gdk.contentProvider
+	// GetSlice: returns the text in the range [@start,@end). Excludes
+	// undisplayed text (text marked with tags that set the invisibility
+	// attribute) if @include_hidden_chars is false. The returned string
+	// includes a 0xFFFC character whenever the buffer contains embedded images,
+	// so byte and character indexes into the returned string do correspond to
+	// byte and character indexes into the buffer. Contrast with
+	// gtk_text_buffer_get_text(). Note that 0xFFFC can occur in normal text as
+	// well, so it is not a reliable indicator that a paintable or widget is in
+	// the buffer.
+	GetSlice(start *TextIter, end *TextIter, includeHiddenChars bool) string
+	// GetStartIter: initialized @iter with the first position in the text
+	// buffer. This is the same as using gtk_text_buffer_get_iter_at_offset() to
+	// get the iter at character offset 0.
+	GetStartIter() TextIter
+	// GetTagTable: get the TextTagTable associated with this buffer.
+	GetTagTable() textTagTable
+	// GetText: returns the text in the range [@start,@end). Excludes
+	// undisplayed text (text marked with tags that set the invisibility
+	// attribute) if @include_hidden_chars is false. Does not include characters
+	// representing embedded images, so byte and character indexes into the
+	// returned string do not correspond to byte and character indexes into the
+	// buffer. Contrast with gtk_text_buffer_get_slice().
+	GetText(start *TextIter, end *TextIter, includeHiddenChars bool) string
+	// Insert: inserts @len bytes of @text at position @iter. If @len is -1,
+	// @text must be nul-terminated and will be inserted in its entirety. Emits
+	// the “insert-text” signal; insertion actually occurs in the default
+	// handler for the signal. @iter is invalidated when insertion occurs
+	// (because the buffer contents change), but the default signal handler
+	// revalidates it to point to the end of the inserted text.
+	Insert(iter *TextIter, text string, len int)
+	// InsertAtCursor: simply calls gtk_text_buffer_insert(), using the current
+	// cursor position as the insertion point.
+	InsertAtCursor(text string, len int)
+	// InsertChildAnchor: inserts a child widget anchor into the text buffer at
+	// @iter. The anchor will be counted as one character in character counts,
+	// and when obtaining the buffer contents as a string, will be represented
+	// by the Unicode “object replacement character” 0xFFFC. Note that the
+	// “slice” variants for obtaining portions of the buffer as a string include
+	// this character for child anchors, but the “text” variants do not. E.g.
+	// see gtk_text_buffer_get_slice() and gtk_text_buffer_get_text(). Consider
+	// gtk_text_buffer_create_child_anchor() as a more convenient alternative to
+	// this function. The buffer will add a reference to the anchor, so you can
+	// unref it after insertion.
+	InsertChildAnchor(iter *TextIter, anchor textChildAnchor)
+	// InsertInteractive: like gtk_text_buffer_insert(), but the insertion will
+	// not occur if @iter is at a non-editable location in the buffer. Usually
+	// you want to prevent insertions at ineditable locations if the insertion
+	// results from a user action (is interactive).
+	//
+	// @default_editable indicates the editability of text that doesn't have a
+	// tag affecting editability applied to it. Typically the result of
+	// gtk_text_view_get_editable() is appropriate here.
+	InsertInteractive(iter *TextIter, text string, len int, defaultEditable bool) bool
+	// InsertInteractiveAtCursor: calls gtk_text_buffer_insert_interactive() at
+	// the cursor position.
+	//
+	// @default_editable indicates the editability of text that doesn't have a
+	// tag affecting editability applied to it. Typically the result of
+	// gtk_text_view_get_editable() is appropriate here.
+	InsertInteractiveAtCursor(text string, len int, defaultEditable bool) bool
+	// InsertMarkup: inserts the text in @markup at position @iter. @markup will
+	// be inserted in its entirety and must be nul-terminated and valid UTF-8.
+	// Emits the TextBuffer::insert-text signal, possibly multiple times;
+	// insertion actually occurs in the default handler for the signal. @iter
+	// will point to the end of the inserted text on return.
+	InsertMarkup(iter *TextIter, markup string, len int)
+	// InsertPaintable: inserts an image into the text buffer at @iter. The
+	// image will be counted as one character in character counts, and when
+	// obtaining the buffer contents as a string, will be represented by the
+	// Unicode “object replacement character” 0xFFFC. Note that the “slice”
+	// variants for obtaining portions of the buffer as a string include this
+	// character for paintable, but the “text” variants do not. e.g. see
+	// gtk_text_buffer_get_slice() and gtk_text_buffer_get_text().
+	InsertPaintable(iter *TextIter, paintable gdk.Paintable)
+	// InsertRange: copies text, tags, and paintables between @start and @end
+	// (the order of @start and @end doesn’t matter) and inserts the copy at
+	// @iter. Used instead of simply getting/inserting text because it preserves
+	// images and tags. If @start and @end are in a different buffer from
+	// @buffer, the two buffers must share the same tag table.
+	//
+	// Implemented via emissions of the insert_text and apply_tag signals, so
+	// expect those.
+	InsertRange(iter *TextIter, start *TextIter, end *TextIter)
+	// InsertRangeInteractive: same as gtk_text_buffer_insert_range(), but does
+	// nothing if the insertion point isn’t editable. The @default_editable
+	// parameter indicates whether the text is editable at @iter if no tags
+	// enclosing @iter affect editability. Typically the result of
+	// gtk_text_view_get_editable() is appropriate here.
+	InsertRangeInteractive(iter *TextIter, start *TextIter, end *TextIter, defaultEditable bool) bool
+	// MoveMark: moves @mark to the new location @where. Emits the
+	// TextBuffer::mark-set signal as notification of the move.
+	MoveMark(mark textMark, where *TextIter)
+	// MoveMarkByName: moves the mark named @name (which must exist) to location
+	// @where. See gtk_text_buffer_move_mark() for details.
+	MoveMarkByName(name string, where *TextIter)
+	// PasteClipboard: pastes the contents of a clipboard. If @override_location
+	// is nil, the pasted text will be inserted at the cursor position, or the
+	// buffer selection will be replaced if the selection is non-empty.
+	//
+	// Note: pasting is asynchronous, that is, we’ll ask for the paste data and
+	// return, and at some point later after the main loop runs, the paste data
+	// will be inserted.
+	PasteClipboard(clipboard gdk.clipboard, overrideLocation *TextIter, defaultEditable bool)
+	// PlaceCursor: this function moves the “insert” and “selection_bound” marks
+	// simultaneously. If you move them to the same place in two steps with
+	// gtk_text_buffer_move_mark(), you will temporarily select a region in
+	// between their old and new locations, which can be pretty inefficient
+	// since the temporarily-selected region will force stuff to be
+	// recalculated. This function moves them as a unit, which can be optimized.
+	PlaceCursor(where *TextIter)
+	// Redo: redoes the next redoable action on the buffer, if there is one.
+	Redo()
+	// RemoveAllTags: removes all tags in the range between @start and @end. Be
+	// careful with this function; it could remove tags added in code unrelated
+	// to the code you’re currently writing. That is, using this function is
+	// probably a bad idea if you have two or more unrelated code sections that
+	// add tags.
+	RemoveAllTags(start *TextIter, end *TextIter)
+	// RemoveSelectionClipboard: removes a Clipboard added with
+	// gtk_text_buffer_add_selection_clipboard().
+	RemoveSelectionClipboard(clipboard gdk.clipboard)
+	// RemoveTag: emits the “remove-tag” signal. The default handler for the
+	// signal removes all occurrences of @tag from the given range. @start and
+	// @end don’t have to be in order.
+	RemoveTag(tag textTag, start *TextIter, end *TextIter)
+	// RemoveTagByName: calls gtk_text_tag_table_lookup() on the buffer’s tag
+	// table to get a TextTag, then calls gtk_text_buffer_remove_tag().
+	RemoveTagByName(name string, start *TextIter, end *TextIter)
+	// SelectRange: this function moves the “insert” and “selection_bound” marks
+	// simultaneously. If you move them in two steps with
+	// gtk_text_buffer_move_mark(), you will temporarily select a region in
+	// between their old and new locations, which can be pretty inefficient
+	// since the temporarily-selected region will force stuff to be
+	// recalculated. This function moves them as a unit, which can be optimized.
+	SelectRange(ins *TextIter, bound *TextIter)
+	// SetEnableUndo: sets whether or not to enable undoable actions in the text
+	// buffer. If enabled, the user will be able to undo the last number of
+	// actions up to gtk_text_buffer_get_max_undo_levels().
+	//
+	// See gtk_text_buffer_begin_irreversible_action() and
+	// gtk_text_buffer_end_irreversible_action() to create changes to the buffer
+	// that cannot be undone.
+	SetEnableUndo(enableUndo bool)
+	// SetMaxUndoLevels: sets the maximum number of undo levels to perform. If
+	// 0, unlimited undo actions may be performed. Note that this may have a
+	// memory usage impact as it requires storing an additional copy of the
+	// inserted or removed text within the text buffer.
+	SetMaxUndoLevels(maxUndoLevels uint)
+	// SetModified: used to keep track of whether the buffer has been modified
+	// since the last time it was saved. Whenever the buffer is saved to disk,
+	// call gtk_text_buffer_set_modified (@buffer, FALSE). When the buffer is
+	// modified, it will automatically toggled on the modified bit again. When
+	// the modified bit flips, the buffer emits the TextBuffer::modified-changed
+	// signal.
+	SetModified(setting bool)
+	// SetText: deletes current contents of @buffer, and inserts @text instead.
+	// If @len is -1, @text must be nul-terminated. @text must be valid UTF-8.
+	SetText(text string, len int)
+	// Undo: undoes the last undoable action on the buffer, if there is one.
+	Undo()
+}
+
+type textBuffer struct {
 	*externglib.Object
 }
 
-func wrapTextBuffer(obj *externglib.Object) *TextBuffer {
-	return &TextBuffer{*externglib.Object{obj}}
+func wrapTextBuffer(obj *externglib.Object) TextBuffer {
+	return &textBuffer{*externglib.Object{obj}}
 }
 
 func marshalTextBuffer(p uintptr) (interface{}, error) {
@@ -14895,17 +27583,166 @@ func marshalTextBuffer(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTextBuffer(table *TextTagTable) *TextBuffer
+func NewTextBuffer(table textTagTable) TextBuffer
+
+func (t textBuffer) AddMark(mark textMark, where *TextIter)
+
+func (t textBuffer) AddSelectionClipboard(clipboard gdk.clipboard)
+
+func (t textBuffer) ApplyTag(tag textTag, start *TextIter, end *TextIter)
+
+func (t textBuffer) ApplyTagByName(name string, start *TextIter, end *TextIter)
+
+func (t textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable bool) bool
+
+func (t textBuffer) BeginIrreversibleAction()
+
+func (t textBuffer) BeginUserAction()
+
+func (t textBuffer) CopyClipboard(clipboard gdk.clipboard)
+
+func (t textBuffer) CreateChildAnchor(iter *TextIter) textChildAnchor
+
+func (t textBuffer) CreateMark(markName string, where *TextIter, leftGravity bool) textMark
+
+func (t textBuffer) CutClipboard(clipboard gdk.clipboard, defaultEditable bool)
+
+func (t textBuffer) Delete(start *TextIter, end *TextIter)
+
+func (t textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, defaultEditable bool) bool
+
+func (t textBuffer) DeleteMark(mark textMark)
+
+func (t textBuffer) DeleteMarkByName(name string)
+
+func (t textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
+
+func (t textBuffer) EndIrreversibleAction()
+
+func (t textBuffer) EndUserAction()
+
+func (t textBuffer) GetBounds() (TextIter, TextIter)
+
+func (t textBuffer) GetCanRedo() bool
+
+func (t textBuffer) GetCanUndo() bool
+
+func (t textBuffer) GetCharCount() int
+
+func (t textBuffer) GetEnableUndo() bool
+
+func (t textBuffer) GetEndIter() TextIter
+
+func (t textBuffer) GetHasSelection() bool
+
+func (t textBuffer) GetInsert() textMark
+
+func (t textBuffer) GetIterAtChildAnchor(anchor textChildAnchor) TextIter
+
+func (t textBuffer) GetIterAtLine(lineNumber int) (TextIter, bool)
+
+func (t textBuffer) GetIterAtLineIndex(lineNumber int, byteIndex int) (TextIter, bool)
+
+func (t textBuffer) GetIterAtLineOffset(lineNumber int, charOffset int) (TextIter, bool)
+
+func (t textBuffer) GetIterAtMark(mark textMark) TextIter
+
+func (t textBuffer) GetIterAtOffset(charOffset int) TextIter
+
+func (t textBuffer) GetLineCount() int
+
+func (t textBuffer) GetMark(name string) textMark
+
+func (t textBuffer) GetMaxUndoLevels() uint
+
+func (t textBuffer) GetModified() bool
+
+func (t textBuffer) GetSelectionBound() textMark
+
+func (t textBuffer) GetSelectionBounds() (TextIter, TextIter, bool)
+
+func (t textBuffer) GetSelectionContent() gdk.contentProvider
+
+func (t textBuffer) GetSlice(start *TextIter, end *TextIter, includeHiddenChars bool) string
+
+func (t textBuffer) GetStartIter() TextIter
+
+func (t textBuffer) GetTagTable() textTagTable
+
+func (t textBuffer) GetText(start *TextIter, end *TextIter, includeHiddenChars bool) string
+
+func (t textBuffer) Insert(iter *TextIter, text string, len int)
+
+func (t textBuffer) InsertAtCursor(text string, len int)
+
+func (t textBuffer) InsertChildAnchor(iter *TextIter, anchor textChildAnchor)
+
+func (t textBuffer) InsertInteractive(iter *TextIter, text string, len int, defaultEditable bool) bool
+
+func (t textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEditable bool) bool
+
+func (t textBuffer) InsertMarkup(iter *TextIter, markup string, len int)
+
+func (t textBuffer) InsertPaintable(iter *TextIter, paintable gdk.Paintable)
+
+func (t textBuffer) InsertRange(iter *TextIter, start *TextIter, end *TextIter)
+
+func (t textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end *TextIter, defaultEditable bool) bool
+
+func (t textBuffer) MoveMark(mark textMark, where *TextIter)
+
+func (t textBuffer) MoveMarkByName(name string, where *TextIter)
+
+func (t textBuffer) PasteClipboard(clipboard gdk.clipboard, overrideLocation *TextIter, defaultEditable bool)
+
+func (t textBuffer) PlaceCursor(where *TextIter)
+
+func (t textBuffer) Redo()
+
+func (t textBuffer) RemoveAllTags(start *TextIter, end *TextIter)
+
+func (t textBuffer) RemoveSelectionClipboard(clipboard gdk.clipboard)
+
+func (t textBuffer) RemoveTag(tag textTag, start *TextIter, end *TextIter)
+
+func (t textBuffer) RemoveTagByName(name string, start *TextIter, end *TextIter)
+
+func (t textBuffer) SelectRange(ins *TextIter, bound *TextIter)
+
+func (t textBuffer) SetEnableUndo(enableUndo bool)
+
+func (t textBuffer) SetMaxUndoLevels(maxUndoLevels uint)
+
+func (t textBuffer) SetModified(setting bool)
+
+func (t textBuffer) SetText(text string, len int)
+
+func (t textBuffer) Undo()
 
 // TextChildAnchor: a TextChildAnchor is a spot in the buffer where child
 // widgets can be “anchored” (inserted inline, as if they were characters). The
 // anchor can have multiple widgets anchored, to allow for multiple views.
-type TextChildAnchor struct {
+type TextChildAnchor interface {
+	gextras.Objector
+
+	// GetDeleted: determines whether a child anchor has been deleted from the
+	// buffer. Keep in mind that the child anchor will be unreferenced when
+	// removed from the buffer, so you need to hold your own reference (with
+	// g_object_ref()) if you plan to use this function — otherwise all deleted
+	// child anchors will also be finalized.
+	GetDeleted() bool
+	// GetWidgets: gets a list of all widgets anchored at this child anchor.
+	//
+	// The order in which the widgets are returned is not defined.
+	GetWidgets() (uint, []widget)
+}
+
+type textChildAnchor struct {
 	*externglib.Object
 }
 
-func wrapTextChildAnchor(obj *externglib.Object) *TextChildAnchor {
-	return &TextChildAnchor{*externglib.Object{obj}}
+func wrapTextChildAnchor(obj *externglib.Object) TextChildAnchor {
+	return &textChildAnchor{*externglib.Object{obj}}
 }
 
 func marshalTextChildAnchor(p uintptr) (interface{}, error) {
@@ -14914,7 +27751,11 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTextChildAnchor() *TextChildAnchor
+func NewTextChildAnchor() TextChildAnchor
+
+func (t textChildAnchor) GetDeleted() bool
+
+func (t textChildAnchor) GetWidgets() (uint, []widget)
 
 // TextMark: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
@@ -14943,12 +27784,33 @@ func NewTextChildAnchor() *TextChildAnchor
 // TextMark object around.
 //
 // Marks are typically created using the gtk_text_buffer_create_mark() function.
-type TextMark struct {
+type TextMark interface {
+	gextras.Objector
+
+	// GetBuffer: gets the buffer this mark is located inside, or nil if the
+	// mark is deleted.
+	GetBuffer() textBuffer
+	// GetDeleted: returns true if the mark has been removed from its buffer
+	// with gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a
+	// way to add it to a buffer again.
+	GetDeleted() bool
+	// GetLeftGravity: determines whether the mark has left gravity.
+	GetLeftGravity() bool
+	// GetName: returns the mark name; returns NULL for anonymous marks.
+	GetName() string
+	// GetVisible: returns true if the mark is visible (i.e. a cursor is
+	// displayed for it).
+	GetVisible() bool
+
+	SetVisible(setting bool)
+}
+
+type textMark struct {
 	*externglib.Object
 }
 
-func wrapTextMark(obj *externglib.Object) *TextMark {
-	return &TextMark{*externglib.Object{obj}}
+func wrapTextMark(obj *externglib.Object) TextMark {
+	return &textMark{*externglib.Object{obj}}
 }
 
 func marshalTextMark(p uintptr) (interface{}, error) {
@@ -14957,7 +27819,19 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTextMark(name string, leftGravity bool) *TextMark
+func NewTextMark(name string, leftGravity bool) TextMark
+
+func (t textMark) GetBuffer() textBuffer
+
+func (t textMark) GetDeleted() bool
+
+func (t textMark) GetLeftGravity() bool
+
+func (t textMark) GetName() string
+
+func (t textMark) GetVisible() bool
+
+func (t textMark) SetVisible(setting bool)
 
 // TextTag: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
@@ -14973,12 +27847,36 @@ func NewTextMark(name string, leftGravity bool) *TextMark
 // corresponds to “font”. These “set” properties reflect whether a property has
 // been set or not. They are maintained by GTK+ and you should not set them
 // independently.
-type TextTag struct {
+type TextTag interface {
+	gextras.Objector
+
+	// Changed: emits the TextTagTable::tag-changed signal on the TextTagTable
+	// where the tag is included.
+	//
+	// The signal is already emitted when setting a TextTag property. This
+	// function is useful for a TextTag subclass.
+	Changed(sizeChanged bool)
+	// GetPriority: get the tag priority.
+	GetPriority() int
+	// SetPriority: sets the priority of a TextTag. Valid priorities start at 0
+	// and go to one less than gtk_text_tag_table_get_size(). Each tag in a
+	// table has a unique priority; setting the priority of one tag shifts the
+	// priorities of all the other tags in the table to maintain a unique
+	// priority for each tag. Higher priority tags “win” if two tags both set
+	// the same text attribute. When adding a tag to a tag table, it will be
+	// assigned the highest priority in the table by default; so normally the
+	// precedence of a set of tags is the order in which they were added to the
+	// table, or created with gtk_text_buffer_create_tag(), which adds the tag
+	// to the buffer’s table automatically.
+	SetPriority(priority int)
+}
+
+type textTag struct {
 	*externglib.Object
 }
 
-func wrapTextTag(obj *externglib.Object) *TextTag {
-	return &TextTag{*externglib.Object{obj}}
+func wrapTextTag(obj *externglib.Object) TextTag {
+	return &textTag{*externglib.Object{obj}}
 }
 
 func marshalTextTag(p uintptr) (interface{}, error) {
@@ -14987,7 +27885,13 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTextTag(name string) *TextTag
+func NewTextTag(name string) TextTag
+
+func (t textTag) Changed(sizeChanged bool)
+
+func (t textTag) GetPriority() int
+
+func (t textTag) SetPriority(priority int)
 
 // TextTagTable: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
@@ -15005,12 +27909,36 @@ func NewTextTag(name string) *TextTag
 //       <object class="GtkTextTag"/>
 //     </child>
 //    </object>
-type TextTagTable struct {
+type TextTagTable interface {
+	gextras.Objector
+
+	// Add: add a tag to the table. The tag is assigned the highest priority in
+	// the table.
+	//
+	// @tag must not be in a tag table already, and may not have the same name
+	// as an already-added tag.
+	Add(tag textTag) bool
+	// Foreach: calls @func on each tag in @table, with user data @data. Note
+	// that the table may not be modified while iterating over it (you can’t
+	// add/remove tags).
+	Foreach(_func TextTagTableForeach, data unsafe.Pointer)
+	// GetSize: returns the size of the table (number of tags)
+	GetSize() int
+	// Lookup: look up a named tag.
+	Lookup(name string) textTag
+	// Remove: remove a tag from the table. If a TextBuffer has @table as its
+	// tag table, the tag is removed from the buffer. The table’s reference to
+	// the tag is removed, so the tag will end up destroyed if you don’t have a
+	// reference to it.
+	Remove(tag textTag)
+}
+
+type textTagTable struct {
 	*externglib.Object
 }
 
-func wrapTextTagTable(obj *externglib.Object) *TextTagTable {
-	return &TextTagTable{*externglib.Object{obj}}
+func wrapTextTagTable(obj *externglib.Object) TextTagTable {
+	return &textTagTable{*externglib.Object{obj}}
 }
 
 func marshalTextTagTable(p uintptr) (interface{}, error) {
@@ -15019,7 +27947,17 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTextTagTable() *TextTagTable
+func NewTextTagTable() TextTagTable
+
+func (t textTagTable) Add(tag textTag) bool
+
+func (t textTagTable) Foreach(_func TextTagTableForeach, data unsafe.Pointer)
+
+func (t textTagTable) GetSize() int
+
+func (t textTagTable) Lookup(name string) textTag
+
+func (t textTagTable) Remove(tag textTag)
 
 // TextView: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
@@ -15050,12 +27988,372 @@ func NewTextTagTable() *TextTagTable
 // Accessibility
 //
 // GtkTextView uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
-type TextView struct {
+type TextView interface {
+	widget
+
+	// AddChildAtAnchor: adds a child widget in the text buffer, at the given
+	// @anchor.
+	AddChildAtAnchor(child widget, anchor textChildAnchor)
+	// AddOverlay: adds @child at a fixed coordinate in the TextView's text
+	// window. The @xpos and @ypos must be in buffer coordinates (see
+	// gtk_text_view_get_iter_location() to convert to buffer coordinates).
+	//
+	// @child will scroll with the text view.
+	//
+	// If instead you want a widget that will not move with the TextView
+	// contents see Overlay.
+	AddOverlay(child widget, xpos int, ypos int)
+	// BackwardDisplayLine: moves the given @iter backward by one display
+	// (wrapped) line. A display line is different from a paragraph. Paragraphs
+	// are separated by newlines or other paragraph separator characters.
+	// Display lines are created by line-wrapping a paragraph. If wrapping is
+	// turned off, display lines and paragraphs will be the same. Display lines
+	// are divided differently for each view, since they depend on the view’s
+	// width; paragraphs are the same in all views, since they depend on the
+	// contents of the TextBuffer.
+	BackwardDisplayLine(iter *TextIter) bool
+	// BackwardDisplayLineStart: moves the given @iter backward to the next
+	// display line start. A display line is different from a paragraph.
+	// Paragraphs are separated by newlines or other paragraph separator
+	// characters. Display lines are created by line-wrapping a paragraph. If
+	// wrapping is turned off, display lines and paragraphs will be the same.
+	// Display lines are divided differently for each view, since they depend on
+	// the view’s width; paragraphs are the same in all views, since they depend
+	// on the contents of the TextBuffer.
+	BackwardDisplayLineStart(iter *TextIter) bool
+	// BufferToWindowCoords: converts coordinate (@buffer_x, @buffer_y) to
+	// coordinates for the window @win, and stores the result in (@window_x,
+	// @window_y).
+	BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (int, int)
+	// ForwardDisplayLine: moves the given @iter forward by one display
+	// (wrapped) line. A display line is different from a paragraph. Paragraphs
+	// are separated by newlines or other paragraph separator characters.
+	// Display lines are created by line-wrapping a paragraph. If wrapping is
+	// turned off, display lines and paragraphs will be the same. Display lines
+	// are divided differently for each view, since they depend on the view’s
+	// width; paragraphs are the same in all views, since they depend on the
+	// contents of the TextBuffer.
+	ForwardDisplayLine(iter *TextIter) bool
+	// ForwardDisplayLineEnd: moves the given @iter forward to the next display
+	// line end. A display line is different from a paragraph. Paragraphs are
+	// separated by newlines or other paragraph separator characters. Display
+	// lines are created by line-wrapping a paragraph. If wrapping is turned
+	// off, display lines and paragraphs will be the same. Display lines are
+	// divided differently for each view, since they depend on the view’s width;
+	// paragraphs are the same in all views, since they depend on the contents
+	// of the TextBuffer.
+	ForwardDisplayLineEnd(iter *TextIter) bool
+	// GetAcceptsTab: returns whether pressing the Tab key inserts a tab
+	// characters. gtk_text_view_set_accepts_tab().
+	GetAcceptsTab() bool
+	// GetBottomMargin: gets the bottom margin for text in the @text_view.
+	GetBottomMargin() int
+	// GetBuffer: returns the TextBuffer being displayed by this text view. The
+	// reference count on the buffer is not incremented; the caller of this
+	// function won’t own a new reference.
+	GetBuffer() textBuffer
+	// GetCursorLocations: given an @iter within a text layout, determine the
+	// positions of the strong and weak cursors if the insertion point is at
+	// that iterator. The position of each cursor is stored as a zero-width
+	// rectangle. The strong cursor location is the location where characters of
+	// the directionality equal to the base direction of the paragraph are
+	// inserted. The weak cursor location is the location where characters of
+	// the directionality opposite to the base direction of the paragraph are
+	// inserted.
+	//
+	// If @iter is nil, the actual cursor position is used.
+	//
+	// Note that if @iter happens to be the actual cursor position, and there is
+	// currently an IM preedit sequence being entered, the returned locations
+	// will be adjusted to account for the preedit cursor’s offset within the
+	// preedit sequence.
+	//
+	// The rectangle position is in buffer coordinates; use
+	// gtk_text_view_buffer_to_window_coords() to convert these coordinates to
+	// coordinates for one of the windows in the text view.
+	GetCursorLocations(iter *TextIter) (gdk.Rectangle, gdk.Rectangle)
+	// GetCursorVisible: find out whether the cursor should be displayed.
+	GetCursorVisible() bool
+	// GetEditable: returns the default editability of the TextView. Tags in the
+	// buffer may override this setting for some ranges of text.
+	GetEditable() bool
+	// GetExtraMenu: gets the menu model set with gtk_text_view_set_extra_menu()
+	// or nil if none has been set.
+	GetExtraMenu() gio.menuModel
+	// GetGutter: gets a Widget that has previously been set with
+	// gtk_text_view_set_gutter().
+	//
+	// @win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
+	// GTK_TEXT_WINDOW_TOP, or GTK_TEXT_WINDOW_BOTTOM.
+	GetGutter(win TextWindowType) widget
+	// GetIndent: gets the default indentation of paragraphs in @text_view. Tags
+	// in the view’s buffer may override the default. The indentation may be
+	// negative.
+	GetIndent() int
+	// GetInputHints: gets the value of the TextView:input-hints property.
+	GetInputHints() InputHints
+	// GetInputPurpose: gets the value of the TextView:input-purpose property.
+	GetInputPurpose() InputPurpose
+	// GetIterAtLocation: retrieves the iterator at buffer coordinates @x and
+	// @y. Buffer coordinates are coordinates for the entire buffer, not just
+	// the currently-displayed portion. If you have coordinates from an event,
+	// you have to convert those to buffer coordinates with
+	// gtk_text_view_window_to_buffer_coords().
+	GetIterAtLocation(x int, y int) (TextIter, bool)
+	// GetIterAtPosition: retrieves the iterator pointing to the character at
+	// buffer coordinates @x and @y. Buffer coordinates are coordinates for the
+	// entire buffer, not just the currently-displayed portion. If you have
+	// coordinates from an event, you have to convert those to buffer
+	// coordinates with gtk_text_view_window_to_buffer_coords().
+	//
+	// Note that this is different from gtk_text_view_get_iter_at_location(),
+	// which returns cursor locations, i.e. positions between characters.
+	GetIterAtPosition(x int, y int) (TextIter, int, bool)
+	// GetIterLocation: gets a rectangle which roughly contains the character at
+	// @iter. The rectangle position is in buffer coordinates; use
+	// gtk_text_view_buffer_to_window_coords() to convert these coordinates to
+	// coordinates for one of the windows in the text view.
+	GetIterLocation(iter *TextIter) gdk.Rectangle
+	// GetJustification: gets the default justification of paragraphs in
+	// @text_view. Tags in the buffer may override the default.
+	GetJustification() Justification
+	// GetLeftMargin: gets the default left margin size of paragraphs in the
+	// @text_view. Tags in the buffer may override the default.
+	GetLeftMargin() int
+	// GetLineAtY: gets the TextIter at the start of the line containing the
+	// coordinate @y. @y is in buffer coordinates, convert from window
+	// coordinates with gtk_text_view_window_to_buffer_coords(). If non-nil,
+	// @line_top will be filled with the coordinate of the top edge of the line.
+	GetLineAtY(y int) (TextIter, int)
+	// GetLineYrange: gets the y coordinate of the top of the line containing
+	// @iter, and the height of the line. The coordinate is a buffer coordinate;
+	// convert to window coordinates with
+	// gtk_text_view_buffer_to_window_coords().
+	GetLineYrange(iter *TextIter) (int, int)
+	// GetMonospace: gets the value of the TextView:monospace property.
+	GetMonospace() bool
+	// GetOverwrite: returns whether the TextView is in overwrite mode or not.
+	GetOverwrite() bool
+	// GetPixelsAboveLines: gets the default number of pixels to put above
+	// paragraphs. Adding this function with
+	// gtk_text_view_get_pixels_below_lines() is equal to the line space between
+	// each paragraph.
+	GetPixelsAboveLines() int
+	// GetPixelsBelowLines: gets the value set by
+	// gtk_text_view_set_pixels_below_lines().
+	//
+	// The line space is the sum of the value returned by this function and the
+	// value returned by gtk_text_view_get_pixels_above_lines().
+	GetPixelsBelowLines() int
+	// GetPixelsInsideWrap: gets the value set by
+	// gtk_text_view_set_pixels_inside_wrap().
+	GetPixelsInsideWrap() int
+	// GetRightMargin: gets the default right margin for text in @text_view.
+	// Tags in the buffer may override the default.
+	GetRightMargin() int
+	// GetTabs: gets the default tabs for @text_view. Tags in the buffer may
+	// override the defaults. The returned array will be nil if “standard”
+	// (8-space) tabs are used. Free the return value with
+	// pango_tab_array_free().
+	GetTabs() *pango.TabArray
+	// GetTopMargin: gets the top margin for text in the @text_view.
+	GetTopMargin() int
+	// GetVisibleRect: fills @visible_rect with the currently-visible region of
+	// the buffer, in buffer coordinates. Convert to window coordinates with
+	// gtk_text_view_buffer_to_window_coords().
+	GetVisibleRect() gdk.Rectangle
+	// GetWrapMode: gets the line wrapping for the view.
+	GetWrapMode() WrapMode
+	// ImContextFilterKeypress: allow the TextView input method to internally
+	// handle key press and release events. If this function returns true, then
+	// no further processing should be done for this key event. See
+	// gtk_im_context_filter_keypress().
+	//
+	// Note that you are expected to call this function from your handler when
+	// overriding key event handling. This is needed in the case when you need
+	// to insert your own key handling between the input method and the default
+	// key event handling of the TextView.
+	//
+	//    static gboolean
+	//    gtk_foo_bar_key_press_event (GtkWidget *widget,
+	//                                 GdkEvent  *event)
+	//    {
+	//      guint keyval;
+	//
+	//      gdk_event_get_keyval ((GdkEvent*)event, &keyval);
+	//
+	//      if (keyval == GDK_KEY_Return || keyval == GDK_KEY_KP_Enter)
+	//        {
+	//          if (gtk_text_view_im_context_filter_keypress (GTK_TEXT_VIEW (widget), event))
+	//            return TRUE;
+	//        }
+	//
+	//      // Do some stuff
+	//
+	//      return GTK_WIDGET_CLASS (gtk_foo_bar_parent_class)->key_press_event (widget, event);
+	//    }
+	//
+	ImContextFilterKeypress(event gdk.event) bool
+	// MoveMarkOnscreen: moves a mark within the buffer so that it's located
+	// within the currently-visible text area.
+	MoveMarkOnscreen(mark textMark) bool
+	// MoveOverlay: updates the position of a child, as for
+	// gtk_text_view_add_overlay().
+	MoveOverlay(child widget, xpos int, ypos int)
+	// MoveVisually: move the iterator a given number of characters visually,
+	// treating it as the strong cursor position. If @count is positive, then
+	// the new strong cursor position will be @count positions to the right of
+	// the old cursor position. If @count is negative then the new strong cursor
+	// position will be @count positions to the left of the old cursor position.
+	//
+	// In the presence of bi-directional text, the correspondence between
+	// logical and visual order will depend on the direction of the current run,
+	// and there may be jumps when the cursor is moved off of the end of a run.
+	MoveVisually(iter *TextIter, count int) bool
+	// PlaceCursorOnscreen: moves the cursor to the currently visible region of
+	// the buffer, if it isn’t there already.
+	PlaceCursorOnscreen() bool
+	// Remove: removes a child widget from @text_view.
+	Remove(child widget)
+	// ResetCursorBlink: ensures that the cursor is shown (i.e. not in an 'off'
+	// blink interval) and resets the time that it will stay blinking (or
+	// visible, in case blinking is disabled).
+	//
+	// This function should be called in response to user input (e.g. from
+	// derived classes that override the textview's event handlers).
+	ResetCursorBlink()
+	// ResetImContext: reset the input method context of the text view if
+	// needed.
+	//
+	// This can be necessary in the case where modifying the buffer would
+	// confuse on-going input method behavior.
+	ResetImContext()
+	// ScrollMarkOnscreen: scrolls @text_view the minimum distance such that
+	// @mark is contained within the visible area of the widget.
+	ScrollMarkOnscreen(mark textMark)
+	// ScrollToIter: scrolls @text_view so that @iter is on the screen in the
+	// position indicated by @xalign and @yalign. An alignment of 0.0 indicates
+	// left or top, 1.0 indicates right or bottom, 0.5 means center. If
+	// @use_align is false, the text scrolls the minimal distance to get the
+	// mark onscreen, possibly not scrolling at all. The effective screen for
+	// purposes of this function is reduced by a margin of size @within_margin.
+	//
+	// Note that this function uses the currently-computed height of the lines
+	// in the text buffer. Line heights are computed in an idle handler; so this
+	// function may not have the desired effect if it’s called before the height
+	// computations. To avoid oddness, consider using
+	// gtk_text_view_scroll_to_mark() which saves a point to be scrolled to
+	// after line validation.
+	ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool
+	// ScrollToMark: scrolls @text_view so that @mark is on the screen in the
+	// position indicated by @xalign and @yalign. An alignment of 0.0 indicates
+	// left or top, 1.0 indicates right or bottom, 0.5 means center. If
+	// @use_align is false, the text scrolls the minimal distance to get the
+	// mark onscreen, possibly not scrolling at all. The effective screen for
+	// purposes of this function is reduced by a margin of size @within_margin.
+	ScrollToMark(mark textMark, withinMargin float64, useAlign bool, xalign float64, yalign float64)
+	// SetAcceptsTab: sets the behavior of the text widget when the Tab key is
+	// pressed. If @accepts_tab is true, a tab character is inserted. If
+	// @accepts_tab is false the keyboard focus is moved to the next widget in
+	// the focus chain.
+	SetAcceptsTab(acceptsTab bool)
+	// SetBottomMargin: sets the bottom margin for text in @text_view.
+	//
+	// Note that this function is confusingly named. In CSS terms, the value set
+	// here is padding.
+	SetBottomMargin(bottomMargin int)
+	// SetBuffer: sets @buffer as the buffer being displayed by @text_view. The
+	// previous buffer displayed by the text view is unreferenced, and a
+	// reference is added to @buffer. If you owned a reference to @buffer before
+	// passing it to this function, you must remove that reference yourself;
+	// TextView will not “adopt” it.
+	SetBuffer(buffer textBuffer)
+	// SetCursorVisible: toggles whether the insertion point should be
+	// displayed. A buffer with no editable text probably shouldn’t have a
+	// visible cursor, so you may want to turn the cursor off.
+	//
+	// Note that this property may be overridden by the
+	// Settings:gtk-keynav-use-caret settings.
+	SetCursorVisible(setting bool)
+	// SetEditable: sets the default editability of the TextView. You can
+	// override this default setting with tags in the buffer, using the
+	// “editable” attribute of tags.
+	SetEditable(setting bool)
+	// SetExtraMenu: sets a menu model to add when constructing the context menu
+	// for @text_view. You can pass nil to remove a previously set extra menu.
+	SetExtraMenu(model gio.menuModel)
+	// SetGutter: places @widget into the gutter specified by @win.
+	//
+	// @win must be one of GTK_TEXT_WINDOW_LEFT, GTK_TEXT_WINDOW_RIGHT,
+	// GTK_TEXT_WINDOW_TOP, or GTK_TEXT_WINDOW_BOTTOM.
+	SetGutter(win TextWindowType, widget widget)
+	// SetIndent: sets the default indentation for paragraphs in @text_view.
+	// Tags in the buffer may override the default.
+	SetIndent(indent int)
+	// SetInputHints: sets the TextView:input-hints property, which allows input
+	// methods to fine-tune their behaviour.
+	SetInputHints(hints InputHints)
+	// SetInputPurpose: sets the TextView:input-purpose property which can be
+	// used by on-screen keyboards and other input methods to adjust their
+	// behaviour.
+	SetInputPurpose(purpose InputPurpose)
+	// SetJustification: sets the default justification of text in @text_view.
+	// Tags in the view’s buffer may override the default.
+	SetJustification(justification Justification)
+	// SetLeftMargin: sets the default left margin for text in @text_view. Tags
+	// in the buffer may override the default.
+	//
+	// Note that this function is confusingly named. In CSS terms, the value set
+	// here is padding.
+	SetLeftMargin(leftMargin int)
+	// SetMonospace: sets the TextView:monospace property, which indicates that
+	// the text view should use monospace fonts.
+	SetMonospace(monospace bool)
+	// SetOverwrite: changes the TextView overwrite mode.
+	SetOverwrite(overwrite bool)
+	// SetPixelsAboveLines: sets the default number of blank pixels above
+	// paragraphs in @text_view. Tags in the buffer for @text_view may override
+	// the defaults.
+	SetPixelsAboveLines(pixelsAboveLines int)
+	// SetPixelsBelowLines: sets the default number of pixels of blank space to
+	// put below paragraphs in @text_view. May be overridden by tags applied to
+	// @text_view’s buffer.
+	SetPixelsBelowLines(pixelsBelowLines int)
+	// SetPixelsInsideWrap: sets the default number of pixels of blank space to
+	// leave between display/wrapped lines within a paragraph. May be overridden
+	// by tags in @text_view’s buffer.
+	SetPixelsInsideWrap(pixelsInsideWrap int)
+	// SetRightMargin: sets the default right margin for text in the text view.
+	// Tags in the buffer may override the default.
+	//
+	// Note that this function is confusingly named. In CSS terms, the value set
+	// here is padding.
+	SetRightMargin(rightMargin int)
+	// SetTabs: sets the default tab stops for paragraphs in @text_view. Tags in
+	// the buffer may override the default.
+	SetTabs(tabs *pango.TabArray)
+	// SetTopMargin: sets the top margin for text in @text_view.
+	//
+	// Note that this function is confusingly named. In CSS terms, the value set
+	// here is padding.
+	SetTopMargin(topMargin int)
+	// SetWrapMode: sets the line wrapping for the view.
+	SetWrapMode(wrapMode WrapMode)
+	// StartsDisplayLine: determines whether @iter is at the start of a display
+	// line. See gtk_text_view_forward_display_line() for an explanation of
+	// display lines vs. paragraphs.
+	StartsDisplayLine(iter *TextIter) bool
+	// WindowToBufferCoords: converts coordinates on the window identified by
+	// @win to buffer coordinates, storing the result in (@buffer_x,@buffer_y).
+	WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (int, int)
+}
+
+type textView struct {
 	Widget
 }
 
-func wrapTextView(obj *externglib.Object) *TextView {
-	return &TextView{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapTextView(obj *externglib.Object) TextView {
+	return &textView{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalTextView(p uintptr) (interface{}, error) {
@@ -15064,9 +28362,147 @@ func marshalTextView(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTextView() *TextView
+func NewTextView() TextView
 
-func NewTextView(buffer *TextBuffer) *TextView
+func NewTextView(buffer textBuffer) TextView
+
+func (t textView) AddChildAtAnchor(child widget, anchor textChildAnchor)
+
+func (t textView) AddOverlay(child widget, xpos int, ypos int)
+
+func (t textView) BackwardDisplayLine(iter *TextIter) bool
+
+func (t textView) BackwardDisplayLineStart(iter *TextIter) bool
+
+func (t textView) BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (int, int)
+
+func (t textView) ForwardDisplayLine(iter *TextIter) bool
+
+func (t textView) ForwardDisplayLineEnd(iter *TextIter) bool
+
+func (t textView) GetAcceptsTab() bool
+
+func (t textView) GetBottomMargin() int
+
+func (t textView) GetBuffer() textBuffer
+
+func (t textView) GetCursorLocations(iter *TextIter) (gdk.Rectangle, gdk.Rectangle)
+
+func (t textView) GetCursorVisible() bool
+
+func (t textView) GetEditable() bool
+
+func (t textView) GetExtraMenu() gio.menuModel
+
+func (t textView) GetGutter(win TextWindowType) widget
+
+func (t textView) GetIndent() int
+
+func (t textView) GetInputHints() InputHints
+
+func (t textView) GetInputPurpose() InputPurpose
+
+func (t textView) GetIterAtLocation(x int, y int) (TextIter, bool)
+
+func (t textView) GetIterAtPosition(x int, y int) (TextIter, int, bool)
+
+func (t textView) GetIterLocation(iter *TextIter) gdk.Rectangle
+
+func (t textView) GetJustification() Justification
+
+func (t textView) GetLeftMargin() int
+
+func (t textView) GetLineAtY(y int) (TextIter, int)
+
+func (t textView) GetLineYrange(iter *TextIter) (int, int)
+
+func (t textView) GetMonospace() bool
+
+func (t textView) GetOverwrite() bool
+
+func (t textView) GetPixelsAboveLines() int
+
+func (t textView) GetPixelsBelowLines() int
+
+func (t textView) GetPixelsInsideWrap() int
+
+func (t textView) GetRightMargin() int
+
+func (t textView) GetTabs() *pango.TabArray
+
+func (t textView) GetTopMargin() int
+
+func (t textView) GetVisibleRect() gdk.Rectangle
+
+func (t textView) GetWrapMode() WrapMode
+
+func (t textView) ImContextFilterKeypress(event gdk.event) bool
+
+func (t textView) MoveMarkOnscreen(mark textMark) bool
+
+func (t textView) MoveOverlay(child widget, xpos int, ypos int)
+
+func (t textView) MoveVisually(iter *TextIter, count int) bool
+
+func (t textView) PlaceCursorOnscreen() bool
+
+func (t textView) Remove(child widget)
+
+func (t textView) ResetCursorBlink()
+
+func (t textView) ResetImContext()
+
+func (t textView) ScrollMarkOnscreen(mark textMark)
+
+func (t textView) ScrollToIter(iter *TextIter, withinMargin float64, useAlign bool, xalign float64, yalign float64) bool
+
+func (t textView) ScrollToMark(mark textMark, withinMargin float64, useAlign bool, xalign float64, yalign float64)
+
+func (t textView) SetAcceptsTab(acceptsTab bool)
+
+func (t textView) SetBottomMargin(bottomMargin int)
+
+func (t textView) SetBuffer(buffer textBuffer)
+
+func (t textView) SetCursorVisible(setting bool)
+
+func (t textView) SetEditable(setting bool)
+
+func (t textView) SetExtraMenu(model gio.menuModel)
+
+func (t textView) SetGutter(win TextWindowType, widget widget)
+
+func (t textView) SetIndent(indent int)
+
+func (t textView) SetInputHints(hints InputHints)
+
+func (t textView) SetInputPurpose(purpose InputPurpose)
+
+func (t textView) SetJustification(justification Justification)
+
+func (t textView) SetLeftMargin(leftMargin int)
+
+func (t textView) SetMonospace(monospace bool)
+
+func (t textView) SetOverwrite(overwrite bool)
+
+func (t textView) SetPixelsAboveLines(pixelsAboveLines int)
+
+func (t textView) SetPixelsBelowLines(pixelsBelowLines int)
+
+func (t textView) SetPixelsInsideWrap(pixelsInsideWrap int)
+
+func (t textView) SetRightMargin(rightMargin int)
+
+func (t textView) SetTabs(tabs *pango.TabArray)
+
+func (t textView) SetTopMargin(topMargin int)
+
+func (t textView) SetWrapMode(wrapMode WrapMode)
+
+func (t textView) StartsDisplayLine(iter *TextIter) bool
+
+func (t textView) WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (int, int)
 
 // ToggleButton: a ToggleButton is a Button which will remain “pressed-in” when
 // clicked. Clicking again will cause the toggle button to return to its normal
@@ -15123,12 +28559,36 @@ func NewTextView(buffer *TextBuffer) *TextView
 //      gtk_widget_show (window);
 //    }
 //
-type ToggleButton struct {
+type ToggleButton interface {
+	button
+
+	// GetActive: queries a ToggleButton and returns its current state. Returns
+	// true if the toggle button is pressed in and false if it is raised.
+	GetActive() bool
+	// SetActive: sets the status of the toggle button. Set to true if you want
+	// the GtkToggleButton to be “pressed in”, and false to raise it.
+	//
+	// If the status of the button changes, this action causes the
+	// ToggleButton::toggled signal to be emitted.
+	SetActive(isActive bool)
+	// SetGroup: adds @self to the group of @group. In a group of multiple
+	// toggle buttons, only one button can be active at a time.
+	//
+	// Note that the same effect can be achieved via the Actionable api, by
+	// using the same action with parameter type and state type 's' for all
+	// buttons in the group, and giving each button its own target value.
+	SetGroup(group toggleButton)
+	// Toggled: emits the ToggleButton::toggled signal on the ToggleButton.
+	// There is no good reason for an application ever to call this function.
+	Toggled()
+}
+
+type toggleButton struct {
 	Button
 }
 
-func wrapToggleButton(obj *externglib.Object) *ToggleButton {
-	return &ToggleButton{Button{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapToggleButton(obj *externglib.Object) ToggleButton {
+	return &toggleButton{Button{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalToggleButton(p uintptr) (interface{}, error) {
@@ -15137,11 +28597,19 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewToggleButton() *ToggleButton
+func NewToggleButton() ToggleButton
 
-func NewToggleButton(label string) *ToggleButton
+func NewToggleButton(label string) ToggleButton
 
-func NewToggleButton(label string) *ToggleButton
+func NewToggleButton(label string) ToggleButton
+
+func (t toggleButton) GetActive() bool
+
+func (t toggleButton) SetActive(isActive bool)
+
+func (t toggleButton) SetGroup(group toggleButton)
+
+func (t toggleButton) Toggled()
 
 // Tooltip: basic tooltips can be realized simply by using
 // gtk_widget_set_tooltip_text() or gtk_widget_set_tooltip_markup() without any
@@ -15165,12 +28633,50 @@ func NewToggleButton(label string) *ToggleButton
 //
 // Return true from your query-tooltip handler. This causes the tooltip to be
 // show. If you return false, it will not be shown.
-type Tooltip struct {
+type Tooltip interface {
+	gextras.Objector
+
+	// SetCustom: replaces the widget packed into the tooltip with
+	// @custom_widget. @custom_widget does not get destroyed when the tooltip
+	// goes away. By default a box with a Image and Label is embedded in the
+	// tooltip, which can be configured using gtk_tooltip_set_markup() and
+	// gtk_tooltip_set_icon().
+	SetCustom(customWidget widget)
+	// SetIcon: sets the icon of the tooltip (which is in front of the text) to
+	// be @paintable. If @paintable is nil, the image will be hidden.
+	SetIcon(paintable gdk.Paintable)
+	// SetIconFromGicon: sets the icon of the tooltip (which is in front of the
+	// text) to be the icon indicated by @gicon with the size indicated by
+	// @size. If @gicon is nil, the image will be hidden.
+	SetIconFromGicon(gicon gio.Icon)
+	// SetIconFromIconName: sets the icon of the tooltip (which is in front of
+	// the text) to be the icon indicated by @icon_name with the size indicated
+	// by @size. If @icon_name is nil, the image will be hidden.
+	SetIconFromIconName(iconName string)
+	// SetMarkup: sets the text of the tooltip to be @markup, which is marked up
+	// with the [Pango text markup language][PangoMarkupFormat]. If @markup is
+	// nil, the label will be hidden.
+	SetMarkup(markup string)
+	// SetText: sets the text of the tooltip to be @text. If @text is nil, the
+	// label will be hidden. See also gtk_tooltip_set_markup().
+	SetText(text string)
+	// SetTipArea: sets the area of the widget, where the contents of this
+	// tooltip apply, to be @rect (in widget coordinates). This is especially
+	// useful for properly setting tooltips on TreeView rows and cells,
+	// IconViews, etc.
+	//
+	// For setting tooltips on TreeView, please refer to the convenience
+	// functions for this: gtk_tree_view_set_tooltip_row() and
+	// gtk_tree_view_set_tooltip_cell().
+	SetTipArea(rect *gdk.Rectangle)
+}
+
+type tooltip struct {
 	*externglib.Object
 }
 
-func wrapTooltip(obj *externglib.Object) *Tooltip {
-	return &Tooltip{*externglib.Object{obj}}
+func wrapTooltip(obj *externglib.Object) Tooltip {
+	return &tooltip{*externglib.Object{obj}}
 }
 
 func marshalTooltip(p uintptr) (interface{}, error) {
@@ -15178,6 +28684,20 @@ func marshalTooltip(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (t tooltip) SetCustom(customWidget widget)
+
+func (t tooltip) SetIcon(paintable gdk.Paintable)
+
+func (t tooltip) SetIconFromGicon(gicon gio.Icon)
+
+func (t tooltip) SetIconFromIconName(iconName string)
+
+func (t tooltip) SetMarkup(markup string)
+
+func (t tooltip) SetText(text string)
+
+func (t tooltip) SetTipArea(rect *gdk.Rectangle)
 
 // TreeExpander: gtkTreeExpander is a widget that provides an expander for a
 // list.
@@ -15216,12 +28736,31 @@ func marshalTooltip(p uintptr) (interface{}, error) {
 // GtkTreeExpander uses the GTK_ACCESSIBLE_ROLE_GROUP role. The expander icon is
 // represented as a GTK_ACCESSIBLE_ROLE_BUTTON, labelled by the expander's
 // child, and toggling it will change the GTK_ACCESSIBLE_STATE_EXPANDED state.
-type TreeExpander struct {
+type TreeExpander interface {
+	widget
+
+	// GetChild: gets the child widget displayed by @self.
+	GetChild() widget
+	// GetItem: forwards the item set on the TreeListRow that @self is managing.
+	//
+	// This call is essentially equivalent to calling:
+	//
+	//    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
+	GetItem() unsafe.Pointer
+	// GetListRow: gets the list row managed by @self.
+	GetListRow() treeListRow
+	// SetChild: sets the content widget to display.
+	SetChild(child widget)
+	// SetListRow: sets the tree list row that this expander should manage.
+	SetListRow(listRow treeListRow)
+}
+
+type treeExpander struct {
 	Widget
 }
 
-func wrapTreeExpander(obj *externglib.Object) *TreeExpander {
-	return &TreeExpander{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapTreeExpander(obj *externglib.Object) TreeExpander {
+	return &treeExpander{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalTreeExpander(p uintptr) (interface{}, error) {
@@ -15230,16 +28769,72 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTreeExpander() *TreeExpander
+func NewTreeExpander() TreeExpander
+
+func (t treeExpander) GetChild() widget
+
+func (t treeExpander) GetItem() unsafe.Pointer
+
+func (t treeExpander) GetListRow() treeListRow
+
+func (t treeExpander) SetChild(child widget)
+
+func (t treeExpander) SetListRow(listRow treeListRow)
 
 // TreeListModel is a Model implementation that can expand rows by creating new
 // child list models on demand.
-type TreeListModel struct {
+type TreeListModel interface {
+	gextras.Objector
+
+	// GetAutoexpand: gets whether the model is set to automatically expand new
+	// rows that get added. This can be either rows added by changes to the
+	// underlying models or via gtk_tree_list_row_set_expanded().
+	GetAutoexpand() bool
+	// GetChildRow: gets the row item corresponding to the child at index
+	// @position for @self's root model.
+	//
+	// If @position is greater than the number of children in the root model,
+	// nil is returned.
+	//
+	// Do not confuse this function with gtk_tree_list_model_get_row().
+	GetChildRow(position uint) treeListRow
+	// GetModel: gets the root model that @self was created with.
+	GetModel() gio.ListModel
+	// GetPassthrough: if this function returns false, the Model functions for
+	// @self return custom TreeListRow objects. You need to call
+	// gtk_tree_list_row_get_item() on these objects to get the original item.
+	//
+	// If true, the values of the child models are passed through in their
+	// original state. You then need to call gtk_tree_list_model_get_row() to
+	// get the custom TreeListRows.
+	GetPassthrough() bool
+	// GetRow: gets the row object for the given row. If @position is greater
+	// than the number of items in @self, nil is returned.
+	//
+	// The row object can be used to expand and collapse rows as well as to
+	// inspect its position in the tree. See its documentation for details.
+	//
+	// This row object is persistent and will refer to the current item as long
+	// as the row is present in @self, independent of other rows being added or
+	// removed.
+	//
+	// If @self is set to not be passthrough, this function is equivalent to
+	// calling g_list_model_get_item().
+	//
+	// Do not confuse this function with gtk_tree_list_model_get_child_row().
+	GetRow(position uint) treeListRow
+	// SetAutoexpand: if set to true, the model will recursively expand all rows
+	// that get added to the model. This can be either rows added by changes to
+	// the underlying models or via gtk_tree_list_row_set_expanded().
+	SetAutoexpand(autoexpand bool)
+}
+
+type treeListModel struct {
 	*externglib.Object
 }
 
-func wrapTreeListModel(obj *externglib.Object) *TreeListModel {
-	return &TreeListModel{*externglib.Object{obj}}
+func wrapTreeListModel(obj *externglib.Object) TreeListModel {
+	return &treeListModel{*externglib.Object{obj}}
 }
 
 func marshalTreeListModel(p uintptr) (interface{}, error) {
@@ -15248,7 +28843,19 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTreeListModel(root gio.ListModel, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) *TreeListModel
+func NewTreeListModel(root gio.ListModel, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) TreeListModel
+
+func (t treeListModel) GetAutoexpand() bool
+
+func (t treeListModel) GetChildRow(position uint) treeListRow
+
+func (t treeListModel) GetModel() gio.ListModel
+
+func (t treeListModel) GetPassthrough() bool
+
+func (t treeListModel) GetRow(position uint) treeListRow
+
+func (t treeListModel) SetAutoexpand(autoexpand bool)
 
 // TreeListRow is the object used by TreeListModel to represent items. It allows
 // navigating the model as a tree and modify the state of rows.
@@ -15260,12 +28867,66 @@ func NewTreeListModel(root gio.ListModel, passthrough bool, autoexpand bool, cre
 // such as the TreeExpander widget that allows displaying an icon to expand or
 // collapse a row or TreeListRowSorter that makes it possible to sort trees
 // properly.
-type TreeListRow struct {
+type TreeListRow interface {
+	gextras.Objector
+
+	// GetChildRow: if @self is not expanded or @position is greater than the
+	// number of children, nil is returned.
+	GetChildRow(position uint) treeListRow
+	// GetChildren: if the row is expanded, gets the model holding the children
+	// of @self.
+	//
+	// This model is the model created by the TreeListModelCreateModelFunc and
+	// contains the original items, no matter what value
+	// TreeListModel:passthrough is set to.
+	GetChildren() gio.ListModel
+	// GetDepth: gets the depth of this row. Rows that correspond to items in
+	// the root model have a depth of zero, rows corresponding to items of
+	// models of direct children of the root model have a depth of 1 and so on.
+	//
+	// The depth of a row never changes until the row is destroyed.
+	GetDepth() uint
+	// GetExpanded: gets if a row is currently expanded.
+	GetExpanded() bool
+	// GetItem: gets the item corresponding to this row,
+	//
+	// The value returned by this function never changes until the row is
+	// destroyed.
+	GetItem() unsafe.Pointer
+	// GetParent: gets the row representing the parent for @self. That is the
+	// row that would need to be collapsed to make this row disappear.
+	//
+	// If @self is a row corresponding to the root model, nil is returned.
+	//
+	// The value returned by this function never changes until the row is
+	// destroyed.
+	GetParent() treeListRow
+	// GetPosition: returns the position in the TreeListModel that @self
+	// occupies at the moment.
+	GetPosition() uint
+	// IsExpandable: checks if a row can be expanded. This does not mean that
+	// the row is actually expanded, this can be checked with
+	// gtk_tree_list_row_get_expanded()
+	//
+	// If a row is expandable never changes until the row is destroyed.
+	IsExpandable() bool
+	// SetExpanded: expands or collapses a row.
+	//
+	// If a row is expanded, the model of calling the
+	// TreeListModelCreateModelFunc for the row's item will be inserted after
+	// this row. If a row is collapsed, those items will be removed from the
+	// model.
+	//
+	// If the row is not expandable, this function does nothing.
+	SetExpanded(expanded bool)
+}
+
+type treeListRow struct {
 	*externglib.Object
 }
 
-func wrapTreeListRow(obj *externglib.Object) *TreeListRow {
-	return &TreeListRow{*externglib.Object{obj}}
+func wrapTreeListRow(obj *externglib.Object) TreeListRow {
+	return &treeListRow{*externglib.Object{obj}}
 }
 
 func marshalTreeListRow(p uintptr) (interface{}, error) {
@@ -15273,6 +28934,24 @@ func marshalTreeListRow(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (t treeListRow) GetChildRow(position uint) treeListRow
+
+func (t treeListRow) GetChildren() gio.ListModel
+
+func (t treeListRow) GetDepth() uint
+
+func (t treeListRow) GetExpanded() bool
+
+func (t treeListRow) GetItem() unsafe.Pointer
+
+func (t treeListRow) GetParent() treeListRow
+
+func (t treeListRow) GetPosition() uint
+
+func (t treeListRow) IsExpandable() bool
+
+func (t treeListRow) SetExpanded(expanded bool)
 
 // TreeListRowSorter is a special-purpose sorter that will apply a given sorter
 // to the levels in a tree, while respecting the tree structure.
@@ -15286,12 +28965,24 @@ func marshalTreeListRow(p uintptr) (interface{}, error) {
 //    sort_model = gtk_sort_list_model_new (tree_model, sorter);
 //    selection = gtk_single_selection_new (sort_model);
 //    gtk_column_view_set_model (view, G_LIST_MODEL (selection));
-type TreeListRowSorter struct {
+type TreeListRowSorter interface {
+	sorter
+
+	// GetSorter: returns the sorter used by @self.
+	GetSorter() sorter
+	// SetSorter: sets the sorter to use for items with the same parent.
+	//
+	// This sorter will be passed the TreeListRow:item of the tree list rows
+	// passed to @self.
+	SetSorter(sorter sorter)
+}
+
+type treeListRowSorter struct {
 	Sorter
 }
 
-func wrapTreeListRowSorter(obj *externglib.Object) *TreeListRowSorter {
-	return &TreeListRowSorter{Sorter{*externglib.Object{obj}}}
+func wrapTreeListRowSorter(obj *externglib.Object) TreeListRowSorter {
+	return &treeListRowSorter{Sorter{*externglib.Object{obj}}}
 }
 
 func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
@@ -15300,7 +28991,11 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter
+func NewTreeListRowSorter(sorter sorter) TreeListRowSorter
+
+func (t treeListRowSorter) GetSorter() sorter
+
+func (t treeListRowSorter) SetSorter(sorter sorter)
 
 // TreeModelFilter: a TreeModelFilter is a tree model which wraps another tree
 // model, and can do the following things:
@@ -15363,12 +29058,103 @@ func NewTreeListRowSorter(sorter *Sorter) *TreeListRowSorter
 // either rely on TreeStore to emit all signals because it does not implement
 // reference counting, or for models that do implement reference counting,
 // obtain references on these child levels yourself.
-type TreeModelFilter struct {
+type TreeModelFilter interface {
+	gextras.Objector
+
+	// ClearCache: this function should almost never be called. It clears the
+	// @filter of any cached iterators that haven’t been reffed with
+	// gtk_tree_model_ref_node(). This might be useful if the child model being
+	// filtered is static (and doesn’t change often) and there has been a lot of
+	// unreffed access to nodes. As a side effect of this function, all unreffed
+	// iters will be invalid.
+	ClearCache()
+	// ConvertChildIterToIter: sets @filter_iter to point to the row in @filter
+	// that corresponds to the row pointed at by @child_iter. If @filter_iter
+	// was not set, false is returned.
+	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+	// ConvertChildPathToPath: converts @child_path to a path relative to
+	// @filter. That is, @child_path points to a path in the child model. The
+	// rerturned path will point to the same row in the filtered model. If
+	// @child_path isn’t a valid path on the child model or points to a row
+	// which is not visible in @filter, then nil is returned.
+	ConvertChildPathToPath(childPath *TreePath) *TreePath
+	// ConvertIterToChildIter: sets @child_iter to point to the row pointed to
+	// by @filter_iter.
+	ConvertIterToChildIter(filterIter *TreeIter) TreeIter
+	// ConvertPathToChildPath: converts @filter_path to a path on the child
+	// model of @filter. That is, @filter_path points to a location in @filter.
+	// The returned path will point to the same location in the model not being
+	// filtered. If @filter_path does not point to a location in the child
+	// model, nil is returned.
+	ConvertPathToChildPath(filterPath *TreePath) *TreePath
+	// GetModel: returns a pointer to the child model of @filter.
+	GetModel() TreeModel
+	// Refilter: emits ::row_changed for each row in the child model, which
+	// causes the filter to re-evaluate whether a row is visible or not.
+	Refilter()
+	// SetModifyFunc: with the @n_columns and @types parameters, you give an
+	// array of column types for this model (which will be exposed to the parent
+	// model/view). The @func, @data and @destroy parameters are for specifying
+	// the modify function. The modify function will get called for each data
+	// access, the goal of the modify function is to return the data which
+	// should be displayed at the location specified using the parameters of the
+	// modify function.
+	//
+	// Note that gtk_tree_model_filter_set_modify_func() can only be called once
+	// for a given filter model.
+	SetModifyFunc(nColumns int, types []externglib.Type, _func TreeModelFilterModifyFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+	// SetVisibleColumn: sets @column of the child_model to be the column where
+	// @filter should look for visibility information. @columns should be a
+	// column of type G_TYPE_BOOLEAN, where true means that a row is visible,
+	// and false if not.
+	//
+	// Note that gtk_tree_model_filter_set_visible_func() or
+	// gtk_tree_model_filter_set_visible_column() can only be called once for a
+	// given filter model.
+	SetVisibleColumn(column int)
+	// SetVisibleFunc: sets the visible function used when filtering the @filter
+	// to be @func. The function should return true if the given row should be
+	// visible and false otherwise.
+	//
+	// If the condition calculated by the function changes over time (e.g.
+	// because it depends on some global parameters), you must call
+	// gtk_tree_model_filter_refilter() to keep the visibility information of
+	// the model up-to-date.
+	//
+	// Note that @func is called whenever a row is inserted, when it may still
+	// be empty. The visible function should therefore take special care of
+	// empty rows, like in the example below.
+	//
+	//    static gboolean
+	//    visible_func (GtkTreeModel *model,
+	//                  GtkTreeIter  *iter,
+	//                  gpointer      data)
+	//    {
+	//      // Visible if row is non-empty and first column is “HI”
+	//      char *str;
+	//      gboolean visible = FALSE;
+	//
+	//      gtk_tree_model_get (model, iter, 0, &str, -1);
+	//      if (str && strcmp (str, "HI") == 0)
+	//        visible = TRUE;
+	//      g_free (str);
+	//
+	//      return visible;
+	//    }
+	//
+	//
+	// Note that gtk_tree_model_filter_set_visible_func() or
+	// gtk_tree_model_filter_set_visible_column() can only be called once for a
+	// given filter model.
+	SetVisibleFunc(_func TreeModelFilterVisibleFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+}
+
+type treeModelFilter struct {
 	*externglib.Object
 }
 
-func wrapTreeModelFilter(obj *externglib.Object) *TreeModelFilter {
-	return &TreeModelFilter{*externglib.Object{obj}}
+func wrapTreeModelFilter(obj *externglib.Object) TreeModelFilter {
+	return &treeModelFilter{*externglib.Object{obj}}
 }
 
 func marshalTreeModelFilter(p uintptr) (interface{}, error) {
@@ -15376,6 +29162,26 @@ func marshalTreeModelFilter(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (t treeModelFilter) ClearCache()
+
+func (t treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+
+func (t treeModelFilter) ConvertChildPathToPath(childPath *TreePath) *TreePath
+
+func (t treeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter
+
+func (t treeModelFilter) ConvertPathToChildPath(filterPath *TreePath) *TreePath
+
+func (t treeModelFilter) GetModel() TreeModel
+
+func (t treeModelFilter) Refilter()
+
+func (t treeModelFilter) SetModifyFunc(nColumns int, types []externglib.Type, _func TreeModelFilterModifyFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+
+func (t treeModelFilter) SetVisibleColumn(column int)
+
+func (t treeModelFilter) SetVisibleFunc(_func TreeModelFilterVisibleFunc, data unsafe.Pointer, destroy unsafe.Pointer)
 
 // TreeModelSort: the TreeModelSort is a model which implements the TreeSortable
 // interface. It does not hold any data itself, but rather is created with a
@@ -15468,12 +29274,56 @@ func marshalTreeModelFilter(p uintptr) (interface{}, error) {
 //      g_free (modified_data);
 //    }
 //
-type TreeModelSort struct {
+type TreeModelSort interface {
+	gextras.Objector
+
+	// ClearCache: this function should almost never be called. It clears the
+	// @tree_model_sort of any cached iterators that haven’t been reffed with
+	// gtk_tree_model_ref_node(). This might be useful if the child model being
+	// sorted is static (and doesn’t change often) and there has been a lot of
+	// unreffed access to nodes. As a side effect of this function, all unreffed
+	// iters will be invalid.
+	ClearCache()
+	// ConvertChildIterToIter: sets @sort_iter to point to the row in
+	// @tree_model_sort that corresponds to the row pointed at by @child_iter.
+	// If @sort_iter was not set, false is returned. Note: a boolean is only
+	// returned since 2.14.
+	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+	// ConvertChildPathToPath: converts @child_path to a path relative to
+	// @tree_model_sort. That is, @child_path points to a path in the child
+	// model. The returned path will point to the same row in the sorted model.
+	// If @child_path isn’t a valid path on the child model, then nil is
+	// returned.
+	ConvertChildPathToPath(childPath *TreePath) *TreePath
+	// ConvertIterToChildIter: sets @child_iter to point to the row pointed to
+	// by @sorted_iter.
+	ConvertIterToChildIter(sortedIter *TreeIter) TreeIter
+	// ConvertPathToChildPath: converts @sorted_path to a path on the child
+	// model of @tree_model_sort. That is, @sorted_path points to a location in
+	// @tree_model_sort. The returned path will point to the same location in
+	// the model not being sorted. If @sorted_path does not point to a location
+	// in the child model, nil is returned.
+	ConvertPathToChildPath(sortedPath *TreePath) *TreePath
+	// GetModel: returns the model the TreeModelSort is sorting.
+	GetModel() TreeModel
+	// IterIsValid: > This function is slow. Only use it for debugging and/or
+	// testing > purposes.
+	//
+	// Checks if the given iter is a valid iter for this TreeModelSort.
+	IterIsValid(iter *TreeIter) bool
+	// ResetDefaultSortFunc: this resets the default sort function to be in the
+	// “unsorted” state. That is, it is in the same order as the child model. It
+	// will re-sort the model to be in the same order as the child model only if
+	// the TreeModelSort is in “unsorted” state.
+	ResetDefaultSortFunc()
+}
+
+type treeModelSort struct {
 	*externglib.Object
 }
 
-func wrapTreeModelSort(obj *externglib.Object) *TreeModelSort {
-	return &TreeModelSort{*externglib.Object{obj}}
+func wrapTreeModelSort(obj *externglib.Object) TreeModelSort {
+	return &treeModelSort{*externglib.Object{obj}}
 }
 
 func marshalTreeModelSort(p uintptr) (interface{}, error) {
@@ -15482,7 +29332,23 @@ func marshalTreeModelSort(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTreeModelSort(childModel TreeModel) *TreeModelSort
+func NewTreeModelSort(childModel TreeModel) TreeModelSort
+
+func (t treeModelSort) ClearCache()
+
+func (t treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+
+func (t treeModelSort) ConvertChildPathToPath(childPath *TreePath) *TreePath
+
+func (t treeModelSort) ConvertIterToChildIter(sortedIter *TreeIter) TreeIter
+
+func (t treeModelSort) ConvertPathToChildPath(sortedPath *TreePath) *TreePath
+
+func (t treeModelSort) GetModel() TreeModel
+
+func (t treeModelSort) IterIsValid(iter *TreeIter) bool
+
+func (t treeModelSort) ResetDefaultSortFunc()
 
 // TreeSelection: the TreeSelection object is a helper object to manage the
 // selection for a TreeView widget. The TreeSelection object is automatically
@@ -15506,12 +29372,81 @@ func NewTreeModelSort(childModel TreeModel) *TreeModelSort
 // may on occasion emit a TreeSelection::changed signal when nothing has
 // happened (mostly as a result of programmers calling select_row on an already
 // selected row).
-type TreeSelection struct {
+type TreeSelection interface {
+	gextras.Objector
+
+	// CountSelectedRows: returns the number of rows that have been selected in
+	// @tree.
+	CountSelectedRows() int
+	// GetMode: gets the selection mode for @selection. See
+	// gtk_tree_selection_set_mode().
+	GetMode() SelectionMode
+	// GetSelectFunction: returns the current selection function.
+	GetSelectFunction() TreeSelectionFunc
+	// GetSelected: sets @iter to the currently selected node if @selection is
+	// set to K_SELECTION_SINGLE or K_SELECTION_BROWSE. @iter may be NULL if you
+	// just want to test if @selection has any selected nodes. @model is filled
+	// with the current model as a convenience. This function will not work if
+	// you use @selection is K_SELECTION_MULTIPLE.
+	GetSelected() (TreeModel, TreeIter, bool)
+	// GetSelectedRows: creates a list of path of all selected rows.
+	// Additionally, if you are planning on modifying the model after calling
+	// this function, you may want to convert the returned list into a list of
+	// TreeRowReferences. To do this, you can use gtk_tree_row_reference_new().
+	//
+	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
+	GetSelectedRows() (TreeModel, *glib.List)
+	// GetTreeView: returns the tree view associated with @selection.
+	GetTreeView() treeView
+	// GetUserData: returns the user data for the selection function.
+	GetUserData() unsafe.Pointer
+	// IterIsSelected: returns true if the row at @iter is currently selected.
+	IterIsSelected(iter *TreeIter) bool
+	// PathIsSelected: returns true if the row pointed to by @path is currently
+	// selected. If @path does not point to a valid location, false is returned
+	PathIsSelected(path *TreePath) bool
+	// SelectAll: selects all the nodes. @selection must be set to
+	// K_SELECTION_MULTIPLE mode.
+	SelectAll()
+	// SelectIter: selects the specified iterator.
+	SelectIter(iter *TreeIter)
+	// SelectPath: select the row at @path.
+	SelectPath(path *TreePath)
+	// SelectRange: selects a range of nodes, determined by @start_path and
+	// @end_path inclusive. @selection must be set to K_SELECTION_MULTIPLE mode.
+	SelectRange(startPath *TreePath, endPath *TreePath)
+	// SelectedForeach: calls a function for each selected node. Note that you
+	// cannot modify the tree or selection from within this function. As a
+	// result, gtk_tree_selection_get_selected_rows() might be more useful.
+	SelectedForeach(_func TreeSelectionForeachFunc, data unsafe.Pointer)
+	// SetMode: sets the selection mode of the @selection. If the previous type
+	// was K_SELECTION_MULTIPLE, then the anchor is kept selected, if it was
+	// previously selected.
+	SetMode(_type SelectionMode)
+	// SetSelectFunction: sets the selection function.
+	//
+	// If set, this function is called before any node is selected or
+	// unselected, giving some control over which nodes are selected. The select
+	// function should return true if the state of the node may be toggled, and
+	// false if the state of the node should be left unchanged.
+	SetSelectFunction(_func TreeSelectionFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+	// UnselectAll: unselects all the nodes.
+	UnselectAll()
+	// UnselectIter: unselects the specified iterator.
+	UnselectIter(iter *TreeIter)
+	// UnselectPath: unselects the row at @path.
+	UnselectPath(path *TreePath)
+	// UnselectRange: unselects a range of nodes, determined by @start_path and
+	// @end_path inclusive.
+	UnselectRange(startPath *TreePath, endPath *TreePath)
+}
+
+type treeSelection struct {
 	*externglib.Object
 }
 
-func wrapTreeSelection(obj *externglib.Object) *TreeSelection {
-	return &TreeSelection{*externglib.Object{obj}}
+func wrapTreeSelection(obj *externglib.Object) TreeSelection {
+	return &treeSelection{*externglib.Object{obj}}
 }
 
 func marshalTreeSelection(p uintptr) (interface{}, error) {
@@ -15519,6 +29454,46 @@ func marshalTreeSelection(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (t treeSelection) CountSelectedRows() int
+
+func (t treeSelection) GetMode() SelectionMode
+
+func (t treeSelection) GetSelectFunction() TreeSelectionFunc
+
+func (t treeSelection) GetSelected() (TreeModel, TreeIter, bool)
+
+func (t treeSelection) GetSelectedRows() (TreeModel, *glib.List)
+
+func (t treeSelection) GetTreeView() treeView
+
+func (t treeSelection) GetUserData() unsafe.Pointer
+
+func (t treeSelection) IterIsSelected(iter *TreeIter) bool
+
+func (t treeSelection) PathIsSelected(path *TreePath) bool
+
+func (t treeSelection) SelectAll()
+
+func (t treeSelection) SelectIter(iter *TreeIter)
+
+func (t treeSelection) SelectPath(path *TreePath)
+
+func (t treeSelection) SelectRange(startPath *TreePath, endPath *TreePath)
+
+func (t treeSelection) SelectedForeach(_func TreeSelectionForeachFunc, data unsafe.Pointer)
+
+func (t treeSelection) SetMode(_type SelectionMode)
+
+func (t treeSelection) SetSelectFunction(_func TreeSelectionFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+
+func (t treeSelection) UnselectAll()
+
+func (t treeSelection) UnselectIter(iter *TreeIter)
+
+func (t treeSelection) UnselectPath(path *TreePath)
+
+func (t treeSelection) UnselectRange(startPath *TreePath, endPath *TreePath)
 
 // TreeStore: the TreeStore object is a list model for use with a TreeView
 // widget. It implements the TreeModel interface, and consequently, can use all
@@ -15542,12 +29517,110 @@ func marshalTreeSelection(p uintptr) (interface{}, error) {
 //        <column type="gint"/>
 //      </columns>
 //    </object>
-type TreeStore struct {
+type TreeStore interface {
+	gextras.Objector
+
+	// Append: appends a new row to @tree_store. If @parent is non-nil, then it
+	// will append the new row after the last child of @parent, otherwise it
+	// will append a row to the top level. @iter will be changed to point to
+	// this new row. The row will be empty after this function is called. To
+	// fill in values, you need to call gtk_tree_store_set() or
+	// gtk_tree_store_set_value().
+	Append(parent *TreeIter) TreeIter
+	// Clear: removes all rows from @tree_store
+	Clear()
+	// Insert: creates a new row at @position. If parent is non-nil, then the
+	// row will be made a child of @parent. Otherwise, the row will be created
+	// at the toplevel. If @position is -1 or is larger than the number of rows
+	// at that level, then the new row will be inserted to the end of the list.
+	// @iter will be changed to point to this new row. The row will be empty
+	// after this function is called. To fill in values, you need to call
+	// gtk_tree_store_set() or gtk_tree_store_set_value().
+	Insert(parent *TreeIter, position int) TreeIter
+	// InsertAfter: inserts a new row after @sibling. If @sibling is nil, then
+	// the row will be prepended to @parent ’s children. If @parent and @sibling
+	// are nil, then the row will be prepended to the toplevel. If both @sibling
+	// and @parent are set, then @parent must be the parent of @sibling. When
+	// @sibling is set, @parent is optional.
+	//
+	// @iter will be changed to point to this new row. The row will be empty
+	// after this function is called. To fill in values, you need to call
+	// gtk_tree_store_set() or gtk_tree_store_set_value().
+	InsertAfter(parent *TreeIter, sibling *TreeIter) TreeIter
+	// InsertBefore: inserts a new row before @sibling. If @sibling is nil, then
+	// the row will be appended to @parent ’s children. If @parent and @sibling
+	// are nil, then the row will be appended to the toplevel. If both @sibling
+	// and @parent are set, then @parent must be the parent of @sibling. When
+	// @sibling is set, @parent is optional.
+	//
+	// @iter will be changed to point to this new row. The row will be empty
+	// after this function is called. To fill in values, you need to call
+	// gtk_tree_store_set() or gtk_tree_store_set_value().
+	InsertBefore(parent *TreeIter, sibling *TreeIter) TreeIter
+	// InsertWithValuesv: a variant of gtk_tree_store_insert_with_values() which
+	// takes the columns and values as two arrays, instead of varargs. This
+	// function is mainly intended for language bindings.
+	InsertWithValuesv(parent *TreeIter, position int, columns []int, values []*externglib.Value, nValues int) TreeIter
+	// IsAncestor: returns true if @iter is an ancestor of @descendant. That is,
+	// @iter is the parent (or grandparent or great-grandparent) of @descendant.
+	IsAncestor(iter *TreeIter, descendant *TreeIter) bool
+	// IterDepth: returns the depth of @iter. This will be 0 for anything on the
+	// root level, 1 for anything down a level, etc.
+	IterDepth(iter *TreeIter) int
+	// IterIsValid: WARNING: This function is slow. Only use it for debugging
+	// and/or testing purposes.
+	//
+	// Checks if the given iter is a valid iter for this TreeStore.
+	IterIsValid(iter *TreeIter) bool
+	// MoveAfter: moves @iter in @tree_store to the position after @position.
+	// @iter and @position should be in the same level. Note that this function
+	// only works with unsorted stores. If @position is nil, @iter will be moved
+	// to the start of the level.
+	MoveAfter(iter *TreeIter, position *TreeIter)
+	// MoveBefore: moves @iter in @tree_store to the position before @position.
+	// @iter and @position should be in the same level. Note that this function
+	// only works with unsorted stores. If @position is nil, @iter will be moved
+	// to the end of the level.
+	MoveBefore(iter *TreeIter, position *TreeIter)
+	// Prepend: prepends a new row to @tree_store. If @parent is non-nil, then
+	// it will prepend the new row before the first child of @parent, otherwise
+	// it will prepend a row to the top level. @iter will be changed to point to
+	// this new row. The row will be empty after this function is called. To
+	// fill in values, you need to call gtk_tree_store_set() or
+	// gtk_tree_store_set_value().
+	Prepend(parent *TreeIter) TreeIter
+	// Remove: removes @iter from @tree_store. After being removed, @iter is set
+	// to the next valid row at that level, or invalidated if it previously
+	// pointed to the last one.
+	Remove(iter *TreeIter) bool
+	// Reorder: reorders the children of @parent in @tree_store to follow the
+	// order indicated by @new_order. Note that this function only works with
+	// unsorted stores.
+	Reorder(parent *TreeIter, newOrder []int)
+	// SetColumnTypes: this function is meant primarily for #GObjects that
+	// inherit from TreeStore, and should only be used when constructing a new
+	// TreeStore. It will not function after a row has been added, or a method
+	// on the TreeModel interface is called.
+	SetColumnTypes(nColumns int, types []externglib.Type)
+	// SetValue: sets the data in the cell specified by @iter and @column. The
+	// type of @value must be convertible to the type of the column.
+	SetValue(iter *TreeIter, column int, value *externglib.Value)
+	// SetValuesv: a variant of gtk_tree_store_set_valist() which takes the
+	// columns and values as two arrays, instead of varargs. This function is
+	// mainly intended for language bindings or in case the number of columns to
+	// change is not known until run-time.
+	SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value, nValues int)
+	// Swap: swaps @a and @b in the same level of @tree_store. Note that this
+	// function only works with unsorted stores.
+	Swap(a *TreeIter, b *TreeIter)
+}
+
+type treeStore struct {
 	*externglib.Object
 }
 
-func wrapTreeStore(obj *externglib.Object) *TreeStore {
-	return &TreeStore{*externglib.Object{obj}}
+func wrapTreeStore(obj *externglib.Object) TreeStore {
+	return &treeStore{*externglib.Object{obj}}
 }
 
 func marshalTreeStore(p uintptr) (interface{}, error) {
@@ -15556,7 +29629,43 @@ func marshalTreeStore(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTreeStore(nColumns int, types []externglib.Type) *TreeStore
+func NewTreeStore(nColumns int, types []externglib.Type) TreeStore
+
+func (t treeStore) Append(parent *TreeIter) TreeIter
+
+func (t treeStore) Clear()
+
+func (t treeStore) Insert(parent *TreeIter, position int) TreeIter
+
+func (t treeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) TreeIter
+
+func (t treeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) TreeIter
+
+func (t treeStore) InsertWithValuesv(parent *TreeIter, position int, columns []int, values []*externglib.Value, nValues int) TreeIter
+
+func (t treeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) bool
+
+func (t treeStore) IterDepth(iter *TreeIter) int
+
+func (t treeStore) IterIsValid(iter *TreeIter) bool
+
+func (t treeStore) MoveAfter(iter *TreeIter, position *TreeIter)
+
+func (t treeStore) MoveBefore(iter *TreeIter, position *TreeIter)
+
+func (t treeStore) Prepend(parent *TreeIter) TreeIter
+
+func (t treeStore) Remove(iter *TreeIter) bool
+
+func (t treeStore) Reorder(parent *TreeIter, newOrder []int)
+
+func (t treeStore) SetColumnTypes(nColumns int, types []externglib.Type)
+
+func (t treeStore) SetValue(iter *TreeIter, column int, value *externglib.Value)
+
+func (t treeStore) SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value, nValues int)
+
+func (t treeStore) Swap(a *TreeIter, b *TreeIter)
 
 // TreeView: widget that displays any object that implements the TreeModel
 // interface.
@@ -15635,12 +29744,460 @@ func NewTreeStore(nColumns int, types []externglib.Type) *TreeStore
 //
 // For the drop target location during DND, a subnode with name dndtarget is
 // used.
-type TreeView struct {
+type TreeView interface {
+	widget
+
+	// AppendColumn: appends @column to the list of columns. If @tree_view has
+	// “fixed_height” mode enabled, then @column must have its “sizing” property
+	// set to be GTK_TREE_VIEW_COLUMN_FIXED.
+	AppendColumn(column treeViewColumn) int
+	// CollapseAll: recursively collapses all visible, expanded nodes in
+	// @tree_view.
+	CollapseAll()
+	// CollapseRow: collapses a row (hides its child rows, if they exist).
+	CollapseRow(path *TreePath) bool
+	// ColumnsAutosize: resizes all columns to their optimal width. Only works
+	// after the treeview has been realized.
+	ColumnsAutosize()
+	// ConvertBinWindowToTreeCoords: converts bin_window coordinates to
+	// coordinates for the tree (the full scrollable area of the tree).
+	ConvertBinWindowToTreeCoords(bx int, by int) (int, int)
+	// ConvertBinWindowToWidgetCoords: converts bin_window coordinates to widget
+	// relative coordinates.
+	ConvertBinWindowToWidgetCoords(bx int, by int) (int, int)
+	// ConvertTreeToBinWindowCoords: converts tree coordinates (coordinates in
+	// full scrollable area of the tree) to bin_window coordinates.
+	ConvertTreeToBinWindowCoords(tx int, ty int) (int, int)
+	// ConvertTreeToWidgetCoords: converts tree coordinates (coordinates in full
+	// scrollable area of the tree) to widget coordinates.
+	ConvertTreeToWidgetCoords(tx int, ty int) (int, int)
+	// ConvertWidgetToBinWindowCoords: converts widget coordinates to
+	// coordinates for the bin_window.
+	ConvertWidgetToBinWindowCoords(wx int, wy int) (int, int)
+	// ConvertWidgetToTreeCoords: converts widget coordinates to coordinates for
+	// the tree (the full scrollable area of the tree).
+	ConvertWidgetToTreeCoords(wx int, wy int) (int, int)
+	// CreateRowDragIcon: creates a #cairo_surface_t representation of the row
+	// at @path. This image is used for a drag icon.
+	CreateRowDragIcon(path *TreePath) gdk.Paintable
+	// EnableModelDragDest: turns @tree_view into a drop destination for
+	// automatic DND. Calling this method sets TreeView:reorderable to false.
+	EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction)
+	// EnableModelDragSource: turns @tree_view into a drag source for automatic
+	// DND. Calling this method sets TreeView:reorderable to false.
+	EnableModelDragSource(startButtonMask gdk.ModifierType, formats *gdk.ContentFormats, actions gdk.DragAction)
+	// ExpandAll: recursively expands all nodes in the @tree_view.
+	ExpandAll()
+	// ExpandRow: opens the row so its children are visible.
+	ExpandRow(path *TreePath, openAll bool) bool
+	// ExpandToPath: expands the row at @path. This will also expand all parent
+	// rows of @path as necessary.
+	ExpandToPath(path *TreePath)
+	// GetActivateOnSingleClick: gets the setting set by
+	// gtk_tree_view_set_activate_on_single_click().
+	GetActivateOnSingleClick() bool
+	// GetBackgroundArea: fills the bounding rectangle in bin_window coordinates
+	// for the cell at the row specified by @path and the column specified by
+	// @column. If @path is nil, or points to a node not found in the tree, the
+	// @y and @height fields of the rectangle will be filled with 0. If @column
+	// is nil, the @x and @width fields will be filled with 0. The returned
+	// rectangle is equivalent to the @background_area passed to
+	// gtk_cell_renderer_render(). These background areas tile to cover the
+	// entire bin window. Contrast with the @cell_area, returned by
+	// gtk_tree_view_get_cell_area(), which returns only the cell itself,
+	// excluding surrounding borders and the tree expander area.
+	GetBackgroundArea(path *TreePath, column treeViewColumn) gdk.Rectangle
+	// GetCellArea: fills the bounding rectangle in bin_window coordinates for
+	// the cell at the row specified by @path and the column specified by
+	// @column. If @path is nil, or points to a path not currently displayed,
+	// the @y and @height fields of the rectangle will be filled with 0. If
+	// @column is nil, the @x and @width fields will be filled with 0. The sum
+	// of all cell rects does not cover the entire tree; there are extra pixels
+	// in between rows, for example. The returned rectangle is equivalent to the
+	// @cell_area passed to gtk_cell_renderer_render(). This function is only
+	// valid if @tree_view is realized.
+	GetCellArea(path *TreePath, column treeViewColumn) gdk.Rectangle
+	// GetColumn: gets the TreeViewColumn at the given position in the
+	// #tree_view.
+	GetColumn(n int) treeViewColumn
+	// GetColumns: returns a #GList of all the TreeViewColumn s currently in
+	// @tree_view. The returned list must be freed with g_list_free ().
+	GetColumns() *glib.List
+	// GetCursor: fills in @path and @focus_column with the current path and
+	// focus column. If the cursor isn’t currently set, then *@path will be nil.
+	// If no column currently has focus, then *@focus_column will be nil.
+	//
+	// The returned TreePath must be freed with gtk_tree_path_free() when you
+	// are done with it.
+	GetCursor() (*TreePath, treeViewColumn)
+	// GetDestRowAtPos: determines the destination row for a given position.
+	// @drag_x and @drag_y are expected to be in widget coordinates. This
+	// function is only meaningful if @tree_view is realized. Therefore this
+	// function will always return false if @tree_view is not realized or does
+	// not have a model.
+	GetDestRowAtPos(dragX int, dragY int) (*TreePath, TreeViewDropPosition, bool)
+	// GetDragDestRow: gets information about the row that is highlighted for
+	// feedback.
+	GetDragDestRow() (*TreePath, TreeViewDropPosition)
+	// GetEnableSearch: returns whether or not the tree allows to start
+	// interactive searching by typing in text.
+	GetEnableSearch() bool
+	// GetEnableTreeLines: returns whether or not tree lines are drawn in
+	// @tree_view.
+	GetEnableTreeLines() bool
+	// GetExpanderColumn: returns the column that is the current expander
+	// column, or nil if none has been set. This column has the expander arrow
+	// drawn next to it.
+	GetExpanderColumn() treeViewColumn
+	// GetFixedHeightMode: returns whether fixed height mode is turned on for
+	// @tree_view.
+	GetFixedHeightMode() bool
+	// GetGridLines: returns which grid lines are enabled in @tree_view.
+	GetGridLines() TreeViewGridLines
+	// GetHeadersClickable: returns whether all header columns are clickable.
+	GetHeadersClickable() bool
+	// GetHeadersVisible: returns true if the headers on the @tree_view are
+	// visible.
+	GetHeadersVisible() bool
+	// GetHoverExpand: returns whether hover expansion mode is turned on for
+	// @tree_view.
+	GetHoverExpand() bool
+	// GetHoverSelection: returns whether hover selection mode is turned on for
+	// @tree_view.
+	GetHoverSelection() bool
+	// GetLevelIndentation: returns the amount, in pixels, of extra indentation
+	// for child levels in @tree_view.
+	GetLevelIndentation() int
+	// GetModel: returns the model the TreeView is based on. Returns nil if the
+	// model is unset.
+	GetModel() TreeModel
+	// GetNColumns: queries the number of columns in the given @tree_view.
+	GetNColumns() uint
+	// GetPathAtPos: finds the path at the point (@x, @y), relative to
+	// bin_window coordinates. That is, @x and @y are relative to an events
+	// coordinates. Widget-relative coordinates must be converted using
+	// gtk_tree_view_convert_widget_to_bin_window_coords(). It is primarily for
+	// things like popup menus. If @path is non-nil, then it will be filled with
+	// the TreePath at that point. This path should be freed with
+	// gtk_tree_path_free(). If @column is non-nil, then it will be filled with
+	// the column at that point. @cell_x and @cell_y return the coordinates
+	// relative to the cell background (i.e. the @background_area passed to
+	// gtk_cell_renderer_render()). This function is only meaningful if
+	// @tree_view is realized. Therefore this function will always return false
+	// if @tree_view is not realized or does not have a model.
+	//
+	// For converting widget coordinates (eg. the ones you get from
+	// GtkWidget::query-tooltip), please see
+	// gtk_tree_view_convert_widget_to_bin_window_coords().
+	GetPathAtPos(x int, y int) (*TreePath, treeViewColumn, int, int, bool)
+	// GetReorderable: retrieves whether the user can reorder the tree via
+	// drag-and-drop. See gtk_tree_view_set_reorderable().
+	GetReorderable() bool
+	// GetRowSeparatorFunc: returns the current row separator function.
+	GetRowSeparatorFunc() TreeViewRowSeparatorFunc
+	// GetRubberBanding: returns whether rubber banding is turned on for
+	// @tree_view. If the selection mode is K_SELECTION_MULTIPLE, rubber banding
+	// will allow the user to select multiple rows by dragging the mouse.
+	GetRubberBanding() bool
+	// GetSearchColumn: gets the column searched on by the interactive search
+	// code.
+	GetSearchColumn() int
+	// GetSearchEntry: returns the Entry which is currently in use as
+	// interactive search entry for @tree_view. In case the built-in entry is
+	// being used, nil will be returned.
+	GetSearchEntry() Editable
+	// GetSearchEqualFunc: returns the compare function currently in use.
+	GetSearchEqualFunc() TreeViewSearchEqualFunc
+	// GetSelection: gets the TreeSelection associated with @tree_view.
+	GetSelection() treeSelection
+	// GetShowExpanders: returns whether or not expanders are drawn in
+	// @tree_view.
+	GetShowExpanders() bool
+	// GetTooltipColumn: returns the column of @tree_view’s model which is being
+	// used for displaying tooltips on @tree_view’s rows.
+	GetTooltipColumn() int
+	// GetTooltipContext: this function is supposed to be used in a
+	// Widget::query-tooltip signal handler for TreeView. The @x, @y and
+	// @keyboard_tip values which are received in the signal handler, should be
+	// passed to this function without modification.
+	//
+	// The return value indicates whether there is a tree view row at the given
+	// coordinates (true) or not (false) for mouse tooltips. For keyboard
+	// tooltips the row returned will be the cursor row. When true, then any of
+	// @model, @path and @iter which have been provided will be set to point to
+	// that row and the corresponding model. @x and @y will always be converted
+	// to be relative to @tree_view’s bin_window if @keyboard_tooltip is false.
+	GetTooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool)
+	// GetVisibleRange: sets @start_path and @end_path to be the first and last
+	// visible path. Note that there may be invisible paths in between.
+	//
+	// The paths should be freed with gtk_tree_path_free() after use.
+	GetVisibleRange() (*TreePath, *TreePath, bool)
+	// GetVisibleRect: fills @visible_rect with the currently-visible region of
+	// the buffer, in tree coordinates. Convert to bin_window coordinates with
+	// gtk_tree_view_convert_tree_to_bin_window_coords(). Tree coordinates start
+	// at 0,0 for row 0 of the tree, and cover the entire scrollable area of the
+	// tree.
+	GetVisibleRect() gdk.Rectangle
+	// InsertColumn: this inserts the @column into the @tree_view at @position.
+	// If @position is -1, then the column is inserted at the end. If @tree_view
+	// has “fixed_height” mode enabled, then @column must have its “sizing”
+	// property set to be GTK_TREE_VIEW_COLUMN_FIXED.
+	InsertColumn(column treeViewColumn, position int) int
+	// InsertColumnWithDataFunc: convenience function that inserts a new column
+	// into the TreeView with the given cell renderer and a TreeCellDataFunc to
+	// set cell renderer attributes (normally using data from the model). See
+	// also gtk_tree_view_column_set_cell_data_func(),
+	// gtk_tree_view_column_pack_start(). If @tree_view has “fixed_height” mode
+	// enabled, then the new column will have its “sizing” property set to be
+	// GTK_TREE_VIEW_COLUMN_FIXED.
+	InsertColumnWithDataFunc(position int, title string, cell cellRenderer, _func TreeCellDataFunc, data unsafe.Pointer, dnotify unsafe.Pointer) int
+	// IsBlankAtPos: determine whether the point (@x, @y) in @tree_view is
+	// blank, that is no cell content nor an expander arrow is drawn at the
+	// location. If so, the location can be considered as the background. You
+	// might wish to take special action on clicks on the background, such as
+	// clearing a current selection, having a custom context menu or starting
+	// rubber banding.
+	//
+	// The @x and @y coordinate that are provided must be relative to bin_window
+	// coordinates. Widget-relative coordinates must be converted using
+	// gtk_tree_view_convert_widget_to_bin_window_coords().
+	//
+	// For converting widget coordinates (eg. the ones you get from
+	// GtkWidget::query-tooltip), please see
+	// gtk_tree_view_convert_widget_to_bin_window_coords().
+	//
+	// The @path, @column, @cell_x and @cell_y arguments will be filled in
+	// likewise as for gtk_tree_view_get_path_at_pos(). Please see
+	// gtk_tree_view_get_path_at_pos() for more information.
+	IsBlankAtPos(x int, y int) (*TreePath, treeViewColumn, int, int, bool)
+	// IsRubberBandingActive: returns whether a rubber banding operation is
+	// currently being done in @tree_view.
+	IsRubberBandingActive() bool
+	// MapExpandedRows: calls @func on all expanded rows.
+	MapExpandedRows(_func TreeViewMappingFunc, data unsafe.Pointer)
+	// MoveColumnAfter: moves @column to be after to @base_column. If
+	// @base_column is nil, then @column is placed in the first position.
+	MoveColumnAfter(column treeViewColumn, baseColumn treeViewColumn)
+	// RemoveColumn: removes @column from @tree_view.
+	RemoveColumn(column treeViewColumn) int
+	// RowActivated: activates the cell determined by @path and @column.
+	RowActivated(path *TreePath, column treeViewColumn)
+	// RowExpanded: returns true if the node pointed to by @path is expanded in
+	// @tree_view.
+	RowExpanded(path *TreePath) bool
+	// ScrollToCell: moves the alignments of @tree_view to the position
+	// specified by @column and @path. If @column is nil, then no horizontal
+	// scrolling occurs. Likewise, if @path is nil no vertical scrolling occurs.
+	// At a minimum, one of @column or @path need to be non-nil. @row_align
+	// determines where the row is placed, and @col_align determines where
+	// @column is placed. Both are expected to be between 0.0 and 1.0. 0.0 means
+	// left/top alignment, 1.0 means right/bottom alignment, 0.5 means center.
+	//
+	// If @use_align is false, then the alignment arguments are ignored, and the
+	// tree does the minimum amount of work to scroll the cell onto the screen.
+	// This means that the cell will be scrolled to the edge closest to its
+	// current position. If the cell is currently visible on the screen, nothing
+	// is done.
+	//
+	// This function only works if the model is set, and @path is a valid row on
+	// the model. If the model changes before the @tree_view is realized, the
+	// centered path will be modified to reflect this change.
+	ScrollToCell(path *TreePath, column treeViewColumn, useAlign bool, rowAlign float32, colAlign float32)
+	// ScrollToPoint: scrolls the tree view such that the top-left corner of the
+	// visible area is @tree_x, @tree_y, where @tree_x and @tree_y are specified
+	// in tree coordinates. The @tree_view must be realized before this function
+	// is called. If it isn't, you probably want to be using
+	// gtk_tree_view_scroll_to_cell().
+	//
+	// If either @tree_x or @tree_y are -1, then that direction isn’t scrolled.
+	ScrollToPoint(treeX int, treeY int)
+	// SetActivateOnSingleClick: cause the TreeView::row-activated signal to be
+	// emitted on a single click instead of a double click.
+	SetActivateOnSingleClick(single bool)
+	// SetColumnDragFunction: sets a user function for determining where a
+	// column may be dropped when dragged. This function is called on every
+	// column pair in turn at the beginning of a column drag to determine where
+	// a drop can take place. The arguments passed to @func are: the @tree_view,
+	// the TreeViewColumn being dragged, the two TreeViewColumn s determining
+	// the drop spot, and @user_data. If either of the TreeViewColumn arguments
+	// for the drop spot are nil, then they indicate an edge. If @func is set to
+	// be nil, then @tree_view reverts to the default behavior of allowing all
+	// columns to be dropped everywhere.
+	SetColumnDragFunction(_func TreeViewColumnDropFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	// SetCursor: sets the current keyboard focus to be at @path, and selects
+	// it. This is useful when you want to focus the user’s attention on a
+	// particular row. If @focus_column is not nil, then focus is given to the
+	// column specified by it. Additionally, if @focus_column is specified, and
+	// @start_editing is true, then editing should be started in the specified
+	// cell. This function is often followed by @gtk_widget_grab_focus
+	// (@tree_view) in order to give keyboard focus to the widget. Please note
+	// that editing can only happen when the widget is realized.
+	//
+	// If @path is invalid for @model, the current cursor (if any) will be unset
+	// and the function will return without failing.
+	SetCursor(path *TreePath, focusColumn treeViewColumn, startEditing bool)
+	// SetCursorOnCell: sets the current keyboard focus to be at @path, and
+	// selects it. This is useful when you want to focus the user’s attention on
+	// a particular row. If @focus_column is not nil, then focus is given to the
+	// column specified by it. If @focus_column and @focus_cell are not nil, and
+	// @focus_column contains 2 or more editable or activatable cells, then
+	// focus is given to the cell specified by @focus_cell. Additionally, if
+	// @focus_column is specified, and @start_editing is true, then editing
+	// should be started in the specified cell. This function is often followed
+	// by @gtk_widget_grab_focus (@tree_view) in order to give keyboard focus to
+	// the widget. Please note that editing can only happen when the widget is
+	// realized.
+	//
+	// If @path is invalid for @model, the current cursor (if any) will be unset
+	// and the function will return without failing.
+	SetCursorOnCell(path *TreePath, focusColumn treeViewColumn, focusCell cellRenderer, startEditing bool)
+	// SetDragDestRow: sets the row that is highlighted for feedback. If @path
+	// is nil, an existing highlight is removed.
+	SetDragDestRow(path *TreePath, pos TreeViewDropPosition)
+	// SetEnableSearch: if @enable_search is set, then the user can type in text
+	// to search through the tree interactively (this is sometimes called
+	// "typeahead find").
+	//
+	// Note that even if this is false, the user can still initiate a search
+	// using the “start-interactive-search” key binding.
+	SetEnableSearch(enableSearch bool)
+	// SetEnableTreeLines: sets whether to draw lines interconnecting the
+	// expanders in @tree_view. This does not have any visible effects for
+	// lists.
+	SetEnableTreeLines(enabled bool)
+	// SetExpanderColumn: sets the column to draw the expander arrow at. It must
+	// be in @tree_view. If @column is nil, then the expander arrow is always at
+	// the first visible column.
+	//
+	// If you do not want expander arrow to appear in your tree, set the
+	// expander column to a hidden column.
+	SetExpanderColumn(column treeViewColumn)
+	// SetFixedHeightMode: enables or disables the fixed height mode of
+	// @tree_view. Fixed height mode speeds up TreeView by assuming that all
+	// rows have the same height. Only enable this option if all rows are the
+	// same height and all columns are of type GTK_TREE_VIEW_COLUMN_FIXED.
+	SetFixedHeightMode(enable bool)
+	// SetGridLines: sets which grid lines to draw in @tree_view.
+	SetGridLines(gridLines TreeViewGridLines)
+	// SetHeadersClickable: allow the column title buttons to be clicked.
+	SetHeadersClickable(setting bool)
+	// SetHeadersVisible: sets the visibility state of the headers.
+	SetHeadersVisible(headersVisible bool)
+	// SetHoverExpand: enables or disables the hover expansion mode of
+	// @tree_view. Hover expansion makes rows expand or collapse if the pointer
+	// moves over them.
+	SetHoverExpand(expand bool)
+	// SetHoverSelection: enables or disables the hover selection mode of
+	// @tree_view. Hover selection makes the selected row follow the pointer.
+	// Currently, this works only for the selection modes GTK_SELECTION_SINGLE
+	// and GTK_SELECTION_BROWSE.
+	SetHoverSelection(hover bool)
+	// SetLevelIndentation: sets the amount of extra indentation for child
+	// levels to use in @tree_view in addition to the default indentation. The
+	// value should be specified in pixels, a value of 0 disables this feature
+	// and in this case only the default indentation will be used. This does not
+	// have any visible effects for lists.
+	SetLevelIndentation(indentation int)
+	// SetModel: sets the model for a TreeView. If the @tree_view already has a
+	// model set, it will remove it before setting the new model. If @model is
+	// nil, then it will unset the old model.
+	SetModel(model TreeModel)
+	// SetReorderable: this function is a convenience function to allow you to
+	// reorder models that support the TreeDragSourceIface and the
+	// TreeDragDestIface. Both TreeStore and ListStore support these. If
+	// @reorderable is true, then the user can reorder the model by dragging and
+	// dropping rows. The developer can listen to these changes by connecting to
+	// the model’s TreeModel::row-inserted and TreeModel::row-deleted signals.
+	// The reordering is implemented by setting up the tree view as a drag
+	// source and destination. Therefore, drag and drop can not be used in a
+	// reorderable view for any other purpose.
+	//
+	// This function does not give you any degree of control over the order --
+	// any reordering is allowed. If more control is needed, you should probably
+	// handle drag and drop manually.
+	SetReorderable(reorderable bool)
+	// SetRowSeparatorFunc: sets the row separator function, which is used to
+	// determine whether a row should be drawn as a separator. If the row
+	// separator function is nil, no separators are drawn. This is the default
+	// value.
+	SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+	// SetRubberBanding: enables or disables rubber banding in @tree_view. If
+	// the selection mode is K_SELECTION_MULTIPLE, rubber banding will allow the
+	// user to select multiple rows by dragging the mouse.
+	SetRubberBanding(enable bool)
+	// SetSearchColumn: sets @column as the column where the interactive search
+	// code should search in for the current model.
+	//
+	// If the search column is set, users can use the “start-interactive-search”
+	// key binding to bring up search popup. The enable-search property controls
+	// whether simply typing text will also start an interactive search.
+	//
+	// Note that @column refers to a column of the current model. The search
+	// column is reset to -1 when the model is changed.
+	SetSearchColumn(column int)
+	// SetSearchEntry: sets the entry which the interactive search code will use
+	// for this @tree_view. This is useful when you want to provide a search
+	// entry in our interface at all time at a fixed position. Passing nil for
+	// @entry will make the interactive search code use the built-in popup entry
+	// again.
+	SetSearchEntry(entry Editable)
+	// SetSearchEqualFunc: sets the compare function for the interactive search
+	// capabilities; note that somewhat like strcmp() returning 0 for equality
+	// TreeViewSearchEqualFunc returns false on matches.
+	SetSearchEqualFunc(searchEqualFunc TreeViewSearchEqualFunc, searchUserData unsafe.Pointer, searchDestroy unsafe.Pointer)
+	// SetShowExpanders: sets whether to draw and enable expanders and indent
+	// child rows in @tree_view. When disabled there will be no expanders
+	// visible in trees and there will be no way to expand and collapse rows by
+	// default. Also note that hiding the expanders will disable the default
+	// indentation. You can set a custom indentation in this case using
+	// gtk_tree_view_set_level_indentation(). This does not have any visible
+	// effects for lists.
+	SetShowExpanders(enabled bool)
+	// SetTooltipCell: sets the tip area of @tooltip to the area @path, @column
+	// and @cell have in common. For example if @path is nil and @column is set,
+	// the tip area will be set to the full area covered by @column. See also
+	// gtk_tooltip_set_tip_area().
+	//
+	// Note that if @path is not specified and @cell is set and part of a column
+	// containing the expander, the tooltip might not show and hide at the
+	// correct position. In such cases @path must be set to the current node
+	// under the mouse cursor for this function to operate correctly.
+	//
+	// See also gtk_tree_view_set_tooltip_column() for a simpler alternative.
+	SetTooltipCell(tooltip tooltip, path *TreePath, column treeViewColumn, cell cellRenderer)
+	// SetTooltipColumn: if you only plan to have simple (text-only) tooltips on
+	// full rows, you can use this function to have TreeView handle these
+	// automatically for you. @column should be set to the column in
+	// @tree_view’s model containing the tooltip texts, or -1 to disable this
+	// feature.
+	//
+	// When enabled, Widget:has-tooltip will be set to true and @tree_view will
+	// connect a Widget::query-tooltip signal handler.
+	//
+	// Note that the signal handler sets the text with gtk_tooltip_set_markup(),
+	// so &, <, etc have to be escaped in the text.
+	SetTooltipColumn(column int)
+	// SetTooltipRow: sets the tip area of @tooltip to be the area covered by
+	// the row at @path. See also gtk_tree_view_set_tooltip_column() for a
+	// simpler alternative. See also gtk_tooltip_set_tip_area().
+	SetTooltipRow(tooltip tooltip, path *TreePath)
+	// UnsetRowsDragDest: undoes the effect of
+	// gtk_tree_view_enable_model_drag_dest(). Calling this method sets
+	// TreeView:reorderable to false.
+	UnsetRowsDragDest()
+	// UnsetRowsDragSource: undoes the effect of
+	// gtk_tree_view_enable_model_drag_source(). Calling this method sets
+	// TreeView:reorderable to false.
+	UnsetRowsDragSource()
+}
+
+type treeView struct {
 	Widget
 }
 
-func wrapTreeView(obj *externglib.Object) *TreeView {
-	return &TreeView{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapTreeView(obj *externglib.Object) TreeView {
+	return &treeView{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalTreeView(p uintptr) (interface{}, error) {
@@ -15649,9 +30206,185 @@ func marshalTreeView(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTreeView() *TreeView
+func NewTreeView() TreeView
 
-func NewTreeView(model TreeModel) *TreeView
+func NewTreeView(model TreeModel) TreeView
+
+func (t treeView) AppendColumn(column treeViewColumn) int
+
+func (t treeView) CollapseAll()
+
+func (t treeView) CollapseRow(path *TreePath) bool
+
+func (t treeView) ColumnsAutosize()
+
+func (t treeView) ConvertBinWindowToTreeCoords(bx int, by int) (int, int)
+
+func (t treeView) ConvertBinWindowToWidgetCoords(bx int, by int) (int, int)
+
+func (t treeView) ConvertTreeToBinWindowCoords(tx int, ty int) (int, int)
+
+func (t treeView) ConvertTreeToWidgetCoords(tx int, ty int) (int, int)
+
+func (t treeView) ConvertWidgetToBinWindowCoords(wx int, wy int) (int, int)
+
+func (t treeView) ConvertWidgetToTreeCoords(wx int, wy int) (int, int)
+
+func (t treeView) CreateRowDragIcon(path *TreePath) gdk.Paintable
+
+func (t treeView) EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction)
+
+func (t treeView) EnableModelDragSource(startButtonMask gdk.ModifierType, formats *gdk.ContentFormats, actions gdk.DragAction)
+
+func (t treeView) ExpandAll()
+
+func (t treeView) ExpandRow(path *TreePath, openAll bool) bool
+
+func (t treeView) ExpandToPath(path *TreePath)
+
+func (t treeView) GetActivateOnSingleClick() bool
+
+func (t treeView) GetBackgroundArea(path *TreePath, column treeViewColumn) gdk.Rectangle
+
+func (t treeView) GetCellArea(path *TreePath, column treeViewColumn) gdk.Rectangle
+
+func (t treeView) GetColumn(n int) treeViewColumn
+
+func (t treeView) GetColumns() *glib.List
+
+func (t treeView) GetCursor() (*TreePath, treeViewColumn)
+
+func (t treeView) GetDestRowAtPos(dragX int, dragY int) (*TreePath, TreeViewDropPosition, bool)
+
+func (t treeView) GetDragDestRow() (*TreePath, TreeViewDropPosition)
+
+func (t treeView) GetEnableSearch() bool
+
+func (t treeView) GetEnableTreeLines() bool
+
+func (t treeView) GetExpanderColumn() treeViewColumn
+
+func (t treeView) GetFixedHeightMode() bool
+
+func (t treeView) GetGridLines() TreeViewGridLines
+
+func (t treeView) GetHeadersClickable() bool
+
+func (t treeView) GetHeadersVisible() bool
+
+func (t treeView) GetHoverExpand() bool
+
+func (t treeView) GetHoverSelection() bool
+
+func (t treeView) GetLevelIndentation() int
+
+func (t treeView) GetModel() TreeModel
+
+func (t treeView) GetNColumns() uint
+
+func (t treeView) GetPathAtPos(x int, y int) (*TreePath, treeViewColumn, int, int, bool)
+
+func (t treeView) GetReorderable() bool
+
+func (t treeView) GetRowSeparatorFunc() TreeViewRowSeparatorFunc
+
+func (t treeView) GetRubberBanding() bool
+
+func (t treeView) GetSearchColumn() int
+
+func (t treeView) GetSearchEntry() Editable
+
+func (t treeView) GetSearchEqualFunc() TreeViewSearchEqualFunc
+
+func (t treeView) GetSelection() treeSelection
+
+func (t treeView) GetShowExpanders() bool
+
+func (t treeView) GetTooltipColumn() int
+
+func (t treeView) GetTooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool)
+
+func (t treeView) GetVisibleRange() (*TreePath, *TreePath, bool)
+
+func (t treeView) GetVisibleRect() gdk.Rectangle
+
+func (t treeView) InsertColumn(column treeViewColumn, position int) int
+
+func (t treeView) InsertColumnWithDataFunc(position int, title string, cell cellRenderer, _func TreeCellDataFunc, data unsafe.Pointer, dnotify unsafe.Pointer) int
+
+func (t treeView) IsBlankAtPos(x int, y int) (*TreePath, treeViewColumn, int, int, bool)
+
+func (t treeView) IsRubberBandingActive() bool
+
+func (t treeView) MapExpandedRows(_func TreeViewMappingFunc, data unsafe.Pointer)
+
+func (t treeView) MoveColumnAfter(column treeViewColumn, baseColumn treeViewColumn)
+
+func (t treeView) RemoveColumn(column treeViewColumn) int
+
+func (t treeView) RowActivated(path *TreePath, column treeViewColumn)
+
+func (t treeView) RowExpanded(path *TreePath) bool
+
+func (t treeView) ScrollToCell(path *TreePath, column treeViewColumn, useAlign bool, rowAlign float32, colAlign float32)
+
+func (t treeView) ScrollToPoint(treeX int, treeY int)
+
+func (t treeView) SetActivateOnSingleClick(single bool)
+
+func (t treeView) SetColumnDragFunction(_func TreeViewColumnDropFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+
+func (t treeView) SetCursor(path *TreePath, focusColumn treeViewColumn, startEditing bool)
+
+func (t treeView) SetCursorOnCell(path *TreePath, focusColumn treeViewColumn, focusCell cellRenderer, startEditing bool)
+
+func (t treeView) SetDragDestRow(path *TreePath, pos TreeViewDropPosition)
+
+func (t treeView) SetEnableSearch(enableSearch bool)
+
+func (t treeView) SetEnableTreeLines(enabled bool)
+
+func (t treeView) SetExpanderColumn(column treeViewColumn)
+
+func (t treeView) SetFixedHeightMode(enable bool)
+
+func (t treeView) SetGridLines(gridLines TreeViewGridLines)
+
+func (t treeView) SetHeadersClickable(setting bool)
+
+func (t treeView) SetHeadersVisible(headersVisible bool)
+
+func (t treeView) SetHoverExpand(expand bool)
+
+func (t treeView) SetHoverSelection(hover bool)
+
+func (t treeView) SetLevelIndentation(indentation int)
+
+func (t treeView) SetModel(model TreeModel)
+
+func (t treeView) SetReorderable(reorderable bool)
+
+func (t treeView) SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+
+func (t treeView) SetRubberBanding(enable bool)
+
+func (t treeView) SetSearchColumn(column int)
+
+func (t treeView) SetSearchEntry(entry Editable)
+
+func (t treeView) SetSearchEqualFunc(searchEqualFunc TreeViewSearchEqualFunc, searchUserData unsafe.Pointer, searchDestroy unsafe.Pointer)
+
+func (t treeView) SetShowExpanders(enabled bool)
+
+func (t treeView) SetTooltipCell(tooltip tooltip, path *TreePath, column treeViewColumn, cell cellRenderer)
+
+func (t treeView) SetTooltipColumn(column int)
+
+func (t treeView) SetTooltipRow(tooltip tooltip, path *TreePath)
+
+func (t treeView) UnsetRowsDragDest()
+
+func (t treeView) UnsetRowsDragSource()
 
 // TreeViewColumn: the GtkTreeViewColumn object represents a visible column in a
 // TreeView widget. It allows to set properties of the column header, and
@@ -15661,12 +30394,200 @@ func NewTreeView(model TreeModel) *TreeView
 // Please refer to the [tree widget conceptual overview][TreeWidget] for an
 // overview of all the objects and data types related to the tree widget and how
 // they work together.
-type TreeViewColumn struct {
+type TreeViewColumn interface {
+	gextras.Objector
+
+	// AddAttribute: adds an attribute mapping to the list in @tree_column. The
+	// @column is the column of the model to get a value from, and the
+	// @attribute is the parameter on @cell_renderer to be set from the value.
+	// So for example if column 2 of the model contains strings, you could have
+	// the “text” attribute of a CellRendererText get its values from column 2.
+	AddAttribute(cellRenderer cellRenderer, attribute string, column int)
+	// CellGetPosition: obtains the horizontal position and size of a cell in a
+	// column. If the cell is not found in the column, @start_pos and @width are
+	// not changed and false is returned.
+	CellGetPosition(cellRenderer cellRenderer) (int, int, bool)
+	// CellGetSize: obtains the width and height needed to render the column.
+	// This is used primarily by the TreeView.
+	CellGetSize() (int, int, int, int)
+	// CellIsVisible: returns true if any of the cells packed into the
+	// @tree_column are visible. For this to be meaningful, you must first
+	// initialize the cells with gtk_tree_view_column_cell_set_cell_data()
+	CellIsVisible() bool
+	// CellSetCellData: sets the cell renderer based on the @tree_model and
+	// @iter. That is, for every attribute mapping in @tree_column, it will get
+	// a value from the set column on the @iter, and use that value to set the
+	// attribute on the cell renderer. This is used primarily by the TreeView.
+	CellSetCellData(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool)
+	// Clear: unsets all the mappings on all renderers on the @tree_column.
+	Clear()
+	// ClearAttributes: clears all existing attributes previously set with
+	// gtk_tree_view_column_set_attributes().
+	ClearAttributes(cellRenderer cellRenderer)
+	// Clicked: emits the “clicked” signal on the column. This function will
+	// only work if @tree_column is clickable.
+	Clicked()
+	// FocusCell: sets the current keyboard focus to be at @cell, if the column
+	// contains 2 or more editable and activatable cells.
+	FocusCell(cell cellRenderer)
+	// GetAlignment: returns the current x alignment of @tree_column. This value
+	// can range between 0.0 and 1.0.
+	GetAlignment() float32
+	// GetButton: returns the button used in the treeview column header
+	GetButton() widget
+	// GetClickable: returns true if the user can click on the header for the
+	// column.
+	GetClickable() bool
+	// GetExpand: returns true if the column expands to fill available space.
+	GetExpand() bool
+	// GetFixedWidth: gets the fixed width of the column. This may not be the
+	// actual displayed width of the column; for that, use
+	// gtk_tree_view_column_get_width().
+	GetFixedWidth() int
+	// GetMaxWidth: returns the maximum width in pixels of the @tree_column, or
+	// -1 if no maximum width is set.
+	GetMaxWidth() int
+	// GetMinWidth: returns the minimum width in pixels of the @tree_column, or
+	// -1 if no minimum width is set.
+	GetMinWidth() int
+	// GetReorderable: returns true if the @tree_column can be reordered by the
+	// user.
+	GetReorderable() bool
+	// GetResizable: returns true if the @tree_column can be resized by the end
+	// user.
+	GetResizable() bool
+	// GetSizing: returns the current type of @tree_column.
+	GetSizing() TreeViewColumnSizing
+	// GetSortColumnID: gets the logical @sort_column_id that the model sorts on
+	// when this column is selected for sorting. See
+	// gtk_tree_view_column_set_sort_column_id().
+	GetSortColumnID() int
+	// GetSortIndicator: gets the value set by
+	// gtk_tree_view_column_set_sort_indicator().
+	GetSortIndicator() bool
+	// GetSortOrder: gets the value set by
+	// gtk_tree_view_column_set_sort_order().
+	GetSortOrder() SortType
+	// GetSpacing: returns the spacing of @tree_column.
+	GetSpacing() int
+	// GetTitle: returns the title of the widget.
+	GetTitle() string
+	// GetTreeView: returns the TreeView wherein @tree_column has been inserted.
+	// If @column is currently not inserted in any tree view, nil is returned.
+	GetTreeView() widget
+	// GetVisible: returns true if @tree_column is visible.
+	GetVisible() bool
+	// GetWidget: returns the Widget in the button on the column header. If a
+	// custom widget has not been set then nil is returned.
+	GetWidget() widget
+	// GetWidth: returns the current size of @tree_column in pixels.
+	GetWidth() int
+	// GetXOffset: returns the current X offset of @tree_column in pixels.
+	GetXOffset() int
+	// PackEnd: adds the @cell to end of the column. If @expand is false, then
+	// the @cell is allocated no more space than it needs. Any unused space is
+	// divided evenly between cells for which @expand is true.
+	PackEnd(cell cellRenderer, expand bool)
+	// PackStart: packs the @cell into the beginning of the column. If @expand
+	// is false, then the @cell is allocated no more space than it needs. Any
+	// unused space is divided evenly between cells for which @expand is true.
+	PackStart(cell cellRenderer, expand bool)
+	// QueueResize: flags the column, and the cell renderers added to this
+	// column, to have their sizes renegotiated.
+	QueueResize()
+	// SetAlignment: sets the alignment of the title or custom widget inside the
+	// column header. The alignment determines its location inside the button --
+	// 0.0 for left, 0.5 for center, 1.0 for right.
+	SetAlignment(xalign float32)
+	// SetCellDataFunc: sets the TreeCellDataFunc to use for the column. This
+	// function is used instead of the standard attributes mapping for setting
+	// the column value, and should set the value of @tree_column's cell
+	// renderer as appropriate. @func may be nil to remove an older one.
+	SetCellDataFunc(cellRenderer cellRenderer, _func TreeCellDataFunc, funcData unsafe.Pointer, destroy unsafe.Pointer)
+	// SetClickable: sets the header to be active if @clickable is true. When
+	// the header is active, then it can take keyboard focus, and can be
+	// clicked.
+	SetClickable(clickable bool)
+	// SetExpand: sets the column to take available extra space. This space is
+	// shared equally amongst all columns that have the expand set to true. If
+	// no column has this option set, then the last column gets all extra space.
+	// By default, every column is created with this false.
+	//
+	// Along with “fixed-width”, the “expand” property changes when the column
+	// is resized by the user.
+	SetExpand(expand bool)
+	// SetFixedWidth: if @fixed_width is not -1, sets the fixed width of
+	// @tree_column; otherwise unsets it. The effective value of @fixed_width is
+	// clamped between the minimum and maximum width of the column; however, the
+	// value stored in the “fixed-width” property is not clamped. If the column
+	// sizing is K_TREE_VIEW_COLUMN_GROW_ONLY or K_TREE_VIEW_COLUMN_AUTOSIZE,
+	// setting a fixed width overrides the automatically calculated width. Note
+	// that @fixed_width is only a hint to GTK; the width actually allocated to
+	// the column may be greater or less than requested.
+	//
+	// Along with “expand”, the “fixed-width” property changes when the column
+	// is resized by the user.
+	SetFixedWidth(fixedWidth int)
+	// SetMaxWidth: sets the maximum width of the @tree_column. If @max_width is
+	// -1, then the maximum width is unset. Note, the column can actually be
+	// wider than max width if it’s the last column in a view. In this case, the
+	// column expands to fill any extra space.
+	SetMaxWidth(maxWidth int)
+	// SetMinWidth: sets the minimum width of the @tree_column. If @min_width is
+	// -1, then the minimum width is unset.
+	SetMinWidth(minWidth int)
+	// SetReorderable: if @reorderable is true, then the column can be reordered
+	// by the end user dragging the header.
+	SetReorderable(reorderable bool)
+	// SetResizable: if @resizable is true, then the user can explicitly resize
+	// the column by grabbing the outer edge of the column button. If resizable
+	// is true and sizing mode of the column is K_TREE_VIEW_COLUMN_AUTOSIZE,
+	// then the sizing mode is changed to K_TREE_VIEW_COLUMN_GROW_ONLY.
+	SetResizable(resizable bool)
+	// SetSizing: sets the growth behavior of @tree_column to @type.
+	SetSizing(_type TreeViewColumnSizing)
+	// SetSortColumnID: sets the logical @sort_column_id that this column sorts
+	// on when this column is selected for sorting. Doing so makes the column
+	// header clickable.
+	SetSortColumnID(sortColumnID int)
+	// SetSortIndicator: call this function with a @setting of true to display
+	// an arrow in the header button indicating the column is sorted. Call
+	// gtk_tree_view_column_set_sort_order() to change the direction of the
+	// arrow.
+	SetSortIndicator(setting bool)
+	// SetSortOrder: changes the appearance of the sort indicator.
+	//
+	// This does not actually sort the model. Use
+	// gtk_tree_view_column_set_sort_column_id() if you want automatic sorting
+	// support. This function is primarily for custom sorting behavior, and
+	// should be used in conjunction with gtk_tree_sortable_set_sort_column_id()
+	// to do that. For custom models, the mechanism will vary.
+	//
+	// The sort indicator changes direction to indicate normal sort or reverse
+	// sort. Note that you must have the sort indicator enabled to see anything
+	// when calling this function; see
+	// gtk_tree_view_column_set_sort_indicator().
+	SetSortOrder(order SortType)
+	// SetSpacing: sets the spacing field of @tree_column, which is the number
+	// of pixels to place between cell renderers packed into it.
+	SetSpacing(spacing int)
+	// SetTitle: sets the title of the @tree_column. If a custom widget has been
+	// set, then this value is ignored.
+	SetTitle(title string)
+	// SetVisible: sets the visibility of @tree_column.
+	SetVisible(visible bool)
+	// SetWidget: sets the widget in the header to be @widget. If widget is nil,
+	// then the header button is set with a Label set to the title of
+	// @tree_column.
+	SetWidget(widget widget)
+}
+
+type treeViewColumn struct {
 	externglib.InitiallyUnowned
 }
 
-func wrapTreeViewColumn(obj *externglib.Object) *TreeViewColumn {
-	return &TreeViewColumn{externglib.InitiallyUnowned{obj}}
+func wrapTreeViewColumn(obj *externglib.Object) TreeViewColumn {
+	return &treeViewColumn{externglib.InitiallyUnowned{obj}}
 }
 
 func marshalTreeViewColumn(p uintptr) (interface{}, error) {
@@ -15675,9 +30596,107 @@ func marshalTreeViewColumn(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTreeViewColumn() *TreeViewColumn
+func NewTreeViewColumn() TreeViewColumn
 
-func NewTreeViewColumn(area *CellArea) *TreeViewColumn
+func NewTreeViewColumn(area cellArea) TreeViewColumn
+
+func (t treeViewColumn) AddAttribute(cellRenderer cellRenderer, attribute string, column int)
+
+func (t treeViewColumn) CellGetPosition(cellRenderer cellRenderer) (int, int, bool)
+
+func (t treeViewColumn) CellGetSize() (int, int, int, int)
+
+func (t treeViewColumn) CellIsVisible() bool
+
+func (t treeViewColumn) CellSetCellData(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool)
+
+func (t treeViewColumn) Clear()
+
+func (t treeViewColumn) ClearAttributes(cellRenderer cellRenderer)
+
+func (t treeViewColumn) Clicked()
+
+func (t treeViewColumn) FocusCell(cell cellRenderer)
+
+func (t treeViewColumn) GetAlignment() float32
+
+func (t treeViewColumn) GetButton() widget
+
+func (t treeViewColumn) GetClickable() bool
+
+func (t treeViewColumn) GetExpand() bool
+
+func (t treeViewColumn) GetFixedWidth() int
+
+func (t treeViewColumn) GetMaxWidth() int
+
+func (t treeViewColumn) GetMinWidth() int
+
+func (t treeViewColumn) GetReorderable() bool
+
+func (t treeViewColumn) GetResizable() bool
+
+func (t treeViewColumn) GetSizing() TreeViewColumnSizing
+
+func (t treeViewColumn) GetSortColumnID() int
+
+func (t treeViewColumn) GetSortIndicator() bool
+
+func (t treeViewColumn) GetSortOrder() SortType
+
+func (t treeViewColumn) GetSpacing() int
+
+func (t treeViewColumn) GetTitle() string
+
+func (t treeViewColumn) GetTreeView() widget
+
+func (t treeViewColumn) GetVisible() bool
+
+func (t treeViewColumn) GetWidget() widget
+
+func (t treeViewColumn) GetWidth() int
+
+func (t treeViewColumn) GetXOffset() int
+
+func (t treeViewColumn) PackEnd(cell cellRenderer, expand bool)
+
+func (t treeViewColumn) PackStart(cell cellRenderer, expand bool)
+
+func (t treeViewColumn) QueueResize()
+
+func (t treeViewColumn) SetAlignment(xalign float32)
+
+func (t treeViewColumn) SetCellDataFunc(cellRenderer cellRenderer, _func TreeCellDataFunc, funcData unsafe.Pointer, destroy unsafe.Pointer)
+
+func (t treeViewColumn) SetClickable(clickable bool)
+
+func (t treeViewColumn) SetExpand(expand bool)
+
+func (t treeViewColumn) SetFixedWidth(fixedWidth int)
+
+func (t treeViewColumn) SetMaxWidth(maxWidth int)
+
+func (t treeViewColumn) SetMinWidth(minWidth int)
+
+func (t treeViewColumn) SetReorderable(reorderable bool)
+
+func (t treeViewColumn) SetResizable(resizable bool)
+
+func (t treeViewColumn) SetSizing(_type TreeViewColumnSizing)
+
+func (t treeViewColumn) SetSortColumnID(sortColumnID int)
+
+func (t treeViewColumn) SetSortIndicator(setting bool)
+
+func (t treeViewColumn) SetSortOrder(order SortType)
+
+func (t treeViewColumn) SetSpacing(spacing int)
+
+func (t treeViewColumn) SetTitle(title string)
+
+func (t treeViewColumn) SetVisible(visible bool)
+
+func (t treeViewColumn) SetWidget(widget widget)
 
 // Video: gtkVideo is a widget to show a MediaStream with media controls as
 // provided by MediaControls. If you just want to display a video without
@@ -15689,12 +30708,49 @@ func NewTreeViewColumn(area *CellArea) *TreeViewColumn
 // support for video overlays, multichannel audio, device selection, or input.
 // If you are writing a full-fledged video player, you may want to use the
 // Paintable API and a media framework such as Gstreamer directly.
-type Video struct {
+type Video interface {
+	widget
+
+	// GetAutoplay: returns true if videos have been set to loop via
+	// gtk_video_set_loop().
+	GetAutoplay() bool
+	// GetFile: gets the file played by @self or nil if not playing back a file.
+	GetFile() gio.File
+	// GetLoop: returns true if videos have been set to loop via
+	// gtk_video_set_loop().
+	GetLoop() bool
+	// GetMediaStream: gets the media stream managed by @self or nil if none.
+	GetMediaStream() mediaStream
+	// SetAutoplay: sets whether @self automatically starts playback when it
+	// becomes visible or when a new file gets loaded.
+	SetAutoplay(autoplay bool)
+	// SetFile: makes @self play the given @file.
+	SetFile(file gio.File)
+	// SetFilename: makes @self play the given @filename.
+	//
+	// This is a utility function that calls gtk_video_set_file(),
+	SetFilename(filename string)
+	// SetLoop: sets whether new files loaded by @self should be set to loop.
+	SetLoop(loop bool)
+	// SetMediaStream: sets the media stream to be played back. @self will take
+	// full control of managing the media stream. If you want to manage a media
+	// stream yourself, consider using a Image for display.
+	//
+	// If you want to display a file, consider using gtk_video_set_file()
+	// instead.
+	SetMediaStream(stream mediaStream)
+	// SetResource: makes @self play the resource at the given @resource_path.
+	//
+	// This is a utility function that calls gtk_video_set_file(),
+	SetResource(resourcePath string)
+}
+
+type video struct {
 	Widget
 }
 
-func wrapVideo(obj *externglib.Object) *Video {
-	return &Video{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapVideo(obj *externglib.Object) Video {
+	return &video{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalVideo(p uintptr) (interface{}, error) {
@@ -15703,15 +30759,35 @@ func marshalVideo(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewVideo() *Video
+func NewVideo() Video
 
-func NewVideo(file gio.File) *Video
+func NewVideo(file gio.File) Video
 
-func NewVideo(filename string) *Video
+func NewVideo(filename string) Video
 
-func NewVideo(stream *MediaStream) *Video
+func NewVideo(stream mediaStream) Video
 
-func NewVideo(resourcePath string) *Video
+func NewVideo(resourcePath string) Video
+
+func (v video) GetAutoplay() bool
+
+func (v video) GetFile() gio.File
+
+func (v video) GetLoop() bool
+
+func (v video) GetMediaStream() mediaStream
+
+func (v video) SetAutoplay(autoplay bool)
+
+func (v video) SetFile(file gio.File)
+
+func (v video) SetFilename(filename string)
+
+func (v video) SetLoop(loop bool)
+
+func (v video) SetMediaStream(stream mediaStream)
+
+func (v video) SetResource(resourcePath string)
 
 // Viewport: the Viewport widget acts as an adaptor class, implementing
 // scrollability for child widgets that lack their own scrolling capabilities.
@@ -15729,12 +30805,27 @@ func NewVideo(resourcePath string) *Video
 // Accessibility
 //
 // GtkViewport uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type Viewport struct {
+type Viewport interface {
+	widget
+
+	// GetChild: gets the child widget of @viewport.
+	GetChild() widget
+	// GetScrollToFocus: gets whether the viewport is scrolling to keep the
+	// focused child in view. See gtk_viewport_set_scroll_to_focus().
+	GetScrollToFocus() bool
+	// SetChild: sets the child widget of @viewport.
+	SetChild(child widget)
+	// SetScrollToFocus: sets whether the viewport should automatically scroll
+	// to keep the focused child in view.
+	SetScrollToFocus(scrollToFocus bool)
+}
+
+type viewport struct {
 	Widget
 }
 
-func wrapViewport(obj *externglib.Object) *Viewport {
-	return &Viewport{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapViewport(obj *externglib.Object) Viewport {
+	return &viewport{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalViewport(p uintptr) (interface{}, error) {
@@ -15743,16 +30834,28 @@ func marshalViewport(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewViewport(hadjustment *Adjustment, vadjustment *Adjustment) *Viewport
+func NewViewport(hadjustment adjustment, vadjustment adjustment) Viewport
+
+func (v viewport) GetChild() widget
+
+func (v viewport) GetScrollToFocus() bool
+
+func (v viewport) SetChild(child widget)
+
+func (v viewport) SetScrollToFocus(scrollToFocus bool)
 
 // VolumeButton is a subclass of ScaleButton that has been tailored for use as a
 // volume control widget with suitable icons, tooltips and accessible labels.
-type VolumeButton struct {
+type VolumeButton interface {
+	scaleButton
+}
+
+type volumeButton struct {
 	ScaleButton
 }
 
-func wrapVolumeButton(obj *externglib.Object) *VolumeButton {
-	return &VolumeButton{ScaleButton{Widget{externglib.InitiallyUnowned{obj}}}}
+func wrapVolumeButton(obj *externglib.Object) VolumeButton {
+	return &volumeButton{ScaleButton{Widget{externglib.InitiallyUnowned{obj}}}}
 }
 
 func marshalVolumeButton(p uintptr) (interface{}, error) {
@@ -15761,7 +30864,7 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewVolumeButton() *VolumeButton
+func NewVolumeButton() VolumeButton
 
 // Widget: gtkWidget is the base class all widgets in GTK derive from. It
 // manages the widget lifecycle, states and style.
@@ -16094,12 +31197,1088 @@ func NewVolumeButton() *VolumeButton
 //      gtk_widget_class_bind_template_callback (GTK_WIDGET_CLASS (klass), hello_button_clicked);
 //    }
 //
-type Widget struct {
+type Widget interface {
+	gextras.Objector
+
+	// ActionSetEnabled: enable or disable an action installed with
+	// gtk_widget_class_install_action().
+	ActionSetEnabled(actionName string, enabled bool)
+	// Activate: for widgets that can be “activated” (buttons, menu items, etc.)
+	// this function activates them. The activation will emit the signal set
+	// using gtk_widget_class_set_activate_signal() during class initialization.
+	//
+	// Activation is what happens when you press Enter on a widget during key
+	// navigation.
+	//
+	// If you wish to handle the activation keybinding yourself, it is
+	// recommended to use gtk_widget_class_add_shortcut() with an action created
+	// with gtk_signal_action_new().
+	//
+	// If @widget isn't activatable, the function returns false.
+	Activate() bool
+	// ActivateActionVariant: looks up the action in the action groups
+	// associated with @widget and its ancestors, and activates it.
+	//
+	// If the action is in an action group added with
+	// gtk_widget_insert_action_group(), the @name is expected to be prefixed
+	// with the prefix that was used when the group was inserted.
+	//
+	// The arguments must match the actions expected parameter type, as returned
+	// by g_action_get_parameter_type().
+	ActivateActionVariant(name string, args *glib.Variant) bool
+	// ActivateDefault: activate the default.activate action from @widget.
+	ActivateDefault()
+	// AddController: adds @controller to @widget so that it will receive
+	// events. You will usually want to call this function right after creating
+	// any kind of EventController.
+	AddController(controller eventController)
+	// AddCSSClass: adds @css_class to @widget. After calling this function,
+	// @widget's style will match for @css_class, after the CSS matching rules.
+	AddCSSClass(cssClass string)
+	// AddMnemonicLabel: adds a widget to the list of mnemonic labels for this
+	// widget. (See gtk_widget_list_mnemonic_labels()). Note the list of
+	// mnemonic labels for the widget is cleared when the widget is destroyed,
+	// so the caller must make sure to update its internal state at this point
+	// as well, by using a connection to the Widget::destroy signal or a weak
+	// notifier.
+	AddMnemonicLabel(label widget)
+	// AddTickCallback: queues an animation frame update and adds a callback to
+	// be called before each frame. Until the tick callback is removed, it will
+	// be called frequently (usually at the frame rate of the output device or
+	// as quickly as the application can be repainted, whichever is slower). For
+	// this reason, is most suitable for handling graphics that change every
+	// frame or every few frames. The tick callback does not automatically imply
+	// a relayout or repaint. If you want a repaint or relayout, and aren’t
+	// changing widget properties that would trigger that (for example, changing
+	// the text of a Label), then you will have to call
+	// gtk_widget_queue_resize() or gtk_widget_queue_draw() yourself.
+	//
+	// gdk_frame_clock_get_frame_time() should generally be used for timing
+	// continuous animations and
+	// gdk_frame_timings_get_predicted_presentation_time() if you are trying to
+	// display isolated frames at particular times.
+	//
+	// This is a more convenient alternative to connecting directly to the
+	// FrameClock::update signal of FrameClock, since you don't have to worry
+	// about when a FrameClock is assigned to a widget.
+	AddTickCallback(callback TickCallback, userData unsafe.Pointer, notify unsafe.Pointer) uint
+	// Allocate: this function is only used by Widget subclasses, to assign a
+	// size, position and (optionally) baseline to their child widgets.
+	//
+	// In this function, the allocation and baseline may be adjusted. The given
+	// allocation will be forced to be bigger than the widget's minimum size, as
+	// well as at least 0×0 in size.
+	//
+	// For a version that does not take a transform, see
+	// gtk_widget_size_allocate()
+	Allocate(width int, height int, baseline int, transform *gsk.Transform)
+	// ChildFocus: this function is used by custom widget implementations; if
+	// you're writing an app, you’d use gtk_widget_grab_focus() to move the
+	// focus to a particular widget.
+	//
+	// gtk_widget_child_focus() is called by widgets as the user moves around
+	// the window using keyboard shortcuts. @direction indicates what kind of
+	// motion is taking place (up, down, left, right, tab forward, tab
+	// backward). gtk_widget_child_focus() calls the WidgetClass.focus() vfunc;
+	// widgets override this vfunc in order to implement appropriate focus
+	// behavior.
+	//
+	// The default focus() vfunc for a widget should return true if moving in
+	// @direction left the focus on a focusable location inside that widget, and
+	// false if moving in @direction moved the focus outside the widget. If
+	// returning true, widgets normally call gtk_widget_grab_focus() to place
+	// the focus accordingly; if returning false, they don’t modify the current
+	// focus location.
+	ChildFocus(direction DirectionType) bool
+	// ComputeBounds: computes the bounds for @widget in the coordinate space of
+	// @target. FIXME: Explain what "bounds" are.
+	//
+	// If the operation is successful, true is returned. If @widget has no
+	// bounds or the bounds cannot be expressed in @target's coordinate space
+	// (for example if both widgets are in different windows), false is returned
+	// and @bounds is set to the zero rectangle.
+	//
+	// It is valid for @widget and @target to be the same widget.
+	ComputeBounds(target widget) (graphene.Rect, bool)
+	// ComputeExpand: computes whether a container should give this widget extra
+	// space when possible. Containers should check this, rather than looking at
+	// gtk_widget_get_hexpand() or gtk_widget_get_vexpand().
+	//
+	// This function already checks whether the widget is visible, so visibility
+	// does not need to be checked separately. Non-visible widgets are not
+	// expanded.
+	//
+	// The computed expand value uses either the expand setting explicitly set
+	// on the widget itself, or, if none has been explicitly set, the widget may
+	// expand if some of its children do.
+	ComputeExpand(orientation Orientation) bool
+	// ComputePoint: translates the given @point in @widget's coordinates to
+	// coordinates relative to @target’s coordinate system. In order to perform
+	// this operation, both widgets must share a common root.
+	ComputePoint(target widget, point *graphene.Point) (graphene.Point, bool)
+	// ComputeTransform: computes a matrix suitable to describe a transformation
+	// from @widget's coordinate system into @target's coordinate system.
+	ComputeTransform(target widget) (graphene.Matrix, bool)
+	// Contains: tests if the point at (@x, @y) is contained in @widget.
+	//
+	// The coordinates for (@x, @y) must be in widget coordinates, so (0, 0) is
+	// assumed to be the top left of @widget's content area.
+	Contains(x float64, y float64) bool
+	// CreatePangoContext: creates a new Context with the appropriate font map,
+	// font options, font description, and base direction for drawing text for
+	// this widget. See also gtk_widget_get_pango_context().
+	CreatePangoContext() pango.context
+	// CreatePangoLayout: creates a new Layout with the appropriate font map,
+	// font description, and base direction for drawing text for this widget.
+	//
+	// If you keep a Layout created in this way around, you need to re-create it
+	// when the widget Context is replaced. This can be tracked by listening to
+	// changes of the Widget:root property on the widget.
+	CreatePangoLayout(text string) pango.layout
+	// DragCheckThreshold: checks to see if a mouse drag starting at (@start_x,
+	// @start_y) and ending at (@current_x, @current_y) has passed the GTK drag
+	// threshold, and thus should trigger the beginning of a drag-and-drop
+	// operation.
+	DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool
+	// ErrorBell: notifies the user about an input-related error on this widget.
+	// If the Settings:gtk-error-bell setting is true, it calls
+	// gdk_surface_beep(), otherwise it does nothing.
+	//
+	// Note that the effect of gdk_surface_beep() can be configured in many
+	// ways, depending on the windowing backend and the desktop environment or
+	// window manager that is used.
+	ErrorBell()
+	// GetAllocatedBaseline: returns the baseline that has currently been
+	// allocated to @widget. This function is intended to be used when
+	// implementing handlers for the WidgetClass.snapshot() function, and when
+	// allocating child widgets in WidgetClass.size_allocate().
+	GetAllocatedBaseline() int
+	// GetAllocatedHeight: returns the height that has currently been allocated
+	// to @widget.
+	GetAllocatedHeight() int
+	// GetAllocatedWidth: returns the width that has currently been allocated to
+	// @widget.
+	GetAllocatedWidth() int
+	// GetAllocation: retrieves the widget’s allocation.
+	//
+	// Note, when implementing a layout container: a widget’s allocation will be
+	// its “adjusted” allocation, that is, the widget’s parent typically calls
+	// gtk_widget_size_allocate() with an allocation, and that allocation is
+	// then adjusted (to handle margin and alignment for example) before
+	// assignment to the widget. gtk_widget_get_allocation() returns the
+	// adjusted allocation that was actually assigned to the widget. The
+	// adjusted allocation is guaranteed to be completely contained within the
+	// gtk_widget_size_allocate() allocation, however.
+	//
+	// So a layout container is guaranteed that its children stay inside the
+	// assigned bounds, but not that they have exactly the bounds the container
+	// assigned.
+	GetAllocation() Allocation
+	// GetAncestor: gets the first ancestor of @widget with type @widget_type.
+	// For example, `gtk_widget_get_ancestor (widget, GTK_TYPE_BOX)` gets the
+	// first Box that’s an ancestor of @widget. No reference will be added to
+	// the returned widget; it should not be unreferenced.
+	//
+	// Note that unlike gtk_widget_is_ancestor(), gtk_widget_get_ancestor()
+	// considers @widget to be an ancestor of itself.
+	GetAncestor(widgetType externglib.Type) widget
+	// GetCanFocus: determines whether the input focus can enter @widget or any
+	// of its children.
+	//
+	// See gtk_widget_set_focusable().
+	GetCanFocus() bool
+	// GetCanTarget: queries whether @widget can be the target of pointer
+	// events.
+	GetCanTarget() bool
+	// GetChildVisible: gets the value set with gtk_widget_set_child_visible().
+	// If you feel a need to use this function, your code probably needs
+	// reorganization.
+	//
+	// This function is only useful for container implementations and never
+	// should be called by an application.
+	GetChildVisible() bool
+	// GetClipboard: this is a utility function to get the clipboard object for
+	// the Display that @widget is using.
+	//
+	// Note that this function always works, even when @widget is not realized
+	// yet.
+	GetClipboard() gdk.clipboard
+	// GetCSSClasses: returns the list of css classes applied to @widget.
+	GetCSSClasses() []string
+	// GetCSSName: returns the CSS name that is used for @self.
+	GetCSSName() string
+	// GetCursor: queries the cursor set via gtk_widget_set_cursor(). See that
+	// function for details.
+	GetCursor() gdk.cursor
+	// GetDirection: gets the reading direction for a particular widget. See
+	// gtk_widget_set_direction().
+	GetDirection() TextDirection
+	// GetDisplay: get the Display for the toplevel window associated with this
+	// widget. This function can only be called after the widget has been added
+	// to a widget hierarchy with a Window at the top.
+	//
+	// In general, you should only create display specific resources when a
+	// widget has been realized, and you should free those resources when the
+	// widget is unrealized.
+	GetDisplay() gdk.display
+	// GetFirstChild: returns the widgets first child.
+	//
+	// This API is primarily meant for widget implementations.
+	GetFirstChild() widget
+	// GetFocusChild: returns the current focus child of @widget.
+	GetFocusChild() widget
+	// GetFocusOnClick: returns whether the widget should grab focus when it is
+	// clicked with the mouse. See gtk_widget_set_focus_on_click().
+	GetFocusOnClick() bool
+	// GetFocusable: determines whether @widget can own the input focus. See
+	// gtk_widget_set_focusable().
+	GetFocusable() bool
+	// GetFontMap: gets the font map that has been set with
+	// gtk_widget_set_font_map().
+	GetFontMap() pango.fontMap
+	// GetFontOptions: returns the #cairo_font_options_t used for Pango
+	// rendering. When not set, the defaults font options for the Display will
+	// be used.
+	GetFontOptions() *cairo.FontOptions
+	// GetFrameClock: obtains the frame clock for a widget. The frame clock is a
+	// global “ticker” that can be used to drive animations and repaints. The
+	// most common reason to get the frame clock is to call
+	// gdk_frame_clock_get_frame_time(), in order to get a time to use for
+	// animating. For example you might record the start of the animation with
+	// an initial value from gdk_frame_clock_get_frame_time(), and then update
+	// the animation by calling gdk_frame_clock_get_frame_time() again during
+	// each repaint.
+	//
+	// gdk_frame_clock_request_phase() will result in a new frame on the clock,
+	// but won’t necessarily repaint any widgets. To repaint a widget, you have
+	// to use gtk_widget_queue_draw() which invalidates the widget (thus
+	// scheduling it to receive a draw on the next frame).
+	// gtk_widget_queue_draw() will also end up requesting a frame on the
+	// appropriate frame clock.
+	//
+	// A widget’s frame clock will not change while the widget is mapped.
+	// Reparenting a widget (which implies a temporary unmap) can change the
+	// widget’s frame clock.
+	//
+	// Unrealized widgets do not have a frame clock.
+	GetFrameClock() gdk.frameClock
+	// GetHalign: gets the value of the Widget:halign property.
+	//
+	// For backwards compatibility reasons this method will never return
+	// GTK_ALIGN_BASELINE, but instead it will convert it to GTK_ALIGN_FILL.
+	// Baselines are not supported for horizontal alignment.
+	GetHalign() Align
+	// GetHasTooltip: returns the current value of the has-tooltip property. See
+	// Widget:has-tooltip for more information.
+	GetHasTooltip() bool
+	// GetHeight: returns the content height of the widget, as passed to its
+	// size-allocate implementation. This is the size you should be using in
+	// GtkWidgetClass.snapshot(). For pointer events, see gtk_widget_contains().
+	GetHeight() int
+	// GetHexpand: gets whether the widget would like any available extra
+	// horizontal space. When a user resizes a Window, widgets with expand=TRUE
+	// generally receive the extra space. For example, a list or scrollable area
+	// or document in your window would often be set to expand.
+	//
+	// Containers should use gtk_widget_compute_expand() rather than this
+	// function, to see whether a widget, or any of its children, has the expand
+	// flag set. If any child of a widget wants to expand, the parent may ask to
+	// expand also.
+	//
+	// This function only looks at the widget’s own hexpand flag, rather than
+	// computing whether the entire widget tree rooted at this widget wants to
+	// expand.
+	GetHexpand() bool
+	// GetHexpandSet: gets whether gtk_widget_set_hexpand() has been used to
+	// explicitly set the expand flag on this widget.
+	//
+	// If hexpand is set, then it overrides any computed expand value based on
+	// child widgets. If hexpand is not set, then the expand value depends on
+	// whether any children of the widget would like to expand.
+	//
+	// There are few reasons to use this function, but it’s here for
+	// completeness and consistency.
+	GetHexpandSet() bool
+	// GetLastChild: returns the widgets last child.
+	//
+	// This API is primarily meant for widget implementations.
+	GetLastChild() widget
+	// GetLayoutManager: retrieves the layout manager set using
+	// gtk_widget_set_layout_manager().
+	GetLayoutManager() layoutManager
+	// GetMapped: whether the widget is mapped.
+	GetMapped() bool
+	// GetMarginBottom: gets the value of the Widget:margin-bottom property.
+	GetMarginBottom() int
+	// GetMarginEnd: gets the value of the Widget:margin-end property.
+	GetMarginEnd() int
+	// GetMarginStart: gets the value of the Widget:margin-start property.
+	GetMarginStart() int
+	// GetMarginTop: gets the value of the Widget:margin-top property.
+	GetMarginTop() int
+	// GetName: retrieves the name of a widget. See gtk_widget_set_name() for
+	// the significance of widget names.
+	GetName() string
+	// GetNative: returns the GtkNative widget that contains @widget, or nil if
+	// the widget is not contained inside a widget tree with a native ancestor.
+	//
+	// Native widgets will return themselves here.
+	GetNative() Native
+	// GetNextSibling: returns the widgets next sibling.
+	//
+	// This API is primarily meant for widget implementations.
+	GetNextSibling() widget
+	// GetOpacity: fetches the requested opacity for this widget. See
+	// gtk_widget_set_opacity().
+	GetOpacity() float64
+	// GetOverflow: returns the value set via gtk_widget_set_overflow().
+	GetOverflow() Overflow
+	// GetPangoContext: gets a Context with the appropriate font map, font
+	// description, and base direction for this widget. Unlike the context
+	// returned by gtk_widget_create_pango_context(), this context is owned by
+	// the widget (it can be used until the screen for the widget changes or the
+	// widget is removed from its toplevel), and will be updated to match any
+	// changes to the widget’s attributes. This can be tracked by listening to
+	// changes of the Widget:root property on the widget.
+	GetPangoContext() pango.context
+	// GetParent: returns the parent widget of @widget.
+	GetParent() widget
+	// GetPreferredSize: retrieves the minimum and natural size of a widget,
+	// taking into account the widget’s preference for height-for-width
+	// management.
+	//
+	// This is used to retrieve a suitable size by container widgets which do
+	// not impose any restrictions on the child placement. It can be used to
+	// deduce toplevel window and menu sizes as well as child widgets in
+	// free-form containers such as GtkLayout.
+	//
+	// Handle with care. Note that the natural height of a height-for-width
+	// widget will generally be a smaller size than the minimum height, since
+	// the required height for the natural width is generally smaller than the
+	// required height for the minimum width.
+	//
+	// Use gtk_widget_measure() if you want to support baseline alignment.
+	GetPreferredSize() (Requisition, Requisition)
+	// GetPrevSibling: returns the widgets previous sibling.
+	//
+	// This API is primarily meant for widget implementations.
+	GetPrevSibling() widget
+	// GetPrimaryClipboard: this is a utility function to get the primary
+	// clipboard object for the Display that @widget is using.
+	//
+	// Note that this function always works, even when @widget is not realized
+	// yet.
+	GetPrimaryClipboard() gdk.clipboard
+	// GetRealized: determines whether @widget is realized.
+	GetRealized() bool
+	// GetReceivesDefault: determines whether @widget is always treated as the
+	// default widget within its toplevel when it has the focus, even if another
+	// widget is the default.
+	//
+	// See gtk_widget_set_receives_default().
+	GetReceivesDefault() bool
+	// GetRequestMode: gets whether the widget prefers a height-for-width layout
+	// or a width-for-height layout.
+	//
+	// Bin widgets generally propagate the preference of their child, container
+	// widgets need to request something either in context of their children or
+	// in context of their allocation capabilities.
+	GetRequestMode() SizeRequestMode
+	// GetRoot: returns the Root widget of @widget or nil if the widget is not
+	// contained inside a widget tree with a root widget.
+	//
+	// Root widgets will return themselves here.
+	GetRoot() Root
+	// GetScaleFactor: retrieves the internal scale factor that maps from window
+	// coordinates to the actual device pixels. On traditional systems this is
+	// 1, on high density outputs, it can be a higher value (typically 2).
+	//
+	// See gdk_surface_get_scale_factor().
+	GetScaleFactor() int
+	// GetSensitive: returns the widget’s sensitivity (in the sense of returning
+	// the value that has been set using gtk_widget_set_sensitive()).
+	//
+	// The effective sensitivity of a widget is however determined by both its
+	// own and its parent widget’s sensitivity. See gtk_widget_is_sensitive().
+	GetSensitive() bool
+	// GetSettings: gets the settings object holding the settings used for this
+	// widget.
+	//
+	// Note that this function can only be called when the Widget is attached to
+	// a toplevel, since the settings object is specific to a particular
+	// Display. If you want to monitor the widget for changes in its settings,
+	// connect to notify::display.
+	GetSettings() settings
+	// GetSize: returns the content width or height of the widget, depending on
+	// @orientation. This is equivalent to calling gtk_widget_get_width() for
+	// GTK_ORIENTATION_HORIZONTAL or gtk_widget_get_height() for
+	// GTK_ORIENTATION_VERTICAL, but can be used when writing
+	// orientation-independent code, such as when implementing Orientable
+	// widgets.
+	GetSize(orientation Orientation) int
+	// GetSizeRequest: gets the size request that was explicitly set for the
+	// widget using gtk_widget_set_size_request(). A value of -1 stored in
+	// @width or @height indicates that that dimension has not been set
+	// explicitly and the natural requisition of the widget will be used
+	// instead. See gtk_widget_set_size_request(). To get the size a widget will
+	// actually request, call gtk_widget_measure() instead of this function.
+	GetSizeRequest() (int, int)
+	// GetStateFlags: returns the widget state as a flag set. It is worth
+	// mentioning that the effective GTK_STATE_FLAG_INSENSITIVE state will be
+	// returned, that is, also based on parent insensitivity, even if @widget
+	// itself is sensitive.
+	//
+	// Also note that if you are looking for a way to obtain the StateFlags to
+	// pass to a StyleContext method, you should look at
+	// gtk_style_context_get_state().
+	GetStateFlags() StateFlags
+	// GetStyleContext: returns the style context associated to @widget. The
+	// returned object is guaranteed to be the same for the lifetime of @widget.
+	GetStyleContext() styleContext
+	// GetTemplateChild: fetch an object build from the template XML for
+	// @widget_type in this @widget instance.
+	//
+	// This will only report children which were previously declared with
+	// gtk_widget_class_bind_template_child_full() or one of its variants.
+	//
+	// This function is only meant to be called for code which is private to the
+	// @widget_type which declared the child and is meant for language bindings
+	// which cannot easily make use of the GObject structure offsets.
+	GetTemplateChild(widgetType externglib.Type, name string) gextras.Objector
+	// GetTooltipMarkup: gets the contents of the tooltip for @widget set using
+	// gtk_widget_set_tooltip_markup().
+	GetTooltipMarkup() string
+	// GetTooltipText: gets the contents of the tooltip for @widget.
+	//
+	// If the @widget's tooltip was set using gtk_widget_set_tooltip_markup(),
+	// this function will return the escaped text.
+	GetTooltipText() string
+	// GetValign: gets the value of the Widget:valign property.
+	GetValign() Align
+	// GetVexpand: gets whether the widget would like any available extra
+	// vertical space.
+	//
+	// See gtk_widget_get_hexpand() for more detail.
+	GetVexpand() bool
+	// GetVexpandSet: gets whether gtk_widget_set_vexpand() has been used to
+	// explicitly set the expand flag on this widget.
+	//
+	// See gtk_widget_get_hexpand_set() for more detail.
+	GetVexpandSet() bool
+	// GetVisible: determines whether the widget is visible. If you want to take
+	// into account whether the widget’s parent is also marked as visible, use
+	// gtk_widget_is_visible() instead.
+	//
+	// This function does not check if the widget is obscured in any way.
+	//
+	// See gtk_widget_set_visible().
+	GetVisible() bool
+	// GetWidth: returns the content width of the widget, as passed to its
+	// size-allocate implementation. This is the size you should be using in
+	// GtkWidgetClass.snapshot(). For pointer events, see gtk_widget_contains().
+	GetWidth() int
+	// GrabFocus: causes @widget (or one of its descendents) to have the
+	// keyboard focus for the Window it's inside.
+	//
+	// If @widget is not focusable, or its ::grab_focus implementation cannot
+	// transfer the focus to a descendant of @widget that is focusable, it will
+	// not take focus and false will be returned.
+	//
+	// Calling gtk_widget_grab_focus() on an already focused widget is allowed,
+	// should not have an effect, and return true.
+	GrabFocus() bool
+	// HasCSSClass: returns whether @css_class is currently applied to @widget.
+	HasCSSClass(cssClass string) bool
+	// HasDefault: determines whether @widget is the current default widget
+	// within its toplevel.
+	HasDefault() bool
+	// HasFocus: determines if the widget has the global input focus. See
+	// gtk_widget_is_focus() for the difference between having the global input
+	// focus, and only having the focus within a toplevel.
+	HasFocus() bool
+	// HasVisibleFocus: determines if the widget should show a visible
+	// indication that it has the global input focus. This is a convenience
+	// function that takes into account whether focus indication should
+	// currently be shown in the toplevel window of @widget. See
+	// gtk_window_get_focus_visible() for more information about focus
+	// indication.
+	//
+	// To find out if the widget has the global input focus, use
+	// gtk_widget_has_focus().
+	HasVisibleFocus() bool
+	// Hide: reverses the effects of gtk_widget_show(), causing the widget to be
+	// hidden (invisible to the user).
+	Hide()
+	// InDestruction: returns whether the widget is currently being destroyed.
+	// This information can sometimes be used to avoid doing unnecessary work.
+	InDestruction() bool
+	// InitTemplate: creates and initializes child widgets defined in templates.
+	// This function must be called in the instance initializer for any class
+	// which assigned itself a template using gtk_widget_class_set_template()
+	//
+	// It is important to call this function in the instance initializer of a
+	// Widget subclass and not in #GObject.constructed() or
+	// #GObject.constructor() for two reasons.
+	//
+	// One reason is that generally derived widgets will assume that parent
+	// class composite widgets have been created in their instance initializers.
+	//
+	// Another reason is that when calling g_object_new() on a widget with
+	// composite templates, it’s important to build the composite widgets before
+	// the construct properties are set. Properties passed to g_object_new()
+	// should take precedence over properties set in the private template XML.
+	InitTemplate()
+	// InsertActionGroup: inserts @group into @widget. Children of @widget that
+	// implement Actionable can then be associated with actions in @group by
+	// setting their “action-name” to @prefix.`action-name`.
+	//
+	// Note that inheritance is defined for individual actions. I.e. even if you
+	// insert a group with prefix @prefix, actions with the same prefix will
+	// still be inherited from the parent, unless the group contains an action
+	// with the same name.
+	//
+	// If @group is nil, a previously inserted group for @name is removed from
+	// @widget.
+	InsertActionGroup(name string, group gio.ActionGroup)
+	// InsertAfter: inserts @widget into the child widget list of @parent.
+	//
+	// It will be placed after @previous_sibling, or at the beginning if
+	// @previous_sibling is nil.
+	//
+	// After calling this function, gtk_widget_get_prev_sibling(widget) will
+	// return @previous_sibling.
+	//
+	// If @parent is already set as the parent widget of @widget, this function
+	// can also be used to reorder @widget in the child widget list of @parent.
+	//
+	// This API is primarily meant for widget implementations; if you are just
+	// using a widget, you *must* use its own API for adding children.
+	InsertAfter(parent widget, previousSibling widget)
+	// InsertBefore: inserts @widget into the child widget list of @parent.
+	//
+	// It will be placed before @next_sibling, or at the end if @next_sibling is
+	// nil.
+	//
+	// After calling this function, gtk_widget_get_next_sibling(widget) will
+	// return @next_sibling.
+	//
+	// If @parent is already set as the parent widget of @widget, this function
+	// can also be used to reorder @widget in the child widget list of @parent.
+	//
+	// This API is primarily meant for widget implementations; if you are just
+	// using a widget, you *must* use its own API for adding children.
+	InsertBefore(parent widget, nextSibling widget)
+	// IsAncestor: determines whether @widget is somewhere inside @ancestor,
+	// possibly with intermediate containers.
+	IsAncestor(ancestor widget) bool
+	// IsDrawable: determines whether @widget can be drawn to. A widget can be
+	// drawn if it is mapped and visible.
+	IsDrawable() bool
+	// IsFocus: determines if the widget is the focus widget within its
+	// toplevel. (This does not mean that the Widget:has-focus property is
+	// necessarily set; Widget:has-focus will only be set if the toplevel widget
+	// additionally has the global input focus.)
+	IsFocus() bool
+	// IsSensitive: returns the widget’s effective sensitivity, which means it
+	// is sensitive itself and also its parent widget is sensitive
+	IsSensitive() bool
+	// IsVisible: determines whether the widget and all its parents are marked
+	// as visible.
+	//
+	// This function does not check if the widget is obscured in any way.
+	//
+	// See also gtk_widget_get_visible() and gtk_widget_set_visible()
+	IsVisible() bool
+	// KeynavFailed: this function should be called whenever keyboard navigation
+	// within a single widget hits a boundary. The function emits the
+	// Widget::keynav-failed signal on the widget and its return value should be
+	// interpreted in a way similar to the return value of
+	// gtk_widget_child_focus():
+	//
+	// When true is returned, stay in the widget, the failed keyboard navigation
+	// is OK and/or there is nowhere we can/should move the focus to.
+	//
+	// When false is returned, the caller should continue with keyboard
+	// navigation outside the widget, e.g. by calling gtk_widget_child_focus()
+	// on the widget’s toplevel.
+	//
+	// The default ::keynav-failed handler returns false for GTK_DIR_TAB_FORWARD
+	// and GTK_DIR_TAB_BACKWARD. For the other values of DirectionType it
+	// returns true.
+	//
+	// Whenever the default handler returns true, it also calls
+	// gtk_widget_error_bell() to notify the user of the failed keyboard
+	// navigation.
+	//
+	// A use case for providing an own implementation of ::keynav-failed (either
+	// by connecting to it or by overriding it) would be a row of Entry widgets
+	// where the user should be able to navigate the entire row with the cursor
+	// keys, as e.g. known from user interfaces that require entering license
+	// keys.
+	KeynavFailed(direction DirectionType) bool
+	// ListMnemonicLabels: returns a newly allocated list of the widgets,
+	// normally labels, for which this widget is the target of a mnemonic (see
+	// for example, gtk_label_set_mnemonic_widget()).
+	//
+	// The widgets in the list are not individually referenced. If you want to
+	// iterate through the list and perform actions involving callbacks that
+	// might destroy the widgets, you must call `g_list_foreach (result,
+	// (GFunc)g_object_ref, NULL)` first, and then unref all the widgets
+	// afterwards.
+	ListMnemonicLabels() *glib.List
+	// Map: this function is only for use in widget implementations. Causes a
+	// widget to be mapped if it isn’t already.
+	Map()
+	// Measure: measures @widget in the orientation @orientation and for the
+	// given @for_size. As an example, if @orientation is
+	// GTK_ORIENTATION_HORIZONTAL and @for_size is 300, this functions will
+	// compute the minimum and natural width of @widget if it is allocated at a
+	// height of 300 pixels.
+	//
+	// See [GtkWidget’s geometry management section][geometry-management] for a
+	// more details on implementing WidgetClass.measure().
+	Measure(orientation Orientation, forSize int) (int, int, int, int)
+	// MnemonicActivate: emits the Widget::mnemonic-activate signal.
+	MnemonicActivate(groupCycling bool) bool
+	// ObserveChildren: returns a Model to track the children of @widget.
+	//
+	// Calling this function will enable extra internal bookkeeping to track
+	// children and emit signals on the returned listmodel. It may slow down
+	// operations a lot.
+	//
+	// Applications should try hard to avoid calling this function because of
+	// the slowdowns.
+	ObserveChildren() gio.ListModel
+	// ObserveControllers: returns a Model to track the EventControllers of
+	// @widget.
+	//
+	// Calling this function will enable extra internal bookkeeping to track
+	// controllers and emit signals on the returned listmodel. It may slow down
+	// operations a lot.
+	//
+	// Applications should try hard to avoid calling this function because of
+	// the slowdowns.
+	ObserveControllers() gio.ListModel
+	// Pick: finds the descendant of @widget (including @widget itself) closest
+	// to the screen at the point (@x, @y). The point must be given in widget
+	// coordinates, so (0, 0) is assumed to be the top left of @widget's content
+	// area.
+	//
+	// Usually widgets will return nil if the given coordinate is not contained
+	// in @widget checked via gtk_widget_contains(). Otherwise they will
+	// recursively try to find a child that does not return nil. Widgets are
+	// however free to customize their picking algorithm.
+	//
+	// This function is used on the toplevel to determine the widget below the
+	// mouse cursor for purposes of hover highlighting and delivering events.
+	Pick(x float64, y float64, flags PickFlags) widget
+	// QueueAllocate: this function is only for use in widget implementations.
+	//
+	// Flags the widget for a rerun of the GtkWidgetClass::size_allocate
+	// function. Use this function instead of gtk_widget_queue_resize() when the
+	// @widget's size request didn't change but it wants to reposition its
+	// contents.
+	//
+	// An example user of this function is gtk_widget_set_halign().
+	QueueAllocate()
+	// QueueDraw: schedules this widget to be redrawn in paint phase of the
+	// current or the next frame. This means @widget's GtkWidgetClass.snapshot()
+	// implementation will be called.
+	QueueDraw()
+	// QueueResize: this function is only for use in widget implementations.
+	// Flags a widget to have its size renegotiated; should be called when a
+	// widget for some reason has a new size request. For example, when you
+	// change the text in a Label, Label queues a resize to ensure there’s
+	// enough space for the new text.
+	//
+	// Note that you cannot call gtk_widget_queue_resize() on a widget from
+	// inside its implementation of the GtkWidgetClass::size_allocate virtual
+	// method. Calls to gtk_widget_queue_resize() from inside
+	// GtkWidgetClass::size_allocate will be silently ignored.
+	QueueResize()
+	// Realize: creates the GDK (windowing system) resources associated with a
+	// widget. Normally realization happens implicitly; if you show a widget and
+	// all its parent containers, then the widget will be realized and mapped
+	// automatically.
+	//
+	// Realizing a widget requires all the widget’s parent widgets to be
+	// realized; calling gtk_widget_realize() realizes the widget’s parents in
+	// addition to @widget itself. If a widget is not yet inside a toplevel
+	// window when you realize it, bad things will happen.
+	//
+	// This function is primarily used in widget implementations, and isn’t very
+	// useful otherwise. Many times when you think you might need it, a better
+	// approach is to connect to a signal that will be called after the widget
+	// is realized automatically, such as Widget::realize.
+	Realize()
+	// RemoveController: removes @controller from @widget, so that it doesn't
+	// process events anymore. It should not be used again.
+	//
+	// Widgets will remove all event controllers automatically when they are
+	// destroyed, there is normally no need to call this function.
+	RemoveController(controller eventController)
+	// RemoveCSSClass: removes @css_class from @widget. After this, the style of
+	// @widget will stop matching for @css_class.
+	RemoveCSSClass(cssClass string)
+	// RemoveMnemonicLabel: removes a widget from the list of mnemonic labels
+	// for this widget. (See gtk_widget_list_mnemonic_labels()). The widget must
+	// have previously been added to the list with
+	// gtk_widget_add_mnemonic_label().
+	RemoveMnemonicLabel(label widget)
+	// RemoveTickCallback: removes a tick callback previously registered with
+	// gtk_widget_add_tick_callback().
+	RemoveTickCallback(id uint)
+	// SetCanFocus: specifies whether the input focus can enter the widget or
+	// any of its children.
+	//
+	// Applications should set @can_focus to false to mark a widget as for
+	// pointer/touch use only.
+	//
+	// Note that having @can_focus be true is only one of the necessary
+	// conditions for being focusable. A widget must also be sensitive and
+	// focusable and not have an ancestor that is marked as not can-focus in
+	// order to receive input focus.
+	//
+	// See gtk_widget_grab_focus() for actually setting the input focus on a
+	// widget.
+	SetCanFocus(canFocus bool)
+	// SetCanTarget: sets whether @widget can be the target of pointer events.
+	SetCanTarget(canTarget bool)
+	// SetChildVisible: sets whether @widget should be mapped along with its
+	// when its parent is mapped and @widget has been shown with
+	// gtk_widget_show().
+	//
+	// The child visibility can be set for widget before it is added to a
+	// container with gtk_widget_set_parent(), to avoid mapping children
+	// unnecessary before immediately unmapping them. However it will be reset
+	// to its default state of true when the widget is removed from a container.
+	//
+	// Note that changing the child visibility of a widget does not queue a
+	// resize on the widget. Most of the time, the size of a widget is computed
+	// from all visible children, whether or not they are mapped. If this is not
+	// the case, the container can queue a resize itself.
+	//
+	// This function is only useful for container implementations and never
+	// should be called by an application.
+	SetChildVisible(childVisible bool)
+	// SetCSSClasses: will clear all css classes applied to @widget and replace
+	// them with @classes.
+	SetCSSClasses(classes []string)
+	// SetCursor: sets the cursor to be shown when pointer devices point towards
+	// @widget.
+	//
+	// If the @cursor is NULL, @widget will use the cursor inherited from the
+	// parent widget.
+	SetCursor(cursor gdk.cursor)
+	// SetCursorFromName: sets a named cursor to be shown when pointer devices
+	// point towards @widget.
+	//
+	// This is a utility function that creates a cursor via
+	// gdk_cursor_new_from_name() and then sets it on @widget with
+	// gtk_widget_set_cursor(). See those 2 functions for details.
+	//
+	// On top of that, this function allows @name to be nil, which will do the
+	// same as calling gtk_widget_set_cursor() with a nil cursor.
+	SetCursorFromName(name string)
+	// SetDirection: sets the reading direction on a particular widget. This
+	// direction controls the primary direction for widgets containing text, and
+	// also the direction in which the children of a container are packed. The
+	// ability to set the direction is present in order so that correct
+	// localization into languages with right-to-left reading directions can be
+	// done. Generally, applications will let the default reading direction
+	// present, except for containers where the containers are arranged in an
+	// order that is explicitly visual rather than logical (such as buttons for
+	// text justification).
+	//
+	// If the direction is set to GTK_TEXT_DIR_NONE, then the value set by
+	// gtk_widget_set_default_direction() will be used.
+	SetDirection(dir TextDirection)
+	// SetFocusChild: set @child as the current focus child of @widget. The
+	// previous focus child will be unset.
+	//
+	// This function is only suitable for widget implementations. If you want a
+	// certain widget to get the input focus, call gtk_widget_grab_focus() on
+	// it.
+	SetFocusChild(child widget)
+	// SetFocusOnClick: sets whether the widget should grab focus when it is
+	// clicked with the mouse. Making mouse clicks not grab focus is useful in
+	// places like toolbars where you don’t want the keyboard focus removed from
+	// the main area of the application.
+	SetFocusOnClick(focusOnClick bool)
+	// SetFocusable: specifies whether @widget can own the input focus.
+	//
+	// Widget implementations should set @focusable to true in their init()
+	// function if they want to receive keyboard input.
+	//
+	// Note that having @focusable be true is only one of the necessary
+	// conditions for being focusable. A widget must also be sensitive and
+	// can-focus and not have an ancestor that is marked as not can-focus in
+	// order to receive input focus.
+	//
+	// See gtk_widget_grab_focus() for actually setting the input focus on a
+	// widget.
+	SetFocusable(focusable bool)
+	// SetFontMap: sets the font map to use for Pango rendering. The font map is
+	// the object that is used to look up fonts. Setting a custom font map can
+	// be useful in special situations, e.g. when you need to add
+	// application-specific fonts to the set of available fonts.
+	//
+	// When not set, the widget will inherit the font map from its parent.
+	SetFontMap(fontMap pango.fontMap)
+	// SetFontOptions: sets the #cairo_font_options_t used for Pango rendering
+	// in this widget. When not set, the default font options for the Display
+	// will be used.
+	SetFontOptions(options *cairo.FontOptions)
+	// SetHalign: sets the horizontal alignment of @widget. See the
+	// Widget:halign property.
+	SetHalign(align Align)
+	// SetHasTooltip: sets the has-tooltip property on @widget to @has_tooltip.
+	// See Widget:has-tooltip for more information.
+	SetHasTooltip(hasTooltip bool)
+	// SetHexpand: sets whether the widget would like any available extra
+	// horizontal space. When a user resizes a Window, widgets with expand=TRUE
+	// generally receive the extra space. For example, a list or scrollable area
+	// or document in your window would often be set to expand.
+	//
+	// Call this function to set the expand flag if you would like your widget
+	// to become larger horizontally when the window has extra room.
+	//
+	// By default, widgets automatically expand if any of their children want to
+	// expand. (To see if a widget will automatically expand given its current
+	// children and state, call gtk_widget_compute_expand(). A container can
+	// decide how the expandability of children affects the expansion of the
+	// container by overriding the compute_expand virtual method on Widget.).
+	//
+	// Setting hexpand explicitly with this function will override the automatic
+	// expand behavior.
+	//
+	// This function forces the widget to expand or not to expand, regardless of
+	// children. The override occurs because gtk_widget_set_hexpand() sets the
+	// hexpand-set property (see gtk_widget_set_hexpand_set()) which causes the
+	// widget’s hexpand value to be used, rather than looking at children and
+	// widget state.
+	SetHexpand(expand bool)
+	// SetHexpandSet: sets whether the hexpand flag (see
+	// gtk_widget_get_hexpand()) will be used.
+	//
+	// The hexpand-set property will be set automatically when you call
+	// gtk_widget_set_hexpand() to set hexpand, so the most likely reason to use
+	// this function would be to unset an explicit expand flag.
+	//
+	// If hexpand is set, then it overrides any computed expand value based on
+	// child widgets. If hexpand is not set, then the expand value depends on
+	// whether any children of the widget would like to expand.
+	//
+	// There are few reasons to use this function, but it’s here for
+	// completeness and consistency.
+	SetHexpandSet(set bool)
+	// SetLayoutManager: sets the layout manager delegate instance that provides
+	// an implementation for measuring and allocating the children of @widget.
+	SetLayoutManager(layoutManager layoutManager)
+	// SetMarginBottom: sets the bottom margin of @widget. See the
+	// Widget:margin-bottom property.
+	SetMarginBottom(margin int)
+	// SetMarginEnd: sets the end margin of @widget. See the Widget:margin-end
+	// property.
+	SetMarginEnd(margin int)
+	// SetMarginStart: sets the start margin of @widget. See the
+	// Widget:margin-start property.
+	SetMarginStart(margin int)
+	// SetMarginTop: sets the top margin of @widget. See the Widget:margin-top
+	// property.
+	SetMarginTop(margin int)
+	// SetName: widgets can be named, which allows you to refer to them from a
+	// CSS file. You can apply a style to widgets with a particular name in the
+	// CSS file. See the documentation for the CSS syntax (on the same page as
+	// the docs for StyleContext).
+	//
+	// Note that the CSS syntax has certain special characters to delimit and
+	// represent elements in a selector (period, #, >, *...), so using these
+	// will make your widget impossible to match by name. Any combination of
+	// alphanumeric symbols, dashes and underscores will suffice.
+	SetName(name string)
+	// SetOpacity: request the @widget to be rendered partially transparent,
+	// with opacity 0 being fully transparent and 1 fully opaque. (Opacity
+	// values are clamped to the [0,1] range).
+	//
+	// Opacity works on both toplevel widgets and child widgets, although there
+	// are some limitations: For toplevel widgets, applying opacity depends on
+	// the capabilities of the windowing system. On X11, this has any effect
+	// only on X displays with a compositing manager, see
+	// gdk_display_is_composited(). On Windows and Wayland it should always
+	// work, although setting a window’s opacity after the window has been shown
+	// may cause some flicker.
+	//
+	// Note that the opacity is inherited through inclusion — if you set a
+	// toplevel to be partially translucent, all of its content will appear
+	// translucent, since it is ultimatively rendered on that toplevel. The
+	// opacity value itself is not inherited by child widgets (since that would
+	// make widgets deeper in the hierarchy progressively more translucent). As
+	// a consequence, Popovers and other Native widgets with their own surface
+	// will use their own opacity value, and thus by default appear
+	// non-translucent, even if they are attached to a toplevel that is
+	// translucent.
+	SetOpacity(opacity float64)
+	// SetOverflow: sets how @widget treats content that is drawn outside the
+	// widget's content area. See the definition of Overflow for details.
+	//
+	// This setting is provided for widget implementations and should not be
+	// used by application code.
+	//
+	// The default value is GTK_OVERFLOW_VISIBLE.
+	SetOverflow(overflow Overflow)
+	// SetParent: this function is useful only when implementing subclasses of
+	// Widget.
+	//
+	// Sets @parent as the parent widget of @widget, and takes care of some
+	// details such as updating the state and style of the child to reflect its
+	// new location and resizing the parent. The opposite function is
+	// gtk_widget_unparent().
+	SetParent(parent widget)
+	// SetReceivesDefault: specifies whether @widget will be treated as the
+	// default widget within its toplevel when it has the focus, even if another
+	// widget is the default.
+	SetReceivesDefault(receivesDefault bool)
+	// SetSensitive: sets the sensitivity of a widget. A widget is sensitive if
+	// the user can interact with it. Insensitive widgets are “grayed out” and
+	// the user can’t interact with them. Insensitive widgets are known as
+	// “inactive”, “disabled”, or “ghosted” in some other toolkits.
+	SetSensitive(sensitive bool)
+	// SetSizeRequest: sets the minimum size of a widget; that is, the widget’s
+	// size request will be at least @width by @height. You can use this
+	// function to force a widget to be larger than it normally would be.
+	//
+	// In most cases, gtk_window_set_default_size() is a better choice for
+	// toplevel windows than this function; setting the default size will still
+	// allow users to shrink the window. Setting the size request will force
+	// them to leave the window at least as large as the size request. When
+	// dealing with window sizes, gtk_window_set_geometry_hints() can be a
+	// useful function as well.
+	//
+	// Note the inherent danger of setting any fixed size - themes, translations
+	// into other languages, different fonts, and user action can all change the
+	// appropriate size for a given widget. So, it's basically impossible to
+	// hardcode a size that will always be correct.
+	//
+	// The size request of a widget is the smallest size a widget can accept
+	// while still functioning well and drawing itself correctly. However in
+	// some strange cases a widget may be allocated less than its requested
+	// size, and in many cases a widget may be allocated more space than it
+	// requested.
+	//
+	// If the size request in a given direction is -1 (unset), then the
+	// “natural” size request of the widget will be used instead.
+	//
+	// The size request set here does not include any margin from the Widget
+	// properties margin-left, margin-right, margin-top, and margin-bottom, but
+	// it does include pretty much all other padding or border properties set by
+	// any subclass of Widget.
+	SetSizeRequest(width int, height int)
+	// SetStateFlags: this function is for use in widget implementations. Turns
+	// on flag values in the current widget state (insensitive, prelighted,
+	// etc.).
+	//
+	// This function accepts the values GTK_STATE_FLAG_DIR_LTR and
+	// GTK_STATE_FLAG_DIR_RTL but ignores them. If you want to set the widget's
+	// direction, use gtk_widget_set_direction().
+	SetStateFlags(flags StateFlags, clear bool)
+	// SetTooltipMarkup: sets @markup as the contents of the tooltip, which is
+	// marked up with the [Pango text markup language][PangoMarkupFormat].
+	//
+	// This function will take care of setting the Widget:has-tooltip as a side
+	// effect, and of the default handler for the Widget::query-tooltip signal.
+	//
+	// See also the Widget:tooltip-markup property and gtk_tooltip_set_markup().
+	SetTooltipMarkup(markup string)
+	// SetTooltipText: sets @text as the contents of the tooltip.
+	//
+	// If @text contains any markup, it will be escaped.
+	//
+	// This function will take care of setting Widget:has-tooltip as a side
+	// effect, and of the default handler for the Widget::query-tooltip signal.
+	//
+	// See also the Widget:tooltip-text property and gtk_tooltip_set_text().
+	SetTooltipText(text string)
+	// SetValign: sets the vertical alignment of @widget. See the Widget:valign
+	// property.
+	SetValign(align Align)
+	// SetVexpand: sets whether the widget would like any available extra
+	// vertical space.
+	//
+	// See gtk_widget_set_hexpand() for more detail.
+	SetVexpand(expand bool)
+	// SetVexpandSet: sets whether the vexpand flag (see
+	// gtk_widget_get_vexpand()) will be used.
+	//
+	// See gtk_widget_set_hexpand_set() for more detail.
+	SetVexpandSet(set bool)
+	// SetVisible: sets the visibility state of @widget. Note that setting this
+	// to true doesn’t mean the widget is actually viewable, see
+	// gtk_widget_get_visible().
+	//
+	// This function simply calls gtk_widget_show() or gtk_widget_hide() but is
+	// nicer to use when the visibility of the widget depends on some condition.
+	SetVisible(visible bool)
+	// ShouldLayout: returns whether @widget should contribute to the measuring
+	// and allocation of its parent. This is false for invisible children, but
+	// also for children that have their own surface.
+	ShouldLayout() bool
+	// Show: flags a widget to be displayed. Any widget that isn’t shown will
+	// not appear on the screen.
+	//
+	// Remember that you have to show the containers containing a widget, in
+	// addition to the widget itself, before it will appear onscreen.
+	//
+	// When a toplevel container is shown, it is immediately realized and
+	// mapped; other shown widgets are realized and mapped when their toplevel
+	// container is realized and mapped.
+	Show()
+	// SizeAllocate: this is a simple form of gtk_widget_allocate() that takes
+	// the new position of @widget as part of @allocation.
+	SizeAllocate(allocation *Allocation, baseline int)
+	// SnapshotChild: when a widget receives a call to the snapshot function, it
+	// must send synthetic WidgetClass.snapshot() calls to all children. This
+	// function provides a convenient way of doing this. A widget, when it
+	// receives a call to its WidgetClass.snapshot() function, calls
+	// gtk_widget_snapshot_child() once for each child, passing in the @snapshot
+	// the widget received.
+	//
+	// gtk_widget_snapshot_child() takes care of translating the origin of
+	// @snapshot, and deciding whether the child needs to be snapshot.
+	//
+	// This function does nothing for children that implement Native.
+	SnapshotChild(child widget, snapshot snapshot)
+	// TranslateCoordinates: translate coordinates relative to @src_widget’s
+	// allocation to coordinates relative to @dest_widget’s allocations. In
+	// order to perform this operation, both widget must share a common
+	// toplevel.
+	TranslateCoordinates(destWidget widget, srcX float64, srcY float64) (float64, float64, bool)
+	// TriggerTooltipQuery: triggers a tooltip query on the display where the
+	// toplevel of @widget is located.
+	TriggerTooltipQuery()
+	// Unmap: this function is only for use in widget implementations. Causes a
+	// widget to be unmapped if it’s currently mapped.
+	Unmap()
+	// Unparent: this function is only for use in widget implementations. It
+	// should be called by parent widgets to dissociate @widget from the parent,
+	// typically in dispose.
+	Unparent()
+	// Unrealize: this function is only useful in widget implementations. Causes
+	// a widget to be unrealized (frees all GDK resources associated with the
+	// widget).
+	Unrealize()
+	// UnsetStateFlags: this function is for use in widget implementations.
+	// Turns off flag values for the current widget state (insensitive,
+	// prelighted, etc.). See gtk_widget_set_state_flags().
+	UnsetStateFlags(flags StateFlags)
+}
+
+type widget struct {
 	externglib.InitiallyUnowned
 }
 
-func wrapWidget(obj *externglib.Object) *Widget {
-	return &Widget{externglib.InitiallyUnowned{obj}}
+func wrapWidget(obj *externglib.Object) Widget {
+	return &widget{externglib.InitiallyUnowned{obj}}
 }
 
 func marshalWidget(p uintptr) (interface{}, error) {
@@ -16107,6 +32286,322 @@ func marshalWidget(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (w widget) ActionSetEnabled(actionName string, enabled bool)
+
+func (w widget) Activate() bool
+
+func (w widget) ActivateActionVariant(name string, args *glib.Variant) bool
+
+func (w widget) ActivateDefault()
+
+func (w widget) AddController(controller eventController)
+
+func (w widget) AddCSSClass(cssClass string)
+
+func (w widget) AddMnemonicLabel(label widget)
+
+func (w widget) AddTickCallback(callback TickCallback, userData unsafe.Pointer, notify unsafe.Pointer) uint
+
+func (w widget) Allocate(width int, height int, baseline int, transform *gsk.Transform)
+
+func (w widget) ChildFocus(direction DirectionType) bool
+
+func (w widget) ComputeBounds(target widget) (graphene.Rect, bool)
+
+func (w widget) ComputeExpand(orientation Orientation) bool
+
+func (w widget) ComputePoint(target widget, point *graphene.Point) (graphene.Point, bool)
+
+func (w widget) ComputeTransform(target widget) (graphene.Matrix, bool)
+
+func (w widget) Contains(x float64, y float64) bool
+
+func (w widget) CreatePangoContext() pango.context
+
+func (w widget) CreatePangoLayout(text string) pango.layout
+
+func (w widget) DragCheckThreshold(startX int, startY int, currentX int, currentY int) bool
+
+func (w widget) ErrorBell()
+
+func (w widget) GetAllocatedBaseline() int
+
+func (w widget) GetAllocatedHeight() int
+
+func (w widget) GetAllocatedWidth() int
+
+func (w widget) GetAllocation() Allocation
+
+func (w widget) GetAncestor(widgetType externglib.Type) widget
+
+func (w widget) GetCanFocus() bool
+
+func (w widget) GetCanTarget() bool
+
+func (w widget) GetChildVisible() bool
+
+func (w widget) GetClipboard() gdk.clipboard
+
+func (w widget) GetCSSClasses() []string
+
+func (w widget) GetCSSName() string
+
+func (w widget) GetCursor() gdk.cursor
+
+func (w widget) GetDirection() TextDirection
+
+func (w widget) GetDisplay() gdk.display
+
+func (w widget) GetFirstChild() widget
+
+func (w widget) GetFocusChild() widget
+
+func (w widget) GetFocusOnClick() bool
+
+func (w widget) GetFocusable() bool
+
+func (w widget) GetFontMap() pango.fontMap
+
+func (w widget) GetFontOptions() *cairo.FontOptions
+
+func (w widget) GetFrameClock() gdk.frameClock
+
+func (w widget) GetHalign() Align
+
+func (w widget) GetHasTooltip() bool
+
+func (w widget) GetHeight() int
+
+func (w widget) GetHexpand() bool
+
+func (w widget) GetHexpandSet() bool
+
+func (w widget) GetLastChild() widget
+
+func (w widget) GetLayoutManager() layoutManager
+
+func (w widget) GetMapped() bool
+
+func (w widget) GetMarginBottom() int
+
+func (w widget) GetMarginEnd() int
+
+func (w widget) GetMarginStart() int
+
+func (w widget) GetMarginTop() int
+
+func (w widget) GetName() string
+
+func (w widget) GetNative() Native
+
+func (w widget) GetNextSibling() widget
+
+func (w widget) GetOpacity() float64
+
+func (w widget) GetOverflow() Overflow
+
+func (w widget) GetPangoContext() pango.context
+
+func (w widget) GetParent() widget
+
+func (w widget) GetPreferredSize() (Requisition, Requisition)
+
+func (w widget) GetPrevSibling() widget
+
+func (w widget) GetPrimaryClipboard() gdk.clipboard
+
+func (w widget) GetRealized() bool
+
+func (w widget) GetReceivesDefault() bool
+
+func (w widget) GetRequestMode() SizeRequestMode
+
+func (w widget) GetRoot() Root
+
+func (w widget) GetScaleFactor() int
+
+func (w widget) GetSensitive() bool
+
+func (w widget) GetSettings() settings
+
+func (w widget) GetSize(orientation Orientation) int
+
+func (w widget) GetSizeRequest() (int, int)
+
+func (w widget) GetStateFlags() StateFlags
+
+func (w widget) GetStyleContext() styleContext
+
+func (w widget) GetTemplateChild(widgetType externglib.Type, name string) gextras.Objector
+
+func (w widget) GetTooltipMarkup() string
+
+func (w widget) GetTooltipText() string
+
+func (w widget) GetValign() Align
+
+func (w widget) GetVexpand() bool
+
+func (w widget) GetVexpandSet() bool
+
+func (w widget) GetVisible() bool
+
+func (w widget) GetWidth() int
+
+func (w widget) GrabFocus() bool
+
+func (w widget) HasCSSClass(cssClass string) bool
+
+func (w widget) HasDefault() bool
+
+func (w widget) HasFocus() bool
+
+func (w widget) HasVisibleFocus() bool
+
+func (w widget) Hide()
+
+func (w widget) InDestruction() bool
+
+func (w widget) InitTemplate()
+
+func (w widget) InsertActionGroup(name string, group gio.ActionGroup)
+
+func (w widget) InsertAfter(parent widget, previousSibling widget)
+
+func (w widget) InsertBefore(parent widget, nextSibling widget)
+
+func (w widget) IsAncestor(ancestor widget) bool
+
+func (w widget) IsDrawable() bool
+
+func (w widget) IsFocus() bool
+
+func (w widget) IsSensitive() bool
+
+func (w widget) IsVisible() bool
+
+func (w widget) KeynavFailed(direction DirectionType) bool
+
+func (w widget) ListMnemonicLabels() *glib.List
+
+func (w widget) Map()
+
+func (w widget) Measure(orientation Orientation, forSize int) (int, int, int, int)
+
+func (w widget) MnemonicActivate(groupCycling bool) bool
+
+func (w widget) ObserveChildren() gio.ListModel
+
+func (w widget) ObserveControllers() gio.ListModel
+
+func (w widget) Pick(x float64, y float64, flags PickFlags) widget
+
+func (w widget) QueueAllocate()
+
+func (w widget) QueueDraw()
+
+func (w widget) QueueResize()
+
+func (w widget) Realize()
+
+func (w widget) RemoveController(controller eventController)
+
+func (w widget) RemoveCSSClass(cssClass string)
+
+func (w widget) RemoveMnemonicLabel(label widget)
+
+func (w widget) RemoveTickCallback(id uint)
+
+func (w widget) SetCanFocus(canFocus bool)
+
+func (w widget) SetCanTarget(canTarget bool)
+
+func (w widget) SetChildVisible(childVisible bool)
+
+func (w widget) SetCSSClasses(classes []string)
+
+func (w widget) SetCursor(cursor gdk.cursor)
+
+func (w widget) SetCursorFromName(name string)
+
+func (w widget) SetDirection(dir TextDirection)
+
+func (w widget) SetFocusChild(child widget)
+
+func (w widget) SetFocusOnClick(focusOnClick bool)
+
+func (w widget) SetFocusable(focusable bool)
+
+func (w widget) SetFontMap(fontMap pango.fontMap)
+
+func (w widget) SetFontOptions(options *cairo.FontOptions)
+
+func (w widget) SetHalign(align Align)
+
+func (w widget) SetHasTooltip(hasTooltip bool)
+
+func (w widget) SetHexpand(expand bool)
+
+func (w widget) SetHexpandSet(set bool)
+
+func (w widget) SetLayoutManager(layoutManager layoutManager)
+
+func (w widget) SetMarginBottom(margin int)
+
+func (w widget) SetMarginEnd(margin int)
+
+func (w widget) SetMarginStart(margin int)
+
+func (w widget) SetMarginTop(margin int)
+
+func (w widget) SetName(name string)
+
+func (w widget) SetOpacity(opacity float64)
+
+func (w widget) SetOverflow(overflow Overflow)
+
+func (w widget) SetParent(parent widget)
+
+func (w widget) SetReceivesDefault(receivesDefault bool)
+
+func (w widget) SetSensitive(sensitive bool)
+
+func (w widget) SetSizeRequest(width int, height int)
+
+func (w widget) SetStateFlags(flags StateFlags, clear bool)
+
+func (w widget) SetTooltipMarkup(markup string)
+
+func (w widget) SetTooltipText(text string)
+
+func (w widget) SetValign(align Align)
+
+func (w widget) SetVexpand(expand bool)
+
+func (w widget) SetVexpandSet(set bool)
+
+func (w widget) SetVisible(visible bool)
+
+func (w widget) ShouldLayout() bool
+
+func (w widget) Show()
+
+func (w widget) SizeAllocate(allocation *Allocation, baseline int)
+
+func (w widget) SnapshotChild(child widget, snapshot snapshot)
+
+func (w widget) TranslateCoordinates(destWidget widget, srcX float64, srcY float64) (float64, float64, bool)
+
+func (w widget) TriggerTooltipQuery()
+
+func (w widget) Unmap()
+
+func (w widget) Unparent()
+
+func (w widget) Unrealize()
+
+func (w widget) UnsetStateFlags(flags StateFlags)
 
 // WidgetPaintable: gtkWidgetPaintable is an implementation of the Paintable
 // interface that allows displaying the contents of a Widget.
@@ -16127,12 +32622,21 @@ func marshalWidget(p uintptr) (interface{}, error) {
 // recursion when this happens. If you do this however, ensure the
 // Picture:can-shrink property is set to true or you might end up with an
 // infinitely growing widget.
-type WidgetPaintable struct {
+type WidgetPaintable interface {
+	gextras.Objector
+
+	// GetWidget: returns the widget that is observed or nil if none.
+	GetWidget() widget
+	// SetWidget: sets the widget that should be observed.
+	SetWidget(widget widget)
+}
+
+type widgetPaintable struct {
 	*externglib.Object
 }
 
-func wrapWidgetPaintable(obj *externglib.Object) *WidgetPaintable {
-	return &WidgetPaintable{*externglib.Object{obj}}
+func wrapWidgetPaintable(obj *externglib.Object) WidgetPaintable {
+	return &widgetPaintable{*externglib.Object{obj}}
 }
 
 func marshalWidgetPaintable(p uintptr) (interface{}, error) {
@@ -16141,7 +32645,11 @@ func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewWidgetPaintable(widget *Widget) *WidgetPaintable
+func NewWidgetPaintable(widget widget) WidgetPaintable
+
+func (w widgetPaintable) GetWidget() widget
+
+func (w widgetPaintable) SetWidget(widget widget)
 
 // Window: a GtkWindow is a toplevel window which can contain other widgets.
 // Windows normally have decorations that are under the control of the windowing
@@ -16185,12 +32693,363 @@ func NewWidgetPaintable(widget *Widget) *WidgetPaintable
 // Accessibility
 //
 // GtkWindow uses the GTK_ACCESSIBLE_ROLE_WINDOW role.
-type Window struct {
+type Window interface {
+	widget
+
+	// Close: requests that the window is closed, similar to what happens when a
+	// window manager close button is clicked.
+	//
+	// This function can be used with close buttons in custom titlebars.
+	Close()
+	// Destroy: drop the internal reference GTK holds on toplevel windows.
+	Destroy()
+	// Fullscreen: asks to place @window in the fullscreen state.
+	//
+	// Note that you shouldn’t assume the window is definitely full screen
+	// afterward, because other entities (e.g. the user or [window
+	// manager][gtk-X11-arch]) could unfullscreen it again, and not all window
+	// managers honor requests to fullscreen windows.
+	//
+	// You can track the result of this operation via the Toplevel:state
+	// property, or by listening to notifications of the Window:fullscreened
+	// property.
+	Fullscreen()
+	// FullscreenOnMonitor: asks to place @window in the fullscreen state on the
+	// given @monitor.
+	//
+	// Note that you shouldn't assume the window is definitely full screen
+	// afterward, or that the windowing system allows fullscreen windows on any
+	// given monitor.
+	//
+	// You can track the result of this operation via the Toplevel:state
+	// property, or by listening to notifications of the Window:fullscreened
+	// property.
+	FullscreenOnMonitor(monitor gdk.monitor)
+	// GetApplication: gets the Application associated with the window (if any).
+	GetApplication() application
+	// GetChild: gets the child widget of @window.
+	GetChild() widget
+	// GetDecorated: returns whether the window has been set to have decorations
+	// such as a title bar via gtk_window_set_decorated().
+	GetDecorated() bool
+	// GetDefaultSize: gets the default size of the window. A value of 0 for the
+	// width or height indicates that a default size has not been explicitly set
+	// for that dimension, so the “natural” size of the window will be used.
+	GetDefaultSize() (int, int)
+	// GetDefaultWidget: returns the default widget for @window.
+	//
+	// See gtk_window_set_default_widget() for more details.
+	GetDefaultWidget() widget
+	// GetDeletable: returns whether the window has been set to have a close
+	// button via gtk_window_set_deletable().
+	GetDeletable() bool
+	// GetDestroyWithParent: returns whether the window will be destroyed with
+	// its transient parent. See gtk_window_set_destroy_with_parent ().
+	GetDestroyWithParent() bool
+	// GetFocus: retrieves the current focused widget within the window. Note
+	// that this is the widget that would have the focus if the toplevel window
+	// focused; if the toplevel window is not focused then `gtk_widget_has_focus
+	// (widget)` will not be true for the widget.
+	GetFocus() widget
+	// GetFocusVisible: gets the value of the Window:focus-visible property.
+	GetFocusVisible() bool
+	// GetGroup: returns the group for @window or the default group, if @window
+	// is nil or if @window does not have an explicit window group.
+	GetGroup() windowGroup
+	// GetHideOnClose: returns whether the window will be hidden when the close
+	// button is clicked.
+	GetHideOnClose() bool
+	// GetIconName: returns the name of the themed icon for the window, see
+	// gtk_window_set_icon_name().
+	GetIconName() string
+	// GetMnemonicsVisible: gets the value of the Window:mnemonics-visible
+	// property.
+	GetMnemonicsVisible() bool
+	// GetModal: returns whether the window is modal. See
+	// gtk_window_set_modal().
+	GetModal() bool
+	// GetResizable: gets the value set by gtk_window_set_resizable().
+	GetResizable() bool
+	// GetTitle: retrieves the title of the window. See gtk_window_set_title().
+	GetTitle() string
+	// GetTitlebar: returns the custom titlebar that has been set with
+	// gtk_window_set_titlebar().
+	GetTitlebar() widget
+	// GetTransientFor: fetches the transient parent for this window. See
+	// gtk_window_set_transient_for().
+	GetTransientFor() window
+	// HasGroup: returns whether @window has an explicit window group.
+	HasGroup() bool
+	// IsActive: returns whether the window is part of the current active
+	// toplevel. (That is, the toplevel window receiving keystrokes.) The return
+	// value is true if the window is active toplevel itself. You might use this
+	// function if you wanted to draw a widget differently in an active window
+	// from a widget in an inactive window.
+	IsActive() bool
+	// IsFullscreen: retrieves the current fullscreen state of @window.
+	//
+	// Note that since fullscreening is ultimately handled by the window manager
+	// and happens asynchronously to an application request, you shouldn’t
+	// assume the return value of this function changing immediately (or at
+	// all), as an effect of calling gtk_window_fullscreen() or
+	// gtk_window_unfullscreen().
+	//
+	// If the window isn't yet mapped, the value returned will whether the
+	// initial requested state is fullscreen.
+	IsFullscreen() bool
+	// IsMaximized: retrieves the current maximized state of @window.
+	//
+	// Note that since maximization is ultimately handled by the window manager
+	// and happens asynchronously to an application request, you shouldn’t
+	// assume the return value of this function changing immediately (or at
+	// all), as an effect of calling gtk_window_maximize() or
+	// gtk_window_unmaximize().
+	//
+	// If the window isn't yet mapped, the value returned will whether the
+	// initial requested state is maximized.
+	IsMaximized() bool
+	// Maximize: asks to maximize @window, so that it fills the screen.
+	//
+	// Note that you shouldn’t assume the window is definitely maximized
+	// afterward, because other entities (e.g. the user or [window
+	// manager][gtk-X11-arch]) could unmaximize it again, and not all window
+	// managers support maximization.
+	//
+	// It’s permitted to call this function before showing a window, in which
+	// case the window will be maximized when it appears onscreen initially.
+	//
+	// You can track the result of this operation via the Toplevel:state
+	// property, or by listening to notifications on the Window:maximized
+	// property.
+	Maximize()
+	// Minimize: asks to minimize the specified @window.
+	//
+	// Note that you shouldn’t assume the window is definitely minimized
+	// afterward, because the windowing system might not support this
+	// functionality; other entities (e.g. the user or the [window
+	// manager][gtk-X11-arch]) could unminimize it again, or there may not be a
+	// window manager in which case minimization isn’t possible, etc.
+	//
+	// It’s permitted to call this function before showing a window, in which
+	// case the window will be minimized before it ever appears onscreen.
+	//
+	// You can track result of this operation via the Toplevel:state property.
+	Minimize()
+	// Present: presents a window to the user. This function should not be used
+	// as when it is called, it is too late to gather a valid timestamp to allow
+	// focus stealing prevention to work correctly.
+	Present()
+	// PresentWithTime: presents a window to the user. This may mean raising the
+	// window in the stacking order, unminimizing it, moving it to the current
+	// desktop, and/or giving it the keyboard focus, possibly dependent on the
+	// user’s platform, window manager, and preferences.
+	//
+	// If @window is hidden, this function calls gtk_widget_show() as well.
+	//
+	// This function should be used when the user tries to open a window that’s
+	// already open. Say for example the preferences dialog is currently open,
+	// and the user chooses Preferences from the menu a second time; use
+	// gtk_window_present() to move the already-open dialog where the user can
+	// see it.
+	//
+	// Presents a window to the user in response to a user interaction. The
+	// timestamp should be gathered when the window was requested to be shown
+	// (when clicking a link for example), rather than once the window is ready
+	// to be shown.
+	PresentWithTime(timestamp uint32)
+	// SetApplication: sets or unsets the Application associated with the
+	// window.
+	//
+	// The application will be kept alive for at least as long as it has any
+	// windows associated with it (see g_application_hold() for a way to keep it
+	// alive without windows).
+	//
+	// Normally, the connection between the application and the window will
+	// remain until the window is destroyed, but you can explicitly remove it by
+	// setting the @application to nil.
+	//
+	// This is equivalent to calling gtk_application_remove_window() and/or
+	// gtk_application_add_window() on the old/new applications as relevant.
+	SetApplication(application application)
+	// SetChild: sets the child widget of @window.
+	SetChild(child widget)
+	// SetDecorated: by default, windows are decorated with a title bar, resize
+	// controls, etc. Some [window managers][gtk-X11-arch] allow GTK to disable
+	// these decorations, creating a borderless window. If you set the decorated
+	// property to false using this function, GTK will do its best to convince
+	// the window manager not to decorate the window. Depending on the system,
+	// this function may not have any effect when called on a window that is
+	// already visible, so you should call it before calling gtk_widget_show().
+	//
+	// On Windows, this function always works, since there’s no window manager
+	// policy involved.
+	SetDecorated(setting bool)
+	// SetDefaultSize: sets the default size of a window. If the window’s
+	// “natural” size (its size request) is larger than the default, the default
+	// will be ignored.
+	//
+	// Unlike gtk_widget_set_size_request(), which sets a size request for a
+	// widget and thus would keep users from shrinking the window, this function
+	// only sets the initial size, just as if the user had resized the window
+	// themselves. Users can still shrink the window again as they normally
+	// would. Setting a default size of -1 means to use the “natural” default
+	// size (the size request of the window).
+	//
+	// The default size of a window only affects the first time a window is
+	// shown; if a window is hidden and re-shown, it will remember the size it
+	// had prior to hiding, rather than using the default size.
+	//
+	// Windows can’t actually be 0x0 in size, they must be at least 1x1, but
+	// passing 0 for @width and @height is OK, resulting in a 1x1 default size.
+	//
+	// If you use this function to reestablish a previously saved window size,
+	// note that the appropriate size to save is the one returned by
+	// gtk_window_get_default_size(). Using the window allocation directly will
+	// not work in all circumstances and can lead to growing or shrinking
+	// windows.
+	SetDefaultSize(width int, height int)
+	// SetDefaultWidget: the default widget is the widget that’s activated when
+	// the user presses Enter in a dialog (for example). This function sets or
+	// unsets the default widget for a Window.
+	SetDefaultWidget(defaultWidget widget)
+	// SetDeletable: by default, windows have a close button in the window
+	// frame. Some [window managers][gtk-X11-arch] allow GTK to disable this
+	// button. If you set the deletable property to false using this function,
+	// GTK will do its best to convince the window manager not to show a close
+	// button. Depending on the system, this function may not have any effect
+	// when called on a window that is already visible, so you should call it
+	// before calling gtk_widget_show().
+	//
+	// On Windows, this function always works, since there’s no window manager
+	// policy involved.
+	SetDeletable(setting bool)
+	// SetDestroyWithParent: if @setting is true, then destroying the transient
+	// parent of @window will also destroy @window itself. This is useful for
+	// dialogs that shouldn’t persist beyond the lifetime of the main window
+	// they're associated with, for example.
+	SetDestroyWithParent(setting bool)
+	// SetDisplay: sets the Display where the @window is displayed; if the
+	// window is already mapped, it will be unmapped, and then remapped on the
+	// new display.
+	SetDisplay(display gdk.display)
+	// SetFocus: if @focus is not the current focus widget, and is focusable,
+	// sets it as the focus widget for the window. If @focus is nil, unsets the
+	// focus widget for this window. To set the focus to a particular widget in
+	// the toplevel, it is usually more convenient to use
+	// gtk_widget_grab_focus() instead of this function.
+	SetFocus(focus widget)
+	// SetFocusVisible: sets the Window:focus-visible property.
+	SetFocusVisible(setting bool)
+	// SetHideOnClose: if @setting is true, then clicking the close button on
+	// the window will not destroy it, but only hide it.
+	SetHideOnClose(setting bool)
+	// SetIconName: sets the icon for the window from a named themed icon. See
+	// the docs for IconTheme for more details. On some platforms, the window
+	// icon is not used at all.
+	//
+	// Note that this has nothing to do with the WM_ICON_NAME property which is
+	// mentioned in the ICCCM.
+	SetIconName(name string)
+	// SetMnemonicsVisible: sets the Window:mnemonics-visible property.
+	SetMnemonicsVisible(setting bool)
+	// SetModal: sets a window modal or non-modal. Modal windows prevent
+	// interaction with other windows in the same application. To keep modal
+	// dialogs on top of main application windows, use
+	// gtk_window_set_transient_for() to make the dialog transient for the
+	// parent; most [window managers][gtk-X11-arch] will then disallow lowering
+	// the dialog below the parent.
+	SetModal(modal bool)
+	// SetResizable: sets whether the user can resize a window.
+	//
+	// Windows are user resizable by default.
+	SetResizable(resizable bool)
+	// SetStartupID: startup notification identifiers are used by desktop
+	// environment to track application startup, to provide user feedback and
+	// other features. This function changes the corresponding property on the
+	// underlying GdkSurface. Normally, startup identifier is managed
+	// automatically and you should only use this function in special cases like
+	// transferring focus from other processes. You should use this function
+	// before calling gtk_window_present() or any equivalent function generating
+	// a window map event.
+	//
+	// This function is only useful on X11, not with other GTK targets.
+	SetStartupID(startupID string)
+	// SetTitle: sets the title of the Window. The title of a window will be
+	// displayed in its title bar; on the X Window System, the title bar is
+	// rendered by the [window manager][gtk-X11-arch], so exactly how the title
+	// appears to users may vary according to a user’s exact configuration. The
+	// title should help a user distinguish this window from other windows they
+	// may have open. A good title might include the application name and
+	// current document filename, for example. document filename, for example.
+	//
+	// Passing nil does the same as setting the title to an empty string.
+	SetTitle(title string)
+	// SetTitlebar: sets a custom titlebar for @window.
+	//
+	// A typical widget used here is HeaderBar, as it provides various features
+	// expected of a titlebar while allowing the addition of child widgets to
+	// it.
+	//
+	// If you set a custom titlebar, GTK will do its best to convince the window
+	// manager not to put its own titlebar on the window. Depending on the
+	// system, this function may not work for a window that is already visible,
+	// so you set the titlebar before calling gtk_widget_show().
+	SetTitlebar(titlebar widget)
+	// SetTransientFor: dialog windows should be set transient for the main
+	// application window they were spawned from. This allows [window
+	// managers][gtk-X11-arch] to e.g. keep the dialog on top of the main
+	// window, or center the dialog over the main window.
+	// gtk_dialog_new_with_buttons() and other convenience functions in GTK will
+	// sometimes call gtk_window_set_transient_for() on your behalf.
+	//
+	// Passing nil for @parent unsets the current transient window.
+	//
+	// On Windows, this function puts the child window on top of the parent,
+	// much as the window manager would have done on X.
+	SetTransientFor(parent window)
+	// Unfullscreen: asks to remove the fullscreen state for @window, and return
+	// to its previous state.
+	//
+	// Note that you shouldn’t assume the window is definitely not full screen
+	// afterward, because other entities (e.g. the user or [window
+	// manager][gtk-X11-arch]) could fullscreen it again, and not all window
+	// managers honor requests to unfullscreen windows; normally the window will
+	// end up restored to its normal state. Just don’t write code that crashes
+	// if not.
+	//
+	// You can track the result of this operation via the Toplevel:state
+	// property, or by listening to notifications of the Window:fullscreened
+	// property.
+	Unfullscreen()
+	// Unmaximize: asks to unmaximize @window.
+	//
+	// Note that you shouldn’t assume the window is definitely unmaximized
+	// afterward, because other entities (e.g. the user or [window
+	// manager][gtk-X11-arch]) could maximize it again, and not all window
+	// managers honor requests to unmaximize.
+	//
+	// You can track the result of this operation via the Toplevel:state
+	// property, or by listening to notifications on the Window:maximized
+	// property.
+	Unmaximize()
+	// Unminimize: asks to unminimize the specified @window.
+	//
+	// Note that you shouldn’t assume the window is definitely unminimized
+	// afterward, because the windowing system might not support this
+	// functionality; other entities (e.g. the user or the [window
+	// manager][gtk-X11-arch]) could minimize it again, or there may not be a
+	// window manager in which case minimization isn’t possible, etc.
+	//
+	// You can track result of this operation via the Toplevel:state property.
+	Unminimize()
+}
+
+type window struct {
 	Widget
 }
 
-func wrapWindow(obj *externglib.Object) *Window {
-	return &Window{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapWindow(obj *externglib.Object) Window {
+	return &window{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalWindow(p uintptr) (interface{}, error) {
@@ -16199,7 +33058,111 @@ func marshalWindow(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewWindow() *Window
+func NewWindow() Window
+
+func (w window) Close()
+
+func (w window) Destroy()
+
+func (w window) Fullscreen()
+
+func (w window) FullscreenOnMonitor(monitor gdk.monitor)
+
+func (w window) GetApplication() application
+
+func (w window) GetChild() widget
+
+func (w window) GetDecorated() bool
+
+func (w window) GetDefaultSize() (int, int)
+
+func (w window) GetDefaultWidget() widget
+
+func (w window) GetDeletable() bool
+
+func (w window) GetDestroyWithParent() bool
+
+func (w window) GetFocus() widget
+
+func (w window) GetFocusVisible() bool
+
+func (w window) GetGroup() windowGroup
+
+func (w window) GetHideOnClose() bool
+
+func (w window) GetIconName() string
+
+func (w window) GetMnemonicsVisible() bool
+
+func (w window) GetModal() bool
+
+func (w window) GetResizable() bool
+
+func (w window) GetTitle() string
+
+func (w window) GetTitlebar() widget
+
+func (w window) GetTransientFor() window
+
+func (w window) HasGroup() bool
+
+func (w window) IsActive() bool
+
+func (w window) IsFullscreen() bool
+
+func (w window) IsMaximized() bool
+
+func (w window) Maximize()
+
+func (w window) Minimize()
+
+func (w window) Present()
+
+func (w window) PresentWithTime(timestamp uint32)
+
+func (w window) SetApplication(application application)
+
+func (w window) SetChild(child widget)
+
+func (w window) SetDecorated(setting bool)
+
+func (w window) SetDefaultSize(width int, height int)
+
+func (w window) SetDefaultWidget(defaultWidget widget)
+
+func (w window) SetDeletable(setting bool)
+
+func (w window) SetDestroyWithParent(setting bool)
+
+func (w window) SetDisplay(display gdk.display)
+
+func (w window) SetFocus(focus widget)
+
+func (w window) SetFocusVisible(setting bool)
+
+func (w window) SetHideOnClose(setting bool)
+
+func (w window) SetIconName(name string)
+
+func (w window) SetMnemonicsVisible(setting bool)
+
+func (w window) SetModal(modal bool)
+
+func (w window) SetResizable(resizable bool)
+
+func (w window) SetStartupID(startupID string)
+
+func (w window) SetTitle(title string)
+
+func (w window) SetTitlebar(titlebar widget)
+
+func (w window) SetTransientFor(parent window)
+
+func (w window) Unfullscreen()
+
+func (w window) Unmaximize()
+
+func (w window) Unminimize()
 
 // WindowControls: gtkWindowControls shows window frame controls, such as
 // minimize, maximize and close buttons, and the window icon.
@@ -16245,12 +33208,43 @@ func NewWindow() *Window
 // Accessibility
 //
 // GtkWindowHandle uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type WindowControls struct {
+type WindowControls interface {
+	widget
+
+	// GetDecorationLayout: gets the decoration layout set with
+	// gtk_window_controls_set_decoration_layout().
+	GetDecorationLayout() string
+	// GetEmpty: gets whether the widget has any window buttons.
+	GetEmpty() bool
+	// GetSide: gets the side set with gtk_window_controls_set_side().
+	GetSide() PackType
+	// SetDecorationLayout: sets the decoration layout for the title buttons,
+	// overriding the Settings:gtk-decoration-layout setting.
+	//
+	// The format of the string is button names, separated by commas. A colon
+	// separates the buttons that should appear on the left from those on the
+	// right. Recognized button names are minimize, maximize, close and icon
+	// (the window icon).
+	//
+	// For example, “icon:minimize,maximize,close” specifies a icon on the left,
+	// and minimize, maximize and close buttons on the right.
+	//
+	// If WindowControls:side value is @GTK_PACK_START, @self will display the
+	// part before the colon, otherwise after that.
+	SetDecorationLayout(layout string)
+	// SetSide: sets the side for @self, determining which part of decoration
+	// layout it uses.
+	//
+	// See gtk_window_controls_set_decoration_layout()
+	SetSide(side PackType)
+}
+
+type windowControls struct {
 	Widget
 }
 
-func wrapWindowControls(obj *externglib.Object) *WindowControls {
-	return &WindowControls{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapWindowControls(obj *externglib.Object) WindowControls {
+	return &windowControls{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalWindowControls(p uintptr) (interface{}, error) {
@@ -16259,7 +33253,17 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewWindowControls(side PackType) *WindowControls
+func NewWindowControls(side PackType) WindowControls
+
+func (w windowControls) GetDecorationLayout() string
+
+func (w windowControls) GetEmpty() bool
+
+func (w windowControls) GetSide() PackType
+
+func (w windowControls) SetDecorationLayout(layout string)
+
+func (w windowControls) SetSide(side PackType)
 
 // WindowGroup: a WindowGroup restricts the effect of grabs to windows in the
 // same group, thereby making window groups almost behave like separate
@@ -16275,12 +33279,23 @@ func NewWindowControls(side PackType) *WindowControls
 // window group are subsequently destroyed, then they will be removed from the
 // window group and drop their references on the window group; when all window
 // have been removed, the window group will be freed.
-type WindowGroup struct {
+type WindowGroup interface {
+	gextras.Objector
+
+	// AddWindow: adds a window to a WindowGroup.
+	AddWindow(window window)
+	// ListWindows: returns a list of the Windows that belong to @window_group.
+	ListWindows() *glib.List
+	// RemoveWindow: removes a window from a WindowGroup.
+	RemoveWindow(window window)
+}
+
+type windowGroup struct {
 	*externglib.Object
 }
 
-func wrapWindowGroup(obj *externglib.Object) *WindowGroup {
-	return &WindowGroup{*externglib.Object{obj}}
+func wrapWindowGroup(obj *externglib.Object) WindowGroup {
+	return &windowGroup{*externglib.Object{obj}}
 }
 
 func marshalWindowGroup(p uintptr) (interface{}, error) {
@@ -16289,7 +33304,13 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewWindowGroup() *WindowGroup
+func NewWindowGroup() WindowGroup
+
+func (w windowGroup) AddWindow(window window)
+
+func (w windowGroup) ListWindows() *glib.List
+
+func (w windowGroup) RemoveWindow(window window)
 
 // WindowHandle: gtkWindowHandle is a titlebar area widget. When added into a
 // window, it can be dragged to move the window, and handles right click, double
@@ -16304,12 +33325,21 @@ func NewWindowGroup() *WindowGroup
 // Accessibility
 //
 // GtkWindowHandle uses the GTK_ACCESSIBLE_ROLE_GROUP role.
-type WindowHandle struct {
+type WindowHandle interface {
+	widget
+
+	// GetChild: gets the child widget of @self.
+	GetChild() widget
+	// SetChild: sets the child widget of @self.
+	SetChild(child widget)
+}
+
+type windowHandle struct {
 	Widget
 }
 
-func wrapWindowHandle(obj *externglib.Object) *WindowHandle {
-	return &WindowHandle{Widget{externglib.InitiallyUnowned{obj}}}
+func wrapWindowHandle(obj *externglib.Object) WindowHandle {
+	return &windowHandle{Widget{externglib.InitiallyUnowned{obj}}}
 }
 
 func marshalWindowHandle(p uintptr) (interface{}, error) {
@@ -16318,4 +33348,8 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewWindowHandle() *WindowHandle
+func NewWindowHandle() WindowHandle
+
+func (w windowHandle) GetChild() widget
+
+func (w windowHandle) SetChild(child widget)

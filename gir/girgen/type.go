@@ -22,6 +22,7 @@ type ResolvedType struct {
 	Package string // Package name, also import alias.
 
 	Parent string // GIR Type, optional
+	GType  string
 	CType  string
 	Ptr    uint8
 }
@@ -39,16 +40,28 @@ var (
 func countPtrs(typ gir.Type, result *gir.TypeFindResult) uint8 {
 	ptr := uint8(strings.Count(typ.CType, "*"))
 
-	// Edge case: interfaces must not be pointers. We should still sometimes
-	// allow for pointers to interfaces, if needed, but this likely won't work.
-	if result != nil && result.Interface != nil && ptr > 0 {
-		ptr--
-	}
-	// Edge case: a string is a gchar*, so we don't need a pointer.
-	if typ.Name == "utf8" && ptr > 0 {
-		ptr--
+	if ptr > 0 {
+		// Edge case: a string is a gchar*, so we don't need a pointer.
+		if typ.Name == "utf8" {
+			ptr--
+			goto ret
+		}
+
+		if result != nil {
+			// Edge case: interfaces must not be pointers. We should still
+			// sometimes allow for pointers to interfaces, if needed, but this
+			// likely won't work.
+			switch {
+			case result.Interface != nil:
+				fallthrough
+			case result.Class != nil:
+				ptr--
+				goto ret
+			}
+		}
 	}
 
+ret:
 	return ptr
 }
 
@@ -63,6 +76,7 @@ func builtinType(imp, typ string, girType gir.Type) *ResolvedType {
 		Builtin: &typ,
 		Import:  imp,
 		Package: path.Base(imp),
+		GType:   girType.Name,
 		CType:   girType.CType,
 		Ptr:     countPtrs(girType, nil),
 	}
@@ -77,6 +91,7 @@ func externGLibType(glibType string, typ gir.Type) *ResolvedType {
 		Builtin: &glibType,
 		Import:  "github.com/gotk3/gotk3/glib",
 		Package: "externglib",
+		GType:   typ.Name,
 		CType:   typ.CType,
 		Ptr:     uint8(ptrs),
 	}
@@ -98,6 +113,7 @@ func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *R
 		Import:  gen.ImportPath(pkg),
 		Package: pkg,
 		Parent:  parent,
+		GType:   typ.Name,
 		CType:   typ.CType,
 		Ptr:     countPtrs(typ, result),
 	}
@@ -113,8 +129,10 @@ func (typ *ResolvedType) NeedsNamespace(current *gir.NamespaceFindResult) bool {
 	return !typ.Extern.Result.Eq(current)
 }
 
-// GoType formats the Go type.
-func (typ *ResolvedType) GoType(needsNamespace bool) string {
+// ImplType returns the implementation type. This is only different to
+// PublicType as far as classes go: the returned type is the unexported
+// implementation type.
+func (typ *ResolvedType) ImplType(needsNamespace bool) string {
 	if typ.Builtin != nil {
 		return *typ.Builtin
 	}
@@ -127,6 +145,38 @@ func (typ *ResolvedType) GoType(needsNamespace bool) string {
 	if !needsNamespace {
 		return ptr + name
 	}
+
+	return ptr + typ.Package + "." + name
+}
+
+// PublicType returns the public type. If the resolved type is a class, then the
+// interface type is returned.
+func (typ *ResolvedType) PublicType(needsNamespace bool) string {
+	switch typ.GType {
+	case "GObject.InitiallyUnowned":
+		fallthrough
+	case "GObject.Object":
+		// TODO: there should be a better way to do this; one that adds imports.
+		return "gextras.Objector"
+	}
+
+	if typ.Builtin != nil {
+		return *typ.Builtin
+	}
+
+	name, _ := typ.Extern.Result.Info()
+	name = PascalToGo(name)
+
+	if typ.Extern.Result.Class != nil {
+		name = UnexportPascal(name)
+	}
+
+	ptr := strings.Repeat("*", int(typ.Ptr))
+
+	if !needsNamespace {
+		return ptr + name
+	}
+
 	return ptr + typ.Package + "." + name
 }
 
@@ -145,19 +195,24 @@ func movePtr(orig, into string) string {
 	return strings.Repeat("*", ptr) + into
 }
 
-// GoType returns the generated Go type of the given resolved type.
-func (ng *NamespaceGenerator) GoType(resolved *ResolvedType) string {
-	return resolved.GoType(resolved.NeedsNamespace(ng.current))
+// PublicType returns the generated public Go type of the given resolved type.
+func (ng *NamespaceGenerator) PublicType(resolved *ResolvedType) string {
+	return resolved.PublicType(resolved.NeedsNamespace(ng.current))
+}
+
+// ImplType returns the generated implementation Go type of the given resolved type.
+func (ng *NamespaceGenerator) ImplType(resolved *ResolvedType) string {
+	return resolved.ImplType(resolved.NeedsNamespace(ng.current))
 }
 
 // arrayType generates the Go type signature for the given array.
-func (ng *NamespaceGenerator) resolveArrayType(array gir.Array) (string, bool) {
+func (ng *NamespaceGenerator) resolveArrayType(array gir.Array, pub bool) (string, bool) {
 	arrayPrefix := "[]"
 	if array.FixedSize > 0 {
 		arrayPrefix = fmt.Sprintf("[%d]", array.FixedSize)
 	}
 
-	child, _ := ng.ResolveAnyType(array.AnyType)
+	child, _ := ng.ResolveAnyType(array.AnyType, pub)
 	// There can't be []void, so this check ensures there can only be valid
 	// array types.
 	if child == "" {
@@ -168,13 +223,15 @@ func (ng *NamespaceGenerator) resolveArrayType(array gir.Array) (string, bool) {
 }
 
 // ResolveAnyType generates the Go type signature for the AnyType union. An
-// empty string returned is an invalid type.
-func (ng *NamespaceGenerator) ResolveAnyType(any gir.AnyType) (string, bool) {
+// empty string returned is an invalid type. If pub is true, then the returned
+// string will use public interface types for classes instead of implementation
+// types.
+func (ng *NamespaceGenerator) ResolveAnyType(any gir.AnyType, pub bool) (string, bool) {
 	switch {
 	case any.Array != nil:
-		return ng.resolveArrayType(*any.Array)
+		return ng.resolveArrayType(*any.Array, pub)
 	case any.Type != nil:
-		return ng.ResolveToGoType(*any.Type)
+		return ng.ResolveToGoType(*any.Type, pub)
 	}
 
 	// Probably varargs, ignore because Cgo.
@@ -183,13 +240,17 @@ func (ng *NamespaceGenerator) ResolveAnyType(any gir.AnyType) (string, bool) {
 
 // ResolveToGoType is a convenient function that wraps around ResolveType and
 // returns the Go type.
-func (ng *NamespaceGenerator) ResolveToGoType(typ gir.Type) (string, bool) {
+func (ng *NamespaceGenerator) ResolveToGoType(typ gir.Type, pub bool) (string, bool) {
 	resolved := ng.ResolveType(typ)
 	if resolved == nil {
 		return "", false
 	}
 
-	return ng.GoType(resolved), true
+	if pub {
+		return ng.PublicType(resolved), true
+	}
+
+	return ng.ImplType(resolved), true
 }
 
 // ResolveTypeName resolves the given GIR type name. The resolved type will
@@ -276,6 +337,13 @@ var girPrimitiveGo = map[string]string{
 	"guint64":     "uint64",
 	"utf8":        "string",
 	"filename":    "string",
+}
+
+// gextrasObjector references the gextras.Objector interface.
+var gextrasObjector = &ResolvedType{
+	Builtin: func() *string { v := "gextras.Objector"; return &v }(),
+	Import:  "github.com/diamondburned/gotk4/internal/gextras",
+	Package: "gextras",
 }
 
 func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
@@ -499,7 +567,7 @@ func (ng *NamespaceGenerator) _typeConverter(value, target string, typ gir.Type,
 	}
 
 	resolved := typeFromResult(ng.gen, typ, result)
-	goType := resolved.GoType(false)
+	goType := ng.ImplType(resolved)
 
 	// Resolve alias.
 	if result.Alias != nil {

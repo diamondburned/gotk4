@@ -36,7 +36,7 @@ type Package struct {
 
 var packages = []Package{
 	{"gobject-introspection-1.0", []string{
-		"GLib", "Gio", "Vulkan", "cairo", "xft", "xlib", "freetype2",
+		"GLib", "Gio", "Vulkan", "cairo", "xft", "xlib", "freetype2", "fontconfig",
 	}},
 	{"pango", nil},
 	{"gdk-pixbuf-2.0", []string{"GdkPixbuf", "GdkPixdata"}},

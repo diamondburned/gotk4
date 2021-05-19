@@ -93,7 +93,7 @@ func (ng *NamespaceGenerator) FnArgs(attrs gir.CallableAttrs) (string, bool) {
 			continue
 		}
 
-		resolved, ok := ng.ResolveAnyType(param.AnyType)
+		resolved, ok := ng.ResolveAnyType(param.AnyType, true)
 		if !ok {
 			return "", false
 		}
@@ -116,7 +116,7 @@ func (ng *NamespaceGenerator) FnReturns(attrs gir.CallableAttrs) (string, bool) 
 				continue
 			}
 
-			typ, ok := ng.ResolveAnyType(param.AnyType)
+			typ, ok := ng.ResolveAnyType(param.AnyType, true)
 			if !ok {
 				return "", false
 			}
@@ -131,7 +131,7 @@ func (ng *NamespaceGenerator) FnReturns(attrs gir.CallableAttrs) (string, bool) 
 	}
 
 	if attrs.ReturnValue != nil {
-		typ, ok := ng.ResolveAnyType(attrs.ReturnValue.AnyType)
+		typ, ok := ng.ResolveAnyType(attrs.ReturnValue.AnyType, true)
 		if !ok {
 			return "", false
 		}

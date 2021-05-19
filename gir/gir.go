@@ -213,6 +213,8 @@ type TypeFindResult struct {
 
 // Info gets the name and C type of the resulting type. The name returned is in
 // camel case.
+//
+// TODO: split Info into Name() and CType().
 func (res *TypeFindResult) Info() (name, ctype string) {
 	switch {
 	case res.Alias != nil:

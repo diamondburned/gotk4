@@ -17,10 +17,10 @@ import (
 func newGoTemplate(block string) *template.Template {
 	t := template.New("")
 	t.Funcs(template.FuncMap{
-		"PascalToGo": PascalToGo,
-		"SnakeToGo":  SnakeToGo,
-		"FirstChar":  FirstChar,
-		"GoDoc":      GoDoc,
+		"PascalToGo":  PascalToGo,
+		"SnakeToGo":   SnakeToGo,
+		"FirstLetter": FirstLetter,
+		"GoDoc":       GoDoc,
 	})
 	t = template.Must(t.Parse(block))
 	return t
@@ -149,8 +149,7 @@ type NamespaceGenerator struct {
 
 // Generate generates the current namespace into the given writer.
 func (ng *NamespaceGenerator) Generate(w io.Writer) error {
-	ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
-	ng.addImport("github.com/diamondburned/gotk4/internal/callback")
+	// ng.addImport("github.com/diamondburned/gotk4/internal/callback")
 
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!

@@ -110,6 +110,26 @@ func PascalToGo(pascal string) string {
 	return pascalRegex.ReplaceAllStringFunc(pascal, strings.ToUpper)
 }
 
+// FirstLetter returns the first letter.
+func FirstLetter(p string) string {
+	r, sz := utf8.DecodeRuneInString(p)
+	if sz > 0 && r != utf8.RuneError {
+		return string(r)
+	}
+
+	return string(p[0]) // fallback
+}
+
+// UnexportPascal converts the PascalToGo string to be unexported.
+func UnexportPascal(pascal string) string {
+	r, sz := utf8.DecodeRuneInString(pascal)
+	if r != utf8.RuneError {
+		return snakeNoGo(string(unicode.ToLower(r)) + pascal[sz:])
+	}
+
+	return pascal // what???
+}
+
 // SnakeToGo converts snake case to Go's special case. If Pascal is true, then
 // the first letter is capitalized.
 func SnakeToGo(pascal bool, snakeString string) string {
@@ -128,18 +148,17 @@ func SnakeToGo(pascal bool, snakeString string) string {
 	snakeString = PascalToGo(snakeString)
 
 	if !pascal {
-		// Special cases.
-		_, isKeyword := goKeywords[snakeString]
-		if isKeyword {
-			snakeString = "_" + snakeString
-		}
+		return snakeNoGo(snakeString)
 	}
 
 	return snakeString
 }
 
-// FirstChar returns the first character.
-func FirstChar(str string) string {
-	r, _ := utf8.DecodeRune([]byte(str))
-	return string(unicode.ToLower(r))
+// snakeNoGo ensures the snake-case string is never a Go keyword.
+func snakeNoGo(snake string) string {
+	_, isKeyword := goKeywords[snake]
+	if isKeyword {
+		snake = "_" + snake
+	}
+	return snake
 }

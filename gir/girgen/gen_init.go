@@ -31,7 +31,7 @@ var initTmpl = newGoTemplate(`
 			// Classes
 			{{- range .Classes }}
 			{{- if (and .GLibGetType ($.C.Use .)) }}
-			{T: externglib.Type(C.{{.GLibGetType}}()), F: marshal{{$.C.GoName}}},
+			{T: externglib.Type(C.{{.GLibGetType}}()), F: marshal{{$.C.InterfaceName}}},
 			{{- else }}
 			// Skipped {{.Name}}.
 			{{- end -}}

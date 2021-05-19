@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -1269,7 +1270,7 @@ func IsZeroWidth(ch uint32) bool
 // range before or containing @start_index; @cached_iter will be advanced to the
 // range covering the position just after @start_index + @length. (i.e. if
 // itemizing in a loop, just keep passing in the same @cached_iter).
-func Itemize(context *Context, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *glib.List
+func Itemize(context context, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *glib.List
 
 // ItemizeWithBaseDir: like `pango_itemize()`, but with an explicitly specified
 // base direction.
@@ -1277,7 +1278,7 @@ func Itemize(context *Context, text string, startIndex int, length int, attrs *A
 // The base direction is used when computing bidirectional levels. (see
 // [method@Pango.Context.set_base_dir]). [func@itemize] gets the base direction
 // from the `PangoContext`.
-func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *glib.List
+func ItemizeWithBaseDir(context context, baseDir Direction, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *glib.List
 
 // LanguageFromString: convert a language tag to a `PangoLanguage`.
 //
@@ -1639,7 +1640,7 @@ type Analysis struct {
 	// LangEngine: unused
 	LangEngine unsafe.Pointer
 	// Font: the font for this segment.
-	Font *Font
+	Font font
 	// Level: the bidirectional level for this segment.
 	Level uint8
 	// Gravity: the glyph orientation for this segment (A `PangoGravity`).
@@ -1662,13 +1663,13 @@ func wrapAnalysis(p *C.PangoAnalysis) *Analysis {
 
 	v.ShapeEngine = unsafe.Pointer(p.shape_engine)
 	v.LangEngine = unsafe.Pointer(p.lang_engine)
-	v.Font = wrap * Font(p.font)
+	v.Font = wrapFont(p.font)
 	v.Level = uint8(p.level)
 	v.Gravity = uint8(p.gravity)
 	v.Flags = uint8(p.flags)
 	v.Script = uint8(p.script)
 	v.Language = wrap * Language(p.language)
-	v.ExtraAttrs = wrap * SList(p.extra_attrs)
+	v.ExtraAttrs = wrap * glib.SList(p.extra_attrs)
 
 	return &v
 }
@@ -1682,8 +1683,8 @@ func marshalAnalysis(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAnalysis. The caller is expected to
 // cast.
-func (a *Analysis) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *Analysis) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // AttrColor: the `PangoAttrColor` structure is used to represent attributes
@@ -1715,8 +1716,8 @@ func marshalAttrColor(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAttrColor. The caller is expected to
 // cast.
-func (a *AttrColor) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrColor) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // AttrFloat: the `PangoAttrFloat` structure is used to represent attributes
@@ -1748,8 +1749,8 @@ func marshalAttrFloat(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAttrFloat. The caller is expected to
 // cast.
-func (a *AttrFloat) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrFloat) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // AttrFontDesc: the `PangoAttrFontDesc` structure is used to store an attribute
@@ -1781,8 +1782,8 @@ func marshalAttrFontDesc(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAttrFontDesc. The caller is expected to
 // cast.
-func (a *AttrFontDesc) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrFontDesc) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // AttrFontFeatures: the `PangoAttrFontFeatures` structure is used to represent
@@ -1814,8 +1815,8 @@ func marshalAttrFontFeatures(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAttrFontFeatures. The caller is expected to
 // cast.
-func (a *AttrFontFeatures) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrFontFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // AttrInt: the `PangoAttrInt` structure is used to represent attributes with an
@@ -1847,8 +1848,8 @@ func marshalAttrInt(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAttrInt. The caller is expected to
 // cast.
-func (a *AttrInt) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrInt) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // AttrIterator: a `PangoAttrIterator` is used to iterate through a
@@ -1879,12 +1880,12 @@ func marshalAttrIterator(p uintptr) (interface{}, error) {
 	return wrapAttrIterator(c)
 }
 
-func (a *AttrIterator) free() {}
+func (A *AttrIterator) free() {}
 
 // Native returns the pointer to *C.PangoAttrIterator. The caller is expected to
 // cast.
-func (a *AttrIterator) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrIterator) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // AttrLanguage: the `PangoAttrLanguage` structure is used to represent
@@ -1916,8 +1917,8 @@ func marshalAttrLanguage(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAttrLanguage. The caller is expected to
 // cast.
-func (a *AttrLanguage) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrLanguage) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // AttrList: a `PangoAttrList` represents a list of attributes that apply to a
@@ -1951,12 +1952,12 @@ func marshalAttrList(p uintptr) (interface{}, error) {
 	return wrapAttrList(c)
 }
 
-func (a *AttrList) free() {}
+func (A *AttrList) free() {}
 
 // Native returns the pointer to *C.PangoAttrList. The caller is expected to
 // cast.
-func (a *AttrList) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrList) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 func NewAttrList() *AttrList
@@ -2001,8 +2002,8 @@ func marshalAttrShape(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAttrShape. The caller is expected to
 // cast.
-func (a *AttrShape) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrShape) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // AttrSize: the `PangoAttrSize` structure is used to represent attributes which
@@ -2041,8 +2042,8 @@ func marshalAttrSize(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAttrSize. The caller is expected to
 // cast.
-func (a *AttrSize) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // AttrString: the `PangoAttrString` structure is used to represent attributes
@@ -2074,8 +2075,8 @@ func marshalAttrString(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAttrString. The caller is expected to
 // cast.
-func (a *AttrString) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *AttrString) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // Attribute: the `PangoAttribute` structure represents the common portions of
@@ -2118,8 +2119,8 @@ func marshalAttribute(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoAttribute. The caller is expected to
 // cast.
-func (a *Attribute) Native() unsafe.Pointer {
-	return unsafe.Pointer(a.native)
+func (A *Attribute) Native() unsafe.Pointer {
+	return unsafe.Pointer(A.native)
 }
 
 // Color: the `PangoColor` structure is used to represent a color in an
@@ -2154,8 +2155,8 @@ func marshalColor(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoColor. The caller is expected to
 // cast.
-func (c *Color) Native() unsafe.Pointer {
-	return unsafe.Pointer(c.native)
+func (C *Color) Native() unsafe.Pointer {
+	return unsafe.Pointer(C.native)
 }
 
 // FontDescription: a `PangoFontDescription` describes a font in an
@@ -2184,12 +2185,12 @@ func marshalFontDescription(p uintptr) (interface{}, error) {
 	return wrapFontDescription(c)
 }
 
-func (f *FontDescription) free() {}
+func (F *FontDescription) free() {}
 
 // Native returns the pointer to *C.PangoFontDescription. The caller is expected to
 // cast.
-func (f *FontDescription) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
+func (F *FontDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(F.native)
 }
 
 func NewFontDescription() *FontDescription
@@ -2221,12 +2222,12 @@ func marshalFontMetrics(p uintptr) (interface{}, error) {
 	return wrapFontMetrics(c)
 }
 
-func (f *FontMetrics) free() {}
+func (F *FontMetrics) free() {}
 
 // Native returns the pointer to *C.PangoFontMetrics. The caller is expected to
 // cast.
-func (f *FontMetrics) Native() unsafe.Pointer {
-	return unsafe.Pointer(f.native)
+func (F *FontMetrics) Native() unsafe.Pointer {
+	return unsafe.Pointer(F.native)
 }
 
 // GlyphGeometry: the `PangoGlyphGeometry` structure contains width and
@@ -2276,8 +2277,8 @@ func marshalGlyphGeometry(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoGlyphGeometry. The caller is expected to
 // cast.
-func (g *GlyphGeometry) Native() unsafe.Pointer {
-	return unsafe.Pointer(g.native)
+func (G *GlyphGeometry) Native() unsafe.Pointer {
+	return unsafe.Pointer(G.native)
 }
 
 // GlyphInfo: a `PangoGlyphInfo` structure represents a single glyph with
@@ -2317,8 +2318,8 @@ func marshalGlyphInfo(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoGlyphInfo. The caller is expected to
 // cast.
-func (g *GlyphInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(g.native)
+func (G *GlyphInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(G.native)
 }
 
 // GlyphItem: a `PangoGlyphItem` is a pair of a `PangoItem` and the glyphs
@@ -2354,8 +2355,8 @@ func marshalGlyphItem(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoGlyphItem. The caller is expected to
 // cast.
-func (g *GlyphItem) Native() unsafe.Pointer {
-	return unsafe.Pointer(g.native)
+func (G *GlyphItem) Native() unsafe.Pointer {
+	return unsafe.Pointer(G.native)
 }
 
 // GlyphItemIter: a `PangoGlyphItemIter` is an iterator over the clusters in a
@@ -2434,8 +2435,8 @@ func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoGlyphItemIter. The caller is expected to
 // cast.
-func (g *GlyphItemIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(g.native)
+func (G *GlyphItemIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(G.native)
 }
 
 // GlyphString: a `PangoGlyphString` is used to store strings of glyphs with
@@ -2475,12 +2476,12 @@ func marshalGlyphString(p uintptr) (interface{}, error) {
 	return wrapGlyphString(c)
 }
 
-func (g *GlyphString) free() {}
+func (G *GlyphString) free() {}
 
 // Native returns the pointer to *C.PangoGlyphString. The caller is expected to
 // cast.
-func (g *GlyphString) Native() unsafe.Pointer {
-	return unsafe.Pointer(g.native)
+func (G *GlyphString) Native() unsafe.Pointer {
+	return unsafe.Pointer(G.native)
 }
 
 func NewGlyphString() *GlyphString
@@ -2518,8 +2519,8 @@ func marshalGlyphVisAttr(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoGlyphVisAttr. The caller is expected to
 // cast.
-func (g *GlyphVisAttr) Native() unsafe.Pointer {
-	return unsafe.Pointer(g.native)
+func (G *GlyphVisAttr) Native() unsafe.Pointer {
+	return unsafe.Pointer(G.native)
 }
 
 // Item: the `PangoItem` structure stores information about a segment of text.
@@ -2559,8 +2560,8 @@ func marshalItem(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoItem. The caller is expected to
 // cast.
-func (i *Item) Native() unsafe.Pointer {
-	return unsafe.Pointer(i.native)
+func (I *Item) Native() unsafe.Pointer {
+	return unsafe.Pointer(I.native)
 }
 
 func NewItem() *Item
@@ -2589,12 +2590,12 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 	return wrapLanguage(c)
 }
 
-func (l *Language) free() {}
+func (L *Language) free() {}
 
 // Native returns the pointer to *C.PangoLanguage. The caller is expected to
 // cast.
-func (l *Language) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+func (L *Language) Native() unsafe.Pointer {
+	return unsafe.Pointer(L.native)
 }
 
 // LayoutIter: a `PangoLayoutIter` can be used to iterate over the visual
@@ -2623,12 +2624,12 @@ func marshalLayoutIter(p uintptr) (interface{}, error) {
 	return wrapLayoutIter(c)
 }
 
-func (l *LayoutIter) free() {}
+func (L *LayoutIter) free() {}
 
 // Native returns the pointer to *C.PangoLayoutIter. The caller is expected to
 // cast.
-func (l *LayoutIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+func (L *LayoutIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(L.native)
 }
 
 // LayoutLine: a `PangoLayoutLine` represents one of the lines resulting from
@@ -2639,7 +2640,7 @@ func (l *LayoutIter) Native() unsafe.Pointer {
 // or settings of the parent `PangoLayout` are modified.
 type LayoutLine struct {
 	// Layout: the layout this line belongs to, might be nil
-	Layout *Layout
+	Layout layout
 	// StartIndex: start of line as byte index into layout->text
 	StartIndex int
 	// Length: length of line in bytes
@@ -2657,10 +2658,10 @@ type LayoutLine struct {
 func wrapLayoutLine(p *C.PangoLayoutLine) *LayoutLine {
 	var v LayoutLine
 
-	v.Layout = wrap * Layout(p.layout)
+	v.Layout = wrapLayout(p.layout)
 	v.StartIndex = int(p.start_index)
 	v.Length = int(p.length)
-	v.Runs = wrap * SList(p.runs)
+	v.Runs = wrap * glib.SList(p.runs)
 	v.IsParagraphStart = uint(p.is_paragraph_start)
 	v.ResolvedDir = uint(p.resolved_dir)
 
@@ -2676,8 +2677,8 @@ func marshalLayoutLine(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoLayoutLine. The caller is expected to
 // cast.
-func (l *LayoutLine) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+func (L *LayoutLine) Native() unsafe.Pointer {
+	return unsafe.Pointer(L.native)
 }
 
 // LogAttr: the `PangoLogAttr` structure stores information about the attributes
@@ -2770,8 +2771,8 @@ func marshalLogAttr(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoLogAttr. The caller is expected to
 // cast.
-func (l *LogAttr) Native() unsafe.Pointer {
-	return unsafe.Pointer(l.native)
+func (L *LogAttr) Native() unsafe.Pointer {
+	return unsafe.Pointer(L.native)
 }
 
 // Matrix: a `PangoMatrix` specifies a transformation between user-space and
@@ -2821,8 +2822,8 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoMatrix. The caller is expected to
 // cast.
-func (m *Matrix) Native() unsafe.Pointer {
-	return unsafe.Pointer(m.native)
+func (M *Matrix) Native() unsafe.Pointer {
+	return unsafe.Pointer(M.native)
 }
 
 // Rectangle: the `PangoRectangle` structure represents a rectangle.
@@ -2863,8 +2864,8 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoRectangle. The caller is expected to
 // cast.
-func (r *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(r.native)
+func (R *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(R.native)
 }
 
 // ScriptIter: a `PangoScriptIter` is used to iterate through a string and
@@ -2889,12 +2890,12 @@ func marshalScriptIter(p uintptr) (interface{}, error) {
 	return wrapScriptIter(c)
 }
 
-func (s *ScriptIter) free() {}
+func (S *ScriptIter) free() {}
 
 // Native returns the pointer to *C.PangoScriptIter. The caller is expected to
 // cast.
-func (s *ScriptIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *ScriptIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 func NewScriptIter(text string, length int) *ScriptIter
@@ -2923,12 +2924,12 @@ func marshalTabArray(p uintptr) (interface{}, error) {
 	return wrapTabArray(c)
 }
 
-func (t *TabArray) free() {}
+func (T *TabArray) free() {}
 
 // Native returns the pointer to *C.PangoTabArray. The caller is expected to
 // cast.
-func (t *TabArray) Native() unsafe.Pointer {
-	return unsafe.Pointer(t.native)
+func (T *TabArray) Native() unsafe.Pointer {
+	return unsafe.Pointer(T.native)
 }
 
 func NewTabArray(initialSize int, positionsInPixels bool) *TabArray
@@ -2941,12 +2942,146 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray
 // default font.
 //
 // To obtain a `PangoContext`, use [method@Pango.FontMap.create_context].
-type Context struct {
+type Context interface {
+	gextras.Objector
+
+	// Changed: forces a change in the context, which will cause any
+	// `PangoLayout` using this context to re-layout.
+	//
+	// This function is only useful when implementing a new backend for Pango,
+	// something applications won't do. Backends should call this function if
+	// they have attached extra data to the context and such data is changed.
+	Changed()
+	// GetBaseDir: retrieves the base direction for the context.
+	//
+	// See [method@Pango.Context.set_base_dir].
+	GetBaseDir() Direction
+	// GetBaseGravity: retrieves the base gravity for the context.
+	//
+	// See [method@Pango.Context.set_base_gravity].
+	GetBaseGravity() Gravity
+	// GetFontDescription: retrieve the default font description for the
+	// context.
+	GetFontDescription() *FontDescription
+	// GetFontMap: gets the `PangoFontMap` used to look up fonts for this
+	// context.
+	GetFontMap() fontMap
+	// GetGravity: retrieves the gravity for the context.
+	//
+	// This is similar to [method@Pango.Context.get_base_gravity], except for
+	// when the base gravity is PANGO_GRAVITY_AUTO for which
+	// [type_func@Pango.Gravity.get_for_matrix] is used to return the gravity
+	// from the current context matrix.
+	GetGravity() Gravity
+	// GetGravityHint: retrieves the gravity hint for the context.
+	//
+	// See [method@Pango.Context.set_gravity_hint] for details.
+	GetGravityHint() GravityHint
+	// GetLanguage: retrieves the global language tag for the context.
+	GetLanguage() *Language
+	// GetMatrix: gets the transformation matrix that will be applied when
+	// rendering with this context.
+	//
+	// See [method@Pango.Context.set_matrix].
+	GetMatrix() *Matrix
+	// GetMetrics: get overall metric information for a particular font
+	// description.
+	//
+	// Since the metrics may be substantially different for different scripts, a
+	// language tag can be provided to indicate that the metrics should be
+	// retrieved that correspond to the script(s) used by that language.
+	//
+	// The `PangoFontDescription` is interpreted in the same way as by
+	// [func@itemize], and the family name may be a comma separated list of
+	// names. If characters from multiple of these families would be used to
+	// render the string, then the returned fonts would be a composite of the
+	// metrics for the fonts loaded for the individual families.
+	GetMetrics(desc *FontDescription, language *Language) *FontMetrics
+	// GetRoundGlyphPositions: returns whether font rendering with this context
+	// should round glyph positions and widths.
+	GetRoundGlyphPositions() bool
+	// GetSerial: returns the current serial number of @context.
+	//
+	// The serial number is initialized to an small number larger than zero when
+	// a new context is created and is increased whenever the context is changed
+	// using any of the setter functions, or the `PangoFontMap` it uses to find
+	// fonts has changed. The serial may wrap, but will never have the value 0.
+	// Since it can wrap, never compare it with "less than", always use "not
+	// equals".
+	//
+	// This can be used to automatically detect changes to a `PangoContext`, and
+	// is only useful when implementing objects that need update when their
+	// `PangoContext` changes, like `PangoLayout`.
+	GetSerial() uint
+	// ListFamilies: list all families for a context.
+	ListFamilies() ([]*fontFamily, int)
+	// LoadFont: loads the font in one of the fontmaps in the context that is
+	// the closest match for @desc.
+	LoadFont(desc *FontDescription) font
+	// LoadFontset: load a set of fonts in the context that can be used to
+	// render a font matching @desc.
+	LoadFontset(desc *FontDescription, language *Language) fontset
+	// SetBaseDir: sets the base direction for the context.
+	//
+	// The base direction is used in applying the Unicode bidirectional
+	// algorithm; if the @direction is PANGO_DIRECTION_LTR or
+	// PANGO_DIRECTION_RTL, then the value will be used as the paragraph
+	// direction in the Unicode bidirectional algorithm. A value of
+	// PANGO_DIRECTION_WEAK_LTR or PANGO_DIRECTION_WEAK_RTL is used only for
+	// paragraphs that do not contain any strong characters themselves.
+	SetBaseDir(direction Direction)
+	// SetBaseGravity: sets the base gravity for the context.
+	//
+	// The base gravity is used in laying vertical text out.
+	SetBaseGravity(gravity Gravity)
+	// SetFontDescription: set the default font description for the context
+	SetFontDescription(desc *FontDescription)
+	// SetFontMap: sets the font map to be searched when fonts are looked-up in
+	// this context.
+	//
+	// This is only for internal use by Pango backends, a `PangoContext`
+	// obtained via one of the recommended methods should already have a
+	// suitable font map.
+	SetFontMap(fontMap fontMap)
+	// SetGravityHint: sets the gravity hint for the context.
+	//
+	// The gravity hint is used in laying vertical text out, and is only
+	// relevant if gravity of the context as returned by
+	// [method@Pango.Context.get_gravity] is set to PANGO_GRAVITY_EAST or
+	// PANGO_GRAVITY_WEST.
+	SetGravityHint(hint GravityHint)
+	// SetLanguage: sets the global language tag for the context.
+	//
+	// The default language for the locale of the running process can be found
+	// using [type_func@Pango.Language.get_default].
+	SetLanguage(language *Language)
+	// SetMatrix: sets the transformation matrix that will be applied when
+	// rendering with this context.
+	//
+	// Note that reported metrics are in the user space coordinates before the
+	// application of the matrix, not device-space coordinates after the
+	// application of the matrix. So, they don't scale with the matrix, though
+	// they may change slightly for different matrices, depending on how the
+	// text is fit to the pixel grid.
+	SetMatrix(matrix *Matrix)
+	// SetRoundGlyphPositions: sets whether font rendering with this context
+	// should round glyph positions and widths to integral positions, in device
+	// units.
+	//
+	// This is useful when the renderer can't handle subpixel positioning of
+	// glyphs.
+	//
+	// The default value is to round glyph positions, to remain compatible with
+	// previous Pango behavior.
+	SetRoundGlyphPositions(roundPositions bool)
+}
+
+type context struct {
 	*externglib.Object
 }
 
-func wrapContext(obj *externglib.Object) *Context {
-	return &Context{*externglib.Object{obj}}
+func wrapContext(obj *externglib.Object) Context {
+	return &context{*externglib.Object{obj}}
 }
 
 func marshalContext(p uintptr) (interface{}, error) {
@@ -2955,7 +3090,53 @@ func marshalContext(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewContext() *Context
+func NewContext() Context
+
+func (c context) Changed()
+
+func (c context) GetBaseDir() Direction
+
+func (c context) GetBaseGravity() Gravity
+
+func (c context) GetFontDescription() *FontDescription
+
+func (c context) GetFontMap() fontMap
+
+func (c context) GetGravity() Gravity
+
+func (c context) GetGravityHint() GravityHint
+
+func (c context) GetLanguage() *Language
+
+func (c context) GetMatrix() *Matrix
+
+func (c context) GetMetrics(desc *FontDescription, language *Language) *FontMetrics
+
+func (c context) GetRoundGlyphPositions() bool
+
+func (c context) GetSerial() uint
+
+func (c context) ListFamilies() ([]*fontFamily, int)
+
+func (c context) LoadFont(desc *FontDescription) font
+
+func (c context) LoadFontset(desc *FontDescription, language *Language) fontset
+
+func (c context) SetBaseDir(direction Direction)
+
+func (c context) SetBaseGravity(gravity Gravity)
+
+func (c context) SetFontDescription(desc *FontDescription)
+
+func (c context) SetFontMap(fontMap fontMap)
+
+func (c context) SetGravityHint(hint GravityHint)
+
+func (c context) SetLanguage(language *Language)
+
+func (c context) SetMatrix(matrix *Matrix)
+
+func (c context) SetRoundGlyphPositions(roundPositions bool)
 
 // Coverage: a Coverage structure is a map from Unicode characters to
 // CoverageLevel values.
@@ -2964,12 +3145,35 @@ func NewContext() *Context
 // represent a particular character, and also how well it can represent that
 // character. The Coverage is a data structure that is used to represent that
 // information. It is an opaque structure with no public fields.
-type Coverage struct {
+type Coverage interface {
+	gextras.Objector
+
+	// Copy: copy an existing `PangoCoverage`.
+	Copy() coverage
+	// Get: determine whether a particular index is covered by @coverage.
+	Get(index_ int) CoverageLevel
+	// Max: set the coverage for each index in @coverage to be the max (better)
+	// value of the current coverage for the index and the coverage for the
+	// corresponding index in @other.
+	Max(other coverage)
+	// Ref: increase the reference count on the `PangoCoverage` by one.
+	Ref() coverage
+	// Set: modify a particular index within @coverage
+	Set(index_ int, level CoverageLevel)
+	// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
+	ToBytes() ([]uint8, int)
+	// Unref: decrease the reference count on the `PangoCoverage` by one.
+	//
+	// If the result is zero, free the coverage and all associated memory.
+	Unref()
+}
+
+type coverage struct {
 	*externglib.Object
 }
 
-func wrapCoverage(obj *externglib.Object) *Coverage {
-	return &Coverage{*externglib.Object{obj}}
+func wrapCoverage(obj *externglib.Object) Coverage {
+	return &coverage{*externglib.Object{obj}}
 }
 
 func marshalCoverage(p uintptr) (interface{}, error) {
@@ -2978,16 +3182,87 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCoverage() *Coverage
+func NewCoverage() Coverage
+
+func (c coverage) Copy() coverage
+
+func (c coverage) Get(index_ int) CoverageLevel
+
+func (c coverage) Max(other coverage)
+
+func (c coverage) Ref() coverage
+
+func (c coverage) Set(index_ int, level CoverageLevel)
+
+func (c coverage) ToBytes() ([]uint8, int)
+
+func (c coverage) Unref()
 
 // Font: a `PangoFont` is used to represent a font in a
 // rendering-system-independent manner.
-type Font struct {
+type Font interface {
+	gextras.Objector
+
+	// Describe: returns a description of the font, with font size set in
+	// points.
+	//
+	// Use [method@Pango.Font.describe_with_absolute_size] if you want the font
+	// size in device units.
+	Describe() *FontDescription
+	// DescribeWithAbsoluteSize: returns a description of the font, with
+	// absolute font size set in device units.
+	//
+	// Use [method@Pango.Font.describe] if you want the font size in points.
+	DescribeWithAbsoluteSize() *FontDescription
+	// GetCoverage: computes the coverage map for a given font and language tag.
+	GetCoverage(language *Language) coverage
+	// GetFace: gets the `PangoFontFace` to which @font belongs.
+	GetFace() fontFace
+	// GetFontMap: gets the font map for which the font was created.
+	//
+	// Note that the font maintains a *weak* reference to the font map, so if
+	// all references to font map are dropped, the font map will be finalized
+	// even if there are fonts created with the font map that are still alive.
+	// In that case this function will return nil.
+	//
+	// It is the responsibility of the user to ensure that the font map is kept
+	// alive. In most uses this is not an issue as a Context holds a reference
+	// to the font map.
+	GetFontMap() fontMap
+	// GetGlyphExtents: gets the logical and ink extents of a glyph within a
+	// font.
+	//
+	// The coordinate system for each rectangle has its origin at the base line
+	// and horizontal origin of the character with increasing coordinates
+	// extending to the right and down. The macros PANGO_ASCENT(),
+	// PANGO_DESCENT(), PANGO_LBEARING(), and PANGO_RBEARING() can be used to
+	// convert from the extents rectangle to more traditional font metrics. The
+	// units of the rectangles are in 1/PANGO_SCALE of a device unit.
+	//
+	// If @font is nil, this function gracefully sets some sane values in the
+	// output variables and returns.
+	GetGlyphExtents(glyph Glyph) (Rectangle, Rectangle)
+	// GetMetrics: gets overall metric information for a font.
+	//
+	// Since the metrics may be substantially different for different scripts, a
+	// language tag can be provided to indicate that the metrics should be
+	// retrieved that correspond to the script(s) used by that language.
+	//
+	// If @font is nil, this function gracefully sets some sane values in the
+	// output variables and returns.
+	GetMetrics(language *Language) *FontMetrics
+	// HasChar: returns whether the font provides a glyph for this character.
+	//
+	// Returns true if @font can render @wc
+	HasChar(wc uint32) bool
+}
+
+type font struct {
 	*externglib.Object
 }
 
-func wrapFont(obj *externglib.Object) *Font {
-	return &Font{*externglib.Object{obj}}
+func wrapFont(obj *externglib.Object) Font {
+	return &font{*externglib.Object{obj}}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
@@ -2996,14 +3271,56 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (f font) Describe() *FontDescription
+
+func (f font) DescribeWithAbsoluteSize() *FontDescription
+
+func (f font) GetCoverage(language *Language) coverage
+
+func (f font) GetFace() fontFace
+
+func (f font) GetFontMap() fontMap
+
+func (f font) GetGlyphExtents(glyph Glyph) (Rectangle, Rectangle)
+
+func (f font) GetMetrics(language *Language) *FontMetrics
+
+func (f font) HasChar(wc uint32) bool
+
 // FontFace: a `PangoFontFace` is used to represent a group of fonts with the
 // same family, slant, weight, and width, but varying sizes.
-type FontFace struct {
+type FontFace interface {
+	gextras.Objector
+
+	// Describe: returns the family, style, variant, weight and stretch of a
+	// `PangoFontFace`. The size field of the resulting font description will be
+	// unset.
+	Describe() *FontDescription
+	// GetFaceName: gets a name representing the style of this face among the
+	// different faces in the `PangoFontFamily` for the face. The name is
+	// suitable for displaying to users.
+	GetFaceName() string
+	// GetFamily: gets the `PangoFontFamily` that @face belongs to.
+	GetFamily() fontFamily
+	// IsSynthesized: returns whether a `PangoFontFace` is synthesized by the
+	// underlying font rendering engine from another face, perhaps by shearing,
+	// emboldening, or lightening it.
+	IsSynthesized() bool
+	// ListSizes: list the available sizes for a font.
+	//
+	// This is only applicable to bitmap fonts. For scalable fonts, stores nil
+	// at the location pointed to by @sizes and 0 at the location pointed to by
+	// @n_sizes. The sizes returned are in Pango units and are sorted in
+	// ascending order.
+	ListSizes() ([]int, int)
+}
+
+type fontFace struct {
 	*externglib.Object
 }
 
-func wrapFontFace(obj *externglib.Object) *FontFace {
-	return &FontFace{*externglib.Object{obj}}
+func wrapFontFace(obj *externglib.Object) FontFace {
+	return &fontFace{*externglib.Object{obj}}
 }
 
 func marshalFontFace(p uintptr) (interface{}, error) {
@@ -3012,17 +3329,62 @@ func marshalFontFace(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (f fontFace) Describe() *FontDescription
+
+func (f fontFace) GetFaceName() string
+
+func (f fontFace) GetFamily() fontFamily
+
+func (f fontFace) IsSynthesized() bool
+
+func (f fontFace) ListSizes() ([]int, int)
+
 // FontFamily: a `PangoFontFamily` is used to represent a family of related font
 // faces.
 //
 // The font faces in a family share a common design, but differ in slant,
 // weight, width or other aspects.
-type FontFamily struct {
+type FontFamily interface {
+	gextras.Objector
+
+	// GetFace: gets the `PangoFontFace` of @family with the given name.
+	GetFace(name string) fontFace
+	// GetName: gets the name of the family.
+	//
+	// The name is unique among all fonts for the font backend and can be used
+	// in a `PangoFontDescription` to specify that a face from this family is
+	// desired.
+	GetName() string
+	// IsMonospace: a monospace font is a font designed for text display where
+	// the the characters form a regular grid.
+	//
+	// For Western languages this would mean that the advance width of all
+	// characters are the same, but this categorization also includes Asian
+	// fonts which include double-width characters: characters that occupy two
+	// grid cells. g_unichar_iswide() returns a result that indicates whether a
+	// character is typically double-width in a monospace font.
+	//
+	// The best way to find out the grid-cell size is to call
+	// [method@Pango.FontMetrics.get_approximate_digit_width], since the results
+	// of [method@Pango.FontMetrics.get_approximate_char_width] may be affected
+	// by double-width characters.
+	IsMonospace() bool
+	// IsVariable: a variable font is a font which has axes that can be modified
+	// to produce different faces.
+	IsVariable() bool
+	// ListFaces: lists the different font faces that make up @family.
+	//
+	// The faces in a family share a common design, but differ in slant, weight,
+	// width and other aspects.
+	ListFaces() ([]*fontFace, int)
+}
+
+type fontFamily struct {
 	*externglib.Object
 }
 
-func wrapFontFamily(obj *externglib.Object) *FontFamily {
-	return &FontFamily{*externglib.Object{obj}}
+func wrapFontFamily(obj *externglib.Object) FontFamily {
+	return &fontFamily{*externglib.Object{obj}}
 }
 
 func marshalFontFamily(p uintptr) (interface{}, error) {
@@ -3031,17 +3393,72 @@ func marshalFontFamily(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (f fontFamily) GetFace(name string) fontFace
+
+func (f fontFamily) GetName() string
+
+func (f fontFamily) IsMonospace() bool
+
+func (f fontFamily) IsVariable() bool
+
+func (f fontFamily) ListFaces() ([]*fontFace, int)
+
 // FontMap: a `PangoFontMap` represents the set of fonts available for a
 // particular rendering system.
 //
 // This is a virtual object with implementations being specific to particular
 // rendering systems.
-type FontMap struct {
+type FontMap interface {
+	gextras.Objector
+
+	// Changed: forces a change in the context, which will cause any
+	// `PangoContext` using this fontmap to change.
+	//
+	// This function is only useful when implementing a new backend for Pango,
+	// something applications won't do. Backends should call this function if
+	// they have attached extra data to the context and such data is changed.
+	Changed()
+	// CreateContext: creates a `PangoContext` connected to @fontmap.
+	//
+	// This is equivalent to [ctor@Pango.Context.new] followed by
+	// [method@Pango.Context.set_font_map].
+	//
+	// If you are using Pango as part of a higher-level system, that system may
+	// have it's own way of create a `PangoContext`. For instance, the GTK
+	// toolkit has, among others, gtk_widget_get_pango_context(). Use those
+	// instead.
+	CreateContext() context
+	// GetFamily: gets a font family by name.
+	GetFamily(name string) fontFamily
+	// GetSerial: returns the current serial number of @fontmap.
+	//
+	// The serial number is initialized to an small number larger than zero when
+	// a new fontmap is created and is increased whenever the fontmap is
+	// changed. It may wrap, but will never have the value 0. Since it can wrap,
+	// never compare it with "less than", always use "not equals".
+	//
+	// The fontmap can only be changed using backend-specific API, like changing
+	// fontmap resolution.
+	//
+	// This can be used to automatically detect changes to a `PangoFontMap`,
+	// like in `PangoContext`.
+	GetSerial() uint
+	// ListFamilies: list all families for a fontmap.
+	ListFamilies() ([]*fontFamily, int)
+	// LoadFont: load the font in the fontmap that is the closest match for
+	// @desc.
+	LoadFont(context context, desc *FontDescription) font
+	// LoadFontset: load a set of fonts in the fontmap that can be used to
+	// render a font matching @desc.
+	LoadFontset(context context, desc *FontDescription, language *Language) fontset
+}
+
+type fontMap struct {
 	*externglib.Object
 }
 
-func wrapFontMap(obj *externglib.Object) *FontMap {
-	return &FontMap{*externglib.Object{obj}}
+func wrapFontMap(obj *externglib.Object) FontMap {
+	return &fontMap{*externglib.Object{obj}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
@@ -3050,6 +3467,20 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (f fontMap) Changed()
+
+func (f fontMap) CreateContext() context
+
+func (f fontMap) GetFamily(name string) fontFamily
+
+func (f fontMap) GetSerial() uint
+
+func (f fontMap) ListFamilies() ([]*fontFamily, int)
+
+func (f fontMap) LoadFont(context context, desc *FontDescription) font
+
+func (f fontMap) LoadFontset(context context, desc *FontDescription, language *Language) fontset
+
 // Fontset: a `PangoFontset` represents a set of `PangoFont` to use when
 // rendering text.
 //
@@ -3057,12 +3488,27 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // a particular `PangoContext`. It has operations for finding the component font
 // for a particular Unicode character, and for finding a composite set of
 // metrics for the entire fontset.
-type Fontset struct {
+type Fontset interface {
+	gextras.Objector
+
+	// Foreach: iterates through all the fonts in a fontset, calling @func for
+	// each one.
+	//
+	// If @func returns true, that stops the iteration.
+	Foreach(_func FontsetForeachFunc, data unsafe.Pointer)
+	// GetFont: returns the font in the fontset that contains the best glyph for
+	// a Unicode character.
+	GetFont(wc uint) font
+	// GetMetrics: get overall metric information for the fonts in the fontset.
+	GetMetrics() *FontMetrics
+}
+
+type fontset struct {
 	*externglib.Object
 }
 
-func wrapFontset(obj *externglib.Object) *Fontset {
-	return &Fontset{*externglib.Object{obj}}
+func wrapFontset(obj *externglib.Object) Fontset {
+	return &fontset{*externglib.Object{obj}}
 }
 
 func marshalFontset(p uintptr) (interface{}, error) {
@@ -3071,17 +3517,32 @@ func marshalFontset(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (f fontset) Foreach(_func FontsetForeachFunc, data unsafe.Pointer)
+
+func (f fontset) GetFont(wc uint) font
+
+func (f fontset) GetMetrics() *FontMetrics
+
 // FontsetSimple: `PangoFontsetSimple` is a implementation of the abstract
 // `PangoFontset` base class as an array of fonts.
 //
 // When creating a `PangoFontsetSimple`, you have to provide the array of fonts
 // that make up the fontset.
-type FontsetSimple struct {
+type FontsetSimple interface {
+	fontset
+
+	// Append: adds a font to the fontset.
+	Append(font font)
+	// Size: returns the number of fonts in the fontset.
+	Size() int
+}
+
+type fontsetSimple struct {
 	Fontset
 }
 
-func wrapFontsetSimple(obj *externglib.Object) *FontsetSimple {
-	return &FontsetSimple{Fontset{*externglib.Object{obj}}}
+func wrapFontsetSimple(obj *externglib.Object) FontsetSimple {
+	return &fontsetSimple{Fontset{*externglib.Object{obj}}}
 }
 
 func marshalFontsetSimple(p uintptr) (interface{}, error) {
@@ -3090,7 +3551,11 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewFontsetSimple(language *Language) *FontsetSimple
+func NewFontsetSimple(language *Language) FontsetSimple
+
+func (f fontsetSimple) Append(font font)
+
+func (f fontsetSimple) Size() int
 
 // Layout: a `PangoLayout` structure represents an entire paragraph of text.
 //
@@ -3115,12 +3580,423 @@ func NewFontsetSimple(language *Language) *FontsetSimple
 //
 // It is possible, as well, to ignore the 2-D setup, and simply treat the
 // results of a `PangoLayout` as a list of lines.
-type Layout struct {
+type Layout interface {
+	gextras.Objector
+
+	// ContextChanged: forces recomputation of any state in the `PangoLayout`
+	// that might depend on the layout's context.
+	//
+	// This function should be called if you make changes to the context
+	// subsequent to creating the layout.
+	ContextChanged()
+	// Copy: creates a deep copy-by-value of the layout.
+	//
+	// The attribute list, tab array, and text from the original layout are all
+	// copied by value.
+	Copy() layout
+	// GetAlignment: gets the alignment for the layout: how partial lines are
+	// positioned within the horizontal space available.
+	GetAlignment() Alignment
+	// GetAttributes: gets the attribute list for the layout, if any.
+	GetAttributes() *AttrList
+	// GetAutoDir: gets whether to calculate the base direction for the layout
+	// according to its contents.
+	//
+	// See [method@Pango.Layout.set_auto_dir].
+	GetAutoDir() bool
+	// GetBaseline: gets the Y position of baseline of the first line in
+	// @layout.
+	GetBaseline() int
+	// GetCharacterCount: returns the number of Unicode characters in the the
+	// text of @layout.
+	GetCharacterCount() int
+	// GetContext: retrieves the `PangoContext` used for this layout.
+	GetContext() context
+	// GetCursorPos: given an index within a layout, determines the positions
+	// that of the strong and weak cursors if the insertion point is at that
+	// index.
+	//
+	// The position of each cursor is stored as a zero-width rectangle. The
+	// strong cursor location is the location where characters of the
+	// directionality equal to the base direction of the layout are inserted.
+	// The weak cursor location is the location where characters of the
+	// directionality opposite to the base direction of the layout are inserted.
+	GetCursorPos(index_ int) (Rectangle, Rectangle)
+	// GetDirection: gets the text direction at the given character position in
+	// @layout.
+	GetDirection(index int) Direction
+	// GetEllipsize: gets the type of ellipsization being performed for @layout.
+	//
+	// See [method@Pango.Layout.set_ellipsize].
+	//
+	// Use [method@Pango.Layout.is_ellipsized] to query whether any paragraphs
+	// were actually ellipsized.
+	GetEllipsize() EllipsizeMode
+	// GetExtents: computes the logical and ink extents of @layout.
+	//
+	// Logical extents are usually what you want for positioning things. Note
+	// that both extents may have non-zero x and y. You may want to use those to
+	// offset where you render the layout. Not doing that is a very typical bug
+	// that shows up as right-to-left layouts not being correctly positioned in
+	// a layout with a set width.
+	//
+	// The extents are given in layout coordinates and in Pango units; layout
+	// coordinates begin at the top left corner of the layout.
+	GetExtents() (Rectangle, Rectangle)
+	// GetFontDescription: gets the font description for the layout, if any.
+	GetFontDescription() *FontDescription
+	// GetHeight: gets the height of layout used for ellipsization.
+	//
+	// See [method@Pango.Layout.set_height] for details.
+	GetHeight() int
+	// GetIndent: gets the paragraph indent width in Pango units.
+	//
+	// A negative value indicates a hanging indentation.
+	GetIndent() int
+	// GetIter: returns an iterator to iterate over the visual extents of the
+	// layout.
+	GetIter() *LayoutIter
+	// GetJustify: gets whether each complete line should be stretched to fill
+	// the entire width of the layout.
+	GetJustify() bool
+	// GetLine: retrieves a particular line from a `PangoLayout`.
+	//
+	// Use the faster [method@Pango.Layout.get_line_readonly] if you do not plan
+	// to modify the contents of the line (glyphs, glyph widths, etc.).
+	GetLine(line int) *LayoutLine
+	// GetLineCount: retrieves the count of lines for the @layout.
+	GetLineCount() int
+	// GetLineReadonly: retrieves a particular line from a `PangoLayout`.
+	//
+	// This is a faster alternative to [method@Pango.Layout.get_line], but the
+	// user is not expected to modify the contents of the line (glyphs, glyph
+	// widths, etc.).
+	GetLineReadonly(line int) *LayoutLine
+	// GetLineSpacing: gets the line spacing factor of @layout.
+	//
+	// See [method@Pango.Layout.set_line_spacing].
+	GetLineSpacing() float32
+	// GetLines: returns the lines of the @layout as a list.
+	//
+	// Use the faster [method@Pango.Layout.get_lines_readonly] if you do not
+	// plan to modify the contents of the lines (glyphs, glyph widths, etc.).
+	GetLines() *glib.SList
+	// GetLinesReadonly: returns the lines of the @layout as a list.
+	//
+	// This is a faster alternative to [method@Pango.Layout.get_lines], but the
+	// user is not expected to modify the contents of the lines (glyphs, glyph
+	// widths, etc.).
+	GetLinesReadonly() *glib.SList
+	// GetLogAttrs: retrieves an array of logical attributes for each character
+	// in the @layout.
+	GetLogAttrs() ([]*LogAttr, int)
+	// GetLogAttrsReadonly: retrieves an array of logical attributes for each
+	// character in the @layout.
+	//
+	// This is a faster alternative to [method@Pango.Layout.get_log_attrs]. The
+	// returned array is part of @layout and must not be modified. Modifying the
+	// layout will invalidate the returned array.
+	//
+	// The number of attributes returned in @n_attrs will be one more than the
+	// total number of characters in the layout, since there need to be
+	// attributes corresponding to both the position before the first character
+	// and the position after the last character.
+	GetLogAttrsReadonly() (int, []LogAttr)
+	// GetPixelExtents: computes the logical and ink extents of @layout in
+	// device units.
+	//
+	// This function just calls [method@Pango.Layout.get_extents] followed by
+	// two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect
+	// such that the rounded rectangles fully contain the unrounded one (that
+	// is, passes them as first argument to `pango_extents_to_pixels()`).
+	GetPixelExtents() (Rectangle, Rectangle)
+	// GetPixelSize: determines the logical width and height of a `PangoLayout`
+	// in device units.
+	//
+	// [method@Pango.Layout.get_size] returns the width and height scaled by
+	// PANGO_SCALE. This is simply a convenience function around
+	// [method@Pango.Layout.get_pixel_extents].
+	GetPixelSize() (int, int)
+	// GetSerial: returns the current serial number of @layout.
+	//
+	// The serial number is initialized to an small number larger than zero when
+	// a new layout is created and is increased whenever the layout is changed
+	// using any of the setter functions, or the `PangoContext` it uses has
+	// changed. The serial may wrap, but will never have the value 0. Since it
+	// can wrap, never compare it with "less than", always use "not equals".
+	//
+	// This can be used to automatically detect changes to a `PangoLayout`, and
+	// is useful for example to decide whether a layout needs redrawing. To
+	// force the serial to be increased, use
+	// [method@Pango.Layout.context_changed].
+	GetSerial() uint
+	// GetSingleParagraphMode: obtains whether @layout is in single paragraph
+	// mode.
+	//
+	// See [method@Pango.Layout.set_single_paragraph_mode].
+	GetSingleParagraphMode() bool
+	// GetSize: determines the logical width and height of a `PangoLayout` in
+	// Pango units.
+	//
+	// This is simply a convenience function around
+	// [method@Pango.Layout.get_extents].
+	GetSize() (int, int)
+	// GetSpacing: gets the amount of spacing between the lines of the layout.
+	GetSpacing() int
+	// GetTabs: gets the current `PangoTabArray` used by this layout.
+	//
+	// If no `PangoTabArray` has been set, then the default tabs are in use and
+	// nil is returned. Default tabs are every 8 spaces.
+	//
+	// The return value should be freed with [method@Pango.TabArray.free].
+	GetTabs() *TabArray
+	// GetText: gets the text in the layout. The returned text should not be
+	// freed or modified.
+	GetText() string
+	// GetUnknownGlyphsCount: counts the number of unknown glyphs in @layout.
+	//
+	// This function can be used to determine if there are any fonts available
+	// to render all characters in a certain string, or when used in combination
+	// with PANGO_ATTR_FALLBACK, to check if a certain font supports all the
+	// characters in the string.
+	GetUnknownGlyphsCount() int
+	// GetWidth: gets the width to which the lines of the `PangoLayout` should
+	// wrap.
+	GetWidth() int
+	// GetWrap: gets the wrap mode for the layout.
+	//
+	// Use [method@Pango.Layout.is_wrapped] to query whether any paragraphs were
+	// actually wrapped.
+	GetWrap() WrapMode
+	// IndexToLineX: converts from byte @index_ within the @layout to line and X
+	// position.
+	//
+	// The X position is measured from the left edge of the line.
+	IndexToLineX(index_ int, trailing bool) (int, int)
+	// IndexToPos: converts from an index within a `PangoLayout` to the onscreen
+	// position corresponding to the grapheme at that index.
+	//
+	// The return value is represented as rectangle. Note that `pos->x` is
+	// always the leading edge of the grapheme and `pos->x + pos->width` the
+	// trailing edge of the grapheme. If the directionality of the grapheme is
+	// right-to-left, then `pos->width` will be negative.
+	IndexToPos(index_ int) Rectangle
+	// IsEllipsized: queries whether the layout had to ellipsize any paragraphs.
+	//
+	// This returns true if the ellipsization mode for @layout is not
+	// PANGO_ELLIPSIZE_NONE, a positive width is set on @layout, and there are
+	// paragraphs exceeding that width that have to be ellipsized.
+	IsEllipsized() bool
+	// IsWrapped: queries whether the layout had to wrap any paragraphs.
+	//
+	// This returns true if a positive width is set on @layout, ellipsization
+	// mode of @layout is set to PANGO_ELLIPSIZE_NONE, and there are paragraphs
+	// exceeding the layout width that have to be wrapped.
+	IsWrapped() bool
+	// MoveCursorVisually: computes a new cursor position from an old position
+	// and a count of positions to move visually.
+	//
+	// If @direction is positive, then the new strong cursor position will be
+	// one position to the right of the old cursor position. If @direction is
+	// negative, then the new strong cursor position will be one position to the
+	// left of the old cursor position.
+	//
+	// In the presence of bidirectional text, the correspondence between logical
+	// and visual order will depend on the direction of the current run, and
+	// there may be jumps when the cursor is moved off of the end of a run.
+	//
+	// Motion here is in cursor positions, not in characters, so a single call
+	// to [method@Pango.Layout.move_cursor_visually] may move the cursor over
+	// multiple characters when multiple characters combine to form a single
+	// grapheme.
+	MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (int, int)
+	// SetAlignment: sets the alignment for the layout: how partial lines are
+	// positioned within the horizontal space available.
+	SetAlignment(alignment Alignment)
+	// SetAttributes: sets the text attributes for a layout object. References
+	// @attrs, so the caller can unref its reference.
+	SetAttributes(attrs *AttrList)
+	// SetAutoDir: sets whether to calculate the base direction for the layout
+	// according to its contents.
+	//
+	// When this flag is on (the default), then paragraphs in @layout that begin
+	// with strong right-to-left characters (Arabic and Hebrew principally),
+	// will have right-to-left layout, paragraphs with letters from other
+	// scripts will have left-to-right layout. Paragraphs with only neutral
+	// characters get their direction from the surrounding paragraphs.
+	//
+	// When false, the choice between left-to-right and right-to-left layout is
+	// done according to the base direction of the layout's `PangoContext`. (See
+	// [method@Pango.Context.set_base_dir]).
+	//
+	// When the auto-computed direction of a paragraph differs from the base
+	// direction of the context, the interpretation of PANGO_ALIGN_LEFT and
+	// PANGO_ALIGN_RIGHT are swapped.
+	SetAutoDir(autoDir bool)
+	// SetEllipsize: sets the type of ellipsization being performed for @layout.
+	//
+	// Depending on the ellipsization mode @ellipsize text is removed from the
+	// start, middle, or end of text so they fit within the width and height of
+	// layout set with [method@Pango.Layout.set_width] and
+	// [method@Pango.Layout.set_height].
+	//
+	// If the layout contains characters such as newlines that force it to be
+	// layed out in multiple paragraphs, then whether each paragraph is
+	// ellipsized separately or the entire layout is ellipsized as a whole
+	// depends on the set height of the layout. See
+	// [method@Pango.Layout.set_height] for details.
+	SetEllipsize(ellipsize EllipsizeMode)
+	// SetFontDescription: sets the default font description for the layout.
+	//
+	// If no font description is set on the layout, the font description from
+	// the layout's context is used.
+	SetFontDescription(desc *FontDescription)
+	// SetHeight: sets the height to which the `PangoLayout` should be
+	// ellipsized at.
+	//
+	// There are two different behaviors, based on whether @height is positive
+	// or negative.
+	//
+	// If @height is positive, it will be the maximum height of the layout. Only
+	// lines would be shown that would fit, and if there is any text omitted, an
+	// ellipsis added. At least one line is included in each paragraph
+	// regardless of how small the height value is. A value of zero will render
+	// exactly one line for the entire layout.
+	//
+	// If @height is negative, it will be the (negative of) maximum number of
+	// lines per paragraph. That is, the total number of lines shown may well be
+	// more than this value if the layout contains multiple paragraphs of text.
+	// The default value of -1 means that first line of each paragraph is
+	// ellipsized. This behavior may be changed in the future to act per layout
+	// instead of per paragraph. File a bug against pango at
+	// [https://gitlab.gnome.org/gnome/pango](https://gitlab.gnome.org/gnome/pango)
+	// if your code relies on this behavior.
+	//
+	// Height setting only has effect if a positive width is set on @layout and
+	// ellipsization mode of @layout is not PANGO_ELLIPSIZE_NONE. The behavior
+	// is undefined if a height other than -1 is set and ellipsization mode is
+	// set to PANGO_ELLIPSIZE_NONE, and may change in the future.
+	SetHeight(height int)
+	// SetIndent: sets the width in Pango units to indent each paragraph.
+	//
+	// A negative value of @indent will produce a hanging indentation. That is,
+	// the first line will have the full width, and subsequent lines will be
+	// indented by the absolute value of @indent.
+	//
+	// The indent setting is ignored if layout alignment is set to
+	// PANGO_ALIGN_CENTER.
+	SetIndent(indent int)
+	// SetJustify: sets whether each complete line should be stretched to fill
+	// the entire width of the layout.
+	//
+	// Stretching is typically done by adding whitespace, but for some scripts
+	// (such as Arabic), the justification may be done in more complex ways,
+	// like extending the characters.
+	//
+	// Note that this setting is not implemented and so is ignored in Pango
+	// older than 1.18.
+	SetJustify(justify bool)
+	// SetLineSpacing: sets a factor for line spacing.
+	//
+	// Typical values are: 0, 1, 1.5, 2. The default values is 0.
+	//
+	// If @factor is non-zero, lines are placed so that
+	//
+	// baseline2 = baseline1 + factor * height2
+	//
+	// where height2 is the line height of the second line (as determined by the
+	// font(s)). In this case, the spacing set with
+	// [method@Pango.Layout.set_spacing] is ignored.
+	//
+	// If @factor is zero, spacing is applied as before.
+	SetLineSpacing(factor float32)
+	// SetMarkup: sets the layout text and attribute list from marked-up text.
+	//
+	// See [Pango Markup](pango_markup.html)). Replaces the current text and
+	// attribute list.
+	//
+	// This is the Same as [method@Pango.Layout.set_markup_with_accel], but the
+	// markup text isn't scanned for accelerators.
+	SetMarkup(markup string, length int)
+	// SetMarkupWithAccel: sets the layout text and attribute list from
+	// marked-up text.
+	//
+	// See [Pango Markup](pango_markup.html)). Replaces the current text and
+	// attribute list.
+	//
+	// If @accel_marker is nonzero, the given character will mark the character
+	// following it as an accelerator. For example, @accel_marker might be an
+	// ampersand or underscore. All characters marked as an accelerator will
+	// receive a PANGO_UNDERLINE_LOW attribute, and the first character so
+	// marked will be returned in @accel_char. Two @accel_marker characters
+	// following each other produce a single literal @accel_marker character.
+	SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32
+	// SetSingleParagraphMode: sets the single paragraph mode of @layout.
+	//
+	// If @setting is true, do not treat newlines and similar characters as
+	// paragraph separators; instead, keep all text in a single paragraph, and
+	// display a glyph for paragraph separator characters. Used when you want to
+	// allow editing of newlines on a single text line.
+	SetSingleParagraphMode(setting bool)
+	// SetSpacing: sets the amount of spacing in Pango unit between the lines of
+	// the layout.
+	//
+	//
+	// When placing lines with spacing, Pango arranges things so that
+	//
+	// line2.top = line1.bottom + spacing
+	//
+	// Note: Since 1.44, Pango defaults to using the line height (as determined
+	// by the font) for placing lines. The @spacing set with this function is
+	// only taken into account when the line height factor is set to zero with
+	// [method@Pango.Layout.set_line_spacing].
+	SetSpacing(spacing int)
+	// SetTabs: sets the tabs to use for @layout, overriding the default tabs.
+	//
+	// By default, tabs are every 8 spaces. If @tabs is nil, the default tabs
+	// are reinstated. @tabs is copied into the layout; you must free your copy
+	// of @tabs yourself.
+	SetTabs(tabs *TabArray)
+	// SetText: sets the text of the layout.
+	//
+	// This function validates @text and renders invalid UTF-8 with a
+	// placeholder glyph.
+	//
+	// Note that if you have used [method@Pango.Layout.set_markup] or
+	// [method@Pango.Layout.set_markup_with_accel] on @layout before, you may
+	// want to call [method@Pango.Layout.set_attributes] to clear the attributes
+	// set on the layout from the markup as this function does not clear
+	// attributes.
+	SetText(text string, length int)
+	// SetWidth: sets the width to which the lines of the `PangoLayout` should
+	// wrap or ellipsized.
+	//
+	// The default value is -1: no width set.
+	SetWidth(width int)
+	// SetWrap: sets the wrap mode.
+	//
+	// The wrap mode only has effect if a width is set on the layout with
+	// [method@Pango.Layout.set_width]. To turn off wrapping, set the width to
+	// -1.
+	SetWrap(wrap WrapMode)
+	// XYToIndex: converts from X and Y position within a layout to the byte
+	// index to the character at that logical position.
+	//
+	// If the Y position is not inside the layout, the closest position is
+	// chosen (the position will be clamped inside the layout). If the X
+	// position is not within the layout, then the start or the end of the line
+	// is chosen as described for [method@Pango.LayoutLine.x_to_index]. If
+	// either the X or Y positions were not inside the layout, then the function
+	// returns false; on an exact hit, it returns true.
+	XYToIndex(x int, y int) (int, int, bool)
+}
+
+type layout struct {
 	*externglib.Object
 }
 
-func wrapLayout(obj *externglib.Object) *Layout {
-	return &Layout{*externglib.Object{obj}}
+func wrapLayout(obj *externglib.Object) Layout {
+	return &layout{*externglib.Object{obj}}
 }
 
 func marshalLayout(p uintptr) (interface{}, error) {
@@ -3129,7 +4005,125 @@ func marshalLayout(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewLayout(context *Context) *Layout
+func NewLayout(context context) Layout
+
+func (l layout) ContextChanged()
+
+func (l layout) Copy() layout
+
+func (l layout) GetAlignment() Alignment
+
+func (l layout) GetAttributes() *AttrList
+
+func (l layout) GetAutoDir() bool
+
+func (l layout) GetBaseline() int
+
+func (l layout) GetCharacterCount() int
+
+func (l layout) GetContext() context
+
+func (l layout) GetCursorPos(index_ int) (Rectangle, Rectangle)
+
+func (l layout) GetDirection(index int) Direction
+
+func (l layout) GetEllipsize() EllipsizeMode
+
+func (l layout) GetExtents() (Rectangle, Rectangle)
+
+func (l layout) GetFontDescription() *FontDescription
+
+func (l layout) GetHeight() int
+
+func (l layout) GetIndent() int
+
+func (l layout) GetIter() *LayoutIter
+
+func (l layout) GetJustify() bool
+
+func (l layout) GetLine(line int) *LayoutLine
+
+func (l layout) GetLineCount() int
+
+func (l layout) GetLineReadonly(line int) *LayoutLine
+
+func (l layout) GetLineSpacing() float32
+
+func (l layout) GetLines() *glib.SList
+
+func (l layout) GetLinesReadonly() *glib.SList
+
+func (l layout) GetLogAttrs() ([]*LogAttr, int)
+
+func (l layout) GetLogAttrsReadonly() (int, []LogAttr)
+
+func (l layout) GetPixelExtents() (Rectangle, Rectangle)
+
+func (l layout) GetPixelSize() (int, int)
+
+func (l layout) GetSerial() uint
+
+func (l layout) GetSingleParagraphMode() bool
+
+func (l layout) GetSize() (int, int)
+
+func (l layout) GetSpacing() int
+
+func (l layout) GetTabs() *TabArray
+
+func (l layout) GetText() string
+
+func (l layout) GetUnknownGlyphsCount() int
+
+func (l layout) GetWidth() int
+
+func (l layout) GetWrap() WrapMode
+
+func (l layout) IndexToLineX(index_ int, trailing bool) (int, int)
+
+func (l layout) IndexToPos(index_ int) Rectangle
+
+func (l layout) IsEllipsized() bool
+
+func (l layout) IsWrapped() bool
+
+func (l layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (int, int)
+
+func (l layout) SetAlignment(alignment Alignment)
+
+func (l layout) SetAttributes(attrs *AttrList)
+
+func (l layout) SetAutoDir(autoDir bool)
+
+func (l layout) SetEllipsize(ellipsize EllipsizeMode)
+
+func (l layout) SetFontDescription(desc *FontDescription)
+
+func (l layout) SetHeight(height int)
+
+func (l layout) SetIndent(indent int)
+
+func (l layout) SetJustify(justify bool)
+
+func (l layout) SetLineSpacing(factor float32)
+
+func (l layout) SetMarkup(markup string, length int)
+
+func (l layout) SetMarkupWithAccel(markup string, length int, accelMarker uint32) uint32
+
+func (l layout) SetSingleParagraphMode(setting bool)
+
+func (l layout) SetSpacing(spacing int)
+
+func (l layout) SetTabs(tabs *TabArray)
+
+func (l layout) SetText(text string, length int)
+
+func (l layout) SetWidth(width int)
+
+func (l layout) SetWrap(wrap WrapMode)
+
+func (l layout) XYToIndex(x int, y int) (int, int, bool)
 
 // Renderer: `PangoRenderer` is a base class for objects that can render text
 // provided as `PangoGlyphString` or `PangoLayout`.
@@ -3137,12 +4131,123 @@ func NewLayout(context *Context) *Layout
 // By subclassing `PangoRenderer` and overriding operations such as @draw_glyphs
 // and @draw_rectangle, renderers for particular font backends and destinations
 // can be created.
-type Renderer struct {
+type Renderer interface {
+	gextras.Objector
+
+	// Activate: does initial setup before rendering operations on @renderer.
+	//
+	// [method@Pango.Renderer.deactivate] should be called when done drawing.
+	// Calls such as [method@Pango.Renderer.draw_layout] automatically activate
+	// the layout before drawing on it. Calls to `pango_renderer_activate()` and
+	// `pango_renderer_deactivate()` can be nested and the renderer will only be
+	// initialized and deinitialized once.
+	Activate()
+	// Deactivate: cleans up after rendering operations on @renderer.
+	//
+	// See docs for [method@Pango.Renderer.activate].
+	Deactivate()
+	// DrawErrorUnderline: draw a squiggly line that approximately covers the
+	// given rectangle in the style of an underline used to indicate a spelling
+	// error.
+	//
+	// The width of the underline is rounded to an integer number of up/down
+	// segments and the resulting rectangle is centered in the original
+	// rectangle.
+	//
+	// This should be called while @renderer is already active. Use
+	// [method@Pango.Renderer.activate] to activate a renderer.
+	DrawErrorUnderline(x int, y int, width int, height int)
+	// DrawGlyph: draws a single glyph with coordinates in device space.
+	DrawGlyph(font font, glyph Glyph, x float64, y float64)
+	// DrawGlyphItem: draws the glyphs in @glyph_item with the specified
+	// `PangoRenderer`, embedding the text associated with the glyphs in the
+	// output if the output format supports it.
+	//
+	// This is useful for rendering text in PDF.
+	//
+	// Note that @text is the start of the text for layout, which is then
+	// indexed by `glyph_item->item->offset`.
+	//
+	// If @text is nil, this simply calls [method@Pango.Renderer.draw_glyphs].
+	//
+	// The default implementation of this method simply falls back to
+	// [method@Pango.Renderer.draw_glyphs].
+	DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
+	// DrawGlyphs: draws the glyphs in @glyphs with the specified
+	// `PangoRenderer`.
+	DrawGlyphs(font font, glyphs *GlyphString, x int, y int)
+	// DrawLayout: draws @layout with the specified `PangoRenderer`.
+	DrawLayout(layout layout, x int, y int)
+	// DrawLayoutLine: draws @line with the specified `PangoRenderer`.
+	DrawLayoutLine(line *LayoutLine, x int, y int)
+	// DrawRectangle: draws an axis-aligned rectangle in user space coordinates
+	// with the specified `PangoRenderer`.
+	//
+	// This should be called while @renderer is already active. Use
+	// [method@Pango.Renderer.activate] to activate a renderer.
+	DrawRectangle(part RenderPart, x int, y int, width int, height int)
+	// DrawTrapezoid: draws a trapezoid with the parallel sides aligned with the
+	// X axis using the given `PangoRenderer`; coordinates are in device space.
+	DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64)
+	// GetAlpha: gets the current alpha for the specified part.
+	GetAlpha(part RenderPart) uint16
+	// GetColor: gets the current rendering color for the specified part.
+	GetColor(part RenderPart) *Color
+	// GetLayout: gets the layout currently being rendered using @renderer.
+	//
+	// Calling this function only makes sense from inside a subclass's methods,
+	// like in its draw_shape vfunc, for example.
+	//
+	// The returned layout should not be modified while still being rendered.
+	GetLayout() layout
+	// GetLayoutLine: gets the layout line currently being rendered using
+	// @renderer.
+	//
+	// Calling this function only makes sense from inside a subclass's methods,
+	// like in its draw_shape vfunc, for example.
+	//
+	// The returned layout line should not be modified while still being
+	// rendered.
+	GetLayoutLine() *LayoutLine
+	// GetMatrix: gets the transformation matrix that will be applied when
+	// rendering.
+	//
+	// See [method@Pango.Renderer.set_matrix].
+	GetMatrix() *Matrix
+	// PartChanged: informs Pango that the way that the rendering is done for
+	// @part has changed.
+	//
+	// This should be called if the rendering changes in a way that would
+	// prevent multiple pieces being joined together into one drawing call. For
+	// instance, if a subclass of `PangoRenderer` was to add a stipple option
+	// for drawing underlines, it needs to call
+	//
+	// “` pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE); “`
+	//
+	// When the stipple changes or underlines with different stipples might be
+	// joined together. Pango automatically calls this for changes to colors.
+	// (See [method@Pango.Renderer.set_color])
+	PartChanged(part RenderPart)
+	// SetAlpha: sets the alpha for part of the rendering.
+	//
+	// Note that the alpha may only be used if a color is specified for @part as
+	// well.
+	SetAlpha(part RenderPart, alpha uint16)
+	// SetColor: sets the color for part of the rendering.
+	//
+	// Also see [method@Pango.Renderer.set_alpha].
+	SetColor(part RenderPart, color *Color)
+	// SetMatrix: sets the transformation matrix that will be applied when
+	// rendering.
+	SetMatrix(matrix *Matrix)
+}
+
+type renderer struct {
 	*externglib.Object
 }
 
-func wrapRenderer(obj *externglib.Object) *Renderer {
-	return &Renderer{*externglib.Object{obj}}
+func wrapRenderer(obj *externglib.Object) Renderer {
+	return &renderer{*externglib.Object{obj}}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
@@ -3150,3 +4255,41 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	obj := externglib.Take(unsafe.Pointer(val))
 	return wrapWidget(obj), nil
 }
+
+func (r renderer) Activate()
+
+func (r renderer) Deactivate()
+
+func (r renderer) DrawErrorUnderline(x int, y int, width int, height int)
+
+func (r renderer) DrawGlyph(font font, glyph Glyph, x float64, y float64)
+
+func (r renderer) DrawGlyphItem(text string, glyphItem *GlyphItem, x int, y int)
+
+func (r renderer) DrawGlyphs(font font, glyphs *GlyphString, x int, y int)
+
+func (r renderer) DrawLayout(layout layout, x int, y int)
+
+func (r renderer) DrawLayoutLine(line *LayoutLine, x int, y int)
+
+func (r renderer) DrawRectangle(part RenderPart, x int, y int, width int, height int)
+
+func (r renderer) DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64)
+
+func (r renderer) GetAlpha(part RenderPart) uint16
+
+func (r renderer) GetColor(part RenderPart) *Color
+
+func (r renderer) GetLayout() layout
+
+func (r renderer) GetLayoutLine() *LayoutLine
+
+func (r renderer) GetMatrix() *Matrix
+
+func (r renderer) PartChanged(part RenderPart)
+
+func (r renderer) SetAlpha(part RenderPart, alpha uint16)
+
+func (r renderer) SetColor(part RenderPart, color *Color)
+
+func (r renderer) SetMatrix(matrix *Matrix)

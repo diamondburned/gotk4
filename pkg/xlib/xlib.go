@@ -78,12 +78,12 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 	return wrapDisplay(c)
 }
 
-func (d *Display) free() {}
+func (D *Display) free() {}
 
 // Native returns the pointer to *C.Display. The caller is expected to
 // cast.
-func (d *Display) Native() unsafe.Pointer {
-	return unsafe.Pointer(d.native)
+func (D *Display) Native() unsafe.Pointer {
+	return unsafe.Pointer(D.native)
 }
 
 type Screen struct {
@@ -106,12 +106,12 @@ func marshalScreen(p uintptr) (interface{}, error) {
 	return wrapScreen(c)
 }
 
-func (s *Screen) free() {}
+func (S *Screen) free() {}
 
 // Native returns the pointer to *C.Screen. The caller is expected to
 // cast.
-func (s *Screen) Native() unsafe.Pointer {
-	return unsafe.Pointer(s.native)
+func (S *Screen) Native() unsafe.Pointer {
+	return unsafe.Pointer(S.native)
 }
 
 type Visual struct {
@@ -134,12 +134,12 @@ func marshalVisual(p uintptr) (interface{}, error) {
 	return wrapVisual(c)
 }
 
-func (v *Visual) free() {}
+func (V *Visual) free() {}
 
 // Native returns the pointer to *C.Visual. The caller is expected to
 // cast.
-func (v *Visual) Native() unsafe.Pointer {
-	return unsafe.Pointer(v.native)
+func (V *Visual) Native() unsafe.Pointer {
+	return unsafe.Pointer(V.native)
 }
 
 type XConfigureEvent struct {
@@ -162,12 +162,12 @@ func marshalXConfigureEvent(p uintptr) (interface{}, error) {
 	return wrapXConfigureEvent(c)
 }
 
-func (x *XConfigureEvent) free() {}
+func (X *XConfigureEvent) free() {}
 
 // Native returns the pointer to *C.XConfigureEvent. The caller is expected to
 // cast.
-func (x *XConfigureEvent) Native() unsafe.Pointer {
-	return unsafe.Pointer(x.native)
+func (X *XConfigureEvent) Native() unsafe.Pointer {
+	return unsafe.Pointer(X.native)
 }
 
 type XImage struct {
@@ -190,12 +190,12 @@ func marshalXImage(p uintptr) (interface{}, error) {
 	return wrapXImage(c)
 }
 
-func (x *XImage) free() {}
+func (X *XImage) free() {}
 
 // Native returns the pointer to *C.XImage. The caller is expected to
 // cast.
-func (x *XImage) Native() unsafe.Pointer {
-	return unsafe.Pointer(x.native)
+func (X *XImage) Native() unsafe.Pointer {
+	return unsafe.Pointer(X.native)
 }
 
 type XFontStruct struct {
@@ -218,12 +218,12 @@ func marshalXFontStruct(p uintptr) (interface{}, error) {
 	return wrapXFontStruct(c)
 }
 
-func (x *XFontStruct) free() {}
+func (X *XFontStruct) free() {}
 
 // Native returns the pointer to *C.XFontStruct. The caller is expected to
 // cast.
-func (x *XFontStruct) Native() unsafe.Pointer {
-	return unsafe.Pointer(x.native)
+func (X *XFontStruct) Native() unsafe.Pointer {
+	return unsafe.Pointer(X.native)
 }
 
 type XTrapezoid struct {
@@ -246,12 +246,12 @@ func marshalXTrapezoid(p uintptr) (interface{}, error) {
 	return wrapXTrapezoid(c)
 }
 
-func (x *XTrapezoid) free() {}
+func (X *XTrapezoid) free() {}
 
 // Native returns the pointer to *C.XTrapezoid. The caller is expected to
 // cast.
-func (x *XTrapezoid) Native() unsafe.Pointer {
-	return unsafe.Pointer(x.native)
+func (X *XTrapezoid) Native() unsafe.Pointer {
+	return unsafe.Pointer(X.native)
 }
 
 type XVisualInfo struct {
@@ -274,12 +274,12 @@ func marshalXVisualInfo(p uintptr) (interface{}, error) {
 	return wrapXVisualInfo(c)
 }
 
-func (x *XVisualInfo) free() {}
+func (X *XVisualInfo) free() {}
 
 // Native returns the pointer to *C.XVisualInfo. The caller is expected to
 // cast.
-func (x *XVisualInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(x.native)
+func (X *XVisualInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(X.native)
 }
 
 type XWindowAttributes struct {
@@ -302,10 +302,10 @@ func marshalXWindowAttributes(p uintptr) (interface{}, error) {
 	return wrapXWindowAttributes(c)
 }
 
-func (x *XWindowAttributes) free() {}
+func (X *XWindowAttributes) free() {}
 
 // Native returns the pointer to *C.XWindowAttributes. The caller is expected to
 // cast.
-func (x *XWindowAttributes) Native() unsafe.Pointer {
-	return unsafe.Pointer(x.native)
+func (X *XWindowAttributes) Native() unsafe.Pointer {
+	return unsafe.Pointer(X.native)
 }

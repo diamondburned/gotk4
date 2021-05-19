@@ -5,7 +5,6 @@ package gdkpixdata
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -92,7 +91,7 @@ const (
 // PixbufFromPixdata: converts a Pixdata to a Pixbuf. If @copy_pixels is true or
 // if the pixel data is run-length-encoded, the pixel data is copied into
 // newly-allocated memory; otherwise it is reused.
-func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) *gdkpixbuf.Pixbuf
+func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.pixbuf
 
 // Pixdata: a Pixdata contains pixbuf information in a form suitable for
 // serialization and streaming.
@@ -141,6 +140,6 @@ func marshalPixdata(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GdkPixdata. The caller is expected to
 // cast.
-func (p *Pixdata) Native() unsafe.Pointer {
-	return unsafe.Pointer(p.native)
+func (P *Pixdata) Native() unsafe.Pointer {
+	return unsafe.Pointer(P.native)
 }

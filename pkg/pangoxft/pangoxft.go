@@ -5,6 +5,7 @@ package pangoxft
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
 	"github.com/diamondburned/gotk4/pkg/xft"
@@ -33,20 +34,20 @@ func init() {
 
 // GetContext: retrieves a Context appropriate for rendering with Xft fonts on
 // the given screen of the given display.
-func GetContext(display *xlib.Display, screen int) *pango.Context
+func GetContext(display *xlib.Display, screen int) pango.context
 
 // GetFontMap: returns the XftFontMap for the given display and screen. The
 // fontmap is owned by Pango and will be valid until the display is closed.
-func GetFontMap(display *xlib.Display, screen int) *pango.FontMap
+func GetFontMap(display *xlib.Display, screen int) pango.fontMap
 
 // PictureRender: renders a GlyphString onto an Xrender Picture object.
-func PictureRender(display *xlib.Display, srcPicture xlib.Picture, destPicture xlib.Picture, font *pango.Font, glyphs *pango.GlyphString, x int, y int)
+func PictureRender(display *xlib.Display, srcPicture xlib.Picture, destPicture xlib.Picture, font pango.font, glyphs *pango.GlyphString, x int, y int)
 
 // Render: renders a GlyphString onto an XftDraw object wrapping an X drawable.
-func Render(draw *xft.Draw, color *xft.Color, font *pango.Font, glyphs *pango.GlyphString, x int, y int)
+func Render(draw *xft.Draw, color *xft.Color, font pango.font, glyphs *pango.GlyphString, x int, y int)
 
 // RenderLayout: render a Layout onto a Draw
-func RenderLayout(draw *xft.Draw, color *xft.Color, layout *pango.Layout, x int, y int)
+func RenderLayout(draw *xft.Draw, color *xft.Color, layout pango.layout, x int, y int)
 
 // RenderLayoutLine: render a LayoutLine onto a Draw
 func RenderLayoutLine(draw *xft.Draw, color *xft.Color, line *pango.LayoutLine, x int, y int)
@@ -56,7 +57,7 @@ func RenderLayoutLine(draw *xft.Draw, color *xft.Color, line *pango.LayoutLine, 
 // transformation matrix for @font is not changed, so to produce correct
 // rendering results, the @font must have been loaded using a Context with an
 // identical transformation matrix to that passed in to this function.
-func RenderTransformed(draw *xft.Draw, color *xft.Color, matrix *pango.Matrix, font *pango.Font, glyphs *pango.GlyphString, x int, y int)
+func RenderTransformed(draw *xft.Draw, color *xft.Color, matrix *pango.Matrix, font pango.font, glyphs *pango.GlyphString, x int, y int)
 
 // SetDefaultSubstitute: sets a function that will be called to do final
 // configuration substitution on a Pattern before it is used to load the font.
@@ -77,12 +78,46 @@ func SubstituteChanged(display *xlib.Display, screen int)
 
 // Font is an implementation of FcFont using the Xft library for rendering. It
 // is used in conjunction with XftFontMap.
-type Font struct {
+type Font interface {
+	pangofc.font
+
+	// GetDisplay: returns the X display of the `XftFont` of a font.
+	GetDisplay() *xlib.Display
+	// GetGlyph: gets the glyph index for a given Unicode character for @font.
+	// If you only want to determine whether the font has the glyph, use
+	// pango_xft_font_has_char().
+	//
+	// Use pango_fc_font_get_glyph() instead.
+	GetGlyph(wc uint32) uint
+	// GetUnknownGlyph: returns the index of a glyph suitable for drawing @wc as
+	// an unknown character.
+	//
+	// Use PANGO_GET_UNKNOWN_GLYPH() instead.
+	GetUnknownGlyph(wc uint32) pango.Glyph
+	// HasChar: determines whether @font has a glyph for the codepoint @wc.
+	//
+	// Use pango_fc_font_has_char() instead.
+	HasChar(wc uint32) bool
+	// LockFace: gets the FreeType `FT_Face` associated with a font.
+	//
+	// This face will be kept around until you call
+	// pango_xft_font_unlock_face().
+	//
+	// Use pango_fc_font_lock_face() instead.
+	LockFace() freetype2.Face
+	// UnlockFace: releases a font previously obtained with
+	// pango_xft_font_lock_face().
+	//
+	// Use pango_fc_font_unlock_face() instead.
+	UnlockFace()
+}
+
+type font struct {
 	pangofc.Font
 }
 
-func wrapFont(obj *externglib.Object) *Font {
-	return &Font{Font{Font{*externglib.Object{obj}}}}
+func wrapFont(obj *externglib.Object) Font {
+	return &font{pangofc.Font{pango.Font{*externglib.Object{obj}}}}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
@@ -91,14 +126,30 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
+func (f font) GetDisplay() *xlib.Display
+
+func (f font) GetGlyph(wc uint32) uint
+
+func (f font) GetUnknownGlyph(wc uint32) pango.Glyph
+
+func (f font) HasChar(wc uint32) bool
+
+func (f font) LockFace() freetype2.Face
+
+func (f font) UnlockFace()
+
 // FontMap is an implementation of FcFontMap suitable for the Xft library as the
 // renderer. It is used in to create fonts of type XftFont.
-type FontMap struct {
+type FontMap interface {
+	pangofc.fontMap
+}
+
+type fontMap struct {
 	pangofc.FontMap
 }
 
-func wrapFontMap(obj *externglib.Object) *FontMap {
-	return &FontMap{FontMap{FontMap{*externglib.Object{obj}}}}
+func wrapFontMap(obj *externglib.Object) FontMap {
+	return &fontMap{pangofc.FontMap{pango.FontMap{*externglib.Object{obj}}}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
@@ -110,12 +161,22 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // Renderer is a subclass of Renderer used for rendering with Pango's Xft
 // backend. It can be used directly, or it can be further subclassed to modify
 // exactly how drawing of individual elements occurs.
-type Renderer struct {
+type Renderer interface {
+	pango.renderer
+
+	// SetDefaultColor: sets the default foreground color for a Renderer.
+	SetDefaultColor(defaultColor *pango.Color)
+	// SetDraw: sets the Draw object that the renderer is drawing to. The
+	// renderer must not be currently active.
+	SetDraw(draw *xft.Draw)
+}
+
+type renderer struct {
 	pango.Renderer
 }
 
-func wrapRenderer(obj *externglib.Object) *Renderer {
-	return &Renderer{Renderer{*externglib.Object{obj}}}
+func wrapRenderer(obj *externglib.Object) Renderer {
+	return &renderer{pango.Renderer{*externglib.Object{obj}}}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
@@ -124,4 +185,8 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRenderer(display *xlib.Display, screen int) *Renderer
+func NewRenderer(display *xlib.Display, screen int) Renderer
+
+func (r renderer) SetDefaultColor(defaultColor *pango.Color)
+
+func (r renderer) SetDraw(draw *xft.Draw)

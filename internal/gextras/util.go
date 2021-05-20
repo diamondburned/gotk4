@@ -1,6 +1,6 @@
 package gextras
 
-// #include <handy.h>
+// #include <glib/glib.h>
 // #include "util.h"
 import "C"
 
@@ -16,18 +16,6 @@ import (
 
 func Gpointer(ptr unsafe.Pointer) C.gpointer {
 	return C.conptr(ptr)
-}
-
-func Nwidget(w gtk.IWidget) unsafe.Pointer {
-	return unsafe.Pointer(w.ToWidget().Native())
-}
-
-func Cwidget(w gtk.IWidget) *C.GtkWidget {
-	return (*C.GtkWidget)(nwidget(w))
-}
-
-func Gwidget(w gtk.IWidget) C.gpointer {
-	return gpointer(unsafe.Pointer(w.ToWidget().GObject))
 }
 
 func Cbool(val bool) C.gboolean {

@@ -817,8 +817,8 @@ type Flags struct {
 func wrapFlags(p *C.VkFlags) *Flags {
 	v := Flags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Flags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Flags).free)
 
 	return &v
 }
@@ -845,8 +845,8 @@ type Bool32 struct {
 func wrapBool32(p *C.VkBool32) *Bool32 {
 	v := Bool32{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Bool32).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Bool32).free)
 
 	return &v
 }
@@ -873,8 +873,8 @@ type DeviceSize struct {
 func wrapDeviceSize(p *C.VkDeviceSize) *DeviceSize {
 	v := DeviceSize{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceSize).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceSize).free)
 
 	return &v
 }
@@ -901,8 +901,8 @@ type SampleMask struct {
 func wrapSampleMask(p *C.VkSampleMask) *SampleMask {
 	v := SampleMask{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SampleMask).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SampleMask).free)
 
 	return &v
 }
@@ -929,8 +929,8 @@ type Instance struct {
 func wrapInstance(p *C.VkInstance) *Instance {
 	v := Instance{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Instance).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Instance).free)
 
 	return &v
 }
@@ -957,8 +957,8 @@ type PhysicalDevice struct {
 func wrapPhysicalDevice(p *C.VkPhysicalDevice) *PhysicalDevice {
 	v := PhysicalDevice{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDevice).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDevice).free)
 
 	return &v
 }
@@ -985,8 +985,8 @@ type Device struct {
 func wrapDevice(p *C.VkDevice) *Device {
 	v := Device{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Device).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Device).free)
 
 	return &v
 }
@@ -1013,8 +1013,8 @@ type Queue struct {
 func wrapQueue(p *C.VkQueue) *Queue {
 	v := Queue{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Queue).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Queue).free)
 
 	return &v
 }
@@ -1041,8 +1041,8 @@ type Semaphore struct {
 func wrapSemaphore(p *C.VkSemaphore) *Semaphore {
 	v := Semaphore{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Semaphore).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Semaphore).free)
 
 	return &v
 }
@@ -1069,8 +1069,8 @@ type CommandBuffer struct {
 func wrapCommandBuffer(p *C.VkCommandBuffer) *CommandBuffer {
 	v := CommandBuffer{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandBuffer).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandBuffer).free)
 
 	return &v
 }
@@ -1097,8 +1097,8 @@ type Fence struct {
 func wrapFence(p *C.VkFence) *Fence {
 	v := Fence{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Fence).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Fence).free)
 
 	return &v
 }
@@ -1125,8 +1125,8 @@ type DeviceMemory struct {
 func wrapDeviceMemory(p *C.VkDeviceMemory) *DeviceMemory {
 	v := DeviceMemory{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceMemory).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceMemory).free)
 
 	return &v
 }
@@ -1153,8 +1153,8 @@ type Buffer struct {
 func wrapBuffer(p *C.VkBuffer) *Buffer {
 	v := Buffer{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Buffer).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Buffer).free)
 
 	return &v
 }
@@ -1181,8 +1181,8 @@ type Image struct {
 func wrapImage(p *C.VkImage) *Image {
 	v := Image{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Image).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Image).free)
 
 	return &v
 }
@@ -1209,8 +1209,8 @@ type Event struct {
 func wrapEvent(p *C.VkEvent) *Event {
 	v := Event{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Event).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Event).free)
 
 	return &v
 }
@@ -1237,8 +1237,8 @@ type QueryPool struct {
 func wrapQueryPool(p *C.VkQueryPool) *QueryPool {
 	v := QueryPool{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueryPool).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueryPool).free)
 
 	return &v
 }
@@ -1265,8 +1265,8 @@ type BufferView struct {
 func wrapBufferView(p *C.VkBufferView) *BufferView {
 	v := BufferView{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferView).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferView).free)
 
 	return &v
 }
@@ -1293,8 +1293,8 @@ type ImageView struct {
 func wrapImageView(p *C.VkImageView) *ImageView {
 	v := ImageView{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageView).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageView).free)
 
 	return &v
 }
@@ -1321,8 +1321,8 @@ type ShaderModule struct {
 func wrapShaderModule(p *C.VkShaderModule) *ShaderModule {
 	v := ShaderModule{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShaderModule).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShaderModule).free)
 
 	return &v
 }
@@ -1349,8 +1349,8 @@ type PipelineCache struct {
 func wrapPipelineCache(p *C.VkPipelineCache) *PipelineCache {
 	v := PipelineCache{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCache).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCache).free)
 
 	return &v
 }
@@ -1377,8 +1377,8 @@ type PipelineLayout struct {
 func wrapPipelineLayout(p *C.VkPipelineLayout) *PipelineLayout {
 	v := PipelineLayout{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineLayout).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineLayout).free)
 
 	return &v
 }
@@ -1405,8 +1405,8 @@ type RenderPass struct {
 func wrapRenderPass(p *C.VkRenderPass) *RenderPass {
 	v := RenderPass{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPass).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPass).free)
 
 	return &v
 }
@@ -1433,8 +1433,8 @@ type Pipeline struct {
 func wrapPipeline(p *C.VkPipeline) *Pipeline {
 	v := Pipeline{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Pipeline).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Pipeline).free)
 
 	return &v
 }
@@ -1461,8 +1461,8 @@ type DescriptorSetLayout struct {
 func wrapDescriptorSetLayout(p *C.VkDescriptorSetLayout) *DescriptorSetLayout {
 	v := DescriptorSetLayout{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetLayout).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetLayout).free)
 
 	return &v
 }
@@ -1489,8 +1489,8 @@ type Sampler struct {
 func wrapSampler(p *C.VkSampler) *Sampler {
 	v := Sampler{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Sampler).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Sampler).free)
 
 	return &v
 }
@@ -1517,8 +1517,8 @@ type DescriptorPool struct {
 func wrapDescriptorPool(p *C.VkDescriptorPool) *DescriptorPool {
 	v := DescriptorPool{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorPool).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorPool).free)
 
 	return &v
 }
@@ -1545,8 +1545,8 @@ type DescriptorSet struct {
 func wrapDescriptorSet(p *C.VkDescriptorSet) *DescriptorSet {
 	v := DescriptorSet{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSet).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSet).free)
 
 	return &v
 }
@@ -1573,8 +1573,8 @@ type Framebuffer struct {
 func wrapFramebuffer(p *C.VkFramebuffer) *Framebuffer {
 	v := Framebuffer{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Framebuffer).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Framebuffer).free)
 
 	return &v
 }
@@ -1601,8 +1601,8 @@ type CommandPool struct {
 func wrapCommandPool(p *C.VkCommandPool) *CommandPool {
 	v := CommandPool{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandPool).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandPool).free)
 
 	return &v
 }
@@ -1629,8 +1629,8 @@ type PipelineCacheHeaderVersion struct {
 func wrapPipelineCacheHeaderVersion(p *C.VkPipelineCacheHeaderVersion) *PipelineCacheHeaderVersion {
 	v := PipelineCacheHeaderVersion{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCacheHeaderVersion).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCacheHeaderVersion).free)
 
 	return &v
 }
@@ -1657,8 +1657,8 @@ type Result struct {
 func wrapResult(p *C.VkResult) *Result {
 	v := Result{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Result).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Result).free)
 
 	return &v
 }
@@ -1685,8 +1685,8 @@ type StructureType struct {
 func wrapStructureType(p *C.VkStructureType) *StructureType {
 	v := StructureType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*StructureType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*StructureType).free)
 
 	return &v
 }
@@ -1713,8 +1713,8 @@ type SystemAllocationScope struct {
 func wrapSystemAllocationScope(p *C.VkSystemAllocationScope) *SystemAllocationScope {
 	v := SystemAllocationScope{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SystemAllocationScope).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SystemAllocationScope).free)
 
 	return &v
 }
@@ -1741,8 +1741,8 @@ type InternalAllocationType struct {
 func wrapInternalAllocationType(p *C.VkInternalAllocationType) *InternalAllocationType {
 	v := InternalAllocationType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*InternalAllocationType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*InternalAllocationType).free)
 
 	return &v
 }
@@ -1769,8 +1769,8 @@ type Format struct {
 func wrapFormat(p *C.VkFormat) *Format {
 	v := Format{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Format).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Format).free)
 
 	return &v
 }
@@ -1797,8 +1797,8 @@ type ImageType struct {
 func wrapImageType(p *C.VkImageType) *ImageType {
 	v := ImageType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageType).free)
 
 	return &v
 }
@@ -1825,8 +1825,8 @@ type ImageTiling struct {
 func wrapImageTiling(p *C.VkImageTiling) *ImageTiling {
 	v := ImageTiling{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageTiling).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageTiling).free)
 
 	return &v
 }
@@ -1853,8 +1853,8 @@ type PhysicalDeviceType struct {
 func wrapPhysicalDeviceType(p *C.VkPhysicalDeviceType) *PhysicalDeviceType {
 	v := PhysicalDeviceType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceType).free)
 
 	return &v
 }
@@ -1881,8 +1881,8 @@ type QueryType struct {
 func wrapQueryType(p *C.VkQueryType) *QueryType {
 	v := QueryType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueryType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueryType).free)
 
 	return &v
 }
@@ -1909,8 +1909,8 @@ type SharingMode struct {
 func wrapSharingMode(p *C.VkSharingMode) *SharingMode {
 	v := SharingMode{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SharingMode).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SharingMode).free)
 
 	return &v
 }
@@ -1937,8 +1937,8 @@ type ImageLayout struct {
 func wrapImageLayout(p *C.VkImageLayout) *ImageLayout {
 	v := ImageLayout{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageLayout).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageLayout).free)
 
 	return &v
 }
@@ -1965,8 +1965,8 @@ type ImageViewType struct {
 func wrapImageViewType(p *C.VkImageViewType) *ImageViewType {
 	v := ImageViewType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageViewType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageViewType).free)
 
 	return &v
 }
@@ -1993,8 +1993,8 @@ type ComponentSwizzle struct {
 func wrapComponentSwizzle(p *C.VkComponentSwizzle) *ComponentSwizzle {
 	v := ComponentSwizzle{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ComponentSwizzle).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ComponentSwizzle).free)
 
 	return &v
 }
@@ -2021,8 +2021,8 @@ type VertexInputRate struct {
 func wrapVertexInputRate(p *C.VkVertexInputRate) *VertexInputRate {
 	v := VertexInputRate{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*VertexInputRate).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*VertexInputRate).free)
 
 	return &v
 }
@@ -2049,8 +2049,8 @@ type PrimitiveTopology struct {
 func wrapPrimitiveTopology(p *C.VkPrimitiveTopology) *PrimitiveTopology {
 	v := PrimitiveTopology{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PrimitiveTopology).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PrimitiveTopology).free)
 
 	return &v
 }
@@ -2077,8 +2077,8 @@ type PolygonMode struct {
 func wrapPolygonMode(p *C.VkPolygonMode) *PolygonMode {
 	v := PolygonMode{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PolygonMode).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PolygonMode).free)
 
 	return &v
 }
@@ -2105,8 +2105,8 @@ type FrontFace struct {
 func wrapFrontFace(p *C.VkFrontFace) *FrontFace {
 	v := FrontFace{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FrontFace).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FrontFace).free)
 
 	return &v
 }
@@ -2133,8 +2133,8 @@ type CompareOp struct {
 func wrapCompareOp(p *C.VkCompareOp) *CompareOp {
 	v := CompareOp{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CompareOp).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CompareOp).free)
 
 	return &v
 }
@@ -2161,8 +2161,8 @@ type StencilOp struct {
 func wrapStencilOp(p *C.VkStencilOp) *StencilOp {
 	v := StencilOp{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*StencilOp).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*StencilOp).free)
 
 	return &v
 }
@@ -2189,8 +2189,8 @@ type LogicOp struct {
 func wrapLogicOp(p *C.VkLogicOp) *LogicOp {
 	v := LogicOp{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*LogicOp).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*LogicOp).free)
 
 	return &v
 }
@@ -2217,8 +2217,8 @@ type BlendFactor struct {
 func wrapBlendFactor(p *C.VkBlendFactor) *BlendFactor {
 	v := BlendFactor{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BlendFactor).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BlendFactor).free)
 
 	return &v
 }
@@ -2245,8 +2245,8 @@ type BlendOp struct {
 func wrapBlendOp(p *C.VkBlendOp) *BlendOp {
 	v := BlendOp{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BlendOp).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BlendOp).free)
 
 	return &v
 }
@@ -2273,8 +2273,8 @@ type DynamicState struct {
 func wrapDynamicState(p *C.VkDynamicState) *DynamicState {
 	v := DynamicState{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DynamicState).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DynamicState).free)
 
 	return &v
 }
@@ -2301,8 +2301,8 @@ type Filter struct {
 func wrapFilter(p *C.VkFilter) *Filter {
 	v := Filter{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Filter).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Filter).free)
 
 	return &v
 }
@@ -2329,8 +2329,8 @@ type SamplerMipmapMode struct {
 func wrapSamplerMipmapMode(p *C.VkSamplerMipmapMode) *SamplerMipmapMode {
 	v := SamplerMipmapMode{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerMipmapMode).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerMipmapMode).free)
 
 	return &v
 }
@@ -2357,8 +2357,8 @@ type SamplerAddressMode struct {
 func wrapSamplerAddressMode(p *C.VkSamplerAddressMode) *SamplerAddressMode {
 	v := SamplerAddressMode{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerAddressMode).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerAddressMode).free)
 
 	return &v
 }
@@ -2385,8 +2385,8 @@ type BorderColor struct {
 func wrapBorderColor(p *C.VkBorderColor) *BorderColor {
 	v := BorderColor{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BorderColor).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BorderColor).free)
 
 	return &v
 }
@@ -2413,8 +2413,8 @@ type DescriptorType struct {
 func wrapDescriptorType(p *C.VkDescriptorType) *DescriptorType {
 	v := DescriptorType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorType).free)
 
 	return &v
 }
@@ -2441,8 +2441,8 @@ type AttachmentLoadOp struct {
 func wrapAttachmentLoadOp(p *C.VkAttachmentLoadOp) *AttachmentLoadOp {
 	v := AttachmentLoadOp{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AttachmentLoadOp).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttachmentLoadOp).free)
 
 	return &v
 }
@@ -2469,8 +2469,8 @@ type AttachmentStoreOp struct {
 func wrapAttachmentStoreOp(p *C.VkAttachmentStoreOp) *AttachmentStoreOp {
 	v := AttachmentStoreOp{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AttachmentStoreOp).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttachmentStoreOp).free)
 
 	return &v
 }
@@ -2497,8 +2497,8 @@ type PipelineBindPoint struct {
 func wrapPipelineBindPoint(p *C.VkPipelineBindPoint) *PipelineBindPoint {
 	v := PipelineBindPoint{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineBindPoint).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineBindPoint).free)
 
 	return &v
 }
@@ -2525,8 +2525,8 @@ type CommandBufferLevel struct {
 func wrapCommandBufferLevel(p *C.VkCommandBufferLevel) *CommandBufferLevel {
 	v := CommandBufferLevel{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandBufferLevel).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandBufferLevel).free)
 
 	return &v
 }
@@ -2553,8 +2553,8 @@ type IndexType struct {
 func wrapIndexType(p *C.VkIndexType) *IndexType {
 	v := IndexType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*IndexType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*IndexType).free)
 
 	return &v
 }
@@ -2581,8 +2581,8 @@ type SubpassContents struct {
 func wrapSubpassContents(p *C.VkSubpassContents) *SubpassContents {
 	v := SubpassContents{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassContents).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassContents).free)
 
 	return &v
 }
@@ -2609,8 +2609,8 @@ type ObjectType struct {
 func wrapObjectType(p *C.VkObjectType) *ObjectType {
 	v := ObjectType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectType).free)
 
 	return &v
 }
@@ -2637,8 +2637,8 @@ type VendorID struct {
 func wrapVendorID(p *C.VkVendorId) *VendorID {
 	v := VendorID{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*VendorID).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*VendorID).free)
 
 	return &v
 }
@@ -2665,8 +2665,8 @@ type InstanceCreateFlags struct {
 func wrapInstanceCreateFlags(p *C.VkInstanceCreateFlags) *InstanceCreateFlags {
 	v := InstanceCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*InstanceCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*InstanceCreateFlags).free)
 
 	return &v
 }
@@ -2693,8 +2693,8 @@ type FormatFeatureFlagBits struct {
 func wrapFormatFeatureFlagBits(p *C.VkFormatFeatureFlagBits) *FormatFeatureFlagBits {
 	v := FormatFeatureFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FormatFeatureFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FormatFeatureFlagBits).free)
 
 	return &v
 }
@@ -2721,8 +2721,8 @@ type FormatFeatureFlags struct {
 func wrapFormatFeatureFlags(p *C.VkFormatFeatureFlags) *FormatFeatureFlags {
 	v := FormatFeatureFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FormatFeatureFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FormatFeatureFlags).free)
 
 	return &v
 }
@@ -2749,8 +2749,8 @@ type ImageUsageFlagBits struct {
 func wrapImageUsageFlagBits(p *C.VkImageUsageFlagBits) *ImageUsageFlagBits {
 	v := ImageUsageFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageUsageFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageUsageFlagBits).free)
 
 	return &v
 }
@@ -2777,8 +2777,8 @@ type ImageUsageFlags struct {
 func wrapImageUsageFlags(p *C.VkImageUsageFlags) *ImageUsageFlags {
 	v := ImageUsageFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageUsageFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageUsageFlags).free)
 
 	return &v
 }
@@ -2805,8 +2805,8 @@ type ImageCreateFlagBits struct {
 func wrapImageCreateFlagBits(p *C.VkImageCreateFlagBits) *ImageCreateFlagBits {
 	v := ImageCreateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageCreateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageCreateFlagBits).free)
 
 	return &v
 }
@@ -2833,8 +2833,8 @@ type ImageCreateFlags struct {
 func wrapImageCreateFlags(p *C.VkImageCreateFlags) *ImageCreateFlags {
 	v := ImageCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageCreateFlags).free)
 
 	return &v
 }
@@ -2861,8 +2861,8 @@ type SampleCountFlagBits struct {
 func wrapSampleCountFlagBits(p *C.VkSampleCountFlagBits) *SampleCountFlagBits {
 	v := SampleCountFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SampleCountFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SampleCountFlagBits).free)
 
 	return &v
 }
@@ -2889,8 +2889,8 @@ type SampleCountFlags struct {
 func wrapSampleCountFlags(p *C.VkSampleCountFlags) *SampleCountFlags {
 	v := SampleCountFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SampleCountFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SampleCountFlags).free)
 
 	return &v
 }
@@ -2917,8 +2917,8 @@ type QueueFlagBits struct {
 func wrapQueueFlagBits(p *C.VkQueueFlagBits) *QueueFlagBits {
 	v := QueueFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueueFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueueFlagBits).free)
 
 	return &v
 }
@@ -2945,8 +2945,8 @@ type QueueFlags struct {
 func wrapQueueFlags(p *C.VkQueueFlags) *QueueFlags {
 	v := QueueFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueueFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueueFlags).free)
 
 	return &v
 }
@@ -2973,8 +2973,8 @@ type MemoryPropertyFlagBits struct {
 func wrapMemoryPropertyFlagBits(p *C.VkMemoryPropertyFlagBits) *MemoryPropertyFlagBits {
 	v := MemoryPropertyFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryPropertyFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryPropertyFlagBits).free)
 
 	return &v
 }
@@ -3001,8 +3001,8 @@ type MemoryPropertyFlags struct {
 func wrapMemoryPropertyFlags(p *C.VkMemoryPropertyFlags) *MemoryPropertyFlags {
 	v := MemoryPropertyFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryPropertyFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryPropertyFlags).free)
 
 	return &v
 }
@@ -3029,8 +3029,8 @@ type MemoryHeapFlagBits struct {
 func wrapMemoryHeapFlagBits(p *C.VkMemoryHeapFlagBits) *MemoryHeapFlagBits {
 	v := MemoryHeapFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryHeapFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryHeapFlagBits).free)
 
 	return &v
 }
@@ -3057,8 +3057,8 @@ type MemoryHeapFlags struct {
 func wrapMemoryHeapFlags(p *C.VkMemoryHeapFlags) *MemoryHeapFlags {
 	v := MemoryHeapFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryHeapFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryHeapFlags).free)
 
 	return &v
 }
@@ -3085,8 +3085,8 @@ type DeviceCreateFlags struct {
 func wrapDeviceCreateFlags(p *C.VkDeviceCreateFlags) *DeviceCreateFlags {
 	v := DeviceCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceCreateFlags).free)
 
 	return &v
 }
@@ -3113,8 +3113,8 @@ type DeviceQueueCreateFlagBits struct {
 func wrapDeviceQueueCreateFlagBits(p *C.VkDeviceQueueCreateFlagBits) *DeviceQueueCreateFlagBits {
 	v := DeviceQueueCreateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceQueueCreateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceQueueCreateFlagBits).free)
 
 	return &v
 }
@@ -3141,8 +3141,8 @@ type DeviceQueueCreateFlags struct {
 func wrapDeviceQueueCreateFlags(p *C.VkDeviceQueueCreateFlags) *DeviceQueueCreateFlags {
 	v := DeviceQueueCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceQueueCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceQueueCreateFlags).free)
 
 	return &v
 }
@@ -3169,8 +3169,8 @@ type PipelineStageFlagBits struct {
 func wrapPipelineStageFlagBits(p *C.VkPipelineStageFlagBits) *PipelineStageFlagBits {
 	v := PipelineStageFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineStageFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineStageFlagBits).free)
 
 	return &v
 }
@@ -3197,8 +3197,8 @@ type PipelineStageFlags struct {
 func wrapPipelineStageFlags(p *C.VkPipelineStageFlags) *PipelineStageFlags {
 	v := PipelineStageFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineStageFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineStageFlags).free)
 
 	return &v
 }
@@ -3225,8 +3225,8 @@ type MemoryMapFlags struct {
 func wrapMemoryMapFlags(p *C.VkMemoryMapFlags) *MemoryMapFlags {
 	v := MemoryMapFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryMapFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryMapFlags).free)
 
 	return &v
 }
@@ -3253,8 +3253,8 @@ type ImageAspectFlagBits struct {
 func wrapImageAspectFlagBits(p *C.VkImageAspectFlagBits) *ImageAspectFlagBits {
 	v := ImageAspectFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageAspectFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageAspectFlagBits).free)
 
 	return &v
 }
@@ -3281,8 +3281,8 @@ type ImageAspectFlags struct {
 func wrapImageAspectFlags(p *C.VkImageAspectFlags) *ImageAspectFlags {
 	v := ImageAspectFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageAspectFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageAspectFlags).free)
 
 	return &v
 }
@@ -3309,8 +3309,8 @@ type SparseImageFormatFlagBits struct {
 func wrapSparseImageFormatFlagBits(p *C.VkSparseImageFormatFlagBits) *SparseImageFormatFlagBits {
 	v := SparseImageFormatFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageFormatFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageFormatFlagBits).free)
 
 	return &v
 }
@@ -3337,8 +3337,8 @@ type SparseImageFormatFlags struct {
 func wrapSparseImageFormatFlags(p *C.VkSparseImageFormatFlags) *SparseImageFormatFlags {
 	v := SparseImageFormatFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageFormatFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageFormatFlags).free)
 
 	return &v
 }
@@ -3365,8 +3365,8 @@ type SparseMemoryBindFlagBits struct {
 func wrapSparseMemoryBindFlagBits(p *C.VkSparseMemoryBindFlagBits) *SparseMemoryBindFlagBits {
 	v := SparseMemoryBindFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseMemoryBindFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseMemoryBindFlagBits).free)
 
 	return &v
 }
@@ -3393,8 +3393,8 @@ type SparseMemoryBindFlags struct {
 func wrapSparseMemoryBindFlags(p *C.VkSparseMemoryBindFlags) *SparseMemoryBindFlags {
 	v := SparseMemoryBindFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseMemoryBindFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseMemoryBindFlags).free)
 
 	return &v
 }
@@ -3421,8 +3421,8 @@ type FenceCreateFlagBits struct {
 func wrapFenceCreateFlagBits(p *C.VkFenceCreateFlagBits) *FenceCreateFlagBits {
 	v := FenceCreateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FenceCreateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FenceCreateFlagBits).free)
 
 	return &v
 }
@@ -3449,8 +3449,8 @@ type FenceCreateFlags struct {
 func wrapFenceCreateFlags(p *C.VkFenceCreateFlags) *FenceCreateFlags {
 	v := FenceCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FenceCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FenceCreateFlags).free)
 
 	return &v
 }
@@ -3477,8 +3477,8 @@ type SemaphoreCreateFlags struct {
 func wrapSemaphoreCreateFlags(p *C.VkSemaphoreCreateFlags) *SemaphoreCreateFlags {
 	v := SemaphoreCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SemaphoreCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SemaphoreCreateFlags).free)
 
 	return &v
 }
@@ -3505,8 +3505,8 @@ type EventCreateFlags struct {
 func wrapEventCreateFlags(p *C.VkEventCreateFlags) *EventCreateFlags {
 	v := EventCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*EventCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*EventCreateFlags).free)
 
 	return &v
 }
@@ -3533,8 +3533,8 @@ type QueryPoolCreateFlags struct {
 func wrapQueryPoolCreateFlags(p *C.VkQueryPoolCreateFlags) *QueryPoolCreateFlags {
 	v := QueryPoolCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueryPoolCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueryPoolCreateFlags).free)
 
 	return &v
 }
@@ -3561,8 +3561,8 @@ type QueryPipelineStatisticFlagBits struct {
 func wrapQueryPipelineStatisticFlagBits(p *C.VkQueryPipelineStatisticFlagBits) *QueryPipelineStatisticFlagBits {
 	v := QueryPipelineStatisticFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueryPipelineStatisticFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueryPipelineStatisticFlagBits).free)
 
 	return &v
 }
@@ -3589,8 +3589,8 @@ type QueryPipelineStatisticFlags struct {
 func wrapQueryPipelineStatisticFlags(p *C.VkQueryPipelineStatisticFlags) *QueryPipelineStatisticFlags {
 	v := QueryPipelineStatisticFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueryPipelineStatisticFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueryPipelineStatisticFlags).free)
 
 	return &v
 }
@@ -3617,8 +3617,8 @@ type QueryResultFlagBits struct {
 func wrapQueryResultFlagBits(p *C.VkQueryResultFlagBits) *QueryResultFlagBits {
 	v := QueryResultFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueryResultFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueryResultFlagBits).free)
 
 	return &v
 }
@@ -3645,8 +3645,8 @@ type QueryResultFlags struct {
 func wrapQueryResultFlags(p *C.VkQueryResultFlags) *QueryResultFlags {
 	v := QueryResultFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueryResultFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueryResultFlags).free)
 
 	return &v
 }
@@ -3673,8 +3673,8 @@ type BufferCreateFlagBits struct {
 func wrapBufferCreateFlagBits(p *C.VkBufferCreateFlagBits) *BufferCreateFlagBits {
 	v := BufferCreateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferCreateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferCreateFlagBits).free)
 
 	return &v
 }
@@ -3701,8 +3701,8 @@ type BufferCreateFlags struct {
 func wrapBufferCreateFlags(p *C.VkBufferCreateFlags) *BufferCreateFlags {
 	v := BufferCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferCreateFlags).free)
 
 	return &v
 }
@@ -3729,8 +3729,8 @@ type BufferUsageFlagBits struct {
 func wrapBufferUsageFlagBits(p *C.VkBufferUsageFlagBits) *BufferUsageFlagBits {
 	v := BufferUsageFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferUsageFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferUsageFlagBits).free)
 
 	return &v
 }
@@ -3757,8 +3757,8 @@ type BufferUsageFlags struct {
 func wrapBufferUsageFlags(p *C.VkBufferUsageFlags) *BufferUsageFlags {
 	v := BufferUsageFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferUsageFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferUsageFlags).free)
 
 	return &v
 }
@@ -3785,8 +3785,8 @@ type BufferViewCreateFlags struct {
 func wrapBufferViewCreateFlags(p *C.VkBufferViewCreateFlags) *BufferViewCreateFlags {
 	v := BufferViewCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferViewCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferViewCreateFlags).free)
 
 	return &v
 }
@@ -3813,8 +3813,8 @@ type ImageViewCreateFlagBits struct {
 func wrapImageViewCreateFlagBits(p *C.VkImageViewCreateFlagBits) *ImageViewCreateFlagBits {
 	v := ImageViewCreateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageViewCreateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageViewCreateFlagBits).free)
 
 	return &v
 }
@@ -3841,8 +3841,8 @@ type ImageViewCreateFlags struct {
 func wrapImageViewCreateFlags(p *C.VkImageViewCreateFlags) *ImageViewCreateFlags {
 	v := ImageViewCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageViewCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageViewCreateFlags).free)
 
 	return &v
 }
@@ -3869,8 +3869,8 @@ type ShaderModuleCreateFlags struct {
 func wrapShaderModuleCreateFlags(p *C.VkShaderModuleCreateFlags) *ShaderModuleCreateFlags {
 	v := ShaderModuleCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShaderModuleCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShaderModuleCreateFlags).free)
 
 	return &v
 }
@@ -3897,8 +3897,8 @@ type PipelineCacheCreateFlags struct {
 func wrapPipelineCacheCreateFlags(p *C.VkPipelineCacheCreateFlags) *PipelineCacheCreateFlags {
 	v := PipelineCacheCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCacheCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCacheCreateFlags).free)
 
 	return &v
 }
@@ -3925,8 +3925,8 @@ type PipelineCreateFlagBits struct {
 func wrapPipelineCreateFlagBits(p *C.VkPipelineCreateFlagBits) *PipelineCreateFlagBits {
 	v := PipelineCreateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCreateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCreateFlagBits).free)
 
 	return &v
 }
@@ -3953,8 +3953,8 @@ type PipelineCreateFlags struct {
 func wrapPipelineCreateFlags(p *C.VkPipelineCreateFlags) *PipelineCreateFlags {
 	v := PipelineCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCreateFlags).free)
 
 	return &v
 }
@@ -3981,8 +3981,8 @@ type PipelineShaderStageCreateFlags struct {
 func wrapPipelineShaderStageCreateFlags(p *C.VkPipelineShaderStageCreateFlags) *PipelineShaderStageCreateFlags {
 	v := PipelineShaderStageCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineShaderStageCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineShaderStageCreateFlags).free)
 
 	return &v
 }
@@ -4009,8 +4009,8 @@ type ShaderStageFlagBits struct {
 func wrapShaderStageFlagBits(p *C.VkShaderStageFlagBits) *ShaderStageFlagBits {
 	v := ShaderStageFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShaderStageFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShaderStageFlagBits).free)
 
 	return &v
 }
@@ -4037,8 +4037,8 @@ type PipelineVertexInputStateCreateFlags struct {
 func wrapPipelineVertexInputStateCreateFlags(p *C.VkPipelineVertexInputStateCreateFlags) *PipelineVertexInputStateCreateFlags {
 	v := PipelineVertexInputStateCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineVertexInputStateCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineVertexInputStateCreateFlags).free)
 
 	return &v
 }
@@ -4065,8 +4065,8 @@ type PipelineInputAssemblyStateCreateFlags struct {
 func wrapPipelineInputAssemblyStateCreateFlags(p *C.VkPipelineInputAssemblyStateCreateFlags) *PipelineInputAssemblyStateCreateFlags {
 	v := PipelineInputAssemblyStateCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineInputAssemblyStateCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineInputAssemblyStateCreateFlags).free)
 
 	return &v
 }
@@ -4093,8 +4093,8 @@ type PipelineTessellationStateCreateFlags struct {
 func wrapPipelineTessellationStateCreateFlags(p *C.VkPipelineTessellationStateCreateFlags) *PipelineTessellationStateCreateFlags {
 	v := PipelineTessellationStateCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineTessellationStateCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineTessellationStateCreateFlags).free)
 
 	return &v
 }
@@ -4121,8 +4121,8 @@ type PipelineViewportStateCreateFlags struct {
 func wrapPipelineViewportStateCreateFlags(p *C.VkPipelineViewportStateCreateFlags) *PipelineViewportStateCreateFlags {
 	v := PipelineViewportStateCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineViewportStateCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineViewportStateCreateFlags).free)
 
 	return &v
 }
@@ -4149,8 +4149,8 @@ type PipelineRasterizationStateCreateFlags struct {
 func wrapPipelineRasterizationStateCreateFlags(p *C.VkPipelineRasterizationStateCreateFlags) *PipelineRasterizationStateCreateFlags {
 	v := PipelineRasterizationStateCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineRasterizationStateCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineRasterizationStateCreateFlags).free)
 
 	return &v
 }
@@ -4177,8 +4177,8 @@ type CullModeFlagBits struct {
 func wrapCullModeFlagBits(p *C.VkCullModeFlagBits) *CullModeFlagBits {
 	v := CullModeFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CullModeFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CullModeFlagBits).free)
 
 	return &v
 }
@@ -4205,8 +4205,8 @@ type CullModeFlags struct {
 func wrapCullModeFlags(p *C.VkCullModeFlags) *CullModeFlags {
 	v := CullModeFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CullModeFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CullModeFlags).free)
 
 	return &v
 }
@@ -4233,8 +4233,8 @@ type PipelineMultisampleStateCreateFlags struct {
 func wrapPipelineMultisampleStateCreateFlags(p *C.VkPipelineMultisampleStateCreateFlags) *PipelineMultisampleStateCreateFlags {
 	v := PipelineMultisampleStateCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineMultisampleStateCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineMultisampleStateCreateFlags).free)
 
 	return &v
 }
@@ -4261,8 +4261,8 @@ type PipelineDepthStencilStateCreateFlags struct {
 func wrapPipelineDepthStencilStateCreateFlags(p *C.VkPipelineDepthStencilStateCreateFlags) *PipelineDepthStencilStateCreateFlags {
 	v := PipelineDepthStencilStateCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineDepthStencilStateCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineDepthStencilStateCreateFlags).free)
 
 	return &v
 }
@@ -4289,8 +4289,8 @@ type PipelineColorBlendStateCreateFlags struct {
 func wrapPipelineColorBlendStateCreateFlags(p *C.VkPipelineColorBlendStateCreateFlags) *PipelineColorBlendStateCreateFlags {
 	v := PipelineColorBlendStateCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineColorBlendStateCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineColorBlendStateCreateFlags).free)
 
 	return &v
 }
@@ -4317,8 +4317,8 @@ type ColorComponentFlagBits struct {
 func wrapColorComponentFlagBits(p *C.VkColorComponentFlagBits) *ColorComponentFlagBits {
 	v := ColorComponentFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ColorComponentFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ColorComponentFlagBits).free)
 
 	return &v
 }
@@ -4345,8 +4345,8 @@ type ColorComponentFlags struct {
 func wrapColorComponentFlags(p *C.VkColorComponentFlags) *ColorComponentFlags {
 	v := ColorComponentFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ColorComponentFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ColorComponentFlags).free)
 
 	return &v
 }
@@ -4373,8 +4373,8 @@ type PipelineDynamicStateCreateFlags struct {
 func wrapPipelineDynamicStateCreateFlags(p *C.VkPipelineDynamicStateCreateFlags) *PipelineDynamicStateCreateFlags {
 	v := PipelineDynamicStateCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineDynamicStateCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineDynamicStateCreateFlags).free)
 
 	return &v
 }
@@ -4401,8 +4401,8 @@ type PipelineLayoutCreateFlags struct {
 func wrapPipelineLayoutCreateFlags(p *C.VkPipelineLayoutCreateFlags) *PipelineLayoutCreateFlags {
 	v := PipelineLayoutCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineLayoutCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineLayoutCreateFlags).free)
 
 	return &v
 }
@@ -4429,8 +4429,8 @@ type ShaderStageFlags struct {
 func wrapShaderStageFlags(p *C.VkShaderStageFlags) *ShaderStageFlags {
 	v := ShaderStageFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShaderStageFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShaderStageFlags).free)
 
 	return &v
 }
@@ -4457,8 +4457,8 @@ type SamplerCreateFlagBits struct {
 func wrapSamplerCreateFlagBits(p *C.VkSamplerCreateFlagBits) *SamplerCreateFlagBits {
 	v := SamplerCreateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerCreateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerCreateFlagBits).free)
 
 	return &v
 }
@@ -4485,8 +4485,8 @@ type SamplerCreateFlags struct {
 func wrapSamplerCreateFlags(p *C.VkSamplerCreateFlags) *SamplerCreateFlags {
 	v := SamplerCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerCreateFlags).free)
 
 	return &v
 }
@@ -4513,8 +4513,8 @@ type DescriptorSetLayoutCreateFlagBits struct {
 func wrapDescriptorSetLayoutCreateFlagBits(p *C.VkDescriptorSetLayoutCreateFlagBits) *DescriptorSetLayoutCreateFlagBits {
 	v := DescriptorSetLayoutCreateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetLayoutCreateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetLayoutCreateFlagBits).free)
 
 	return &v
 }
@@ -4541,8 +4541,8 @@ type DescriptorSetLayoutCreateFlags struct {
 func wrapDescriptorSetLayoutCreateFlags(p *C.VkDescriptorSetLayoutCreateFlags) *DescriptorSetLayoutCreateFlags {
 	v := DescriptorSetLayoutCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetLayoutCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetLayoutCreateFlags).free)
 
 	return &v
 }
@@ -4569,8 +4569,8 @@ type DescriptorPoolCreateFlagBits struct {
 func wrapDescriptorPoolCreateFlagBits(p *C.VkDescriptorPoolCreateFlagBits) *DescriptorPoolCreateFlagBits {
 	v := DescriptorPoolCreateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorPoolCreateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorPoolCreateFlagBits).free)
 
 	return &v
 }
@@ -4597,8 +4597,8 @@ type DescriptorPoolCreateFlags struct {
 func wrapDescriptorPoolCreateFlags(p *C.VkDescriptorPoolCreateFlags) *DescriptorPoolCreateFlags {
 	v := DescriptorPoolCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorPoolCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorPoolCreateFlags).free)
 
 	return &v
 }
@@ -4625,8 +4625,8 @@ type DescriptorPoolResetFlags struct {
 func wrapDescriptorPoolResetFlags(p *C.VkDescriptorPoolResetFlags) *DescriptorPoolResetFlags {
 	v := DescriptorPoolResetFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorPoolResetFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorPoolResetFlags).free)
 
 	return &v
 }
@@ -4653,8 +4653,8 @@ type FramebufferCreateFlags struct {
 func wrapFramebufferCreateFlags(p *C.VkFramebufferCreateFlags) *FramebufferCreateFlags {
 	v := FramebufferCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FramebufferCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FramebufferCreateFlags).free)
 
 	return &v
 }
@@ -4681,8 +4681,8 @@ type RenderPassCreateFlags struct {
 func wrapRenderPassCreateFlags(p *C.VkRenderPassCreateFlags) *RenderPassCreateFlags {
 	v := RenderPassCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPassCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPassCreateFlags).free)
 
 	return &v
 }
@@ -4709,8 +4709,8 @@ type AttachmentDescriptionFlagBits struct {
 func wrapAttachmentDescriptionFlagBits(p *C.VkAttachmentDescriptionFlagBits) *AttachmentDescriptionFlagBits {
 	v := AttachmentDescriptionFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AttachmentDescriptionFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttachmentDescriptionFlagBits).free)
 
 	return &v
 }
@@ -4737,8 +4737,8 @@ type AttachmentDescriptionFlags struct {
 func wrapAttachmentDescriptionFlags(p *C.VkAttachmentDescriptionFlags) *AttachmentDescriptionFlags {
 	v := AttachmentDescriptionFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AttachmentDescriptionFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttachmentDescriptionFlags).free)
 
 	return &v
 }
@@ -4765,8 +4765,8 @@ type SubpassDescriptionFlagBits struct {
 func wrapSubpassDescriptionFlagBits(p *C.VkSubpassDescriptionFlagBits) *SubpassDescriptionFlagBits {
 	v := SubpassDescriptionFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassDescriptionFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassDescriptionFlagBits).free)
 
 	return &v
 }
@@ -4793,8 +4793,8 @@ type SubpassDescriptionFlags struct {
 func wrapSubpassDescriptionFlags(p *C.VkSubpassDescriptionFlags) *SubpassDescriptionFlags {
 	v := SubpassDescriptionFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassDescriptionFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassDescriptionFlags).free)
 
 	return &v
 }
@@ -4821,8 +4821,8 @@ type AccessFlagBits struct {
 func wrapAccessFlagBits(p *C.VkAccessFlagBits) *AccessFlagBits {
 	v := AccessFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AccessFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AccessFlagBits).free)
 
 	return &v
 }
@@ -4849,8 +4849,8 @@ type AccessFlags struct {
 func wrapAccessFlags(p *C.VkAccessFlags) *AccessFlags {
 	v := AccessFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AccessFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AccessFlags).free)
 
 	return &v
 }
@@ -4877,8 +4877,8 @@ type DependencyFlagBits struct {
 func wrapDependencyFlagBits(p *C.VkDependencyFlagBits) *DependencyFlagBits {
 	v := DependencyFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DependencyFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DependencyFlagBits).free)
 
 	return &v
 }
@@ -4905,8 +4905,8 @@ type DependencyFlags struct {
 func wrapDependencyFlags(p *C.VkDependencyFlags) *DependencyFlags {
 	v := DependencyFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DependencyFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DependencyFlags).free)
 
 	return &v
 }
@@ -4933,8 +4933,8 @@ type CommandPoolCreateFlagBits struct {
 func wrapCommandPoolCreateFlagBits(p *C.VkCommandPoolCreateFlagBits) *CommandPoolCreateFlagBits {
 	v := CommandPoolCreateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandPoolCreateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandPoolCreateFlagBits).free)
 
 	return &v
 }
@@ -4961,8 +4961,8 @@ type CommandPoolCreateFlags struct {
 func wrapCommandPoolCreateFlags(p *C.VkCommandPoolCreateFlags) *CommandPoolCreateFlags {
 	v := CommandPoolCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandPoolCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandPoolCreateFlags).free)
 
 	return &v
 }
@@ -4989,8 +4989,8 @@ type CommandPoolResetFlagBits struct {
 func wrapCommandPoolResetFlagBits(p *C.VkCommandPoolResetFlagBits) *CommandPoolResetFlagBits {
 	v := CommandPoolResetFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandPoolResetFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandPoolResetFlagBits).free)
 
 	return &v
 }
@@ -5017,8 +5017,8 @@ type CommandPoolResetFlags struct {
 func wrapCommandPoolResetFlags(p *C.VkCommandPoolResetFlags) *CommandPoolResetFlags {
 	v := CommandPoolResetFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandPoolResetFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandPoolResetFlags).free)
 
 	return &v
 }
@@ -5045,8 +5045,8 @@ type CommandBufferUsageFlagBits struct {
 func wrapCommandBufferUsageFlagBits(p *C.VkCommandBufferUsageFlagBits) *CommandBufferUsageFlagBits {
 	v := CommandBufferUsageFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandBufferUsageFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandBufferUsageFlagBits).free)
 
 	return &v
 }
@@ -5073,8 +5073,8 @@ type CommandBufferUsageFlags struct {
 func wrapCommandBufferUsageFlags(p *C.VkCommandBufferUsageFlags) *CommandBufferUsageFlags {
 	v := CommandBufferUsageFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandBufferUsageFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandBufferUsageFlags).free)
 
 	return &v
 }
@@ -5101,8 +5101,8 @@ type QueryControlFlagBits struct {
 func wrapQueryControlFlagBits(p *C.VkQueryControlFlagBits) *QueryControlFlagBits {
 	v := QueryControlFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueryControlFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueryControlFlagBits).free)
 
 	return &v
 }
@@ -5129,8 +5129,8 @@ type QueryControlFlags struct {
 func wrapQueryControlFlags(p *C.VkQueryControlFlags) *QueryControlFlags {
 	v := QueryControlFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueryControlFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueryControlFlags).free)
 
 	return &v
 }
@@ -5157,8 +5157,8 @@ type CommandBufferResetFlagBits struct {
 func wrapCommandBufferResetFlagBits(p *C.VkCommandBufferResetFlagBits) *CommandBufferResetFlagBits {
 	v := CommandBufferResetFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandBufferResetFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandBufferResetFlagBits).free)
 
 	return &v
 }
@@ -5185,8 +5185,8 @@ type CommandBufferResetFlags struct {
 func wrapCommandBufferResetFlags(p *C.VkCommandBufferResetFlags) *CommandBufferResetFlags {
 	v := CommandBufferResetFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandBufferResetFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandBufferResetFlags).free)
 
 	return &v
 }
@@ -5213,8 +5213,8 @@ type StencilFaceFlagBits struct {
 func wrapStencilFaceFlagBits(p *C.VkStencilFaceFlagBits) *StencilFaceFlagBits {
 	v := StencilFaceFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*StencilFaceFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*StencilFaceFlagBits).free)
 
 	return &v
 }
@@ -5241,8 +5241,8 @@ type StencilFaceFlags struct {
 func wrapStencilFaceFlags(p *C.VkStencilFaceFlags) *StencilFaceFlags {
 	v := StencilFaceFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*StencilFaceFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*StencilFaceFlags).free)
 
 	return &v
 }
@@ -5269,8 +5269,8 @@ type ApplicationInfo struct {
 func wrapApplicationInfo(p *C.VkApplicationInfo) *ApplicationInfo {
 	v := ApplicationInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ApplicationInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ApplicationInfo).free)
 
 	return &v
 }
@@ -5297,8 +5297,8 @@ type InstanceCreateInfo struct {
 func wrapInstanceCreateInfo(p *C.VkInstanceCreateInfo) *InstanceCreateInfo {
 	v := InstanceCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*InstanceCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*InstanceCreateInfo).free)
 
 	return &v
 }
@@ -5325,8 +5325,8 @@ type AllocationCallbacks struct {
 func wrapAllocationCallbacks(p *C.VkAllocationCallbacks) *AllocationCallbacks {
 	v := AllocationCallbacks{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AllocationCallbacks).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AllocationCallbacks).free)
 
 	return &v
 }
@@ -5353,8 +5353,8 @@ type PhysicalDeviceFeatures struct {
 func wrapPhysicalDeviceFeatures(p *C.VkPhysicalDeviceFeatures) *PhysicalDeviceFeatures {
 	v := PhysicalDeviceFeatures{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceFeatures).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceFeatures).free)
 
 	return &v
 }
@@ -5381,8 +5381,8 @@ type FormatProperties struct {
 func wrapFormatProperties(p *C.VkFormatProperties) *FormatProperties {
 	v := FormatProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FormatProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FormatProperties).free)
 
 	return &v
 }
@@ -5409,8 +5409,8 @@ type Extent3D struct {
 func wrapExtent3D(p *C.VkExtent3D) *Extent3D {
 	v := Extent3D{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Extent3D).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Extent3D).free)
 
 	return &v
 }
@@ -5437,8 +5437,8 @@ type ImageFormatProperties struct {
 func wrapImageFormatProperties(p *C.VkImageFormatProperties) *ImageFormatProperties {
 	v := ImageFormatProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageFormatProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageFormatProperties).free)
 
 	return &v
 }
@@ -5465,8 +5465,8 @@ type PhysicalDeviceLimits struct {
 func wrapPhysicalDeviceLimits(p *C.VkPhysicalDeviceLimits) *PhysicalDeviceLimits {
 	v := PhysicalDeviceLimits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceLimits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceLimits).free)
 
 	return &v
 }
@@ -5493,8 +5493,8 @@ type PhysicalDeviceSparseProperties struct {
 func wrapPhysicalDeviceSparseProperties(p *C.VkPhysicalDeviceSparseProperties) *PhysicalDeviceSparseProperties {
 	v := PhysicalDeviceSparseProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceSparseProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceSparseProperties).free)
 
 	return &v
 }
@@ -5521,8 +5521,8 @@ type PhysicalDeviceProperties struct {
 func wrapPhysicalDeviceProperties(p *C.VkPhysicalDeviceProperties) *PhysicalDeviceProperties {
 	v := PhysicalDeviceProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceProperties).free)
 
 	return &v
 }
@@ -5549,8 +5549,8 @@ type QueueFamilyProperties struct {
 func wrapQueueFamilyProperties(p *C.VkQueueFamilyProperties) *QueueFamilyProperties {
 	v := QueueFamilyProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueueFamilyProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueueFamilyProperties).free)
 
 	return &v
 }
@@ -5577,8 +5577,8 @@ type MemoryType struct {
 func wrapMemoryType(p *C.VkMemoryType) *MemoryType {
 	v := MemoryType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryType).free)
 
 	return &v
 }
@@ -5605,8 +5605,8 @@ type MemoryHeap struct {
 func wrapMemoryHeap(p *C.VkMemoryHeap) *MemoryHeap {
 	v := MemoryHeap{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryHeap).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryHeap).free)
 
 	return &v
 }
@@ -5633,8 +5633,8 @@ type PhysicalDeviceMemoryProperties struct {
 func wrapPhysicalDeviceMemoryProperties(p *C.VkPhysicalDeviceMemoryProperties) *PhysicalDeviceMemoryProperties {
 	v := PhysicalDeviceMemoryProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMemoryProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMemoryProperties).free)
 
 	return &v
 }
@@ -5661,8 +5661,8 @@ type DeviceQueueCreateInfo struct {
 func wrapDeviceQueueCreateInfo(p *C.VkDeviceQueueCreateInfo) *DeviceQueueCreateInfo {
 	v := DeviceQueueCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceQueueCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceQueueCreateInfo).free)
 
 	return &v
 }
@@ -5689,8 +5689,8 @@ type DeviceCreateInfo struct {
 func wrapDeviceCreateInfo(p *C.VkDeviceCreateInfo) *DeviceCreateInfo {
 	v := DeviceCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceCreateInfo).free)
 
 	return &v
 }
@@ -5717,8 +5717,8 @@ type ExtensionProperties struct {
 func wrapExtensionProperties(p *C.VkExtensionProperties) *ExtensionProperties {
 	v := ExtensionProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExtensionProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExtensionProperties).free)
 
 	return &v
 }
@@ -5745,8 +5745,8 @@ type LayerProperties struct {
 func wrapLayerProperties(p *C.VkLayerProperties) *LayerProperties {
 	v := LayerProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*LayerProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*LayerProperties).free)
 
 	return &v
 }
@@ -5773,8 +5773,8 @@ type SubmitInfo struct {
 func wrapSubmitInfo(p *C.VkSubmitInfo) *SubmitInfo {
 	v := SubmitInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubmitInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubmitInfo).free)
 
 	return &v
 }
@@ -5801,8 +5801,8 @@ type MemoryAllocateInfo struct {
 func wrapMemoryAllocateInfo(p *C.VkMemoryAllocateInfo) *MemoryAllocateInfo {
 	v := MemoryAllocateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryAllocateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryAllocateInfo).free)
 
 	return &v
 }
@@ -5829,8 +5829,8 @@ type MappedMemoryRange struct {
 func wrapMappedMemoryRange(p *C.VkMappedMemoryRange) *MappedMemoryRange {
 	v := MappedMemoryRange{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MappedMemoryRange).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MappedMemoryRange).free)
 
 	return &v
 }
@@ -5857,8 +5857,8 @@ type MemoryRequirements struct {
 func wrapMemoryRequirements(p *C.VkMemoryRequirements) *MemoryRequirements {
 	v := MemoryRequirements{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryRequirements).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryRequirements).free)
 
 	return &v
 }
@@ -5885,8 +5885,8 @@ type SparseImageFormatProperties struct {
 func wrapSparseImageFormatProperties(p *C.VkSparseImageFormatProperties) *SparseImageFormatProperties {
 	v := SparseImageFormatProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageFormatProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageFormatProperties).free)
 
 	return &v
 }
@@ -5913,8 +5913,8 @@ type SparseImageMemoryRequirements struct {
 func wrapSparseImageMemoryRequirements(p *C.VkSparseImageMemoryRequirements) *SparseImageMemoryRequirements {
 	v := SparseImageMemoryRequirements{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageMemoryRequirements).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageMemoryRequirements).free)
 
 	return &v
 }
@@ -5941,8 +5941,8 @@ type SparseMemoryBind struct {
 func wrapSparseMemoryBind(p *C.VkSparseMemoryBind) *SparseMemoryBind {
 	v := SparseMemoryBind{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseMemoryBind).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseMemoryBind).free)
 
 	return &v
 }
@@ -5969,8 +5969,8 @@ type SparseBufferMemoryBindInfo struct {
 func wrapSparseBufferMemoryBindInfo(p *C.VkSparseBufferMemoryBindInfo) *SparseBufferMemoryBindInfo {
 	v := SparseBufferMemoryBindInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseBufferMemoryBindInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseBufferMemoryBindInfo).free)
 
 	return &v
 }
@@ -5997,8 +5997,8 @@ type SparseImageOpaqueMemoryBindInfo struct {
 func wrapSparseImageOpaqueMemoryBindInfo(p *C.VkSparseImageOpaqueMemoryBindInfo) *SparseImageOpaqueMemoryBindInfo {
 	v := SparseImageOpaqueMemoryBindInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageOpaqueMemoryBindInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageOpaqueMemoryBindInfo).free)
 
 	return &v
 }
@@ -6025,8 +6025,8 @@ type ImageSubresource struct {
 func wrapImageSubresource(p *C.VkImageSubresource) *ImageSubresource {
 	v := ImageSubresource{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageSubresource).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageSubresource).free)
 
 	return &v
 }
@@ -6053,8 +6053,8 @@ type Offset3D struct {
 func wrapOffset3D(p *C.VkOffset3D) *Offset3D {
 	v := Offset3D{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Offset3D).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Offset3D).free)
 
 	return &v
 }
@@ -6081,8 +6081,8 @@ type SparseImageMemoryBind struct {
 func wrapSparseImageMemoryBind(p *C.VkSparseImageMemoryBind) *SparseImageMemoryBind {
 	v := SparseImageMemoryBind{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageMemoryBind).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageMemoryBind).free)
 
 	return &v
 }
@@ -6109,8 +6109,8 @@ type SparseImageMemoryBindInfo struct {
 func wrapSparseImageMemoryBindInfo(p *C.VkSparseImageMemoryBindInfo) *SparseImageMemoryBindInfo {
 	v := SparseImageMemoryBindInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageMemoryBindInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageMemoryBindInfo).free)
 
 	return &v
 }
@@ -6137,8 +6137,8 @@ type BindSparseInfo struct {
 func wrapBindSparseInfo(p *C.VkBindSparseInfo) *BindSparseInfo {
 	v := BindSparseInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindSparseInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindSparseInfo).free)
 
 	return &v
 }
@@ -6165,8 +6165,8 @@ type FenceCreateInfo struct {
 func wrapFenceCreateInfo(p *C.VkFenceCreateInfo) *FenceCreateInfo {
 	v := FenceCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FenceCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FenceCreateInfo).free)
 
 	return &v
 }
@@ -6193,8 +6193,8 @@ type SemaphoreCreateInfo struct {
 func wrapSemaphoreCreateInfo(p *C.VkSemaphoreCreateInfo) *SemaphoreCreateInfo {
 	v := SemaphoreCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SemaphoreCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SemaphoreCreateInfo).free)
 
 	return &v
 }
@@ -6221,8 +6221,8 @@ type EventCreateInfo struct {
 func wrapEventCreateInfo(p *C.VkEventCreateInfo) *EventCreateInfo {
 	v := EventCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*EventCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*EventCreateInfo).free)
 
 	return &v
 }
@@ -6249,8 +6249,8 @@ type QueryPoolCreateInfo struct {
 func wrapQueryPoolCreateInfo(p *C.VkQueryPoolCreateInfo) *QueryPoolCreateInfo {
 	v := QueryPoolCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueryPoolCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueryPoolCreateInfo).free)
 
 	return &v
 }
@@ -6277,8 +6277,8 @@ type BufferCreateInfo struct {
 func wrapBufferCreateInfo(p *C.VkBufferCreateInfo) *BufferCreateInfo {
 	v := BufferCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferCreateInfo).free)
 
 	return &v
 }
@@ -6305,8 +6305,8 @@ type BufferViewCreateInfo struct {
 func wrapBufferViewCreateInfo(p *C.VkBufferViewCreateInfo) *BufferViewCreateInfo {
 	v := BufferViewCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferViewCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferViewCreateInfo).free)
 
 	return &v
 }
@@ -6333,8 +6333,8 @@ type ImageCreateInfo struct {
 func wrapImageCreateInfo(p *C.VkImageCreateInfo) *ImageCreateInfo {
 	v := ImageCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageCreateInfo).free)
 
 	return &v
 }
@@ -6361,8 +6361,8 @@ type SubresourceLayout struct {
 func wrapSubresourceLayout(p *C.VkSubresourceLayout) *SubresourceLayout {
 	v := SubresourceLayout{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubresourceLayout).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubresourceLayout).free)
 
 	return &v
 }
@@ -6389,8 +6389,8 @@ type ComponentMapping struct {
 func wrapComponentMapping(p *C.VkComponentMapping) *ComponentMapping {
 	v := ComponentMapping{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ComponentMapping).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ComponentMapping).free)
 
 	return &v
 }
@@ -6417,8 +6417,8 @@ type ImageSubresourceRange struct {
 func wrapImageSubresourceRange(p *C.VkImageSubresourceRange) *ImageSubresourceRange {
 	v := ImageSubresourceRange{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageSubresourceRange).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageSubresourceRange).free)
 
 	return &v
 }
@@ -6445,8 +6445,8 @@ type ImageViewCreateInfo struct {
 func wrapImageViewCreateInfo(p *C.VkImageViewCreateInfo) *ImageViewCreateInfo {
 	v := ImageViewCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageViewCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageViewCreateInfo).free)
 
 	return &v
 }
@@ -6473,8 +6473,8 @@ type ShaderModuleCreateInfo struct {
 func wrapShaderModuleCreateInfo(p *C.VkShaderModuleCreateInfo) *ShaderModuleCreateInfo {
 	v := ShaderModuleCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShaderModuleCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShaderModuleCreateInfo).free)
 
 	return &v
 }
@@ -6501,8 +6501,8 @@ type PipelineCacheCreateInfo struct {
 func wrapPipelineCacheCreateInfo(p *C.VkPipelineCacheCreateInfo) *PipelineCacheCreateInfo {
 	v := PipelineCacheCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCacheCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCacheCreateInfo).free)
 
 	return &v
 }
@@ -6529,8 +6529,8 @@ type SpecializationMapEntry struct {
 func wrapSpecializationMapEntry(p *C.VkSpecializationMapEntry) *SpecializationMapEntry {
 	v := SpecializationMapEntry{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SpecializationMapEntry).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SpecializationMapEntry).free)
 
 	return &v
 }
@@ -6557,8 +6557,8 @@ type SpecializationInfo struct {
 func wrapSpecializationInfo(p *C.VkSpecializationInfo) *SpecializationInfo {
 	v := SpecializationInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SpecializationInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SpecializationInfo).free)
 
 	return &v
 }
@@ -6585,8 +6585,8 @@ type PipelineShaderStageCreateInfo struct {
 func wrapPipelineShaderStageCreateInfo(p *C.VkPipelineShaderStageCreateInfo) *PipelineShaderStageCreateInfo {
 	v := PipelineShaderStageCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineShaderStageCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineShaderStageCreateInfo).free)
 
 	return &v
 }
@@ -6613,8 +6613,8 @@ type VertexInputBindingDescription struct {
 func wrapVertexInputBindingDescription(p *C.VkVertexInputBindingDescription) *VertexInputBindingDescription {
 	v := VertexInputBindingDescription{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*VertexInputBindingDescription).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*VertexInputBindingDescription).free)
 
 	return &v
 }
@@ -6641,8 +6641,8 @@ type VertexInputAttributeDescription struct {
 func wrapVertexInputAttributeDescription(p *C.VkVertexInputAttributeDescription) *VertexInputAttributeDescription {
 	v := VertexInputAttributeDescription{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*VertexInputAttributeDescription).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*VertexInputAttributeDescription).free)
 
 	return &v
 }
@@ -6669,8 +6669,8 @@ type PipelineVertexInputStateCreateInfo struct {
 func wrapPipelineVertexInputStateCreateInfo(p *C.VkPipelineVertexInputStateCreateInfo) *PipelineVertexInputStateCreateInfo {
 	v := PipelineVertexInputStateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineVertexInputStateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineVertexInputStateCreateInfo).free)
 
 	return &v
 }
@@ -6697,8 +6697,8 @@ type PipelineInputAssemblyStateCreateInfo struct {
 func wrapPipelineInputAssemblyStateCreateInfo(p *C.VkPipelineInputAssemblyStateCreateInfo) *PipelineInputAssemblyStateCreateInfo {
 	v := PipelineInputAssemblyStateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineInputAssemblyStateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineInputAssemblyStateCreateInfo).free)
 
 	return &v
 }
@@ -6725,8 +6725,8 @@ type PipelineTessellationStateCreateInfo struct {
 func wrapPipelineTessellationStateCreateInfo(p *C.VkPipelineTessellationStateCreateInfo) *PipelineTessellationStateCreateInfo {
 	v := PipelineTessellationStateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineTessellationStateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineTessellationStateCreateInfo).free)
 
 	return &v
 }
@@ -6753,8 +6753,8 @@ type Viewport struct {
 func wrapViewport(p *C.VkViewport) *Viewport {
 	v := Viewport{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Viewport).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Viewport).free)
 
 	return &v
 }
@@ -6781,8 +6781,8 @@ type Offset2D struct {
 func wrapOffset2D(p *C.VkOffset2D) *Offset2D {
 	v := Offset2D{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Offset2D).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Offset2D).free)
 
 	return &v
 }
@@ -6809,8 +6809,8 @@ type Extent2D struct {
 func wrapExtent2D(p *C.VkExtent2D) *Extent2D {
 	v := Extent2D{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Extent2D).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Extent2D).free)
 
 	return &v
 }
@@ -6837,8 +6837,8 @@ type Rect2D struct {
 func wrapRect2D(p *C.VkRect2D) *Rect2D {
 	v := Rect2D{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Rect2D).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Rect2D).free)
 
 	return &v
 }
@@ -6865,8 +6865,8 @@ type PipelineViewportStateCreateInfo struct {
 func wrapPipelineViewportStateCreateInfo(p *C.VkPipelineViewportStateCreateInfo) *PipelineViewportStateCreateInfo {
 	v := PipelineViewportStateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineViewportStateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineViewportStateCreateInfo).free)
 
 	return &v
 }
@@ -6893,8 +6893,8 @@ type PipelineRasterizationStateCreateInfo struct {
 func wrapPipelineRasterizationStateCreateInfo(p *C.VkPipelineRasterizationStateCreateInfo) *PipelineRasterizationStateCreateInfo {
 	v := PipelineRasterizationStateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineRasterizationStateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineRasterizationStateCreateInfo).free)
 
 	return &v
 }
@@ -6921,8 +6921,8 @@ type PipelineMultisampleStateCreateInfo struct {
 func wrapPipelineMultisampleStateCreateInfo(p *C.VkPipelineMultisampleStateCreateInfo) *PipelineMultisampleStateCreateInfo {
 	v := PipelineMultisampleStateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineMultisampleStateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineMultisampleStateCreateInfo).free)
 
 	return &v
 }
@@ -6949,8 +6949,8 @@ type StencilOpState struct {
 func wrapStencilOpState(p *C.VkStencilOpState) *StencilOpState {
 	v := StencilOpState{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*StencilOpState).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*StencilOpState).free)
 
 	return &v
 }
@@ -6977,8 +6977,8 @@ type PipelineDepthStencilStateCreateInfo struct {
 func wrapPipelineDepthStencilStateCreateInfo(p *C.VkPipelineDepthStencilStateCreateInfo) *PipelineDepthStencilStateCreateInfo {
 	v := PipelineDepthStencilStateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineDepthStencilStateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineDepthStencilStateCreateInfo).free)
 
 	return &v
 }
@@ -7005,8 +7005,8 @@ type PipelineColorBlendAttachmentState struct {
 func wrapPipelineColorBlendAttachmentState(p *C.VkPipelineColorBlendAttachmentState) *PipelineColorBlendAttachmentState {
 	v := PipelineColorBlendAttachmentState{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineColorBlendAttachmentState).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineColorBlendAttachmentState).free)
 
 	return &v
 }
@@ -7033,8 +7033,8 @@ type PipelineColorBlendStateCreateInfo struct {
 func wrapPipelineColorBlendStateCreateInfo(p *C.VkPipelineColorBlendStateCreateInfo) *PipelineColorBlendStateCreateInfo {
 	v := PipelineColorBlendStateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineColorBlendStateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineColorBlendStateCreateInfo).free)
 
 	return &v
 }
@@ -7061,8 +7061,8 @@ type PipelineDynamicStateCreateInfo struct {
 func wrapPipelineDynamicStateCreateInfo(p *C.VkPipelineDynamicStateCreateInfo) *PipelineDynamicStateCreateInfo {
 	v := PipelineDynamicStateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineDynamicStateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineDynamicStateCreateInfo).free)
 
 	return &v
 }
@@ -7089,8 +7089,8 @@ type GraphicsPipelineCreateInfo struct {
 func wrapGraphicsPipelineCreateInfo(p *C.VkGraphicsPipelineCreateInfo) *GraphicsPipelineCreateInfo {
 	v := GraphicsPipelineCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GraphicsPipelineCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GraphicsPipelineCreateInfo).free)
 
 	return &v
 }
@@ -7117,8 +7117,8 @@ type ComputePipelineCreateInfo struct {
 func wrapComputePipelineCreateInfo(p *C.VkComputePipelineCreateInfo) *ComputePipelineCreateInfo {
 	v := ComputePipelineCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ComputePipelineCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ComputePipelineCreateInfo).free)
 
 	return &v
 }
@@ -7145,8 +7145,8 @@ type PushConstantRange struct {
 func wrapPushConstantRange(p *C.VkPushConstantRange) *PushConstantRange {
 	v := PushConstantRange{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PushConstantRange).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PushConstantRange).free)
 
 	return &v
 }
@@ -7173,8 +7173,8 @@ type PipelineLayoutCreateInfo struct {
 func wrapPipelineLayoutCreateInfo(p *C.VkPipelineLayoutCreateInfo) *PipelineLayoutCreateInfo {
 	v := PipelineLayoutCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineLayoutCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineLayoutCreateInfo).free)
 
 	return &v
 }
@@ -7201,8 +7201,8 @@ type SamplerCreateInfo struct {
 func wrapSamplerCreateInfo(p *C.VkSamplerCreateInfo) *SamplerCreateInfo {
 	v := SamplerCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerCreateInfo).free)
 
 	return &v
 }
@@ -7229,8 +7229,8 @@ type DescriptorSetLayoutBinding struct {
 func wrapDescriptorSetLayoutBinding(p *C.VkDescriptorSetLayoutBinding) *DescriptorSetLayoutBinding {
 	v := DescriptorSetLayoutBinding{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetLayoutBinding).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetLayoutBinding).free)
 
 	return &v
 }
@@ -7257,8 +7257,8 @@ type DescriptorSetLayoutCreateInfo struct {
 func wrapDescriptorSetLayoutCreateInfo(p *C.VkDescriptorSetLayoutCreateInfo) *DescriptorSetLayoutCreateInfo {
 	v := DescriptorSetLayoutCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetLayoutCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetLayoutCreateInfo).free)
 
 	return &v
 }
@@ -7285,8 +7285,8 @@ type DescriptorPoolSize struct {
 func wrapDescriptorPoolSize(p *C.VkDescriptorPoolSize) *DescriptorPoolSize {
 	v := DescriptorPoolSize{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorPoolSize).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorPoolSize).free)
 
 	return &v
 }
@@ -7313,8 +7313,8 @@ type DescriptorPoolCreateInfo struct {
 func wrapDescriptorPoolCreateInfo(p *C.VkDescriptorPoolCreateInfo) *DescriptorPoolCreateInfo {
 	v := DescriptorPoolCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorPoolCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorPoolCreateInfo).free)
 
 	return &v
 }
@@ -7341,8 +7341,8 @@ type DescriptorSetAllocateInfo struct {
 func wrapDescriptorSetAllocateInfo(p *C.VkDescriptorSetAllocateInfo) *DescriptorSetAllocateInfo {
 	v := DescriptorSetAllocateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetAllocateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetAllocateInfo).free)
 
 	return &v
 }
@@ -7369,8 +7369,8 @@ type DescriptorImageInfo struct {
 func wrapDescriptorImageInfo(p *C.VkDescriptorImageInfo) *DescriptorImageInfo {
 	v := DescriptorImageInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorImageInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorImageInfo).free)
 
 	return &v
 }
@@ -7397,8 +7397,8 @@ type DescriptorBufferInfo struct {
 func wrapDescriptorBufferInfo(p *C.VkDescriptorBufferInfo) *DescriptorBufferInfo {
 	v := DescriptorBufferInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorBufferInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorBufferInfo).free)
 
 	return &v
 }
@@ -7425,8 +7425,8 @@ type WriteDescriptorSet struct {
 func wrapWriteDescriptorSet(p *C.VkWriteDescriptorSet) *WriteDescriptorSet {
 	v := WriteDescriptorSet{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*WriteDescriptorSet).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*WriteDescriptorSet).free)
 
 	return &v
 }
@@ -7453,8 +7453,8 @@ type CopyDescriptorSet struct {
 func wrapCopyDescriptorSet(p *C.VkCopyDescriptorSet) *CopyDescriptorSet {
 	v := CopyDescriptorSet{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CopyDescriptorSet).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CopyDescriptorSet).free)
 
 	return &v
 }
@@ -7481,8 +7481,8 @@ type FramebufferCreateInfo struct {
 func wrapFramebufferCreateInfo(p *C.VkFramebufferCreateInfo) *FramebufferCreateInfo {
 	v := FramebufferCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FramebufferCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FramebufferCreateInfo).free)
 
 	return &v
 }
@@ -7509,8 +7509,8 @@ type AttachmentDescription struct {
 func wrapAttachmentDescription(p *C.VkAttachmentDescription) *AttachmentDescription {
 	v := AttachmentDescription{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AttachmentDescription).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttachmentDescription).free)
 
 	return &v
 }
@@ -7537,8 +7537,8 @@ type AttachmentReference struct {
 func wrapAttachmentReference(p *C.VkAttachmentReference) *AttachmentReference {
 	v := AttachmentReference{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AttachmentReference).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttachmentReference).free)
 
 	return &v
 }
@@ -7565,8 +7565,8 @@ type SubpassDescription struct {
 func wrapSubpassDescription(p *C.VkSubpassDescription) *SubpassDescription {
 	v := SubpassDescription{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassDescription).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassDescription).free)
 
 	return &v
 }
@@ -7593,8 +7593,8 @@ type SubpassDependency struct {
 func wrapSubpassDependency(p *C.VkSubpassDependency) *SubpassDependency {
 	v := SubpassDependency{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassDependency).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassDependency).free)
 
 	return &v
 }
@@ -7621,8 +7621,8 @@ type RenderPassCreateInfo struct {
 func wrapRenderPassCreateInfo(p *C.VkRenderPassCreateInfo) *RenderPassCreateInfo {
 	v := RenderPassCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPassCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPassCreateInfo).free)
 
 	return &v
 }
@@ -7649,8 +7649,8 @@ type CommandPoolCreateInfo struct {
 func wrapCommandPoolCreateInfo(p *C.VkCommandPoolCreateInfo) *CommandPoolCreateInfo {
 	v := CommandPoolCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandPoolCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandPoolCreateInfo).free)
 
 	return &v
 }
@@ -7677,8 +7677,8 @@ type CommandBufferAllocateInfo struct {
 func wrapCommandBufferAllocateInfo(p *C.VkCommandBufferAllocateInfo) *CommandBufferAllocateInfo {
 	v := CommandBufferAllocateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandBufferAllocateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandBufferAllocateInfo).free)
 
 	return &v
 }
@@ -7705,8 +7705,8 @@ type CommandBufferInheritanceInfo struct {
 func wrapCommandBufferInheritanceInfo(p *C.VkCommandBufferInheritanceInfo) *CommandBufferInheritanceInfo {
 	v := CommandBufferInheritanceInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandBufferInheritanceInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandBufferInheritanceInfo).free)
 
 	return &v
 }
@@ -7733,8 +7733,8 @@ type CommandBufferBeginInfo struct {
 func wrapCommandBufferBeginInfo(p *C.VkCommandBufferBeginInfo) *CommandBufferBeginInfo {
 	v := CommandBufferBeginInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandBufferBeginInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandBufferBeginInfo).free)
 
 	return &v
 }
@@ -7761,8 +7761,8 @@ type BufferCopy struct {
 func wrapBufferCopy(p *C.VkBufferCopy) *BufferCopy {
 	v := BufferCopy{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferCopy).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferCopy).free)
 
 	return &v
 }
@@ -7789,8 +7789,8 @@ type ImageSubresourceLayers struct {
 func wrapImageSubresourceLayers(p *C.VkImageSubresourceLayers) *ImageSubresourceLayers {
 	v := ImageSubresourceLayers{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageSubresourceLayers).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageSubresourceLayers).free)
 
 	return &v
 }
@@ -7817,8 +7817,8 @@ type ImageCopy struct {
 func wrapImageCopy(p *C.VkImageCopy) *ImageCopy {
 	v := ImageCopy{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageCopy).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageCopy).free)
 
 	return &v
 }
@@ -7845,8 +7845,8 @@ type ImageBlit struct {
 func wrapImageBlit(p *C.VkImageBlit) *ImageBlit {
 	v := ImageBlit{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageBlit).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageBlit).free)
 
 	return &v
 }
@@ -7873,8 +7873,8 @@ type BufferImageCopy struct {
 func wrapBufferImageCopy(p *C.VkBufferImageCopy) *BufferImageCopy {
 	v := BufferImageCopy{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferImageCopy).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferImageCopy).free)
 
 	return &v
 }
@@ -7901,8 +7901,8 @@ type ClearColorValue struct {
 func wrapClearColorValue(p *C.VkClearColorValue) *ClearColorValue {
 	v := ClearColorValue{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ClearColorValue).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ClearColorValue).free)
 
 	return &v
 }
@@ -7929,8 +7929,8 @@ type ClearDepthStencilValue struct {
 func wrapClearDepthStencilValue(p *C.VkClearDepthStencilValue) *ClearDepthStencilValue {
 	v := ClearDepthStencilValue{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ClearDepthStencilValue).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ClearDepthStencilValue).free)
 
 	return &v
 }
@@ -7957,8 +7957,8 @@ type ClearValue struct {
 func wrapClearValue(p *C.VkClearValue) *ClearValue {
 	v := ClearValue{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ClearValue).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ClearValue).free)
 
 	return &v
 }
@@ -7985,8 +7985,8 @@ type ClearAttachment struct {
 func wrapClearAttachment(p *C.VkClearAttachment) *ClearAttachment {
 	v := ClearAttachment{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ClearAttachment).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ClearAttachment).free)
 
 	return &v
 }
@@ -8013,8 +8013,8 @@ type ClearRect struct {
 func wrapClearRect(p *C.VkClearRect) *ClearRect {
 	v := ClearRect{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ClearRect).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ClearRect).free)
 
 	return &v
 }
@@ -8041,8 +8041,8 @@ type ImageResolve struct {
 func wrapImageResolve(p *C.VkImageResolve) *ImageResolve {
 	v := ImageResolve{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageResolve).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageResolve).free)
 
 	return &v
 }
@@ -8069,8 +8069,8 @@ type MemoryBarrier struct {
 func wrapMemoryBarrier(p *C.VkMemoryBarrier) *MemoryBarrier {
 	v := MemoryBarrier{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryBarrier).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryBarrier).free)
 
 	return &v
 }
@@ -8097,8 +8097,8 @@ type BufferMemoryBarrier struct {
 func wrapBufferMemoryBarrier(p *C.VkBufferMemoryBarrier) *BufferMemoryBarrier {
 	v := BufferMemoryBarrier{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferMemoryBarrier).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferMemoryBarrier).free)
 
 	return &v
 }
@@ -8125,8 +8125,8 @@ type ImageMemoryBarrier struct {
 func wrapImageMemoryBarrier(p *C.VkImageMemoryBarrier) *ImageMemoryBarrier {
 	v := ImageMemoryBarrier{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageMemoryBarrier).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageMemoryBarrier).free)
 
 	return &v
 }
@@ -8153,8 +8153,8 @@ type RenderPassBeginInfo struct {
 func wrapRenderPassBeginInfo(p *C.VkRenderPassBeginInfo) *RenderPassBeginInfo {
 	v := RenderPassBeginInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPassBeginInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPassBeginInfo).free)
 
 	return &v
 }
@@ -8181,8 +8181,8 @@ type DispatchIndirectCommand struct {
 func wrapDispatchIndirectCommand(p *C.VkDispatchIndirectCommand) *DispatchIndirectCommand {
 	v := DispatchIndirectCommand{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DispatchIndirectCommand).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DispatchIndirectCommand).free)
 
 	return &v
 }
@@ -8209,8 +8209,8 @@ type DrawIndexedIndirectCommand struct {
 func wrapDrawIndexedIndirectCommand(p *C.VkDrawIndexedIndirectCommand) *DrawIndexedIndirectCommand {
 	v := DrawIndexedIndirectCommand{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DrawIndexedIndirectCommand).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DrawIndexedIndirectCommand).free)
 
 	return &v
 }
@@ -8237,8 +8237,8 @@ type DrawIndirectCommand struct {
 func wrapDrawIndirectCommand(p *C.VkDrawIndirectCommand) *DrawIndirectCommand {
 	v := DrawIndirectCommand{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DrawIndirectCommand).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DrawIndirectCommand).free)
 
 	return &v
 }
@@ -8265,8 +8265,8 @@ type BaseOutStructure struct {
 func wrapBaseOutStructure(p *C.VkBaseOutStructure) *BaseOutStructure {
 	v := BaseOutStructure{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BaseOutStructure).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BaseOutStructure).free)
 
 	return &v
 }
@@ -8293,8 +8293,8 @@ type BaseInStructure struct {
 func wrapBaseInStructure(p *C.VkBaseInStructure) *BaseInStructure {
 	v := BaseInStructure{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BaseInStructure).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BaseInStructure).free)
 
 	return &v
 }
@@ -8321,8 +8321,8 @@ type SamplerYcbcrConversion struct {
 func wrapSamplerYcbcrConversion(p *C.VkSamplerYcbcrConversion) *SamplerYcbcrConversion {
 	v := SamplerYcbcrConversion{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrConversion).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrConversion).free)
 
 	return &v
 }
@@ -8349,8 +8349,8 @@ type DescriptorUpdateTemplate struct {
 func wrapDescriptorUpdateTemplate(p *C.VkDescriptorUpdateTemplate) *DescriptorUpdateTemplate {
 	v := DescriptorUpdateTemplate{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorUpdateTemplate).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorUpdateTemplate).free)
 
 	return &v
 }
@@ -8377,8 +8377,8 @@ type PointClippingBehavior struct {
 func wrapPointClippingBehavior(p *C.VkPointClippingBehavior) *PointClippingBehavior {
 	v := PointClippingBehavior{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PointClippingBehavior).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PointClippingBehavior).free)
 
 	return &v
 }
@@ -8405,8 +8405,8 @@ type TessellationDomainOrigin struct {
 func wrapTessellationDomainOrigin(p *C.VkTessellationDomainOrigin) *TessellationDomainOrigin {
 	v := TessellationDomainOrigin{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*TessellationDomainOrigin).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*TessellationDomainOrigin).free)
 
 	return &v
 }
@@ -8433,8 +8433,8 @@ type SamplerYcbcrModelConversion struct {
 func wrapSamplerYcbcrModelConversion(p *C.VkSamplerYcbcrModelConversion) *SamplerYcbcrModelConversion {
 	v := SamplerYcbcrModelConversion{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrModelConversion).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrModelConversion).free)
 
 	return &v
 }
@@ -8461,8 +8461,8 @@ type SamplerYcbcrRange struct {
 func wrapSamplerYcbcrRange(p *C.VkSamplerYcbcrRange) *SamplerYcbcrRange {
 	v := SamplerYcbcrRange{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrRange).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrRange).free)
 
 	return &v
 }
@@ -8489,8 +8489,8 @@ type ChromaLocation struct {
 func wrapChromaLocation(p *C.VkChromaLocation) *ChromaLocation {
 	v := ChromaLocation{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ChromaLocation).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ChromaLocation).free)
 
 	return &v
 }
@@ -8517,8 +8517,8 @@ type DescriptorUpdateTemplateType struct {
 func wrapDescriptorUpdateTemplateType(p *C.VkDescriptorUpdateTemplateType) *DescriptorUpdateTemplateType {
 	v := DescriptorUpdateTemplateType{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateType).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorUpdateTemplateType).free)
 
 	return &v
 }
@@ -8545,8 +8545,8 @@ type SubgroupFeatureFlagBits struct {
 func wrapSubgroupFeatureFlagBits(p *C.VkSubgroupFeatureFlagBits) *SubgroupFeatureFlagBits {
 	v := SubgroupFeatureFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubgroupFeatureFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubgroupFeatureFlagBits).free)
 
 	return &v
 }
@@ -8573,8 +8573,8 @@ type SubgroupFeatureFlags struct {
 func wrapSubgroupFeatureFlags(p *C.VkSubgroupFeatureFlags) *SubgroupFeatureFlags {
 	v := SubgroupFeatureFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubgroupFeatureFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubgroupFeatureFlags).free)
 
 	return &v
 }
@@ -8601,8 +8601,8 @@ type PeerMemoryFeatureFlagBits struct {
 func wrapPeerMemoryFeatureFlagBits(p *C.VkPeerMemoryFeatureFlagBits) *PeerMemoryFeatureFlagBits {
 	v := PeerMemoryFeatureFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PeerMemoryFeatureFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PeerMemoryFeatureFlagBits).free)
 
 	return &v
 }
@@ -8629,8 +8629,8 @@ type PeerMemoryFeatureFlags struct {
 func wrapPeerMemoryFeatureFlags(p *C.VkPeerMemoryFeatureFlags) *PeerMemoryFeatureFlags {
 	v := PeerMemoryFeatureFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PeerMemoryFeatureFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PeerMemoryFeatureFlags).free)
 
 	return &v
 }
@@ -8657,8 +8657,8 @@ type MemoryAllocateFlagBits struct {
 func wrapMemoryAllocateFlagBits(p *C.VkMemoryAllocateFlagBits) *MemoryAllocateFlagBits {
 	v := MemoryAllocateFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryAllocateFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryAllocateFlagBits).free)
 
 	return &v
 }
@@ -8685,8 +8685,8 @@ type MemoryAllocateFlags struct {
 func wrapMemoryAllocateFlags(p *C.VkMemoryAllocateFlags) *MemoryAllocateFlags {
 	v := MemoryAllocateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryAllocateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryAllocateFlags).free)
 
 	return &v
 }
@@ -8713,8 +8713,8 @@ type CommandPoolTrimFlags struct {
 func wrapCommandPoolTrimFlags(p *C.VkCommandPoolTrimFlags) *CommandPoolTrimFlags {
 	v := CommandPoolTrimFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandPoolTrimFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandPoolTrimFlags).free)
 
 	return &v
 }
@@ -8741,8 +8741,8 @@ type DescriptorUpdateTemplateCreateFlags struct {
 func wrapDescriptorUpdateTemplateCreateFlags(p *C.VkDescriptorUpdateTemplateCreateFlags) *DescriptorUpdateTemplateCreateFlags {
 	v := DescriptorUpdateTemplateCreateFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateCreateFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorUpdateTemplateCreateFlags).free)
 
 	return &v
 }
@@ -8769,8 +8769,8 @@ type ExternalMemoryHandleTypeFlagBits struct {
 func wrapExternalMemoryHandleTypeFlagBits(p *C.VkExternalMemoryHandleTypeFlagBits) *ExternalMemoryHandleTypeFlagBits {
 	v := ExternalMemoryHandleTypeFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryHandleTypeFlagBits).free)
 
 	return &v
 }
@@ -8797,8 +8797,8 @@ type ExternalMemoryHandleTypeFlags struct {
 func wrapExternalMemoryHandleTypeFlags(p *C.VkExternalMemoryHandleTypeFlags) *ExternalMemoryHandleTypeFlags {
 	v := ExternalMemoryHandleTypeFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryHandleTypeFlags).free)
 
 	return &v
 }
@@ -8825,8 +8825,8 @@ type ExternalMemoryFeatureFlagBits struct {
 func wrapExternalMemoryFeatureFlagBits(p *C.VkExternalMemoryFeatureFlagBits) *ExternalMemoryFeatureFlagBits {
 	v := ExternalMemoryFeatureFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryFeatureFlagBits).free)
 
 	return &v
 }
@@ -8853,8 +8853,8 @@ type ExternalMemoryFeatureFlags struct {
 func wrapExternalMemoryFeatureFlags(p *C.VkExternalMemoryFeatureFlags) *ExternalMemoryFeatureFlags {
 	v := ExternalMemoryFeatureFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryFeatureFlags).free)
 
 	return &v
 }
@@ -8881,8 +8881,8 @@ type ExternalFenceHandleTypeFlagBits struct {
 func wrapExternalFenceHandleTypeFlagBits(p *C.VkExternalFenceHandleTypeFlagBits) *ExternalFenceHandleTypeFlagBits {
 	v := ExternalFenceHandleTypeFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalFenceHandleTypeFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalFenceHandleTypeFlagBits).free)
 
 	return &v
 }
@@ -8909,8 +8909,8 @@ type ExternalFenceHandleTypeFlags struct {
 func wrapExternalFenceHandleTypeFlags(p *C.VkExternalFenceHandleTypeFlags) *ExternalFenceHandleTypeFlags {
 	v := ExternalFenceHandleTypeFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalFenceHandleTypeFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalFenceHandleTypeFlags).free)
 
 	return &v
 }
@@ -8937,8 +8937,8 @@ type ExternalFenceFeatureFlagBits struct {
 func wrapExternalFenceFeatureFlagBits(p *C.VkExternalFenceFeatureFlagBits) *ExternalFenceFeatureFlagBits {
 	v := ExternalFenceFeatureFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalFenceFeatureFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalFenceFeatureFlagBits).free)
 
 	return &v
 }
@@ -8965,8 +8965,8 @@ type ExternalFenceFeatureFlags struct {
 func wrapExternalFenceFeatureFlags(p *C.VkExternalFenceFeatureFlags) *ExternalFenceFeatureFlags {
 	v := ExternalFenceFeatureFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalFenceFeatureFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalFenceFeatureFlags).free)
 
 	return &v
 }
@@ -8993,8 +8993,8 @@ type FenceImportFlagBits struct {
 func wrapFenceImportFlagBits(p *C.VkFenceImportFlagBits) *FenceImportFlagBits {
 	v := FenceImportFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FenceImportFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FenceImportFlagBits).free)
 
 	return &v
 }
@@ -9021,8 +9021,8 @@ type FenceImportFlags struct {
 func wrapFenceImportFlags(p *C.VkFenceImportFlags) *FenceImportFlags {
 	v := FenceImportFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FenceImportFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FenceImportFlags).free)
 
 	return &v
 }
@@ -9049,8 +9049,8 @@ type SemaphoreImportFlagBits struct {
 func wrapSemaphoreImportFlagBits(p *C.VkSemaphoreImportFlagBits) *SemaphoreImportFlagBits {
 	v := SemaphoreImportFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SemaphoreImportFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SemaphoreImportFlagBits).free)
 
 	return &v
 }
@@ -9077,8 +9077,8 @@ type SemaphoreImportFlags struct {
 func wrapSemaphoreImportFlags(p *C.VkSemaphoreImportFlags) *SemaphoreImportFlags {
 	v := SemaphoreImportFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SemaphoreImportFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SemaphoreImportFlags).free)
 
 	return &v
 }
@@ -9105,8 +9105,8 @@ type ExternalSemaphoreHandleTypeFlagBits struct {
 func wrapExternalSemaphoreHandleTypeFlagBits(p *C.VkExternalSemaphoreHandleTypeFlagBits) *ExternalSemaphoreHandleTypeFlagBits {
 	v := ExternalSemaphoreHandleTypeFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalSemaphoreHandleTypeFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalSemaphoreHandleTypeFlagBits).free)
 
 	return &v
 }
@@ -9133,8 +9133,8 @@ type ExternalSemaphoreHandleTypeFlags struct {
 func wrapExternalSemaphoreHandleTypeFlags(p *C.VkExternalSemaphoreHandleTypeFlags) *ExternalSemaphoreHandleTypeFlags {
 	v := ExternalSemaphoreHandleTypeFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalSemaphoreHandleTypeFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalSemaphoreHandleTypeFlags).free)
 
 	return &v
 }
@@ -9161,8 +9161,8 @@ type ExternalSemaphoreFeatureFlagBits struct {
 func wrapExternalSemaphoreFeatureFlagBits(p *C.VkExternalSemaphoreFeatureFlagBits) *ExternalSemaphoreFeatureFlagBits {
 	v := ExternalSemaphoreFeatureFlagBits{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalSemaphoreFeatureFlagBits).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalSemaphoreFeatureFlagBits).free)
 
 	return &v
 }
@@ -9189,8 +9189,8 @@ type ExternalSemaphoreFeatureFlags struct {
 func wrapExternalSemaphoreFeatureFlags(p *C.VkExternalSemaphoreFeatureFlags) *ExternalSemaphoreFeatureFlags {
 	v := ExternalSemaphoreFeatureFlags{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalSemaphoreFeatureFlags).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalSemaphoreFeatureFlags).free)
 
 	return &v
 }
@@ -9217,8 +9217,8 @@ type PhysicalDeviceSubgroupProperties struct {
 func wrapPhysicalDeviceSubgroupProperties(p *C.VkPhysicalDeviceSubgroupProperties) *PhysicalDeviceSubgroupProperties {
 	v := PhysicalDeviceSubgroupProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceSubgroupProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceSubgroupProperties).free)
 
 	return &v
 }
@@ -9245,8 +9245,8 @@ type BindBufferMemoryInfo struct {
 func wrapBindBufferMemoryInfo(p *C.VkBindBufferMemoryInfo) *BindBufferMemoryInfo {
 	v := BindBufferMemoryInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindBufferMemoryInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindBufferMemoryInfo).free)
 
 	return &v
 }
@@ -9273,8 +9273,8 @@ type BindImageMemoryInfo struct {
 func wrapBindImageMemoryInfo(p *C.VkBindImageMemoryInfo) *BindImageMemoryInfo {
 	v := BindImageMemoryInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindImageMemoryInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindImageMemoryInfo).free)
 
 	return &v
 }
@@ -9301,8 +9301,8 @@ type PhysicalDevice16BitStorageFeatures struct {
 func wrapPhysicalDevice16BitStorageFeatures(p *C.VkPhysicalDevice16BitStorageFeatures) *PhysicalDevice16BitStorageFeatures {
 	v := PhysicalDevice16BitStorageFeatures{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDevice16BitStorageFeatures).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDevice16BitStorageFeatures).free)
 
 	return &v
 }
@@ -9329,8 +9329,8 @@ type MemoryDedicatedRequirements struct {
 func wrapMemoryDedicatedRequirements(p *C.VkMemoryDedicatedRequirements) *MemoryDedicatedRequirements {
 	v := MemoryDedicatedRequirements{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryDedicatedRequirements).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryDedicatedRequirements).free)
 
 	return &v
 }
@@ -9357,8 +9357,8 @@ type MemoryDedicatedAllocateInfo struct {
 func wrapMemoryDedicatedAllocateInfo(p *C.VkMemoryDedicatedAllocateInfo) *MemoryDedicatedAllocateInfo {
 	v := MemoryDedicatedAllocateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryDedicatedAllocateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryDedicatedAllocateInfo).free)
 
 	return &v
 }
@@ -9385,8 +9385,8 @@ type MemoryAllocateFlagsInfo struct {
 func wrapMemoryAllocateFlagsInfo(p *C.VkMemoryAllocateFlagsInfo) *MemoryAllocateFlagsInfo {
 	v := MemoryAllocateFlagsInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryAllocateFlagsInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryAllocateFlagsInfo).free)
 
 	return &v
 }
@@ -9413,8 +9413,8 @@ type DeviceGroupRenderPassBeginInfo struct {
 func wrapDeviceGroupRenderPassBeginInfo(p *C.VkDeviceGroupRenderPassBeginInfo) *DeviceGroupRenderPassBeginInfo {
 	v := DeviceGroupRenderPassBeginInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupRenderPassBeginInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupRenderPassBeginInfo).free)
 
 	return &v
 }
@@ -9441,8 +9441,8 @@ type DeviceGroupCommandBufferBeginInfo struct {
 func wrapDeviceGroupCommandBufferBeginInfo(p *C.VkDeviceGroupCommandBufferBeginInfo) *DeviceGroupCommandBufferBeginInfo {
 	v := DeviceGroupCommandBufferBeginInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupCommandBufferBeginInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupCommandBufferBeginInfo).free)
 
 	return &v
 }
@@ -9469,8 +9469,8 @@ type DeviceGroupSubmitInfo struct {
 func wrapDeviceGroupSubmitInfo(p *C.VkDeviceGroupSubmitInfo) *DeviceGroupSubmitInfo {
 	v := DeviceGroupSubmitInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupSubmitInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupSubmitInfo).free)
 
 	return &v
 }
@@ -9497,8 +9497,8 @@ type DeviceGroupBindSparseInfo struct {
 func wrapDeviceGroupBindSparseInfo(p *C.VkDeviceGroupBindSparseInfo) *DeviceGroupBindSparseInfo {
 	v := DeviceGroupBindSparseInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupBindSparseInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupBindSparseInfo).free)
 
 	return &v
 }
@@ -9525,8 +9525,8 @@ type BindBufferMemoryDeviceGroupInfo struct {
 func wrapBindBufferMemoryDeviceGroupInfo(p *C.VkBindBufferMemoryDeviceGroupInfo) *BindBufferMemoryDeviceGroupInfo {
 	v := BindBufferMemoryDeviceGroupInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindBufferMemoryDeviceGroupInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindBufferMemoryDeviceGroupInfo).free)
 
 	return &v
 }
@@ -9553,8 +9553,8 @@ type BindImageMemoryDeviceGroupInfo struct {
 func wrapBindImageMemoryDeviceGroupInfo(p *C.VkBindImageMemoryDeviceGroupInfo) *BindImageMemoryDeviceGroupInfo {
 	v := BindImageMemoryDeviceGroupInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindImageMemoryDeviceGroupInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindImageMemoryDeviceGroupInfo).free)
 
 	return &v
 }
@@ -9581,8 +9581,8 @@ type PhysicalDeviceGroupProperties struct {
 func wrapPhysicalDeviceGroupProperties(p *C.VkPhysicalDeviceGroupProperties) *PhysicalDeviceGroupProperties {
 	v := PhysicalDeviceGroupProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceGroupProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceGroupProperties).free)
 
 	return &v
 }
@@ -9609,8 +9609,8 @@ type DeviceGroupDeviceCreateInfo struct {
 func wrapDeviceGroupDeviceCreateInfo(p *C.VkDeviceGroupDeviceCreateInfo) *DeviceGroupDeviceCreateInfo {
 	v := DeviceGroupDeviceCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupDeviceCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupDeviceCreateInfo).free)
 
 	return &v
 }
@@ -9637,8 +9637,8 @@ type BufferMemoryRequirementsInfo2 struct {
 func wrapBufferMemoryRequirementsInfo2(p *C.VkBufferMemoryRequirementsInfo2) *BufferMemoryRequirementsInfo2 {
 	v := BufferMemoryRequirementsInfo2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferMemoryRequirementsInfo2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferMemoryRequirementsInfo2).free)
 
 	return &v
 }
@@ -9665,8 +9665,8 @@ type ImageMemoryRequirementsInfo2 struct {
 func wrapImageMemoryRequirementsInfo2(p *C.VkImageMemoryRequirementsInfo2) *ImageMemoryRequirementsInfo2 {
 	v := ImageMemoryRequirementsInfo2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageMemoryRequirementsInfo2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageMemoryRequirementsInfo2).free)
 
 	return &v
 }
@@ -9693,8 +9693,8 @@ type ImageSparseMemoryRequirementsInfo2 struct {
 func wrapImageSparseMemoryRequirementsInfo2(p *C.VkImageSparseMemoryRequirementsInfo2) *ImageSparseMemoryRequirementsInfo2 {
 	v := ImageSparseMemoryRequirementsInfo2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageSparseMemoryRequirementsInfo2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageSparseMemoryRequirementsInfo2).free)
 
 	return &v
 }
@@ -9721,8 +9721,8 @@ type MemoryRequirements2 struct {
 func wrapMemoryRequirements2(p *C.VkMemoryRequirements2) *MemoryRequirements2 {
 	v := MemoryRequirements2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryRequirements2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryRequirements2).free)
 
 	return &v
 }
@@ -9749,8 +9749,8 @@ type MemoryRequirements2KHR struct {
 func wrapMemoryRequirements2KHR(p *C.VkMemoryRequirements2KHR) *MemoryRequirements2KHR {
 	v := MemoryRequirements2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryRequirements2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryRequirements2KHR).free)
 
 	return &v
 }
@@ -9777,8 +9777,8 @@ type SparseImageMemoryRequirements2 struct {
 func wrapSparseImageMemoryRequirements2(p *C.VkSparseImageMemoryRequirements2) *SparseImageMemoryRequirements2 {
 	v := SparseImageMemoryRequirements2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageMemoryRequirements2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageMemoryRequirements2).free)
 
 	return &v
 }
@@ -9805,8 +9805,8 @@ type PhysicalDeviceFeatures2 struct {
 func wrapPhysicalDeviceFeatures2(p *C.VkPhysicalDeviceFeatures2) *PhysicalDeviceFeatures2 {
 	v := PhysicalDeviceFeatures2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceFeatures2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceFeatures2).free)
 
 	return &v
 }
@@ -9833,8 +9833,8 @@ type PhysicalDeviceProperties2 struct {
 func wrapPhysicalDeviceProperties2(p *C.VkPhysicalDeviceProperties2) *PhysicalDeviceProperties2 {
 	v := PhysicalDeviceProperties2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceProperties2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceProperties2).free)
 
 	return &v
 }
@@ -9861,8 +9861,8 @@ type FormatProperties2 struct {
 func wrapFormatProperties2(p *C.VkFormatProperties2) *FormatProperties2 {
 	v := FormatProperties2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FormatProperties2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FormatProperties2).free)
 
 	return &v
 }
@@ -9889,8 +9889,8 @@ type ImageFormatProperties2 struct {
 func wrapImageFormatProperties2(p *C.VkImageFormatProperties2) *ImageFormatProperties2 {
 	v := ImageFormatProperties2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageFormatProperties2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageFormatProperties2).free)
 
 	return &v
 }
@@ -9917,8 +9917,8 @@ type PhysicalDeviceImageFormatInfo2 struct {
 func wrapPhysicalDeviceImageFormatInfo2(p *C.VkPhysicalDeviceImageFormatInfo2) *PhysicalDeviceImageFormatInfo2 {
 	v := PhysicalDeviceImageFormatInfo2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceImageFormatInfo2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceImageFormatInfo2).free)
 
 	return &v
 }
@@ -9945,8 +9945,8 @@ type QueueFamilyProperties2 struct {
 func wrapQueueFamilyProperties2(p *C.VkQueueFamilyProperties2) *QueueFamilyProperties2 {
 	v := QueueFamilyProperties2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueueFamilyProperties2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueueFamilyProperties2).free)
 
 	return &v
 }
@@ -9973,8 +9973,8 @@ type PhysicalDeviceMemoryProperties2 struct {
 func wrapPhysicalDeviceMemoryProperties2(p *C.VkPhysicalDeviceMemoryProperties2) *PhysicalDeviceMemoryProperties2 {
 	v := PhysicalDeviceMemoryProperties2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMemoryProperties2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMemoryProperties2).free)
 
 	return &v
 }
@@ -10001,8 +10001,8 @@ type SparseImageFormatProperties2 struct {
 func wrapSparseImageFormatProperties2(p *C.VkSparseImageFormatProperties2) *SparseImageFormatProperties2 {
 	v := SparseImageFormatProperties2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageFormatProperties2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageFormatProperties2).free)
 
 	return &v
 }
@@ -10029,8 +10029,8 @@ type PhysicalDeviceSparseImageFormatInfo2 struct {
 func wrapPhysicalDeviceSparseImageFormatInfo2(p *C.VkPhysicalDeviceSparseImageFormatInfo2) *PhysicalDeviceSparseImageFormatInfo2 {
 	v := PhysicalDeviceSparseImageFormatInfo2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceSparseImageFormatInfo2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceSparseImageFormatInfo2).free)
 
 	return &v
 }
@@ -10057,8 +10057,8 @@ type PhysicalDevicePointClippingProperties struct {
 func wrapPhysicalDevicePointClippingProperties(p *C.VkPhysicalDevicePointClippingProperties) *PhysicalDevicePointClippingProperties {
 	v := PhysicalDevicePointClippingProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDevicePointClippingProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDevicePointClippingProperties).free)
 
 	return &v
 }
@@ -10085,8 +10085,8 @@ type InputAttachmentAspectReference struct {
 func wrapInputAttachmentAspectReference(p *C.VkInputAttachmentAspectReference) *InputAttachmentAspectReference {
 	v := InputAttachmentAspectReference{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*InputAttachmentAspectReference).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*InputAttachmentAspectReference).free)
 
 	return &v
 }
@@ -10113,8 +10113,8 @@ type RenderPassInputAttachmentAspectCreateInfo struct {
 func wrapRenderPassInputAttachmentAspectCreateInfo(p *C.VkRenderPassInputAttachmentAspectCreateInfo) *RenderPassInputAttachmentAspectCreateInfo {
 	v := RenderPassInputAttachmentAspectCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPassInputAttachmentAspectCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPassInputAttachmentAspectCreateInfo).free)
 
 	return &v
 }
@@ -10141,8 +10141,8 @@ type ImageViewUsageCreateInfo struct {
 func wrapImageViewUsageCreateInfo(p *C.VkImageViewUsageCreateInfo) *ImageViewUsageCreateInfo {
 	v := ImageViewUsageCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageViewUsageCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageViewUsageCreateInfo).free)
 
 	return &v
 }
@@ -10169,8 +10169,8 @@ type PipelineTessellationDomainOriginStateCreateInfo struct {
 func wrapPipelineTessellationDomainOriginStateCreateInfo(p *C.VkPipelineTessellationDomainOriginStateCreateInfo) *PipelineTessellationDomainOriginStateCreateInfo {
 	v := PipelineTessellationDomainOriginStateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineTessellationDomainOriginStateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineTessellationDomainOriginStateCreateInfo).free)
 
 	return &v
 }
@@ -10197,8 +10197,8 @@ type RenderPassMultiviewCreateInfo struct {
 func wrapRenderPassMultiviewCreateInfo(p *C.VkRenderPassMultiviewCreateInfo) *RenderPassMultiviewCreateInfo {
 	v := RenderPassMultiviewCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPassMultiviewCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPassMultiviewCreateInfo).free)
 
 	return &v
 }
@@ -10225,8 +10225,8 @@ type PhysicalDeviceMultiviewFeatures struct {
 func wrapPhysicalDeviceMultiviewFeatures(p *C.VkPhysicalDeviceMultiviewFeatures) *PhysicalDeviceMultiviewFeatures {
 	v := PhysicalDeviceMultiviewFeatures{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMultiviewFeatures).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMultiviewFeatures).free)
 
 	return &v
 }
@@ -10253,8 +10253,8 @@ type PhysicalDeviceMultiviewProperties struct {
 func wrapPhysicalDeviceMultiviewProperties(p *C.VkPhysicalDeviceMultiviewProperties) *PhysicalDeviceMultiviewProperties {
 	v := PhysicalDeviceMultiviewProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMultiviewProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMultiviewProperties).free)
 
 	return &v
 }
@@ -10281,8 +10281,8 @@ type PhysicalDeviceVariablePointersFeatures struct {
 func wrapPhysicalDeviceVariablePointersFeatures(p *C.VkPhysicalDeviceVariablePointersFeatures) *PhysicalDeviceVariablePointersFeatures {
 	v := PhysicalDeviceVariablePointersFeatures{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceVariablePointersFeatures).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceVariablePointersFeatures).free)
 
 	return &v
 }
@@ -10309,8 +10309,8 @@ type PhysicalDeviceVariablePointerFeatures struct {
 func wrapPhysicalDeviceVariablePointerFeatures(p *C.VkPhysicalDeviceVariablePointerFeatures) *PhysicalDeviceVariablePointerFeatures {
 	v := PhysicalDeviceVariablePointerFeatures{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceVariablePointerFeatures).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceVariablePointerFeatures).free)
 
 	return &v
 }
@@ -10337,8 +10337,8 @@ type PhysicalDeviceProtectedMemoryFeatures struct {
 func wrapPhysicalDeviceProtectedMemoryFeatures(p *C.VkPhysicalDeviceProtectedMemoryFeatures) *PhysicalDeviceProtectedMemoryFeatures {
 	v := PhysicalDeviceProtectedMemoryFeatures{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceProtectedMemoryFeatures).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceProtectedMemoryFeatures).free)
 
 	return &v
 }
@@ -10365,8 +10365,8 @@ type PhysicalDeviceProtectedMemoryProperties struct {
 func wrapPhysicalDeviceProtectedMemoryProperties(p *C.VkPhysicalDeviceProtectedMemoryProperties) *PhysicalDeviceProtectedMemoryProperties {
 	v := PhysicalDeviceProtectedMemoryProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceProtectedMemoryProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceProtectedMemoryProperties).free)
 
 	return &v
 }
@@ -10393,8 +10393,8 @@ type DeviceQueueInfo2 struct {
 func wrapDeviceQueueInfo2(p *C.VkDeviceQueueInfo2) *DeviceQueueInfo2 {
 	v := DeviceQueueInfo2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceQueueInfo2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceQueueInfo2).free)
 
 	return &v
 }
@@ -10421,8 +10421,8 @@ type ProtectedSubmitInfo struct {
 func wrapProtectedSubmitInfo(p *C.VkProtectedSubmitInfo) *ProtectedSubmitInfo {
 	v := ProtectedSubmitInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ProtectedSubmitInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ProtectedSubmitInfo).free)
 
 	return &v
 }
@@ -10449,8 +10449,8 @@ type SamplerYcbcrConversionCreateInfo struct {
 func wrapSamplerYcbcrConversionCreateInfo(p *C.VkSamplerYcbcrConversionCreateInfo) *SamplerYcbcrConversionCreateInfo {
 	v := SamplerYcbcrConversionCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrConversionCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrConversionCreateInfo).free)
 
 	return &v
 }
@@ -10477,8 +10477,8 @@ type SamplerYcbcrConversionInfo struct {
 func wrapSamplerYcbcrConversionInfo(p *C.VkSamplerYcbcrConversionInfo) *SamplerYcbcrConversionInfo {
 	v := SamplerYcbcrConversionInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrConversionInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrConversionInfo).free)
 
 	return &v
 }
@@ -10505,8 +10505,8 @@ type BindImagePlaneMemoryInfo struct {
 func wrapBindImagePlaneMemoryInfo(p *C.VkBindImagePlaneMemoryInfo) *BindImagePlaneMemoryInfo {
 	v := BindImagePlaneMemoryInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindImagePlaneMemoryInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindImagePlaneMemoryInfo).free)
 
 	return &v
 }
@@ -10533,8 +10533,8 @@ type ImagePlaneMemoryRequirementsInfo struct {
 func wrapImagePlaneMemoryRequirementsInfo(p *C.VkImagePlaneMemoryRequirementsInfo) *ImagePlaneMemoryRequirementsInfo {
 	v := ImagePlaneMemoryRequirementsInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImagePlaneMemoryRequirementsInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImagePlaneMemoryRequirementsInfo).free)
 
 	return &v
 }
@@ -10561,8 +10561,8 @@ type PhysicalDeviceSamplerYcbcrConversionFeatures struct {
 func wrapPhysicalDeviceSamplerYcbcrConversionFeatures(p *C.VkPhysicalDeviceSamplerYcbcrConversionFeatures) *PhysicalDeviceSamplerYcbcrConversionFeatures {
 	v := PhysicalDeviceSamplerYcbcrConversionFeatures{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceSamplerYcbcrConversionFeatures).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceSamplerYcbcrConversionFeatures).free)
 
 	return &v
 }
@@ -10589,8 +10589,8 @@ type SamplerYcbcrConversionImageFormatProperties struct {
 func wrapSamplerYcbcrConversionImageFormatProperties(p *C.VkSamplerYcbcrConversionImageFormatProperties) *SamplerYcbcrConversionImageFormatProperties {
 	v := SamplerYcbcrConversionImageFormatProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrConversionImageFormatProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrConversionImageFormatProperties).free)
 
 	return &v
 }
@@ -10617,8 +10617,8 @@ type DescriptorUpdateTemplateEntry struct {
 func wrapDescriptorUpdateTemplateEntry(p *C.VkDescriptorUpdateTemplateEntry) *DescriptorUpdateTemplateEntry {
 	v := DescriptorUpdateTemplateEntry{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateEntry).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorUpdateTemplateEntry).free)
 
 	return &v
 }
@@ -10645,8 +10645,8 @@ type DescriptorUpdateTemplateCreateInfo struct {
 func wrapDescriptorUpdateTemplateCreateInfo(p *C.VkDescriptorUpdateTemplateCreateInfo) *DescriptorUpdateTemplateCreateInfo {
 	v := DescriptorUpdateTemplateCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorUpdateTemplateCreateInfo).free)
 
 	return &v
 }
@@ -10673,8 +10673,8 @@ type ExternalMemoryProperties struct {
 func wrapExternalMemoryProperties(p *C.VkExternalMemoryProperties) *ExternalMemoryProperties {
 	v := ExternalMemoryProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryProperties).free)
 
 	return &v
 }
@@ -10701,8 +10701,8 @@ type PhysicalDeviceExternalImageFormatInfo struct {
 func wrapPhysicalDeviceExternalImageFormatInfo(p *C.VkPhysicalDeviceExternalImageFormatInfo) *PhysicalDeviceExternalImageFormatInfo {
 	v := PhysicalDeviceExternalImageFormatInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceExternalImageFormatInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceExternalImageFormatInfo).free)
 
 	return &v
 }
@@ -10729,8 +10729,8 @@ type ExternalImageFormatProperties struct {
 func wrapExternalImageFormatProperties(p *C.VkExternalImageFormatProperties) *ExternalImageFormatProperties {
 	v := ExternalImageFormatProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalImageFormatProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalImageFormatProperties).free)
 
 	return &v
 }
@@ -10757,8 +10757,8 @@ type PhysicalDeviceExternalBufferInfo struct {
 func wrapPhysicalDeviceExternalBufferInfo(p *C.VkPhysicalDeviceExternalBufferInfo) *PhysicalDeviceExternalBufferInfo {
 	v := PhysicalDeviceExternalBufferInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceExternalBufferInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceExternalBufferInfo).free)
 
 	return &v
 }
@@ -10785,8 +10785,8 @@ type ExternalBufferProperties struct {
 func wrapExternalBufferProperties(p *C.VkExternalBufferProperties) *ExternalBufferProperties {
 	v := ExternalBufferProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalBufferProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalBufferProperties).free)
 
 	return &v
 }
@@ -10813,8 +10813,8 @@ type PhysicalDeviceIDProperties struct {
 func wrapPhysicalDeviceIDProperties(p *C.VkPhysicalDeviceIDProperties) *PhysicalDeviceIDProperties {
 	v := PhysicalDeviceIDProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceIDProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceIDProperties).free)
 
 	return &v
 }
@@ -10841,8 +10841,8 @@ type ExternalMemoryImageCreateInfo struct {
 func wrapExternalMemoryImageCreateInfo(p *C.VkExternalMemoryImageCreateInfo) *ExternalMemoryImageCreateInfo {
 	v := ExternalMemoryImageCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryImageCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryImageCreateInfo).free)
 
 	return &v
 }
@@ -10869,8 +10869,8 @@ type ExternalMemoryBufferCreateInfo struct {
 func wrapExternalMemoryBufferCreateInfo(p *C.VkExternalMemoryBufferCreateInfo) *ExternalMemoryBufferCreateInfo {
 	v := ExternalMemoryBufferCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryBufferCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryBufferCreateInfo).free)
 
 	return &v
 }
@@ -10897,8 +10897,8 @@ type ExportMemoryAllocateInfo struct {
 func wrapExportMemoryAllocateInfo(p *C.VkExportMemoryAllocateInfo) *ExportMemoryAllocateInfo {
 	v := ExportMemoryAllocateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExportMemoryAllocateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExportMemoryAllocateInfo).free)
 
 	return &v
 }
@@ -10925,8 +10925,8 @@ type PhysicalDeviceExternalFenceInfo struct {
 func wrapPhysicalDeviceExternalFenceInfo(p *C.VkPhysicalDeviceExternalFenceInfo) *PhysicalDeviceExternalFenceInfo {
 	v := PhysicalDeviceExternalFenceInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceExternalFenceInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceExternalFenceInfo).free)
 
 	return &v
 }
@@ -10953,8 +10953,8 @@ type ExternalFenceProperties struct {
 func wrapExternalFenceProperties(p *C.VkExternalFenceProperties) *ExternalFenceProperties {
 	v := ExternalFenceProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalFenceProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalFenceProperties).free)
 
 	return &v
 }
@@ -10981,8 +10981,8 @@ type ExportFenceCreateInfo struct {
 func wrapExportFenceCreateInfo(p *C.VkExportFenceCreateInfo) *ExportFenceCreateInfo {
 	v := ExportFenceCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExportFenceCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExportFenceCreateInfo).free)
 
 	return &v
 }
@@ -11009,8 +11009,8 @@ type ExportSemaphoreCreateInfo struct {
 func wrapExportSemaphoreCreateInfo(p *C.VkExportSemaphoreCreateInfo) *ExportSemaphoreCreateInfo {
 	v := ExportSemaphoreCreateInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExportSemaphoreCreateInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExportSemaphoreCreateInfo).free)
 
 	return &v
 }
@@ -11037,8 +11037,8 @@ type PhysicalDeviceExternalSemaphoreInfo struct {
 func wrapPhysicalDeviceExternalSemaphoreInfo(p *C.VkPhysicalDeviceExternalSemaphoreInfo) *PhysicalDeviceExternalSemaphoreInfo {
 	v := PhysicalDeviceExternalSemaphoreInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceExternalSemaphoreInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceExternalSemaphoreInfo).free)
 
 	return &v
 }
@@ -11065,8 +11065,8 @@ type ExternalSemaphoreProperties struct {
 func wrapExternalSemaphoreProperties(p *C.VkExternalSemaphoreProperties) *ExternalSemaphoreProperties {
 	v := ExternalSemaphoreProperties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalSemaphoreProperties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalSemaphoreProperties).free)
 
 	return &v
 }
@@ -11093,8 +11093,8 @@ type PhysicalDeviceMaintenance3Properties struct {
 func wrapPhysicalDeviceMaintenance3Properties(p *C.VkPhysicalDeviceMaintenance3Properties) *PhysicalDeviceMaintenance3Properties {
 	v := PhysicalDeviceMaintenance3Properties{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMaintenance3Properties).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMaintenance3Properties).free)
 
 	return &v
 }
@@ -11121,8 +11121,8 @@ type DescriptorSetLayoutSupport struct {
 func wrapDescriptorSetLayoutSupport(p *C.VkDescriptorSetLayoutSupport) *DescriptorSetLayoutSupport {
 	v := DescriptorSetLayoutSupport{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetLayoutSupport).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetLayoutSupport).free)
 
 	return &v
 }
@@ -11149,8 +11149,8 @@ type PhysicalDeviceShaderDrawParametersFeatures struct {
 func wrapPhysicalDeviceShaderDrawParametersFeatures(p *C.VkPhysicalDeviceShaderDrawParametersFeatures) *PhysicalDeviceShaderDrawParametersFeatures {
 	v := PhysicalDeviceShaderDrawParametersFeatures{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceShaderDrawParametersFeatures).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceShaderDrawParametersFeatures).free)
 
 	return &v
 }
@@ -11177,8 +11177,8 @@ type PhysicalDeviceShaderDrawParameterFeatures struct {
 func wrapPhysicalDeviceShaderDrawParameterFeatures(p *C.VkPhysicalDeviceShaderDrawParameterFeatures) *PhysicalDeviceShaderDrawParameterFeatures {
 	v := PhysicalDeviceShaderDrawParameterFeatures{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceShaderDrawParameterFeatures).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceShaderDrawParameterFeatures).free)
 
 	return &v
 }
@@ -11205,8 +11205,8 @@ type SurfaceKHR struct {
 func wrapSurfaceKHR(p *C.VkSurfaceKHR) *SurfaceKHR {
 	v := SurfaceKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceKHR).free)
 
 	return &v
 }
@@ -11233,8 +11233,8 @@ type ColorSpaceKHR struct {
 func wrapColorSpaceKHR(p *C.VkColorSpaceKHR) *ColorSpaceKHR {
 	v := ColorSpaceKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ColorSpaceKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ColorSpaceKHR).free)
 
 	return &v
 }
@@ -11261,8 +11261,8 @@ type PresentModeKHR struct {
 func wrapPresentModeKHR(p *C.VkPresentModeKHR) *PresentModeKHR {
 	v := PresentModeKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PresentModeKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PresentModeKHR).free)
 
 	return &v
 }
@@ -11289,8 +11289,8 @@ type SurfaceTransformFlagBitsKHR struct {
 func wrapSurfaceTransformFlagBitsKHR(p *C.VkSurfaceTransformFlagBitsKHR) *SurfaceTransformFlagBitsKHR {
 	v := SurfaceTransformFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceTransformFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceTransformFlagBitsKHR).free)
 
 	return &v
 }
@@ -11317,8 +11317,8 @@ type SurfaceTransformFlagsKHR struct {
 func wrapSurfaceTransformFlagsKHR(p *C.VkSurfaceTransformFlagsKHR) *SurfaceTransformFlagsKHR {
 	v := SurfaceTransformFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceTransformFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceTransformFlagsKHR).free)
 
 	return &v
 }
@@ -11345,8 +11345,8 @@ type CompositeAlphaFlagBitsKHR struct {
 func wrapCompositeAlphaFlagBitsKHR(p *C.VkCompositeAlphaFlagBitsKHR) *CompositeAlphaFlagBitsKHR {
 	v := CompositeAlphaFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CompositeAlphaFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CompositeAlphaFlagBitsKHR).free)
 
 	return &v
 }
@@ -11373,8 +11373,8 @@ type CompositeAlphaFlagsKHR struct {
 func wrapCompositeAlphaFlagsKHR(p *C.VkCompositeAlphaFlagsKHR) *CompositeAlphaFlagsKHR {
 	v := CompositeAlphaFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CompositeAlphaFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CompositeAlphaFlagsKHR).free)
 
 	return &v
 }
@@ -11401,8 +11401,8 @@ type SurfaceCapabilitiesKHR struct {
 func wrapSurfaceCapabilitiesKHR(p *C.VkSurfaceCapabilitiesKHR) *SurfaceCapabilitiesKHR {
 	v := SurfaceCapabilitiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceCapabilitiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceCapabilitiesKHR).free)
 
 	return &v
 }
@@ -11429,8 +11429,8 @@ type SurfaceFormatKHR struct {
 func wrapSurfaceFormatKHR(p *C.VkSurfaceFormatKHR) *SurfaceFormatKHR {
 	v := SurfaceFormatKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceFormatKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceFormatKHR).free)
 
 	return &v
 }
@@ -11457,8 +11457,8 @@ type SwapchainKHR struct {
 func wrapSwapchainKHR(p *C.VkSwapchainKHR) *SwapchainKHR {
 	v := SwapchainKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SwapchainKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SwapchainKHR).free)
 
 	return &v
 }
@@ -11485,8 +11485,8 @@ type SwapchainCreateFlagBitsKHR struct {
 func wrapSwapchainCreateFlagBitsKHR(p *C.VkSwapchainCreateFlagBitsKHR) *SwapchainCreateFlagBitsKHR {
 	v := SwapchainCreateFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SwapchainCreateFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SwapchainCreateFlagBitsKHR).free)
 
 	return &v
 }
@@ -11513,8 +11513,8 @@ type SwapchainCreateFlagsKHR struct {
 func wrapSwapchainCreateFlagsKHR(p *C.VkSwapchainCreateFlagsKHR) *SwapchainCreateFlagsKHR {
 	v := SwapchainCreateFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SwapchainCreateFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SwapchainCreateFlagsKHR).free)
 
 	return &v
 }
@@ -11541,8 +11541,8 @@ type DeviceGroupPresentModeFlagBitsKHR struct {
 func wrapDeviceGroupPresentModeFlagBitsKHR(p *C.VkDeviceGroupPresentModeFlagBitsKHR) *DeviceGroupPresentModeFlagBitsKHR {
 	v := DeviceGroupPresentModeFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupPresentModeFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupPresentModeFlagBitsKHR).free)
 
 	return &v
 }
@@ -11569,8 +11569,8 @@ type DeviceGroupPresentModeFlagsKHR struct {
 func wrapDeviceGroupPresentModeFlagsKHR(p *C.VkDeviceGroupPresentModeFlagsKHR) *DeviceGroupPresentModeFlagsKHR {
 	v := DeviceGroupPresentModeFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupPresentModeFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupPresentModeFlagsKHR).free)
 
 	return &v
 }
@@ -11597,8 +11597,8 @@ type SwapchainCreateInfoKHR struct {
 func wrapSwapchainCreateInfoKHR(p *C.VkSwapchainCreateInfoKHR) *SwapchainCreateInfoKHR {
 	v := SwapchainCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SwapchainCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SwapchainCreateInfoKHR).free)
 
 	return &v
 }
@@ -11625,8 +11625,8 @@ type PresentInfoKHR struct {
 func wrapPresentInfoKHR(p *C.VkPresentInfoKHR) *PresentInfoKHR {
 	v := PresentInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PresentInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PresentInfoKHR).free)
 
 	return &v
 }
@@ -11653,8 +11653,8 @@ type ImageSwapchainCreateInfoKHR struct {
 func wrapImageSwapchainCreateInfoKHR(p *C.VkImageSwapchainCreateInfoKHR) *ImageSwapchainCreateInfoKHR {
 	v := ImageSwapchainCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageSwapchainCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageSwapchainCreateInfoKHR).free)
 
 	return &v
 }
@@ -11681,8 +11681,8 @@ type BindImageMemorySwapchainInfoKHR struct {
 func wrapBindImageMemorySwapchainInfoKHR(p *C.VkBindImageMemorySwapchainInfoKHR) *BindImageMemorySwapchainInfoKHR {
 	v := BindImageMemorySwapchainInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindImageMemorySwapchainInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindImageMemorySwapchainInfoKHR).free)
 
 	return &v
 }
@@ -11709,8 +11709,8 @@ type AcquireNextImageInfoKHR struct {
 func wrapAcquireNextImageInfoKHR(p *C.VkAcquireNextImageInfoKHR) *AcquireNextImageInfoKHR {
 	v := AcquireNextImageInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AcquireNextImageInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AcquireNextImageInfoKHR).free)
 
 	return &v
 }
@@ -11737,8 +11737,8 @@ type DeviceGroupPresentCapabilitiesKHR struct {
 func wrapDeviceGroupPresentCapabilitiesKHR(p *C.VkDeviceGroupPresentCapabilitiesKHR) *DeviceGroupPresentCapabilitiesKHR {
 	v := DeviceGroupPresentCapabilitiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupPresentCapabilitiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupPresentCapabilitiesKHR).free)
 
 	return &v
 }
@@ -11765,8 +11765,8 @@ type DeviceGroupPresentInfoKHR struct {
 func wrapDeviceGroupPresentInfoKHR(p *C.VkDeviceGroupPresentInfoKHR) *DeviceGroupPresentInfoKHR {
 	v := DeviceGroupPresentInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupPresentInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupPresentInfoKHR).free)
 
 	return &v
 }
@@ -11793,8 +11793,8 @@ type DeviceGroupSwapchainCreateInfoKHR struct {
 func wrapDeviceGroupSwapchainCreateInfoKHR(p *C.VkDeviceGroupSwapchainCreateInfoKHR) *DeviceGroupSwapchainCreateInfoKHR {
 	v := DeviceGroupSwapchainCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupSwapchainCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupSwapchainCreateInfoKHR).free)
 
 	return &v
 }
@@ -11821,8 +11821,8 @@ type DisplayKHR struct {
 func wrapDisplayKHR(p *C.VkDisplayKHR) *DisplayKHR {
 	v := DisplayKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayKHR).free)
 
 	return &v
 }
@@ -11849,8 +11849,8 @@ type DisplayModeKHR struct {
 func wrapDisplayModeKHR(p *C.VkDisplayModeKHR) *DisplayModeKHR {
 	v := DisplayModeKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayModeKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayModeKHR).free)
 
 	return &v
 }
@@ -11877,8 +11877,8 @@ type DisplayPlaneAlphaFlagBitsKHR struct {
 func wrapDisplayPlaneAlphaFlagBitsKHR(p *C.VkDisplayPlaneAlphaFlagBitsKHR) *DisplayPlaneAlphaFlagBitsKHR {
 	v := DisplayPlaneAlphaFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPlaneAlphaFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPlaneAlphaFlagBitsKHR).free)
 
 	return &v
 }
@@ -11905,8 +11905,8 @@ type DisplayPlaneAlphaFlagsKHR struct {
 func wrapDisplayPlaneAlphaFlagsKHR(p *C.VkDisplayPlaneAlphaFlagsKHR) *DisplayPlaneAlphaFlagsKHR {
 	v := DisplayPlaneAlphaFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPlaneAlphaFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPlaneAlphaFlagsKHR).free)
 
 	return &v
 }
@@ -11933,8 +11933,8 @@ type DisplayModeCreateFlagsKHR struct {
 func wrapDisplayModeCreateFlagsKHR(p *C.VkDisplayModeCreateFlagsKHR) *DisplayModeCreateFlagsKHR {
 	v := DisplayModeCreateFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayModeCreateFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayModeCreateFlagsKHR).free)
 
 	return &v
 }
@@ -11961,8 +11961,8 @@ type DisplaySurfaceCreateFlagsKHR struct {
 func wrapDisplaySurfaceCreateFlagsKHR(p *C.VkDisplaySurfaceCreateFlagsKHR) *DisplaySurfaceCreateFlagsKHR {
 	v := DisplaySurfaceCreateFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplaySurfaceCreateFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplaySurfaceCreateFlagsKHR).free)
 
 	return &v
 }
@@ -11989,8 +11989,8 @@ type DisplayPropertiesKHR struct {
 func wrapDisplayPropertiesKHR(p *C.VkDisplayPropertiesKHR) *DisplayPropertiesKHR {
 	v := DisplayPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPropertiesKHR).free)
 
 	return &v
 }
@@ -12017,8 +12017,8 @@ type DisplayModeParametersKHR struct {
 func wrapDisplayModeParametersKHR(p *C.VkDisplayModeParametersKHR) *DisplayModeParametersKHR {
 	v := DisplayModeParametersKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayModeParametersKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayModeParametersKHR).free)
 
 	return &v
 }
@@ -12045,8 +12045,8 @@ type DisplayModePropertiesKHR struct {
 func wrapDisplayModePropertiesKHR(p *C.VkDisplayModePropertiesKHR) *DisplayModePropertiesKHR {
 	v := DisplayModePropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayModePropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayModePropertiesKHR).free)
 
 	return &v
 }
@@ -12073,8 +12073,8 @@ type DisplayModeCreateInfoKHR struct {
 func wrapDisplayModeCreateInfoKHR(p *C.VkDisplayModeCreateInfoKHR) *DisplayModeCreateInfoKHR {
 	v := DisplayModeCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayModeCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayModeCreateInfoKHR).free)
 
 	return &v
 }
@@ -12101,8 +12101,8 @@ type DisplayPlaneCapabilitiesKHR struct {
 func wrapDisplayPlaneCapabilitiesKHR(p *C.VkDisplayPlaneCapabilitiesKHR) *DisplayPlaneCapabilitiesKHR {
 	v := DisplayPlaneCapabilitiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPlaneCapabilitiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPlaneCapabilitiesKHR).free)
 
 	return &v
 }
@@ -12129,8 +12129,8 @@ type DisplayPlanePropertiesKHR struct {
 func wrapDisplayPlanePropertiesKHR(p *C.VkDisplayPlanePropertiesKHR) *DisplayPlanePropertiesKHR {
 	v := DisplayPlanePropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPlanePropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPlanePropertiesKHR).free)
 
 	return &v
 }
@@ -12157,8 +12157,8 @@ type DisplaySurfaceCreateInfoKHR struct {
 func wrapDisplaySurfaceCreateInfoKHR(p *C.VkDisplaySurfaceCreateInfoKHR) *DisplaySurfaceCreateInfoKHR {
 	v := DisplaySurfaceCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplaySurfaceCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplaySurfaceCreateInfoKHR).free)
 
 	return &v
 }
@@ -12185,8 +12185,8 @@ type DisplayPresentInfoKHR struct {
 func wrapDisplayPresentInfoKHR(p *C.VkDisplayPresentInfoKHR) *DisplayPresentInfoKHR {
 	v := DisplayPresentInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPresentInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPresentInfoKHR).free)
 
 	return &v
 }
@@ -12213,8 +12213,8 @@ type RenderPassMultiviewCreateInfoKHR struct {
 func wrapRenderPassMultiviewCreateInfoKHR(p *C.VkRenderPassMultiviewCreateInfoKHR) *RenderPassMultiviewCreateInfoKHR {
 	v := RenderPassMultiviewCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPassMultiviewCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPassMultiviewCreateInfoKHR).free)
 
 	return &v
 }
@@ -12241,8 +12241,8 @@ type PhysicalDeviceMultiviewFeaturesKHR struct {
 func wrapPhysicalDeviceMultiviewFeaturesKHR(p *C.VkPhysicalDeviceMultiviewFeaturesKHR) *PhysicalDeviceMultiviewFeaturesKHR {
 	v := PhysicalDeviceMultiviewFeaturesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMultiviewFeaturesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMultiviewFeaturesKHR).free)
 
 	return &v
 }
@@ -12269,8 +12269,8 @@ type PhysicalDeviceMultiviewPropertiesKHR struct {
 func wrapPhysicalDeviceMultiviewPropertiesKHR(p *C.VkPhysicalDeviceMultiviewPropertiesKHR) *PhysicalDeviceMultiviewPropertiesKHR {
 	v := PhysicalDeviceMultiviewPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMultiviewPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMultiviewPropertiesKHR).free)
 
 	return &v
 }
@@ -12297,8 +12297,8 @@ type PhysicalDeviceFeatures2KHR struct {
 func wrapPhysicalDeviceFeatures2KHR(p *C.VkPhysicalDeviceFeatures2KHR) *PhysicalDeviceFeatures2KHR {
 	v := PhysicalDeviceFeatures2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceFeatures2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceFeatures2KHR).free)
 
 	return &v
 }
@@ -12325,8 +12325,8 @@ type PhysicalDeviceProperties2KHR struct {
 func wrapPhysicalDeviceProperties2KHR(p *C.VkPhysicalDeviceProperties2KHR) *PhysicalDeviceProperties2KHR {
 	v := PhysicalDeviceProperties2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceProperties2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceProperties2KHR).free)
 
 	return &v
 }
@@ -12353,8 +12353,8 @@ type FormatProperties2KHR struct {
 func wrapFormatProperties2KHR(p *C.VkFormatProperties2KHR) *FormatProperties2KHR {
 	v := FormatProperties2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FormatProperties2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FormatProperties2KHR).free)
 
 	return &v
 }
@@ -12381,8 +12381,8 @@ type ImageFormatProperties2KHR struct {
 func wrapImageFormatProperties2KHR(p *C.VkImageFormatProperties2KHR) *ImageFormatProperties2KHR {
 	v := ImageFormatProperties2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageFormatProperties2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageFormatProperties2KHR).free)
 
 	return &v
 }
@@ -12409,8 +12409,8 @@ type PhysicalDeviceImageFormatInfo2KHR struct {
 func wrapPhysicalDeviceImageFormatInfo2KHR(p *C.VkPhysicalDeviceImageFormatInfo2KHR) *PhysicalDeviceImageFormatInfo2KHR {
 	v := PhysicalDeviceImageFormatInfo2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceImageFormatInfo2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceImageFormatInfo2KHR).free)
 
 	return &v
 }
@@ -12437,8 +12437,8 @@ type QueueFamilyProperties2KHR struct {
 func wrapQueueFamilyProperties2KHR(p *C.VkQueueFamilyProperties2KHR) *QueueFamilyProperties2KHR {
 	v := QueueFamilyProperties2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueueFamilyProperties2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueueFamilyProperties2KHR).free)
 
 	return &v
 }
@@ -12465,8 +12465,8 @@ type PhysicalDeviceMemoryProperties2KHR struct {
 func wrapPhysicalDeviceMemoryProperties2KHR(p *C.VkPhysicalDeviceMemoryProperties2KHR) *PhysicalDeviceMemoryProperties2KHR {
 	v := PhysicalDeviceMemoryProperties2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMemoryProperties2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMemoryProperties2KHR).free)
 
 	return &v
 }
@@ -12493,8 +12493,8 @@ type SparseImageFormatProperties2KHR struct {
 func wrapSparseImageFormatProperties2KHR(p *C.VkSparseImageFormatProperties2KHR) *SparseImageFormatProperties2KHR {
 	v := SparseImageFormatProperties2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageFormatProperties2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageFormatProperties2KHR).free)
 
 	return &v
 }
@@ -12521,8 +12521,8 @@ type PhysicalDeviceSparseImageFormatInfo2KHR struct {
 func wrapPhysicalDeviceSparseImageFormatInfo2KHR(p *C.VkPhysicalDeviceSparseImageFormatInfo2KHR) *PhysicalDeviceSparseImageFormatInfo2KHR {
 	v := PhysicalDeviceSparseImageFormatInfo2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceSparseImageFormatInfo2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceSparseImageFormatInfo2KHR).free)
 
 	return &v
 }
@@ -12549,8 +12549,8 @@ type PeerMemoryFeatureFlagsKHR struct {
 func wrapPeerMemoryFeatureFlagsKHR(p *C.VkPeerMemoryFeatureFlagsKHR) *PeerMemoryFeatureFlagsKHR {
 	v := PeerMemoryFeatureFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PeerMemoryFeatureFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PeerMemoryFeatureFlagsKHR).free)
 
 	return &v
 }
@@ -12577,8 +12577,8 @@ type PeerMemoryFeatureFlagBitsKHR struct {
 func wrapPeerMemoryFeatureFlagBitsKHR(p *C.VkPeerMemoryFeatureFlagBitsKHR) *PeerMemoryFeatureFlagBitsKHR {
 	v := PeerMemoryFeatureFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PeerMemoryFeatureFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PeerMemoryFeatureFlagBitsKHR).free)
 
 	return &v
 }
@@ -12605,8 +12605,8 @@ type MemoryAllocateFlagsKHR struct {
 func wrapMemoryAllocateFlagsKHR(p *C.VkMemoryAllocateFlagsKHR) *MemoryAllocateFlagsKHR {
 	v := MemoryAllocateFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryAllocateFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryAllocateFlagsKHR).free)
 
 	return &v
 }
@@ -12633,8 +12633,8 @@ type MemoryAllocateFlagBitsKHR struct {
 func wrapMemoryAllocateFlagBitsKHR(p *C.VkMemoryAllocateFlagBitsKHR) *MemoryAllocateFlagBitsKHR {
 	v := MemoryAllocateFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryAllocateFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryAllocateFlagBitsKHR).free)
 
 	return &v
 }
@@ -12661,8 +12661,8 @@ type MemoryAllocateFlagsInfoKHR struct {
 func wrapMemoryAllocateFlagsInfoKHR(p *C.VkMemoryAllocateFlagsInfoKHR) *MemoryAllocateFlagsInfoKHR {
 	v := MemoryAllocateFlagsInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryAllocateFlagsInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryAllocateFlagsInfoKHR).free)
 
 	return &v
 }
@@ -12689,8 +12689,8 @@ type DeviceGroupRenderPassBeginInfoKHR struct {
 func wrapDeviceGroupRenderPassBeginInfoKHR(p *C.VkDeviceGroupRenderPassBeginInfoKHR) *DeviceGroupRenderPassBeginInfoKHR {
 	v := DeviceGroupRenderPassBeginInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupRenderPassBeginInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupRenderPassBeginInfoKHR).free)
 
 	return &v
 }
@@ -12717,8 +12717,8 @@ type DeviceGroupCommandBufferBeginInfoKHR struct {
 func wrapDeviceGroupCommandBufferBeginInfoKHR(p *C.VkDeviceGroupCommandBufferBeginInfoKHR) *DeviceGroupCommandBufferBeginInfoKHR {
 	v := DeviceGroupCommandBufferBeginInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupCommandBufferBeginInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupCommandBufferBeginInfoKHR).free)
 
 	return &v
 }
@@ -12745,8 +12745,8 @@ type DeviceGroupSubmitInfoKHR struct {
 func wrapDeviceGroupSubmitInfoKHR(p *C.VkDeviceGroupSubmitInfoKHR) *DeviceGroupSubmitInfoKHR {
 	v := DeviceGroupSubmitInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupSubmitInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupSubmitInfoKHR).free)
 
 	return &v
 }
@@ -12773,8 +12773,8 @@ type DeviceGroupBindSparseInfoKHR struct {
 func wrapDeviceGroupBindSparseInfoKHR(p *C.VkDeviceGroupBindSparseInfoKHR) *DeviceGroupBindSparseInfoKHR {
 	v := DeviceGroupBindSparseInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupBindSparseInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupBindSparseInfoKHR).free)
 
 	return &v
 }
@@ -12801,8 +12801,8 @@ type BindBufferMemoryDeviceGroupInfoKHR struct {
 func wrapBindBufferMemoryDeviceGroupInfoKHR(p *C.VkBindBufferMemoryDeviceGroupInfoKHR) *BindBufferMemoryDeviceGroupInfoKHR {
 	v := BindBufferMemoryDeviceGroupInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindBufferMemoryDeviceGroupInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindBufferMemoryDeviceGroupInfoKHR).free)
 
 	return &v
 }
@@ -12829,8 +12829,8 @@ type BindImageMemoryDeviceGroupInfoKHR struct {
 func wrapBindImageMemoryDeviceGroupInfoKHR(p *C.VkBindImageMemoryDeviceGroupInfoKHR) *BindImageMemoryDeviceGroupInfoKHR {
 	v := BindImageMemoryDeviceGroupInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindImageMemoryDeviceGroupInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindImageMemoryDeviceGroupInfoKHR).free)
 
 	return &v
 }
@@ -12857,8 +12857,8 @@ type CommandPoolTrimFlagsKHR struct {
 func wrapCommandPoolTrimFlagsKHR(p *C.VkCommandPoolTrimFlagsKHR) *CommandPoolTrimFlagsKHR {
 	v := CommandPoolTrimFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandPoolTrimFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandPoolTrimFlagsKHR).free)
 
 	return &v
 }
@@ -12885,8 +12885,8 @@ type PhysicalDeviceGroupPropertiesKHR struct {
 func wrapPhysicalDeviceGroupPropertiesKHR(p *C.VkPhysicalDeviceGroupPropertiesKHR) *PhysicalDeviceGroupPropertiesKHR {
 	v := PhysicalDeviceGroupPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceGroupPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceGroupPropertiesKHR).free)
 
 	return &v
 }
@@ -12913,8 +12913,8 @@ type DeviceGroupDeviceCreateInfoKHR struct {
 func wrapDeviceGroupDeviceCreateInfoKHR(p *C.VkDeviceGroupDeviceCreateInfoKHR) *DeviceGroupDeviceCreateInfoKHR {
 	v := DeviceGroupDeviceCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGroupDeviceCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGroupDeviceCreateInfoKHR).free)
 
 	return &v
 }
@@ -12941,8 +12941,8 @@ type ExternalMemoryHandleTypeFlagsKHR struct {
 func wrapExternalMemoryHandleTypeFlagsKHR(p *C.VkExternalMemoryHandleTypeFlagsKHR) *ExternalMemoryHandleTypeFlagsKHR {
 	v := ExternalMemoryHandleTypeFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryHandleTypeFlagsKHR).free)
 
 	return &v
 }
@@ -12969,8 +12969,8 @@ type ExternalMemoryHandleTypeFlagBitsKHR struct {
 func wrapExternalMemoryHandleTypeFlagBitsKHR(p *C.VkExternalMemoryHandleTypeFlagBitsKHR) *ExternalMemoryHandleTypeFlagBitsKHR {
 	v := ExternalMemoryHandleTypeFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryHandleTypeFlagBitsKHR).free)
 
 	return &v
 }
@@ -12997,8 +12997,8 @@ type ExternalMemoryFeatureFlagsKHR struct {
 func wrapExternalMemoryFeatureFlagsKHR(p *C.VkExternalMemoryFeatureFlagsKHR) *ExternalMemoryFeatureFlagsKHR {
 	v := ExternalMemoryFeatureFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryFeatureFlagsKHR).free)
 
 	return &v
 }
@@ -13025,8 +13025,8 @@ type ExternalMemoryFeatureFlagBitsKHR struct {
 func wrapExternalMemoryFeatureFlagBitsKHR(p *C.VkExternalMemoryFeatureFlagBitsKHR) *ExternalMemoryFeatureFlagBitsKHR {
 	v := ExternalMemoryFeatureFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryFeatureFlagBitsKHR).free)
 
 	return &v
 }
@@ -13053,8 +13053,8 @@ type ExternalMemoryPropertiesKHR struct {
 func wrapExternalMemoryPropertiesKHR(p *C.VkExternalMemoryPropertiesKHR) *ExternalMemoryPropertiesKHR {
 	v := ExternalMemoryPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryPropertiesKHR).free)
 
 	return &v
 }
@@ -13081,8 +13081,8 @@ type PhysicalDeviceExternalImageFormatInfoKHR struct {
 func wrapPhysicalDeviceExternalImageFormatInfoKHR(p *C.VkPhysicalDeviceExternalImageFormatInfoKHR) *PhysicalDeviceExternalImageFormatInfoKHR {
 	v := PhysicalDeviceExternalImageFormatInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceExternalImageFormatInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceExternalImageFormatInfoKHR).free)
 
 	return &v
 }
@@ -13109,8 +13109,8 @@ type ExternalImageFormatPropertiesKHR struct {
 func wrapExternalImageFormatPropertiesKHR(p *C.VkExternalImageFormatPropertiesKHR) *ExternalImageFormatPropertiesKHR {
 	v := ExternalImageFormatPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalImageFormatPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalImageFormatPropertiesKHR).free)
 
 	return &v
 }
@@ -13137,8 +13137,8 @@ type PhysicalDeviceExternalBufferInfoKHR struct {
 func wrapPhysicalDeviceExternalBufferInfoKHR(p *C.VkPhysicalDeviceExternalBufferInfoKHR) *PhysicalDeviceExternalBufferInfoKHR {
 	v := PhysicalDeviceExternalBufferInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceExternalBufferInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceExternalBufferInfoKHR).free)
 
 	return &v
 }
@@ -13165,8 +13165,8 @@ type ExternalBufferPropertiesKHR struct {
 func wrapExternalBufferPropertiesKHR(p *C.VkExternalBufferPropertiesKHR) *ExternalBufferPropertiesKHR {
 	v := ExternalBufferPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalBufferPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalBufferPropertiesKHR).free)
 
 	return &v
 }
@@ -13193,8 +13193,8 @@ type PhysicalDeviceIDPropertiesKHR struct {
 func wrapPhysicalDeviceIDPropertiesKHR(p *C.VkPhysicalDeviceIDPropertiesKHR) *PhysicalDeviceIDPropertiesKHR {
 	v := PhysicalDeviceIDPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceIDPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceIDPropertiesKHR).free)
 
 	return &v
 }
@@ -13221,8 +13221,8 @@ type ExternalMemoryImageCreateInfoKHR struct {
 func wrapExternalMemoryImageCreateInfoKHR(p *C.VkExternalMemoryImageCreateInfoKHR) *ExternalMemoryImageCreateInfoKHR {
 	v := ExternalMemoryImageCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryImageCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryImageCreateInfoKHR).free)
 
 	return &v
 }
@@ -13249,8 +13249,8 @@ type ExternalMemoryBufferCreateInfoKHR struct {
 func wrapExternalMemoryBufferCreateInfoKHR(p *C.VkExternalMemoryBufferCreateInfoKHR) *ExternalMemoryBufferCreateInfoKHR {
 	v := ExternalMemoryBufferCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryBufferCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryBufferCreateInfoKHR).free)
 
 	return &v
 }
@@ -13277,8 +13277,8 @@ type ExportMemoryAllocateInfoKHR struct {
 func wrapExportMemoryAllocateInfoKHR(p *C.VkExportMemoryAllocateInfoKHR) *ExportMemoryAllocateInfoKHR {
 	v := ExportMemoryAllocateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExportMemoryAllocateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExportMemoryAllocateInfoKHR).free)
 
 	return &v
 }
@@ -13305,8 +13305,8 @@ type ImportMemoryFdInfoKHR struct {
 func wrapImportMemoryFdInfoKHR(p *C.VkImportMemoryFdInfoKHR) *ImportMemoryFdInfoKHR {
 	v := ImportMemoryFdInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImportMemoryFdInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImportMemoryFdInfoKHR).free)
 
 	return &v
 }
@@ -13333,8 +13333,8 @@ type MemoryFdPropertiesKHR struct {
 func wrapMemoryFdPropertiesKHR(p *C.VkMemoryFdPropertiesKHR) *MemoryFdPropertiesKHR {
 	v := MemoryFdPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryFdPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryFdPropertiesKHR).free)
 
 	return &v
 }
@@ -13361,8 +13361,8 @@ type MemoryGetFdInfoKHR struct {
 func wrapMemoryGetFdInfoKHR(p *C.VkMemoryGetFdInfoKHR) *MemoryGetFdInfoKHR {
 	v := MemoryGetFdInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryGetFdInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryGetFdInfoKHR).free)
 
 	return &v
 }
@@ -13389,8 +13389,8 @@ type ExternalSemaphoreHandleTypeFlagsKHR struct {
 func wrapExternalSemaphoreHandleTypeFlagsKHR(p *C.VkExternalSemaphoreHandleTypeFlagsKHR) *ExternalSemaphoreHandleTypeFlagsKHR {
 	v := ExternalSemaphoreHandleTypeFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalSemaphoreHandleTypeFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalSemaphoreHandleTypeFlagsKHR).free)
 
 	return &v
 }
@@ -13417,8 +13417,8 @@ type ExternalSemaphoreHandleTypeFlagBitsKHR struct {
 func wrapExternalSemaphoreHandleTypeFlagBitsKHR(p *C.VkExternalSemaphoreHandleTypeFlagBitsKHR) *ExternalSemaphoreHandleTypeFlagBitsKHR {
 	v := ExternalSemaphoreHandleTypeFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalSemaphoreHandleTypeFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalSemaphoreHandleTypeFlagBitsKHR).free)
 
 	return &v
 }
@@ -13445,8 +13445,8 @@ type ExternalSemaphoreFeatureFlagsKHR struct {
 func wrapExternalSemaphoreFeatureFlagsKHR(p *C.VkExternalSemaphoreFeatureFlagsKHR) *ExternalSemaphoreFeatureFlagsKHR {
 	v := ExternalSemaphoreFeatureFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalSemaphoreFeatureFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalSemaphoreFeatureFlagsKHR).free)
 
 	return &v
 }
@@ -13473,8 +13473,8 @@ type ExternalSemaphoreFeatureFlagBitsKHR struct {
 func wrapExternalSemaphoreFeatureFlagBitsKHR(p *C.VkExternalSemaphoreFeatureFlagBitsKHR) *ExternalSemaphoreFeatureFlagBitsKHR {
 	v := ExternalSemaphoreFeatureFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalSemaphoreFeatureFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalSemaphoreFeatureFlagBitsKHR).free)
 
 	return &v
 }
@@ -13501,8 +13501,8 @@ type PhysicalDeviceExternalSemaphoreInfoKHR struct {
 func wrapPhysicalDeviceExternalSemaphoreInfoKHR(p *C.VkPhysicalDeviceExternalSemaphoreInfoKHR) *PhysicalDeviceExternalSemaphoreInfoKHR {
 	v := PhysicalDeviceExternalSemaphoreInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceExternalSemaphoreInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceExternalSemaphoreInfoKHR).free)
 
 	return &v
 }
@@ -13529,8 +13529,8 @@ type ExternalSemaphorePropertiesKHR struct {
 func wrapExternalSemaphorePropertiesKHR(p *C.VkExternalSemaphorePropertiesKHR) *ExternalSemaphorePropertiesKHR {
 	v := ExternalSemaphorePropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalSemaphorePropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalSemaphorePropertiesKHR).free)
 
 	return &v
 }
@@ -13557,8 +13557,8 @@ type SemaphoreImportFlagsKHR struct {
 func wrapSemaphoreImportFlagsKHR(p *C.VkSemaphoreImportFlagsKHR) *SemaphoreImportFlagsKHR {
 	v := SemaphoreImportFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SemaphoreImportFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SemaphoreImportFlagsKHR).free)
 
 	return &v
 }
@@ -13585,8 +13585,8 @@ type SemaphoreImportFlagBitsKHR struct {
 func wrapSemaphoreImportFlagBitsKHR(p *C.VkSemaphoreImportFlagBitsKHR) *SemaphoreImportFlagBitsKHR {
 	v := SemaphoreImportFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SemaphoreImportFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SemaphoreImportFlagBitsKHR).free)
 
 	return &v
 }
@@ -13613,8 +13613,8 @@ type ExportSemaphoreCreateInfoKHR struct {
 func wrapExportSemaphoreCreateInfoKHR(p *C.VkExportSemaphoreCreateInfoKHR) *ExportSemaphoreCreateInfoKHR {
 	v := ExportSemaphoreCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExportSemaphoreCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExportSemaphoreCreateInfoKHR).free)
 
 	return &v
 }
@@ -13641,8 +13641,8 @@ type ImportSemaphoreFdInfoKHR struct {
 func wrapImportSemaphoreFdInfoKHR(p *C.VkImportSemaphoreFdInfoKHR) *ImportSemaphoreFdInfoKHR {
 	v := ImportSemaphoreFdInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImportSemaphoreFdInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImportSemaphoreFdInfoKHR).free)
 
 	return &v
 }
@@ -13669,8 +13669,8 @@ type SemaphoreGetFdInfoKHR struct {
 func wrapSemaphoreGetFdInfoKHR(p *C.VkSemaphoreGetFdInfoKHR) *SemaphoreGetFdInfoKHR {
 	v := SemaphoreGetFdInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SemaphoreGetFdInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SemaphoreGetFdInfoKHR).free)
 
 	return &v
 }
@@ -13697,8 +13697,8 @@ type PhysicalDevicePushDescriptorPropertiesKHR struct {
 func wrapPhysicalDevicePushDescriptorPropertiesKHR(p *C.VkPhysicalDevicePushDescriptorPropertiesKHR) *PhysicalDevicePushDescriptorPropertiesKHR {
 	v := PhysicalDevicePushDescriptorPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDevicePushDescriptorPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDevicePushDescriptorPropertiesKHR).free)
 
 	return &v
 }
@@ -13725,8 +13725,8 @@ type PhysicalDeviceFloat16Int8FeaturesKHR struct {
 func wrapPhysicalDeviceFloat16Int8FeaturesKHR(p *C.VkPhysicalDeviceFloat16Int8FeaturesKHR) *PhysicalDeviceFloat16Int8FeaturesKHR {
 	v := PhysicalDeviceFloat16Int8FeaturesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceFloat16Int8FeaturesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceFloat16Int8FeaturesKHR).free)
 
 	return &v
 }
@@ -13753,8 +13753,8 @@ type PhysicalDevice16BitStorageFeaturesKHR struct {
 func wrapPhysicalDevice16BitStorageFeaturesKHR(p *C.VkPhysicalDevice16BitStorageFeaturesKHR) *PhysicalDevice16BitStorageFeaturesKHR {
 	v := PhysicalDevice16BitStorageFeaturesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDevice16BitStorageFeaturesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDevice16BitStorageFeaturesKHR).free)
 
 	return &v
 }
@@ -13781,8 +13781,8 @@ type RectLayerKHR struct {
 func wrapRectLayerKHR(p *C.VkRectLayerKHR) *RectLayerKHR {
 	v := RectLayerKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RectLayerKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RectLayerKHR).free)
 
 	return &v
 }
@@ -13809,8 +13809,8 @@ type PresentRegionKHR struct {
 func wrapPresentRegionKHR(p *C.VkPresentRegionKHR) *PresentRegionKHR {
 	v := PresentRegionKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PresentRegionKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PresentRegionKHR).free)
 
 	return &v
 }
@@ -13837,8 +13837,8 @@ type PresentRegionsKHR struct {
 func wrapPresentRegionsKHR(p *C.VkPresentRegionsKHR) *PresentRegionsKHR {
 	v := PresentRegionsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PresentRegionsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PresentRegionsKHR).free)
 
 	return &v
 }
@@ -13865,8 +13865,8 @@ type DescriptorUpdateTemplateKHR struct {
 func wrapDescriptorUpdateTemplateKHR(p *C.VkDescriptorUpdateTemplateKHR) *DescriptorUpdateTemplateKHR {
 	v := DescriptorUpdateTemplateKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorUpdateTemplateKHR).free)
 
 	return &v
 }
@@ -13893,8 +13893,8 @@ type DescriptorUpdateTemplateTypeKHR struct {
 func wrapDescriptorUpdateTemplateTypeKHR(p *C.VkDescriptorUpdateTemplateTypeKHR) *DescriptorUpdateTemplateTypeKHR {
 	v := DescriptorUpdateTemplateTypeKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateTypeKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorUpdateTemplateTypeKHR).free)
 
 	return &v
 }
@@ -13921,8 +13921,8 @@ type DescriptorUpdateTemplateCreateFlagsKHR struct {
 func wrapDescriptorUpdateTemplateCreateFlagsKHR(p *C.VkDescriptorUpdateTemplateCreateFlagsKHR) *DescriptorUpdateTemplateCreateFlagsKHR {
 	v := DescriptorUpdateTemplateCreateFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateCreateFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorUpdateTemplateCreateFlagsKHR).free)
 
 	return &v
 }
@@ -13949,8 +13949,8 @@ type DescriptorUpdateTemplateEntryKHR struct {
 func wrapDescriptorUpdateTemplateEntryKHR(p *C.VkDescriptorUpdateTemplateEntryKHR) *DescriptorUpdateTemplateEntryKHR {
 	v := DescriptorUpdateTemplateEntryKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateEntryKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorUpdateTemplateEntryKHR).free)
 
 	return &v
 }
@@ -13977,8 +13977,8 @@ type DescriptorUpdateTemplateCreateInfoKHR struct {
 func wrapDescriptorUpdateTemplateCreateInfoKHR(p *C.VkDescriptorUpdateTemplateCreateInfoKHR) *DescriptorUpdateTemplateCreateInfoKHR {
 	v := DescriptorUpdateTemplateCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorUpdateTemplateCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorUpdateTemplateCreateInfoKHR).free)
 
 	return &v
 }
@@ -14005,8 +14005,8 @@ type AttachmentDescription2KHR struct {
 func wrapAttachmentDescription2KHR(p *C.VkAttachmentDescription2KHR) *AttachmentDescription2KHR {
 	v := AttachmentDescription2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AttachmentDescription2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttachmentDescription2KHR).free)
 
 	return &v
 }
@@ -14033,8 +14033,8 @@ type AttachmentReference2KHR struct {
 func wrapAttachmentReference2KHR(p *C.VkAttachmentReference2KHR) *AttachmentReference2KHR {
 	v := AttachmentReference2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AttachmentReference2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttachmentReference2KHR).free)
 
 	return &v
 }
@@ -14061,8 +14061,8 @@ type SubpassDescription2KHR struct {
 func wrapSubpassDescription2KHR(p *C.VkSubpassDescription2KHR) *SubpassDescription2KHR {
 	v := SubpassDescription2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassDescription2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassDescription2KHR).free)
 
 	return &v
 }
@@ -14089,8 +14089,8 @@ type SubpassDependency2KHR struct {
 func wrapSubpassDependency2KHR(p *C.VkSubpassDependency2KHR) *SubpassDependency2KHR {
 	v := SubpassDependency2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassDependency2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassDependency2KHR).free)
 
 	return &v
 }
@@ -14117,8 +14117,8 @@ type RenderPassCreateInfo2KHR struct {
 func wrapRenderPassCreateInfo2KHR(p *C.VkRenderPassCreateInfo2KHR) *RenderPassCreateInfo2KHR {
 	v := RenderPassCreateInfo2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPassCreateInfo2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPassCreateInfo2KHR).free)
 
 	return &v
 }
@@ -14145,8 +14145,8 @@ type SubpassBeginInfoKHR struct {
 func wrapSubpassBeginInfoKHR(p *C.VkSubpassBeginInfoKHR) *SubpassBeginInfoKHR {
 	v := SubpassBeginInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassBeginInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassBeginInfoKHR).free)
 
 	return &v
 }
@@ -14173,8 +14173,8 @@ type SubpassEndInfoKHR struct {
 func wrapSubpassEndInfoKHR(p *C.VkSubpassEndInfoKHR) *SubpassEndInfoKHR {
 	v := SubpassEndInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassEndInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassEndInfoKHR).free)
 
 	return &v
 }
@@ -14201,8 +14201,8 @@ type SharedPresentSurfaceCapabilitiesKHR struct {
 func wrapSharedPresentSurfaceCapabilitiesKHR(p *C.VkSharedPresentSurfaceCapabilitiesKHR) *SharedPresentSurfaceCapabilitiesKHR {
 	v := SharedPresentSurfaceCapabilitiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SharedPresentSurfaceCapabilitiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SharedPresentSurfaceCapabilitiesKHR).free)
 
 	return &v
 }
@@ -14229,8 +14229,8 @@ type ExternalFenceHandleTypeFlagsKHR struct {
 func wrapExternalFenceHandleTypeFlagsKHR(p *C.VkExternalFenceHandleTypeFlagsKHR) *ExternalFenceHandleTypeFlagsKHR {
 	v := ExternalFenceHandleTypeFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalFenceHandleTypeFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalFenceHandleTypeFlagsKHR).free)
 
 	return &v
 }
@@ -14257,8 +14257,8 @@ type ExternalFenceHandleTypeFlagBitsKHR struct {
 func wrapExternalFenceHandleTypeFlagBitsKHR(p *C.VkExternalFenceHandleTypeFlagBitsKHR) *ExternalFenceHandleTypeFlagBitsKHR {
 	v := ExternalFenceHandleTypeFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalFenceHandleTypeFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalFenceHandleTypeFlagBitsKHR).free)
 
 	return &v
 }
@@ -14285,8 +14285,8 @@ type ExternalFenceFeatureFlagsKHR struct {
 func wrapExternalFenceFeatureFlagsKHR(p *C.VkExternalFenceFeatureFlagsKHR) *ExternalFenceFeatureFlagsKHR {
 	v := ExternalFenceFeatureFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalFenceFeatureFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalFenceFeatureFlagsKHR).free)
 
 	return &v
 }
@@ -14313,8 +14313,8 @@ type ExternalFenceFeatureFlagBitsKHR struct {
 func wrapExternalFenceFeatureFlagBitsKHR(p *C.VkExternalFenceFeatureFlagBitsKHR) *ExternalFenceFeatureFlagBitsKHR {
 	v := ExternalFenceFeatureFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalFenceFeatureFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalFenceFeatureFlagBitsKHR).free)
 
 	return &v
 }
@@ -14341,8 +14341,8 @@ type PhysicalDeviceExternalFenceInfoKHR struct {
 func wrapPhysicalDeviceExternalFenceInfoKHR(p *C.VkPhysicalDeviceExternalFenceInfoKHR) *PhysicalDeviceExternalFenceInfoKHR {
 	v := PhysicalDeviceExternalFenceInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceExternalFenceInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceExternalFenceInfoKHR).free)
 
 	return &v
 }
@@ -14369,8 +14369,8 @@ type ExternalFencePropertiesKHR struct {
 func wrapExternalFencePropertiesKHR(p *C.VkExternalFencePropertiesKHR) *ExternalFencePropertiesKHR {
 	v := ExternalFencePropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalFencePropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalFencePropertiesKHR).free)
 
 	return &v
 }
@@ -14397,8 +14397,8 @@ type FenceImportFlagsKHR struct {
 func wrapFenceImportFlagsKHR(p *C.VkFenceImportFlagsKHR) *FenceImportFlagsKHR {
 	v := FenceImportFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FenceImportFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FenceImportFlagsKHR).free)
 
 	return &v
 }
@@ -14425,8 +14425,8 @@ type FenceImportFlagBitsKHR struct {
 func wrapFenceImportFlagBitsKHR(p *C.VkFenceImportFlagBitsKHR) *FenceImportFlagBitsKHR {
 	v := FenceImportFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FenceImportFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FenceImportFlagBitsKHR).free)
 
 	return &v
 }
@@ -14453,8 +14453,8 @@ type ExportFenceCreateInfoKHR struct {
 func wrapExportFenceCreateInfoKHR(p *C.VkExportFenceCreateInfoKHR) *ExportFenceCreateInfoKHR {
 	v := ExportFenceCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExportFenceCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExportFenceCreateInfoKHR).free)
 
 	return &v
 }
@@ -14481,8 +14481,8 @@ type ImportFenceFdInfoKHR struct {
 func wrapImportFenceFdInfoKHR(p *C.VkImportFenceFdInfoKHR) *ImportFenceFdInfoKHR {
 	v := ImportFenceFdInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImportFenceFdInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImportFenceFdInfoKHR).free)
 
 	return &v
 }
@@ -14509,8 +14509,8 @@ type FenceGetFdInfoKHR struct {
 func wrapFenceGetFdInfoKHR(p *C.VkFenceGetFdInfoKHR) *FenceGetFdInfoKHR {
 	v := FenceGetFdInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FenceGetFdInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FenceGetFdInfoKHR).free)
 
 	return &v
 }
@@ -14537,8 +14537,8 @@ type PointClippingBehaviorKHR struct {
 func wrapPointClippingBehaviorKHR(p *C.VkPointClippingBehaviorKHR) *PointClippingBehaviorKHR {
 	v := PointClippingBehaviorKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PointClippingBehaviorKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PointClippingBehaviorKHR).free)
 
 	return &v
 }
@@ -14565,8 +14565,8 @@ type TessellationDomainOriginKHR struct {
 func wrapTessellationDomainOriginKHR(p *C.VkTessellationDomainOriginKHR) *TessellationDomainOriginKHR {
 	v := TessellationDomainOriginKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*TessellationDomainOriginKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*TessellationDomainOriginKHR).free)
 
 	return &v
 }
@@ -14593,8 +14593,8 @@ type PhysicalDevicePointClippingPropertiesKHR struct {
 func wrapPhysicalDevicePointClippingPropertiesKHR(p *C.VkPhysicalDevicePointClippingPropertiesKHR) *PhysicalDevicePointClippingPropertiesKHR {
 	v := PhysicalDevicePointClippingPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDevicePointClippingPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDevicePointClippingPropertiesKHR).free)
 
 	return &v
 }
@@ -14621,8 +14621,8 @@ type RenderPassInputAttachmentAspectCreateInfoKHR struct {
 func wrapRenderPassInputAttachmentAspectCreateInfoKHR(p *C.VkRenderPassInputAttachmentAspectCreateInfoKHR) *RenderPassInputAttachmentAspectCreateInfoKHR {
 	v := RenderPassInputAttachmentAspectCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPassInputAttachmentAspectCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPassInputAttachmentAspectCreateInfoKHR).free)
 
 	return &v
 }
@@ -14649,8 +14649,8 @@ type InputAttachmentAspectReferenceKHR struct {
 func wrapInputAttachmentAspectReferenceKHR(p *C.VkInputAttachmentAspectReferenceKHR) *InputAttachmentAspectReferenceKHR {
 	v := InputAttachmentAspectReferenceKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*InputAttachmentAspectReferenceKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*InputAttachmentAspectReferenceKHR).free)
 
 	return &v
 }
@@ -14677,8 +14677,8 @@ type ImageViewUsageCreateInfoKHR struct {
 func wrapImageViewUsageCreateInfoKHR(p *C.VkImageViewUsageCreateInfoKHR) *ImageViewUsageCreateInfoKHR {
 	v := ImageViewUsageCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageViewUsageCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageViewUsageCreateInfoKHR).free)
 
 	return &v
 }
@@ -14705,8 +14705,8 @@ type PipelineTessellationDomainOriginStateCreateInfoKHR struct {
 func wrapPipelineTessellationDomainOriginStateCreateInfoKHR(p *C.VkPipelineTessellationDomainOriginStateCreateInfoKHR) *PipelineTessellationDomainOriginStateCreateInfoKHR {
 	v := PipelineTessellationDomainOriginStateCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineTessellationDomainOriginStateCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineTessellationDomainOriginStateCreateInfoKHR).free)
 
 	return &v
 }
@@ -14733,8 +14733,8 @@ type PhysicalDeviceSurfaceInfo2KHR struct {
 func wrapPhysicalDeviceSurfaceInfo2KHR(p *C.VkPhysicalDeviceSurfaceInfo2KHR) *PhysicalDeviceSurfaceInfo2KHR {
 	v := PhysicalDeviceSurfaceInfo2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceSurfaceInfo2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceSurfaceInfo2KHR).free)
 
 	return &v
 }
@@ -14761,8 +14761,8 @@ type SurfaceCapabilities2KHR struct {
 func wrapSurfaceCapabilities2KHR(p *C.VkSurfaceCapabilities2KHR) *SurfaceCapabilities2KHR {
 	v := SurfaceCapabilities2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceCapabilities2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceCapabilities2KHR).free)
 
 	return &v
 }
@@ -14789,8 +14789,8 @@ type SurfaceFormat2KHR struct {
 func wrapSurfaceFormat2KHR(p *C.VkSurfaceFormat2KHR) *SurfaceFormat2KHR {
 	v := SurfaceFormat2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceFormat2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceFormat2KHR).free)
 
 	return &v
 }
@@ -14817,8 +14817,8 @@ type PhysicalDeviceVariablePointerFeaturesKHR struct {
 func wrapPhysicalDeviceVariablePointerFeaturesKHR(p *C.VkPhysicalDeviceVariablePointerFeaturesKHR) *PhysicalDeviceVariablePointerFeaturesKHR {
 	v := PhysicalDeviceVariablePointerFeaturesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceVariablePointerFeaturesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceVariablePointerFeaturesKHR).free)
 
 	return &v
 }
@@ -14845,8 +14845,8 @@ type PhysicalDeviceVariablePointersFeaturesKHR struct {
 func wrapPhysicalDeviceVariablePointersFeaturesKHR(p *C.VkPhysicalDeviceVariablePointersFeaturesKHR) *PhysicalDeviceVariablePointersFeaturesKHR {
 	v := PhysicalDeviceVariablePointersFeaturesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceVariablePointersFeaturesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceVariablePointersFeaturesKHR).free)
 
 	return &v
 }
@@ -14873,8 +14873,8 @@ type DisplayProperties2KHR struct {
 func wrapDisplayProperties2KHR(p *C.VkDisplayProperties2KHR) *DisplayProperties2KHR {
 	v := DisplayProperties2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayProperties2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayProperties2KHR).free)
 
 	return &v
 }
@@ -14901,8 +14901,8 @@ type DisplayPlaneProperties2KHR struct {
 func wrapDisplayPlaneProperties2KHR(p *C.VkDisplayPlaneProperties2KHR) *DisplayPlaneProperties2KHR {
 	v := DisplayPlaneProperties2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPlaneProperties2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPlaneProperties2KHR).free)
 
 	return &v
 }
@@ -14929,8 +14929,8 @@ type DisplayModeProperties2KHR struct {
 func wrapDisplayModeProperties2KHR(p *C.VkDisplayModeProperties2KHR) *DisplayModeProperties2KHR {
 	v := DisplayModeProperties2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayModeProperties2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayModeProperties2KHR).free)
 
 	return &v
 }
@@ -14957,8 +14957,8 @@ type DisplayPlaneInfo2KHR struct {
 func wrapDisplayPlaneInfo2KHR(p *C.VkDisplayPlaneInfo2KHR) *DisplayPlaneInfo2KHR {
 	v := DisplayPlaneInfo2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPlaneInfo2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPlaneInfo2KHR).free)
 
 	return &v
 }
@@ -14985,8 +14985,8 @@ type DisplayPlaneCapabilities2KHR struct {
 func wrapDisplayPlaneCapabilities2KHR(p *C.VkDisplayPlaneCapabilities2KHR) *DisplayPlaneCapabilities2KHR {
 	v := DisplayPlaneCapabilities2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPlaneCapabilities2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPlaneCapabilities2KHR).free)
 
 	return &v
 }
@@ -15013,8 +15013,8 @@ type MemoryDedicatedRequirementsKHR struct {
 func wrapMemoryDedicatedRequirementsKHR(p *C.VkMemoryDedicatedRequirementsKHR) *MemoryDedicatedRequirementsKHR {
 	v := MemoryDedicatedRequirementsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryDedicatedRequirementsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryDedicatedRequirementsKHR).free)
 
 	return &v
 }
@@ -15041,8 +15041,8 @@ type MemoryDedicatedAllocateInfoKHR struct {
 func wrapMemoryDedicatedAllocateInfoKHR(p *C.VkMemoryDedicatedAllocateInfoKHR) *MemoryDedicatedAllocateInfoKHR {
 	v := MemoryDedicatedAllocateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryDedicatedAllocateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryDedicatedAllocateInfoKHR).free)
 
 	return &v
 }
@@ -15069,8 +15069,8 @@ type BufferMemoryRequirementsInfo2KHR struct {
 func wrapBufferMemoryRequirementsInfo2KHR(p *C.VkBufferMemoryRequirementsInfo2KHR) *BufferMemoryRequirementsInfo2KHR {
 	v := BufferMemoryRequirementsInfo2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferMemoryRequirementsInfo2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferMemoryRequirementsInfo2KHR).free)
 
 	return &v
 }
@@ -15097,8 +15097,8 @@ type ImageMemoryRequirementsInfo2KHR struct {
 func wrapImageMemoryRequirementsInfo2KHR(p *C.VkImageMemoryRequirementsInfo2KHR) *ImageMemoryRequirementsInfo2KHR {
 	v := ImageMemoryRequirementsInfo2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageMemoryRequirementsInfo2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageMemoryRequirementsInfo2KHR).free)
 
 	return &v
 }
@@ -15125,8 +15125,8 @@ type ImageSparseMemoryRequirementsInfo2KHR struct {
 func wrapImageSparseMemoryRequirementsInfo2KHR(p *C.VkImageSparseMemoryRequirementsInfo2KHR) *ImageSparseMemoryRequirementsInfo2KHR {
 	v := ImageSparseMemoryRequirementsInfo2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageSparseMemoryRequirementsInfo2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageSparseMemoryRequirementsInfo2KHR).free)
 
 	return &v
 }
@@ -15153,8 +15153,8 @@ type SparseImageMemoryRequirements2KHR struct {
 func wrapSparseImageMemoryRequirements2KHR(p *C.VkSparseImageMemoryRequirements2KHR) *SparseImageMemoryRequirements2KHR {
 	v := SparseImageMemoryRequirements2KHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SparseImageMemoryRequirements2KHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SparseImageMemoryRequirements2KHR).free)
 
 	return &v
 }
@@ -15181,8 +15181,8 @@ type ImageFormatListCreateInfoKHR struct {
 func wrapImageFormatListCreateInfoKHR(p *C.VkImageFormatListCreateInfoKHR) *ImageFormatListCreateInfoKHR {
 	v := ImageFormatListCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageFormatListCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageFormatListCreateInfoKHR).free)
 
 	return &v
 }
@@ -15209,8 +15209,8 @@ type SamplerYcbcrConversionKHR struct {
 func wrapSamplerYcbcrConversionKHR(p *C.VkSamplerYcbcrConversionKHR) *SamplerYcbcrConversionKHR {
 	v := SamplerYcbcrConversionKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrConversionKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrConversionKHR).free)
 
 	return &v
 }
@@ -15237,8 +15237,8 @@ type SamplerYcbcrModelConversionKHR struct {
 func wrapSamplerYcbcrModelConversionKHR(p *C.VkSamplerYcbcrModelConversionKHR) *SamplerYcbcrModelConversionKHR {
 	v := SamplerYcbcrModelConversionKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrModelConversionKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrModelConversionKHR).free)
 
 	return &v
 }
@@ -15265,8 +15265,8 @@ type SamplerYcbcrRangeKHR struct {
 func wrapSamplerYcbcrRangeKHR(p *C.VkSamplerYcbcrRangeKHR) *SamplerYcbcrRangeKHR {
 	v := SamplerYcbcrRangeKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrRangeKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrRangeKHR).free)
 
 	return &v
 }
@@ -15293,8 +15293,8 @@ type ChromaLocationKHR struct {
 func wrapChromaLocationKHR(p *C.VkChromaLocationKHR) *ChromaLocationKHR {
 	v := ChromaLocationKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ChromaLocationKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ChromaLocationKHR).free)
 
 	return &v
 }
@@ -15321,8 +15321,8 @@ type SamplerYcbcrConversionCreateInfoKHR struct {
 func wrapSamplerYcbcrConversionCreateInfoKHR(p *C.VkSamplerYcbcrConversionCreateInfoKHR) *SamplerYcbcrConversionCreateInfoKHR {
 	v := SamplerYcbcrConversionCreateInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrConversionCreateInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrConversionCreateInfoKHR).free)
 
 	return &v
 }
@@ -15349,8 +15349,8 @@ type SamplerYcbcrConversionInfoKHR struct {
 func wrapSamplerYcbcrConversionInfoKHR(p *C.VkSamplerYcbcrConversionInfoKHR) *SamplerYcbcrConversionInfoKHR {
 	v := SamplerYcbcrConversionInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrConversionInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrConversionInfoKHR).free)
 
 	return &v
 }
@@ -15377,8 +15377,8 @@ type BindImagePlaneMemoryInfoKHR struct {
 func wrapBindImagePlaneMemoryInfoKHR(p *C.VkBindImagePlaneMemoryInfoKHR) *BindImagePlaneMemoryInfoKHR {
 	v := BindImagePlaneMemoryInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindImagePlaneMemoryInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindImagePlaneMemoryInfoKHR).free)
 
 	return &v
 }
@@ -15405,8 +15405,8 @@ type ImagePlaneMemoryRequirementsInfoKHR struct {
 func wrapImagePlaneMemoryRequirementsInfoKHR(p *C.VkImagePlaneMemoryRequirementsInfoKHR) *ImagePlaneMemoryRequirementsInfoKHR {
 	v := ImagePlaneMemoryRequirementsInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImagePlaneMemoryRequirementsInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImagePlaneMemoryRequirementsInfoKHR).free)
 
 	return &v
 }
@@ -15433,8 +15433,8 @@ type PhysicalDeviceSamplerYcbcrConversionFeaturesKHR struct {
 func wrapPhysicalDeviceSamplerYcbcrConversionFeaturesKHR(p *C.VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR) *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR {
 	v := PhysicalDeviceSamplerYcbcrConversionFeaturesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceSamplerYcbcrConversionFeaturesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceSamplerYcbcrConversionFeaturesKHR).free)
 
 	return &v
 }
@@ -15461,8 +15461,8 @@ type SamplerYcbcrConversionImageFormatPropertiesKHR struct {
 func wrapSamplerYcbcrConversionImageFormatPropertiesKHR(p *C.VkSamplerYcbcrConversionImageFormatPropertiesKHR) *SamplerYcbcrConversionImageFormatPropertiesKHR {
 	v := SamplerYcbcrConversionImageFormatPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerYcbcrConversionImageFormatPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerYcbcrConversionImageFormatPropertiesKHR).free)
 
 	return &v
 }
@@ -15489,8 +15489,8 @@ type BindBufferMemoryInfoKHR struct {
 func wrapBindBufferMemoryInfoKHR(p *C.VkBindBufferMemoryInfoKHR) *BindBufferMemoryInfoKHR {
 	v := BindBufferMemoryInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindBufferMemoryInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindBufferMemoryInfoKHR).free)
 
 	return &v
 }
@@ -15517,8 +15517,8 @@ type BindImageMemoryInfoKHR struct {
 func wrapBindImageMemoryInfoKHR(p *C.VkBindImageMemoryInfoKHR) *BindImageMemoryInfoKHR {
 	v := BindImageMemoryInfoKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindImageMemoryInfoKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindImageMemoryInfoKHR).free)
 
 	return &v
 }
@@ -15545,8 +15545,8 @@ type PhysicalDeviceMaintenance3PropertiesKHR struct {
 func wrapPhysicalDeviceMaintenance3PropertiesKHR(p *C.VkPhysicalDeviceMaintenance3PropertiesKHR) *PhysicalDeviceMaintenance3PropertiesKHR {
 	v := PhysicalDeviceMaintenance3PropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMaintenance3PropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMaintenance3PropertiesKHR).free)
 
 	return &v
 }
@@ -15573,8 +15573,8 @@ type DescriptorSetLayoutSupportKHR struct {
 func wrapDescriptorSetLayoutSupportKHR(p *C.VkDescriptorSetLayoutSupportKHR) *DescriptorSetLayoutSupportKHR {
 	v := DescriptorSetLayoutSupportKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetLayoutSupportKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetLayoutSupportKHR).free)
 
 	return &v
 }
@@ -15601,8 +15601,8 @@ type PhysicalDevice8BitStorageFeaturesKHR struct {
 func wrapPhysicalDevice8BitStorageFeaturesKHR(p *C.VkPhysicalDevice8BitStorageFeaturesKHR) *PhysicalDevice8BitStorageFeaturesKHR {
 	v := PhysicalDevice8BitStorageFeaturesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDevice8BitStorageFeaturesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDevice8BitStorageFeaturesKHR).free)
 
 	return &v
 }
@@ -15629,8 +15629,8 @@ type PhysicalDeviceShaderAtomicInt64FeaturesKHR struct {
 func wrapPhysicalDeviceShaderAtomicInt64FeaturesKHR(p *C.VkPhysicalDeviceShaderAtomicInt64FeaturesKHR) *PhysicalDeviceShaderAtomicInt64FeaturesKHR {
 	v := PhysicalDeviceShaderAtomicInt64FeaturesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceShaderAtomicInt64FeaturesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceShaderAtomicInt64FeaturesKHR).free)
 
 	return &v
 }
@@ -15657,8 +15657,8 @@ type DriverIDKHR struct {
 func wrapDriverIDKHR(p *C.VkDriverIdKHR) *DriverIDKHR {
 	v := DriverIDKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DriverIDKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DriverIDKHR).free)
 
 	return &v
 }
@@ -15685,8 +15685,8 @@ type ConformanceVersionKHR struct {
 func wrapConformanceVersionKHR(p *C.VkConformanceVersionKHR) *ConformanceVersionKHR {
 	v := ConformanceVersionKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ConformanceVersionKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ConformanceVersionKHR).free)
 
 	return &v
 }
@@ -15713,8 +15713,8 @@ type PhysicalDeviceDriverPropertiesKHR struct {
 func wrapPhysicalDeviceDriverPropertiesKHR(p *C.VkPhysicalDeviceDriverPropertiesKHR) *PhysicalDeviceDriverPropertiesKHR {
 	v := PhysicalDeviceDriverPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceDriverPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceDriverPropertiesKHR).free)
 
 	return &v
 }
@@ -15741,8 +15741,8 @@ type PhysicalDeviceFloatControlsPropertiesKHR struct {
 func wrapPhysicalDeviceFloatControlsPropertiesKHR(p *C.VkPhysicalDeviceFloatControlsPropertiesKHR) *PhysicalDeviceFloatControlsPropertiesKHR {
 	v := PhysicalDeviceFloatControlsPropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceFloatControlsPropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceFloatControlsPropertiesKHR).free)
 
 	return &v
 }
@@ -15769,8 +15769,8 @@ type ResolveModeFlagBitsKHR struct {
 func wrapResolveModeFlagBitsKHR(p *C.VkResolveModeFlagBitsKHR) *ResolveModeFlagBitsKHR {
 	v := ResolveModeFlagBitsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ResolveModeFlagBitsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ResolveModeFlagBitsKHR).free)
 
 	return &v
 }
@@ -15797,8 +15797,8 @@ type ResolveModeFlagsKHR struct {
 func wrapResolveModeFlagsKHR(p *C.VkResolveModeFlagsKHR) *ResolveModeFlagsKHR {
 	v := ResolveModeFlagsKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ResolveModeFlagsKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ResolveModeFlagsKHR).free)
 
 	return &v
 }
@@ -15825,8 +15825,8 @@ type SubpassDescriptionDepthStencilResolveKHR struct {
 func wrapSubpassDescriptionDepthStencilResolveKHR(p *C.VkSubpassDescriptionDepthStencilResolveKHR) *SubpassDescriptionDepthStencilResolveKHR {
 	v := SubpassDescriptionDepthStencilResolveKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassDescriptionDepthStencilResolveKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassDescriptionDepthStencilResolveKHR).free)
 
 	return &v
 }
@@ -15853,8 +15853,8 @@ type PhysicalDeviceDepthStencilResolvePropertiesKHR struct {
 func wrapPhysicalDeviceDepthStencilResolvePropertiesKHR(p *C.VkPhysicalDeviceDepthStencilResolvePropertiesKHR) *PhysicalDeviceDepthStencilResolvePropertiesKHR {
 	v := PhysicalDeviceDepthStencilResolvePropertiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceDepthStencilResolvePropertiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceDepthStencilResolvePropertiesKHR).free)
 
 	return &v
 }
@@ -15881,8 +15881,8 @@ type PhysicalDeviceVulkanMemoryModelFeaturesKHR struct {
 func wrapPhysicalDeviceVulkanMemoryModelFeaturesKHR(p *C.VkPhysicalDeviceVulkanMemoryModelFeaturesKHR) *PhysicalDeviceVulkanMemoryModelFeaturesKHR {
 	v := PhysicalDeviceVulkanMemoryModelFeaturesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceVulkanMemoryModelFeaturesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceVulkanMemoryModelFeaturesKHR).free)
 
 	return &v
 }
@@ -15909,8 +15909,8 @@ type SurfaceProtectedCapabilitiesKHR struct {
 func wrapSurfaceProtectedCapabilitiesKHR(p *C.VkSurfaceProtectedCapabilitiesKHR) *SurfaceProtectedCapabilitiesKHR {
 	v := SurfaceProtectedCapabilitiesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceProtectedCapabilitiesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceProtectedCapabilitiesKHR).free)
 
 	return &v
 }
@@ -15937,8 +15937,8 @@ type PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR struct {
 func wrapPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR(p *C.VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR {
 	v := PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR).free)
 
 	return &v
 }
@@ -15965,8 +15965,8 @@ type DebugReportCallbackEXT struct {
 func wrapDebugReportCallbackEXT(p *C.VkDebugReportCallbackEXT) *DebugReportCallbackEXT {
 	v := DebugReportCallbackEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugReportCallbackEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugReportCallbackEXT).free)
 
 	return &v
 }
@@ -15993,8 +15993,8 @@ type DebugReportObjectTypeEXT struct {
 func wrapDebugReportObjectTypeEXT(p *C.VkDebugReportObjectTypeEXT) *DebugReportObjectTypeEXT {
 	v := DebugReportObjectTypeEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugReportObjectTypeEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugReportObjectTypeEXT).free)
 
 	return &v
 }
@@ -16021,8 +16021,8 @@ type DebugReportFlagBitsEXT struct {
 func wrapDebugReportFlagBitsEXT(p *C.VkDebugReportFlagBitsEXT) *DebugReportFlagBitsEXT {
 	v := DebugReportFlagBitsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugReportFlagBitsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugReportFlagBitsEXT).free)
 
 	return &v
 }
@@ -16049,8 +16049,8 @@ type DebugReportFlagsEXT struct {
 func wrapDebugReportFlagsEXT(p *C.VkDebugReportFlagsEXT) *DebugReportFlagsEXT {
 	v := DebugReportFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugReportFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugReportFlagsEXT).free)
 
 	return &v
 }
@@ -16077,8 +16077,8 @@ type DebugReportCallbackCreateInfoEXT struct {
 func wrapDebugReportCallbackCreateInfoEXT(p *C.VkDebugReportCallbackCreateInfoEXT) *DebugReportCallbackCreateInfoEXT {
 	v := DebugReportCallbackCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugReportCallbackCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugReportCallbackCreateInfoEXT).free)
 
 	return &v
 }
@@ -16105,8 +16105,8 @@ type RasterizationOrderAMD struct {
 func wrapRasterizationOrderAMD(p *C.VkRasterizationOrderAMD) *RasterizationOrderAMD {
 	v := RasterizationOrderAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RasterizationOrderAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RasterizationOrderAMD).free)
 
 	return &v
 }
@@ -16133,8 +16133,8 @@ type PipelineRasterizationStateRasterizationOrderAMD struct {
 func wrapPipelineRasterizationStateRasterizationOrderAMD(p *C.VkPipelineRasterizationStateRasterizationOrderAMD) *PipelineRasterizationStateRasterizationOrderAMD {
 	v := PipelineRasterizationStateRasterizationOrderAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineRasterizationStateRasterizationOrderAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineRasterizationStateRasterizationOrderAMD).free)
 
 	return &v
 }
@@ -16161,8 +16161,8 @@ type DebugMarkerObjectNameInfoEXT struct {
 func wrapDebugMarkerObjectNameInfoEXT(p *C.VkDebugMarkerObjectNameInfoEXT) *DebugMarkerObjectNameInfoEXT {
 	v := DebugMarkerObjectNameInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugMarkerObjectNameInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugMarkerObjectNameInfoEXT).free)
 
 	return &v
 }
@@ -16189,8 +16189,8 @@ type DebugMarkerObjectTagInfoEXT struct {
 func wrapDebugMarkerObjectTagInfoEXT(p *C.VkDebugMarkerObjectTagInfoEXT) *DebugMarkerObjectTagInfoEXT {
 	v := DebugMarkerObjectTagInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugMarkerObjectTagInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugMarkerObjectTagInfoEXT).free)
 
 	return &v
 }
@@ -16217,8 +16217,8 @@ type DebugMarkerMarkerInfoEXT struct {
 func wrapDebugMarkerMarkerInfoEXT(p *C.VkDebugMarkerMarkerInfoEXT) *DebugMarkerMarkerInfoEXT {
 	v := DebugMarkerMarkerInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugMarkerMarkerInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugMarkerMarkerInfoEXT).free)
 
 	return &v
 }
@@ -16245,8 +16245,8 @@ type DedicatedAllocationImageCreateInfoNV struct {
 func wrapDedicatedAllocationImageCreateInfoNV(p *C.VkDedicatedAllocationImageCreateInfoNV) *DedicatedAllocationImageCreateInfoNV {
 	v := DedicatedAllocationImageCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DedicatedAllocationImageCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DedicatedAllocationImageCreateInfoNV).free)
 
 	return &v
 }
@@ -16273,8 +16273,8 @@ type DedicatedAllocationBufferCreateInfoNV struct {
 func wrapDedicatedAllocationBufferCreateInfoNV(p *C.VkDedicatedAllocationBufferCreateInfoNV) *DedicatedAllocationBufferCreateInfoNV {
 	v := DedicatedAllocationBufferCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DedicatedAllocationBufferCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DedicatedAllocationBufferCreateInfoNV).free)
 
 	return &v
 }
@@ -16301,8 +16301,8 @@ type DedicatedAllocationMemoryAllocateInfoNV struct {
 func wrapDedicatedAllocationMemoryAllocateInfoNV(p *C.VkDedicatedAllocationMemoryAllocateInfoNV) *DedicatedAllocationMemoryAllocateInfoNV {
 	v := DedicatedAllocationMemoryAllocateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DedicatedAllocationMemoryAllocateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DedicatedAllocationMemoryAllocateInfoNV).free)
 
 	return &v
 }
@@ -16329,8 +16329,8 @@ type PipelineRasterizationStateStreamCreateFlagsEXT struct {
 func wrapPipelineRasterizationStateStreamCreateFlagsEXT(p *C.VkPipelineRasterizationStateStreamCreateFlagsEXT) *PipelineRasterizationStateStreamCreateFlagsEXT {
 	v := PipelineRasterizationStateStreamCreateFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineRasterizationStateStreamCreateFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineRasterizationStateStreamCreateFlagsEXT).free)
 
 	return &v
 }
@@ -16357,8 +16357,8 @@ type PhysicalDeviceTransformFeedbackFeaturesEXT struct {
 func wrapPhysicalDeviceTransformFeedbackFeaturesEXT(p *C.VkPhysicalDeviceTransformFeedbackFeaturesEXT) *PhysicalDeviceTransformFeedbackFeaturesEXT {
 	v := PhysicalDeviceTransformFeedbackFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceTransformFeedbackFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceTransformFeedbackFeaturesEXT).free)
 
 	return &v
 }
@@ -16385,8 +16385,8 @@ type PhysicalDeviceTransformFeedbackPropertiesEXT struct {
 func wrapPhysicalDeviceTransformFeedbackPropertiesEXT(p *C.VkPhysicalDeviceTransformFeedbackPropertiesEXT) *PhysicalDeviceTransformFeedbackPropertiesEXT {
 	v := PhysicalDeviceTransformFeedbackPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceTransformFeedbackPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceTransformFeedbackPropertiesEXT).free)
 
 	return &v
 }
@@ -16413,8 +16413,8 @@ type PipelineRasterizationStateStreamCreateInfoEXT struct {
 func wrapPipelineRasterizationStateStreamCreateInfoEXT(p *C.VkPipelineRasterizationStateStreamCreateInfoEXT) *PipelineRasterizationStateStreamCreateInfoEXT {
 	v := PipelineRasterizationStateStreamCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineRasterizationStateStreamCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineRasterizationStateStreamCreateInfoEXT).free)
 
 	return &v
 }
@@ -16441,8 +16441,8 @@ type ImageViewHandleInfoNVX struct {
 func wrapImageViewHandleInfoNVX(p *C.VkImageViewHandleInfoNVX) *ImageViewHandleInfoNVX {
 	v := ImageViewHandleInfoNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageViewHandleInfoNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageViewHandleInfoNVX).free)
 
 	return &v
 }
@@ -16469,8 +16469,8 @@ type TextureLODGatherFormatPropertiesAMD struct {
 func wrapTextureLODGatherFormatPropertiesAMD(p *C.VkTextureLODGatherFormatPropertiesAMD) *TextureLODGatherFormatPropertiesAMD {
 	v := TextureLODGatherFormatPropertiesAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*TextureLODGatherFormatPropertiesAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*TextureLODGatherFormatPropertiesAMD).free)
 
 	return &v
 }
@@ -16497,8 +16497,8 @@ type ShaderInfoTypeAMD struct {
 func wrapShaderInfoTypeAMD(p *C.VkShaderInfoTypeAMD) *ShaderInfoTypeAMD {
 	v := ShaderInfoTypeAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShaderInfoTypeAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShaderInfoTypeAMD).free)
 
 	return &v
 }
@@ -16525,8 +16525,8 @@ type ShaderResourceUsageAMD struct {
 func wrapShaderResourceUsageAMD(p *C.VkShaderResourceUsageAMD) *ShaderResourceUsageAMD {
 	v := ShaderResourceUsageAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShaderResourceUsageAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShaderResourceUsageAMD).free)
 
 	return &v
 }
@@ -16553,8 +16553,8 @@ type ShaderStatisticsInfoAMD struct {
 func wrapShaderStatisticsInfoAMD(p *C.VkShaderStatisticsInfoAMD) *ShaderStatisticsInfoAMD {
 	v := ShaderStatisticsInfoAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShaderStatisticsInfoAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShaderStatisticsInfoAMD).free)
 
 	return &v
 }
@@ -16581,8 +16581,8 @@ type PhysicalDeviceCornerSampledImageFeaturesNV struct {
 func wrapPhysicalDeviceCornerSampledImageFeaturesNV(p *C.VkPhysicalDeviceCornerSampledImageFeaturesNV) *PhysicalDeviceCornerSampledImageFeaturesNV {
 	v := PhysicalDeviceCornerSampledImageFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceCornerSampledImageFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceCornerSampledImageFeaturesNV).free)
 
 	return &v
 }
@@ -16609,8 +16609,8 @@ type ExternalMemoryHandleTypeFlagBitsNV struct {
 func wrapExternalMemoryHandleTypeFlagBitsNV(p *C.VkExternalMemoryHandleTypeFlagBitsNV) *ExternalMemoryHandleTypeFlagBitsNV {
 	v := ExternalMemoryHandleTypeFlagBitsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlagBitsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryHandleTypeFlagBitsNV).free)
 
 	return &v
 }
@@ -16637,8 +16637,8 @@ type ExternalMemoryHandleTypeFlagsNV struct {
 func wrapExternalMemoryHandleTypeFlagsNV(p *C.VkExternalMemoryHandleTypeFlagsNV) *ExternalMemoryHandleTypeFlagsNV {
 	v := ExternalMemoryHandleTypeFlagsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryHandleTypeFlagsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryHandleTypeFlagsNV).free)
 
 	return &v
 }
@@ -16665,8 +16665,8 @@ type ExternalMemoryFeatureFlagBitsNV struct {
 func wrapExternalMemoryFeatureFlagBitsNV(p *C.VkExternalMemoryFeatureFlagBitsNV) *ExternalMemoryFeatureFlagBitsNV {
 	v := ExternalMemoryFeatureFlagBitsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlagBitsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryFeatureFlagBitsNV).free)
 
 	return &v
 }
@@ -16693,8 +16693,8 @@ type ExternalMemoryFeatureFlagsNV struct {
 func wrapExternalMemoryFeatureFlagsNV(p *C.VkExternalMemoryFeatureFlagsNV) *ExternalMemoryFeatureFlagsNV {
 	v := ExternalMemoryFeatureFlagsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryFeatureFlagsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryFeatureFlagsNV).free)
 
 	return &v
 }
@@ -16721,8 +16721,8 @@ type ExternalImageFormatPropertiesNV struct {
 func wrapExternalImageFormatPropertiesNV(p *C.VkExternalImageFormatPropertiesNV) *ExternalImageFormatPropertiesNV {
 	v := ExternalImageFormatPropertiesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalImageFormatPropertiesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalImageFormatPropertiesNV).free)
 
 	return &v
 }
@@ -16749,8 +16749,8 @@ type ExternalMemoryImageCreateInfoNV struct {
 func wrapExternalMemoryImageCreateInfoNV(p *C.VkExternalMemoryImageCreateInfoNV) *ExternalMemoryImageCreateInfoNV {
 	v := ExternalMemoryImageCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExternalMemoryImageCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExternalMemoryImageCreateInfoNV).free)
 
 	return &v
 }
@@ -16777,8 +16777,8 @@ type ExportMemoryAllocateInfoNV struct {
 func wrapExportMemoryAllocateInfoNV(p *C.VkExportMemoryAllocateInfoNV) *ExportMemoryAllocateInfoNV {
 	v := ExportMemoryAllocateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ExportMemoryAllocateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ExportMemoryAllocateInfoNV).free)
 
 	return &v
 }
@@ -16805,8 +16805,8 @@ type ValidationCheckEXT struct {
 func wrapValidationCheckEXT(p *C.VkValidationCheckEXT) *ValidationCheckEXT {
 	v := ValidationCheckEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ValidationCheckEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ValidationCheckEXT).free)
 
 	return &v
 }
@@ -16833,8 +16833,8 @@ type ValidationFlagsEXT struct {
 func wrapValidationFlagsEXT(p *C.VkValidationFlagsEXT) *ValidationFlagsEXT {
 	v := ValidationFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ValidationFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ValidationFlagsEXT).free)
 
 	return &v
 }
@@ -16861,8 +16861,8 @@ type ImageViewASTCDecodeModeEXT struct {
 func wrapImageViewASTCDecodeModeEXT(p *C.VkImageViewASTCDecodeModeEXT) *ImageViewASTCDecodeModeEXT {
 	v := ImageViewASTCDecodeModeEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageViewASTCDecodeModeEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageViewASTCDecodeModeEXT).free)
 
 	return &v
 }
@@ -16889,8 +16889,8 @@ type PhysicalDeviceASTCDecodeFeaturesEXT struct {
 func wrapPhysicalDeviceASTCDecodeFeaturesEXT(p *C.VkPhysicalDeviceASTCDecodeFeaturesEXT) *PhysicalDeviceASTCDecodeFeaturesEXT {
 	v := PhysicalDeviceASTCDecodeFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceASTCDecodeFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceASTCDecodeFeaturesEXT).free)
 
 	return &v
 }
@@ -16917,8 +16917,8 @@ type ConditionalRenderingFlagBitsEXT struct {
 func wrapConditionalRenderingFlagBitsEXT(p *C.VkConditionalRenderingFlagBitsEXT) *ConditionalRenderingFlagBitsEXT {
 	v := ConditionalRenderingFlagBitsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ConditionalRenderingFlagBitsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ConditionalRenderingFlagBitsEXT).free)
 
 	return &v
 }
@@ -16945,8 +16945,8 @@ type ConditionalRenderingFlagsEXT struct {
 func wrapConditionalRenderingFlagsEXT(p *C.VkConditionalRenderingFlagsEXT) *ConditionalRenderingFlagsEXT {
 	v := ConditionalRenderingFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ConditionalRenderingFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ConditionalRenderingFlagsEXT).free)
 
 	return &v
 }
@@ -16973,8 +16973,8 @@ type ConditionalRenderingBeginInfoEXT struct {
 func wrapConditionalRenderingBeginInfoEXT(p *C.VkConditionalRenderingBeginInfoEXT) *ConditionalRenderingBeginInfoEXT {
 	v := ConditionalRenderingBeginInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ConditionalRenderingBeginInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ConditionalRenderingBeginInfoEXT).free)
 
 	return &v
 }
@@ -17001,8 +17001,8 @@ type PhysicalDeviceConditionalRenderingFeaturesEXT struct {
 func wrapPhysicalDeviceConditionalRenderingFeaturesEXT(p *C.VkPhysicalDeviceConditionalRenderingFeaturesEXT) *PhysicalDeviceConditionalRenderingFeaturesEXT {
 	v := PhysicalDeviceConditionalRenderingFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceConditionalRenderingFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceConditionalRenderingFeaturesEXT).free)
 
 	return &v
 }
@@ -17029,8 +17029,8 @@ type CommandBufferInheritanceConditionalRenderingInfoEXT struct {
 func wrapCommandBufferInheritanceConditionalRenderingInfoEXT(p *C.VkCommandBufferInheritanceConditionalRenderingInfoEXT) *CommandBufferInheritanceConditionalRenderingInfoEXT {
 	v := CommandBufferInheritanceConditionalRenderingInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CommandBufferInheritanceConditionalRenderingInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CommandBufferInheritanceConditionalRenderingInfoEXT).free)
 
 	return &v
 }
@@ -17057,8 +17057,8 @@ type ObjectTableNVX struct {
 func wrapObjectTableNVX(p *C.VkObjectTableNVX) *ObjectTableNVX {
 	v := ObjectTableNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectTableNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectTableNVX).free)
 
 	return &v
 }
@@ -17085,8 +17085,8 @@ type IndirectCommandsLayoutNVX struct {
 func wrapIndirectCommandsLayoutNVX(p *C.VkIndirectCommandsLayoutNVX) *IndirectCommandsLayoutNVX {
 	v := IndirectCommandsLayoutNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*IndirectCommandsLayoutNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*IndirectCommandsLayoutNVX).free)
 
 	return &v
 }
@@ -17113,8 +17113,8 @@ type IndirectCommandsTokenTypeNVX struct {
 func wrapIndirectCommandsTokenTypeNVX(p *C.VkIndirectCommandsTokenTypeNVX) *IndirectCommandsTokenTypeNVX {
 	v := IndirectCommandsTokenTypeNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*IndirectCommandsTokenTypeNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*IndirectCommandsTokenTypeNVX).free)
 
 	return &v
 }
@@ -17141,8 +17141,8 @@ type ObjectEntryTypeNVX struct {
 func wrapObjectEntryTypeNVX(p *C.VkObjectEntryTypeNVX) *ObjectEntryTypeNVX {
 	v := ObjectEntryTypeNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectEntryTypeNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectEntryTypeNVX).free)
 
 	return &v
 }
@@ -17169,8 +17169,8 @@ type IndirectCommandsLayoutUsageFlagBitsNVX struct {
 func wrapIndirectCommandsLayoutUsageFlagBitsNVX(p *C.VkIndirectCommandsLayoutUsageFlagBitsNVX) *IndirectCommandsLayoutUsageFlagBitsNVX {
 	v := IndirectCommandsLayoutUsageFlagBitsNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*IndirectCommandsLayoutUsageFlagBitsNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*IndirectCommandsLayoutUsageFlagBitsNVX).free)
 
 	return &v
 }
@@ -17197,8 +17197,8 @@ type IndirectCommandsLayoutUsageFlagsNVX struct {
 func wrapIndirectCommandsLayoutUsageFlagsNVX(p *C.VkIndirectCommandsLayoutUsageFlagsNVX) *IndirectCommandsLayoutUsageFlagsNVX {
 	v := IndirectCommandsLayoutUsageFlagsNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*IndirectCommandsLayoutUsageFlagsNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*IndirectCommandsLayoutUsageFlagsNVX).free)
 
 	return &v
 }
@@ -17225,8 +17225,8 @@ type ObjectEntryUsageFlagBitsNVX struct {
 func wrapObjectEntryUsageFlagBitsNVX(p *C.VkObjectEntryUsageFlagBitsNVX) *ObjectEntryUsageFlagBitsNVX {
 	v := ObjectEntryUsageFlagBitsNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectEntryUsageFlagBitsNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectEntryUsageFlagBitsNVX).free)
 
 	return &v
 }
@@ -17253,8 +17253,8 @@ type ObjectEntryUsageFlagsNVX struct {
 func wrapObjectEntryUsageFlagsNVX(p *C.VkObjectEntryUsageFlagsNVX) *ObjectEntryUsageFlagsNVX {
 	v := ObjectEntryUsageFlagsNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectEntryUsageFlagsNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectEntryUsageFlagsNVX).free)
 
 	return &v
 }
@@ -17281,8 +17281,8 @@ type DeviceGeneratedCommandsFeaturesNVX struct {
 func wrapDeviceGeneratedCommandsFeaturesNVX(p *C.VkDeviceGeneratedCommandsFeaturesNVX) *DeviceGeneratedCommandsFeaturesNVX {
 	v := DeviceGeneratedCommandsFeaturesNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGeneratedCommandsFeaturesNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGeneratedCommandsFeaturesNVX).free)
 
 	return &v
 }
@@ -17309,8 +17309,8 @@ type DeviceGeneratedCommandsLimitsNVX struct {
 func wrapDeviceGeneratedCommandsLimitsNVX(p *C.VkDeviceGeneratedCommandsLimitsNVX) *DeviceGeneratedCommandsLimitsNVX {
 	v := DeviceGeneratedCommandsLimitsNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceGeneratedCommandsLimitsNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceGeneratedCommandsLimitsNVX).free)
 
 	return &v
 }
@@ -17337,8 +17337,8 @@ type IndirectCommandsTokenNVX struct {
 func wrapIndirectCommandsTokenNVX(p *C.VkIndirectCommandsTokenNVX) *IndirectCommandsTokenNVX {
 	v := IndirectCommandsTokenNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*IndirectCommandsTokenNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*IndirectCommandsTokenNVX).free)
 
 	return &v
 }
@@ -17365,8 +17365,8 @@ type IndirectCommandsLayoutTokenNVX struct {
 func wrapIndirectCommandsLayoutTokenNVX(p *C.VkIndirectCommandsLayoutTokenNVX) *IndirectCommandsLayoutTokenNVX {
 	v := IndirectCommandsLayoutTokenNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*IndirectCommandsLayoutTokenNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*IndirectCommandsLayoutTokenNVX).free)
 
 	return &v
 }
@@ -17393,8 +17393,8 @@ type IndirectCommandsLayoutCreateInfoNVX struct {
 func wrapIndirectCommandsLayoutCreateInfoNVX(p *C.VkIndirectCommandsLayoutCreateInfoNVX) *IndirectCommandsLayoutCreateInfoNVX {
 	v := IndirectCommandsLayoutCreateInfoNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*IndirectCommandsLayoutCreateInfoNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*IndirectCommandsLayoutCreateInfoNVX).free)
 
 	return &v
 }
@@ -17421,8 +17421,8 @@ type CmdProcessCommandsInfoNVX struct {
 func wrapCmdProcessCommandsInfoNVX(p *C.VkCmdProcessCommandsInfoNVX) *CmdProcessCommandsInfoNVX {
 	v := CmdProcessCommandsInfoNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CmdProcessCommandsInfoNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CmdProcessCommandsInfoNVX).free)
 
 	return &v
 }
@@ -17449,8 +17449,8 @@ type CmdReserveSpaceForCommandsInfoNVX struct {
 func wrapCmdReserveSpaceForCommandsInfoNVX(p *C.VkCmdReserveSpaceForCommandsInfoNVX) *CmdReserveSpaceForCommandsInfoNVX {
 	v := CmdReserveSpaceForCommandsInfoNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CmdReserveSpaceForCommandsInfoNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CmdReserveSpaceForCommandsInfoNVX).free)
 
 	return &v
 }
@@ -17477,8 +17477,8 @@ type ObjectTableCreateInfoNVX struct {
 func wrapObjectTableCreateInfoNVX(p *C.VkObjectTableCreateInfoNVX) *ObjectTableCreateInfoNVX {
 	v := ObjectTableCreateInfoNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectTableCreateInfoNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectTableCreateInfoNVX).free)
 
 	return &v
 }
@@ -17505,8 +17505,8 @@ type ObjectTableEntryNVX struct {
 func wrapObjectTableEntryNVX(p *C.VkObjectTableEntryNVX) *ObjectTableEntryNVX {
 	v := ObjectTableEntryNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectTableEntryNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectTableEntryNVX).free)
 
 	return &v
 }
@@ -17533,8 +17533,8 @@ type ObjectTablePipelineEntryNVX struct {
 func wrapObjectTablePipelineEntryNVX(p *C.VkObjectTablePipelineEntryNVX) *ObjectTablePipelineEntryNVX {
 	v := ObjectTablePipelineEntryNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectTablePipelineEntryNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectTablePipelineEntryNVX).free)
 
 	return &v
 }
@@ -17561,8 +17561,8 @@ type ObjectTableDescriptorSetEntryNVX struct {
 func wrapObjectTableDescriptorSetEntryNVX(p *C.VkObjectTableDescriptorSetEntryNVX) *ObjectTableDescriptorSetEntryNVX {
 	v := ObjectTableDescriptorSetEntryNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectTableDescriptorSetEntryNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectTableDescriptorSetEntryNVX).free)
 
 	return &v
 }
@@ -17589,8 +17589,8 @@ type ObjectTableVertexBufferEntryNVX struct {
 func wrapObjectTableVertexBufferEntryNVX(p *C.VkObjectTableVertexBufferEntryNVX) *ObjectTableVertexBufferEntryNVX {
 	v := ObjectTableVertexBufferEntryNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectTableVertexBufferEntryNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectTableVertexBufferEntryNVX).free)
 
 	return &v
 }
@@ -17617,8 +17617,8 @@ type ObjectTableIndexBufferEntryNVX struct {
 func wrapObjectTableIndexBufferEntryNVX(p *C.VkObjectTableIndexBufferEntryNVX) *ObjectTableIndexBufferEntryNVX {
 	v := ObjectTableIndexBufferEntryNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectTableIndexBufferEntryNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectTableIndexBufferEntryNVX).free)
 
 	return &v
 }
@@ -17645,8 +17645,8 @@ type ObjectTablePushConstantEntryNVX struct {
 func wrapObjectTablePushConstantEntryNVX(p *C.VkObjectTablePushConstantEntryNVX) *ObjectTablePushConstantEntryNVX {
 	v := ObjectTablePushConstantEntryNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ObjectTablePushConstantEntryNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ObjectTablePushConstantEntryNVX).free)
 
 	return &v
 }
@@ -17673,8 +17673,8 @@ type ViewportWScalingNV struct {
 func wrapViewportWScalingNV(p *C.VkViewportWScalingNV) *ViewportWScalingNV {
 	v := ViewportWScalingNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ViewportWScalingNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ViewportWScalingNV).free)
 
 	return &v
 }
@@ -17701,8 +17701,8 @@ type PipelineViewportWScalingStateCreateInfoNV struct {
 func wrapPipelineViewportWScalingStateCreateInfoNV(p *C.VkPipelineViewportWScalingStateCreateInfoNV) *PipelineViewportWScalingStateCreateInfoNV {
 	v := PipelineViewportWScalingStateCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineViewportWScalingStateCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineViewportWScalingStateCreateInfoNV).free)
 
 	return &v
 }
@@ -17729,8 +17729,8 @@ type SurfaceCounterFlagBitsEXT struct {
 func wrapSurfaceCounterFlagBitsEXT(p *C.VkSurfaceCounterFlagBitsEXT) *SurfaceCounterFlagBitsEXT {
 	v := SurfaceCounterFlagBitsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceCounterFlagBitsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceCounterFlagBitsEXT).free)
 
 	return &v
 }
@@ -17757,8 +17757,8 @@ type SurfaceCounterFlagsEXT struct {
 func wrapSurfaceCounterFlagsEXT(p *C.VkSurfaceCounterFlagsEXT) *SurfaceCounterFlagsEXT {
 	v := SurfaceCounterFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceCounterFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceCounterFlagsEXT).free)
 
 	return &v
 }
@@ -17785,8 +17785,8 @@ type SurfaceCapabilities2EXT struct {
 func wrapSurfaceCapabilities2EXT(p *C.VkSurfaceCapabilities2EXT) *SurfaceCapabilities2EXT {
 	v := SurfaceCapabilities2EXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SurfaceCapabilities2EXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SurfaceCapabilities2EXT).free)
 
 	return &v
 }
@@ -17813,8 +17813,8 @@ type DisplayPowerStateEXT struct {
 func wrapDisplayPowerStateEXT(p *C.VkDisplayPowerStateEXT) *DisplayPowerStateEXT {
 	v := DisplayPowerStateEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPowerStateEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPowerStateEXT).free)
 
 	return &v
 }
@@ -17841,8 +17841,8 @@ type DeviceEventTypeEXT struct {
 func wrapDeviceEventTypeEXT(p *C.VkDeviceEventTypeEXT) *DeviceEventTypeEXT {
 	v := DeviceEventTypeEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceEventTypeEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceEventTypeEXT).free)
 
 	return &v
 }
@@ -17869,8 +17869,8 @@ type DisplayEventTypeEXT struct {
 func wrapDisplayEventTypeEXT(p *C.VkDisplayEventTypeEXT) *DisplayEventTypeEXT {
 	v := DisplayEventTypeEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayEventTypeEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayEventTypeEXT).free)
 
 	return &v
 }
@@ -17897,8 +17897,8 @@ type DisplayPowerInfoEXT struct {
 func wrapDisplayPowerInfoEXT(p *C.VkDisplayPowerInfoEXT) *DisplayPowerInfoEXT {
 	v := DisplayPowerInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayPowerInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayPowerInfoEXT).free)
 
 	return &v
 }
@@ -17925,8 +17925,8 @@ type DeviceEventInfoEXT struct {
 func wrapDeviceEventInfoEXT(p *C.VkDeviceEventInfoEXT) *DeviceEventInfoEXT {
 	v := DeviceEventInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceEventInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceEventInfoEXT).free)
 
 	return &v
 }
@@ -17953,8 +17953,8 @@ type DisplayEventInfoEXT struct {
 func wrapDisplayEventInfoEXT(p *C.VkDisplayEventInfoEXT) *DisplayEventInfoEXT {
 	v := DisplayEventInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayEventInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayEventInfoEXT).free)
 
 	return &v
 }
@@ -17981,8 +17981,8 @@ type SwapchainCounterCreateInfoEXT struct {
 func wrapSwapchainCounterCreateInfoEXT(p *C.VkSwapchainCounterCreateInfoEXT) *SwapchainCounterCreateInfoEXT {
 	v := SwapchainCounterCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SwapchainCounterCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SwapchainCounterCreateInfoEXT).free)
 
 	return &v
 }
@@ -18009,8 +18009,8 @@ type RefreshCycleDurationGOOGLE struct {
 func wrapRefreshCycleDurationGOOGLE(p *C.VkRefreshCycleDurationGOOGLE) *RefreshCycleDurationGOOGLE {
 	v := RefreshCycleDurationGOOGLE{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RefreshCycleDurationGOOGLE).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RefreshCycleDurationGOOGLE).free)
 
 	return &v
 }
@@ -18037,8 +18037,8 @@ type PastPresentationTimingGOOGLE struct {
 func wrapPastPresentationTimingGOOGLE(p *C.VkPastPresentationTimingGOOGLE) *PastPresentationTimingGOOGLE {
 	v := PastPresentationTimingGOOGLE{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PastPresentationTimingGOOGLE).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PastPresentationTimingGOOGLE).free)
 
 	return &v
 }
@@ -18065,8 +18065,8 @@ type PresentTimeGOOGLE struct {
 func wrapPresentTimeGOOGLE(p *C.VkPresentTimeGOOGLE) *PresentTimeGOOGLE {
 	v := PresentTimeGOOGLE{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PresentTimeGOOGLE).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PresentTimeGOOGLE).free)
 
 	return &v
 }
@@ -18093,8 +18093,8 @@ type PresentTimesInfoGOOGLE struct {
 func wrapPresentTimesInfoGOOGLE(p *C.VkPresentTimesInfoGOOGLE) *PresentTimesInfoGOOGLE {
 	v := PresentTimesInfoGOOGLE{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PresentTimesInfoGOOGLE).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PresentTimesInfoGOOGLE).free)
 
 	return &v
 }
@@ -18121,8 +18121,8 @@ type PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX struct {
 func wrapPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(p *C.VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX {
 	v := PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX).free)
 
 	return &v
 }
@@ -18149,8 +18149,8 @@ type ViewportCoordinateSwizzleNV struct {
 func wrapViewportCoordinateSwizzleNV(p *C.VkViewportCoordinateSwizzleNV) *ViewportCoordinateSwizzleNV {
 	v := ViewportCoordinateSwizzleNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ViewportCoordinateSwizzleNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ViewportCoordinateSwizzleNV).free)
 
 	return &v
 }
@@ -18177,8 +18177,8 @@ type PipelineViewportSwizzleStateCreateFlagsNV struct {
 func wrapPipelineViewportSwizzleStateCreateFlagsNV(p *C.VkPipelineViewportSwizzleStateCreateFlagsNV) *PipelineViewportSwizzleStateCreateFlagsNV {
 	v := PipelineViewportSwizzleStateCreateFlagsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineViewportSwizzleStateCreateFlagsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineViewportSwizzleStateCreateFlagsNV).free)
 
 	return &v
 }
@@ -18205,8 +18205,8 @@ type ViewportSwizzleNV struct {
 func wrapViewportSwizzleNV(p *C.VkViewportSwizzleNV) *ViewportSwizzleNV {
 	v := ViewportSwizzleNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ViewportSwizzleNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ViewportSwizzleNV).free)
 
 	return &v
 }
@@ -18233,8 +18233,8 @@ type PipelineViewportSwizzleStateCreateInfoNV struct {
 func wrapPipelineViewportSwizzleStateCreateInfoNV(p *C.VkPipelineViewportSwizzleStateCreateInfoNV) *PipelineViewportSwizzleStateCreateInfoNV {
 	v := PipelineViewportSwizzleStateCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineViewportSwizzleStateCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineViewportSwizzleStateCreateInfoNV).free)
 
 	return &v
 }
@@ -18261,8 +18261,8 @@ type DiscardRectangleModeEXT struct {
 func wrapDiscardRectangleModeEXT(p *C.VkDiscardRectangleModeEXT) *DiscardRectangleModeEXT {
 	v := DiscardRectangleModeEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DiscardRectangleModeEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DiscardRectangleModeEXT).free)
 
 	return &v
 }
@@ -18289,8 +18289,8 @@ type PipelineDiscardRectangleStateCreateFlagsEXT struct {
 func wrapPipelineDiscardRectangleStateCreateFlagsEXT(p *C.VkPipelineDiscardRectangleStateCreateFlagsEXT) *PipelineDiscardRectangleStateCreateFlagsEXT {
 	v := PipelineDiscardRectangleStateCreateFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineDiscardRectangleStateCreateFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineDiscardRectangleStateCreateFlagsEXT).free)
 
 	return &v
 }
@@ -18317,8 +18317,8 @@ type PhysicalDeviceDiscardRectanglePropertiesEXT struct {
 func wrapPhysicalDeviceDiscardRectanglePropertiesEXT(p *C.VkPhysicalDeviceDiscardRectanglePropertiesEXT) *PhysicalDeviceDiscardRectanglePropertiesEXT {
 	v := PhysicalDeviceDiscardRectanglePropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceDiscardRectanglePropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceDiscardRectanglePropertiesEXT).free)
 
 	return &v
 }
@@ -18345,8 +18345,8 @@ type PipelineDiscardRectangleStateCreateInfoEXT struct {
 func wrapPipelineDiscardRectangleStateCreateInfoEXT(p *C.VkPipelineDiscardRectangleStateCreateInfoEXT) *PipelineDiscardRectangleStateCreateInfoEXT {
 	v := PipelineDiscardRectangleStateCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineDiscardRectangleStateCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineDiscardRectangleStateCreateInfoEXT).free)
 
 	return &v
 }
@@ -18373,8 +18373,8 @@ type ConservativeRasterizationModeEXT struct {
 func wrapConservativeRasterizationModeEXT(p *C.VkConservativeRasterizationModeEXT) *ConservativeRasterizationModeEXT {
 	v := ConservativeRasterizationModeEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ConservativeRasterizationModeEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ConservativeRasterizationModeEXT).free)
 
 	return &v
 }
@@ -18401,8 +18401,8 @@ type PipelineRasterizationConservativeStateCreateFlagsEXT struct {
 func wrapPipelineRasterizationConservativeStateCreateFlagsEXT(p *C.VkPipelineRasterizationConservativeStateCreateFlagsEXT) *PipelineRasterizationConservativeStateCreateFlagsEXT {
 	v := PipelineRasterizationConservativeStateCreateFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineRasterizationConservativeStateCreateFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineRasterizationConservativeStateCreateFlagsEXT).free)
 
 	return &v
 }
@@ -18429,8 +18429,8 @@ type PhysicalDeviceConservativeRasterizationPropertiesEXT struct {
 func wrapPhysicalDeviceConservativeRasterizationPropertiesEXT(p *C.VkPhysicalDeviceConservativeRasterizationPropertiesEXT) *PhysicalDeviceConservativeRasterizationPropertiesEXT {
 	v := PhysicalDeviceConservativeRasterizationPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceConservativeRasterizationPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceConservativeRasterizationPropertiesEXT).free)
 
 	return &v
 }
@@ -18457,8 +18457,8 @@ type PipelineRasterizationConservativeStateCreateInfoEXT struct {
 func wrapPipelineRasterizationConservativeStateCreateInfoEXT(p *C.VkPipelineRasterizationConservativeStateCreateInfoEXT) *PipelineRasterizationConservativeStateCreateInfoEXT {
 	v := PipelineRasterizationConservativeStateCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineRasterizationConservativeStateCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineRasterizationConservativeStateCreateInfoEXT).free)
 
 	return &v
 }
@@ -18485,8 +18485,8 @@ type PipelineRasterizationDepthClipStateCreateFlagsEXT struct {
 func wrapPipelineRasterizationDepthClipStateCreateFlagsEXT(p *C.VkPipelineRasterizationDepthClipStateCreateFlagsEXT) *PipelineRasterizationDepthClipStateCreateFlagsEXT {
 	v := PipelineRasterizationDepthClipStateCreateFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineRasterizationDepthClipStateCreateFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineRasterizationDepthClipStateCreateFlagsEXT).free)
 
 	return &v
 }
@@ -18513,8 +18513,8 @@ type PhysicalDeviceDepthClipEnableFeaturesEXT struct {
 func wrapPhysicalDeviceDepthClipEnableFeaturesEXT(p *C.VkPhysicalDeviceDepthClipEnableFeaturesEXT) *PhysicalDeviceDepthClipEnableFeaturesEXT {
 	v := PhysicalDeviceDepthClipEnableFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceDepthClipEnableFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceDepthClipEnableFeaturesEXT).free)
 
 	return &v
 }
@@ -18541,8 +18541,8 @@ type PipelineRasterizationDepthClipStateCreateInfoEXT struct {
 func wrapPipelineRasterizationDepthClipStateCreateInfoEXT(p *C.VkPipelineRasterizationDepthClipStateCreateInfoEXT) *PipelineRasterizationDepthClipStateCreateInfoEXT {
 	v := PipelineRasterizationDepthClipStateCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineRasterizationDepthClipStateCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineRasterizationDepthClipStateCreateInfoEXT).free)
 
 	return &v
 }
@@ -18569,8 +18569,8 @@ type XYColorEXT struct {
 func wrapXYColorEXT(p *C.VkXYColorEXT) *XYColorEXT {
 	v := XYColorEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*XYColorEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*XYColorEXT).free)
 
 	return &v
 }
@@ -18597,8 +18597,8 @@ type HdrMetadataEXT struct {
 func wrapHdrMetadataEXT(p *C.VkHdrMetadataEXT) *HdrMetadataEXT {
 	v := HdrMetadataEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*HdrMetadataEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*HdrMetadataEXT).free)
 
 	return &v
 }
@@ -18625,8 +18625,8 @@ type DebugUtilsMessengerEXT struct {
 func wrapDebugUtilsMessengerEXT(p *C.VkDebugUtilsMessengerEXT) *DebugUtilsMessengerEXT {
 	v := DebugUtilsMessengerEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsMessengerEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsMessengerEXT).free)
 
 	return &v
 }
@@ -18653,8 +18653,8 @@ type DebugUtilsMessengerCallbackDataFlagsEXT struct {
 func wrapDebugUtilsMessengerCallbackDataFlagsEXT(p *C.VkDebugUtilsMessengerCallbackDataFlagsEXT) *DebugUtilsMessengerCallbackDataFlagsEXT {
 	v := DebugUtilsMessengerCallbackDataFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsMessengerCallbackDataFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsMessengerCallbackDataFlagsEXT).free)
 
 	return &v
 }
@@ -18681,8 +18681,8 @@ type DebugUtilsMessengerCreateFlagsEXT struct {
 func wrapDebugUtilsMessengerCreateFlagsEXT(p *C.VkDebugUtilsMessengerCreateFlagsEXT) *DebugUtilsMessengerCreateFlagsEXT {
 	v := DebugUtilsMessengerCreateFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsMessengerCreateFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsMessengerCreateFlagsEXT).free)
 
 	return &v
 }
@@ -18709,8 +18709,8 @@ type DebugUtilsMessageSeverityFlagBitsEXT struct {
 func wrapDebugUtilsMessageSeverityFlagBitsEXT(p *C.VkDebugUtilsMessageSeverityFlagBitsEXT) *DebugUtilsMessageSeverityFlagBitsEXT {
 	v := DebugUtilsMessageSeverityFlagBitsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsMessageSeverityFlagBitsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsMessageSeverityFlagBitsEXT).free)
 
 	return &v
 }
@@ -18737,8 +18737,8 @@ type DebugUtilsMessageSeverityFlagsEXT struct {
 func wrapDebugUtilsMessageSeverityFlagsEXT(p *C.VkDebugUtilsMessageSeverityFlagsEXT) *DebugUtilsMessageSeverityFlagsEXT {
 	v := DebugUtilsMessageSeverityFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsMessageSeverityFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsMessageSeverityFlagsEXT).free)
 
 	return &v
 }
@@ -18765,8 +18765,8 @@ type DebugUtilsMessageTypeFlagBitsEXT struct {
 func wrapDebugUtilsMessageTypeFlagBitsEXT(p *C.VkDebugUtilsMessageTypeFlagBitsEXT) *DebugUtilsMessageTypeFlagBitsEXT {
 	v := DebugUtilsMessageTypeFlagBitsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsMessageTypeFlagBitsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsMessageTypeFlagBitsEXT).free)
 
 	return &v
 }
@@ -18793,8 +18793,8 @@ type DebugUtilsMessageTypeFlagsEXT struct {
 func wrapDebugUtilsMessageTypeFlagsEXT(p *C.VkDebugUtilsMessageTypeFlagsEXT) *DebugUtilsMessageTypeFlagsEXT {
 	v := DebugUtilsMessageTypeFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsMessageTypeFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsMessageTypeFlagsEXT).free)
 
 	return &v
 }
@@ -18821,8 +18821,8 @@ type DebugUtilsObjectNameInfoEXT struct {
 func wrapDebugUtilsObjectNameInfoEXT(p *C.VkDebugUtilsObjectNameInfoEXT) *DebugUtilsObjectNameInfoEXT {
 	v := DebugUtilsObjectNameInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsObjectNameInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsObjectNameInfoEXT).free)
 
 	return &v
 }
@@ -18849,8 +18849,8 @@ type DebugUtilsObjectTagInfoEXT struct {
 func wrapDebugUtilsObjectTagInfoEXT(p *C.VkDebugUtilsObjectTagInfoEXT) *DebugUtilsObjectTagInfoEXT {
 	v := DebugUtilsObjectTagInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsObjectTagInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsObjectTagInfoEXT).free)
 
 	return &v
 }
@@ -18877,8 +18877,8 @@ type DebugUtilsLabelEXT struct {
 func wrapDebugUtilsLabelEXT(p *C.VkDebugUtilsLabelEXT) *DebugUtilsLabelEXT {
 	v := DebugUtilsLabelEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsLabelEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsLabelEXT).free)
 
 	return &v
 }
@@ -18905,8 +18905,8 @@ type DebugUtilsMessengerCallbackDataEXT struct {
 func wrapDebugUtilsMessengerCallbackDataEXT(p *C.VkDebugUtilsMessengerCallbackDataEXT) *DebugUtilsMessengerCallbackDataEXT {
 	v := DebugUtilsMessengerCallbackDataEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsMessengerCallbackDataEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsMessengerCallbackDataEXT).free)
 
 	return &v
 }
@@ -18933,8 +18933,8 @@ type DebugUtilsMessengerCreateInfoEXT struct {
 func wrapDebugUtilsMessengerCreateInfoEXT(p *C.VkDebugUtilsMessengerCreateInfoEXT) *DebugUtilsMessengerCreateInfoEXT {
 	v := DebugUtilsMessengerCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DebugUtilsMessengerCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DebugUtilsMessengerCreateInfoEXT).free)
 
 	return &v
 }
@@ -18961,8 +18961,8 @@ type SamplerReductionModeEXT struct {
 func wrapSamplerReductionModeEXT(p *C.VkSamplerReductionModeEXT) *SamplerReductionModeEXT {
 	v := SamplerReductionModeEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerReductionModeEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerReductionModeEXT).free)
 
 	return &v
 }
@@ -18989,8 +18989,8 @@ type SamplerReductionModeCreateInfoEXT struct {
 func wrapSamplerReductionModeCreateInfoEXT(p *C.VkSamplerReductionModeCreateInfoEXT) *SamplerReductionModeCreateInfoEXT {
 	v := SamplerReductionModeCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SamplerReductionModeCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SamplerReductionModeCreateInfoEXT).free)
 
 	return &v
 }
@@ -19017,8 +19017,8 @@ type PhysicalDeviceSamplerFilterMinmaxPropertiesEXT struct {
 func wrapPhysicalDeviceSamplerFilterMinmaxPropertiesEXT(p *C.VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT) *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT {
 	v := PhysicalDeviceSamplerFilterMinmaxPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceSamplerFilterMinmaxPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceSamplerFilterMinmaxPropertiesEXT).free)
 
 	return &v
 }
@@ -19045,8 +19045,8 @@ type PhysicalDeviceInlineUniformBlockFeaturesEXT struct {
 func wrapPhysicalDeviceInlineUniformBlockFeaturesEXT(p *C.VkPhysicalDeviceInlineUniformBlockFeaturesEXT) *PhysicalDeviceInlineUniformBlockFeaturesEXT {
 	v := PhysicalDeviceInlineUniformBlockFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceInlineUniformBlockFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceInlineUniformBlockFeaturesEXT).free)
 
 	return &v
 }
@@ -19073,8 +19073,8 @@ type PhysicalDeviceInlineUniformBlockPropertiesEXT struct {
 func wrapPhysicalDeviceInlineUniformBlockPropertiesEXT(p *C.VkPhysicalDeviceInlineUniformBlockPropertiesEXT) *PhysicalDeviceInlineUniformBlockPropertiesEXT {
 	v := PhysicalDeviceInlineUniformBlockPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceInlineUniformBlockPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceInlineUniformBlockPropertiesEXT).free)
 
 	return &v
 }
@@ -19101,8 +19101,8 @@ type WriteDescriptorSetInlineUniformBlockEXT struct {
 func wrapWriteDescriptorSetInlineUniformBlockEXT(p *C.VkWriteDescriptorSetInlineUniformBlockEXT) *WriteDescriptorSetInlineUniformBlockEXT {
 	v := WriteDescriptorSetInlineUniformBlockEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*WriteDescriptorSetInlineUniformBlockEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*WriteDescriptorSetInlineUniformBlockEXT).free)
 
 	return &v
 }
@@ -19129,8 +19129,8 @@ type DescriptorPoolInlineUniformBlockCreateInfoEXT struct {
 func wrapDescriptorPoolInlineUniformBlockCreateInfoEXT(p *C.VkDescriptorPoolInlineUniformBlockCreateInfoEXT) *DescriptorPoolInlineUniformBlockCreateInfoEXT {
 	v := DescriptorPoolInlineUniformBlockCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorPoolInlineUniformBlockCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorPoolInlineUniformBlockCreateInfoEXT).free)
 
 	return &v
 }
@@ -19157,8 +19157,8 @@ type SampleLocationEXT struct {
 func wrapSampleLocationEXT(p *C.VkSampleLocationEXT) *SampleLocationEXT {
 	v := SampleLocationEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SampleLocationEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SampleLocationEXT).free)
 
 	return &v
 }
@@ -19185,8 +19185,8 @@ type SampleLocationsInfoEXT struct {
 func wrapSampleLocationsInfoEXT(p *C.VkSampleLocationsInfoEXT) *SampleLocationsInfoEXT {
 	v := SampleLocationsInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SampleLocationsInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SampleLocationsInfoEXT).free)
 
 	return &v
 }
@@ -19213,8 +19213,8 @@ type AttachmentSampleLocationsEXT struct {
 func wrapAttachmentSampleLocationsEXT(p *C.VkAttachmentSampleLocationsEXT) *AttachmentSampleLocationsEXT {
 	v := AttachmentSampleLocationsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AttachmentSampleLocationsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttachmentSampleLocationsEXT).free)
 
 	return &v
 }
@@ -19241,8 +19241,8 @@ type SubpassSampleLocationsEXT struct {
 func wrapSubpassSampleLocationsEXT(p *C.VkSubpassSampleLocationsEXT) *SubpassSampleLocationsEXT {
 	v := SubpassSampleLocationsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SubpassSampleLocationsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SubpassSampleLocationsEXT).free)
 
 	return &v
 }
@@ -19269,8 +19269,8 @@ type RenderPassSampleLocationsBeginInfoEXT struct {
 func wrapRenderPassSampleLocationsBeginInfoEXT(p *C.VkRenderPassSampleLocationsBeginInfoEXT) *RenderPassSampleLocationsBeginInfoEXT {
 	v := RenderPassSampleLocationsBeginInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPassSampleLocationsBeginInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPassSampleLocationsBeginInfoEXT).free)
 
 	return &v
 }
@@ -19297,8 +19297,8 @@ type PipelineSampleLocationsStateCreateInfoEXT struct {
 func wrapPipelineSampleLocationsStateCreateInfoEXT(p *C.VkPipelineSampleLocationsStateCreateInfoEXT) *PipelineSampleLocationsStateCreateInfoEXT {
 	v := PipelineSampleLocationsStateCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineSampleLocationsStateCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineSampleLocationsStateCreateInfoEXT).free)
 
 	return &v
 }
@@ -19325,8 +19325,8 @@ type PhysicalDeviceSampleLocationsPropertiesEXT struct {
 func wrapPhysicalDeviceSampleLocationsPropertiesEXT(p *C.VkPhysicalDeviceSampleLocationsPropertiesEXT) *PhysicalDeviceSampleLocationsPropertiesEXT {
 	v := PhysicalDeviceSampleLocationsPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceSampleLocationsPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceSampleLocationsPropertiesEXT).free)
 
 	return &v
 }
@@ -19353,8 +19353,8 @@ type MultisamplePropertiesEXT struct {
 func wrapMultisamplePropertiesEXT(p *C.VkMultisamplePropertiesEXT) *MultisamplePropertiesEXT {
 	v := MultisamplePropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MultisamplePropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MultisamplePropertiesEXT).free)
 
 	return &v
 }
@@ -19381,8 +19381,8 @@ type BlendOverlapEXT struct {
 func wrapBlendOverlapEXT(p *C.VkBlendOverlapEXT) *BlendOverlapEXT {
 	v := BlendOverlapEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BlendOverlapEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BlendOverlapEXT).free)
 
 	return &v
 }
@@ -19409,8 +19409,8 @@ type PhysicalDeviceBlendOperationAdvancedFeaturesEXT struct {
 func wrapPhysicalDeviceBlendOperationAdvancedFeaturesEXT(p *C.VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT) *PhysicalDeviceBlendOperationAdvancedFeaturesEXT {
 	v := PhysicalDeviceBlendOperationAdvancedFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceBlendOperationAdvancedFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceBlendOperationAdvancedFeaturesEXT).free)
 
 	return &v
 }
@@ -19437,8 +19437,8 @@ type PhysicalDeviceBlendOperationAdvancedPropertiesEXT struct {
 func wrapPhysicalDeviceBlendOperationAdvancedPropertiesEXT(p *C.VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT) *PhysicalDeviceBlendOperationAdvancedPropertiesEXT {
 	v := PhysicalDeviceBlendOperationAdvancedPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceBlendOperationAdvancedPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceBlendOperationAdvancedPropertiesEXT).free)
 
 	return &v
 }
@@ -19465,8 +19465,8 @@ type PipelineColorBlendAdvancedStateCreateInfoEXT struct {
 func wrapPipelineColorBlendAdvancedStateCreateInfoEXT(p *C.VkPipelineColorBlendAdvancedStateCreateInfoEXT) *PipelineColorBlendAdvancedStateCreateInfoEXT {
 	v := PipelineColorBlendAdvancedStateCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineColorBlendAdvancedStateCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineColorBlendAdvancedStateCreateInfoEXT).free)
 
 	return &v
 }
@@ -19493,8 +19493,8 @@ type PipelineCoverageToColorStateCreateFlagsNV struct {
 func wrapPipelineCoverageToColorStateCreateFlagsNV(p *C.VkPipelineCoverageToColorStateCreateFlagsNV) *PipelineCoverageToColorStateCreateFlagsNV {
 	v := PipelineCoverageToColorStateCreateFlagsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCoverageToColorStateCreateFlagsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCoverageToColorStateCreateFlagsNV).free)
 
 	return &v
 }
@@ -19521,8 +19521,8 @@ type PipelineCoverageToColorStateCreateInfoNV struct {
 func wrapPipelineCoverageToColorStateCreateInfoNV(p *C.VkPipelineCoverageToColorStateCreateInfoNV) *PipelineCoverageToColorStateCreateInfoNV {
 	v := PipelineCoverageToColorStateCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCoverageToColorStateCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCoverageToColorStateCreateInfoNV).free)
 
 	return &v
 }
@@ -19549,8 +19549,8 @@ type CoverageModulationModeNV struct {
 func wrapCoverageModulationModeNV(p *C.VkCoverageModulationModeNV) *CoverageModulationModeNV {
 	v := CoverageModulationModeNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CoverageModulationModeNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CoverageModulationModeNV).free)
 
 	return &v
 }
@@ -19577,8 +19577,8 @@ type PipelineCoverageModulationStateCreateFlagsNV struct {
 func wrapPipelineCoverageModulationStateCreateFlagsNV(p *C.VkPipelineCoverageModulationStateCreateFlagsNV) *PipelineCoverageModulationStateCreateFlagsNV {
 	v := PipelineCoverageModulationStateCreateFlagsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCoverageModulationStateCreateFlagsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCoverageModulationStateCreateFlagsNV).free)
 
 	return &v
 }
@@ -19605,8 +19605,8 @@ type PipelineCoverageModulationStateCreateInfoNV struct {
 func wrapPipelineCoverageModulationStateCreateInfoNV(p *C.VkPipelineCoverageModulationStateCreateInfoNV) *PipelineCoverageModulationStateCreateInfoNV {
 	v := PipelineCoverageModulationStateCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCoverageModulationStateCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCoverageModulationStateCreateInfoNV).free)
 
 	return &v
 }
@@ -19633,8 +19633,8 @@ type DrmFormatModifierPropertiesEXT struct {
 func wrapDrmFormatModifierPropertiesEXT(p *C.VkDrmFormatModifierPropertiesEXT) *DrmFormatModifierPropertiesEXT {
 	v := DrmFormatModifierPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DrmFormatModifierPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DrmFormatModifierPropertiesEXT).free)
 
 	return &v
 }
@@ -19661,8 +19661,8 @@ type DrmFormatModifierPropertiesListEXT struct {
 func wrapDrmFormatModifierPropertiesListEXT(p *C.VkDrmFormatModifierPropertiesListEXT) *DrmFormatModifierPropertiesListEXT {
 	v := DrmFormatModifierPropertiesListEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DrmFormatModifierPropertiesListEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DrmFormatModifierPropertiesListEXT).free)
 
 	return &v
 }
@@ -19689,8 +19689,8 @@ type PhysicalDeviceImageDrmFormatModifierInfoEXT struct {
 func wrapPhysicalDeviceImageDrmFormatModifierInfoEXT(p *C.VkPhysicalDeviceImageDrmFormatModifierInfoEXT) *PhysicalDeviceImageDrmFormatModifierInfoEXT {
 	v := PhysicalDeviceImageDrmFormatModifierInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceImageDrmFormatModifierInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceImageDrmFormatModifierInfoEXT).free)
 
 	return &v
 }
@@ -19717,8 +19717,8 @@ type ImageDrmFormatModifierListCreateInfoEXT struct {
 func wrapImageDrmFormatModifierListCreateInfoEXT(p *C.VkImageDrmFormatModifierListCreateInfoEXT) *ImageDrmFormatModifierListCreateInfoEXT {
 	v := ImageDrmFormatModifierListCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageDrmFormatModifierListCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageDrmFormatModifierListCreateInfoEXT).free)
 
 	return &v
 }
@@ -19745,8 +19745,8 @@ type ImageDrmFormatModifierExplicitCreateInfoEXT struct {
 func wrapImageDrmFormatModifierExplicitCreateInfoEXT(p *C.VkImageDrmFormatModifierExplicitCreateInfoEXT) *ImageDrmFormatModifierExplicitCreateInfoEXT {
 	v := ImageDrmFormatModifierExplicitCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageDrmFormatModifierExplicitCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageDrmFormatModifierExplicitCreateInfoEXT).free)
 
 	return &v
 }
@@ -19773,8 +19773,8 @@ type ImageDrmFormatModifierPropertiesEXT struct {
 func wrapImageDrmFormatModifierPropertiesEXT(p *C.VkImageDrmFormatModifierPropertiesEXT) *ImageDrmFormatModifierPropertiesEXT {
 	v := ImageDrmFormatModifierPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageDrmFormatModifierPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageDrmFormatModifierPropertiesEXT).free)
 
 	return &v
 }
@@ -19801,8 +19801,8 @@ type ValidationCacheEXT struct {
 func wrapValidationCacheEXT(p *C.VkValidationCacheEXT) *ValidationCacheEXT {
 	v := ValidationCacheEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ValidationCacheEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ValidationCacheEXT).free)
 
 	return &v
 }
@@ -19829,8 +19829,8 @@ type ValidationCacheHeaderVersionEXT struct {
 func wrapValidationCacheHeaderVersionEXT(p *C.VkValidationCacheHeaderVersionEXT) *ValidationCacheHeaderVersionEXT {
 	v := ValidationCacheHeaderVersionEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ValidationCacheHeaderVersionEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ValidationCacheHeaderVersionEXT).free)
 
 	return &v
 }
@@ -19857,8 +19857,8 @@ type ValidationCacheCreateFlagsEXT struct {
 func wrapValidationCacheCreateFlagsEXT(p *C.VkValidationCacheCreateFlagsEXT) *ValidationCacheCreateFlagsEXT {
 	v := ValidationCacheCreateFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ValidationCacheCreateFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ValidationCacheCreateFlagsEXT).free)
 
 	return &v
 }
@@ -19885,8 +19885,8 @@ type ValidationCacheCreateInfoEXT struct {
 func wrapValidationCacheCreateInfoEXT(p *C.VkValidationCacheCreateInfoEXT) *ValidationCacheCreateInfoEXT {
 	v := ValidationCacheCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ValidationCacheCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ValidationCacheCreateInfoEXT).free)
 
 	return &v
 }
@@ -19913,8 +19913,8 @@ type ShaderModuleValidationCacheCreateInfoEXT struct {
 func wrapShaderModuleValidationCacheCreateInfoEXT(p *C.VkShaderModuleValidationCacheCreateInfoEXT) *ShaderModuleValidationCacheCreateInfoEXT {
 	v := ShaderModuleValidationCacheCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShaderModuleValidationCacheCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShaderModuleValidationCacheCreateInfoEXT).free)
 
 	return &v
 }
@@ -19941,8 +19941,8 @@ type DescriptorBindingFlagBitsEXT struct {
 func wrapDescriptorBindingFlagBitsEXT(p *C.VkDescriptorBindingFlagBitsEXT) *DescriptorBindingFlagBitsEXT {
 	v := DescriptorBindingFlagBitsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorBindingFlagBitsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorBindingFlagBitsEXT).free)
 
 	return &v
 }
@@ -19969,8 +19969,8 @@ type DescriptorBindingFlagsEXT struct {
 func wrapDescriptorBindingFlagsEXT(p *C.VkDescriptorBindingFlagsEXT) *DescriptorBindingFlagsEXT {
 	v := DescriptorBindingFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorBindingFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorBindingFlagsEXT).free)
 
 	return &v
 }
@@ -19997,8 +19997,8 @@ type DescriptorSetLayoutBindingFlagsCreateInfoEXT struct {
 func wrapDescriptorSetLayoutBindingFlagsCreateInfoEXT(p *C.VkDescriptorSetLayoutBindingFlagsCreateInfoEXT) *DescriptorSetLayoutBindingFlagsCreateInfoEXT {
 	v := DescriptorSetLayoutBindingFlagsCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetLayoutBindingFlagsCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetLayoutBindingFlagsCreateInfoEXT).free)
 
 	return &v
 }
@@ -20025,8 +20025,8 @@ type PhysicalDeviceDescriptorIndexingFeaturesEXT struct {
 func wrapPhysicalDeviceDescriptorIndexingFeaturesEXT(p *C.VkPhysicalDeviceDescriptorIndexingFeaturesEXT) *PhysicalDeviceDescriptorIndexingFeaturesEXT {
 	v := PhysicalDeviceDescriptorIndexingFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceDescriptorIndexingFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceDescriptorIndexingFeaturesEXT).free)
 
 	return &v
 }
@@ -20053,8 +20053,8 @@ type PhysicalDeviceDescriptorIndexingPropertiesEXT struct {
 func wrapPhysicalDeviceDescriptorIndexingPropertiesEXT(p *C.VkPhysicalDeviceDescriptorIndexingPropertiesEXT) *PhysicalDeviceDescriptorIndexingPropertiesEXT {
 	v := PhysicalDeviceDescriptorIndexingPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceDescriptorIndexingPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceDescriptorIndexingPropertiesEXT).free)
 
 	return &v
 }
@@ -20081,8 +20081,8 @@ type DescriptorSetVariableDescriptorCountAllocateInfoEXT struct {
 func wrapDescriptorSetVariableDescriptorCountAllocateInfoEXT(p *C.VkDescriptorSetVariableDescriptorCountAllocateInfoEXT) *DescriptorSetVariableDescriptorCountAllocateInfoEXT {
 	v := DescriptorSetVariableDescriptorCountAllocateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetVariableDescriptorCountAllocateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetVariableDescriptorCountAllocateInfoEXT).free)
 
 	return &v
 }
@@ -20109,8 +20109,8 @@ type DescriptorSetVariableDescriptorCountLayoutSupportEXT struct {
 func wrapDescriptorSetVariableDescriptorCountLayoutSupportEXT(p *C.VkDescriptorSetVariableDescriptorCountLayoutSupportEXT) *DescriptorSetVariableDescriptorCountLayoutSupportEXT {
 	v := DescriptorSetVariableDescriptorCountLayoutSupportEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DescriptorSetVariableDescriptorCountLayoutSupportEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DescriptorSetVariableDescriptorCountLayoutSupportEXT).free)
 
 	return &v
 }
@@ -20137,8 +20137,8 @@ type ShadingRatePaletteEntryNV struct {
 func wrapShadingRatePaletteEntryNV(p *C.VkShadingRatePaletteEntryNV) *ShadingRatePaletteEntryNV {
 	v := ShadingRatePaletteEntryNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShadingRatePaletteEntryNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShadingRatePaletteEntryNV).free)
 
 	return &v
 }
@@ -20165,8 +20165,8 @@ type CoarseSampleOrderTypeNV struct {
 func wrapCoarseSampleOrderTypeNV(p *C.VkCoarseSampleOrderTypeNV) *CoarseSampleOrderTypeNV {
 	v := CoarseSampleOrderTypeNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CoarseSampleOrderTypeNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CoarseSampleOrderTypeNV).free)
 
 	return &v
 }
@@ -20193,8 +20193,8 @@ type ShadingRatePaletteNV struct {
 func wrapShadingRatePaletteNV(p *C.VkShadingRatePaletteNV) *ShadingRatePaletteNV {
 	v := ShadingRatePaletteNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShadingRatePaletteNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShadingRatePaletteNV).free)
 
 	return &v
 }
@@ -20221,8 +20221,8 @@ type PipelineViewportShadingRateImageStateCreateInfoNV struct {
 func wrapPipelineViewportShadingRateImageStateCreateInfoNV(p *C.VkPipelineViewportShadingRateImageStateCreateInfoNV) *PipelineViewportShadingRateImageStateCreateInfoNV {
 	v := PipelineViewportShadingRateImageStateCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineViewportShadingRateImageStateCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineViewportShadingRateImageStateCreateInfoNV).free)
 
 	return &v
 }
@@ -20249,8 +20249,8 @@ type PhysicalDeviceShadingRateImageFeaturesNV struct {
 func wrapPhysicalDeviceShadingRateImageFeaturesNV(p *C.VkPhysicalDeviceShadingRateImageFeaturesNV) *PhysicalDeviceShadingRateImageFeaturesNV {
 	v := PhysicalDeviceShadingRateImageFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceShadingRateImageFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceShadingRateImageFeaturesNV).free)
 
 	return &v
 }
@@ -20277,8 +20277,8 @@ type PhysicalDeviceShadingRateImagePropertiesNV struct {
 func wrapPhysicalDeviceShadingRateImagePropertiesNV(p *C.VkPhysicalDeviceShadingRateImagePropertiesNV) *PhysicalDeviceShadingRateImagePropertiesNV {
 	v := PhysicalDeviceShadingRateImagePropertiesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceShadingRateImagePropertiesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceShadingRateImagePropertiesNV).free)
 
 	return &v
 }
@@ -20305,8 +20305,8 @@ type CoarseSampleLocationNV struct {
 func wrapCoarseSampleLocationNV(p *C.VkCoarseSampleLocationNV) *CoarseSampleLocationNV {
 	v := CoarseSampleLocationNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CoarseSampleLocationNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CoarseSampleLocationNV).free)
 
 	return &v
 }
@@ -20333,8 +20333,8 @@ type CoarseSampleOrderCustomNV struct {
 func wrapCoarseSampleOrderCustomNV(p *C.VkCoarseSampleOrderCustomNV) *CoarseSampleOrderCustomNV {
 	v := CoarseSampleOrderCustomNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CoarseSampleOrderCustomNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CoarseSampleOrderCustomNV).free)
 
 	return &v
 }
@@ -20361,8 +20361,8 @@ type PipelineViewportCoarseSampleOrderStateCreateInfoNV struct {
 func wrapPipelineViewportCoarseSampleOrderStateCreateInfoNV(p *C.VkPipelineViewportCoarseSampleOrderStateCreateInfoNV) *PipelineViewportCoarseSampleOrderStateCreateInfoNV {
 	v := PipelineViewportCoarseSampleOrderStateCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineViewportCoarseSampleOrderStateCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineViewportCoarseSampleOrderStateCreateInfoNV).free)
 
 	return &v
 }
@@ -20389,8 +20389,8 @@ type AccelerationStructureNV struct {
 func wrapAccelerationStructureNV(p *C.VkAccelerationStructureNV) *AccelerationStructureNV {
 	v := AccelerationStructureNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AccelerationStructureNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AccelerationStructureNV).free)
 
 	return &v
 }
@@ -20417,8 +20417,8 @@ type RayTracingShaderGroupTypeNV struct {
 func wrapRayTracingShaderGroupTypeNV(p *C.VkRayTracingShaderGroupTypeNV) *RayTracingShaderGroupTypeNV {
 	v := RayTracingShaderGroupTypeNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RayTracingShaderGroupTypeNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RayTracingShaderGroupTypeNV).free)
 
 	return &v
 }
@@ -20445,8 +20445,8 @@ type GeometryTypeNV struct {
 func wrapGeometryTypeNV(p *C.VkGeometryTypeNV) *GeometryTypeNV {
 	v := GeometryTypeNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GeometryTypeNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GeometryTypeNV).free)
 
 	return &v
 }
@@ -20473,8 +20473,8 @@ type AccelerationStructureTypeNV struct {
 func wrapAccelerationStructureTypeNV(p *C.VkAccelerationStructureTypeNV) *AccelerationStructureTypeNV {
 	v := AccelerationStructureTypeNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AccelerationStructureTypeNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AccelerationStructureTypeNV).free)
 
 	return &v
 }
@@ -20501,8 +20501,8 @@ type CopyAccelerationStructureModeNV struct {
 func wrapCopyAccelerationStructureModeNV(p *C.VkCopyAccelerationStructureModeNV) *CopyAccelerationStructureModeNV {
 	v := CopyAccelerationStructureModeNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CopyAccelerationStructureModeNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CopyAccelerationStructureModeNV).free)
 
 	return &v
 }
@@ -20529,8 +20529,8 @@ type AccelerationStructureMemoryRequirementsTypeNV struct {
 func wrapAccelerationStructureMemoryRequirementsTypeNV(p *C.VkAccelerationStructureMemoryRequirementsTypeNV) *AccelerationStructureMemoryRequirementsTypeNV {
 	v := AccelerationStructureMemoryRequirementsTypeNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AccelerationStructureMemoryRequirementsTypeNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AccelerationStructureMemoryRequirementsTypeNV).free)
 
 	return &v
 }
@@ -20557,8 +20557,8 @@ type GeometryFlagBitsNV struct {
 func wrapGeometryFlagBitsNV(p *C.VkGeometryFlagBitsNV) *GeometryFlagBitsNV {
 	v := GeometryFlagBitsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GeometryFlagBitsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GeometryFlagBitsNV).free)
 
 	return &v
 }
@@ -20585,8 +20585,8 @@ type GeometryFlagsNV struct {
 func wrapGeometryFlagsNV(p *C.VkGeometryFlagsNV) *GeometryFlagsNV {
 	v := GeometryFlagsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GeometryFlagsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GeometryFlagsNV).free)
 
 	return &v
 }
@@ -20613,8 +20613,8 @@ type GeometryInstanceFlagBitsNV struct {
 func wrapGeometryInstanceFlagBitsNV(p *C.VkGeometryInstanceFlagBitsNV) *GeometryInstanceFlagBitsNV {
 	v := GeometryInstanceFlagBitsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GeometryInstanceFlagBitsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GeometryInstanceFlagBitsNV).free)
 
 	return &v
 }
@@ -20641,8 +20641,8 @@ type GeometryInstanceFlagsNV struct {
 func wrapGeometryInstanceFlagsNV(p *C.VkGeometryInstanceFlagsNV) *GeometryInstanceFlagsNV {
 	v := GeometryInstanceFlagsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GeometryInstanceFlagsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GeometryInstanceFlagsNV).free)
 
 	return &v
 }
@@ -20669,8 +20669,8 @@ type BuildAccelerationStructureFlagBitsNV struct {
 func wrapBuildAccelerationStructureFlagBitsNV(p *C.VkBuildAccelerationStructureFlagBitsNV) *BuildAccelerationStructureFlagBitsNV {
 	v := BuildAccelerationStructureFlagBitsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BuildAccelerationStructureFlagBitsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BuildAccelerationStructureFlagBitsNV).free)
 
 	return &v
 }
@@ -20697,8 +20697,8 @@ type BuildAccelerationStructureFlagsNV struct {
 func wrapBuildAccelerationStructureFlagsNV(p *C.VkBuildAccelerationStructureFlagsNV) *BuildAccelerationStructureFlagsNV {
 	v := BuildAccelerationStructureFlagsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BuildAccelerationStructureFlagsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BuildAccelerationStructureFlagsNV).free)
 
 	return &v
 }
@@ -20725,8 +20725,8 @@ type RayTracingShaderGroupCreateInfoNV struct {
 func wrapRayTracingShaderGroupCreateInfoNV(p *C.VkRayTracingShaderGroupCreateInfoNV) *RayTracingShaderGroupCreateInfoNV {
 	v := RayTracingShaderGroupCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RayTracingShaderGroupCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RayTracingShaderGroupCreateInfoNV).free)
 
 	return &v
 }
@@ -20753,8 +20753,8 @@ type RayTracingPipelineCreateInfoNV struct {
 func wrapRayTracingPipelineCreateInfoNV(p *C.VkRayTracingPipelineCreateInfoNV) *RayTracingPipelineCreateInfoNV {
 	v := RayTracingPipelineCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RayTracingPipelineCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RayTracingPipelineCreateInfoNV).free)
 
 	return &v
 }
@@ -20781,8 +20781,8 @@ type GeometryTrianglesNV struct {
 func wrapGeometryTrianglesNV(p *C.VkGeometryTrianglesNV) *GeometryTrianglesNV {
 	v := GeometryTrianglesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GeometryTrianglesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GeometryTrianglesNV).free)
 
 	return &v
 }
@@ -20809,8 +20809,8 @@ type GeometryAABBNV struct {
 func wrapGeometryAABBNV(p *C.VkGeometryAABBNV) *GeometryAABBNV {
 	v := GeometryAABBNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GeometryAABBNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GeometryAABBNV).free)
 
 	return &v
 }
@@ -20837,8 +20837,8 @@ type GeometryDataNV struct {
 func wrapGeometryDataNV(p *C.VkGeometryDataNV) *GeometryDataNV {
 	v := GeometryDataNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GeometryDataNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GeometryDataNV).free)
 
 	return &v
 }
@@ -20865,8 +20865,8 @@ type GeometryNV struct {
 func wrapGeometryNV(p *C.VkGeometryNV) *GeometryNV {
 	v := GeometryNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GeometryNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GeometryNV).free)
 
 	return &v
 }
@@ -20893,8 +20893,8 @@ type AccelerationStructureInfoNV struct {
 func wrapAccelerationStructureInfoNV(p *C.VkAccelerationStructureInfoNV) *AccelerationStructureInfoNV {
 	v := AccelerationStructureInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AccelerationStructureInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AccelerationStructureInfoNV).free)
 
 	return &v
 }
@@ -20921,8 +20921,8 @@ type AccelerationStructureCreateInfoNV struct {
 func wrapAccelerationStructureCreateInfoNV(p *C.VkAccelerationStructureCreateInfoNV) *AccelerationStructureCreateInfoNV {
 	v := AccelerationStructureCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AccelerationStructureCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AccelerationStructureCreateInfoNV).free)
 
 	return &v
 }
@@ -20949,8 +20949,8 @@ type BindAccelerationStructureMemoryInfoNV struct {
 func wrapBindAccelerationStructureMemoryInfoNV(p *C.VkBindAccelerationStructureMemoryInfoNV) *BindAccelerationStructureMemoryInfoNV {
 	v := BindAccelerationStructureMemoryInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BindAccelerationStructureMemoryInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BindAccelerationStructureMemoryInfoNV).free)
 
 	return &v
 }
@@ -20977,8 +20977,8 @@ type WriteDescriptorSetAccelerationStructureNV struct {
 func wrapWriteDescriptorSetAccelerationStructureNV(p *C.VkWriteDescriptorSetAccelerationStructureNV) *WriteDescriptorSetAccelerationStructureNV {
 	v := WriteDescriptorSetAccelerationStructureNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*WriteDescriptorSetAccelerationStructureNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*WriteDescriptorSetAccelerationStructureNV).free)
 
 	return &v
 }
@@ -21005,8 +21005,8 @@ type AccelerationStructureMemoryRequirementsInfoNV struct {
 func wrapAccelerationStructureMemoryRequirementsInfoNV(p *C.VkAccelerationStructureMemoryRequirementsInfoNV) *AccelerationStructureMemoryRequirementsInfoNV {
 	v := AccelerationStructureMemoryRequirementsInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*AccelerationStructureMemoryRequirementsInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AccelerationStructureMemoryRequirementsInfoNV).free)
 
 	return &v
 }
@@ -21033,8 +21033,8 @@ type PhysicalDeviceRayTracingPropertiesNV struct {
 func wrapPhysicalDeviceRayTracingPropertiesNV(p *C.VkPhysicalDeviceRayTracingPropertiesNV) *PhysicalDeviceRayTracingPropertiesNV {
 	v := PhysicalDeviceRayTracingPropertiesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceRayTracingPropertiesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceRayTracingPropertiesNV).free)
 
 	return &v
 }
@@ -21061,8 +21061,8 @@ type PhysicalDeviceRepresentativeFragmentTestFeaturesNV struct {
 func wrapPhysicalDeviceRepresentativeFragmentTestFeaturesNV(p *C.VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV) *PhysicalDeviceRepresentativeFragmentTestFeaturesNV {
 	v := PhysicalDeviceRepresentativeFragmentTestFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceRepresentativeFragmentTestFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceRepresentativeFragmentTestFeaturesNV).free)
 
 	return &v
 }
@@ -21089,8 +21089,8 @@ type PipelineRepresentativeFragmentTestStateCreateInfoNV struct {
 func wrapPipelineRepresentativeFragmentTestStateCreateInfoNV(p *C.VkPipelineRepresentativeFragmentTestStateCreateInfoNV) *PipelineRepresentativeFragmentTestStateCreateInfoNV {
 	v := PipelineRepresentativeFragmentTestStateCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineRepresentativeFragmentTestStateCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineRepresentativeFragmentTestStateCreateInfoNV).free)
 
 	return &v
 }
@@ -21117,8 +21117,8 @@ type PhysicalDeviceImageViewImageFormatInfoEXT struct {
 func wrapPhysicalDeviceImageViewImageFormatInfoEXT(p *C.VkPhysicalDeviceImageViewImageFormatInfoEXT) *PhysicalDeviceImageViewImageFormatInfoEXT {
 	v := PhysicalDeviceImageViewImageFormatInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceImageViewImageFormatInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceImageViewImageFormatInfoEXT).free)
 
 	return &v
 }
@@ -21145,8 +21145,8 @@ type FilterCubicImageViewImageFormatPropertiesEXT struct {
 func wrapFilterCubicImageViewImageFormatPropertiesEXT(p *C.VkFilterCubicImageViewImageFormatPropertiesEXT) *FilterCubicImageViewImageFormatPropertiesEXT {
 	v := FilterCubicImageViewImageFormatPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FilterCubicImageViewImageFormatPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FilterCubicImageViewImageFormatPropertiesEXT).free)
 
 	return &v
 }
@@ -21173,8 +21173,8 @@ type QueueGlobalPriorityEXT struct {
 func wrapQueueGlobalPriorityEXT(p *C.VkQueueGlobalPriorityEXT) *QueueGlobalPriorityEXT {
 	v := QueueGlobalPriorityEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueueGlobalPriorityEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueueGlobalPriorityEXT).free)
 
 	return &v
 }
@@ -21201,8 +21201,8 @@ type DeviceQueueGlobalPriorityCreateInfoEXT struct {
 func wrapDeviceQueueGlobalPriorityCreateInfoEXT(p *C.VkDeviceQueueGlobalPriorityCreateInfoEXT) *DeviceQueueGlobalPriorityCreateInfoEXT {
 	v := DeviceQueueGlobalPriorityCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceQueueGlobalPriorityCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceQueueGlobalPriorityCreateInfoEXT).free)
 
 	return &v
 }
@@ -21229,8 +21229,8 @@ type ImportMemoryHostPointerInfoEXT struct {
 func wrapImportMemoryHostPointerInfoEXT(p *C.VkImportMemoryHostPointerInfoEXT) *ImportMemoryHostPointerInfoEXT {
 	v := ImportMemoryHostPointerInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImportMemoryHostPointerInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImportMemoryHostPointerInfoEXT).free)
 
 	return &v
 }
@@ -21257,8 +21257,8 @@ type MemoryHostPointerPropertiesEXT struct {
 func wrapMemoryHostPointerPropertiesEXT(p *C.VkMemoryHostPointerPropertiesEXT) *MemoryHostPointerPropertiesEXT {
 	v := MemoryHostPointerPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryHostPointerPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryHostPointerPropertiesEXT).free)
 
 	return &v
 }
@@ -21285,8 +21285,8 @@ type PhysicalDeviceExternalMemoryHostPropertiesEXT struct {
 func wrapPhysicalDeviceExternalMemoryHostPropertiesEXT(p *C.VkPhysicalDeviceExternalMemoryHostPropertiesEXT) *PhysicalDeviceExternalMemoryHostPropertiesEXT {
 	v := PhysicalDeviceExternalMemoryHostPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceExternalMemoryHostPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceExternalMemoryHostPropertiesEXT).free)
 
 	return &v
 }
@@ -21313,8 +21313,8 @@ type TimeDomainEXT struct {
 func wrapTimeDomainEXT(p *C.VkTimeDomainEXT) *TimeDomainEXT {
 	v := TimeDomainEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*TimeDomainEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*TimeDomainEXT).free)
 
 	return &v
 }
@@ -21341,8 +21341,8 @@ type CalibratedTimestampInfoEXT struct {
 func wrapCalibratedTimestampInfoEXT(p *C.VkCalibratedTimestampInfoEXT) *CalibratedTimestampInfoEXT {
 	v := CalibratedTimestampInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CalibratedTimestampInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CalibratedTimestampInfoEXT).free)
 
 	return &v
 }
@@ -21369,8 +21369,8 @@ type PhysicalDeviceShaderCorePropertiesAMD struct {
 func wrapPhysicalDeviceShaderCorePropertiesAMD(p *C.VkPhysicalDeviceShaderCorePropertiesAMD) *PhysicalDeviceShaderCorePropertiesAMD {
 	v := PhysicalDeviceShaderCorePropertiesAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceShaderCorePropertiesAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceShaderCorePropertiesAMD).free)
 
 	return &v
 }
@@ -21397,8 +21397,8 @@ type MemoryOverallocationBehaviorAMD struct {
 func wrapMemoryOverallocationBehaviorAMD(p *C.VkMemoryOverallocationBehaviorAMD) *MemoryOverallocationBehaviorAMD {
 	v := MemoryOverallocationBehaviorAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryOverallocationBehaviorAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryOverallocationBehaviorAMD).free)
 
 	return &v
 }
@@ -21425,8 +21425,8 @@ type DeviceMemoryOverallocationCreateInfoAMD struct {
 func wrapDeviceMemoryOverallocationCreateInfoAMD(p *C.VkDeviceMemoryOverallocationCreateInfoAMD) *DeviceMemoryOverallocationCreateInfoAMD {
 	v := DeviceMemoryOverallocationCreateInfoAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceMemoryOverallocationCreateInfoAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceMemoryOverallocationCreateInfoAMD).free)
 
 	return &v
 }
@@ -21453,8 +21453,8 @@ type PhysicalDeviceVertexAttributeDivisorPropertiesEXT struct {
 func wrapPhysicalDeviceVertexAttributeDivisorPropertiesEXT(p *C.VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT) *PhysicalDeviceVertexAttributeDivisorPropertiesEXT {
 	v := PhysicalDeviceVertexAttributeDivisorPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceVertexAttributeDivisorPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceVertexAttributeDivisorPropertiesEXT).free)
 
 	return &v
 }
@@ -21481,8 +21481,8 @@ type VertexInputBindingDivisorDescriptionEXT struct {
 func wrapVertexInputBindingDivisorDescriptionEXT(p *C.VkVertexInputBindingDivisorDescriptionEXT) *VertexInputBindingDivisorDescriptionEXT {
 	v := VertexInputBindingDivisorDescriptionEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*VertexInputBindingDivisorDescriptionEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*VertexInputBindingDivisorDescriptionEXT).free)
 
 	return &v
 }
@@ -21509,8 +21509,8 @@ type PipelineVertexInputDivisorStateCreateInfoEXT struct {
 func wrapPipelineVertexInputDivisorStateCreateInfoEXT(p *C.VkPipelineVertexInputDivisorStateCreateInfoEXT) *PipelineVertexInputDivisorStateCreateInfoEXT {
 	v := PipelineVertexInputDivisorStateCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineVertexInputDivisorStateCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineVertexInputDivisorStateCreateInfoEXT).free)
 
 	return &v
 }
@@ -21537,8 +21537,8 @@ type PhysicalDeviceVertexAttributeDivisorFeaturesEXT struct {
 func wrapPhysicalDeviceVertexAttributeDivisorFeaturesEXT(p *C.VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT) *PhysicalDeviceVertexAttributeDivisorFeaturesEXT {
 	v := PhysicalDeviceVertexAttributeDivisorFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceVertexAttributeDivisorFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceVertexAttributeDivisorFeaturesEXT).free)
 
 	return &v
 }
@@ -21565,8 +21565,8 @@ type PipelineCreationFeedbackFlagBitsEXT struct {
 func wrapPipelineCreationFeedbackFlagBitsEXT(p *C.VkPipelineCreationFeedbackFlagBitsEXT) *PipelineCreationFeedbackFlagBitsEXT {
 	v := PipelineCreationFeedbackFlagBitsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCreationFeedbackFlagBitsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCreationFeedbackFlagBitsEXT).free)
 
 	return &v
 }
@@ -21593,8 +21593,8 @@ type PipelineCreationFeedbackFlagsEXT struct {
 func wrapPipelineCreationFeedbackFlagsEXT(p *C.VkPipelineCreationFeedbackFlagsEXT) *PipelineCreationFeedbackFlagsEXT {
 	v := PipelineCreationFeedbackFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCreationFeedbackFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCreationFeedbackFlagsEXT).free)
 
 	return &v
 }
@@ -21621,8 +21621,8 @@ type PipelineCreationFeedbackEXT struct {
 func wrapPipelineCreationFeedbackEXT(p *C.VkPipelineCreationFeedbackEXT) *PipelineCreationFeedbackEXT {
 	v := PipelineCreationFeedbackEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCreationFeedbackEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCreationFeedbackEXT).free)
 
 	return &v
 }
@@ -21649,8 +21649,8 @@ type PipelineCreationFeedbackCreateInfoEXT struct {
 func wrapPipelineCreationFeedbackCreateInfoEXT(p *C.VkPipelineCreationFeedbackCreateInfoEXT) *PipelineCreationFeedbackCreateInfoEXT {
 	v := PipelineCreationFeedbackCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCreationFeedbackCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCreationFeedbackCreateInfoEXT).free)
 
 	return &v
 }
@@ -21677,8 +21677,8 @@ type PhysicalDeviceComputeShaderDerivativesFeaturesNV struct {
 func wrapPhysicalDeviceComputeShaderDerivativesFeaturesNV(p *C.VkPhysicalDeviceComputeShaderDerivativesFeaturesNV) *PhysicalDeviceComputeShaderDerivativesFeaturesNV {
 	v := PhysicalDeviceComputeShaderDerivativesFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceComputeShaderDerivativesFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceComputeShaderDerivativesFeaturesNV).free)
 
 	return &v
 }
@@ -21705,8 +21705,8 @@ type PhysicalDeviceMeshShaderFeaturesNV struct {
 func wrapPhysicalDeviceMeshShaderFeaturesNV(p *C.VkPhysicalDeviceMeshShaderFeaturesNV) *PhysicalDeviceMeshShaderFeaturesNV {
 	v := PhysicalDeviceMeshShaderFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMeshShaderFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMeshShaderFeaturesNV).free)
 
 	return &v
 }
@@ -21733,8 +21733,8 @@ type PhysicalDeviceMeshShaderPropertiesNV struct {
 func wrapPhysicalDeviceMeshShaderPropertiesNV(p *C.VkPhysicalDeviceMeshShaderPropertiesNV) *PhysicalDeviceMeshShaderPropertiesNV {
 	v := PhysicalDeviceMeshShaderPropertiesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMeshShaderPropertiesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMeshShaderPropertiesNV).free)
 
 	return &v
 }
@@ -21761,8 +21761,8 @@ type DrawMeshTasksIndirectCommandNV struct {
 func wrapDrawMeshTasksIndirectCommandNV(p *C.VkDrawMeshTasksIndirectCommandNV) *DrawMeshTasksIndirectCommandNV {
 	v := DrawMeshTasksIndirectCommandNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DrawMeshTasksIndirectCommandNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DrawMeshTasksIndirectCommandNV).free)
 
 	return &v
 }
@@ -21789,8 +21789,8 @@ type PhysicalDeviceFragmentShaderBarycentricFeaturesNV struct {
 func wrapPhysicalDeviceFragmentShaderBarycentricFeaturesNV(p *C.VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV) *PhysicalDeviceFragmentShaderBarycentricFeaturesNV {
 	v := PhysicalDeviceFragmentShaderBarycentricFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceFragmentShaderBarycentricFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceFragmentShaderBarycentricFeaturesNV).free)
 
 	return &v
 }
@@ -21817,8 +21817,8 @@ type PhysicalDeviceShaderImageFootprintFeaturesNV struct {
 func wrapPhysicalDeviceShaderImageFootprintFeaturesNV(p *C.VkPhysicalDeviceShaderImageFootprintFeaturesNV) *PhysicalDeviceShaderImageFootprintFeaturesNV {
 	v := PhysicalDeviceShaderImageFootprintFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceShaderImageFootprintFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceShaderImageFootprintFeaturesNV).free)
 
 	return &v
 }
@@ -21845,8 +21845,8 @@ type PipelineViewportExclusiveScissorStateCreateInfoNV struct {
 func wrapPipelineViewportExclusiveScissorStateCreateInfoNV(p *C.VkPipelineViewportExclusiveScissorStateCreateInfoNV) *PipelineViewportExclusiveScissorStateCreateInfoNV {
 	v := PipelineViewportExclusiveScissorStateCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineViewportExclusiveScissorStateCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineViewportExclusiveScissorStateCreateInfoNV).free)
 
 	return &v
 }
@@ -21873,8 +21873,8 @@ type PhysicalDeviceExclusiveScissorFeaturesNV struct {
 func wrapPhysicalDeviceExclusiveScissorFeaturesNV(p *C.VkPhysicalDeviceExclusiveScissorFeaturesNV) *PhysicalDeviceExclusiveScissorFeaturesNV {
 	v := PhysicalDeviceExclusiveScissorFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceExclusiveScissorFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceExclusiveScissorFeaturesNV).free)
 
 	return &v
 }
@@ -21901,8 +21901,8 @@ type QueueFamilyCheckpointPropertiesNV struct {
 func wrapQueueFamilyCheckpointPropertiesNV(p *C.VkQueueFamilyCheckpointPropertiesNV) *QueueFamilyCheckpointPropertiesNV {
 	v := QueueFamilyCheckpointPropertiesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*QueueFamilyCheckpointPropertiesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*QueueFamilyCheckpointPropertiesNV).free)
 
 	return &v
 }
@@ -21929,8 +21929,8 @@ type CheckpointDataNV struct {
 func wrapCheckpointDataNV(p *C.VkCheckpointDataNV) *CheckpointDataNV {
 	v := CheckpointDataNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CheckpointDataNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CheckpointDataNV).free)
 
 	return &v
 }
@@ -21957,8 +21957,8 @@ type PhysicalDevicePCIBusInfoPropertiesEXT struct {
 func wrapPhysicalDevicePCIBusInfoPropertiesEXT(p *C.VkPhysicalDevicePCIBusInfoPropertiesEXT) *PhysicalDevicePCIBusInfoPropertiesEXT {
 	v := PhysicalDevicePCIBusInfoPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDevicePCIBusInfoPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDevicePCIBusInfoPropertiesEXT).free)
 
 	return &v
 }
@@ -21985,8 +21985,8 @@ type DisplayNativeHdrSurfaceCapabilitiesAMD struct {
 func wrapDisplayNativeHdrSurfaceCapabilitiesAMD(p *C.VkDisplayNativeHdrSurfaceCapabilitiesAMD) *DisplayNativeHdrSurfaceCapabilitiesAMD {
 	v := DisplayNativeHdrSurfaceCapabilitiesAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DisplayNativeHdrSurfaceCapabilitiesAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DisplayNativeHdrSurfaceCapabilitiesAMD).free)
 
 	return &v
 }
@@ -22013,8 +22013,8 @@ type SwapchainDisplayNativeHdrCreateInfoAMD struct {
 func wrapSwapchainDisplayNativeHdrCreateInfoAMD(p *C.VkSwapchainDisplayNativeHdrCreateInfoAMD) *SwapchainDisplayNativeHdrCreateInfoAMD {
 	v := SwapchainDisplayNativeHdrCreateInfoAMD{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SwapchainDisplayNativeHdrCreateInfoAMD).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SwapchainDisplayNativeHdrCreateInfoAMD).free)
 
 	return &v
 }
@@ -22041,8 +22041,8 @@ type PhysicalDeviceFragmentDensityMapFeaturesEXT struct {
 func wrapPhysicalDeviceFragmentDensityMapFeaturesEXT(p *C.VkPhysicalDeviceFragmentDensityMapFeaturesEXT) *PhysicalDeviceFragmentDensityMapFeaturesEXT {
 	v := PhysicalDeviceFragmentDensityMapFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceFragmentDensityMapFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceFragmentDensityMapFeaturesEXT).free)
 
 	return &v
 }
@@ -22069,8 +22069,8 @@ type PhysicalDeviceFragmentDensityMapPropertiesEXT struct {
 func wrapPhysicalDeviceFragmentDensityMapPropertiesEXT(p *C.VkPhysicalDeviceFragmentDensityMapPropertiesEXT) *PhysicalDeviceFragmentDensityMapPropertiesEXT {
 	v := PhysicalDeviceFragmentDensityMapPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceFragmentDensityMapPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceFragmentDensityMapPropertiesEXT).free)
 
 	return &v
 }
@@ -22097,8 +22097,8 @@ type RenderPassFragmentDensityMapCreateInfoEXT struct {
 func wrapRenderPassFragmentDensityMapCreateInfoEXT(p *C.VkRenderPassFragmentDensityMapCreateInfoEXT) *RenderPassFragmentDensityMapCreateInfoEXT {
 	v := RenderPassFragmentDensityMapCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*RenderPassFragmentDensityMapCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RenderPassFragmentDensityMapCreateInfoEXT).free)
 
 	return &v
 }
@@ -22125,8 +22125,8 @@ type PhysicalDeviceScalarBlockLayoutFeaturesEXT struct {
 func wrapPhysicalDeviceScalarBlockLayoutFeaturesEXT(p *C.VkPhysicalDeviceScalarBlockLayoutFeaturesEXT) *PhysicalDeviceScalarBlockLayoutFeaturesEXT {
 	v := PhysicalDeviceScalarBlockLayoutFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceScalarBlockLayoutFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceScalarBlockLayoutFeaturesEXT).free)
 
 	return &v
 }
@@ -22153,8 +22153,8 @@ type PhysicalDeviceMemoryBudgetPropertiesEXT struct {
 func wrapPhysicalDeviceMemoryBudgetPropertiesEXT(p *C.VkPhysicalDeviceMemoryBudgetPropertiesEXT) *PhysicalDeviceMemoryBudgetPropertiesEXT {
 	v := PhysicalDeviceMemoryBudgetPropertiesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMemoryBudgetPropertiesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMemoryBudgetPropertiesEXT).free)
 
 	return &v
 }
@@ -22181,8 +22181,8 @@ type PhysicalDeviceMemoryPriorityFeaturesEXT struct {
 func wrapPhysicalDeviceMemoryPriorityFeaturesEXT(p *C.VkPhysicalDeviceMemoryPriorityFeaturesEXT) *PhysicalDeviceMemoryPriorityFeaturesEXT {
 	v := PhysicalDeviceMemoryPriorityFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceMemoryPriorityFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceMemoryPriorityFeaturesEXT).free)
 
 	return &v
 }
@@ -22209,8 +22209,8 @@ type MemoryPriorityAllocateInfoEXT struct {
 func wrapMemoryPriorityAllocateInfoEXT(p *C.VkMemoryPriorityAllocateInfoEXT) *MemoryPriorityAllocateInfoEXT {
 	v := MemoryPriorityAllocateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*MemoryPriorityAllocateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*MemoryPriorityAllocateInfoEXT).free)
 
 	return &v
 }
@@ -22237,8 +22237,8 @@ type PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV struct {
 func wrapPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(p *C.VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV {
 	v := PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV).free)
 
 	return &v
 }
@@ -22265,8 +22265,8 @@ type DeviceAddress struct {
 func wrapDeviceAddress(p *C.VkDeviceAddress) *DeviceAddress {
 	v := DeviceAddress{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*DeviceAddress).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DeviceAddress).free)
 
 	return &v
 }
@@ -22293,8 +22293,8 @@ type PhysicalDeviceBufferDeviceAddressFeaturesEXT struct {
 func wrapPhysicalDeviceBufferDeviceAddressFeaturesEXT(p *C.VkPhysicalDeviceBufferDeviceAddressFeaturesEXT) *PhysicalDeviceBufferDeviceAddressFeaturesEXT {
 	v := PhysicalDeviceBufferDeviceAddressFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceBufferDeviceAddressFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceBufferDeviceAddressFeaturesEXT).free)
 
 	return &v
 }
@@ -22321,8 +22321,8 @@ type PhysicalDeviceBufferAddressFeaturesEXT struct {
 func wrapPhysicalDeviceBufferAddressFeaturesEXT(p *C.VkPhysicalDeviceBufferAddressFeaturesEXT) *PhysicalDeviceBufferAddressFeaturesEXT {
 	v := PhysicalDeviceBufferAddressFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceBufferAddressFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceBufferAddressFeaturesEXT).free)
 
 	return &v
 }
@@ -22349,8 +22349,8 @@ type BufferDeviceAddressInfoEXT struct {
 func wrapBufferDeviceAddressInfoEXT(p *C.VkBufferDeviceAddressInfoEXT) *BufferDeviceAddressInfoEXT {
 	v := BufferDeviceAddressInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferDeviceAddressInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferDeviceAddressInfoEXT).free)
 
 	return &v
 }
@@ -22377,8 +22377,8 @@ type BufferDeviceAddressCreateInfoEXT struct {
 func wrapBufferDeviceAddressCreateInfoEXT(p *C.VkBufferDeviceAddressCreateInfoEXT) *BufferDeviceAddressCreateInfoEXT {
 	v := BufferDeviceAddressCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*BufferDeviceAddressCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*BufferDeviceAddressCreateInfoEXT).free)
 
 	return &v
 }
@@ -22405,8 +22405,8 @@ type ImageStencilUsageCreateInfoEXT struct {
 func wrapImageStencilUsageCreateInfoEXT(p *C.VkImageStencilUsageCreateInfoEXT) *ImageStencilUsageCreateInfoEXT {
 	v := ImageStencilUsageCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ImageStencilUsageCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ImageStencilUsageCreateInfoEXT).free)
 
 	return &v
 }
@@ -22433,8 +22433,8 @@ type ValidationFeatureEnableEXT struct {
 func wrapValidationFeatureEnableEXT(p *C.VkValidationFeatureEnableEXT) *ValidationFeatureEnableEXT {
 	v := ValidationFeatureEnableEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ValidationFeatureEnableEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ValidationFeatureEnableEXT).free)
 
 	return &v
 }
@@ -22461,8 +22461,8 @@ type ValidationFeatureDisableEXT struct {
 func wrapValidationFeatureDisableEXT(p *C.VkValidationFeatureDisableEXT) *ValidationFeatureDisableEXT {
 	v := ValidationFeatureDisableEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ValidationFeatureDisableEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ValidationFeatureDisableEXT).free)
 
 	return &v
 }
@@ -22489,8 +22489,8 @@ type ValidationFeaturesEXT struct {
 func wrapValidationFeaturesEXT(p *C.VkValidationFeaturesEXT) *ValidationFeaturesEXT {
 	v := ValidationFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ValidationFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ValidationFeaturesEXT).free)
 
 	return &v
 }
@@ -22517,8 +22517,8 @@ type ComponentTypeNV struct {
 func wrapComponentTypeNV(p *C.VkComponentTypeNV) *ComponentTypeNV {
 	v := ComponentTypeNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ComponentTypeNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ComponentTypeNV).free)
 
 	return &v
 }
@@ -22545,8 +22545,8 @@ type ScopeNV struct {
 func wrapScopeNV(p *C.VkScopeNV) *ScopeNV {
 	v := ScopeNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ScopeNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ScopeNV).free)
 
 	return &v
 }
@@ -22573,8 +22573,8 @@ type CooperativeMatrixPropertiesNV struct {
 func wrapCooperativeMatrixPropertiesNV(p *C.VkCooperativeMatrixPropertiesNV) *CooperativeMatrixPropertiesNV {
 	v := CooperativeMatrixPropertiesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CooperativeMatrixPropertiesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CooperativeMatrixPropertiesNV).free)
 
 	return &v
 }
@@ -22601,8 +22601,8 @@ type PhysicalDeviceCooperativeMatrixFeaturesNV struct {
 func wrapPhysicalDeviceCooperativeMatrixFeaturesNV(p *C.VkPhysicalDeviceCooperativeMatrixFeaturesNV) *PhysicalDeviceCooperativeMatrixFeaturesNV {
 	v := PhysicalDeviceCooperativeMatrixFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceCooperativeMatrixFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceCooperativeMatrixFeaturesNV).free)
 
 	return &v
 }
@@ -22629,8 +22629,8 @@ type PhysicalDeviceCooperativeMatrixPropertiesNV struct {
 func wrapPhysicalDeviceCooperativeMatrixPropertiesNV(p *C.VkPhysicalDeviceCooperativeMatrixPropertiesNV) *PhysicalDeviceCooperativeMatrixPropertiesNV {
 	v := PhysicalDeviceCooperativeMatrixPropertiesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceCooperativeMatrixPropertiesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceCooperativeMatrixPropertiesNV).free)
 
 	return &v
 }
@@ -22657,8 +22657,8 @@ type CoverageReductionModeNV struct {
 func wrapCoverageReductionModeNV(p *C.VkCoverageReductionModeNV) *CoverageReductionModeNV {
 	v := CoverageReductionModeNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CoverageReductionModeNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CoverageReductionModeNV).free)
 
 	return &v
 }
@@ -22685,8 +22685,8 @@ type PipelineCoverageReductionStateCreateFlagsNV struct {
 func wrapPipelineCoverageReductionStateCreateFlagsNV(p *C.VkPipelineCoverageReductionStateCreateFlagsNV) *PipelineCoverageReductionStateCreateFlagsNV {
 	v := PipelineCoverageReductionStateCreateFlagsNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCoverageReductionStateCreateFlagsNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCoverageReductionStateCreateFlagsNV).free)
 
 	return &v
 }
@@ -22713,8 +22713,8 @@ type PhysicalDeviceCoverageReductionModeFeaturesNV struct {
 func wrapPhysicalDeviceCoverageReductionModeFeaturesNV(p *C.VkPhysicalDeviceCoverageReductionModeFeaturesNV) *PhysicalDeviceCoverageReductionModeFeaturesNV {
 	v := PhysicalDeviceCoverageReductionModeFeaturesNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceCoverageReductionModeFeaturesNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceCoverageReductionModeFeaturesNV).free)
 
 	return &v
 }
@@ -22741,8 +22741,8 @@ type PipelineCoverageReductionStateCreateInfoNV struct {
 func wrapPipelineCoverageReductionStateCreateInfoNV(p *C.VkPipelineCoverageReductionStateCreateInfoNV) *PipelineCoverageReductionStateCreateInfoNV {
 	v := PipelineCoverageReductionStateCreateInfoNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PipelineCoverageReductionStateCreateInfoNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PipelineCoverageReductionStateCreateInfoNV).free)
 
 	return &v
 }
@@ -22769,8 +22769,8 @@ type FramebufferMixedSamplesCombinationNV struct {
 func wrapFramebufferMixedSamplesCombinationNV(p *C.VkFramebufferMixedSamplesCombinationNV) *FramebufferMixedSamplesCombinationNV {
 	v := FramebufferMixedSamplesCombinationNV{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FramebufferMixedSamplesCombinationNV).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FramebufferMixedSamplesCombinationNV).free)
 
 	return &v
 }
@@ -22797,8 +22797,8 @@ type PhysicalDeviceYcbcrImageArraysFeaturesEXT struct {
 func wrapPhysicalDeviceYcbcrImageArraysFeaturesEXT(p *C.VkPhysicalDeviceYcbcrImageArraysFeaturesEXT) *PhysicalDeviceYcbcrImageArraysFeaturesEXT {
 	v := PhysicalDeviceYcbcrImageArraysFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceYcbcrImageArraysFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceYcbcrImageArraysFeaturesEXT).free)
 
 	return &v
 }
@@ -22825,8 +22825,8 @@ type HeadlessSurfaceCreateFlagsEXT struct {
 func wrapHeadlessSurfaceCreateFlagsEXT(p *C.VkHeadlessSurfaceCreateFlagsEXT) *HeadlessSurfaceCreateFlagsEXT {
 	v := HeadlessSurfaceCreateFlagsEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*HeadlessSurfaceCreateFlagsEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*HeadlessSurfaceCreateFlagsEXT).free)
 
 	return &v
 }
@@ -22853,8 +22853,8 @@ type HeadlessSurfaceCreateInfoEXT struct {
 func wrapHeadlessSurfaceCreateInfoEXT(p *C.VkHeadlessSurfaceCreateInfoEXT) *HeadlessSurfaceCreateInfoEXT {
 	v := HeadlessSurfaceCreateInfoEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*HeadlessSurfaceCreateInfoEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*HeadlessSurfaceCreateInfoEXT).free)
 
 	return &v
 }
@@ -22881,8 +22881,8 @@ type PhysicalDeviceHostQueryResetFeaturesEXT struct {
 func wrapPhysicalDeviceHostQueryResetFeaturesEXT(p *C.VkPhysicalDeviceHostQueryResetFeaturesEXT) *PhysicalDeviceHostQueryResetFeaturesEXT {
 	v := PhysicalDeviceHostQueryResetFeaturesEXT{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PhysicalDeviceHostQueryResetFeaturesEXT).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PhysicalDeviceHostQueryResetFeaturesEXT).free)
 
 	return &v
 }

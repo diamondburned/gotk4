@@ -10,19 +10,58 @@ import (
 	"text/template"
 )
 
-// Piece is a simple string builder.
+// Joints is a string builder that joins using a separator.
+type Joints struct {
+	sep  string
+	strs []string
+}
+
+// NewJoints creates a new Joints instance.
+func NewJoints(sep string, cap int) *Joints {
+	return &Joints{
+		sep:  sep,
+		strs: make([]string, 0, cap),
+	}
+}
+
+// Add adds a new joint.
+func (j *Joints) Add(str string) { j.strs = append(j.strs, str) }
+
+// Addf adds a new joint with Sprintf.
+func (j *Joints) Addf(f string, v ...interface{}) {
+	j.Add(fmt.Sprintf(f, v...))
+}
+
+// Join joins the joints.
+func (j *Joints) Join() string { return strings.Join(j.strs, j.sep) }
+
+// Piece is a simple string builder with easy chaining.
 type Piece struct {
 	str strings.Builder
 }
 
+// NewPiece returns a new piece.
+func NewPiece() *Piece {
+	return &Piece{}
+}
+
+func (p *Piece) ensureCap() {
+	if p.str.Cap() < 4096 {
+		p.str.Grow(4096)
+	}
+}
+
 // Writef writes using Printf.
 func (p *Piece) Writef(f string, v ...interface{}) *Piece {
+	p.ensureCap()
 	fmt.Fprintf(&p.str, f, v...)
 	return p
 }
 
 // Write writes using Print.
 func (p *Piece) Write(v ...interface{}) *Piece {
+	p.ensureCap()
+
 	if len(v) == 1 {
 		if str, ok := v[0].(string); ok {
 			p.str.WriteString(str)
@@ -36,12 +75,30 @@ func (p *Piece) Write(v ...interface{}) *Piece {
 
 // Char writes a single ASCII character.
 func (p *Piece) Char(b byte) *Piece {
+	p.ensureCap()
 	p.str.WriteByte(b)
 	return p
 }
 
+// Line writes a line.
+func (p *Piece) Line(line string) *Piece {
+	p.ensureCap()
+	p.str.WriteString(line)
+	p.str.WriteByte('\n')
+	return p
+}
+
+// Linef writes a line using Sprintf.
+func (p *Piece) Linef(f string, v ...interface{}) {
+	p.ensureCap()
+	p.Writef(f, v...)
+	p.str.WriteByte('\n')
+}
+
 // String returns the inner string block.
-func (p *Piece) String() string { return p.str.String() }
+func (p *Piece) String() string {
+	return strings.TrimSuffix(p.str.String(), "\n")
+}
 
 // Block writes a scoped Go block.
 type Block struct {
@@ -64,7 +121,7 @@ func (b *Block) Linef(f string, v ...interface{}) {
 
 // String returns the block.
 func (b *Block) String() string {
-	return "{\n" + b.str.String() + "\n}"
+	return "{\n" + strings.TrimSuffix(b.str.String(), "\n") + "\n}"
 }
 
 // Pen is an utility writer.

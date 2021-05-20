@@ -325,7 +325,7 @@ type SubpixelOrder int
 const (
 	SubpixelOrderDefault SubpixelOrder = 0
 
-	SubpixelOrderRgb SubpixelOrder = 1
+	SubpixelOrderRGB SubpixelOrder = 1
 
 	SubpixelOrderBgr SubpixelOrder = 2
 
@@ -495,15 +495,15 @@ const (
 
 	FormatArgb32 Format = 0
 
-	FormatRgb24 Format = 1
+	FormatRGB24 Format = 1
 
 	FormatA8 Format = 2
 
 	FormatA1 Format = 3
 
-	FormatRgb16565 Format = 4
+	FormatRGB16565 Format = 4
 
-	FormatRgb30 Format = 5
+	FormatRGB30 Format = 5
 )
 
 func marshalFormat(p uintptr) (interface{}, error) {
@@ -580,7 +580,9 @@ func marshalRegionOverlap(p uintptr) (interface{}, error) {
 	return RegionOverlap(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-func ImageSurfaceCreate()
+func ImageSurfaceCreate() {
+	C.cairo_image_surface_create()
+}
 
 type Context struct {
 	native *C.cairo_t
@@ -589,8 +591,8 @@ type Context struct {
 func wrapContext(p *C.cairo_t) *Context {
 	v := Context{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Context).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Context).free)
 
 	return &v
 }
@@ -617,8 +619,8 @@ type Device struct {
 func wrapDevice(p *C.cairo_device_t) *Device {
 	v := Device{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Device).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Device).free)
 
 	return &v
 }
@@ -645,8 +647,8 @@ type Surface struct {
 func wrapSurface(p *C.cairo_surface_t) *Surface {
 	v := Surface{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Surface).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Surface).free)
 
 	return &v
 }
@@ -673,8 +675,8 @@ type Matrix struct {
 func wrapMatrix(p *C.cairo_matrix_t) *Matrix {
 	v := Matrix{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Matrix).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Matrix).free)
 
 	return &v
 }
@@ -701,8 +703,8 @@ type Pattern struct {
 func wrapPattern(p *C.cairo_pattern_t) *Pattern {
 	v := Pattern{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Pattern).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Pattern).free)
 
 	return &v
 }
@@ -729,8 +731,8 @@ type Region struct {
 func wrapRegion(p *C.cairo_region_t) *Region {
 	v := Region{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Region).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Region).free)
 
 	return &v
 }
@@ -757,8 +759,8 @@ type FontOptions struct {
 func wrapFontOptions(p *C.cairo_font_options_t) *FontOptions {
 	v := FontOptions{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FontOptions).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FontOptions).free)
 
 	return &v
 }
@@ -785,8 +787,8 @@ type FontFace struct {
 func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
 	v := FontFace{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*FontFace).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FontFace).free)
 
 	return &v
 }
@@ -813,8 +815,8 @@ type ScaledFont struct {
 func wrapScaledFont(p *C.cairo_scaled_font_t) *ScaledFont {
 	v := ScaledFont{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ScaledFont).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ScaledFont).free)
 
 	return &v
 }
@@ -841,8 +843,8 @@ type Path struct {
 func wrapPath(p *C.cairo_path_t) *Path {
 	v := Path{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Path).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Path).free)
 
 	return &v
 }

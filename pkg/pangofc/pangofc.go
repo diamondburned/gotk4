@@ -50,7 +50,7 @@ type Decoder interface {
 	//
 	// The returned `FcCharSet` will be a reference to an internal value stored
 	// by the `PangoFcDecoder` and must not be modified or freed.
-	GetCharset(fcfont font) *fontconfig.CharSet
+	GetCharset(fcfont Font) *fontconfig.CharSet
 	// GetGlyph: generates a `PangoGlyph` for the given Unicode point using the
 	// custom decoder.
 	//
@@ -58,7 +58,7 @@ type Decoder interface {
 	// character, the decoder will return whatever glyph is most convenient for
 	// it. (Usually whatever glyph is directly in the fonts character map
 	// table.)
-	GetGlyph(fcfont font, wc uint32) pango.Glyph
+	GetGlyph(fcfont Font, wc uint32) pango.Glyph
 }
 
 type decoder struct {
@@ -66,7 +66,7 @@ type decoder struct {
 }
 
 func wrapDecoder(obj *externglib.Object) Decoder {
-	return &decoder{*externglib.Object{obj}}
+	return decoder{*externglib.Object{obj}}
 }
 
 func marshalDecoder(p uintptr) (interface{}, error) {
@@ -75,9 +75,9 @@ func marshalDecoder(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (d decoder) GetCharset(fcfont font) *fontconfig.CharSet
+func (d decoder) GetCharset(fcfont Font) *fontconfig.CharSet
 
-func (d decoder) GetGlyph(fcfont font, wc uint32) pango.Glyph
+func (d decoder) GetGlyph(fcfont Font, wc uint32) pango.Glyph
 
 // Font: `PangoFcFont` is a base class for font implementations using the
 // Fontconfig and FreeType libraries.
@@ -87,7 +87,7 @@ func (d decoder) GetGlyph(fcfont font, wc uint32) pango.Glyph
 // shutdown() along with the get_glyph_extents() virtual function from
 // `PangoFont`.
 type Font interface {
-	pango.font
+	pango.Font
 
 	// GetGlyph: gets the glyph index for a given Unicode character for @font.
 	//
@@ -126,11 +126,11 @@ type Font interface {
 }
 
 type font struct {
-	pango.Font
+	pango.font
 }
 
 func wrapFont(obj *externglib.Object) Font {
-	return &font{pango.Font{*externglib.Object{obj}}}
+	return font{pango.font{*externglib.Object{obj}}}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
@@ -163,7 +163,7 @@ func (f font) UnlockFace()
 // will take advantage of the wide range of shapers implemented using FreeType
 // that come with Pango.
 type FontMap interface {
-	pango.fontMap
+	pango.FontMap
 
 	// AddDecoderFindFunc: this function saves a callback method in the
 	// `PangoFcFontMap` that will be called whenever new fonts are created.
@@ -192,12 +192,12 @@ type FontMap interface {
 	// `PangoFcFontMap`; it is possible that a backend will store additional
 	// information needed for correct operation on the `PangoContext` after
 	// calling this function.
-	CreateContext() pango.context
+	CreateContext() pango.Context
 	// FindDecoder: finds the decoder to use for @pattern.
 	//
 	// Decoders can be added to a font map using
 	// [method@PangoFc.FontMap.add_decoder_find_func].
-	FindDecoder(pattern *fontconfig.Pattern) decoder
+	FindDecoder(pattern *fontconfig.Pattern) Decoder
 	// SetDefaultSubstitute: sets a function that will be called to do final
 	// configuration substitution on a `FcPattern` before it is used to load the
 	// font.
@@ -224,11 +224,11 @@ type FontMap interface {
 }
 
 type fontMap struct {
-	pango.FontMap
+	pango.fontMap
 }
 
 func wrapFontMap(obj *externglib.Object) FontMap {
-	return &fontMap{pango.FontMap{*externglib.Object{obj}}}
+	return fontMap{pango.fontMap{*externglib.Object{obj}}}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
@@ -243,9 +243,9 @@ func (f fontMap) CacheClear()
 
 func (f fontMap) ConfigChanged()
 
-func (f fontMap) CreateContext() pango.context
+func (f fontMap) CreateContext() pango.Context
 
-func (f fontMap) FindDecoder(pattern *fontconfig.Pattern) decoder
+func (f fontMap) FindDecoder(pattern *fontconfig.Pattern) Decoder
 
 func (f fontMap) SetDefaultSubstitute(_func SubstituteFunc, data unsafe.Pointer, notify unsafe.Pointer)
 

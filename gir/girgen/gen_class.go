@@ -46,15 +46,9 @@ type classGenerator struct {
 	InterfaceName string
 
 	TypeTree []*ResolvedType
-	Methods  []classMethod
+	Methods  []callableGenerator
 
 	Ng *NamespaceGenerator
-}
-
-type classMethod struct {
-	*gir.Method
-	Name string
-	Call string
 }
 
 func (cg *classGenerator) Use(class gir.Class) bool {
@@ -86,19 +80,13 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 		parent = parentType.Parent
 	}
 
-	for i, method := range class.Methods {
-		call := cg.Ng.FnCall(method.CallableAttrs)
-		if call == "" {
+	for _, method := range class.Methods {
+		cbgen := newCallableGenerator(cg.Ng)
+		if !cbgen.Use(method.CallableAttrs) {
 			continue
 		}
 
-		name := SnakeToGo(true, method.Name)
-
-		cg.Methods = append(cg.Methods, classMethod{
-			Method: &class.Methods[i],
-			Name:   name,
-			Call:   name + call,
-		})
+		cg.Methods = append(cg.Methods, cbgen)
 	}
 
 	cg.Class = class
@@ -122,7 +110,7 @@ func (cg *classGenerator) CtorCall(attrs gir.CallableAttrs) string {
 // *glib.Object.
 func (cg *classGenerator) Wrap(objName string) string {
 	var p pen.Piece
-	p.Char('&').Write(cg.StructName).Char('{')
+	p.Write(cg.StructName).Char('{')
 
 	for _, typ := range cg.TypeTree {
 		p.Writef("%s{", cg.Ng.ImplType(typ))

@@ -5,6 +5,8 @@ package gdkpixdata
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -65,8 +67,8 @@ const (
 type PixdataType int
 
 const (
-	// PixdataTypeColorTypeRgb: each pixel has red, green and blue samples.
-	PixdataTypeColorTypeRgb PixdataType = 0b1
+	// PixdataTypeColorTypeRGB: each pixel has red, green and blue samples.
+	PixdataTypeColorTypeRGB PixdataType = 0b1
 	// PixdataTypeColorTypeRgba: each pixel has red, green and blue samples and
 	// an alpha value.
 	PixdataTypeColorTypeRgba PixdataType = 0b10
@@ -91,7 +93,20 @@ const (
 // PixbufFromPixdata: converts a Pixdata to a Pixbuf. If @copy_pixels is true or
 // if the pixel data is run-length-encoded, the pixel data is copied into
 // newly-allocated memory; otherwise it is reused.
-func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.pixbuf
+func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
+	var arg0 *Pixdata
+	arg0 = wrapPixdata(pixdata)
+
+	var arg1 bool
+	arg1 = gextras.Gobool(copyPixels)
+
+	c0 := C.gdk_pixbuf_from_pixdata(arg0, arg1)
+
+	var ret0 gdkpixbuf.Pixbuf
+	ret0 = wrapPixbuf(c0)
+
+	return ret0
+}
 
 // Pixdata: a Pixdata contains pixbuf information in a form suitable for
 // serialization and streaming.

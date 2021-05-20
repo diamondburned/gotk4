@@ -56,7 +56,9 @@ type XID uint32
 
 type Pixmap uint32
 
-func OpenDisplay()
+func OpenDisplay() {
+	C.XOpenDisplay()
+}
 
 type Display struct {
 	native *C.Display
@@ -65,8 +67,8 @@ type Display struct {
 func wrapDisplay(p *C.Display) *Display {
 	v := Display{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Display).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Display).free)
 
 	return &v
 }
@@ -93,8 +95,8 @@ type Screen struct {
 func wrapScreen(p *C.Screen) *Screen {
 	v := Screen{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Screen).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Screen).free)
 
 	return &v
 }
@@ -121,8 +123,8 @@ type Visual struct {
 func wrapVisual(p *C.Visual) *Visual {
 	v := Visual{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Visual).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Visual).free)
 
 	return &v
 }
@@ -149,8 +151,8 @@ type XConfigureEvent struct {
 func wrapXConfigureEvent(p *C.XConfigureEvent) *XConfigureEvent {
 	v := XConfigureEvent{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*XConfigureEvent).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*XConfigureEvent).free)
 
 	return &v
 }
@@ -177,8 +179,8 @@ type XImage struct {
 func wrapXImage(p *C.XImage) *XImage {
 	v := XImage{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*XImage).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*XImage).free)
 
 	return &v
 }
@@ -205,8 +207,8 @@ type XFontStruct struct {
 func wrapXFontStruct(p *C.XFontStruct) *XFontStruct {
 	v := XFontStruct{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*XFontStruct).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*XFontStruct).free)
 
 	return &v
 }
@@ -233,8 +235,8 @@ type XTrapezoid struct {
 func wrapXTrapezoid(p *C.XTrapezoid) *XTrapezoid {
 	v := XTrapezoid{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*XTrapezoid).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*XTrapezoid).free)
 
 	return &v
 }
@@ -261,8 +263,8 @@ type XVisualInfo struct {
 func wrapXVisualInfo(p *C.XVisualInfo) *XVisualInfo {
 	v := XVisualInfo{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*XVisualInfo).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*XVisualInfo).free)
 
 	return &v
 }
@@ -289,8 +291,8 @@ type XWindowAttributes struct {
 func wrapXWindowAttributes(p *C.XWindowAttributes) *XWindowAttributes {
 	v := XWindowAttributes{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*XWindowAttributes).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*XWindowAttributes).free)
 
 	return &v
 }

@@ -149,8 +149,6 @@ type NamespaceGenerator struct {
 
 // Generate generates the current namespace into the given writer.
 func (ng *NamespaceGenerator) Generate(w io.Writer) error {
-	// ng.addImport("github.com/diamondburned/gotk4/internal/callback")
-
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
@@ -166,6 +164,7 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 	ng.generateClasses()
 
 	if err := ng.pen.Flush(); err != nil {
+		ng.logln(logError, "generation error:", err)
 		return err
 	}
 
@@ -211,7 +210,12 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 
 	pen.Write(ng.body.Bytes())
 
-	return pen.Flush()
+	if err := pen.Flush(); err != nil {
+		ng.logln(logError, "final file write error:", err)
+		return err
+	}
+
+	return nil
 }
 
 // PackageName returns the current namespace's package name.

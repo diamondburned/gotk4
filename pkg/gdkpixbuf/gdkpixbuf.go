@@ -46,8 +46,8 @@ func init() {
 type Colorspace int
 
 const (
-	// ColorspaceRgb: indicates a red/green/blue additive color space.
-	ColorspaceRgb Colorspace = 0
+	// ColorspaceRGB: indicates a red/green/blue additive color space.
+	ColorspaceRGB Colorspace = 0
 )
 
 func marshalColorspace(p uintptr) (interface{}, error) {
@@ -165,7 +165,17 @@ func marshalPixbufRotation(p uintptr) (interface{}, error) {
 	return PixbufRotation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-func PixbufErrorQuark() glib.Quark
+func PixbufErrorQuark() glib.Quark {
+	c0 := C.gdk_pixbuf_error_quark()
+
+	var ret0 glib.Quark
+	{
+		tmp := uint32(c0)
+		ret0 = Quark(tmp)
+	}
+
+	return ret0
+}
 
 type PixbufFormat struct {
 	native *C.GdkPixbufFormat
@@ -174,8 +184,8 @@ type PixbufFormat struct {
 func wrapPixbufFormat(p *C.GdkPixbufFormat) *PixbufFormat {
 	v := PixbufFormat{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*PixbufFormat).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*PixbufFormat).free)
 
 	return &v
 }
@@ -210,7 +220,7 @@ type Pixbuf interface {
 	// If @substitute_color is true, then the color specified by (@r, @g, @b)
 	// will be assigned zero opacity. That is, if you pass (255, 255, 255) for
 	// the substitute color, all white pixels will become fully transparent.
-	AddAlpha(substituteColor bool, r uint8, g uint8, b uint8) pixbuf
+	AddAlpha(substituteColor bool, r uint8, g uint8, b uint8) Pixbuf
 	// ApplyEmbeddedOrientation: takes an existing pixbuf and checks for the
 	// presence of an associated "orientation" option, which may be provided by
 	// the jpeg loader (which reads the exif orientation tag) or the tiff loader
@@ -218,7 +228,7 @@ type Pixbuf interface {
 	// transforms performed by libtiff). If an orientation option/tag is
 	// present, the appropriate transform will be performed so that the pixbuf
 	// is oriented correctly.
-	ApplyEmbeddedOrientation() pixbuf
+	ApplyEmbeddedOrientation() Pixbuf
 	// Composite: creates a transformation of the source image @src by scaling
 	// by @scale_x and @scale_y then translating by @offset_x and @offset_y.
 	// This gives an image in the coordinates of the destination pixbuf. The
@@ -230,7 +240,7 @@ type Pixbuf interface {
 	// the data at the edges of the source image is replicated to infinity.
 	//
 	// ![](composite.png)
-	Composite(dest pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int)
+	Composite(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int)
 	// CompositeColor: creates a transformation of the source image @src by
 	// scaling by @scale_x and @scale_y then translating by @offset_x and
 	// @offset_y, then alpha blends the rectangle (@dest_x ,@dest_y,
@@ -243,35 +253,35 @@ type Pixbuf interface {
 	//
 	// See gdk_pixbuf_composite_color_simple() for a simpler variant of this
 	// function suitable for many tasks.
-	CompositeColor(dest pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32)
+	CompositeColor(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32)
 	// CompositeColorSimple: creates a new Pixbuf by scaling @src to @dest_width
 	// x @dest_height and alpha blending the result with a checkboard of colors
 	// @color1 and @color2.
-	CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) pixbuf
+	CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf
 	// Copy: creates a new Pixbuf with a copy of the information in the
 	// specified @pixbuf. Note that this does not copy the options set on the
 	// original Pixbuf, use gdk_pixbuf_copy_options() for this.
-	Copy() pixbuf
+	Copy() Pixbuf
 	// CopyArea: copies a rectangular area from @src_pixbuf to @dest_pixbuf.
 	// Conversion of pixbuf formats is done automatically.
 	//
 	// If the source rectangle overlaps the destination rectangle on the same
 	// pixbuf, it will be overwritten during the copy operation. Therefore, you
 	// can not use this function to scroll a pixbuf.
-	CopyArea(srcX int, srcY int, width int, height int, destPixbuf pixbuf, destX int, destY int)
+	CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int)
 	// CopyOptions: copy the key/value pair options attached to a Pixbuf to
 	// another. This is useful to keep original metadata after having
 	// manipulated a file. However be careful to remove metadata which you've
 	// already applied, such as the "orientation" option after rotating the
 	// image.
-	CopyOptions(destPixbuf pixbuf) bool
+	CopyOptions(destPixbuf Pixbuf) bool
 	// Fill: clears a pixbuf to the given RGBA value, converting the RGBA value
 	// into the pixbuf's pixel format. The alpha will be ignored if the pixbuf
 	// doesn't have an alpha channel.
 	Fill(pixel uint32)
 	// Flip: flips a pixbuf horizontally or vertically and returns the result in
 	// a new pixbuf.
-	Flip(horizontal bool) pixbuf
+	Flip(horizontal bool) Pixbuf
 	// GetBitsPerSample: queries the number of bits per color sample in a
 	// pixbuf.
 	GetBitsPerSample() int
@@ -324,7 +334,7 @@ type Pixbuf interface {
 	//
 	// Note that if @src_pixbuf is read-only, this function will force it to be
 	// mutable.
-	NewSubpixbuf(srcX int, srcY int, width int, height int) pixbuf
+	NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf
 	// ReadPixelBytes: provides a #GBytes buffer containing the raw pixel data;
 	// the data must not be modified. This function allows skipping the implicit
 	// copy that must be made if gdk_pixbuf_get_pixels() is called on a
@@ -335,14 +345,14 @@ type Pixbuf interface {
 	// made if gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
 	ReadPixels() uint8
 	// Ref: adds a reference to a pixbuf.
-	Ref() pixbuf
+	Ref() Pixbuf
 	// RemoveOption: remove the key/value pair option attached to a Pixbuf.
 	RemoveOption(key string) bool
 	// RotateSimple: rotates a pixbuf by a multiple of 90 degrees, and returns
 	// the result in a new pixbuf.
 	//
 	// If @angle is 0, a copy of @src is returned, avoiding any rotation.
-	RotateSimple(angle PixbufRotation) pixbuf
+	RotateSimple(angle PixbufRotation) Pixbuf
 	// SaturateAndPixelate: modifies saturation and optionally pixelates @src,
 	// placing the result in @dest. @src and @dest may be the same pixbuf with
 	// no ill effects. If @saturation is 1.0 then saturation is not changed. If
@@ -351,7 +361,7 @@ type Pixbuf interface {
 	// more vivid colors). If @pixelate is true, then pixels are faded in a
 	// checkerboard pattern to create a pixelated image. @src and @dest must
 	// have the same image format, size, and rowstride.
-	SaturateAndPixelate(dest pixbuf, saturation float32, pixelate bool)
+	SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool)
 	// SaveToBufferv: saves pixbuf to a new buffer in format @type, which is
 	// currently "jpeg", "tiff", "png", "ico" or "bmp". See
 	// gdk_pixbuf_save_to_buffer() for more details.
@@ -364,7 +374,7 @@ type Pixbuf interface {
 	//
 	// Supported file formats are currently "jpeg", "tiff", "png", "ico" or
 	// "bmp". See gdk_pixbuf_save_to_stream() for more details.
-	SaveToStreamv(stream gio.outputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.cancellable) bool
+	SaveToStreamv(stream gio.OutputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) bool
 	// SaveToStreamvAsync: saves @pixbuf to an output stream asynchronously.
 	//
 	// For more details see gdk_pixbuf_save_to_streamv(), which is the
@@ -373,7 +383,7 @@ type Pixbuf interface {
 	// When the operation is finished, @callback will be called in the main
 	// thread. You can then call gdk_pixbuf_save_to_stream_finish() to get the
 	// result of the operation.
-	SaveToStreamvAsync(stream gio.outputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	SaveToStreamvAsync(stream gio.OutputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
 	// Savev: saves pixbuf to a file in @type, which is currently "jpeg", "png",
 	// "tiff", "ico" or "bmp". If @error is set, false will be returned. See
 	// gdk_pixbuf_save () for more details.
@@ -391,7 +401,7 @@ type Pixbuf interface {
 	// If the source rectangle overlaps the destination rectangle on the same
 	// pixbuf, it will be overwritten during the scaling which results in
 	// rendering artifacts.
-	Scale(dest pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType)
+	Scale(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType)
 	// ScaleSimple: create a new Pixbuf containing a copy of @src scaled to
 	// @dest_width x @dest_height. Leaves @src unaffected. @interp_type should
 	// be K_INTERP_NEAREST if you want maximum speed (but when scaling down
@@ -406,7 +416,7 @@ type Pixbuf interface {
 	//
 	// For more complicated scaling/alpha blending see gdk_pixbuf_scale() and
 	// gdk_pixbuf_composite().
-	ScaleSimple(destWidth int, destHeight int, interpType InterpType) pixbuf
+	ScaleSimple(destWidth int, destHeight int, interpType InterpType) Pixbuf
 	// SetOption: attaches a key/value pair as an option to a Pixbuf. If @key
 	// already exists in the list of options attached to @pixbuf, the new value
 	// is ignored and false is returned.
@@ -420,7 +430,7 @@ type pixbuf struct {
 }
 
 func wrapPixbuf(obj *externglib.Object) Pixbuf {
-	return &pixbuf{*externglib.Object{obj}}
+	return pixbuf{*externglib.Object{obj}}
 }
 
 func marshalPixbuf(p uintptr) (interface{}, error) {
@@ -447,33 +457,33 @@ func NewPixbuf(resourcePath string) Pixbuf
 
 func NewPixbuf(resourcePath string, width int, height int, preserveAspectRatio bool) Pixbuf
 
-func NewPixbuf(stream gio.inputStream, cancellable gio.cancellable) Pixbuf
+func NewPixbuf(stream gio.InputStream, cancellable gio.Cancellable) Pixbuf
 
-func NewPixbuf(stream gio.inputStream, width int, height int, preserveAspectRatio bool, cancellable gio.cancellable) Pixbuf
+func NewPixbuf(stream gio.InputStream, width int, height int, preserveAspectRatio bool, cancellable gio.Cancellable) Pixbuf
 
 func NewPixbuf(asyncResult gio.AsyncResult) Pixbuf
 
 func NewPixbuf(data []string) Pixbuf
 
-func (p pixbuf) AddAlpha(substituteColor bool, r uint8, g uint8, b uint8) pixbuf
+func (p pixbuf) AddAlpha(substituteColor bool, r uint8, g uint8, b uint8) Pixbuf
 
-func (p pixbuf) ApplyEmbeddedOrientation() pixbuf
+func (p pixbuf) ApplyEmbeddedOrientation() Pixbuf
 
-func (p pixbuf) Composite(dest pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int)
+func (p pixbuf) Composite(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int)
 
-func (p pixbuf) CompositeColor(dest pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32)
+func (p pixbuf) CompositeColor(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32)
 
-func (p pixbuf) CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) pixbuf
+func (p pixbuf) CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf
 
-func (p pixbuf) Copy() pixbuf
+func (p pixbuf) Copy() Pixbuf
 
-func (p pixbuf) CopyArea(srcX int, srcY int, width int, height int, destPixbuf pixbuf, destX int, destY int)
+func (p pixbuf) CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int)
 
-func (p pixbuf) CopyOptions(destPixbuf pixbuf) bool
+func (p pixbuf) CopyOptions(destPixbuf Pixbuf) bool
 
 func (p pixbuf) Fill(pixel uint32)
 
-func (p pixbuf) Flip(horizontal bool) pixbuf
+func (p pixbuf) Flip(horizontal bool) Pixbuf
 
 func (p pixbuf) GetBitsPerSample() int
 
@@ -499,33 +509,33 @@ func (p pixbuf) GetRowstride() int
 
 func (p pixbuf) GetWidth() int
 
-func (p pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int) pixbuf
+func (p pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf
 
 func (p pixbuf) ReadPixelBytes() *glib.Bytes
 
 func (p pixbuf) ReadPixels() uint8
 
-func (p pixbuf) Ref() pixbuf
+func (p pixbuf) Ref() Pixbuf
 
 func (p pixbuf) RemoveOption(key string) bool
 
-func (p pixbuf) RotateSimple(angle PixbufRotation) pixbuf
+func (p pixbuf) RotateSimple(angle PixbufRotation) Pixbuf
 
-func (p pixbuf) SaturateAndPixelate(dest pixbuf, saturation float32, pixelate bool)
+func (p pixbuf) SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool)
 
 func (p pixbuf) SaveToBufferv(_type string, optionKeys []string, optionValues []string) ([]uint8, uint, bool)
 
 func (p pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, userData unsafe.Pointer, _type string, optionKeys []string, optionValues []string) bool
 
-func (p pixbuf) SaveToStreamv(stream gio.outputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.cancellable) bool
+func (p pixbuf) SaveToStreamv(stream gio.OutputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) bool
 
-func (p pixbuf) SaveToStreamvAsync(stream gio.outputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func (p pixbuf) SaveToStreamvAsync(stream gio.OutputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
 
 func (p pixbuf) Savev(filename string, _type string, optionKeys []string, optionValues []string) bool
 
-func (p pixbuf) Scale(dest pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType)
+func (p pixbuf) Scale(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType)
 
-func (p pixbuf) ScaleSimple(destWidth int, destHeight int, interpType InterpType) pixbuf
+func (p pixbuf) ScaleSimple(destWidth int, destHeight int, interpType InterpType) Pixbuf
 
 func (p pixbuf) SetOption(key string, value string) bool
 
@@ -568,14 +578,14 @@ type PixbufAnimation interface {
 	// should be reinstalled after any area_updated signal.
 	//
 	// A delay time of -1 is possible, indicating "infinite."
-	GetIter(startTime *glib.TimeVal) pixbufAnimationIter
+	GetIter(startTime *glib.TimeVal) PixbufAnimationIter
 	// GetStaticImage: if an animation is really just a plain image (has only
 	// one frame), this function returns that image. If the animation is an
 	// animation, this function returns a reasonable thing to display as a
 	// static unanimated image, which might be the first frame, or something
 	// more sophisticated. If an animation hasn't loaded any frames yet, this
 	// function will return nil.
-	GetStaticImage() pixbuf
+	GetStaticImage() Pixbuf
 	// GetWidth: queries the width of the bounding box of a pixbuf animation.
 	GetWidth() int
 	// IsStaticImage: if you load a file with
@@ -584,7 +594,7 @@ type PixbufAnimation interface {
 	// gdk_pixbuf_animation_get_static_image() to retrieve the image.
 	IsStaticImage() bool
 	// Ref: adds a reference to an animation.
-	Ref() pixbufAnimation
+	Ref() PixbufAnimation
 	// Unref: removes a reference from an animation.
 	Unref()
 }
@@ -594,7 +604,7 @@ type pixbufAnimation struct {
 }
 
 func wrapPixbufAnimation(obj *externglib.Object) PixbufAnimation {
-	return &pixbufAnimation{*externglib.Object{obj}}
+	return pixbufAnimation{*externglib.Object{obj}}
 }
 
 func marshalPixbufAnimation(p uintptr) (interface{}, error) {
@@ -607,21 +617,21 @@ func NewPixbufAnimation(filename string) PixbufAnimation
 
 func NewPixbufAnimation(resourcePath string) PixbufAnimation
 
-func NewPixbufAnimation(stream gio.inputStream, cancellable gio.cancellable) PixbufAnimation
+func NewPixbufAnimation(stream gio.InputStream, cancellable gio.Cancellable) PixbufAnimation
 
 func NewPixbufAnimation(asyncResult gio.AsyncResult) PixbufAnimation
 
 func (p pixbufAnimation) GetHeight() int
 
-func (p pixbufAnimation) GetIter(startTime *glib.TimeVal) pixbufAnimationIter
+func (p pixbufAnimation) GetIter(startTime *glib.TimeVal) PixbufAnimationIter
 
-func (p pixbufAnimation) GetStaticImage() pixbuf
+func (p pixbufAnimation) GetStaticImage() Pixbuf
 
 func (p pixbufAnimation) GetWidth() int
 
 func (p pixbufAnimation) IsStaticImage() bool
 
-func (p pixbufAnimation) Ref() pixbufAnimation
+func (p pixbufAnimation) Ref() PixbufAnimation
 
 func (p pixbufAnimation) Unref()
 
@@ -669,7 +679,7 @@ type PixbufAnimationIter interface {
 	// gdk_pixbuf_animation_iter_advance(). Copy the pixbuf to keep it (don't
 	// just add a reference), as it may get recycled as you advance the
 	// iterator.
-	GetPixbuf() pixbuf
+	GetPixbuf() Pixbuf
 	// OnCurrentlyLoadingFrame: used to determine how to respond to the
 	// area_updated signal on PixbufLoader when loading an animation.
 	// area_updated is emitted for an area of the frame currently streaming in
@@ -683,7 +693,7 @@ type pixbufAnimationIter struct {
 }
 
 func wrapPixbufAnimationIter(obj *externglib.Object) PixbufAnimationIter {
-	return &pixbufAnimationIter{*externglib.Object{obj}}
+	return pixbufAnimationIter{*externglib.Object{obj}}
 }
 
 func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
@@ -696,7 +706,7 @@ func (p pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool
 
 func (p pixbufAnimationIter) GetDelayTime() int
 
-func (p pixbufAnimationIter) GetPixbuf() pixbuf
+func (p pixbufAnimationIter) GetPixbuf() Pixbuf
 
 func (p pixbufAnimationIter) OnCurrentlyLoadingFrame() bool
 
@@ -721,7 +731,7 @@ type PixbufLoader interface {
 	// after the "area-prepared" signal has been emitted by the loader. If the
 	// loader doesn't have enough bytes yet (hasn't emitted the "area-prepared"
 	// signal) this function will return nil.
-	GetAnimation() pixbufAnimation
+	GetAnimation() PixbufAnimation
 	// GetFormat: obtains the available information about the format of the
 	// currently loading image file.
 	GetFormat() *PixbufFormat
@@ -735,7 +745,7 @@ type PixbufLoader interface {
 	// calling g_object_ref() should be sufficient to continue using it.
 	// Additionally, if the loader is an animation, it will return the "static
 	// image" of the animation (see gdk_pixbuf_animation_get_static_image()).
-	GetPixbuf() pixbuf
+	GetPixbuf() Pixbuf
 	// SetSize: causes the image to be scaled while it is loaded. The desired
 	// image size can be determined relative to the original size of the image
 	// by calling gdk_pixbuf_loader_set_size() from a signal handler for the
@@ -766,7 +776,7 @@ type pixbufLoader struct {
 }
 
 func wrapPixbufLoader(obj *externglib.Object) PixbufLoader {
-	return &pixbufLoader{*externglib.Object{obj}}
+	return pixbufLoader{*externglib.Object{obj}}
 }
 
 func marshalPixbufLoader(p uintptr) (interface{}, error) {
@@ -783,11 +793,11 @@ func NewPixbufLoader(imageType string) PixbufLoader
 
 func (p pixbufLoader) Close() bool
 
-func (p pixbufLoader) GetAnimation() pixbufAnimation
+func (p pixbufLoader) GetAnimation() PixbufAnimation
 
 func (p pixbufLoader) GetFormat() *PixbufFormat
 
-func (p pixbufLoader) GetPixbuf() pixbuf
+func (p pixbufLoader) GetPixbuf() Pixbuf
 
 func (p pixbufLoader) SetSize(width int, height int)
 
@@ -797,11 +807,11 @@ func (p pixbufLoader) WriteBytes(buffer *glib.Bytes) bool
 
 // PixbufSimpleAnim: an opaque struct representing a simple animation.
 type PixbufSimpleAnim interface {
-	pixbufAnimation
+	PixbufAnimation
 
 	// AddFrame: adds a new frame to @animation. The @pixbuf must have the
 	// dimensions specified when the animation was constructed.
-	AddFrame(pixbuf pixbuf)
+	AddFrame(pixbuf Pixbuf)
 	// GetLoop: gets whether @animation should loop indefinitely when it reaches
 	// the end.
 	GetLoop() bool
@@ -811,11 +821,11 @@ type PixbufSimpleAnim interface {
 }
 
 type pixbufSimpleAnim struct {
-	PixbufAnimation
+	pixbufAnimation
 }
 
 func wrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnim {
-	return &pixbufSimpleAnim{PixbufAnimation{*externglib.Object{obj}}}
+	return pixbufSimpleAnim{pixbufAnimation{*externglib.Object{obj}}}
 }
 
 func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
@@ -826,22 +836,22 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 
 func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim
 
-func (p pixbufSimpleAnim) AddFrame(pixbuf pixbuf)
+func (p pixbufSimpleAnim) AddFrame(pixbuf Pixbuf)
 
 func (p pixbufSimpleAnim) GetLoop() bool
 
 func (p pixbufSimpleAnim) SetLoop(loop bool)
 
 type PixbufSimpleAnimIter interface {
-	pixbufAnimationIter
-}
-
-type pixbufSimpleAnimIter struct {
 	PixbufAnimationIter
 }
 
+type pixbufSimpleAnimIter struct {
+	pixbufAnimationIter
+}
+
 func wrapPixbufSimpleAnimIter(obj *externglib.Object) PixbufSimpleAnimIter {
-	return &pixbufSimpleAnimIter{PixbufAnimationIter{*externglib.Object{obj}}}
+	return pixbufSimpleAnimIter{pixbufAnimationIter{*externglib.Object{obj}}}
 }
 
 func marshalPixbufSimpleAnimIter(p uintptr) (interface{}, error) {

@@ -10,8 +10,11 @@ import (
 var (
 	snakeRegex     = regexp.MustCompile(`[_0-9]+\w`)
 	pascalSpecials = []string{
+		"Es",
 		"Id",
 		"Io",
+		"Rgb",
+		"Hsv",
 		"Uri",
 		"Url",
 		"Css",
@@ -122,12 +125,24 @@ func FirstLetter(p string) string {
 
 // UnexportPascal converts the PascalToGo string to be unexported.
 func UnexportPascal(pascal string) string {
-	r, sz := utf8.DecodeRuneInString(pascal)
-	if r != utf8.RuneError {
-		return snakeNoGo(string(unicode.ToLower(r)) + pascal[sz:])
+	runes := []rune(pascal)
+	if len(runes) < 1 {
+		return snakeNoGo(strings.ToLower(pascal))
 	}
 
-	return pascal // what???
+	var i int
+	for i < len(runes) && unicode.IsUpper(runes[i]) {
+		i++
+	}
+
+	if i > 1 {
+		i--
+	}
+
+	pascal = strings.ToLower(string(runes[:i])) + string(runes[i:])
+	pascal = snakeNoGo(pascal)
+
+	return pascal
 }
 
 // SnakeToGo converts snake case to Go's special case. If Pascal is true, then

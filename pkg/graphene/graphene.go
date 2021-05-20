@@ -160,111 +160,293 @@ const (
 // BoxEmpty: a degenerate #graphene_box_t that can only be expanded.
 //
 // The returned value is owned by Graphene and should not be modified or freed.
-func BoxEmpty() *Box
+func BoxEmpty() *Box {
+	c0 := C.graphene_box_empty()
+
+	var ret0 *Box
+	ret0 = wrapBox(c0)
+
+	return ret0
+}
 
 // BoxInfinite: a degenerate #graphene_box_t that cannot be expanded.
 //
 // The returned value is owned by Graphene and should not be modified or freed.
-func BoxInfinite() *Box
+func BoxInfinite() *Box {
+	c0 := C.graphene_box_infinite()
+
+	var ret0 *Box
+	ret0 = wrapBox(c0)
+
+	return ret0
+}
 
 // BoxMinusOne: a #graphene_box_t with the minimum vertex set at (-1, -1, -1)
 // and the maximum vertex set at (0, 0, 0).
 //
 // The returned value is owned by Graphene and should not be modified or freed.
-func BoxMinusOne() *Box
+func BoxMinusOne() *Box {
+	c0 := C.graphene_box_minus_one()
+
+	var ret0 *Box
+	ret0 = wrapBox(c0)
+
+	return ret0
+}
 
 // BoxOne: a #graphene_box_t with the minimum vertex set at (0, 0, 0) and the
 // maximum vertex set at (1, 1, 1).
 //
 // The returned value is owned by Graphene and should not be modified or freed.
-func BoxOne() *Box
+func BoxOne() *Box {
+	c0 := C.graphene_box_one()
+
+	var ret0 *Box
+	ret0 = wrapBox(c0)
+
+	return ret0
+}
 
 // BoxOneMinusOne: a #graphene_box_t with the minimum vertex set at (-1, -1, -1)
 // and the maximum vertex set at (1, 1, 1).
 //
 // The returned value is owned by Graphene and should not be modified or freed.
-func BoxOneMinusOne() *Box
+func BoxOneMinusOne() *Box {
+	c0 := C.graphene_box_one_minus_one()
+
+	var ret0 *Box
+	ret0 = wrapBox(c0)
+
+	return ret0
+}
 
 // BoxZero: a #graphene_box_t with both the minimum and maximum vertices set at
 // (0, 0, 0).
 //
 // The returned value is owned by Graphene and should not be modified or freed.
-func BoxZero() *Box
+func BoxZero() *Box {
+	c0 := C.graphene_box_zero()
+
+	var ret0 *Box
+	ret0 = wrapBox(c0)
+
+	return ret0
+}
 
 // Point3DZero: retrieves a constant point with all three coordinates set to 0.
-func Point3DZero() *Point3D
+func Point3DZero() *Point3D {
+	c0 := C.graphene_point3d_zero()
+
+	var ret0 *Point3D
+	ret0 = wrapPoint3D(c0)
+
+	return ret0
+}
 
 // PointZero: returns a point fixed at (0, 0).
-func PointZero() *Point
+func PointZero() *Point {
+	c0 := C.graphene_point_zero()
+
+	var ret0 *Point
+	ret0 = wrapPoint(c0)
+
+	return ret0
+}
 
 // RectAlloc: allocates a new #graphene_rect_t.
 //
 // The contents of the returned rectangle are undefined.
-func RectAlloc() *Rect
+func RectAlloc() *Rect {
+	c0 := C.graphene_rect_alloc()
+
+	var ret0 *Rect
+	ret0 = wrapRect(c0)
+
+	return ret0
+}
 
 // RectZero: returns a degenerate rectangle with origin fixed at (0, 0) and a
 // size of 0, 0.
-func RectZero() *Rect
+func RectZero() *Rect {
+	c0 := C.graphene_rect_zero()
+
+	var ret0 *Rect
+	ret0 = wrapRect(c0)
+
+	return ret0
+}
 
 // SizeZero: a constant pointer to a zero #graphene_size_t, useful for equality
 // checks and interpolations.
-func SizeZero() *Size
+func SizeZero() *Size {
+	c0 := C.graphene_size_zero()
+
+	var ret0 *Size
+	ret0 = wrapSize(c0)
+
+	return ret0
+}
 
 // Vec2One: retrieves a constant vector with (1, 1) components.
-func Vec2One() *Vec2
+func Vec2One() *Vec2 {
+	c0 := C.graphene_vec2_one()
+
+	var ret0 *Vec2
+	ret0 = wrapVec2(c0)
+
+	return ret0
+}
 
 // Vec2XAxis: retrieves a constant vector with (1, 0) components.
-func Vec2XAxis() *Vec2
+func Vec2XAxis() *Vec2 {
+	c0 := C.graphene_vec2_x_axis()
+
+	var ret0 *Vec2
+	ret0 = wrapVec2(c0)
+
+	return ret0
+}
 
 // Vec2YAxis: retrieves a constant vector with (0, 1) components.
-func Vec2YAxis() *Vec2
+func Vec2YAxis() *Vec2 {
+	c0 := C.graphene_vec2_y_axis()
+
+	var ret0 *Vec2
+	ret0 = wrapVec2(c0)
+
+	return ret0
+}
 
 // Vec2Zero: retrieves a constant vector with (0, 0) components.
-func Vec2Zero() *Vec2
+func Vec2Zero() *Vec2 {
+	c0 := C.graphene_vec2_zero()
+
+	var ret0 *Vec2
+	ret0 = wrapVec2(c0)
+
+	return ret0
+}
 
 // Vec3One: provides a constant pointer to a vector with three components, all
 // sets to 1.
-func Vec3One() *Vec3
+func Vec3One() *Vec3 {
+	c0 := C.graphene_vec3_one()
+
+	var ret0 *Vec3
+	ret0 = wrapVec3(c0)
+
+	return ret0
+}
 
 // Vec3XAxis: provides a constant pointer to a vector with three components with
 // values set to (1, 0, 0).
-func Vec3XAxis() *Vec3
+func Vec3XAxis() *Vec3 {
+	c0 := C.graphene_vec3_x_axis()
+
+	var ret0 *Vec3
+	ret0 = wrapVec3(c0)
+
+	return ret0
+}
 
 // Vec3YAxis: provides a constant pointer to a vector with three components with
 // values set to (0, 1, 0).
-func Vec3YAxis() *Vec3
+func Vec3YAxis() *Vec3 {
+	c0 := C.graphene_vec3_y_axis()
+
+	var ret0 *Vec3
+	ret0 = wrapVec3(c0)
+
+	return ret0
+}
 
 // Vec3ZAxis: provides a constant pointer to a vector with three components with
 // values set to (0, 0, 1).
-func Vec3ZAxis() *Vec3
+func Vec3ZAxis() *Vec3 {
+	c0 := C.graphene_vec3_z_axis()
+
+	var ret0 *Vec3
+	ret0 = wrapVec3(c0)
+
+	return ret0
+}
 
 // Vec3Zero: provides a constant pointer to a vector with three components, all
 // sets to 0.
-func Vec3Zero() *Vec3
+func Vec3Zero() *Vec3 {
+	c0 := C.graphene_vec3_zero()
+
+	var ret0 *Vec3
+	ret0 = wrapVec3(c0)
+
+	return ret0
+}
 
 // Vec4One: retrieves a pointer to a #graphene_vec4_t with all its components
 // set to 1.
-func Vec4One() *Vec4
+func Vec4One() *Vec4 {
+	c0 := C.graphene_vec4_one()
+
+	var ret0 *Vec4
+	ret0 = wrapVec4(c0)
+
+	return ret0
+}
 
 // Vec4WAxis: retrieves a pointer to a #graphene_vec4_t with its components set
 // to (0, 0, 0, 1).
-func Vec4WAxis() *Vec4
+func Vec4WAxis() *Vec4 {
+	c0 := C.graphene_vec4_w_axis()
+
+	var ret0 *Vec4
+	ret0 = wrapVec4(c0)
+
+	return ret0
+}
 
 // Vec4XAxis: retrieves a pointer to a #graphene_vec4_t with its components set
 // to (1, 0, 0, 0).
-func Vec4XAxis() *Vec4
+func Vec4XAxis() *Vec4 {
+	c0 := C.graphene_vec4_x_axis()
+
+	var ret0 *Vec4
+	ret0 = wrapVec4(c0)
+
+	return ret0
+}
 
 // Vec4YAxis: retrieves a pointer to a #graphene_vec4_t with its components set
 // to (0, 1, 0, 0).
-func Vec4YAxis() *Vec4
+func Vec4YAxis() *Vec4 {
+	c0 := C.graphene_vec4_y_axis()
+
+	var ret0 *Vec4
+	ret0 = wrapVec4(c0)
+
+	return ret0
+}
 
 // Vec4ZAxis: retrieves a pointer to a #graphene_vec4_t with its components set
 // to (0, 0, 1, 0).
-func Vec4ZAxis() *Vec4
+func Vec4ZAxis() *Vec4 {
+	c0 := C.graphene_vec4_z_axis()
+
+	var ret0 *Vec4
+	ret0 = wrapVec4(c0)
+
+	return ret0
+}
 
 // Vec4Zero: retrieves a pointer to a #graphene_vec4_t with all its components
 // set to 0.
-func Vec4Zero() *Vec4
+func Vec4Zero() *Vec4 {
+	c0 := C.graphene_vec4_zero()
+
+	var ret0 *Vec4
+	ret0 = wrapVec4(c0)
+
+	return ret0
+}
 
 // Box: a 3D box, described as the volume between a minimum and a maximum
 // vertices.
@@ -275,8 +457,8 @@ type Box struct {
 func wrapBox(p *C.graphene_box_t) *Box {
 	v := Box{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Box).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Box).free)
 
 	return &v
 }
@@ -309,8 +491,8 @@ type Euler struct {
 func wrapEuler(p *C.graphene_euler_t) *Euler {
 	v := Euler{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Euler).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Euler).free)
 
 	return &v
 }
@@ -343,8 +525,8 @@ type Frustum struct {
 func wrapFrustum(p *C.graphene_frustum_t) *Frustum {
 	v := Frustum{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Frustum).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Frustum).free)
 
 	return &v
 }
@@ -377,8 +559,8 @@ type Matrix struct {
 func wrapMatrix(p *C.graphene_matrix_t) *Matrix {
 	v := Matrix{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Matrix).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Matrix).free)
 
 	return &v
 }
@@ -411,8 +593,8 @@ type Plane struct {
 func wrapPlane(p *C.graphene_plane_t) *Plane {
 	v := Plane{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Plane).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Plane).free)
 
 	return &v
 }
@@ -516,8 +698,8 @@ type Quad struct {
 func wrapQuad(p *C.graphene_quad_t) *Quad {
 	v := Quad{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Quad).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Quad).free)
 
 	return &v
 }
@@ -550,8 +732,8 @@ type Quaternion struct {
 func wrapQuaternion(p *C.graphene_quaternion_t) *Quaternion {
 	v := Quaternion{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Quaternion).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Quaternion).free)
 
 	return &v
 }
@@ -584,8 +766,8 @@ type Ray struct {
 func wrapRay(p *C.graphene_ray_t) *Ray {
 	v := Ray{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Ray).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Ray).free)
 
 	return &v
 }
@@ -657,8 +839,8 @@ type SIMD4F struct {
 func wrapSIMD4F(p *C.graphene_simd4f_t) *SIMD4F {
 	v := SIMD4F{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SIMD4F).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SIMD4F).free)
 
 	return &v
 }
@@ -685,8 +867,8 @@ type SIMD4X4F struct {
 func wrapSIMD4X4F(p *C.graphene_simd4x4f_t) *SIMD4X4F {
 	v := SIMD4X4F{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*SIMD4X4F).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*SIMD4X4F).free)
 
 	return &v
 }
@@ -748,8 +930,8 @@ type Sphere struct {
 func wrapSphere(p *C.graphene_sphere_t) *Sphere {
 	v := Sphere{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Sphere).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Sphere).free)
 
 	return &v
 }
@@ -779,8 +961,8 @@ type Triangle struct {
 func wrapTriangle(p *C.graphene_triangle_t) *Triangle {
 	v := Triangle{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Triangle).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Triangle).free)
 
 	return &v
 }
@@ -813,8 +995,8 @@ type Vec2 struct {
 func wrapVec2(p *C.graphene_vec2_t) *Vec2 {
 	v := Vec2{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Vec2).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Vec2).free)
 
 	return &v
 }
@@ -848,8 +1030,8 @@ type Vec3 struct {
 func wrapVec3(p *C.graphene_vec3_t) *Vec3 {
 	v := Vec3{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Vec3).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Vec3).free)
 
 	return &v
 }
@@ -883,8 +1065,8 @@ type Vec4 struct {
 func wrapVec4(p *C.graphene_vec4_t) *Vec4 {
 	v := Vec4{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Vec4).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Vec4).free)
 
 	return &v
 }

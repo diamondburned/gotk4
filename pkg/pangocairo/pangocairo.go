@@ -24,11 +24,31 @@ func init() {
 //
 // This function does not report options that are derived from the target
 // surface by [func@update_context].
-func ContextGetFontOptions(context pango.context) *cairo.FontOptions
+func ContextGetFontOptions(context pango.Context) *cairo.FontOptions {
+	var arg0 pango.Context
+	arg0 = wrapContext(context)
+
+	c0 := C.pango_cairo_context_get_font_options(arg0)
+
+	var ret0 *cairo.FontOptions
+	ret0 = wrapFontOptions(c0)
+
+	return ret0
+}
 
 // ContextGetResolution: gets the resolution for the context. See
 // [func@PangoCairo.context_set_resolution]
-func ContextGetResolution(context pango.context) float64
+func ContextGetResolution(context pango.Context) float64 {
+	var arg0 pango.Context
+	arg0 = wrapContext(context)
+
+	c0 := C.pango_cairo_context_get_resolution(arg0)
+
+	var ret0 float64
+	ret0 = float64(c0)
+
+	return ret0
+}
 
 // ContextGetShapeRenderer: sets callback function for context to use for
 // rendering attributes of type PANGO_ATTR_SHAPE.
@@ -38,27 +58,67 @@ func ContextGetResolution(context pango.context) float64
 // Retrieves callback function and associated user data for rendering attributes
 // of type PANGO_ATTR_SHAPE as set by
 // [func@PangoCairo.context_set_shape_renderer], if any.
-func ContextGetShapeRenderer(context pango.context, data unsafe.Pointer) ShapeRendererFunc
+func ContextGetShapeRenderer(context pango.Context, data unsafe.Pointer) ShapeRendererFunc {
+	var arg0 pango.Context
+	arg0 = wrapContext(context)
+
+	var arg1 unsafe.Pointer
+	arg1 = unsafe.Pointer(data)
+
+	c0 := C.pango_cairo_context_get_shape_renderer(arg0, arg1)
+
+	var ret0 ShapeRendererFunc
+	ret0 = wrapShapeRendererFunc(c0)
+
+	return ret0
+}
 
 // ContextSetFontOptions: sets the font options used when rendering text with
 // this context.
 //
 // These options override any options that [func@update_context] derives from
 // the target surface.
-func ContextSetFontOptions(context pango.context, options *cairo.FontOptions)
+func ContextSetFontOptions(context pango.Context, options *cairo.FontOptions) {
+	var arg0 pango.Context
+	arg0 = wrapContext(context)
+
+	var arg1 *cairo.FontOptions
+	arg1 = wrapFontOptions(options)
+
+	C.pango_cairo_context_set_font_options(arg0, arg1)
+}
 
 // ContextSetResolution: sets the resolution for the context.
 //
 // This is a scale factor between points specified in a `PangoFontDescription`
 // and Cairo units. The default value is 96, meaning that a 10 point font will
 // be 13 units high. (10 * 96. / 72. = 13.3).
-func ContextSetResolution(context pango.context, dpi float64)
+func ContextSetResolution(context pango.Context, dpi float64) {
+	var arg0 pango.Context
+	arg0 = wrapContext(context)
+
+	var arg1 float64
+	arg1 = float64(dpi)
+
+	C.pango_cairo_context_set_resolution(arg0, arg1)
+}
 
 // ContextSetShapeRenderer: sets callback function for context to use for
 // rendering attributes of type PANGO_ATTR_SHAPE.
 //
 // See `PangoCairoShapeRendererFunc` for details.
-func ContextSetShapeRenderer(context pango.context, _func ShapeRendererFunc, data unsafe.Pointer, dnotify unsafe.Pointer)
+func ContextSetShapeRenderer(context pango.Context, _func ShapeRendererFunc, data unsafe.Pointer, dnotify unsafe.Pointer) {
+	var arg0 pango.Context
+	arg0 = wrapContext(context)
+
+	var arg1 ShapeRendererFunc
+	arg1 = wrapShapeRendererFunc(_func)
+
+	var arg2 unsafe.Pointer
+	arg2 = unsafe.Pointer(data)
+
+	C.pango_cairo_context_set_shape_renderer(arg0, arg1, arg2)
+}
 
 // CreateContext: creates a context object set up to match the current
 // transformation and target surface of the Cairo context.
@@ -70,7 +130,17 @@ func ContextSetShapeRenderer(context pango.context, _func ShapeRendererFunc, dat
 // default font map, then updates it to @cr. If you just need to create a layout
 // for use with @cr and do not need to access `PangoContext` directly, you can
 // use [func@create_layout] instead.
-func CreateContext(cr *cairo.Context) pango.context
+func CreateContext(cr *cairo.Context) pango.Context {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	c0 := C.pango_cairo_create_context(arg0)
+
+	var ret0 pango.Context
+	ret0 = wrapContext(c0)
+
+	return ret0
+}
 
 // CreateLayout: creates a layout object set up to match the current
 // transformation and target surface of the Cairo context.
@@ -84,7 +154,17 @@ func CreateContext(cr *cairo.Context) pango.context
 // is slightly inefficient since it creates a separate `PangoContext` object for
 // each layout. This might matter in an application that was laying out large
 // amounts of text.
-func CreateLayout(cr *cairo.Context) pango.layout
+func CreateLayout(cr *cairo.Context) pango.Layout {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	c0 := C.pango_cairo_create_layout(arg0)
+
+	var ret0 pango.Layout
+	ret0 = wrapLayout(c0)
+
+	return ret0
+}
 
 // ErrorUnderlinePath: add a squiggly line to the current path in the specified
 // cairo context that approximately covers the given rectangle in the style of
@@ -92,7 +172,24 @@ func CreateLayout(cr *cairo.Context) pango.layout
 //
 // The width of the underline is rounded to an integer number of up/down
 // segments and the resulting rectangle is centered in the original rectangle.
-func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, height float64)
+func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, height float64) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 float64
+	arg1 = float64(x)
+
+	var arg2 float64
+	arg2 = float64(y)
+
+	var arg3 float64
+	arg3 = float64(width)
+
+	var arg4 float64
+	arg4 = float64(height)
+
+	C.pango_cairo_error_underline_path(arg0, arg1, arg2, arg3, arg4)
+}
 
 // FontMapGetDefault: gets a default `PangoCairoFontMap` to use with Cairo.
 //
@@ -107,7 +204,14 @@ func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, 
 // Note that since Pango 1.32.6, the default fontmap is per-thread. Each thread
 // gets its own default fontmap. In this way, PangoCairo can be used safely from
 // multiple threads.
-func FontMapGetDefault() pango.fontMap
+func FontMapGetDefault() pango.FontMap {
+	c0 := C.pango_cairo_font_map_get_default()
+
+	var ret0 pango.FontMap
+	ret0 = wrapFontMap(c0)
+
+	return ret0
+}
 
 // NewFontMap: creates a new `PangoCairoFontMap` object.
 //
@@ -124,35 +228,79 @@ func FontMapGetDefault() pango.fontMap
 // (fontconfig), win32, and coretext. If requested type is not available, NULL
 // is returned. Ie. this is only useful for testing, when at least two backends
 // are compiled in.
-func NewFontMap() pango.fontMap
+func NewFontMap() pango.FontMap {
+	c0 := C.pango_cairo_font_map_new()
+
+	var ret0 pango.FontMap
+	ret0 = wrapFontMap(c0)
+
+	return ret0
+}
 
 // FontMapNewForFontType: creates a new `PangoCairoFontMap` object of the type
 // suitable to be used with cairo font backend of type @fonttype.
 //
 // In most cases one should simply use [type_func@PangoCairo.FontMap.new], or in
 // fact in most of those cases, just use [func@PangoCairo.FontMap.get_default].
-func FontMapNewForFontType(fonttype cairo.FontType) pango.fontMap
+func FontMapNewForFontType(fonttype cairo.FontType) pango.FontMap {
+	var arg0 cairo.FontType
+	arg0 = FontType(fonttype)
+
+	c0 := C.pango_cairo_font_map_new_for_font_type(arg0)
+
+	var ret0 pango.FontMap
+	ret0 = wrapFontMap(c0)
+
+	return ret0
+}
 
 // GlyphStringPath: adds the glyphs in @glyphs to the current path in the
 // specified cairo context.
 //
 // The origin of the glyphs (the left edge of the baseline) will be at the
 // current point of the cairo context.
-func GlyphStringPath(cr *cairo.Context, font pango.font, glyphs *pango.GlyphString)
+func GlyphStringPath(cr *cairo.Context, font pango.Font, glyphs *pango.GlyphString) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 pango.Font
+	arg1 = wrapFont(font)
+
+	var arg2 *pango.GlyphString
+	arg2 = wrapGlyphString(glyphs)
+
+	C.pango_cairo_glyph_string_path(arg0, arg1, arg2)
+}
 
 // LayoutLinePath: adds the text in `PangoLayoutLine` to the current path in the
 // specified cairo context.
 //
 // The origin of the glyphs (the left edge of the line) will be at the current
 // point of the cairo context.
-func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine)
+func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 *pango.LayoutLine
+	arg1 = wrapLayoutLine(line)
+
+	C.pango_cairo_layout_line_path(arg0, arg1)
+}
 
 // LayoutPath: adds the text in a `PangoLayout` to the current path in the
 // specified cairo context.
 //
 // The top-left corner of the `PangoLayout` will be at the current point of the
 // cairo context.
-func LayoutPath(cr *cairo.Context, layout pango.layout)
+func LayoutPath(cr *cairo.Context, layout pango.Layout) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 pango.Layout
+	arg1 = wrapLayout(layout)
+
+	C.pango_cairo_layout_path(arg0, arg1)
+}
 
 // ShowErrorUnderline: draw a squiggly line in the specified cairo context that
 // approximately covers the given rectangle in the style of an underline used to
@@ -160,7 +308,24 @@ func LayoutPath(cr *cairo.Context, layout pango.layout)
 //
 // The width of the underline is rounded to an integer number of up/down
 // segments and the resulting rectangle is centered in the original rectangle.
-func ShowErrorUnderline(cr *cairo.Context, x float64, y float64, width float64, height float64)
+func ShowErrorUnderline(cr *cairo.Context, x float64, y float64, width float64, height float64) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 float64
+	arg1 = float64(x)
+
+	var arg2 float64
+	arg2 = float64(y)
+
+	var arg3 float64
+	arg3 = float64(width)
+
+	var arg4 float64
+	arg4 = float64(height)
+
+	C.pango_cairo_show_error_underline(arg0, arg1, arg2, arg3, arg4)
+}
 
 // ShowGlyphItem: draws the glyphs in @glyph_item in the specified cairo
 // context,
@@ -174,37 +339,92 @@ func ShowErrorUnderline(cr *cairo.Context, x float64, y float64, width float64, 
 //
 // Note that @text is the start of the text for layout, which is then indexed by
 // `glyph_item->item->offset`.
-func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem)
+func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 string
+	arg1 = C.GoString(text)
+	defer C.free(unsafe.Pointer(text))
+
+	var arg2 *pango.GlyphItem
+	arg2 = wrapGlyphItem(glyphItem)
+
+	C.pango_cairo_show_glyph_item(arg0, arg1, arg2)
+}
 
 // ShowGlyphString: draws the glyphs in @glyphs in the specified cairo context.
 //
 // The origin of the glyphs (the left edge of the baseline) will be drawn at the
 // current point of the cairo context.
-func ShowGlyphString(cr *cairo.Context, font pango.font, glyphs *pango.GlyphString)
+func ShowGlyphString(cr *cairo.Context, font pango.Font, glyphs *pango.GlyphString) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 pango.Font
+	arg1 = wrapFont(font)
+
+	var arg2 *pango.GlyphString
+	arg2 = wrapGlyphString(glyphs)
+
+	C.pango_cairo_show_glyph_string(arg0, arg1, arg2)
+}
 
 // ShowLayout: draws a `PangoLayout` in the specified cairo context.
 //
 // The top-left corner of the `PangoLayout` will be drawn at the current point
 // of the cairo context.
-func ShowLayout(cr *cairo.Context, layout pango.layout)
+func ShowLayout(cr *cairo.Context, layout pango.Layout) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 pango.Layout
+	arg1 = wrapLayout(layout)
+
+	C.pango_cairo_show_layout(arg0, arg1)
+}
 
 // ShowLayoutLine: draws a `PangoLayoutLine` in the specified cairo context.
 //
 // The origin of the glyphs (the left edge of the line) will be drawn at the
 // current point of the cairo context.
-func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine)
+func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 *pango.LayoutLine
+	arg1 = wrapLayoutLine(line)
+
+	C.pango_cairo_show_layout_line(arg0, arg1)
+}
 
 // UpdateContext: updates a `PangoContext` previously created for use with Cairo
 // to match the current transformation and target surface of a Cairo context.
 //
 // If any layouts have been created for the context, it's necessary to call
 // [method@Pango.Layout.context_changed] on those layouts.
-func UpdateContext(cr *cairo.Context, context pango.context)
+func UpdateContext(cr *cairo.Context, context pango.Context) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 pango.Context
+	arg1 = wrapContext(context)
+
+	C.pango_cairo_update_context(arg0, arg1)
+}
 
 // UpdateLayout: updates the private `PangoContext` of a `PangoLayout` created
 // with [func@create_layout] to match the current transformation and target
 // surface of a Cairo context.
-func UpdateLayout(cr *cairo.Context, layout pango.layout)
+func UpdateLayout(cr *cairo.Context, layout pango.Layout) {
+	var arg0 *cairo.Context
+	arg0 = wrapContext(cr)
+
+	var arg1 pango.Layout
+	arg1 = wrapLayout(layout)
+
+	C.pango_cairo_update_layout(arg0, arg1)
+}
 
 // Font: `PangoCairoFont` is an interface exported by fonts for use with Cairo.
 //
@@ -220,7 +440,7 @@ type Font interface {
 // The actual type of the font map will depend on the particular font technology
 // Cairo was compiled to use.
 type FontMap interface {
-	CreateContext() pango.context
+	CreateContext() pango.Context
 	GetFontType() cairo.FontType
 	GetResolution() float64
 	SetDefault()

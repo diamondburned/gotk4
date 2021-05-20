@@ -333,7 +333,17 @@ func marshalTransformCategory(p uintptr) (interface{}, error) {
 	return TransformCategory(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-func SerializationErrorQuark() glib.Quark
+func SerializationErrorQuark() glib.Quark {
+	c0 := C.gsk_serialization_error_quark()
+
+	var ret0 glib.Quark
+	{
+		tmp := uint32(c0)
+		ret0 = Quark(tmp)
+	}
+
+	return ret0
+}
 
 // TransformParse: parses the given @string into a transform and puts it in
 // @out_transform. Strings printed via gsk_transform_to_string() can be read in
@@ -341,7 +351,21 @@ func SerializationErrorQuark() glib.Quark
 //
 // If @string does not describe a valid transform, false is returned and nil is
 // put in @out_transform.
-func TransformParse(string string) (*Transform, bool)
+func TransformParse(string string) (*Transform, bool) {
+	var arg0 string
+	arg0 = C.GoString(string)
+	defer C.free(unsafe.Pointer(string))
+
+	c0, c1 := C.gsk_transform_parse(arg0)
+
+	var ret0 **Transform
+	ret0 = wrapTransform(c0)
+
+	var ret1 bool
+	ret1 = gextras.Gobool(c1)
+
+	return ret0, ret1
+}
 
 // ColorStop: a color stop in a gradient node.
 type ColorStop struct {
@@ -357,7 +381,7 @@ func wrapColorStop(p *C.GskColorStop) *ColorStop {
 	var v ColorStop
 
 	v.Offset = float32(p.offset)
-	v.Color = wrapgdk.RGBA(p.color)
+	v.Color = wrapRGBA(p.color)
 
 	return &v
 }
@@ -436,7 +460,7 @@ type RoundedRect struct {
 func wrapRoundedRect(p *C.GskRoundedRect) *RoundedRect {
 	var v RoundedRect
 
-	v.Bounds = wrapgraphene.Rect(p.bounds)
+	v.Bounds = wrapRect(p.bounds)
 
 	return &v
 }
@@ -462,8 +486,8 @@ type ShaderArgsBuilder struct {
 func wrapShaderArgsBuilder(p *C.GskShaderArgsBuilder) *ShaderArgsBuilder {
 	v := ShaderArgsBuilder{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*ShaderArgsBuilder).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ShaderArgsBuilder).free)
 
 	return &v
 }
@@ -483,7 +507,7 @@ func (S *ShaderArgsBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(S.native)
 }
 
-func NewShaderArgsBuilder(shader gLShader, initialValues *glib.Bytes) *ShaderArgsBuilder
+func NewShaderArgsBuilder(shader GLShader, initialValues *glib.Bytes) *ShaderArgsBuilder
 
 // Shadow: the shadow parameters in a shadow node.
 type Shadow struct {
@@ -502,7 +526,7 @@ type Shadow struct {
 func wrapShadow(p *C.GskShadow) *Shadow {
 	var v Shadow
 
-	v.Color = wrapgdk.RGBA(p.color)
+	v.Color = wrapRGBA(p.color)
 	v.Dx = float32(p.dx)
 	v.Dy = float32(p.dy)
 	v.Radius = float32(p.radius)
@@ -531,8 +555,8 @@ type Transform struct {
 func wrapTransform(p *C.GskTransform) *Transform {
 	v := Transform{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Transform).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Transform).free)
 
 	return &v
 }
@@ -557,22 +581,22 @@ func NewTransform() *Transform
 // BlendNode: a render node applying a blending function between its two child
 // nodes.
 type BlendNode interface {
-	renderNode
+	RenderNode
 
 	// GetBlendMode: retrieves the blend mode used by @node.
 	GetBlendMode() BlendMode
 	// GetBottomChild: retrieves the bottom RenderNode child of the @node.
-	GetBottomChild() renderNode
+	GetBottomChild() RenderNode
 	// GetTopChild: retrieves the top RenderNode child of the @node.
-	GetTopChild() renderNode
+	GetTopChild() RenderNode
 }
 
 type blendNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapBlendNode(obj *externglib.Object) BlendNode {
-	return &blendNode{RenderNode{obj}}
+	return blendNode{renderNode{obj}}
 }
 
 func marshalBlendNode(p uintptr) (interface{}, error) {
@@ -581,30 +605,30 @@ func marshalBlendNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewBlendNode(bottom renderNode, top renderNode, blendMode BlendMode) BlendNode
+func NewBlendNode(bottom RenderNode, top RenderNode, blendMode BlendMode) BlendNode
 
 func (b blendNode) GetBlendMode() BlendMode
 
-func (b blendNode) GetBottomChild() renderNode
+func (b blendNode) GetBottomChild() RenderNode
 
-func (b blendNode) GetTopChild() renderNode
+func (b blendNode) GetTopChild() RenderNode
 
 // BlurNode: a render node applying a blur effect to its single child.
 type BlurNode interface {
-	renderNode
+	RenderNode
 
 	// GetChild: retrieves the child RenderNode of the blur @node.
-	GetChild() renderNode
+	GetChild() RenderNode
 	// GetRadius: retrieves the blur radius of the @node.
 	GetRadius() float32
 }
 
 type blurNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapBlurNode(obj *externglib.Object) BlurNode {
-	return &blurNode{RenderNode{obj}}
+	return blurNode{renderNode{obj}}
 }
 
 func marshalBlurNode(p uintptr) (interface{}, error) {
@@ -613,15 +637,15 @@ func marshalBlurNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewBlurNode(child renderNode, radius float32) BlurNode
+func NewBlurNode(child RenderNode, radius float32) BlurNode
 
-func (b blurNode) GetChild() renderNode
+func (b blurNode) GetChild() RenderNode
 
 func (b blurNode) GetRadius() float32
 
 // BorderNode: a render node for a border.
 type BorderNode interface {
-	renderNode
+	RenderNode
 
 	// GetColors: retrieves the colors of the border.
 	GetColors() *gdk.RGBA
@@ -632,11 +656,11 @@ type BorderNode interface {
 }
 
 type borderNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapBorderNode(obj *externglib.Object) BorderNode {
-	return &borderNode{RenderNode{obj}}
+	return borderNode{renderNode{obj}}
 }
 
 func marshalBorderNode(p uintptr) (interface{}, error) {
@@ -655,7 +679,7 @@ func (b borderNode) GetWidths() [4]float32
 
 // CairoNode: a render node for a Cairo surface.
 type CairoNode interface {
-	renderNode
+	RenderNode
 
 	// GetDrawContext: creates a Cairo context for drawing using the surface
 	// associated to the render node.
@@ -668,11 +692,11 @@ type CairoNode interface {
 }
 
 type cairoNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapCairoNode(obj *externglib.Object) CairoNode {
-	return &cairoNode{RenderNode{obj}}
+	return cairoNode{renderNode{obj}}
 }
 
 func marshalCairoNode(p uintptr) (interface{}, error) {
@@ -688,15 +712,15 @@ func (c cairoNode) GetDrawContext() *cairo.Context
 func (c cairoNode) GetSurface() *cairo.Surface
 
 type CairoRenderer interface {
-	renderer
-}
-
-type cairoRenderer struct {
 	Renderer
 }
 
+type cairoRenderer struct {
+	renderer
+}
+
 func wrapCairoRenderer(obj *externglib.Object) CairoRenderer {
-	return &cairoRenderer{Renderer{*externglib.Object{obj}}}
+	return cairoRenderer{renderer{*externglib.Object{obj}}}
 }
 
 func marshalCairoRenderer(p uintptr) (interface{}, error) {
@@ -709,20 +733,20 @@ func NewCairoRenderer() CairoRenderer
 
 // ClipNode: a render node applying a rectangular clip to its single child node.
 type ClipNode interface {
-	renderNode
+	RenderNode
 
 	// GetChild: gets the child node that is getting clipped by the given @node.
-	GetChild() renderNode
+	GetChild() RenderNode
 	// GetClip: retrieves the clip rectangle for @node.
 	GetClip() *graphene.Rect
 }
 
 type clipNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapClipNode(obj *externglib.Object) ClipNode {
-	return &clipNode{RenderNode{obj}}
+	return clipNode{renderNode{obj}}
 }
 
 func marshalClipNode(p uintptr) (interface{}, error) {
@@ -731,20 +755,20 @@ func marshalClipNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewClipNode(child renderNode, clip *graphene.Rect) ClipNode
+func NewClipNode(child RenderNode, clip *graphene.Rect) ClipNode
 
-func (c clipNode) GetChild() renderNode
+func (c clipNode) GetChild() RenderNode
 
 func (c clipNode) GetClip() *graphene.Rect
 
 // ColorMatrixNode: a render node controlling the color matrix of its single
 // child node.
 type ColorMatrixNode interface {
-	renderNode
+	RenderNode
 
 	// GetChild: gets the child node that is getting its colors modified by the
 	// given @node.
-	GetChild() renderNode
+	GetChild() RenderNode
 	// GetColorMatrix: retrieves the color matrix used by the @node.
 	GetColorMatrix() *graphene.Matrix
 	// GetColorOffset: retrieves the color offset used by the @node.
@@ -752,11 +776,11 @@ type ColorMatrixNode interface {
 }
 
 type colorMatrixNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapColorMatrixNode(obj *externglib.Object) ColorMatrixNode {
-	return &colorMatrixNode{RenderNode{obj}}
+	return colorMatrixNode{renderNode{obj}}
 }
 
 func marshalColorMatrixNode(p uintptr) (interface{}, error) {
@@ -765,9 +789,9 @@ func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewColorMatrixNode(child renderNode, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) ColorMatrixNode
+func NewColorMatrixNode(child RenderNode, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) ColorMatrixNode
 
-func (c colorMatrixNode) GetChild() renderNode
+func (c colorMatrixNode) GetChild() RenderNode
 
 func (c colorMatrixNode) GetColorMatrix() *graphene.Matrix
 
@@ -775,18 +799,18 @@ func (c colorMatrixNode) GetColorOffset() *graphene.Vec4
 
 // ColorNode: a render node for a solid color.
 type ColorNode interface {
-	renderNode
+	RenderNode
 
 	// GetColor: retrieves the color of the given @node.
 	GetColor() *gdk.RGBA
 }
 
 type colorNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapColorNode(obj *externglib.Object) ColorNode {
-	return &colorNode{RenderNode{obj}}
+	return colorNode{renderNode{obj}}
 }
 
 func marshalColorNode(p uintptr) (interface{}, error) {
@@ -801,7 +825,7 @@ func (c colorNode) GetColor() *gdk.RGBA
 
 // ConicGradientNode: a render node for a conic gradient.
 type ConicGradientNode interface {
-	renderNode
+	RenderNode
 
 	// GetCenter: retrieves the center pointer for the gradient.
 	GetCenter() *graphene.Point
@@ -814,11 +838,11 @@ type ConicGradientNode interface {
 }
 
 type conicGradientNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapConicGradientNode(obj *externglib.Object) ConicGradientNode {
-	return &conicGradientNode{RenderNode{obj}}
+	return conicGradientNode{renderNode{obj}}
 }
 
 func marshalConicGradientNode(p uintptr) (interface{}, error) {
@@ -839,20 +863,20 @@ func (c conicGradientNode) GetRotation() float32
 
 // ContainerNode: a render node that can contain other render nodes.
 type ContainerNode interface {
-	renderNode
+	RenderNode
 
 	// GetChild: gets one of the children of @container.
-	GetChild(idx uint) renderNode
+	GetChild(idx uint) RenderNode
 	// GetNChildren: retrieves the number of direct children of @node.
 	GetNChildren() uint
 }
 
 type containerNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapContainerNode(obj *externglib.Object) ContainerNode {
-	return &containerNode{RenderNode{obj}}
+	return containerNode{renderNode{obj}}
 }
 
 func marshalContainerNode(p uintptr) (interface{}, error) {
@@ -861,31 +885,31 @@ func marshalContainerNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewContainerNode(children []renderNode, nChildren uint) ContainerNode
+func NewContainerNode(children []RenderNode, nChildren uint) ContainerNode
 
-func (c containerNode) GetChild(idx uint) renderNode
+func (c containerNode) GetChild(idx uint) RenderNode
 
 func (c containerNode) GetNChildren() uint
 
 // CrossFadeNode: a render node cross fading between two child nodes.
 type CrossFadeNode interface {
-	renderNode
+	RenderNode
 
 	// GetEndChild: retrieves the child RenderNode at the end of the cross-fade.
-	GetEndChild() renderNode
+	GetEndChild() RenderNode
 	// GetProgress: retrieves the progress value of the cross fade.
 	GetProgress() float32
 	// GetStartChild: retrieves the child RenderNode at the beginning of the
 	// cross-fade.
-	GetStartChild() renderNode
+	GetStartChild() RenderNode
 }
 
 type crossFadeNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapCrossFadeNode(obj *externglib.Object) CrossFadeNode {
-	return &crossFadeNode{RenderNode{obj}}
+	return crossFadeNode{renderNode{obj}}
 }
 
 func marshalCrossFadeNode(p uintptr) (interface{}, error) {
@@ -894,31 +918,31 @@ func marshalCrossFadeNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCrossFadeNode(start renderNode, end renderNode, progress float32) CrossFadeNode
+func NewCrossFadeNode(start RenderNode, end RenderNode, progress float32) CrossFadeNode
 
-func (c crossFadeNode) GetEndChild() renderNode
+func (c crossFadeNode) GetEndChild() RenderNode
 
 func (c crossFadeNode) GetProgress() float32
 
-func (c crossFadeNode) GetStartChild() renderNode
+func (c crossFadeNode) GetStartChild() RenderNode
 
 // DebugNode: a render node that emits a debugging message when drawing its
 // child node.
 type DebugNode interface {
-	renderNode
+	RenderNode
 
 	// GetChild: gets the child node that is getting drawn by the given @node.
-	GetChild() renderNode
+	GetChild() RenderNode
 	// GetMessage: gets the debug message that was set on this node
 	GetMessage() string
 }
 
 type debugNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapDebugNode(obj *externglib.Object) DebugNode {
-	return &debugNode{RenderNode{obj}}
+	return debugNode{renderNode{obj}}
 }
 
 func marshalDebugNode(p uintptr) (interface{}, error) {
@@ -927,22 +951,22 @@ func marshalDebugNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewDebugNode(child renderNode, message string) DebugNode
+func NewDebugNode(child RenderNode, message string) DebugNode
 
-func (d debugNode) GetChild() renderNode
+func (d debugNode) GetChild() RenderNode
 
 func (d debugNode) GetMessage() string
 
 type GLRenderer interface {
-	renderer
-}
-
-type gLRenderer struct {
 	Renderer
 }
 
+type glRenderer struct {
+	renderer
+}
+
 func wrapGLRenderer(obj *externglib.Object) GLRenderer {
-	return &gLRenderer{Renderer{*externglib.Object{obj}}}
+	return glRenderer{renderer{*externglib.Object{obj}}}
 }
 
 func marshalGLRenderer(p uintptr) (interface{}, error) {
@@ -966,7 +990,7 @@ type GLShader interface {
 	// current GL context) and requires the renderer to be set up. This means
 	// that the widget has to be realized. Commonly you want to call this from
 	// the realize signal of a widget, or during widget snapshot.
-	Compile(renderer renderer) bool
+	Compile(renderer Renderer) bool
 	// FindUniformByName: looks for a uniform by the name @name, and returns the
 	// index of the uniform, or -1 if it was not found.
 	FindUniformByName(name string) int
@@ -1018,12 +1042,12 @@ type GLShader interface {
 	GetUniformType(idx int) GLUniformType
 }
 
-type gLShader struct {
+type glShader struct {
 	*externglib.Object
 }
 
 func wrapGLShader(obj *externglib.Object) GLShader {
-	return &gLShader{*externglib.Object{obj}}
+	return glShader{*externglib.Object{obj}}
 }
 
 func marshalGLShader(p uintptr) (interface{}, error) {
@@ -1036,61 +1060,61 @@ func NewGLShader(sourcecode *glib.Bytes) GLShader
 
 func NewGLShader(resourcePath string) GLShader
 
-func (g gLShader) Compile(renderer renderer) bool
+func (g glShader) Compile(renderer Renderer) bool
 
-func (g gLShader) FindUniformByName(name string) int
+func (g glShader) FindUniformByName(name string) int
 
-func (g gLShader) GetArgBool(args *glib.Bytes, idx int) bool
+func (g glShader) GetArgBool(args *glib.Bytes, idx int) bool
 
-func (g gLShader) GetArgFloat(args *glib.Bytes, idx int) float32
+func (g glShader) GetArgFloat(args *glib.Bytes, idx int) float32
 
-func (g gLShader) GetArgInt(args *glib.Bytes, idx int) int32
+func (g glShader) GetArgInt(args *glib.Bytes, idx int) int32
 
-func (g gLShader) GetArgUint(args *glib.Bytes, idx int) uint32
+func (g glShader) GetArgUint(args *glib.Bytes, idx int) uint32
 
-func (g gLShader) GetArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2)
+func (g glShader) GetArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2)
 
-func (g gLShader) GetArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3)
+func (g glShader) GetArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3)
 
-func (g gLShader) GetArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4)
+func (g glShader) GetArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4)
 
-func (g gLShader) GetArgsSize() uint
+func (g glShader) GetArgsSize() uint
 
-func (g gLShader) GetNTextures() int
+func (g glShader) GetNTextures() int
 
-func (g gLShader) GetNUniforms() int
+func (g glShader) GetNUniforms() int
 
-func (g gLShader) GetResource() string
+func (g glShader) GetResource() string
 
-func (g gLShader) GetSource() *glib.Bytes
+func (g glShader) GetSource() *glib.Bytes
 
-func (g gLShader) GetUniformName(idx int) string
+func (g glShader) GetUniformName(idx int) string
 
-func (g gLShader) GetUniformOffset(idx int) int
+func (g glShader) GetUniformOffset(idx int) int
 
-func (g gLShader) GetUniformType(idx int) GLUniformType
+func (g glShader) GetUniformType(idx int) GLUniformType
 
 // GLShaderNode: a render node using a GL shader when drawing its children
 // nodes.
 type GLShaderNode interface {
-	renderNode
+	RenderNode
 
 	// GetArgs: gets args for the node.
 	GetArgs() *glib.Bytes
 	// GetChild: gets one of the children.
-	GetChild(idx uint) renderNode
+	GetChild(idx uint) RenderNode
 	// GetNChildren: returns the number of children
 	GetNChildren() uint
 	// GetShader: gets shader code for the node.
-	GetShader() gLShader
+	GetShader() GLShader
 }
 
-type gLShaderNode struct {
-	RenderNode
+type glShaderNode struct {
+	renderNode
 }
 
 func wrapGLShaderNode(obj *externglib.Object) GLShaderNode {
-	return &gLShaderNode{RenderNode{obj}}
+	return glShaderNode{renderNode{obj}}
 }
 
 func marshalGLShaderNode(p uintptr) (interface{}, error) {
@@ -1099,19 +1123,19 @@ func marshalGLShaderNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGLShaderNode(shader gLShader, bounds *graphene.Rect, args *glib.Bytes, children []renderNode, nChildren uint) GLShaderNode
+func NewGLShaderNode(shader GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNode, nChildren uint) GLShaderNode
 
-func (g gLShaderNode) GetArgs() *glib.Bytes
+func (g glShaderNode) GetArgs() *glib.Bytes
 
-func (g gLShaderNode) GetChild(idx uint) renderNode
+func (g glShaderNode) GetChild(idx uint) RenderNode
 
-func (g gLShaderNode) GetNChildren() uint
+func (g glShaderNode) GetNChildren() uint
 
-func (g gLShaderNode) GetShader() gLShader
+func (g glShaderNode) GetShader() GLShader
 
 // InsetShadowNode: a render node for an inset shadow.
 type InsetShadowNode interface {
-	renderNode
+	RenderNode
 
 	// GetBlurRadius: retrieves the blur radius to apply to the shadow.
 	GetBlurRadius() float32
@@ -1128,11 +1152,11 @@ type InsetShadowNode interface {
 }
 
 type insetShadowNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapInsetShadowNode(obj *externglib.Object) InsetShadowNode {
-	return &insetShadowNode{RenderNode{obj}}
+	return insetShadowNode{renderNode{obj}}
 }
 
 func marshalInsetShadowNode(p uintptr) (interface{}, error) {
@@ -1157,7 +1181,7 @@ func (i insetShadowNode) GetSpread() float32
 
 // LinearGradientNode: a render node for a linear gradient.
 type LinearGradientNode interface {
-	renderNode
+	RenderNode
 
 	// GetColorStops: retrieves the color stops in the gradient.
 	GetColorStops() (uint, []ColorStop)
@@ -1170,11 +1194,11 @@ type LinearGradientNode interface {
 }
 
 type linearGradientNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapLinearGradientNode(obj *externglib.Object) LinearGradientNode {
-	return &linearGradientNode{RenderNode{obj}}
+	return linearGradientNode{renderNode{obj}}
 }
 
 func marshalLinearGradientNode(p uintptr) (interface{}, error) {
@@ -1195,21 +1219,21 @@ func (l linearGradientNode) GetStart() *graphene.Point
 
 // OpacityNode: a render node controlling the opacity of its single child node.
 type OpacityNode interface {
-	renderNode
+	RenderNode
 
 	// GetChild: gets the child node that is getting opacityed by the given
 	// @node.
-	GetChild() renderNode
+	GetChild() RenderNode
 	// GetOpacity: gets the transparency factor for an opacity node.
 	GetOpacity() float32
 }
 
 type opacityNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapOpacityNode(obj *externglib.Object) OpacityNode {
-	return &opacityNode{RenderNode{obj}}
+	return opacityNode{renderNode{obj}}
 }
 
 func marshalOpacityNode(p uintptr) (interface{}, error) {
@@ -1218,15 +1242,15 @@ func marshalOpacityNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewOpacityNode(child renderNode, opacity float32) OpacityNode
+func NewOpacityNode(child RenderNode, opacity float32) OpacityNode
 
-func (o opacityNode) GetChild() renderNode
+func (o opacityNode) GetChild() RenderNode
 
 func (o opacityNode) GetOpacity() float32
 
 // OutsetShadowNode: a render node for an outset shadow.
 type OutsetShadowNode interface {
-	renderNode
+	RenderNode
 
 	// GetBlurRadius: retrieves the blur radius of the shadow.
 	GetBlurRadius() float32
@@ -1243,11 +1267,11 @@ type OutsetShadowNode interface {
 }
 
 type outsetShadowNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapOutsetShadowNode(obj *externglib.Object) OutsetShadowNode {
-	return &outsetShadowNode{RenderNode{obj}}
+	return outsetShadowNode{renderNode{obj}}
 }
 
 func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
@@ -1272,7 +1296,7 @@ func (o outsetShadowNode) GetSpread() float32
 
 // RadialGradientNode: a render node for a radial gradient.
 type RadialGradientNode interface {
-	renderNode
+	RenderNode
 
 	// GetCenter: retrieves the center pointer for the gradient.
 	GetCenter() *graphene.Point
@@ -1291,11 +1315,11 @@ type RadialGradientNode interface {
 }
 
 type radialGradientNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapRadialGradientNode(obj *externglib.Object) RadialGradientNode {
-	return &radialGradientNode{RenderNode{obj}}
+	return radialGradientNode{renderNode{obj}}
 }
 
 func marshalRadialGradientNode(p uintptr) (interface{}, error) {
@@ -1327,12 +1351,12 @@ type Renderer interface {
 
 	// GetSurface: retrieves the Surface set using gsk_renderer_realize(). If
 	// the renderer has not been realized yet, nil will be returned.
-	GetSurface() gdk.surface
+	GetSurface() gdk.Surface
 	// IsRealized: checks whether the @renderer is realized or not.
 	IsRealized() bool
 	// Realize: creates the resources needed by the @renderer to render the
 	// scene graph.
-	Realize(surface gdk.surface) bool
+	Realize(surface gdk.Surface) bool
 	// Render: renders the scene graph, described by a tree of RenderNode
 	// instances, ensuring that the given @region gets redrawn.
 	//
@@ -1343,7 +1367,7 @@ type Renderer interface {
 	//
 	// The @renderer will acquire a reference on the RenderNode tree while the
 	// rendering is in progress.
-	Render(root renderNode, region *cairo.Region)
+	Render(root RenderNode, region *cairo.Region)
 	// RenderTexture: renders the scene graph, described by a tree of RenderNode
 	// instances, to a Texture.
 	//
@@ -1352,7 +1376,7 @@ type Renderer interface {
 	//
 	// If you want to apply any transformations to @root, you should put it into
 	// a transform node and pass that node instead.
-	RenderTexture(root renderNode, viewport *graphene.Rect) gdk.texture
+	RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture
 	// Unrealize: releases all the resources created by gsk_renderer_realize().
 	Unrealize()
 }
@@ -1362,7 +1386,7 @@ type renderer struct {
 }
 
 func wrapRenderer(obj *externglib.Object) Renderer {
-	return &renderer{*externglib.Object{obj}}
+	return renderer{*externglib.Object{obj}}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
@@ -1371,36 +1395,36 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRenderer(surface gdk.surface) Renderer
+func NewRenderer(surface gdk.Surface) Renderer
 
-func (r renderer) GetSurface() gdk.surface
+func (r renderer) GetSurface() gdk.Surface
 
 func (r renderer) IsRealized() bool
 
-func (r renderer) Realize(surface gdk.surface) bool
+func (r renderer) Realize(surface gdk.Surface) bool
 
-func (r renderer) Render(root renderNode, region *cairo.Region)
+func (r renderer) Render(root RenderNode, region *cairo.Region)
 
-func (r renderer) RenderTexture(root renderNode, viewport *graphene.Rect) gdk.texture
+func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture
 
 func (r renderer) Unrealize()
 
 // RepeatNode: a render node repeating its single child node.
 type RepeatNode interface {
-	renderNode
+	RenderNode
 
 	// GetChild: retrieves the child of @node.
-	GetChild() renderNode
+	GetChild() RenderNode
 	// GetChildBounds: retrieves the bounding rectangle of the child of @node.
 	GetChildBounds() *graphene.Rect
 }
 
 type repeatNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapRepeatNode(obj *externglib.Object) RepeatNode {
-	return &repeatNode{RenderNode{obj}}
+	return repeatNode{renderNode{obj}}
 }
 
 func marshalRepeatNode(p uintptr) (interface{}, error) {
@@ -1409,23 +1433,23 @@ func marshalRepeatNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRepeatNode(bounds *graphene.Rect, child renderNode, childBounds *graphene.Rect) RepeatNode
+func NewRepeatNode(bounds *graphene.Rect, child RenderNode, childBounds *graphene.Rect) RepeatNode
 
-func (r repeatNode) GetChild() renderNode
+func (r repeatNode) GetChild() RenderNode
 
 func (r repeatNode) GetChildBounds() *graphene.Rect
 
 // RepeatingLinearGradientNode: a render node for a repeating linear gradient.
 type RepeatingLinearGradientNode interface {
-	renderNode
-}
-
-type repeatingLinearGradientNode struct {
 	RenderNode
 }
 
+type repeatingLinearGradientNode struct {
+	renderNode
+}
+
 func wrapRepeatingLinearGradientNode(obj *externglib.Object) RepeatingLinearGradientNode {
-	return &repeatingLinearGradientNode{RenderNode{obj}}
+	return repeatingLinearGradientNode{renderNode{obj}}
 }
 
 func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
@@ -1438,15 +1462,15 @@ func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point
 
 // RepeatingRadialGradientNode: a render node for a repeating radial gradient.
 type RepeatingRadialGradientNode interface {
-	renderNode
-}
-
-type repeatingRadialGradientNode struct {
 	RenderNode
 }
 
+type repeatingRadialGradientNode struct {
+	renderNode
+}
+
 func wrapRepeatingRadialGradientNode(obj *externglib.Object) RepeatingRadialGradientNode {
-	return &repeatingRadialGradientNode{RenderNode{obj}}
+	return repeatingRadialGradientNode{renderNode{obj}}
 }
 
 func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
@@ -1460,21 +1484,21 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 // RoundedClipNode: a render node applying a rounded rectangle clip to its
 // single child.
 type RoundedClipNode interface {
-	renderNode
+	RenderNode
 
 	// GetChild: gets the child node that is getting clipped by the given @node.
-	GetChild() renderNode
+	GetChild() RenderNode
 	// GetClip: retrievs the rounded rectangle used to clip the contents of the
 	// @node.
 	GetClip() *RoundedRect
 }
 
 type roundedClipNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapRoundedClipNode(obj *externglib.Object) RoundedClipNode {
-	return &roundedClipNode{RenderNode{obj}}
+	return roundedClipNode{renderNode{obj}}
 }
 
 func marshalRoundedClipNode(p uintptr) (interface{}, error) {
@@ -1483,19 +1507,19 @@ func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRoundedClipNode(child renderNode, clip *RoundedRect) RoundedClipNode
+func NewRoundedClipNode(child RenderNode, clip *RoundedRect) RoundedClipNode
 
-func (r roundedClipNode) GetChild() renderNode
+func (r roundedClipNode) GetChild() RenderNode
 
 func (r roundedClipNode) GetClip() *RoundedRect
 
 // ShadowNode: a render node drawing one or more shadows behind its single child
 // node.
 type ShadowNode interface {
-	renderNode
+	RenderNode
 
 	// GetChild: retrieves the child RenderNode of the shadow @node.
-	GetChild() renderNode
+	GetChild() RenderNode
 	// GetNShadows: retrieves the number of shadows in the @node.
 	GetNShadows() uint
 	// GetShadow: retrieves the shadow data at the given index @i.
@@ -1503,11 +1527,11 @@ type ShadowNode interface {
 }
 
 type shadowNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapShadowNode(obj *externglib.Object) ShadowNode {
-	return &shadowNode{RenderNode{obj}}
+	return shadowNode{renderNode{obj}}
 }
 
 func marshalShadowNode(p uintptr) (interface{}, error) {
@@ -1516,9 +1540,9 @@ func marshalShadowNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewShadowNode(child renderNode, shadows []Shadow, nShadows uint) ShadowNode
+func NewShadowNode(child RenderNode, shadows []Shadow, nShadows uint) ShadowNode
 
-func (s shadowNode) GetChild() renderNode
+func (s shadowNode) GetChild() RenderNode
 
 func (s shadowNode) GetNShadows() uint
 
@@ -1526,12 +1550,12 @@ func (s shadowNode) GetShadow(i uint) *Shadow
 
 // TextNode: a render node drawing a set of glyphs.
 type TextNode interface {
-	renderNode
+	RenderNode
 
 	// GetColor: retrieves the color used by the text @node.
 	GetColor() *gdk.RGBA
 	// GetFont: returns the font used by the text @node.
-	GetFont() pango.font
+	GetFont() pango.Font
 	// GetGlyphs: retrieves the glyph information in the @node.
 	GetGlyphs() (uint, []pango.GlyphInfo)
 	// GetNumGlyphs: retrieves the number of glyphs in the text node.
@@ -1543,11 +1567,11 @@ type TextNode interface {
 }
 
 type textNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapTextNode(obj *externglib.Object) TextNode {
-	return &textNode{RenderNode{obj}}
+	return textNode{renderNode{obj}}
 }
 
 func marshalTextNode(p uintptr) (interface{}, error) {
@@ -1556,11 +1580,11 @@ func marshalTextNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTextNode(font pango.font, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) TextNode
+func NewTextNode(font pango.Font, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) TextNode
 
 func (t textNode) GetColor() *gdk.RGBA
 
-func (t textNode) GetFont() pango.font
+func (t textNode) GetFont() pango.Font
 
 func (t textNode) GetGlyphs() (uint, []pango.GlyphInfo)
 
@@ -1572,18 +1596,18 @@ func (t textNode) HasColorGlyphs() bool
 
 // TextureNode: a render node for a Texture.
 type TextureNode interface {
-	renderNode
+	RenderNode
 
 	// GetTexture: retrieves the Texture used when creating this RenderNode.
-	GetTexture() gdk.texture
+	GetTexture() gdk.Texture
 }
 
 type textureNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapTextureNode(obj *externglib.Object) TextureNode {
-	return &textureNode{RenderNode{obj}}
+	return textureNode{renderNode{obj}}
 }
 
 func marshalTextureNode(p uintptr) (interface{}, error) {
@@ -1592,27 +1616,27 @@ func marshalTextureNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTextureNode(texture gdk.texture, bounds *graphene.Rect) TextureNode
+func NewTextureNode(texture gdk.Texture, bounds *graphene.Rect) TextureNode
 
-func (t textureNode) GetTexture() gdk.texture
+func (t textureNode) GetTexture() gdk.Texture
 
 // TransformNode: a render node applying a Transform to its single child node.
 type TransformNode interface {
-	renderNode
+	RenderNode
 
 	// GetChild: gets the child node that is getting transformed by the given
 	// @node.
-	GetChild() renderNode
+	GetChild() RenderNode
 	// GetTransform: retrieves the Transform used by the @node.
 	GetTransform() *Transform
 }
 
 type transformNode struct {
-	RenderNode
+	renderNode
 }
 
 func wrapTransformNode(obj *externglib.Object) TransformNode {
-	return &transformNode{RenderNode{obj}}
+	return transformNode{renderNode{obj}}
 }
 
 func marshalTransformNode(p uintptr) (interface{}, error) {
@@ -1621,22 +1645,22 @@ func marshalTransformNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTransformNode(child renderNode, transform *Transform) TransformNode
+func NewTransformNode(child RenderNode, transform *Transform) TransformNode
 
-func (t transformNode) GetChild() renderNode
+func (t transformNode) GetChild() RenderNode
 
 func (t transformNode) GetTransform() *Transform
 
 type VulkanRenderer interface {
-	renderer
-}
-
-type vulkanRenderer struct {
 	Renderer
 }
 
+type vulkanRenderer struct {
+	renderer
+}
+
 func wrapVulkanRenderer(obj *externglib.Object) VulkanRenderer {
-	return &vulkanRenderer{Renderer{*externglib.Object{obj}}}
+	return vulkanRenderer{renderer{*externglib.Object{obj}}}
 }
 
 func marshalVulkanRenderer(p uintptr) (interface{}, error) {

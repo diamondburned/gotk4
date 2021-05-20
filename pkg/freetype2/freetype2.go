@@ -26,7 +26,9 @@ func init() {
 
 type Int32 int32
 
-func LibraryVersion()
+func LibraryVersion() {
+	C.FT_Library_Version()
+}
 
 type Bitmap struct {
 	native *C.FT_Bitmap
@@ -35,8 +37,8 @@ type Bitmap struct {
 func wrapBitmap(p *C.FT_Bitmap) *Bitmap {
 	v := Bitmap{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Bitmap).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Bitmap).free)
 
 	return &v
 }
@@ -63,8 +65,8 @@ type Face struct {
 func wrapFace(p *C.FT_Face) *Face {
 	v := Face{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Face).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Face).free)
 
 	return &v
 }
@@ -91,8 +93,8 @@ type Library struct {
 func wrapLibrary(p *C.FT_Library) *Library {
 	v := Library{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Library).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Library).free)
 
 	return &v
 }

@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,7 +52,20 @@ const (
 
 // TagFromLanguage: finds the OpenType language-system tag best describing
 // @language.
-func TagFromLanguage(language *pango.Language) Tag
+func TagFromLanguage(language *pango.Language) Tag {
+	var arg0 *pango.Language
+	arg0 = wrapLanguage(language)
+
+	c0 := C.pango_ot_tag_from_language(arg0)
+
+	var ret0 Tag
+	{
+		tmp := uint32(c0)
+		ret0 = Tag(tmp)
+	}
+
+	return ret0
+}
 
 // TagFromScript: finds the OpenType script tag corresponding to @script.
 //
@@ -62,10 +76,36 @@ func TagFromLanguage(language *pango.Language) Tag
 // Note that multiple Script values may map to the same OpenType script tag. In
 // particular, PANGO_SCRIPT_HIRAGANA and PANGO_SCRIPT_KATAKANA both map to the
 // OT tag 'kana'.
-func TagFromScript(script pango.Script) Tag
+func TagFromScript(script pango.Script) Tag {
+	var arg0 pango.Script
+	arg0 = Script(script)
+
+	c0 := C.pango_ot_tag_from_script(arg0)
+
+	var ret0 Tag
+	{
+		tmp := uint32(c0)
+		ret0 = Tag(tmp)
+	}
+
+	return ret0
+}
 
 // TagToLanguage: finds a Language corresponding to @language_tag.
-func TagToLanguage(languageTag Tag) *pango.Language
+func TagToLanguage(languageTag Tag) *pango.Language {
+	var arg0 Tag
+	{
+		tmp := uint32(languageTag)
+		arg0 = Tag(tmp)
+	}
+
+	c0 := C.pango_ot_tag_to_language(arg0)
+
+	var ret0 *pango.Language
+	ret0 = wrapLanguage(c0)
+
+	return ret0
+}
 
 // TagToScript: finds the Script corresponding to @script_tag.
 //
@@ -75,7 +115,20 @@ func TagToLanguage(languageTag Tag) *pango.Language
 // such cases, the Script value with the smallest value is returned. In
 // particular, PANGO_SCRIPT_HIRAGANA and PANGO_SCRIPT_KATAKANA both map to the
 // OT tag 'kana'. This function will return PANGO_SCRIPT_HIRAGANA for 'kana'.
-func TagToScript(scriptTag Tag) pango.Script
+func TagToScript(scriptTag Tag) pango.Script {
+	var arg0 Tag
+	{
+		tmp := uint32(scriptTag)
+		arg0 = Tag(tmp)
+	}
+
+	c0 := C.pango_ot_tag_to_script(arg0)
+
+	var ret0 pango.Script
+	ret0 = Script(c0)
+
+	return ret0
+}
 
 type Buffer struct {
 	native *C.PangoOTBuffer
@@ -84,8 +137,8 @@ type Buffer struct {
 func wrapBuffer(p *C.PangoOTBuffer) *Buffer {
 	v := Buffer{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Buffer).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Buffer).free)
 
 	return &v
 }
@@ -105,7 +158,7 @@ func (B *Buffer) Native() unsafe.Pointer {
 	return unsafe.Pointer(B.native)
 }
 
-func NewBuffer(font pangofc.font) *Buffer
+func NewBuffer(font pangofc.Font) *Buffer
 
 // FeatureMap: the OTFeatureMap typedef is used to represent an OpenType feature
 // with the property bit associated with it. The feature tag is represented as a
@@ -220,13 +273,13 @@ type RulesetDescription struct {
 func wrapRulesetDescription(p *C.PangoOTRulesetDescription) *RulesetDescription {
 	var v RulesetDescription
 
-	v.Script = pango.Script(p.script)
-	v.Language = wrap * pango.Language(p.language)
-	v.StaticGsubFeatures = wrap * FeatureMap(p.static_gsub_features)
+	v.Script = Script(p.script)
+	v.Language = wrapLanguage(p.language)
+	v.StaticGsubFeatures = wrapFeatureMap(p.static_gsub_features)
 	v.NStaticGsubFeatures = uint(p.n_static_gsub_features)
-	v.StaticGposFeatures = wrap * FeatureMap(p.static_gpos_features)
+	v.StaticGposFeatures = wrapFeatureMap(p.static_gpos_features)
 	v.NStaticGposFeatures = uint(p.n_static_gpos_features)
-	v.OtherFeatures = wrap * FeatureMap(p.other_features)
+	v.OtherFeatures = wrapFeatureMap(p.other_features)
 	v.NOtherFeatures = uint(p.n_other_features)
 
 	return &v
@@ -292,7 +345,7 @@ type info struct {
 }
 
 func wrapInfo(obj *externglib.Object) Info {
-	return &info{*externglib.Object{obj}}
+	return info{*externglib.Object{obj}}
 }
 
 func marshalInfo(p uintptr) (interface{}, error) {
@@ -353,7 +406,7 @@ type ruleset struct {
 }
 
 func wrapRuleset(obj *externglib.Object) Ruleset {
-	return &ruleset{*externglib.Object{obj}}
+	return ruleset{*externglib.Object{obj}}
 }
 
 func marshalRuleset(p uintptr) (interface{}, error) {
@@ -362,11 +415,11 @@ func marshalRuleset(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRuleset(info info) Ruleset
+func NewRuleset(info Info) Ruleset
 
-func NewRuleset(info info, script pango.Script, language *pango.Language) Ruleset
+func NewRuleset(info Info, script pango.Script, language *pango.Language) Ruleset
 
-func NewRuleset(info info, desc *RulesetDescription) Ruleset
+func NewRuleset(info Info, desc *RulesetDescription) Ruleset
 
 func (r ruleset) AddFeature(tableType TableType, featureIndex uint, propertyBit uint32)
 

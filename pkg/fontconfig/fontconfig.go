@@ -23,7 +23,9 @@ func init() {
 	})
 }
 
-func Init()
+func Init() {
+	C.FcInit()
+}
 
 type Pattern struct {
 	native *C.FcPattern
@@ -32,8 +34,8 @@ type Pattern struct {
 func wrapPattern(p *C.FcPattern) *Pattern {
 	v := Pattern{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Pattern).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Pattern).free)
 
 	return &v
 }
@@ -60,8 +62,8 @@ type CharSet struct {
 func wrapCharSet(p *C.FcCharSet) *CharSet {
 	v := CharSet{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*CharSet).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*CharSet).free)
 
 	return &v
 }

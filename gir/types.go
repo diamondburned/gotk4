@@ -70,6 +70,7 @@ type CallableAttrs struct {
 	Parameters  *Parameters  `xml:"http://www.gtk.org/introspection/core/1.0 parameters"`
 	ReturnValue *ReturnValue `xml:"http://www.gtk.org/introspection/core/1.0 return-value"`
 	InfoAttrs
+	InfoElements
 }
 
 type Callback struct {
@@ -105,7 +106,6 @@ type Constant struct{}
 type Constructor struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 constructor"`
 	CallableAttrs
-	InfoElements
 }
 
 type Doc struct {
@@ -146,7 +146,6 @@ type Field struct {
 type Function struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 function"`
 	CallableAttrs
-	DocElements
 }
 
 type Implements struct {
@@ -210,9 +209,7 @@ type Member struct {
 
 type Method struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 method"`
-
 	CallableAttrs
-	InfoElements
 }
 
 type Namespace struct {
@@ -349,7 +346,5 @@ type VirtualMethod struct {
 	XMLName xml.Name `xml:"http://www.gtk.org/introspection/core/1.0 virtual-method"`
 
 	Invoker string `xml:"name,attr"`
-
 	CallableAttrs
-	InfoElements
 }

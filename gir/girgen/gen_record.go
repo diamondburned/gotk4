@@ -43,12 +43,12 @@ var recordTmpl = newGoTemplate(`
 		{{ end }}
 
 		{{ range .PublicFields -}}
-		{{ $.Ng.AnyTypeConverter (printf "p.%s" .Name) (printf "v.%s" .GoName) .AnyType }}
+		{{ $.Ng.CGoConverter (printf "p.%s" .Name) (printf "v.%s" .GoName) .AnyType }}
 		{{ end }}
 
 		{{ if .NeedsNative }}
-		runtime.SetFinalizer(v, nil)
-		runtime.SetFinalizer(v, (*{{ .GoName }}).free)
+		runtime.SetFinalizer(&v, nil)
+		runtime.SetFinalizer(&v, (*{{ .GoName }}).free)
 		{{ end }}
 		return &v
 	}
@@ -93,6 +93,9 @@ type recordField struct {
 	Name   string
 	GoName string
 	GoType string
+}
+
+type recordMethod struct {
 }
 
 func (rg *recordGenerator) Use(rec gir.Record) bool {

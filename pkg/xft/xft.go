@@ -25,7 +25,9 @@ func init() {
 	})
 }
 
-func Init()
+func Init() {
+	C.XftInit()
+}
 
 type Color struct {
 	native *C.XftColor
@@ -34,8 +36,8 @@ type Color struct {
 func wrapColor(p *C.XftColor) *Color {
 	v := Color{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Color).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Color).free)
 
 	return &v
 }
@@ -62,8 +64,8 @@ type Draw struct {
 func wrapDraw(p *C.XftDraw) *Draw {
 	v := Draw{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Draw).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Draw).free)
 
 	return &v
 }
@@ -90,8 +92,8 @@ type Font struct {
 func wrapFont(p *C.XftFont) *Font {
 	v := Font{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*Font).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Font).free)
 
 	return &v
 }
@@ -118,8 +120,8 @@ type GlyphSpec struct {
 func wrapGlyphSpec(p *C.XftGlyphSpec) *GlyphSpec {
 	v := GlyphSpec{native: p}
 
-	runtime.SetFinalizer(v, nil)
-	runtime.SetFinalizer(v, (*GlyphSpec).free)
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GlyphSpec).free)
 
 	return &v
 }

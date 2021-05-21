@@ -7557,8 +7557,8 @@ func wrapInputMessage(p *C.GInputMessage) *InputMessage {
 
 	v.Address = wrapSocketAddress(p.address)
 	{
-		a := make([]InputVector, v.NumVectors)
-		for i := 0; i < v.NumVectors; i++ {
+		a := make([]InputVector, p.num_vectors)
+		for i := 0; i < p.num_vectors; i++ {
 			src := (C.GInputVector)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			a[i] = wrapInputVector(src)
 		}
@@ -7566,8 +7566,8 @@ func wrapInputMessage(p *C.GInputMessage) *InputMessage {
 	v.BytesReceived = uint(p.bytes_received)
 	v.Flags = int(p.flags)
 	{
-		a := make([]*SocketControlMessage, v.NumControlMessages)
-		for i := 0; i < v.NumControlMessages; i++ {
+		a := make([]*SocketControlMessage, p.num_control_messages)
+		for i := 0; i < p.num_control_messages; i++ {
 			src := (**C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			a[i] = wrapSocketControlMessage(src)
 		}
@@ -7654,8 +7654,8 @@ func wrapOutputMessage(p *C.GOutputMessage) *OutputMessage {
 	v.NumVectors = uint(p.num_vectors)
 	v.BytesSent = uint(p.bytes_sent)
 	{
-		a := make([]SocketControlMessage, v.NumControlMessages)
-		for i := 0; i < v.NumControlMessages; i++ {
+		a := make([]SocketControlMessage, p.num_control_messages)
+		for i := 0; i < p.num_control_messages; i++ {
 			src := (*C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			a[i] = wrapSocketControlMessage(src)
 		}

@@ -121,7 +121,7 @@ func (rg *recordGenerator) Convert(field recordField, cStruct, goStruct string) 
 		cStruct+"."+field.Name,
 		goStruct+"."+field.GoName,
 		field.AnyType,
-		func(i int) string { return goStruct + "." + SnakeToGo(true, rg.Fields[i].Name) },
+		func(i int) string { return cStruct + "." + cgoField(rg.Fields[i].Name) },
 	)
 }
 

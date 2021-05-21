@@ -3596,8 +3596,8 @@ func wrapGlyphString(p *C.PangoGlyphString) *GlyphString {
 
 	v.NumGlyphs = int(p.num_glyphs)
 	{
-		a := make([]GlyphInfo, v.NumGlyphs)
-		for i := 0; i < v.NumGlyphs; i++ {
+		a := make([]GlyphInfo, p.num_glyphs)
+		for i := 0; i < p.num_glyphs; i++ {
 			src := (C.PangoGlyphInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			a[i] = wrapGlyphInfo(src)
 		}

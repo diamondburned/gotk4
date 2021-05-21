@@ -11,12 +11,20 @@ import (
 
 // TODO: GoTypeConverter converts Go types to C with GIR type.
 
+// ArgAtFunc is the function to get the argument name at the given index. This
+// function is primarily used for certain type conversions that need to access
+// multiple variables.
+type ArgAtFunc func(i int) string
+
 // CGoConverter returns Go code that is the conversion from the given C value
 // type to its respective Go value type. An empty string returned is invalid.
-func (ng *NamespaceGenerator) CGoConverter(value, target string, any gir.AnyType) string {
+//
+// The given argPrefix is used to get the nth parameter by concatenating the
+// prefix with the index number. This is used for length parameters.
+func (ng *NamespaceGenerator) CGoConverter(value, target string, any gir.AnyType, argAt ArgAtFunc) string {
 	switch {
 	case any.Array != nil:
-		return ng.cgoArrayConverter(value, target, *any.Array)
+		return ng.cgoArrayConverter(value, target, *any.Array, argAt)
 	case any.Type != nil:
 		return ng.cgoTypeConverter(value, target, *any.Type)
 	}
@@ -34,28 +42,27 @@ func directCallOrCreate(value, target, typ string, create bool) string {
 	return target + op + typ + "(" + value + ")"
 }
 
-func (ng *NamespaceGenerator) cgoArrayConverter(value, target string, array gir.Array) string {
-	if array.Type != nil {
+func (ng *NamespaceGenerator) cgoArrayConverter(value, target string, array gir.Array, argAt ArgAtFunc) string {
+	if array.Type == nil {
 		ng.gen.logln(logWarn, "skipping nested array", array)
 		return ""
 	}
 
 	// Detect if the underlying is a compatible Go primitive type. If it is,
 	// then we can directly cast a fixed-size array.
-	if array.Type != nil {
-		if primitiveGo, ok := girPrimitiveGo[array.Type.Name]; ok {
-			return fmt.Sprintf("%s = ([%d]%s)(%s)", target, array.FixedSize, primitiveGo, value)
-		}
+	if primitiveGo, ok := girPrimitiveGo[array.Type.Name]; ok {
+		return fmt.Sprintf("%s = ([%d]%s)(%s)", target, array.FixedSize, primitiveGo, value)
 	}
 
-	innerType := ng.ResolveType(*array.Type)
-	if innerType == nil {
+	innerResolved := ng.ResolveType(*array.Type)
+	if innerResolved == nil {
 		return ""
 	}
-	innerCGoType := innerType.CGoType()
+	innerType := ng.PublicType(innerResolved)
+	innerCGoType := innerResolved.CGoType()
 
-	// Generate a type converter from "src" to "dst" variables.
-	innerConv := ng.cgoTypeConverter("src", "dst", *array.Type)
+	// Generate a type converter from "src" to "a[i]" variables.
+	innerConv := ng.cgoTypeConverter("src", "a[i]", *array.Type)
 	if innerConv == "" {
 		return ""
 	}
@@ -70,12 +77,16 @@ func (ng *NamespaceGenerator) cgoArrayConverter(value, target string, array gir.
 		b.EmptyLine()
 		b.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
 		b.Linef("  src := cArray[i]")
-		b.Linef("  dst := &a[i]")
 		b.Linef("  " + innerConv)
 		b.Linef("}")
 
 	case array.Length != nil:
-		return "" // TODO
+		lengthArg := argAt(*array.Length)
+		b.Linef("a := make([]%s, %s)", innerType, lengthArg)
+		b.Linef("for i := 0; i < %s; i++ {", lengthArg)
+		b.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))", innerCGoType)
+		b.Linef("  " + innerConv)
+		b.Linef("}")
 
 	case array.Name == "GLib.Array": // treat as Go array
 		b.Linef("var length uintptr")
@@ -83,7 +94,6 @@ func (ng *NamespaceGenerator) cgoArrayConverter(value, target string, array gir.
 		b.Linef("a := make([]%s, length)", innerType)
 		b.Linef("for i := 0; i < length; i++ {")
 		b.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))", innerCGoType)
-		b.Linef("  dst := &a[i]")
 		// TODO: nested array support
 		b.Linef("  " + innerConv)
 		b.Linef("}")
@@ -100,8 +110,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(value, target string, array gir.
 		// Preallocate the slice.
 		b.Linef("a := make([]%s, length)", innerType)
 		b.Linef("for i := 0; i < length; i++ {")
-		b.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(%s)) + 1))", innerCGoType, value)
-		b.Linef("  dst := &a[i]")
+		b.Linef("  src := (%s)(unsafe.Pointer(uintptr(unsafe.Pointer(%s)) + i))", innerCGoType, value)
 		b.Linef("  " + innerConv)
 		b.Linef("}")
 	}

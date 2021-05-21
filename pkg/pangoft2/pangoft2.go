@@ -5,6 +5,7 @@ package pangoft2
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/fontconfig"
 	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
@@ -24,6 +25,11 @@ func init() {
 	})
 }
 
+type SubstituteFunc func(pattern *fontconfig.Pattern, data interface{})
+
+//export cSubstituteFunc
+func cSubstituteFunc(arg0 *C.FcPattern, arg1 C.gpointer)
+
 // FontGetCoverage: gets the Coverage for a `PangoFT2Font`. Use
 // pango_font_get_coverage() instead.
 func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
@@ -33,10 +39,10 @@ func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 	var arg1 *pango.Language
 	arg1 = wrapLanguage(language)
 
-	c0 := C.pango_ft2_font_get_coverage(arg0, arg1)
+	ret := C.pango_ft2_font_get_coverage(arg0, arg1)
 
 	var ret0 pango.Coverage
-	ret0 = wrapCoverage(c0)
+	ret0 = wrapCoverage(ret)
 
 	return ret0
 }
@@ -50,10 +56,10 @@ func FontGetFace(font pango.Font) freetype2.Face {
 	var arg0 pango.Font
 	arg0 = wrapFont(font)
 
-	c0 := C.pango_ft2_font_get_face(arg0)
+	ret := C.pango_ft2_font_get_face(arg0)
 
 	var ret0 freetype2.Face
-	ret0 = wrapFace(c0)
+	ret0 = wrapFace(ret)
 
 	return ret0
 }
@@ -78,10 +84,10 @@ func FontGetKerning(font pango.Font, left pango.Glyph, right pango.Glyph) int {
 		arg2 = Glyph(tmp)
 	}
 
-	c0 := C.pango_ft2_font_get_kerning(arg0, arg1, arg2)
+	ret := C.pango_ft2_font_get_kerning(arg0, arg1, arg2)
 
 	var ret0 int
-	ret0 = int(c0)
+	ret0 = int(ret)
 
 	return ret0
 }
@@ -96,10 +102,10 @@ func GetContext(dpiX float64, dpiY float64) pango.Context {
 	var arg1 float64
 	arg1 = float64(dpiY)
 
-	c0 := C.pango_ft2_get_context(arg0, arg1)
+	ret := C.pango_ft2_get_context(arg0, arg1)
 
 	var ret0 pango.Context
-	ret0 = wrapContext(c0)
+	ret0 = wrapContext(ret)
 
 	return ret0
 }
@@ -113,11 +119,11 @@ func GetUnknownGlyph(font pango.Font) pango.Glyph {
 	var arg0 pango.Font
 	arg0 = wrapFont(font)
 
-	c0 := C.pango_ft2_get_unknown_glyph(arg0)
+	ret := C.pango_ft2_get_unknown_glyph(arg0)
 
 	var ret0 pango.Glyph
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Glyph(tmp)
 	}
 
@@ -265,7 +271,7 @@ type FontMap interface {
 	//
 	// This function can be used to do things like set hinting and antialiasing
 	// options.
-	SetDefaultSubstitute(_func SubstituteFunc, data unsafe.Pointer, notify unsafe.Pointer)
+	SetDefaultSubstitute(_func SubstituteFunc)
 	// SetResolution: sets the horizontal and vertical resolutions for the
 	// fontmap.
 	SetResolution(dpiX float64, dpiY float64)
@@ -296,7 +302,7 @@ func NewFontMap() FontMap
 
 func (f fontMap) CreateContext() pango.Context
 
-func (f fontMap) SetDefaultSubstitute(_func SubstituteFunc, data unsafe.Pointer, notify unsafe.Pointer)
+func (f fontMap) SetDefaultSubstitute(_func SubstituteFunc)
 
 func (f fontMap) SetResolution(dpiX float64, dpiY float64)
 

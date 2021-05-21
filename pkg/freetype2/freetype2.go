@@ -50,12 +50,12 @@ func marshalBitmap(p uintptr) (interface{}, error) {
 	return wrapBitmap(c)
 }
 
-func (B *Bitmap) free() {}
+func (b *Bitmap) free() {}
 
 // Native returns the pointer to *C.FT_Bitmap. The caller is expected to
 // cast.
-func (B *Bitmap) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *Bitmap) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type Face struct {
@@ -78,12 +78,12 @@ func marshalFace(p uintptr) (interface{}, error) {
 	return wrapFace(c)
 }
 
-func (F *Face) free() {}
+func (f *Face) free() {}
 
 // Native returns the pointer to *C.FT_Face. The caller is expected to
 // cast.
-func (F *Face) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *Face) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type Library struct {
@@ -106,10 +106,10 @@ func marshalLibrary(p uintptr) (interface{}, error) {
 	return wrapLibrary(c)
 }
 
-func (L *Library) free() {}
+func (l *Library) free() {}
 
 // Native returns the pointer to *C.FT_Library. The caller is expected to
 // cast.
-func (L *Library) Native() unsafe.Pointer {
-	return unsafe.Pointer(L.native)
+func (l *Library) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }

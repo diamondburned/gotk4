@@ -247,9 +247,9 @@ const (
 	// RenderNodeTypeDebugNode: debug information that does not affect the
 	// rendering
 	RenderNodeTypeDebugNode RenderNodeType = 24
-	// RenderNodeTypeGlShaderNode: a node that uses OpenGL fragment shaders to
+	// RenderNodeTypeGLShaderNode: a node that uses OpenGL fragment shaders to
 	// render
-	RenderNodeTypeGlShaderNode RenderNodeType = 25
+	RenderNodeTypeGLShaderNode RenderNodeType = 25
 )
 
 func marshalRenderNodeType(p uintptr) (interface{}, error) {
@@ -333,12 +333,17 @@ func marshalTransformCategory(p uintptr) (interface{}, error) {
 	return TransformCategory(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, error *glib.Error)
+
+//export cParseErrorFunc
+func cParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer)
+
 func SerializationErrorQuark() glib.Quark {
-	c0 := C.gsk_serialization_error_quark()
+	ret := C.gsk_serialization_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -356,13 +361,15 @@ func TransformParse(string string) (*Transform, bool) {
 	arg0 = C.GoString(string)
 	defer C.free(unsafe.Pointer(string))
 
-	c0, c1 := C.gsk_transform_parse(arg0)
+	var arg1 **C.GskTransform // out
+
+	ret := C.gsk_transform_parse(arg0, &arg1)
 
 	var ret0 **Transform
-	ret0 = wrapTransform(c0)
+	ret0 = wrapTransform(arg1)
 
 	var ret1 bool
-	ret1 = gextras.Gobool(c1)
+	ret1 = gextras.Gobool(ret)
 
 	return ret0, ret1
 }
@@ -395,8 +402,8 @@ func marshalColorStop(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GskColorStop. The caller is expected to
 // cast.
-func (C *ColorStop) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ColorStop) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // ParseLocation: a location in a parse buffer.
@@ -436,8 +443,8 @@ func marshalParseLocation(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GskParseLocation. The caller is expected to
 // cast.
-func (P *ParseLocation) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *ParseLocation) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // RoundedRect: a rectangular region with rounded corners.
@@ -461,6 +468,15 @@ func wrapRoundedRect(p *C.GskRoundedRect) *RoundedRect {
 	var v RoundedRect
 
 	v.Bounds = wrapRect(p.bounds)
+	{
+		var a [4]graphene.Size
+		cArray := ([4]graphene_size_t)(p.corner)
+
+		for i := 0; i < 4; i++ {
+			src := cArray[i]
+			a[i] = wrapSize(src)
+		}
+	}
 
 	return &v
 }
@@ -474,8 +490,8 @@ func marshalRoundedRect(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GskRoundedRect. The caller is expected to
 // cast.
-func (R *RoundedRect) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RoundedRect) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // ShaderArgsBuilder: an object to build the uniforms data for a GLShader.
@@ -499,12 +515,12 @@ func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 	return wrapShaderArgsBuilder(c)
 }
 
-func (S *ShaderArgsBuilder) free() {}
+func (s *ShaderArgsBuilder) free() {}
 
 // Native returns the pointer to *C.GskShaderArgsBuilder. The caller is expected to
 // cast.
-func (S *ShaderArgsBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 func NewShaderArgsBuilder(shader GLShader, initialValues *glib.Bytes) *ShaderArgsBuilder
@@ -543,8 +559,8 @@ func marshalShadow(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GskShadow. The caller is expected to
 // cast.
-func (S *Shadow) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *Shadow) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Transform: the `GskTransform` structure contains only private data.
@@ -568,12 +584,12 @@ func marshalTransform(p uintptr) (interface{}, error) {
 	return wrapTransform(c)
 }
 
-func (T *Transform) free() {}
+func (t *Transform) free() {}
 
 // Native returns the pointer to *C.GskTransform. The caller is expected to
 // cast.
-func (T *Transform) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *Transform) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 func NewTransform() *Transform
@@ -851,7 +867,7 @@ func marshalConicGradientNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop, nColorStops uint) ConicGradientNode
+func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode
 
 func (c conicGradientNode) GetCenter() *graphene.Point
 
@@ -885,7 +901,7 @@ func marshalContainerNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewContainerNode(children []RenderNode, nChildren uint) ContainerNode
+func NewContainerNode(children []RenderNode) ContainerNode
 
 func (c containerNode) GetChild(idx uint) RenderNode
 
@@ -1123,7 +1139,7 @@ func marshalGLShaderNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGLShaderNode(shader GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNode, nChildren uint) GLShaderNode
+func NewGLShaderNode(shader GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNode) GLShaderNode
 
 func (g glShaderNode) GetArgs() *glib.Bytes
 
@@ -1207,7 +1223,7 @@ func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop, nColorStops uint) LinearGradientNode
+func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) LinearGradientNode
 
 func (l linearGradientNode) GetColorStops() (uint, []ColorStop)
 
@@ -1328,7 +1344,7 @@ func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop, nColorStops uint) RadialGradientNode
+func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode
 
 func (r radialGradientNode) GetCenter() *graphene.Point
 
@@ -1458,7 +1474,7 @@ func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop, nColorStops uint) RepeatingLinearGradientNode
+func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) RepeatingLinearGradientNode
 
 // RepeatingRadialGradientNode: a render node for a repeating radial gradient.
 type RepeatingRadialGradientNode interface {
@@ -1479,7 +1495,7 @@ func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop, nColorStops uint) RepeatingRadialGradientNode
+func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RepeatingRadialGradientNode
 
 // RoundedClipNode: a render node applying a rounded rectangle clip to its
 // single child.
@@ -1540,7 +1556,7 @@ func marshalShadowNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewShadowNode(child RenderNode, shadows []Shadow, nShadows uint) ShadowNode
+func NewShadowNode(child RenderNode, shadows []Shadow) ShadowNode
 
 func (s shadowNode) GetChild() RenderNode
 

@@ -38,7 +38,7 @@ type Cursor uint32
 
 type Drawable uint32
 
-type GC unsafe.Pointer
+type GC interface{}
 
 type KeyCode uint8
 
@@ -80,12 +80,12 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 	return wrapDisplay(c)
 }
 
-func (D *Display) free() {}
+func (d *Display) free() {}
 
 // Native returns the pointer to *C.Display. The caller is expected to
 // cast.
-func (D *Display) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *Display) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type Screen struct {
@@ -108,12 +108,12 @@ func marshalScreen(p uintptr) (interface{}, error) {
 	return wrapScreen(c)
 }
 
-func (S *Screen) free() {}
+func (s *Screen) free() {}
 
 // Native returns the pointer to *C.Screen. The caller is expected to
 // cast.
-func (S *Screen) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *Screen) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type Visual struct {
@@ -136,12 +136,12 @@ func marshalVisual(p uintptr) (interface{}, error) {
 	return wrapVisual(c)
 }
 
-func (V *Visual) free() {}
+func (v *Visual) free() {}
 
 // Native returns the pointer to *C.Visual. The caller is expected to
 // cast.
-func (V *Visual) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *Visual) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type XConfigureEvent struct {
@@ -164,12 +164,12 @@ func marshalXConfigureEvent(p uintptr) (interface{}, error) {
 	return wrapXConfigureEvent(c)
 }
 
-func (X *XConfigureEvent) free() {}
+func (x *XConfigureEvent) free() {}
 
 // Native returns the pointer to *C.XConfigureEvent. The caller is expected to
 // cast.
-func (X *XConfigureEvent) Native() unsafe.Pointer {
-	return unsafe.Pointer(X.native)
+func (x *XConfigureEvent) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 type XImage struct {
@@ -192,12 +192,12 @@ func marshalXImage(p uintptr) (interface{}, error) {
 	return wrapXImage(c)
 }
 
-func (X *XImage) free() {}
+func (x *XImage) free() {}
 
 // Native returns the pointer to *C.XImage. The caller is expected to
 // cast.
-func (X *XImage) Native() unsafe.Pointer {
-	return unsafe.Pointer(X.native)
+func (x *XImage) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 type XFontStruct struct {
@@ -220,12 +220,12 @@ func marshalXFontStruct(p uintptr) (interface{}, error) {
 	return wrapXFontStruct(c)
 }
 
-func (X *XFontStruct) free() {}
+func (x *XFontStruct) free() {}
 
 // Native returns the pointer to *C.XFontStruct. The caller is expected to
 // cast.
-func (X *XFontStruct) Native() unsafe.Pointer {
-	return unsafe.Pointer(X.native)
+func (x *XFontStruct) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 type XTrapezoid struct {
@@ -248,12 +248,12 @@ func marshalXTrapezoid(p uintptr) (interface{}, error) {
 	return wrapXTrapezoid(c)
 }
 
-func (X *XTrapezoid) free() {}
+func (x *XTrapezoid) free() {}
 
 // Native returns the pointer to *C.XTrapezoid. The caller is expected to
 // cast.
-func (X *XTrapezoid) Native() unsafe.Pointer {
-	return unsafe.Pointer(X.native)
+func (x *XTrapezoid) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 type XVisualInfo struct {
@@ -276,12 +276,12 @@ func marshalXVisualInfo(p uintptr) (interface{}, error) {
 	return wrapXVisualInfo(c)
 }
 
-func (X *XVisualInfo) free() {}
+func (x *XVisualInfo) free() {}
 
 // Native returns the pointer to *C.XVisualInfo. The caller is expected to
 // cast.
-func (X *XVisualInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(X.native)
+func (x *XVisualInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 type XWindowAttributes struct {
@@ -304,10 +304,10 @@ func marshalXWindowAttributes(p uintptr) (interface{}, error) {
 	return wrapXWindowAttributes(c)
 }
 
-func (X *XWindowAttributes) free() {}
+func (x *XWindowAttributes) free() {}
 
 // Native returns the pointer to *C.XWindowAttributes. The caller is expected to
 // cast.
-func (X *XWindowAttributes) Native() unsafe.Pointer {
-	return unsafe.Pointer(X.native)
+func (x *XWindowAttributes) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }

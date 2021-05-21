@@ -33,6 +33,16 @@ func init() {
 	})
 }
 
+type DecoderFindFunc func(pattern *fontconfig.Pattern) Decoder
+
+//export cDecoderFindFunc
+func cDecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder
+
+type SubstituteFunc func(pattern *fontconfig.Pattern, data interface{})
+
+//export cSubstituteFunc
+func cSubstituteFunc(arg0 *C.FcPattern, arg1 C.gpointer)
+
 // Decoder: `PangoFcDecoder` is a virtual base class that implementations will
 // inherit from.
 //
@@ -172,7 +182,7 @@ type FontMap interface {
 	// determine both coverage via a `FcCharSet` and a one-to-one mapping of
 	// characters to glyphs. This will allow applications to have
 	// application-specific encodings for various fonts.
-	AddDecoderFindFunc(findfunc DecoderFindFunc, userData unsafe.Pointer, dnotify unsafe.Pointer)
+	AddDecoderFindFunc(findfunc DecoderFindFunc)
 	// CacheClear: clear all cached information and fontsets for this font map.
 	//
 	// This should be called whenever there is a change in the output of the
@@ -204,7 +214,7 @@ type FontMap interface {
 	//
 	// This function can be used to do things like set hinting and antialiasing
 	// options.
-	SetDefaultSubstitute(_func SubstituteFunc, data unsafe.Pointer, notify unsafe.Pointer)
+	SetDefaultSubstitute(_func SubstituteFunc)
 	// Shutdown: clears all cached information for the fontmap and marks all
 	// fonts open for the fontmap as dead.
 	//
@@ -237,7 +247,7 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (f fontMap) AddDecoderFindFunc(findfunc DecoderFindFunc, userData unsafe.Pointer, dnotify unsafe.Pointer)
+func (f fontMap) AddDecoderFindFunc(findfunc DecoderFindFunc)
 
 func (f fontMap) CacheClear()
 
@@ -247,7 +257,7 @@ func (f fontMap) CreateContext() pango.Context
 
 func (f fontMap) FindDecoder(pattern *fontconfig.Pattern) Decoder
 
-func (f fontMap) SetDefaultSubstitute(_func SubstituteFunc, data unsafe.Pointer, notify unsafe.Pointer)
+func (f fontMap) SetDefaultSubstitute(_func SubstituteFunc)
 
 func (f fontMap) Shutdown()
 

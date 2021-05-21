@@ -250,6 +250,8 @@ type ParameterAttrs struct {
 	Name      string `xml:"name,attr"`
 	AllowNone bool   `xml:"allow-none,attr"`
 	Direction string `xml:"direction,attr"`
+	Closure   *int   `xml:"closure,attr"`
+	Destroy   *int   `xml:"destroy,attr"`
 	TransferOwnership
 	AnyType
 	Doc *Doc
@@ -257,6 +259,7 @@ type ParameterAttrs struct {
 
 type Parameters struct {
 	XMLName           xml.Name           `xml:"http://www.gtk.org/introspection/core/1.0 parameters"`
+	Scope             string             `xml:"scope,attr"`
 	InstanceParameter *InstanceParameter `xml:"http://www.gtk.org/introspection/core/1.0 instance-parameter"`
 	Parameters        []Parameter        `xml:"http://www.gtk.org/introspection/core/1.0 parameter"`
 }

@@ -182,7 +182,7 @@ func (typ *ResolvedType) PublicType(needsNamespace bool) string {
 // CGoType returns the CGo type.
 func (typ *ResolvedType) CGoType() string {
 	ptr := strings.Count(typ.CType, "*")
-	val := strings.TrimSuffix(typ.CType, "*")
+	val := strings.ReplaceAll(strings.TrimPrefix(typ.CType, "const "), "*", "")
 
 	return strings.Repeat("*", ptr) + "C." + val
 }
@@ -219,6 +219,25 @@ func (ng *NamespaceGenerator) resolveArrayType(array gir.Array, pub bool) (strin
 	}
 
 	return arrayPrefix + child, true
+}
+
+// anyTypeCGo returns the CGo type for a GIR AnyType. An empty string is
+// returned if none is made.
+func anyTypeCGo(any gir.AnyType) string {
+	movePtr := func(c string) string {
+		c = strings.TrimPrefix(c, "const ")
+		cgo := "C." + strings.ReplaceAll(c, "*", "")
+		return movePtr(c, cgo)
+	}
+
+	switch {
+	case any.Array != nil:
+		return movePtr(any.Array.CType)
+	case any.Type != nil:
+		return movePtr(any.Type.CType)
+	default:
+		return ""
+	}
 }
 
 // ResolveAnyType generates the Go type signature for the AnyType union. An
@@ -370,7 +389,7 @@ func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 	// TODO: ignore field
 	// TODO: aaaaaaaaaaaaaaaaaaaaaaa
 	case "gpointer":
-		return builtinType("unsafe", "Pointer", typ)
+		return builtinType("", "interface{}", typ)
 	case "GLib.DestroyNotify", "DestroyNotify": // This should be handled externally.
 		return builtinType("unsafe", "Pointer", typ)
 	case "GType":

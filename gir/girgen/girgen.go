@@ -135,6 +135,48 @@ func (g *Generator) UseNamespace(namespace string) *NamespaceGenerator {
 	}
 }
 
+// ignoreIxs is a map of indexes to ignore.
+type ignoreIxs map[int]struct{}
+
+func (ig *ignoreIxs) init() {
+	if *ig == nil {
+		*ig = map[int]struct{}{}
+	}
+}
+
+func (ig *ignoreIxs) set(i int) {
+	ig.init()
+	(*ig)[i] = struct{}{}
+}
+
+func (ig *ignoreIxs) fieldIgnore(field gir.Field) {
+	ig.typeIgnore(field.AnyType)
+}
+
+func (ig *ignoreIxs) paramIgnore(param gir.Parameter) {
+	if param.Closure != nil {
+		ig.set(*param.Closure)
+	}
+	if param.Destroy != nil {
+		ig.set(*param.Destroy)
+	}
+
+	ig.typeIgnore(param.AnyType)
+}
+
+func (ig *ignoreIxs) typeIgnore(typ gir.AnyType) {
+	if typ.Array != nil {
+		if typ.Array.Length != nil {
+			ig.set(*typ.Array.Length)
+		}
+	}
+}
+
+func (ig ignoreIxs) ignore(i int) bool {
+	_, ignore := ig[i]
+	return ignore
+}
+
 // NamespaceGenerator is a generator for a specific namespace.
 type NamespaceGenerator struct {
 	pen  *pen.Pen
@@ -158,6 +200,7 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 	ng.generateAliases()
 	ng.generateEnums()
 	ng.generateBitfields()
+	ng.generateCallbacks()
 	ng.generateFuncs()
 	ng.generateIfaces()
 	ng.generateRecords()

@@ -43,7 +43,7 @@ var recordTmpl = newGoTemplate(`
 		{{ end }}
 
 		{{ range .PublicFields -}}
-		{{ $.Ng.CGoConverter (printf "p.%s" .Name) (printf "v.%s" .GoName) .AnyType }}
+		{{ $.Convert . "p" "v" }}
 		{{ end }}
 
 		{{ if .NeedsNative }}
@@ -95,9 +95,6 @@ type recordField struct {
 	GoType string
 }
 
-type recordMethod struct {
-}
-
 func (rg *recordGenerator) Use(rec gir.Record) bool {
 	// GLibIsGTypeStructFor seems to be records used in addition to classes due
 	// to C? Not sure, but we likely don't need it.
@@ -119,11 +116,23 @@ func (rg *recordGenerator) Use(rec gir.Record) bool {
 	return true
 }
 
+func (rg *recordGenerator) Convert(field recordField, cStruct, goStruct string) string {
+	return rg.Ng.CGoConverter(
+		cStruct+"."+field.Name,
+		goStruct+"."+field.GoName,
+		field.AnyType,
+		func(i int) string { return goStruct + "." + SnakeToGo(true, rg.Fields[i].Name) },
+	)
+}
+
 func (rg *recordGenerator) publicFields() []recordField {
 	fields := make([]recordField, 0, len(rg.Fields))
+	var ignores ignoreIxs
 
-	for _, field := range rg.Fields {
-		if field.Private {
+	for i, field := range rg.Fields {
+		ignores.fieldIgnore(field)
+
+		if field.Private || ignores.ignore(i) {
 			continue
 		}
 
@@ -171,7 +180,7 @@ func (ng *NamespaceGenerator) generateRecords() {
 			imported = true
 		}
 
-		ng.pen.BlockTmpl(recordTmpl, rg)
+		ng.pen.BlockTmpl(recordTmpl, &rg)
 
 		// TODO: record Native() uintptr
 		// TODO: record methods.

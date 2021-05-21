@@ -3483,16 +3483,236 @@ func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 	return TreeModelFlags(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+type AssistantPageFunc func(currentPage int) int
+
+//export cAssistantPageFunc
+func cAssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int
+
+type CellAllocCallback func(renderer CellRenderer, cellArea *gdk.Rectangle, cellBackground *gdk.Rectangle) bool
+
+//export cCellAllocCallback
+func cCellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) C.gboolean
+
+type CellCallback func(renderer CellRenderer) bool
+
+//export cCellCallback
+func cCellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean
+
+type CellLayoutDataFunc func(cellLayout CellLayout, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
+
+//export cCellLayoutDataFunc
+func cCellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer)
+
+type CustomAllocateFunc func(widget Widget, width int, height int, baseline int)
+
+//export cCustomAllocateFunc
+func cCustomAllocateFunc(arg0 *C.GtkWidget, arg1 C.int, arg2 C.int, arg3 C.int)
+
+type CustomFilterFunc func(item interface{}) bool
+
+//export cCustomFilterFunc
+func cCustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean
+
+type CustomMeasureFunc func(widget Widget, orientation Orientation, forSize int) (int, int, int, int)
+
+//export cCustomMeasureFunc
+func cCustomMeasureFunc(arg0 *C.GtkWidget, arg1 C.GtkOrientation, arg2 C.int, arg3 *C.int, arg4 *C.int, arg5 *C.int, arg6 *C.int)
+
+type CustomRequestModeFunc func(widget Widget) SizeRequestMode
+
+//export cCustomRequestModeFunc
+func cCustomRequestModeFunc(arg0 *C.GtkWidget) C.GtkSizeRequestMode
+
+type DrawingAreaDrawFunc func(drawingArea DrawingArea, cr *cairo.Context, width int, height int)
+
+//export cDrawingAreaDrawFunc
+func cDrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer)
+
+type EntryCompletionMatchFunc func(completion EntryCompletion, key string, iter *TreeIter) bool
+
+//export cEntryCompletionMatchFunc
+func cEntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean
+
+type ExpressionNotify func()
+
+//export cExpressionNotify
+func cExpressionNotify(arg0 C.gpointer)
+
+type FlowBoxCreateWidgetFunc func(item interface{}) Widget
+
+//export cFlowBoxCreateWidgetFunc
+func cFlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget
+
+type FlowBoxFilterFunc func(child FlowBoxChild) bool
+
+//export cFlowBoxFilterFunc
+func cFlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean
+
+type FlowBoxForeachFunc func(box FlowBox, child FlowBoxChild)
+
+//export cFlowBoxForeachFunc
+func cFlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer)
+
+type FlowBoxSortFunc func(child1 FlowBoxChild, child2 FlowBoxChild) int
+
+//export cFlowBoxSortFunc
+func cFlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.int
+
+type FontFilterFunc func(family pango.FontFamily, face pango.FontFace) bool
+
+//export cFontFilterFunc
+func cFontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) C.gboolean
+
+type IconViewForeachFunc func(iconView IconView, path *TreePath)
+
+//export cIconViewForeachFunc
+func cIconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer)
+
+type ListBoxCreateWidgetFunc func(item interface{}) Widget
+
+//export cListBoxCreateWidgetFunc
+func cListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget
+
+type ListBoxFilterFunc func(row ListBoxRow) bool
+
+//export cListBoxFilterFunc
+func cListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean
+
+type ListBoxForeachFunc func(box ListBox, row ListBoxRow)
+
+//export cListBoxForeachFunc
+func cListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer)
+
+type ListBoxSortFunc func(row1 ListBoxRow, row2 ListBoxRow) int
+
+//export cListBoxSortFunc
+func cListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.int
+
+type ListBoxUpdateHeaderFunc func(row ListBoxRow, before ListBoxRow)
+
+//export cListBoxUpdateHeaderFunc
+func cListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer)
+
+type MapListModelMapFunc func(item interface{}) interface{}
+
+//export cMapListModelMapFunc
+func cMapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer
+
+type MenuButtonCreatePopupFunc func(menuButton MenuButton)
+
+//export cMenuButtonCreatePopupFunc
+func cMenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer)
+
+type PageSetupDoneFunc func(pageSetup PageSetup)
+
+//export cPageSetupDoneFunc
+func cPageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer)
+
+type PrintSettingsFunc func(key string, value string)
+
+//export cPrintSettingsFunc
+func cPrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer)
+
+type ScaleFormatValueFunc func(scale Scale, value float64) string
+
+//export cScaleFormatValueFunc
+func cScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) *C.char
+
+type ShortcutFunc func(widget Widget, args *glib.Variant) bool
+
+//export cShortcutFunc
+func cShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean
+
+type TextCharPredicate func(ch uint32) bool
+
+//export cTextCharPredicate
+func cTextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean
+
+type TextTagTableForeach func(tag TextTag)
+
+//export cTextTagTableForeach
+func cTextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer)
+
+type TickCallback func(widget Widget, frameClock gdk.FrameClock) bool
+
+//export cTickCallback
+func cTickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean
+
+type TreeCellDataFunc func(treeColumn TreeViewColumn, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
+
+//export cTreeCellDataFunc
+func cTreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer)
+
+type TreeIterCompareFunc func(model TreeModel, a *TreeIter, b *TreeIter) int
+
+//export cTreeIterCompareFunc
+func cTreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.int
+
+type TreeListModelCreateModelFunc func(item interface{}) gio.ListModel
+
+//export cTreeListModelCreateModelFunc
+func cTreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GListModel
+
+type TreeModelFilterModifyFunc func(model TreeModel, iter *TreeIter, column int) externglib.Value
+
+//export cTreeModelFilterModifyFunc
+func cTreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.int, arg4 C.gpointer)
+
+type TreeModelFilterVisibleFunc func(model TreeModel, iter *TreeIter) bool
+
+//export cTreeModelFilterVisibleFunc
+func cTreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean
+
+type TreeModelForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter) bool
+
+//export cTreeModelForeachFunc
+func cTreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean
+
+type TreeSelectionForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter)
+
+//export cTreeSelectionForeachFunc
+func cTreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer)
+
+type TreeSelectionFunc func(selection TreeSelection, model TreeModel, path *TreePath, pathCurrentlySelected bool) bool
+
+//export cTreeSelectionFunc
+func cTreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) C.gboolean
+
+type TreeViewColumnDropFunc func(treeView TreeView, column TreeViewColumn, prevColumn TreeViewColumn, nextColumn TreeViewColumn) bool
+
+//export cTreeViewColumnDropFunc
+func cTreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) C.gboolean
+
+type TreeViewMappingFunc func(treeView TreeView, path *TreePath)
+
+//export cTreeViewMappingFunc
+func cTreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpointer)
+
+type TreeViewRowSeparatorFunc func(model TreeModel, iter *TreeIter) bool
+
+//export cTreeViewRowSeparatorFunc
+func cTreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean
+
+type TreeViewSearchEqualFunc func(model TreeModel, column int, key string, iter *TreeIter) bool
+
+//export cTreeViewSearchEqualFunc
+func cTreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.char, arg3 *C.GtkTreeIter, arg4 C.gpointer) C.gboolean
+
+type WidgetActionActivateFunc func(widget Widget, actionName string, parameter *glib.Variant)
+
+//export cWidgetActionActivateFunc
+func cWidgetActionActivateFunc(arg0 *C.GtkWidget, arg1 *C.char, arg2 *C.GVariant)
+
 // AcceleratorGetDefaultModMask: gets the modifier mask.
 //
 // The modifier mask determines which modifiers are considered significant for
 // keyboard accelerators. This includes all keyboard modifiers except for
 // GDK_LOCK_MASK.
 func AcceleratorGetDefaultModMask() gdk.ModifierType {
-	c0 := C.gtk_accelerator_get_default_mod_mask()
+	ret := C.gtk_accelerator_get_default_mod_mask()
 
 	var ret0 gdk.ModifierType
-	ret0 = ModifierType(c0)
+	ret0 = ModifierType(ret)
 
 	return ret0
 }
@@ -3506,11 +3726,11 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 	var arg1 gdk.ModifierType
 	arg1 = ModifierType(acceleratorMods)
 
-	c0 := C.gtk_accelerator_get_label(arg0, arg1)
+	ret := C.gtk_accelerator_get_label(arg0, arg1)
 
 	var ret0 string
-	ret0 = C.GoString(c0)
-	defer C.free(unsafe.Pointer(c0))
+	ret0 = C.GoString(ret)
+	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -3534,11 +3754,11 @@ func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, ke
 	var arg3 gdk.ModifierType
 	arg3 = ModifierType(acceleratorMods)
 
-	c0 := C.gtk_accelerator_get_label_with_keycode(arg0, arg1, arg2, arg3)
+	ret := C.gtk_accelerator_get_label_with_keycode(arg0, arg1, arg2, arg3)
 
 	var ret0 string
-	ret0 = C.GoString(c0)
-	defer C.free(unsafe.Pointer(c0))
+	ret0 = C.GoString(ret)
+	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -3556,11 +3776,11 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 	var arg1 gdk.ModifierType
 	arg1 = ModifierType(acceleratorMods)
 
-	c0 := C.gtk_accelerator_name(arg0, arg1)
+	ret := C.gtk_accelerator_name(arg0, arg1)
 
 	var ret0 string
-	ret0 = C.GoString(c0)
-	defer C.free(unsafe.Pointer(c0))
+	ret0 = C.GoString(ret)
+	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -3583,11 +3803,11 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 	var arg3 gdk.ModifierType
 	arg3 = ModifierType(acceleratorMods)
 
-	c0 := C.gtk_accelerator_name_with_keycode(arg0, arg1, arg2, arg3)
+	ret := C.gtk_accelerator_name_with_keycode(arg0, arg1, arg2, arg3)
 
 	var ret0 string
-	ret0 = C.GoString(c0)
-	defer C.free(unsafe.Pointer(c0))
+	ret0 = C.GoString(ret)
+	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -3607,16 +3827,20 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 	arg0 = C.GoString(accelerator)
 	defer C.free(unsafe.Pointer(accelerator))
 
-	c0, c1, c2 := C.gtk_accelerator_parse(arg0)
+	var arg1 *C.guint // out
+
+	var arg2 *C.GdkModifierType // out
+
+	ret := C.gtk_accelerator_parse(arg0, &arg1, &arg2)
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(arg1)
 
 	var ret1 *gdk.ModifierType
-	ret1 = ModifierType(c1)
+	ret1 = ModifierType(arg2)
 
 	var ret2 bool
-	ret2 = gextras.Gobool(c2)
+	ret2 = gextras.Gobool(ret)
 
 	return ret0, ret1, ret2
 }
@@ -3642,18 +3866,25 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (uint,
 	var arg1 gdk.Display
 	arg1 = wrapDisplay(display)
 
-	c0, c1, c2, c3 := C.gtk_accelerator_parse_with_keycode(arg0, arg1)
+	var arg2 *C.guint // out
+
+	var arg3 **C.guint // out
+
+	var arg4 *C.GdkModifierType // out
+
+	ret := C.gtk_accelerator_parse_with_keycode(arg0, arg1, &arg2, &arg3, &arg4)
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(arg2)
 
 	var ret1 []uint
+	ret1 = ([0]uint)(arg3)
 
 	var ret2 *gdk.ModifierType
-	ret2 = ModifierType(c2)
+	ret2 = ModifierType(arg4)
 
 	var ret3 bool
-	ret3 = gextras.Gobool(c3)
+	ret3 = gextras.Gobool(ret)
 
 	return ret0, ret1, ret2, ret3
 }
@@ -3669,10 +3900,10 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	var arg1 gdk.ModifierType
 	arg1 = ModifierType(modifiers)
 
-	c0 := C.gtk_accelerator_valid(arg0, arg1)
+	ret := C.gtk_accelerator_valid(arg0, arg1)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -3702,22 +3933,26 @@ func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 // found, finds the next value after it. If no value >= @target exists in @set,
 // this function returns false.
 func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
+	var arg0 *C.GtkBitsetIter // out
+
 	var arg1 *Bitset
 	arg1 = wrapBitset(set)
 
 	var arg2 uint
 	arg2 = uint(target)
 
-	c0, c1, c2 := C.gtk_bitset_iter_init_at(arg1, arg2)
+	var arg3 *C.guint // out
+
+	ret := C.gtk_bitset_iter_init_at(&arg0, arg1, arg2, &arg3)
 
 	var ret0 *BitsetIter
-	ret0 = wrapBitsetIter(c0)
+	ret0 = wrapBitsetIter(arg0)
 
 	var ret1 uint
-	ret1 = uint(c1)
+	ret1 = uint(arg3)
 
 	var ret2 bool
-	ret2 = gextras.Gobool(c2)
+	ret2 = gextras.Gobool(ret)
 
 	return ret0, ret1, ret2
 }
@@ -3726,19 +3961,23 @@ func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
 // first value in @set. If @set is empty, false is returned and @value is set to
 // G_MAXUINT.
 func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
+	var arg0 *C.GtkBitsetIter // out
+
 	var arg1 *Bitset
 	arg1 = wrapBitset(set)
 
-	c0, c1, c2 := C.gtk_bitset_iter_init_first(arg1)
+	var arg2 *C.guint // out
+
+	ret := C.gtk_bitset_iter_init_first(&arg0, arg1, &arg2)
 
 	var ret0 *BitsetIter
-	ret0 = wrapBitsetIter(c0)
+	ret0 = wrapBitsetIter(arg0)
 
 	var ret1 uint
-	ret1 = uint(c1)
+	ret1 = uint(arg2)
 
 	var ret2 bool
-	ret2 = gextras.Gobool(c2)
+	ret2 = gextras.Gobool(ret)
 
 	return ret0, ret1, ret2
 }
@@ -3746,29 +3985,33 @@ func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
 // BitsetIterInitLast: initializes an iterator for @set and points it to the
 // last value in @set. If @set is empty, false is returned.
 func BitsetIterInitLast(set *Bitset) (BitsetIter, uint, bool) {
+	var arg0 *C.GtkBitsetIter // out
+
 	var arg1 *Bitset
 	arg1 = wrapBitset(set)
 
-	c0, c1, c2 := C.gtk_bitset_iter_init_last(arg1)
+	var arg2 *C.guint // out
+
+	ret := C.gtk_bitset_iter_init_last(&arg0, arg1, &arg2)
 
 	var ret0 *BitsetIter
-	ret0 = wrapBitsetIter(c0)
+	ret0 = wrapBitsetIter(arg0)
 
 	var ret1 uint
-	ret1 = uint(c1)
+	ret1 = uint(arg2)
 
 	var ret2 bool
-	ret2 = gextras.Gobool(c2)
+	ret2 = gextras.Gobool(ret)
 
 	return ret0, ret1, ret2
 }
 
 func BuilderErrorQuark() glib.Quark {
-	c0 := C.gtk_builder_error_quark()
+	ret := C.gtk_builder_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -3803,21 +4046,21 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	var arg2 uint
 	arg2 = uint(requiredMicro)
 
-	c0 := C.gtk_check_version(arg0, arg1, arg2)
+	ret := C.gtk_check_version(arg0, arg1, arg2)
 
 	var ret0 string
-	ret0 = C.GoString(c0)
-	defer C.free(unsafe.Pointer(c0))
+	ret0 = C.GoString(ret)
+	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
 
 func ConstraintVflParserErrorQuark() glib.Quark {
-	c0 := C.gtk_constraint_vfl_parser_error_quark()
+	ret := C.gtk_constraint_vfl_parser_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -3825,11 +4068,11 @@ func ConstraintVflParserErrorQuark() glib.Quark {
 }
 
 func CSSParserErrorQuark() glib.Quark {
-	c0 := C.gtk_css_parser_error_quark()
+	ret := C.gtk_css_parser_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -3837,11 +4080,11 @@ func CSSParserErrorQuark() glib.Quark {
 }
 
 func CSSParserWarningQuark() glib.Quark {
-	c0 := C.gtk_css_parser_warning_quark()
+	ret := C.gtk_css_parser_warning_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -3875,21 +4118,21 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 	var arg2 *RequestedSize
 	arg2 = wrapRequestedSize(sizes)
 
-	c0 := C.gtk_distribute_natural_allocation(arg0, arg1, arg2)
+	ret := C.gtk_distribute_natural_allocation(arg0, arg1, arg2)
 
 	var ret0 int
-	ret0 = int(c0)
+	ret0 = int(ret)
 
 	return ret0
 }
 
 // FileChooserErrorQuark: registers an error quark for FileChooser if necessary.
 func FileChooserErrorQuark() glib.Quark {
-	c0 := C.gtk_file_chooser_error_quark()
+	ret := C.gtk_file_chooser_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -3900,10 +4143,10 @@ func FileChooserErrorQuark() glib.Quark {
 // GTK library the process is running against. If `libtool` means nothing to
 // you, don't worry about it.
 func GetBinaryAge() uint {
-	c0 := C.gtk_get_binary_age()
+	ret := C.gtk_get_binary_age()
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -3913,10 +4156,10 @@ func GetBinaryAge() uint {
 // This function is intended for GTK modules that want to adjust their debug
 // output based on GTK debug flags.
 func GetDebugFlags() DebugFlags {
-	c0 := C.gtk_get_debug_flags()
+	ret := C.gtk_get_debug_flags()
 
 	var ret0 DebugFlags
-	ret0 = DebugFlags(c0)
+	ret0 = DebugFlags(ret)
 
 	return ret0
 }
@@ -3929,10 +4172,10 @@ func GetDebugFlags() DebugFlags {
 // This function is equivalent to pango_language_get_default(). See that
 // function for details.
 func GetDefaultLanguage() *pango.Language {
-	c0 := C.gtk_get_default_language()
+	ret := C.gtk_get_default_language()
 
 	var ret0 *pango.Language
-	ret0 = wrapLanguage(c0)
+	ret0 = wrapLanguage(ret)
 
 	return ret0
 }
@@ -3941,10 +4184,10 @@ func GetDefaultLanguage() *pango.Language {
 // building the GTK library the process is running against. If `libtool` means
 // nothing to you, don't worry about it.
 func GetInterfaceAge() uint {
-	c0 := C.gtk_get_interface_age()
+	ret := C.gtk_get_interface_age()
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -3968,10 +4211,10 @@ func GetInterfaceAge() uint {
 //    direction = gtk_get_locale_direction ();
 //    gtk_widget_set_default_direction (direction);
 func GetLocaleDirection() TextDirection {
-	c0 := C.gtk_get_locale_direction()
+	ret := C.gtk_get_locale_direction()
 
 	var ret0 TextDirection
-	ret0 = TextDirection(c0)
+	ret0 = TextDirection(ret)
 
 	return ret0
 }
@@ -3984,10 +4227,10 @@ func GetLocaleDirection() TextDirection {
 // represents the major version of the GTK headers you have included when
 // compiling your code.
 func GetMajorVersion() uint {
-	c0 := C.gtk_get_major_version()
+	ret := C.gtk_get_major_version()
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -4000,10 +4243,10 @@ func GetMajorVersion() uint {
 // represents the micro version of the GTK headers you have included when
 // compiling your code.
 func GetMicroVersion() uint {
-	c0 := C.gtk_get_micro_version()
+	ret := C.gtk_get_micro_version()
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -4016,10 +4259,10 @@ func GetMicroVersion() uint {
 // represents the minor version of the GTK headers you have included when
 // compiling your code.
 func GetMinorVersion() uint {
-	c0 := C.gtk_get_minor_version()
+	ret := C.gtk_get_minor_version()
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -4038,26 +4281,32 @@ func HSVToRGB(h float32, s float32, v float32) (float32, float32, float32) {
 	var arg2 float32
 	arg2 = float32(v)
 
-	c0, c1, c2 := C.gtk_hsv_to_rgb(arg0, arg1, arg2)
+	var arg3 *C.float // out
+
+	var arg4 *C.float // out
+
+	var arg5 *C.float // out
+
+	ret := C.gtk_hsv_to_rgb(arg0, arg1, arg2, &arg3, &arg4, &arg5)
 
 	var ret0 float32
-	ret0 = float32(c0)
+	ret0 = float32(arg3)
 
 	var ret1 float32
-	ret1 = float32(c1)
+	ret1 = float32(arg4)
 
 	var ret2 float32
-	ret2 = float32(c2)
+	ret2 = float32(arg5)
 
 	return ret0, ret1, ret2
 }
 
 func IconThemeErrorQuark() glib.Quark {
-	c0 := C.gtk_icon_theme_error_quark()
+	ret := C.gtk_icon_theme_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -4095,10 +4344,10 @@ func Init() {
 // This way the application can fall back to some other means of communication
 // with the user - for example a curses or command line interface.
 func InitCheck() bool {
-	c0 := C.gtk_init_check()
+	ret := C.gtk_init_check()
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -4106,10 +4355,10 @@ func InitCheck() bool {
 // IsInitialized: use this function to check if GTK has been initialized with
 // gtk_init() or gtk_init_check().
 func IsInitialized() bool {
-	c0 := C.gtk_is_initialized()
+	ret := C.gtk_is_initialized()
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -4119,10 +4368,10 @@ func NativeGetForSurface(surface gdk.Surface) Native {
 	var arg0 gdk.Surface
 	arg0 = wrapSurface(surface)
 
-	c0 := C.gtk_native_get_for_surface(arg0)
+	ret := C.gtk_native_get_for_surface(arg0)
 
 	var ret0 Native
-	ret0 = wrapNative(c0)
+	ret0 = wrapNative(ret)
 
 	return ret0
 }
@@ -4130,11 +4379,11 @@ func NativeGetForSurface(surface gdk.Surface) Native {
 // PaperSizeGetDefault: returns the name of the default paper size, which
 // depends on the current locale.
 func PaperSizeGetDefault() string {
-	c0 := C.gtk_paper_size_get_default()
+	ret := C.gtk_paper_size_get_default()
 
 	var ret0 string
-	ret0 = C.GoString(c0)
-	defer C.free(unsafe.Pointer(c0))
+	ret0 = C.GoString(ret)
+	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -4144,21 +4393,21 @@ func PaperSizeGetPaperSizes(includeCustom bool) *glib.List {
 	var arg0 bool
 	arg0 = gextras.Gobool(includeCustom)
 
-	c0 := C.gtk_paper_size_get_paper_sizes(arg0)
+	ret := C.gtk_paper_size_get_paper_sizes(arg0)
 
 	var ret0 *glib.List
-	ret0 = wrapList(c0)
+	ret0 = wrapList(ret)
 
 	return ret0
 }
 
 // PrintErrorQuark: registers an error quark for PrintOperation if necessary.
 func PrintErrorQuark() glib.Quark {
-	c0 := C.gtk_print_error_quark()
+	ret := C.gtk_print_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -4182,10 +4431,10 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 	var arg2 PrintSettings
 	arg2 = wrapPrintSettings(settings)
 
-	c0 := C.gtk_print_run_page_setup_dialog(arg0, arg1, arg2)
+	ret := C.gtk_print_run_page_setup_dialog(arg0, arg1, arg2)
 
 	var ret0 PageSetup
-	ret0 = wrapPageSetup(c0)
+	ret0 = wrapPageSetup(ret)
 
 	return ret0
 }
@@ -4196,7 +4445,7 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 // In contrast to gtk_print_run_page_setup_dialog(), this function returns after
 // showing the page setup dialog on platforms that support this, and calls
 // @done_cb from a signal handler for the ::response signal of the dialog.
-func PrintRunPageSetupDialogAsync(parent Window, pageSetup PageSetup, settings PrintSettings, doneCb PageSetupDoneFunc, data unsafe.Pointer) {
+func PrintRunPageSetupDialogAsync(parent Window, pageSetup PageSetup, settings PrintSettings, doneCb PageSetupDoneFunc) {
 	var arg0 Window
 	arg0 = wrapWindow(parent)
 
@@ -4209,18 +4458,15 @@ func PrintRunPageSetupDialogAsync(parent Window, pageSetup PageSetup, settings P
 	var arg3 PageSetupDoneFunc
 	arg3 = wrapPageSetupDoneFunc(doneCb)
 
-	var arg4 unsafe.Pointer
-	arg4 = unsafe.Pointer(data)
-
-	C.gtk_print_run_page_setup_dialog_async(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_print_run_page_setup_dialog_async(arg0, arg1, arg2, arg3)
 }
 
 func RecentManagerErrorQuark() glib.Quark {
-	c0 := C.gtk_recent_manager_error_quark()
+	ret := C.gtk_recent_manager_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -4562,16 +4808,22 @@ func RGBToHSV(r float32, g float32, b float32) (float32, float32, float32) {
 	var arg2 float32
 	arg2 = float32(b)
 
-	c0, c1, c2 := C.gtk_rgb_to_hsv(arg0, arg1, arg2)
+	var arg3 *C.float // out
+
+	var arg4 *C.float // out
+
+	var arg5 *C.float // out
+
+	ret := C.gtk_rgb_to_hsv(arg0, arg1, arg2, &arg3, &arg4, &arg5)
 
 	var ret0 float32
-	ret0 = float32(c0)
+	ret0 = float32(arg3)
 
 	var ret1 float32
-	ret1 = float32(c1)
+	ret1 = float32(arg4)
 
 	var ret2 float32
-	ret2 = float32(c2)
+	ret2 = float32(arg5)
 
 	return ret0, ret1, ret2
 }
@@ -4608,7 +4860,7 @@ func ShowURI(parent Window, uri string, timestamp uint32) {
 //
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
-func ShowURIFull(parent Window, uri string, timestamp uint32, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer) {
+func ShowURIFull(parent Window, uri string, timestamp uint32, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg0 Window
 	arg0 = wrapWindow(parent)
 
@@ -4625,10 +4877,7 @@ func ShowURIFull(parent Window, uri string, timestamp uint32, cancellable gio.Ca
 	var arg4 gio.AsyncReadyCallback
 	arg4 = wrapAsyncReadyCallback(callback)
 
-	var arg5 unsafe.Pointer
-	arg5 = unsafe.Pointer(userData)
-
-	C.gtk_show_uri_full(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.gtk_show_uri_full(arg0, arg1, arg2, arg3, arg4)
 }
 
 // ShowURIFullFinish: finishes the gtk_show_uri() call and returns the result of
@@ -4640,10 +4889,10 @@ func ShowURIFullFinish(parent Window, result gio.AsyncResult) bool {
 	var arg1 gio.AsyncResult
 	arg1 = wrapAsyncResult(result)
 
-	c0 := C.gtk_show_uri_full_finish(arg0, arg1)
+	ret := C.gtk_show_uri_full_finish(arg0, arg1)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -4688,10 +4937,10 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 	var arg1 AccessibleProperty
 	arg1 = AccessibleProperty(property)
 
-	c0 := C.gtk_test_accessible_has_property(arg0, arg1)
+	ret := C.gtk_test_accessible_has_property(arg0, arg1)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -4704,10 +4953,10 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 	var arg1 AccessibleRelation
 	arg1 = AccessibleRelation(relation)
 
-	c0 := C.gtk_test_accessible_has_relation(arg0, arg1)
+	ret := C.gtk_test_accessible_has_relation(arg0, arg1)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -4721,10 +4970,10 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 	var arg1 AccessibleRole
 	arg1 = AccessibleRole(role)
 
-	c0 := C.gtk_test_accessible_has_role(arg0, arg1)
+	ret := C.gtk_test_accessible_has_role(arg0, arg1)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -4737,10 +4986,10 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 	var arg1 AccessibleState
 	arg1 = AccessibleState(state)
 
-	c0 := C.gtk_test_accessible_has_state(arg0, arg1)
+	ret := C.gtk_test_accessible_has_state(arg0, arg1)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -4748,10 +4997,12 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 // TestListAllTypes: return the type ids that have been registered after calling
 // gtk_test_register_all_types().
 func TestListAllTypes() (uint, []externglib.Type) {
-	c0, c1 := C.gtk_test_list_all_types()
+	var arg0 *C.guint // out
+
+	ret := C.gtk_test_list_all_types(&arg0)
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(arg0)
 
 	var ret1 []externglib.Type
 
@@ -4788,10 +5039,10 @@ func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentPr
 	var arg1 *TreePath
 	arg1 = wrapTreePath(path)
 
-	c0 := C.gtk_tree_create_row_drag_content(arg0, arg1)
+	ret := C.gtk_tree_create_row_drag_content(arg0, arg1)
 
 	var ret0 gdk.ContentProvider
-	ret0 = wrapContentProvider(c0)
+	ret0 = wrapContentProvider(ret)
 
 	return ret0
 }
@@ -4801,16 +5052,20 @@ func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentPr
 //
 // The returned path must be freed with gtk_tree_path_free().
 func TreeGetRowDragData(value *externglib.Value) (TreeModel, *TreePath, bool) {
-	c0, c1, c2 := C.gtk_tree_get_row_drag_data()
+	var arg1 **C.GtkTreeModel // out
+
+	var arg2 **C.GtkTreePath // out
+
+	ret := C.gtk_tree_get_row_drag_data(&arg1, &arg2)
 
 	var ret0 *TreeModel
-	ret0 = wrapTreeModel(c0)
+	ret0 = wrapTreeModel(arg1)
 
 	var ret1 **TreePath
-	ret1 = wrapTreePath(c1)
+	ret1 = wrapTreePath(arg2)
 
 	var ret2 bool
-	ret2 = gextras.Gobool(c2)
+	ret2 = gextras.Gobool(ret)
 
 	return ret0, ret1, ret2
 }
@@ -4854,26 +5109,29 @@ func TreeRowReferenceReordered(proxy gextras.Objector, path *TreePath, iter *Tre
 	var arg2 *TreeIter
 	arg2 = wrapTreeIter(iter)
 
-	C.gtk_tree_row_reference_reordered(arg0, arg1, arg2)
+	var arg3 []int
+	arg3 = ([0]int)(newOrder)
+
+	C.gtk_tree_row_reference_reordered(arg0, arg1, arg2, arg3)
 }
 
 // ValueDupExpression: retrieves the Expression stored inside the given @value,
 // and acquires a reference to it.
 func ValueDupExpression(value *externglib.Value) Expression {
-	c0 := C.gtk_value_dup_expression()
+	ret := C.gtk_value_dup_expression()
 
 	var ret0 Expression
-	ret0 = wrapExpression(c0)
+	ret0 = wrapExpression(ret)
 
 	return ret0
 }
 
 // ValueGetExpression: retrieves the Expression stored inside the given @value.
 func ValueGetExpression(value *externglib.Value) Expression {
-	c0 := C.gtk_value_get_expression()
+	ret := C.gtk_value_get_expression()
 
 	var ret0 Expression
-	ret0 = wrapExpression(c0)
+	ret0 = wrapExpression(ret)
 
 	return ret0
 }
@@ -5095,7 +5353,7 @@ type CellLayout interface {
 	PackEnd(cell CellRenderer, expand bool)
 	PackStart(cell CellRenderer, expand bool)
 	Reorder(cell CellRenderer, position int)
-	SetCellDataFunc(cell CellRenderer, _func CellLayoutDataFunc, funcData unsafe.Pointer, destroy unsafe.Pointer)
+	SetCellDataFunc(cell CellRenderer, _func CellLayoutDataFunc)
 }
 
 // ColorChooser is an interface that is implemented by widgets for choosing
@@ -5340,7 +5598,7 @@ type FontChooser interface {
 	GetLevel() FontChooserLevel
 	GetPreviewText() string
 	GetShowPreviewEntry() bool
-	SetFilterFunc(filter FontFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetFilterFunc(filter FontFilterFunc)
 	SetFont(fontname string)
 	SetFontDesc(fontDesc *pango.FontDescription)
 	SetFontMap(fontmap pango.FontMap)
@@ -5669,7 +5927,7 @@ type TreeDragSource interface {
 // always referenced when any view is attached).
 type TreeModel interface {
 	NewFilter(root *TreePath) TreeModel
-	Foreach(_func TreeModelForeachFunc, userData unsafe.Pointer)
+	Foreach(_func TreeModelForeachFunc)
 	GetColumnType(index_ int) externglib.Type
 	GetFlags() TreeModelFlags
 	GetIter(path *TreePath) (TreeIter, bool)
@@ -5692,7 +5950,7 @@ type TreeModel interface {
 	RowHasChildToggled(path *TreePath, iter *TreeIter)
 	RowInserted(path *TreePath, iter *TreeIter)
 	RowsReordered(path *TreePath, iter *TreeIter, newOrder int)
-	RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int, length int)
+	RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int)
 	UnrefNode(iter *TreeIter)
 }
 
@@ -5702,9 +5960,9 @@ type TreeModel interface {
 type TreeSortable interface {
 	GetSortColumnID() (int, SortType, bool)
 	HasDefaultSortFunc() bool
-	SetDefaultSortFunc(sortFunc TreeIterCompareFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetDefaultSortFunc(sortFunc TreeIterCompareFunc)
 	SetSortColumnID(sortColumnID int, order SortType)
-	SetSortFunc(sortColumnID int, sortFunc TreeIterCompareFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetSortFunc(sortColumnID int, sortFunc TreeIterCompareFunc)
 	SortColumnChanged()
 }
 
@@ -5743,12 +6001,12 @@ func marshalBitset(p uintptr) (interface{}, error) {
 	return wrapBitset(c)
 }
 
-func (B *Bitset) free() {}
+func (b *Bitset) free() {}
 
 // Native returns the pointer to *C.GtkBitset. The caller is expected to
 // cast.
-func (B *Bitset) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *Bitset) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 func NewBitset() *Bitset
@@ -5779,12 +6037,12 @@ func marshalBitsetIter(p uintptr) (interface{}, error) {
 	return wrapBitsetIter(c)
 }
 
-func (B *BitsetIter) free() {}
+func (b *BitsetIter) free() {}
 
 // Native returns the pointer to *C.GtkBitsetIter. The caller is expected to
 // cast.
-func (B *BitsetIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BitsetIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Border: a struct that specifies a border around a rectangular area that can
@@ -5822,8 +6080,8 @@ func marshalBorder(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkBorder. The caller is expected to
 // cast.
-func (B *Border) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *Border) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 func NewBorder() *Border
@@ -5849,12 +6107,12 @@ func marshalBuildableParser(p uintptr) (interface{}, error) {
 	return wrapBuildableParser(c)
 }
 
-func (B *BuildableParser) free() {}
+func (b *BuildableParser) free() {}
 
 // Native returns the pointer to *C.GtkBuildableParser. The caller is expected to
 // cast.
-func (B *BuildableParser) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BuildableParser) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // CSSLocation is used to present a location in a file - or other source of data
@@ -5905,8 +6163,8 @@ func marshalCSSLocation(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkCssLocation. The caller is expected to
 // cast.
-func (C *CSSLocation) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CSSLocation) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // CSSSection: defines a part of a CSS document. Because sections are nested
@@ -5932,12 +6190,12 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 	return wrapCSSSection(c)
 }
 
-func (C *CSSSection) free() {}
+func (c *CSSSection) free() {}
 
 // Native returns the pointer to *C.GtkCssSection. The caller is expected to
 // cast.
-func (C *CSSSection) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CSSSection) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 func NewCSSSection(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSection
@@ -5983,8 +6241,8 @@ func marshalPadActionEntry(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkPadActionEntry. The caller is expected to
 // cast.
-func (P *PadActionEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PadActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // PageRange: see also gtk_print_settings_set_page_ranges().
@@ -6015,8 +6273,8 @@ func marshalPageRange(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkPageRange. The caller is expected to
 // cast.
-func (P *PageRange) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PageRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // PaperSize: gtkPaperSize handles paper sizes. It uses the standard called [PWG
@@ -6049,12 +6307,12 @@ func marshalPaperSize(p uintptr) (interface{}, error) {
 	return wrapPaperSize(c)
 }
 
-func (P *PaperSize) free() {}
+func (p *PaperSize) free() {}
 
 // Native returns the pointer to *C.GtkPaperSize. The caller is expected to
 // cast.
-func (P *PaperSize) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PaperSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 func NewPaperSize(name string) *PaperSize
@@ -6109,7 +6367,7 @@ func wrapRecentData(p *C.GtkRecentData) *RecentData {
 	defer C.free(unsafe.Pointer(p.app_name))
 	v.AppExec = C.GoString(p.app_exec)
 	defer C.free(unsafe.Pointer(p.app_exec))
-
+	v.Groups = ([0]string)(p.groups)
 	v.IsPrivate = gextras.Gobool(p.is_private)
 
 	return &v
@@ -6124,8 +6382,8 @@ func marshalRecentData(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkRecentData. The caller is expected to
 // cast.
-func (R *RecentData) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RecentData) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // RecentInfo: recentInfo contains private data only, and should be accessed
@@ -6153,12 +6411,12 @@ func marshalRecentInfo(p uintptr) (interface{}, error) {
 	return wrapRecentInfo(c)
 }
 
-func (R *RecentInfo) free() {}
+func (r *RecentInfo) free() {}
 
 // Native returns the pointer to *C.GtkRecentInfo. The caller is expected to
 // cast.
-func (R *RecentInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RecentInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // RequestedSize: represents a request of a screen object in a given
@@ -6167,7 +6425,7 @@ func (R *RecentInfo) Native() unsafe.Pointer {
 // gtk_distribute_natural_allocation().
 type RequestedSize struct {
 	// Data: a client pointer
-	Data unsafe.Pointer
+	Data interface{}
 	// MinimumSize: the minimum size needed for allocation in a given
 	// orientation
 	MinimumSize int
@@ -6196,8 +6454,8 @@ func marshalRequestedSize(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkRequestedSize. The caller is expected to
 // cast.
-func (R *RequestedSize) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RequestedSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Requisition: a Requisition-struct represents the desired size of a widget.
@@ -6230,8 +6488,8 @@ func marshalRequisition(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkRequisition. The caller is expected to
 // cast.
-func (R *Requisition) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *Requisition) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 func NewRequisition() *Requisition
@@ -6265,8 +6523,8 @@ func marshalSettingsValue(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkSettingsValue. The caller is expected to
 // cast.
-func (S *SettingsValue) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SettingsValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // TextIter: you may wish to begin by reading the [text widget conceptual
@@ -6292,12 +6550,12 @@ func marshalTextIter(p uintptr) (interface{}, error) {
 	return wrapTextIter(c)
 }
 
-func (T *TextIter) free() {}
+func (t *TextIter) free() {}
 
 // Native returns the pointer to *C.GtkTextIter. The caller is expected to
 // cast.
-func (T *TextIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *TextIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // TreeIter: the TreeIter is the primary structure for accessing a TreeModel.
@@ -6307,11 +6565,11 @@ type TreeIter struct {
 	// Stamp: a unique stamp to catch invalid iterators
 	Stamp int
 	// UserData: model-specific data
-	UserData unsafe.Pointer
+	UserData interface{}
 	// UserData2: model-specific data
-	UserData2 unsafe.Pointer
+	UserData2 interface{}
 	// UserData3: model-specific data
-	UserData3 unsafe.Pointer
+	UserData3 interface{}
 
 	native *C.GtkTreeIter
 }
@@ -6336,8 +6594,8 @@ func marshalTreeIter(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GtkTreeIter. The caller is expected to
 // cast.
-func (T *TreeIter) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *TreeIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 type TreePath struct {
@@ -6360,19 +6618,19 @@ func marshalTreePath(p uintptr) (interface{}, error) {
 	return wrapTreePath(c)
 }
 
-func (T *TreePath) free() {}
+func (t *TreePath) free() {}
 
 // Native returns the pointer to *C.GtkTreePath. The caller is expected to
 // cast.
-func (T *TreePath) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *TreePath) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 func NewTreePath() *TreePath
 
 func NewTreePath() *TreePath
 
-func NewTreePath(indices []int, length uint) *TreePath
+func NewTreePath(indices []int) *TreePath
 
 func NewTreePath(path string) *TreePath
 
@@ -6399,12 +6657,12 @@ func marshalTreeRowReference(p uintptr) (interface{}, error) {
 	return wrapTreeRowReference(c)
 }
 
-func (T *TreeRowReference) free() {}
+func (t *TreeRowReference) free() {}
 
 // Native returns the pointer to *C.GtkTreeRowReference. The caller is expected to
 // cast.
-func (T *TreeRowReference) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *TreeRowReference) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference
@@ -7739,7 +7997,7 @@ type Assistant interface {
 	// the user presses the forward button. Setting @page_func to nil will make
 	// the assistant to use the default forward function, which just goes to the
 	// next visible page.
-	SetForwardPageFunc(pageFunc AssistantPageFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+	SetForwardPageFunc(pageFunc AssistantPageFunc)
 	// SetPageComplete: sets whether @page contents are complete.
 	//
 	// This will make @assistant update the buttons state to be able to continue
@@ -7818,7 +8076,7 @@ func (a assistant) RemovePage(pageNum int)
 
 func (a assistant) SetCurrentPage(pageNum int)
 
-func (a assistant) SetForwardPageFunc(pageFunc AssistantPageFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+func (a assistant) SetForwardPageFunc(pageFunc AssistantPageFunc)
 
 func (a assistant) SetPageComplete(page Widget, complete bool)
 
@@ -8879,7 +9137,7 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCallbackAction(callback ShortcutFunc, data unsafe.Pointer, destroy unsafe.Pointer) CallbackAction
+func NewCallbackAction(callback ShortcutFunc) CallbackAction
 
 // CellArea: the CellArea is an abstract class for CellLayout widgets (also
 // referred to as "layouting widgets") to interface with an arbitrary number of
@@ -9238,10 +9496,10 @@ type CellArea interface {
 	// navigate focus in its own way particular to how it lays out cells.
 	Focus(direction DirectionType) bool
 	// Foreach: calls @callback for every CellRenderer in @area.
-	Foreach(callback CellCallback, callbackData unsafe.Pointer)
+	Foreach(callback CellCallback)
 	// ForeachAlloc: calls @callback for every CellRenderer in @area with the
 	// allocated rectangle inside @cell_area.
-	ForeachAlloc(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback, callbackData unsafe.Pointer)
+	ForeachAlloc(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
 	// GetCellAllocation: derives the allocation of @renderer inside @area if
 	// @area were to be renderered in @cell_area.
 	GetCellAllocation(context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) gdk.Rectangle
@@ -9407,9 +9665,9 @@ func (c cellArea) Event(context CellAreaContext, widget Widget, event gdk.Event,
 
 func (c cellArea) Focus(direction DirectionType) bool
 
-func (c cellArea) Foreach(callback CellCallback, callbackData unsafe.Pointer)
+func (c cellArea) Foreach(callback CellCallback)
 
-func (c cellArea) ForeachAlloc(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback, callbackData unsafe.Pointer)
+func (c cellArea) ForeachAlloc(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback)
 
 func (c cellArea) GetCellAllocation(context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) gdk.Rectangle
 
@@ -11090,7 +11348,7 @@ type ComboBox interface {
 	// determine whether a row should be drawn as a separator. If the row
 	// separator function is nil, no separators are drawn. This is the default
 	// value.
-	SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+	SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc)
 }
 
 type comboBox struct {
@@ -11161,7 +11419,7 @@ func (c comboBox) SetModel(model TreeModel)
 
 func (c comboBox) SetPopupFixedWidth(fixed bool)
 
-func (c comboBox) SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+func (c comboBox) SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc)
 
 // ComboBoxText: a GtkComboBoxText is a simple variant of ComboBox that hides
 // the model-view complexity for simple text-only use cases.
@@ -11388,9 +11646,9 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewConstraint(target unsafe.Pointer, targetAttribute ConstraintAttribute, relation ConstraintRelation, source unsafe.Pointer, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint
+func NewConstraint(target interface{}, targetAttribute ConstraintAttribute, relation ConstraintRelation, source interface{}, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint
 
-func NewConstraint(target unsafe.Pointer, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) Constraint
+func NewConstraint(target interface{}, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) Constraint
 
 func (c constraint) GetConstant() float64
 
@@ -11741,7 +11999,7 @@ type ConstraintLayout interface {
 	//      // Named attributes
 	//      [button1(==button2.height)]
 	//
-	AddConstraintsFromDescriptionv(lines []string, nLines uint, hspacing int, vspacing int, views *glib.HashTable) *glib.List
+	AddConstraintsFromDescriptionv(lines []string, hspacing int, vspacing int, views *glib.HashTable) *glib.List
 	// AddGuide: adds a guide to @layout. A guide can be used as the source or
 	// target of constraints, like a widget, but it is not visible.
 	//
@@ -11795,7 +12053,7 @@ func NewConstraintLayout() ConstraintLayout
 
 func (c constraintLayout) AddConstraint(constraint Constraint)
 
-func (c constraintLayout) AddConstraintsFromDescriptionv(lines []string, nLines uint, hspacing int, vspacing int, views *glib.HashTable) *glib.List
+func (c constraintLayout) AddConstraintsFromDescriptionv(lines []string, hspacing int, vspacing int, views *glib.HashTable) *glib.List
 
 func (c constraintLayout) AddGuide(guide ConstraintGuide)
 
@@ -11856,7 +12114,7 @@ type CSSProvider interface {
 
 	// LoadFromData: loads @data into @css_provider, and by doing so clears any
 	// previously loaded information.
-	LoadFromData(data []uint8, length int)
+	LoadFromData(data []uint8)
 	// LoadFromFile: loads the data contained in @file into @css_provider,
 	// making it clear any previously loaded information.
 	LoadFromFile(file gio.File)
@@ -11900,7 +12158,7 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 
 func NewCSSProvider() CSSProvider
 
-func (c cssProvider) LoadFromData(data []uint8, length int)
+func (c cssProvider) LoadFromData(data []uint8)
 
 func (c cssProvider) LoadFromFile(file gio.File)
 
@@ -11925,7 +12183,7 @@ type CustomFilter interface {
 	// needs to be called.
 	//
 	// If a previous function was set, its @user_destroy will be called now.
-	SetFilterFunc(matchFunc CustomFilterFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
+	SetFilterFunc(matchFunc CustomFilterFunc)
 }
 
 type customFilter struct {
@@ -11942,9 +12200,9 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCustomFilter(matchFunc CustomFilterFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) CustomFilter
+func NewCustomFilter(matchFunc CustomFilterFunc) CustomFilter
 
-func (c customFilter) SetFilterFunc(matchFunc CustomFilterFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
+func (c customFilter) SetFilterFunc(matchFunc CustomFilterFunc)
 
 // CustomLayout is a convenience type meant to be used as a transition mechanism
 // between Widgets implementing a layout policy, and LayoutManager classes.
@@ -11985,7 +12243,7 @@ type CustomSorter interface {
 	// to be called.
 	//
 	// If a previous function was set, its @user_destroy will be called now.
-	SetSortFunc(sortFunc glib.CompareDataFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
+	SetSortFunc(sortFunc glib.CompareDataFunc)
 }
 
 type customSorter struct {
@@ -12002,9 +12260,9 @@ func marshalCustomSorter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewCustomSorter(sortFunc glib.CompareDataFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) CustomSorter
+func NewCustomSorter(sortFunc glib.CompareDataFunc) CustomSorter
 
-func (c customSorter) SetSortFunc(sortFunc glib.CompareDataFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
+func (c customSorter) SetSortFunc(sortFunc glib.CompareDataFunc)
 
 // Dialog: dialogs are a convenient way to prompt the user for a small amount of
 // input, e.g. to display a message, ask a question, or anything else that does
@@ -12575,7 +12833,7 @@ type DrawingArea interface {
 	//
 	// If what you are drawing does change, call gtk_widget_queue_draw() on the
 	// drawing area. This will cause a redraw and will call @draw_func again.
-	SetDrawFunc(drawFunc DrawingAreaDrawFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetDrawFunc(drawFunc DrawingAreaDrawFunc)
 }
 
 type drawingArea struct {
@@ -12602,7 +12860,7 @@ func (d drawingArea) SetContentHeight(height int)
 
 func (d drawingArea) SetContentWidth(width int)
 
-func (d drawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+func (d drawingArea) SetDrawFunc(drawFunc DrawingAreaDrawFunc)
 
 // DropControllerMotion is an event controller meant for tracking the pointer
 // hovering over a widget during a drag and drop operation.
@@ -12696,7 +12954,7 @@ type DropDown interface {
 	GetSelected() uint
 	// GetSelectedItem: gets the selected item. If no item is selected, nil is
 	// returned.
-	GetSelectedItem() unsafe.Pointer
+	GetSelectedItem() interface{}
 	// SetEnableSearch: sets whether a search entry will be shown in the popup
 	// that allows to search for items in the list.
 	//
@@ -12747,7 +13005,7 @@ func (d dropDown) GetModel() gio.ListModel
 
 func (d dropDown) GetSelected() uint
 
-func (d dropDown) GetSelectedItem() unsafe.Pointer
+func (d dropDown) GetSelectedItem() interface{}
 
 func (d dropDown) SetEnableSearch(enableSearch bool)
 
@@ -12854,7 +13112,7 @@ type DropTarget interface {
 	// SetActions: sets the actions that this drop target supports.
 	SetActions(actions gdk.DragAction)
 	// SetGtypes: sets the supported #GTypes for this drop target.
-	SetGtypes(types []externglib.Type, nTypes uint)
+	SetGtypes(types []externglib.Type)
 	// SetPreload: sets the GtkDropTarget:preload property.
 	SetPreload(preload bool)
 }
@@ -12891,7 +13149,7 @@ func (d dropTarget) Reject()
 
 func (d dropTarget) SetActions(actions gdk.DragAction)
 
-func (d dropTarget) SetGtypes(types []externglib.Type, nTypes uint)
+func (d dropTarget) SetGtypes(types []externglib.Type)
 
 func (d dropTarget) SetPreload(preload bool)
 
@@ -13711,7 +13969,7 @@ type EntryCompletion interface {
 	// SetMatchFunc: sets the match function for @completion to be @func. The
 	// match function is used to determine if a row should or should not be in
 	// the completion list.
-	SetMatchFunc(_func EntryCompletionMatchFunc, funcData unsafe.Pointer, funcNotify unsafe.Pointer)
+	SetMatchFunc(_func EntryCompletionMatchFunc)
 	// SetMinimumKeyLength: requires the length of the search key for
 	// @completion to be at least @length. This is useful for long lists, where
 	// completing using a small key takes a lot of time and will come up with
@@ -13793,7 +14051,7 @@ func (e entryCompletion) SetInlineCompletion(inlineCompletion bool)
 
 func (e entryCompletion) SetInlineSelection(inlineSelection bool)
 
-func (e entryCompletion) SetMatchFunc(_func EntryCompletionMatchFunc, funcData unsafe.Pointer, funcNotify unsafe.Pointer)
+func (e entryCompletion) SetMatchFunc(_func EntryCompletionMatchFunc)
 
 func (e entryCompletion) SetMinimumKeyLength(length int)
 
@@ -14830,7 +15088,7 @@ type Filter interface {
 	// choose to omit implementing it, but FilterListModel uses it.
 	GetStrictness() FilterMatch
 	// Match: checks if the given @item is matched by the filter or not.
-	Match(item unsafe.Pointer) bool
+	Match(item interface{}) bool
 }
 
 type filter struct {
@@ -14851,7 +15109,7 @@ func (f filter) Changed(change FilterChange)
 
 func (f filter) GetStrictness() FilterMatch
 
-func (f filter) Match(item unsafe.Pointer) bool
+func (f filter) Match(item interface{}) bool
 
 // FilterListModel is a list model that filters a given other listmodel. It
 // hides some elements from the other model according to criteria given by a
@@ -15205,7 +15463,7 @@ type FlowBox interface {
 	// Note that using a model is incompatible with the filtering and sorting
 	// functionality in GtkFlowBox. When using a model, filtering and sorting
 	// should be implemented by the model.
-	BindModel(model gio.ListModel, createWidgetFunc FlowBoxCreateWidgetFunc, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer)
+	BindModel(model gio.ListModel, createWidgetFunc FlowBoxCreateWidgetFunc)
 	// GetActivateOnSingleClick: returns whether children activate on single
 	// clicks.
 	GetActivateOnSingleClick() bool
@@ -15259,7 +15517,7 @@ type FlowBox interface {
 	// SelectedForeach: calls a function for each selected child.
 	//
 	// Note that the selection cannot be modified from within this function.
-	SelectedForeach(_func FlowBoxForeachFunc, data unsafe.Pointer)
+	SelectedForeach(_func FlowBoxForeachFunc)
 	// SetActivateOnSingleClick: if @single is true, children will be activated
 	// when you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
@@ -15277,7 +15535,7 @@ type FlowBox interface {
 	//
 	// Note that using a filter function is incompatible with using a model (see
 	// gtk_flow_box_bind_model()).
-	SetFilterFunc(filterFunc FlowBoxFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetFilterFunc(filterFunc FlowBoxFilterFunc)
 	// SetHadjustment: hooks up an adjustment to focus handling in @box. The
 	// adjustment is also used for autoscrolling during rubberband selection.
 	// See gtk_scrolled_window_get_hadjustment() for a typical way of obtaining
@@ -15317,7 +15575,7 @@ type FlowBox interface {
 	//
 	// Note that using a sort function is incompatible with using a model (see
 	// gtk_flow_box_bind_model()).
-	SetSortFunc(sortFunc FlowBoxSortFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetSortFunc(sortFunc FlowBoxSortFunc)
 	// SetVadjustment: hooks up an adjustment to focus handling in @box. The
 	// adjustment is also used for autoscrolling during rubberband selection.
 	// See gtk_scrolled_window_get_vadjustment() for a typical way of obtaining
@@ -15351,7 +15609,7 @@ func marshalFlowBox(p uintptr) (interface{}, error) {
 
 func NewFlowBox() FlowBox
 
-func (f flowBox) BindModel(model gio.ListModel, createWidgetFunc FlowBoxCreateWidgetFunc, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer)
+func (f flowBox) BindModel(model gio.ListModel, createWidgetFunc FlowBoxCreateWidgetFunc)
 
 func (f flowBox) GetActivateOnSingleClick() bool
 
@@ -15385,13 +15643,13 @@ func (f flowBox) SelectAll()
 
 func (f flowBox) SelectChild(child FlowBoxChild)
 
-func (f flowBox) SelectedForeach(_func FlowBoxForeachFunc, data unsafe.Pointer)
+func (f flowBox) SelectedForeach(_func FlowBoxForeachFunc)
 
 func (f flowBox) SetActivateOnSingleClick(single bool)
 
 func (f flowBox) SetColumnSpacing(spacing uint)
 
-func (f flowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+func (f flowBox) SetFilterFunc(filterFunc FlowBoxFilterFunc)
 
 func (f flowBox) SetHadjustment(adjustment Adjustment)
 
@@ -15405,7 +15663,7 @@ func (f flowBox) SetRowSpacing(spacing uint)
 
 func (f flowBox) SetSelectionMode(mode SelectionMode)
 
-func (f flowBox) SetSortFunc(sortFunc FlowBoxSortFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+func (f flowBox) SetSortFunc(sortFunc FlowBoxSortFunc)
 
 func (f flowBox) SetVadjustment(adjustment Adjustment)
 
@@ -17743,7 +18001,7 @@ type IconView interface {
 	SelectPath(path *TreePath)
 	// SelectedForeach: calls a function for each selected icon. Note that the
 	// model or selection cannot be modified from within this function.
-	SelectedForeach(_func IconViewForeachFunc, data unsafe.Pointer)
+	SelectedForeach(_func IconViewForeachFunc)
 	// SetActivateOnSingleClick: causes the IconView::item-activated signal to
 	// be emitted on a single click instead of a double click.
 	SetActivateOnSingleClick(single bool)
@@ -17942,7 +18200,7 @@ func (i iconView) SelectAll()
 
 func (i iconView) SelectPath(path *TreePath)
 
-func (i iconView) SelectedForeach(_func IconViewForeachFunc, data unsafe.Pointer)
+func (i iconView) SelectedForeach(_func IconViewForeachFunc)
 
 func (i iconView) SetActivateOnSingleClick(single bool)
 
@@ -19304,7 +19562,7 @@ type ListBox interface {
 	// Note that using a model is incompatible with the filtering and sorting
 	// functionality in GtkListBox. When using a model, filtering and sorting
 	// should be implemented by the model.
-	BindModel(model gio.ListModel, createWidgetFunc ListBoxCreateWidgetFunc, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer)
+	BindModel(model gio.ListModel, createWidgetFunc ListBoxCreateWidgetFunc)
 	// DragHighlightRow: this is a helper function for implementing DnD onto a
 	// ListBox. The passed in @row will be highlighted by setting the
 	// K_STATE_FLAG_DROP_ACTIVE state and any previously highlighted row will be
@@ -19370,7 +19628,7 @@ type ListBox interface {
 	// SelectedForeach: calls a function for each selected child.
 	//
 	// Note that the selection cannot be modified from within this function.
-	SelectedForeach(_func ListBoxForeachFunc, data unsafe.Pointer)
+	SelectedForeach(_func ListBoxForeachFunc)
 	// SetActivateOnSingleClick: if @single is true, rows will be activated when
 	// you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
@@ -19394,7 +19652,7 @@ type ListBox interface {
 	//
 	// Note that using a filter function is incompatible with using a model (see
 	// gtk_list_box_bind_model()).
-	SetFilterFunc(filterFunc ListBoxFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetFilterFunc(filterFunc ListBoxFilterFunc)
 	// SetHeaderFunc: by setting a header function on the @box one can
 	// dynamically add headers in front of rows, depending on the contents of
 	// the row and its position in the list. For instance, one could use it to
@@ -19417,7 +19675,7 @@ type ListBox interface {
 	// gtk_list_box_row_changed() on the previous row, or when the previous row
 	// becomes a different row). It is also called for all rows when
 	// gtk_list_box_invalidate_headers() is called.
-	SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc)
 	// SetPlaceholder: sets the placeholder widget that is shown in the list
 	// when it doesn't display any visible children.
 	SetPlaceholder(placeholder Widget)
@@ -19437,7 +19695,7 @@ type ListBox interface {
 	//
 	// Note that using a sort function is incompatible with using a model (see
 	// gtk_list_box_bind_model()).
-	SetSortFunc(sortFunc ListBoxSortFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetSortFunc(sortFunc ListBoxSortFunc)
 	// UnselectAll: unselect all children of @box, if the selection mode allows
 	// it.
 	UnselectAll()
@@ -19464,7 +19722,7 @@ func NewListBox() ListBox
 
 func (l listBox) Append(child Widget)
 
-func (l listBox) BindModel(model gio.ListModel, createWidgetFunc ListBoxCreateWidgetFunc, userData unsafe.Pointer, userDataFreeFunc unsafe.Pointer)
+func (l listBox) BindModel(model gio.ListModel, createWidgetFunc ListBoxCreateWidgetFunc)
 
 func (l listBox) DragHighlightRow(row ListBoxRow)
 
@@ -19502,15 +19760,15 @@ func (l listBox) SelectAll()
 
 func (l listBox) SelectRow(row ListBoxRow)
 
-func (l listBox) SelectedForeach(_func ListBoxForeachFunc, data unsafe.Pointer)
+func (l listBox) SelectedForeach(_func ListBoxForeachFunc)
 
 func (l listBox) SetActivateOnSingleClick(single bool)
 
 func (l listBox) SetAdjustment(adjustment Adjustment)
 
-func (l listBox) SetFilterFunc(filterFunc ListBoxFilterFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+func (l listBox) SetFilterFunc(filterFunc ListBoxFilterFunc)
 
-func (l listBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+func (l listBox) SetHeaderFunc(updateHeader ListBoxUpdateHeaderFunc)
 
 func (l listBox) SetPlaceholder(placeholder Widget)
 
@@ -19518,7 +19776,7 @@ func (l listBox) SetSelectionMode(mode SelectionMode)
 
 func (l listBox) SetShowSeparators(showSeparators bool)
 
-func (l listBox) SetSortFunc(sortFunc ListBoxSortFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+func (l listBox) SetSortFunc(sortFunc ListBoxSortFunc)
 
 func (l listBox) UnselectAll()
 
@@ -19635,7 +19893,7 @@ type ListItem interface {
 	GetChild() Widget
 	// GetItem: gets the item that is currently displayed in model that @self is
 	// currently bound to or nil if @self is unbound.
-	GetItem() unsafe.Pointer
+	GetItem() interface{}
 	// GetPosition: gets the position in the model that @self currently
 	// displays. If @self is unbound, GTK_INVALID_LIST_POSITION is returned.
 	GetPosition() uint
@@ -19694,7 +19952,7 @@ func (l listItem) GetActivatable() bool
 
 func (l listItem) GetChild() Widget
 
-func (l listItem) GetItem() unsafe.Pointer
+func (l listItem) GetItem() interface{}
 
 func (l listItem) GetPosition() uint
 
@@ -19906,7 +20164,7 @@ type ListStore interface {
 	// InsertWithValuesv: a variant of gtk_list_store_insert_with_values() which
 	// takes the columns and values as two arrays, instead of varargs. This
 	// function is mainly intended for language-bindings.
-	InsertWithValuesv(position int, columns []int, values []*externglib.Value, nValues int) TreeIter
+	InsertWithValuesv(position int, columns []int, values []*externglib.Value) TreeIter
 	// IterIsValid: > This function is slow. Only use it for debugging and/or
 	// testing > purposes.
 	//
@@ -19944,7 +20202,7 @@ type ListStore interface {
 	// columns and values as two arrays, instead of varargs. This function is
 	// mainly intended for language-bindings and in case the number of columns
 	// to change is not known until run-time.
-	SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value, nValues int)
+	SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value)
 	// Swap: swaps @a and @b in @store. Note that this function only works with
 	// unsorted stores.
 	Swap(a *TreeIter, b *TreeIter)
@@ -19976,7 +20234,7 @@ func (l listStore) InsertAfter(sibling *TreeIter) TreeIter
 
 func (l listStore) InsertBefore(sibling *TreeIter) TreeIter
 
-func (l listStore) InsertWithValuesv(position int, columns []int, values []*externglib.Value, nValues int) TreeIter
+func (l listStore) InsertWithValuesv(position int, columns []int, values []*externglib.Value) TreeIter
 
 func (l listStore) IterIsValid(iter *TreeIter) bool
 
@@ -19994,7 +20252,7 @@ func (l listStore) SetColumnTypes(nColumns int, types []externglib.Type)
 
 func (l listStore) SetValue(iter *TreeIter, column int, value *externglib.Value)
 
-func (l listStore) SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value, nValues int)
+func (l listStore) SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value)
 
 func (l listStore) Swap(a *TreeIter, b *TreeIter)
 
@@ -20240,7 +20498,7 @@ type MapListModel interface {
 	// GTK makes no effort to ensure that @map_func conforms to the item type of
 	// @self. It assumes that the caller knows what they are doing and the map
 	// function returns items of the appropriate type.
-	SetMapFunc(mapFunc MapListModelMapFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
+	SetMapFunc(mapFunc MapListModelMapFunc)
 	// SetModel: sets the model to be mapped.
 	//
 	// GTK makes no effort to ensure that @model conforms to the item type
@@ -20263,13 +20521,13 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewMapListModel(model gio.ListModel, mapFunc MapListModelMapFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) MapListModel
+func NewMapListModel(model gio.ListModel, mapFunc MapListModelMapFunc) MapListModel
 
 func (m mapListModel) GetModel() gio.ListModel
 
 func (m mapListModel) HasMap() bool
 
-func (m mapListModel) SetMapFunc(mapFunc MapListModelMapFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer)
+func (m mapListModel) SetMapFunc(mapFunc MapListModelMapFunc)
 
 func (m mapListModel) SetModel(model gio.ListModel)
 
@@ -20750,7 +21008,7 @@ type MenuButton interface {
 	//
 	// Using this function will not reset the menu widget attached to
 	// @menu_button. Instead, this can be done manually in @func.
-	SetCreatePopupFunc(_func MenuButtonCreatePopupFunc, userData unsafe.Pointer, destroyNotify unsafe.Pointer)
+	SetCreatePopupFunc(_func MenuButtonCreatePopupFunc)
 	// SetDirection: sets the direction in which the popup will be popped up, as
 	// well as changing the arrow’s direction. The child will not be changed to
 	// an arrow if it was customized.
@@ -20823,7 +21081,7 @@ func (m menuButton) Popdown()
 
 func (m menuButton) Popup()
 
-func (m menuButton) SetCreatePopupFunc(_func MenuButtonCreatePopupFunc, userData unsafe.Pointer, destroyNotify unsafe.Pointer)
+func (m menuButton) SetCreatePopupFunc(_func MenuButtonCreatePopupFunc)
 
 func (m menuButton) SetDirection(direction ArrowType)
 
@@ -21991,7 +22249,7 @@ type PadController interface {
 	// SetActionEntries: this is a convenience function to add a group of action
 	// entries on @controller. See PadActionEntry and
 	// gtk_pad_controller_set_action().
-	SetActionEntries(entries []PadActionEntry, nEntries int)
+	SetActionEntries(entries []PadActionEntry)
 }
 
 type padController struct {
@@ -22012,7 +22270,7 @@ func NewPadController(group gio.ActionGroup, pad gdk.Device) PadController
 
 func (p padController) SetAction(_type PadActionType, index int, mode int, label string, actionName string)
 
-func (p padController) SetActionEntries(entries []PadActionEntry, nEntries int)
+func (p padController) SetActionEntries(entries []PadActionEntry)
 
 // PageSetup: a GtkPageSetup object stores the page size, orientation and
 // margins. The idea is that you can get one of these from the page setup dialog
@@ -23454,7 +23712,7 @@ type PrintSettings interface {
 	// Copy: copies a PrintSettings object.
 	Copy() PrintSettings
 	// Foreach: calls @func for each key-value pair of @settings.
-	Foreach(_func PrintSettingsFunc, userData unsafe.Pointer)
+	Foreach(_func PrintSettingsFunc)
 	// Get: looks up the string value associated with @key.
 	Get(key string) string
 	// GetBool: returns the boolean represented by the value that is associated
@@ -23582,7 +23840,7 @@ type PrintSettings interface {
 	// SetOutputBin: sets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 	SetOutputBin(outputBin string)
 	// SetPageRanges: sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-	SetPageRanges(pageRanges []PageRange, numRanges int)
+	SetPageRanges(pageRanges []PageRange)
 	// SetPageSet: sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
 	SetPageSet(pageSet PageSet)
 	// SetPaperHeight: sets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT.
@@ -23651,7 +23909,7 @@ func NewPrintSettings(keyFile *glib.KeyFile, groupName string) PrintSettings
 
 func (p printSettings) Copy() PrintSettings
 
-func (p printSettings) Foreach(_func PrintSettingsFunc, userData unsafe.Pointer)
+func (p printSettings) Foreach(_func PrintSettingsFunc)
 
 func (p printSettings) Get(key string) string
 
@@ -23757,7 +24015,7 @@ func (p printSettings) SetOrientation(orientation PageOrientation)
 
 func (p printSettings) SetOutputBin(outputBin string)
 
-func (p printSettings) SetPageRanges(pageRanges []PageRange, numRanges int)
+func (p printSettings) SetPageRanges(pageRanges []PageRange)
 
 func (p printSettings) SetPageSet(pageSet PageSet)
 
@@ -24498,7 +24756,7 @@ type Scale interface {
 	//
 	// If LL is passed as @func, the value will be displayed on its own, rounded
 	// according to the value of the Scale:digits property.
-	SetFormatValueFunc(_func ScaleFormatValueFunc, userData unsafe.Pointer, destroyNotify unsafe.Pointer)
+	SetFormatValueFunc(_func ScaleFormatValueFunc)
 	// SetHasOrigin: if Scale:has-origin is set to true (the default), the scale
 	// will highlight the part of the trough between the origin (bottom or left
 	// side) and the current value.
@@ -24545,7 +24803,7 @@ func (s scale) SetDigits(digits int)
 
 func (s scale) SetDrawValue(drawValue bool)
 
-func (s scale) SetFormatValueFunc(_func ScaleFormatValueFunc, userData unsafe.Pointer, destroyNotify unsafe.Pointer)
+func (s scale) SetFormatValueFunc(_func ScaleFormatValueFunc)
 
 func (s scale) SetHasOrigin(hasOrigin bool)
 
@@ -25579,13 +25837,13 @@ type ShortcutTrigger interface {
 	// Compare: the types of @trigger1 and @trigger2 are #gconstpointer only to
 	// allow use of this function as a Func. They must each be a
 	// ShortcutTrigger.
-	Compare(trigger2 unsafe.Pointer) int
+	Compare(trigger2 interface{}) int
 	// Equal: checks if @trigger1 and @trigger2 trigger under the same
 	// conditions.
 	//
 	// The types of @one and @two are #gconstpointer only to allow use of this
 	// function with Table. They must each be a ShortcutTrigger.
-	Equal(trigger2 unsafe.Pointer) bool
+	Equal(trigger2 interface{}) bool
 	// Hash: generates a hash value for a ShortcutTrigger.
 	//
 	// The output of this function is guaranteed to be the same for a given
@@ -25648,9 +25906,9 @@ func marshalShortcutTrigger(p uintptr) (interface{}, error) {
 
 func NewShortcutTrigger(string string) ShortcutTrigger
 
-func (s shortcutTrigger) Compare(trigger2 unsafe.Pointer) int
+func (s shortcutTrigger) Compare(trigger2 interface{}) int
 
-func (s shortcutTrigger) Equal(trigger2 unsafe.Pointer) bool
+func (s shortcutTrigger) Equal(trigger2 interface{}) bool
 
 func (s shortcutTrigger) Hash() uint
 
@@ -25909,7 +26167,7 @@ type SingleSelection interface {
 	// GetSelectedItem: gets the selected item.
 	//
 	// If no item is selected, nil is returned.
-	GetSelectedItem() unsafe.Pointer
+	GetSelectedItem() interface{}
 	// SetAutoselect: if @autoselect is true, @self will enforce that an item is
 	// always selected. It will select a new item when the currently selected
 	// item is deleted and it will disallow unselecting the current item.
@@ -25958,7 +26216,7 @@ func (s singleSelection) GetModel() gio.ListModel
 
 func (s singleSelection) GetSelected() uint
 
-func (s singleSelection) GetSelectedItem() unsafe.Pointer
+func (s singleSelection) GetSelectedItem() interface{}
 
 func (s singleSelection) SetAutoselect(autoselect bool)
 
@@ -26169,7 +26427,7 @@ type Snapshot interface {
 	AppendColor(color *gdk.RGBA, bounds *graphene.Rect)
 	// AppendConicGradient: appends a conic gradient node with the given stops
 	// to @snapshot.
-	AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop, nStops uint)
+	AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
 	// AppendInsetShadow: appends an inset shadow into the box given by
 	// @outline.
 	AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
@@ -26177,7 +26435,7 @@ type Snapshot interface {
 	AppendLayout(layout pango.Layout, color *gdk.RGBA)
 	// AppendLinearGradient: appends a linear gradient node with the given stops
 	// to @snapshot.
-	AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop, nStops uint)
+	AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
 	// AppendNode: appends @node to the current render node of @snapshot,
 	// without changing the current node. If @snapshot does not have a current
 	// node yet, @node will become the initial node.
@@ -26187,13 +26445,13 @@ type Snapshot interface {
 	AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 	// AppendRadialGradient: appends a radial gradient node with the given stops
 	// to @snapshot.
-	AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop, nStops uint)
+	AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 	// AppendRepeatingLinearGradient: appends a repeating linear gradient node
 	// with the given stops to @snapshot.
-	AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop, nStops uint)
+	AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
 	// AppendRepeatingRadialGradient: appends a repeating radial gradient node
 	// with the given stops to @snapshot.
-	AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop, nStops uint)
+	AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 	// AppendTexture: creates a new render node drawing the @texture into the
 	// given @bounds and appends it to the current render node of @snapshot.
 	AppendTexture(texture gdk.Texture, bounds *graphene.Rect)
@@ -26203,11 +26461,11 @@ type Snapshot interface {
 	// FreeToPaintable: returns a paintable for the node that was constructed by
 	// @snapshot and frees @snapshot.
 	FreeToPaintable(size *graphene.Size) gdk.Paintable
-	// GlShaderPopTexture: removes the top element from the stack of render
+	// GLShaderPopTexture: removes the top element from the stack of render
 	// nodes and adds it to the nearest GskGLShaderNode below it. This must be
 	// called the same number of times as the number of textures is needed for
 	// the shader in gtk_snapshot_push_gl_shader().
-	GlShaderPopTexture()
+	GLShaderPopTexture()
 	// Perspective: applies a perspective projection transform.
 	//
 	// See gsk_transform_perspective() for a discussion on the details.
@@ -26245,7 +26503,7 @@ type Snapshot interface {
 	//
 	// Calling this function requires 2 calls to gtk_snapshot_pop().
 	PushCrossFade(progress float64)
-	// PushGlShader: push a GLShaderNode with a specific GLShader and a set of
+	// PushGLShader: push a GLShaderNode with a specific GLShader and a set of
 	// uniform values to use while rendering. Additionally this takes a list of
 	// @n_children other nodes which will be passed to the GLShaderNode.
 	//
@@ -26274,7 +26532,7 @@ type Snapshot interface {
 	// texture node. These will be used directly rather than being re-rendered.
 	//
 	// For details on how to write shaders, see GLShader.
-	PushGlShader(shader gsk.GLShader, bounds *graphene.Rect, takeArgs *glib.Bytes)
+	PushGLShader(shader gsk.GLShader, bounds *graphene.Rect, takeArgs *glib.Bytes)
 	// PushOpacity: modifies the opacity of an image.
 	//
 	// The image is recorded until the next call to gtk_snapshot_pop().
@@ -26384,23 +26642,23 @@ func (s snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context
 
 func (s snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect)
 
-func (s snapshot) AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop, nStops uint)
+func (s snapshot) AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
 
 func (s snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 
 func (s snapshot) AppendLayout(layout pango.Layout, color *gdk.RGBA)
 
-func (s snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop, nStops uint)
+func (s snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
 
 func (s snapshot) AppendNode(node gsk.RenderNode)
 
 func (s snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 
-func (s snapshot) AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop, nStops uint)
+func (s snapshot) AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 
-func (s snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop, nStops uint)
+func (s snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
 
-func (s snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop, nStops uint)
+func (s snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 
 func (s snapshot) AppendTexture(texture gdk.Texture, bounds *graphene.Rect)
 
@@ -26408,7 +26666,7 @@ func (s snapshot) FreeToNode() gsk.RenderNode
 
 func (s snapshot) FreeToPaintable(size *graphene.Size) gdk.Paintable
 
-func (s snapshot) GlShaderPopTexture()
+func (s snapshot) GLShaderPopTexture()
 
 func (s snapshot) Perspective(depth float32)
 
@@ -26424,7 +26682,7 @@ func (s snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOffset *gra
 
 func (s snapshot) PushCrossFade(progress float64)
 
-func (s snapshot) PushGlShader(shader gsk.GLShader, bounds *graphene.Rect, takeArgs *glib.Bytes)
+func (s snapshot) PushGLShader(shader gsk.GLShader, bounds *graphene.Rect, takeArgs *glib.Bytes)
 
 func (s snapshot) PushOpacity(opacity float64)
 
@@ -26596,7 +26854,7 @@ type Sorter interface {
 	//
 	// The sorter may signal it conforms to additional constraints via the
 	// return value of gtk_sorter_get_order().
-	Compare(item1 unsafe.Pointer, item2 unsafe.Pointer) Ordering
+	Compare(item1 interface{}, item2 interface{}) Ordering
 	// GetOrder: gets the order that @self conforms to. See SorterOrder for
 	// details of the possible return values.
 	//
@@ -26620,7 +26878,7 @@ func marshalSorter(p uintptr) (interface{}, error) {
 
 func (s sorter) Changed(change SorterChange)
 
-func (s sorter) Compare(item1 unsafe.Pointer, item2 unsafe.Pointer) Ordering
+func (s sorter) Compare(item1 interface{}, item2 interface{}) Ordering
 
 func (s sorter) GetOrder() SorterOrder
 
@@ -28876,7 +29134,7 @@ type TextTagTable interface {
 	// Foreach: calls @func on each tag in @table, with user data @data. Note
 	// that the table may not be modified while iterating over it (you can’t
 	// add/remove tags).
-	Foreach(_func TextTagTableForeach, data unsafe.Pointer)
+	Foreach(_func TextTagTableForeach)
 	// GetSize: returns the size of the table (number of tags)
 	GetSize() int
 	// Lookup: look up a named tag.
@@ -28906,7 +29164,7 @@ func NewTextTagTable() TextTagTable
 
 func (t textTagTable) Add(tag TextTag) bool
 
-func (t textTagTable) Foreach(_func TextTagTableForeach, data unsafe.Pointer)
+func (t textTagTable) Foreach(_func TextTagTableForeach)
 
 func (t textTagTable) GetSize() int
 
@@ -29701,7 +29959,7 @@ type TreeExpander interface {
 	// This call is essentially equivalent to calling:
 	//
 	//    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
-	GetItem() unsafe.Pointer
+	GetItem() interface{}
 	// GetListRow: gets the list row managed by @self.
 	GetListRow() TreeListRow
 	// SetChild: sets the content widget to display.
@@ -29728,7 +29986,7 @@ func NewTreeExpander() TreeExpander
 
 func (t treeExpander) GetChild() Widget
 
-func (t treeExpander) GetItem() unsafe.Pointer
+func (t treeExpander) GetItem() interface{}
 
 func (t treeExpander) GetListRow() TreeListRow
 
@@ -29798,7 +30056,7 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTreeListModel(root gio.ListModel, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc, userData unsafe.Pointer, userDestroy unsafe.Pointer) TreeListModel
+func NewTreeListModel(root gio.ListModel, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc) TreeListModel
 
 func (t treeListModel) GetAutoexpand() bool
 
@@ -29847,7 +30105,7 @@ type TreeListRow interface {
 	//
 	// The value returned by this function never changes until the row is
 	// destroyed.
-	GetItem() unsafe.Pointer
+	GetItem() interface{}
 	// GetParent: gets the row representing the parent for @self. That is the
 	// row that would need to be collapsed to make this row disappear.
 	//
@@ -29898,7 +30156,7 @@ func (t treeListRow) GetDepth() uint
 
 func (t treeListRow) GetExpanded() bool
 
-func (t treeListRow) GetItem() unsafe.Pointer
+func (t treeListRow) GetItem() interface{}
 
 func (t treeListRow) GetParent() TreeListRow
 
@@ -30057,7 +30315,7 @@ type TreeModelFilter interface {
 	//
 	// Note that gtk_tree_model_filter_set_modify_func() can only be called once
 	// for a given filter model.
-	SetModifyFunc(nColumns int, types []externglib.Type, _func TreeModelFilterModifyFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+	SetModifyFunc(nColumns int, types []externglib.Type, _func TreeModelFilterModifyFunc)
 	// SetVisibleColumn: sets @column of the child_model to be the column where
 	// @filter should look for visibility information. @columns should be a
 	// column of type G_TYPE_BOOLEAN, where true means that a row is visible,
@@ -30101,7 +30359,7 @@ type TreeModelFilter interface {
 	// Note that gtk_tree_model_filter_set_visible_func() or
 	// gtk_tree_model_filter_set_visible_column() can only be called once for a
 	// given filter model.
-	SetVisibleFunc(_func TreeModelFilterVisibleFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+	SetVisibleFunc(_func TreeModelFilterVisibleFunc)
 }
 
 type treeModelFilter struct {
@@ -30132,11 +30390,11 @@ func (t treeModelFilter) GetModel() TreeModel
 
 func (t treeModelFilter) Refilter()
 
-func (t treeModelFilter) SetModifyFunc(nColumns int, types []externglib.Type, _func TreeModelFilterModifyFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+func (t treeModelFilter) SetModifyFunc(nColumns int, types []externglib.Type, _func TreeModelFilterModifyFunc)
 
 func (t treeModelFilter) SetVisibleColumn(column int)
 
-func (t treeModelFilter) SetVisibleFunc(_func TreeModelFilterVisibleFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+func (t treeModelFilter) SetVisibleFunc(_func TreeModelFilterVisibleFunc)
 
 // TreeModelSort: the TreeModelSort is a model which implements the TreeSortable
 // interface. It does not hold any data itself, but rather is created with a
@@ -30354,7 +30612,7 @@ type TreeSelection interface {
 	// GetTreeView: returns the tree view associated with @selection.
 	GetTreeView() TreeView
 	// GetUserData: returns the user data for the selection function.
-	GetUserData() unsafe.Pointer
+	GetUserData() interface{}
 	// IterIsSelected: returns true if the row at @iter is currently selected.
 	IterIsSelected(iter *TreeIter) bool
 	// PathIsSelected: returns true if the row pointed to by @path is currently
@@ -30373,7 +30631,7 @@ type TreeSelection interface {
 	// SelectedForeach: calls a function for each selected node. Note that you
 	// cannot modify the tree or selection from within this function. As a
 	// result, gtk_tree_selection_get_selected_rows() might be more useful.
-	SelectedForeach(_func TreeSelectionForeachFunc, data unsafe.Pointer)
+	SelectedForeach(_func TreeSelectionForeachFunc)
 	// SetMode: sets the selection mode of the @selection. If the previous type
 	// was K_SELECTION_MULTIPLE, then the anchor is kept selected, if it was
 	// previously selected.
@@ -30384,7 +30642,7 @@ type TreeSelection interface {
 	// unselected, giving some control over which nodes are selected. The select
 	// function should return true if the state of the node may be toggled, and
 	// false if the state of the node should be left unchanged.
-	SetSelectFunction(_func TreeSelectionFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+	SetSelectFunction(_func TreeSelectionFunc)
 	// UnselectAll: unselects all the nodes.
 	UnselectAll()
 	// UnselectIter: unselects the specified iterator.
@@ -30422,7 +30680,7 @@ func (t treeSelection) GetSelectedRows() (TreeModel, *glib.List)
 
 func (t treeSelection) GetTreeView() TreeView
 
-func (t treeSelection) GetUserData() unsafe.Pointer
+func (t treeSelection) GetUserData() interface{}
 
 func (t treeSelection) IterIsSelected(iter *TreeIter) bool
 
@@ -30436,11 +30694,11 @@ func (t treeSelection) SelectPath(path *TreePath)
 
 func (t treeSelection) SelectRange(startPath *TreePath, endPath *TreePath)
 
-func (t treeSelection) SelectedForeach(_func TreeSelectionForeachFunc, data unsafe.Pointer)
+func (t treeSelection) SelectedForeach(_func TreeSelectionForeachFunc)
 
 func (t treeSelection) SetMode(_type SelectionMode)
 
-func (t treeSelection) SetSelectFunction(_func TreeSelectionFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+func (t treeSelection) SetSelectFunction(_func TreeSelectionFunc)
 
 func (t treeSelection) UnselectAll()
 
@@ -30515,7 +30773,7 @@ type TreeStore interface {
 	// InsertWithValuesv: a variant of gtk_tree_store_insert_with_values() which
 	// takes the columns and values as two arrays, instead of varargs. This
 	// function is mainly intended for language bindings.
-	InsertWithValuesv(parent *TreeIter, position int, columns []int, values []*externglib.Value, nValues int) TreeIter
+	InsertWithValuesv(parent *TreeIter, position int, columns []int, values []*externglib.Value) TreeIter
 	// IsAncestor: returns true if @iter is an ancestor of @descendant. That is,
 	// @iter is the parent (or grandparent or great-grandparent) of @descendant.
 	IsAncestor(iter *TreeIter, descendant *TreeIter) bool
@@ -30564,7 +30822,7 @@ type TreeStore interface {
 	// columns and values as two arrays, instead of varargs. This function is
 	// mainly intended for language bindings or in case the number of columns to
 	// change is not known until run-time.
-	SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value, nValues int)
+	SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value)
 	// Swap: swaps @a and @b in the same level of @tree_store. Note that this
 	// function only works with unsorted stores.
 	Swap(a *TreeIter, b *TreeIter)
@@ -30596,7 +30854,7 @@ func (t treeStore) InsertAfter(parent *TreeIter, sibling *TreeIter) TreeIter
 
 func (t treeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) TreeIter
 
-func (t treeStore) InsertWithValuesv(parent *TreeIter, position int, columns []int, values []*externglib.Value, nValues int) TreeIter
+func (t treeStore) InsertWithValuesv(parent *TreeIter, position int, columns []int, values []*externglib.Value) TreeIter
 
 func (t treeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) bool
 
@@ -30618,7 +30876,7 @@ func (t treeStore) SetColumnTypes(nColumns int, types []externglib.Type)
 
 func (t treeStore) SetValue(iter *TreeIter, column int, value *externglib.Value)
 
-func (t treeStore) SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value, nValues int)
+func (t treeStore) SetValuesv(iter *TreeIter, columns []int, values []*externglib.Value)
 
 func (t treeStore) Swap(a *TreeIter, b *TreeIter)
 
@@ -30906,7 +31164,7 @@ type TreeView interface {
 	// gtk_tree_view_column_pack_start(). If @tree_view has “fixed_height” mode
 	// enabled, then the new column will have its “sizing” property set to be
 	// GTK_TREE_VIEW_COLUMN_FIXED.
-	InsertColumnWithDataFunc(position int, title string, cell CellRenderer, _func TreeCellDataFunc, data unsafe.Pointer, dnotify unsafe.Pointer) int
+	InsertColumnWithDataFunc(position int, title string, cell CellRenderer, _func TreeCellDataFunc) int
 	// IsBlankAtPos: determine whether the point (@x, @y) in @tree_view is
 	// blank, that is no cell content nor an expander arrow is drawn at the
 	// location. If so, the location can be considered as the background. You
@@ -30930,7 +31188,7 @@ type TreeView interface {
 	// currently being done in @tree_view.
 	IsRubberBandingActive() bool
 	// MapExpandedRows: calls @func on all expanded rows.
-	MapExpandedRows(_func TreeViewMappingFunc, data unsafe.Pointer)
+	MapExpandedRows(_func TreeViewMappingFunc)
 	// MoveColumnAfter: moves @column to be after to @base_column. If
 	// @base_column is nil, then @column is placed in the first position.
 	MoveColumnAfter(column TreeViewColumn, baseColumn TreeViewColumn)
@@ -30979,7 +31237,7 @@ type TreeView interface {
 	// for the drop spot are nil, then they indicate an edge. If @func is set to
 	// be nil, then @tree_view reverts to the default behavior of allowing all
 	// columns to be dropped everywhere.
-	SetColumnDragFunction(_func TreeViewColumnDropFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+	SetColumnDragFunction(_func TreeViewColumnDropFunc)
 	// SetCursor: sets the current keyboard focus to be at @path, and selects
 	// it. This is useful when you want to focus the user’s attention on a
 	// particular row. If @focus_column is not nil, then focus is given to the
@@ -31076,7 +31334,7 @@ type TreeView interface {
 	// determine whether a row should be drawn as a separator. If the row
 	// separator function is nil, no separators are drawn. This is the default
 	// value.
-	SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+	SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc)
 	// SetRubberBanding: enables or disables rubber banding in @tree_view. If
 	// the selection mode is K_SELECTION_MULTIPLE, rubber banding will allow the
 	// user to select multiple rows by dragging the mouse.
@@ -31100,7 +31358,7 @@ type TreeView interface {
 	// SetSearchEqualFunc: sets the compare function for the interactive search
 	// capabilities; note that somewhat like strcmp() returning 0 for equality
 	// TreeViewSearchEqualFunc returns false on matches.
-	SetSearchEqualFunc(searchEqualFunc TreeViewSearchEqualFunc, searchUserData unsafe.Pointer, searchDestroy unsafe.Pointer)
+	SetSearchEqualFunc(searchEqualFunc TreeViewSearchEqualFunc)
 	// SetShowExpanders: sets whether to draw and enable expanders and indent
 	// child rows in @tree_view. When disabled there will be no expanders
 	// visible in trees and there will be no way to expand and collapse rows by
@@ -31265,13 +31523,13 @@ func (t treeView) GetVisibleRect() gdk.Rectangle
 
 func (t treeView) InsertColumn(column TreeViewColumn, position int) int
 
-func (t treeView) InsertColumnWithDataFunc(position int, title string, cell CellRenderer, _func TreeCellDataFunc, data unsafe.Pointer, dnotify unsafe.Pointer) int
+func (t treeView) InsertColumnWithDataFunc(position int, title string, cell CellRenderer, _func TreeCellDataFunc) int
 
 func (t treeView) IsBlankAtPos(x int, y int) (*TreePath, TreeViewColumn, int, int, bool)
 
 func (t treeView) IsRubberBandingActive() bool
 
-func (t treeView) MapExpandedRows(_func TreeViewMappingFunc, data unsafe.Pointer)
+func (t treeView) MapExpandedRows(_func TreeViewMappingFunc)
 
 func (t treeView) MoveColumnAfter(column TreeViewColumn, baseColumn TreeViewColumn)
 
@@ -31287,7 +31545,7 @@ func (t treeView) ScrollToPoint(treeX int, treeY int)
 
 func (t treeView) SetActivateOnSingleClick(single bool)
 
-func (t treeView) SetColumnDragFunction(_func TreeViewColumnDropFunc, userData unsafe.Pointer, destroy unsafe.Pointer)
+func (t treeView) SetColumnDragFunction(_func TreeViewColumnDropFunc)
 
 func (t treeView) SetCursor(path *TreePath, focusColumn TreeViewColumn, startEditing bool)
 
@@ -31319,7 +31577,7 @@ func (t treeView) SetModel(model TreeModel)
 
 func (t treeView) SetReorderable(reorderable bool)
 
-func (t treeView) SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc, data unsafe.Pointer, destroy unsafe.Pointer)
+func (t treeView) SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc)
 
 func (t treeView) SetRubberBanding(enable bool)
 
@@ -31327,7 +31585,7 @@ func (t treeView) SetSearchColumn(column int)
 
 func (t treeView) SetSearchEntry(entry Editable)
 
-func (t treeView) SetSearchEqualFunc(searchEqualFunc TreeViewSearchEqualFunc, searchUserData unsafe.Pointer, searchDestroy unsafe.Pointer)
+func (t treeView) SetSearchEqualFunc(searchEqualFunc TreeViewSearchEqualFunc)
 
 func (t treeView) SetShowExpanders(enabled bool)
 
@@ -31458,7 +31716,7 @@ type TreeViewColumn interface {
 	// function is used instead of the standard attributes mapping for setting
 	// the column value, and should set the value of @tree_column's cell
 	// renderer as appropriate. @func may be nil to remove an older one.
-	SetCellDataFunc(cellRenderer CellRenderer, _func TreeCellDataFunc, funcData unsafe.Pointer, destroy unsafe.Pointer)
+	SetCellDataFunc(cellRenderer CellRenderer, _func TreeCellDataFunc)
 	// SetClickable: sets the header to be active if @clickable is true. When
 	// the header is active, then it can take keyboard focus, and can be
 	// clicked.
@@ -31621,7 +31879,7 @@ func (t treeViewColumn) QueueResize()
 
 func (t treeViewColumn) SetAlignment(xalign float32)
 
-func (t treeViewColumn) SetCellDataFunc(cellRenderer CellRenderer, _func TreeCellDataFunc, funcData unsafe.Pointer, destroy unsafe.Pointer)
+func (t treeViewColumn) SetCellDataFunc(cellRenderer CellRenderer, _func TreeCellDataFunc)
 
 func (t treeViewColumn) SetClickable(clickable bool)
 
@@ -32216,7 +32474,7 @@ type Widget interface {
 	// This is a more convenient alternative to connecting directly to the
 	// FrameClock::update signal of FrameClock, since you don't have to worry
 	// about when a FrameClock is assigned to a widget.
-	AddTickCallback(callback TickCallback, userData unsafe.Pointer, notify unsafe.Pointer) uint
+	AddTickCallback(callback TickCallback) uint
 	// Allocate: this function is only used by Widget subclasses, to assign a
 	// size, position and (optionally) baseline to their child widgets.
 	//
@@ -33256,7 +33514,7 @@ func (w widget) AddCSSClass(cssClass string)
 
 func (w widget) AddMnemonicLabel(label Widget)
 
-func (w widget) AddTickCallback(callback TickCallback, userData unsafe.Pointer, notify unsafe.Pointer) uint
+func (w widget) AddTickCallback(callback TickCallback) uint
 
 func (w widget) Allocate(width int, height int, baseline int, transform *gsk.Transform)
 

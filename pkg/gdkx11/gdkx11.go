@@ -60,10 +60,10 @@ func X11DeviceGetID(device gdk.Device) int {
 	var arg0 gdk.Device
 	arg0 = wrapX11DeviceXI2(device)
 
-	c0 := C.gdk_x11_device_get_id(arg0)
+	ret := C.gdk_x11_device_get_id(arg0)
 
 	var ret0 int
-	ret0 = int(c0)
+	ret0 = int(ret)
 
 	return ret0
 }
@@ -76,10 +76,10 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) gdk
 	var arg1 int
 	arg1 = int(deviceID)
 
-	c0 := C.gdk_x11_device_manager_lookup(arg0, arg1)
+	ret := C.gdk_x11_device_manager_lookup(arg0, arg1)
 
 	var ret0 gdk.Device
-	ret0 = wrapX11DeviceXI2(c0)
+	ret0 = wrapX11DeviceXI2(ret)
 
 	return ret0
 }
@@ -108,10 +108,10 @@ func X11GetServerTime(surface gdk.Surface) uint32 {
 	var arg0 gdk.Surface
 	arg0 = wrapX11Surface(surface)
 
-	c0 := C.gdk_x11_get_server_time(arg0)
+	ret := C.gdk_x11_get_server_time(arg0)
 
 	var ret0 uint32
-	ret0 = uint32(c0)
+	ret0 = uint32(ret)
 
 	return ret0
 }
@@ -128,11 +128,11 @@ func X11GetXatomByNameForDisplay(display gdk.Display, atomName string) xlib.Atom
 	arg1 = C.GoString(atomName)
 	defer C.free(unsafe.Pointer(atomName))
 
-	c0 := C.gdk_x11_get_xatom_by_name_for_display(arg0, arg1)
+	ret := C.gdk_x11_get_xatom_by_name_for_display(arg0, arg1)
 
 	var ret0 xlib.Atom
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Atom(tmp)
 	}
 
@@ -152,11 +152,11 @@ func X11GetXatomNameForDisplay(display gdk.Display, xatom xlib.Atom) string {
 		arg1 = Atom(tmp)
 	}
 
-	c0 := C.gdk_x11_get_xatom_name_for_display(arg0, arg1)
+	ret := C.gdk_x11_get_xatom_name_for_display(arg0, arg1)
 
 	var ret0 string
-	ret0 = C.GoString(c0)
-	defer C.free(unsafe.Pointer(c0))
+	ret0 = C.GoString(ret)
+	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -167,10 +167,10 @@ func X11LookupXdisplay(xdisplay *xlib.Display) gdk.Display {
 	var arg0 *xlib.Display
 	arg0 = wrapDisplay(xdisplay)
 
-	c0 := C.gdk_x11_lookup_xdisplay(arg0)
+	ret := C.gdk_x11_lookup_xdisplay(arg0)
 
 	var ret0 gdk.Display
-	ret0 = wrapX11Display(c0)
+	ret0 = wrapX11Display(ret)
 
 	return ret0
 }

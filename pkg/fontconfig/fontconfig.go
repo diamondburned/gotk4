@@ -47,12 +47,12 @@ func marshalPattern(p uintptr) (interface{}, error) {
 	return wrapPattern(c)
 }
 
-func (P *Pattern) free() {}
+func (p *Pattern) free() {}
 
 // Native returns the pointer to *C.FcPattern. The caller is expected to
 // cast.
-func (P *Pattern) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *Pattern) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type CharSet struct {
@@ -75,10 +75,10 @@ func marshalCharSet(p uintptr) (interface{}, error) {
 	return wrapCharSet(c)
 }
 
-func (C *CharSet) free() {}
+func (c *CharSet) free() {}
 
 // Native returns the pointer to *C.FcCharSet. The caller is expected to
 // cast.
-func (C *CharSet) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CharSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }

@@ -165,12 +165,22 @@ func marshalPixbufRotation(p uintptr) (interface{}, error) {
 	return PixbufRotation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+type PixbufDestroyNotify func(pixels []uint8)
+
+//export cPixbufDestroyNotify
+func cPixbufDestroyNotify(arg0 *C.guchar, arg1 C.gpointer)
+
+type PixbufSaveFunc func(buf []uint8) (*glib.Error, bool)
+
+//export cPixbufSaveFunc
+func cPixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean
+
 func PixbufErrorQuark() glib.Quark {
-	c0 := C.gdk_pixbuf_error_quark()
+	ret := C.gdk_pixbuf_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -197,12 +207,12 @@ func marshalPixbufFormat(p uintptr) (interface{}, error) {
 	return wrapPixbufFormat(c)
 }
 
-func (P *PixbufFormat) free() {}
+func (p *PixbufFormat) free() {}
 
 // Native returns the pointer to *C.GdkPixbufFormat. The caller is expected to
 // cast.
-func (P *PixbufFormat) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PixbufFormat) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Pixbuf: this is the main structure in the gdk-pixbuf library. It is used to
@@ -369,7 +379,7 @@ type Pixbuf interface {
 	// SaveToCallbackv: saves pixbuf to a callback in format @type, which is
 	// currently "jpeg", "png", "tiff", "ico" or "bmp". If @error is set, false
 	// will be returned. See gdk_pixbuf_save_to_callback () for more details.
-	SaveToCallbackv(saveFunc PixbufSaveFunc, userData unsafe.Pointer, _type string, optionKeys []string, optionValues []string) bool
+	SaveToCallbackv(saveFunc PixbufSaveFunc, _type string, optionKeys []string, optionValues []string) bool
 	// SaveToStreamv: saves @pixbuf to an output stream.
 	//
 	// Supported file formats are currently "jpeg", "tiff", "png", "ico" or
@@ -383,7 +393,7 @@ type Pixbuf interface {
 	// When the operation is finished, @callback will be called in the main
 	// thread. You can then call gdk_pixbuf_save_to_stream_finish() to get the
 	// result of the operation.
-	SaveToStreamvAsync(stream gio.OutputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	SaveToStreamvAsync(stream gio.OutputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// Savev: saves pixbuf to a file in @type, which is currently "jpeg", "png",
 	// "tiff", "ico" or "bmp". If @error is set, false will be returned. See
 	// gdk_pixbuf_save () for more details.
@@ -443,7 +453,7 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width in
 
 func NewPixbuf(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) Pixbuf
 
-func NewPixbuf(data []uint8, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int, destroyFn PixbufDestroyNotify, destroyFnData unsafe.Pointer) Pixbuf
+func NewPixbuf(data []uint8, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int, destroyFn PixbufDestroyNotify) Pixbuf
 
 func NewPixbuf(filename string) Pixbuf
 
@@ -525,11 +535,11 @@ func (p pixbuf) SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bo
 
 func (p pixbuf) SaveToBufferv(_type string, optionKeys []string, optionValues []string) ([]uint8, uint, bool)
 
-func (p pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, userData unsafe.Pointer, _type string, optionKeys []string, optionValues []string) bool
+func (p pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, _type string, optionKeys []string, optionValues []string) bool
 
 func (p pixbuf) SaveToStreamv(stream gio.OutputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) bool
 
-func (p pixbuf) SaveToStreamvAsync(stream gio.OutputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func (p pixbuf) SaveToStreamvAsync(stream gio.OutputStream, _type string, optionKeys []string, optionValues []string, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
 func (p pixbuf) Savev(filename string, _type string, optionKeys []string, optionValues []string) bool
 
@@ -759,7 +769,7 @@ type PixbufLoader interface {
 	// false if an error occurred. In the latter case, the loader will be
 	// closed, and will not accept further writes. If false is returned, @error
 	// will be set to an error from the K_PIXBUF_ERROR or FILE_ERROR domains.
-	Write(buf []uint8, count uint) bool
+	Write(buf []uint8) bool
 	// WriteBytes: this will cause a pixbuf loader to parse a buffer inside a
 	// #GBytes for an image. It will return true if the data was loaded
 	// successfully, and false if an error occurred. In the latter case, the
@@ -801,7 +811,7 @@ func (p pixbufLoader) GetPixbuf() Pixbuf
 
 func (p pixbufLoader) SetSize(width int, height int)
 
-func (p pixbufLoader) Write(buf []uint8, count uint) bool
+func (p pixbufLoader) Write(buf []uint8) bool
 
 func (p pixbufLoader) WriteBytes(buffer *glib.Bytes) bool
 

@@ -896,7 +896,17 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 	return ToplevelState(C.g_value_get_bitfield((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// CairoDrawFromGl: this is the main way to draw GL content in GTK. It takes a
+type ContentDeserializeFunc func(deserializer ContentDeserializer)
+
+//export cContentDeserializeFunc
+func cContentDeserializeFunc(arg0 *C.GdkContentDeserializer)
+
+type ContentSerializeFunc func(serializer ContentSerializer)
+
+//export cContentSerializeFunc
+func cContentSerializeFunc(arg0 *C.GdkContentSerializer)
+
+// CairoDrawFromGL: this is the main way to draw GL content in GTK. It takes a
 // render buffer ID (@source_type == RENDERBUFFER) or a texture id (@source_type
 // == TEXTURE) and draws it onto @cr with an OVER operation, respecting the
 // current clip. The top left corner of the rectangle specified by @x, @y,
@@ -912,7 +922,7 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 // alpha components, so make sure you use TEXTURE if using alpha.
 //
 // Calling this may change the current GL context.
-func CairoDrawFromGl(cr *cairo.Context, surface Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
+func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
 	var arg0 *cairo.Context
 	arg0 = wrapContext(cr)
 
@@ -974,10 +984,10 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var arg0 *cairo.Surface
 	arg0 = wrapSurface(surface)
 
-	c0 := C.gdk_cairo_region_create_from_surface(arg0)
+	ret := C.gdk_cairo_region_create_from_surface(arg0)
 
 	var ret0 *cairo.Region
-	ret0 = wrapRegion(c0)
+	ret0 = wrapRegion(ret)
 
 	return ret0
 }
@@ -1017,7 +1027,7 @@ func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA) {
 // deserialize it, asynchronously. When the operation is finished, @callback
 // will be called. You can then call gdk_content_deserialize_finish() to get the
 // result of the operation.
-func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer) {
+func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg0 gio.InputStream
 	arg0 = wrapInputStream(stream)
 
@@ -1034,10 +1044,7 @@ func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type exte
 	var arg5 gio.AsyncReadyCallback
 	arg5 = wrapAsyncReadyCallback(callback)
 
-	var arg6 unsafe.Pointer
-	arg6 = unsafe.Pointer(userData)
-
-	C.gdk_content_deserialize_async(arg0, arg1, arg3, arg4, arg5, arg6)
+	C.gdk_content_deserialize_async(arg0, arg1, arg3, arg4, arg5)
 }
 
 // ContentDeserializeFinish: finishes a content deserialization operation.
@@ -1045,17 +1052,17 @@ func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) b
 	var arg0 gio.AsyncResult
 	arg0 = wrapAsyncResult(result)
 
-	c0 := C.gdk_content_deserialize_finish(arg0)
+	ret := C.gdk_content_deserialize_finish(arg0)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
 
 // ContentRegisterDeserializer: registers a function to create objects of a
 // given @type from a serialized representation with the given mime type.
-func ContentRegisterDeserializer(mimeType string, _type externglib.Type, deserialize ContentDeserializeFunc, data unsafe.Pointer, notify unsafe.Pointer) {
+func ContentRegisterDeserializer(mimeType string, _type externglib.Type, deserialize ContentDeserializeFunc) {
 	var arg0 string
 	arg0 = C.GoString(mimeType)
 	defer C.free(unsafe.Pointer(mimeType))
@@ -1063,15 +1070,12 @@ func ContentRegisterDeserializer(mimeType string, _type externglib.Type, deseria
 	var arg2 ContentDeserializeFunc
 	arg2 = wrapContentDeserializeFunc(deserialize)
 
-	var arg3 unsafe.Pointer
-	arg3 = unsafe.Pointer(data)
-
-	C.gdk_content_register_deserializer(arg0, arg2, arg3)
+	C.gdk_content_register_deserializer(arg0, arg2)
 }
 
 // ContentRegisterSerializer: registers a function to convert objects of the
 // given @type to a serialized representation with the given mime type.
-func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize ContentSerializeFunc, data unsafe.Pointer, notify unsafe.Pointer) {
+func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize ContentSerializeFunc) {
 	var arg1 string
 	arg1 = C.GoString(mimeType)
 	defer C.free(unsafe.Pointer(mimeType))
@@ -1079,17 +1083,14 @@ func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize
 	var arg2 ContentSerializeFunc
 	arg2 = wrapContentSerializeFunc(serialize)
 
-	var arg3 unsafe.Pointer
-	arg3 = unsafe.Pointer(data)
-
-	C.gdk_content_register_serializer(arg1, arg2, arg3)
+	C.gdk_content_register_serializer(arg1, arg2)
 }
 
 // ContentSerializeAsync: serialize content and write it to the given output
 // stream, asynchronously. When the operation is finished, @callback will be
 // called. You can then call gdk_content_serialize_finish() to get the result of
 // the operation.
-func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *externglib.Value, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer) {
+func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *externglib.Value, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg0 gio.OutputStream
 	arg0 = wrapOutputStream(stream)
 
@@ -1106,10 +1107,7 @@ func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *exte
 	var arg5 gio.AsyncReadyCallback
 	arg5 = wrapAsyncReadyCallback(callback)
 
-	var arg6 unsafe.Pointer
-	arg6 = unsafe.Pointer(userData)
-
-	C.gdk_content_serialize_async(arg0, arg1, arg3, arg4, arg5, arg6)
+	C.gdk_content_serialize_async(arg0, arg1, arg3, arg4, arg5)
 }
 
 // ContentSerializeFinish: finishes a content serialization operation.
@@ -1117,10 +1115,10 @@ func ContentSerializeFinish(result gio.AsyncResult) bool {
 	var arg0 gio.AsyncResult
 	arg0 = wrapAsyncResult(result)
 
-	c0 := C.gdk_content_serialize_finish(arg0)
+	ret := C.gdk_content_serialize_finish(arg0)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -1133,10 +1131,10 @@ func DragActionIsUnique(action DragAction) bool {
 	var arg0 DragAction
 	arg0 = DragAction(action)
 
-	c0 := C.gdk_drag_action_is_unique(arg0)
+	ret := C.gdk_drag_action_is_unique(arg0)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -1152,13 +1150,15 @@ func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 	var arg1 Event
 	arg1 = wrapEvent(event2)
 
-	c0, c1 := C.gdk_events_get_angle(arg0, arg1)
+	var arg2 *C.double // out
+
+	ret := C.gdk_events_get_angle(arg0, arg1, &arg2)
 
 	var ret0 float64
-	ret0 = float64(c0)
+	ret0 = float64(arg2)
 
 	var ret1 bool
-	ret1 = gextras.Gobool(c1)
+	ret1 = gextras.Gobool(ret)
 
 	return ret0, ret1
 }
@@ -1172,16 +1172,20 @@ func EventsGetCenter(event1 Event, event2 Event) (float64, float64, bool) {
 	var arg1 Event
 	arg1 = wrapEvent(event2)
 
-	c0, c1, c2 := C.gdk_events_get_center(arg0, arg1)
+	var arg2 *C.double // out
+
+	var arg3 *C.double // out
+
+	ret := C.gdk_events_get_center(arg0, arg1, &arg2, &arg3)
 
 	var ret0 float64
-	ret0 = float64(c0)
+	ret0 = float64(arg2)
 
 	var ret1 float64
-	ret1 = float64(c1)
+	ret1 = float64(arg3)
 
 	var ret2 bool
-	ret2 = gextras.Gobool(c2)
+	ret2 = gextras.Gobool(ret)
 
 	return ret0, ret1, ret2
 }
@@ -1196,23 +1200,25 @@ func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 	var arg1 Event
 	arg1 = wrapEvent(event2)
 
-	c0, c1 := C.gdk_events_get_distance(arg0, arg1)
+	var arg2 *C.double // out
+
+	ret := C.gdk_events_get_distance(arg0, arg1, &arg2)
 
 	var ret0 float64
-	ret0 = float64(c0)
+	ret0 = float64(arg2)
 
 	var ret1 bool
-	ret1 = gextras.Gobool(c1)
+	ret1 = gextras.Gobool(ret)
 
 	return ret0, ret1
 }
 
-func GlErrorQuark() glib.Quark {
-	c0 := C.gdk_gl_error_quark()
+func GLErrorQuark() glib.Quark {
+	ret := C.gdk_gl_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -1228,11 +1234,11 @@ func InternMimeType(string string) string {
 	arg0 = C.GoString(string)
 	defer C.free(unsafe.Pointer(string))
 
-	c0 := C.gdk_intern_mime_type(arg0)
+	ret := C.gdk_intern_mime_type(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(c0)
-	defer C.free(unsafe.Pointer(c0))
+	ret0 = C.GoString(ret)
+	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -1243,13 +1249,17 @@ func KeyvalConvertCase(symbol uint) (uint, uint) {
 	var arg0 uint
 	arg0 = uint(symbol)
 
-	c0, c1 := C.gdk_keyval_convert_case(arg0)
+	var arg1 *C.guint // out
+
+	var arg2 *C.guint // out
+
+	ret := C.gdk_keyval_convert_case(arg0, &arg1, &arg2)
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(arg1)
 
 	var ret1 uint
-	ret1 = uint(c1)
+	ret1 = uint(arg2)
 
 	return ret0, ret1
 }
@@ -1263,10 +1273,10 @@ func KeyvalFromName(keyvalName string) uint {
 	arg0 = C.GoString(keyvalName)
 	defer C.free(unsafe.Pointer(keyvalName))
 
-	c0 := C.gdk_keyval_from_name(arg0)
+	ret := C.gdk_keyval_from_name(arg0)
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -1276,10 +1286,10 @@ func KeyvalIsLower(keyval uint) bool {
 	var arg0 uint
 	arg0 = uint(keyval)
 
-	c0 := C.gdk_keyval_is_lower(arg0)
+	ret := C.gdk_keyval_is_lower(arg0)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -1289,10 +1299,10 @@ func KeyvalIsUpper(keyval uint) bool {
 	var arg0 uint
 	arg0 = uint(keyval)
 
-	c0 := C.gdk_keyval_is_upper(arg0)
+	ret := C.gdk_keyval_is_upper(arg0)
 
 	var ret0 bool
-	ret0 = gextras.Gobool(c0)
+	ret0 = gextras.Gobool(ret)
 
 	return ret0
 }
@@ -1305,11 +1315,11 @@ func KeyvalName(keyval uint) string {
 	var arg0 uint
 	arg0 = uint(keyval)
 
-	c0 := C.gdk_keyval_name(arg0)
+	ret := C.gdk_keyval_name(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(c0)
-	defer C.free(unsafe.Pointer(c0))
+	ret0 = C.GoString(ret)
+	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
@@ -1319,10 +1329,10 @@ func KeyvalToLower(keyval uint) uint {
 	var arg0 uint
 	arg0 = uint(keyval)
 
-	c0 := C.gdk_keyval_to_lower(arg0)
+	ret := C.gdk_keyval_to_lower(arg0)
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -1336,10 +1346,10 @@ func KeyvalToUnicode(keyval uint) uint32 {
 	var arg0 uint
 	arg0 = uint(keyval)
 
-	c0 := C.gdk_keyval_to_unicode(arg0)
+	ret := C.gdk_keyval_to_unicode(arg0)
 
 	var ret0 uint32
-	ret0 = uint32(c0)
+	ret0 = uint32(ret)
 
 	return ret0
 }
@@ -1349,10 +1359,10 @@ func KeyvalToUpper(keyval uint) uint {
 	var arg0 uint
 	arg0 = uint(keyval)
 
-	c0 := C.gdk_keyval_to_upper(arg0)
+	ret := C.gdk_keyval_to_upper(arg0)
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(ret)
 
 	return ret0
 }
@@ -1368,10 +1378,10 @@ func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable {
 	var arg1 int
 	arg1 = int(intrinsicHeight)
 
-	c0 := C.gdk_paintable_new_empty(arg0, arg1)
+	ret := C.gdk_paintable_new_empty(arg0, arg1)
 
 	var ret0 Paintable
-	ret0 = wrapPaintable(c0)
+	ret0 = wrapPaintable(ret)
 
 	return ret0
 }
@@ -1401,10 +1411,10 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 	var arg4 int
 	arg4 = int(nRanges)
 
-	c0 := C.gdk_pango_layout_get_clip_region(arg0, arg1, arg2, arg3, arg4)
+	ret := C.gdk_pango_layout_get_clip_region(arg0, arg1, arg2, arg3, arg4)
 
 	var ret0 *cairo.Region
-	ret0 = wrapRegion(c0)
+	ret0 = wrapRegion(ret)
 
 	return ret0
 }
@@ -1432,13 +1442,16 @@ func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin i
 	var arg2 int
 	arg2 = int(yOrigin)
 
+	var arg3 []int
+	arg3 = ([0]int)(indexRanges)
+
 	var arg4 int
 	arg4 = int(nRanges)
 
-	c0 := C.gdk_pango_layout_line_get_clip_region(arg0, arg1, arg2, arg4)
+	ret := C.gdk_pango_layout_line_get_clip_region(arg0, arg1, arg2, arg3, arg4)
 
 	var ret0 *cairo.Region
-	ret0 = wrapRegion(c0)
+	ret0 = wrapRegion(ret)
 
 	return ret0
 }
@@ -1465,10 +1478,10 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	var arg4 int
 	arg4 = int(height)
 
-	c0 := C.gdk_pixbuf_get_from_surface(arg0, arg1, arg2, arg3, arg4)
+	ret := C.gdk_pixbuf_get_from_surface(arg0, arg1, arg2, arg3, arg4)
 
 	var ret0 gdkpixbuf.Pixbuf
-	ret0 = wrapPixbuf(c0)
+	ret0 = wrapPixbuf(ret)
 
 	return ret0
 }
@@ -1480,10 +1493,10 @@ func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 	var arg0 Texture
 	arg0 = wrapTexture(texture)
 
-	c0 := C.gdk_pixbuf_get_from_texture(arg0)
+	ret := C.gdk_pixbuf_get_from_texture(arg0)
 
 	var ret0 gdkpixbuf.Pixbuf
-	ret0 = wrapPixbuf(c0)
+	ret0 = wrapPixbuf(ret)
 
 	return ret0
 }
@@ -1517,7 +1530,7 @@ func SetAllowedBackends(backends string) {
 }
 
 func ToplevelSizeGetType() externglib.Type {
-	c0 := C.gdk_toplevel_size_get_type()
+	ret := C.gdk_toplevel_size_get_type()
 
 	var ret0 externglib.Type
 
@@ -1529,20 +1542,20 @@ func UnicodeToKeyval(wc uint32) uint {
 	var arg0 uint32
 	arg0 = uint32(wc)
 
-	c0 := C.gdk_unicode_to_keyval(arg0)
+	ret := C.gdk_unicode_to_keyval(arg0)
 
 	var ret0 uint
-	ret0 = uint(c0)
+	ret0 = uint(ret)
 
 	return ret0
 }
 
 func VulkanErrorQuark() glib.Quark {
-	c0 := C.gdk_vulkan_error_quark()
+	ret := C.gdk_vulkan_error_quark()
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Quark(tmp)
 	}
 
@@ -1717,15 +1730,15 @@ func marshalContentFormats(p uintptr) (interface{}, error) {
 	return wrapContentFormats(c)
 }
 
-func (C *ContentFormats) free() {}
+func (c *ContentFormats) free() {}
 
 // Native returns the pointer to *C.GdkContentFormats. The caller is expected to
 // cast.
-func (C *ContentFormats) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ContentFormats) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
-func NewContentFormats(mimeTypes []string, nMimeTypes uint) *ContentFormats
+func NewContentFormats(mimeTypes []string) *ContentFormats
 
 func NewContentFormats(_type externglib.Type) *ContentFormats
 
@@ -1752,12 +1765,12 @@ func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 	return wrapContentFormatsBuilder(c)
 }
 
-func (C *ContentFormatsBuilder) free() {}
+func (c *ContentFormatsBuilder) free() {}
 
 // Native returns the pointer to *C.GdkContentFormatsBuilder. The caller is expected to
 // cast.
-func (C *ContentFormatsBuilder) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ContentFormatsBuilder) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 func NewContentFormatsBuilder() *ContentFormatsBuilder
@@ -1784,12 +1797,12 @@ func marshalEventSequence(p uintptr) (interface{}, error) {
 	return wrapEventSequence(c)
 }
 
-func (E *EventSequence) free() {}
+func (e *EventSequence) free() {}
 
 // Native returns the pointer to *C.GdkEventSequence. The caller is expected to
 // cast.
-func (E *EventSequence) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *EventSequence) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // FrameTimings: a FrameTimings object holds timing information for a single
@@ -1818,12 +1831,12 @@ func marshalFrameTimings(p uintptr) (interface{}, error) {
 	return wrapFrameTimings(c)
 }
 
-func (F *FrameTimings) free() {}
+func (f *FrameTimings) free() {}
 
 // Native returns the pointer to *C.GdkFrameTimings. The caller is expected to
 // cast.
-func (F *FrameTimings) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FrameTimings) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // KeymapKey: a KeymapKey is a hardware key that can be mapped to a keyval.
@@ -1867,8 +1880,8 @@ func marshalKeymapKey(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GdkKeymapKey. The caller is expected to
 // cast.
-func (K *KeymapKey) Native() unsafe.Pointer {
-	return unsafe.Pointer(K.native)
+func (k *KeymapKey) Native() unsafe.Pointer {
+	return unsafe.Pointer(k.native)
 }
 
 // PopupLayout: popups are positioned relative to their parent surface. The
@@ -1923,12 +1936,12 @@ func marshalPopupLayout(p uintptr) (interface{}, error) {
 	return wrapPopupLayout(c)
 }
 
-func (P *PopupLayout) free() {}
+func (p *PopupLayout) free() {}
 
 // Native returns the pointer to *C.GdkPopupLayout. The caller is expected to
 // cast.
-func (P *PopupLayout) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PopupLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gravity) *PopupLayout
@@ -1969,8 +1982,8 @@ func marshalRGBA(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GdkRGBA. The caller is expected to
 // cast.
-func (R *RGBA) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RGBA) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Rectangle: defines the position and size of a rectangle. It is identical to
@@ -2008,8 +2021,8 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GdkRectangle. The caller is expected to
 // cast.
-func (R *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // TimeCoord: a TimeCoord stores a single event in a motion history.
@@ -2029,6 +2042,7 @@ func wrapTimeCoord(p *C.GdkTimeCoord) *TimeCoord {
 
 	v.Time = uint32(p.time)
 	v.Flags = AxisFlags(p.flags)
+	v.Axes = ([12]float64)(p.axes)
 
 	return &v
 }
@@ -2042,8 +2056,8 @@ func marshalTimeCoord(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GdkTimeCoord. The caller is expected to
 // cast.
-func (T *TimeCoord) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *TimeCoord) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // ToplevelLayout: toplevel surfaces are sovereign windows that can be presented
@@ -2071,12 +2085,12 @@ func marshalToplevelLayout(p uintptr) (interface{}, error) {
 	return wrapToplevelLayout(c)
 }
 
-func (T *ToplevelLayout) free() {}
+func (t *ToplevelLayout) free() {}
 
 // Native returns the pointer to *C.GdkToplevelLayout. The caller is expected to
 // cast.
-func (T *ToplevelLayout) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *ToplevelLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 func NewToplevelLayout() *ToplevelLayout
@@ -2260,7 +2274,7 @@ type Clipboard interface {
 	//
 	// The clipboard will choose the most suitable mime type from the given list
 	// to fulfill the request, preferring the ones listed first.
-	ReadAsync(mimeTypes string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	ReadAsync(mimeTypes string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadFinish: finishes an asynchronous clipboard read started with
 	// gdk_clipboard_read_async().
 	ReadFinish(result gio.AsyncResult) (string, gio.InputStream)
@@ -2271,7 +2285,7 @@ type Clipboard interface {
 	// This is a simple wrapper around gdk_clipboard_read_value_async(). Use
 	// that function or gdk_clipboard_read_async() directly if you need more
 	// control over the operation.
-	ReadTextAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	ReadTextAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadTextFinish: finishes an asynchronous clipboard read started with
 	// gdk_clipboard_read_text_async().
 	ReadTextFinish(result gio.AsyncResult) string
@@ -2283,7 +2297,7 @@ type Clipboard interface {
 	// This is a simple wrapper around gdk_clipboard_read_value_async(). Use
 	// that function or gdk_clipboard_read_async() directly if you need more
 	// control over the operation.
-	ReadTextureAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	ReadTextureAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadTextureFinish: finishes an asynchronous clipboard read started with
 	// gdk_clipboard_read_texture_async().
 	ReadTextureFinish(result gio.AsyncResult) Texture
@@ -2295,7 +2309,7 @@ type Clipboard interface {
 	// For local clipboard contents that are available in the given #GType, the
 	// value will be copied directly. Otherwise, GDK will try to use
 	// gdk_content_deserialize_async() to convert the clipboard's data.
-	ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadValueFinish: finishes an asynchronous clipboard read started with
 	// gdk_clipboard_read_value_async().
 	ReadValueFinish(result gio.AsyncResult) *externglib.Value
@@ -2323,7 +2337,7 @@ type Clipboard interface {
 	//
 	// This function is called automatically when gtk_main() or Application
 	// exit, so you likely don't need to call it.
-	StoreAsync(ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	StoreAsync(ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// StoreFinish: finishes an asynchronous clipboard store started with
 	// gdk_clipboard_store_async().
 	StoreFinish(result gio.AsyncResult) bool
@@ -2351,19 +2365,19 @@ func (c clipboard) GetFormats() *ContentFormats
 
 func (c clipboard) IsLocal() bool
 
-func (c clipboard) ReadAsync(mimeTypes string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func (c clipboard) ReadAsync(mimeTypes string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
 func (c clipboard) ReadFinish(result gio.AsyncResult) (string, gio.InputStream)
 
-func (c clipboard) ReadTextAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func (c clipboard) ReadTextAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
 func (c clipboard) ReadTextFinish(result gio.AsyncResult) string
 
-func (c clipboard) ReadTextureAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func (c clipboard) ReadTextureAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
 func (c clipboard) ReadTextureFinish(result gio.AsyncResult) Texture
 
-func (c clipboard) ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func (c clipboard) ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
 func (c clipboard) ReadValueFinish(result gio.AsyncResult) *externglib.Value
 
@@ -2375,7 +2389,7 @@ func (c clipboard) SetTexture(texture Texture)
 
 func (c clipboard) SetValue(value *externglib.Value)
 
-func (c clipboard) StoreAsync(ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func (c clipboard) StoreAsync(ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
 func (c clipboard) StoreFinish(result gio.AsyncResult) bool
 
@@ -2399,10 +2413,10 @@ type ContentDeserializer interface {
 	GetPriority() int
 	// GetTaskData: gets the data that was associated with @deserializer via
 	// gdk_content_deserializer_set_task_data().
-	GetTaskData() unsafe.Pointer
+	GetTaskData() interface{}
 	// GetUserData: gets the user data that was passed when the deserializer was
 	// registered.
-	GetUserData() unsafe.Pointer
+	GetUserData() interface{}
 	// GetValue: gets the #GValue to store the deserialized object in.
 	GetValue() *externglib.Value
 	// ReturnError: indicate that the deserialization has ended with an error.
@@ -2412,7 +2426,7 @@ type ContentDeserializer interface {
 	// completed.
 	ReturnSuccess()
 	// SetTaskData: associate data with the current deserialization operation.
-	SetTaskData(data unsafe.Pointer, notify unsafe.Pointer)
+	SetTaskData(data interface{}, notify unsafe.Pointer)
 }
 
 type contentDeserializer struct {
@@ -2439,9 +2453,9 @@ func (c contentDeserializer) GetMimeType() string
 
 func (c contentDeserializer) GetPriority() int
 
-func (c contentDeserializer) GetTaskData() unsafe.Pointer
+func (c contentDeserializer) GetTaskData() interface{}
 
-func (c contentDeserializer) GetUserData() unsafe.Pointer
+func (c contentDeserializer) GetUserData() interface{}
 
 func (c contentDeserializer) GetValue() *externglib.Value
 
@@ -2449,7 +2463,7 @@ func (c contentDeserializer) ReturnError(error *glib.Error)
 
 func (c contentDeserializer) ReturnSuccess()
 
-func (c contentDeserializer) SetTaskData(data unsafe.Pointer, notify unsafe.Pointer)
+func (c contentDeserializer) SetTaskData(data interface{}, notify unsafe.Pointer)
 
 // ContentProvider: a GdkContentProvider is used to provide content for the
 // clipboard in a number of formats.
@@ -2493,7 +2507,7 @@ type ContentProvider interface {
 	// supported, IO_ERROR_NOT_SUPPORTED will be reported.
 	//
 	// The given @stream will not be closed.
-	WriteMimeTypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	WriteMimeTypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// WriteMimeTypeFinish: finishes an asynchronous write operation started
 	// with gdk_content_provider_write_mime_type_async().
 	WriteMimeTypeFinish(result gio.AsyncResult) bool
@@ -2517,7 +2531,7 @@ func NewContentProvider(mimeType string, bytes *glib.Bytes) ContentProvider
 
 func NewContentProvider(value *externglib.Value) ContentProvider
 
-func NewContentProvider(providers []ContentProvider, nProviders uint) ContentProvider
+func NewContentProvider(providers []ContentProvider) ContentProvider
 
 func (c contentProvider) ContentChanged()
 
@@ -2527,7 +2541,7 @@ func (c contentProvider) RefFormats() *ContentFormats
 
 func (c contentProvider) RefStorableFormats() *ContentFormats
 
-func (c contentProvider) WriteMimeTypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func (c contentProvider) WriteMimeTypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
 func (c contentProvider) WriteMimeTypeFinish(result gio.AsyncResult) bool
 
@@ -2551,10 +2565,10 @@ type ContentSerializer interface {
 	GetPriority() int
 	// GetTaskData: gets the data that was associated with @serializer via
 	// gdk_content_serializer_set_task_data().
-	GetTaskData() unsafe.Pointer
+	GetTaskData() interface{}
 	// GetUserData: gets the user data that was passed when the serializer was
 	// registered.
-	GetUserData() unsafe.Pointer
+	GetUserData() interface{}
 	// GetValue: gets the #GValue to read the object to serialize from.
 	GetValue() *externglib.Value
 	// ReturnError: indicate that the serialization has ended with an error.
@@ -2564,7 +2578,7 @@ type ContentSerializer interface {
 	// completed.
 	ReturnSuccess()
 	// SetTaskData: associate data with the current serialization operation.
-	SetTaskData(data unsafe.Pointer, notify unsafe.Pointer)
+	SetTaskData(data interface{}, notify unsafe.Pointer)
 }
 
 type contentSerializer struct {
@@ -2591,9 +2605,9 @@ func (c contentSerializer) GetOutputStream() gio.OutputStream
 
 func (c contentSerializer) GetPriority() int
 
-func (c contentSerializer) GetTaskData() unsafe.Pointer
+func (c contentSerializer) GetTaskData() interface{}
 
-func (c contentSerializer) GetUserData() unsafe.Pointer
+func (c contentSerializer) GetUserData() interface{}
 
 func (c contentSerializer) GetValue() *externglib.Value
 
@@ -2601,7 +2615,7 @@ func (c contentSerializer) ReturnError(error *glib.Error)
 
 func (c contentSerializer) ReturnSuccess()
 
-func (c contentSerializer) SetTaskData(data unsafe.Pointer, notify unsafe.Pointer)
+func (c contentSerializer) SetTaskData(data interface{}, notify unsafe.Pointer)
 
 // CrossingEvent: an event caused by a pointing device moving between surfaces.
 type CrossingEvent interface {
@@ -3419,7 +3433,7 @@ type Drop interface {
 	GetSurface() Surface
 	// ReadAsync: asynchronously read the dropped data from a Drop in a format
 	// that complies with one of the mime types.
-	ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadFinish: finishes an async drop read operation, see
 	// gdk_drop_read_async().
 	ReadFinish(result gio.AsyncResult) (string, gio.InputStream)
@@ -3431,7 +3445,7 @@ type Drop interface {
 	// For local drag'n'drop operations that are available in the given #GType,
 	// the value will be copied directly. Otherwise, GDK will try to use
 	// gdk_content_deserialize_async() to convert the data.
-	ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+	ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadValueFinish: finishes an async drop read started with
 	// gdk_drop_read_value_async().
 	ReadValueFinish(result gio.AsyncResult) *externglib.Value
@@ -3480,11 +3494,11 @@ func (d drop) GetFormats() *ContentFormats
 
 func (d drop) GetSurface() Surface
 
-func (d drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func (d drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
 func (d drop) ReadFinish(result gio.AsyncResult) (string, gio.InputStream)
 
-func (d drop) ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback, userData unsafe.Pointer)
+func (d drop) ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
 func (d drop) ReadValueFinish(result gio.AsyncResult) *externglib.Value
 
@@ -3837,7 +3851,7 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGLTexture(context GLContext, id uint, width int, height int, destroy unsafe.Pointer, data unsafe.Pointer) GLTexture
+func NewGLTexture(context GLContext, id uint, width int, height int, destroy unsafe.Pointer, data interface{}) GLTexture
 
 func (g glTexture) Release()
 
@@ -4227,7 +4241,7 @@ type Surface interface {
 	Beep()
 	// CreateCairoContext: creates a new CairoContext for rendering on @surface.
 	CreateCairoContext() CairoContext
-	// CreateGlContext: creates a new GLContext matching the framebuffer format
+	// CreateGLContext: creates a new GLContext matching the framebuffer format
 	// to the visual of the Surface. The context is disconnected from any
 	// particular surface or surface.
 	//
@@ -4235,7 +4249,7 @@ type Surface interface {
 	//
 	// Before using the returned GLContext, you will need to call
 	// gdk_gl_context_make_current() or gdk_gl_context_realize().
-	CreateGlContext() GLContext
+	CreateGLContext() GLContext
 	// CreateSimilarSurface: create a new surface that is as compatible as
 	// possible with the given @surface. For example the new surface will have
 	// the same fallback resolution and font options as @surface. Generally, the
@@ -4393,7 +4407,7 @@ func (s surface) Beep()
 
 func (s surface) CreateCairoContext() CairoContext
 
-func (s surface) CreateGlContext() GLContext
+func (s surface) CreateGLContext() GLContext
 
 func (s surface) CreateSimilarSurface(content cairo.Content, width int, height int) *cairo.Surface
 

@@ -5,6 +5,7 @@ package pangoxft
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/fontconfig"
 	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
@@ -32,6 +33,11 @@ func init() {
 	})
 }
 
+type SubstituteFunc func(pattern *fontconfig.Pattern, data interface{})
+
+//export cSubstituteFunc
+func cSubstituteFunc(arg0 *C.FcPattern, arg1 C.gpointer)
+
 // GetContext: retrieves a Context appropriate for rendering with Xft fonts on
 // the given screen of the given display.
 func GetContext(display *xlib.Display, screen int) pango.Context {
@@ -41,10 +47,10 @@ func GetContext(display *xlib.Display, screen int) pango.Context {
 	var arg1 int
 	arg1 = int(screen)
 
-	c0 := C.pango_xft_get_context(arg0, arg1)
+	ret := C.pango_xft_get_context(arg0, arg1)
 
 	var ret0 pango.Context
-	ret0 = wrapContext(c0)
+	ret0 = wrapContext(ret)
 
 	return ret0
 }
@@ -58,10 +64,10 @@ func GetFontMap(display *xlib.Display, screen int) pango.FontMap {
 	var arg1 int
 	arg1 = int(screen)
 
-	c0 := C.pango_xft_get_font_map(arg0, arg1)
+	ret := C.pango_xft_get_font_map(arg0, arg1)
 
 	var ret0 pango.FontMap
-	ret0 = wrapFontMap(c0)
+	ret0 = wrapFontMap(ret)
 
 	return ret0
 }
@@ -195,7 +201,7 @@ func RenderTransformed(draw *xft.Draw, color *xft.Color, matrix *pango.Matrix, f
 // configuration substitution on a Pattern before it is used to load the font.
 // This function can be used to do things like set hinting and antialiasing
 // options.
-func SetDefaultSubstitute(display *xlib.Display, screen int, _func SubstituteFunc, data unsafe.Pointer, notify unsafe.Pointer) {
+func SetDefaultSubstitute(display *xlib.Display, screen int, _func SubstituteFunc) {
 	var arg0 *xlib.Display
 	arg0 = wrapDisplay(display)
 
@@ -205,10 +211,7 @@ func SetDefaultSubstitute(display *xlib.Display, screen int, _func SubstituteFun
 	var arg2 SubstituteFunc
 	arg2 = wrapSubstituteFunc(_func)
 
-	var arg3 unsafe.Pointer
-	arg3 = unsafe.Pointer(data)
-
-	C.pango_xft_set_default_substitute(arg0, arg1, arg2, arg3)
+	C.pango_xft_set_default_substitute(arg0, arg1, arg2)
 }
 
 // ShutdownDisplay: release any resources that have been cached for the

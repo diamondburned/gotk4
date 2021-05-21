@@ -100,10 +100,10 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
 	var arg1 bool
 	arg1 = gextras.Gobool(copyPixels)
 
-	c0 := C.gdk_pixbuf_from_pixdata(arg0, arg1)
+	ret := C.gdk_pixbuf_from_pixdata(arg0, arg1)
 
 	var ret0 gdkpixbuf.Pixbuf
-	ret0 = wrapPixbuf(c0)
+	ret0 = wrapPixbuf(ret)
 
 	return ret0
 }
@@ -142,6 +142,7 @@ func wrapPixdata(p *C.GdkPixdata) *Pixdata {
 	v.Rowstride = uint32(p.rowstride)
 	v.Width = uint32(p.width)
 	v.Height = uint32(p.height)
+	v.PixelData = ([0]uint8)(p.pixel_data)
 
 	return &v
 }
@@ -155,6 +156,6 @@ func marshalPixdata(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.GdkPixdata. The caller is expected to
 // cast.
-func (P *Pixdata) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *Pixdata) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }

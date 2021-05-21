@@ -830,12 +830,12 @@ func marshalFlags(p uintptr) (interface{}, error) {
 	return wrapFlags(c)
 }
 
-func (F *Flags) free() {}
+func (f *Flags) free() {}
 
 // Native returns the pointer to *C.VkFlags. The caller is expected to
 // cast.
-func (F *Flags) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *Flags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type Bool32 struct {
@@ -858,12 +858,12 @@ func marshalBool32(p uintptr) (interface{}, error) {
 	return wrapBool32(c)
 }
 
-func (B *Bool32) free() {}
+func (b *Bool32) free() {}
 
 // Native returns the pointer to *C.VkBool32. The caller is expected to
 // cast.
-func (B *Bool32) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *Bool32) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type DeviceSize struct {
@@ -886,12 +886,12 @@ func marshalDeviceSize(p uintptr) (interface{}, error) {
 	return wrapDeviceSize(c)
 }
 
-func (D *DeviceSize) free() {}
+func (d *DeviceSize) free() {}
 
 // Native returns the pointer to *C.VkDeviceSize. The caller is expected to
 // cast.
-func (D *DeviceSize) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type SampleMask struct {
@@ -914,12 +914,12 @@ func marshalSampleMask(p uintptr) (interface{}, error) {
 	return wrapSampleMask(c)
 }
 
-func (S *SampleMask) free() {}
+func (s *SampleMask) free() {}
 
 // Native returns the pointer to *C.VkSampleMask. The caller is expected to
 // cast.
-func (S *SampleMask) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SampleMask) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type Instance struct {
@@ -942,12 +942,12 @@ func marshalInstance(p uintptr) (interface{}, error) {
 	return wrapInstance(c)
 }
 
-func (I *Instance) free() {}
+func (i *Instance) free() {}
 
 // Native returns the pointer to *C.VkInstance. The caller is expected to
 // cast.
-func (I *Instance) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *Instance) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type PhysicalDevice struct {
@@ -970,12 +970,12 @@ func marshalPhysicalDevice(p uintptr) (interface{}, error) {
 	return wrapPhysicalDevice(c)
 }
 
-func (P *PhysicalDevice) free() {}
+func (p *PhysicalDevice) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDevice. The caller is expected to
 // cast.
-func (P *PhysicalDevice) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDevice) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type Device struct {
@@ -998,12 +998,12 @@ func marshalDevice(p uintptr) (interface{}, error) {
 	return wrapDevice(c)
 }
 
-func (D *Device) free() {}
+func (d *Device) free() {}
 
 // Native returns the pointer to *C.VkDevice. The caller is expected to
 // cast.
-func (D *Device) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *Device) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type Queue struct {
@@ -1026,12 +1026,12 @@ func marshalQueue(p uintptr) (interface{}, error) {
 	return wrapQueue(c)
 }
 
-func (Q *Queue) free() {}
+func (q *Queue) free() {}
 
 // Native returns the pointer to *C.VkQueue. The caller is expected to
 // cast.
-func (Q *Queue) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *Queue) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type Semaphore struct {
@@ -1054,12 +1054,12 @@ func marshalSemaphore(p uintptr) (interface{}, error) {
 	return wrapSemaphore(c)
 }
 
-func (S *Semaphore) free() {}
+func (s *Semaphore) free() {}
 
 // Native returns the pointer to *C.VkSemaphore. The caller is expected to
 // cast.
-func (S *Semaphore) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *Semaphore) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type CommandBuffer struct {
@@ -1082,12 +1082,12 @@ func marshalCommandBuffer(p uintptr) (interface{}, error) {
 	return wrapCommandBuffer(c)
 }
 
-func (C *CommandBuffer) free() {}
+func (c *CommandBuffer) free() {}
 
 // Native returns the pointer to *C.VkCommandBuffer. The caller is expected to
 // cast.
-func (C *CommandBuffer) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandBuffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type Fence struct {
@@ -1110,12 +1110,12 @@ func marshalFence(p uintptr) (interface{}, error) {
 	return wrapFence(c)
 }
 
-func (F *Fence) free() {}
+func (f *Fence) free() {}
 
 // Native returns the pointer to *C.VkFence. The caller is expected to
 // cast.
-func (F *Fence) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *Fence) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type DeviceMemory struct {
@@ -1138,12 +1138,12 @@ func marshalDeviceMemory(p uintptr) (interface{}, error) {
 	return wrapDeviceMemory(c)
 }
 
-func (D *DeviceMemory) free() {}
+func (d *DeviceMemory) free() {}
 
 // Native returns the pointer to *C.VkDeviceMemory. The caller is expected to
 // cast.
-func (D *DeviceMemory) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceMemory) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type Buffer struct {
@@ -1166,12 +1166,12 @@ func marshalBuffer(p uintptr) (interface{}, error) {
 	return wrapBuffer(c)
 }
 
-func (B *Buffer) free() {}
+func (b *Buffer) free() {}
 
 // Native returns the pointer to *C.VkBuffer. The caller is expected to
 // cast.
-func (B *Buffer) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *Buffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type Image struct {
@@ -1194,12 +1194,12 @@ func marshalImage(p uintptr) (interface{}, error) {
 	return wrapImage(c)
 }
 
-func (I *Image) free() {}
+func (i *Image) free() {}
 
 // Native returns the pointer to *C.VkImage. The caller is expected to
 // cast.
-func (I *Image) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *Image) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type Event struct {
@@ -1222,12 +1222,12 @@ func marshalEvent(p uintptr) (interface{}, error) {
 	return wrapEvent(c)
 }
 
-func (E *Event) free() {}
+func (e *Event) free() {}
 
 // Native returns the pointer to *C.VkEvent. The caller is expected to
 // cast.
-func (E *Event) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *Event) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type QueryPool struct {
@@ -1250,12 +1250,12 @@ func marshalQueryPool(p uintptr) (interface{}, error) {
 	return wrapQueryPool(c)
 }
 
-func (Q *QueryPool) free() {}
+func (q *QueryPool) free() {}
 
 // Native returns the pointer to *C.VkQueryPool. The caller is expected to
 // cast.
-func (Q *QueryPool) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueryPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type BufferView struct {
@@ -1278,12 +1278,12 @@ func marshalBufferView(p uintptr) (interface{}, error) {
 	return wrapBufferView(c)
 }
 
-func (B *BufferView) free() {}
+func (b *BufferView) free() {}
 
 // Native returns the pointer to *C.VkBufferView. The caller is expected to
 // cast.
-func (B *BufferView) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferView) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ImageView struct {
@@ -1306,12 +1306,12 @@ func marshalImageView(p uintptr) (interface{}, error) {
 	return wrapImageView(c)
 }
 
-func (I *ImageView) free() {}
+func (i *ImageView) free() {}
 
 // Native returns the pointer to *C.VkImageView. The caller is expected to
 // cast.
-func (I *ImageView) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageView) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ShaderModule struct {
@@ -1334,12 +1334,12 @@ func marshalShaderModule(p uintptr) (interface{}, error) {
 	return wrapShaderModule(c)
 }
 
-func (S *ShaderModule) free() {}
+func (s *ShaderModule) free() {}
 
 // Native returns the pointer to *C.VkShaderModule. The caller is expected to
 // cast.
-func (S *ShaderModule) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShaderModule) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PipelineCache struct {
@@ -1362,12 +1362,12 @@ func marshalPipelineCache(p uintptr) (interface{}, error) {
 	return wrapPipelineCache(c)
 }
 
-func (P *PipelineCache) free() {}
+func (p *PipelineCache) free() {}
 
 // Native returns the pointer to *C.VkPipelineCache. The caller is expected to
 // cast.
-func (P *PipelineCache) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCache) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineLayout struct {
@@ -1390,12 +1390,12 @@ func marshalPipelineLayout(p uintptr) (interface{}, error) {
 	return wrapPipelineLayout(c)
 }
 
-func (P *PipelineLayout) free() {}
+func (p *PipelineLayout) free() {}
 
 // Native returns the pointer to *C.VkPipelineLayout. The caller is expected to
 // cast.
-func (P *PipelineLayout) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type RenderPass struct {
@@ -1418,12 +1418,12 @@ func marshalRenderPass(p uintptr) (interface{}, error) {
 	return wrapRenderPass(c)
 }
 
-func (R *RenderPass) free() {}
+func (r *RenderPass) free() {}
 
 // Native returns the pointer to *C.VkRenderPass. The caller is expected to
 // cast.
-func (R *RenderPass) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPass) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type Pipeline struct {
@@ -1446,12 +1446,12 @@ func marshalPipeline(p uintptr) (interface{}, error) {
 	return wrapPipeline(c)
 }
 
-func (P *Pipeline) free() {}
+func (p *Pipeline) free() {}
 
 // Native returns the pointer to *C.VkPipeline. The caller is expected to
 // cast.
-func (P *Pipeline) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *Pipeline) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DescriptorSetLayout struct {
@@ -1474,12 +1474,12 @@ func marshalDescriptorSetLayout(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayout(c)
 }
 
-func (D *DescriptorSetLayout) free() {}
+func (d *DescriptorSetLayout) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetLayout. The caller is expected to
 // cast.
-func (D *DescriptorSetLayout) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type Sampler struct {
@@ -1502,12 +1502,12 @@ func marshalSampler(p uintptr) (interface{}, error) {
 	return wrapSampler(c)
 }
 
-func (S *Sampler) free() {}
+func (s *Sampler) free() {}
 
 // Native returns the pointer to *C.VkSampler. The caller is expected to
 // cast.
-func (S *Sampler) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *Sampler) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type DescriptorPool struct {
@@ -1530,12 +1530,12 @@ func marshalDescriptorPool(p uintptr) (interface{}, error) {
 	return wrapDescriptorPool(c)
 }
 
-func (D *DescriptorPool) free() {}
+func (d *DescriptorPool) free() {}
 
 // Native returns the pointer to *C.VkDescriptorPool. The caller is expected to
 // cast.
-func (D *DescriptorPool) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorSet struct {
@@ -1558,12 +1558,12 @@ func marshalDescriptorSet(p uintptr) (interface{}, error) {
 	return wrapDescriptorSet(c)
 }
 
-func (D *DescriptorSet) free() {}
+func (d *DescriptorSet) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSet. The caller is expected to
 // cast.
-func (D *DescriptorSet) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type Framebuffer struct {
@@ -1586,12 +1586,12 @@ func marshalFramebuffer(p uintptr) (interface{}, error) {
 	return wrapFramebuffer(c)
 }
 
-func (F *Framebuffer) free() {}
+func (f *Framebuffer) free() {}
 
 // Native returns the pointer to *C.VkFramebuffer. The caller is expected to
 // cast.
-func (F *Framebuffer) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *Framebuffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type CommandPool struct {
@@ -1614,12 +1614,12 @@ func marshalCommandPool(p uintptr) (interface{}, error) {
 	return wrapCommandPool(c)
 }
 
-func (C *CommandPool) free() {}
+func (c *CommandPool) free() {}
 
 // Native returns the pointer to *C.VkCommandPool. The caller is expected to
 // cast.
-func (C *CommandPool) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PipelineCacheHeaderVersion struct {
@@ -1642,12 +1642,12 @@ func marshalPipelineCacheHeaderVersion(p uintptr) (interface{}, error) {
 	return wrapPipelineCacheHeaderVersion(c)
 }
 
-func (P *PipelineCacheHeaderVersion) free() {}
+func (p *PipelineCacheHeaderVersion) free() {}
 
 // Native returns the pointer to *C.VkPipelineCacheHeaderVersion. The caller is expected to
 // cast.
-func (P *PipelineCacheHeaderVersion) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCacheHeaderVersion) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type Result struct {
@@ -1670,12 +1670,12 @@ func marshalResult(p uintptr) (interface{}, error) {
 	return wrapResult(c)
 }
 
-func (R *Result) free() {}
+func (r *Result) free() {}
 
 // Native returns the pointer to *C.VkResult. The caller is expected to
 // cast.
-func (R *Result) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *Result) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type StructureType struct {
@@ -1698,12 +1698,12 @@ func marshalStructureType(p uintptr) (interface{}, error) {
 	return wrapStructureType(c)
 }
 
-func (S *StructureType) free() {}
+func (s *StructureType) free() {}
 
 // Native returns the pointer to *C.VkStructureType. The caller is expected to
 // cast.
-func (S *StructureType) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *StructureType) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SystemAllocationScope struct {
@@ -1726,12 +1726,12 @@ func marshalSystemAllocationScope(p uintptr) (interface{}, error) {
 	return wrapSystemAllocationScope(c)
 }
 
-func (S *SystemAllocationScope) free() {}
+func (s *SystemAllocationScope) free() {}
 
 // Native returns the pointer to *C.VkSystemAllocationScope. The caller is expected to
 // cast.
-func (S *SystemAllocationScope) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SystemAllocationScope) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type InternalAllocationType struct {
@@ -1754,12 +1754,12 @@ func marshalInternalAllocationType(p uintptr) (interface{}, error) {
 	return wrapInternalAllocationType(c)
 }
 
-func (I *InternalAllocationType) free() {}
+func (i *InternalAllocationType) free() {}
 
 // Native returns the pointer to *C.VkInternalAllocationType. The caller is expected to
 // cast.
-func (I *InternalAllocationType) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *InternalAllocationType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type Format struct {
@@ -1782,12 +1782,12 @@ func marshalFormat(p uintptr) (interface{}, error) {
 	return wrapFormat(c)
 }
 
-func (F *Format) free() {}
+func (f *Format) free() {}
 
 // Native returns the pointer to *C.VkFormat. The caller is expected to
 // cast.
-func (F *Format) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *Format) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type ImageType struct {
@@ -1810,12 +1810,12 @@ func marshalImageType(p uintptr) (interface{}, error) {
 	return wrapImageType(c)
 }
 
-func (I *ImageType) free() {}
+func (i *ImageType) free() {}
 
 // Native returns the pointer to *C.VkImageType. The caller is expected to
 // cast.
-func (I *ImageType) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageTiling struct {
@@ -1838,12 +1838,12 @@ func marshalImageTiling(p uintptr) (interface{}, error) {
 	return wrapImageTiling(c)
 }
 
-func (I *ImageTiling) free() {}
+func (i *ImageTiling) free() {}
 
 // Native returns the pointer to *C.VkImageTiling. The caller is expected to
 // cast.
-func (I *ImageTiling) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageTiling) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type PhysicalDeviceType struct {
@@ -1866,12 +1866,12 @@ func marshalPhysicalDeviceType(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceType(c)
 }
 
-func (P *PhysicalDeviceType) free() {}
+func (p *PhysicalDeviceType) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceType. The caller is expected to
 // cast.
-func (P *PhysicalDeviceType) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceType) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type QueryType struct {
@@ -1894,12 +1894,12 @@ func marshalQueryType(p uintptr) (interface{}, error) {
 	return wrapQueryType(c)
 }
 
-func (Q *QueryType) free() {}
+func (q *QueryType) free() {}
 
 // Native returns the pointer to *C.VkQueryType. The caller is expected to
 // cast.
-func (Q *QueryType) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueryType) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type SharingMode struct {
@@ -1922,12 +1922,12 @@ func marshalSharingMode(p uintptr) (interface{}, error) {
 	return wrapSharingMode(c)
 }
 
-func (S *SharingMode) free() {}
+func (s *SharingMode) free() {}
 
 // Native returns the pointer to *C.VkSharingMode. The caller is expected to
 // cast.
-func (S *SharingMode) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SharingMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ImageLayout struct {
@@ -1950,12 +1950,12 @@ func marshalImageLayout(p uintptr) (interface{}, error) {
 	return wrapImageLayout(c)
 }
 
-func (I *ImageLayout) free() {}
+func (i *ImageLayout) free() {}
 
 // Native returns the pointer to *C.VkImageLayout. The caller is expected to
 // cast.
-func (I *ImageLayout) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageViewType struct {
@@ -1978,12 +1978,12 @@ func marshalImageViewType(p uintptr) (interface{}, error) {
 	return wrapImageViewType(c)
 }
 
-func (I *ImageViewType) free() {}
+func (i *ImageViewType) free() {}
 
 // Native returns the pointer to *C.VkImageViewType. The caller is expected to
 // cast.
-func (I *ImageViewType) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageViewType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ComponentSwizzle struct {
@@ -2006,12 +2006,12 @@ func marshalComponentSwizzle(p uintptr) (interface{}, error) {
 	return wrapComponentSwizzle(c)
 }
 
-func (C *ComponentSwizzle) free() {}
+func (c *ComponentSwizzle) free() {}
 
 // Native returns the pointer to *C.VkComponentSwizzle. The caller is expected to
 // cast.
-func (C *ComponentSwizzle) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ComponentSwizzle) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type VertexInputRate struct {
@@ -2034,12 +2034,12 @@ func marshalVertexInputRate(p uintptr) (interface{}, error) {
 	return wrapVertexInputRate(c)
 }
 
-func (V *VertexInputRate) free() {}
+func (v *VertexInputRate) free() {}
 
 // Native returns the pointer to *C.VkVertexInputRate. The caller is expected to
 // cast.
-func (V *VertexInputRate) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *VertexInputRate) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type PrimitiveTopology struct {
@@ -2062,12 +2062,12 @@ func marshalPrimitiveTopology(p uintptr) (interface{}, error) {
 	return wrapPrimitiveTopology(c)
 }
 
-func (P *PrimitiveTopology) free() {}
+func (p *PrimitiveTopology) free() {}
 
 // Native returns the pointer to *C.VkPrimitiveTopology. The caller is expected to
 // cast.
-func (P *PrimitiveTopology) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PrimitiveTopology) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PolygonMode struct {
@@ -2090,12 +2090,12 @@ func marshalPolygonMode(p uintptr) (interface{}, error) {
 	return wrapPolygonMode(c)
 }
 
-func (P *PolygonMode) free() {}
+func (p *PolygonMode) free() {}
 
 // Native returns the pointer to *C.VkPolygonMode. The caller is expected to
 // cast.
-func (P *PolygonMode) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PolygonMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type FrontFace struct {
@@ -2118,12 +2118,12 @@ func marshalFrontFace(p uintptr) (interface{}, error) {
 	return wrapFrontFace(c)
 }
 
-func (F *FrontFace) free() {}
+func (f *FrontFace) free() {}
 
 // Native returns the pointer to *C.VkFrontFace. The caller is expected to
 // cast.
-func (F *FrontFace) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FrontFace) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type CompareOp struct {
@@ -2146,12 +2146,12 @@ func marshalCompareOp(p uintptr) (interface{}, error) {
 	return wrapCompareOp(c)
 }
 
-func (C *CompareOp) free() {}
+func (c *CompareOp) free() {}
 
 // Native returns the pointer to *C.VkCompareOp. The caller is expected to
 // cast.
-func (C *CompareOp) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CompareOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type StencilOp struct {
@@ -2174,12 +2174,12 @@ func marshalStencilOp(p uintptr) (interface{}, error) {
 	return wrapStencilOp(c)
 }
 
-func (S *StencilOp) free() {}
+func (s *StencilOp) free() {}
 
 // Native returns the pointer to *C.VkStencilOp. The caller is expected to
 // cast.
-func (S *StencilOp) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *StencilOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type LogicOp struct {
@@ -2202,12 +2202,12 @@ func marshalLogicOp(p uintptr) (interface{}, error) {
 	return wrapLogicOp(c)
 }
 
-func (L *LogicOp) free() {}
+func (l *LogicOp) free() {}
 
 // Native returns the pointer to *C.VkLogicOp. The caller is expected to
 // cast.
-func (L *LogicOp) Native() unsafe.Pointer {
-	return unsafe.Pointer(L.native)
+func (l *LogicOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 type BlendFactor struct {
@@ -2230,12 +2230,12 @@ func marshalBlendFactor(p uintptr) (interface{}, error) {
 	return wrapBlendFactor(c)
 }
 
-func (B *BlendFactor) free() {}
+func (b *BlendFactor) free() {}
 
 // Native returns the pointer to *C.VkBlendFactor. The caller is expected to
 // cast.
-func (B *BlendFactor) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BlendFactor) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BlendOp struct {
@@ -2258,12 +2258,12 @@ func marshalBlendOp(p uintptr) (interface{}, error) {
 	return wrapBlendOp(c)
 }
 
-func (B *BlendOp) free() {}
+func (b *BlendOp) free() {}
 
 // Native returns the pointer to *C.VkBlendOp. The caller is expected to
 // cast.
-func (B *BlendOp) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BlendOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type DynamicState struct {
@@ -2286,12 +2286,12 @@ func marshalDynamicState(p uintptr) (interface{}, error) {
 	return wrapDynamicState(c)
 }
 
-func (D *DynamicState) free() {}
+func (d *DynamicState) free() {}
 
 // Native returns the pointer to *C.VkDynamicState. The caller is expected to
 // cast.
-func (D *DynamicState) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DynamicState) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type Filter struct {
@@ -2314,12 +2314,12 @@ func marshalFilter(p uintptr) (interface{}, error) {
 	return wrapFilter(c)
 }
 
-func (F *Filter) free() {}
+func (f *Filter) free() {}
 
 // Native returns the pointer to *C.VkFilter. The caller is expected to
 // cast.
-func (F *Filter) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *Filter) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type SamplerMipmapMode struct {
@@ -2342,12 +2342,12 @@ func marshalSamplerMipmapMode(p uintptr) (interface{}, error) {
 	return wrapSamplerMipmapMode(c)
 }
 
-func (S *SamplerMipmapMode) free() {}
+func (s *SamplerMipmapMode) free() {}
 
 // Native returns the pointer to *C.VkSamplerMipmapMode. The caller is expected to
 // cast.
-func (S *SamplerMipmapMode) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerMipmapMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SamplerAddressMode struct {
@@ -2370,12 +2370,12 @@ func marshalSamplerAddressMode(p uintptr) (interface{}, error) {
 	return wrapSamplerAddressMode(c)
 }
 
-func (S *SamplerAddressMode) free() {}
+func (s *SamplerAddressMode) free() {}
 
 // Native returns the pointer to *C.VkSamplerAddressMode. The caller is expected to
 // cast.
-func (S *SamplerAddressMode) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerAddressMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type BorderColor struct {
@@ -2398,12 +2398,12 @@ func marshalBorderColor(p uintptr) (interface{}, error) {
 	return wrapBorderColor(c)
 }
 
-func (B *BorderColor) free() {}
+func (b *BorderColor) free() {}
 
 // Native returns the pointer to *C.VkBorderColor. The caller is expected to
 // cast.
-func (B *BorderColor) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BorderColor) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type DescriptorType struct {
@@ -2426,12 +2426,12 @@ func marshalDescriptorType(p uintptr) (interface{}, error) {
 	return wrapDescriptorType(c)
 }
 
-func (D *DescriptorType) free() {}
+func (d *DescriptorType) free() {}
 
 // Native returns the pointer to *C.VkDescriptorType. The caller is expected to
 // cast.
-func (D *DescriptorType) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorType) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type AttachmentLoadOp struct {
@@ -2454,12 +2454,12 @@ func marshalAttachmentLoadOp(p uintptr) (interface{}, error) {
 	return wrapAttachmentLoadOp(c)
 }
 
-func (A *AttachmentLoadOp) free() {}
+func (a *AttachmentLoadOp) free() {}
 
 // Native returns the pointer to *C.VkAttachmentLoadOp. The caller is expected to
 // cast.
-func (A *AttachmentLoadOp) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AttachmentLoadOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type AttachmentStoreOp struct {
@@ -2482,12 +2482,12 @@ func marshalAttachmentStoreOp(p uintptr) (interface{}, error) {
 	return wrapAttachmentStoreOp(c)
 }
 
-func (A *AttachmentStoreOp) free() {}
+func (a *AttachmentStoreOp) free() {}
 
 // Native returns the pointer to *C.VkAttachmentStoreOp. The caller is expected to
 // cast.
-func (A *AttachmentStoreOp) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AttachmentStoreOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type PipelineBindPoint struct {
@@ -2510,12 +2510,12 @@ func marshalPipelineBindPoint(p uintptr) (interface{}, error) {
 	return wrapPipelineBindPoint(c)
 }
 
-func (P *PipelineBindPoint) free() {}
+func (p *PipelineBindPoint) free() {}
 
 // Native returns the pointer to *C.VkPipelineBindPoint. The caller is expected to
 // cast.
-func (P *PipelineBindPoint) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineBindPoint) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type CommandBufferLevel struct {
@@ -2538,12 +2538,12 @@ func marshalCommandBufferLevel(p uintptr) (interface{}, error) {
 	return wrapCommandBufferLevel(c)
 }
 
-func (C *CommandBufferLevel) free() {}
+func (c *CommandBufferLevel) free() {}
 
 // Native returns the pointer to *C.VkCommandBufferLevel. The caller is expected to
 // cast.
-func (C *CommandBufferLevel) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandBufferLevel) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type IndexType struct {
@@ -2566,12 +2566,12 @@ func marshalIndexType(p uintptr) (interface{}, error) {
 	return wrapIndexType(c)
 }
 
-func (I *IndexType) free() {}
+func (i *IndexType) free() {}
 
 // Native returns the pointer to *C.VkIndexType. The caller is expected to
 // cast.
-func (I *IndexType) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *IndexType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type SubpassContents struct {
@@ -2594,12 +2594,12 @@ func marshalSubpassContents(p uintptr) (interface{}, error) {
 	return wrapSubpassContents(c)
 }
 
-func (S *SubpassContents) free() {}
+func (s *SubpassContents) free() {}
 
 // Native returns the pointer to *C.VkSubpassContents. The caller is expected to
 // cast.
-func (S *SubpassContents) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassContents) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ObjectType struct {
@@ -2622,12 +2622,12 @@ func marshalObjectType(p uintptr) (interface{}, error) {
 	return wrapObjectType(c)
 }
 
-func (O *ObjectType) free() {}
+func (o *ObjectType) free() {}
 
 // Native returns the pointer to *C.VkObjectType. The caller is expected to
 // cast.
-func (O *ObjectType) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectType) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type VendorID struct {
@@ -2650,12 +2650,12 @@ func marshalVendorID(p uintptr) (interface{}, error) {
 	return wrapVendorID(c)
 }
 
-func (V *VendorID) free() {}
+func (v *VendorID) free() {}
 
 // Native returns the pointer to *C.VkVendorId. The caller is expected to
 // cast.
-func (V *VendorID) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *VendorID) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type InstanceCreateFlags struct {
@@ -2678,12 +2678,12 @@ func marshalInstanceCreateFlags(p uintptr) (interface{}, error) {
 	return wrapInstanceCreateFlags(c)
 }
 
-func (I *InstanceCreateFlags) free() {}
+func (i *InstanceCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkInstanceCreateFlags. The caller is expected to
 // cast.
-func (I *InstanceCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *InstanceCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type FormatFeatureFlagBits struct {
@@ -2706,12 +2706,12 @@ func marshalFormatFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapFormatFeatureFlagBits(c)
 }
 
-func (F *FormatFeatureFlagBits) free() {}
+func (f *FormatFeatureFlagBits) free() {}
 
 // Native returns the pointer to *C.VkFormatFeatureFlagBits. The caller is expected to
 // cast.
-func (F *FormatFeatureFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FormatFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type FormatFeatureFlags struct {
@@ -2734,12 +2734,12 @@ func marshalFormatFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapFormatFeatureFlags(c)
 }
 
-func (F *FormatFeatureFlags) free() {}
+func (f *FormatFeatureFlags) free() {}
 
 // Native returns the pointer to *C.VkFormatFeatureFlags. The caller is expected to
 // cast.
-func (F *FormatFeatureFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FormatFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type ImageUsageFlagBits struct {
@@ -2762,12 +2762,12 @@ func marshalImageUsageFlagBits(p uintptr) (interface{}, error) {
 	return wrapImageUsageFlagBits(c)
 }
 
-func (I *ImageUsageFlagBits) free() {}
+func (i *ImageUsageFlagBits) free() {}
 
 // Native returns the pointer to *C.VkImageUsageFlagBits. The caller is expected to
 // cast.
-func (I *ImageUsageFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageUsageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageUsageFlags struct {
@@ -2790,12 +2790,12 @@ func marshalImageUsageFlags(p uintptr) (interface{}, error) {
 	return wrapImageUsageFlags(c)
 }
 
-func (I *ImageUsageFlags) free() {}
+func (i *ImageUsageFlags) free() {}
 
 // Native returns the pointer to *C.VkImageUsageFlags. The caller is expected to
 // cast.
-func (I *ImageUsageFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageUsageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageCreateFlagBits struct {
@@ -2818,12 +2818,12 @@ func marshalImageCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapImageCreateFlagBits(c)
 }
 
-func (I *ImageCreateFlagBits) free() {}
+func (i *ImageCreateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkImageCreateFlagBits. The caller is expected to
 // cast.
-func (I *ImageCreateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageCreateFlags struct {
@@ -2846,12 +2846,12 @@ func marshalImageCreateFlags(p uintptr) (interface{}, error) {
 	return wrapImageCreateFlags(c)
 }
 
-func (I *ImageCreateFlags) free() {}
+func (i *ImageCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkImageCreateFlags. The caller is expected to
 // cast.
-func (I *ImageCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type SampleCountFlagBits struct {
@@ -2874,12 +2874,12 @@ func marshalSampleCountFlagBits(p uintptr) (interface{}, error) {
 	return wrapSampleCountFlagBits(c)
 }
 
-func (S *SampleCountFlagBits) free() {}
+func (s *SampleCountFlagBits) free() {}
 
 // Native returns the pointer to *C.VkSampleCountFlagBits. The caller is expected to
 // cast.
-func (S *SampleCountFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SampleCountFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SampleCountFlags struct {
@@ -2902,12 +2902,12 @@ func marshalSampleCountFlags(p uintptr) (interface{}, error) {
 	return wrapSampleCountFlags(c)
 }
 
-func (S *SampleCountFlags) free() {}
+func (s *SampleCountFlags) free() {}
 
 // Native returns the pointer to *C.VkSampleCountFlags. The caller is expected to
 // cast.
-func (S *SampleCountFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SampleCountFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type QueueFlagBits struct {
@@ -2930,12 +2930,12 @@ func marshalQueueFlagBits(p uintptr) (interface{}, error) {
 	return wrapQueueFlagBits(c)
 }
 
-func (Q *QueueFlagBits) free() {}
+func (q *QueueFlagBits) free() {}
 
 // Native returns the pointer to *C.VkQueueFlagBits. The caller is expected to
 // cast.
-func (Q *QueueFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueueFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type QueueFlags struct {
@@ -2958,12 +2958,12 @@ func marshalQueueFlags(p uintptr) (interface{}, error) {
 	return wrapQueueFlags(c)
 }
 
-func (Q *QueueFlags) free() {}
+func (q *QueueFlags) free() {}
 
 // Native returns the pointer to *C.VkQueueFlags. The caller is expected to
 // cast.
-func (Q *QueueFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueueFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type MemoryPropertyFlagBits struct {
@@ -2986,12 +2986,12 @@ func marshalMemoryPropertyFlagBits(p uintptr) (interface{}, error) {
 	return wrapMemoryPropertyFlagBits(c)
 }
 
-func (M *MemoryPropertyFlagBits) free() {}
+func (m *MemoryPropertyFlagBits) free() {}
 
 // Native returns the pointer to *C.VkMemoryPropertyFlagBits. The caller is expected to
 // cast.
-func (M *MemoryPropertyFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryPropertyFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryPropertyFlags struct {
@@ -3014,12 +3014,12 @@ func marshalMemoryPropertyFlags(p uintptr) (interface{}, error) {
 	return wrapMemoryPropertyFlags(c)
 }
 
-func (M *MemoryPropertyFlags) free() {}
+func (m *MemoryPropertyFlags) free() {}
 
 // Native returns the pointer to *C.VkMemoryPropertyFlags. The caller is expected to
 // cast.
-func (M *MemoryPropertyFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryPropertyFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryHeapFlagBits struct {
@@ -3042,12 +3042,12 @@ func marshalMemoryHeapFlagBits(p uintptr) (interface{}, error) {
 	return wrapMemoryHeapFlagBits(c)
 }
 
-func (M *MemoryHeapFlagBits) free() {}
+func (m *MemoryHeapFlagBits) free() {}
 
 // Native returns the pointer to *C.VkMemoryHeapFlagBits. The caller is expected to
 // cast.
-func (M *MemoryHeapFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryHeapFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryHeapFlags struct {
@@ -3070,12 +3070,12 @@ func marshalMemoryHeapFlags(p uintptr) (interface{}, error) {
 	return wrapMemoryHeapFlags(c)
 }
 
-func (M *MemoryHeapFlags) free() {}
+func (m *MemoryHeapFlags) free() {}
 
 // Native returns the pointer to *C.VkMemoryHeapFlags. The caller is expected to
 // cast.
-func (M *MemoryHeapFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryHeapFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type DeviceCreateFlags struct {
@@ -3098,12 +3098,12 @@ func marshalDeviceCreateFlags(p uintptr) (interface{}, error) {
 	return wrapDeviceCreateFlags(c)
 }
 
-func (D *DeviceCreateFlags) free() {}
+func (d *DeviceCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkDeviceCreateFlags. The caller is expected to
 // cast.
-func (D *DeviceCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceQueueCreateFlagBits struct {
@@ -3126,12 +3126,12 @@ func marshalDeviceQueueCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapDeviceQueueCreateFlagBits(c)
 }
 
-func (D *DeviceQueueCreateFlagBits) free() {}
+func (d *DeviceQueueCreateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkDeviceQueueCreateFlagBits. The caller is expected to
 // cast.
-func (D *DeviceQueueCreateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceQueueCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceQueueCreateFlags struct {
@@ -3154,12 +3154,12 @@ func marshalDeviceQueueCreateFlags(p uintptr) (interface{}, error) {
 	return wrapDeviceQueueCreateFlags(c)
 }
 
-func (D *DeviceQueueCreateFlags) free() {}
+func (d *DeviceQueueCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkDeviceQueueCreateFlags. The caller is expected to
 // cast.
-func (D *DeviceQueueCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceQueueCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PipelineStageFlagBits struct {
@@ -3182,12 +3182,12 @@ func marshalPipelineStageFlagBits(p uintptr) (interface{}, error) {
 	return wrapPipelineStageFlagBits(c)
 }
 
-func (P *PipelineStageFlagBits) free() {}
+func (p *PipelineStageFlagBits) free() {}
 
 // Native returns the pointer to *C.VkPipelineStageFlagBits. The caller is expected to
 // cast.
-func (P *PipelineStageFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineStageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineStageFlags struct {
@@ -3210,12 +3210,12 @@ func marshalPipelineStageFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineStageFlags(c)
 }
 
-func (P *PipelineStageFlags) free() {}
+func (p *PipelineStageFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineStageFlags. The caller is expected to
 // cast.
-func (P *PipelineStageFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineStageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type MemoryMapFlags struct {
@@ -3238,12 +3238,12 @@ func marshalMemoryMapFlags(p uintptr) (interface{}, error) {
 	return wrapMemoryMapFlags(c)
 }
 
-func (M *MemoryMapFlags) free() {}
+func (m *MemoryMapFlags) free() {}
 
 // Native returns the pointer to *C.VkMemoryMapFlags. The caller is expected to
 // cast.
-func (M *MemoryMapFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryMapFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type ImageAspectFlagBits struct {
@@ -3266,12 +3266,12 @@ func marshalImageAspectFlagBits(p uintptr) (interface{}, error) {
 	return wrapImageAspectFlagBits(c)
 }
 
-func (I *ImageAspectFlagBits) free() {}
+func (i *ImageAspectFlagBits) free() {}
 
 // Native returns the pointer to *C.VkImageAspectFlagBits. The caller is expected to
 // cast.
-func (I *ImageAspectFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageAspectFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageAspectFlags struct {
@@ -3294,12 +3294,12 @@ func marshalImageAspectFlags(p uintptr) (interface{}, error) {
 	return wrapImageAspectFlags(c)
 }
 
-func (I *ImageAspectFlags) free() {}
+func (i *ImageAspectFlags) free() {}
 
 // Native returns the pointer to *C.VkImageAspectFlags. The caller is expected to
 // cast.
-func (I *ImageAspectFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageAspectFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type SparseImageFormatFlagBits struct {
@@ -3322,12 +3322,12 @@ func marshalSparseImageFormatFlagBits(p uintptr) (interface{}, error) {
 	return wrapSparseImageFormatFlagBits(c)
 }
 
-func (S *SparseImageFormatFlagBits) free() {}
+func (s *SparseImageFormatFlagBits) free() {}
 
 // Native returns the pointer to *C.VkSparseImageFormatFlagBits. The caller is expected to
 // cast.
-func (S *SparseImageFormatFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageFormatFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SparseImageFormatFlags struct {
@@ -3350,12 +3350,12 @@ func marshalSparseImageFormatFlags(p uintptr) (interface{}, error) {
 	return wrapSparseImageFormatFlags(c)
 }
 
-func (S *SparseImageFormatFlags) free() {}
+func (s *SparseImageFormatFlags) free() {}
 
 // Native returns the pointer to *C.VkSparseImageFormatFlags. The caller is expected to
 // cast.
-func (S *SparseImageFormatFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageFormatFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SparseMemoryBindFlagBits struct {
@@ -3378,12 +3378,12 @@ func marshalSparseMemoryBindFlagBits(p uintptr) (interface{}, error) {
 	return wrapSparseMemoryBindFlagBits(c)
 }
 
-func (S *SparseMemoryBindFlagBits) free() {}
+func (s *SparseMemoryBindFlagBits) free() {}
 
 // Native returns the pointer to *C.VkSparseMemoryBindFlagBits. The caller is expected to
 // cast.
-func (S *SparseMemoryBindFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseMemoryBindFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SparseMemoryBindFlags struct {
@@ -3406,12 +3406,12 @@ func marshalSparseMemoryBindFlags(p uintptr) (interface{}, error) {
 	return wrapSparseMemoryBindFlags(c)
 }
 
-func (S *SparseMemoryBindFlags) free() {}
+func (s *SparseMemoryBindFlags) free() {}
 
 // Native returns the pointer to *C.VkSparseMemoryBindFlags. The caller is expected to
 // cast.
-func (S *SparseMemoryBindFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseMemoryBindFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type FenceCreateFlagBits struct {
@@ -3434,12 +3434,12 @@ func marshalFenceCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapFenceCreateFlagBits(c)
 }
 
-func (F *FenceCreateFlagBits) free() {}
+func (f *FenceCreateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkFenceCreateFlagBits. The caller is expected to
 // cast.
-func (F *FenceCreateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FenceCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type FenceCreateFlags struct {
@@ -3462,12 +3462,12 @@ func marshalFenceCreateFlags(p uintptr) (interface{}, error) {
 	return wrapFenceCreateFlags(c)
 }
 
-func (F *FenceCreateFlags) free() {}
+func (f *FenceCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkFenceCreateFlags. The caller is expected to
 // cast.
-func (F *FenceCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FenceCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type SemaphoreCreateFlags struct {
@@ -3490,12 +3490,12 @@ func marshalSemaphoreCreateFlags(p uintptr) (interface{}, error) {
 	return wrapSemaphoreCreateFlags(c)
 }
 
-func (S *SemaphoreCreateFlags) free() {}
+func (s *SemaphoreCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkSemaphoreCreateFlags. The caller is expected to
 // cast.
-func (S *SemaphoreCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SemaphoreCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type EventCreateFlags struct {
@@ -3518,12 +3518,12 @@ func marshalEventCreateFlags(p uintptr) (interface{}, error) {
 	return wrapEventCreateFlags(c)
 }
 
-func (E *EventCreateFlags) free() {}
+func (e *EventCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkEventCreateFlags. The caller is expected to
 // cast.
-func (E *EventCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *EventCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type QueryPoolCreateFlags struct {
@@ -3546,12 +3546,12 @@ func marshalQueryPoolCreateFlags(p uintptr) (interface{}, error) {
 	return wrapQueryPoolCreateFlags(c)
 }
 
-func (Q *QueryPoolCreateFlags) free() {}
+func (q *QueryPoolCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkQueryPoolCreateFlags. The caller is expected to
 // cast.
-func (Q *QueryPoolCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueryPoolCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type QueryPipelineStatisticFlagBits struct {
@@ -3574,12 +3574,12 @@ func marshalQueryPipelineStatisticFlagBits(p uintptr) (interface{}, error) {
 	return wrapQueryPipelineStatisticFlagBits(c)
 }
 
-func (Q *QueryPipelineStatisticFlagBits) free() {}
+func (q *QueryPipelineStatisticFlagBits) free() {}
 
 // Native returns the pointer to *C.VkQueryPipelineStatisticFlagBits. The caller is expected to
 // cast.
-func (Q *QueryPipelineStatisticFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueryPipelineStatisticFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type QueryPipelineStatisticFlags struct {
@@ -3602,12 +3602,12 @@ func marshalQueryPipelineStatisticFlags(p uintptr) (interface{}, error) {
 	return wrapQueryPipelineStatisticFlags(c)
 }
 
-func (Q *QueryPipelineStatisticFlags) free() {}
+func (q *QueryPipelineStatisticFlags) free() {}
 
 // Native returns the pointer to *C.VkQueryPipelineStatisticFlags. The caller is expected to
 // cast.
-func (Q *QueryPipelineStatisticFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueryPipelineStatisticFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type QueryResultFlagBits struct {
@@ -3630,12 +3630,12 @@ func marshalQueryResultFlagBits(p uintptr) (interface{}, error) {
 	return wrapQueryResultFlagBits(c)
 }
 
-func (Q *QueryResultFlagBits) free() {}
+func (q *QueryResultFlagBits) free() {}
 
 // Native returns the pointer to *C.VkQueryResultFlagBits. The caller is expected to
 // cast.
-func (Q *QueryResultFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueryResultFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type QueryResultFlags struct {
@@ -3658,12 +3658,12 @@ func marshalQueryResultFlags(p uintptr) (interface{}, error) {
 	return wrapQueryResultFlags(c)
 }
 
-func (Q *QueryResultFlags) free() {}
+func (q *QueryResultFlags) free() {}
 
 // Native returns the pointer to *C.VkQueryResultFlags. The caller is expected to
 // cast.
-func (Q *QueryResultFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueryResultFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type BufferCreateFlagBits struct {
@@ -3686,12 +3686,12 @@ func marshalBufferCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapBufferCreateFlagBits(c)
 }
 
-func (B *BufferCreateFlagBits) free() {}
+func (b *BufferCreateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkBufferCreateFlagBits. The caller is expected to
 // cast.
-func (B *BufferCreateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BufferCreateFlags struct {
@@ -3714,12 +3714,12 @@ func marshalBufferCreateFlags(p uintptr) (interface{}, error) {
 	return wrapBufferCreateFlags(c)
 }
 
-func (B *BufferCreateFlags) free() {}
+func (b *BufferCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkBufferCreateFlags. The caller is expected to
 // cast.
-func (B *BufferCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BufferUsageFlagBits struct {
@@ -3742,12 +3742,12 @@ func marshalBufferUsageFlagBits(p uintptr) (interface{}, error) {
 	return wrapBufferUsageFlagBits(c)
 }
 
-func (B *BufferUsageFlagBits) free() {}
+func (b *BufferUsageFlagBits) free() {}
 
 // Native returns the pointer to *C.VkBufferUsageFlagBits. The caller is expected to
 // cast.
-func (B *BufferUsageFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferUsageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BufferUsageFlags struct {
@@ -3770,12 +3770,12 @@ func marshalBufferUsageFlags(p uintptr) (interface{}, error) {
 	return wrapBufferUsageFlags(c)
 }
 
-func (B *BufferUsageFlags) free() {}
+func (b *BufferUsageFlags) free() {}
 
 // Native returns the pointer to *C.VkBufferUsageFlags. The caller is expected to
 // cast.
-func (B *BufferUsageFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferUsageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BufferViewCreateFlags struct {
@@ -3798,12 +3798,12 @@ func marshalBufferViewCreateFlags(p uintptr) (interface{}, error) {
 	return wrapBufferViewCreateFlags(c)
 }
 
-func (B *BufferViewCreateFlags) free() {}
+func (b *BufferViewCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkBufferViewCreateFlags. The caller is expected to
 // cast.
-func (B *BufferViewCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferViewCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ImageViewCreateFlagBits struct {
@@ -3826,12 +3826,12 @@ func marshalImageViewCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapImageViewCreateFlagBits(c)
 }
 
-func (I *ImageViewCreateFlagBits) free() {}
+func (i *ImageViewCreateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkImageViewCreateFlagBits. The caller is expected to
 // cast.
-func (I *ImageViewCreateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageViewCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageViewCreateFlags struct {
@@ -3854,12 +3854,12 @@ func marshalImageViewCreateFlags(p uintptr) (interface{}, error) {
 	return wrapImageViewCreateFlags(c)
 }
 
-func (I *ImageViewCreateFlags) free() {}
+func (i *ImageViewCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkImageViewCreateFlags. The caller is expected to
 // cast.
-func (I *ImageViewCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageViewCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ShaderModuleCreateFlags struct {
@@ -3882,12 +3882,12 @@ func marshalShaderModuleCreateFlags(p uintptr) (interface{}, error) {
 	return wrapShaderModuleCreateFlags(c)
 }
 
-func (S *ShaderModuleCreateFlags) free() {}
+func (s *ShaderModuleCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkShaderModuleCreateFlags. The caller is expected to
 // cast.
-func (S *ShaderModuleCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShaderModuleCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PipelineCacheCreateFlags struct {
@@ -3910,12 +3910,12 @@ func marshalPipelineCacheCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineCacheCreateFlags(c)
 }
 
-func (P *PipelineCacheCreateFlags) free() {}
+func (p *PipelineCacheCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineCacheCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineCacheCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCacheCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineCreateFlagBits struct {
@@ -3938,12 +3938,12 @@ func marshalPipelineCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapPipelineCreateFlagBits(c)
 }
 
-func (P *PipelineCreateFlagBits) free() {}
+func (p *PipelineCreateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkPipelineCreateFlagBits. The caller is expected to
 // cast.
-func (P *PipelineCreateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineCreateFlags struct {
@@ -3966,12 +3966,12 @@ func marshalPipelineCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineCreateFlags(c)
 }
 
-func (P *PipelineCreateFlags) free() {}
+func (p *PipelineCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineShaderStageCreateFlags struct {
@@ -3994,12 +3994,12 @@ func marshalPipelineShaderStageCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineShaderStageCreateFlags(c)
 }
 
-func (P *PipelineShaderStageCreateFlags) free() {}
+func (p *PipelineShaderStageCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineShaderStageCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineShaderStageCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineShaderStageCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ShaderStageFlagBits struct {
@@ -4022,12 +4022,12 @@ func marshalShaderStageFlagBits(p uintptr) (interface{}, error) {
 	return wrapShaderStageFlagBits(c)
 }
 
-func (S *ShaderStageFlagBits) free() {}
+func (s *ShaderStageFlagBits) free() {}
 
 // Native returns the pointer to *C.VkShaderStageFlagBits. The caller is expected to
 // cast.
-func (S *ShaderStageFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShaderStageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PipelineVertexInputStateCreateFlags struct {
@@ -4050,12 +4050,12 @@ func marshalPipelineVertexInputStateCreateFlags(p uintptr) (interface{}, error) 
 	return wrapPipelineVertexInputStateCreateFlags(c)
 }
 
-func (P *PipelineVertexInputStateCreateFlags) free() {}
+func (p *PipelineVertexInputStateCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineVertexInputStateCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineVertexInputStateCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineVertexInputStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineInputAssemblyStateCreateFlags struct {
@@ -4078,12 +4078,12 @@ func marshalPipelineInputAssemblyStateCreateFlags(p uintptr) (interface{}, error
 	return wrapPipelineInputAssemblyStateCreateFlags(c)
 }
 
-func (P *PipelineInputAssemblyStateCreateFlags) free() {}
+func (p *PipelineInputAssemblyStateCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineInputAssemblyStateCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineInputAssemblyStateCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineInputAssemblyStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineTessellationStateCreateFlags struct {
@@ -4106,12 +4106,12 @@ func marshalPipelineTessellationStateCreateFlags(p uintptr) (interface{}, error)
 	return wrapPipelineTessellationStateCreateFlags(c)
 }
 
-func (P *PipelineTessellationStateCreateFlags) free() {}
+func (p *PipelineTessellationStateCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineTessellationStateCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineTessellationStateCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineTessellationStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineViewportStateCreateFlags struct {
@@ -4134,12 +4134,12 @@ func marshalPipelineViewportStateCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineViewportStateCreateFlags(c)
 }
 
-func (P *PipelineViewportStateCreateFlags) free() {}
+func (p *PipelineViewportStateCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineViewportStateCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineViewportStateCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineViewportStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineRasterizationStateCreateFlags struct {
@@ -4162,12 +4162,12 @@ func marshalPipelineRasterizationStateCreateFlags(p uintptr) (interface{}, error
 	return wrapPipelineRasterizationStateCreateFlags(c)
 }
 
-func (P *PipelineRasterizationStateCreateFlags) free() {}
+func (p *PipelineRasterizationStateCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineRasterizationStateCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineRasterizationStateCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineRasterizationStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type CullModeFlagBits struct {
@@ -4190,12 +4190,12 @@ func marshalCullModeFlagBits(p uintptr) (interface{}, error) {
 	return wrapCullModeFlagBits(c)
 }
 
-func (C *CullModeFlagBits) free() {}
+func (c *CullModeFlagBits) free() {}
 
 // Native returns the pointer to *C.VkCullModeFlagBits. The caller is expected to
 // cast.
-func (C *CullModeFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CullModeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CullModeFlags struct {
@@ -4218,12 +4218,12 @@ func marshalCullModeFlags(p uintptr) (interface{}, error) {
 	return wrapCullModeFlags(c)
 }
 
-func (C *CullModeFlags) free() {}
+func (c *CullModeFlags) free() {}
 
 // Native returns the pointer to *C.VkCullModeFlags. The caller is expected to
 // cast.
-func (C *CullModeFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CullModeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PipelineMultisampleStateCreateFlags struct {
@@ -4246,12 +4246,12 @@ func marshalPipelineMultisampleStateCreateFlags(p uintptr) (interface{}, error) 
 	return wrapPipelineMultisampleStateCreateFlags(c)
 }
 
-func (P *PipelineMultisampleStateCreateFlags) free() {}
+func (p *PipelineMultisampleStateCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineMultisampleStateCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineMultisampleStateCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineMultisampleStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineDepthStencilStateCreateFlags struct {
@@ -4274,12 +4274,12 @@ func marshalPipelineDepthStencilStateCreateFlags(p uintptr) (interface{}, error)
 	return wrapPipelineDepthStencilStateCreateFlags(c)
 }
 
-func (P *PipelineDepthStencilStateCreateFlags) free() {}
+func (p *PipelineDepthStencilStateCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineDepthStencilStateCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineDepthStencilStateCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineDepthStencilStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineColorBlendStateCreateFlags struct {
@@ -4302,12 +4302,12 @@ func marshalPipelineColorBlendStateCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineColorBlendStateCreateFlags(c)
 }
 
-func (P *PipelineColorBlendStateCreateFlags) free() {}
+func (p *PipelineColorBlendStateCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineColorBlendStateCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineColorBlendStateCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineColorBlendStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ColorComponentFlagBits struct {
@@ -4330,12 +4330,12 @@ func marshalColorComponentFlagBits(p uintptr) (interface{}, error) {
 	return wrapColorComponentFlagBits(c)
 }
 
-func (C *ColorComponentFlagBits) free() {}
+func (c *ColorComponentFlagBits) free() {}
 
 // Native returns the pointer to *C.VkColorComponentFlagBits. The caller is expected to
 // cast.
-func (C *ColorComponentFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ColorComponentFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ColorComponentFlags struct {
@@ -4358,12 +4358,12 @@ func marshalColorComponentFlags(p uintptr) (interface{}, error) {
 	return wrapColorComponentFlags(c)
 }
 
-func (C *ColorComponentFlags) free() {}
+func (c *ColorComponentFlags) free() {}
 
 // Native returns the pointer to *C.VkColorComponentFlags. The caller is expected to
 // cast.
-func (C *ColorComponentFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ColorComponentFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PipelineDynamicStateCreateFlags struct {
@@ -4386,12 +4386,12 @@ func marshalPipelineDynamicStateCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineDynamicStateCreateFlags(c)
 }
 
-func (P *PipelineDynamicStateCreateFlags) free() {}
+func (p *PipelineDynamicStateCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineDynamicStateCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineDynamicStateCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineDynamicStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineLayoutCreateFlags struct {
@@ -4414,12 +4414,12 @@ func marshalPipelineLayoutCreateFlags(p uintptr) (interface{}, error) {
 	return wrapPipelineLayoutCreateFlags(c)
 }
 
-func (P *PipelineLayoutCreateFlags) free() {}
+func (p *PipelineLayoutCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkPipelineLayoutCreateFlags. The caller is expected to
 // cast.
-func (P *PipelineLayoutCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineLayoutCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ShaderStageFlags struct {
@@ -4442,12 +4442,12 @@ func marshalShaderStageFlags(p uintptr) (interface{}, error) {
 	return wrapShaderStageFlags(c)
 }
 
-func (S *ShaderStageFlags) free() {}
+func (s *ShaderStageFlags) free() {}
 
 // Native returns the pointer to *C.VkShaderStageFlags. The caller is expected to
 // cast.
-func (S *ShaderStageFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShaderStageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SamplerCreateFlagBits struct {
@@ -4470,12 +4470,12 @@ func marshalSamplerCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapSamplerCreateFlagBits(c)
 }
 
-func (S *SamplerCreateFlagBits) free() {}
+func (s *SamplerCreateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkSamplerCreateFlagBits. The caller is expected to
 // cast.
-func (S *SamplerCreateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SamplerCreateFlags struct {
@@ -4498,12 +4498,12 @@ func marshalSamplerCreateFlags(p uintptr) (interface{}, error) {
 	return wrapSamplerCreateFlags(c)
 }
 
-func (S *SamplerCreateFlags) free() {}
+func (s *SamplerCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkSamplerCreateFlags. The caller is expected to
 // cast.
-func (S *SamplerCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type DescriptorSetLayoutCreateFlagBits struct {
@@ -4526,12 +4526,12 @@ func marshalDescriptorSetLayoutCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutCreateFlagBits(c)
 }
 
-func (D *DescriptorSetLayoutCreateFlagBits) free() {}
+func (d *DescriptorSetLayoutCreateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutCreateFlagBits. The caller is expected to
 // cast.
-func (D *DescriptorSetLayoutCreateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetLayoutCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorSetLayoutCreateFlags struct {
@@ -4554,12 +4554,12 @@ func marshalDescriptorSetLayoutCreateFlags(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutCreateFlags(c)
 }
 
-func (D *DescriptorSetLayoutCreateFlags) free() {}
+func (d *DescriptorSetLayoutCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutCreateFlags. The caller is expected to
 // cast.
-func (D *DescriptorSetLayoutCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetLayoutCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorPoolCreateFlagBits struct {
@@ -4582,12 +4582,12 @@ func marshalDescriptorPoolCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapDescriptorPoolCreateFlagBits(c)
 }
 
-func (D *DescriptorPoolCreateFlagBits) free() {}
+func (d *DescriptorPoolCreateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkDescriptorPoolCreateFlagBits. The caller is expected to
 // cast.
-func (D *DescriptorPoolCreateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorPoolCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorPoolCreateFlags struct {
@@ -4610,12 +4610,12 @@ func marshalDescriptorPoolCreateFlags(p uintptr) (interface{}, error) {
 	return wrapDescriptorPoolCreateFlags(c)
 }
 
-func (D *DescriptorPoolCreateFlags) free() {}
+func (d *DescriptorPoolCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkDescriptorPoolCreateFlags. The caller is expected to
 // cast.
-func (D *DescriptorPoolCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorPoolCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorPoolResetFlags struct {
@@ -4638,12 +4638,12 @@ func marshalDescriptorPoolResetFlags(p uintptr) (interface{}, error) {
 	return wrapDescriptorPoolResetFlags(c)
 }
 
-func (D *DescriptorPoolResetFlags) free() {}
+func (d *DescriptorPoolResetFlags) free() {}
 
 // Native returns the pointer to *C.VkDescriptorPoolResetFlags. The caller is expected to
 // cast.
-func (D *DescriptorPoolResetFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorPoolResetFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type FramebufferCreateFlags struct {
@@ -4666,12 +4666,12 @@ func marshalFramebufferCreateFlags(p uintptr) (interface{}, error) {
 	return wrapFramebufferCreateFlags(c)
 }
 
-func (F *FramebufferCreateFlags) free() {}
+func (f *FramebufferCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkFramebufferCreateFlags. The caller is expected to
 // cast.
-func (F *FramebufferCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FramebufferCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type RenderPassCreateFlags struct {
@@ -4694,12 +4694,12 @@ func marshalRenderPassCreateFlags(p uintptr) (interface{}, error) {
 	return wrapRenderPassCreateFlags(c)
 }
 
-func (R *RenderPassCreateFlags) free() {}
+func (r *RenderPassCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkRenderPassCreateFlags. The caller is expected to
 // cast.
-func (R *RenderPassCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPassCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type AttachmentDescriptionFlagBits struct {
@@ -4722,12 +4722,12 @@ func marshalAttachmentDescriptionFlagBits(p uintptr) (interface{}, error) {
 	return wrapAttachmentDescriptionFlagBits(c)
 }
 
-func (A *AttachmentDescriptionFlagBits) free() {}
+func (a *AttachmentDescriptionFlagBits) free() {}
 
 // Native returns the pointer to *C.VkAttachmentDescriptionFlagBits. The caller is expected to
 // cast.
-func (A *AttachmentDescriptionFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AttachmentDescriptionFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type AttachmentDescriptionFlags struct {
@@ -4750,12 +4750,12 @@ func marshalAttachmentDescriptionFlags(p uintptr) (interface{}, error) {
 	return wrapAttachmentDescriptionFlags(c)
 }
 
-func (A *AttachmentDescriptionFlags) free() {}
+func (a *AttachmentDescriptionFlags) free() {}
 
 // Native returns the pointer to *C.VkAttachmentDescriptionFlags. The caller is expected to
 // cast.
-func (A *AttachmentDescriptionFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AttachmentDescriptionFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type SubpassDescriptionFlagBits struct {
@@ -4778,12 +4778,12 @@ func marshalSubpassDescriptionFlagBits(p uintptr) (interface{}, error) {
 	return wrapSubpassDescriptionFlagBits(c)
 }
 
-func (S *SubpassDescriptionFlagBits) free() {}
+func (s *SubpassDescriptionFlagBits) free() {}
 
 // Native returns the pointer to *C.VkSubpassDescriptionFlagBits. The caller is expected to
 // cast.
-func (S *SubpassDescriptionFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassDescriptionFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SubpassDescriptionFlags struct {
@@ -4806,12 +4806,12 @@ func marshalSubpassDescriptionFlags(p uintptr) (interface{}, error) {
 	return wrapSubpassDescriptionFlags(c)
 }
 
-func (S *SubpassDescriptionFlags) free() {}
+func (s *SubpassDescriptionFlags) free() {}
 
 // Native returns the pointer to *C.VkSubpassDescriptionFlags. The caller is expected to
 // cast.
-func (S *SubpassDescriptionFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassDescriptionFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type AccessFlagBits struct {
@@ -4834,12 +4834,12 @@ func marshalAccessFlagBits(p uintptr) (interface{}, error) {
 	return wrapAccessFlagBits(c)
 }
 
-func (A *AccessFlagBits) free() {}
+func (a *AccessFlagBits) free() {}
 
 // Native returns the pointer to *C.VkAccessFlagBits. The caller is expected to
 // cast.
-func (A *AccessFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AccessFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type AccessFlags struct {
@@ -4862,12 +4862,12 @@ func marshalAccessFlags(p uintptr) (interface{}, error) {
 	return wrapAccessFlags(c)
 }
 
-func (A *AccessFlags) free() {}
+func (a *AccessFlags) free() {}
 
 // Native returns the pointer to *C.VkAccessFlags. The caller is expected to
 // cast.
-func (A *AccessFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AccessFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type DependencyFlagBits struct {
@@ -4890,12 +4890,12 @@ func marshalDependencyFlagBits(p uintptr) (interface{}, error) {
 	return wrapDependencyFlagBits(c)
 }
 
-func (D *DependencyFlagBits) free() {}
+func (d *DependencyFlagBits) free() {}
 
 // Native returns the pointer to *C.VkDependencyFlagBits. The caller is expected to
 // cast.
-func (D *DependencyFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DependencyFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DependencyFlags struct {
@@ -4918,12 +4918,12 @@ func marshalDependencyFlags(p uintptr) (interface{}, error) {
 	return wrapDependencyFlags(c)
 }
 
-func (D *DependencyFlags) free() {}
+func (d *DependencyFlags) free() {}
 
 // Native returns the pointer to *C.VkDependencyFlags. The caller is expected to
 // cast.
-func (D *DependencyFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DependencyFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type CommandPoolCreateFlagBits struct {
@@ -4946,12 +4946,12 @@ func marshalCommandPoolCreateFlagBits(p uintptr) (interface{}, error) {
 	return wrapCommandPoolCreateFlagBits(c)
 }
 
-func (C *CommandPoolCreateFlagBits) free() {}
+func (c *CommandPoolCreateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkCommandPoolCreateFlagBits. The caller is expected to
 // cast.
-func (C *CommandPoolCreateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandPoolCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CommandPoolCreateFlags struct {
@@ -4974,12 +4974,12 @@ func marshalCommandPoolCreateFlags(p uintptr) (interface{}, error) {
 	return wrapCommandPoolCreateFlags(c)
 }
 
-func (C *CommandPoolCreateFlags) free() {}
+func (c *CommandPoolCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkCommandPoolCreateFlags. The caller is expected to
 // cast.
-func (C *CommandPoolCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandPoolCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CommandPoolResetFlagBits struct {
@@ -5002,12 +5002,12 @@ func marshalCommandPoolResetFlagBits(p uintptr) (interface{}, error) {
 	return wrapCommandPoolResetFlagBits(c)
 }
 
-func (C *CommandPoolResetFlagBits) free() {}
+func (c *CommandPoolResetFlagBits) free() {}
 
 // Native returns the pointer to *C.VkCommandPoolResetFlagBits. The caller is expected to
 // cast.
-func (C *CommandPoolResetFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandPoolResetFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CommandPoolResetFlags struct {
@@ -5030,12 +5030,12 @@ func marshalCommandPoolResetFlags(p uintptr) (interface{}, error) {
 	return wrapCommandPoolResetFlags(c)
 }
 
-func (C *CommandPoolResetFlags) free() {}
+func (c *CommandPoolResetFlags) free() {}
 
 // Native returns the pointer to *C.VkCommandPoolResetFlags. The caller is expected to
 // cast.
-func (C *CommandPoolResetFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandPoolResetFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CommandBufferUsageFlagBits struct {
@@ -5058,12 +5058,12 @@ func marshalCommandBufferUsageFlagBits(p uintptr) (interface{}, error) {
 	return wrapCommandBufferUsageFlagBits(c)
 }
 
-func (C *CommandBufferUsageFlagBits) free() {}
+func (c *CommandBufferUsageFlagBits) free() {}
 
 // Native returns the pointer to *C.VkCommandBufferUsageFlagBits. The caller is expected to
 // cast.
-func (C *CommandBufferUsageFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandBufferUsageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CommandBufferUsageFlags struct {
@@ -5086,12 +5086,12 @@ func marshalCommandBufferUsageFlags(p uintptr) (interface{}, error) {
 	return wrapCommandBufferUsageFlags(c)
 }
 
-func (C *CommandBufferUsageFlags) free() {}
+func (c *CommandBufferUsageFlags) free() {}
 
 // Native returns the pointer to *C.VkCommandBufferUsageFlags. The caller is expected to
 // cast.
-func (C *CommandBufferUsageFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandBufferUsageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type QueryControlFlagBits struct {
@@ -5114,12 +5114,12 @@ func marshalQueryControlFlagBits(p uintptr) (interface{}, error) {
 	return wrapQueryControlFlagBits(c)
 }
 
-func (Q *QueryControlFlagBits) free() {}
+func (q *QueryControlFlagBits) free() {}
 
 // Native returns the pointer to *C.VkQueryControlFlagBits. The caller is expected to
 // cast.
-func (Q *QueryControlFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueryControlFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type QueryControlFlags struct {
@@ -5142,12 +5142,12 @@ func marshalQueryControlFlags(p uintptr) (interface{}, error) {
 	return wrapQueryControlFlags(c)
 }
 
-func (Q *QueryControlFlags) free() {}
+func (q *QueryControlFlags) free() {}
 
 // Native returns the pointer to *C.VkQueryControlFlags. The caller is expected to
 // cast.
-func (Q *QueryControlFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueryControlFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type CommandBufferResetFlagBits struct {
@@ -5170,12 +5170,12 @@ func marshalCommandBufferResetFlagBits(p uintptr) (interface{}, error) {
 	return wrapCommandBufferResetFlagBits(c)
 }
 
-func (C *CommandBufferResetFlagBits) free() {}
+func (c *CommandBufferResetFlagBits) free() {}
 
 // Native returns the pointer to *C.VkCommandBufferResetFlagBits. The caller is expected to
 // cast.
-func (C *CommandBufferResetFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandBufferResetFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CommandBufferResetFlags struct {
@@ -5198,12 +5198,12 @@ func marshalCommandBufferResetFlags(p uintptr) (interface{}, error) {
 	return wrapCommandBufferResetFlags(c)
 }
 
-func (C *CommandBufferResetFlags) free() {}
+func (c *CommandBufferResetFlags) free() {}
 
 // Native returns the pointer to *C.VkCommandBufferResetFlags. The caller is expected to
 // cast.
-func (C *CommandBufferResetFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandBufferResetFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type StencilFaceFlagBits struct {
@@ -5226,12 +5226,12 @@ func marshalStencilFaceFlagBits(p uintptr) (interface{}, error) {
 	return wrapStencilFaceFlagBits(c)
 }
 
-func (S *StencilFaceFlagBits) free() {}
+func (s *StencilFaceFlagBits) free() {}
 
 // Native returns the pointer to *C.VkStencilFaceFlagBits. The caller is expected to
 // cast.
-func (S *StencilFaceFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *StencilFaceFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type StencilFaceFlags struct {
@@ -5254,12 +5254,12 @@ func marshalStencilFaceFlags(p uintptr) (interface{}, error) {
 	return wrapStencilFaceFlags(c)
 }
 
-func (S *StencilFaceFlags) free() {}
+func (s *StencilFaceFlags) free() {}
 
 // Native returns the pointer to *C.VkStencilFaceFlags. The caller is expected to
 // cast.
-func (S *StencilFaceFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *StencilFaceFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ApplicationInfo struct {
@@ -5282,12 +5282,12 @@ func marshalApplicationInfo(p uintptr) (interface{}, error) {
 	return wrapApplicationInfo(c)
 }
 
-func (A *ApplicationInfo) free() {}
+func (a *ApplicationInfo) free() {}
 
 // Native returns the pointer to *C.VkApplicationInfo. The caller is expected to
 // cast.
-func (A *ApplicationInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *ApplicationInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type InstanceCreateInfo struct {
@@ -5310,12 +5310,12 @@ func marshalInstanceCreateInfo(p uintptr) (interface{}, error) {
 	return wrapInstanceCreateInfo(c)
 }
 
-func (I *InstanceCreateInfo) free() {}
+func (i *InstanceCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkInstanceCreateInfo. The caller is expected to
 // cast.
-func (I *InstanceCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *InstanceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type AllocationCallbacks struct {
@@ -5338,12 +5338,12 @@ func marshalAllocationCallbacks(p uintptr) (interface{}, error) {
 	return wrapAllocationCallbacks(c)
 }
 
-func (A *AllocationCallbacks) free() {}
+func (a *AllocationCallbacks) free() {}
 
 // Native returns the pointer to *C.VkAllocationCallbacks. The caller is expected to
 // cast.
-func (A *AllocationCallbacks) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AllocationCallbacks) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type PhysicalDeviceFeatures struct {
@@ -5366,12 +5366,12 @@ func marshalPhysicalDeviceFeatures(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceFeatures(c)
 }
 
-func (P *PhysicalDeviceFeatures) free() {}
+func (p *PhysicalDeviceFeatures) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceFeatures. The caller is expected to
 // cast.
-func (P *PhysicalDeviceFeatures) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type FormatProperties struct {
@@ -5394,12 +5394,12 @@ func marshalFormatProperties(p uintptr) (interface{}, error) {
 	return wrapFormatProperties(c)
 }
 
-func (F *FormatProperties) free() {}
+func (f *FormatProperties) free() {}
 
 // Native returns the pointer to *C.VkFormatProperties. The caller is expected to
 // cast.
-func (F *FormatProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type Extent3D struct {
@@ -5422,12 +5422,12 @@ func marshalExtent3D(p uintptr) (interface{}, error) {
 	return wrapExtent3D(c)
 }
 
-func (E *Extent3D) free() {}
+func (e *Extent3D) free() {}
 
 // Native returns the pointer to *C.VkExtent3D. The caller is expected to
 // cast.
-func (E *Extent3D) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *Extent3D) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ImageFormatProperties struct {
@@ -5450,12 +5450,12 @@ func marshalImageFormatProperties(p uintptr) (interface{}, error) {
 	return wrapImageFormatProperties(c)
 }
 
-func (I *ImageFormatProperties) free() {}
+func (i *ImageFormatProperties) free() {}
 
 // Native returns the pointer to *C.VkImageFormatProperties. The caller is expected to
 // cast.
-func (I *ImageFormatProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type PhysicalDeviceLimits struct {
@@ -5478,12 +5478,12 @@ func marshalPhysicalDeviceLimits(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceLimits(c)
 }
 
-func (P *PhysicalDeviceLimits) free() {}
+func (p *PhysicalDeviceLimits) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceLimits. The caller is expected to
 // cast.
-func (P *PhysicalDeviceLimits) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceLimits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceSparseProperties struct {
@@ -5506,12 +5506,12 @@ func marshalPhysicalDeviceSparseProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceSparseProperties(c)
 }
 
-func (P *PhysicalDeviceSparseProperties) free() {}
+func (p *PhysicalDeviceSparseProperties) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceSparseProperties. The caller is expected to
 // cast.
-func (P *PhysicalDeviceSparseProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceSparseProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceProperties struct {
@@ -5534,12 +5534,12 @@ func marshalPhysicalDeviceProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceProperties(c)
 }
 
-func (P *PhysicalDeviceProperties) free() {}
+func (p *PhysicalDeviceProperties) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceProperties. The caller is expected to
 // cast.
-func (P *PhysicalDeviceProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type QueueFamilyProperties struct {
@@ -5562,12 +5562,12 @@ func marshalQueueFamilyProperties(p uintptr) (interface{}, error) {
 	return wrapQueueFamilyProperties(c)
 }
 
-func (Q *QueueFamilyProperties) free() {}
+func (q *QueueFamilyProperties) free() {}
 
 // Native returns the pointer to *C.VkQueueFamilyProperties. The caller is expected to
 // cast.
-func (Q *QueueFamilyProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueueFamilyProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type MemoryType struct {
@@ -5590,12 +5590,12 @@ func marshalMemoryType(p uintptr) (interface{}, error) {
 	return wrapMemoryType(c)
 }
 
-func (M *MemoryType) free() {}
+func (m *MemoryType) free() {}
 
 // Native returns the pointer to *C.VkMemoryType. The caller is expected to
 // cast.
-func (M *MemoryType) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryType) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryHeap struct {
@@ -5618,12 +5618,12 @@ func marshalMemoryHeap(p uintptr) (interface{}, error) {
 	return wrapMemoryHeap(c)
 }
 
-func (M *MemoryHeap) free() {}
+func (m *MemoryHeap) free() {}
 
 // Native returns the pointer to *C.VkMemoryHeap. The caller is expected to
 // cast.
-func (M *MemoryHeap) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryHeap) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type PhysicalDeviceMemoryProperties struct {
@@ -5646,12 +5646,12 @@ func marshalPhysicalDeviceMemoryProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMemoryProperties(c)
 }
 
-func (P *PhysicalDeviceMemoryProperties) free() {}
+func (p *PhysicalDeviceMemoryProperties) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMemoryProperties. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMemoryProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMemoryProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DeviceQueueCreateInfo struct {
@@ -5674,12 +5674,12 @@ func marshalDeviceQueueCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceQueueCreateInfo(c)
 }
 
-func (D *DeviceQueueCreateInfo) free() {}
+func (d *DeviceQueueCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkDeviceQueueCreateInfo. The caller is expected to
 // cast.
-func (D *DeviceQueueCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceQueueCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceCreateInfo struct {
@@ -5702,12 +5702,12 @@ func marshalDeviceCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceCreateInfo(c)
 }
 
-func (D *DeviceCreateInfo) free() {}
+func (d *DeviceCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkDeviceCreateInfo. The caller is expected to
 // cast.
-func (D *DeviceCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type ExtensionProperties struct {
@@ -5730,12 +5730,12 @@ func marshalExtensionProperties(p uintptr) (interface{}, error) {
 	return wrapExtensionProperties(c)
 }
 
-func (E *ExtensionProperties) free() {}
+func (e *ExtensionProperties) free() {}
 
 // Native returns the pointer to *C.VkExtensionProperties. The caller is expected to
 // cast.
-func (E *ExtensionProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExtensionProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type LayerProperties struct {
@@ -5758,12 +5758,12 @@ func marshalLayerProperties(p uintptr) (interface{}, error) {
 	return wrapLayerProperties(c)
 }
 
-func (L *LayerProperties) free() {}
+func (l *LayerProperties) free() {}
 
 // Native returns the pointer to *C.VkLayerProperties. The caller is expected to
 // cast.
-func (L *LayerProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(L.native)
+func (l *LayerProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 type SubmitInfo struct {
@@ -5786,12 +5786,12 @@ func marshalSubmitInfo(p uintptr) (interface{}, error) {
 	return wrapSubmitInfo(c)
 }
 
-func (S *SubmitInfo) free() {}
+func (s *SubmitInfo) free() {}
 
 // Native returns the pointer to *C.VkSubmitInfo. The caller is expected to
 // cast.
-func (S *SubmitInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubmitInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type MemoryAllocateInfo struct {
@@ -5814,12 +5814,12 @@ func marshalMemoryAllocateInfo(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateInfo(c)
 }
 
-func (M *MemoryAllocateInfo) free() {}
+func (m *MemoryAllocateInfo) free() {}
 
 // Native returns the pointer to *C.VkMemoryAllocateInfo. The caller is expected to
 // cast.
-func (M *MemoryAllocateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MappedMemoryRange struct {
@@ -5842,12 +5842,12 @@ func marshalMappedMemoryRange(p uintptr) (interface{}, error) {
 	return wrapMappedMemoryRange(c)
 }
 
-func (M *MappedMemoryRange) free() {}
+func (m *MappedMemoryRange) free() {}
 
 // Native returns the pointer to *C.VkMappedMemoryRange. The caller is expected to
 // cast.
-func (M *MappedMemoryRange) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MappedMemoryRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryRequirements struct {
@@ -5870,12 +5870,12 @@ func marshalMemoryRequirements(p uintptr) (interface{}, error) {
 	return wrapMemoryRequirements(c)
 }
 
-func (M *MemoryRequirements) free() {}
+func (m *MemoryRequirements) free() {}
 
 // Native returns the pointer to *C.VkMemoryRequirements. The caller is expected to
 // cast.
-func (M *MemoryRequirements) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryRequirements) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type SparseImageFormatProperties struct {
@@ -5898,12 +5898,12 @@ func marshalSparseImageFormatProperties(p uintptr) (interface{}, error) {
 	return wrapSparseImageFormatProperties(c)
 }
 
-func (S *SparseImageFormatProperties) free() {}
+func (s *SparseImageFormatProperties) free() {}
 
 // Native returns the pointer to *C.VkSparseImageFormatProperties. The caller is expected to
 // cast.
-func (S *SparseImageFormatProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SparseImageMemoryRequirements struct {
@@ -5926,12 +5926,12 @@ func marshalSparseImageMemoryRequirements(p uintptr) (interface{}, error) {
 	return wrapSparseImageMemoryRequirements(c)
 }
 
-func (S *SparseImageMemoryRequirements) free() {}
+func (s *SparseImageMemoryRequirements) free() {}
 
 // Native returns the pointer to *C.VkSparseImageMemoryRequirements. The caller is expected to
 // cast.
-func (S *SparseImageMemoryRequirements) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageMemoryRequirements) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SparseMemoryBind struct {
@@ -5954,12 +5954,12 @@ func marshalSparseMemoryBind(p uintptr) (interface{}, error) {
 	return wrapSparseMemoryBind(c)
 }
 
-func (S *SparseMemoryBind) free() {}
+func (s *SparseMemoryBind) free() {}
 
 // Native returns the pointer to *C.VkSparseMemoryBind. The caller is expected to
 // cast.
-func (S *SparseMemoryBind) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseMemoryBind) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SparseBufferMemoryBindInfo struct {
@@ -5982,12 +5982,12 @@ func marshalSparseBufferMemoryBindInfo(p uintptr) (interface{}, error) {
 	return wrapSparseBufferMemoryBindInfo(c)
 }
 
-func (S *SparseBufferMemoryBindInfo) free() {}
+func (s *SparseBufferMemoryBindInfo) free() {}
 
 // Native returns the pointer to *C.VkSparseBufferMemoryBindInfo. The caller is expected to
 // cast.
-func (S *SparseBufferMemoryBindInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseBufferMemoryBindInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SparseImageOpaqueMemoryBindInfo struct {
@@ -6010,12 +6010,12 @@ func marshalSparseImageOpaqueMemoryBindInfo(p uintptr) (interface{}, error) {
 	return wrapSparseImageOpaqueMemoryBindInfo(c)
 }
 
-func (S *SparseImageOpaqueMemoryBindInfo) free() {}
+func (s *SparseImageOpaqueMemoryBindInfo) free() {}
 
 // Native returns the pointer to *C.VkSparseImageOpaqueMemoryBindInfo. The caller is expected to
 // cast.
-func (S *SparseImageOpaqueMemoryBindInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageOpaqueMemoryBindInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ImageSubresource struct {
@@ -6038,12 +6038,12 @@ func marshalImageSubresource(p uintptr) (interface{}, error) {
 	return wrapImageSubresource(c)
 }
 
-func (I *ImageSubresource) free() {}
+func (i *ImageSubresource) free() {}
 
 // Native returns the pointer to *C.VkImageSubresource. The caller is expected to
 // cast.
-func (I *ImageSubresource) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageSubresource) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type Offset3D struct {
@@ -6066,12 +6066,12 @@ func marshalOffset3D(p uintptr) (interface{}, error) {
 	return wrapOffset3D(c)
 }
 
-func (O *Offset3D) free() {}
+func (o *Offset3D) free() {}
 
 // Native returns the pointer to *C.VkOffset3D. The caller is expected to
 // cast.
-func (O *Offset3D) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *Offset3D) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type SparseImageMemoryBind struct {
@@ -6094,12 +6094,12 @@ func marshalSparseImageMemoryBind(p uintptr) (interface{}, error) {
 	return wrapSparseImageMemoryBind(c)
 }
 
-func (S *SparseImageMemoryBind) free() {}
+func (s *SparseImageMemoryBind) free() {}
 
 // Native returns the pointer to *C.VkSparseImageMemoryBind. The caller is expected to
 // cast.
-func (S *SparseImageMemoryBind) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageMemoryBind) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SparseImageMemoryBindInfo struct {
@@ -6122,12 +6122,12 @@ func marshalSparseImageMemoryBindInfo(p uintptr) (interface{}, error) {
 	return wrapSparseImageMemoryBindInfo(c)
 }
 
-func (S *SparseImageMemoryBindInfo) free() {}
+func (s *SparseImageMemoryBindInfo) free() {}
 
 // Native returns the pointer to *C.VkSparseImageMemoryBindInfo. The caller is expected to
 // cast.
-func (S *SparseImageMemoryBindInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageMemoryBindInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type BindSparseInfo struct {
@@ -6150,12 +6150,12 @@ func marshalBindSparseInfo(p uintptr) (interface{}, error) {
 	return wrapBindSparseInfo(c)
 }
 
-func (B *BindSparseInfo) free() {}
+func (b *BindSparseInfo) free() {}
 
 // Native returns the pointer to *C.VkBindSparseInfo. The caller is expected to
 // cast.
-func (B *BindSparseInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindSparseInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type FenceCreateInfo struct {
@@ -6178,12 +6178,12 @@ func marshalFenceCreateInfo(p uintptr) (interface{}, error) {
 	return wrapFenceCreateInfo(c)
 }
 
-func (F *FenceCreateInfo) free() {}
+func (f *FenceCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkFenceCreateInfo. The caller is expected to
 // cast.
-func (F *FenceCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FenceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type SemaphoreCreateInfo struct {
@@ -6206,12 +6206,12 @@ func marshalSemaphoreCreateInfo(p uintptr) (interface{}, error) {
 	return wrapSemaphoreCreateInfo(c)
 }
 
-func (S *SemaphoreCreateInfo) free() {}
+func (s *SemaphoreCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkSemaphoreCreateInfo. The caller is expected to
 // cast.
-func (S *SemaphoreCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SemaphoreCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type EventCreateInfo struct {
@@ -6234,12 +6234,12 @@ func marshalEventCreateInfo(p uintptr) (interface{}, error) {
 	return wrapEventCreateInfo(c)
 }
 
-func (E *EventCreateInfo) free() {}
+func (e *EventCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkEventCreateInfo. The caller is expected to
 // cast.
-func (E *EventCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *EventCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type QueryPoolCreateInfo struct {
@@ -6262,12 +6262,12 @@ func marshalQueryPoolCreateInfo(p uintptr) (interface{}, error) {
 	return wrapQueryPoolCreateInfo(c)
 }
 
-func (Q *QueryPoolCreateInfo) free() {}
+func (q *QueryPoolCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkQueryPoolCreateInfo. The caller is expected to
 // cast.
-func (Q *QueryPoolCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueryPoolCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type BufferCreateInfo struct {
@@ -6290,12 +6290,12 @@ func marshalBufferCreateInfo(p uintptr) (interface{}, error) {
 	return wrapBufferCreateInfo(c)
 }
 
-func (B *BufferCreateInfo) free() {}
+func (b *BufferCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkBufferCreateInfo. The caller is expected to
 // cast.
-func (B *BufferCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BufferViewCreateInfo struct {
@@ -6318,12 +6318,12 @@ func marshalBufferViewCreateInfo(p uintptr) (interface{}, error) {
 	return wrapBufferViewCreateInfo(c)
 }
 
-func (B *BufferViewCreateInfo) free() {}
+func (b *BufferViewCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkBufferViewCreateInfo. The caller is expected to
 // cast.
-func (B *BufferViewCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferViewCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ImageCreateInfo struct {
@@ -6346,12 +6346,12 @@ func marshalImageCreateInfo(p uintptr) (interface{}, error) {
 	return wrapImageCreateInfo(c)
 }
 
-func (I *ImageCreateInfo) free() {}
+func (i *ImageCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkImageCreateInfo. The caller is expected to
 // cast.
-func (I *ImageCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type SubresourceLayout struct {
@@ -6374,12 +6374,12 @@ func marshalSubresourceLayout(p uintptr) (interface{}, error) {
 	return wrapSubresourceLayout(c)
 }
 
-func (S *SubresourceLayout) free() {}
+func (s *SubresourceLayout) free() {}
 
 // Native returns the pointer to *C.VkSubresourceLayout. The caller is expected to
 // cast.
-func (S *SubresourceLayout) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubresourceLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ComponentMapping struct {
@@ -6402,12 +6402,12 @@ func marshalComponentMapping(p uintptr) (interface{}, error) {
 	return wrapComponentMapping(c)
 }
 
-func (C *ComponentMapping) free() {}
+func (c *ComponentMapping) free() {}
 
 // Native returns the pointer to *C.VkComponentMapping. The caller is expected to
 // cast.
-func (C *ComponentMapping) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ComponentMapping) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ImageSubresourceRange struct {
@@ -6430,12 +6430,12 @@ func marshalImageSubresourceRange(p uintptr) (interface{}, error) {
 	return wrapImageSubresourceRange(c)
 }
 
-func (I *ImageSubresourceRange) free() {}
+func (i *ImageSubresourceRange) free() {}
 
 // Native returns the pointer to *C.VkImageSubresourceRange. The caller is expected to
 // cast.
-func (I *ImageSubresourceRange) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageSubresourceRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageViewCreateInfo struct {
@@ -6458,12 +6458,12 @@ func marshalImageViewCreateInfo(p uintptr) (interface{}, error) {
 	return wrapImageViewCreateInfo(c)
 }
 
-func (I *ImageViewCreateInfo) free() {}
+func (i *ImageViewCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkImageViewCreateInfo. The caller is expected to
 // cast.
-func (I *ImageViewCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageViewCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ShaderModuleCreateInfo struct {
@@ -6486,12 +6486,12 @@ func marshalShaderModuleCreateInfo(p uintptr) (interface{}, error) {
 	return wrapShaderModuleCreateInfo(c)
 }
 
-func (S *ShaderModuleCreateInfo) free() {}
+func (s *ShaderModuleCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkShaderModuleCreateInfo. The caller is expected to
 // cast.
-func (S *ShaderModuleCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShaderModuleCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PipelineCacheCreateInfo struct {
@@ -6514,12 +6514,12 @@ func marshalPipelineCacheCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineCacheCreateInfo(c)
 }
 
-func (P *PipelineCacheCreateInfo) free() {}
+func (p *PipelineCacheCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineCacheCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineCacheCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCacheCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SpecializationMapEntry struct {
@@ -6542,12 +6542,12 @@ func marshalSpecializationMapEntry(p uintptr) (interface{}, error) {
 	return wrapSpecializationMapEntry(c)
 }
 
-func (S *SpecializationMapEntry) free() {}
+func (s *SpecializationMapEntry) free() {}
 
 // Native returns the pointer to *C.VkSpecializationMapEntry. The caller is expected to
 // cast.
-func (S *SpecializationMapEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SpecializationMapEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SpecializationInfo struct {
@@ -6570,12 +6570,12 @@ func marshalSpecializationInfo(p uintptr) (interface{}, error) {
 	return wrapSpecializationInfo(c)
 }
 
-func (S *SpecializationInfo) free() {}
+func (s *SpecializationInfo) free() {}
 
 // Native returns the pointer to *C.VkSpecializationInfo. The caller is expected to
 // cast.
-func (S *SpecializationInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SpecializationInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PipelineShaderStageCreateInfo struct {
@@ -6598,12 +6598,12 @@ func marshalPipelineShaderStageCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineShaderStageCreateInfo(c)
 }
 
-func (P *PipelineShaderStageCreateInfo) free() {}
+func (p *PipelineShaderStageCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineShaderStageCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineShaderStageCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineShaderStageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type VertexInputBindingDescription struct {
@@ -6626,12 +6626,12 @@ func marshalVertexInputBindingDescription(p uintptr) (interface{}, error) {
 	return wrapVertexInputBindingDescription(c)
 }
 
-func (V *VertexInputBindingDescription) free() {}
+func (v *VertexInputBindingDescription) free() {}
 
 // Native returns the pointer to *C.VkVertexInputBindingDescription. The caller is expected to
 // cast.
-func (V *VertexInputBindingDescription) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *VertexInputBindingDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type VertexInputAttributeDescription struct {
@@ -6654,12 +6654,12 @@ func marshalVertexInputAttributeDescription(p uintptr) (interface{}, error) {
 	return wrapVertexInputAttributeDescription(c)
 }
 
-func (V *VertexInputAttributeDescription) free() {}
+func (v *VertexInputAttributeDescription) free() {}
 
 // Native returns the pointer to *C.VkVertexInputAttributeDescription. The caller is expected to
 // cast.
-func (V *VertexInputAttributeDescription) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *VertexInputAttributeDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type PipelineVertexInputStateCreateInfo struct {
@@ -6682,12 +6682,12 @@ func marshalPipelineVertexInputStateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineVertexInputStateCreateInfo(c)
 }
 
-func (P *PipelineVertexInputStateCreateInfo) free() {}
+func (p *PipelineVertexInputStateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineVertexInputStateCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineVertexInputStateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineVertexInputStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineInputAssemblyStateCreateInfo struct {
@@ -6710,12 +6710,12 @@ func marshalPipelineInputAssemblyStateCreateInfo(p uintptr) (interface{}, error)
 	return wrapPipelineInputAssemblyStateCreateInfo(c)
 }
 
-func (P *PipelineInputAssemblyStateCreateInfo) free() {}
+func (p *PipelineInputAssemblyStateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineInputAssemblyStateCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineInputAssemblyStateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineInputAssemblyStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineTessellationStateCreateInfo struct {
@@ -6738,12 +6738,12 @@ func marshalPipelineTessellationStateCreateInfo(p uintptr) (interface{}, error) 
 	return wrapPipelineTessellationStateCreateInfo(c)
 }
 
-func (P *PipelineTessellationStateCreateInfo) free() {}
+func (p *PipelineTessellationStateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineTessellationStateCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineTessellationStateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineTessellationStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type Viewport struct {
@@ -6766,12 +6766,12 @@ func marshalViewport(p uintptr) (interface{}, error) {
 	return wrapViewport(c)
 }
 
-func (V *Viewport) free() {}
+func (v *Viewport) free() {}
 
 // Native returns the pointer to *C.VkViewport. The caller is expected to
 // cast.
-func (V *Viewport) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *Viewport) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type Offset2D struct {
@@ -6794,12 +6794,12 @@ func marshalOffset2D(p uintptr) (interface{}, error) {
 	return wrapOffset2D(c)
 }
 
-func (O *Offset2D) free() {}
+func (o *Offset2D) free() {}
 
 // Native returns the pointer to *C.VkOffset2D. The caller is expected to
 // cast.
-func (O *Offset2D) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *Offset2D) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type Extent2D struct {
@@ -6822,12 +6822,12 @@ func marshalExtent2D(p uintptr) (interface{}, error) {
 	return wrapExtent2D(c)
 }
 
-func (E *Extent2D) free() {}
+func (e *Extent2D) free() {}
 
 // Native returns the pointer to *C.VkExtent2D. The caller is expected to
 // cast.
-func (E *Extent2D) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *Extent2D) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type Rect2D struct {
@@ -6850,12 +6850,12 @@ func marshalRect2D(p uintptr) (interface{}, error) {
 	return wrapRect2D(c)
 }
 
-func (R *Rect2D) free() {}
+func (r *Rect2D) free() {}
 
 // Native returns the pointer to *C.VkRect2D. The caller is expected to
 // cast.
-func (R *Rect2D) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *Rect2D) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type PipelineViewportStateCreateInfo struct {
@@ -6878,12 +6878,12 @@ func marshalPipelineViewportStateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineViewportStateCreateInfo(c)
 }
 
-func (P *PipelineViewportStateCreateInfo) free() {}
+func (p *PipelineViewportStateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineViewportStateCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineViewportStateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineViewportStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineRasterizationStateCreateInfo struct {
@@ -6906,12 +6906,12 @@ func marshalPipelineRasterizationStateCreateInfo(p uintptr) (interface{}, error)
 	return wrapPipelineRasterizationStateCreateInfo(c)
 }
 
-func (P *PipelineRasterizationStateCreateInfo) free() {}
+func (p *PipelineRasterizationStateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineRasterizationStateCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineRasterizationStateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineRasterizationStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineMultisampleStateCreateInfo struct {
@@ -6934,12 +6934,12 @@ func marshalPipelineMultisampleStateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineMultisampleStateCreateInfo(c)
 }
 
-func (P *PipelineMultisampleStateCreateInfo) free() {}
+func (p *PipelineMultisampleStateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineMultisampleStateCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineMultisampleStateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineMultisampleStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type StencilOpState struct {
@@ -6962,12 +6962,12 @@ func marshalStencilOpState(p uintptr) (interface{}, error) {
 	return wrapStencilOpState(c)
 }
 
-func (S *StencilOpState) free() {}
+func (s *StencilOpState) free() {}
 
 // Native returns the pointer to *C.VkStencilOpState. The caller is expected to
 // cast.
-func (S *StencilOpState) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *StencilOpState) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PipelineDepthStencilStateCreateInfo struct {
@@ -6990,12 +6990,12 @@ func marshalPipelineDepthStencilStateCreateInfo(p uintptr) (interface{}, error) 
 	return wrapPipelineDepthStencilStateCreateInfo(c)
 }
 
-func (P *PipelineDepthStencilStateCreateInfo) free() {}
+func (p *PipelineDepthStencilStateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineDepthStencilStateCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineDepthStencilStateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineDepthStencilStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineColorBlendAttachmentState struct {
@@ -7018,12 +7018,12 @@ func marshalPipelineColorBlendAttachmentState(p uintptr) (interface{}, error) {
 	return wrapPipelineColorBlendAttachmentState(c)
 }
 
-func (P *PipelineColorBlendAttachmentState) free() {}
+func (p *PipelineColorBlendAttachmentState) free() {}
 
 // Native returns the pointer to *C.VkPipelineColorBlendAttachmentState. The caller is expected to
 // cast.
-func (P *PipelineColorBlendAttachmentState) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineColorBlendAttachmentState) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineColorBlendStateCreateInfo struct {
@@ -7046,12 +7046,12 @@ func marshalPipelineColorBlendStateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineColorBlendStateCreateInfo(c)
 }
 
-func (P *PipelineColorBlendStateCreateInfo) free() {}
+func (p *PipelineColorBlendStateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineColorBlendStateCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineColorBlendStateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineColorBlendStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineDynamicStateCreateInfo struct {
@@ -7074,12 +7074,12 @@ func marshalPipelineDynamicStateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineDynamicStateCreateInfo(c)
 }
 
-func (P *PipelineDynamicStateCreateInfo) free() {}
+func (p *PipelineDynamicStateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineDynamicStateCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineDynamicStateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineDynamicStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type GraphicsPipelineCreateInfo struct {
@@ -7102,12 +7102,12 @@ func marshalGraphicsPipelineCreateInfo(p uintptr) (interface{}, error) {
 	return wrapGraphicsPipelineCreateInfo(c)
 }
 
-func (G *GraphicsPipelineCreateInfo) free() {}
+func (g *GraphicsPipelineCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkGraphicsPipelineCreateInfo. The caller is expected to
 // cast.
-func (G *GraphicsPipelineCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *GraphicsPipelineCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 type ComputePipelineCreateInfo struct {
@@ -7130,12 +7130,12 @@ func marshalComputePipelineCreateInfo(p uintptr) (interface{}, error) {
 	return wrapComputePipelineCreateInfo(c)
 }
 
-func (C *ComputePipelineCreateInfo) free() {}
+func (c *ComputePipelineCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkComputePipelineCreateInfo. The caller is expected to
 // cast.
-func (C *ComputePipelineCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ComputePipelineCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PushConstantRange struct {
@@ -7158,12 +7158,12 @@ func marshalPushConstantRange(p uintptr) (interface{}, error) {
 	return wrapPushConstantRange(c)
 }
 
-func (P *PushConstantRange) free() {}
+func (p *PushConstantRange) free() {}
 
 // Native returns the pointer to *C.VkPushConstantRange. The caller is expected to
 // cast.
-func (P *PushConstantRange) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PushConstantRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineLayoutCreateInfo struct {
@@ -7186,12 +7186,12 @@ func marshalPipelineLayoutCreateInfo(p uintptr) (interface{}, error) {
 	return wrapPipelineLayoutCreateInfo(c)
 }
 
-func (P *PipelineLayoutCreateInfo) free() {}
+func (p *PipelineLayoutCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineLayoutCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineLayoutCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineLayoutCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SamplerCreateInfo struct {
@@ -7214,12 +7214,12 @@ func marshalSamplerCreateInfo(p uintptr) (interface{}, error) {
 	return wrapSamplerCreateInfo(c)
 }
 
-func (S *SamplerCreateInfo) free() {}
+func (s *SamplerCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkSamplerCreateInfo. The caller is expected to
 // cast.
-func (S *SamplerCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type DescriptorSetLayoutBinding struct {
@@ -7242,12 +7242,12 @@ func marshalDescriptorSetLayoutBinding(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutBinding(c)
 }
 
-func (D *DescriptorSetLayoutBinding) free() {}
+func (d *DescriptorSetLayoutBinding) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutBinding. The caller is expected to
 // cast.
-func (D *DescriptorSetLayoutBinding) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetLayoutBinding) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorSetLayoutCreateInfo struct {
@@ -7270,12 +7270,12 @@ func marshalDescriptorSetLayoutCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutCreateInfo(c)
 }
 
-func (D *DescriptorSetLayoutCreateInfo) free() {}
+func (d *DescriptorSetLayoutCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutCreateInfo. The caller is expected to
 // cast.
-func (D *DescriptorSetLayoutCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetLayoutCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorPoolSize struct {
@@ -7298,12 +7298,12 @@ func marshalDescriptorPoolSize(p uintptr) (interface{}, error) {
 	return wrapDescriptorPoolSize(c)
 }
 
-func (D *DescriptorPoolSize) free() {}
+func (d *DescriptorPoolSize) free() {}
 
 // Native returns the pointer to *C.VkDescriptorPoolSize. The caller is expected to
 // cast.
-func (D *DescriptorPoolSize) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorPoolSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorPoolCreateInfo struct {
@@ -7326,12 +7326,12 @@ func marshalDescriptorPoolCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorPoolCreateInfo(c)
 }
 
-func (D *DescriptorPoolCreateInfo) free() {}
+func (d *DescriptorPoolCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkDescriptorPoolCreateInfo. The caller is expected to
 // cast.
-func (D *DescriptorPoolCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorPoolCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorSetAllocateInfo struct {
@@ -7354,12 +7354,12 @@ func marshalDescriptorSetAllocateInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetAllocateInfo(c)
 }
 
-func (D *DescriptorSetAllocateInfo) free() {}
+func (d *DescriptorSetAllocateInfo) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetAllocateInfo. The caller is expected to
 // cast.
-func (D *DescriptorSetAllocateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorImageInfo struct {
@@ -7382,12 +7382,12 @@ func marshalDescriptorImageInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorImageInfo(c)
 }
 
-func (D *DescriptorImageInfo) free() {}
+func (d *DescriptorImageInfo) free() {}
 
 // Native returns the pointer to *C.VkDescriptorImageInfo. The caller is expected to
 // cast.
-func (D *DescriptorImageInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorImageInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorBufferInfo struct {
@@ -7410,12 +7410,12 @@ func marshalDescriptorBufferInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorBufferInfo(c)
 }
 
-func (D *DescriptorBufferInfo) free() {}
+func (d *DescriptorBufferInfo) free() {}
 
 // Native returns the pointer to *C.VkDescriptorBufferInfo. The caller is expected to
 // cast.
-func (D *DescriptorBufferInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorBufferInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type WriteDescriptorSet struct {
@@ -7438,12 +7438,12 @@ func marshalWriteDescriptorSet(p uintptr) (interface{}, error) {
 	return wrapWriteDescriptorSet(c)
 }
 
-func (W *WriteDescriptorSet) free() {}
+func (w *WriteDescriptorSet) free() {}
 
 // Native returns the pointer to *C.VkWriteDescriptorSet. The caller is expected to
 // cast.
-func (W *WriteDescriptorSet) Native() unsafe.Pointer {
-	return unsafe.Pointer(W.native)
+func (w *WriteDescriptorSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(w.native)
 }
 
 type CopyDescriptorSet struct {
@@ -7466,12 +7466,12 @@ func marshalCopyDescriptorSet(p uintptr) (interface{}, error) {
 	return wrapCopyDescriptorSet(c)
 }
 
-func (C *CopyDescriptorSet) free() {}
+func (c *CopyDescriptorSet) free() {}
 
 // Native returns the pointer to *C.VkCopyDescriptorSet. The caller is expected to
 // cast.
-func (C *CopyDescriptorSet) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CopyDescriptorSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type FramebufferCreateInfo struct {
@@ -7494,12 +7494,12 @@ func marshalFramebufferCreateInfo(p uintptr) (interface{}, error) {
 	return wrapFramebufferCreateInfo(c)
 }
 
-func (F *FramebufferCreateInfo) free() {}
+func (f *FramebufferCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkFramebufferCreateInfo. The caller is expected to
 // cast.
-func (F *FramebufferCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FramebufferCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type AttachmentDescription struct {
@@ -7522,12 +7522,12 @@ func marshalAttachmentDescription(p uintptr) (interface{}, error) {
 	return wrapAttachmentDescription(c)
 }
 
-func (A *AttachmentDescription) free() {}
+func (a *AttachmentDescription) free() {}
 
 // Native returns the pointer to *C.VkAttachmentDescription. The caller is expected to
 // cast.
-func (A *AttachmentDescription) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AttachmentDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type AttachmentReference struct {
@@ -7550,12 +7550,12 @@ func marshalAttachmentReference(p uintptr) (interface{}, error) {
 	return wrapAttachmentReference(c)
 }
 
-func (A *AttachmentReference) free() {}
+func (a *AttachmentReference) free() {}
 
 // Native returns the pointer to *C.VkAttachmentReference. The caller is expected to
 // cast.
-func (A *AttachmentReference) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AttachmentReference) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type SubpassDescription struct {
@@ -7578,12 +7578,12 @@ func marshalSubpassDescription(p uintptr) (interface{}, error) {
 	return wrapSubpassDescription(c)
 }
 
-func (S *SubpassDescription) free() {}
+func (s *SubpassDescription) free() {}
 
 // Native returns the pointer to *C.VkSubpassDescription. The caller is expected to
 // cast.
-func (S *SubpassDescription) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SubpassDependency struct {
@@ -7606,12 +7606,12 @@ func marshalSubpassDependency(p uintptr) (interface{}, error) {
 	return wrapSubpassDependency(c)
 }
 
-func (S *SubpassDependency) free() {}
+func (s *SubpassDependency) free() {}
 
 // Native returns the pointer to *C.VkSubpassDependency. The caller is expected to
 // cast.
-func (S *SubpassDependency) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassDependency) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type RenderPassCreateInfo struct {
@@ -7634,12 +7634,12 @@ func marshalRenderPassCreateInfo(p uintptr) (interface{}, error) {
 	return wrapRenderPassCreateInfo(c)
 }
 
-func (R *RenderPassCreateInfo) free() {}
+func (r *RenderPassCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkRenderPassCreateInfo. The caller is expected to
 // cast.
-func (R *RenderPassCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPassCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type CommandPoolCreateInfo struct {
@@ -7662,12 +7662,12 @@ func marshalCommandPoolCreateInfo(p uintptr) (interface{}, error) {
 	return wrapCommandPoolCreateInfo(c)
 }
 
-func (C *CommandPoolCreateInfo) free() {}
+func (c *CommandPoolCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkCommandPoolCreateInfo. The caller is expected to
 // cast.
-func (C *CommandPoolCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandPoolCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CommandBufferAllocateInfo struct {
@@ -7690,12 +7690,12 @@ func marshalCommandBufferAllocateInfo(p uintptr) (interface{}, error) {
 	return wrapCommandBufferAllocateInfo(c)
 }
 
-func (C *CommandBufferAllocateInfo) free() {}
+func (c *CommandBufferAllocateInfo) free() {}
 
 // Native returns the pointer to *C.VkCommandBufferAllocateInfo. The caller is expected to
 // cast.
-func (C *CommandBufferAllocateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandBufferAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CommandBufferInheritanceInfo struct {
@@ -7718,12 +7718,12 @@ func marshalCommandBufferInheritanceInfo(p uintptr) (interface{}, error) {
 	return wrapCommandBufferInheritanceInfo(c)
 }
 
-func (C *CommandBufferInheritanceInfo) free() {}
+func (c *CommandBufferInheritanceInfo) free() {}
 
 // Native returns the pointer to *C.VkCommandBufferInheritanceInfo. The caller is expected to
 // cast.
-func (C *CommandBufferInheritanceInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandBufferInheritanceInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CommandBufferBeginInfo struct {
@@ -7746,12 +7746,12 @@ func marshalCommandBufferBeginInfo(p uintptr) (interface{}, error) {
 	return wrapCommandBufferBeginInfo(c)
 }
 
-func (C *CommandBufferBeginInfo) free() {}
+func (c *CommandBufferBeginInfo) free() {}
 
 // Native returns the pointer to *C.VkCommandBufferBeginInfo. The caller is expected to
 // cast.
-func (C *CommandBufferBeginInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandBufferBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type BufferCopy struct {
@@ -7774,12 +7774,12 @@ func marshalBufferCopy(p uintptr) (interface{}, error) {
 	return wrapBufferCopy(c)
 }
 
-func (B *BufferCopy) free() {}
+func (b *BufferCopy) free() {}
 
 // Native returns the pointer to *C.VkBufferCopy. The caller is expected to
 // cast.
-func (B *BufferCopy) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferCopy) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ImageSubresourceLayers struct {
@@ -7802,12 +7802,12 @@ func marshalImageSubresourceLayers(p uintptr) (interface{}, error) {
 	return wrapImageSubresourceLayers(c)
 }
 
-func (I *ImageSubresourceLayers) free() {}
+func (i *ImageSubresourceLayers) free() {}
 
 // Native returns the pointer to *C.VkImageSubresourceLayers. The caller is expected to
 // cast.
-func (I *ImageSubresourceLayers) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageSubresourceLayers) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageCopy struct {
@@ -7830,12 +7830,12 @@ func marshalImageCopy(p uintptr) (interface{}, error) {
 	return wrapImageCopy(c)
 }
 
-func (I *ImageCopy) free() {}
+func (i *ImageCopy) free() {}
 
 // Native returns the pointer to *C.VkImageCopy. The caller is expected to
 // cast.
-func (I *ImageCopy) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageCopy) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageBlit struct {
@@ -7858,12 +7858,12 @@ func marshalImageBlit(p uintptr) (interface{}, error) {
 	return wrapImageBlit(c)
 }
 
-func (I *ImageBlit) free() {}
+func (i *ImageBlit) free() {}
 
 // Native returns the pointer to *C.VkImageBlit. The caller is expected to
 // cast.
-func (I *ImageBlit) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageBlit) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type BufferImageCopy struct {
@@ -7886,12 +7886,12 @@ func marshalBufferImageCopy(p uintptr) (interface{}, error) {
 	return wrapBufferImageCopy(c)
 }
 
-func (B *BufferImageCopy) free() {}
+func (b *BufferImageCopy) free() {}
 
 // Native returns the pointer to *C.VkBufferImageCopy. The caller is expected to
 // cast.
-func (B *BufferImageCopy) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferImageCopy) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ClearColorValue struct {
@@ -7914,12 +7914,12 @@ func marshalClearColorValue(p uintptr) (interface{}, error) {
 	return wrapClearColorValue(c)
 }
 
-func (C *ClearColorValue) free() {}
+func (c *ClearColorValue) free() {}
 
 // Native returns the pointer to *C.VkClearColorValue. The caller is expected to
 // cast.
-func (C *ClearColorValue) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ClearColorValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ClearDepthStencilValue struct {
@@ -7942,12 +7942,12 @@ func marshalClearDepthStencilValue(p uintptr) (interface{}, error) {
 	return wrapClearDepthStencilValue(c)
 }
 
-func (C *ClearDepthStencilValue) free() {}
+func (c *ClearDepthStencilValue) free() {}
 
 // Native returns the pointer to *C.VkClearDepthStencilValue. The caller is expected to
 // cast.
-func (C *ClearDepthStencilValue) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ClearDepthStencilValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ClearValue struct {
@@ -7970,12 +7970,12 @@ func marshalClearValue(p uintptr) (interface{}, error) {
 	return wrapClearValue(c)
 }
 
-func (C *ClearValue) free() {}
+func (c *ClearValue) free() {}
 
 // Native returns the pointer to *C.VkClearValue. The caller is expected to
 // cast.
-func (C *ClearValue) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ClearValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ClearAttachment struct {
@@ -7998,12 +7998,12 @@ func marshalClearAttachment(p uintptr) (interface{}, error) {
 	return wrapClearAttachment(c)
 }
 
-func (C *ClearAttachment) free() {}
+func (c *ClearAttachment) free() {}
 
 // Native returns the pointer to *C.VkClearAttachment. The caller is expected to
 // cast.
-func (C *ClearAttachment) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ClearAttachment) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ClearRect struct {
@@ -8026,12 +8026,12 @@ func marshalClearRect(p uintptr) (interface{}, error) {
 	return wrapClearRect(c)
 }
 
-func (C *ClearRect) free() {}
+func (c *ClearRect) free() {}
 
 // Native returns the pointer to *C.VkClearRect. The caller is expected to
 // cast.
-func (C *ClearRect) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ClearRect) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ImageResolve struct {
@@ -8054,12 +8054,12 @@ func marshalImageResolve(p uintptr) (interface{}, error) {
 	return wrapImageResolve(c)
 }
 
-func (I *ImageResolve) free() {}
+func (i *ImageResolve) free() {}
 
 // Native returns the pointer to *C.VkImageResolve. The caller is expected to
 // cast.
-func (I *ImageResolve) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageResolve) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type MemoryBarrier struct {
@@ -8082,12 +8082,12 @@ func marshalMemoryBarrier(p uintptr) (interface{}, error) {
 	return wrapMemoryBarrier(c)
 }
 
-func (M *MemoryBarrier) free() {}
+func (m *MemoryBarrier) free() {}
 
 // Native returns the pointer to *C.VkMemoryBarrier. The caller is expected to
 // cast.
-func (M *MemoryBarrier) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryBarrier) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type BufferMemoryBarrier struct {
@@ -8110,12 +8110,12 @@ func marshalBufferMemoryBarrier(p uintptr) (interface{}, error) {
 	return wrapBufferMemoryBarrier(c)
 }
 
-func (B *BufferMemoryBarrier) free() {}
+func (b *BufferMemoryBarrier) free() {}
 
 // Native returns the pointer to *C.VkBufferMemoryBarrier. The caller is expected to
 // cast.
-func (B *BufferMemoryBarrier) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferMemoryBarrier) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ImageMemoryBarrier struct {
@@ -8138,12 +8138,12 @@ func marshalImageMemoryBarrier(p uintptr) (interface{}, error) {
 	return wrapImageMemoryBarrier(c)
 }
 
-func (I *ImageMemoryBarrier) free() {}
+func (i *ImageMemoryBarrier) free() {}
 
 // Native returns the pointer to *C.VkImageMemoryBarrier. The caller is expected to
 // cast.
-func (I *ImageMemoryBarrier) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageMemoryBarrier) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type RenderPassBeginInfo struct {
@@ -8166,12 +8166,12 @@ func marshalRenderPassBeginInfo(p uintptr) (interface{}, error) {
 	return wrapRenderPassBeginInfo(c)
 }
 
-func (R *RenderPassBeginInfo) free() {}
+func (r *RenderPassBeginInfo) free() {}
 
 // Native returns the pointer to *C.VkRenderPassBeginInfo. The caller is expected to
 // cast.
-func (R *RenderPassBeginInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPassBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type DispatchIndirectCommand struct {
@@ -8194,12 +8194,12 @@ func marshalDispatchIndirectCommand(p uintptr) (interface{}, error) {
 	return wrapDispatchIndirectCommand(c)
 }
 
-func (D *DispatchIndirectCommand) free() {}
+func (d *DispatchIndirectCommand) free() {}
 
 // Native returns the pointer to *C.VkDispatchIndirectCommand. The caller is expected to
 // cast.
-func (D *DispatchIndirectCommand) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DispatchIndirectCommand) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DrawIndexedIndirectCommand struct {
@@ -8222,12 +8222,12 @@ func marshalDrawIndexedIndirectCommand(p uintptr) (interface{}, error) {
 	return wrapDrawIndexedIndirectCommand(c)
 }
 
-func (D *DrawIndexedIndirectCommand) free() {}
+func (d *DrawIndexedIndirectCommand) free() {}
 
 // Native returns the pointer to *C.VkDrawIndexedIndirectCommand. The caller is expected to
 // cast.
-func (D *DrawIndexedIndirectCommand) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DrawIndexedIndirectCommand) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DrawIndirectCommand struct {
@@ -8250,12 +8250,12 @@ func marshalDrawIndirectCommand(p uintptr) (interface{}, error) {
 	return wrapDrawIndirectCommand(c)
 }
 
-func (D *DrawIndirectCommand) free() {}
+func (d *DrawIndirectCommand) free() {}
 
 // Native returns the pointer to *C.VkDrawIndirectCommand. The caller is expected to
 // cast.
-func (D *DrawIndirectCommand) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DrawIndirectCommand) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type BaseOutStructure struct {
@@ -8278,12 +8278,12 @@ func marshalBaseOutStructure(p uintptr) (interface{}, error) {
 	return wrapBaseOutStructure(c)
 }
 
-func (B *BaseOutStructure) free() {}
+func (b *BaseOutStructure) free() {}
 
 // Native returns the pointer to *C.VkBaseOutStructure. The caller is expected to
 // cast.
-func (B *BaseOutStructure) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BaseOutStructure) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BaseInStructure struct {
@@ -8306,12 +8306,12 @@ func marshalBaseInStructure(p uintptr) (interface{}, error) {
 	return wrapBaseInStructure(c)
 }
 
-func (B *BaseInStructure) free() {}
+func (b *BaseInStructure) free() {}
 
 // Native returns the pointer to *C.VkBaseInStructure. The caller is expected to
 // cast.
-func (B *BaseInStructure) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BaseInStructure) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type SamplerYcbcrConversion struct {
@@ -8334,12 +8334,12 @@ func marshalSamplerYcbcrConversion(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrConversion(c)
 }
 
-func (S *SamplerYcbcrConversion) free() {}
+func (s *SamplerYcbcrConversion) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversion. The caller is expected to
 // cast.
-func (S *SamplerYcbcrConversion) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrConversion) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type DescriptorUpdateTemplate struct {
@@ -8362,12 +8362,12 @@ func marshalDescriptorUpdateTemplate(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplate(c)
 }
 
-func (D *DescriptorUpdateTemplate) free() {}
+func (d *DescriptorUpdateTemplate) free() {}
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplate. The caller is expected to
 // cast.
-func (D *DescriptorUpdateTemplate) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorUpdateTemplate) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PointClippingBehavior struct {
@@ -8390,12 +8390,12 @@ func marshalPointClippingBehavior(p uintptr) (interface{}, error) {
 	return wrapPointClippingBehavior(c)
 }
 
-func (P *PointClippingBehavior) free() {}
+func (p *PointClippingBehavior) free() {}
 
 // Native returns the pointer to *C.VkPointClippingBehavior. The caller is expected to
 // cast.
-func (P *PointClippingBehavior) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PointClippingBehavior) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type TessellationDomainOrigin struct {
@@ -8418,12 +8418,12 @@ func marshalTessellationDomainOrigin(p uintptr) (interface{}, error) {
 	return wrapTessellationDomainOrigin(c)
 }
 
-func (T *TessellationDomainOrigin) free() {}
+func (t *TessellationDomainOrigin) free() {}
 
 // Native returns the pointer to *C.VkTessellationDomainOrigin. The caller is expected to
 // cast.
-func (T *TessellationDomainOrigin) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *TessellationDomainOrigin) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 type SamplerYcbcrModelConversion struct {
@@ -8446,12 +8446,12 @@ func marshalSamplerYcbcrModelConversion(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrModelConversion(c)
 }
 
-func (S *SamplerYcbcrModelConversion) free() {}
+func (s *SamplerYcbcrModelConversion) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrModelConversion. The caller is expected to
 // cast.
-func (S *SamplerYcbcrModelConversion) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrModelConversion) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SamplerYcbcrRange struct {
@@ -8474,12 +8474,12 @@ func marshalSamplerYcbcrRange(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrRange(c)
 }
 
-func (S *SamplerYcbcrRange) free() {}
+func (s *SamplerYcbcrRange) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrRange. The caller is expected to
 // cast.
-func (S *SamplerYcbcrRange) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ChromaLocation struct {
@@ -8502,12 +8502,12 @@ func marshalChromaLocation(p uintptr) (interface{}, error) {
 	return wrapChromaLocation(c)
 }
 
-func (C *ChromaLocation) free() {}
+func (c *ChromaLocation) free() {}
 
 // Native returns the pointer to *C.VkChromaLocation. The caller is expected to
 // cast.
-func (C *ChromaLocation) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ChromaLocation) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type DescriptorUpdateTemplateType struct {
@@ -8530,12 +8530,12 @@ func marshalDescriptorUpdateTemplateType(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateType(c)
 }
 
-func (D *DescriptorUpdateTemplateType) free() {}
+func (d *DescriptorUpdateTemplateType) free() {}
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateType. The caller is expected to
 // cast.
-func (D *DescriptorUpdateTemplateType) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorUpdateTemplateType) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type SubgroupFeatureFlagBits struct {
@@ -8558,12 +8558,12 @@ func marshalSubgroupFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapSubgroupFeatureFlagBits(c)
 }
 
-func (S *SubgroupFeatureFlagBits) free() {}
+func (s *SubgroupFeatureFlagBits) free() {}
 
 // Native returns the pointer to *C.VkSubgroupFeatureFlagBits. The caller is expected to
 // cast.
-func (S *SubgroupFeatureFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubgroupFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SubgroupFeatureFlags struct {
@@ -8586,12 +8586,12 @@ func marshalSubgroupFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapSubgroupFeatureFlags(c)
 }
 
-func (S *SubgroupFeatureFlags) free() {}
+func (s *SubgroupFeatureFlags) free() {}
 
 // Native returns the pointer to *C.VkSubgroupFeatureFlags. The caller is expected to
 // cast.
-func (S *SubgroupFeatureFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubgroupFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PeerMemoryFeatureFlagBits struct {
@@ -8614,12 +8614,12 @@ func marshalPeerMemoryFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapPeerMemoryFeatureFlagBits(c)
 }
 
-func (P *PeerMemoryFeatureFlagBits) free() {}
+func (p *PeerMemoryFeatureFlagBits) free() {}
 
 // Native returns the pointer to *C.VkPeerMemoryFeatureFlagBits. The caller is expected to
 // cast.
-func (P *PeerMemoryFeatureFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PeerMemoryFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PeerMemoryFeatureFlags struct {
@@ -8642,12 +8642,12 @@ func marshalPeerMemoryFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapPeerMemoryFeatureFlags(c)
 }
 
-func (P *PeerMemoryFeatureFlags) free() {}
+func (p *PeerMemoryFeatureFlags) free() {}
 
 // Native returns the pointer to *C.VkPeerMemoryFeatureFlags. The caller is expected to
 // cast.
-func (P *PeerMemoryFeatureFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PeerMemoryFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type MemoryAllocateFlagBits struct {
@@ -8670,12 +8670,12 @@ func marshalMemoryAllocateFlagBits(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlagBits(c)
 }
 
-func (M *MemoryAllocateFlagBits) free() {}
+func (m *MemoryAllocateFlagBits) free() {}
 
 // Native returns the pointer to *C.VkMemoryAllocateFlagBits. The caller is expected to
 // cast.
-func (M *MemoryAllocateFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryAllocateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryAllocateFlags struct {
@@ -8698,12 +8698,12 @@ func marshalMemoryAllocateFlags(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlags(c)
 }
 
-func (M *MemoryAllocateFlags) free() {}
+func (m *MemoryAllocateFlags) free() {}
 
 // Native returns the pointer to *C.VkMemoryAllocateFlags. The caller is expected to
 // cast.
-func (M *MemoryAllocateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryAllocateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type CommandPoolTrimFlags struct {
@@ -8726,12 +8726,12 @@ func marshalCommandPoolTrimFlags(p uintptr) (interface{}, error) {
 	return wrapCommandPoolTrimFlags(c)
 }
 
-func (C *CommandPoolTrimFlags) free() {}
+func (c *CommandPoolTrimFlags) free() {}
 
 // Native returns the pointer to *C.VkCommandPoolTrimFlags. The caller is expected to
 // cast.
-func (C *CommandPoolTrimFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandPoolTrimFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type DescriptorUpdateTemplateCreateFlags struct {
@@ -8754,12 +8754,12 @@ func marshalDescriptorUpdateTemplateCreateFlags(p uintptr) (interface{}, error) 
 	return wrapDescriptorUpdateTemplateCreateFlags(c)
 }
 
-func (D *DescriptorUpdateTemplateCreateFlags) free() {}
+func (d *DescriptorUpdateTemplateCreateFlags) free() {}
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateFlags. The caller is expected to
 // cast.
-func (D *DescriptorUpdateTemplateCreateFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorUpdateTemplateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type ExternalMemoryHandleTypeFlagBits struct {
@@ -8782,12 +8782,12 @@ func marshalExternalMemoryHandleTypeFlagBits(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryHandleTypeFlagBits(c)
 }
 
-func (E *ExternalMemoryHandleTypeFlagBits) free() {}
+func (e *ExternalMemoryHandleTypeFlagBits) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagBits. The caller is expected to
 // cast.
-func (E *ExternalMemoryHandleTypeFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryHandleTypeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryHandleTypeFlags struct {
@@ -8810,12 +8810,12 @@ func marshalExternalMemoryHandleTypeFlags(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryHandleTypeFlags(c)
 }
 
-func (E *ExternalMemoryHandleTypeFlags) free() {}
+func (e *ExternalMemoryHandleTypeFlags) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlags. The caller is expected to
 // cast.
-func (E *ExternalMemoryHandleTypeFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryHandleTypeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryFeatureFlagBits struct {
@@ -8838,12 +8838,12 @@ func marshalExternalMemoryFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlagBits(c)
 }
 
-func (E *ExternalMemoryFeatureFlagBits) free() {}
+func (e *ExternalMemoryFeatureFlagBits) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlagBits. The caller is expected to
 // cast.
-func (E *ExternalMemoryFeatureFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryFeatureFlags struct {
@@ -8866,12 +8866,12 @@ func marshalExternalMemoryFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlags(c)
 }
 
-func (E *ExternalMemoryFeatureFlags) free() {}
+func (e *ExternalMemoryFeatureFlags) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlags. The caller is expected to
 // cast.
-func (E *ExternalMemoryFeatureFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalFenceHandleTypeFlagBits struct {
@@ -8894,12 +8894,12 @@ func marshalExternalFenceHandleTypeFlagBits(p uintptr) (interface{}, error) {
 	return wrapExternalFenceHandleTypeFlagBits(c)
 }
 
-func (E *ExternalFenceHandleTypeFlagBits) free() {}
+func (e *ExternalFenceHandleTypeFlagBits) free() {}
 
 // Native returns the pointer to *C.VkExternalFenceHandleTypeFlagBits. The caller is expected to
 // cast.
-func (E *ExternalFenceHandleTypeFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalFenceHandleTypeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalFenceHandleTypeFlags struct {
@@ -8922,12 +8922,12 @@ func marshalExternalFenceHandleTypeFlags(p uintptr) (interface{}, error) {
 	return wrapExternalFenceHandleTypeFlags(c)
 }
 
-func (E *ExternalFenceHandleTypeFlags) free() {}
+func (e *ExternalFenceHandleTypeFlags) free() {}
 
 // Native returns the pointer to *C.VkExternalFenceHandleTypeFlags. The caller is expected to
 // cast.
-func (E *ExternalFenceHandleTypeFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalFenceHandleTypeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalFenceFeatureFlagBits struct {
@@ -8950,12 +8950,12 @@ func marshalExternalFenceFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapExternalFenceFeatureFlagBits(c)
 }
 
-func (E *ExternalFenceFeatureFlagBits) free() {}
+func (e *ExternalFenceFeatureFlagBits) free() {}
 
 // Native returns the pointer to *C.VkExternalFenceFeatureFlagBits. The caller is expected to
 // cast.
-func (E *ExternalFenceFeatureFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalFenceFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalFenceFeatureFlags struct {
@@ -8978,12 +8978,12 @@ func marshalExternalFenceFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapExternalFenceFeatureFlags(c)
 }
 
-func (E *ExternalFenceFeatureFlags) free() {}
+func (e *ExternalFenceFeatureFlags) free() {}
 
 // Native returns the pointer to *C.VkExternalFenceFeatureFlags. The caller is expected to
 // cast.
-func (E *ExternalFenceFeatureFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalFenceFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type FenceImportFlagBits struct {
@@ -9006,12 +9006,12 @@ func marshalFenceImportFlagBits(p uintptr) (interface{}, error) {
 	return wrapFenceImportFlagBits(c)
 }
 
-func (F *FenceImportFlagBits) free() {}
+func (f *FenceImportFlagBits) free() {}
 
 // Native returns the pointer to *C.VkFenceImportFlagBits. The caller is expected to
 // cast.
-func (F *FenceImportFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FenceImportFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type FenceImportFlags struct {
@@ -9034,12 +9034,12 @@ func marshalFenceImportFlags(p uintptr) (interface{}, error) {
 	return wrapFenceImportFlags(c)
 }
 
-func (F *FenceImportFlags) free() {}
+func (f *FenceImportFlags) free() {}
 
 // Native returns the pointer to *C.VkFenceImportFlags. The caller is expected to
 // cast.
-func (F *FenceImportFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FenceImportFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type SemaphoreImportFlagBits struct {
@@ -9062,12 +9062,12 @@ func marshalSemaphoreImportFlagBits(p uintptr) (interface{}, error) {
 	return wrapSemaphoreImportFlagBits(c)
 }
 
-func (S *SemaphoreImportFlagBits) free() {}
+func (s *SemaphoreImportFlagBits) free() {}
 
 // Native returns the pointer to *C.VkSemaphoreImportFlagBits. The caller is expected to
 // cast.
-func (S *SemaphoreImportFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SemaphoreImportFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SemaphoreImportFlags struct {
@@ -9090,12 +9090,12 @@ func marshalSemaphoreImportFlags(p uintptr) (interface{}, error) {
 	return wrapSemaphoreImportFlags(c)
 }
 
-func (S *SemaphoreImportFlags) free() {}
+func (s *SemaphoreImportFlags) free() {}
 
 // Native returns the pointer to *C.VkSemaphoreImportFlags. The caller is expected to
 // cast.
-func (S *SemaphoreImportFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SemaphoreImportFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ExternalSemaphoreHandleTypeFlagBits struct {
@@ -9118,12 +9118,12 @@ func marshalExternalSemaphoreHandleTypeFlagBits(p uintptr) (interface{}, error) 
 	return wrapExternalSemaphoreHandleTypeFlagBits(c)
 }
 
-func (E *ExternalSemaphoreHandleTypeFlagBits) free() {}
+func (e *ExternalSemaphoreHandleTypeFlagBits) free() {}
 
 // Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlagBits. The caller is expected to
 // cast.
-func (E *ExternalSemaphoreHandleTypeFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalSemaphoreHandleTypeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalSemaphoreHandleTypeFlags struct {
@@ -9146,12 +9146,12 @@ func marshalExternalSemaphoreHandleTypeFlags(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphoreHandleTypeFlags(c)
 }
 
-func (E *ExternalSemaphoreHandleTypeFlags) free() {}
+func (e *ExternalSemaphoreHandleTypeFlags) free() {}
 
 // Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlags. The caller is expected to
 // cast.
-func (E *ExternalSemaphoreHandleTypeFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalSemaphoreHandleTypeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalSemaphoreFeatureFlagBits struct {
@@ -9174,12 +9174,12 @@ func marshalExternalSemaphoreFeatureFlagBits(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphoreFeatureFlagBits(c)
 }
 
-func (E *ExternalSemaphoreFeatureFlagBits) free() {}
+func (e *ExternalSemaphoreFeatureFlagBits) free() {}
 
 // Native returns the pointer to *C.VkExternalSemaphoreFeatureFlagBits. The caller is expected to
 // cast.
-func (E *ExternalSemaphoreFeatureFlagBits) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalSemaphoreFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalSemaphoreFeatureFlags struct {
@@ -9202,12 +9202,12 @@ func marshalExternalSemaphoreFeatureFlags(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphoreFeatureFlags(c)
 }
 
-func (E *ExternalSemaphoreFeatureFlags) free() {}
+func (e *ExternalSemaphoreFeatureFlags) free() {}
 
 // Native returns the pointer to *C.VkExternalSemaphoreFeatureFlags. The caller is expected to
 // cast.
-func (E *ExternalSemaphoreFeatureFlags) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalSemaphoreFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceSubgroupProperties struct {
@@ -9230,12 +9230,12 @@ func marshalPhysicalDeviceSubgroupProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceSubgroupProperties(c)
 }
 
-func (P *PhysicalDeviceSubgroupProperties) free() {}
+func (p *PhysicalDeviceSubgroupProperties) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceSubgroupProperties. The caller is expected to
 // cast.
-func (P *PhysicalDeviceSubgroupProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceSubgroupProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type BindBufferMemoryInfo struct {
@@ -9258,12 +9258,12 @@ func marshalBindBufferMemoryInfo(p uintptr) (interface{}, error) {
 	return wrapBindBufferMemoryInfo(c)
 }
 
-func (B *BindBufferMemoryInfo) free() {}
+func (b *BindBufferMemoryInfo) free() {}
 
 // Native returns the pointer to *C.VkBindBufferMemoryInfo. The caller is expected to
 // cast.
-func (B *BindBufferMemoryInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindBufferMemoryInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BindImageMemoryInfo struct {
@@ -9286,12 +9286,12 @@ func marshalBindImageMemoryInfo(p uintptr) (interface{}, error) {
 	return wrapBindImageMemoryInfo(c)
 }
 
-func (B *BindImageMemoryInfo) free() {}
+func (b *BindImageMemoryInfo) free() {}
 
 // Native returns the pointer to *C.VkBindImageMemoryInfo. The caller is expected to
 // cast.
-func (B *BindImageMemoryInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindImageMemoryInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type PhysicalDevice16BitStorageFeatures struct {
@@ -9314,12 +9314,12 @@ func marshalPhysicalDevice16BitStorageFeatures(p uintptr) (interface{}, error) {
 	return wrapPhysicalDevice16BitStorageFeatures(c)
 }
 
-func (P *PhysicalDevice16BitStorageFeatures) free() {}
+func (p *PhysicalDevice16BitStorageFeatures) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDevice16BitStorageFeatures. The caller is expected to
 // cast.
-func (P *PhysicalDevice16BitStorageFeatures) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDevice16BitStorageFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type MemoryDedicatedRequirements struct {
@@ -9342,12 +9342,12 @@ func marshalMemoryDedicatedRequirements(p uintptr) (interface{}, error) {
 	return wrapMemoryDedicatedRequirements(c)
 }
 
-func (M *MemoryDedicatedRequirements) free() {}
+func (m *MemoryDedicatedRequirements) free() {}
 
 // Native returns the pointer to *C.VkMemoryDedicatedRequirements. The caller is expected to
 // cast.
-func (M *MemoryDedicatedRequirements) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryDedicatedRequirements) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryDedicatedAllocateInfo struct {
@@ -9370,12 +9370,12 @@ func marshalMemoryDedicatedAllocateInfo(p uintptr) (interface{}, error) {
 	return wrapMemoryDedicatedAllocateInfo(c)
 }
 
-func (M *MemoryDedicatedAllocateInfo) free() {}
+func (m *MemoryDedicatedAllocateInfo) free() {}
 
 // Native returns the pointer to *C.VkMemoryDedicatedAllocateInfo. The caller is expected to
 // cast.
-func (M *MemoryDedicatedAllocateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryDedicatedAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryAllocateFlagsInfo struct {
@@ -9398,12 +9398,12 @@ func marshalMemoryAllocateFlagsInfo(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlagsInfo(c)
 }
 
-func (M *MemoryAllocateFlagsInfo) free() {}
+func (m *MemoryAllocateFlagsInfo) free() {}
 
 // Native returns the pointer to *C.VkMemoryAllocateFlagsInfo. The caller is expected to
 // cast.
-func (M *MemoryAllocateFlagsInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryAllocateFlagsInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type DeviceGroupRenderPassBeginInfo struct {
@@ -9426,12 +9426,12 @@ func marshalDeviceGroupRenderPassBeginInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupRenderPassBeginInfo(c)
 }
 
-func (D *DeviceGroupRenderPassBeginInfo) free() {}
+func (d *DeviceGroupRenderPassBeginInfo) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupRenderPassBeginInfo. The caller is expected to
 // cast.
-func (D *DeviceGroupRenderPassBeginInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupRenderPassBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceGroupCommandBufferBeginInfo struct {
@@ -9454,12 +9454,12 @@ func marshalDeviceGroupCommandBufferBeginInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupCommandBufferBeginInfo(c)
 }
 
-func (D *DeviceGroupCommandBufferBeginInfo) free() {}
+func (d *DeviceGroupCommandBufferBeginInfo) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupCommandBufferBeginInfo. The caller is expected to
 // cast.
-func (D *DeviceGroupCommandBufferBeginInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupCommandBufferBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceGroupSubmitInfo struct {
@@ -9482,12 +9482,12 @@ func marshalDeviceGroupSubmitInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupSubmitInfo(c)
 }
 
-func (D *DeviceGroupSubmitInfo) free() {}
+func (d *DeviceGroupSubmitInfo) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupSubmitInfo. The caller is expected to
 // cast.
-func (D *DeviceGroupSubmitInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupSubmitInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceGroupBindSparseInfo struct {
@@ -9510,12 +9510,12 @@ func marshalDeviceGroupBindSparseInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupBindSparseInfo(c)
 }
 
-func (D *DeviceGroupBindSparseInfo) free() {}
+func (d *DeviceGroupBindSparseInfo) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupBindSparseInfo. The caller is expected to
 // cast.
-func (D *DeviceGroupBindSparseInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupBindSparseInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type BindBufferMemoryDeviceGroupInfo struct {
@@ -9538,12 +9538,12 @@ func marshalBindBufferMemoryDeviceGroupInfo(p uintptr) (interface{}, error) {
 	return wrapBindBufferMemoryDeviceGroupInfo(c)
 }
 
-func (B *BindBufferMemoryDeviceGroupInfo) free() {}
+func (b *BindBufferMemoryDeviceGroupInfo) free() {}
 
 // Native returns the pointer to *C.VkBindBufferMemoryDeviceGroupInfo. The caller is expected to
 // cast.
-func (B *BindBufferMemoryDeviceGroupInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindBufferMemoryDeviceGroupInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BindImageMemoryDeviceGroupInfo struct {
@@ -9566,12 +9566,12 @@ func marshalBindImageMemoryDeviceGroupInfo(p uintptr) (interface{}, error) {
 	return wrapBindImageMemoryDeviceGroupInfo(c)
 }
 
-func (B *BindImageMemoryDeviceGroupInfo) free() {}
+func (b *BindImageMemoryDeviceGroupInfo) free() {}
 
 // Native returns the pointer to *C.VkBindImageMemoryDeviceGroupInfo. The caller is expected to
 // cast.
-func (B *BindImageMemoryDeviceGroupInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindImageMemoryDeviceGroupInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type PhysicalDeviceGroupProperties struct {
@@ -9594,12 +9594,12 @@ func marshalPhysicalDeviceGroupProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceGroupProperties(c)
 }
 
-func (P *PhysicalDeviceGroupProperties) free() {}
+func (p *PhysicalDeviceGroupProperties) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceGroupProperties. The caller is expected to
 // cast.
-func (P *PhysicalDeviceGroupProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceGroupProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DeviceGroupDeviceCreateInfo struct {
@@ -9622,12 +9622,12 @@ func marshalDeviceGroupDeviceCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupDeviceCreateInfo(c)
 }
 
-func (D *DeviceGroupDeviceCreateInfo) free() {}
+func (d *DeviceGroupDeviceCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupDeviceCreateInfo. The caller is expected to
 // cast.
-func (D *DeviceGroupDeviceCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupDeviceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type BufferMemoryRequirementsInfo2 struct {
@@ -9650,12 +9650,12 @@ func marshalBufferMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
 	return wrapBufferMemoryRequirementsInfo2(c)
 }
 
-func (B *BufferMemoryRequirementsInfo2) free() {}
+func (b *BufferMemoryRequirementsInfo2) free() {}
 
 // Native returns the pointer to *C.VkBufferMemoryRequirementsInfo2. The caller is expected to
 // cast.
-func (B *BufferMemoryRequirementsInfo2) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferMemoryRequirementsInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ImageMemoryRequirementsInfo2 struct {
@@ -9678,12 +9678,12 @@ func marshalImageMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
 	return wrapImageMemoryRequirementsInfo2(c)
 }
 
-func (I *ImageMemoryRequirementsInfo2) free() {}
+func (i *ImageMemoryRequirementsInfo2) free() {}
 
 // Native returns the pointer to *C.VkImageMemoryRequirementsInfo2. The caller is expected to
 // cast.
-func (I *ImageMemoryRequirementsInfo2) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageMemoryRequirementsInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageSparseMemoryRequirementsInfo2 struct {
@@ -9706,12 +9706,12 @@ func marshalImageSparseMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
 	return wrapImageSparseMemoryRequirementsInfo2(c)
 }
 
-func (I *ImageSparseMemoryRequirementsInfo2) free() {}
+func (i *ImageSparseMemoryRequirementsInfo2) free() {}
 
 // Native returns the pointer to *C.VkImageSparseMemoryRequirementsInfo2. The caller is expected to
 // cast.
-func (I *ImageSparseMemoryRequirementsInfo2) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageSparseMemoryRequirementsInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type MemoryRequirements2 struct {
@@ -9734,12 +9734,12 @@ func marshalMemoryRequirements2(p uintptr) (interface{}, error) {
 	return wrapMemoryRequirements2(c)
 }
 
-func (M *MemoryRequirements2) free() {}
+func (m *MemoryRequirements2) free() {}
 
 // Native returns the pointer to *C.VkMemoryRequirements2. The caller is expected to
 // cast.
-func (M *MemoryRequirements2) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryRequirements2) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryRequirements2KHR struct {
@@ -9762,12 +9762,12 @@ func marshalMemoryRequirements2KHR(p uintptr) (interface{}, error) {
 	return wrapMemoryRequirements2KHR(c)
 }
 
-func (M *MemoryRequirements2KHR) free() {}
+func (m *MemoryRequirements2KHR) free() {}
 
 // Native returns the pointer to *C.VkMemoryRequirements2KHR. The caller is expected to
 // cast.
-func (M *MemoryRequirements2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryRequirements2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type SparseImageMemoryRequirements2 struct {
@@ -9790,12 +9790,12 @@ func marshalSparseImageMemoryRequirements2(p uintptr) (interface{}, error) {
 	return wrapSparseImageMemoryRequirements2(c)
 }
 
-func (S *SparseImageMemoryRequirements2) free() {}
+func (s *SparseImageMemoryRequirements2) free() {}
 
 // Native returns the pointer to *C.VkSparseImageMemoryRequirements2. The caller is expected to
 // cast.
-func (S *SparseImageMemoryRequirements2) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageMemoryRequirements2) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PhysicalDeviceFeatures2 struct {
@@ -9818,12 +9818,12 @@ func marshalPhysicalDeviceFeatures2(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceFeatures2(c)
 }
 
-func (P *PhysicalDeviceFeatures2) free() {}
+func (p *PhysicalDeviceFeatures2) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceFeatures2. The caller is expected to
 // cast.
-func (P *PhysicalDeviceFeatures2) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceFeatures2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceProperties2 struct {
@@ -9846,12 +9846,12 @@ func marshalPhysicalDeviceProperties2(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceProperties2(c)
 }
 
-func (P *PhysicalDeviceProperties2) free() {}
+func (p *PhysicalDeviceProperties2) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceProperties2. The caller is expected to
 // cast.
-func (P *PhysicalDeviceProperties2) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type FormatProperties2 struct {
@@ -9874,12 +9874,12 @@ func marshalFormatProperties2(p uintptr) (interface{}, error) {
 	return wrapFormatProperties2(c)
 }
 
-func (F *FormatProperties2) free() {}
+func (f *FormatProperties2) free() {}
 
 // Native returns the pointer to *C.VkFormatProperties2. The caller is expected to
 // cast.
-func (F *FormatProperties2) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FormatProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type ImageFormatProperties2 struct {
@@ -9902,12 +9902,12 @@ func marshalImageFormatProperties2(p uintptr) (interface{}, error) {
 	return wrapImageFormatProperties2(c)
 }
 
-func (I *ImageFormatProperties2) free() {}
+func (i *ImageFormatProperties2) free() {}
 
 // Native returns the pointer to *C.VkImageFormatProperties2. The caller is expected to
 // cast.
-func (I *ImageFormatProperties2) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageFormatProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type PhysicalDeviceImageFormatInfo2 struct {
@@ -9930,12 +9930,12 @@ func marshalPhysicalDeviceImageFormatInfo2(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceImageFormatInfo2(c)
 }
 
-func (P *PhysicalDeviceImageFormatInfo2) free() {}
+func (p *PhysicalDeviceImageFormatInfo2) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceImageFormatInfo2. The caller is expected to
 // cast.
-func (P *PhysicalDeviceImageFormatInfo2) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceImageFormatInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type QueueFamilyProperties2 struct {
@@ -9958,12 +9958,12 @@ func marshalQueueFamilyProperties2(p uintptr) (interface{}, error) {
 	return wrapQueueFamilyProperties2(c)
 }
 
-func (Q *QueueFamilyProperties2) free() {}
+func (q *QueueFamilyProperties2) free() {}
 
 // Native returns the pointer to *C.VkQueueFamilyProperties2. The caller is expected to
 // cast.
-func (Q *QueueFamilyProperties2) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueueFamilyProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type PhysicalDeviceMemoryProperties2 struct {
@@ -9986,12 +9986,12 @@ func marshalPhysicalDeviceMemoryProperties2(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMemoryProperties2(c)
 }
 
-func (P *PhysicalDeviceMemoryProperties2) free() {}
+func (p *PhysicalDeviceMemoryProperties2) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMemoryProperties2. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMemoryProperties2) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMemoryProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SparseImageFormatProperties2 struct {
@@ -10014,12 +10014,12 @@ func marshalSparseImageFormatProperties2(p uintptr) (interface{}, error) {
 	return wrapSparseImageFormatProperties2(c)
 }
 
-func (S *SparseImageFormatProperties2) free() {}
+func (s *SparseImageFormatProperties2) free() {}
 
 // Native returns the pointer to *C.VkSparseImageFormatProperties2. The caller is expected to
 // cast.
-func (S *SparseImageFormatProperties2) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageFormatProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PhysicalDeviceSparseImageFormatInfo2 struct {
@@ -10042,12 +10042,12 @@ func marshalPhysicalDeviceSparseImageFormatInfo2(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceSparseImageFormatInfo2(c)
 }
 
-func (P *PhysicalDeviceSparseImageFormatInfo2) free() {}
+func (p *PhysicalDeviceSparseImageFormatInfo2) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceSparseImageFormatInfo2. The caller is expected to
 // cast.
-func (P *PhysicalDeviceSparseImageFormatInfo2) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceSparseImageFormatInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDevicePointClippingProperties struct {
@@ -10070,12 +10070,12 @@ func marshalPhysicalDevicePointClippingProperties(p uintptr) (interface{}, error
 	return wrapPhysicalDevicePointClippingProperties(c)
 }
 
-func (P *PhysicalDevicePointClippingProperties) free() {}
+func (p *PhysicalDevicePointClippingProperties) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDevicePointClippingProperties. The caller is expected to
 // cast.
-func (P *PhysicalDevicePointClippingProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDevicePointClippingProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type InputAttachmentAspectReference struct {
@@ -10098,12 +10098,12 @@ func marshalInputAttachmentAspectReference(p uintptr) (interface{}, error) {
 	return wrapInputAttachmentAspectReference(c)
 }
 
-func (I *InputAttachmentAspectReference) free() {}
+func (i *InputAttachmentAspectReference) free() {}
 
 // Native returns the pointer to *C.VkInputAttachmentAspectReference. The caller is expected to
 // cast.
-func (I *InputAttachmentAspectReference) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *InputAttachmentAspectReference) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type RenderPassInputAttachmentAspectCreateInfo struct {
@@ -10126,12 +10126,12 @@ func marshalRenderPassInputAttachmentAspectCreateInfo(p uintptr) (interface{}, e
 	return wrapRenderPassInputAttachmentAspectCreateInfo(c)
 }
 
-func (R *RenderPassInputAttachmentAspectCreateInfo) free() {}
+func (r *RenderPassInputAttachmentAspectCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkRenderPassInputAttachmentAspectCreateInfo. The caller is expected to
 // cast.
-func (R *RenderPassInputAttachmentAspectCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPassInputAttachmentAspectCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type ImageViewUsageCreateInfo struct {
@@ -10154,12 +10154,12 @@ func marshalImageViewUsageCreateInfo(p uintptr) (interface{}, error) {
 	return wrapImageViewUsageCreateInfo(c)
 }
 
-func (I *ImageViewUsageCreateInfo) free() {}
+func (i *ImageViewUsageCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkImageViewUsageCreateInfo. The caller is expected to
 // cast.
-func (I *ImageViewUsageCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageViewUsageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type PipelineTessellationDomainOriginStateCreateInfo struct {
@@ -10182,12 +10182,12 @@ func marshalPipelineTessellationDomainOriginStateCreateInfo(p uintptr) (interfac
 	return wrapPipelineTessellationDomainOriginStateCreateInfo(c)
 }
 
-func (P *PipelineTessellationDomainOriginStateCreateInfo) free() {}
+func (p *PipelineTessellationDomainOriginStateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkPipelineTessellationDomainOriginStateCreateInfo. The caller is expected to
 // cast.
-func (P *PipelineTessellationDomainOriginStateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineTessellationDomainOriginStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type RenderPassMultiviewCreateInfo struct {
@@ -10210,12 +10210,12 @@ func marshalRenderPassMultiviewCreateInfo(p uintptr) (interface{}, error) {
 	return wrapRenderPassMultiviewCreateInfo(c)
 }
 
-func (R *RenderPassMultiviewCreateInfo) free() {}
+func (r *RenderPassMultiviewCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkRenderPassMultiviewCreateInfo. The caller is expected to
 // cast.
-func (R *RenderPassMultiviewCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPassMultiviewCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type PhysicalDeviceMultiviewFeatures struct {
@@ -10238,12 +10238,12 @@ func marshalPhysicalDeviceMultiviewFeatures(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMultiviewFeatures(c)
 }
 
-func (P *PhysicalDeviceMultiviewFeatures) free() {}
+func (p *PhysicalDeviceMultiviewFeatures) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMultiviewFeatures. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMultiviewFeatures) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMultiviewFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceMultiviewProperties struct {
@@ -10266,12 +10266,12 @@ func marshalPhysicalDeviceMultiviewProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMultiviewProperties(c)
 }
 
-func (P *PhysicalDeviceMultiviewProperties) free() {}
+func (p *PhysicalDeviceMultiviewProperties) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMultiviewProperties. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMultiviewProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMultiviewProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceVariablePointersFeatures struct {
@@ -10294,12 +10294,12 @@ func marshalPhysicalDeviceVariablePointersFeatures(p uintptr) (interface{}, erro
 	return wrapPhysicalDeviceVariablePointersFeatures(c)
 }
 
-func (P *PhysicalDeviceVariablePointersFeatures) free() {}
+func (p *PhysicalDeviceVariablePointersFeatures) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceVariablePointersFeatures. The caller is expected to
 // cast.
-func (P *PhysicalDeviceVariablePointersFeatures) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceVariablePointersFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceVariablePointerFeatures struct {
@@ -10322,12 +10322,12 @@ func marshalPhysicalDeviceVariablePointerFeatures(p uintptr) (interface{}, error
 	return wrapPhysicalDeviceVariablePointerFeatures(c)
 }
 
-func (P *PhysicalDeviceVariablePointerFeatures) free() {}
+func (p *PhysicalDeviceVariablePointerFeatures) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceVariablePointerFeatures. The caller is expected to
 // cast.
-func (P *PhysicalDeviceVariablePointerFeatures) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceVariablePointerFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceProtectedMemoryFeatures struct {
@@ -10350,12 +10350,12 @@ func marshalPhysicalDeviceProtectedMemoryFeatures(p uintptr) (interface{}, error
 	return wrapPhysicalDeviceProtectedMemoryFeatures(c)
 }
 
-func (P *PhysicalDeviceProtectedMemoryFeatures) free() {}
+func (p *PhysicalDeviceProtectedMemoryFeatures) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceProtectedMemoryFeatures. The caller is expected to
 // cast.
-func (P *PhysicalDeviceProtectedMemoryFeatures) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceProtectedMemoryFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceProtectedMemoryProperties struct {
@@ -10378,12 +10378,12 @@ func marshalPhysicalDeviceProtectedMemoryProperties(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceProtectedMemoryProperties(c)
 }
 
-func (P *PhysicalDeviceProtectedMemoryProperties) free() {}
+func (p *PhysicalDeviceProtectedMemoryProperties) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceProtectedMemoryProperties. The caller is expected to
 // cast.
-func (P *PhysicalDeviceProtectedMemoryProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceProtectedMemoryProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DeviceQueueInfo2 struct {
@@ -10406,12 +10406,12 @@ func marshalDeviceQueueInfo2(p uintptr) (interface{}, error) {
 	return wrapDeviceQueueInfo2(c)
 }
 
-func (D *DeviceQueueInfo2) free() {}
+func (d *DeviceQueueInfo2) free() {}
 
 // Native returns the pointer to *C.VkDeviceQueueInfo2. The caller is expected to
 // cast.
-func (D *DeviceQueueInfo2) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceQueueInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type ProtectedSubmitInfo struct {
@@ -10434,12 +10434,12 @@ func marshalProtectedSubmitInfo(p uintptr) (interface{}, error) {
 	return wrapProtectedSubmitInfo(c)
 }
 
-func (P *ProtectedSubmitInfo) free() {}
+func (p *ProtectedSubmitInfo) free() {}
 
 // Native returns the pointer to *C.VkProtectedSubmitInfo. The caller is expected to
 // cast.
-func (P *ProtectedSubmitInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *ProtectedSubmitInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SamplerYcbcrConversionCreateInfo struct {
@@ -10462,12 +10462,12 @@ func marshalSamplerYcbcrConversionCreateInfo(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrConversionCreateInfo(c)
 }
 
-func (S *SamplerYcbcrConversionCreateInfo) free() {}
+func (s *SamplerYcbcrConversionCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionCreateInfo. The caller is expected to
 // cast.
-func (S *SamplerYcbcrConversionCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrConversionCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SamplerYcbcrConversionInfo struct {
@@ -10490,12 +10490,12 @@ func marshalSamplerYcbcrConversionInfo(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrConversionInfo(c)
 }
 
-func (S *SamplerYcbcrConversionInfo) free() {}
+func (s *SamplerYcbcrConversionInfo) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionInfo. The caller is expected to
 // cast.
-func (S *SamplerYcbcrConversionInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrConversionInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type BindImagePlaneMemoryInfo struct {
@@ -10518,12 +10518,12 @@ func marshalBindImagePlaneMemoryInfo(p uintptr) (interface{}, error) {
 	return wrapBindImagePlaneMemoryInfo(c)
 }
 
-func (B *BindImagePlaneMemoryInfo) free() {}
+func (b *BindImagePlaneMemoryInfo) free() {}
 
 // Native returns the pointer to *C.VkBindImagePlaneMemoryInfo. The caller is expected to
 // cast.
-func (B *BindImagePlaneMemoryInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindImagePlaneMemoryInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ImagePlaneMemoryRequirementsInfo struct {
@@ -10546,12 +10546,12 @@ func marshalImagePlaneMemoryRequirementsInfo(p uintptr) (interface{}, error) {
 	return wrapImagePlaneMemoryRequirementsInfo(c)
 }
 
-func (I *ImagePlaneMemoryRequirementsInfo) free() {}
+func (i *ImagePlaneMemoryRequirementsInfo) free() {}
 
 // Native returns the pointer to *C.VkImagePlaneMemoryRequirementsInfo. The caller is expected to
 // cast.
-func (I *ImagePlaneMemoryRequirementsInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImagePlaneMemoryRequirementsInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type PhysicalDeviceSamplerYcbcrConversionFeatures struct {
@@ -10574,12 +10574,12 @@ func marshalPhysicalDeviceSamplerYcbcrConversionFeatures(p uintptr) (interface{}
 	return wrapPhysicalDeviceSamplerYcbcrConversionFeatures(c)
 }
 
-func (P *PhysicalDeviceSamplerYcbcrConversionFeatures) free() {}
+func (p *PhysicalDeviceSamplerYcbcrConversionFeatures) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceSamplerYcbcrConversionFeatures. The caller is expected to
 // cast.
-func (P *PhysicalDeviceSamplerYcbcrConversionFeatures) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceSamplerYcbcrConversionFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SamplerYcbcrConversionImageFormatProperties struct {
@@ -10602,12 +10602,12 @@ func marshalSamplerYcbcrConversionImageFormatProperties(p uintptr) (interface{},
 	return wrapSamplerYcbcrConversionImageFormatProperties(c)
 }
 
-func (S *SamplerYcbcrConversionImageFormatProperties) free() {}
+func (s *SamplerYcbcrConversionImageFormatProperties) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionImageFormatProperties. The caller is expected to
 // cast.
-func (S *SamplerYcbcrConversionImageFormatProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrConversionImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type DescriptorUpdateTemplateEntry struct {
@@ -10630,12 +10630,12 @@ func marshalDescriptorUpdateTemplateEntry(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateEntry(c)
 }
 
-func (D *DescriptorUpdateTemplateEntry) free() {}
+func (d *DescriptorUpdateTemplateEntry) free() {}
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateEntry. The caller is expected to
 // cast.
-func (D *DescriptorUpdateTemplateEntry) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorUpdateTemplateEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorUpdateTemplateCreateInfo struct {
@@ -10658,12 +10658,12 @@ func marshalDescriptorUpdateTemplateCreateInfo(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateCreateInfo(c)
 }
 
-func (D *DescriptorUpdateTemplateCreateInfo) free() {}
+func (d *DescriptorUpdateTemplateCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateInfo. The caller is expected to
 // cast.
-func (D *DescriptorUpdateTemplateCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorUpdateTemplateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type ExternalMemoryProperties struct {
@@ -10686,12 +10686,12 @@ func marshalExternalMemoryProperties(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryProperties(c)
 }
 
-func (E *ExternalMemoryProperties) free() {}
+func (e *ExternalMemoryProperties) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryProperties. The caller is expected to
 // cast.
-func (E *ExternalMemoryProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceExternalImageFormatInfo struct {
@@ -10714,12 +10714,12 @@ func marshalPhysicalDeviceExternalImageFormatInfo(p uintptr) (interface{}, error
 	return wrapPhysicalDeviceExternalImageFormatInfo(c)
 }
 
-func (P *PhysicalDeviceExternalImageFormatInfo) free() {}
+func (p *PhysicalDeviceExternalImageFormatInfo) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalImageFormatInfo. The caller is expected to
 // cast.
-func (P *PhysicalDeviceExternalImageFormatInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceExternalImageFormatInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalImageFormatProperties struct {
@@ -10742,12 +10742,12 @@ func marshalExternalImageFormatProperties(p uintptr) (interface{}, error) {
 	return wrapExternalImageFormatProperties(c)
 }
 
-func (E *ExternalImageFormatProperties) free() {}
+func (e *ExternalImageFormatProperties) free() {}
 
 // Native returns the pointer to *C.VkExternalImageFormatProperties. The caller is expected to
 // cast.
-func (E *ExternalImageFormatProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceExternalBufferInfo struct {
@@ -10770,12 +10770,12 @@ func marshalPhysicalDeviceExternalBufferInfo(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceExternalBufferInfo(c)
 }
 
-func (P *PhysicalDeviceExternalBufferInfo) free() {}
+func (p *PhysicalDeviceExternalBufferInfo) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalBufferInfo. The caller is expected to
 // cast.
-func (P *PhysicalDeviceExternalBufferInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceExternalBufferInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalBufferProperties struct {
@@ -10798,12 +10798,12 @@ func marshalExternalBufferProperties(p uintptr) (interface{}, error) {
 	return wrapExternalBufferProperties(c)
 }
 
-func (E *ExternalBufferProperties) free() {}
+func (e *ExternalBufferProperties) free() {}
 
 // Native returns the pointer to *C.VkExternalBufferProperties. The caller is expected to
 // cast.
-func (E *ExternalBufferProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalBufferProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceIDProperties struct {
@@ -10826,12 +10826,12 @@ func marshalPhysicalDeviceIDProperties(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceIDProperties(c)
 }
 
-func (P *PhysicalDeviceIDProperties) free() {}
+func (p *PhysicalDeviceIDProperties) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceIDProperties. The caller is expected to
 // cast.
-func (P *PhysicalDeviceIDProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceIDProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalMemoryImageCreateInfo struct {
@@ -10854,12 +10854,12 @@ func marshalExternalMemoryImageCreateInfo(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryImageCreateInfo(c)
 }
 
-func (E *ExternalMemoryImageCreateInfo) free() {}
+func (e *ExternalMemoryImageCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryImageCreateInfo. The caller is expected to
 // cast.
-func (E *ExternalMemoryImageCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryImageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryBufferCreateInfo struct {
@@ -10882,12 +10882,12 @@ func marshalExternalMemoryBufferCreateInfo(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryBufferCreateInfo(c)
 }
 
-func (E *ExternalMemoryBufferCreateInfo) free() {}
+func (e *ExternalMemoryBufferCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryBufferCreateInfo. The caller is expected to
 // cast.
-func (E *ExternalMemoryBufferCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryBufferCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExportMemoryAllocateInfo struct {
@@ -10910,12 +10910,12 @@ func marshalExportMemoryAllocateInfo(p uintptr) (interface{}, error) {
 	return wrapExportMemoryAllocateInfo(c)
 }
 
-func (E *ExportMemoryAllocateInfo) free() {}
+func (e *ExportMemoryAllocateInfo) free() {}
 
 // Native returns the pointer to *C.VkExportMemoryAllocateInfo. The caller is expected to
 // cast.
-func (E *ExportMemoryAllocateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExportMemoryAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceExternalFenceInfo struct {
@@ -10938,12 +10938,12 @@ func marshalPhysicalDeviceExternalFenceInfo(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceExternalFenceInfo(c)
 }
 
-func (P *PhysicalDeviceExternalFenceInfo) free() {}
+func (p *PhysicalDeviceExternalFenceInfo) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalFenceInfo. The caller is expected to
 // cast.
-func (P *PhysicalDeviceExternalFenceInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceExternalFenceInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalFenceProperties struct {
@@ -10966,12 +10966,12 @@ func marshalExternalFenceProperties(p uintptr) (interface{}, error) {
 	return wrapExternalFenceProperties(c)
 }
 
-func (E *ExternalFenceProperties) free() {}
+func (e *ExternalFenceProperties) free() {}
 
 // Native returns the pointer to *C.VkExternalFenceProperties. The caller is expected to
 // cast.
-func (E *ExternalFenceProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalFenceProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExportFenceCreateInfo struct {
@@ -10994,12 +10994,12 @@ func marshalExportFenceCreateInfo(p uintptr) (interface{}, error) {
 	return wrapExportFenceCreateInfo(c)
 }
 
-func (E *ExportFenceCreateInfo) free() {}
+func (e *ExportFenceCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkExportFenceCreateInfo. The caller is expected to
 // cast.
-func (E *ExportFenceCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExportFenceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExportSemaphoreCreateInfo struct {
@@ -11022,12 +11022,12 @@ func marshalExportSemaphoreCreateInfo(p uintptr) (interface{}, error) {
 	return wrapExportSemaphoreCreateInfo(c)
 }
 
-func (E *ExportSemaphoreCreateInfo) free() {}
+func (e *ExportSemaphoreCreateInfo) free() {}
 
 // Native returns the pointer to *C.VkExportSemaphoreCreateInfo. The caller is expected to
 // cast.
-func (E *ExportSemaphoreCreateInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExportSemaphoreCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceExternalSemaphoreInfo struct {
@@ -11050,12 +11050,12 @@ func marshalPhysicalDeviceExternalSemaphoreInfo(p uintptr) (interface{}, error) 
 	return wrapPhysicalDeviceExternalSemaphoreInfo(c)
 }
 
-func (P *PhysicalDeviceExternalSemaphoreInfo) free() {}
+func (p *PhysicalDeviceExternalSemaphoreInfo) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalSemaphoreInfo. The caller is expected to
 // cast.
-func (P *PhysicalDeviceExternalSemaphoreInfo) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceExternalSemaphoreInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalSemaphoreProperties struct {
@@ -11078,12 +11078,12 @@ func marshalExternalSemaphoreProperties(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphoreProperties(c)
 }
 
-func (E *ExternalSemaphoreProperties) free() {}
+func (e *ExternalSemaphoreProperties) free() {}
 
 // Native returns the pointer to *C.VkExternalSemaphoreProperties. The caller is expected to
 // cast.
-func (E *ExternalSemaphoreProperties) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalSemaphoreProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceMaintenance3Properties struct {
@@ -11106,12 +11106,12 @@ func marshalPhysicalDeviceMaintenance3Properties(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceMaintenance3Properties(c)
 }
 
-func (P *PhysicalDeviceMaintenance3Properties) free() {}
+func (p *PhysicalDeviceMaintenance3Properties) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMaintenance3Properties. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMaintenance3Properties) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMaintenance3Properties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DescriptorSetLayoutSupport struct {
@@ -11134,12 +11134,12 @@ func marshalDescriptorSetLayoutSupport(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutSupport(c)
 }
 
-func (D *DescriptorSetLayoutSupport) free() {}
+func (d *DescriptorSetLayoutSupport) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutSupport. The caller is expected to
 // cast.
-func (D *DescriptorSetLayoutSupport) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetLayoutSupport) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PhysicalDeviceShaderDrawParametersFeatures struct {
@@ -11162,12 +11162,12 @@ func marshalPhysicalDeviceShaderDrawParametersFeatures(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceShaderDrawParametersFeatures(c)
 }
 
-func (P *PhysicalDeviceShaderDrawParametersFeatures) free() {}
+func (p *PhysicalDeviceShaderDrawParametersFeatures) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceShaderDrawParametersFeatures. The caller is expected to
 // cast.
-func (P *PhysicalDeviceShaderDrawParametersFeatures) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceShaderDrawParametersFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceShaderDrawParameterFeatures struct {
@@ -11190,12 +11190,12 @@ func marshalPhysicalDeviceShaderDrawParameterFeatures(p uintptr) (interface{}, e
 	return wrapPhysicalDeviceShaderDrawParameterFeatures(c)
 }
 
-func (P *PhysicalDeviceShaderDrawParameterFeatures) free() {}
+func (p *PhysicalDeviceShaderDrawParameterFeatures) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceShaderDrawParameterFeatures. The caller is expected to
 // cast.
-func (P *PhysicalDeviceShaderDrawParameterFeatures) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceShaderDrawParameterFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SurfaceKHR struct {
@@ -11218,12 +11218,12 @@ func marshalSurfaceKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceKHR(c)
 }
 
-func (S *SurfaceKHR) free() {}
+func (s *SurfaceKHR) free() {}
 
 // Native returns the pointer to *C.VkSurfaceKHR. The caller is expected to
 // cast.
-func (S *SurfaceKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ColorSpaceKHR struct {
@@ -11246,12 +11246,12 @@ func marshalColorSpaceKHR(p uintptr) (interface{}, error) {
 	return wrapColorSpaceKHR(c)
 }
 
-func (C *ColorSpaceKHR) free() {}
+func (c *ColorSpaceKHR) free() {}
 
 // Native returns the pointer to *C.VkColorSpaceKHR. The caller is expected to
 // cast.
-func (C *ColorSpaceKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ColorSpaceKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PresentModeKHR struct {
@@ -11274,12 +11274,12 @@ func marshalPresentModeKHR(p uintptr) (interface{}, error) {
 	return wrapPresentModeKHR(c)
 }
 
-func (P *PresentModeKHR) free() {}
+func (p *PresentModeKHR) free() {}
 
 // Native returns the pointer to *C.VkPresentModeKHR. The caller is expected to
 // cast.
-func (P *PresentModeKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PresentModeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SurfaceTransformFlagBitsKHR struct {
@@ -11302,12 +11302,12 @@ func marshalSurfaceTransformFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceTransformFlagBitsKHR(c)
 }
 
-func (S *SurfaceTransformFlagBitsKHR) free() {}
+func (s *SurfaceTransformFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkSurfaceTransformFlagBitsKHR. The caller is expected to
 // cast.
-func (S *SurfaceTransformFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceTransformFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SurfaceTransformFlagsKHR struct {
@@ -11330,12 +11330,12 @@ func marshalSurfaceTransformFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceTransformFlagsKHR(c)
 }
 
-func (S *SurfaceTransformFlagsKHR) free() {}
+func (s *SurfaceTransformFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkSurfaceTransformFlagsKHR. The caller is expected to
 // cast.
-func (S *SurfaceTransformFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceTransformFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type CompositeAlphaFlagBitsKHR struct {
@@ -11358,12 +11358,12 @@ func marshalCompositeAlphaFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapCompositeAlphaFlagBitsKHR(c)
 }
 
-func (C *CompositeAlphaFlagBitsKHR) free() {}
+func (c *CompositeAlphaFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkCompositeAlphaFlagBitsKHR. The caller is expected to
 // cast.
-func (C *CompositeAlphaFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CompositeAlphaFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CompositeAlphaFlagsKHR struct {
@@ -11386,12 +11386,12 @@ func marshalCompositeAlphaFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapCompositeAlphaFlagsKHR(c)
 }
 
-func (C *CompositeAlphaFlagsKHR) free() {}
+func (c *CompositeAlphaFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkCompositeAlphaFlagsKHR. The caller is expected to
 // cast.
-func (C *CompositeAlphaFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CompositeAlphaFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type SurfaceCapabilitiesKHR struct {
@@ -11414,12 +11414,12 @@ func marshalSurfaceCapabilitiesKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceCapabilitiesKHR(c)
 }
 
-func (S *SurfaceCapabilitiesKHR) free() {}
+func (s *SurfaceCapabilitiesKHR) free() {}
 
 // Native returns the pointer to *C.VkSurfaceCapabilitiesKHR. The caller is expected to
 // cast.
-func (S *SurfaceCapabilitiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SurfaceFormatKHR struct {
@@ -11442,12 +11442,12 @@ func marshalSurfaceFormatKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceFormatKHR(c)
 }
 
-func (S *SurfaceFormatKHR) free() {}
+func (s *SurfaceFormatKHR) free() {}
 
 // Native returns the pointer to *C.VkSurfaceFormatKHR. The caller is expected to
 // cast.
-func (S *SurfaceFormatKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceFormatKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SwapchainKHR struct {
@@ -11470,12 +11470,12 @@ func marshalSwapchainKHR(p uintptr) (interface{}, error) {
 	return wrapSwapchainKHR(c)
 }
 
-func (S *SwapchainKHR) free() {}
+func (s *SwapchainKHR) free() {}
 
 // Native returns the pointer to *C.VkSwapchainKHR. The caller is expected to
 // cast.
-func (S *SwapchainKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SwapchainKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SwapchainCreateFlagBitsKHR struct {
@@ -11498,12 +11498,12 @@ func marshalSwapchainCreateFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapSwapchainCreateFlagBitsKHR(c)
 }
 
-func (S *SwapchainCreateFlagBitsKHR) free() {}
+func (s *SwapchainCreateFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkSwapchainCreateFlagBitsKHR. The caller is expected to
 // cast.
-func (S *SwapchainCreateFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SwapchainCreateFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SwapchainCreateFlagsKHR struct {
@@ -11526,12 +11526,12 @@ func marshalSwapchainCreateFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapSwapchainCreateFlagsKHR(c)
 }
 
-func (S *SwapchainCreateFlagsKHR) free() {}
+func (s *SwapchainCreateFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkSwapchainCreateFlagsKHR. The caller is expected to
 // cast.
-func (S *SwapchainCreateFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SwapchainCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type DeviceGroupPresentModeFlagBitsKHR struct {
@@ -11554,12 +11554,12 @@ func marshalDeviceGroupPresentModeFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupPresentModeFlagBitsKHR(c)
 }
 
-func (D *DeviceGroupPresentModeFlagBitsKHR) free() {}
+func (d *DeviceGroupPresentModeFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupPresentModeFlagBitsKHR. The caller is expected to
 // cast.
-func (D *DeviceGroupPresentModeFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupPresentModeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceGroupPresentModeFlagsKHR struct {
@@ -11582,12 +11582,12 @@ func marshalDeviceGroupPresentModeFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupPresentModeFlagsKHR(c)
 }
 
-func (D *DeviceGroupPresentModeFlagsKHR) free() {}
+func (d *DeviceGroupPresentModeFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupPresentModeFlagsKHR. The caller is expected to
 // cast.
-func (D *DeviceGroupPresentModeFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupPresentModeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type SwapchainCreateInfoKHR struct {
@@ -11610,12 +11610,12 @@ func marshalSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapSwapchainCreateInfoKHR(c)
 }
 
-func (S *SwapchainCreateInfoKHR) free() {}
+func (s *SwapchainCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkSwapchainCreateInfoKHR. The caller is expected to
 // cast.
-func (S *SwapchainCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SwapchainCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PresentInfoKHR struct {
@@ -11638,12 +11638,12 @@ func marshalPresentInfoKHR(p uintptr) (interface{}, error) {
 	return wrapPresentInfoKHR(c)
 }
 
-func (P *PresentInfoKHR) free() {}
+func (p *PresentInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkPresentInfoKHR. The caller is expected to
 // cast.
-func (P *PresentInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PresentInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ImageSwapchainCreateInfoKHR struct {
@@ -11666,12 +11666,12 @@ func marshalImageSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImageSwapchainCreateInfoKHR(c)
 }
 
-func (I *ImageSwapchainCreateInfoKHR) free() {}
+func (i *ImageSwapchainCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkImageSwapchainCreateInfoKHR. The caller is expected to
 // cast.
-func (I *ImageSwapchainCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageSwapchainCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type BindImageMemorySwapchainInfoKHR struct {
@@ -11694,12 +11694,12 @@ func marshalBindImageMemorySwapchainInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindImageMemorySwapchainInfoKHR(c)
 }
 
-func (B *BindImageMemorySwapchainInfoKHR) free() {}
+func (b *BindImageMemorySwapchainInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkBindImageMemorySwapchainInfoKHR. The caller is expected to
 // cast.
-func (B *BindImageMemorySwapchainInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindImageMemorySwapchainInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type AcquireNextImageInfoKHR struct {
@@ -11722,12 +11722,12 @@ func marshalAcquireNextImageInfoKHR(p uintptr) (interface{}, error) {
 	return wrapAcquireNextImageInfoKHR(c)
 }
 
-func (A *AcquireNextImageInfoKHR) free() {}
+func (a *AcquireNextImageInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkAcquireNextImageInfoKHR. The caller is expected to
 // cast.
-func (A *AcquireNextImageInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AcquireNextImageInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type DeviceGroupPresentCapabilitiesKHR struct {
@@ -11750,12 +11750,12 @@ func marshalDeviceGroupPresentCapabilitiesKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupPresentCapabilitiesKHR(c)
 }
 
-func (D *DeviceGroupPresentCapabilitiesKHR) free() {}
+func (d *DeviceGroupPresentCapabilitiesKHR) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupPresentCapabilitiesKHR. The caller is expected to
 // cast.
-func (D *DeviceGroupPresentCapabilitiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupPresentCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceGroupPresentInfoKHR struct {
@@ -11778,12 +11778,12 @@ func marshalDeviceGroupPresentInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupPresentInfoKHR(c)
 }
 
-func (D *DeviceGroupPresentInfoKHR) free() {}
+func (d *DeviceGroupPresentInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupPresentInfoKHR. The caller is expected to
 // cast.
-func (D *DeviceGroupPresentInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupPresentInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceGroupSwapchainCreateInfoKHR struct {
@@ -11806,12 +11806,12 @@ func marshalDeviceGroupSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupSwapchainCreateInfoKHR(c)
 }
 
-func (D *DeviceGroupSwapchainCreateInfoKHR) free() {}
+func (d *DeviceGroupSwapchainCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupSwapchainCreateInfoKHR. The caller is expected to
 // cast.
-func (D *DeviceGroupSwapchainCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupSwapchainCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayKHR struct {
@@ -11834,12 +11834,12 @@ func marshalDisplayKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayKHR(c)
 }
 
-func (D *DisplayKHR) free() {}
+func (d *DisplayKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayKHR. The caller is expected to
 // cast.
-func (D *DisplayKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayModeKHR struct {
@@ -11862,12 +11862,12 @@ func marshalDisplayModeKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModeKHR(c)
 }
 
-func (D *DisplayModeKHR) free() {}
+func (d *DisplayModeKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayModeKHR. The caller is expected to
 // cast.
-func (D *DisplayModeKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayModeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayPlaneAlphaFlagBitsKHR struct {
@@ -11890,12 +11890,12 @@ func marshalDisplayPlaneAlphaFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneAlphaFlagBitsKHR(c)
 }
 
-func (D *DisplayPlaneAlphaFlagBitsKHR) free() {}
+func (d *DisplayPlaneAlphaFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayPlaneAlphaFlagBitsKHR. The caller is expected to
 // cast.
-func (D *DisplayPlaneAlphaFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPlaneAlphaFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayPlaneAlphaFlagsKHR struct {
@@ -11918,12 +11918,12 @@ func marshalDisplayPlaneAlphaFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneAlphaFlagsKHR(c)
 }
 
-func (D *DisplayPlaneAlphaFlagsKHR) free() {}
+func (d *DisplayPlaneAlphaFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayPlaneAlphaFlagsKHR. The caller is expected to
 // cast.
-func (D *DisplayPlaneAlphaFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPlaneAlphaFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayModeCreateFlagsKHR struct {
@@ -11946,12 +11946,12 @@ func marshalDisplayModeCreateFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModeCreateFlagsKHR(c)
 }
 
-func (D *DisplayModeCreateFlagsKHR) free() {}
+func (d *DisplayModeCreateFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayModeCreateFlagsKHR. The caller is expected to
 // cast.
-func (D *DisplayModeCreateFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayModeCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplaySurfaceCreateFlagsKHR struct {
@@ -11974,12 +11974,12 @@ func marshalDisplaySurfaceCreateFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapDisplaySurfaceCreateFlagsKHR(c)
 }
 
-func (D *DisplaySurfaceCreateFlagsKHR) free() {}
+func (d *DisplaySurfaceCreateFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplaySurfaceCreateFlagsKHR. The caller is expected to
 // cast.
-func (D *DisplaySurfaceCreateFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplaySurfaceCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayPropertiesKHR struct {
@@ -12002,12 +12002,12 @@ func marshalDisplayPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPropertiesKHR(c)
 }
 
-func (D *DisplayPropertiesKHR) free() {}
+func (d *DisplayPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayPropertiesKHR. The caller is expected to
 // cast.
-func (D *DisplayPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayModeParametersKHR struct {
@@ -12030,12 +12030,12 @@ func marshalDisplayModeParametersKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModeParametersKHR(c)
 }
 
-func (D *DisplayModeParametersKHR) free() {}
+func (d *DisplayModeParametersKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayModeParametersKHR. The caller is expected to
 // cast.
-func (D *DisplayModeParametersKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayModeParametersKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayModePropertiesKHR struct {
@@ -12058,12 +12058,12 @@ func marshalDisplayModePropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModePropertiesKHR(c)
 }
 
-func (D *DisplayModePropertiesKHR) free() {}
+func (d *DisplayModePropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayModePropertiesKHR. The caller is expected to
 // cast.
-func (D *DisplayModePropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayModePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayModeCreateInfoKHR struct {
@@ -12086,12 +12086,12 @@ func marshalDisplayModeCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModeCreateInfoKHR(c)
 }
 
-func (D *DisplayModeCreateInfoKHR) free() {}
+func (d *DisplayModeCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayModeCreateInfoKHR. The caller is expected to
 // cast.
-func (D *DisplayModeCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayModeCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayPlaneCapabilitiesKHR struct {
@@ -12114,12 +12114,12 @@ func marshalDisplayPlaneCapabilitiesKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneCapabilitiesKHR(c)
 }
 
-func (D *DisplayPlaneCapabilitiesKHR) free() {}
+func (d *DisplayPlaneCapabilitiesKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayPlaneCapabilitiesKHR. The caller is expected to
 // cast.
-func (D *DisplayPlaneCapabilitiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPlaneCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayPlanePropertiesKHR struct {
@@ -12142,12 +12142,12 @@ func marshalDisplayPlanePropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlanePropertiesKHR(c)
 }
 
-func (D *DisplayPlanePropertiesKHR) free() {}
+func (d *DisplayPlanePropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayPlanePropertiesKHR. The caller is expected to
 // cast.
-func (D *DisplayPlanePropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPlanePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplaySurfaceCreateInfoKHR struct {
@@ -12170,12 +12170,12 @@ func marshalDisplaySurfaceCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDisplaySurfaceCreateInfoKHR(c)
 }
 
-func (D *DisplaySurfaceCreateInfoKHR) free() {}
+func (d *DisplaySurfaceCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplaySurfaceCreateInfoKHR. The caller is expected to
 // cast.
-func (D *DisplaySurfaceCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplaySurfaceCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayPresentInfoKHR struct {
@@ -12198,12 +12198,12 @@ func marshalDisplayPresentInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPresentInfoKHR(c)
 }
 
-func (D *DisplayPresentInfoKHR) free() {}
+func (d *DisplayPresentInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayPresentInfoKHR. The caller is expected to
 // cast.
-func (D *DisplayPresentInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPresentInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type RenderPassMultiviewCreateInfoKHR struct {
@@ -12226,12 +12226,12 @@ func marshalRenderPassMultiviewCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapRenderPassMultiviewCreateInfoKHR(c)
 }
 
-func (R *RenderPassMultiviewCreateInfoKHR) free() {}
+func (r *RenderPassMultiviewCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkRenderPassMultiviewCreateInfoKHR. The caller is expected to
 // cast.
-func (R *RenderPassMultiviewCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPassMultiviewCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type PhysicalDeviceMultiviewFeaturesKHR struct {
@@ -12254,12 +12254,12 @@ func marshalPhysicalDeviceMultiviewFeaturesKHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMultiviewFeaturesKHR(c)
 }
 
-func (P *PhysicalDeviceMultiviewFeaturesKHR) free() {}
+func (p *PhysicalDeviceMultiviewFeaturesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMultiviewFeaturesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMultiviewFeaturesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMultiviewFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceMultiviewPropertiesKHR struct {
@@ -12282,12 +12282,12 @@ func marshalPhysicalDeviceMultiviewPropertiesKHR(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceMultiviewPropertiesKHR(c)
 }
 
-func (P *PhysicalDeviceMultiviewPropertiesKHR) free() {}
+func (p *PhysicalDeviceMultiviewPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMultiviewPropertiesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMultiviewPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMultiviewPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceFeatures2KHR struct {
@@ -12310,12 +12310,12 @@ func marshalPhysicalDeviceFeatures2KHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceFeatures2KHR(c)
 }
 
-func (P *PhysicalDeviceFeatures2KHR) free() {}
+func (p *PhysicalDeviceFeatures2KHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceFeatures2KHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceFeatures2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceFeatures2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceProperties2KHR struct {
@@ -12338,12 +12338,12 @@ func marshalPhysicalDeviceProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceProperties2KHR(c)
 }
 
-func (P *PhysicalDeviceProperties2KHR) free() {}
+func (p *PhysicalDeviceProperties2KHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceProperties2KHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceProperties2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type FormatProperties2KHR struct {
@@ -12366,12 +12366,12 @@ func marshalFormatProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapFormatProperties2KHR(c)
 }
 
-func (F *FormatProperties2KHR) free() {}
+func (f *FormatProperties2KHR) free() {}
 
 // Native returns the pointer to *C.VkFormatProperties2KHR. The caller is expected to
 // cast.
-func (F *FormatProperties2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FormatProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type ImageFormatProperties2KHR struct {
@@ -12394,12 +12394,12 @@ func marshalImageFormatProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapImageFormatProperties2KHR(c)
 }
 
-func (I *ImageFormatProperties2KHR) free() {}
+func (i *ImageFormatProperties2KHR) free() {}
 
 // Native returns the pointer to *C.VkImageFormatProperties2KHR. The caller is expected to
 // cast.
-func (I *ImageFormatProperties2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageFormatProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type PhysicalDeviceImageFormatInfo2KHR struct {
@@ -12422,12 +12422,12 @@ func marshalPhysicalDeviceImageFormatInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceImageFormatInfo2KHR(c)
 }
 
-func (P *PhysicalDeviceImageFormatInfo2KHR) free() {}
+func (p *PhysicalDeviceImageFormatInfo2KHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceImageFormatInfo2KHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceImageFormatInfo2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceImageFormatInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type QueueFamilyProperties2KHR struct {
@@ -12450,12 +12450,12 @@ func marshalQueueFamilyProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapQueueFamilyProperties2KHR(c)
 }
 
-func (Q *QueueFamilyProperties2KHR) free() {}
+func (q *QueueFamilyProperties2KHR) free() {}
 
 // Native returns the pointer to *C.VkQueueFamilyProperties2KHR. The caller is expected to
 // cast.
-func (Q *QueueFamilyProperties2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueueFamilyProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type PhysicalDeviceMemoryProperties2KHR struct {
@@ -12478,12 +12478,12 @@ func marshalPhysicalDeviceMemoryProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMemoryProperties2KHR(c)
 }
 
-func (P *PhysicalDeviceMemoryProperties2KHR) free() {}
+func (p *PhysicalDeviceMemoryProperties2KHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMemoryProperties2KHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMemoryProperties2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMemoryProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SparseImageFormatProperties2KHR struct {
@@ -12506,12 +12506,12 @@ func marshalSparseImageFormatProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapSparseImageFormatProperties2KHR(c)
 }
 
-func (S *SparseImageFormatProperties2KHR) free() {}
+func (s *SparseImageFormatProperties2KHR) free() {}
 
 // Native returns the pointer to *C.VkSparseImageFormatProperties2KHR. The caller is expected to
 // cast.
-func (S *SparseImageFormatProperties2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageFormatProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PhysicalDeviceSparseImageFormatInfo2KHR struct {
@@ -12534,12 +12534,12 @@ func marshalPhysicalDeviceSparseImageFormatInfo2KHR(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceSparseImageFormatInfo2KHR(c)
 }
 
-func (P *PhysicalDeviceSparseImageFormatInfo2KHR) free() {}
+func (p *PhysicalDeviceSparseImageFormatInfo2KHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceSparseImageFormatInfo2KHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceSparseImageFormatInfo2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceSparseImageFormatInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PeerMemoryFeatureFlagsKHR struct {
@@ -12562,12 +12562,12 @@ func marshalPeerMemoryFeatureFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapPeerMemoryFeatureFlagsKHR(c)
 }
 
-func (P *PeerMemoryFeatureFlagsKHR) free() {}
+func (p *PeerMemoryFeatureFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkPeerMemoryFeatureFlagsKHR. The caller is expected to
 // cast.
-func (P *PeerMemoryFeatureFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PeerMemoryFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PeerMemoryFeatureFlagBitsKHR struct {
@@ -12590,12 +12590,12 @@ func marshalPeerMemoryFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapPeerMemoryFeatureFlagBitsKHR(c)
 }
 
-func (P *PeerMemoryFeatureFlagBitsKHR) free() {}
+func (p *PeerMemoryFeatureFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkPeerMemoryFeatureFlagBitsKHR. The caller is expected to
 // cast.
-func (P *PeerMemoryFeatureFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PeerMemoryFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type MemoryAllocateFlagsKHR struct {
@@ -12618,12 +12618,12 @@ func marshalMemoryAllocateFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlagsKHR(c)
 }
 
-func (M *MemoryAllocateFlagsKHR) free() {}
+func (m *MemoryAllocateFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkMemoryAllocateFlagsKHR. The caller is expected to
 // cast.
-func (M *MemoryAllocateFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryAllocateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryAllocateFlagBitsKHR struct {
@@ -12646,12 +12646,12 @@ func marshalMemoryAllocateFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlagBitsKHR(c)
 }
 
-func (M *MemoryAllocateFlagBitsKHR) free() {}
+func (m *MemoryAllocateFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkMemoryAllocateFlagBitsKHR. The caller is expected to
 // cast.
-func (M *MemoryAllocateFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryAllocateFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryAllocateFlagsInfoKHR struct {
@@ -12674,12 +12674,12 @@ func marshalMemoryAllocateFlagsInfoKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryAllocateFlagsInfoKHR(c)
 }
 
-func (M *MemoryAllocateFlagsInfoKHR) free() {}
+func (m *MemoryAllocateFlagsInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkMemoryAllocateFlagsInfoKHR. The caller is expected to
 // cast.
-func (M *MemoryAllocateFlagsInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryAllocateFlagsInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type DeviceGroupRenderPassBeginInfoKHR struct {
@@ -12702,12 +12702,12 @@ func marshalDeviceGroupRenderPassBeginInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupRenderPassBeginInfoKHR(c)
 }
 
-func (D *DeviceGroupRenderPassBeginInfoKHR) free() {}
+func (d *DeviceGroupRenderPassBeginInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupRenderPassBeginInfoKHR. The caller is expected to
 // cast.
-func (D *DeviceGroupRenderPassBeginInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupRenderPassBeginInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceGroupCommandBufferBeginInfoKHR struct {
@@ -12730,12 +12730,12 @@ func marshalDeviceGroupCommandBufferBeginInfoKHR(p uintptr) (interface{}, error)
 	return wrapDeviceGroupCommandBufferBeginInfoKHR(c)
 }
 
-func (D *DeviceGroupCommandBufferBeginInfoKHR) free() {}
+func (d *DeviceGroupCommandBufferBeginInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupCommandBufferBeginInfoKHR. The caller is expected to
 // cast.
-func (D *DeviceGroupCommandBufferBeginInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupCommandBufferBeginInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceGroupSubmitInfoKHR struct {
@@ -12758,12 +12758,12 @@ func marshalDeviceGroupSubmitInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupSubmitInfoKHR(c)
 }
 
-func (D *DeviceGroupSubmitInfoKHR) free() {}
+func (d *DeviceGroupSubmitInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupSubmitInfoKHR. The caller is expected to
 // cast.
-func (D *DeviceGroupSubmitInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupSubmitInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceGroupBindSparseInfoKHR struct {
@@ -12786,12 +12786,12 @@ func marshalDeviceGroupBindSparseInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupBindSparseInfoKHR(c)
 }
 
-func (D *DeviceGroupBindSparseInfoKHR) free() {}
+func (d *DeviceGroupBindSparseInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupBindSparseInfoKHR. The caller is expected to
 // cast.
-func (D *DeviceGroupBindSparseInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupBindSparseInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type BindBufferMemoryDeviceGroupInfoKHR struct {
@@ -12814,12 +12814,12 @@ func marshalBindBufferMemoryDeviceGroupInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindBufferMemoryDeviceGroupInfoKHR(c)
 }
 
-func (B *BindBufferMemoryDeviceGroupInfoKHR) free() {}
+func (b *BindBufferMemoryDeviceGroupInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkBindBufferMemoryDeviceGroupInfoKHR. The caller is expected to
 // cast.
-func (B *BindBufferMemoryDeviceGroupInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindBufferMemoryDeviceGroupInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BindImageMemoryDeviceGroupInfoKHR struct {
@@ -12842,12 +12842,12 @@ func marshalBindImageMemoryDeviceGroupInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindImageMemoryDeviceGroupInfoKHR(c)
 }
 
-func (B *BindImageMemoryDeviceGroupInfoKHR) free() {}
+func (b *BindImageMemoryDeviceGroupInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkBindImageMemoryDeviceGroupInfoKHR. The caller is expected to
 // cast.
-func (B *BindImageMemoryDeviceGroupInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindImageMemoryDeviceGroupInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type CommandPoolTrimFlagsKHR struct {
@@ -12870,12 +12870,12 @@ func marshalCommandPoolTrimFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapCommandPoolTrimFlagsKHR(c)
 }
 
-func (C *CommandPoolTrimFlagsKHR) free() {}
+func (c *CommandPoolTrimFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkCommandPoolTrimFlagsKHR. The caller is expected to
 // cast.
-func (C *CommandPoolTrimFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandPoolTrimFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PhysicalDeviceGroupPropertiesKHR struct {
@@ -12898,12 +12898,12 @@ func marshalPhysicalDeviceGroupPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceGroupPropertiesKHR(c)
 }
 
-func (P *PhysicalDeviceGroupPropertiesKHR) free() {}
+func (p *PhysicalDeviceGroupPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceGroupPropertiesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceGroupPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceGroupPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DeviceGroupDeviceCreateInfoKHR struct {
@@ -12926,12 +12926,12 @@ func marshalDeviceGroupDeviceCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapDeviceGroupDeviceCreateInfoKHR(c)
 }
 
-func (D *DeviceGroupDeviceCreateInfoKHR) free() {}
+func (d *DeviceGroupDeviceCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDeviceGroupDeviceCreateInfoKHR. The caller is expected to
 // cast.
-func (D *DeviceGroupDeviceCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGroupDeviceCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type ExternalMemoryHandleTypeFlagsKHR struct {
@@ -12954,12 +12954,12 @@ func marshalExternalMemoryHandleTypeFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryHandleTypeFlagsKHR(c)
 }
 
-func (E *ExternalMemoryHandleTypeFlagsKHR) free() {}
+func (e *ExternalMemoryHandleTypeFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagsKHR. The caller is expected to
 // cast.
-func (E *ExternalMemoryHandleTypeFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryHandleTypeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryHandleTypeFlagBitsKHR struct {
@@ -12982,12 +12982,12 @@ func marshalExternalMemoryHandleTypeFlagBitsKHR(p uintptr) (interface{}, error) 
 	return wrapExternalMemoryHandleTypeFlagBitsKHR(c)
 }
 
-func (E *ExternalMemoryHandleTypeFlagBitsKHR) free() {}
+func (e *ExternalMemoryHandleTypeFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagBitsKHR. The caller is expected to
 // cast.
-func (E *ExternalMemoryHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryFeatureFlagsKHR struct {
@@ -13010,12 +13010,12 @@ func marshalExternalMemoryFeatureFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlagsKHR(c)
 }
 
-func (E *ExternalMemoryFeatureFlagsKHR) free() {}
+func (e *ExternalMemoryFeatureFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlagsKHR. The caller is expected to
 // cast.
-func (E *ExternalMemoryFeatureFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryFeatureFlagBitsKHR struct {
@@ -13038,12 +13038,12 @@ func marshalExternalMemoryFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlagBitsKHR(c)
 }
 
-func (E *ExternalMemoryFeatureFlagBitsKHR) free() {}
+func (e *ExternalMemoryFeatureFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlagBitsKHR. The caller is expected to
 // cast.
-func (E *ExternalMemoryFeatureFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryPropertiesKHR struct {
@@ -13066,12 +13066,12 @@ func marshalExternalMemoryPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryPropertiesKHR(c)
 }
 
-func (E *ExternalMemoryPropertiesKHR) free() {}
+func (e *ExternalMemoryPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryPropertiesKHR. The caller is expected to
 // cast.
-func (E *ExternalMemoryPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceExternalImageFormatInfoKHR struct {
@@ -13094,12 +13094,12 @@ func marshalPhysicalDeviceExternalImageFormatInfoKHR(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceExternalImageFormatInfoKHR(c)
 }
 
-func (P *PhysicalDeviceExternalImageFormatInfoKHR) free() {}
+func (p *PhysicalDeviceExternalImageFormatInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalImageFormatInfoKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceExternalImageFormatInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceExternalImageFormatInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalImageFormatPropertiesKHR struct {
@@ -13122,12 +13122,12 @@ func marshalExternalImageFormatPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapExternalImageFormatPropertiesKHR(c)
 }
 
-func (E *ExternalImageFormatPropertiesKHR) free() {}
+func (e *ExternalImageFormatPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalImageFormatPropertiesKHR. The caller is expected to
 // cast.
-func (E *ExternalImageFormatPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalImageFormatPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceExternalBufferInfoKHR struct {
@@ -13150,12 +13150,12 @@ func marshalPhysicalDeviceExternalBufferInfoKHR(p uintptr) (interface{}, error) 
 	return wrapPhysicalDeviceExternalBufferInfoKHR(c)
 }
 
-func (P *PhysicalDeviceExternalBufferInfoKHR) free() {}
+func (p *PhysicalDeviceExternalBufferInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalBufferInfoKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceExternalBufferInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceExternalBufferInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalBufferPropertiesKHR struct {
@@ -13178,12 +13178,12 @@ func marshalExternalBufferPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapExternalBufferPropertiesKHR(c)
 }
 
-func (E *ExternalBufferPropertiesKHR) free() {}
+func (e *ExternalBufferPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalBufferPropertiesKHR. The caller is expected to
 // cast.
-func (E *ExternalBufferPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalBufferPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceIDPropertiesKHR struct {
@@ -13206,12 +13206,12 @@ func marshalPhysicalDeviceIDPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceIDPropertiesKHR(c)
 }
 
-func (P *PhysicalDeviceIDPropertiesKHR) free() {}
+func (p *PhysicalDeviceIDPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceIDPropertiesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceIDPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceIDPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalMemoryImageCreateInfoKHR struct {
@@ -13234,12 +13234,12 @@ func marshalExternalMemoryImageCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryImageCreateInfoKHR(c)
 }
 
-func (E *ExternalMemoryImageCreateInfoKHR) free() {}
+func (e *ExternalMemoryImageCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryImageCreateInfoKHR. The caller is expected to
 // cast.
-func (E *ExternalMemoryImageCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryImageCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryBufferCreateInfoKHR struct {
@@ -13262,12 +13262,12 @@ func marshalExternalMemoryBufferCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryBufferCreateInfoKHR(c)
 }
 
-func (E *ExternalMemoryBufferCreateInfoKHR) free() {}
+func (e *ExternalMemoryBufferCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryBufferCreateInfoKHR. The caller is expected to
 // cast.
-func (E *ExternalMemoryBufferCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryBufferCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExportMemoryAllocateInfoKHR struct {
@@ -13290,12 +13290,12 @@ func marshalExportMemoryAllocateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapExportMemoryAllocateInfoKHR(c)
 }
 
-func (E *ExportMemoryAllocateInfoKHR) free() {}
+func (e *ExportMemoryAllocateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkExportMemoryAllocateInfoKHR. The caller is expected to
 // cast.
-func (E *ExportMemoryAllocateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExportMemoryAllocateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ImportMemoryFdInfoKHR struct {
@@ -13318,12 +13318,12 @@ func marshalImportMemoryFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImportMemoryFdInfoKHR(c)
 }
 
-func (I *ImportMemoryFdInfoKHR) free() {}
+func (i *ImportMemoryFdInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkImportMemoryFdInfoKHR. The caller is expected to
 // cast.
-func (I *ImportMemoryFdInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImportMemoryFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type MemoryFdPropertiesKHR struct {
@@ -13346,12 +13346,12 @@ func marshalMemoryFdPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryFdPropertiesKHR(c)
 }
 
-func (M *MemoryFdPropertiesKHR) free() {}
+func (m *MemoryFdPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkMemoryFdPropertiesKHR. The caller is expected to
 // cast.
-func (M *MemoryFdPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryFdPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryGetFdInfoKHR struct {
@@ -13374,12 +13374,12 @@ func marshalMemoryGetFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryGetFdInfoKHR(c)
 }
 
-func (M *MemoryGetFdInfoKHR) free() {}
+func (m *MemoryGetFdInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkMemoryGetFdInfoKHR. The caller is expected to
 // cast.
-func (M *MemoryGetFdInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryGetFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type ExternalSemaphoreHandleTypeFlagsKHR struct {
@@ -13402,12 +13402,12 @@ func marshalExternalSemaphoreHandleTypeFlagsKHR(p uintptr) (interface{}, error) 
 	return wrapExternalSemaphoreHandleTypeFlagsKHR(c)
 }
 
-func (E *ExternalSemaphoreHandleTypeFlagsKHR) free() {}
+func (e *ExternalSemaphoreHandleTypeFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlagsKHR. The caller is expected to
 // cast.
-func (E *ExternalSemaphoreHandleTypeFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalSemaphoreHandleTypeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalSemaphoreHandleTypeFlagBitsKHR struct {
@@ -13430,12 +13430,12 @@ func marshalExternalSemaphoreHandleTypeFlagBitsKHR(p uintptr) (interface{}, erro
 	return wrapExternalSemaphoreHandleTypeFlagBitsKHR(c)
 }
 
-func (E *ExternalSemaphoreHandleTypeFlagBitsKHR) free() {}
+func (e *ExternalSemaphoreHandleTypeFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlagBitsKHR. The caller is expected to
 // cast.
-func (E *ExternalSemaphoreHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalSemaphoreHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalSemaphoreFeatureFlagsKHR struct {
@@ -13458,12 +13458,12 @@ func marshalExternalSemaphoreFeatureFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphoreFeatureFlagsKHR(c)
 }
 
-func (E *ExternalSemaphoreFeatureFlagsKHR) free() {}
+func (e *ExternalSemaphoreFeatureFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalSemaphoreFeatureFlagsKHR. The caller is expected to
 // cast.
-func (E *ExternalSemaphoreFeatureFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalSemaphoreFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalSemaphoreFeatureFlagBitsKHR struct {
@@ -13486,12 +13486,12 @@ func marshalExternalSemaphoreFeatureFlagBitsKHR(p uintptr) (interface{}, error) 
 	return wrapExternalSemaphoreFeatureFlagBitsKHR(c)
 }
 
-func (E *ExternalSemaphoreFeatureFlagBitsKHR) free() {}
+func (e *ExternalSemaphoreFeatureFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalSemaphoreFeatureFlagBitsKHR. The caller is expected to
 // cast.
-func (E *ExternalSemaphoreFeatureFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalSemaphoreFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceExternalSemaphoreInfoKHR struct {
@@ -13514,12 +13514,12 @@ func marshalPhysicalDeviceExternalSemaphoreInfoKHR(p uintptr) (interface{}, erro
 	return wrapPhysicalDeviceExternalSemaphoreInfoKHR(c)
 }
 
-func (P *PhysicalDeviceExternalSemaphoreInfoKHR) free() {}
+func (p *PhysicalDeviceExternalSemaphoreInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalSemaphoreInfoKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceExternalSemaphoreInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceExternalSemaphoreInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalSemaphorePropertiesKHR struct {
@@ -13542,12 +13542,12 @@ func marshalExternalSemaphorePropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapExternalSemaphorePropertiesKHR(c)
 }
 
-func (E *ExternalSemaphorePropertiesKHR) free() {}
+func (e *ExternalSemaphorePropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalSemaphorePropertiesKHR. The caller is expected to
 // cast.
-func (E *ExternalSemaphorePropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalSemaphorePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type SemaphoreImportFlagsKHR struct {
@@ -13570,12 +13570,12 @@ func marshalSemaphoreImportFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapSemaphoreImportFlagsKHR(c)
 }
 
-func (S *SemaphoreImportFlagsKHR) free() {}
+func (s *SemaphoreImportFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkSemaphoreImportFlagsKHR. The caller is expected to
 // cast.
-func (S *SemaphoreImportFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SemaphoreImportFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SemaphoreImportFlagBitsKHR struct {
@@ -13598,12 +13598,12 @@ func marshalSemaphoreImportFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapSemaphoreImportFlagBitsKHR(c)
 }
 
-func (S *SemaphoreImportFlagBitsKHR) free() {}
+func (s *SemaphoreImportFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkSemaphoreImportFlagBitsKHR. The caller is expected to
 // cast.
-func (S *SemaphoreImportFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SemaphoreImportFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ExportSemaphoreCreateInfoKHR struct {
@@ -13626,12 +13626,12 @@ func marshalExportSemaphoreCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapExportSemaphoreCreateInfoKHR(c)
 }
 
-func (E *ExportSemaphoreCreateInfoKHR) free() {}
+func (e *ExportSemaphoreCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkExportSemaphoreCreateInfoKHR. The caller is expected to
 // cast.
-func (E *ExportSemaphoreCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExportSemaphoreCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ImportSemaphoreFdInfoKHR struct {
@@ -13654,12 +13654,12 @@ func marshalImportSemaphoreFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImportSemaphoreFdInfoKHR(c)
 }
 
-func (I *ImportSemaphoreFdInfoKHR) free() {}
+func (i *ImportSemaphoreFdInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkImportSemaphoreFdInfoKHR. The caller is expected to
 // cast.
-func (I *ImportSemaphoreFdInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImportSemaphoreFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type SemaphoreGetFdInfoKHR struct {
@@ -13682,12 +13682,12 @@ func marshalSemaphoreGetFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapSemaphoreGetFdInfoKHR(c)
 }
 
-func (S *SemaphoreGetFdInfoKHR) free() {}
+func (s *SemaphoreGetFdInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkSemaphoreGetFdInfoKHR. The caller is expected to
 // cast.
-func (S *SemaphoreGetFdInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SemaphoreGetFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PhysicalDevicePushDescriptorPropertiesKHR struct {
@@ -13710,12 +13710,12 @@ func marshalPhysicalDevicePushDescriptorPropertiesKHR(p uintptr) (interface{}, e
 	return wrapPhysicalDevicePushDescriptorPropertiesKHR(c)
 }
 
-func (P *PhysicalDevicePushDescriptorPropertiesKHR) free() {}
+func (p *PhysicalDevicePushDescriptorPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDevicePushDescriptorPropertiesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDevicePushDescriptorPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDevicePushDescriptorPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceFloat16Int8FeaturesKHR struct {
@@ -13738,12 +13738,12 @@ func marshalPhysicalDeviceFloat16Int8FeaturesKHR(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceFloat16Int8FeaturesKHR(c)
 }
 
-func (P *PhysicalDeviceFloat16Int8FeaturesKHR) free() {}
+func (p *PhysicalDeviceFloat16Int8FeaturesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceFloat16Int8FeaturesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceFloat16Int8FeaturesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceFloat16Int8FeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDevice16BitStorageFeaturesKHR struct {
@@ -13766,12 +13766,12 @@ func marshalPhysicalDevice16BitStorageFeaturesKHR(p uintptr) (interface{}, error
 	return wrapPhysicalDevice16BitStorageFeaturesKHR(c)
 }
 
-func (P *PhysicalDevice16BitStorageFeaturesKHR) free() {}
+func (p *PhysicalDevice16BitStorageFeaturesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDevice16BitStorageFeaturesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDevice16BitStorageFeaturesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDevice16BitStorageFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type RectLayerKHR struct {
@@ -13794,12 +13794,12 @@ func marshalRectLayerKHR(p uintptr) (interface{}, error) {
 	return wrapRectLayerKHR(c)
 }
 
-func (R *RectLayerKHR) free() {}
+func (r *RectLayerKHR) free() {}
 
 // Native returns the pointer to *C.VkRectLayerKHR. The caller is expected to
 // cast.
-func (R *RectLayerKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RectLayerKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type PresentRegionKHR struct {
@@ -13822,12 +13822,12 @@ func marshalPresentRegionKHR(p uintptr) (interface{}, error) {
 	return wrapPresentRegionKHR(c)
 }
 
-func (P *PresentRegionKHR) free() {}
+func (p *PresentRegionKHR) free() {}
 
 // Native returns the pointer to *C.VkPresentRegionKHR. The caller is expected to
 // cast.
-func (P *PresentRegionKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PresentRegionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PresentRegionsKHR struct {
@@ -13850,12 +13850,12 @@ func marshalPresentRegionsKHR(p uintptr) (interface{}, error) {
 	return wrapPresentRegionsKHR(c)
 }
 
-func (P *PresentRegionsKHR) free() {}
+func (p *PresentRegionsKHR) free() {}
 
 // Native returns the pointer to *C.VkPresentRegionsKHR. The caller is expected to
 // cast.
-func (P *PresentRegionsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PresentRegionsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DescriptorUpdateTemplateKHR struct {
@@ -13878,12 +13878,12 @@ func marshalDescriptorUpdateTemplateKHR(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateKHR(c)
 }
 
-func (D *DescriptorUpdateTemplateKHR) free() {}
+func (d *DescriptorUpdateTemplateKHR) free() {}
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateKHR. The caller is expected to
 // cast.
-func (D *DescriptorUpdateTemplateKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorUpdateTemplateKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorUpdateTemplateTypeKHR struct {
@@ -13906,12 +13906,12 @@ func marshalDescriptorUpdateTemplateTypeKHR(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateTypeKHR(c)
 }
 
-func (D *DescriptorUpdateTemplateTypeKHR) free() {}
+func (d *DescriptorUpdateTemplateTypeKHR) free() {}
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateTypeKHR. The caller is expected to
 // cast.
-func (D *DescriptorUpdateTemplateTypeKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorUpdateTemplateTypeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorUpdateTemplateCreateFlagsKHR struct {
@@ -13934,12 +13934,12 @@ func marshalDescriptorUpdateTemplateCreateFlagsKHR(p uintptr) (interface{}, erro
 	return wrapDescriptorUpdateTemplateCreateFlagsKHR(c)
 }
 
-func (D *DescriptorUpdateTemplateCreateFlagsKHR) free() {}
+func (d *DescriptorUpdateTemplateCreateFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateFlagsKHR. The caller is expected to
 // cast.
-func (D *DescriptorUpdateTemplateCreateFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorUpdateTemplateCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorUpdateTemplateEntryKHR struct {
@@ -13962,12 +13962,12 @@ func marshalDescriptorUpdateTemplateEntryKHR(p uintptr) (interface{}, error) {
 	return wrapDescriptorUpdateTemplateEntryKHR(c)
 }
 
-func (D *DescriptorUpdateTemplateEntryKHR) free() {}
+func (d *DescriptorUpdateTemplateEntryKHR) free() {}
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateEntryKHR. The caller is expected to
 // cast.
-func (D *DescriptorUpdateTemplateEntryKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorUpdateTemplateEntryKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorUpdateTemplateCreateInfoKHR struct {
@@ -13990,12 +13990,12 @@ func marshalDescriptorUpdateTemplateCreateInfoKHR(p uintptr) (interface{}, error
 	return wrapDescriptorUpdateTemplateCreateInfoKHR(c)
 }
 
-func (D *DescriptorUpdateTemplateCreateInfoKHR) free() {}
+func (d *DescriptorUpdateTemplateCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateInfoKHR. The caller is expected to
 // cast.
-func (D *DescriptorUpdateTemplateCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorUpdateTemplateCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type AttachmentDescription2KHR struct {
@@ -14018,12 +14018,12 @@ func marshalAttachmentDescription2KHR(p uintptr) (interface{}, error) {
 	return wrapAttachmentDescription2KHR(c)
 }
 
-func (A *AttachmentDescription2KHR) free() {}
+func (a *AttachmentDescription2KHR) free() {}
 
 // Native returns the pointer to *C.VkAttachmentDescription2KHR. The caller is expected to
 // cast.
-func (A *AttachmentDescription2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AttachmentDescription2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type AttachmentReference2KHR struct {
@@ -14046,12 +14046,12 @@ func marshalAttachmentReference2KHR(p uintptr) (interface{}, error) {
 	return wrapAttachmentReference2KHR(c)
 }
 
-func (A *AttachmentReference2KHR) free() {}
+func (a *AttachmentReference2KHR) free() {}
 
 // Native returns the pointer to *C.VkAttachmentReference2KHR. The caller is expected to
 // cast.
-func (A *AttachmentReference2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AttachmentReference2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type SubpassDescription2KHR struct {
@@ -14074,12 +14074,12 @@ func marshalSubpassDescription2KHR(p uintptr) (interface{}, error) {
 	return wrapSubpassDescription2KHR(c)
 }
 
-func (S *SubpassDescription2KHR) free() {}
+func (s *SubpassDescription2KHR) free() {}
 
 // Native returns the pointer to *C.VkSubpassDescription2KHR. The caller is expected to
 // cast.
-func (S *SubpassDescription2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassDescription2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SubpassDependency2KHR struct {
@@ -14102,12 +14102,12 @@ func marshalSubpassDependency2KHR(p uintptr) (interface{}, error) {
 	return wrapSubpassDependency2KHR(c)
 }
 
-func (S *SubpassDependency2KHR) free() {}
+func (s *SubpassDependency2KHR) free() {}
 
 // Native returns the pointer to *C.VkSubpassDependency2KHR. The caller is expected to
 // cast.
-func (S *SubpassDependency2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassDependency2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type RenderPassCreateInfo2KHR struct {
@@ -14130,12 +14130,12 @@ func marshalRenderPassCreateInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapRenderPassCreateInfo2KHR(c)
 }
 
-func (R *RenderPassCreateInfo2KHR) free() {}
+func (r *RenderPassCreateInfo2KHR) free() {}
 
 // Native returns the pointer to *C.VkRenderPassCreateInfo2KHR. The caller is expected to
 // cast.
-func (R *RenderPassCreateInfo2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPassCreateInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type SubpassBeginInfoKHR struct {
@@ -14158,12 +14158,12 @@ func marshalSubpassBeginInfoKHR(p uintptr) (interface{}, error) {
 	return wrapSubpassBeginInfoKHR(c)
 }
 
-func (S *SubpassBeginInfoKHR) free() {}
+func (s *SubpassBeginInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkSubpassBeginInfoKHR. The caller is expected to
 // cast.
-func (S *SubpassBeginInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassBeginInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SubpassEndInfoKHR struct {
@@ -14186,12 +14186,12 @@ func marshalSubpassEndInfoKHR(p uintptr) (interface{}, error) {
 	return wrapSubpassEndInfoKHR(c)
 }
 
-func (S *SubpassEndInfoKHR) free() {}
+func (s *SubpassEndInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkSubpassEndInfoKHR. The caller is expected to
 // cast.
-func (S *SubpassEndInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassEndInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SharedPresentSurfaceCapabilitiesKHR struct {
@@ -14214,12 +14214,12 @@ func marshalSharedPresentSurfaceCapabilitiesKHR(p uintptr) (interface{}, error) 
 	return wrapSharedPresentSurfaceCapabilitiesKHR(c)
 }
 
-func (S *SharedPresentSurfaceCapabilitiesKHR) free() {}
+func (s *SharedPresentSurfaceCapabilitiesKHR) free() {}
 
 // Native returns the pointer to *C.VkSharedPresentSurfaceCapabilitiesKHR. The caller is expected to
 // cast.
-func (S *SharedPresentSurfaceCapabilitiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SharedPresentSurfaceCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ExternalFenceHandleTypeFlagsKHR struct {
@@ -14242,12 +14242,12 @@ func marshalExternalFenceHandleTypeFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalFenceHandleTypeFlagsKHR(c)
 }
 
-func (E *ExternalFenceHandleTypeFlagsKHR) free() {}
+func (e *ExternalFenceHandleTypeFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalFenceHandleTypeFlagsKHR. The caller is expected to
 // cast.
-func (E *ExternalFenceHandleTypeFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalFenceHandleTypeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalFenceHandleTypeFlagBitsKHR struct {
@@ -14270,12 +14270,12 @@ func marshalExternalFenceHandleTypeFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalFenceHandleTypeFlagBitsKHR(c)
 }
 
-func (E *ExternalFenceHandleTypeFlagBitsKHR) free() {}
+func (e *ExternalFenceHandleTypeFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalFenceHandleTypeFlagBitsKHR. The caller is expected to
 // cast.
-func (E *ExternalFenceHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalFenceHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalFenceFeatureFlagsKHR struct {
@@ -14298,12 +14298,12 @@ func marshalExternalFenceFeatureFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalFenceFeatureFlagsKHR(c)
 }
 
-func (E *ExternalFenceFeatureFlagsKHR) free() {}
+func (e *ExternalFenceFeatureFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalFenceFeatureFlagsKHR. The caller is expected to
 // cast.
-func (E *ExternalFenceFeatureFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalFenceFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalFenceFeatureFlagBitsKHR struct {
@@ -14326,12 +14326,12 @@ func marshalExternalFenceFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapExternalFenceFeatureFlagBitsKHR(c)
 }
 
-func (E *ExternalFenceFeatureFlagBitsKHR) free() {}
+func (e *ExternalFenceFeatureFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalFenceFeatureFlagBitsKHR. The caller is expected to
 // cast.
-func (E *ExternalFenceFeatureFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalFenceFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type PhysicalDeviceExternalFenceInfoKHR struct {
@@ -14354,12 +14354,12 @@ func marshalPhysicalDeviceExternalFenceInfoKHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceExternalFenceInfoKHR(c)
 }
 
-func (P *PhysicalDeviceExternalFenceInfoKHR) free() {}
+func (p *PhysicalDeviceExternalFenceInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalFenceInfoKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceExternalFenceInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceExternalFenceInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalFencePropertiesKHR struct {
@@ -14382,12 +14382,12 @@ func marshalExternalFencePropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapExternalFencePropertiesKHR(c)
 }
 
-func (E *ExternalFencePropertiesKHR) free() {}
+func (e *ExternalFencePropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkExternalFencePropertiesKHR. The caller is expected to
 // cast.
-func (E *ExternalFencePropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalFencePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type FenceImportFlagsKHR struct {
@@ -14410,12 +14410,12 @@ func marshalFenceImportFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapFenceImportFlagsKHR(c)
 }
 
-func (F *FenceImportFlagsKHR) free() {}
+func (f *FenceImportFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkFenceImportFlagsKHR. The caller is expected to
 // cast.
-func (F *FenceImportFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FenceImportFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type FenceImportFlagBitsKHR struct {
@@ -14438,12 +14438,12 @@ func marshalFenceImportFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapFenceImportFlagBitsKHR(c)
 }
 
-func (F *FenceImportFlagBitsKHR) free() {}
+func (f *FenceImportFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkFenceImportFlagBitsKHR. The caller is expected to
 // cast.
-func (F *FenceImportFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FenceImportFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type ExportFenceCreateInfoKHR struct {
@@ -14466,12 +14466,12 @@ func marshalExportFenceCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapExportFenceCreateInfoKHR(c)
 }
 
-func (E *ExportFenceCreateInfoKHR) free() {}
+func (e *ExportFenceCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkExportFenceCreateInfoKHR. The caller is expected to
 // cast.
-func (E *ExportFenceCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExportFenceCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ImportFenceFdInfoKHR struct {
@@ -14494,12 +14494,12 @@ func marshalImportFenceFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImportFenceFdInfoKHR(c)
 }
 
-func (I *ImportFenceFdInfoKHR) free() {}
+func (i *ImportFenceFdInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkImportFenceFdInfoKHR. The caller is expected to
 // cast.
-func (I *ImportFenceFdInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImportFenceFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type FenceGetFdInfoKHR struct {
@@ -14522,12 +14522,12 @@ func marshalFenceGetFdInfoKHR(p uintptr) (interface{}, error) {
 	return wrapFenceGetFdInfoKHR(c)
 }
 
-func (F *FenceGetFdInfoKHR) free() {}
+func (f *FenceGetFdInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkFenceGetFdInfoKHR. The caller is expected to
 // cast.
-func (F *FenceGetFdInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FenceGetFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type PointClippingBehaviorKHR struct {
@@ -14550,12 +14550,12 @@ func marshalPointClippingBehaviorKHR(p uintptr) (interface{}, error) {
 	return wrapPointClippingBehaviorKHR(c)
 }
 
-func (P *PointClippingBehaviorKHR) free() {}
+func (p *PointClippingBehaviorKHR) free() {}
 
 // Native returns the pointer to *C.VkPointClippingBehaviorKHR. The caller is expected to
 // cast.
-func (P *PointClippingBehaviorKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PointClippingBehaviorKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type TessellationDomainOriginKHR struct {
@@ -14578,12 +14578,12 @@ func marshalTessellationDomainOriginKHR(p uintptr) (interface{}, error) {
 	return wrapTessellationDomainOriginKHR(c)
 }
 
-func (T *TessellationDomainOriginKHR) free() {}
+func (t *TessellationDomainOriginKHR) free() {}
 
 // Native returns the pointer to *C.VkTessellationDomainOriginKHR. The caller is expected to
 // cast.
-func (T *TessellationDomainOriginKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *TessellationDomainOriginKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 type PhysicalDevicePointClippingPropertiesKHR struct {
@@ -14606,12 +14606,12 @@ func marshalPhysicalDevicePointClippingPropertiesKHR(p uintptr) (interface{}, er
 	return wrapPhysicalDevicePointClippingPropertiesKHR(c)
 }
 
-func (P *PhysicalDevicePointClippingPropertiesKHR) free() {}
+func (p *PhysicalDevicePointClippingPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDevicePointClippingPropertiesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDevicePointClippingPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDevicePointClippingPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type RenderPassInputAttachmentAspectCreateInfoKHR struct {
@@ -14634,12 +14634,12 @@ func marshalRenderPassInputAttachmentAspectCreateInfoKHR(p uintptr) (interface{}
 	return wrapRenderPassInputAttachmentAspectCreateInfoKHR(c)
 }
 
-func (R *RenderPassInputAttachmentAspectCreateInfoKHR) free() {}
+func (r *RenderPassInputAttachmentAspectCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkRenderPassInputAttachmentAspectCreateInfoKHR. The caller is expected to
 // cast.
-func (R *RenderPassInputAttachmentAspectCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPassInputAttachmentAspectCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type InputAttachmentAspectReferenceKHR struct {
@@ -14662,12 +14662,12 @@ func marshalInputAttachmentAspectReferenceKHR(p uintptr) (interface{}, error) {
 	return wrapInputAttachmentAspectReferenceKHR(c)
 }
 
-func (I *InputAttachmentAspectReferenceKHR) free() {}
+func (i *InputAttachmentAspectReferenceKHR) free() {}
 
 // Native returns the pointer to *C.VkInputAttachmentAspectReferenceKHR. The caller is expected to
 // cast.
-func (I *InputAttachmentAspectReferenceKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *InputAttachmentAspectReferenceKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageViewUsageCreateInfoKHR struct {
@@ -14690,12 +14690,12 @@ func marshalImageViewUsageCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImageViewUsageCreateInfoKHR(c)
 }
 
-func (I *ImageViewUsageCreateInfoKHR) free() {}
+func (i *ImageViewUsageCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkImageViewUsageCreateInfoKHR. The caller is expected to
 // cast.
-func (I *ImageViewUsageCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageViewUsageCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type PipelineTessellationDomainOriginStateCreateInfoKHR struct {
@@ -14718,12 +14718,12 @@ func marshalPipelineTessellationDomainOriginStateCreateInfoKHR(p uintptr) (inter
 	return wrapPipelineTessellationDomainOriginStateCreateInfoKHR(c)
 }
 
-func (P *PipelineTessellationDomainOriginStateCreateInfoKHR) free() {}
+func (p *PipelineTessellationDomainOriginStateCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkPipelineTessellationDomainOriginStateCreateInfoKHR. The caller is expected to
 // cast.
-func (P *PipelineTessellationDomainOriginStateCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineTessellationDomainOriginStateCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceSurfaceInfo2KHR struct {
@@ -14746,12 +14746,12 @@ func marshalPhysicalDeviceSurfaceInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceSurfaceInfo2KHR(c)
 }
 
-func (P *PhysicalDeviceSurfaceInfo2KHR) free() {}
+func (p *PhysicalDeviceSurfaceInfo2KHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceSurfaceInfo2KHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceSurfaceInfo2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceSurfaceInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SurfaceCapabilities2KHR struct {
@@ -14774,12 +14774,12 @@ func marshalSurfaceCapabilities2KHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceCapabilities2KHR(c)
 }
 
-func (S *SurfaceCapabilities2KHR) free() {}
+func (s *SurfaceCapabilities2KHR) free() {}
 
 // Native returns the pointer to *C.VkSurfaceCapabilities2KHR. The caller is expected to
 // cast.
-func (S *SurfaceCapabilities2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceCapabilities2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SurfaceFormat2KHR struct {
@@ -14802,12 +14802,12 @@ func marshalSurfaceFormat2KHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceFormat2KHR(c)
 }
 
-func (S *SurfaceFormat2KHR) free() {}
+func (s *SurfaceFormat2KHR) free() {}
 
 // Native returns the pointer to *C.VkSurfaceFormat2KHR. The caller is expected to
 // cast.
-func (S *SurfaceFormat2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceFormat2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PhysicalDeviceVariablePointerFeaturesKHR struct {
@@ -14830,12 +14830,12 @@ func marshalPhysicalDeviceVariablePointerFeaturesKHR(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceVariablePointerFeaturesKHR(c)
 }
 
-func (P *PhysicalDeviceVariablePointerFeaturesKHR) free() {}
+func (p *PhysicalDeviceVariablePointerFeaturesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceVariablePointerFeaturesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceVariablePointerFeaturesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceVariablePointerFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceVariablePointersFeaturesKHR struct {
@@ -14858,12 +14858,12 @@ func marshalPhysicalDeviceVariablePointersFeaturesKHR(p uintptr) (interface{}, e
 	return wrapPhysicalDeviceVariablePointersFeaturesKHR(c)
 }
 
-func (P *PhysicalDeviceVariablePointersFeaturesKHR) free() {}
+func (p *PhysicalDeviceVariablePointersFeaturesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceVariablePointersFeaturesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceVariablePointersFeaturesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceVariablePointersFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DisplayProperties2KHR struct {
@@ -14886,12 +14886,12 @@ func marshalDisplayProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapDisplayProperties2KHR(c)
 }
 
-func (D *DisplayProperties2KHR) free() {}
+func (d *DisplayProperties2KHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayProperties2KHR. The caller is expected to
 // cast.
-func (D *DisplayProperties2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayPlaneProperties2KHR struct {
@@ -14914,12 +14914,12 @@ func marshalDisplayPlaneProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneProperties2KHR(c)
 }
 
-func (D *DisplayPlaneProperties2KHR) free() {}
+func (d *DisplayPlaneProperties2KHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayPlaneProperties2KHR. The caller is expected to
 // cast.
-func (D *DisplayPlaneProperties2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPlaneProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayModeProperties2KHR struct {
@@ -14942,12 +14942,12 @@ func marshalDisplayModeProperties2KHR(p uintptr) (interface{}, error) {
 	return wrapDisplayModeProperties2KHR(c)
 }
 
-func (D *DisplayModeProperties2KHR) free() {}
+func (d *DisplayModeProperties2KHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayModeProperties2KHR. The caller is expected to
 // cast.
-func (D *DisplayModeProperties2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayModeProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayPlaneInfo2KHR struct {
@@ -14970,12 +14970,12 @@ func marshalDisplayPlaneInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneInfo2KHR(c)
 }
 
-func (D *DisplayPlaneInfo2KHR) free() {}
+func (d *DisplayPlaneInfo2KHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayPlaneInfo2KHR. The caller is expected to
 // cast.
-func (D *DisplayPlaneInfo2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPlaneInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayPlaneCapabilities2KHR struct {
@@ -14998,12 +14998,12 @@ func marshalDisplayPlaneCapabilities2KHR(p uintptr) (interface{}, error) {
 	return wrapDisplayPlaneCapabilities2KHR(c)
 }
 
-func (D *DisplayPlaneCapabilities2KHR) free() {}
+func (d *DisplayPlaneCapabilities2KHR) free() {}
 
 // Native returns the pointer to *C.VkDisplayPlaneCapabilities2KHR. The caller is expected to
 // cast.
-func (D *DisplayPlaneCapabilities2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPlaneCapabilities2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type MemoryDedicatedRequirementsKHR struct {
@@ -15026,12 +15026,12 @@ func marshalMemoryDedicatedRequirementsKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryDedicatedRequirementsKHR(c)
 }
 
-func (M *MemoryDedicatedRequirementsKHR) free() {}
+func (m *MemoryDedicatedRequirementsKHR) free() {}
 
 // Native returns the pointer to *C.VkMemoryDedicatedRequirementsKHR. The caller is expected to
 // cast.
-func (M *MemoryDedicatedRequirementsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryDedicatedRequirementsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type MemoryDedicatedAllocateInfoKHR struct {
@@ -15054,12 +15054,12 @@ func marshalMemoryDedicatedAllocateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapMemoryDedicatedAllocateInfoKHR(c)
 }
 
-func (M *MemoryDedicatedAllocateInfoKHR) free() {}
+func (m *MemoryDedicatedAllocateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkMemoryDedicatedAllocateInfoKHR. The caller is expected to
 // cast.
-func (M *MemoryDedicatedAllocateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryDedicatedAllocateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type BufferMemoryRequirementsInfo2KHR struct {
@@ -15082,12 +15082,12 @@ func marshalBufferMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapBufferMemoryRequirementsInfo2KHR(c)
 }
 
-func (B *BufferMemoryRequirementsInfo2KHR) free() {}
+func (b *BufferMemoryRequirementsInfo2KHR) free() {}
 
 // Native returns the pointer to *C.VkBufferMemoryRequirementsInfo2KHR. The caller is expected to
 // cast.
-func (B *BufferMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ImageMemoryRequirementsInfo2KHR struct {
@@ -15110,12 +15110,12 @@ func marshalImageMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error) {
 	return wrapImageMemoryRequirementsInfo2KHR(c)
 }
 
-func (I *ImageMemoryRequirementsInfo2KHR) free() {}
+func (i *ImageMemoryRequirementsInfo2KHR) free() {}
 
 // Native returns the pointer to *C.VkImageMemoryRequirementsInfo2KHR. The caller is expected to
 // cast.
-func (I *ImageMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageSparseMemoryRequirementsInfo2KHR struct {
@@ -15138,12 +15138,12 @@ func marshalImageSparseMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error
 	return wrapImageSparseMemoryRequirementsInfo2KHR(c)
 }
 
-func (I *ImageSparseMemoryRequirementsInfo2KHR) free() {}
+func (i *ImageSparseMemoryRequirementsInfo2KHR) free() {}
 
 // Native returns the pointer to *C.VkImageSparseMemoryRequirementsInfo2KHR. The caller is expected to
 // cast.
-func (I *ImageSparseMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageSparseMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type SparseImageMemoryRequirements2KHR struct {
@@ -15166,12 +15166,12 @@ func marshalSparseImageMemoryRequirements2KHR(p uintptr) (interface{}, error) {
 	return wrapSparseImageMemoryRequirements2KHR(c)
 }
 
-func (S *SparseImageMemoryRequirements2KHR) free() {}
+func (s *SparseImageMemoryRequirements2KHR) free() {}
 
 // Native returns the pointer to *C.VkSparseImageMemoryRequirements2KHR. The caller is expected to
 // cast.
-func (S *SparseImageMemoryRequirements2KHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SparseImageMemoryRequirements2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ImageFormatListCreateInfoKHR struct {
@@ -15194,12 +15194,12 @@ func marshalImageFormatListCreateInfoKHR(p uintptr) (interface{}, error) {
 	return wrapImageFormatListCreateInfoKHR(c)
 }
 
-func (I *ImageFormatListCreateInfoKHR) free() {}
+func (i *ImageFormatListCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkImageFormatListCreateInfoKHR. The caller is expected to
 // cast.
-func (I *ImageFormatListCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageFormatListCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type SamplerYcbcrConversionKHR struct {
@@ -15222,12 +15222,12 @@ func marshalSamplerYcbcrConversionKHR(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrConversionKHR(c)
 }
 
-func (S *SamplerYcbcrConversionKHR) free() {}
+func (s *SamplerYcbcrConversionKHR) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionKHR. The caller is expected to
 // cast.
-func (S *SamplerYcbcrConversionKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrConversionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SamplerYcbcrModelConversionKHR struct {
@@ -15250,12 +15250,12 @@ func marshalSamplerYcbcrModelConversionKHR(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrModelConversionKHR(c)
 }
 
-func (S *SamplerYcbcrModelConversionKHR) free() {}
+func (s *SamplerYcbcrModelConversionKHR) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrModelConversionKHR. The caller is expected to
 // cast.
-func (S *SamplerYcbcrModelConversionKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrModelConversionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SamplerYcbcrRangeKHR struct {
@@ -15278,12 +15278,12 @@ func marshalSamplerYcbcrRangeKHR(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrRangeKHR(c)
 }
 
-func (S *SamplerYcbcrRangeKHR) free() {}
+func (s *SamplerYcbcrRangeKHR) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrRangeKHR. The caller is expected to
 // cast.
-func (S *SamplerYcbcrRangeKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrRangeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ChromaLocationKHR struct {
@@ -15306,12 +15306,12 @@ func marshalChromaLocationKHR(p uintptr) (interface{}, error) {
 	return wrapChromaLocationKHR(c)
 }
 
-func (C *ChromaLocationKHR) free() {}
+func (c *ChromaLocationKHR) free() {}
 
 // Native returns the pointer to *C.VkChromaLocationKHR. The caller is expected to
 // cast.
-func (C *ChromaLocationKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ChromaLocationKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type SamplerYcbcrConversionCreateInfoKHR struct {
@@ -15334,12 +15334,12 @@ func marshalSamplerYcbcrConversionCreateInfoKHR(p uintptr) (interface{}, error) 
 	return wrapSamplerYcbcrConversionCreateInfoKHR(c)
 }
 
-func (S *SamplerYcbcrConversionCreateInfoKHR) free() {}
+func (s *SamplerYcbcrConversionCreateInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionCreateInfoKHR. The caller is expected to
 // cast.
-func (S *SamplerYcbcrConversionCreateInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrConversionCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SamplerYcbcrConversionInfoKHR struct {
@@ -15362,12 +15362,12 @@ func marshalSamplerYcbcrConversionInfoKHR(p uintptr) (interface{}, error) {
 	return wrapSamplerYcbcrConversionInfoKHR(c)
 }
 
-func (S *SamplerYcbcrConversionInfoKHR) free() {}
+func (s *SamplerYcbcrConversionInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionInfoKHR. The caller is expected to
 // cast.
-func (S *SamplerYcbcrConversionInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrConversionInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type BindImagePlaneMemoryInfoKHR struct {
@@ -15390,12 +15390,12 @@ func marshalBindImagePlaneMemoryInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindImagePlaneMemoryInfoKHR(c)
 }
 
-func (B *BindImagePlaneMemoryInfoKHR) free() {}
+func (b *BindImagePlaneMemoryInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkBindImagePlaneMemoryInfoKHR. The caller is expected to
 // cast.
-func (B *BindImagePlaneMemoryInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindImagePlaneMemoryInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ImagePlaneMemoryRequirementsInfoKHR struct {
@@ -15418,12 +15418,12 @@ func marshalImagePlaneMemoryRequirementsInfoKHR(p uintptr) (interface{}, error) 
 	return wrapImagePlaneMemoryRequirementsInfoKHR(c)
 }
 
-func (I *ImagePlaneMemoryRequirementsInfoKHR) free() {}
+func (i *ImagePlaneMemoryRequirementsInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkImagePlaneMemoryRequirementsInfoKHR. The caller is expected to
 // cast.
-func (I *ImagePlaneMemoryRequirementsInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImagePlaneMemoryRequirementsInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type PhysicalDeviceSamplerYcbcrConversionFeaturesKHR struct {
@@ -15446,12 +15446,12 @@ func marshalPhysicalDeviceSamplerYcbcrConversionFeaturesKHR(p uintptr) (interfac
 	return wrapPhysicalDeviceSamplerYcbcrConversionFeaturesKHR(c)
 }
 
-func (P *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR) free() {}
+func (p *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SamplerYcbcrConversionImageFormatPropertiesKHR struct {
@@ -15474,12 +15474,12 @@ func marshalSamplerYcbcrConversionImageFormatPropertiesKHR(p uintptr) (interface
 	return wrapSamplerYcbcrConversionImageFormatPropertiesKHR(c)
 }
 
-func (S *SamplerYcbcrConversionImageFormatPropertiesKHR) free() {}
+func (s *SamplerYcbcrConversionImageFormatPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionImageFormatPropertiesKHR. The caller is expected to
 // cast.
-func (S *SamplerYcbcrConversionImageFormatPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerYcbcrConversionImageFormatPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type BindBufferMemoryInfoKHR struct {
@@ -15502,12 +15502,12 @@ func marshalBindBufferMemoryInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindBufferMemoryInfoKHR(c)
 }
 
-func (B *BindBufferMemoryInfoKHR) free() {}
+func (b *BindBufferMemoryInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkBindBufferMemoryInfoKHR. The caller is expected to
 // cast.
-func (B *BindBufferMemoryInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindBufferMemoryInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BindImageMemoryInfoKHR struct {
@@ -15530,12 +15530,12 @@ func marshalBindImageMemoryInfoKHR(p uintptr) (interface{}, error) {
 	return wrapBindImageMemoryInfoKHR(c)
 }
 
-func (B *BindImageMemoryInfoKHR) free() {}
+func (b *BindImageMemoryInfoKHR) free() {}
 
 // Native returns the pointer to *C.VkBindImageMemoryInfoKHR. The caller is expected to
 // cast.
-func (B *BindImageMemoryInfoKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindImageMemoryInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type PhysicalDeviceMaintenance3PropertiesKHR struct {
@@ -15558,12 +15558,12 @@ func marshalPhysicalDeviceMaintenance3PropertiesKHR(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceMaintenance3PropertiesKHR(c)
 }
 
-func (P *PhysicalDeviceMaintenance3PropertiesKHR) free() {}
+func (p *PhysicalDeviceMaintenance3PropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMaintenance3PropertiesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMaintenance3PropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMaintenance3PropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DescriptorSetLayoutSupportKHR struct {
@@ -15586,12 +15586,12 @@ func marshalDescriptorSetLayoutSupportKHR(p uintptr) (interface{}, error) {
 	return wrapDescriptorSetLayoutSupportKHR(c)
 }
 
-func (D *DescriptorSetLayoutSupportKHR) free() {}
+func (d *DescriptorSetLayoutSupportKHR) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutSupportKHR. The caller is expected to
 // cast.
-func (D *DescriptorSetLayoutSupportKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetLayoutSupportKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PhysicalDevice8BitStorageFeaturesKHR struct {
@@ -15614,12 +15614,12 @@ func marshalPhysicalDevice8BitStorageFeaturesKHR(p uintptr) (interface{}, error)
 	return wrapPhysicalDevice8BitStorageFeaturesKHR(c)
 }
 
-func (P *PhysicalDevice8BitStorageFeaturesKHR) free() {}
+func (p *PhysicalDevice8BitStorageFeaturesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDevice8BitStorageFeaturesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDevice8BitStorageFeaturesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDevice8BitStorageFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceShaderAtomicInt64FeaturesKHR struct {
@@ -15642,12 +15642,12 @@ func marshalPhysicalDeviceShaderAtomicInt64FeaturesKHR(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceShaderAtomicInt64FeaturesKHR(c)
 }
 
-func (P *PhysicalDeviceShaderAtomicInt64FeaturesKHR) free() {}
+func (p *PhysicalDeviceShaderAtomicInt64FeaturesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceShaderAtomicInt64FeaturesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceShaderAtomicInt64FeaturesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceShaderAtomicInt64FeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DriverIDKHR struct {
@@ -15670,12 +15670,12 @@ func marshalDriverIDKHR(p uintptr) (interface{}, error) {
 	return wrapDriverIDKHR(c)
 }
 
-func (D *DriverIDKHR) free() {}
+func (d *DriverIDKHR) free() {}
 
 // Native returns the pointer to *C.VkDriverIdKHR. The caller is expected to
 // cast.
-func (D *DriverIDKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DriverIDKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type ConformanceVersionKHR struct {
@@ -15698,12 +15698,12 @@ func marshalConformanceVersionKHR(p uintptr) (interface{}, error) {
 	return wrapConformanceVersionKHR(c)
 }
 
-func (C *ConformanceVersionKHR) free() {}
+func (c *ConformanceVersionKHR) free() {}
 
 // Native returns the pointer to *C.VkConformanceVersionKHR. The caller is expected to
 // cast.
-func (C *ConformanceVersionKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ConformanceVersionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PhysicalDeviceDriverPropertiesKHR struct {
@@ -15726,12 +15726,12 @@ func marshalPhysicalDeviceDriverPropertiesKHR(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceDriverPropertiesKHR(c)
 }
 
-func (P *PhysicalDeviceDriverPropertiesKHR) free() {}
+func (p *PhysicalDeviceDriverPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceDriverPropertiesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceDriverPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceDriverPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceFloatControlsPropertiesKHR struct {
@@ -15754,12 +15754,12 @@ func marshalPhysicalDeviceFloatControlsPropertiesKHR(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceFloatControlsPropertiesKHR(c)
 }
 
-func (P *PhysicalDeviceFloatControlsPropertiesKHR) free() {}
+func (p *PhysicalDeviceFloatControlsPropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceFloatControlsPropertiesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceFloatControlsPropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceFloatControlsPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ResolveModeFlagBitsKHR struct {
@@ -15782,12 +15782,12 @@ func marshalResolveModeFlagBitsKHR(p uintptr) (interface{}, error) {
 	return wrapResolveModeFlagBitsKHR(c)
 }
 
-func (R *ResolveModeFlagBitsKHR) free() {}
+func (r *ResolveModeFlagBitsKHR) free() {}
 
 // Native returns the pointer to *C.VkResolveModeFlagBitsKHR. The caller is expected to
 // cast.
-func (R *ResolveModeFlagBitsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *ResolveModeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type ResolveModeFlagsKHR struct {
@@ -15810,12 +15810,12 @@ func marshalResolveModeFlagsKHR(p uintptr) (interface{}, error) {
 	return wrapResolveModeFlagsKHR(c)
 }
 
-func (R *ResolveModeFlagsKHR) free() {}
+func (r *ResolveModeFlagsKHR) free() {}
 
 // Native returns the pointer to *C.VkResolveModeFlagsKHR. The caller is expected to
 // cast.
-func (R *ResolveModeFlagsKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *ResolveModeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type SubpassDescriptionDepthStencilResolveKHR struct {
@@ -15838,12 +15838,12 @@ func marshalSubpassDescriptionDepthStencilResolveKHR(p uintptr) (interface{}, er
 	return wrapSubpassDescriptionDepthStencilResolveKHR(c)
 }
 
-func (S *SubpassDescriptionDepthStencilResolveKHR) free() {}
+func (s *SubpassDescriptionDepthStencilResolveKHR) free() {}
 
 // Native returns the pointer to *C.VkSubpassDescriptionDepthStencilResolveKHR. The caller is expected to
 // cast.
-func (S *SubpassDescriptionDepthStencilResolveKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassDescriptionDepthStencilResolveKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PhysicalDeviceDepthStencilResolvePropertiesKHR struct {
@@ -15866,12 +15866,12 @@ func marshalPhysicalDeviceDepthStencilResolvePropertiesKHR(p uintptr) (interface
 	return wrapPhysicalDeviceDepthStencilResolvePropertiesKHR(c)
 }
 
-func (P *PhysicalDeviceDepthStencilResolvePropertiesKHR) free() {}
+func (p *PhysicalDeviceDepthStencilResolvePropertiesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceDepthStencilResolvePropertiesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceDepthStencilResolvePropertiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceDepthStencilResolvePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceVulkanMemoryModelFeaturesKHR struct {
@@ -15894,12 +15894,12 @@ func marshalPhysicalDeviceVulkanMemoryModelFeaturesKHR(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceVulkanMemoryModelFeaturesKHR(c)
 }
 
-func (P *PhysicalDeviceVulkanMemoryModelFeaturesKHR) free() {}
+func (p *PhysicalDeviceVulkanMemoryModelFeaturesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceVulkanMemoryModelFeaturesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceVulkanMemoryModelFeaturesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceVulkanMemoryModelFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SurfaceProtectedCapabilitiesKHR struct {
@@ -15922,12 +15922,12 @@ func marshalSurfaceProtectedCapabilitiesKHR(p uintptr) (interface{}, error) {
 	return wrapSurfaceProtectedCapabilitiesKHR(c)
 }
 
-func (S *SurfaceProtectedCapabilitiesKHR) free() {}
+func (s *SurfaceProtectedCapabilitiesKHR) free() {}
 
 // Native returns the pointer to *C.VkSurfaceProtectedCapabilitiesKHR. The caller is expected to
 // cast.
-func (S *SurfaceProtectedCapabilitiesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceProtectedCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR struct {
@@ -15950,12 +15950,12 @@ func marshalPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR(p uintptr) (int
 	return wrapPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR(c)
 }
 
-func (P *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) free() {}
+func (p *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR. The caller is expected to
 // cast.
-func (P *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DebugReportCallbackEXT struct {
@@ -15978,12 +15978,12 @@ func marshalDebugReportCallbackEXT(p uintptr) (interface{}, error) {
 	return wrapDebugReportCallbackEXT(c)
 }
 
-func (D *DebugReportCallbackEXT) free() {}
+func (d *DebugReportCallbackEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugReportCallbackEXT. The caller is expected to
 // cast.
-func (D *DebugReportCallbackEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugReportCallbackEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugReportObjectTypeEXT struct {
@@ -16006,12 +16006,12 @@ func marshalDebugReportObjectTypeEXT(p uintptr) (interface{}, error) {
 	return wrapDebugReportObjectTypeEXT(c)
 }
 
-func (D *DebugReportObjectTypeEXT) free() {}
+func (d *DebugReportObjectTypeEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugReportObjectTypeEXT. The caller is expected to
 // cast.
-func (D *DebugReportObjectTypeEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugReportObjectTypeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugReportFlagBitsEXT struct {
@@ -16034,12 +16034,12 @@ func marshalDebugReportFlagBitsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugReportFlagBitsEXT(c)
 }
 
-func (D *DebugReportFlagBitsEXT) free() {}
+func (d *DebugReportFlagBitsEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugReportFlagBitsEXT. The caller is expected to
 // cast.
-func (D *DebugReportFlagBitsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugReportFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugReportFlagsEXT struct {
@@ -16062,12 +16062,12 @@ func marshalDebugReportFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugReportFlagsEXT(c)
 }
 
-func (D *DebugReportFlagsEXT) free() {}
+func (d *DebugReportFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugReportFlagsEXT. The caller is expected to
 // cast.
-func (D *DebugReportFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugReportFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugReportCallbackCreateInfoEXT struct {
@@ -16090,12 +16090,12 @@ func marshalDebugReportCallbackCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugReportCallbackCreateInfoEXT(c)
 }
 
-func (D *DebugReportCallbackCreateInfoEXT) free() {}
+func (d *DebugReportCallbackCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugReportCallbackCreateInfoEXT. The caller is expected to
 // cast.
-func (D *DebugReportCallbackCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugReportCallbackCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type RasterizationOrderAMD struct {
@@ -16118,12 +16118,12 @@ func marshalRasterizationOrderAMD(p uintptr) (interface{}, error) {
 	return wrapRasterizationOrderAMD(c)
 }
 
-func (R *RasterizationOrderAMD) free() {}
+func (r *RasterizationOrderAMD) free() {}
 
 // Native returns the pointer to *C.VkRasterizationOrderAMD. The caller is expected to
 // cast.
-func (R *RasterizationOrderAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RasterizationOrderAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type PipelineRasterizationStateRasterizationOrderAMD struct {
@@ -16146,12 +16146,12 @@ func marshalPipelineRasterizationStateRasterizationOrderAMD(p uintptr) (interfac
 	return wrapPipelineRasterizationStateRasterizationOrderAMD(c)
 }
 
-func (P *PipelineRasterizationStateRasterizationOrderAMD) free() {}
+func (p *PipelineRasterizationStateRasterizationOrderAMD) free() {}
 
 // Native returns the pointer to *C.VkPipelineRasterizationStateRasterizationOrderAMD. The caller is expected to
 // cast.
-func (P *PipelineRasterizationStateRasterizationOrderAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineRasterizationStateRasterizationOrderAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DebugMarkerObjectNameInfoEXT struct {
@@ -16174,12 +16174,12 @@ func marshalDebugMarkerObjectNameInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugMarkerObjectNameInfoEXT(c)
 }
 
-func (D *DebugMarkerObjectNameInfoEXT) free() {}
+func (d *DebugMarkerObjectNameInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugMarkerObjectNameInfoEXT. The caller is expected to
 // cast.
-func (D *DebugMarkerObjectNameInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugMarkerObjectNameInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugMarkerObjectTagInfoEXT struct {
@@ -16202,12 +16202,12 @@ func marshalDebugMarkerObjectTagInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugMarkerObjectTagInfoEXT(c)
 }
 
-func (D *DebugMarkerObjectTagInfoEXT) free() {}
+func (d *DebugMarkerObjectTagInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugMarkerObjectTagInfoEXT. The caller is expected to
 // cast.
-func (D *DebugMarkerObjectTagInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugMarkerObjectTagInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugMarkerMarkerInfoEXT struct {
@@ -16230,12 +16230,12 @@ func marshalDebugMarkerMarkerInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugMarkerMarkerInfoEXT(c)
 }
 
-func (D *DebugMarkerMarkerInfoEXT) free() {}
+func (d *DebugMarkerMarkerInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugMarkerMarkerInfoEXT. The caller is expected to
 // cast.
-func (D *DebugMarkerMarkerInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugMarkerMarkerInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DedicatedAllocationImageCreateInfoNV struct {
@@ -16258,12 +16258,12 @@ func marshalDedicatedAllocationImageCreateInfoNV(p uintptr) (interface{}, error)
 	return wrapDedicatedAllocationImageCreateInfoNV(c)
 }
 
-func (D *DedicatedAllocationImageCreateInfoNV) free() {}
+func (d *DedicatedAllocationImageCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkDedicatedAllocationImageCreateInfoNV. The caller is expected to
 // cast.
-func (D *DedicatedAllocationImageCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DedicatedAllocationImageCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DedicatedAllocationBufferCreateInfoNV struct {
@@ -16286,12 +16286,12 @@ func marshalDedicatedAllocationBufferCreateInfoNV(p uintptr) (interface{}, error
 	return wrapDedicatedAllocationBufferCreateInfoNV(c)
 }
 
-func (D *DedicatedAllocationBufferCreateInfoNV) free() {}
+func (d *DedicatedAllocationBufferCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkDedicatedAllocationBufferCreateInfoNV. The caller is expected to
 // cast.
-func (D *DedicatedAllocationBufferCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DedicatedAllocationBufferCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DedicatedAllocationMemoryAllocateInfoNV struct {
@@ -16314,12 +16314,12 @@ func marshalDedicatedAllocationMemoryAllocateInfoNV(p uintptr) (interface{}, err
 	return wrapDedicatedAllocationMemoryAllocateInfoNV(c)
 }
 
-func (D *DedicatedAllocationMemoryAllocateInfoNV) free() {}
+func (d *DedicatedAllocationMemoryAllocateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkDedicatedAllocationMemoryAllocateInfoNV. The caller is expected to
 // cast.
-func (D *DedicatedAllocationMemoryAllocateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DedicatedAllocationMemoryAllocateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PipelineRasterizationStateStreamCreateFlagsEXT struct {
@@ -16342,12 +16342,12 @@ func marshalPipelineRasterizationStateStreamCreateFlagsEXT(p uintptr) (interface
 	return wrapPipelineRasterizationStateStreamCreateFlagsEXT(c)
 }
 
-func (P *PipelineRasterizationStateStreamCreateFlagsEXT) free() {}
+func (p *PipelineRasterizationStateStreamCreateFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineRasterizationStateStreamCreateFlagsEXT. The caller is expected to
 // cast.
-func (P *PipelineRasterizationStateStreamCreateFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineRasterizationStateStreamCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceTransformFeedbackFeaturesEXT struct {
@@ -16370,12 +16370,12 @@ func marshalPhysicalDeviceTransformFeedbackFeaturesEXT(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceTransformFeedbackFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceTransformFeedbackFeaturesEXT) free() {}
+func (p *PhysicalDeviceTransformFeedbackFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceTransformFeedbackFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceTransformFeedbackFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceTransformFeedbackFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceTransformFeedbackPropertiesEXT struct {
@@ -16398,12 +16398,12 @@ func marshalPhysicalDeviceTransformFeedbackPropertiesEXT(p uintptr) (interface{}
 	return wrapPhysicalDeviceTransformFeedbackPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceTransformFeedbackPropertiesEXT) free() {}
+func (p *PhysicalDeviceTransformFeedbackPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceTransformFeedbackPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceTransformFeedbackPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceTransformFeedbackPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineRasterizationStateStreamCreateInfoEXT struct {
@@ -16426,12 +16426,12 @@ func marshalPipelineRasterizationStateStreamCreateInfoEXT(p uintptr) (interface{
 	return wrapPipelineRasterizationStateStreamCreateInfoEXT(c)
 }
 
-func (P *PipelineRasterizationStateStreamCreateInfoEXT) free() {}
+func (p *PipelineRasterizationStateStreamCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineRasterizationStateStreamCreateInfoEXT. The caller is expected to
 // cast.
-func (P *PipelineRasterizationStateStreamCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineRasterizationStateStreamCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ImageViewHandleInfoNVX struct {
@@ -16454,12 +16454,12 @@ func marshalImageViewHandleInfoNVX(p uintptr) (interface{}, error) {
 	return wrapImageViewHandleInfoNVX(c)
 }
 
-func (I *ImageViewHandleInfoNVX) free() {}
+func (i *ImageViewHandleInfoNVX) free() {}
 
 // Native returns the pointer to *C.VkImageViewHandleInfoNVX. The caller is expected to
 // cast.
-func (I *ImageViewHandleInfoNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageViewHandleInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type TextureLODGatherFormatPropertiesAMD struct {
@@ -16482,12 +16482,12 @@ func marshalTextureLODGatherFormatPropertiesAMD(p uintptr) (interface{}, error) 
 	return wrapTextureLODGatherFormatPropertiesAMD(c)
 }
 
-func (T *TextureLODGatherFormatPropertiesAMD) free() {}
+func (t *TextureLODGatherFormatPropertiesAMD) free() {}
 
 // Native returns the pointer to *C.VkTextureLODGatherFormatPropertiesAMD. The caller is expected to
 // cast.
-func (T *TextureLODGatherFormatPropertiesAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *TextureLODGatherFormatPropertiesAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 type ShaderInfoTypeAMD struct {
@@ -16510,12 +16510,12 @@ func marshalShaderInfoTypeAMD(p uintptr) (interface{}, error) {
 	return wrapShaderInfoTypeAMD(c)
 }
 
-func (S *ShaderInfoTypeAMD) free() {}
+func (s *ShaderInfoTypeAMD) free() {}
 
 // Native returns the pointer to *C.VkShaderInfoTypeAMD. The caller is expected to
 // cast.
-func (S *ShaderInfoTypeAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShaderInfoTypeAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ShaderResourceUsageAMD struct {
@@ -16538,12 +16538,12 @@ func marshalShaderResourceUsageAMD(p uintptr) (interface{}, error) {
 	return wrapShaderResourceUsageAMD(c)
 }
 
-func (S *ShaderResourceUsageAMD) free() {}
+func (s *ShaderResourceUsageAMD) free() {}
 
 // Native returns the pointer to *C.VkShaderResourceUsageAMD. The caller is expected to
 // cast.
-func (S *ShaderResourceUsageAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShaderResourceUsageAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type ShaderStatisticsInfoAMD struct {
@@ -16566,12 +16566,12 @@ func marshalShaderStatisticsInfoAMD(p uintptr) (interface{}, error) {
 	return wrapShaderStatisticsInfoAMD(c)
 }
 
-func (S *ShaderStatisticsInfoAMD) free() {}
+func (s *ShaderStatisticsInfoAMD) free() {}
 
 // Native returns the pointer to *C.VkShaderStatisticsInfoAMD. The caller is expected to
 // cast.
-func (S *ShaderStatisticsInfoAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShaderStatisticsInfoAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PhysicalDeviceCornerSampledImageFeaturesNV struct {
@@ -16594,12 +16594,12 @@ func marshalPhysicalDeviceCornerSampledImageFeaturesNV(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceCornerSampledImageFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceCornerSampledImageFeaturesNV) free() {}
+func (p *PhysicalDeviceCornerSampledImageFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceCornerSampledImageFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceCornerSampledImageFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceCornerSampledImageFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ExternalMemoryHandleTypeFlagBitsNV struct {
@@ -16622,12 +16622,12 @@ func marshalExternalMemoryHandleTypeFlagBitsNV(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryHandleTypeFlagBitsNV(c)
 }
 
-func (E *ExternalMemoryHandleTypeFlagBitsNV) free() {}
+func (e *ExternalMemoryHandleTypeFlagBitsNV) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagBitsNV. The caller is expected to
 // cast.
-func (E *ExternalMemoryHandleTypeFlagBitsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryHandleTypeFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryHandleTypeFlagsNV struct {
@@ -16650,12 +16650,12 @@ func marshalExternalMemoryHandleTypeFlagsNV(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryHandleTypeFlagsNV(c)
 }
 
-func (E *ExternalMemoryHandleTypeFlagsNV) free() {}
+func (e *ExternalMemoryHandleTypeFlagsNV) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagsNV. The caller is expected to
 // cast.
-func (E *ExternalMemoryHandleTypeFlagsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryHandleTypeFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryFeatureFlagBitsNV struct {
@@ -16678,12 +16678,12 @@ func marshalExternalMemoryFeatureFlagBitsNV(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlagBitsNV(c)
 }
 
-func (E *ExternalMemoryFeatureFlagBitsNV) free() {}
+func (e *ExternalMemoryFeatureFlagBitsNV) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlagBitsNV. The caller is expected to
 // cast.
-func (E *ExternalMemoryFeatureFlagBitsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryFeatureFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryFeatureFlagsNV struct {
@@ -16706,12 +16706,12 @@ func marshalExternalMemoryFeatureFlagsNV(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryFeatureFlagsNV(c)
 }
 
-func (E *ExternalMemoryFeatureFlagsNV) free() {}
+func (e *ExternalMemoryFeatureFlagsNV) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlagsNV. The caller is expected to
 // cast.
-func (E *ExternalMemoryFeatureFlagsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryFeatureFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalImageFormatPropertiesNV struct {
@@ -16734,12 +16734,12 @@ func marshalExternalImageFormatPropertiesNV(p uintptr) (interface{}, error) {
 	return wrapExternalImageFormatPropertiesNV(c)
 }
 
-func (E *ExternalImageFormatPropertiesNV) free() {}
+func (e *ExternalImageFormatPropertiesNV) free() {}
 
 // Native returns the pointer to *C.VkExternalImageFormatPropertiesNV. The caller is expected to
 // cast.
-func (E *ExternalImageFormatPropertiesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalImageFormatPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExternalMemoryImageCreateInfoNV struct {
@@ -16762,12 +16762,12 @@ func marshalExternalMemoryImageCreateInfoNV(p uintptr) (interface{}, error) {
 	return wrapExternalMemoryImageCreateInfoNV(c)
 }
 
-func (E *ExternalMemoryImageCreateInfoNV) free() {}
+func (e *ExternalMemoryImageCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkExternalMemoryImageCreateInfoNV. The caller is expected to
 // cast.
-func (E *ExternalMemoryImageCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExternalMemoryImageCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ExportMemoryAllocateInfoNV struct {
@@ -16790,12 +16790,12 @@ func marshalExportMemoryAllocateInfoNV(p uintptr) (interface{}, error) {
 	return wrapExportMemoryAllocateInfoNV(c)
 }
 
-func (E *ExportMemoryAllocateInfoNV) free() {}
+func (e *ExportMemoryAllocateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkExportMemoryAllocateInfoNV. The caller is expected to
 // cast.
-func (E *ExportMemoryAllocateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(E.native)
+func (e *ExportMemoryAllocateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 type ValidationCheckEXT struct {
@@ -16818,12 +16818,12 @@ func marshalValidationCheckEXT(p uintptr) (interface{}, error) {
 	return wrapValidationCheckEXT(c)
 }
 
-func (V *ValidationCheckEXT) free() {}
+func (v *ValidationCheckEXT) free() {}
 
 // Native returns the pointer to *C.VkValidationCheckEXT. The caller is expected to
 // cast.
-func (V *ValidationCheckEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ValidationCheckEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type ValidationFlagsEXT struct {
@@ -16846,12 +16846,12 @@ func marshalValidationFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapValidationFlagsEXT(c)
 }
 
-func (V *ValidationFlagsEXT) free() {}
+func (v *ValidationFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkValidationFlagsEXT. The caller is expected to
 // cast.
-func (V *ValidationFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ValidationFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type ImageViewASTCDecodeModeEXT struct {
@@ -16874,12 +16874,12 @@ func marshalImageViewASTCDecodeModeEXT(p uintptr) (interface{}, error) {
 	return wrapImageViewASTCDecodeModeEXT(c)
 }
 
-func (I *ImageViewASTCDecodeModeEXT) free() {}
+func (i *ImageViewASTCDecodeModeEXT) free() {}
 
 // Native returns the pointer to *C.VkImageViewASTCDecodeModeEXT. The caller is expected to
 // cast.
-func (I *ImageViewASTCDecodeModeEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageViewASTCDecodeModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type PhysicalDeviceASTCDecodeFeaturesEXT struct {
@@ -16902,12 +16902,12 @@ func marshalPhysicalDeviceASTCDecodeFeaturesEXT(p uintptr) (interface{}, error) 
 	return wrapPhysicalDeviceASTCDecodeFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceASTCDecodeFeaturesEXT) free() {}
+func (p *PhysicalDeviceASTCDecodeFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceASTCDecodeFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceASTCDecodeFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceASTCDecodeFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ConditionalRenderingFlagBitsEXT struct {
@@ -16930,12 +16930,12 @@ func marshalConditionalRenderingFlagBitsEXT(p uintptr) (interface{}, error) {
 	return wrapConditionalRenderingFlagBitsEXT(c)
 }
 
-func (C *ConditionalRenderingFlagBitsEXT) free() {}
+func (c *ConditionalRenderingFlagBitsEXT) free() {}
 
 // Native returns the pointer to *C.VkConditionalRenderingFlagBitsEXT. The caller is expected to
 // cast.
-func (C *ConditionalRenderingFlagBitsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ConditionalRenderingFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ConditionalRenderingFlagsEXT struct {
@@ -16958,12 +16958,12 @@ func marshalConditionalRenderingFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapConditionalRenderingFlagsEXT(c)
 }
 
-func (C *ConditionalRenderingFlagsEXT) free() {}
+func (c *ConditionalRenderingFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkConditionalRenderingFlagsEXT. The caller is expected to
 // cast.
-func (C *ConditionalRenderingFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ConditionalRenderingFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ConditionalRenderingBeginInfoEXT struct {
@@ -16986,12 +16986,12 @@ func marshalConditionalRenderingBeginInfoEXT(p uintptr) (interface{}, error) {
 	return wrapConditionalRenderingBeginInfoEXT(c)
 }
 
-func (C *ConditionalRenderingBeginInfoEXT) free() {}
+func (c *ConditionalRenderingBeginInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkConditionalRenderingBeginInfoEXT. The caller is expected to
 // cast.
-func (C *ConditionalRenderingBeginInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ConditionalRenderingBeginInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PhysicalDeviceConditionalRenderingFeaturesEXT struct {
@@ -17014,12 +17014,12 @@ func marshalPhysicalDeviceConditionalRenderingFeaturesEXT(p uintptr) (interface{
 	return wrapPhysicalDeviceConditionalRenderingFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceConditionalRenderingFeaturesEXT) free() {}
+func (p *PhysicalDeviceConditionalRenderingFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceConditionalRenderingFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceConditionalRenderingFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceConditionalRenderingFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type CommandBufferInheritanceConditionalRenderingInfoEXT struct {
@@ -17042,12 +17042,12 @@ func marshalCommandBufferInheritanceConditionalRenderingInfoEXT(p uintptr) (inte
 	return wrapCommandBufferInheritanceConditionalRenderingInfoEXT(c)
 }
 
-func (C *CommandBufferInheritanceConditionalRenderingInfoEXT) free() {}
+func (c *CommandBufferInheritanceConditionalRenderingInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkCommandBufferInheritanceConditionalRenderingInfoEXT. The caller is expected to
 // cast.
-func (C *CommandBufferInheritanceConditionalRenderingInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CommandBufferInheritanceConditionalRenderingInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ObjectTableNVX struct {
@@ -17070,12 +17070,12 @@ func marshalObjectTableNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableNVX(c)
 }
 
-func (O *ObjectTableNVX) free() {}
+func (o *ObjectTableNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectTableNVX. The caller is expected to
 // cast.
-func (O *ObjectTableNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectTableNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type IndirectCommandsLayoutNVX struct {
@@ -17098,12 +17098,12 @@ func marshalIndirectCommandsLayoutNVX(p uintptr) (interface{}, error) {
 	return wrapIndirectCommandsLayoutNVX(c)
 }
 
-func (I *IndirectCommandsLayoutNVX) free() {}
+func (i *IndirectCommandsLayoutNVX) free() {}
 
 // Native returns the pointer to *C.VkIndirectCommandsLayoutNVX. The caller is expected to
 // cast.
-func (I *IndirectCommandsLayoutNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *IndirectCommandsLayoutNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type IndirectCommandsTokenTypeNVX struct {
@@ -17126,12 +17126,12 @@ func marshalIndirectCommandsTokenTypeNVX(p uintptr) (interface{}, error) {
 	return wrapIndirectCommandsTokenTypeNVX(c)
 }
 
-func (I *IndirectCommandsTokenTypeNVX) free() {}
+func (i *IndirectCommandsTokenTypeNVX) free() {}
 
 // Native returns the pointer to *C.VkIndirectCommandsTokenTypeNVX. The caller is expected to
 // cast.
-func (I *IndirectCommandsTokenTypeNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *IndirectCommandsTokenTypeNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ObjectEntryTypeNVX struct {
@@ -17154,12 +17154,12 @@ func marshalObjectEntryTypeNVX(p uintptr) (interface{}, error) {
 	return wrapObjectEntryTypeNVX(c)
 }
 
-func (O *ObjectEntryTypeNVX) free() {}
+func (o *ObjectEntryTypeNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectEntryTypeNVX. The caller is expected to
 // cast.
-func (O *ObjectEntryTypeNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectEntryTypeNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type IndirectCommandsLayoutUsageFlagBitsNVX struct {
@@ -17182,12 +17182,12 @@ func marshalIndirectCommandsLayoutUsageFlagBitsNVX(p uintptr) (interface{}, erro
 	return wrapIndirectCommandsLayoutUsageFlagBitsNVX(c)
 }
 
-func (I *IndirectCommandsLayoutUsageFlagBitsNVX) free() {}
+func (i *IndirectCommandsLayoutUsageFlagBitsNVX) free() {}
 
 // Native returns the pointer to *C.VkIndirectCommandsLayoutUsageFlagBitsNVX. The caller is expected to
 // cast.
-func (I *IndirectCommandsLayoutUsageFlagBitsNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *IndirectCommandsLayoutUsageFlagBitsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type IndirectCommandsLayoutUsageFlagsNVX struct {
@@ -17210,12 +17210,12 @@ func marshalIndirectCommandsLayoutUsageFlagsNVX(p uintptr) (interface{}, error) 
 	return wrapIndirectCommandsLayoutUsageFlagsNVX(c)
 }
 
-func (I *IndirectCommandsLayoutUsageFlagsNVX) free() {}
+func (i *IndirectCommandsLayoutUsageFlagsNVX) free() {}
 
 // Native returns the pointer to *C.VkIndirectCommandsLayoutUsageFlagsNVX. The caller is expected to
 // cast.
-func (I *IndirectCommandsLayoutUsageFlagsNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *IndirectCommandsLayoutUsageFlagsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ObjectEntryUsageFlagBitsNVX struct {
@@ -17238,12 +17238,12 @@ func marshalObjectEntryUsageFlagBitsNVX(p uintptr) (interface{}, error) {
 	return wrapObjectEntryUsageFlagBitsNVX(c)
 }
 
-func (O *ObjectEntryUsageFlagBitsNVX) free() {}
+func (o *ObjectEntryUsageFlagBitsNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectEntryUsageFlagBitsNVX. The caller is expected to
 // cast.
-func (O *ObjectEntryUsageFlagBitsNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectEntryUsageFlagBitsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type ObjectEntryUsageFlagsNVX struct {
@@ -17266,12 +17266,12 @@ func marshalObjectEntryUsageFlagsNVX(p uintptr) (interface{}, error) {
 	return wrapObjectEntryUsageFlagsNVX(c)
 }
 
-func (O *ObjectEntryUsageFlagsNVX) free() {}
+func (o *ObjectEntryUsageFlagsNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectEntryUsageFlagsNVX. The caller is expected to
 // cast.
-func (O *ObjectEntryUsageFlagsNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectEntryUsageFlagsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type DeviceGeneratedCommandsFeaturesNVX struct {
@@ -17294,12 +17294,12 @@ func marshalDeviceGeneratedCommandsFeaturesNVX(p uintptr) (interface{}, error) {
 	return wrapDeviceGeneratedCommandsFeaturesNVX(c)
 }
 
-func (D *DeviceGeneratedCommandsFeaturesNVX) free() {}
+func (d *DeviceGeneratedCommandsFeaturesNVX) free() {}
 
 // Native returns the pointer to *C.VkDeviceGeneratedCommandsFeaturesNVX. The caller is expected to
 // cast.
-func (D *DeviceGeneratedCommandsFeaturesNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGeneratedCommandsFeaturesNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceGeneratedCommandsLimitsNVX struct {
@@ -17322,12 +17322,12 @@ func marshalDeviceGeneratedCommandsLimitsNVX(p uintptr) (interface{}, error) {
 	return wrapDeviceGeneratedCommandsLimitsNVX(c)
 }
 
-func (D *DeviceGeneratedCommandsLimitsNVX) free() {}
+func (d *DeviceGeneratedCommandsLimitsNVX) free() {}
 
 // Native returns the pointer to *C.VkDeviceGeneratedCommandsLimitsNVX. The caller is expected to
 // cast.
-func (D *DeviceGeneratedCommandsLimitsNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceGeneratedCommandsLimitsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type IndirectCommandsTokenNVX struct {
@@ -17350,12 +17350,12 @@ func marshalIndirectCommandsTokenNVX(p uintptr) (interface{}, error) {
 	return wrapIndirectCommandsTokenNVX(c)
 }
 
-func (I *IndirectCommandsTokenNVX) free() {}
+func (i *IndirectCommandsTokenNVX) free() {}
 
 // Native returns the pointer to *C.VkIndirectCommandsTokenNVX. The caller is expected to
 // cast.
-func (I *IndirectCommandsTokenNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *IndirectCommandsTokenNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type IndirectCommandsLayoutTokenNVX struct {
@@ -17378,12 +17378,12 @@ func marshalIndirectCommandsLayoutTokenNVX(p uintptr) (interface{}, error) {
 	return wrapIndirectCommandsLayoutTokenNVX(c)
 }
 
-func (I *IndirectCommandsLayoutTokenNVX) free() {}
+func (i *IndirectCommandsLayoutTokenNVX) free() {}
 
 // Native returns the pointer to *C.VkIndirectCommandsLayoutTokenNVX. The caller is expected to
 // cast.
-func (I *IndirectCommandsLayoutTokenNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *IndirectCommandsLayoutTokenNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type IndirectCommandsLayoutCreateInfoNVX struct {
@@ -17406,12 +17406,12 @@ func marshalIndirectCommandsLayoutCreateInfoNVX(p uintptr) (interface{}, error) 
 	return wrapIndirectCommandsLayoutCreateInfoNVX(c)
 }
 
-func (I *IndirectCommandsLayoutCreateInfoNVX) free() {}
+func (i *IndirectCommandsLayoutCreateInfoNVX) free() {}
 
 // Native returns the pointer to *C.VkIndirectCommandsLayoutCreateInfoNVX. The caller is expected to
 // cast.
-func (I *IndirectCommandsLayoutCreateInfoNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *IndirectCommandsLayoutCreateInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type CmdProcessCommandsInfoNVX struct {
@@ -17434,12 +17434,12 @@ func marshalCmdProcessCommandsInfoNVX(p uintptr) (interface{}, error) {
 	return wrapCmdProcessCommandsInfoNVX(c)
 }
 
-func (C *CmdProcessCommandsInfoNVX) free() {}
+func (c *CmdProcessCommandsInfoNVX) free() {}
 
 // Native returns the pointer to *C.VkCmdProcessCommandsInfoNVX. The caller is expected to
 // cast.
-func (C *CmdProcessCommandsInfoNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CmdProcessCommandsInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CmdReserveSpaceForCommandsInfoNVX struct {
@@ -17462,12 +17462,12 @@ func marshalCmdReserveSpaceForCommandsInfoNVX(p uintptr) (interface{}, error) {
 	return wrapCmdReserveSpaceForCommandsInfoNVX(c)
 }
 
-func (C *CmdReserveSpaceForCommandsInfoNVX) free() {}
+func (c *CmdReserveSpaceForCommandsInfoNVX) free() {}
 
 // Native returns the pointer to *C.VkCmdReserveSpaceForCommandsInfoNVX. The caller is expected to
 // cast.
-func (C *CmdReserveSpaceForCommandsInfoNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CmdReserveSpaceForCommandsInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ObjectTableCreateInfoNVX struct {
@@ -17490,12 +17490,12 @@ func marshalObjectTableCreateInfoNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableCreateInfoNVX(c)
 }
 
-func (O *ObjectTableCreateInfoNVX) free() {}
+func (o *ObjectTableCreateInfoNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectTableCreateInfoNVX. The caller is expected to
 // cast.
-func (O *ObjectTableCreateInfoNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectTableCreateInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type ObjectTableEntryNVX struct {
@@ -17518,12 +17518,12 @@ func marshalObjectTableEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableEntryNVX(c)
 }
 
-func (O *ObjectTableEntryNVX) free() {}
+func (o *ObjectTableEntryNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectTableEntryNVX. The caller is expected to
 // cast.
-func (O *ObjectTableEntryNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectTableEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type ObjectTablePipelineEntryNVX struct {
@@ -17546,12 +17546,12 @@ func marshalObjectTablePipelineEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTablePipelineEntryNVX(c)
 }
 
-func (O *ObjectTablePipelineEntryNVX) free() {}
+func (o *ObjectTablePipelineEntryNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectTablePipelineEntryNVX. The caller is expected to
 // cast.
-func (O *ObjectTablePipelineEntryNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectTablePipelineEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type ObjectTableDescriptorSetEntryNVX struct {
@@ -17574,12 +17574,12 @@ func marshalObjectTableDescriptorSetEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableDescriptorSetEntryNVX(c)
 }
 
-func (O *ObjectTableDescriptorSetEntryNVX) free() {}
+func (o *ObjectTableDescriptorSetEntryNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectTableDescriptorSetEntryNVX. The caller is expected to
 // cast.
-func (O *ObjectTableDescriptorSetEntryNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectTableDescriptorSetEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type ObjectTableVertexBufferEntryNVX struct {
@@ -17602,12 +17602,12 @@ func marshalObjectTableVertexBufferEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableVertexBufferEntryNVX(c)
 }
 
-func (O *ObjectTableVertexBufferEntryNVX) free() {}
+func (o *ObjectTableVertexBufferEntryNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectTableVertexBufferEntryNVX. The caller is expected to
 // cast.
-func (O *ObjectTableVertexBufferEntryNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectTableVertexBufferEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type ObjectTableIndexBufferEntryNVX struct {
@@ -17630,12 +17630,12 @@ func marshalObjectTableIndexBufferEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTableIndexBufferEntryNVX(c)
 }
 
-func (O *ObjectTableIndexBufferEntryNVX) free() {}
+func (o *ObjectTableIndexBufferEntryNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectTableIndexBufferEntryNVX. The caller is expected to
 // cast.
-func (O *ObjectTableIndexBufferEntryNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectTableIndexBufferEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type ObjectTablePushConstantEntryNVX struct {
@@ -17658,12 +17658,12 @@ func marshalObjectTablePushConstantEntryNVX(p uintptr) (interface{}, error) {
 	return wrapObjectTablePushConstantEntryNVX(c)
 }
 
-func (O *ObjectTablePushConstantEntryNVX) free() {}
+func (o *ObjectTablePushConstantEntryNVX) free() {}
 
 // Native returns the pointer to *C.VkObjectTablePushConstantEntryNVX. The caller is expected to
 // cast.
-func (O *ObjectTablePushConstantEntryNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(O.native)
+func (o *ObjectTablePushConstantEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 type ViewportWScalingNV struct {
@@ -17686,12 +17686,12 @@ func marshalViewportWScalingNV(p uintptr) (interface{}, error) {
 	return wrapViewportWScalingNV(c)
 }
 
-func (V *ViewportWScalingNV) free() {}
+func (v *ViewportWScalingNV) free() {}
 
 // Native returns the pointer to *C.VkViewportWScalingNV. The caller is expected to
 // cast.
-func (V *ViewportWScalingNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ViewportWScalingNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type PipelineViewportWScalingStateCreateInfoNV struct {
@@ -17714,12 +17714,12 @@ func marshalPipelineViewportWScalingStateCreateInfoNV(p uintptr) (interface{}, e
 	return wrapPipelineViewportWScalingStateCreateInfoNV(c)
 }
 
-func (P *PipelineViewportWScalingStateCreateInfoNV) free() {}
+func (p *PipelineViewportWScalingStateCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineViewportWScalingStateCreateInfoNV. The caller is expected to
 // cast.
-func (P *PipelineViewportWScalingStateCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineViewportWScalingStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type SurfaceCounterFlagBitsEXT struct {
@@ -17742,12 +17742,12 @@ func marshalSurfaceCounterFlagBitsEXT(p uintptr) (interface{}, error) {
 	return wrapSurfaceCounterFlagBitsEXT(c)
 }
 
-func (S *SurfaceCounterFlagBitsEXT) free() {}
+func (s *SurfaceCounterFlagBitsEXT) free() {}
 
 // Native returns the pointer to *C.VkSurfaceCounterFlagBitsEXT. The caller is expected to
 // cast.
-func (S *SurfaceCounterFlagBitsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceCounterFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SurfaceCounterFlagsEXT struct {
@@ -17770,12 +17770,12 @@ func marshalSurfaceCounterFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapSurfaceCounterFlagsEXT(c)
 }
 
-func (S *SurfaceCounterFlagsEXT) free() {}
+func (s *SurfaceCounterFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkSurfaceCounterFlagsEXT. The caller is expected to
 // cast.
-func (S *SurfaceCounterFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceCounterFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SurfaceCapabilities2EXT struct {
@@ -17798,12 +17798,12 @@ func marshalSurfaceCapabilities2EXT(p uintptr) (interface{}, error) {
 	return wrapSurfaceCapabilities2EXT(c)
 }
 
-func (S *SurfaceCapabilities2EXT) free() {}
+func (s *SurfaceCapabilities2EXT) free() {}
 
 // Native returns the pointer to *C.VkSurfaceCapabilities2EXT. The caller is expected to
 // cast.
-func (S *SurfaceCapabilities2EXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SurfaceCapabilities2EXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type DisplayPowerStateEXT struct {
@@ -17826,12 +17826,12 @@ func marshalDisplayPowerStateEXT(p uintptr) (interface{}, error) {
 	return wrapDisplayPowerStateEXT(c)
 }
 
-func (D *DisplayPowerStateEXT) free() {}
+func (d *DisplayPowerStateEXT) free() {}
 
 // Native returns the pointer to *C.VkDisplayPowerStateEXT. The caller is expected to
 // cast.
-func (D *DisplayPowerStateEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPowerStateEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceEventTypeEXT struct {
@@ -17854,12 +17854,12 @@ func marshalDeviceEventTypeEXT(p uintptr) (interface{}, error) {
 	return wrapDeviceEventTypeEXT(c)
 }
 
-func (D *DeviceEventTypeEXT) free() {}
+func (d *DeviceEventTypeEXT) free() {}
 
 // Native returns the pointer to *C.VkDeviceEventTypeEXT. The caller is expected to
 // cast.
-func (D *DeviceEventTypeEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceEventTypeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayEventTypeEXT struct {
@@ -17882,12 +17882,12 @@ func marshalDisplayEventTypeEXT(p uintptr) (interface{}, error) {
 	return wrapDisplayEventTypeEXT(c)
 }
 
-func (D *DisplayEventTypeEXT) free() {}
+func (d *DisplayEventTypeEXT) free() {}
 
 // Native returns the pointer to *C.VkDisplayEventTypeEXT. The caller is expected to
 // cast.
-func (D *DisplayEventTypeEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayEventTypeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayPowerInfoEXT struct {
@@ -17910,12 +17910,12 @@ func marshalDisplayPowerInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDisplayPowerInfoEXT(c)
 }
 
-func (D *DisplayPowerInfoEXT) free() {}
+func (d *DisplayPowerInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDisplayPowerInfoEXT. The caller is expected to
 // cast.
-func (D *DisplayPowerInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayPowerInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DeviceEventInfoEXT struct {
@@ -17938,12 +17938,12 @@ func marshalDeviceEventInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDeviceEventInfoEXT(c)
 }
 
-func (D *DeviceEventInfoEXT) free() {}
+func (d *DeviceEventInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDeviceEventInfoEXT. The caller is expected to
 // cast.
-func (D *DeviceEventInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceEventInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DisplayEventInfoEXT struct {
@@ -17966,12 +17966,12 @@ func marshalDisplayEventInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDisplayEventInfoEXT(c)
 }
 
-func (D *DisplayEventInfoEXT) free() {}
+func (d *DisplayEventInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDisplayEventInfoEXT. The caller is expected to
 // cast.
-func (D *DisplayEventInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayEventInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type SwapchainCounterCreateInfoEXT struct {
@@ -17994,12 +17994,12 @@ func marshalSwapchainCounterCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapSwapchainCounterCreateInfoEXT(c)
 }
 
-func (S *SwapchainCounterCreateInfoEXT) free() {}
+func (s *SwapchainCounterCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkSwapchainCounterCreateInfoEXT. The caller is expected to
 // cast.
-func (S *SwapchainCounterCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SwapchainCounterCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type RefreshCycleDurationGOOGLE struct {
@@ -18022,12 +18022,12 @@ func marshalRefreshCycleDurationGOOGLE(p uintptr) (interface{}, error) {
 	return wrapRefreshCycleDurationGOOGLE(c)
 }
 
-func (R *RefreshCycleDurationGOOGLE) free() {}
+func (r *RefreshCycleDurationGOOGLE) free() {}
 
 // Native returns the pointer to *C.VkRefreshCycleDurationGOOGLE. The caller is expected to
 // cast.
-func (R *RefreshCycleDurationGOOGLE) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RefreshCycleDurationGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type PastPresentationTimingGOOGLE struct {
@@ -18050,12 +18050,12 @@ func marshalPastPresentationTimingGOOGLE(p uintptr) (interface{}, error) {
 	return wrapPastPresentationTimingGOOGLE(c)
 }
 
-func (P *PastPresentationTimingGOOGLE) free() {}
+func (p *PastPresentationTimingGOOGLE) free() {}
 
 // Native returns the pointer to *C.VkPastPresentationTimingGOOGLE. The caller is expected to
 // cast.
-func (P *PastPresentationTimingGOOGLE) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PastPresentationTimingGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PresentTimeGOOGLE struct {
@@ -18078,12 +18078,12 @@ func marshalPresentTimeGOOGLE(p uintptr) (interface{}, error) {
 	return wrapPresentTimeGOOGLE(c)
 }
 
-func (P *PresentTimeGOOGLE) free() {}
+func (p *PresentTimeGOOGLE) free() {}
 
 // Native returns the pointer to *C.VkPresentTimeGOOGLE. The caller is expected to
 // cast.
-func (P *PresentTimeGOOGLE) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PresentTimeGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PresentTimesInfoGOOGLE struct {
@@ -18106,12 +18106,12 @@ func marshalPresentTimesInfoGOOGLE(p uintptr) (interface{}, error) {
 	return wrapPresentTimesInfoGOOGLE(c)
 }
 
-func (P *PresentTimesInfoGOOGLE) free() {}
+func (p *PresentTimesInfoGOOGLE) free() {}
 
 // Native returns the pointer to *C.VkPresentTimesInfoGOOGLE. The caller is expected to
 // cast.
-func (P *PresentTimesInfoGOOGLE) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PresentTimesInfoGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX struct {
@@ -18134,12 +18134,12 @@ func marshalPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(p uintptr) (in
 	return wrapPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(c)
 }
 
-func (P *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) free() {}
+func (p *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ViewportCoordinateSwizzleNV struct {
@@ -18162,12 +18162,12 @@ func marshalViewportCoordinateSwizzleNV(p uintptr) (interface{}, error) {
 	return wrapViewportCoordinateSwizzleNV(c)
 }
 
-func (V *ViewportCoordinateSwizzleNV) free() {}
+func (v *ViewportCoordinateSwizzleNV) free() {}
 
 // Native returns the pointer to *C.VkViewportCoordinateSwizzleNV. The caller is expected to
 // cast.
-func (V *ViewportCoordinateSwizzleNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ViewportCoordinateSwizzleNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type PipelineViewportSwizzleStateCreateFlagsNV struct {
@@ -18190,12 +18190,12 @@ func marshalPipelineViewportSwizzleStateCreateFlagsNV(p uintptr) (interface{}, e
 	return wrapPipelineViewportSwizzleStateCreateFlagsNV(c)
 }
 
-func (P *PipelineViewportSwizzleStateCreateFlagsNV) free() {}
+func (p *PipelineViewportSwizzleStateCreateFlagsNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineViewportSwizzleStateCreateFlagsNV. The caller is expected to
 // cast.
-func (P *PipelineViewportSwizzleStateCreateFlagsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineViewportSwizzleStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ViewportSwizzleNV struct {
@@ -18218,12 +18218,12 @@ func marshalViewportSwizzleNV(p uintptr) (interface{}, error) {
 	return wrapViewportSwizzleNV(c)
 }
 
-func (V *ViewportSwizzleNV) free() {}
+func (v *ViewportSwizzleNV) free() {}
 
 // Native returns the pointer to *C.VkViewportSwizzleNV. The caller is expected to
 // cast.
-func (V *ViewportSwizzleNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ViewportSwizzleNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type PipelineViewportSwizzleStateCreateInfoNV struct {
@@ -18246,12 +18246,12 @@ func marshalPipelineViewportSwizzleStateCreateInfoNV(p uintptr) (interface{}, er
 	return wrapPipelineViewportSwizzleStateCreateInfoNV(c)
 }
 
-func (P *PipelineViewportSwizzleStateCreateInfoNV) free() {}
+func (p *PipelineViewportSwizzleStateCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineViewportSwizzleStateCreateInfoNV. The caller is expected to
 // cast.
-func (P *PipelineViewportSwizzleStateCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineViewportSwizzleStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DiscardRectangleModeEXT struct {
@@ -18274,12 +18274,12 @@ func marshalDiscardRectangleModeEXT(p uintptr) (interface{}, error) {
 	return wrapDiscardRectangleModeEXT(c)
 }
 
-func (D *DiscardRectangleModeEXT) free() {}
+func (d *DiscardRectangleModeEXT) free() {}
 
 // Native returns the pointer to *C.VkDiscardRectangleModeEXT. The caller is expected to
 // cast.
-func (D *DiscardRectangleModeEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DiscardRectangleModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PipelineDiscardRectangleStateCreateFlagsEXT struct {
@@ -18302,12 +18302,12 @@ func marshalPipelineDiscardRectangleStateCreateFlagsEXT(p uintptr) (interface{},
 	return wrapPipelineDiscardRectangleStateCreateFlagsEXT(c)
 }
 
-func (P *PipelineDiscardRectangleStateCreateFlagsEXT) free() {}
+func (p *PipelineDiscardRectangleStateCreateFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineDiscardRectangleStateCreateFlagsEXT. The caller is expected to
 // cast.
-func (P *PipelineDiscardRectangleStateCreateFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineDiscardRectangleStateCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceDiscardRectanglePropertiesEXT struct {
@@ -18330,12 +18330,12 @@ func marshalPhysicalDeviceDiscardRectanglePropertiesEXT(p uintptr) (interface{},
 	return wrapPhysicalDeviceDiscardRectanglePropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceDiscardRectanglePropertiesEXT) free() {}
+func (p *PhysicalDeviceDiscardRectanglePropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceDiscardRectanglePropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceDiscardRectanglePropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceDiscardRectanglePropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineDiscardRectangleStateCreateInfoEXT struct {
@@ -18358,12 +18358,12 @@ func marshalPipelineDiscardRectangleStateCreateInfoEXT(p uintptr) (interface{}, 
 	return wrapPipelineDiscardRectangleStateCreateInfoEXT(c)
 }
 
-func (P *PipelineDiscardRectangleStateCreateInfoEXT) free() {}
+func (p *PipelineDiscardRectangleStateCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineDiscardRectangleStateCreateInfoEXT. The caller is expected to
 // cast.
-func (P *PipelineDiscardRectangleStateCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineDiscardRectangleStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ConservativeRasterizationModeEXT struct {
@@ -18386,12 +18386,12 @@ func marshalConservativeRasterizationModeEXT(p uintptr) (interface{}, error) {
 	return wrapConservativeRasterizationModeEXT(c)
 }
 
-func (C *ConservativeRasterizationModeEXT) free() {}
+func (c *ConservativeRasterizationModeEXT) free() {}
 
 // Native returns the pointer to *C.VkConservativeRasterizationModeEXT. The caller is expected to
 // cast.
-func (C *ConservativeRasterizationModeEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ConservativeRasterizationModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PipelineRasterizationConservativeStateCreateFlagsEXT struct {
@@ -18414,12 +18414,12 @@ func marshalPipelineRasterizationConservativeStateCreateFlagsEXT(p uintptr) (int
 	return wrapPipelineRasterizationConservativeStateCreateFlagsEXT(c)
 }
 
-func (P *PipelineRasterizationConservativeStateCreateFlagsEXT) free() {}
+func (p *PipelineRasterizationConservativeStateCreateFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineRasterizationConservativeStateCreateFlagsEXT. The caller is expected to
 // cast.
-func (P *PipelineRasterizationConservativeStateCreateFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineRasterizationConservativeStateCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceConservativeRasterizationPropertiesEXT struct {
@@ -18442,12 +18442,12 @@ func marshalPhysicalDeviceConservativeRasterizationPropertiesEXT(p uintptr) (int
 	return wrapPhysicalDeviceConservativeRasterizationPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceConservativeRasterizationPropertiesEXT) free() {}
+func (p *PhysicalDeviceConservativeRasterizationPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceConservativeRasterizationPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceConservativeRasterizationPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceConservativeRasterizationPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineRasterizationConservativeStateCreateInfoEXT struct {
@@ -18470,12 +18470,12 @@ func marshalPipelineRasterizationConservativeStateCreateInfoEXT(p uintptr) (inte
 	return wrapPipelineRasterizationConservativeStateCreateInfoEXT(c)
 }
 
-func (P *PipelineRasterizationConservativeStateCreateInfoEXT) free() {}
+func (p *PipelineRasterizationConservativeStateCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineRasterizationConservativeStateCreateInfoEXT. The caller is expected to
 // cast.
-func (P *PipelineRasterizationConservativeStateCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineRasterizationConservativeStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineRasterizationDepthClipStateCreateFlagsEXT struct {
@@ -18498,12 +18498,12 @@ func marshalPipelineRasterizationDepthClipStateCreateFlagsEXT(p uintptr) (interf
 	return wrapPipelineRasterizationDepthClipStateCreateFlagsEXT(c)
 }
 
-func (P *PipelineRasterizationDepthClipStateCreateFlagsEXT) free() {}
+func (p *PipelineRasterizationDepthClipStateCreateFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineRasterizationDepthClipStateCreateFlagsEXT. The caller is expected to
 // cast.
-func (P *PipelineRasterizationDepthClipStateCreateFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineRasterizationDepthClipStateCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceDepthClipEnableFeaturesEXT struct {
@@ -18526,12 +18526,12 @@ func marshalPhysicalDeviceDepthClipEnableFeaturesEXT(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceDepthClipEnableFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceDepthClipEnableFeaturesEXT) free() {}
+func (p *PhysicalDeviceDepthClipEnableFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceDepthClipEnableFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceDepthClipEnableFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceDepthClipEnableFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineRasterizationDepthClipStateCreateInfoEXT struct {
@@ -18554,12 +18554,12 @@ func marshalPipelineRasterizationDepthClipStateCreateInfoEXT(p uintptr) (interfa
 	return wrapPipelineRasterizationDepthClipStateCreateInfoEXT(c)
 }
 
-func (P *PipelineRasterizationDepthClipStateCreateInfoEXT) free() {}
+func (p *PipelineRasterizationDepthClipStateCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineRasterizationDepthClipStateCreateInfoEXT. The caller is expected to
 // cast.
-func (P *PipelineRasterizationDepthClipStateCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineRasterizationDepthClipStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type XYColorEXT struct {
@@ -18582,12 +18582,12 @@ func marshalXYColorEXT(p uintptr) (interface{}, error) {
 	return wrapXYColorEXT(c)
 }
 
-func (X *XYColorEXT) free() {}
+func (x *XYColorEXT) free() {}
 
 // Native returns the pointer to *C.VkXYColorEXT. The caller is expected to
 // cast.
-func (X *XYColorEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(X.native)
+func (x *XYColorEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 type HdrMetadataEXT struct {
@@ -18610,12 +18610,12 @@ func marshalHdrMetadataEXT(p uintptr) (interface{}, error) {
 	return wrapHdrMetadataEXT(c)
 }
 
-func (H *HdrMetadataEXT) free() {}
+func (h *HdrMetadataEXT) free() {}
 
 // Native returns the pointer to *C.VkHdrMetadataEXT. The caller is expected to
 // cast.
-func (H *HdrMetadataEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(H.native)
+func (h *HdrMetadataEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
 }
 
 type DebugUtilsMessengerEXT struct {
@@ -18638,12 +18638,12 @@ func marshalDebugUtilsMessengerEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessengerEXT(c)
 }
 
-func (D *DebugUtilsMessengerEXT) free() {}
+func (d *DebugUtilsMessengerEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsMessengerEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsMessengerEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsMessengerEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsMessengerCallbackDataFlagsEXT struct {
@@ -18666,12 +18666,12 @@ func marshalDebugUtilsMessengerCallbackDataFlagsEXT(p uintptr) (interface{}, err
 	return wrapDebugUtilsMessengerCallbackDataFlagsEXT(c)
 }
 
-func (D *DebugUtilsMessengerCallbackDataFlagsEXT) free() {}
+func (d *DebugUtilsMessengerCallbackDataFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsMessengerCallbackDataFlagsEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsMessengerCallbackDataFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsMessengerCallbackDataFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsMessengerCreateFlagsEXT struct {
@@ -18694,12 +18694,12 @@ func marshalDebugUtilsMessengerCreateFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessengerCreateFlagsEXT(c)
 }
 
-func (D *DebugUtilsMessengerCreateFlagsEXT) free() {}
+func (d *DebugUtilsMessengerCreateFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsMessengerCreateFlagsEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsMessengerCreateFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsMessengerCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsMessageSeverityFlagBitsEXT struct {
@@ -18722,12 +18722,12 @@ func marshalDebugUtilsMessageSeverityFlagBitsEXT(p uintptr) (interface{}, error)
 	return wrapDebugUtilsMessageSeverityFlagBitsEXT(c)
 }
 
-func (D *DebugUtilsMessageSeverityFlagBitsEXT) free() {}
+func (d *DebugUtilsMessageSeverityFlagBitsEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsMessageSeverityFlagBitsEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsMessageSeverityFlagBitsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsMessageSeverityFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsMessageSeverityFlagsEXT struct {
@@ -18750,12 +18750,12 @@ func marshalDebugUtilsMessageSeverityFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessageSeverityFlagsEXT(c)
 }
 
-func (D *DebugUtilsMessageSeverityFlagsEXT) free() {}
+func (d *DebugUtilsMessageSeverityFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsMessageSeverityFlagsEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsMessageSeverityFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsMessageSeverityFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsMessageTypeFlagBitsEXT struct {
@@ -18778,12 +18778,12 @@ func marshalDebugUtilsMessageTypeFlagBitsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessageTypeFlagBitsEXT(c)
 }
 
-func (D *DebugUtilsMessageTypeFlagBitsEXT) free() {}
+func (d *DebugUtilsMessageTypeFlagBitsEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsMessageTypeFlagBitsEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsMessageTypeFlagBitsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsMessageTypeFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsMessageTypeFlagsEXT struct {
@@ -18806,12 +18806,12 @@ func marshalDebugUtilsMessageTypeFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessageTypeFlagsEXT(c)
 }
 
-func (D *DebugUtilsMessageTypeFlagsEXT) free() {}
+func (d *DebugUtilsMessageTypeFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsMessageTypeFlagsEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsMessageTypeFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsMessageTypeFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsObjectNameInfoEXT struct {
@@ -18834,12 +18834,12 @@ func marshalDebugUtilsObjectNameInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsObjectNameInfoEXT(c)
 }
 
-func (D *DebugUtilsObjectNameInfoEXT) free() {}
+func (d *DebugUtilsObjectNameInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsObjectNameInfoEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsObjectNameInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsObjectNameInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsObjectTagInfoEXT struct {
@@ -18862,12 +18862,12 @@ func marshalDebugUtilsObjectTagInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsObjectTagInfoEXT(c)
 }
 
-func (D *DebugUtilsObjectTagInfoEXT) free() {}
+func (d *DebugUtilsObjectTagInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsObjectTagInfoEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsObjectTagInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsObjectTagInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsLabelEXT struct {
@@ -18890,12 +18890,12 @@ func marshalDebugUtilsLabelEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsLabelEXT(c)
 }
 
-func (D *DebugUtilsLabelEXT) free() {}
+func (d *DebugUtilsLabelEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsLabelEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsLabelEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsLabelEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsMessengerCallbackDataEXT struct {
@@ -18918,12 +18918,12 @@ func marshalDebugUtilsMessengerCallbackDataEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessengerCallbackDataEXT(c)
 }
 
-func (D *DebugUtilsMessengerCallbackDataEXT) free() {}
+func (d *DebugUtilsMessengerCallbackDataEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsMessengerCallbackDataEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsMessengerCallbackDataEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsMessengerCallbackDataEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DebugUtilsMessengerCreateInfoEXT struct {
@@ -18946,12 +18946,12 @@ func marshalDebugUtilsMessengerCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapDebugUtilsMessengerCreateInfoEXT(c)
 }
 
-func (D *DebugUtilsMessengerCreateInfoEXT) free() {}
+func (d *DebugUtilsMessengerCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDebugUtilsMessengerCreateInfoEXT. The caller is expected to
 // cast.
-func (D *DebugUtilsMessengerCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DebugUtilsMessengerCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type SamplerReductionModeEXT struct {
@@ -18974,12 +18974,12 @@ func marshalSamplerReductionModeEXT(p uintptr) (interface{}, error) {
 	return wrapSamplerReductionModeEXT(c)
 }
 
-func (S *SamplerReductionModeEXT) free() {}
+func (s *SamplerReductionModeEXT) free() {}
 
 // Native returns the pointer to *C.VkSamplerReductionModeEXT. The caller is expected to
 // cast.
-func (S *SamplerReductionModeEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerReductionModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SamplerReductionModeCreateInfoEXT struct {
@@ -19002,12 +19002,12 @@ func marshalSamplerReductionModeCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapSamplerReductionModeCreateInfoEXT(c)
 }
 
-func (S *SamplerReductionModeCreateInfoEXT) free() {}
+func (s *SamplerReductionModeCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkSamplerReductionModeCreateInfoEXT. The caller is expected to
 // cast.
-func (S *SamplerReductionModeCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SamplerReductionModeCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PhysicalDeviceSamplerFilterMinmaxPropertiesEXT struct {
@@ -19030,12 +19030,12 @@ func marshalPhysicalDeviceSamplerFilterMinmaxPropertiesEXT(p uintptr) (interface
 	return wrapPhysicalDeviceSamplerFilterMinmaxPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT) free() {}
+func (p *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceInlineUniformBlockFeaturesEXT struct {
@@ -19058,12 +19058,12 @@ func marshalPhysicalDeviceInlineUniformBlockFeaturesEXT(p uintptr) (interface{},
 	return wrapPhysicalDeviceInlineUniformBlockFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceInlineUniformBlockFeaturesEXT) free() {}
+func (p *PhysicalDeviceInlineUniformBlockFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceInlineUniformBlockFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceInlineUniformBlockFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceInlineUniformBlockFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceInlineUniformBlockPropertiesEXT struct {
@@ -19086,12 +19086,12 @@ func marshalPhysicalDeviceInlineUniformBlockPropertiesEXT(p uintptr) (interface{
 	return wrapPhysicalDeviceInlineUniformBlockPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceInlineUniformBlockPropertiesEXT) free() {}
+func (p *PhysicalDeviceInlineUniformBlockPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceInlineUniformBlockPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceInlineUniformBlockPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceInlineUniformBlockPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type WriteDescriptorSetInlineUniformBlockEXT struct {
@@ -19114,12 +19114,12 @@ func marshalWriteDescriptorSetInlineUniformBlockEXT(p uintptr) (interface{}, err
 	return wrapWriteDescriptorSetInlineUniformBlockEXT(c)
 }
 
-func (W *WriteDescriptorSetInlineUniformBlockEXT) free() {}
+func (w *WriteDescriptorSetInlineUniformBlockEXT) free() {}
 
 // Native returns the pointer to *C.VkWriteDescriptorSetInlineUniformBlockEXT. The caller is expected to
 // cast.
-func (W *WriteDescriptorSetInlineUniformBlockEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(W.native)
+func (w *WriteDescriptorSetInlineUniformBlockEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(w.native)
 }
 
 type DescriptorPoolInlineUniformBlockCreateInfoEXT struct {
@@ -19142,12 +19142,12 @@ func marshalDescriptorPoolInlineUniformBlockCreateInfoEXT(p uintptr) (interface{
 	return wrapDescriptorPoolInlineUniformBlockCreateInfoEXT(c)
 }
 
-func (D *DescriptorPoolInlineUniformBlockCreateInfoEXT) free() {}
+func (d *DescriptorPoolInlineUniformBlockCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDescriptorPoolInlineUniformBlockCreateInfoEXT. The caller is expected to
 // cast.
-func (D *DescriptorPoolInlineUniformBlockCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorPoolInlineUniformBlockCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type SampleLocationEXT struct {
@@ -19170,12 +19170,12 @@ func marshalSampleLocationEXT(p uintptr) (interface{}, error) {
 	return wrapSampleLocationEXT(c)
 }
 
-func (S *SampleLocationEXT) free() {}
+func (s *SampleLocationEXT) free() {}
 
 // Native returns the pointer to *C.VkSampleLocationEXT. The caller is expected to
 // cast.
-func (S *SampleLocationEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SampleLocationEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type SampleLocationsInfoEXT struct {
@@ -19198,12 +19198,12 @@ func marshalSampleLocationsInfoEXT(p uintptr) (interface{}, error) {
 	return wrapSampleLocationsInfoEXT(c)
 }
 
-func (S *SampleLocationsInfoEXT) free() {}
+func (s *SampleLocationsInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkSampleLocationsInfoEXT. The caller is expected to
 // cast.
-func (S *SampleLocationsInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SampleLocationsInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type AttachmentSampleLocationsEXT struct {
@@ -19226,12 +19226,12 @@ func marshalAttachmentSampleLocationsEXT(p uintptr) (interface{}, error) {
 	return wrapAttachmentSampleLocationsEXT(c)
 }
 
-func (A *AttachmentSampleLocationsEXT) free() {}
+func (a *AttachmentSampleLocationsEXT) free() {}
 
 // Native returns the pointer to *C.VkAttachmentSampleLocationsEXT. The caller is expected to
 // cast.
-func (A *AttachmentSampleLocationsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AttachmentSampleLocationsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type SubpassSampleLocationsEXT struct {
@@ -19254,12 +19254,12 @@ func marshalSubpassSampleLocationsEXT(p uintptr) (interface{}, error) {
 	return wrapSubpassSampleLocationsEXT(c)
 }
 
-func (S *SubpassSampleLocationsEXT) free() {}
+func (s *SubpassSampleLocationsEXT) free() {}
 
 // Native returns the pointer to *C.VkSubpassSampleLocationsEXT. The caller is expected to
 // cast.
-func (S *SubpassSampleLocationsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SubpassSampleLocationsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type RenderPassSampleLocationsBeginInfoEXT struct {
@@ -19282,12 +19282,12 @@ func marshalRenderPassSampleLocationsBeginInfoEXT(p uintptr) (interface{}, error
 	return wrapRenderPassSampleLocationsBeginInfoEXT(c)
 }
 
-func (R *RenderPassSampleLocationsBeginInfoEXT) free() {}
+func (r *RenderPassSampleLocationsBeginInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkRenderPassSampleLocationsBeginInfoEXT. The caller is expected to
 // cast.
-func (R *RenderPassSampleLocationsBeginInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPassSampleLocationsBeginInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type PipelineSampleLocationsStateCreateInfoEXT struct {
@@ -19310,12 +19310,12 @@ func marshalPipelineSampleLocationsStateCreateInfoEXT(p uintptr) (interface{}, e
 	return wrapPipelineSampleLocationsStateCreateInfoEXT(c)
 }
 
-func (P *PipelineSampleLocationsStateCreateInfoEXT) free() {}
+func (p *PipelineSampleLocationsStateCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineSampleLocationsStateCreateInfoEXT. The caller is expected to
 // cast.
-func (P *PipelineSampleLocationsStateCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineSampleLocationsStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceSampleLocationsPropertiesEXT struct {
@@ -19338,12 +19338,12 @@ func marshalPhysicalDeviceSampleLocationsPropertiesEXT(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceSampleLocationsPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceSampleLocationsPropertiesEXT) free() {}
+func (p *PhysicalDeviceSampleLocationsPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceSampleLocationsPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceSampleLocationsPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceSampleLocationsPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type MultisamplePropertiesEXT struct {
@@ -19366,12 +19366,12 @@ func marshalMultisamplePropertiesEXT(p uintptr) (interface{}, error) {
 	return wrapMultisamplePropertiesEXT(c)
 }
 
-func (M *MultisamplePropertiesEXT) free() {}
+func (m *MultisamplePropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkMultisamplePropertiesEXT. The caller is expected to
 // cast.
-func (M *MultisamplePropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MultisamplePropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type BlendOverlapEXT struct {
@@ -19394,12 +19394,12 @@ func marshalBlendOverlapEXT(p uintptr) (interface{}, error) {
 	return wrapBlendOverlapEXT(c)
 }
 
-func (B *BlendOverlapEXT) free() {}
+func (b *BlendOverlapEXT) free() {}
 
 // Native returns the pointer to *C.VkBlendOverlapEXT. The caller is expected to
 // cast.
-func (B *BlendOverlapEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BlendOverlapEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type PhysicalDeviceBlendOperationAdvancedFeaturesEXT struct {
@@ -19422,12 +19422,12 @@ func marshalPhysicalDeviceBlendOperationAdvancedFeaturesEXT(p uintptr) (interfac
 	return wrapPhysicalDeviceBlendOperationAdvancedFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceBlendOperationAdvancedFeaturesEXT) free() {}
+func (p *PhysicalDeviceBlendOperationAdvancedFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceBlendOperationAdvancedFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceBlendOperationAdvancedFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceBlendOperationAdvancedPropertiesEXT struct {
@@ -19450,12 +19450,12 @@ func marshalPhysicalDeviceBlendOperationAdvancedPropertiesEXT(p uintptr) (interf
 	return wrapPhysicalDeviceBlendOperationAdvancedPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceBlendOperationAdvancedPropertiesEXT) free() {}
+func (p *PhysicalDeviceBlendOperationAdvancedPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceBlendOperationAdvancedPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceBlendOperationAdvancedPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineColorBlendAdvancedStateCreateInfoEXT struct {
@@ -19478,12 +19478,12 @@ func marshalPipelineColorBlendAdvancedStateCreateInfoEXT(p uintptr) (interface{}
 	return wrapPipelineColorBlendAdvancedStateCreateInfoEXT(c)
 }
 
-func (P *PipelineColorBlendAdvancedStateCreateInfoEXT) free() {}
+func (p *PipelineColorBlendAdvancedStateCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineColorBlendAdvancedStateCreateInfoEXT. The caller is expected to
 // cast.
-func (P *PipelineColorBlendAdvancedStateCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineColorBlendAdvancedStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineCoverageToColorStateCreateFlagsNV struct {
@@ -19506,12 +19506,12 @@ func marshalPipelineCoverageToColorStateCreateFlagsNV(p uintptr) (interface{}, e
 	return wrapPipelineCoverageToColorStateCreateFlagsNV(c)
 }
 
-func (P *PipelineCoverageToColorStateCreateFlagsNV) free() {}
+func (p *PipelineCoverageToColorStateCreateFlagsNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineCoverageToColorStateCreateFlagsNV. The caller is expected to
 // cast.
-func (P *PipelineCoverageToColorStateCreateFlagsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCoverageToColorStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineCoverageToColorStateCreateInfoNV struct {
@@ -19534,12 +19534,12 @@ func marshalPipelineCoverageToColorStateCreateInfoNV(p uintptr) (interface{}, er
 	return wrapPipelineCoverageToColorStateCreateInfoNV(c)
 }
 
-func (P *PipelineCoverageToColorStateCreateInfoNV) free() {}
+func (p *PipelineCoverageToColorStateCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineCoverageToColorStateCreateInfoNV. The caller is expected to
 // cast.
-func (P *PipelineCoverageToColorStateCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCoverageToColorStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type CoverageModulationModeNV struct {
@@ -19562,12 +19562,12 @@ func marshalCoverageModulationModeNV(p uintptr) (interface{}, error) {
 	return wrapCoverageModulationModeNV(c)
 }
 
-func (C *CoverageModulationModeNV) free() {}
+func (c *CoverageModulationModeNV) free() {}
 
 // Native returns the pointer to *C.VkCoverageModulationModeNV. The caller is expected to
 // cast.
-func (C *CoverageModulationModeNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CoverageModulationModeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PipelineCoverageModulationStateCreateFlagsNV struct {
@@ -19590,12 +19590,12 @@ func marshalPipelineCoverageModulationStateCreateFlagsNV(p uintptr) (interface{}
 	return wrapPipelineCoverageModulationStateCreateFlagsNV(c)
 }
 
-func (P *PipelineCoverageModulationStateCreateFlagsNV) free() {}
+func (p *PipelineCoverageModulationStateCreateFlagsNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineCoverageModulationStateCreateFlagsNV. The caller is expected to
 // cast.
-func (P *PipelineCoverageModulationStateCreateFlagsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCoverageModulationStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineCoverageModulationStateCreateInfoNV struct {
@@ -19618,12 +19618,12 @@ func marshalPipelineCoverageModulationStateCreateInfoNV(p uintptr) (interface{},
 	return wrapPipelineCoverageModulationStateCreateInfoNV(c)
 }
 
-func (P *PipelineCoverageModulationStateCreateInfoNV) free() {}
+func (p *PipelineCoverageModulationStateCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineCoverageModulationStateCreateInfoNV. The caller is expected to
 // cast.
-func (P *PipelineCoverageModulationStateCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCoverageModulationStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DrmFormatModifierPropertiesEXT struct {
@@ -19646,12 +19646,12 @@ func marshalDrmFormatModifierPropertiesEXT(p uintptr) (interface{}, error) {
 	return wrapDrmFormatModifierPropertiesEXT(c)
 }
 
-func (D *DrmFormatModifierPropertiesEXT) free() {}
+func (d *DrmFormatModifierPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkDrmFormatModifierPropertiesEXT. The caller is expected to
 // cast.
-func (D *DrmFormatModifierPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DrmFormatModifierPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DrmFormatModifierPropertiesListEXT struct {
@@ -19674,12 +19674,12 @@ func marshalDrmFormatModifierPropertiesListEXT(p uintptr) (interface{}, error) {
 	return wrapDrmFormatModifierPropertiesListEXT(c)
 }
 
-func (D *DrmFormatModifierPropertiesListEXT) free() {}
+func (d *DrmFormatModifierPropertiesListEXT) free() {}
 
 // Native returns the pointer to *C.VkDrmFormatModifierPropertiesListEXT. The caller is expected to
 // cast.
-func (D *DrmFormatModifierPropertiesListEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DrmFormatModifierPropertiesListEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PhysicalDeviceImageDrmFormatModifierInfoEXT struct {
@@ -19702,12 +19702,12 @@ func marshalPhysicalDeviceImageDrmFormatModifierInfoEXT(p uintptr) (interface{},
 	return wrapPhysicalDeviceImageDrmFormatModifierInfoEXT(c)
 }
 
-func (P *PhysicalDeviceImageDrmFormatModifierInfoEXT) free() {}
+func (p *PhysicalDeviceImageDrmFormatModifierInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceImageDrmFormatModifierInfoEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceImageDrmFormatModifierInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceImageDrmFormatModifierInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type ImageDrmFormatModifierListCreateInfoEXT struct {
@@ -19730,12 +19730,12 @@ func marshalImageDrmFormatModifierListCreateInfoEXT(p uintptr) (interface{}, err
 	return wrapImageDrmFormatModifierListCreateInfoEXT(c)
 }
 
-func (I *ImageDrmFormatModifierListCreateInfoEXT) free() {}
+func (i *ImageDrmFormatModifierListCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkImageDrmFormatModifierListCreateInfoEXT. The caller is expected to
 // cast.
-func (I *ImageDrmFormatModifierListCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageDrmFormatModifierListCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageDrmFormatModifierExplicitCreateInfoEXT struct {
@@ -19758,12 +19758,12 @@ func marshalImageDrmFormatModifierExplicitCreateInfoEXT(p uintptr) (interface{},
 	return wrapImageDrmFormatModifierExplicitCreateInfoEXT(c)
 }
 
-func (I *ImageDrmFormatModifierExplicitCreateInfoEXT) free() {}
+func (i *ImageDrmFormatModifierExplicitCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkImageDrmFormatModifierExplicitCreateInfoEXT. The caller is expected to
 // cast.
-func (I *ImageDrmFormatModifierExplicitCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageDrmFormatModifierExplicitCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ImageDrmFormatModifierPropertiesEXT struct {
@@ -19786,12 +19786,12 @@ func marshalImageDrmFormatModifierPropertiesEXT(p uintptr) (interface{}, error) 
 	return wrapImageDrmFormatModifierPropertiesEXT(c)
 }
 
-func (I *ImageDrmFormatModifierPropertiesEXT) free() {}
+func (i *ImageDrmFormatModifierPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkImageDrmFormatModifierPropertiesEXT. The caller is expected to
 // cast.
-func (I *ImageDrmFormatModifierPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageDrmFormatModifierPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ValidationCacheEXT struct {
@@ -19814,12 +19814,12 @@ func marshalValidationCacheEXT(p uintptr) (interface{}, error) {
 	return wrapValidationCacheEXT(c)
 }
 
-func (V *ValidationCacheEXT) free() {}
+func (v *ValidationCacheEXT) free() {}
 
 // Native returns the pointer to *C.VkValidationCacheEXT. The caller is expected to
 // cast.
-func (V *ValidationCacheEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ValidationCacheEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type ValidationCacheHeaderVersionEXT struct {
@@ -19842,12 +19842,12 @@ func marshalValidationCacheHeaderVersionEXT(p uintptr) (interface{}, error) {
 	return wrapValidationCacheHeaderVersionEXT(c)
 }
 
-func (V *ValidationCacheHeaderVersionEXT) free() {}
+func (v *ValidationCacheHeaderVersionEXT) free() {}
 
 // Native returns the pointer to *C.VkValidationCacheHeaderVersionEXT. The caller is expected to
 // cast.
-func (V *ValidationCacheHeaderVersionEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ValidationCacheHeaderVersionEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type ValidationCacheCreateFlagsEXT struct {
@@ -19870,12 +19870,12 @@ func marshalValidationCacheCreateFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapValidationCacheCreateFlagsEXT(c)
 }
 
-func (V *ValidationCacheCreateFlagsEXT) free() {}
+func (v *ValidationCacheCreateFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkValidationCacheCreateFlagsEXT. The caller is expected to
 // cast.
-func (V *ValidationCacheCreateFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ValidationCacheCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type ValidationCacheCreateInfoEXT struct {
@@ -19898,12 +19898,12 @@ func marshalValidationCacheCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapValidationCacheCreateInfoEXT(c)
 }
 
-func (V *ValidationCacheCreateInfoEXT) free() {}
+func (v *ValidationCacheCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkValidationCacheCreateInfoEXT. The caller is expected to
 // cast.
-func (V *ValidationCacheCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ValidationCacheCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type ShaderModuleValidationCacheCreateInfoEXT struct {
@@ -19926,12 +19926,12 @@ func marshalShaderModuleValidationCacheCreateInfoEXT(p uintptr) (interface{}, er
 	return wrapShaderModuleValidationCacheCreateInfoEXT(c)
 }
 
-func (S *ShaderModuleValidationCacheCreateInfoEXT) free() {}
+func (s *ShaderModuleValidationCacheCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkShaderModuleValidationCacheCreateInfoEXT. The caller is expected to
 // cast.
-func (S *ShaderModuleValidationCacheCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShaderModuleValidationCacheCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type DescriptorBindingFlagBitsEXT struct {
@@ -19954,12 +19954,12 @@ func marshalDescriptorBindingFlagBitsEXT(p uintptr) (interface{}, error) {
 	return wrapDescriptorBindingFlagBitsEXT(c)
 }
 
-func (D *DescriptorBindingFlagBitsEXT) free() {}
+func (d *DescriptorBindingFlagBitsEXT) free() {}
 
 // Native returns the pointer to *C.VkDescriptorBindingFlagBitsEXT. The caller is expected to
 // cast.
-func (D *DescriptorBindingFlagBitsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorBindingFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorBindingFlagsEXT struct {
@@ -19982,12 +19982,12 @@ func marshalDescriptorBindingFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapDescriptorBindingFlagsEXT(c)
 }
 
-func (D *DescriptorBindingFlagsEXT) free() {}
+func (d *DescriptorBindingFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkDescriptorBindingFlagsEXT. The caller is expected to
 // cast.
-func (D *DescriptorBindingFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorBindingFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorSetLayoutBindingFlagsCreateInfoEXT struct {
@@ -20010,12 +20010,12 @@ func marshalDescriptorSetLayoutBindingFlagsCreateInfoEXT(p uintptr) (interface{}
 	return wrapDescriptorSetLayoutBindingFlagsCreateInfoEXT(c)
 }
 
-func (D *DescriptorSetLayoutBindingFlagsCreateInfoEXT) free() {}
+func (d *DescriptorSetLayoutBindingFlagsCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutBindingFlagsCreateInfoEXT. The caller is expected to
 // cast.
-func (D *DescriptorSetLayoutBindingFlagsCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetLayoutBindingFlagsCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PhysicalDeviceDescriptorIndexingFeaturesEXT struct {
@@ -20038,12 +20038,12 @@ func marshalPhysicalDeviceDescriptorIndexingFeaturesEXT(p uintptr) (interface{},
 	return wrapPhysicalDeviceDescriptorIndexingFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceDescriptorIndexingFeaturesEXT) free() {}
+func (p *PhysicalDeviceDescriptorIndexingFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceDescriptorIndexingFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceDescriptorIndexingFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceDescriptorIndexingFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceDescriptorIndexingPropertiesEXT struct {
@@ -20066,12 +20066,12 @@ func marshalPhysicalDeviceDescriptorIndexingPropertiesEXT(p uintptr) (interface{
 	return wrapPhysicalDeviceDescriptorIndexingPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceDescriptorIndexingPropertiesEXT) free() {}
+func (p *PhysicalDeviceDescriptorIndexingPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceDescriptorIndexingPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceDescriptorIndexingPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceDescriptorIndexingPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DescriptorSetVariableDescriptorCountAllocateInfoEXT struct {
@@ -20094,12 +20094,12 @@ func marshalDescriptorSetVariableDescriptorCountAllocateInfoEXT(p uintptr) (inte
 	return wrapDescriptorSetVariableDescriptorCountAllocateInfoEXT(c)
 }
 
-func (D *DescriptorSetVariableDescriptorCountAllocateInfoEXT) free() {}
+func (d *DescriptorSetVariableDescriptorCountAllocateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetVariableDescriptorCountAllocateInfoEXT. The caller is expected to
 // cast.
-func (D *DescriptorSetVariableDescriptorCountAllocateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetVariableDescriptorCountAllocateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type DescriptorSetVariableDescriptorCountLayoutSupportEXT struct {
@@ -20122,12 +20122,12 @@ func marshalDescriptorSetVariableDescriptorCountLayoutSupportEXT(p uintptr) (int
 	return wrapDescriptorSetVariableDescriptorCountLayoutSupportEXT(c)
 }
 
-func (D *DescriptorSetVariableDescriptorCountLayoutSupportEXT) free() {}
+func (d *DescriptorSetVariableDescriptorCountLayoutSupportEXT) free() {}
 
 // Native returns the pointer to *C.VkDescriptorSetVariableDescriptorCountLayoutSupportEXT. The caller is expected to
 // cast.
-func (D *DescriptorSetVariableDescriptorCountLayoutSupportEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DescriptorSetVariableDescriptorCountLayoutSupportEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type ShadingRatePaletteEntryNV struct {
@@ -20150,12 +20150,12 @@ func marshalShadingRatePaletteEntryNV(p uintptr) (interface{}, error) {
 	return wrapShadingRatePaletteEntryNV(c)
 }
 
-func (S *ShadingRatePaletteEntryNV) free() {}
+func (s *ShadingRatePaletteEntryNV) free() {}
 
 // Native returns the pointer to *C.VkShadingRatePaletteEntryNV. The caller is expected to
 // cast.
-func (S *ShadingRatePaletteEntryNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShadingRatePaletteEntryNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type CoarseSampleOrderTypeNV struct {
@@ -20178,12 +20178,12 @@ func marshalCoarseSampleOrderTypeNV(p uintptr) (interface{}, error) {
 	return wrapCoarseSampleOrderTypeNV(c)
 }
 
-func (C *CoarseSampleOrderTypeNV) free() {}
+func (c *CoarseSampleOrderTypeNV) free() {}
 
 // Native returns the pointer to *C.VkCoarseSampleOrderTypeNV. The caller is expected to
 // cast.
-func (C *CoarseSampleOrderTypeNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CoarseSampleOrderTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ShadingRatePaletteNV struct {
@@ -20206,12 +20206,12 @@ func marshalShadingRatePaletteNV(p uintptr) (interface{}, error) {
 	return wrapShadingRatePaletteNV(c)
 }
 
-func (S *ShadingRatePaletteNV) free() {}
+func (s *ShadingRatePaletteNV) free() {}
 
 // Native returns the pointer to *C.VkShadingRatePaletteNV. The caller is expected to
 // cast.
-func (S *ShadingRatePaletteNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ShadingRatePaletteNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PipelineViewportShadingRateImageStateCreateInfoNV struct {
@@ -20234,12 +20234,12 @@ func marshalPipelineViewportShadingRateImageStateCreateInfoNV(p uintptr) (interf
 	return wrapPipelineViewportShadingRateImageStateCreateInfoNV(c)
 }
 
-func (P *PipelineViewportShadingRateImageStateCreateInfoNV) free() {}
+func (p *PipelineViewportShadingRateImageStateCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineViewportShadingRateImageStateCreateInfoNV. The caller is expected to
 // cast.
-func (P *PipelineViewportShadingRateImageStateCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineViewportShadingRateImageStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceShadingRateImageFeaturesNV struct {
@@ -20262,12 +20262,12 @@ func marshalPhysicalDeviceShadingRateImageFeaturesNV(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceShadingRateImageFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceShadingRateImageFeaturesNV) free() {}
+func (p *PhysicalDeviceShadingRateImageFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceShadingRateImageFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceShadingRateImageFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceShadingRateImageFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceShadingRateImagePropertiesNV struct {
@@ -20290,12 +20290,12 @@ func marshalPhysicalDeviceShadingRateImagePropertiesNV(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceShadingRateImagePropertiesNV(c)
 }
 
-func (P *PhysicalDeviceShadingRateImagePropertiesNV) free() {}
+func (p *PhysicalDeviceShadingRateImagePropertiesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceShadingRateImagePropertiesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceShadingRateImagePropertiesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceShadingRateImagePropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type CoarseSampleLocationNV struct {
@@ -20318,12 +20318,12 @@ func marshalCoarseSampleLocationNV(p uintptr) (interface{}, error) {
 	return wrapCoarseSampleLocationNV(c)
 }
 
-func (C *CoarseSampleLocationNV) free() {}
+func (c *CoarseSampleLocationNV) free() {}
 
 // Native returns the pointer to *C.VkCoarseSampleLocationNV. The caller is expected to
 // cast.
-func (C *CoarseSampleLocationNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CoarseSampleLocationNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type CoarseSampleOrderCustomNV struct {
@@ -20346,12 +20346,12 @@ func marshalCoarseSampleOrderCustomNV(p uintptr) (interface{}, error) {
 	return wrapCoarseSampleOrderCustomNV(c)
 }
 
-func (C *CoarseSampleOrderCustomNV) free() {}
+func (c *CoarseSampleOrderCustomNV) free() {}
 
 // Native returns the pointer to *C.VkCoarseSampleOrderCustomNV. The caller is expected to
 // cast.
-func (C *CoarseSampleOrderCustomNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CoarseSampleOrderCustomNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PipelineViewportCoarseSampleOrderStateCreateInfoNV struct {
@@ -20374,12 +20374,12 @@ func marshalPipelineViewportCoarseSampleOrderStateCreateInfoNV(p uintptr) (inter
 	return wrapPipelineViewportCoarseSampleOrderStateCreateInfoNV(c)
 }
 
-func (P *PipelineViewportCoarseSampleOrderStateCreateInfoNV) free() {}
+func (p *PipelineViewportCoarseSampleOrderStateCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineViewportCoarseSampleOrderStateCreateInfoNV. The caller is expected to
 // cast.
-func (P *PipelineViewportCoarseSampleOrderStateCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineViewportCoarseSampleOrderStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type AccelerationStructureNV struct {
@@ -20402,12 +20402,12 @@ func marshalAccelerationStructureNV(p uintptr) (interface{}, error) {
 	return wrapAccelerationStructureNV(c)
 }
 
-func (A *AccelerationStructureNV) free() {}
+func (a *AccelerationStructureNV) free() {}
 
 // Native returns the pointer to *C.VkAccelerationStructureNV. The caller is expected to
 // cast.
-func (A *AccelerationStructureNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AccelerationStructureNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type RayTracingShaderGroupTypeNV struct {
@@ -20430,12 +20430,12 @@ func marshalRayTracingShaderGroupTypeNV(p uintptr) (interface{}, error) {
 	return wrapRayTracingShaderGroupTypeNV(c)
 }
 
-func (R *RayTracingShaderGroupTypeNV) free() {}
+func (r *RayTracingShaderGroupTypeNV) free() {}
 
 // Native returns the pointer to *C.VkRayTracingShaderGroupTypeNV. The caller is expected to
 // cast.
-func (R *RayTracingShaderGroupTypeNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RayTracingShaderGroupTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type GeometryTypeNV struct {
@@ -20458,12 +20458,12 @@ func marshalGeometryTypeNV(p uintptr) (interface{}, error) {
 	return wrapGeometryTypeNV(c)
 }
 
-func (G *GeometryTypeNV) free() {}
+func (g *GeometryTypeNV) free() {}
 
 // Native returns the pointer to *C.VkGeometryTypeNV. The caller is expected to
 // cast.
-func (G *GeometryTypeNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *GeometryTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 type AccelerationStructureTypeNV struct {
@@ -20486,12 +20486,12 @@ func marshalAccelerationStructureTypeNV(p uintptr) (interface{}, error) {
 	return wrapAccelerationStructureTypeNV(c)
 }
 
-func (A *AccelerationStructureTypeNV) free() {}
+func (a *AccelerationStructureTypeNV) free() {}
 
 // Native returns the pointer to *C.VkAccelerationStructureTypeNV. The caller is expected to
 // cast.
-func (A *AccelerationStructureTypeNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AccelerationStructureTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type CopyAccelerationStructureModeNV struct {
@@ -20514,12 +20514,12 @@ func marshalCopyAccelerationStructureModeNV(p uintptr) (interface{}, error) {
 	return wrapCopyAccelerationStructureModeNV(c)
 }
 
-func (C *CopyAccelerationStructureModeNV) free() {}
+func (c *CopyAccelerationStructureModeNV) free() {}
 
 // Native returns the pointer to *C.VkCopyAccelerationStructureModeNV. The caller is expected to
 // cast.
-func (C *CopyAccelerationStructureModeNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CopyAccelerationStructureModeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type AccelerationStructureMemoryRequirementsTypeNV struct {
@@ -20542,12 +20542,12 @@ func marshalAccelerationStructureMemoryRequirementsTypeNV(p uintptr) (interface{
 	return wrapAccelerationStructureMemoryRequirementsTypeNV(c)
 }
 
-func (A *AccelerationStructureMemoryRequirementsTypeNV) free() {}
+func (a *AccelerationStructureMemoryRequirementsTypeNV) free() {}
 
 // Native returns the pointer to *C.VkAccelerationStructureMemoryRequirementsTypeNV. The caller is expected to
 // cast.
-func (A *AccelerationStructureMemoryRequirementsTypeNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AccelerationStructureMemoryRequirementsTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type GeometryFlagBitsNV struct {
@@ -20570,12 +20570,12 @@ func marshalGeometryFlagBitsNV(p uintptr) (interface{}, error) {
 	return wrapGeometryFlagBitsNV(c)
 }
 
-func (G *GeometryFlagBitsNV) free() {}
+func (g *GeometryFlagBitsNV) free() {}
 
 // Native returns the pointer to *C.VkGeometryFlagBitsNV. The caller is expected to
 // cast.
-func (G *GeometryFlagBitsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *GeometryFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 type GeometryFlagsNV struct {
@@ -20598,12 +20598,12 @@ func marshalGeometryFlagsNV(p uintptr) (interface{}, error) {
 	return wrapGeometryFlagsNV(c)
 }
 
-func (G *GeometryFlagsNV) free() {}
+func (g *GeometryFlagsNV) free() {}
 
 // Native returns the pointer to *C.VkGeometryFlagsNV. The caller is expected to
 // cast.
-func (G *GeometryFlagsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *GeometryFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 type GeometryInstanceFlagBitsNV struct {
@@ -20626,12 +20626,12 @@ func marshalGeometryInstanceFlagBitsNV(p uintptr) (interface{}, error) {
 	return wrapGeometryInstanceFlagBitsNV(c)
 }
 
-func (G *GeometryInstanceFlagBitsNV) free() {}
+func (g *GeometryInstanceFlagBitsNV) free() {}
 
 // Native returns the pointer to *C.VkGeometryInstanceFlagBitsNV. The caller is expected to
 // cast.
-func (G *GeometryInstanceFlagBitsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *GeometryInstanceFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 type GeometryInstanceFlagsNV struct {
@@ -20654,12 +20654,12 @@ func marshalGeometryInstanceFlagsNV(p uintptr) (interface{}, error) {
 	return wrapGeometryInstanceFlagsNV(c)
 }
 
-func (G *GeometryInstanceFlagsNV) free() {}
+func (g *GeometryInstanceFlagsNV) free() {}
 
 // Native returns the pointer to *C.VkGeometryInstanceFlagsNV. The caller is expected to
 // cast.
-func (G *GeometryInstanceFlagsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *GeometryInstanceFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 type BuildAccelerationStructureFlagBitsNV struct {
@@ -20682,12 +20682,12 @@ func marshalBuildAccelerationStructureFlagBitsNV(p uintptr) (interface{}, error)
 	return wrapBuildAccelerationStructureFlagBitsNV(c)
 }
 
-func (B *BuildAccelerationStructureFlagBitsNV) free() {}
+func (b *BuildAccelerationStructureFlagBitsNV) free() {}
 
 // Native returns the pointer to *C.VkBuildAccelerationStructureFlagBitsNV. The caller is expected to
 // cast.
-func (B *BuildAccelerationStructureFlagBitsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BuildAccelerationStructureFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BuildAccelerationStructureFlagsNV struct {
@@ -20710,12 +20710,12 @@ func marshalBuildAccelerationStructureFlagsNV(p uintptr) (interface{}, error) {
 	return wrapBuildAccelerationStructureFlagsNV(c)
 }
 
-func (B *BuildAccelerationStructureFlagsNV) free() {}
+func (b *BuildAccelerationStructureFlagsNV) free() {}
 
 // Native returns the pointer to *C.VkBuildAccelerationStructureFlagsNV. The caller is expected to
 // cast.
-func (B *BuildAccelerationStructureFlagsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BuildAccelerationStructureFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type RayTracingShaderGroupCreateInfoNV struct {
@@ -20738,12 +20738,12 @@ func marshalRayTracingShaderGroupCreateInfoNV(p uintptr) (interface{}, error) {
 	return wrapRayTracingShaderGroupCreateInfoNV(c)
 }
 
-func (R *RayTracingShaderGroupCreateInfoNV) free() {}
+func (r *RayTracingShaderGroupCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkRayTracingShaderGroupCreateInfoNV. The caller is expected to
 // cast.
-func (R *RayTracingShaderGroupCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RayTracingShaderGroupCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type RayTracingPipelineCreateInfoNV struct {
@@ -20766,12 +20766,12 @@ func marshalRayTracingPipelineCreateInfoNV(p uintptr) (interface{}, error) {
 	return wrapRayTracingPipelineCreateInfoNV(c)
 }
 
-func (R *RayTracingPipelineCreateInfoNV) free() {}
+func (r *RayTracingPipelineCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkRayTracingPipelineCreateInfoNV. The caller is expected to
 // cast.
-func (R *RayTracingPipelineCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RayTracingPipelineCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type GeometryTrianglesNV struct {
@@ -20794,12 +20794,12 @@ func marshalGeometryTrianglesNV(p uintptr) (interface{}, error) {
 	return wrapGeometryTrianglesNV(c)
 }
 
-func (G *GeometryTrianglesNV) free() {}
+func (g *GeometryTrianglesNV) free() {}
 
 // Native returns the pointer to *C.VkGeometryTrianglesNV. The caller is expected to
 // cast.
-func (G *GeometryTrianglesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *GeometryTrianglesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 type GeometryAABBNV struct {
@@ -20822,12 +20822,12 @@ func marshalGeometryAABBNV(p uintptr) (interface{}, error) {
 	return wrapGeometryAABBNV(c)
 }
 
-func (G *GeometryAABBNV) free() {}
+func (g *GeometryAABBNV) free() {}
 
 // Native returns the pointer to *C.VkGeometryAABBNV. The caller is expected to
 // cast.
-func (G *GeometryAABBNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *GeometryAABBNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 type GeometryDataNV struct {
@@ -20850,12 +20850,12 @@ func marshalGeometryDataNV(p uintptr) (interface{}, error) {
 	return wrapGeometryDataNV(c)
 }
 
-func (G *GeometryDataNV) free() {}
+func (g *GeometryDataNV) free() {}
 
 // Native returns the pointer to *C.VkGeometryDataNV. The caller is expected to
 // cast.
-func (G *GeometryDataNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *GeometryDataNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 type GeometryNV struct {
@@ -20878,12 +20878,12 @@ func marshalGeometryNV(p uintptr) (interface{}, error) {
 	return wrapGeometryNV(c)
 }
 
-func (G *GeometryNV) free() {}
+func (g *GeometryNV) free() {}
 
 // Native returns the pointer to *C.VkGeometryNV. The caller is expected to
 // cast.
-func (G *GeometryNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *GeometryNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 type AccelerationStructureInfoNV struct {
@@ -20906,12 +20906,12 @@ func marshalAccelerationStructureInfoNV(p uintptr) (interface{}, error) {
 	return wrapAccelerationStructureInfoNV(c)
 }
 
-func (A *AccelerationStructureInfoNV) free() {}
+func (a *AccelerationStructureInfoNV) free() {}
 
 // Native returns the pointer to *C.VkAccelerationStructureInfoNV. The caller is expected to
 // cast.
-func (A *AccelerationStructureInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AccelerationStructureInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type AccelerationStructureCreateInfoNV struct {
@@ -20934,12 +20934,12 @@ func marshalAccelerationStructureCreateInfoNV(p uintptr) (interface{}, error) {
 	return wrapAccelerationStructureCreateInfoNV(c)
 }
 
-func (A *AccelerationStructureCreateInfoNV) free() {}
+func (a *AccelerationStructureCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkAccelerationStructureCreateInfoNV. The caller is expected to
 // cast.
-func (A *AccelerationStructureCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AccelerationStructureCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type BindAccelerationStructureMemoryInfoNV struct {
@@ -20962,12 +20962,12 @@ func marshalBindAccelerationStructureMemoryInfoNV(p uintptr) (interface{}, error
 	return wrapBindAccelerationStructureMemoryInfoNV(c)
 }
 
-func (B *BindAccelerationStructureMemoryInfoNV) free() {}
+func (b *BindAccelerationStructureMemoryInfoNV) free() {}
 
 // Native returns the pointer to *C.VkBindAccelerationStructureMemoryInfoNV. The caller is expected to
 // cast.
-func (B *BindAccelerationStructureMemoryInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BindAccelerationStructureMemoryInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type WriteDescriptorSetAccelerationStructureNV struct {
@@ -20990,12 +20990,12 @@ func marshalWriteDescriptorSetAccelerationStructureNV(p uintptr) (interface{}, e
 	return wrapWriteDescriptorSetAccelerationStructureNV(c)
 }
 
-func (W *WriteDescriptorSetAccelerationStructureNV) free() {}
+func (w *WriteDescriptorSetAccelerationStructureNV) free() {}
 
 // Native returns the pointer to *C.VkWriteDescriptorSetAccelerationStructureNV. The caller is expected to
 // cast.
-func (W *WriteDescriptorSetAccelerationStructureNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(W.native)
+func (w *WriteDescriptorSetAccelerationStructureNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(w.native)
 }
 
 type AccelerationStructureMemoryRequirementsInfoNV struct {
@@ -21018,12 +21018,12 @@ func marshalAccelerationStructureMemoryRequirementsInfoNV(p uintptr) (interface{
 	return wrapAccelerationStructureMemoryRequirementsInfoNV(c)
 }
 
-func (A *AccelerationStructureMemoryRequirementsInfoNV) free() {}
+func (a *AccelerationStructureMemoryRequirementsInfoNV) free() {}
 
 // Native returns the pointer to *C.VkAccelerationStructureMemoryRequirementsInfoNV. The caller is expected to
 // cast.
-func (A *AccelerationStructureMemoryRequirementsInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(A.native)
+func (a *AccelerationStructureMemoryRequirementsInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 type PhysicalDeviceRayTracingPropertiesNV struct {
@@ -21046,12 +21046,12 @@ func marshalPhysicalDeviceRayTracingPropertiesNV(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceRayTracingPropertiesNV(c)
 }
 
-func (P *PhysicalDeviceRayTracingPropertiesNV) free() {}
+func (p *PhysicalDeviceRayTracingPropertiesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceRayTracingPropertiesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceRayTracingPropertiesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceRayTracingPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceRepresentativeFragmentTestFeaturesNV struct {
@@ -21074,12 +21074,12 @@ func marshalPhysicalDeviceRepresentativeFragmentTestFeaturesNV(p uintptr) (inter
 	return wrapPhysicalDeviceRepresentativeFragmentTestFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceRepresentativeFragmentTestFeaturesNV) free() {}
+func (p *PhysicalDeviceRepresentativeFragmentTestFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceRepresentativeFragmentTestFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceRepresentativeFragmentTestFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineRepresentativeFragmentTestStateCreateInfoNV struct {
@@ -21102,12 +21102,12 @@ func marshalPipelineRepresentativeFragmentTestStateCreateInfoNV(p uintptr) (inte
 	return wrapPipelineRepresentativeFragmentTestStateCreateInfoNV(c)
 }
 
-func (P *PipelineRepresentativeFragmentTestStateCreateInfoNV) free() {}
+func (p *PipelineRepresentativeFragmentTestStateCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineRepresentativeFragmentTestStateCreateInfoNV. The caller is expected to
 // cast.
-func (P *PipelineRepresentativeFragmentTestStateCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineRepresentativeFragmentTestStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceImageViewImageFormatInfoEXT struct {
@@ -21130,12 +21130,12 @@ func marshalPhysicalDeviceImageViewImageFormatInfoEXT(p uintptr) (interface{}, e
 	return wrapPhysicalDeviceImageViewImageFormatInfoEXT(c)
 }
 
-func (P *PhysicalDeviceImageViewImageFormatInfoEXT) free() {}
+func (p *PhysicalDeviceImageViewImageFormatInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceImageViewImageFormatInfoEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceImageViewImageFormatInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceImageViewImageFormatInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type FilterCubicImageViewImageFormatPropertiesEXT struct {
@@ -21158,12 +21158,12 @@ func marshalFilterCubicImageViewImageFormatPropertiesEXT(p uintptr) (interface{}
 	return wrapFilterCubicImageViewImageFormatPropertiesEXT(c)
 }
 
-func (F *FilterCubicImageViewImageFormatPropertiesEXT) free() {}
+func (f *FilterCubicImageViewImageFormatPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkFilterCubicImageViewImageFormatPropertiesEXT. The caller is expected to
 // cast.
-func (F *FilterCubicImageViewImageFormatPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FilterCubicImageViewImageFormatPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type QueueGlobalPriorityEXT struct {
@@ -21186,12 +21186,12 @@ func marshalQueueGlobalPriorityEXT(p uintptr) (interface{}, error) {
 	return wrapQueueGlobalPriorityEXT(c)
 }
 
-func (Q *QueueGlobalPriorityEXT) free() {}
+func (q *QueueGlobalPriorityEXT) free() {}
 
 // Native returns the pointer to *C.VkQueueGlobalPriorityEXT. The caller is expected to
 // cast.
-func (Q *QueueGlobalPriorityEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueueGlobalPriorityEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type DeviceQueueGlobalPriorityCreateInfoEXT struct {
@@ -21214,12 +21214,12 @@ func marshalDeviceQueueGlobalPriorityCreateInfoEXT(p uintptr) (interface{}, erro
 	return wrapDeviceQueueGlobalPriorityCreateInfoEXT(c)
 }
 
-func (D *DeviceQueueGlobalPriorityCreateInfoEXT) free() {}
+func (d *DeviceQueueGlobalPriorityCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkDeviceQueueGlobalPriorityCreateInfoEXT. The caller is expected to
 // cast.
-func (D *DeviceQueueGlobalPriorityCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceQueueGlobalPriorityCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type ImportMemoryHostPointerInfoEXT struct {
@@ -21242,12 +21242,12 @@ func marshalImportMemoryHostPointerInfoEXT(p uintptr) (interface{}, error) {
 	return wrapImportMemoryHostPointerInfoEXT(c)
 }
 
-func (I *ImportMemoryHostPointerInfoEXT) free() {}
+func (i *ImportMemoryHostPointerInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkImportMemoryHostPointerInfoEXT. The caller is expected to
 // cast.
-func (I *ImportMemoryHostPointerInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImportMemoryHostPointerInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type MemoryHostPointerPropertiesEXT struct {
@@ -21270,12 +21270,12 @@ func marshalMemoryHostPointerPropertiesEXT(p uintptr) (interface{}, error) {
 	return wrapMemoryHostPointerPropertiesEXT(c)
 }
 
-func (M *MemoryHostPointerPropertiesEXT) free() {}
+func (m *MemoryHostPointerPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkMemoryHostPointerPropertiesEXT. The caller is expected to
 // cast.
-func (M *MemoryHostPointerPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryHostPointerPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type PhysicalDeviceExternalMemoryHostPropertiesEXT struct {
@@ -21298,12 +21298,12 @@ func marshalPhysicalDeviceExternalMemoryHostPropertiesEXT(p uintptr) (interface{
 	return wrapPhysicalDeviceExternalMemoryHostPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceExternalMemoryHostPropertiesEXT) free() {}
+func (p *PhysicalDeviceExternalMemoryHostPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalMemoryHostPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceExternalMemoryHostPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceExternalMemoryHostPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type TimeDomainEXT struct {
@@ -21326,12 +21326,12 @@ func marshalTimeDomainEXT(p uintptr) (interface{}, error) {
 	return wrapTimeDomainEXT(c)
 }
 
-func (T *TimeDomainEXT) free() {}
+func (t *TimeDomainEXT) free() {}
 
 // Native returns the pointer to *C.VkTimeDomainEXT. The caller is expected to
 // cast.
-func (T *TimeDomainEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(T.native)
+func (t *TimeDomainEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 type CalibratedTimestampInfoEXT struct {
@@ -21354,12 +21354,12 @@ func marshalCalibratedTimestampInfoEXT(p uintptr) (interface{}, error) {
 	return wrapCalibratedTimestampInfoEXT(c)
 }
 
-func (C *CalibratedTimestampInfoEXT) free() {}
+func (c *CalibratedTimestampInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkCalibratedTimestampInfoEXT. The caller is expected to
 // cast.
-func (C *CalibratedTimestampInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CalibratedTimestampInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PhysicalDeviceShaderCorePropertiesAMD struct {
@@ -21382,12 +21382,12 @@ func marshalPhysicalDeviceShaderCorePropertiesAMD(p uintptr) (interface{}, error
 	return wrapPhysicalDeviceShaderCorePropertiesAMD(c)
 }
 
-func (P *PhysicalDeviceShaderCorePropertiesAMD) free() {}
+func (p *PhysicalDeviceShaderCorePropertiesAMD) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceShaderCorePropertiesAMD. The caller is expected to
 // cast.
-func (P *PhysicalDeviceShaderCorePropertiesAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceShaderCorePropertiesAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type MemoryOverallocationBehaviorAMD struct {
@@ -21410,12 +21410,12 @@ func marshalMemoryOverallocationBehaviorAMD(p uintptr) (interface{}, error) {
 	return wrapMemoryOverallocationBehaviorAMD(c)
 }
 
-func (M *MemoryOverallocationBehaviorAMD) free() {}
+func (m *MemoryOverallocationBehaviorAMD) free() {}
 
 // Native returns the pointer to *C.VkMemoryOverallocationBehaviorAMD. The caller is expected to
 // cast.
-func (M *MemoryOverallocationBehaviorAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryOverallocationBehaviorAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type DeviceMemoryOverallocationCreateInfoAMD struct {
@@ -21438,12 +21438,12 @@ func marshalDeviceMemoryOverallocationCreateInfoAMD(p uintptr) (interface{}, err
 	return wrapDeviceMemoryOverallocationCreateInfoAMD(c)
 }
 
-func (D *DeviceMemoryOverallocationCreateInfoAMD) free() {}
+func (d *DeviceMemoryOverallocationCreateInfoAMD) free() {}
 
 // Native returns the pointer to *C.VkDeviceMemoryOverallocationCreateInfoAMD. The caller is expected to
 // cast.
-func (D *DeviceMemoryOverallocationCreateInfoAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceMemoryOverallocationCreateInfoAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PhysicalDeviceVertexAttributeDivisorPropertiesEXT struct {
@@ -21466,12 +21466,12 @@ func marshalPhysicalDeviceVertexAttributeDivisorPropertiesEXT(p uintptr) (interf
 	return wrapPhysicalDeviceVertexAttributeDivisorPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceVertexAttributeDivisorPropertiesEXT) free() {}
+func (p *PhysicalDeviceVertexAttributeDivisorPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceVertexAttributeDivisorPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceVertexAttributeDivisorPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type VertexInputBindingDivisorDescriptionEXT struct {
@@ -21494,12 +21494,12 @@ func marshalVertexInputBindingDivisorDescriptionEXT(p uintptr) (interface{}, err
 	return wrapVertexInputBindingDivisorDescriptionEXT(c)
 }
 
-func (V *VertexInputBindingDivisorDescriptionEXT) free() {}
+func (v *VertexInputBindingDivisorDescriptionEXT) free() {}
 
 // Native returns the pointer to *C.VkVertexInputBindingDivisorDescriptionEXT. The caller is expected to
 // cast.
-func (V *VertexInputBindingDivisorDescriptionEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *VertexInputBindingDivisorDescriptionEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type PipelineVertexInputDivisorStateCreateInfoEXT struct {
@@ -21522,12 +21522,12 @@ func marshalPipelineVertexInputDivisorStateCreateInfoEXT(p uintptr) (interface{}
 	return wrapPipelineVertexInputDivisorStateCreateInfoEXT(c)
 }
 
-func (P *PipelineVertexInputDivisorStateCreateInfoEXT) free() {}
+func (p *PipelineVertexInputDivisorStateCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineVertexInputDivisorStateCreateInfoEXT. The caller is expected to
 // cast.
-func (P *PipelineVertexInputDivisorStateCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineVertexInputDivisorStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceVertexAttributeDivisorFeaturesEXT struct {
@@ -21550,12 +21550,12 @@ func marshalPhysicalDeviceVertexAttributeDivisorFeaturesEXT(p uintptr) (interfac
 	return wrapPhysicalDeviceVertexAttributeDivisorFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceVertexAttributeDivisorFeaturesEXT) free() {}
+func (p *PhysicalDeviceVertexAttributeDivisorFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceVertexAttributeDivisorFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceVertexAttributeDivisorFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineCreationFeedbackFlagBitsEXT struct {
@@ -21578,12 +21578,12 @@ func marshalPipelineCreationFeedbackFlagBitsEXT(p uintptr) (interface{}, error) 
 	return wrapPipelineCreationFeedbackFlagBitsEXT(c)
 }
 
-func (P *PipelineCreationFeedbackFlagBitsEXT) free() {}
+func (p *PipelineCreationFeedbackFlagBitsEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineCreationFeedbackFlagBitsEXT. The caller is expected to
 // cast.
-func (P *PipelineCreationFeedbackFlagBitsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCreationFeedbackFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineCreationFeedbackFlagsEXT struct {
@@ -21606,12 +21606,12 @@ func marshalPipelineCreationFeedbackFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapPipelineCreationFeedbackFlagsEXT(c)
 }
 
-func (P *PipelineCreationFeedbackFlagsEXT) free() {}
+func (p *PipelineCreationFeedbackFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineCreationFeedbackFlagsEXT. The caller is expected to
 // cast.
-func (P *PipelineCreationFeedbackFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCreationFeedbackFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineCreationFeedbackEXT struct {
@@ -21634,12 +21634,12 @@ func marshalPipelineCreationFeedbackEXT(p uintptr) (interface{}, error) {
 	return wrapPipelineCreationFeedbackEXT(c)
 }
 
-func (P *PipelineCreationFeedbackEXT) free() {}
+func (p *PipelineCreationFeedbackEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineCreationFeedbackEXT. The caller is expected to
 // cast.
-func (P *PipelineCreationFeedbackEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCreationFeedbackEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineCreationFeedbackCreateInfoEXT struct {
@@ -21662,12 +21662,12 @@ func marshalPipelineCreationFeedbackCreateInfoEXT(p uintptr) (interface{}, error
 	return wrapPipelineCreationFeedbackCreateInfoEXT(c)
 }
 
-func (P *PipelineCreationFeedbackCreateInfoEXT) free() {}
+func (p *PipelineCreationFeedbackCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkPipelineCreationFeedbackCreateInfoEXT. The caller is expected to
 // cast.
-func (P *PipelineCreationFeedbackCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCreationFeedbackCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceComputeShaderDerivativesFeaturesNV struct {
@@ -21690,12 +21690,12 @@ func marshalPhysicalDeviceComputeShaderDerivativesFeaturesNV(p uintptr) (interfa
 	return wrapPhysicalDeviceComputeShaderDerivativesFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceComputeShaderDerivativesFeaturesNV) free() {}
+func (p *PhysicalDeviceComputeShaderDerivativesFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceComputeShaderDerivativesFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceComputeShaderDerivativesFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceComputeShaderDerivativesFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceMeshShaderFeaturesNV struct {
@@ -21718,12 +21718,12 @@ func marshalPhysicalDeviceMeshShaderFeaturesNV(p uintptr) (interface{}, error) {
 	return wrapPhysicalDeviceMeshShaderFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceMeshShaderFeaturesNV) free() {}
+func (p *PhysicalDeviceMeshShaderFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMeshShaderFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMeshShaderFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMeshShaderFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceMeshShaderPropertiesNV struct {
@@ -21746,12 +21746,12 @@ func marshalPhysicalDeviceMeshShaderPropertiesNV(p uintptr) (interface{}, error)
 	return wrapPhysicalDeviceMeshShaderPropertiesNV(c)
 }
 
-func (P *PhysicalDeviceMeshShaderPropertiesNV) free() {}
+func (p *PhysicalDeviceMeshShaderPropertiesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMeshShaderPropertiesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMeshShaderPropertiesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMeshShaderPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DrawMeshTasksIndirectCommandNV struct {
@@ -21774,12 +21774,12 @@ func marshalDrawMeshTasksIndirectCommandNV(p uintptr) (interface{}, error) {
 	return wrapDrawMeshTasksIndirectCommandNV(c)
 }
 
-func (D *DrawMeshTasksIndirectCommandNV) free() {}
+func (d *DrawMeshTasksIndirectCommandNV) free() {}
 
 // Native returns the pointer to *C.VkDrawMeshTasksIndirectCommandNV. The caller is expected to
 // cast.
-func (D *DrawMeshTasksIndirectCommandNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DrawMeshTasksIndirectCommandNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PhysicalDeviceFragmentShaderBarycentricFeaturesNV struct {
@@ -21802,12 +21802,12 @@ func marshalPhysicalDeviceFragmentShaderBarycentricFeaturesNV(p uintptr) (interf
 	return wrapPhysicalDeviceFragmentShaderBarycentricFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceFragmentShaderBarycentricFeaturesNV) free() {}
+func (p *PhysicalDeviceFragmentShaderBarycentricFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceFragmentShaderBarycentricFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceFragmentShaderBarycentricFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceShaderImageFootprintFeaturesNV struct {
@@ -21830,12 +21830,12 @@ func marshalPhysicalDeviceShaderImageFootprintFeaturesNV(p uintptr) (interface{}
 	return wrapPhysicalDeviceShaderImageFootprintFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceShaderImageFootprintFeaturesNV) free() {}
+func (p *PhysicalDeviceShaderImageFootprintFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceShaderImageFootprintFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceShaderImageFootprintFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceShaderImageFootprintFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineViewportExclusiveScissorStateCreateInfoNV struct {
@@ -21858,12 +21858,12 @@ func marshalPipelineViewportExclusiveScissorStateCreateInfoNV(p uintptr) (interf
 	return wrapPipelineViewportExclusiveScissorStateCreateInfoNV(c)
 }
 
-func (P *PipelineViewportExclusiveScissorStateCreateInfoNV) free() {}
+func (p *PipelineViewportExclusiveScissorStateCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineViewportExclusiveScissorStateCreateInfoNV. The caller is expected to
 // cast.
-func (P *PipelineViewportExclusiveScissorStateCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineViewportExclusiveScissorStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceExclusiveScissorFeaturesNV struct {
@@ -21886,12 +21886,12 @@ func marshalPhysicalDeviceExclusiveScissorFeaturesNV(p uintptr) (interface{}, er
 	return wrapPhysicalDeviceExclusiveScissorFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceExclusiveScissorFeaturesNV) free() {}
+func (p *PhysicalDeviceExclusiveScissorFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceExclusiveScissorFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceExclusiveScissorFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceExclusiveScissorFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type QueueFamilyCheckpointPropertiesNV struct {
@@ -21914,12 +21914,12 @@ func marshalQueueFamilyCheckpointPropertiesNV(p uintptr) (interface{}, error) {
 	return wrapQueueFamilyCheckpointPropertiesNV(c)
 }
 
-func (Q *QueueFamilyCheckpointPropertiesNV) free() {}
+func (q *QueueFamilyCheckpointPropertiesNV) free() {}
 
 // Native returns the pointer to *C.VkQueueFamilyCheckpointPropertiesNV. The caller is expected to
 // cast.
-func (Q *QueueFamilyCheckpointPropertiesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(Q.native)
+func (q *QueueFamilyCheckpointPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 type CheckpointDataNV struct {
@@ -21942,12 +21942,12 @@ func marshalCheckpointDataNV(p uintptr) (interface{}, error) {
 	return wrapCheckpointDataNV(c)
 }
 
-func (C *CheckpointDataNV) free() {}
+func (c *CheckpointDataNV) free() {}
 
 // Native returns the pointer to *C.VkCheckpointDataNV. The caller is expected to
 // cast.
-func (C *CheckpointDataNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CheckpointDataNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PhysicalDevicePCIBusInfoPropertiesEXT struct {
@@ -21970,12 +21970,12 @@ func marshalPhysicalDevicePCIBusInfoPropertiesEXT(p uintptr) (interface{}, error
 	return wrapPhysicalDevicePCIBusInfoPropertiesEXT(c)
 }
 
-func (P *PhysicalDevicePCIBusInfoPropertiesEXT) free() {}
+func (p *PhysicalDevicePCIBusInfoPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDevicePCIBusInfoPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDevicePCIBusInfoPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDevicePCIBusInfoPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DisplayNativeHdrSurfaceCapabilitiesAMD struct {
@@ -21998,12 +21998,12 @@ func marshalDisplayNativeHdrSurfaceCapabilitiesAMD(p uintptr) (interface{}, erro
 	return wrapDisplayNativeHdrSurfaceCapabilitiesAMD(c)
 }
 
-func (D *DisplayNativeHdrSurfaceCapabilitiesAMD) free() {}
+func (d *DisplayNativeHdrSurfaceCapabilitiesAMD) free() {}
 
 // Native returns the pointer to *C.VkDisplayNativeHdrSurfaceCapabilitiesAMD. The caller is expected to
 // cast.
-func (D *DisplayNativeHdrSurfaceCapabilitiesAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DisplayNativeHdrSurfaceCapabilitiesAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type SwapchainDisplayNativeHdrCreateInfoAMD struct {
@@ -22026,12 +22026,12 @@ func marshalSwapchainDisplayNativeHdrCreateInfoAMD(p uintptr) (interface{}, erro
 	return wrapSwapchainDisplayNativeHdrCreateInfoAMD(c)
 }
 
-func (S *SwapchainDisplayNativeHdrCreateInfoAMD) free() {}
+func (s *SwapchainDisplayNativeHdrCreateInfoAMD) free() {}
 
 // Native returns the pointer to *C.VkSwapchainDisplayNativeHdrCreateInfoAMD. The caller is expected to
 // cast.
-func (S *SwapchainDisplayNativeHdrCreateInfoAMD) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *SwapchainDisplayNativeHdrCreateInfoAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type PhysicalDeviceFragmentDensityMapFeaturesEXT struct {
@@ -22054,12 +22054,12 @@ func marshalPhysicalDeviceFragmentDensityMapFeaturesEXT(p uintptr) (interface{},
 	return wrapPhysicalDeviceFragmentDensityMapFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceFragmentDensityMapFeaturesEXT) free() {}
+func (p *PhysicalDeviceFragmentDensityMapFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceFragmentDensityMapFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceFragmentDensityMapFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceFragmentDensityMapFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceFragmentDensityMapPropertiesEXT struct {
@@ -22082,12 +22082,12 @@ func marshalPhysicalDeviceFragmentDensityMapPropertiesEXT(p uintptr) (interface{
 	return wrapPhysicalDeviceFragmentDensityMapPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceFragmentDensityMapPropertiesEXT) free() {}
+func (p *PhysicalDeviceFragmentDensityMapPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceFragmentDensityMapPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceFragmentDensityMapPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceFragmentDensityMapPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type RenderPassFragmentDensityMapCreateInfoEXT struct {
@@ -22110,12 +22110,12 @@ func marshalRenderPassFragmentDensityMapCreateInfoEXT(p uintptr) (interface{}, e
 	return wrapRenderPassFragmentDensityMapCreateInfoEXT(c)
 }
 
-func (R *RenderPassFragmentDensityMapCreateInfoEXT) free() {}
+func (r *RenderPassFragmentDensityMapCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkRenderPassFragmentDensityMapCreateInfoEXT. The caller is expected to
 // cast.
-func (R *RenderPassFragmentDensityMapCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RenderPassFragmentDensityMapCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type PhysicalDeviceScalarBlockLayoutFeaturesEXT struct {
@@ -22138,12 +22138,12 @@ func marshalPhysicalDeviceScalarBlockLayoutFeaturesEXT(p uintptr) (interface{}, 
 	return wrapPhysicalDeviceScalarBlockLayoutFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceScalarBlockLayoutFeaturesEXT) free() {}
+func (p *PhysicalDeviceScalarBlockLayoutFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceScalarBlockLayoutFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceScalarBlockLayoutFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceScalarBlockLayoutFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceMemoryBudgetPropertiesEXT struct {
@@ -22166,12 +22166,12 @@ func marshalPhysicalDeviceMemoryBudgetPropertiesEXT(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceMemoryBudgetPropertiesEXT(c)
 }
 
-func (P *PhysicalDeviceMemoryBudgetPropertiesEXT) free() {}
+func (p *PhysicalDeviceMemoryBudgetPropertiesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMemoryBudgetPropertiesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMemoryBudgetPropertiesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMemoryBudgetPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceMemoryPriorityFeaturesEXT struct {
@@ -22194,12 +22194,12 @@ func marshalPhysicalDeviceMemoryPriorityFeaturesEXT(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceMemoryPriorityFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceMemoryPriorityFeaturesEXT) free() {}
+func (p *PhysicalDeviceMemoryPriorityFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceMemoryPriorityFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceMemoryPriorityFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceMemoryPriorityFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type MemoryPriorityAllocateInfoEXT struct {
@@ -22222,12 +22222,12 @@ func marshalMemoryPriorityAllocateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapMemoryPriorityAllocateInfoEXT(c)
 }
 
-func (M *MemoryPriorityAllocateInfoEXT) free() {}
+func (m *MemoryPriorityAllocateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkMemoryPriorityAllocateInfoEXT. The caller is expected to
 // cast.
-func (M *MemoryPriorityAllocateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *MemoryPriorityAllocateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV struct {
@@ -22250,12 +22250,12 @@ func marshalPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(p uintptr) 
 	return wrapPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) free() {}
+func (p *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type DeviceAddress struct {
@@ -22278,12 +22278,12 @@ func marshalDeviceAddress(p uintptr) (interface{}, error) {
 	return wrapDeviceAddress(c)
 }
 
-func (D *DeviceAddress) free() {}
+func (d *DeviceAddress) free() {}
 
 // Native returns the pointer to *C.VkDeviceAddress. The caller is expected to
 // cast.
-func (D *DeviceAddress) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *DeviceAddress) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type PhysicalDeviceBufferDeviceAddressFeaturesEXT struct {
@@ -22306,12 +22306,12 @@ func marshalPhysicalDeviceBufferDeviceAddressFeaturesEXT(p uintptr) (interface{}
 	return wrapPhysicalDeviceBufferDeviceAddressFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceBufferDeviceAddressFeaturesEXT) free() {}
+func (p *PhysicalDeviceBufferDeviceAddressFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceBufferDeviceAddressFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceBufferDeviceAddressFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceBufferDeviceAddressFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceBufferAddressFeaturesEXT struct {
@@ -22334,12 +22334,12 @@ func marshalPhysicalDeviceBufferAddressFeaturesEXT(p uintptr) (interface{}, erro
 	return wrapPhysicalDeviceBufferAddressFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceBufferAddressFeaturesEXT) free() {}
+func (p *PhysicalDeviceBufferAddressFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceBufferAddressFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceBufferAddressFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceBufferAddressFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type BufferDeviceAddressInfoEXT struct {
@@ -22362,12 +22362,12 @@ func marshalBufferDeviceAddressInfoEXT(p uintptr) (interface{}, error) {
 	return wrapBufferDeviceAddressInfoEXT(c)
 }
 
-func (B *BufferDeviceAddressInfoEXT) free() {}
+func (b *BufferDeviceAddressInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkBufferDeviceAddressInfoEXT. The caller is expected to
 // cast.
-func (B *BufferDeviceAddressInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferDeviceAddressInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type BufferDeviceAddressCreateInfoEXT struct {
@@ -22390,12 +22390,12 @@ func marshalBufferDeviceAddressCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapBufferDeviceAddressCreateInfoEXT(c)
 }
 
-func (B *BufferDeviceAddressCreateInfoEXT) free() {}
+func (b *BufferDeviceAddressCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkBufferDeviceAddressCreateInfoEXT. The caller is expected to
 // cast.
-func (B *BufferDeviceAddressCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *BufferDeviceAddressCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 type ImageStencilUsageCreateInfoEXT struct {
@@ -22418,12 +22418,12 @@ func marshalImageStencilUsageCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapImageStencilUsageCreateInfoEXT(c)
 }
 
-func (I *ImageStencilUsageCreateInfoEXT) free() {}
+func (i *ImageStencilUsageCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkImageStencilUsageCreateInfoEXT. The caller is expected to
 // cast.
-func (I *ImageStencilUsageCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(I.native)
+func (i *ImageStencilUsageCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 type ValidationFeatureEnableEXT struct {
@@ -22446,12 +22446,12 @@ func marshalValidationFeatureEnableEXT(p uintptr) (interface{}, error) {
 	return wrapValidationFeatureEnableEXT(c)
 }
 
-func (V *ValidationFeatureEnableEXT) free() {}
+func (v *ValidationFeatureEnableEXT) free() {}
 
 // Native returns the pointer to *C.VkValidationFeatureEnableEXT. The caller is expected to
 // cast.
-func (V *ValidationFeatureEnableEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ValidationFeatureEnableEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type ValidationFeatureDisableEXT struct {
@@ -22474,12 +22474,12 @@ func marshalValidationFeatureDisableEXT(p uintptr) (interface{}, error) {
 	return wrapValidationFeatureDisableEXT(c)
 }
 
-func (V *ValidationFeatureDisableEXT) free() {}
+func (v *ValidationFeatureDisableEXT) free() {}
 
 // Native returns the pointer to *C.VkValidationFeatureDisableEXT. The caller is expected to
 // cast.
-func (V *ValidationFeatureDisableEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ValidationFeatureDisableEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type ValidationFeaturesEXT struct {
@@ -22502,12 +22502,12 @@ func marshalValidationFeaturesEXT(p uintptr) (interface{}, error) {
 	return wrapValidationFeaturesEXT(c)
 }
 
-func (V *ValidationFeaturesEXT) free() {}
+func (v *ValidationFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkValidationFeaturesEXT. The caller is expected to
 // cast.
-func (V *ValidationFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(V.native)
+func (v *ValidationFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 type ComponentTypeNV struct {
@@ -22530,12 +22530,12 @@ func marshalComponentTypeNV(p uintptr) (interface{}, error) {
 	return wrapComponentTypeNV(c)
 }
 
-func (C *ComponentTypeNV) free() {}
+func (c *ComponentTypeNV) free() {}
 
 // Native returns the pointer to *C.VkComponentTypeNV. The caller is expected to
 // cast.
-func (C *ComponentTypeNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *ComponentTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type ScopeNV struct {
@@ -22558,12 +22558,12 @@ func marshalScopeNV(p uintptr) (interface{}, error) {
 	return wrapScopeNV(c)
 }
 
-func (S *ScopeNV) free() {}
+func (s *ScopeNV) free() {}
 
 // Native returns the pointer to *C.VkScopeNV. The caller is expected to
 // cast.
-func (S *ScopeNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ScopeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type CooperativeMatrixPropertiesNV struct {
@@ -22586,12 +22586,12 @@ func marshalCooperativeMatrixPropertiesNV(p uintptr) (interface{}, error) {
 	return wrapCooperativeMatrixPropertiesNV(c)
 }
 
-func (C *CooperativeMatrixPropertiesNV) free() {}
+func (c *CooperativeMatrixPropertiesNV) free() {}
 
 // Native returns the pointer to *C.VkCooperativeMatrixPropertiesNV. The caller is expected to
 // cast.
-func (C *CooperativeMatrixPropertiesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CooperativeMatrixPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PhysicalDeviceCooperativeMatrixFeaturesNV struct {
@@ -22614,12 +22614,12 @@ func marshalPhysicalDeviceCooperativeMatrixFeaturesNV(p uintptr) (interface{}, e
 	return wrapPhysicalDeviceCooperativeMatrixFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceCooperativeMatrixFeaturesNV) free() {}
+func (p *PhysicalDeviceCooperativeMatrixFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceCooperativeMatrixFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceCooperativeMatrixFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceCooperativeMatrixFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceCooperativeMatrixPropertiesNV struct {
@@ -22642,12 +22642,12 @@ func marshalPhysicalDeviceCooperativeMatrixPropertiesNV(p uintptr) (interface{},
 	return wrapPhysicalDeviceCooperativeMatrixPropertiesNV(c)
 }
 
-func (P *PhysicalDeviceCooperativeMatrixPropertiesNV) free() {}
+func (p *PhysicalDeviceCooperativeMatrixPropertiesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceCooperativeMatrixPropertiesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceCooperativeMatrixPropertiesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceCooperativeMatrixPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type CoverageReductionModeNV struct {
@@ -22670,12 +22670,12 @@ func marshalCoverageReductionModeNV(p uintptr) (interface{}, error) {
 	return wrapCoverageReductionModeNV(c)
 }
 
-func (C *CoverageReductionModeNV) free() {}
+func (c *CoverageReductionModeNV) free() {}
 
 // Native returns the pointer to *C.VkCoverageReductionModeNV. The caller is expected to
 // cast.
-func (C *CoverageReductionModeNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *CoverageReductionModeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type PipelineCoverageReductionStateCreateFlagsNV struct {
@@ -22698,12 +22698,12 @@ func marshalPipelineCoverageReductionStateCreateFlagsNV(p uintptr) (interface{},
 	return wrapPipelineCoverageReductionStateCreateFlagsNV(c)
 }
 
-func (P *PipelineCoverageReductionStateCreateFlagsNV) free() {}
+func (p *PipelineCoverageReductionStateCreateFlagsNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineCoverageReductionStateCreateFlagsNV. The caller is expected to
 // cast.
-func (P *PipelineCoverageReductionStateCreateFlagsNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCoverageReductionStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PhysicalDeviceCoverageReductionModeFeaturesNV struct {
@@ -22726,12 +22726,12 @@ func marshalPhysicalDeviceCoverageReductionModeFeaturesNV(p uintptr) (interface{
 	return wrapPhysicalDeviceCoverageReductionModeFeaturesNV(c)
 }
 
-func (P *PhysicalDeviceCoverageReductionModeFeaturesNV) free() {}
+func (p *PhysicalDeviceCoverageReductionModeFeaturesNV) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceCoverageReductionModeFeaturesNV. The caller is expected to
 // cast.
-func (P *PhysicalDeviceCoverageReductionModeFeaturesNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceCoverageReductionModeFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type PipelineCoverageReductionStateCreateInfoNV struct {
@@ -22754,12 +22754,12 @@ func marshalPipelineCoverageReductionStateCreateInfoNV(p uintptr) (interface{}, 
 	return wrapPipelineCoverageReductionStateCreateInfoNV(c)
 }
 
-func (P *PipelineCoverageReductionStateCreateInfoNV) free() {}
+func (p *PipelineCoverageReductionStateCreateInfoNV) free() {}
 
 // Native returns the pointer to *C.VkPipelineCoverageReductionStateCreateInfoNV. The caller is expected to
 // cast.
-func (P *PipelineCoverageReductionStateCreateInfoNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PipelineCoverageReductionStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type FramebufferMixedSamplesCombinationNV struct {
@@ -22782,12 +22782,12 @@ func marshalFramebufferMixedSamplesCombinationNV(p uintptr) (interface{}, error)
 	return wrapFramebufferMixedSamplesCombinationNV(c)
 }
 
-func (F *FramebufferMixedSamplesCombinationNV) free() {}
+func (f *FramebufferMixedSamplesCombinationNV) free() {}
 
 // Native returns the pointer to *C.VkFramebufferMixedSamplesCombinationNV. The caller is expected to
 // cast.
-func (F *FramebufferMixedSamplesCombinationNV) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FramebufferMixedSamplesCombinationNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type PhysicalDeviceYcbcrImageArraysFeaturesEXT struct {
@@ -22810,12 +22810,12 @@ func marshalPhysicalDeviceYcbcrImageArraysFeaturesEXT(p uintptr) (interface{}, e
 	return wrapPhysicalDeviceYcbcrImageArraysFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceYcbcrImageArraysFeaturesEXT) free() {}
+func (p *PhysicalDeviceYcbcrImageArraysFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceYcbcrImageArraysFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceYcbcrImageArraysFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceYcbcrImageArraysFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type HeadlessSurfaceCreateFlagsEXT struct {
@@ -22838,12 +22838,12 @@ func marshalHeadlessSurfaceCreateFlagsEXT(p uintptr) (interface{}, error) {
 	return wrapHeadlessSurfaceCreateFlagsEXT(c)
 }
 
-func (H *HeadlessSurfaceCreateFlagsEXT) free() {}
+func (h *HeadlessSurfaceCreateFlagsEXT) free() {}
 
 // Native returns the pointer to *C.VkHeadlessSurfaceCreateFlagsEXT. The caller is expected to
 // cast.
-func (H *HeadlessSurfaceCreateFlagsEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(H.native)
+func (h *HeadlessSurfaceCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
 }
 
 type HeadlessSurfaceCreateInfoEXT struct {
@@ -22866,12 +22866,12 @@ func marshalHeadlessSurfaceCreateInfoEXT(p uintptr) (interface{}, error) {
 	return wrapHeadlessSurfaceCreateInfoEXT(c)
 }
 
-func (H *HeadlessSurfaceCreateInfoEXT) free() {}
+func (h *HeadlessSurfaceCreateInfoEXT) free() {}
 
 // Native returns the pointer to *C.VkHeadlessSurfaceCreateInfoEXT. The caller is expected to
 // cast.
-func (H *HeadlessSurfaceCreateInfoEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(H.native)
+func (h *HeadlessSurfaceCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
 }
 
 type PhysicalDeviceHostQueryResetFeaturesEXT struct {
@@ -22894,10 +22894,10 @@ func marshalPhysicalDeviceHostQueryResetFeaturesEXT(p uintptr) (interface{}, err
 	return wrapPhysicalDeviceHostQueryResetFeaturesEXT(c)
 }
 
-func (P *PhysicalDeviceHostQueryResetFeaturesEXT) free() {}
+func (p *PhysicalDeviceHostQueryResetFeaturesEXT) free() {}
 
 // Native returns the pointer to *C.VkPhysicalDeviceHostQueryResetFeaturesEXT. The caller is expected to
 // cast.
-func (P *PhysicalDeviceHostQueryResetFeaturesEXT) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *PhysicalDeviceHostQueryResetFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }

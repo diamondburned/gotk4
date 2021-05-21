@@ -409,7 +409,7 @@ type DeviceType int
 const (
 	DeviceTypeDrm DeviceType = 0
 
-	DeviceTypeGl DeviceType = 1
+	DeviceTypeGL DeviceType = 1
 
 	DeviceTypeScript DeviceType = 2
 
@@ -469,7 +469,7 @@ const (
 
 	SurfaceTypeVg SurfaceType = 17
 
-	SurfaceTypeGl SurfaceType = 18
+	SurfaceTypeGL SurfaceType = 18
 
 	SurfaceTypeDrm SurfaceType = 19
 
@@ -604,12 +604,12 @@ func marshalContext(p uintptr) (interface{}, error) {
 	return wrapContext(c)
 }
 
-func (C *Context) free() {}
+func (c *Context) free() {}
 
 // Native returns the pointer to *C.cairo_t. The caller is expected to
 // cast.
-func (C *Context) Native() unsafe.Pointer {
-	return unsafe.Pointer(C.native)
+func (c *Context) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 type Device struct {
@@ -632,12 +632,12 @@ func marshalDevice(p uintptr) (interface{}, error) {
 	return wrapDevice(c)
 }
 
-func (D *Device) free() {}
+func (d *Device) free() {}
 
 // Native returns the pointer to *C.cairo_device_t. The caller is expected to
 // cast.
-func (D *Device) Native() unsafe.Pointer {
-	return unsafe.Pointer(D.native)
+func (d *Device) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 type Surface struct {
@@ -660,12 +660,12 @@ func marshalSurface(p uintptr) (interface{}, error) {
 	return wrapSurface(c)
 }
 
-func (S *Surface) free() {}
+func (s *Surface) free() {}
 
 // Native returns the pointer to *C.cairo_surface_t. The caller is expected to
 // cast.
-func (S *Surface) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *Surface) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type Matrix struct {
@@ -688,12 +688,12 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 	return wrapMatrix(c)
 }
 
-func (M *Matrix) free() {}
+func (m *Matrix) free() {}
 
 // Native returns the pointer to *C.cairo_matrix_t. The caller is expected to
 // cast.
-func (M *Matrix) Native() unsafe.Pointer {
-	return unsafe.Pointer(M.native)
+func (m *Matrix) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 type Pattern struct {
@@ -716,12 +716,12 @@ func marshalPattern(p uintptr) (interface{}, error) {
 	return wrapPattern(c)
 }
 
-func (P *Pattern) free() {}
+func (p *Pattern) free() {}
 
 // Native returns the pointer to *C.cairo_pattern_t. The caller is expected to
 // cast.
-func (P *Pattern) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *Pattern) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type Region struct {
@@ -744,12 +744,12 @@ func marshalRegion(p uintptr) (interface{}, error) {
 	return wrapRegion(c)
 }
 
-func (R *Region) free() {}
+func (r *Region) free() {}
 
 // Native returns the pointer to *C.cairo_region_t. The caller is expected to
 // cast.
-func (R *Region) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *Region) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type FontOptions struct {
@@ -772,12 +772,12 @@ func marshalFontOptions(p uintptr) (interface{}, error) {
 	return wrapFontOptions(c)
 }
 
-func (F *FontOptions) free() {}
+func (f *FontOptions) free() {}
 
 // Native returns the pointer to *C.cairo_font_options_t. The caller is expected to
 // cast.
-func (F *FontOptions) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FontOptions) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type FontFace struct {
@@ -800,12 +800,12 @@ func marshalFontFace(p uintptr) (interface{}, error) {
 	return wrapFontFace(c)
 }
 
-func (F *FontFace) free() {}
+func (f *FontFace) free() {}
 
 // Native returns the pointer to *C.cairo_font_face_t. The caller is expected to
 // cast.
-func (F *FontFace) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FontFace) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 type ScaledFont struct {
@@ -828,12 +828,12 @@ func marshalScaledFont(p uintptr) (interface{}, error) {
 	return wrapScaledFont(c)
 }
 
-func (S *ScaledFont) free() {}
+func (s *ScaledFont) free() {}
 
 // Native returns the pointer to *C.cairo_scaled_font_t. The caller is expected to
 // cast.
-func (S *ScaledFont) Native() unsafe.Pointer {
-	return unsafe.Pointer(S.native)
+func (s *ScaledFont) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 type Path struct {
@@ -856,12 +856,12 @@ func marshalPath(p uintptr) (interface{}, error) {
 	return wrapPath(c)
 }
 
-func (P *Path) free() {}
+func (p *Path) free() {}
 
 // Native returns the pointer to *C.cairo_path_t. The caller is expected to
 // cast.
-func (P *Path) Native() unsafe.Pointer {
-	return unsafe.Pointer(P.native)
+func (p *Path) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 type Rectangle struct {
@@ -896,8 +896,8 @@ func marshalRectangle(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.cairo_rectangle_t. The caller is expected to
 // cast.
-func (R *Rectangle) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type RectangleInt struct {
@@ -932,6 +932,6 @@ func marshalRectangleInt(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.cairo_rectangle_int_t. The caller is expected to
 // cast.
-func (R *RectangleInt) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RectangleInt) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }

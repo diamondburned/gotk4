@@ -56,11 +56,11 @@ func TagFromLanguage(language *pango.Language) Tag {
 	var arg0 *pango.Language
 	arg0 = wrapLanguage(language)
 
-	c0 := C.pango_ot_tag_from_language(arg0)
+	ret := C.pango_ot_tag_from_language(arg0)
 
 	var ret0 Tag
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Tag(tmp)
 	}
 
@@ -80,11 +80,11 @@ func TagFromScript(script pango.Script) Tag {
 	var arg0 pango.Script
 	arg0 = Script(script)
 
-	c0 := C.pango_ot_tag_from_script(arg0)
+	ret := C.pango_ot_tag_from_script(arg0)
 
 	var ret0 Tag
 	{
-		tmp := uint32(c0)
+		tmp := uint32(ret)
 		ret0 = Tag(tmp)
 	}
 
@@ -99,10 +99,10 @@ func TagToLanguage(languageTag Tag) *pango.Language {
 		arg0 = Tag(tmp)
 	}
 
-	c0 := C.pango_ot_tag_to_language(arg0)
+	ret := C.pango_ot_tag_to_language(arg0)
 
 	var ret0 *pango.Language
-	ret0 = wrapLanguage(c0)
+	ret0 = wrapLanguage(ret)
 
 	return ret0
 }
@@ -122,10 +122,10 @@ func TagToScript(scriptTag Tag) pango.Script {
 		arg0 = Tag(tmp)
 	}
 
-	c0 := C.pango_ot_tag_to_script(arg0)
+	ret := C.pango_ot_tag_to_script(arg0)
 
 	var ret0 pango.Script
-	ret0 = Script(c0)
+	ret0 = Script(ret)
 
 	return ret0
 }
@@ -150,12 +150,12 @@ func marshalBuffer(p uintptr) (interface{}, error) {
 	return wrapBuffer(c)
 }
 
-func (B *Buffer) free() {}
+func (b *Buffer) free() {}
 
 // Native returns the pointer to *C.PangoOTBuffer. The caller is expected to
 // cast.
-func (B *Buffer) Native() unsafe.Pointer {
-	return unsafe.Pointer(B.native)
+func (b *Buffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 func NewBuffer(font pangofc.Font) *Buffer
@@ -176,6 +176,7 @@ type FeatureMap struct {
 func wrapFeatureMap(p *C.PangoOTFeatureMap) *FeatureMap {
 	var v FeatureMap
 
+	v.FeatureName = ([5]byte)(p.feature_name)
 	v.PropertyBit = uint32(p.property_bit)
 
 	return &v
@@ -190,8 +191,8 @@ func marshalFeatureMap(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoOTFeatureMap. The caller is expected to
 // cast.
-func (F *FeatureMap) Native() unsafe.Pointer {
-	return unsafe.Pointer(F.native)
+func (f *FeatureMap) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Glyph: the OTGlyph structure represents a single glyph together with
@@ -237,8 +238,8 @@ func marshalGlyph(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoOTGlyph. The caller is expected to
 // cast.
-func (G *Glyph) Native() unsafe.Pointer {
-	return unsafe.Pointer(G.native)
+func (g *Glyph) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // RulesetDescription: the OTRuleset structure holds all the information needed
@@ -294,8 +295,8 @@ func marshalRulesetDescription(p uintptr) (interface{}, error) {
 
 // Native returns the pointer to *C.PangoOTRulesetDescription. The caller is expected to
 // cast.
-func (R *RulesetDescription) Native() unsafe.Pointer {
-	return unsafe.Pointer(R.native)
+func (r *RulesetDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 type Info interface {

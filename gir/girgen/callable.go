@@ -35,26 +35,49 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 
 // Block renders the function block.
 func (cg *callableGenerator) Block() string {
+	type retVar struct {
+		Name string
+		Type gir.AnyType
+	}
+
 	var block pen.Block
 	var args []string
-	var rets []gir.AnyType
+	var rets []retVar
+	var ignores ignoreIxs
+
+	argNamer := func(i int) string { return fmt.Sprintf("arg%d", i) }
 
 	if cg.Parameters != nil {
 		args = make([]string, 0, len(cg.Parameters.Parameters))
 
 		for i, param := range cg.Parameters.Parameters {
+			ignores.paramIgnore(param)
+			targ := argNamer(i)
+
 			if param.Direction == "out" {
-				rets = append(rets, param.AnyType)
+				block.Linef("var %s %s // out", targ, anyTypeCGo(param.AnyType))
+				block.EmptyLine()
+
+				args = append(args, "&"+targ)
+				rets = append(rets, retVar{
+					Name: targ,
+					Type: param.AnyType,
+				})
 				continue
 			}
 
-			targ := fmt.Sprintf("arg%d", i)
+			// Skip user_data fields because we need them for the callback
+			// registry.
+			if ignores.ignore(i) {
+				continue
+			}
+
 			valn := SnakeToGo(false, param.Name)
 
 			// TODO: nullability.
 			// TODO: GoCConverter.
 
-			conv := cg.Ng.CGoConverter(valn, targ, param.AnyType)
+			conv := cg.Ng.CGoConverter(valn, targ, param.AnyType, func(int) string { return "a" })
 			if conv == "" {
 				continue
 			}
@@ -68,31 +91,31 @@ func (cg *callableGenerator) Block() string {
 	}
 
 	if !returnIsVoid(cg.ReturnValue) {
-		rets = append(rets, cg.ReturnValue.AnyType)
+		rets = append(rets, retVar{
+			Name: "ret",
+			Type: cg.ReturnValue.AnyType,
+		})
 	}
 
+	callArgs := strings.Join(args, ", ")
+
 	if len(rets) == 0 {
-		block.Linef("C.%s(%s)", cg.CIdentifier, strings.Join(args, ", "))
+		block.Linef("C.%s(%s)", cg.CIdentifier, callArgs)
 		return block.String()
 	}
 
-	cvars := pen.NewJoints(", ", len(rets))
-	for i := range rets {
-		cvars.Addf("c%d", i)
-	}
-
-	block.Linef("%s := C.%s(%s)", cvars.Join(), cg.CIdentifier, strings.Join(args, ", "))
+	block.Linef("ret := C.%s(%s)", cg.CIdentifier, callArgs)
 	block.EmptyLine()
 
 	retvars := pen.NewJoints(", ", len(rets))
 
 	for i, ret := range rets {
-		resolved, _ := cg.Ng.ResolveAnyType(ret, true)
+		resolved, _ := cg.Ng.ResolveAnyType(ret.Type, true)
 		retName := fmt.Sprintf("ret%d", i)
 		retvars.Add(retName)
 
 		block.Linef("var %s %s", retName, resolved)
-		block.Linef(cg.Ng.CGoConverter(fmt.Sprintf("c%d", i), retName, ret))
+		block.Linef(cg.Ng.CGoConverter(ret.Name, retName, ret.Type, argNamer))
 		block.EmptyLine()
 	}
 
@@ -128,10 +151,18 @@ func (ng *NamespaceGenerator) FnArgs(attrs gir.CallableAttrs) (string, bool) {
 	}
 
 	goArgs := make([]string, 0, len(attrs.Parameters.Parameters))
+	var ignores ignoreIxs
 
-	for _, param := range attrs.Parameters.Parameters {
-		// Skip output parameters.
+	for i, param := range attrs.Parameters.Parameters {
+		ignores.paramIgnore(param)
+
+		// Skip output parameters or user_data args.
 		if param.Direction == "out" {
+			continue
+		}
+
+		// Skip user_data fields because we need them for the callback registry.
+		if ignores.ignore(i) {
 			continue
 		}
 

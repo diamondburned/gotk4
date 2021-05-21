@@ -36,6 +36,11 @@ func init() {
 	})
 }
 
+type WaylandToplevelExported func(toplevel WaylandToplevel, handle string)
+
+//export cWaylandToplevelExported
+func cWaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer)
+
 type WaylandDevice interface {
 	gdk.Device
 
@@ -48,11 +53,11 @@ type WaylandDevice interface {
 	// GDK_SOURCE_TABLET_PAD.
 	GetNodePath() string
 	// GetWlKeyboard: returns the Wayland wl_keyboard of a Device.
-	GetWlKeyboard() unsafe.Pointer
+	GetWlKeyboard() interface{}
 	// GetWlPointer: returns the Wayland wl_pointer of a Device.
-	GetWlPointer() unsafe.Pointer
+	GetWlPointer() interface{}
 	// GetWlSeat: returns the Wayland wl_seat of a Device.
-	GetWlSeat() unsafe.Pointer
+	GetWlSeat() interface{}
 }
 
 type waylandDevice struct {
@@ -71,11 +76,11 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 
 func (w waylandDevice) GetNodePath() string
 
-func (w waylandDevice) GetWlKeyboard() unsafe.Pointer
+func (w waylandDevice) GetWlKeyboard() interface{}
 
-func (w waylandDevice) GetWlPointer() unsafe.Pointer
+func (w waylandDevice) GetWlPointer() interface{}
 
-func (w waylandDevice) GetWlSeat() unsafe.Pointer
+func (w waylandDevice) GetWlSeat() interface{}
 
 type WaylandDisplay interface {
 	gdk.Display
@@ -85,9 +90,9 @@ type WaylandDisplay interface {
 	GetStartupNotificationID() string
 	// GetWlCompositor: returns the Wayland global singleton compositor of a
 	// Display.
-	GetWlCompositor() unsafe.Pointer
+	GetWlCompositor() interface{}
 	// GetWlDisplay: returns the Wayland wl_display of a Display.
-	GetWlDisplay() unsafe.Pointer
+	GetWlDisplay() interface{}
 	// QueryRegistry: returns true if the the interface was found in the display
 	// `wl_registry.global` handler.
 	QueryRegistry(global string) bool
@@ -121,9 +126,9 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 
 func (w waylandDisplay) GetStartupNotificationID() string
 
-func (w waylandDisplay) GetWlCompositor() unsafe.Pointer
+func (w waylandDisplay) GetWlCompositor() interface{}
 
-func (w waylandDisplay) GetWlDisplay() unsafe.Pointer
+func (w waylandDisplay) GetWlDisplay() interface{}
 
 func (w waylandDisplay) QueryRegistry(global string) bool
 
@@ -135,7 +140,7 @@ type WaylandMonitor interface {
 	gdk.Monitor
 
 	// GetWlOutput: returns the Wayland wl_output of a Monitor.
-	GetWlOutput() unsafe.Pointer
+	GetWlOutput() interface{}
 }
 
 type waylandMonitor struct {
@@ -152,7 +157,7 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (w waylandMonitor) GetWlOutput() unsafe.Pointer
+func (w waylandMonitor) GetWlOutput() interface{}
 
 type WaylandPopup interface {
 	WaylandSurface
@@ -176,7 +181,7 @@ type WaylandSeat interface {
 	gdk.Seat
 
 	// GetWlSeat: returns the Wayland `wl_seat` of a Seat.
-	GetWlSeat() unsafe.Pointer
+	GetWlSeat() interface{}
 }
 
 type waylandSeat struct {
@@ -193,13 +198,13 @@ func marshalWaylandSeat(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (w waylandSeat) GetWlSeat() unsafe.Pointer
+func (w waylandSeat) GetWlSeat() interface{}
 
 type WaylandSurface interface {
 	gdk.Surface
 
 	// GetWlSurface: returns the Wayland surface of a Surface.
-	GetWlSurface() unsafe.Pointer
+	GetWlSurface() interface{}
 }
 
 type waylandSurface struct {
@@ -216,7 +221,7 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (w waylandSurface) GetWlSurface() unsafe.Pointer
+func (w waylandSurface) GetWlSurface() interface{}
 
 type WaylandToplevel interface {
 	WaylandSurface
@@ -238,7 +243,7 @@ type WaylandToplevel interface {
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	ExportHandle(callback WaylandToplevelExported, userData unsafe.Pointer, destroyFunc unsafe.Pointer) bool
+	ExportHandle(callback WaylandToplevelExported) bool
 	// SetApplicationID: sets the application id on a Toplevel.
 	SetApplicationID(applicationID string)
 	// SetTransientForExported: marks @toplevel as transient for the surface to
@@ -274,7 +279,7 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (w waylandToplevel) ExportHandle(callback WaylandToplevelExported, userData unsafe.Pointer, destroyFunc unsafe.Pointer) bool
+func (w waylandToplevel) ExportHandle(callback WaylandToplevelExported) bool
 
 func (w waylandToplevel) SetApplicationID(applicationID string)
 

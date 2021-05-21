@@ -10,6 +10,7 @@ import (
 var (
 	snakeRegex     = regexp.MustCompile(`[_0-9]+\w`)
 	pascalSpecials = []string{
+		"Gl",
 		"Es",
 		"Id",
 		"Io",
@@ -33,13 +34,16 @@ var (
 		"Simd",
 		"Hmac",
 		"Ascii",
-		"Toupper",
-		"Tolower",
 		`Sha(\d+)?`,
 		`Utf(\d+)?`,
 		`[XY][^aiueo]`,
 		`(|S|R)[XYZxyz]{3}`,
 	}
+	pascalWords = strings.NewReplacer(
+		"Tolower", "ToLower",
+		"Toupper", "ToUpper",
+		"Xdigit", "XDigit",
+	)
 	pascalRegex *regexp.Regexp
 )
 
@@ -110,14 +114,17 @@ func PascalToGo(pascal string) string {
 		pascal = "New" + strings.TrimSuffix(pascal, "New")
 	}
 
-	return pascalRegex.ReplaceAllStringFunc(pascal, strings.ToUpper)
+	pascal = pascalRegex.ReplaceAllStringFunc(pascal, strings.ToUpper)
+	pascal = pascalWords.Replace(pascal)
+
+	return pascal
 }
 
-// FirstLetter returns the first letter.
+// FirstLetter returns the first letter in lower-case.
 func FirstLetter(p string) string {
 	r, sz := utf8.DecodeRuneInString(p)
 	if sz > 0 && r != utf8.RuneError {
-		return string(r)
+		return string(unicode.ToLower(r))
 	}
 
 	return string(p[0]) // fallback

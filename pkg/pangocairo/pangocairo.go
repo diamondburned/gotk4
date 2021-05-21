@@ -19,6 +19,11 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{})
 }
 
+type ShapeRendererFunc func(cr *cairo.Context, attr *pango.AttrShape, doPath bool)
+
+//export cShapeRendererFunc
+func cShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gboolean, arg3 C.gpointer)
+
 // ContextGetFontOptions: retrieves any font rendering options previously set
 // with [func@PangoCairo.context_set_font_options].
 //
@@ -28,10 +33,10 @@ func ContextGetFontOptions(context pango.Context) *cairo.FontOptions {
 	var arg0 pango.Context
 	arg0 = wrapContext(context)
 
-	c0 := C.pango_cairo_context_get_font_options(arg0)
+	ret := C.pango_cairo_context_get_font_options(arg0)
 
 	var ret0 *cairo.FontOptions
-	ret0 = wrapFontOptions(c0)
+	ret0 = wrapFontOptions(ret)
 
 	return ret0
 }
@@ -42,10 +47,10 @@ func ContextGetResolution(context pango.Context) float64 {
 	var arg0 pango.Context
 	arg0 = wrapContext(context)
 
-	c0 := C.pango_cairo_context_get_resolution(arg0)
+	ret := C.pango_cairo_context_get_resolution(arg0)
 
 	var ret0 float64
-	ret0 = float64(c0)
+	ret0 = float64(ret)
 
 	return ret0
 }
@@ -58,17 +63,17 @@ func ContextGetResolution(context pango.Context) float64 {
 // Retrieves callback function and associated user data for rendering attributes
 // of type PANGO_ATTR_SHAPE as set by
 // [func@PangoCairo.context_set_shape_renderer], if any.
-func ContextGetShapeRenderer(context pango.Context, data unsafe.Pointer) ShapeRendererFunc {
+func ContextGetShapeRenderer(context pango.Context, data interface{}) ShapeRendererFunc {
 	var arg0 pango.Context
 	arg0 = wrapContext(context)
 
-	var arg1 unsafe.Pointer
+	var arg1 interface{}
 	arg1 = unsafe.Pointer(data)
 
-	c0 := C.pango_cairo_context_get_shape_renderer(arg0, arg1)
+	ret := C.pango_cairo_context_get_shape_renderer(arg0, arg1)
 
 	var ret0 ShapeRendererFunc
-	ret0 = wrapShapeRendererFunc(c0)
+	ret0 = wrapShapeRendererFunc(ret)
 
 	return ret0
 }
@@ -107,17 +112,14 @@ func ContextSetResolution(context pango.Context, dpi float64) {
 // rendering attributes of type PANGO_ATTR_SHAPE.
 //
 // See `PangoCairoShapeRendererFunc` for details.
-func ContextSetShapeRenderer(context pango.Context, _func ShapeRendererFunc, data unsafe.Pointer, dnotify unsafe.Pointer) {
+func ContextSetShapeRenderer(context pango.Context, _func ShapeRendererFunc) {
 	var arg0 pango.Context
 	arg0 = wrapContext(context)
 
 	var arg1 ShapeRendererFunc
 	arg1 = wrapShapeRendererFunc(_func)
 
-	var arg2 unsafe.Pointer
-	arg2 = unsafe.Pointer(data)
-
-	C.pango_cairo_context_set_shape_renderer(arg0, arg1, arg2)
+	C.pango_cairo_context_set_shape_renderer(arg0, arg1)
 }
 
 // CreateContext: creates a context object set up to match the current
@@ -134,10 +136,10 @@ func CreateContext(cr *cairo.Context) pango.Context {
 	var arg0 *cairo.Context
 	arg0 = wrapContext(cr)
 
-	c0 := C.pango_cairo_create_context(arg0)
+	ret := C.pango_cairo_create_context(arg0)
 
 	var ret0 pango.Context
-	ret0 = wrapContext(c0)
+	ret0 = wrapContext(ret)
 
 	return ret0
 }
@@ -158,10 +160,10 @@ func CreateLayout(cr *cairo.Context) pango.Layout {
 	var arg0 *cairo.Context
 	arg0 = wrapContext(cr)
 
-	c0 := C.pango_cairo_create_layout(arg0)
+	ret := C.pango_cairo_create_layout(arg0)
 
 	var ret0 pango.Layout
-	ret0 = wrapLayout(c0)
+	ret0 = wrapLayout(ret)
 
 	return ret0
 }
@@ -205,10 +207,10 @@ func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, 
 // gets its own default fontmap. In this way, PangoCairo can be used safely from
 // multiple threads.
 func FontMapGetDefault() pango.FontMap {
-	c0 := C.pango_cairo_font_map_get_default()
+	ret := C.pango_cairo_font_map_get_default()
 
 	var ret0 pango.FontMap
-	ret0 = wrapFontMap(c0)
+	ret0 = wrapFontMap(ret)
 
 	return ret0
 }
@@ -229,10 +231,10 @@ func FontMapGetDefault() pango.FontMap {
 // is returned. Ie. this is only useful for testing, when at least two backends
 // are compiled in.
 func NewFontMap() pango.FontMap {
-	c0 := C.pango_cairo_font_map_new()
+	ret := C.pango_cairo_font_map_new()
 
 	var ret0 pango.FontMap
-	ret0 = wrapFontMap(c0)
+	ret0 = wrapFontMap(ret)
 
 	return ret0
 }
@@ -246,10 +248,10 @@ func FontMapNewForFontType(fonttype cairo.FontType) pango.FontMap {
 	var arg0 cairo.FontType
 	arg0 = FontType(fonttype)
 
-	c0 := C.pango_cairo_font_map_new_for_font_type(arg0)
+	ret := C.pango_cairo_font_map_new_for_font_type(arg0)
 
 	var ret0 pango.FontMap
-	ret0 = wrapFontMap(c0)
+	ret0 = wrapFontMap(ret)
 
 	return ret0
 }

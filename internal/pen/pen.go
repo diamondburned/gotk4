@@ -105,6 +105,13 @@ type Block struct {
 	str strings.Builder
 }
 
+// NewBlock creates a new preallocated block.
+func NewBlock() *Block {
+	b := Block{}
+	b.str.Grow(4096)
+	return &b
+}
+
 func (b *Block) EmptyLine() { b.Line("") }
 
 // Line writes a line.

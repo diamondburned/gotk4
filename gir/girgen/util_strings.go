@@ -33,6 +33,7 @@ var (
 		"Nfkd",
 		"Simd",
 		"Hmac",
+		"Mime",
 		"Ascii",
 		`Sha(\d+)?`,
 		`Utf(\d+)?`,
@@ -43,6 +44,8 @@ var (
 		"Tolower", "ToLower",
 		"Toupper", "ToUpper",
 		"Xdigit", "XDigit",
+		"Gtype", "GType",
+		"Gvalue", "GValue",
 	)
 	pascalRegex *regexp.Regexp
 )

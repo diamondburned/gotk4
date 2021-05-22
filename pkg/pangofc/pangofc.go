@@ -55,20 +55,20 @@ func cSubstituteFunc(arg0 *C.FcPattern, arg1 C.gpointer)
 type Decoder interface {
 	gextras.Objector
 
-	// GetCharset: generates an `FcCharSet` of supported characters for the
-	// @fcfont given.
+	// Charset: generates an `FcCharSet` of supported characters for the @fcfont
+	// given.
 	//
 	// The returned `FcCharSet` will be a reference to an internal value stored
 	// by the `PangoFcDecoder` and must not be modified or freed.
-	GetCharset(fcfont Font) *fontconfig.CharSet
-	// GetGlyph: generates a `PangoGlyph` for the given Unicode point using the
+	Charset(fcfont Font) *fontconfig.CharSet
+	// Glyph: generates a `PangoGlyph` for the given Unicode point using the
 	// custom decoder.
 	//
 	// For complex scripts where there can be multiple glyphs for a single
 	// character, the decoder will return whatever glyph is most convenient for
 	// it. (Usually whatever glyph is directly in the fonts character map
 	// table.)
-	GetGlyph(fcfont Font, wc uint32) pango.Glyph
+	Glyph(fcfont Font, wc uint32) pango.Glyph
 }
 
 type decoder struct {
@@ -85,9 +85,9 @@ func marshalDecoder(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (d decoder) GetCharset(fcfont Font) *fontconfig.CharSet
+func (d decoder) Charset(fcfont Font) *fontconfig.CharSet
 
-func (d decoder) GetGlyph(fcfont Font, wc uint32) pango.Glyph
+func (d decoder) Glyph(fcfont Font, wc uint32) pango.Glyph
 
 // Font: `PangoFcFont` is a base class for font implementations using the
 // Fontconfig and FreeType libraries.
@@ -99,25 +99,25 @@ func (d decoder) GetGlyph(fcfont Font, wc uint32) pango.Glyph
 type Font interface {
 	pango.Font
 
-	// GetGlyph: gets the glyph index for a given Unicode character for @font.
+	// Glyph: gets the glyph index for a given Unicode character for @font.
 	//
 	// If you only want to determine whether the font has the glyph, use
 	// [method@PangoFc.Font.has_char].
-	GetGlyph(wc uint32) uint
-	// GetLanguages: returns the languages that are supported by @font.
+	Glyph(wc uint32) uint
+	// Languages: returns the languages that are supported by @font.
 	//
 	// This corresponds to the FC_LANG member of the FcPattern.
 	//
 	// The returned array is only valid as long as the font and its fontmap are
 	// valid.
-	GetLanguages() **pango.Language
-	// GetPattern: returns the FcPattern that @font is based on.
-	GetPattern() *fontconfig.Pattern
-	// GetUnknownGlyph: returns the index of a glyph suitable for drawing @wc as
-	// an unknown character.
+	Languages() **pango.Language
+	// Pattern: returns the FcPattern that @font is based on.
+	Pattern() *fontconfig.Pattern
+	// UnknownGlyph: returns the index of a glyph suitable for drawing @wc as an
+	// unknown character.
 	//
 	// Use PANGO_GET_UNKNOWN_GLYPH() instead.
-	GetUnknownGlyph(wc uint32) pango.Glyph
+	UnknownGlyph(wc uint32) pango.Glyph
 	// HasChar: determines whether @font has a glyph for the codepoint @wc.
 	HasChar(wc uint32) bool
 	// KernGlyphs: this function used to adjust each adjacent pair of glyphs in
@@ -149,13 +149,13 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (f font) GetGlyph(wc uint32) uint
+func (f font) Glyph(wc uint32) uint
 
-func (f font) GetLanguages() **pango.Language
+func (f font) Languages() **pango.Language
 
-func (f font) GetPattern() *fontconfig.Pattern
+func (f font) Pattern() *fontconfig.Pattern
 
-func (f font) GetUnknownGlyph(wc uint32) pango.Glyph
+func (f font) UnknownGlyph(wc uint32) pango.Glyph
 
 func (f font) HasChar(wc uint32) bool
 

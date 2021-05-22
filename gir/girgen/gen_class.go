@@ -1,6 +1,8 @@
 package girgen
 
 import (
+	"strings"
+
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/internal/pen"
 )
@@ -11,7 +13,7 @@ var classTmpl = newGoTemplate(`
 		{{ $.Ng.PublicType (index .TypeTree 0) }}
 		{{ range .Methods }}
 		{{ GoDoc .Doc 1 .Name }}
-		{{ .Call -}}
+		{{ .Name }}{{ .Tail -}}
 		{{ end }}
 	}
 
@@ -36,7 +38,7 @@ var classTmpl = newGoTemplate(`
 	{{ end }}
 
 	{{ range .Methods }}
-	func ({{ FirstLetter $.StructName }} {{ $.StructName }}) {{ .Call }}
+	func ({{ FirstLetter $.StructName }} {{ $.StructName }}) {{ .Name }}{{ .Tail }}
 	{{ end }}
 `)
 
@@ -80,6 +82,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 		parent = parentType.Parent
 	}
 
+	methodNames := make(map[string]struct{}, len(class.Methods))
 	for _, method := range class.Methods {
 		cbgen := newCallableGenerator(cg.Ng)
 		if !cbgen.Use(method.CallableAttrs) {
@@ -87,6 +90,26 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 		}
 
 		cg.Methods = append(cg.Methods, cbgen)
+		methodNames[cbgen.Name] = struct{}{}
+	}
+
+	// Use Go-idiomatic getter names, unless there's a duplicate.
+	for i, cbgen := range cg.Methods {
+		if !strings.HasPrefix(cbgen.Name, "Get") || cbgen.Name == "Get" {
+			continue
+		}
+
+		newName := strings.TrimPrefix(cbgen.Name, "Get")
+		_, dup := methodNames[newName]
+		if dup {
+			cg.Ng.logln(logInfo, "not renaming cbgen", cbgen.Name, "in class", class.Name)
+			continue // skip
+		}
+
+		delete(methodNames, cbgen.Name)
+		methodNames[newName] = struct{}{}
+
+		cg.Methods[i].Name = newName
 	}
 
 	cg.Class = class

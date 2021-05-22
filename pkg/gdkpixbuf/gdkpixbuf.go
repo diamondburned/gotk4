@@ -292,23 +292,22 @@ type Pixbuf interface {
 	// Flip: flips a pixbuf horizontally or vertically and returns the result in
 	// a new pixbuf.
 	Flip(horizontal bool) Pixbuf
-	// GetBitsPerSample: queries the number of bits per color sample in a
-	// pixbuf.
-	GetBitsPerSample() int
-	// GetByteLength: returns the length of the pixel data, in bytes.
-	GetByteLength() uint
-	// GetColorspace: queries the color space of a pixbuf.
-	GetColorspace() Colorspace
-	// GetHasAlpha: queries whether a pixbuf has an alpha channel (opacity
+	// BitsPerSample: queries the number of bits per color sample in a pixbuf.
+	BitsPerSample() int
+	// ByteLength: returns the length of the pixel data, in bytes.
+	ByteLength() uint
+	// Colorspace: queries the color space of a pixbuf.
+	Colorspace() Colorspace
+	// HasAlpha: queries whether a pixbuf has an alpha channel (opacity
 	// information).
-	GetHasAlpha() bool
-	// GetHeight: queries the height of a pixbuf.
-	GetHeight() int
-	// GetNChannels: queries the number of channels of a pixbuf.
-	GetNChannels() int
-	// GetOption: looks up @key in the list of options that may have been
-	// attached to the @pixbuf when it was loaded, or that may have been
-	// attached by another function using gdk_pixbuf_set_option().
+	HasAlpha() bool
+	// Height: queries the height of a pixbuf.
+	Height() int
+	// NChannels: queries the number of channels of a pixbuf.
+	NChannels() int
+	// Option: looks up @key in the list of options that may have been attached
+	// to the @pixbuf when it was loaded, or that may have been attached by
+	// another function using gdk_pixbuf_set_option().
 	//
 	// For instance, the ANI loader provides "Title" and "Artist" options. The
 	// ICO, XBM, and XPM loaders provide "x_hot" and "y_hot" hot-spot options
@@ -320,22 +319,22 @@ type Pixbuf interface {
 	// Since 2.32 the JPEG and PNG loaders set "x-dpi" and "y-dpi" if the file
 	// contains image density information in dots per inch. Since 2.36.6, the
 	// JPEG loader sets the "comment" option with the comment EXIF tag.
-	GetOption(key string) string
-	// GetOptions: returns a Table with a list of all the options that may have
+	Option(key string) string
+	// Options: returns a Table with a list of all the options that may have
 	// been attached to the @pixbuf when it was loaded, or that may have been
 	// attached by another function using gdk_pixbuf_set_option().
 	//
 	// See gdk_pixbuf_get_option() for more details.
-	GetOptions() *glib.HashTable
-	// GetPixels: queries a pointer to the pixel data of a pixbuf.
-	GetPixels() []uint8
-	// GetPixelsWithLength: queries a pointer to the pixel data of a pixbuf.
-	GetPixelsWithLength() (uint, []uint8)
-	// GetRowstride: queries the rowstride of a pixbuf, which is the number of
+	Options() *glib.HashTable
+	// Pixels: queries a pointer to the pixel data of a pixbuf.
+	Pixels() []uint8
+	// PixelsWithLength: queries a pointer to the pixel data of a pixbuf.
+	PixelsWithLength() (uint, []uint8)
+	// Rowstride: queries the rowstride of a pixbuf, which is the number of
 	// bytes between the start of a row and the start of the next row.
-	GetRowstride() int
-	// GetWidth: queries the width of a pixbuf.
-	GetWidth() int
+	Rowstride() int
+	// Width: queries the width of a pixbuf.
+	Width() int
 	// NewSubpixbuf: creates a new pixbuf which represents a sub-region of
 	// @src_pixbuf. The new pixbuf shares its pixels with the original pixbuf,
 	// so writing to one affects both. The new pixbuf holds a reference to
@@ -495,29 +494,29 @@ func (p pixbuf) Fill(pixel uint32)
 
 func (p pixbuf) Flip(horizontal bool) Pixbuf
 
-func (p pixbuf) GetBitsPerSample() int
+func (p pixbuf) BitsPerSample() int
 
-func (p pixbuf) GetByteLength() uint
+func (p pixbuf) ByteLength() uint
 
-func (p pixbuf) GetColorspace() Colorspace
+func (p pixbuf) Colorspace() Colorspace
 
-func (p pixbuf) GetHasAlpha() bool
+func (p pixbuf) HasAlpha() bool
 
-func (p pixbuf) GetHeight() int
+func (p pixbuf) Height() int
 
-func (p pixbuf) GetNChannels() int
+func (p pixbuf) NChannels() int
 
-func (p pixbuf) GetOption(key string) string
+func (p pixbuf) Option(key string) string
 
-func (p pixbuf) GetOptions() *glib.HashTable
+func (p pixbuf) Options() *glib.HashTable
 
-func (p pixbuf) GetPixels() []uint8
+func (p pixbuf) Pixels() []uint8
 
-func (p pixbuf) GetPixelsWithLength() (uint, []uint8)
+func (p pixbuf) PixelsWithLength() (uint, []uint8)
 
-func (p pixbuf) GetRowstride() int
+func (p pixbuf) Rowstride() int
 
-func (p pixbuf) GetWidth() int
+func (p pixbuf) Width() int
 
 func (p pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf
 
@@ -555,11 +554,11 @@ func (p pixbuf) Unref()
 type PixbufAnimation interface {
 	gextras.Objector
 
-	// GetHeight: queries the height of the bounding box of a pixbuf animation.
-	GetHeight() int
-	// GetIter: get an iterator for displaying an animation. The iterator
-	// provides the frames that should be displayed at a given time. It should
-	// be freed after use with g_object_unref().
+	// Height: queries the height of the bounding box of a pixbuf animation.
+	Height() int
+	// Iter: get an iterator for displaying an animation. The iterator provides
+	// the frames that should be displayed at a given time. It should be freed
+	// after use with g_object_unref().
 	//
 	// @start_time would normally come from g_get_current_time(), and marks the
 	// beginning of animation playback. After creating an iterator, you should
@@ -588,16 +587,16 @@ type PixbufAnimation interface {
 	// should be reinstalled after any area_updated signal.
 	//
 	// A delay time of -1 is possible, indicating "infinite."
-	GetIter(startTime *glib.TimeVal) PixbufAnimationIter
-	// GetStaticImage: if an animation is really just a plain image (has only
-	// one frame), this function returns that image. If the animation is an
+	Iter(startTime *glib.TimeVal) PixbufAnimationIter
+	// StaticImage: if an animation is really just a plain image (has only one
+	// frame), this function returns that image. If the animation is an
 	// animation, this function returns a reasonable thing to display as a
 	// static unanimated image, which might be the first frame, or something
 	// more sophisticated. If an animation hasn't loaded any frames yet, this
 	// function will return nil.
-	GetStaticImage() Pixbuf
-	// GetWidth: queries the width of the bounding box of a pixbuf animation.
-	GetWidth() int
+	StaticImage() Pixbuf
+	// Width: queries the width of the bounding box of a pixbuf animation.
+	Width() int
 	// IsStaticImage: if you load a file with
 	// gdk_pixbuf_animation_new_from_file() and it turns out to be a plain,
 	// unanimated image, then this function will return true. Use
@@ -631,13 +630,13 @@ func NewPixbufAnimation(stream gio.InputStream, cancellable gio.Cancellable) Pix
 
 func NewPixbufAnimation(asyncResult gio.AsyncResult) PixbufAnimation
 
-func (p pixbufAnimation) GetHeight() int
+func (p pixbufAnimation) Height() int
 
-func (p pixbufAnimation) GetIter(startTime *glib.TimeVal) PixbufAnimationIter
+func (p pixbufAnimation) Iter(startTime *glib.TimeVal) PixbufAnimationIter
 
-func (p pixbufAnimation) GetStaticImage() Pixbuf
+func (p pixbufAnimation) StaticImage() Pixbuf
 
-func (p pixbufAnimation) GetWidth() int
+func (p pixbufAnimation) Width() int
 
 func (p pixbufAnimation) IsStaticImage() bool
 
@@ -669,16 +668,16 @@ type PixbufAnimationIter interface {
 	// true, you need to call gdk_pixbuf_animation_iter_get_pixbuf() and update
 	// the display with the new pixbuf.
 	Advance(currentTime *glib.TimeVal) bool
-	// GetDelayTime: gets the number of milliseconds the current pixbuf should
-	// be displayed, or -1 if the current pixbuf should be displayed forever.
+	// DelayTime: gets the number of milliseconds the current pixbuf should be
+	// displayed, or -1 if the current pixbuf should be displayed forever.
 	// g_timeout_add() conveniently takes a timeout in milliseconds, so you can
 	// use a timeout to schedule the next update.
 	//
 	// Note that some formats, like GIF, might clamp the timeout values in the
 	// image file to avoid updates that are just too quick. The minimum timeout
 	// for GIF images is currently 20 milliseconds.
-	GetDelayTime() int
-	// GetPixbuf: gets the current pixbuf which should be displayed; the pixbuf
+	DelayTime() int
+	// Pixbuf: gets the current pixbuf which should be displayed; the pixbuf
 	// might not be the same size as the animation itself
 	// (gdk_pixbuf_animation_get_width(), gdk_pixbuf_animation_get_height()).
 	// This pixbuf should be displayed for
@@ -689,7 +688,7 @@ type PixbufAnimationIter interface {
 	// gdk_pixbuf_animation_iter_advance(). Copy the pixbuf to keep it (don't
 	// just add a reference), as it may get recycled as you advance the
 	// iterator.
-	GetPixbuf() Pixbuf
+	Pixbuf() Pixbuf
 	// OnCurrentlyLoadingFrame: used to determine how to respond to the
 	// area_updated signal on PixbufLoader when loading an animation.
 	// area_updated is emitted for an area of the frame currently streaming in
@@ -714,9 +713,9 @@ func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 
 func (p pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool
 
-func (p pixbufAnimationIter) GetDelayTime() int
+func (p pixbufAnimationIter) DelayTime() int
 
-func (p pixbufAnimationIter) GetPixbuf() Pixbuf
+func (p pixbufAnimationIter) Pixbuf() Pixbuf
 
 func (p pixbufAnimationIter) OnCurrentlyLoadingFrame() bool
 
@@ -736,17 +735,17 @@ type PixbufLoader interface {
 	// Remember that this does not unref the loader, so if you plan not to use
 	// it anymore, please g_object_unref() it.
 	Close() bool
-	// GetAnimation: queries the PixbufAnimation that a pixbuf loader is
-	// currently creating. In general it only makes sense to call this function
-	// after the "area-prepared" signal has been emitted by the loader. If the
-	// loader doesn't have enough bytes yet (hasn't emitted the "area-prepared"
-	// signal) this function will return nil.
-	GetAnimation() PixbufAnimation
-	// GetFormat: obtains the available information about the format of the
+	// Animation: queries the PixbufAnimation that a pixbuf loader is currently
+	// creating. In general it only makes sense to call this function after the
+	// "area-prepared" signal has been emitted by the loader. If the loader
+	// doesn't have enough bytes yet (hasn't emitted the "area-prepared" signal)
+	// this function will return nil.
+	Animation() PixbufAnimation
+	// Format: obtains the available information about the format of the
 	// currently loading image file.
-	GetFormat() *PixbufFormat
-	// GetPixbuf: queries the Pixbuf that a pixbuf loader is currently creating.
-	// In general it only makes sense to call this function after the
+	Format() *PixbufFormat
+	// Pixbuf: queries the Pixbuf that a pixbuf loader is currently creating. In
+	// general it only makes sense to call this function after the
 	// "area-prepared" signal has been emitted by the loader; this means that
 	// enough data has been read to know the size of the image that will be
 	// allocated. If the loader has not received enough data via
@@ -755,7 +754,7 @@ type PixbufLoader interface {
 	// calling g_object_ref() should be sufficient to continue using it.
 	// Additionally, if the loader is an animation, it will return the "static
 	// image" of the animation (see gdk_pixbuf_animation_get_static_image()).
-	GetPixbuf() Pixbuf
+	Pixbuf() Pixbuf
 	// SetSize: causes the image to be scaled while it is loaded. The desired
 	// image size can be determined relative to the original size of the image
 	// by calling gdk_pixbuf_loader_set_size() from a signal handler for the
@@ -803,11 +802,11 @@ func NewPixbufLoader(imageType string) PixbufLoader
 
 func (p pixbufLoader) Close() bool
 
-func (p pixbufLoader) GetAnimation() PixbufAnimation
+func (p pixbufLoader) Animation() PixbufAnimation
 
-func (p pixbufLoader) GetFormat() *PixbufFormat
+func (p pixbufLoader) Format() *PixbufFormat
 
-func (p pixbufLoader) GetPixbuf() Pixbuf
+func (p pixbufLoader) Pixbuf() Pixbuf
 
 func (p pixbufLoader) SetSize(width int, height int)
 
@@ -822,9 +821,9 @@ type PixbufSimpleAnim interface {
 	// AddFrame: adds a new frame to @animation. The @pixbuf must have the
 	// dimensions specified when the animation was constructed.
 	AddFrame(pixbuf Pixbuf)
-	// GetLoop: gets whether @animation should loop indefinitely when it reaches
+	// Loop: gets whether @animation should loop indefinitely when it reaches
 	// the end.
-	GetLoop() bool
+	Loop() bool
 	// SetLoop: sets whether @animation should loop indefinitely when it reaches
 	// the end.
 	SetLoop(loop bool)
@@ -848,7 +847,7 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim
 
 func (p pixbufSimpleAnim) AddFrame(pixbuf Pixbuf)
 
-func (p pixbufSimpleAnim) GetLoop() bool
+func (p pixbufSimpleAnim) Loop() bool
 
 func (p pixbufSimpleAnim) SetLoop(loop bool)
 

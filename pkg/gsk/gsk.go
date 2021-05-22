@@ -599,12 +599,12 @@ func NewTransform() *Transform
 type BlendNode interface {
 	RenderNode
 
-	// GetBlendMode: retrieves the blend mode used by @node.
-	GetBlendMode() BlendMode
-	// GetBottomChild: retrieves the bottom RenderNode child of the @node.
-	GetBottomChild() RenderNode
-	// GetTopChild: retrieves the top RenderNode child of the @node.
-	GetTopChild() RenderNode
+	// BlendMode: retrieves the blend mode used by @node.
+	BlendMode() BlendMode
+	// BottomChild: retrieves the bottom RenderNode child of the @node.
+	BottomChild() RenderNode
+	// TopChild: retrieves the top RenderNode child of the @node.
+	TopChild() RenderNode
 }
 
 type blendNode struct {
@@ -623,20 +623,20 @@ func marshalBlendNode(p uintptr) (interface{}, error) {
 
 func NewBlendNode(bottom RenderNode, top RenderNode, blendMode BlendMode) BlendNode
 
-func (b blendNode) GetBlendMode() BlendMode
+func (b blendNode) BlendMode() BlendMode
 
-func (b blendNode) GetBottomChild() RenderNode
+func (b blendNode) BottomChild() RenderNode
 
-func (b blendNode) GetTopChild() RenderNode
+func (b blendNode) TopChild() RenderNode
 
 // BlurNode: a render node applying a blur effect to its single child.
 type BlurNode interface {
 	RenderNode
 
-	// GetChild: retrieves the child RenderNode of the blur @node.
-	GetChild() RenderNode
-	// GetRadius: retrieves the blur radius of the @node.
-	GetRadius() float32
+	// Child: retrieves the child RenderNode of the blur @node.
+	Child() RenderNode
+	// Radius: retrieves the blur radius of the @node.
+	Radius() float32
 }
 
 type blurNode struct {
@@ -655,20 +655,20 @@ func marshalBlurNode(p uintptr) (interface{}, error) {
 
 func NewBlurNode(child RenderNode, radius float32) BlurNode
 
-func (b blurNode) GetChild() RenderNode
+func (b blurNode) Child() RenderNode
 
-func (b blurNode) GetRadius() float32
+func (b blurNode) Radius() float32
 
 // BorderNode: a render node for a border.
 type BorderNode interface {
 	RenderNode
 
-	// GetColors: retrieves the colors of the border.
-	GetColors() *gdk.RGBA
-	// GetOutline: retrieves the outline of the border.
-	GetOutline() *RoundedRect
-	// GetWidths: retrieves the stroke widths of the border.
-	GetWidths() [4]float32
+	// Colors: retrieves the colors of the border.
+	Colors() *gdk.RGBA
+	// Outline: retrieves the outline of the border.
+	Outline() *RoundedRect
+	// Widths: retrieves the stroke widths of the border.
+	Widths() [4]float32
 }
 
 type borderNode struct {
@@ -687,24 +687,24 @@ func marshalBorderNode(p uintptr) (interface{}, error) {
 
 func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) BorderNode
 
-func (b borderNode) GetColors() *gdk.RGBA
+func (b borderNode) Colors() *gdk.RGBA
 
-func (b borderNode) GetOutline() *RoundedRect
+func (b borderNode) Outline() *RoundedRect
 
-func (b borderNode) GetWidths() [4]float32
+func (b borderNode) Widths() [4]float32
 
 // CairoNode: a render node for a Cairo surface.
 type CairoNode interface {
 	RenderNode
 
-	// GetDrawContext: creates a Cairo context for drawing using the surface
+	// DrawContext: creates a Cairo context for drawing using the surface
 	// associated to the render node.
 	//
 	// If no surface exists yet, a surface will be created optimized for
 	// rendering to @renderer.
-	GetDrawContext() *cairo.Context
-	// GetSurface: retrieves the Cairo surface used by the render node.
-	GetSurface() *cairo.Surface
+	DrawContext() *cairo.Context
+	// Surface: retrieves the Cairo surface used by the render node.
+	Surface() *cairo.Surface
 }
 
 type cairoNode struct {
@@ -723,9 +723,9 @@ func marshalCairoNode(p uintptr) (interface{}, error) {
 
 func NewCairoNode(bounds *graphene.Rect) CairoNode
 
-func (c cairoNode) GetDrawContext() *cairo.Context
+func (c cairoNode) DrawContext() *cairo.Context
 
-func (c cairoNode) GetSurface() *cairo.Surface
+func (c cairoNode) Surface() *cairo.Surface
 
 type CairoRenderer interface {
 	Renderer
@@ -751,10 +751,10 @@ func NewCairoRenderer() CairoRenderer
 type ClipNode interface {
 	RenderNode
 
-	// GetChild: gets the child node that is getting clipped by the given @node.
-	GetChild() RenderNode
-	// GetClip: retrieves the clip rectangle for @node.
-	GetClip() *graphene.Rect
+	// Child: gets the child node that is getting clipped by the given @node.
+	Child() RenderNode
+	// Clip: retrieves the clip rectangle for @node.
+	Clip() *graphene.Rect
 }
 
 type clipNode struct {
@@ -773,22 +773,22 @@ func marshalClipNode(p uintptr) (interface{}, error) {
 
 func NewClipNode(child RenderNode, clip *graphene.Rect) ClipNode
 
-func (c clipNode) GetChild() RenderNode
+func (c clipNode) Child() RenderNode
 
-func (c clipNode) GetClip() *graphene.Rect
+func (c clipNode) Clip() *graphene.Rect
 
 // ColorMatrixNode: a render node controlling the color matrix of its single
 // child node.
 type ColorMatrixNode interface {
 	RenderNode
 
-	// GetChild: gets the child node that is getting its colors modified by the
+	// Child: gets the child node that is getting its colors modified by the
 	// given @node.
-	GetChild() RenderNode
-	// GetColorMatrix: retrieves the color matrix used by the @node.
-	GetColorMatrix() *graphene.Matrix
-	// GetColorOffset: retrieves the color offset used by the @node.
-	GetColorOffset() *graphene.Vec4
+	Child() RenderNode
+	// ColorMatrix: retrieves the color matrix used by the @node.
+	ColorMatrix() *graphene.Matrix
+	// ColorOffset: retrieves the color offset used by the @node.
+	ColorOffset() *graphene.Vec4
 }
 
 type colorMatrixNode struct {
@@ -807,18 +807,18 @@ func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 
 func NewColorMatrixNode(child RenderNode, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) ColorMatrixNode
 
-func (c colorMatrixNode) GetChild() RenderNode
+func (c colorMatrixNode) Child() RenderNode
 
-func (c colorMatrixNode) GetColorMatrix() *graphene.Matrix
+func (c colorMatrixNode) ColorMatrix() *graphene.Matrix
 
-func (c colorMatrixNode) GetColorOffset() *graphene.Vec4
+func (c colorMatrixNode) ColorOffset() *graphene.Vec4
 
 // ColorNode: a render node for a solid color.
 type ColorNode interface {
 	RenderNode
 
-	// GetColor: retrieves the color of the given @node.
-	GetColor() *gdk.RGBA
+	// Color: retrieves the color of the given @node.
+	Color() *gdk.RGBA
 }
 
 type colorNode struct {
@@ -837,20 +837,20 @@ func marshalColorNode(p uintptr) (interface{}, error) {
 
 func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) ColorNode
 
-func (c colorNode) GetColor() *gdk.RGBA
+func (c colorNode) Color() *gdk.RGBA
 
 // ConicGradientNode: a render node for a conic gradient.
 type ConicGradientNode interface {
 	RenderNode
 
-	// GetCenter: retrieves the center pointer for the gradient.
-	GetCenter() *graphene.Point
-	// GetColorStops: retrieves the color stops in the gradient.
-	GetColorStops() (uint, []ColorStop)
-	// GetNColorStops: retrieves the number of color stops in the gradient.
-	GetNColorStops() uint
-	// GetRotation: retrieves the rotation for the gradient in degrees.
-	GetRotation() float32
+	// Center: retrieves the center pointer for the gradient.
+	Center() *graphene.Point
+	// ColorStops: retrieves the color stops in the gradient.
+	ColorStops() (uint, []ColorStop)
+	// NColorStops: retrieves the number of color stops in the gradient.
+	NColorStops() uint
+	// Rotation: retrieves the rotation for the gradient in degrees.
+	Rotation() float32
 }
 
 type conicGradientNode struct {
@@ -869,22 +869,22 @@ func marshalConicGradientNode(p uintptr) (interface{}, error) {
 
 func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode
 
-func (c conicGradientNode) GetCenter() *graphene.Point
+func (c conicGradientNode) Center() *graphene.Point
 
-func (c conicGradientNode) GetColorStops() (uint, []ColorStop)
+func (c conicGradientNode) ColorStops() (uint, []ColorStop)
 
-func (c conicGradientNode) GetNColorStops() uint
+func (c conicGradientNode) NColorStops() uint
 
-func (c conicGradientNode) GetRotation() float32
+func (c conicGradientNode) Rotation() float32
 
 // ContainerNode: a render node that can contain other render nodes.
 type ContainerNode interface {
 	RenderNode
 
-	// GetChild: gets one of the children of @container.
-	GetChild(idx uint) RenderNode
-	// GetNChildren: retrieves the number of direct children of @node.
-	GetNChildren() uint
+	// Child: gets one of the children of @container.
+	Child(idx uint) RenderNode
+	// NChildren: retrieves the number of direct children of @node.
+	NChildren() uint
 }
 
 type containerNode struct {
@@ -903,21 +903,21 @@ func marshalContainerNode(p uintptr) (interface{}, error) {
 
 func NewContainerNode(children []RenderNode) ContainerNode
 
-func (c containerNode) GetChild(idx uint) RenderNode
+func (c containerNode) Child(idx uint) RenderNode
 
-func (c containerNode) GetNChildren() uint
+func (c containerNode) NChildren() uint
 
 // CrossFadeNode: a render node cross fading between two child nodes.
 type CrossFadeNode interface {
 	RenderNode
 
-	// GetEndChild: retrieves the child RenderNode at the end of the cross-fade.
-	GetEndChild() RenderNode
-	// GetProgress: retrieves the progress value of the cross fade.
-	GetProgress() float32
-	// GetStartChild: retrieves the child RenderNode at the beginning of the
+	// EndChild: retrieves the child RenderNode at the end of the cross-fade.
+	EndChild() RenderNode
+	// Progress: retrieves the progress value of the cross fade.
+	Progress() float32
+	// StartChild: retrieves the child RenderNode at the beginning of the
 	// cross-fade.
-	GetStartChild() RenderNode
+	StartChild() RenderNode
 }
 
 type crossFadeNode struct {
@@ -936,21 +936,21 @@ func marshalCrossFadeNode(p uintptr) (interface{}, error) {
 
 func NewCrossFadeNode(start RenderNode, end RenderNode, progress float32) CrossFadeNode
 
-func (c crossFadeNode) GetEndChild() RenderNode
+func (c crossFadeNode) EndChild() RenderNode
 
-func (c crossFadeNode) GetProgress() float32
+func (c crossFadeNode) Progress() float32
 
-func (c crossFadeNode) GetStartChild() RenderNode
+func (c crossFadeNode) StartChild() RenderNode
 
 // DebugNode: a render node that emits a debugging message when drawing its
 // child node.
 type DebugNode interface {
 	RenderNode
 
-	// GetChild: gets the child node that is getting drawn by the given @node.
-	GetChild() RenderNode
-	// GetMessage: gets the debug message that was set on this node
-	GetMessage() string
+	// Child: gets the child node that is getting drawn by the given @node.
+	Child() RenderNode
+	// Message: gets the debug message that was set on this node
+	Message() string
 }
 
 type debugNode struct {
@@ -969,9 +969,9 @@ func marshalDebugNode(p uintptr) (interface{}, error) {
 
 func NewDebugNode(child RenderNode, message string) DebugNode
 
-func (d debugNode) GetChild() RenderNode
+func (d debugNode) Child() RenderNode
 
-func (d debugNode) GetMessage() string
+func (d debugNode) Message() string
 
 type GLRenderer interface {
 	Renderer
@@ -1010,52 +1010,52 @@ type GLShader interface {
 	// FindUniformByName: looks for a uniform by the name @name, and returns the
 	// index of the uniform, or -1 if it was not found.
 	FindUniformByName(name string) int
-	// GetArgBool: gets the value of the uniform @idx in the @args block. The
+	// ArgBool: gets the value of the uniform @idx in the @args block. The
 	// uniform must be of bool type.
-	GetArgBool(args *glib.Bytes, idx int) bool
-	// GetArgFloat: gets the value of the uniform @idx in the @args block. The
+	ArgBool(args *glib.Bytes, idx int) bool
+	// ArgFloat: gets the value of the uniform @idx in the @args block. The
 	// uniform must be of float type.
-	GetArgFloat(args *glib.Bytes, idx int) float32
-	// GetArgInt: gets the value of the uniform @idx in the @args block. The
+	ArgFloat(args *glib.Bytes, idx int) float32
+	// ArgInt: gets the value of the uniform @idx in the @args block. The
 	// uniform must be of int type.
-	GetArgInt(args *glib.Bytes, idx int) int32
-	// GetArgUint: gets the value of the uniform @idx in the @args block. The
+	ArgInt(args *glib.Bytes, idx int) int32
+	// ArgUint: gets the value of the uniform @idx in the @args block. The
 	// uniform must be of uint type.
-	GetArgUint(args *glib.Bytes, idx int) uint32
-	// GetArgVec2: gets the value of the uniform @idx in the @args block. The
+	ArgUint(args *glib.Bytes, idx int) uint32
+	// ArgVec2: gets the value of the uniform @idx in the @args block. The
 	// uniform must be of vec2 type.
-	GetArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2)
-	// GetArgVec3: gets the value of the uniform @idx in the @args block. The
+	ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2)
+	// ArgVec3: gets the value of the uniform @idx in the @args block. The
 	// uniform must be of vec3 type.
-	GetArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3)
-	// GetArgVec4: gets the value of the uniform @idx in the @args block. The
+	ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3)
+	// ArgVec4: gets the value of the uniform @idx in the @args block. The
 	// uniform must be of vec4 type.
-	GetArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4)
-	// GetArgsSize: get the size of the data block used to specify arguments for
+	ArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4)
+	// ArgsSize: get the size of the data block used to specify arguments for
 	// this shader.
-	GetArgsSize() uint
-	// GetNTextures: returns the number of textures that the shader requires.
+	ArgsSize() uint
+	// NTextures: returns the number of textures that the shader requires.
 	//
 	// This can be used to check that the a passed shader works in your usecase.
 	// It is determined by looking at the highest u_textureN value that the
 	// shader defines.
-	GetNTextures() int
-	// GetNUniforms: get the number of declared uniforms for this shader.
-	GetNUniforms() int
-	// GetResource: gets the resource path for the GLSL sourcecode being used to
+	NTextures() int
+	// NUniforms: get the number of declared uniforms for this shader.
+	NUniforms() int
+	// Resource: gets the resource path for the GLSL sourcecode being used to
 	// render this shader.
-	GetResource() string
-	// GetSource: gets the GLSL sourcecode being used to render this shader.
-	GetSource() *glib.Bytes
-	// GetUniformName: get the name of the declared uniform for this shader at
+	Resource() string
+	// Source: gets the GLSL sourcecode being used to render this shader.
+	Source() *glib.Bytes
+	// UniformName: get the name of the declared uniform for this shader at
 	// index @idx.
-	GetUniformName(idx int) string
-	// GetUniformOffset: get the offset into the data block where data for this
+	UniformName(idx int) string
+	// UniformOffset: get the offset into the data block where data for this
 	// uniforms is stored.
-	GetUniformOffset(idx int) int
-	// GetUniformType: get the type of the declared uniform for this shader at
+	UniformOffset(idx int) int
+	// UniformType: get the type of the declared uniform for this shader at
 	// index @idx.
-	GetUniformType(idx int) GLUniformType
+	UniformType(idx int) GLUniformType
 }
 
 type glShader struct {
@@ -1080,49 +1080,49 @@ func (g glShader) Compile(renderer Renderer) bool
 
 func (g glShader) FindUniformByName(name string) int
 
-func (g glShader) GetArgBool(args *glib.Bytes, idx int) bool
+func (g glShader) ArgBool(args *glib.Bytes, idx int) bool
 
-func (g glShader) GetArgFloat(args *glib.Bytes, idx int) float32
+func (g glShader) ArgFloat(args *glib.Bytes, idx int) float32
 
-func (g glShader) GetArgInt(args *glib.Bytes, idx int) int32
+func (g glShader) ArgInt(args *glib.Bytes, idx int) int32
 
-func (g glShader) GetArgUint(args *glib.Bytes, idx int) uint32
+func (g glShader) ArgUint(args *glib.Bytes, idx int) uint32
 
-func (g glShader) GetArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2)
+func (g glShader) ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2)
 
-func (g glShader) GetArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3)
+func (g glShader) ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3)
 
-func (g glShader) GetArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4)
+func (g glShader) ArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4)
 
-func (g glShader) GetArgsSize() uint
+func (g glShader) ArgsSize() uint
 
-func (g glShader) GetNTextures() int
+func (g glShader) NTextures() int
 
-func (g glShader) GetNUniforms() int
+func (g glShader) NUniforms() int
 
-func (g glShader) GetResource() string
+func (g glShader) Resource() string
 
-func (g glShader) GetSource() *glib.Bytes
+func (g glShader) Source() *glib.Bytes
 
-func (g glShader) GetUniformName(idx int) string
+func (g glShader) UniformName(idx int) string
 
-func (g glShader) GetUniformOffset(idx int) int
+func (g glShader) UniformOffset(idx int) int
 
-func (g glShader) GetUniformType(idx int) GLUniformType
+func (g glShader) UniformType(idx int) GLUniformType
 
 // GLShaderNode: a render node using a GL shader when drawing its children
 // nodes.
 type GLShaderNode interface {
 	RenderNode
 
-	// GetArgs: gets args for the node.
-	GetArgs() *glib.Bytes
-	// GetChild: gets one of the children.
-	GetChild(idx uint) RenderNode
-	// GetNChildren: returns the number of children
-	GetNChildren() uint
-	// GetShader: gets shader code for the node.
-	GetShader() GLShader
+	// Args: gets args for the node.
+	Args() *glib.Bytes
+	// Child: gets one of the children.
+	Child(idx uint) RenderNode
+	// NChildren: returns the number of children
+	NChildren() uint
+	// Shader: gets shader code for the node.
+	Shader() GLShader
 }
 
 type glShaderNode struct {
@@ -1141,30 +1141,30 @@ func marshalGLShaderNode(p uintptr) (interface{}, error) {
 
 func NewGLShaderNode(shader GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNode) GLShaderNode
 
-func (g glShaderNode) GetArgs() *glib.Bytes
+func (g glShaderNode) Args() *glib.Bytes
 
-func (g glShaderNode) GetChild(idx uint) RenderNode
+func (g glShaderNode) Child(idx uint) RenderNode
 
-func (g glShaderNode) GetNChildren() uint
+func (g glShaderNode) NChildren() uint
 
-func (g glShaderNode) GetShader() GLShader
+func (g glShaderNode) Shader() GLShader
 
 // InsetShadowNode: a render node for an inset shadow.
 type InsetShadowNode interface {
 	RenderNode
 
-	// GetBlurRadius: retrieves the blur radius to apply to the shadow.
-	GetBlurRadius() float32
-	// GetColor: retrieves the color of the inset shadow.
-	GetColor() *gdk.RGBA
-	// GetDx: retrieves the horizontal offset of the inset shadow.
-	GetDx() float32
-	// GetDy: retrieves the vertical offset of the inset shadow.
-	GetDy() float32
-	// GetOutline: retrieves the outline rectangle of the inset shadow.
-	GetOutline() *RoundedRect
-	// GetSpread: retrieves how much the shadow spreads inwards.
-	GetSpread() float32
+	// BlurRadius: retrieves the blur radius to apply to the shadow.
+	BlurRadius() float32
+	// Color: retrieves the color of the inset shadow.
+	Color() *gdk.RGBA
+	// Dx: retrieves the horizontal offset of the inset shadow.
+	Dx() float32
+	// Dy: retrieves the vertical offset of the inset shadow.
+	Dy() float32
+	// Outline: retrieves the outline rectangle of the inset shadow.
+	Outline() *RoundedRect
+	// Spread: retrieves how much the shadow spreads inwards.
+	Spread() float32
 }
 
 type insetShadowNode struct {
@@ -1183,30 +1183,30 @@ func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 
 func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) InsetShadowNode
 
-func (i insetShadowNode) GetBlurRadius() float32
+func (i insetShadowNode) BlurRadius() float32
 
-func (i insetShadowNode) GetColor() *gdk.RGBA
+func (i insetShadowNode) Color() *gdk.RGBA
 
-func (i insetShadowNode) GetDx() float32
+func (i insetShadowNode) Dx() float32
 
-func (i insetShadowNode) GetDy() float32
+func (i insetShadowNode) Dy() float32
 
-func (i insetShadowNode) GetOutline() *RoundedRect
+func (i insetShadowNode) Outline() *RoundedRect
 
-func (i insetShadowNode) GetSpread() float32
+func (i insetShadowNode) Spread() float32
 
 // LinearGradientNode: a render node for a linear gradient.
 type LinearGradientNode interface {
 	RenderNode
 
-	// GetColorStops: retrieves the color stops in the gradient.
-	GetColorStops() (uint, []ColorStop)
-	// GetEnd: retrieves the final point of the linear gradient.
-	GetEnd() *graphene.Point
-	// GetNColorStops: retrieves the number of color stops in the gradient.
-	GetNColorStops() uint
-	// GetStart: retrieves the initial point of the linear gradient.
-	GetStart() *graphene.Point
+	// ColorStops: retrieves the color stops in the gradient.
+	ColorStops() (uint, []ColorStop)
+	// End: retrieves the final point of the linear gradient.
+	End() *graphene.Point
+	// NColorStops: retrieves the number of color stops in the gradient.
+	NColorStops() uint
+	// Start: retrieves the initial point of the linear gradient.
+	Start() *graphene.Point
 }
 
 type linearGradientNode struct {
@@ -1225,23 +1225,22 @@ func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 
 func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) LinearGradientNode
 
-func (l linearGradientNode) GetColorStops() (uint, []ColorStop)
+func (l linearGradientNode) ColorStops() (uint, []ColorStop)
 
-func (l linearGradientNode) GetEnd() *graphene.Point
+func (l linearGradientNode) End() *graphene.Point
 
-func (l linearGradientNode) GetNColorStops() uint
+func (l linearGradientNode) NColorStops() uint
 
-func (l linearGradientNode) GetStart() *graphene.Point
+func (l linearGradientNode) Start() *graphene.Point
 
 // OpacityNode: a render node controlling the opacity of its single child node.
 type OpacityNode interface {
 	RenderNode
 
-	// GetChild: gets the child node that is getting opacityed by the given
-	// @node.
-	GetChild() RenderNode
-	// GetOpacity: gets the transparency factor for an opacity node.
-	GetOpacity() float32
+	// Child: gets the child node that is getting opacityed by the given @node.
+	Child() RenderNode
+	// Opacity: gets the transparency factor for an opacity node.
+	Opacity() float32
 }
 
 type opacityNode struct {
@@ -1260,26 +1259,26 @@ func marshalOpacityNode(p uintptr) (interface{}, error) {
 
 func NewOpacityNode(child RenderNode, opacity float32) OpacityNode
 
-func (o opacityNode) GetChild() RenderNode
+func (o opacityNode) Child() RenderNode
 
-func (o opacityNode) GetOpacity() float32
+func (o opacityNode) Opacity() float32
 
 // OutsetShadowNode: a render node for an outset shadow.
 type OutsetShadowNode interface {
 	RenderNode
 
-	// GetBlurRadius: retrieves the blur radius of the shadow.
-	GetBlurRadius() float32
-	// GetColor: retrieves the color of the outset shadow.
-	GetColor() *gdk.RGBA
-	// GetDx: retrieves the horizontal offset of the outset shadow.
-	GetDx() float32
-	// GetDy: retrieves the vertical offset of the outset shadow.
-	GetDy() float32
-	// GetOutline: retrieves the outline rectangle of the outset shadow.
-	GetOutline() *RoundedRect
-	// GetSpread: retrieves how much the shadow spreads outwards.
-	GetSpread() float32
+	// BlurRadius: retrieves the blur radius of the shadow.
+	BlurRadius() float32
+	// Color: retrieves the color of the outset shadow.
+	Color() *gdk.RGBA
+	// Dx: retrieves the horizontal offset of the outset shadow.
+	Dx() float32
+	// Dy: retrieves the vertical offset of the outset shadow.
+	Dy() float32
+	// Outline: retrieves the outline rectangle of the outset shadow.
+	Outline() *RoundedRect
+	// Spread: retrieves how much the shadow spreads outwards.
+	Spread() float32
 }
 
 type outsetShadowNode struct {
@@ -1298,36 +1297,36 @@ func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 
 func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) OutsetShadowNode
 
-func (o outsetShadowNode) GetBlurRadius() float32
+func (o outsetShadowNode) BlurRadius() float32
 
-func (o outsetShadowNode) GetColor() *gdk.RGBA
+func (o outsetShadowNode) Color() *gdk.RGBA
 
-func (o outsetShadowNode) GetDx() float32
+func (o outsetShadowNode) Dx() float32
 
-func (o outsetShadowNode) GetDy() float32
+func (o outsetShadowNode) Dy() float32
 
-func (o outsetShadowNode) GetOutline() *RoundedRect
+func (o outsetShadowNode) Outline() *RoundedRect
 
-func (o outsetShadowNode) GetSpread() float32
+func (o outsetShadowNode) Spread() float32
 
 // RadialGradientNode: a render node for a radial gradient.
 type RadialGradientNode interface {
 	RenderNode
 
-	// GetCenter: retrieves the center pointer for the gradient.
-	GetCenter() *graphene.Point
-	// GetColorStops: retrieves the color stops in the gradient.
-	GetColorStops() (uint, []ColorStop)
-	// GetEnd: retrieves the end value for the gradient.
-	GetEnd() float32
-	// GetHradius: retrieves the horizonal radius for the gradient.
-	GetHradius() float32
-	// GetNColorStops: retrieves the number of color stops in the gradient.
-	GetNColorStops() uint
-	// GetStart: retrieves the start value for the gradient.
-	GetStart() float32
-	// GetVradius: retrieves the vertical radius for the gradient.
-	GetVradius() float32
+	// Center: retrieves the center pointer for the gradient.
+	Center() *graphene.Point
+	// ColorStops: retrieves the color stops in the gradient.
+	ColorStops() (uint, []ColorStop)
+	// End: retrieves the end value for the gradient.
+	End() float32
+	// Hradius: retrieves the horizonal radius for the gradient.
+	Hradius() float32
+	// NColorStops: retrieves the number of color stops in the gradient.
+	NColorStops() uint
+	// Start: retrieves the start value for the gradient.
+	Start() float32
+	// Vradius: retrieves the vertical radius for the gradient.
+	Vradius() float32
 }
 
 type radialGradientNode struct {
@@ -1346,28 +1345,28 @@ func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 
 func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode
 
-func (r radialGradientNode) GetCenter() *graphene.Point
+func (r radialGradientNode) Center() *graphene.Point
 
-func (r radialGradientNode) GetColorStops() (uint, []ColorStop)
+func (r radialGradientNode) ColorStops() (uint, []ColorStop)
 
-func (r radialGradientNode) GetEnd() float32
+func (r radialGradientNode) End() float32
 
-func (r radialGradientNode) GetHradius() float32
+func (r radialGradientNode) Hradius() float32
 
-func (r radialGradientNode) GetNColorStops() uint
+func (r radialGradientNode) NColorStops() uint
 
-func (r radialGradientNode) GetStart() float32
+func (r radialGradientNode) Start() float32
 
-func (r radialGradientNode) GetVradius() float32
+func (r radialGradientNode) Vradius() float32
 
 // Renderer: base type for the object managing the rendering pipeline for a
 // Surface.
 type Renderer interface {
 	gextras.Objector
 
-	// GetSurface: retrieves the Surface set using gsk_renderer_realize(). If
-	// the renderer has not been realized yet, nil will be returned.
-	GetSurface() gdk.Surface
+	// Surface: retrieves the Surface set using gsk_renderer_realize(). If the
+	// renderer has not been realized yet, nil will be returned.
+	Surface() gdk.Surface
 	// IsRealized: checks whether the @renderer is realized or not.
 	IsRealized() bool
 	// Realize: creates the resources needed by the @renderer to render the
@@ -1413,7 +1412,7 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 
 func NewRenderer(surface gdk.Surface) Renderer
 
-func (r renderer) GetSurface() gdk.Surface
+func (r renderer) Surface() gdk.Surface
 
 func (r renderer) IsRealized() bool
 
@@ -1429,10 +1428,10 @@ func (r renderer) Unrealize()
 type RepeatNode interface {
 	RenderNode
 
-	// GetChild: retrieves the child of @node.
-	GetChild() RenderNode
-	// GetChildBounds: retrieves the bounding rectangle of the child of @node.
-	GetChildBounds() *graphene.Rect
+	// Child: retrieves the child of @node.
+	Child() RenderNode
+	// ChildBounds: retrieves the bounding rectangle of the child of @node.
+	ChildBounds() *graphene.Rect
 }
 
 type repeatNode struct {
@@ -1451,9 +1450,9 @@ func marshalRepeatNode(p uintptr) (interface{}, error) {
 
 func NewRepeatNode(bounds *graphene.Rect, child RenderNode, childBounds *graphene.Rect) RepeatNode
 
-func (r repeatNode) GetChild() RenderNode
+func (r repeatNode) Child() RenderNode
 
-func (r repeatNode) GetChildBounds() *graphene.Rect
+func (r repeatNode) ChildBounds() *graphene.Rect
 
 // RepeatingLinearGradientNode: a render node for a repeating linear gradient.
 type RepeatingLinearGradientNode interface {
@@ -1502,11 +1501,11 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 type RoundedClipNode interface {
 	RenderNode
 
-	// GetChild: gets the child node that is getting clipped by the given @node.
-	GetChild() RenderNode
-	// GetClip: retrievs the rounded rectangle used to clip the contents of the
+	// Child: gets the child node that is getting clipped by the given @node.
+	Child() RenderNode
+	// Clip: retrievs the rounded rectangle used to clip the contents of the
 	// @node.
-	GetClip() *RoundedRect
+	Clip() *RoundedRect
 }
 
 type roundedClipNode struct {
@@ -1525,21 +1524,21 @@ func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 
 func NewRoundedClipNode(child RenderNode, clip *RoundedRect) RoundedClipNode
 
-func (r roundedClipNode) GetChild() RenderNode
+func (r roundedClipNode) Child() RenderNode
 
-func (r roundedClipNode) GetClip() *RoundedRect
+func (r roundedClipNode) Clip() *RoundedRect
 
 // ShadowNode: a render node drawing one or more shadows behind its single child
 // node.
 type ShadowNode interface {
 	RenderNode
 
-	// GetChild: retrieves the child RenderNode of the shadow @node.
-	GetChild() RenderNode
-	// GetNShadows: retrieves the number of shadows in the @node.
-	GetNShadows() uint
-	// GetShadow: retrieves the shadow data at the given index @i.
-	GetShadow(i uint) *Shadow
+	// Child: retrieves the child RenderNode of the shadow @node.
+	Child() RenderNode
+	// NShadows: retrieves the number of shadows in the @node.
+	NShadows() uint
+	// Shadow: retrieves the shadow data at the given index @i.
+	Shadow(i uint) *Shadow
 }
 
 type shadowNode struct {
@@ -1558,26 +1557,26 @@ func marshalShadowNode(p uintptr) (interface{}, error) {
 
 func NewShadowNode(child RenderNode, shadows []Shadow) ShadowNode
 
-func (s shadowNode) GetChild() RenderNode
+func (s shadowNode) Child() RenderNode
 
-func (s shadowNode) GetNShadows() uint
+func (s shadowNode) NShadows() uint
 
-func (s shadowNode) GetShadow(i uint) *Shadow
+func (s shadowNode) Shadow(i uint) *Shadow
 
 // TextNode: a render node drawing a set of glyphs.
 type TextNode interface {
 	RenderNode
 
-	// GetColor: retrieves the color used by the text @node.
-	GetColor() *gdk.RGBA
-	// GetFont: returns the font used by the text @node.
-	GetFont() pango.Font
-	// GetGlyphs: retrieves the glyph information in the @node.
-	GetGlyphs() (uint, []pango.GlyphInfo)
-	// GetNumGlyphs: retrieves the number of glyphs in the text node.
-	GetNumGlyphs() uint
-	// GetOffset: retrieves the offset applied to the text.
-	GetOffset() *graphene.Point
+	// Color: retrieves the color used by the text @node.
+	Color() *gdk.RGBA
+	// Font: returns the font used by the text @node.
+	Font() pango.Font
+	// Glyphs: retrieves the glyph information in the @node.
+	Glyphs() (uint, []pango.GlyphInfo)
+	// NumGlyphs: retrieves the number of glyphs in the text node.
+	NumGlyphs() uint
+	// Offset: retrieves the offset applied to the text.
+	Offset() *graphene.Point
 	// HasColorGlyphs: checks whether the text @node has color glyphs.
 	HasColorGlyphs() bool
 }
@@ -1598,15 +1597,15 @@ func marshalTextNode(p uintptr) (interface{}, error) {
 
 func NewTextNode(font pango.Font, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) TextNode
 
-func (t textNode) GetColor() *gdk.RGBA
+func (t textNode) Color() *gdk.RGBA
 
-func (t textNode) GetFont() pango.Font
+func (t textNode) Font() pango.Font
 
-func (t textNode) GetGlyphs() (uint, []pango.GlyphInfo)
+func (t textNode) Glyphs() (uint, []pango.GlyphInfo)
 
-func (t textNode) GetNumGlyphs() uint
+func (t textNode) NumGlyphs() uint
 
-func (t textNode) GetOffset() *graphene.Point
+func (t textNode) Offset() *graphene.Point
 
 func (t textNode) HasColorGlyphs() bool
 
@@ -1614,8 +1613,8 @@ func (t textNode) HasColorGlyphs() bool
 type TextureNode interface {
 	RenderNode
 
-	// GetTexture: retrieves the Texture used when creating this RenderNode.
-	GetTexture() gdk.Texture
+	// Texture: retrieves the Texture used when creating this RenderNode.
+	Texture() gdk.Texture
 }
 
 type textureNode struct {
@@ -1634,17 +1633,17 @@ func marshalTextureNode(p uintptr) (interface{}, error) {
 
 func NewTextureNode(texture gdk.Texture, bounds *graphene.Rect) TextureNode
 
-func (t textureNode) GetTexture() gdk.Texture
+func (t textureNode) Texture() gdk.Texture
 
 // TransformNode: a render node applying a Transform to its single child node.
 type TransformNode interface {
 	RenderNode
 
-	// GetChild: gets the child node that is getting transformed by the given
+	// Child: gets the child node that is getting transformed by the given
 	// @node.
-	GetChild() RenderNode
-	// GetTransform: retrieves the Transform used by the @node.
-	GetTransform() *Transform
+	Child() RenderNode
+	// Transform: retrieves the Transform used by the @node.
+	Transform() *Transform
 }
 
 type transformNode struct {
@@ -1663,9 +1662,9 @@ func marshalTransformNode(p uintptr) (interface{}, error) {
 
 func NewTransformNode(child RenderNode, transform *Transform) TransformNode
 
-func (t transformNode) GetChild() RenderNode
+func (t transformNode) Child() RenderNode
 
-func (t transformNode) GetTransform() *Transform
+func (t transformNode) Transform() *Transform
 
 type VulkanRenderer interface {
 	Renderer

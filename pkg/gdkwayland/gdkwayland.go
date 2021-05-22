@@ -44,20 +44,20 @@ func cWaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer
 type WaylandDevice interface {
 	gdk.Device
 
-	// GetNodePath: returns the `/dev/input/event*` path of this device.
+	// NodePath: returns the `/dev/input/event*` path of this device.
 	//
 	// For Devices that possibly coalesce multiple hardware devices (eg. mouse,
 	// keyboard, touch,...), this function will return nil.
 	//
 	// This is most notably implemented for devices of type GDK_SOURCE_PEN,
 	// GDK_SOURCE_TABLET_PAD.
-	GetNodePath() string
-	// GetWlKeyboard: returns the Wayland wl_keyboard of a Device.
-	GetWlKeyboard() interface{}
-	// GetWlPointer: returns the Wayland wl_pointer of a Device.
-	GetWlPointer() interface{}
-	// GetWlSeat: returns the Wayland wl_seat of a Device.
-	GetWlSeat() interface{}
+	NodePath() string
+	// WlKeyboard: returns the Wayland wl_keyboard of a Device.
+	WlKeyboard() interface{}
+	// WlPointer: returns the Wayland wl_pointer of a Device.
+	WlPointer() interface{}
+	// WlSeat: returns the Wayland wl_seat of a Device.
+	WlSeat() interface{}
 }
 
 type waylandDevice struct {
@@ -74,25 +74,25 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (w waylandDevice) GetNodePath() string
+func (w waylandDevice) NodePath() string
 
-func (w waylandDevice) GetWlKeyboard() interface{}
+func (w waylandDevice) WlKeyboard() interface{}
 
-func (w waylandDevice) GetWlPointer() interface{}
+func (w waylandDevice) WlPointer() interface{}
 
-func (w waylandDevice) GetWlSeat() interface{}
+func (w waylandDevice) WlSeat() interface{}
 
 type WaylandDisplay interface {
 	gdk.Display
 
-	// GetStartupNotificationID: gets the startup notification ID for a Wayland
+	// StartupNotificationID: gets the startup notification ID for a Wayland
 	// display, or nil if no ID has been defined.
-	GetStartupNotificationID() string
-	// GetWlCompositor: returns the Wayland global singleton compositor of a
+	StartupNotificationID() string
+	// WlCompositor: returns the Wayland global singleton compositor of a
 	// Display.
-	GetWlCompositor() interface{}
-	// GetWlDisplay: returns the Wayland wl_display of a Display.
-	GetWlDisplay() interface{}
+	WlCompositor() interface{}
+	// WlDisplay: returns the Wayland wl_display of a Display.
+	WlDisplay() interface{}
 	// QueryRegistry: returns true if the the interface was found in the display
 	// `wl_registry.global` handler.
 	QueryRegistry(global string) bool
@@ -124,11 +124,11 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (w waylandDisplay) GetStartupNotificationID() string
+func (w waylandDisplay) StartupNotificationID() string
 
-func (w waylandDisplay) GetWlCompositor() interface{}
+func (w waylandDisplay) WlCompositor() interface{}
 
-func (w waylandDisplay) GetWlDisplay() interface{}
+func (w waylandDisplay) WlDisplay() interface{}
 
 func (w waylandDisplay) QueryRegistry(global string) bool
 
@@ -139,8 +139,8 @@ func (w waylandDisplay) SetStartupNotificationID(startupID string)
 type WaylandMonitor interface {
 	gdk.Monitor
 
-	// GetWlOutput: returns the Wayland wl_output of a Monitor.
-	GetWlOutput() interface{}
+	// WlOutput: returns the Wayland wl_output of a Monitor.
+	WlOutput() interface{}
 }
 
 type waylandMonitor struct {
@@ -157,7 +157,7 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (w waylandMonitor) GetWlOutput() interface{}
+func (w waylandMonitor) WlOutput() interface{}
 
 type WaylandPopup interface {
 	WaylandSurface
@@ -180,8 +180,8 @@ func marshalWaylandPopup(p uintptr) (interface{}, error) {
 type WaylandSeat interface {
 	gdk.Seat
 
-	// GetWlSeat: returns the Wayland `wl_seat` of a Seat.
-	GetWlSeat() interface{}
+	// WlSeat: returns the Wayland `wl_seat` of a Seat.
+	WlSeat() interface{}
 }
 
 type waylandSeat struct {
@@ -198,13 +198,13 @@ func marshalWaylandSeat(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (w waylandSeat) GetWlSeat() interface{}
+func (w waylandSeat) WlSeat() interface{}
 
 type WaylandSurface interface {
 	gdk.Surface
 
-	// GetWlSurface: returns the Wayland surface of a Surface.
-	GetWlSurface() interface{}
+	// WlSurface: returns the Wayland surface of a Surface.
+	WlSurface() interface{}
 }
 
 type waylandSurface struct {
@@ -221,7 +221,7 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (w waylandSurface) GetWlSurface() interface{}
+func (w waylandSurface) WlSurface() interface{}
 
 type WaylandToplevel interface {
 	WaylandSurface

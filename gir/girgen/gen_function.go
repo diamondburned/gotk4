@@ -9,7 +9,7 @@ import (
 
 var functionTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .Name }}
-	func {{ .Call }} {{ .Block }}
+	func {{ .Name }}{{ .Tail }} {{ .Block }}
 `)
 
 type functionGenerator struct {

@@ -378,9 +378,8 @@ type Ruleset interface {
 
 	// AddFeature: adds a feature to the ruleset.
 	AddFeature(tableType TableType, featureIndex uint, propertyBit uint32)
-	// GetFeatureCount: gets the number of GSUB and GPOS features in the
-	// ruleset.
-	GetFeatureCount() (uint, uint, uint)
+	// FeatureCount: gets the number of GSUB and GPOS features in the ruleset.
+	FeatureCount() (uint, uint, uint)
 	// MaybeAddFeature: this is a convenience function that first tries to find
 	// the feature using pango_ot_info_find_feature() and the ruleset script and
 	// language passed to pango_ot_ruleset_new_for(), and if the feature is
@@ -424,7 +423,7 @@ func NewRuleset(info Info, desc *RulesetDescription) Ruleset
 
 func (r ruleset) AddFeature(tableType TableType, featureIndex uint, propertyBit uint32)
 
-func (r ruleset) GetFeatureCount() (uint, uint, uint)
+func (r ruleset) FeatureCount() (uint, uint, uint)
 
 func (r ruleset) MaybeAddFeature(tableType TableType, featureTag Tag, propertyBit uint32) bool
 

@@ -15827,7 +15827,7 @@ func UuidStringRandom() string {
 	return ret0
 }
 
-func VariantGetGtype() externglib.Type {
+func VariantGetGType() externglib.Type {
 	ret := C.g_variant_get_gtype()
 
 	var ret0 externglib.Type

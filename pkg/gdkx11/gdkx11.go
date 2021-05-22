@@ -265,13 +265,13 @@ type X11Display interface {
 	// gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
 	// function.
 	ErrorTrapPush()
-	// GetDefaultGroup: returns the default group leader surface for all
-	// toplevel surfaces on @display. This surface is implicitly created by GDK.
-	// See gdk_x11_surface_set_group().
-	GetDefaultGroup() gdk.Surface
-	// GetGlxVersion: retrieves the version of the GLX implementation.
-	GetGlxVersion() (int, int, bool)
-	// GetPrimaryMonitor: gets the primary monitor for the display.
+	// DefaultGroup: returns the default group leader surface for all toplevel
+	// surfaces on @display. This surface is implicitly created by GDK. See
+	// gdk_x11_surface_set_group().
+	DefaultGroup() gdk.Surface
+	// GlxVersion: retrieves the version of the GLX implementation.
+	GlxVersion() (int, int, bool)
+	// PrimaryMonitor: gets the primary monitor for the display.
 	//
 	// The primary monitor is considered the monitor where the “main desktop”
 	// lives. While normal application surfaces typically allow the window
@@ -280,30 +280,29 @@ type X11Display interface {
 	//
 	// If no monitor is the designated primary monitor, any monitor (usually the
 	// first) may be returned.
-	GetPrimaryMonitor() gdk.Monitor
-	// GetScreen: retrieves the X11Screen of the @display.
-	GetScreen() X11Screen
-	// GetStartupNotificationID: gets the startup notification ID for a display.
-	GetStartupNotificationID() string
-	// GetUserTime: returns the timestamp of the last user interaction on
-	// @display. The timestamp is taken from events caused by user interaction
-	// such as key presses or pointer movements. See
-	// gdk_x11_surface_set_user_time().
-	GetUserTime() uint32
-	// GetXcursor: returns the X cursor belonging to a Cursor, potentially
-	// creating the cursor.
+	PrimaryMonitor() gdk.Monitor
+	// Screen: retrieves the X11Screen of the @display.
+	Screen() X11Screen
+	// StartupNotificationID: gets the startup notification ID for a display.
+	StartupNotificationID() string
+	// UserTime: returns the timestamp of the last user interaction on @display.
+	// The timestamp is taken from events caused by user interaction such as key
+	// presses or pointer movements. See gdk_x11_surface_set_user_time().
+	UserTime() uint32
+	// Xcursor: returns the X cursor belonging to a Cursor, potentially creating
+	// the cursor.
 	//
 	// Be aware that the returned cursor may not be unique to @cursor. It may
 	// for example be shared with its fallback cursor. On old X servers that
 	// don't support the XCursor extension, all cursors may even fall back to a
 	// few default cursors.
-	GetXcursor(cursor gdk.Cursor) xlib.Cursor
-	// GetXdisplay: returns the X display of a Display.
-	GetXdisplay() *xlib.Display
-	// GetXrootwindow: returns the root X window used by Display.
-	GetXrootwindow() xlib.Window
-	// GetXscreen: returns the X Screen used by Display.
-	GetXscreen() *xlib.Screen
+	Xcursor(cursor gdk.Cursor) xlib.Cursor
+	// Xdisplay: returns the X display of a Display.
+	Xdisplay() *xlib.Display
+	// Xrootwindow: returns the root X window used by Display.
+	Xrootwindow() xlib.Window
+	// Xscreen: returns the X Screen used by Display.
+	Xscreen() *xlib.Screen
 	// Grab: call XGrabServer() on @display. To ungrab the display again, use
 	// gdk_x11_display_ungrab().
 	//
@@ -377,25 +376,25 @@ func (x x11Display) ErrorTrapPopIgnored()
 
 func (x x11Display) ErrorTrapPush()
 
-func (x x11Display) GetDefaultGroup() gdk.Surface
+func (x x11Display) DefaultGroup() gdk.Surface
 
-func (x x11Display) GetGlxVersion() (int, int, bool)
+func (x x11Display) GlxVersion() (int, int, bool)
 
-func (x x11Display) GetPrimaryMonitor() gdk.Monitor
+func (x x11Display) PrimaryMonitor() gdk.Monitor
 
-func (x x11Display) GetScreen() X11Screen
+func (x x11Display) Screen() X11Screen
 
-func (x x11Display) GetStartupNotificationID() string
+func (x x11Display) StartupNotificationID() string
 
-func (x x11Display) GetUserTime() uint32
+func (x x11Display) UserTime() uint32
 
-func (x x11Display) GetXcursor(cursor gdk.Cursor) xlib.Cursor
+func (x x11Display) Xcursor(cursor gdk.Cursor) xlib.Cursor
 
-func (x x11Display) GetXdisplay() *xlib.Display
+func (x x11Display) Xdisplay() *xlib.Display
 
-func (x x11Display) GetXrootwindow() xlib.Window
+func (x x11Display) Xrootwindow() xlib.Window
 
-func (x x11Display) GetXscreen() *xlib.Screen
+func (x x11Display) Xscreen() *xlib.Screen
 
 func (x x11Display) Grab()
 
@@ -434,13 +433,13 @@ func marshalX11Drag(p uintptr) (interface{}, error) {
 type X11Monitor interface {
 	gdk.Monitor
 
-	// GetOutput: returns the XID of the Output corresponding to @monitor.
-	GetOutput() xlib.XID
-	// GetWorkarea: retrieves the size and position of the “work area” on a
-	// monitor within the display coordinate space. The returned geometry is in
+	// Output: returns the XID of the Output corresponding to @monitor.
+	Output() xlib.XID
+	// Workarea: retrieves the size and position of the “work area” on a monitor
+	// within the display coordinate space. The returned geometry is in
 	// ”application pixels”, not in ”device pixels” (see
 	// gdk_monitor_get_scale_factor()).
-	GetWorkarea() gdk.Rectangle
+	Workarea() gdk.Rectangle
 }
 
 type x11Monitor struct {
@@ -457,33 +456,33 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (x x11Monitor) GetOutput() xlib.XID
+func (x x11Monitor) Output() xlib.XID
 
-func (x x11Monitor) GetWorkarea() gdk.Rectangle
+func (x x11Monitor) Workarea() gdk.Rectangle
 
 type X11Screen interface {
 	gextras.Objector
 
-	// GetCurrentDesktop: returns the current workspace for @screen when running
+	// CurrentDesktop: returns the current workspace for @screen when running
 	// under a window manager that supports multiple workspaces, as described in
 	// the [Extended Window Manager
 	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification.
-	GetCurrentDesktop() uint32
-	// GetMonitorOutput: gets the XID of the specified output/monitor. If the X
+	CurrentDesktop() uint32
+	// MonitorOutput: gets the XID of the specified output/monitor. If the X
 	// server does not support version 1.2 of the RANDR extension, 0 is
 	// returned.
-	GetMonitorOutput(monitorNum int) xlib.XID
-	// GetNumberOfDesktops: returns the number of workspaces for @screen when
+	MonitorOutput(monitorNum int) xlib.XID
+	// NumberOfDesktops: returns the number of workspaces for @screen when
 	// running under a window manager that supports multiple workspaces, as
 	// described in the [Extended Window Manager
 	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification.
-	GetNumberOfDesktops() uint32
-	// GetScreenNumber: returns the index of a X11Screen.
-	GetScreenNumber() int
-	// GetWindowManagerName: returns the name of the window manager for @screen.
-	GetWindowManagerName() string
-	// GetXscreen: returns the screen of a X11Screen.
-	GetXscreen() *xlib.Screen
+	NumberOfDesktops() uint32
+	// ScreenNumber: returns the index of a X11Screen.
+	ScreenNumber() int
+	// WindowManagerName: returns the name of the window manager for @screen.
+	WindowManagerName() string
+	// Xscreen: returns the screen of a X11Screen.
+	Xscreen() *xlib.Screen
 	// SupportsNetWmHint: this function is specific to the X11 backend of GDK,
 	// and indicates whether the window manager supports a certain hint from the
 	// [Extended Window Manager
@@ -514,29 +513,29 @@ func marshalX11Screen(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (x x11Screen) GetCurrentDesktop() uint32
+func (x x11Screen) CurrentDesktop() uint32
 
-func (x x11Screen) GetMonitorOutput(monitorNum int) xlib.XID
+func (x x11Screen) MonitorOutput(monitorNum int) xlib.XID
 
-func (x x11Screen) GetNumberOfDesktops() uint32
+func (x x11Screen) NumberOfDesktops() uint32
 
-func (x x11Screen) GetScreenNumber() int
+func (x x11Screen) ScreenNumber() int
 
-func (x x11Screen) GetWindowManagerName() string
+func (x x11Screen) WindowManagerName() string
 
-func (x x11Screen) GetXscreen() *xlib.Screen
+func (x x11Screen) Xscreen() *xlib.Screen
 
 func (x x11Screen) SupportsNetWmHint(propertyName string) bool
 
 type X11Surface interface {
 	gdk.Surface
 
-	// GetDesktop: gets the number of the workspace @surface is on.
-	GetDesktop() uint32
-	// GetGroup: returns the group this surface belongs to.
-	GetGroup() gdk.Surface
-	// GetXid: returns the X resource (surface) belonging to a Surface.
-	GetXid() xlib.Window
+	// Desktop: gets the number of the workspace @surface is on.
+	Desktop() uint32
+	// Group: returns the group this surface belongs to.
+	Group() gdk.Surface
+	// Xid: returns the X resource (surface) belonging to a Surface.
+	Xid() xlib.Window
 	// MoveToCurrentDesktop: moves the surface to the correct workspace when
 	// running under a window manager that supports multiple workspaces, as
 	// described in the [Extended Window Manager
@@ -611,11 +610,11 @@ func marshalX11Surface(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (x x11Surface) GetDesktop() uint32
+func (x x11Surface) Desktop() uint32
 
-func (x x11Surface) GetGroup() gdk.Surface
+func (x x11Surface) Group() gdk.Surface
 
-func (x x11Surface) GetXid() xlib.Window
+func (x x11Surface) Xid() xlib.Window
 
 func (x x11Surface) MoveToCurrentDesktop()
 

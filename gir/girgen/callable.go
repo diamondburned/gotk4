@@ -11,7 +11,7 @@ import (
 type callableGenerator struct {
 	gir.CallableAttrs
 	Name string
-	Call string
+	Tail string
 
 	Ng *NamespaceGenerator
 }
@@ -27,7 +27,7 @@ func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 	}
 
 	cg.Name = SnakeToGo(true, cattrs.Name)
-	cg.Call = cg.Name + call
+	cg.Tail = call
 	cg.CallableAttrs = cattrs
 
 	return true

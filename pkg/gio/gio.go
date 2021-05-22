@@ -3321,9 +3321,9 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 	return ret0
 }
 
-// ContentTypeFromMimeType: tries to find a content type based on the mime type
+// ContentTypeFromMIMEType: tries to find a content type based on the mime type
 // name.
-func ContentTypeFromMimeType(mimeType string) string {
+func ContentTypeFromMIMEType(mimeType string) string {
 	var arg0 string
 	arg0 = C.GoString(mimeType)
 	defer C.free(unsafe.Pointer(mimeType))
@@ -3386,9 +3386,9 @@ func ContentTypeGetIcon(_type string) Icon {
 	return ret0
 }
 
-// ContentTypeGetMimeDirs: get the list of directories which MIME data is loaded
+// ContentTypeGetMIMEDirs: get the list of directories which MIME data is loaded
 // from. See g_content_type_set_mime_dirs() for details.
-func ContentTypeGetMimeDirs() []string {
+func ContentTypeGetMIMEDirs() []string {
 	ret := C.g_content_type_get_mime_dirs()
 
 	var ret0 []string
@@ -3397,9 +3397,9 @@ func ContentTypeGetMimeDirs() []string {
 	return ret0
 }
 
-// ContentTypeGetMimeType: gets the mime type for the content type, if one is
+// ContentTypeGetMIMEType: gets the mime type for the content type, if one is
 // registered.
-func ContentTypeGetMimeType(_type string) string {
+func ContentTypeGetMIMEType(_type string) string {
 	var arg0 string
 	arg0 = C.GoString(_type)
 	defer C.free(unsafe.Pointer(_type))
@@ -3494,9 +3494,9 @@ func ContentTypeIsA(_type string, supertype string) bool {
 	return ret0
 }
 
-// ContentTypeIsMimeType: determines if @type is a subset of @mime_type.
+// ContentTypeIsMIMEType: determines if @type is a subset of @mime_type.
 // Convenience wrapper around g_content_type_is_a().
-func ContentTypeIsMimeType(_type string, mimeType string) bool {
+func ContentTypeIsMIMEType(_type string, mimeType string) bool {
 	var arg0 string
 	arg0 = C.GoString(_type)
 	defer C.free(unsafe.Pointer(_type))
@@ -3529,7 +3529,7 @@ func ContentTypeIsUnknown(_type string) bool {
 	return ret0
 }
 
-// ContentTypeSetMimeDirs: set the list of directories used by GIO to load the
+// ContentTypeSetMIMEDirs: set the list of directories used by GIO to load the
 // MIME database. If @dirs is nil, the directories used are the default:
 //
 // - the `mime` subdirectory of the directory in `$XDG_DATA_HOME` - the `mime`
@@ -3551,7 +3551,7 @@ func ContentTypeIsUnknown(_type string) bool {
 //
 //      return g_test_run ();
 //
-func ContentTypeSetMimeDirs(dirs []string) {
+func ContentTypeSetMIMEDirs(dirs []string) {
 	var arg0 []string
 	arg0 = ([0]string)(dirs)
 
@@ -3936,7 +3936,7 @@ func DbusGenerateGuid() string {
 	return ret0
 }
 
-// DbusGvalueToGvariant: converts a #GValue to a #GVariant of the type indicated
+// DbusGValueToGvariant: converts a #GValue to a #GVariant of the type indicated
 // by the @type parameter.
 //
 // The conversion is using the following rules:
@@ -3957,7 +3957,7 @@ func DbusGenerateGuid() string {
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DbusGvalueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *glib.Variant {
+func DbusGValueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *glib.Variant {
 	var arg1 *glib.VariantType
 	arg1 = wrapVariantType(_type)
 
@@ -3969,7 +3969,7 @@ func DbusGvalueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *gl
 	return ret0
 }
 
-// DbusGvariantToGvalue: converts a #GVariant to a #GValue. If @value is
+// DbusGvariantToGValue: converts a #GVariant to a #GValue. If @value is
 // floating, it is consumed.
 //
 // The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
@@ -3980,7 +3980,7 @@ func DbusGvalueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *gl
 //
 // The conversion never fails - a valid #GValue is always returned in
 // @out_gvalue.
-func DbusGvariantToGvalue(value *glib.Variant) externglib.Value {
+func DbusGvariantToGValue(value *glib.Variant) externglib.Value {
 	var arg0 *glib.Variant
 	arg0 = wrapVariant(value)
 
@@ -8228,23 +8228,23 @@ func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
 type AppLaunchContext interface {
 	gextras.Objector
 
-	// GetDisplay: gets the display string for the @context. This is used to
-	// ensure new applications are started on the same display as the launching
+	// Display: gets the display string for the @context. This is used to ensure
+	// new applications are started on the same display as the launching
 	// application, by setting the `DISPLAY` environment variable.
-	GetDisplay(info AppInfo, files *glib.List) string
-	// GetEnvironment: gets the complete environment variable list to be passed
-	// to the child process when @context is used to launch an application. This
-	// is a nil-terminated array of strings, where each string has the form
+	Display(info AppInfo, files *glib.List) string
+	// Environment: gets the complete environment variable list to be passed to
+	// the child process when @context is used to launch an application. This is
+	// a nil-terminated array of strings, where each string has the form
 	// `KEY=VALUE`.
-	GetEnvironment() []string
-	// GetStartupNotifyID: initiates startup notification for the application
-	// and returns the `DESKTOP_STARTUP_ID` for the launched operation, if
+	Environment() []string
+	// StartupNotifyID: initiates startup notification for the application and
+	// returns the `DESKTOP_STARTUP_ID` for the launched operation, if
 	// supported.
 	//
 	// Startup notification IDs are defined in the [FreeDesktop.Org Startup
 	// Notifications
 	// standard](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
-	GetStartupNotifyID(info AppInfo, files *glib.List) string
+	StartupNotifyID(info AppInfo, files *glib.List) string
 	// LaunchFailed: called when an application has failed to launch, so that it
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
@@ -8273,11 +8273,11 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 
 func NewAppLaunchContext() AppLaunchContext
 
-func (a appLaunchContext) GetDisplay(info AppInfo, files *glib.List) string
+func (a appLaunchContext) Display(info AppInfo, files *glib.List) string
 
-func (a appLaunchContext) GetEnvironment() []string
+func (a appLaunchContext) Environment() []string
 
-func (a appLaunchContext) GetStartupNotifyID(info AppInfo, files *glib.List) string
+func (a appLaunchContext) StartupNotifyID(info AppInfo, files *glib.List) string
 
 func (a appLaunchContext) LaunchFailed(startupNotifyID string)
 
@@ -8498,10 +8498,10 @@ type Application interface {
 	// The binding holds a reference to @application while it is active, but not
 	// to @object. Instead, the binding is destroyed when @object is finalized.
 	BindBusyProperty(object interface{}, property string)
-	// GetApplicationID: gets the unique identifier for @application.
-	GetApplicationID() string
-	// GetDbusConnection: gets the BusConnection being used by the application,
-	// or nil.
+	// ApplicationID: gets the unique identifier for @application.
+	ApplicationID() string
+	// DbusConnection: gets the BusConnection being used by the application, or
+	// nil.
 	//
 	// If #GApplication is using its D-Bus backend then this function will
 	// return the BusConnection being used for uniqueness and communication with
@@ -8513,9 +8513,9 @@ type Application interface {
 	//
 	// This function must not be called before the application has been
 	// registered. See g_application_get_is_registered().
-	GetDbusConnection() DBusConnection
-	// GetDbusObjectPath: gets the D-Bus object path being used by the
-	// application, or nil.
+	DbusConnection() DBusConnection
+	// DbusObjectPath: gets the D-Bus object path being used by the application,
+	// or nil.
 	//
 	// If #GApplication is using its D-Bus backend then this function will
 	// return the D-Bus object path that #GApplication is using. If the
@@ -8529,26 +8529,26 @@ type Application interface {
 	//
 	// This function must not be called before the application has been
 	// registered. See g_application_get_is_registered().
-	GetDbusObjectPath() string
-	// GetFlags: gets the flags for @application.
+	DbusObjectPath() string
+	// Flags: gets the flags for @application.
 	//
 	// See Flags.
-	GetFlags() ApplicationFlags
-	// GetInactivityTimeout: gets the current inactivity timeout for the
+	Flags() ApplicationFlags
+	// InactivityTimeout: gets the current inactivity timeout for the
 	// application.
 	//
 	// This is the amount of time (in milliseconds) after the last call to
 	// g_application_release() before the application stops running.
-	GetInactivityTimeout() uint
-	// GetIsBusy: gets the application's current busy state, as set through
+	InactivityTimeout() uint
+	// IsBusy: gets the application's current busy state, as set through
 	// g_application_mark_busy() or g_application_bind_busy_property().
-	GetIsBusy() bool
-	// GetIsRegistered: checks if @application is registered.
+	IsBusy() bool
+	// IsRegistered: checks if @application is registered.
 	//
 	// An application is registered if g_application_register() has been
 	// successfully called.
-	GetIsRegistered() bool
-	// GetIsRemote: checks if @application is remote.
+	IsRegistered() bool
+	// IsRemote: checks if @application is remote.
 	//
 	// If @application is remote then it means that another instance of
 	// application already exists (the 'primary' instance). Calls to perform
@@ -8558,11 +8558,11 @@ type Application interface {
 	// The value of this property cannot be accessed before
 	// g_application_register() has been called. See
 	// g_application_get_is_registered().
-	GetIsRemote() bool
-	// GetResourceBasePath: gets the resource base path of @application.
+	IsRemote() bool
+	// ResourceBasePath: gets the resource base path of @application.
 	//
 	// See g_application_set_resource_base_path() for more information.
-	GetResourceBasePath() string
+	ResourceBasePath() string
 	// Hold: increases the use count of @application.
 	//
 	// Use this function to indicate that the application has a reason to
@@ -8888,23 +8888,23 @@ func (a application) AddOptionGroup(group *glib.OptionGroup)
 
 func (a application) BindBusyProperty(object interface{}, property string)
 
-func (a application) GetApplicationID() string
+func (a application) ApplicationID() string
 
-func (a application) GetDbusConnection() DBusConnection
+func (a application) DbusConnection() DBusConnection
 
-func (a application) GetDbusObjectPath() string
+func (a application) DbusObjectPath() string
 
-func (a application) GetFlags() ApplicationFlags
+func (a application) Flags() ApplicationFlags
 
-func (a application) GetInactivityTimeout() uint
+func (a application) InactivityTimeout() uint
 
-func (a application) GetIsBusy() bool
+func (a application) IsBusy() bool
 
-func (a application) GetIsRegistered() bool
+func (a application) IsRegistered() bool
 
-func (a application) GetIsRemote() bool
+func (a application) IsRemote() bool
 
-func (a application) GetResourceBasePath() string
+func (a application) ResourceBasePath() string
 
 func (a application) Hold()
 
@@ -9057,7 +9057,7 @@ type ApplicationCommandLine interface {
 	// relative pathnames using the current working directory of the invoking
 	// process rather than the local process.
 	CreateFileForArg(arg string) File
-	// GetArguments: gets the list of arguments that was passed on the command
+	// Arguments: gets the list of arguments that was passed on the command
 	// line.
 	//
 	// The strings in the array may contain non-UTF-8 data on UNIX (such as
@@ -9069,8 +9069,8 @@ type ApplicationCommandLine interface {
 	//
 	// The return value is nil-terminated and should be freed using
 	// g_strfreev().
-	GetArguments() (int, []string)
-	// GetCwd: gets the working directory of the command line invocation. The
+	Arguments() (int, []string)
+	// Cwd: gets the working directory of the command line invocation. The
 	// string may contain non-utf8 data.
 	//
 	// It is possible that the remote application did not send a working
@@ -9078,9 +9078,9 @@ type ApplicationCommandLine interface {
 	//
 	// The return value should not be modified or freed and is valid for as long
 	// as @cmdline exists.
-	GetCwd() string
-	// GetEnviron: gets the contents of the 'environ' variable of the command
-	// line invocation, as would be returned by g_get_environ(), ie as a
+	Cwd() string
+	// Environ: gets the contents of the 'environ' variable of the command line
+	// invocation, as would be returned by g_get_environ(), ie as a
 	// nil-terminated list of strings in the form 'NAME=VALUE'. The strings may
 	// contain non-utf8 data.
 	//
@@ -9094,13 +9094,13 @@ type ApplicationCommandLine interface {
 	//
 	// See g_application_command_line_getenv() if you are only interested in the
 	// value of a single environment variable.
-	GetEnviron() []string
-	// GetExitStatus: gets the exit status of @cmdline. See
+	Environ() []string
+	// ExitStatus: gets the exit status of @cmdline. See
 	// g_application_command_line_set_exit_status() for more information.
-	GetExitStatus() int
-	// GetIsRemote: determines if @cmdline represents a remote invocation.
-	GetIsRemote() bool
-	// GetOptionsDict: gets the options there were passed to
+	ExitStatus() int
+	// IsRemote: determines if @cmdline represents a remote invocation.
+	IsRemote() bool
+	// OptionsDict: gets the options there were passed to
 	// g_application_command_line().
 	//
 	// If you did not override local_command_line() then these are the same
@@ -9110,8 +9110,8 @@ type ApplicationCommandLine interface {
 	//
 	// If no options were sent then an empty dictionary is returned so that you
 	// don't need to check for nil.
-	GetOptionsDict() *glib.VariantDict
-	// GetPlatformData: gets the platform data associated with the invocation of
+	OptionsDict() *glib.VariantDict
+	// PlatformData: gets the platform data associated with the invocation of
 	// @cmdline.
 	//
 	// This is a #GVariant dictionary containing information about the context
@@ -9119,8 +9119,8 @@ type ApplicationCommandLine interface {
 	// the current working directory and the startup notification ID.
 	//
 	// For local invocation, it will be nil.
-	GetPlatformData() *glib.Variant
-	// GetStdin: gets the stdin of the invoking process.
+	PlatformData() *glib.Variant
+	// Stdin: gets the stdin of the invoking process.
 	//
 	// The Stream can be used to read data passed to the standard input of the
 	// invoking process. This doesn't work on all platforms. Presently, it is
@@ -9129,10 +9129,10 @@ type ApplicationCommandLine interface {
 	// future, support may be expanded to other platforms.
 	//
 	// You must only call this function once per commandline invocation.
-	GetStdin() InputStream
-	// Getenv: gets the value of a particular environment variable of the
-	// command line invocation, as would be returned by g_getenv(). The strings
-	// may contain non-utf8 data.
+	Stdin() InputStream
+	// env: gets the value of a particular environment variable of the command
+	// line invocation, as would be returned by g_getenv(). The strings may
+	// contain non-utf8 data.
 	//
 	// The remote application usually does not send an environment. Use
 	// G_APPLICATION_SEND_ENVIRONMENT to affect that. Even with this flag set it
@@ -9141,7 +9141,7 @@ type ApplicationCommandLine interface {
 	//
 	// The return value should not be modified or freed and is valid for as long
 	// as @cmdline exists.
-	Getenv(name string) string
+	env(name string) string
 	// SetExitStatus: sets the exit status that will be used when the invoking
 	// process exits.
 	//
@@ -9182,23 +9182,23 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 
 func (a applicationCommandLine) CreateFileForArg(arg string) File
 
-func (a applicationCommandLine) GetArguments() (int, []string)
+func (a applicationCommandLine) Arguments() (int, []string)
 
-func (a applicationCommandLine) GetCwd() string
+func (a applicationCommandLine) Cwd() string
 
-func (a applicationCommandLine) GetEnviron() []string
+func (a applicationCommandLine) Environ() []string
 
-func (a applicationCommandLine) GetExitStatus() int
+func (a applicationCommandLine) ExitStatus() int
 
-func (a applicationCommandLine) GetIsRemote() bool
+func (a applicationCommandLine) IsRemote() bool
 
-func (a applicationCommandLine) GetOptionsDict() *glib.VariantDict
+func (a applicationCommandLine) OptionsDict() *glib.VariantDict
 
-func (a applicationCommandLine) GetPlatformData() *glib.Variant
+func (a applicationCommandLine) PlatformData() *glib.Variant
 
-func (a applicationCommandLine) GetStdin() InputStream
+func (a applicationCommandLine) Stdin() InputStream
 
-func (a applicationCommandLine) Getenv(name string) string
+func (a applicationCommandLine) env(name string) string
 
 func (a applicationCommandLine) SetExitStatus(exitStatus int)
 
@@ -9253,10 +9253,10 @@ type BufferedInputStream interface {
 	FillAsync(count int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// FillFinish: finishes an asynchronous read.
 	FillFinish(result AsyncResult) int
-	// GetAvailable: gets the size of the available data within the stream.
-	GetAvailable() uint
-	// GetBufferSize: gets the size of the input buffer.
-	GetBufferSize() uint
+	// Available: gets the size of the available data within the stream.
+	Available() uint
+	// BufferSize: gets the size of the input buffer.
+	BufferSize() uint
 	// Peek: peeks in the buffer, copying data of size @count into @buffer,
 	// offset @offset bytes.
 	Peek(buffer []uint8, offset uint) uint
@@ -9308,9 +9308,9 @@ func (b bufferedInputStream) FillAsync(count int, ioPriority int, cancellable Ca
 
 func (b bufferedInputStream) FillFinish(result AsyncResult) int
 
-func (b bufferedInputStream) GetAvailable() uint
+func (b bufferedInputStream) Available() uint
 
-func (b bufferedInputStream) GetBufferSize() uint
+func (b bufferedInputStream) BufferSize() uint
 
 func (b bufferedInputStream) Peek(buffer []uint8, offset uint) uint
 
@@ -9337,10 +9337,10 @@ func (b bufferedInputStream) SetBufferSize(size uint)
 type BufferedOutputStream interface {
 	FilterOutputStream
 
-	// GetAutoGrow: checks if the buffer automatically grows as data is added.
-	GetAutoGrow() bool
-	// GetBufferSize: gets the size of the buffer in the @stream.
-	GetBufferSize() uint
+	// AutoGrow: checks if the buffer automatically grows as data is added.
+	AutoGrow() bool
+	// BufferSize: gets the size of the buffer in the @stream.
+	BufferSize() uint
 	// SetAutoGrow: sets whether or not the @stream's buffer should
 	// automatically grow. If @auto_grow is true, then each write will just make
 	// the buffer larger, and you must manually flush the buffer to actually
@@ -9368,9 +9368,9 @@ func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream
 
 func NewBufferedOutputStream(baseStream OutputStream, size uint) BufferedOutputStream
 
-func (b bufferedOutputStream) GetAutoGrow() bool
+func (b bufferedOutputStream) AutoGrow() bool
 
-func (b bufferedOutputStream) GetBufferSize() uint
+func (b bufferedOutputStream) BufferSize() uint
 
 func (b bufferedOutputStream) SetAutoGrow(autoGrow bool)
 
@@ -9381,8 +9381,8 @@ func (b bufferedOutputStream) SetBufferSize(size uint)
 type BytesIcon interface {
 	gextras.Objector
 
-	// GetBytes: gets the #GBytes associated with the given @icon.
-	GetBytes() *glib.Bytes
+	// Bytes: gets the #GBytes associated with the given @icon.
+	Bytes() *glib.Bytes
 }
 
 type bytesIcon struct {
@@ -9401,7 +9401,7 @@ func marshalBytesIcon(p uintptr) (interface{}, error) {
 
 func NewBytesIcon(bytes *glib.Bytes) BytesIcon
 
-func (b bytesIcon) GetBytes() *glib.Bytes
+func (b bytesIcon) Bytes() *glib.Bytes
 
 // Cancellable: GCancellable is a thread-safe operation cancellation stack used
 // throughout GIO to allow for cancellation of synchronous and asynchronous
@@ -9457,8 +9457,8 @@ type Cancellable interface {
 	//
 	// If @cancellable is nil or @handler_id is `0` this function does nothing.
 	Disconnect(handlerID uint32)
-	// GetFd: gets the file descriptor for a cancellable job. This can be used
-	// to implement cancellable operations on Unix systems. The returned fd will
+	// Fd: gets the file descriptor for a cancellable job. This can be used to
+	// implement cancellable operations on Unix systems. The returned fd will
 	// turn readable when @cancellable is cancelled.
 	//
 	// You are not supposed to read from the fd yourself, just check for
@@ -9470,7 +9470,7 @@ type Cancellable interface {
 	// returned file descriptor.
 	//
 	// See also g_cancellable_make_pollfd().
-	GetFd() int
+	Fd() int
 	// IsCancelled: checks if a cancellable job has been cancelled.
 	IsCancelled() bool
 	// MakePollfd: creates a FD corresponding to @cancellable; this can be
@@ -9562,7 +9562,7 @@ func (c cancellable) Connect(callback interface{}) uint32
 
 func (c cancellable) Disconnect(handlerID uint32)
 
-func (c cancellable) GetFd() int
+func (c cancellable) Fd() int
 
 func (c cancellable) IsCancelled() bool
 
@@ -9584,11 +9584,11 @@ func (c cancellable) NewSource() *glib.Source
 type CharsetConverter interface {
 	gextras.Objector
 
-	// GetNumFallbacks: gets the number of fallbacks that @converter has applied
-	// so far.
-	GetNumFallbacks() uint
-	// GetUseFallback: gets the Converter:use-fallback property.
-	GetUseFallback() bool
+	// NumFallbacks: gets the number of fallbacks that @converter has applied so
+	// far.
+	NumFallbacks() uint
+	// UseFallback: gets the Converter:use-fallback property.
+	UseFallback() bool
 	// SetUseFallback: sets the Converter:use-fallback property.
 	SetUseFallback(useFallback bool)
 }
@@ -9609,9 +9609,9 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 
 func NewCharsetConverter(toCharset string, fromCharset string) CharsetConverter
 
-func (c charsetConverter) GetNumFallbacks() uint
+func (c charsetConverter) NumFallbacks() uint
 
-func (c charsetConverter) GetUseFallback() bool
+func (c charsetConverter) UseFallback() bool
 
 func (c charsetConverter) SetUseFallback(useFallback bool)
 
@@ -9622,8 +9622,8 @@ func (c charsetConverter) SetUseFallback(useFallback bool)
 type ConverterInputStream interface {
 	FilterInputStream
 
-	// GetConverter: gets the #GConverter that is used by @converter_stream.
-	GetConverter() Converter
+	// Converter: gets the #GConverter that is used by @converter_stream.
+	Converter() Converter
 }
 
 type converterInputStream struct {
@@ -9642,7 +9642,7 @@ func marshalConverterInputStream(p uintptr) (interface{}, error) {
 
 func NewConverterInputStream(baseStream InputStream, converter Converter) ConverterInputStream
 
-func (c converterInputStream) GetConverter() Converter
+func (c converterInputStream) Converter() Converter
 
 // ConverterOutputStream: converter output stream implements Stream and allows
 // conversion of data of various types during reading.
@@ -9651,8 +9651,8 @@ func (c converterInputStream) GetConverter() Converter
 type ConverterOutputStream interface {
 	FilterOutputStream
 
-	// GetConverter: gets the #GConverter that is used by @converter_stream.
-	GetConverter() Converter
+	// Converter: gets the #GConverter that is used by @converter_stream.
+	Converter() Converter
 }
 
 type converterOutputStream struct {
@@ -9671,7 +9671,7 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 
 func NewConverterOutputStream(baseStream OutputStream, converter Converter) ConverterOutputStream
 
-func (c converterOutputStream) GetConverter() Converter
+func (c converterOutputStream) Converter() Converter
 
 // Credentials: the #GCredentials type is a reference-counted wrapper for native
 // credentials. This information is typically used for identifying,
@@ -9706,28 +9706,28 @@ func (c converterOutputStream) GetConverter() Converter
 type Credentials interface {
 	gextras.Objector
 
-	// GetNative: gets a pointer to native credentials of type @native_type from
+	// Native: gets a pointer to native credentials of type @native_type from
 	// @credentials.
 	//
 	// It is a programming error (which will cause a warning to be logged) to
 	// use this method if there is no #GCredentials support for the OS or if
 	// @native_type isn't supported by the OS.
-	GetNative(nativeType CredentialsType) interface{}
-	// GetUnixPid: tries to get the UNIX process identifier from @credentials.
-	// This method is only available on UNIX platforms.
+	Native(nativeType CredentialsType) interface{}
+	// UnixPid: tries to get the UNIX process identifier from @credentials. This
+	// method is only available on UNIX platforms.
 	//
 	// This operation can fail if #GCredentials is not supported on the OS or if
 	// the native credentials type does not contain information about the UNIX
 	// process ID (for example this is the case for
 	// G_CREDENTIALS_TYPE_APPLE_XUCRED).
-	GetUnixPid() int
-	// GetUnixUser: tries to get the UNIX user identifier from @credentials.
-	// This method is only available on UNIX platforms.
+	UnixPid() int
+	// UnixUser: tries to get the UNIX user identifier from @credentials. This
+	// method is only available on UNIX platforms.
 	//
 	// This operation can fail if #GCredentials is not supported on the OS or if
 	// the native credentials type does not contain information about the UNIX
 	// user.
-	GetUnixUser() uint
+	UnixUser() uint
 	// IsSameUser: checks if @credentials and @other_credentials is the same
 	// user.
 	//
@@ -9770,11 +9770,11 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 
 func NewCredentials() Credentials
 
-func (c credentials) GetNative(nativeType CredentialsType) interface{}
+func (c credentials) Native(nativeType CredentialsType) interface{}
 
-func (c credentials) GetUnixPid() int
+func (c credentials) UnixPid() int
 
-func (c credentials) GetUnixUser() uint
+func (c credentials) UnixUser() uint
 
 func (c credentials) IsSameUser(otherCredentials Credentials) bool
 
@@ -10152,24 +10152,24 @@ type DBusConnection interface {
 	// blocked until this is done. See g_dbus_connection_flush() for the
 	// asynchronous version of this method and more details about what it does.
 	FlushSync(cancellable Cancellable) bool
-	// GetCapabilities: gets the capabilities negotiated with the remote peer
-	GetCapabilities() DBusCapabilityFlags
-	// GetExitOnClose: gets whether the process is terminated when @connection
-	// is closed by the remote peer. See BusConnection:exit-on-close for more
+	// Capabilities: gets the capabilities negotiated with the remote peer
+	Capabilities() DBusCapabilityFlags
+	// ExitOnClose: gets whether the process is terminated when @connection is
+	// closed by the remote peer. See BusConnection:exit-on-close for more
 	// details.
-	GetExitOnClose() bool
-	// GetFlags: gets the flags used to construct this connection
-	GetFlags() DBusConnectionFlags
-	// GetGuid: the GUID of the peer performing the role of server when
+	ExitOnClose() bool
+	// Flags: gets the flags used to construct this connection
+	Flags() DBusConnectionFlags
+	// Guid: the GUID of the peer performing the role of server when
 	// authenticating. See BusConnection:guid for more details.
-	GetGuid() string
-	// GetLastSerial: retrieves the last serial number assigned to a BusMessage
-	// on the current thread. This includes messages sent via both low-level API
+	Guid() string
+	// LastSerial: retrieves the last serial number assigned to a BusMessage on
+	// the current thread. This includes messages sent via both low-level API
 	// such as g_dbus_connection_send_message() as well as high-level API such
 	// as g_dbus_connection_emit_signal(), g_dbus_connection_call() or
 	// g_dbus_proxy_call().
-	GetLastSerial() uint32
-	// GetPeerCredentials: gets the credentials of the authenticated peer. This
+	LastSerial() uint32
+	// PeerCredentials: gets the credentials of the authenticated peer. This
 	// will always return nil unless @connection acted as a server (e.g.
 	// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER was passed) when set up and
 	// the client passed credentials as part of the authentication process.
@@ -10177,16 +10177,16 @@ type DBusConnection interface {
 	// In a message bus setup, the message bus is always the server and each
 	// application is a client. So this method will always return nil for
 	// message bus clients.
-	GetPeerCredentials() Credentials
-	// GetStream: gets the underlying stream used for IO.
+	PeerCredentials() Credentials
+	// Stream: gets the underlying stream used for IO.
 	//
 	// While the BusConnection is active, it will interact with this stream from
 	// a worker thread, so it is not safe to interact with the stream directly.
-	GetStream() IOStream
-	// GetUniqueName: gets the unique name of @connection as assigned by the
+	Stream() IOStream
+	// UniqueName: gets the unique name of @connection as assigned by the
 	// message bus. This can also be used to figure out if @connection is a
 	// message bus connection.
-	GetUniqueName() string
+	UniqueName() string
 	// IsClosed: gets whether @connection is closed.
 	IsClosed() bool
 	// RegisterObject: registers callbacks for exported objects at @object_path
@@ -10512,21 +10512,21 @@ func (d dBusConnection) FlushFinish(res AsyncResult) bool
 
 func (d dBusConnection) FlushSync(cancellable Cancellable) bool
 
-func (d dBusConnection) GetCapabilities() DBusCapabilityFlags
+func (d dBusConnection) Capabilities() DBusCapabilityFlags
 
-func (d dBusConnection) GetExitOnClose() bool
+func (d dBusConnection) ExitOnClose() bool
 
-func (d dBusConnection) GetFlags() DBusConnectionFlags
+func (d dBusConnection) Flags() DBusConnectionFlags
 
-func (d dBusConnection) GetGuid() string
+func (d dBusConnection) Guid() string
 
-func (d dBusConnection) GetLastSerial() uint32
+func (d dBusConnection) LastSerial() uint32
 
-func (d dBusConnection) GetPeerCredentials() Credentials
+func (d dBusConnection) PeerCredentials() Credentials
 
-func (d dBusConnection) GetStream() IOStream
+func (d dBusConnection) Stream() IOStream
 
-func (d dBusConnection) GetUniqueName() string
+func (d dBusConnection) UniqueName() string
 
 func (d dBusConnection) IsClosed() bool
 
@@ -10583,27 +10583,26 @@ type DBusInterfaceSkeleton interface {
 	// later (e.g. in an idle handler). This technique is useful for collapsing
 	// multiple property changes into one.
 	Flush()
-	// GetConnection: gets the first connection that @interface_ is exported on,
-	// if any.
-	GetConnection() DBusConnection
-	// GetConnections: gets a list of the connections that @interface_ is
-	// exported on.
-	GetConnections() *glib.List
-	// GetFlags: gets the BusInterfaceSkeletonFlags that describes what the
-	// behavior of @interface_
-	GetFlags() DBusInterfaceSkeletonFlags
-	// GetInfo: gets D-Bus introspection information for the D-Bus interface
-	// implemented by @interface_.
-	GetInfo() *DBusInterfaceInfo
-	// GetObjectPath: gets the object path that @interface_ is exported on, if
+	// Connection: gets the first connection that @interface_ is exported on, if
 	// any.
-	GetObjectPath() string
-	// GetProperties: gets all D-Bus properties for @interface_.
-	GetProperties() *glib.Variant
-	// GetVtable: gets the interface vtable for the D-Bus interface implemented
-	// by @interface_. The returned function pointers should expect @interface_
+	Connection() DBusConnection
+	// Connections: gets a list of the connections that @interface_ is exported
+	// on.
+	Connections() *glib.List
+	// Flags: gets the BusInterfaceSkeletonFlags that describes what the
+	// behavior of @interface_
+	Flags() DBusInterfaceSkeletonFlags
+	// Info: gets D-Bus introspection information for the D-Bus interface
+	// implemented by @interface_.
+	Info() *DBusInterfaceInfo
+	// ObjectPath: gets the object path that @interface_ is exported on, if any.
+	ObjectPath() string
+	// Properties: gets all D-Bus properties for @interface_.
+	Properties() *glib.Variant
+	// Vtable: gets the interface vtable for the D-Bus interface implemented by
+	// @interface_. The returned function pointers should expect @interface_
 	// itself to be passed as @user_data.
-	GetVtable() *DBusInterfaceVTable
+	Vtable() *DBusInterfaceVTable
 	// HasConnection: checks if @interface_ is exported on @connection.
 	HasConnection(connection DBusConnection) bool
 	// SetFlags: sets flags describing what the behavior of @skeleton should be.
@@ -10639,19 +10638,19 @@ func (d dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath stri
 
 func (d dBusInterfaceSkeleton) Flush()
 
-func (d dBusInterfaceSkeleton) GetConnection() DBusConnection
+func (d dBusInterfaceSkeleton) Connection() DBusConnection
 
-func (d dBusInterfaceSkeleton) GetConnections() *glib.List
+func (d dBusInterfaceSkeleton) Connections() *glib.List
 
-func (d dBusInterfaceSkeleton) GetFlags() DBusInterfaceSkeletonFlags
+func (d dBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags
 
-func (d dBusInterfaceSkeleton) GetInfo() *DBusInterfaceInfo
+func (d dBusInterfaceSkeleton) Info() *DBusInterfaceInfo
 
-func (d dBusInterfaceSkeleton) GetObjectPath() string
+func (d dBusInterfaceSkeleton) ObjectPath() string
 
-func (d dBusInterfaceSkeleton) GetProperties() *glib.Variant
+func (d dBusInterfaceSkeleton) Properties() *glib.Variant
 
-func (d dBusInterfaceSkeleton) GetVtable() *DBusInterfaceVTable
+func (d dBusInterfaceSkeleton) Vtable() *DBusInterfaceVTable
 
 func (d dBusInterfaceSkeleton) HasConnection(connection DBusConnection) bool
 
@@ -10694,62 +10693,62 @@ type DBusMessage interface {
 	// This operation can fail if e.g. @message contains file descriptors and
 	// the per-process or system-wide open files limit is reached.
 	Copy() DBusMessage
-	// GetArg0: convenience to get the first item in the body of @message.
-	GetArg0() string
-	// GetBody: gets the body of a message.
-	GetBody() *glib.Variant
-	// GetByteOrder: gets the byte order of @message.
-	GetByteOrder() DBusMessageByteOrder
-	// GetDestination: convenience getter for the
+	// Arg0: convenience to get the first item in the body of @message.
+	Arg0() string
+	// Body: gets the body of a message.
+	Body() *glib.Variant
+	// ByteOrder: gets the byte order of @message.
+	ByteOrder() DBusMessageByteOrder
+	// Destination: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
-	GetDestination() string
-	// GetErrorName: convenience getter for the
+	Destination() string
+	// ErrorName: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
-	GetErrorName() string
-	// GetFlags: gets the flags for @message.
-	GetFlags() DBusMessageFlags
-	// GetHeader: gets a header field on @message.
+	ErrorName() string
+	// Flags: gets the flags for @message.
+	Flags() DBusMessageFlags
+	// Header: gets a header field on @message.
 	//
 	// The caller is responsible for checking the type of the returned #GVariant
 	// matches what is expected.
-	GetHeader(headerField DBusMessageHeaderField) *glib.Variant
-	// GetHeaderFields: gets an array of all header fields on @message that are
+	Header(headerField DBusMessageHeaderField) *glib.Variant
+	// HeaderFields: gets an array of all header fields on @message that are
 	// set.
-	GetHeaderFields() []uint8
-	// GetInterface: convenience getter for the
+	HeaderFields() []uint8
+	// Interface: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
-	GetInterface() string
-	// GetLocked: checks whether @message is locked. To monitor changes to this
+	Interface() string
+	// Locked: checks whether @message is locked. To monitor changes to this
 	// value, conncet to the #GObject::notify signal to listen for changes on
 	// the BusMessage:locked property.
-	GetLocked() bool
-	// GetMember: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
+	Locked() bool
+	// Member: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
 	// header field.
-	GetMember() string
-	// GetMessageType: gets the type of @message.
-	GetMessageType() DBusMessageType
-	// GetNumUnixFds: convenience getter for the
+	Member() string
+	// MessageType: gets the type of @message.
+	MessageType() DBusMessageType
+	// NumUnixFds: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
-	GetNumUnixFds() uint32
-	// GetPath: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH
-	// header field.
-	GetPath() string
-	// GetReplySerial: convenience getter for the
+	NumUnixFds() uint32
+	// Path: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
+	// field.
+	Path() string
+	// ReplySerial: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
-	GetReplySerial() uint32
-	// GetSender: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
+	ReplySerial() uint32
+	// Sender: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
 	// header field.
-	GetSender() string
-	// GetSerial: gets the serial for @message.
-	GetSerial() uint32
-	// GetSignature: convenience getter for the
+	Sender() string
+	// Serial: gets the serial for @message.
+	Serial() uint32
+	// Signature: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
-	GetSignature() string
-	// GetUnixFdList: gets the UNIX file descriptors associated with @message,
-	// if any.
+	Signature() string
+	// UnixFdList: gets the UNIX file descriptors associated with @message, if
+	// any.
 	//
 	// This method is only available on UNIX.
-	GetUnixFdList() UnixFDList
+	UnixFdList() UnixFDList
 	// Lock: if @message is locked, does nothing. Otherwise locks the message.
 	Lock()
 	// NewMethodErrorLiteral: creates a new BusMessage that is an error reply to
@@ -10876,43 +10875,43 @@ func NewDBusMessage(path string, interface_ string, signal string) DBusMessage
 
 func (d dBusMessage) Copy() DBusMessage
 
-func (d dBusMessage) GetArg0() string
+func (d dBusMessage) Arg0() string
 
-func (d dBusMessage) GetBody() *glib.Variant
+func (d dBusMessage) Body() *glib.Variant
 
-func (d dBusMessage) GetByteOrder() DBusMessageByteOrder
+func (d dBusMessage) ByteOrder() DBusMessageByteOrder
 
-func (d dBusMessage) GetDestination() string
+func (d dBusMessage) Destination() string
 
-func (d dBusMessage) GetErrorName() string
+func (d dBusMessage) ErrorName() string
 
-func (d dBusMessage) GetFlags() DBusMessageFlags
+func (d dBusMessage) Flags() DBusMessageFlags
 
-func (d dBusMessage) GetHeader(headerField DBusMessageHeaderField) *glib.Variant
+func (d dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant
 
-func (d dBusMessage) GetHeaderFields() []uint8
+func (d dBusMessage) HeaderFields() []uint8
 
-func (d dBusMessage) GetInterface() string
+func (d dBusMessage) Interface() string
 
-func (d dBusMessage) GetLocked() bool
+func (d dBusMessage) Locked() bool
 
-func (d dBusMessage) GetMember() string
+func (d dBusMessage) Member() string
 
-func (d dBusMessage) GetMessageType() DBusMessageType
+func (d dBusMessage) MessageType() DBusMessageType
 
-func (d dBusMessage) GetNumUnixFds() uint32
+func (d dBusMessage) NumUnixFds() uint32
 
-func (d dBusMessage) GetPath() string
+func (d dBusMessage) Path() string
 
-func (d dBusMessage) GetReplySerial() uint32
+func (d dBusMessage) ReplySerial() uint32
 
-func (d dBusMessage) GetSender() string
+func (d dBusMessage) Sender() string
 
-func (d dBusMessage) GetSerial() uint32
+func (d dBusMessage) Serial() uint32
 
-func (d dBusMessage) GetSignature() string
+func (d dBusMessage) Signature() string
 
-func (d dBusMessage) GetUnixFdList() UnixFDList
+func (d dBusMessage) UnixFdList() UnixFDList
 
 func (d dBusMessage) Lock()
 
@@ -10968,42 +10967,41 @@ func (d dBusMessage) ToGerror() bool
 type DBusMethodInvocation interface {
 	gextras.Objector
 
-	// GetConnection: gets the BusConnection the method was invoked on.
-	GetConnection() DBusConnection
-	// GetInterfaceName: gets the name of the D-Bus interface the method was
+	// Connection: gets the BusConnection the method was invoked on.
+	Connection() DBusConnection
+	// InterfaceName: gets the name of the D-Bus interface the method was
 	// invoked on.
 	//
 	// If this method call is a property Get, Set or GetAll call that has been
 	// redirected to the method call handler then
 	// "org.freedesktop.DBus.Properties" will be returned. See
 	// BusInterfaceVTable for more information.
-	GetInterfaceName() string
-	// GetMessage: gets the BusMessage for the method invocation. This is useful
-	// if you need to use low-level protocol features, such as UNIX file
-	// descriptor passing, that cannot be properly expressed in the #GVariant
-	// API.
+	InterfaceName() string
+	// Message: gets the BusMessage for the method invocation. This is useful if
+	// you need to use low-level protocol features, such as UNIX file descriptor
+	// passing, that cannot be properly expressed in the #GVariant API.
 	//
 	// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 	// example of how to use this low-level API to send and receive UNIX file
 	// descriptors.
-	GetMessage() DBusMessage
-	// GetMethodInfo: gets information about the method call, if any.
+	Message() DBusMessage
+	// MethodInfo: gets information about the method call, if any.
 	//
 	// If this method invocation is a property Get, Set or GetAll call that has
 	// been redirected to the method call handler then nil will be returned. See
 	// g_dbus_method_invocation_get_property_info() and BusInterfaceVTable for
 	// more information.
-	GetMethodInfo() *DBusMethodInfo
-	// GetMethodName: gets the name of the method that was invoked.
-	GetMethodName() string
-	// GetObjectPath: gets the object path the method was invoked on.
-	GetObjectPath() string
-	// GetParameters: gets the parameters of the method invocation. If there are
-	// no input parameters then this will return a GVariant with 0 children
-	// rather than NULL.
-	GetParameters() *glib.Variant
-	// GetPropertyInfo: gets information about the property that this method
-	// call is for, if any.
+	MethodInfo() *DBusMethodInfo
+	// MethodName: gets the name of the method that was invoked.
+	MethodName() string
+	// ObjectPath: gets the object path the method was invoked on.
+	ObjectPath() string
+	// Parameters: gets the parameters of the method invocation. If there are no
+	// input parameters then this will return a GVariant with 0 children rather
+	// than NULL.
+	Parameters() *glib.Variant
+	// PropertyInfo: gets information about the property that this method call
+	// is for, if any.
 	//
 	// This will only be set in the case of an invocation in response to a
 	// property Get or Set call that has been directed to the method call
@@ -11013,12 +11011,12 @@ type DBusMethodInvocation interface {
 	// See BusInterfaceVTable for more information.
 	//
 	// If the call was GetAll, nil will be returned.
-	GetPropertyInfo() *DBusPropertyInfo
-	// GetSender: gets the bus name that invoked the method.
-	GetSender() string
-	// GetUserData: gets the @user_data #gpointer passed to
+	PropertyInfo() *DBusPropertyInfo
+	// Sender: gets the bus name that invoked the method.
+	Sender() string
+	// UserData: gets the @user_data #gpointer passed to
 	// g_dbus_connection_register_object().
-	GetUserData() interface{}
+	UserData() interface{}
 	// ReturnDbusError: finishes handling a D-Bus method call by returning an
 	// error.
 	//
@@ -11098,25 +11096,25 @@ func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (d dBusMethodInvocation) GetConnection() DBusConnection
+func (d dBusMethodInvocation) Connection() DBusConnection
 
-func (d dBusMethodInvocation) GetInterfaceName() string
+func (d dBusMethodInvocation) InterfaceName() string
 
-func (d dBusMethodInvocation) GetMessage() DBusMessage
+func (d dBusMethodInvocation) Message() DBusMessage
 
-func (d dBusMethodInvocation) GetMethodInfo() *DBusMethodInfo
+func (d dBusMethodInvocation) MethodInfo() *DBusMethodInfo
 
-func (d dBusMethodInvocation) GetMethodName() string
+func (d dBusMethodInvocation) MethodName() string
 
-func (d dBusMethodInvocation) GetObjectPath() string
+func (d dBusMethodInvocation) ObjectPath() string
 
-func (d dBusMethodInvocation) GetParameters() *glib.Variant
+func (d dBusMethodInvocation) Parameters() *glib.Variant
 
-func (d dBusMethodInvocation) GetPropertyInfo() *DBusPropertyInfo
+func (d dBusMethodInvocation) PropertyInfo() *DBusPropertyInfo
 
-func (d dBusMethodInvocation) GetSender() string
+func (d dBusMethodInvocation) Sender() string
 
-func (d dBusMethodInvocation) GetUserData() interface{}
+func (d dBusMethodInvocation) UserData() interface{}
 
 func (d dBusMethodInvocation) ReturnDbusError(errorName string, errorMessage string)
 
@@ -11196,18 +11194,18 @@ func (d dBusMethodInvocation) TakeError(error *glib.Error)
 type DBusObjectManagerClient interface {
 	gextras.Objector
 
-	// GetConnection: gets the BusConnection used by @manager.
-	GetConnection() DBusConnection
-	// GetFlags: gets the flags that @manager was constructed with.
-	GetFlags() DBusObjectManagerClientFlags
-	// GetName: gets the name that @manager is for, or nil if not a message bus
+	// Connection: gets the BusConnection used by @manager.
+	Connection() DBusConnection
+	// Flags: gets the flags that @manager was constructed with.
+	Flags() DBusObjectManagerClientFlags
+	// Name: gets the name that @manager is for, or nil if not a message bus
 	// connection.
-	GetName() string
-	// GetNameOwner: the unique name that owns the name that @manager is for or
-	// nil if no-one currently owns that name. You can connect to the
+	Name() string
+	// NameOwner: the unique name that owns the name that @manager is for or nil
+	// if no-one currently owns that name. You can connect to the
 	// #GObject::notify signal to track changes to the
 	// BusObjectManagerClient:name-owner property.
-	GetNameOwner() string
+	NameOwner() string
 }
 
 type dBusObjectManagerClient struct {
@@ -11232,13 +11230,13 @@ func NewDBusObjectManagerClient(busType BusType, flags DBusObjectManagerClientFl
 
 func NewDBusObjectManagerClient(connection DBusConnection, flags DBusObjectManagerClientFlags, name string, objectPath string, getProxyTypeFunc DBusProxyTypeFunc, cancellable Cancellable) DBusObjectManagerClient
 
-func (d dBusObjectManagerClient) GetConnection() DBusConnection
+func (d dBusObjectManagerClient) Connection() DBusConnection
 
-func (d dBusObjectManagerClient) GetFlags() DBusObjectManagerClientFlags
+func (d dBusObjectManagerClient) Flags() DBusObjectManagerClientFlags
 
-func (d dBusObjectManagerClient) GetName() string
+func (d dBusObjectManagerClient) Name() string
 
-func (d dBusObjectManagerClient) GetNameOwner() string
+func (d dBusObjectManagerClient) NameOwner() string
 
 // DBusObjectManagerServer is used to export BusObject instances using the
 // standardized
@@ -11279,8 +11277,8 @@ type DBusObjectManagerServer interface {
 	// path if an object with the given path already exists. As such, the
 	// BusObjectProxy:g-object-path property of @object may be modified.
 	ExportUniquely(object DBusObjectSkeleton)
-	// GetConnection: gets the BusConnection used by @manager.
-	GetConnection() DBusConnection
+	// Connection: gets the BusConnection used by @manager.
+	Connection() DBusConnection
 	// IsExported: returns whether @object is currently exported on @manager.
 	IsExported(object DBusObjectSkeleton) bool
 	// SetConnection: exports all objects managed by @manager on @connection. If
@@ -11314,7 +11312,7 @@ func (d dBusObjectManagerServer) Export(object DBusObjectSkeleton)
 
 func (d dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton)
 
-func (d dBusObjectManagerServer) GetConnection() DBusConnection
+func (d dBusObjectManagerServer) Connection() DBusConnection
 
 func (d dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool
 
@@ -11329,8 +11327,8 @@ func (d dBusObjectManagerServer) Unexport(objectPath string) bool
 type DBusObjectProxy interface {
 	gextras.Objector
 
-	// GetConnection: gets the connection that @proxy is for.
-	GetConnection() DBusConnection
+	// Connection: gets the connection that @proxy is for.
+	Connection() DBusConnection
 }
 
 type dBusObjectProxy struct {
@@ -11349,7 +11347,7 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 
 func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObjectProxy
 
-func (d dBusObjectProxy) GetConnection() DBusConnection
+func (d dBusObjectProxy) Connection() DBusConnection
 
 // DBusObjectSkeleton: a BusObjectSkeleton instance is essentially a group of
 // D-Bus interfaces. The set of exported interfaces on the object may be dynamic
@@ -11528,41 +11526,40 @@ type DBusProxy interface {
 	//
 	// This method is only available on UNIX.
 	CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant)
-	// GetCachedProperty: looks up the value for a property from the cache. This
+	// CachedProperty: looks up the value for a property from the cache. This
 	// call does no blocking IO.
 	//
 	// If @proxy has an expected interface (see BusProxy:g-interface-info) and
 	// @property_name is referenced by it, then @value is checked against the
 	// type of the property.
-	GetCachedProperty(propertyName string) *glib.Variant
-	// GetCachedPropertyNames: gets the names of all cached properties on
-	// @proxy.
-	GetCachedPropertyNames() []string
-	// GetConnection: gets the connection @proxy is for.
-	GetConnection() DBusConnection
-	// GetDefaultTimeout: gets the timeout to use if -1 (specifying default
+	CachedProperty(propertyName string) *glib.Variant
+	// CachedPropertyNames: gets the names of all cached properties on @proxy.
+	CachedPropertyNames() []string
+	// Connection: gets the connection @proxy is for.
+	Connection() DBusConnection
+	// DefaultTimeout: gets the timeout to use if -1 (specifying default
 	// timeout) is passed as @timeout_msec in the g_dbus_proxy_call() and
 	// g_dbus_proxy_call_sync() functions.
 	//
 	// See the BusProxy:g-default-timeout property for more details.
-	GetDefaultTimeout() int
-	// GetFlags: gets the flags that @proxy was constructed with.
-	GetFlags() DBusProxyFlags
-	// GetInterfaceInfo: returns the BusInterfaceInfo, if any, specifying the
+	DefaultTimeout() int
+	// Flags: gets the flags that @proxy was constructed with.
+	Flags() DBusProxyFlags
+	// InterfaceInfo: returns the BusInterfaceInfo, if any, specifying the
 	// interface that @proxy conforms to. See the BusProxy:g-interface-info
 	// property for more details.
-	GetInterfaceInfo() *DBusInterfaceInfo
-	// GetInterfaceName: gets the D-Bus interface name @proxy is for.
-	GetInterfaceName() string
-	// GetName: gets the name that @proxy was constructed for.
-	GetName() string
-	// GetNameOwner: the unique name that owns the name that @proxy is for or
-	// nil if no-one currently owns that name. You may connect to the
+	InterfaceInfo() *DBusInterfaceInfo
+	// InterfaceName: gets the D-Bus interface name @proxy is for.
+	InterfaceName() string
+	// Name: gets the name that @proxy was constructed for.
+	Name() string
+	// NameOwner: the unique name that owns the name that @proxy is for or nil
+	// if no-one currently owns that name. You may connect to the
 	// #GObject::notify signal to track changes to the BusProxy:g-name-owner
 	// property.
-	GetNameOwner() string
-	// GetObjectPath: gets the object path @proxy is for.
-	GetObjectPath() string
+	NameOwner() string
+	// ObjectPath: gets the object path @proxy is for.
+	ObjectPath() string
 	// SetCachedProperty: if @value is not nil, sets the cached value for the
 	// property with name @property_name to the value in @value.
 	//
@@ -11638,25 +11635,25 @@ func (d dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.
 
 func (d dBusProxy) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant)
 
-func (d dBusProxy) GetCachedProperty(propertyName string) *glib.Variant
+func (d dBusProxy) CachedProperty(propertyName string) *glib.Variant
 
-func (d dBusProxy) GetCachedPropertyNames() []string
+func (d dBusProxy) CachedPropertyNames() []string
 
-func (d dBusProxy) GetConnection() DBusConnection
+func (d dBusProxy) Connection() DBusConnection
 
-func (d dBusProxy) GetDefaultTimeout() int
+func (d dBusProxy) DefaultTimeout() int
 
-func (d dBusProxy) GetFlags() DBusProxyFlags
+func (d dBusProxy) Flags() DBusProxyFlags
 
-func (d dBusProxy) GetInterfaceInfo() *DBusInterfaceInfo
+func (d dBusProxy) InterfaceInfo() *DBusInterfaceInfo
 
-func (d dBusProxy) GetInterfaceName() string
+func (d dBusProxy) InterfaceName() string
 
-func (d dBusProxy) GetName() string
+func (d dBusProxy) Name() string
 
-func (d dBusProxy) GetNameOwner() string
+func (d dBusProxy) NameOwner() string
 
-func (d dBusProxy) GetObjectPath() string
+func (d dBusProxy) ObjectPath() string
 
 func (d dBusProxy) SetCachedProperty(propertyName string, value *glib.Variant)
 
@@ -11683,14 +11680,14 @@ func (d dBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo)
 type DBusServer interface {
 	gextras.Objector
 
-	// GetClientAddress: gets a [D-Bus
+	// ClientAddress: gets a [D-Bus
 	// address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
 	// string that can be used by clients to connect to @server.
-	GetClientAddress() string
-	// GetFlags: gets the flags for @server.
-	GetFlags() DBusServerFlags
-	// GetGuid: gets the GUID for @server.
-	GetGuid() string
+	ClientAddress() string
+	// Flags: gets the flags for @server.
+	Flags() DBusServerFlags
+	// Guid: gets the GUID for @server.
+	Guid() string
 	// IsActive: gets whether @server is active.
 	IsActive() bool
 	// Start: starts @server.
@@ -11715,11 +11712,11 @@ func marshalDBusServer(p uintptr) (interface{}, error) {
 
 func NewDBusServer(address string, flags DBusServerFlags, guid string, observer DBusAuthObserver, cancellable Cancellable) DBusServer
 
-func (d dBusServer) GetClientAddress() string
+func (d dBusServer) ClientAddress() string
 
-func (d dBusServer) GetFlags() DBusServerFlags
+func (d dBusServer) Flags() DBusServerFlags
 
-func (d dBusServer) GetGuid() string
+func (d dBusServer) Guid() string
 
 func (d dBusServer) IsActive() bool
 
@@ -11732,10 +11729,10 @@ func (d dBusServer) Stop()
 type DataInputStream interface {
 	BufferedInputStream
 
-	// GetByteOrder: gets the byte order for the data input stream.
-	GetByteOrder() DataStreamByteOrder
-	// GetNewlineType: gets the current newline type for the @stream.
-	GetNewlineType() DataStreamNewlineType
+	// ByteOrder: gets the byte order for the data input stream.
+	ByteOrder() DataStreamByteOrder
+	// NewlineType: gets the current newline type for the @stream.
+	NewlineType() DataStreamNewlineType
 	// ReadByte: reads an unsigned 8-bit/1-byte value from @stream.
 	ReadByte(cancellable Cancellable) uint8
 	// ReadInt16: reads a 16-bit/2-byte value from @stream.
@@ -11914,9 +11911,9 @@ func marshalDataInputStream(p uintptr) (interface{}, error) {
 
 func NewDataInputStream(baseStream InputStream) DataInputStream
 
-func (d dataInputStream) GetByteOrder() DataStreamByteOrder
+func (d dataInputStream) ByteOrder() DataStreamByteOrder
 
-func (d dataInputStream) GetNewlineType() DataStreamNewlineType
+func (d dataInputStream) NewlineType() DataStreamNewlineType
 
 func (d dataInputStream) ReadByte(cancellable Cancellable) uint8
 
@@ -11963,8 +11960,8 @@ func (d dataInputStream) SetNewlineType(_type DataStreamNewlineType)
 type DataOutputStream interface {
 	FilterOutputStream
 
-	// GetByteOrder: gets the byte order for the stream.
-	GetByteOrder() DataStreamByteOrder
+	// ByteOrder: gets the byte order for the stream.
+	ByteOrder() DataStreamByteOrder
 	// PutByte: puts a byte into the output stream.
 	PutByte(data uint8, cancellable Cancellable) bool
 	// PutInt16: puts a signed 16-bit integer into the output stream.
@@ -12001,7 +11998,7 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 
 func NewDataOutputStream(baseStream OutputStream) DataOutputStream
 
-func (d dataOutputStream) GetByteOrder() DataStreamByteOrder
+func (d dataOutputStream) ByteOrder() DataStreamByteOrder
 
 func (d dataOutputStream) PutByte(data uint8, cancellable Cancellable) bool
 
@@ -12029,41 +12026,41 @@ func (d dataOutputStream) SetByteOrder(order DataStreamByteOrder)
 type DesktopAppInfo interface {
 	gextras.Objector
 
-	// GetActionName: gets the user-visible display name of the "additional
+	// ActionName: gets the user-visible display name of the "additional
 	// application action" specified by @action_name.
 	//
 	// This corresponds to the "Name" key within the keyfile group for the
 	// action.
-	GetActionName(actionName string) string
-	// GetBoolean: looks up a boolean value in the keyfile backing @info.
+	ActionName(actionName string) string
+	// Boolean: looks up a boolean value in the keyfile backing @info.
 	//
 	// The @key is looked up in the "Desktop Entry" group.
-	GetBoolean(key string) bool
-	// GetCategories: gets the categories from the desktop file.
-	GetCategories() string
-	// GetFilename: when @info was created from a known filename, return it. In
+	Boolean(key string) bool
+	// Categories: gets the categories from the desktop file.
+	Categories() string
+	// Filename: when @info was created from a known filename, return it. In
 	// some situations such as the AppInfo returned from
 	// g_desktop_app_info_new_from_keyfile(), this function will return nil.
-	GetFilename() string
-	// GetGenericName: gets the generic name from the destkop file.
-	GetGenericName() string
-	// GetIsHidden: a desktop file is hidden if the Hidden key in it is set to
+	Filename() string
+	// GenericName: gets the generic name from the destkop file.
+	GenericName() string
+	// IsHidden: a desktop file is hidden if the Hidden key in it is set to
 	// True.
-	GetIsHidden() bool
-	// GetKeywords: gets the keywords from the desktop file.
-	GetKeywords() []string
-	// GetLocaleString: looks up a localized string value in the keyfile backing
+	IsHidden() bool
+	// Keywords: gets the keywords from the desktop file.
+	Keywords() []string
+	// LocaleString: looks up a localized string value in the keyfile backing
 	// @info translated to the current locale.
 	//
 	// The @key is looked up in the "Desktop Entry" group.
-	GetLocaleString(key string) string
-	// GetNodisplay: gets the value of the NoDisplay key, which helps determine
-	// if the application info should be shown in menus. See
+	LocaleString(key string) string
+	// Nodisplay: gets the value of the NoDisplay key, which helps determine if
+	// the application info should be shown in menus. See
 	// KEY_FILE_DESKTOP_KEY_NO_DISPLAY and g_app_info_should_show().
-	GetNodisplay() bool
-	// GetShowIn: checks if the application info should be shown in menus that
-	// list available applications for a specific name of the desktop, based on
-	// the `OnlyShowIn` and `NotShowIn` keys.
+	Nodisplay() bool
+	// ShowIn: checks if the application info should be shown in menus that list
+	// available applications for a specific name of the desktop, based on the
+	// `OnlyShowIn` and `NotShowIn` keys.
 	//
 	// @desktop_env should typically be given as nil, in which case the
 	// `XDG_CURRENT_DESKTOP` environment variable is consulted. If you want to
@@ -12072,19 +12069,19 @@ type DesktopAppInfo interface {
 	//
 	// Note that g_app_info_should_show() for @info will include this check
 	// (with nil for @desktop_env) as well as additional checks.
-	GetShowIn(desktopEnv string) bool
-	// GetStartupWmClass: retrieves the StartupWMClass field from @info. This
+	ShowIn(desktopEnv string) bool
+	// StartupWmClass: retrieves the StartupWMClass field from @info. This
 	// represents the WM_CLASS property of the main window of the application,
 	// if launched through @info.
-	GetStartupWmClass() string
-	// GetString: looks up a string value in the keyfile backing @info.
+	StartupWmClass() string
+	// String: looks up a string value in the keyfile backing @info.
 	//
 	// The @key is looked up in the "Desktop Entry" group.
-	GetString(key string) string
-	// GetStringList: looks up a string list value in the keyfile backing @info.
+	String(key string) string
+	// StringList: looks up a string list value in the keyfile backing @info.
 	//
 	// The @key is looked up in the "Desktop Entry" group.
-	GetStringList(key string) (uint, []string)
+	StringList(key string) (uint, []string)
 	// HasKey: returns whether @key exists in the "Desktop Entry" group of the
 	// keyfile backing @info.
 	HasKey(key string) bool
@@ -12157,31 +12154,31 @@ func NewDesktopAppInfo(filename string) DesktopAppInfo
 
 func NewDesktopAppInfo(keyFile *glib.KeyFile) DesktopAppInfo
 
-func (d desktopAppInfo) GetActionName(actionName string) string
+func (d desktopAppInfo) ActionName(actionName string) string
 
-func (d desktopAppInfo) GetBoolean(key string) bool
+func (d desktopAppInfo) Boolean(key string) bool
 
-func (d desktopAppInfo) GetCategories() string
+func (d desktopAppInfo) Categories() string
 
-func (d desktopAppInfo) GetFilename() string
+func (d desktopAppInfo) Filename() string
 
-func (d desktopAppInfo) GetGenericName() string
+func (d desktopAppInfo) GenericName() string
 
-func (d desktopAppInfo) GetIsHidden() bool
+func (d desktopAppInfo) IsHidden() bool
 
-func (d desktopAppInfo) GetKeywords() []string
+func (d desktopAppInfo) Keywords() []string
 
-func (d desktopAppInfo) GetLocaleString(key string) string
+func (d desktopAppInfo) LocaleString(key string) string
 
-func (d desktopAppInfo) GetNodisplay() bool
+func (d desktopAppInfo) Nodisplay() bool
 
-func (d desktopAppInfo) GetShowIn(desktopEnv string) bool
+func (d desktopAppInfo) ShowIn(desktopEnv string) bool
 
-func (d desktopAppInfo) GetStartupWmClass() string
+func (d desktopAppInfo) StartupWmClass() string
 
-func (d desktopAppInfo) GetString(key string) string
+func (d desktopAppInfo) String(key string) string
 
-func (d desktopAppInfo) GetStringList(key string) (uint, []string)
+func (d desktopAppInfo) StringList(key string) (uint, []string)
 
 func (d desktopAppInfo) HasKey(key string) bool
 
@@ -12201,10 +12198,10 @@ func (d desktopAppInfo) ListActions() []string
 type Emblem interface {
 	gextras.Objector
 
-	// GetIcon: gives back the icon from @emblem.
-	GetIcon() Icon
-	// GetOrigin: gets the origin of the emblem.
-	GetOrigin() EmblemOrigin
+	// Icon: gives back the icon from @emblem.
+	Icon() Icon
+	// Origin: gets the origin of the emblem.
+	Origin() EmblemOrigin
 }
 
 type emblem struct {
@@ -12225,9 +12222,9 @@ func NewEmblem(icon Icon) Emblem
 
 func NewEmblem(icon Icon, origin EmblemOrigin) Emblem
 
-func (e emblem) GetIcon() Icon
+func (e emblem) Icon() Icon
 
-func (e emblem) GetOrigin() EmblemOrigin
+func (e emblem) Origin() EmblemOrigin
 
 // EmblemedIcon is an implementation of #GIcon that supports adding an emblem to
 // an icon. Adding multiple emblems to an icon is ensured via
@@ -12242,10 +12239,10 @@ type EmblemedIcon interface {
 	AddEmblem(emblem Emblem)
 	// ClearEmblems: removes all the emblems from @icon.
 	ClearEmblems()
-	// GetEmblems: gets the list of emblems for the @icon.
-	GetEmblems() *glib.List
-	// GetIcon: gets the main icon for @emblemed.
-	GetIcon() Icon
+	// Emblems: gets the list of emblems for the @icon.
+	Emblems() *glib.List
+	// Icon: gets the main icon for @emblemed.
+	Icon() Icon
 }
 
 type emblemedIcon struct {
@@ -12268,9 +12265,9 @@ func (e emblemedIcon) AddEmblem(emblem Emblem)
 
 func (e emblemedIcon) ClearEmblems()
 
-func (e emblemedIcon) GetEmblems() *glib.List
+func (e emblemedIcon) Emblems() *glib.List
 
-func (e emblemedIcon) GetIcon() Icon
+func (e emblemedIcon) Icon() Icon
 
 // FileEnumerator: enumerator allows you to operate on a set of #GFiles,
 // returning a Info structure for each file enumerated (e.g.
@@ -12326,16 +12323,16 @@ type FileEnumerator interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
 	// be returned.
 	CloseFinish(result AsyncResult) bool
-	// GetChild: return a new #GFile which refers to the file named by @info in
-	// the source directory of @enumerator. This function is primarily intended
-	// to be used inside loops with g_file_enumerator_next_file().
+	// Child: return a new #GFile which refers to the file named by @info in the
+	// source directory of @enumerator. This function is primarily intended to
+	// be used inside loops with g_file_enumerator_next_file().
 	//
 	//    gchar *name = g_file_info_get_name (info);
 	//    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
 	//                                     name);
-	GetChild(info FileInfo) File
-	// GetContainer: get the #GFile container which is being enumerated.
-	GetContainer() File
+	Child(info FileInfo) File
+	// Container: get the #GFile container which is being enumerated.
+	Container() File
 	// HasPending: checks if the file enumerator has pending operations.
 	HasPending() bool
 	// IsClosed: checks if the file enumerator has been closed.
@@ -12435,9 +12432,9 @@ func (f fileEnumerator) CloseAsync(ioPriority int, cancellable Cancellable, call
 
 func (f fileEnumerator) CloseFinish(result AsyncResult) bool
 
-func (f fileEnumerator) GetChild(info FileInfo) File
+func (f fileEnumerator) Child(info FileInfo) File
 
-func (f fileEnumerator) GetContainer() File
+func (f fileEnumerator) Container() File
 
 func (f fileEnumerator) HasPending() bool
 
@@ -12473,10 +12470,10 @@ func (f fileEnumerator) SetPending(pending bool)
 type FileIOStream interface {
 	IOStream
 
-	// GetEtag: gets the entity tag for the file when it has been written. This
+	// Etag: gets the entity tag for the file when it has been written. This
 	// must be called after the stream has been written and closed, as the etag
 	// can change while writing.
-	GetEtag() string
+	Etag() string
 	// QueryInfo: queries a file io stream for the given @attributes. This
 	// function blocks while querying the stream. For the asynchronous version
 	// of this function, see g_file_io_stream_query_info_async(). While the
@@ -12520,7 +12517,7 @@ func marshalFileIOStream(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (f fileIOStream) GetEtag() string
+func (f fileIOStream) Etag() string
 
 func (f fileIOStream) QueryInfo(attributes string, cancellable Cancellable) FileInfo
 
@@ -12533,8 +12530,8 @@ func (f fileIOStream) QueryInfoFinish(result AsyncResult) FileInfo
 type FileIcon interface {
 	gextras.Objector
 
-	// GetFile: gets the #GFile associated with the given @icon.
-	GetFile() File
+	// File: gets the #GFile associated with the given @icon.
+	File() File
 }
 
 type fileIcon struct {
@@ -12553,7 +12550,7 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 
 func NewFileIcon(file File) FileIcon
 
-func (f fileIcon) GetFile() File
+func (f fileIcon) File() File
 
 // FileInfo: functionality for manipulating basic metadata for files. Info
 // implements methods for getting information that all files should contain, and
@@ -12589,94 +12586,94 @@ type FileInfo interface {
 	CopyInto(destInfo FileInfo)
 	// Dup: duplicates a file info structure.
 	Dup() FileInfo
-	// GetAttributeAsString: gets the value of a attribute, formatted as a
-	// string. This escapes things as needed to make the string valid UTF-8.
-	GetAttributeAsString(attribute string) string
-	// GetAttributeBoolean: gets the value of a boolean attribute. If the
-	// attribute does not contain a boolean value, false will be returned.
-	GetAttributeBoolean(attribute string) bool
-	// GetAttributeByteString: gets the value of a byte string attribute. If the
+	// AttributeAsString: gets the value of a attribute, formatted as a string.
+	// This escapes things as needed to make the string valid UTF-8.
+	AttributeAsString(attribute string) string
+	// AttributeBoolean: gets the value of a boolean attribute. If the attribute
+	// does not contain a boolean value, false will be returned.
+	AttributeBoolean(attribute string) bool
+	// AttributeByteString: gets the value of a byte string attribute. If the
 	// attribute does not contain a byte string, nil will be returned.
-	GetAttributeByteString(attribute string) string
-	// GetAttributeData: gets the attribute type, value and status for an
-	// attribute key.
-	GetAttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool)
-	// GetAttributeInt32: gets a signed 32-bit integer contained within the
+	AttributeByteString(attribute string) string
+	// AttributeData: gets the attribute type, value and status for an attribute
+	// key.
+	AttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool)
+	// AttributeInt32: gets a signed 32-bit integer contained within the
 	// attribute. If the attribute does not contain a signed 32-bit integer, or
 	// is invalid, 0 will be returned.
-	GetAttributeInt32(attribute string) int32
-	// GetAttributeInt64: gets a signed 64-bit integer contained within the
+	AttributeInt32(attribute string) int32
+	// AttributeInt64: gets a signed 64-bit integer contained within the
 	// attribute. If the attribute does not contain a signed 64-bit integer, or
 	// is invalid, 0 will be returned.
-	GetAttributeInt64(attribute string) int64
-	// GetAttributeObject: gets the value of a #GObject attribute. If the
-	// attribute does not contain a #GObject, nil will be returned.
-	GetAttributeObject(attribute string) gextras.Objector
-	// GetAttributeStatus: gets the attribute status for an attribute key.
-	GetAttributeStatus(attribute string) FileAttributeStatus
-	// GetAttributeString: gets the value of a string attribute. If the
-	// attribute does not contain a string, nil will be returned.
-	GetAttributeString(attribute string) string
-	// GetAttributeStringv: gets the value of a stringv attribute. If the
-	// attribute does not contain a stringv, nil will be returned.
-	GetAttributeStringv(attribute string) []string
-	// GetAttributeType: gets the attribute type for an attribute key.
-	GetAttributeType(attribute string) FileAttributeType
-	// GetAttributeUint32: gets an unsigned 32-bit integer contained within the
+	AttributeInt64(attribute string) int64
+	// AttributeObject: gets the value of a #GObject attribute. If the attribute
+	// does not contain a #GObject, nil will be returned.
+	AttributeObject(attribute string) gextras.Objector
+	// AttributeStatus: gets the attribute status for an attribute key.
+	AttributeStatus(attribute string) FileAttributeStatus
+	// AttributeString: gets the value of a string attribute. If the attribute
+	// does not contain a string, nil will be returned.
+	AttributeString(attribute string) string
+	// AttributeStringv: gets the value of a stringv attribute. If the attribute
+	// does not contain a stringv, nil will be returned.
+	AttributeStringv(attribute string) []string
+	// AttributeType: gets the attribute type for an attribute key.
+	AttributeType(attribute string) FileAttributeType
+	// AttributeUint32: gets an unsigned 32-bit integer contained within the
 	// attribute. If the attribute does not contain an unsigned 32-bit integer,
 	// or is invalid, 0 will be returned.
-	GetAttributeUint32(attribute string) uint32
-	// GetAttributeUint64: gets a unsigned 64-bit integer contained within the
+	AttributeUint32(attribute string) uint32
+	// AttributeUint64: gets a unsigned 64-bit integer contained within the
 	// attribute. If the attribute does not contain an unsigned 64-bit integer,
 	// or is invalid, 0 will be returned.
-	GetAttributeUint64(attribute string) uint64
-	// GetContentType: gets the file's content type.
-	GetContentType() string
-	// GetDeletionDate: returns the Time representing the deletion date of the
+	AttributeUint64(attribute string) uint64
+	// ContentType: gets the file's content type.
+	ContentType() string
+	// DeletionDate: returns the Time representing the deletion date of the
 	// file, as available in G_FILE_ATTRIBUTE_TRASH_DELETION_DATE. If the
 	// G_FILE_ATTRIBUTE_TRASH_DELETION_DATE attribute is unset, nil is returned.
-	GetDeletionDate() *glib.DateTime
-	// GetDisplayName: gets a display name for a file. This is guaranteed to
-	// always be set.
-	GetDisplayName() string
-	// GetEditName: gets the edit name for a file.
-	GetEditName() string
-	// GetEtag: gets the [entity tag][gfile-etag] for a given Info. See
+	DeletionDate() *glib.DateTime
+	// DisplayName: gets a display name for a file. This is guaranteed to always
+	// be set.
+	DisplayName() string
+	// EditName: gets the edit name for a file.
+	EditName() string
+	// Etag: gets the [entity tag][gfile-etag] for a given Info. See
 	// G_FILE_ATTRIBUTE_ETAG_VALUE.
-	GetEtag() string
-	// GetFileType: gets a file's type (whether it is a regular file, symlink,
+	Etag() string
+	// FileType: gets a file's type (whether it is a regular file, symlink,
 	// etc). This is different from the file's content type, see
 	// g_file_info_get_content_type().
-	GetFileType() FileType
-	// GetIcon: gets the icon for a file.
-	GetIcon() Icon
-	// GetIsBackup: checks if a file is a backup file.
-	GetIsBackup() bool
-	// GetIsHidden: checks if a file is hidden.
-	GetIsHidden() bool
-	// GetIsSymlink: checks if a file is a symlink.
-	GetIsSymlink() bool
-	// GetModificationDateTime: gets the modification time of the current @info
-	// and returns it as a Time.
+	FileType() FileType
+	// Icon: gets the icon for a file.
+	Icon() Icon
+	// IsBackup: checks if a file is a backup file.
+	IsBackup() bool
+	// IsHidden: checks if a file is hidden.
+	IsHidden() bool
+	// IsSymlink: checks if a file is a symlink.
+	IsSymlink() bool
+	// ModificationDateTime: gets the modification time of the current @info and
+	// returns it as a Time.
 	//
 	// This requires the G_FILE_ATTRIBUTE_TIME_MODIFIED attribute. If
 	// G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is provided, the resulting Time will
 	// have microsecond precision.
-	GetModificationDateTime() *glib.DateTime
-	// GetModificationTime: gets the modification time of the current @info and
+	ModificationDateTime() *glib.DateTime
+	// ModificationTime: gets the modification time of the current @info and
 	// sets it in @result.
-	GetModificationTime() glib.TimeVal
-	// GetName: gets the name for a file. This is guaranteed to always be set.
-	GetName() string
-	// GetSize: gets the file's size.
-	GetSize() int64
-	// GetSortOrder: gets the value of the sort_order attribute from the Info.
-	// See G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
-	GetSortOrder() int32
-	// GetSymbolicIcon: gets the symbolic icon for a file.
-	GetSymbolicIcon() Icon
-	// GetSymlinkTarget: gets the symlink target for a given Info.
-	GetSymlinkTarget() string
+	ModificationTime() glib.TimeVal
+	// Name: gets the name for a file. This is guaranteed to always be set.
+	Name() string
+	// Size: gets the file's size.
+	Size() int64
+	// SortOrder: gets the value of the sort_order attribute from the Info. See
+	// G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
+	SortOrder() int32
+	// SymbolicIcon: gets the symbolic icon for a file.
+	SymbolicIcon() Icon
+	// SymlinkTarget: gets the symlink target for a given Info.
+	SymlinkTarget() string
 	// HasAttribute: checks if a file info structure has an attribute named
 	// @attribute.
 	HasAttribute(attribute string) bool
@@ -12800,65 +12797,65 @@ func (f fileInfo) CopyInto(destInfo FileInfo)
 
 func (f fileInfo) Dup() FileInfo
 
-func (f fileInfo) GetAttributeAsString(attribute string) string
+func (f fileInfo) AttributeAsString(attribute string) string
 
-func (f fileInfo) GetAttributeBoolean(attribute string) bool
+func (f fileInfo) AttributeBoolean(attribute string) bool
 
-func (f fileInfo) GetAttributeByteString(attribute string) string
+func (f fileInfo) AttributeByteString(attribute string) string
 
-func (f fileInfo) GetAttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool)
+func (f fileInfo) AttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool)
 
-func (f fileInfo) GetAttributeInt32(attribute string) int32
+func (f fileInfo) AttributeInt32(attribute string) int32
 
-func (f fileInfo) GetAttributeInt64(attribute string) int64
+func (f fileInfo) AttributeInt64(attribute string) int64
 
-func (f fileInfo) GetAttributeObject(attribute string) gextras.Objector
+func (f fileInfo) AttributeObject(attribute string) gextras.Objector
 
-func (f fileInfo) GetAttributeStatus(attribute string) FileAttributeStatus
+func (f fileInfo) AttributeStatus(attribute string) FileAttributeStatus
 
-func (f fileInfo) GetAttributeString(attribute string) string
+func (f fileInfo) AttributeString(attribute string) string
 
-func (f fileInfo) GetAttributeStringv(attribute string) []string
+func (f fileInfo) AttributeStringv(attribute string) []string
 
-func (f fileInfo) GetAttributeType(attribute string) FileAttributeType
+func (f fileInfo) AttributeType(attribute string) FileAttributeType
 
-func (f fileInfo) GetAttributeUint32(attribute string) uint32
+func (f fileInfo) AttributeUint32(attribute string) uint32
 
-func (f fileInfo) GetAttributeUint64(attribute string) uint64
+func (f fileInfo) AttributeUint64(attribute string) uint64
 
-func (f fileInfo) GetContentType() string
+func (f fileInfo) ContentType() string
 
-func (f fileInfo) GetDeletionDate() *glib.DateTime
+func (f fileInfo) DeletionDate() *glib.DateTime
 
-func (f fileInfo) GetDisplayName() string
+func (f fileInfo) DisplayName() string
 
-func (f fileInfo) GetEditName() string
+func (f fileInfo) EditName() string
 
-func (f fileInfo) GetEtag() string
+func (f fileInfo) Etag() string
 
-func (f fileInfo) GetFileType() FileType
+func (f fileInfo) FileType() FileType
 
-func (f fileInfo) GetIcon() Icon
+func (f fileInfo) Icon() Icon
 
-func (f fileInfo) GetIsBackup() bool
+func (f fileInfo) IsBackup() bool
 
-func (f fileInfo) GetIsHidden() bool
+func (f fileInfo) IsHidden() bool
 
-func (f fileInfo) GetIsSymlink() bool
+func (f fileInfo) IsSymlink() bool
 
-func (f fileInfo) GetModificationDateTime() *glib.DateTime
+func (f fileInfo) ModificationDateTime() *glib.DateTime
 
-func (f fileInfo) GetModificationTime() glib.TimeVal
+func (f fileInfo) ModificationTime() glib.TimeVal
 
-func (f fileInfo) GetName() string
+func (f fileInfo) Name() string
 
-func (f fileInfo) GetSize() int64
+func (f fileInfo) Size() int64
 
-func (f fileInfo) GetSortOrder() int32
+func (f fileInfo) SortOrder() int32
 
-func (f fileInfo) GetSymbolicIcon() Icon
+func (f fileInfo) SymbolicIcon() Icon
 
-func (f fileInfo) GetSymlinkTarget() string
+func (f fileInfo) SymlinkTarget() string
 
 func (f fileInfo) HasAttribute(attribute string) bool
 
@@ -13044,10 +13041,10 @@ func (f fileMonitor) SetRateLimit(limitMsecs int)
 type FileOutputStream interface {
 	OutputStream
 
-	// GetEtag: gets the entity tag for the file when it has been written. This
+	// Etag: gets the entity tag for the file when it has been written. This
 	// must be called after the stream has been written and closed, as the etag
 	// can change while writing.
-	GetEtag() string
+	Etag() string
 	// QueryInfo: queries a file output stream for the given @attributes. This
 	// function blocks while querying the stream. For the asynchronous version
 	// of this function, see g_file_output_stream_query_info_async(). While the
@@ -13091,7 +13088,7 @@ func marshalFileOutputStream(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (f fileOutputStream) GetEtag() string
+func (f fileOutputStream) Etag() string
 
 func (f fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) FileInfo
 
@@ -13105,12 +13102,11 @@ func (f fileOutputStream) QueryInfoFinish(result AsyncResult) FileInfo
 type FilenameCompleter interface {
 	gextras.Objector
 
-	// GetCompletionSuffix: obtains a completion for @initial_text from
-	// @completer.
-	GetCompletionSuffix(initialText string) string
-	// GetCompletions: gets an array of completion strings for a given initial
+	// CompletionSuffix: obtains a completion for @initial_text from @completer.
+	CompletionSuffix(initialText string) string
+	// Completions: gets an array of completion strings for a given initial
 	// text.
-	GetCompletions(initialText string) []string
+	Completions(initialText string) []string
 	// SetDirsOnly: if @dirs_only is true, @completer will only complete
 	// directory names, and not file names.
 	SetDirsOnly(dirsOnly bool)
@@ -13132,9 +13128,9 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 
 func NewFilenameCompleter() FilenameCompleter
 
-func (f filenameCompleter) GetCompletionSuffix(initialText string) string
+func (f filenameCompleter) CompletionSuffix(initialText string) string
 
-func (f filenameCompleter) GetCompletions(initialText string) []string
+func (f filenameCompleter) Completions(initialText string) []string
 
 func (f filenameCompleter) SetDirsOnly(dirsOnly bool)
 
@@ -13145,11 +13141,11 @@ func (f filenameCompleter) SetDirsOnly(dirsOnly bool)
 type FilterInputStream interface {
 	InputStream
 
-	// GetBaseStream: gets the base stream for the filter stream.
-	GetBaseStream() InputStream
-	// GetCloseBaseStream: returns whether the base stream will be closed when
+	// BaseStream: gets the base stream for the filter stream.
+	BaseStream() InputStream
+	// CloseBaseStream: returns whether the base stream will be closed when
 	// @stream is closed.
-	GetCloseBaseStream() bool
+	CloseBaseStream() bool
 	// SetCloseBaseStream: sets whether the base stream will be closed when
 	// @stream is closed.
 	SetCloseBaseStream(closeBase bool)
@@ -13169,9 +13165,9 @@ func marshalFilterInputStream(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (f filterInputStream) GetBaseStream() InputStream
+func (f filterInputStream) BaseStream() InputStream
 
-func (f filterInputStream) GetCloseBaseStream() bool
+func (f filterInputStream) CloseBaseStream() bool
 
 func (f filterInputStream) SetCloseBaseStream(closeBase bool)
 
@@ -13182,11 +13178,11 @@ func (f filterInputStream) SetCloseBaseStream(closeBase bool)
 type FilterOutputStream interface {
 	OutputStream
 
-	// GetBaseStream: gets the base stream for the filter stream.
-	GetBaseStream() OutputStream
-	// GetCloseBaseStream: returns whether the base stream will be closed when
+	// BaseStream: gets the base stream for the filter stream.
+	BaseStream() OutputStream
+	// CloseBaseStream: returns whether the base stream will be closed when
 	// @stream is closed.
-	GetCloseBaseStream() bool
+	CloseBaseStream() bool
 	// SetCloseBaseStream: sets whether the base stream will be closed when
 	// @stream is closed.
 	SetCloseBaseStream(closeBase bool)
@@ -13206,9 +13202,9 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (f filterOutputStream) GetBaseStream() OutputStream
+func (f filterOutputStream) BaseStream() OutputStream
 
-func (f filterOutputStream) GetCloseBaseStream() bool
+func (f filterOutputStream) CloseBaseStream() bool
 
 func (f filterOutputStream) SetCloseBaseStream(closeBase bool)
 
@@ -13308,12 +13304,12 @@ type IOStream interface {
 	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CloseFinish: closes a stream.
 	CloseFinish(result AsyncResult) bool
-	// GetInputStream: gets the input stream for this object. This is used for
+	// InputStream: gets the input stream for this object. This is used for
 	// reading.
-	GetInputStream() InputStream
-	// GetOutputStream: gets the output stream for this object. This is used for
+	InputStream() InputStream
+	// OutputStream: gets the output stream for this object. This is used for
 	// writing.
-	GetOutputStream() OutputStream
+	OutputStream() OutputStream
 	// HasPending: checks if a stream has pending actions.
 	HasPending() bool
 	// IsClosed: checks if a stream is closed.
@@ -13352,9 +13348,9 @@ func (i ioStream) CloseAsync(ioPriority int, cancellable Cancellable, callback A
 
 func (i ioStream) CloseFinish(result AsyncResult) bool
 
-func (i ioStream) GetInputStream() InputStream
+func (i ioStream) InputStream() InputStream
 
-func (i ioStream) GetOutputStream() OutputStream
+func (i ioStream) OutputStream() OutputStream
 
 func (i ioStream) HasPending() bool
 
@@ -13376,42 +13372,38 @@ type InetAddress interface {
 
 	// Equal: checks if two Address instances are equal, e.g. the same address.
 	Equal(otherAddress InetAddress) bool
-	// GetFamily: gets @address's family
-	GetFamily() SocketFamily
-	// GetIsAny: tests whether @address is the "any" address for its family.
-	GetIsAny() bool
-	// GetIsLinkLocal: tests whether @address is a link-local address (that is,
-	// if it identifies a host on a local network that is not connected to the
+	// Family: gets @address's family
+	Family() SocketFamily
+	// IsAny: tests whether @address is the "any" address for its family.
+	IsAny() bool
+	// IsLinkLocal: tests whether @address is a link-local address (that is, if
+	// it identifies a host on a local network that is not connected to the
 	// Internet).
-	GetIsLinkLocal() bool
-	// GetIsLoopback: tests whether @address is the loopback address for its
+	IsLinkLocal() bool
+	// IsLoopback: tests whether @address is the loopback address for its
 	// family.
-	GetIsLoopback() bool
-	// GetIsMcGlobal: tests whether @address is a global multicast address.
-	GetIsMcGlobal() bool
-	// GetIsMcLinkLocal: tests whether @address is a link-local multicast
+	IsLoopback() bool
+	// IsMcGlobal: tests whether @address is a global multicast address.
+	IsMcGlobal() bool
+	// IsMcLinkLocal: tests whether @address is a link-local multicast address.
+	IsMcLinkLocal() bool
+	// IsMcNodeLocal: tests whether @address is a node-local multicast address.
+	IsMcNodeLocal() bool
+	// IsMcOrgLocal: tests whether @address is an organization-local multicast
 	// address.
-	GetIsMcLinkLocal() bool
-	// GetIsMcNodeLocal: tests whether @address is a node-local multicast
-	// address.
-	GetIsMcNodeLocal() bool
-	// GetIsMcOrgLocal: tests whether @address is an organization-local
-	// multicast address.
-	GetIsMcOrgLocal() bool
-	// GetIsMcSiteLocal: tests whether @address is a site-local multicast
-	// address.
-	GetIsMcSiteLocal() bool
-	// GetIsMulticast: tests whether @address is a multicast address.
-	GetIsMulticast() bool
-	// GetIsSiteLocal: tests whether @address is a site-local address such as
+	IsMcOrgLocal() bool
+	// IsMcSiteLocal: tests whether @address is a site-local multicast address.
+	IsMcSiteLocal() bool
+	// IsMulticast: tests whether @address is a multicast address.
+	IsMulticast() bool
+	// IsSiteLocal: tests whether @address is a site-local address such as
 	// 10.0.0.1 (that is, the address identifies a host on a local network that
 	// can not be reached directly from the Internet, but which may have
 	// outgoing Internet connectivity via a NAT or firewall).
-	GetIsSiteLocal() bool
-	// GetNativeSize: gets the size of the native raw binary address for
-	// @address. This is the size of the data that you get from
-	// g_inet_address_to_bytes().
-	GetNativeSize() uint
+	IsSiteLocal() bool
+	// NativeSize: gets the size of the native raw binary address for @address.
+	// This is the size of the data that you get from g_inet_address_to_bytes().
+	NativeSize() uint
 	// ToBytes: gets the raw binary address data from @address.
 	ToBytes() uint8
 	// ToString: converts @address to string form.
@@ -13442,29 +13434,29 @@ func NewInetAddress(family SocketFamily) InetAddress
 
 func (i inetAddress) Equal(otherAddress InetAddress) bool
 
-func (i inetAddress) GetFamily() SocketFamily
+func (i inetAddress) Family() SocketFamily
 
-func (i inetAddress) GetIsAny() bool
+func (i inetAddress) IsAny() bool
 
-func (i inetAddress) GetIsLinkLocal() bool
+func (i inetAddress) IsLinkLocal() bool
 
-func (i inetAddress) GetIsLoopback() bool
+func (i inetAddress) IsLoopback() bool
 
-func (i inetAddress) GetIsMcGlobal() bool
+func (i inetAddress) IsMcGlobal() bool
 
-func (i inetAddress) GetIsMcLinkLocal() bool
+func (i inetAddress) IsMcLinkLocal() bool
 
-func (i inetAddress) GetIsMcNodeLocal() bool
+func (i inetAddress) IsMcNodeLocal() bool
 
-func (i inetAddress) GetIsMcOrgLocal() bool
+func (i inetAddress) IsMcOrgLocal() bool
 
-func (i inetAddress) GetIsMcSiteLocal() bool
+func (i inetAddress) IsMcSiteLocal() bool
 
-func (i inetAddress) GetIsMulticast() bool
+func (i inetAddress) IsMulticast() bool
 
-func (i inetAddress) GetIsSiteLocal() bool
+func (i inetAddress) IsSiteLocal() bool
 
-func (i inetAddress) GetNativeSize() uint
+func (i inetAddress) NativeSize() uint
 
 func (i inetAddress) ToBytes() uint8
 
@@ -13479,12 +13471,12 @@ type InetAddressMask interface {
 
 	// Equal: tests if @mask and @mask2 are the same mask.
 	Equal(mask2 InetAddressMask) bool
-	// GetAddress: gets @mask's base address
-	GetAddress() InetAddress
-	// GetFamily: gets the Family of @mask's address
-	GetFamily() SocketFamily
-	// GetLength: gets @mask's length
-	GetLength() uint
+	// Address: gets @mask's base address
+	Address() InetAddress
+	// Family: gets the Family of @mask's address
+	Family() SocketFamily
+	// Length: gets @mask's length
+	Length() uint
 	// Matches: tests if @address falls within the range described by @mask.
 	Matches(address InetAddress) bool
 	// ToString: converts @mask back to its corresponding string form.
@@ -13511,11 +13503,11 @@ func NewInetAddressMask(maskString string) InetAddressMask
 
 func (i inetAddressMask) Equal(mask2 InetAddressMask) bool
 
-func (i inetAddressMask) GetAddress() InetAddress
+func (i inetAddressMask) Address() InetAddress
 
-func (i inetAddressMask) GetFamily() SocketFamily
+func (i inetAddressMask) Family() SocketFamily
 
-func (i inetAddressMask) GetLength() uint
+func (i inetAddressMask) Length() uint
 
 func (i inetAddressMask) Matches(address InetAddress) bool
 
@@ -13526,16 +13518,16 @@ func (i inetAddressMask) ToString() string
 type InetSocketAddress interface {
 	SocketAddress
 
-	// GetAddress: gets @address's Address.
-	GetAddress() InetAddress
-	// GetFlowinfo: gets the `sin6_flowinfo` field from @address, which must be
-	// an IPv6 address.
-	GetFlowinfo() uint32
-	// GetPort: gets @address's port.
-	GetPort() uint16
-	// GetScopeID: gets the `sin6_scope_id` field from @address, which must be
-	// an IPv6 address.
-	GetScopeID() uint32
+	// Address: gets @address's Address.
+	Address() InetAddress
+	// Flowinfo: gets the `sin6_flowinfo` field from @address, which must be an
+	// IPv6 address.
+	Flowinfo() uint32
+	// Port: gets @address's port.
+	Port() uint16
+	// ScopeID: gets the `sin6_scope_id` field from @address, which must be an
+	// IPv6 address.
+	ScopeID() uint32
 }
 
 type inetSocketAddress struct {
@@ -13556,13 +13548,13 @@ func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress
 
 func NewInetSocketAddress(address string, port uint) InetSocketAddress
 
-func (i inetSocketAddress) GetAddress() InetAddress
+func (i inetSocketAddress) Address() InetAddress
 
-func (i inetSocketAddress) GetFlowinfo() uint32
+func (i inetSocketAddress) Flowinfo() uint32
 
-func (i inetSocketAddress) GetPort() uint16
+func (i inetSocketAddress) Port() uint16
 
-func (i inetSocketAddress) GetScopeID() uint32
+func (i inetSocketAddress) ScopeID() uint32
 
 // InputStream: stream has functions to read from a stream
 // (g_input_stream_read()), to close a stream (g_input_stream_close()) and to
@@ -14010,16 +14002,16 @@ func (m memoryInputStream) AddData(data []uint8, destroy unsafe.Pointer)
 type MemoryOutputStream interface {
 	OutputStream
 
-	// GetData: gets any loaded data from the @ostream.
+	// Data: gets any loaded data from the @ostream.
 	//
 	// Note that the returned pointer may become invalid on the next write or
 	// truncate operation on the stream.
-	GetData() interface{}
-	// GetDataSize: returns the number of bytes from the start up to including
-	// the last byte written in the stream that has not been truncated away.
-	GetDataSize() uint
-	// GetSize: gets the size of the currently allocated data area (available
-	// from g_memory_output_stream_get_data()).
+	Data() interface{}
+	// DataSize: returns the number of bytes from the start up to including the
+	// last byte written in the stream that has not been truncated away.
+	DataSize() uint
+	// Size: gets the size of the currently allocated data area (available from
+	// g_memory_output_stream_get_data()).
 	//
 	// You probably don't want to use this function on resizable streams. See
 	// g_memory_output_stream_get_data_size() instead. For resizable streams the
@@ -14032,7 +14024,7 @@ type MemoryOutputStream interface {
 	//
 	// In any case, if you want the number of bytes currently written to the
 	// stream, use g_memory_output_stream_get_data_size().
-	GetSize() uint
+	Size() uint
 	// StealAsBytes: returns data from the @ostream as a #GBytes. @ostream must
 	// be closed before calling this function.
 	StealAsBytes() *glib.Bytes
@@ -14063,11 +14055,11 @@ func NewMemoryOutputStream(data interface{}, size uint, reallocFunction ReallocF
 
 func NewMemoryOutputStream() MemoryOutputStream
 
-func (m memoryOutputStream) GetData() interface{}
+func (m memoryOutputStream) Data() interface{}
 
-func (m memoryOutputStream) GetDataSize() uint
+func (m memoryOutputStream) DataSize() uint
 
-func (m memoryOutputStream) GetSize() uint
+func (m memoryOutputStream) Size() uint
 
 func (m memoryOutputStream) StealAsBytes() *glib.Bytes
 
@@ -14218,11 +14210,11 @@ func (m menu) RemoveAll()
 type MenuAttributeIter interface {
 	gextras.Objector
 
-	// GetName: gets the name of the attribute at the current iterator position,
-	// as a string.
+	// Name: gets the name of the attribute at the current iterator position, as
+	// a string.
 	//
 	// The iterator is not advanced.
-	GetName() string
+	Name() string
 	// GetNext: this function combines g_menu_attribute_iter_next() with
 	// g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
 	//
@@ -14238,11 +14230,10 @@ type MenuAttributeIter interface {
 	// remains at the current position. The value returned in @value must be
 	// unreffed using g_variant_unref() when it is no longer in use.
 	GetNext() (string, *glib.Variant, bool)
-	// GetValue: gets the value of the attribute at the current iterator
-	// position.
+	// Value: gets the value of the attribute at the current iterator position.
 	//
 	// The iterator is not advanced.
-	GetValue() *glib.Variant
+	Value() *glib.Variant
 	// Next: attempts to advance the iterator to the next (possibly first)
 	// attribute.
 	//
@@ -14268,11 +14259,11 @@ func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (m menuAttributeIter) GetName() string
+func (m menuAttributeIter) Name() string
 
 func (m menuAttributeIter) GetNext() (string, *glib.Variant, bool)
 
-func (m menuAttributeIter) GetValue() *glib.Variant
+func (m menuAttributeIter) Value() *glib.Variant
 
 func (m menuAttributeIter) Next() bool
 
@@ -14281,14 +14272,14 @@ func (m menuAttributeIter) Next() bool
 type MenuItem interface {
 	gextras.Objector
 
-	// GetAttributeValue: queries the named @attribute on @menu_item.
+	// AttributeValue: queries the named @attribute on @menu_item.
 	//
 	// If @expected_type is specified and the attribute does not have this type,
 	// nil is returned. nil is also returned if the attribute simply does not
 	// exist.
-	GetAttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant
-	// GetLink: queries the named @link on @menu_item.
-	GetLink(link string) MenuModel
+	AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant
+	// Link: queries the named @link on @menu_item.
+	Link(link string) MenuModel
 	// SetActionAndTargetValue: sets or unsets the "action" and "target"
 	// attributes of @menu_item.
 	//
@@ -14426,9 +14417,9 @@ func NewMenuItem(label string, section MenuModel) MenuItem
 
 func NewMenuItem(label string, submenu MenuModel) MenuItem
 
-func (m menuItem) GetAttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant
+func (m menuItem) AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant
 
-func (m menuItem) GetLink(link string) MenuModel
+func (m menuItem) Link(link string) MenuModel
 
 func (m menuItem) SetActionAndTargetValue(action string, targetValue *glib.Variant)
 
@@ -14451,10 +14442,10 @@ func (m menuItem) SetSubmenu(submenu MenuModel)
 type MenuLinkIter interface {
 	gextras.Objector
 
-	// GetName: gets the name of the link at the current iterator position.
+	// Name: gets the name of the link at the current iterator position.
 	//
 	// The iterator is not advanced.
-	GetName() string
+	Name() string
 	// GetNext: this function combines g_menu_link_iter_next() with
 	// g_menu_link_iter_get_name() and g_menu_link_iter_get_value().
 	//
@@ -14470,10 +14461,10 @@ type MenuLinkIter interface {
 	// remains at the current position. The value returned in @value must be
 	// unreffed using g_object_unref() when it is no longer in use.
 	GetNext() (string, MenuModel, bool)
-	// GetValue: gets the linked Model at the current iterator position.
+	// Value: gets the linked Model at the current iterator position.
 	//
 	// The iterator is not advanced.
-	GetValue() MenuModel
+	Value() MenuModel
 	// Next: attempts to advance the iterator to the next (possibly first) link.
 	//
 	// true is returned on success, or false if there are no more links.
@@ -14498,11 +14489,11 @@ func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (m menuLinkIter) GetName() string
+func (m menuLinkIter) Name() string
 
 func (m menuLinkIter) GetNext() (string, MenuModel, bool)
 
-func (m menuLinkIter) GetValue() MenuModel
+func (m menuLinkIter) Value() MenuModel
 
 func (m menuLinkIter) Next() bool
 
@@ -14618,7 +14609,7 @@ func (m menuLinkIter) Next() bool
 type MenuModel interface {
 	gextras.Objector
 
-	// GetItemAttributeValue: queries the item at position @item_index in @model
+	// ItemAttributeValue: queries the item at position @item_index in @model
 	// for the attribute specified by @attribute.
 	//
 	// If @expected_type is non-nil then it specifies the expected type of the
@@ -14629,15 +14620,15 @@ type MenuModel interface {
 	//
 	// If the attribute does not exist, or does not match the expected type then
 	// nil is returned.
-	GetItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
-	// GetItemLink: queries the item at position @item_index in @model for the
-	// link specified by @link.
+	ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
+	// ItemLink: queries the item at position @item_index in @model for the link
+	// specified by @link.
 	//
 	// If the link exists, the linked Model is returned. If the link does not
 	// exist, nil is returned.
-	GetItemLink(itemIndex int, link string) MenuModel
-	// GetNItems: query the number of items in @model.
-	GetNItems() int
+	ItemLink(itemIndex int, link string) MenuModel
+	// NItems: query the number of items in @model.
+	NItems() int
 	// IsMutable: queries if @model is mutable.
 	//
 	// An immutable Model will never emit the Model::items-changed signal.
@@ -14686,11 +14677,11 @@ func marshalMenuModel(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (m menuModel) GetItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
+func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
 
-func (m menuModel) GetItemLink(itemIndex int, link string) MenuModel
+func (m menuModel) ItemLink(itemIndex int, link string) MenuModel
 
-func (m menuModel) GetNItems() int
+func (m menuModel) NItems() int
 
 func (m menuModel) IsMutable() bool
 
@@ -14723,28 +14714,27 @@ func (m menuModel) IterateItemLinks(itemIndex int) MenuLinkIter
 type MountOperation interface {
 	gextras.Objector
 
-	// GetAnonymous: check to see whether the mount operation is being used for
-	// an anonymous user.
-	GetAnonymous() bool
-	// GetChoice: gets a choice from the mount operation.
-	GetChoice() int
-	// GetDomain: gets the domain of the mount operation.
-	GetDomain() string
-	// GetIsTcryptHiddenVolume: check to see whether the mount operation is
-	// being used for a TCRYPT hidden volume.
-	GetIsTcryptHiddenVolume() bool
-	// GetIsTcryptSystemVolume: check to see whether the mount operation is
-	// being used for a TCRYPT system volume.
-	GetIsTcryptSystemVolume() bool
-	// GetPassword: gets a password from the mount operation.
-	GetPassword() string
-	// GetPasswordSave: gets the state of saving passwords for the mount
-	// operation.
-	GetPasswordSave() PasswordSave
-	// GetPim: gets a PIM from the mount operation.
-	GetPim() uint
-	// GetUsername: get the user name from the mount operation.
-	GetUsername() string
+	// Anonymous: check to see whether the mount operation is being used for an
+	// anonymous user.
+	Anonymous() bool
+	// Choice: gets a choice from the mount operation.
+	Choice() int
+	// Domain: gets the domain of the mount operation.
+	Domain() string
+	// IsTcryptHiddenVolume: check to see whether the mount operation is being
+	// used for a TCRYPT hidden volume.
+	IsTcryptHiddenVolume() bool
+	// IsTcryptSystemVolume: check to see whether the mount operation is being
+	// used for a TCRYPT system volume.
+	IsTcryptSystemVolume() bool
+	// Password: gets a password from the mount operation.
+	Password() string
+	// PasswordSave: gets the state of saving passwords for the mount operation.
+	PasswordSave() PasswordSave
+	// Pim: gets a PIM from the mount operation.
+	Pim() uint
+	// Username: get the user name from the mount operation.
+	Username() string
 	// Reply: emits the Operation::reply signal.
 	Reply(result MountOperationResult)
 	// SetAnonymous: sets the mount operation to use an anonymous user if
@@ -14787,23 +14777,23 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 
 func NewMountOperation() MountOperation
 
-func (m mountOperation) GetAnonymous() bool
+func (m mountOperation) Anonymous() bool
 
-func (m mountOperation) GetChoice() int
+func (m mountOperation) Choice() int
 
-func (m mountOperation) GetDomain() string
+func (m mountOperation) Domain() string
 
-func (m mountOperation) GetIsTcryptHiddenVolume() bool
+func (m mountOperation) IsTcryptHiddenVolume() bool
 
-func (m mountOperation) GetIsTcryptSystemVolume() bool
+func (m mountOperation) IsTcryptSystemVolume() bool
 
-func (m mountOperation) GetPassword() string
+func (m mountOperation) Password() string
 
-func (m mountOperation) GetPasswordSave() PasswordSave
+func (m mountOperation) PasswordSave() PasswordSave
 
-func (m mountOperation) GetPim() uint
+func (m mountOperation) Pim() uint
 
-func (m mountOperation) GetUsername() string
+func (m mountOperation) Username() string
 
 func (m mountOperation) Reply(result MountOperationResult)
 
@@ -14875,13 +14865,13 @@ func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
 type NetworkAddress interface {
 	gextras.Objector
 
-	// GetHostname: gets @addr's hostname. This might be either UTF-8 or
+	// Hostname: gets @addr's hostname. This might be either UTF-8 or
 	// ASCII-encoded, depending on what @addr was created with.
-	GetHostname() string
-	// GetPort: gets @addr's port number
-	GetPort() uint16
-	// GetScheme: gets @addr's scheme
-	GetScheme() string
+	Hostname() string
+	// Port: gets @addr's port number
+	Port() uint16
+	// Scheme: gets @addr's scheme
+	Scheme() string
 }
 
 type networkAddress struct {
@@ -14902,11 +14892,11 @@ func NewNetworkAddress(hostname string, port uint16) NetworkAddress
 
 func NewNetworkAddress(port uint16) NetworkAddress
 
-func (n networkAddress) GetHostname() string
+func (n networkAddress) Hostname() string
 
-func (n networkAddress) GetPort() uint16
+func (n networkAddress) Port() uint16
 
-func (n networkAddress) GetScheme() string
+func (n networkAddress) Scheme() string
 
 // NetworkService: like Address does with hostnames, Service provides an easy
 // way to resolve a SRV record, and then attempt to connect to one of the hosts
@@ -14918,16 +14908,16 @@ func (n networkAddress) GetScheme() string
 type NetworkService interface {
 	gextras.Objector
 
-	// GetDomain: gets the domain that @srv serves. This might be either UTF-8
-	// or ASCII-encoded, depending on what @srv was created with.
-	GetDomain() string
-	// GetProtocol: gets @srv's protocol name (eg, "tcp").
-	GetProtocol() string
-	// GetScheme: gets the URI scheme used to resolve proxies. By default, the
+	// Domain: gets the domain that @srv serves. This might be either UTF-8 or
+	// ASCII-encoded, depending on what @srv was created with.
+	Domain() string
+	// Protocol: gets @srv's protocol name (eg, "tcp").
+	Protocol() string
+	// Scheme: gets the URI scheme used to resolve proxies. By default, the
 	// service name is used as scheme.
-	GetScheme() string
-	// GetService: gets @srv's service name (eg, "ldap").
-	GetService() string
+	Scheme() string
+	// Service: gets @srv's service name (eg, "ldap").
+	Service() string
 	// SetScheme: set's the URI scheme used to resolve proxies. By default, the
 	// service name is used as scheme.
 	SetScheme(scheme string)
@@ -14949,13 +14939,13 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 
 func NewNetworkService(service string, protocol string, domain string) NetworkService
 
-func (n networkService) GetDomain() string
+func (n networkService) Domain() string
 
-func (n networkService) GetProtocol() string
+func (n networkService) Protocol() string
 
-func (n networkService) GetScheme() string
+func (n networkService) Scheme() string
 
-func (n networkService) GetService() string
+func (n networkService) Service() string
 
 func (n networkService) SetScheme(scheme string)
 
@@ -15523,18 +15513,18 @@ type Permission interface {
 	// This is the second half of the asynchronous version of
 	// g_permission_acquire().
 	AcquireFinish(result AsyncResult) bool
-	// GetAllowed: gets the value of the 'allowed' property. This property is
-	// true if the caller currently has permission to perform the action that
+	// Allowed: gets the value of the 'allowed' property. This property is true
+	// if the caller currently has permission to perform the action that
 	// @permission represents the permission to perform.
-	GetAllowed() bool
-	// GetCanAcquire: gets the value of the 'can-acquire' property. This
-	// property is true if it is generally possible to acquire the permission by
-	// calling g_permission_acquire().
-	GetCanAcquire() bool
-	// GetCanRelease: gets the value of the 'can-release' property. This
-	// property is true if it is generally possible to release the permission by
-	// calling g_permission_release().
-	GetCanRelease() bool
+	Allowed() bool
+	// CanAcquire: gets the value of the 'can-acquire' property. This property
+	// is true if it is generally possible to acquire the permission by calling
+	// g_permission_acquire().
+	CanAcquire() bool
+	// CanRelease: gets the value of the 'can-release' property. This property
+	// is true if it is generally possible to release the permission by calling
+	// g_permission_release().
+	CanRelease() bool
 	// ImplUpdate: this function is called by the #GPermission implementation to
 	// update the properties of the permission. You should never call this
 	// function except from a #GPermission implementation.
@@ -15591,11 +15581,11 @@ func (p permission) AcquireAsync(cancellable Cancellable, callback AsyncReadyCal
 
 func (p permission) AcquireFinish(result AsyncResult) bool
 
-func (p permission) GetAllowed() bool
+func (p permission) Allowed() bool
 
-func (p permission) GetCanAcquire() bool
+func (p permission) CanAcquire() bool
 
-func (p permission) GetCanRelease() bool
+func (p permission) CanRelease() bool
 
 func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool)
 
@@ -15677,25 +15667,25 @@ func NewPropertyAction(name string, object interface{}, propertyName string) Pro
 type ProxyAddress interface {
 	InetSocketAddress
 
-	// GetDestinationHostname: gets @proxy's destination hostname; that is, the
+	// DestinationHostname: gets @proxy's destination hostname; that is, the
 	// name of the host that will be connected to via the proxy, not the name of
 	// the proxy itself.
-	GetDestinationHostname() string
-	// GetDestinationPort: gets @proxy's destination port; that is, the port on
-	// the destination host that will be connected to via the proxy, not the
-	// port number of the proxy itself.
-	GetDestinationPort() uint16
-	// GetDestinationProtocol: gets the protocol that is being spoken to the
+	DestinationHostname() string
+	// DestinationPort: gets @proxy's destination port; that is, the port on the
+	// destination host that will be connected to via the proxy, not the port
+	// number of the proxy itself.
+	DestinationPort() uint16
+	// DestinationProtocol: gets the protocol that is being spoken to the
 	// destination server; eg, "http" or "ftp".
-	GetDestinationProtocol() string
-	// GetPassword: gets @proxy's password.
-	GetPassword() string
-	// GetProtocol: gets @proxy's protocol. eg, "socks" or "http"
-	GetProtocol() string
-	// GetURI: gets the proxy URI that @proxy was constructed from.
-	GetURI() string
-	// GetUsername: gets @proxy's username.
-	GetUsername() string
+	DestinationProtocol() string
+	// Password: gets @proxy's password.
+	Password() string
+	// Protocol: gets @proxy's protocol. eg, "socks" or "http"
+	Protocol() string
+	// URI: gets the proxy URI that @proxy was constructed from.
+	URI() string
+	// Username: gets @proxy's username.
+	Username() string
 }
 
 type proxyAddress struct {
@@ -15714,19 +15704,19 @@ func marshalProxyAddress(p uintptr) (interface{}, error) {
 
 func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) ProxyAddress
 
-func (p proxyAddress) GetDestinationHostname() string
+func (p proxyAddress) DestinationHostname() string
 
-func (p proxyAddress) GetDestinationPort() uint16
+func (p proxyAddress) DestinationPort() uint16
 
-func (p proxyAddress) GetDestinationProtocol() string
+func (p proxyAddress) DestinationProtocol() string
 
-func (p proxyAddress) GetPassword() string
+func (p proxyAddress) Password() string
 
-func (p proxyAddress) GetProtocol() string
+func (p proxyAddress) Protocol() string
 
-func (p proxyAddress) GetURI() string
+func (p proxyAddress) URI() string
 
-func (p proxyAddress) GetUsername() string
+func (p proxyAddress) Username() string
 
 // ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
 // Address instances returned by the AddressEnumerator and wraps them in Address
@@ -16257,20 +16247,20 @@ type Settings interface {
 	// mode, changes to @settings are not immediately propagated to the backend,
 	// but kept locally until g_settings_apply() is called.
 	Delay()
-	// GetBoolean: gets the value that is stored at @key in @settings.
+	// Boolean: gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for booleans.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// boolean type in the schema for @settings.
-	GetBoolean(key string) bool
-	// GetChild: creates a child settings object which has a base path of
+	Boolean(key string) bool
+	// Child: creates a child settings object which has a base path of
 	// `base-path/@name`, where `base-path` is the base path of @settings.
 	//
 	// The schema for the child settings object must have been declared in the
 	// schema of @settings using a <child> element.
-	GetChild(name string) Settings
-	// GetDefaultValue: gets the "default value" of a key.
+	Child(name string) Settings
+	// DefaultValue: gets the "default value" of a key.
 	//
 	// This is the value that would be read if g_settings_reset() were to be
 	// called on the key.
@@ -16290,16 +16280,16 @@ type Settings interface {
 	//
 	// It is a programmer error to give a @key that isn't contained in the
 	// schema for @settings.
-	GetDefaultValue(key string) *glib.Variant
-	// GetDouble: gets the value that is stored at @key in @settings.
+	DefaultValue(key string) *glib.Variant
+	// Double: gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for doubles.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// 'double' type in the schema for @settings.
-	GetDouble(key string) float64
-	// GetEnum: gets the value that is stored in @settings for @key and converts
-	// it to the enum value that it represents.
+	Double(key string) float64
+	// Enum: gets the value that is stored in @settings for @key and converts it
+	// to the enum value that it represents.
 	//
 	// In order to use this function the type of the value must be a string and
 	// it must be marked in the schema file as an enumerated type.
@@ -16309,9 +16299,9 @@ type Settings interface {
 	//
 	// If the value stored in the configuration database is not a valid value
 	// for the enumerated type then this function will return the default value.
-	GetEnum(key string) int
-	// GetFlags: gets the value that is stored in @settings for @key and
-	// converts it to the flags value that it represents.
+	Enum(key string) int
+	// Flags: gets the value that is stored in @settings for @key and converts
+	// it to the flags value that it represents.
 	//
 	// In order to use this function the type of the value must be an array of
 	// strings and it must be marked in the schema file as a flags type.
@@ -16321,25 +16311,25 @@ type Settings interface {
 	//
 	// If the value stored in the configuration database is not a valid value
 	// for the flags type then this function will return the default value.
-	GetFlags(key string) uint
-	// GetHasUnapplied: returns whether the #GSettings object has any unapplied
+	Flags(key string) uint
+	// HasUnapplied: returns whether the #GSettings object has any unapplied
 	// changes. This can only be the case if it is in 'delayed-apply' mode.
-	GetHasUnapplied() bool
-	// GetInt: gets the value that is stored at @key in @settings.
+	HasUnapplied() bool
+	// Int: gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for 32-bit integers.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// int32 type in the schema for @settings.
-	GetInt(key string) int
-	// GetInt64: gets the value that is stored at @key in @settings.
+	Int(key string) int
+	// Int64: gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for 64-bit integers.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// int64 type in the schema for @settings.
-	GetInt64(key string) int64
-	// GetMapped: gets the value that is stored at @key in @settings, subject to
+	Int64(key string) int64
+	// Mapped: gets the value that is stored at @key in @settings, subject to
 	// application-level validation/mapping.
 	//
 	// You should use this function when the application needs to perform some
@@ -16366,36 +16356,36 @@ type Settings interface {
 	// invocation of @mapping. The final value of that #gpointer is what is
 	// returned by this function. nil is valid; it is returned just as any other
 	// value would be.
-	GetMapped(key string, mapping SettingsGetMapping) interface{}
-	// GetRange: queries the range of a key.
-	GetRange(key string) *glib.Variant
-	// GetString: gets the value that is stored at @key in @settings.
+	Mapped(key string, mapping SettingsGetMapping) interface{}
+	// Range: queries the range of a key.
+	Range(key string) *glib.Variant
+	// String: gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for strings.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// string type in the schema for @settings.
-	GetString(key string) string
-	// GetStrv: a convenience variant of g_settings_get() for string arrays.
+	String(key string) string
+	// Strv: a convenience variant of g_settings_get() for string arrays.
 	//
 	// It is a programmer error to give a @key that isn't specified as having an
 	// array of strings type in the schema for @settings.
-	GetStrv(key string) []string
-	// GetUint: gets the value that is stored at @key in @settings.
+	Strv(key string) []string
+	// Uint: gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for 32-bit unsigned integers.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// uint32 type in the schema for @settings.
-	GetUint(key string) uint
-	// GetUint64: gets the value that is stored at @key in @settings.
+	Uint(key string) uint
+	// Uint64: gets the value that is stored at @key in @settings.
 	//
 	// A convenience variant of g_settings_get() for 64-bit unsigned integers.
 	//
 	// It is a programmer error to give a @key that isn't specified as having a
 	// uint64 type in the schema for @settings.
-	GetUint64(key string) uint64
-	// GetUserValue: checks the "user value" of a key, if there is one.
+	Uint64(key string) uint64
+	// UserValue: checks the "user value" of a key, if there is one.
 	//
 	// The user value of a key is the last value that was set by the user.
 	//
@@ -16412,12 +16402,12 @@ type Settings interface {
 	//
 	// It is a programmer error to give a @key that isn't contained in the
 	// schema for @settings.
-	GetUserValue(key string) *glib.Variant
-	// GetValue: gets the value that is stored in @settings for @key.
+	UserValue(key string) *glib.Variant
+	// Value: gets the value that is stored in @settings for @key.
 	//
 	// It is a programmer error to give a @key that isn't contained in the
 	// schema for @settings.
-	GetValue(key string) *glib.Variant
+	Value(key string) *glib.Variant
 	// IsWritable: finds out if a key can be written or not
 	IsWritable(name string) bool
 	// ListChildren: gets the list of children on @settings.
@@ -16582,39 +16572,39 @@ func (s settings) CreateAction(key string) Action
 
 func (s settings) Delay()
 
-func (s settings) GetBoolean(key string) bool
+func (s settings) Boolean(key string) bool
 
-func (s settings) GetChild(name string) Settings
+func (s settings) Child(name string) Settings
 
-func (s settings) GetDefaultValue(key string) *glib.Variant
+func (s settings) DefaultValue(key string) *glib.Variant
 
-func (s settings) GetDouble(key string) float64
+func (s settings) Double(key string) float64
 
-func (s settings) GetEnum(key string) int
+func (s settings) Enum(key string) int
 
-func (s settings) GetFlags(key string) uint
+func (s settings) Flags(key string) uint
 
-func (s settings) GetHasUnapplied() bool
+func (s settings) HasUnapplied() bool
 
-func (s settings) GetInt(key string) int
+func (s settings) Int(key string) int
 
-func (s settings) GetInt64(key string) int64
+func (s settings) Int64(key string) int64
 
-func (s settings) GetMapped(key string, mapping SettingsGetMapping) interface{}
+func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{}
 
-func (s settings) GetRange(key string) *glib.Variant
+func (s settings) Range(key string) *glib.Variant
 
-func (s settings) GetString(key string) string
+func (s settings) String(key string) string
 
-func (s settings) GetStrv(key string) []string
+func (s settings) Strv(key string) []string
 
-func (s settings) GetUint(key string) uint
+func (s settings) Uint(key string) uint
 
-func (s settings) GetUint64(key string) uint64
+func (s settings) Uint64(key string) uint64
 
-func (s settings) GetUserValue(key string) *glib.Variant
+func (s settings) UserValue(key string) *glib.Variant
 
-func (s settings) GetValue(key string) *glib.Variant
+func (s settings) Value(key string) *glib.Variant
 
 func (s settings) IsWritable(name string) bool
 
@@ -17067,16 +17057,16 @@ type SimpleAsyncResult interface {
 	// Calling this function takes a reference to @simple for as long as is
 	// needed to complete the call.
 	CompleteInIdle()
-	// GetOpResGboolean: gets the operation result boolean from within the
+	// OpResGboolean: gets the operation result boolean from within the
 	// asynchronous result.
-	GetOpResGboolean() bool
-	// GetOpResGpointer: gets a pointer result as returned by the asynchronous
+	OpResGboolean() bool
+	// OpResGpointer: gets a pointer result as returned by the asynchronous
 	// function.
-	GetOpResGpointer() interface{}
-	// GetOpResGssize: gets a gssize from the asynchronous result.
-	GetOpResGssize() int
-	// GetSourceTag: gets the source tag for the AsyncResult.
-	GetSourceTag() interface{}
+	OpResGpointer() interface{}
+	// OpResGssize: gets a gssize from the asynchronous result.
+	OpResGssize() int
+	// SourceTag: gets the source tag for the AsyncResult.
+	SourceTag() interface{}
 	// PropagateError: propagates an error from within the simple asynchronous
 	// result to a given destination.
 	//
@@ -17155,13 +17145,13 @@ func (s simpleAsyncResult) Complete()
 
 func (s simpleAsyncResult) CompleteInIdle()
 
-func (s simpleAsyncResult) GetOpResGboolean() bool
+func (s simpleAsyncResult) OpResGboolean() bool
 
-func (s simpleAsyncResult) GetOpResGpointer() interface{}
+func (s simpleAsyncResult) OpResGpointer() interface{}
 
-func (s simpleAsyncResult) GetOpResGssize() int
+func (s simpleAsyncResult) OpResGssize() int
 
-func (s simpleAsyncResult) GetSourceTag() interface{}
+func (s simpleAsyncResult) SourceTag() interface{}
 
 func (s simpleAsyncResult) PropagateError() bool
 
@@ -17488,7 +17478,7 @@ type Socket interface {
 	// had a timeout, and so the next #GSocket I/O method you call will then
 	// fail with a G_IO_ERROR_TIMED_OUT.
 	CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source
-	// GetAvailableBytes: get the amount of data pending in the OS input buffer,
+	// AvailableBytes: get the amount of data pending in the OS input buffer,
 	// without blocking.
 	//
 	// If @socket is a UDP or SCTP socket, this will return the size of just the
@@ -17499,16 +17489,16 @@ type Socket interface {
 	// incoming packet, it is better to just do a g_socket_receive() with a
 	// buffer of that size, rather than calling g_socket_get_available_bytes()
 	// first and then doing a receive of exactly the right size.
-	GetAvailableBytes() int
-	// GetBlocking: gets the blocking mode of the socket. For details on
-	// blocking I/O, see g_socket_set_blocking().
-	GetBlocking() bool
-	// GetBroadcast: gets the broadcast setting on @socket; if true, it is
-	// possible to send packets to broadcast addresses.
-	GetBroadcast() bool
-	// GetCredentials: returns the credentials of the foreign process connected
-	// to this socket, if any (e.g. it is only supported for
-	// G_SOCKET_FAMILY_UNIX sockets).
+	AvailableBytes() int
+	// Blocking: gets the blocking mode of the socket. For details on blocking
+	// I/O, see g_socket_set_blocking().
+	Blocking() bool
+	// Broadcast: gets the broadcast setting on @socket; if true, it is possible
+	// to send packets to broadcast addresses.
+	Broadcast() bool
+	// Credentials: returns the credentials of the foreign process connected to
+	// this socket, if any (e.g. it is only supported for G_SOCKET_FAMILY_UNIX
+	// sockets).
 	//
 	// If this operation isn't supported on the OS, the method fails with the
 	// G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented by reading
@@ -17523,32 +17513,32 @@ type Socket interface {
 	// Other ways to obtain credentials from a foreign peer includes the
 	// CredentialsMessage type and g_unix_connection_send_credentials() /
 	// g_unix_connection_receive_credentials() functions.
-	GetCredentials() Credentials
-	// GetFamily: gets the socket family of the socket.
-	GetFamily() SocketFamily
-	// GetFd: returns the underlying OS socket object. On unix this is a socket
+	Credentials() Credentials
+	// Family: gets the socket family of the socket.
+	Family() SocketFamily
+	// Fd: returns the underlying OS socket object. On unix this is a socket
 	// file descriptor, and on Windows this is a Winsock2 SOCKET handle. This
 	// may be useful for doing platform specific or otherwise unusual operations
 	// on the socket.
-	GetFd() int
-	// GetKeepalive: gets the keepalive mode of the socket. For details on this,
+	Fd() int
+	// Keepalive: gets the keepalive mode of the socket. For details on this,
 	// see g_socket_set_keepalive().
-	GetKeepalive() bool
-	// GetListenBacklog: gets the listen backlog setting of the socket. For
-	// details on this, see g_socket_set_listen_backlog().
-	GetListenBacklog() int
-	// GetLocalAddress: try to get the local address of a bound socket. This is
+	Keepalive() bool
+	// ListenBacklog: gets the listen backlog setting of the socket. For details
+	// on this, see g_socket_set_listen_backlog().
+	ListenBacklog() int
+	// LocalAddress: try to get the local address of a bound socket. This is
 	// only useful if the socket has been bound to a local address, either
 	// explicitly or implicitly when connecting.
-	GetLocalAddress() SocketAddress
-	// GetMulticastLoopback: gets the multicast loopback setting on @socket; if
+	LocalAddress() SocketAddress
+	// MulticastLoopback: gets the multicast loopback setting on @socket; if
 	// true (the default), outgoing multicast packets will be looped back to
 	// multicast listeners on the same host.
-	GetMulticastLoopback() bool
-	// GetMulticastTtl: gets the multicast time-to-live setting on @socket; see
+	MulticastLoopback() bool
+	// MulticastTtl: gets the multicast time-to-live setting on @socket; see
 	// g_socket_set_multicast_ttl() for more details.
-	GetMulticastTtl() uint
-	// GetOption: gets the value of an integer-valued option on @socket, as with
+	MulticastTtl() uint
+	// Option: gets the value of an integer-valued option on @socket, as with
 	// getsockopt(). (If you need to fetch a non-integer-valued option, you will
 	// need to call getsockopt() directly.)
 	//
@@ -17560,22 +17550,21 @@ type Socket interface {
 	// Note that even for socket options that are a single byte in size, @value
 	// is still a pointer to a #gint variable, not a #guchar;
 	// g_socket_get_option() will handle the conversion internally.
-	GetOption(level int, optname int) (int, bool)
-	// GetProtocol: gets the socket protocol id the socket was created with. In
+	Option(level int, optname int) (int, bool)
+	// Protocol: gets the socket protocol id the socket was created with. In
 	// case the protocol is unknown, -1 is returned.
-	GetProtocol() SocketProtocol
-	// GetRemoteAddress: try to get the remote address of a connected socket.
-	// This is only useful for connection oriented sockets that have been
-	// connected.
-	GetRemoteAddress() SocketAddress
-	// GetSocketType: gets the socket type of the socket.
-	GetSocketType() SocketType
-	// GetTimeout: gets the timeout setting of the socket. For details on this,
-	// see g_socket_set_timeout().
-	GetTimeout() uint
-	// GetTtl: gets the unicast time-to-live setting on @socket; see
+	Protocol() SocketProtocol
+	// RemoteAddress: try to get the remote address of a connected socket. This
+	// is only useful for connection oriented sockets that have been connected.
+	RemoteAddress() SocketAddress
+	// SocketType: gets the socket type of the socket.
+	SocketType() SocketType
+	// Timeout: gets the timeout setting of the socket. For details on this, see
+	// g_socket_set_timeout().
+	Timeout() uint
+	// Ttl: gets the unicast time-to-live setting on @socket; see
 	// g_socket_set_ttl() for more details.
-	GetTtl() uint
+	Ttl() uint
 	// IsClosed: checks whether a socket is closed.
 	IsClosed() bool
 	// IsConnected: check whether the socket is connected. This is only useful
@@ -18030,39 +18019,39 @@ func (s socket) ConnectionFactoryCreateConnection() SocketConnection
 
 func (s socket) CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source
 
-func (s socket) GetAvailableBytes() int
+func (s socket) AvailableBytes() int
 
-func (s socket) GetBlocking() bool
+func (s socket) Blocking() bool
 
-func (s socket) GetBroadcast() bool
+func (s socket) Broadcast() bool
 
-func (s socket) GetCredentials() Credentials
+func (s socket) Credentials() Credentials
 
-func (s socket) GetFamily() SocketFamily
+func (s socket) Family() SocketFamily
 
-func (s socket) GetFd() int
+func (s socket) Fd() int
 
-func (s socket) GetKeepalive() bool
+func (s socket) Keepalive() bool
 
-func (s socket) GetListenBacklog() int
+func (s socket) ListenBacklog() int
 
-func (s socket) GetLocalAddress() SocketAddress
+func (s socket) LocalAddress() SocketAddress
 
-func (s socket) GetMulticastLoopback() bool
+func (s socket) MulticastLoopback() bool
 
-func (s socket) GetMulticastTtl() uint
+func (s socket) MulticastTtl() uint
 
-func (s socket) GetOption(level int, optname int) (int, bool)
+func (s socket) Option(level int, optname int) (int, bool)
 
-func (s socket) GetProtocol() SocketProtocol
+func (s socket) Protocol() SocketProtocol
 
-func (s socket) GetRemoteAddress() SocketAddress
+func (s socket) RemoteAddress() SocketAddress
 
-func (s socket) GetSocketType() SocketType
+func (s socket) SocketType() SocketType
 
-func (s socket) GetTimeout() uint
+func (s socket) Timeout() uint
 
-func (s socket) GetTtl() uint
+func (s socket) Ttl() uint
 
 func (s socket) IsClosed() bool
 
@@ -18128,11 +18117,11 @@ func (s socket) SpeaksIpv4() bool
 type SocketAddress interface {
 	gextras.Objector
 
-	// GetFamily: gets the socket family type of @address.
-	GetFamily() SocketFamily
-	// GetNativeSize: gets the size of @address's native struct sockaddr. You
-	// can use this to allocate memory to pass to g_socket_address_to_native().
-	GetNativeSize() int
+	// Family: gets the socket family type of @address.
+	Family() SocketFamily
+	// NativeSize: gets the size of @address's native struct sockaddr. You can
+	// use this to allocate memory to pass to g_socket_address_to_native().
+	NativeSize() int
 	// ToNative: converts a Address to a native struct sockaddr, which can be
 	// passed to low-level functions like connect() or bind().
 	//
@@ -18158,9 +18147,9 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 
 func NewSocketAddress(native interface{}, len uint) SocketAddress
 
-func (s socketAddress) GetFamily() SocketFamily
+func (s socketAddress) Family() SocketFamily
 
-func (s socketAddress) GetNativeSize() int
+func (s socketAddress) NativeSize() int
 
 func (s socketAddress) ToNative(dest interface{}, destlen uint) bool
 
@@ -18379,39 +18368,39 @@ type SocketClient interface {
 	// ConnectToURIFinish: finishes an async connect operation. See
 	// g_socket_client_connect_to_uri_async()
 	ConnectToURIFinish(result AsyncResult) SocketConnection
-	// GetEnableProxy: gets the proxy enable state; see
+	// EnableProxy: gets the proxy enable state; see
 	// g_socket_client_set_enable_proxy()
-	GetEnableProxy() bool
-	// GetFamily: gets the socket family of the socket client.
+	EnableProxy() bool
+	// Family: gets the socket family of the socket client.
 	//
 	// See g_socket_client_set_family() for details.
-	GetFamily() SocketFamily
-	// GetLocalAddress: gets the local address of the socket client.
+	Family() SocketFamily
+	// LocalAddress: gets the local address of the socket client.
 	//
 	// See g_socket_client_set_local_address() for details.
-	GetLocalAddress() SocketAddress
-	// GetProtocol: gets the protocol name type of the socket client.
+	LocalAddress() SocketAddress
+	// Protocol: gets the protocol name type of the socket client.
 	//
 	// See g_socket_client_set_protocol() for details.
-	GetProtocol() SocketProtocol
-	// GetProxyResolver: gets the Resolver being used by @client. Normally, this
+	Protocol() SocketProtocol
+	// ProxyResolver: gets the Resolver being used by @client. Normally, this
 	// will be the resolver returned by g_proxy_resolver_get_default(), but you
 	// can override it with g_socket_client_set_proxy_resolver().
-	GetProxyResolver() ProxyResolver
-	// GetSocketType: gets the socket type of the socket client.
+	ProxyResolver() ProxyResolver
+	// SocketType: gets the socket type of the socket client.
 	//
 	// See g_socket_client_set_socket_type() for details.
-	GetSocketType() SocketType
-	// GetTimeout: gets the I/O timeout time for sockets created by @client.
+	SocketType() SocketType
+	// Timeout: gets the I/O timeout time for sockets created by @client.
 	//
 	// See g_socket_client_set_timeout() for details.
-	GetTimeout() uint
-	// GetTls: gets whether @client creates TLS connections. See
+	Timeout() uint
+	// Tls: gets whether @client creates TLS connections. See
 	// g_socket_client_set_tls() for details.
-	GetTls() bool
-	// GetTlsValidationFlags: gets the TLS validation flags used creating TLS
+	Tls() bool
+	// TlsValidationFlags: gets the TLS validation flags used creating TLS
 	// connections via @client.
-	GetTlsValidationFlags() TlsCertificateFlags
+	TlsValidationFlags() TlsCertificateFlags
 	// SetEnableProxy: sets whether or not @client attempts to make connections
 	// via a proxy server. When enabled (the default), Client will use a
 	// Resolver to determine if a proxy protocol such as SOCKS is needed, and
@@ -18526,23 +18515,23 @@ func (s socketClient) ConnectToURIAsync(uri string, defaultPort uint16, cancella
 
 func (s socketClient) ConnectToURIFinish(result AsyncResult) SocketConnection
 
-func (s socketClient) GetEnableProxy() bool
+func (s socketClient) EnableProxy() bool
 
-func (s socketClient) GetFamily() SocketFamily
+func (s socketClient) Family() SocketFamily
 
-func (s socketClient) GetLocalAddress() SocketAddress
+func (s socketClient) LocalAddress() SocketAddress
 
-func (s socketClient) GetProtocol() SocketProtocol
+func (s socketClient) Protocol() SocketProtocol
 
-func (s socketClient) GetProxyResolver() ProxyResolver
+func (s socketClient) ProxyResolver() ProxyResolver
 
-func (s socketClient) GetSocketType() SocketType
+func (s socketClient) SocketType() SocketType
 
-func (s socketClient) GetTimeout() uint
+func (s socketClient) Timeout() uint
 
-func (s socketClient) GetTls() bool
+func (s socketClient) Tls() bool
 
-func (s socketClient) GetTlsValidationFlags() TlsCertificateFlags
+func (s socketClient) TlsValidationFlags() TlsCertificateFlags
 
 func (s socketClient) SetEnableProxy(enable bool)
 
@@ -18593,20 +18582,20 @@ type SocketConnection interface {
 	// ConnectFinish: gets the result of a g_socket_connection_connect_async()
 	// call.
 	ConnectFinish(result AsyncResult) bool
-	// GetLocalAddress: try to get the local address of a socket connection.
-	GetLocalAddress() SocketAddress
-	// GetRemoteAddress: try to get the remote address of a socket connection.
+	// LocalAddress: try to get the local address of a socket connection.
+	LocalAddress() SocketAddress
+	// RemoteAddress: try to get the remote address of a socket connection.
 	//
 	// Since GLib 2.40, when used with g_socket_client_connect() or
 	// g_socket_client_connect_async(), during emission of
 	// G_SOCKET_CLIENT_CONNECTING, this function will return the remote address
 	// that will be used for the connection. This allows applications to print
 	// e.g. "Connecting to example.com (10.42.77.3)...".
-	GetRemoteAddress() SocketAddress
-	// GetSocket: gets the underlying #GSocket object of the connection. This
-	// can be useful if you want to do something unusual on it not supported by
-	// the Connection APIs.
-	GetSocket() Socket
+	RemoteAddress() SocketAddress
+	// Socket: gets the underlying #GSocket object of the connection. This can
+	// be useful if you want to do something unusual on it not supported by the
+	// Connection APIs.
+	Socket() Socket
 	// IsConnected: checks if @connection is connected. This is equivalent to
 	// calling g_socket_is_connected() on @connection's underlying #GSocket.
 	IsConnected() bool
@@ -18632,11 +18621,11 @@ func (s socketConnection) ConnectAsync(address SocketAddress, cancellable Cancel
 
 func (s socketConnection) ConnectFinish(result AsyncResult) bool
 
-func (s socketConnection) GetLocalAddress() SocketAddress
+func (s socketConnection) LocalAddress() SocketAddress
 
-func (s socketConnection) GetRemoteAddress() SocketAddress
+func (s socketConnection) RemoteAddress() SocketAddress
 
-func (s socketConnection) GetSocket() Socket
+func (s socketConnection) Socket() Socket
 
 func (s socketConnection) IsConnected() bool
 
@@ -18661,15 +18650,15 @@ func (s socketConnection) IsConnected() bool
 type SocketControlMessage interface {
 	gextras.Objector
 
-	// GetLevel: returns the "level" (i.e. the originating protocol) of the
-	// control message. This is often SOL_SOCKET.
-	GetLevel() int
-	// GetMsgType: returns the protocol specific type of the control message.
-	// For instance, for UNIX fd passing this would be SCM_RIGHTS.
-	GetMsgType() int
-	// GetSize: returns the space required for the control message, not
-	// including headers or alignment.
-	GetSize() uint
+	// Level: returns the "level" (i.e. the originating protocol) of the control
+	// message. This is often SOL_SOCKET.
+	Level() int
+	// MsgType: returns the protocol specific type of the control message. For
+	// instance, for UNIX fd passing this would be SCM_RIGHTS.
+	MsgType() int
+	// Size: returns the space required for the control message, not including
+	// headers or alignment.
+	Size() uint
 	// Serialize: converts the data in the message to bytes placed in the
 	// message.
 	//
@@ -18692,11 +18681,11 @@ func marshalSocketControlMessage(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (s socketControlMessage) GetLevel() int
+func (s socketControlMessage) Level() int
 
-func (s socketControlMessage) GetMsgType() int
+func (s socketControlMessage) MsgType() int
 
-func (s socketControlMessage) GetSize() uint
+func (s socketControlMessage) Size() uint
 
 func (s socketControlMessage) Serialize(data interface{})
 
@@ -19069,36 +19058,36 @@ type Subprocess interface {
 	//
 	// On Unix, this function sends SIGKILL.
 	ForceExit()
-	// GetExitStatus: check the exit status of the subprocess, given that it
-	// exited normally. This is the value passed to the exit() system call or
-	// the return value from main.
+	// ExitStatus: check the exit status of the subprocess, given that it exited
+	// normally. This is the value passed to the exit() system call or the
+	// return value from main.
 	//
 	// This is equivalent to the system WEXITSTATUS macro.
 	//
 	// It is an error to call this function before g_subprocess_wait() and
 	// unless g_subprocess_get_if_exited() returned true.
-	GetExitStatus() int
-	// GetIdentifier: on UNIX, returns the process ID as a decimal string. On
+	ExitStatus() int
+	// Identifier: on UNIX, returns the process ID as a decimal string. On
 	// Windows, returns the result of GetProcessId() also as a string. If the
 	// subprocess has terminated, this will return nil.
-	GetIdentifier() string
-	// GetIfExited: check if the given subprocess exited normally (ie: by way of
+	Identifier() string
+	// IfExited: check if the given subprocess exited normally (ie: by way of
 	// exit() or return from main()).
 	//
 	// This is equivalent to the system WIFEXITED macro.
 	//
 	// It is an error to call this function before g_subprocess_wait() has
 	// returned.
-	GetIfExited() bool
-	// GetIfSignaled: check if the given subprocess terminated in response to a
+	IfExited() bool
+	// IfSignaled: check if the given subprocess terminated in response to a
 	// signal.
 	//
 	// This is equivalent to the system WIFSIGNALED macro.
 	//
 	// It is an error to call this function before g_subprocess_wait() has
 	// returned.
-	GetIfSignaled() bool
-	// GetStatus: gets the raw status code of the process, as from waitpid().
+	IfSignaled() bool
+	// Status: gets the raw status code of the process, as from waitpid().
 	//
 	// This value has no particular meaning, but it can be used with the macros
 	// defined by the system headers such as WIFEXITED. It can also be used with
@@ -19109,37 +19098,37 @@ type Subprocess interface {
 	//
 	// It is an error to call this function before g_subprocess_wait() has
 	// returned.
-	GetStatus() int
-	// GetStderrPipe: gets the Stream from which to read the stderr output of
+	Status() int
+	// StderrPipe: gets the Stream from which to read the stderr output of
 	// @subprocess.
 	//
 	// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE.
-	GetStderrPipe() InputStream
-	// GetStdinPipe: gets the Stream that you can write to in order to give data
-	// to the stdin of @subprocess.
+	StderrPipe() InputStream
+	// StdinPipe: gets the Stream that you can write to in order to give data to
+	// the stdin of @subprocess.
 	//
 	// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE.
-	GetStdinPipe() OutputStream
-	// GetStdoutPipe: gets the Stream from which to read the stdout output of
+	StdinPipe() OutputStream
+	// StdoutPipe: gets the Stream from which to read the stdout output of
 	// @subprocess.
 	//
 	// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE.
-	GetStdoutPipe() InputStream
-	// GetSuccessful: checks if the process was "successful". A process is
+	StdoutPipe() InputStream
+	// Successful: checks if the process was "successful". A process is
 	// considered successful if it exited cleanly with an exit status of 0,
 	// either by way of the exit() system call or return from main().
 	//
 	// It is an error to call this function before g_subprocess_wait() has
 	// returned.
-	GetSuccessful() bool
-	// GetTermSig: get the signal number that caused the subprocess to
-	// terminate, given that it terminated due to a signal.
+	Successful() bool
+	// TermSig: get the signal number that caused the subprocess to terminate,
+	// given that it terminated due to a signal.
 	//
 	// This is equivalent to the system WTERMSIG macro.
 	//
 	// It is an error to call this function before g_subprocess_wait() and
 	// unless g_subprocess_get_if_signaled() returned true.
-	GetTermSig() int
+	TermSig() int
 	// SendSignal: sends the UNIX signal @signal_num to the subprocess, if it is
 	// still running.
 	//
@@ -19208,25 +19197,25 @@ func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (string, string, b
 
 func (s subprocess) ForceExit()
 
-func (s subprocess) GetExitStatus() int
+func (s subprocess) ExitStatus() int
 
-func (s subprocess) GetIdentifier() string
+func (s subprocess) Identifier() string
 
-func (s subprocess) GetIfExited() bool
+func (s subprocess) IfExited() bool
 
-func (s subprocess) GetIfSignaled() bool
+func (s subprocess) IfSignaled() bool
 
-func (s subprocess) GetStatus() int
+func (s subprocess) Status() int
 
-func (s subprocess) GetStderrPipe() InputStream
+func (s subprocess) StderrPipe() InputStream
 
-func (s subprocess) GetStdinPipe() OutputStream
+func (s subprocess) StdinPipe() OutputStream
 
-func (s subprocess) GetStdoutPipe() InputStream
+func (s subprocess) StdoutPipe() InputStream
 
-func (s subprocess) GetSuccessful() bool
+func (s subprocess) Successful() bool
 
-func (s subprocess) GetTermSig() int
+func (s subprocess) TermSig() int
 
 func (s subprocess) SendSignal(signalNum int)
 
@@ -19252,12 +19241,12 @@ func (s subprocess) WaitFinish(result AsyncResult) bool
 type SubprocessLauncher interface {
 	gextras.Objector
 
-	// Getenv: returns the value of the environment variable @variable in the
+	// env: returns the value of the environment variable @variable in the
 	// environment of processes launched from this launcher.
 	//
 	// On UNIX, the returned string can be an arbitrary byte string. On Windows,
 	// it will be UTF-8.
-	Getenv(variable string) string
+	env(variable string) string
 	// SetChildSetup: sets up a child setup function.
 	//
 	// The child setup function will be called after fork() but before exec() on
@@ -19452,7 +19441,7 @@ func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
 
 func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher
 
-func (s subprocessLauncher) Getenv(variable string) string
+func (s subprocessLauncher) env(variable string) string
 
 func (s subprocessLauncher) SetChildSetup(childSetup glib.SpawnChildSetupFunc)
 
@@ -19910,37 +19899,37 @@ type Task interface {
 	//
 	// This takes a reference on @task until @source is destroyed.
 	AttachSource(source *glib.Source, callback glib.SourceFunc)
-	// GetCancellable: gets @task's #GCancellable
-	GetCancellable() Cancellable
-	// GetCheckCancellable: gets @task's check-cancellable flag. See
+	// Cancellable: gets @task's #GCancellable
+	Cancellable() Cancellable
+	// CheckCancellable: gets @task's check-cancellable flag. See
 	// g_task_set_check_cancellable() for more details.
-	GetCheckCancellable() bool
-	// GetCompleted: gets the value of #GTask:completed. This changes from false
-	// to true after the task’s callback is invoked, and will return false if
+	CheckCancellable() bool
+	// Completed: gets the value of #GTask:completed. This changes from false to
+	// true after the task’s callback is invoked, and will return false if
 	// called from inside the callback.
-	GetCompleted() bool
-	// GetContext: gets the Context that @task will return its result in (that
-	// is, the context that was the [thread-default main
+	Completed() bool
+	// Context: gets the Context that @task will return its result in (that is,
+	// the context that was the [thread-default main
 	// context][g-main-context-push-thread-default] at the point when @task was
 	// created).
 	//
 	// This will always return a non-nil value, even if the task's context is
 	// the default Context.
-	GetContext() *glib.MainContext
-	// GetName: gets @task’s name. See g_task_set_name().
-	GetName() string
-	// GetPriority: gets @task's priority
-	GetPriority() int
-	// GetReturnOnCancel: gets @task's return-on-cancel flag. See
+	Context() *glib.MainContext
+	// Name: gets @task’s name. See g_task_set_name().
+	Name() string
+	// Priority: gets @task's priority
+	Priority() int
+	// ReturnOnCancel: gets @task's return-on-cancel flag. See
 	// g_task_set_return_on_cancel() for more details.
-	GetReturnOnCancel() bool
-	// GetSourceObject: gets the source object from @task. Like
+	ReturnOnCancel() bool
+	// SourceObject: gets the source object from @task. Like
 	// g_async_result_get_source_object(), but does not ref the object.
-	GetSourceObject() interface{}
-	// GetSourceTag: gets @task's source tag. See g_task_set_source_tag().
-	GetSourceTag() interface{}
-	// GetTaskData: gets @task's `task_data`.
-	GetTaskData() interface{}
+	SourceObject() interface{}
+	// SourceTag: gets @task's source tag. See g_task_set_source_tag().
+	SourceTag() interface{}
+	// TaskData: gets @task's `task_data`.
+	TaskData() interface{}
 	// HadError: tests if @task resulted in an error.
 	HadError() bool
 	// PropagateBoolean: gets the result of @task as a #gboolean.
@@ -20144,25 +20133,25 @@ func NewTask(sourceObject interface{}, cancellable Cancellable, callback AsyncRe
 
 func (t task) AttachSource(source *glib.Source, callback glib.SourceFunc)
 
-func (t task) GetCancellable() Cancellable
+func (t task) Cancellable() Cancellable
 
-func (t task) GetCheckCancellable() bool
+func (t task) CheckCancellable() bool
 
-func (t task) GetCompleted() bool
+func (t task) Completed() bool
 
-func (t task) GetContext() *glib.MainContext
+func (t task) Context() *glib.MainContext
 
-func (t task) GetName() string
+func (t task) Name() string
 
-func (t task) GetPriority() int
+func (t task) Priority() int
 
-func (t task) GetReturnOnCancel() bool
+func (t task) ReturnOnCancel() bool
 
-func (t task) GetSourceObject() interface{}
+func (t task) SourceObject() interface{}
 
-func (t task) GetSourceTag() interface{}
+func (t task) SourceTag() interface{}
 
-func (t task) GetTaskData() interface{}
+func (t task) TaskData() interface{}
 
 func (t task) HadError() bool
 
@@ -20207,9 +20196,9 @@ func (t task) SetTaskData(taskData interface{}, taskDataDestroy unsafe.Pointer)
 type TcpConnection interface {
 	SocketConnection
 
-	// GetGracefulDisconnect: checks if graceful disconnects are used. See
+	// GracefulDisconnect: checks if graceful disconnects are used. See
 	// g_tcp_connection_set_graceful_disconnect().
-	GetGracefulDisconnect() bool
+	GracefulDisconnect() bool
 	// SetGracefulDisconnect: this enables graceful disconnects on close. A
 	// graceful disconnect means that we signal the receiving end that the
 	// connection is terminated and wait for it to close the connection before
@@ -20237,7 +20226,7 @@ func marshalTcpConnection(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (t tcpConnection) GetGracefulDisconnect() bool
+func (t tcpConnection) GracefulDisconnect() bool
 
 func (t tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool)
 
@@ -20248,8 +20237,8 @@ func (t tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool)
 type TcpWrapperConnection interface {
 	TcpConnection
 
-	// GetBaseIOStream: gets @conn's base OStream
-	GetBaseIOStream() IOStream
+	// BaseIOStream: gets @conn's base OStream
+	BaseIOStream() IOStream
 }
 
 type tcpWrapperConnection struct {
@@ -20268,7 +20257,7 @@ func marshalTcpWrapperConnection(p uintptr) (interface{}, error) {
 
 func NewTcpWrapperConnection(baseIOStream IOStream, socket Socket) TcpWrapperConnection
 
-func (t tcpWrapperConnection) GetBaseIOStream() IOStream
+func (t tcpWrapperConnection) BaseIOStream() IOStream
 
 // TestDBus: a helper class for testing code which uses D-Bus without touching
 // the user's session bus.
@@ -20344,12 +20333,12 @@ type TestDBus interface {
 	// g_bus_get_sync() to be destroyed. This is done to ensure that the next
 	// unit test won't get a leaked singleton from this test.
 	Down()
-	// GetBusAddress: get the address on which dbus-daemon is running. If
+	// BusAddress: get the address on which dbus-daemon is running. If
 	// g_test_dbus_up() has not been called yet, nil is returned. This can be
 	// used with g_dbus_connection_new_for_address().
-	GetBusAddress() string
-	// GetFlags: get the flags of the DBus object.
-	GetFlags() TestDBusFlags
+	BusAddress() string
+	// Flags: get the flags of the DBus object.
+	Flags() TestDBusFlags
 	// Stop: stop the session bus started by g_test_dbus_up().
 	//
 	// Unlike g_test_dbus_down(), this won't verify the BusConnection singleton
@@ -20389,9 +20378,9 @@ func (t testDBus) AddServiceDir(path string)
 
 func (t testDBus) Down()
 
-func (t testDBus) GetBusAddress() string
+func (t testDBus) BusAddress() string
 
-func (t testDBus) GetFlags() TestDBusFlags
+func (t testDBus) Flags() TestDBusFlags
 
 func (t testDBus) Stop()
 
@@ -20411,8 +20400,8 @@ type ThemedIcon interface {
 	// Note that doing so invalidates the hash computed by prior calls to
 	// g_icon_hash().
 	AppendName(iconname string)
-	// GetNames: gets the names of icons from within @icon.
-	GetNames() []string
+	// Names: gets the names of icons from within @icon.
+	Names() []string
 	// PrependName: prepend a name to the list of icons from within @icon.
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
@@ -20442,7 +20431,7 @@ func NewThemedIcon(iconname string) ThemedIcon
 
 func (t themedIcon) AppendName(iconname string)
 
-func (t themedIcon) GetNames() []string
+func (t themedIcon) Names() []string
 
 func (t themedIcon) PrependName(iconname string)
 
@@ -20486,8 +20475,8 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService
 type TlsCertificate interface {
 	gextras.Objector
 
-	// GetIssuer: gets the Certificate representing @cert's issuer, if known
-	GetIssuer() TlsCertificate
+	// Issuer: gets the Certificate representing @cert's issuer, if known
+	Issuer() TlsCertificate
 	// IsSame: check if two Certificate objects represent the same certificate.
 	// The raw DER byte data of the two certificates are checked for equality.
 	// This has the effect that two certificates may compare equal even if their
@@ -20534,7 +20523,7 @@ func NewTlsCertificate(certFile string, keyFile string) TlsCertificate
 
 func NewTlsCertificate(data string, length int) TlsCertificate
 
-func (t tlsCertificate) GetIssuer() TlsCertificate
+func (t tlsCertificate) Issuer() TlsCertificate
 
 func (t tlsCertificate) IsSame(certTwo TlsCertificate) bool
 
@@ -20552,11 +20541,11 @@ type TlsConnection interface {
 	// EmitAcceptCertificate: used by Connection implementations to emit the
 	// Connection::accept-certificate signal.
 	EmitAcceptCertificate(peerCert TlsCertificate, errors TlsCertificateFlags) bool
-	// GetCertificate: gets @conn's certificate, as set by
+	// Certificate: gets @conn's certificate, as set by
 	// g_tls_connection_set_certificate().
-	GetCertificate() TlsCertificate
-	// GetChannelBindingData: query the TLS backend for TLS channel binding data
-	// of @type for @conn.
+	Certificate() TlsCertificate
+	// ChannelBindingData: query the TLS backend for TLS channel binding data of
+	// @type for @conn.
 	//
 	// This call retrieves TLS channel binding data as specified in RFC
 	// [5056](https://tools.ietf.org/html/rfc5056), RFC
@@ -20569,42 +20558,41 @@ type TlsConnection interface {
 	// be available though. That could happen if TLS connection does not support
 	// @type or the binding data is not available yet due to additional
 	// negotiation or input required.
-	GetChannelBindingData(_type TlsChannelBindingType) ([]uint8, bool)
-	// GetDatabase: gets the certificate database that @conn uses to verify peer
+	ChannelBindingData(_type TlsChannelBindingType) ([]uint8, bool)
+	// Database: gets the certificate database that @conn uses to verify peer
 	// certificates. See g_tls_connection_set_database().
-	GetDatabase() TlsDatabase
-	// GetInteraction: get the object that will be used to interact with the
-	// user. It will be used for things like prompting the user for passwords.
-	// If nil is returned, then no user interaction will occur for this
-	// connection.
-	GetInteraction() TlsInteraction
-	// GetNegotiatedProtocol: gets the name of the application-layer protocol
+	Database() TlsDatabase
+	// Interaction: get the object that will be used to interact with the user.
+	// It will be used for things like prompting the user for passwords. If nil
+	// is returned, then no user interaction will occur for this connection.
+	Interaction() TlsInteraction
+	// NegotiatedProtocol: gets the name of the application-layer protocol
 	// negotiated during the handshake.
 	//
 	// If the peer did not use the ALPN extension, or did not advertise a
 	// protocol that matched one of @conn's protocols, or the TLS backend does
 	// not support ALPN, then this will be nil. See
 	// g_tls_connection_set_advertised_protocols().
-	GetNegotiatedProtocol() string
-	// GetPeerCertificate: gets @conn's peer's certificate after the handshake
-	// has completed or failed. (It is not set during the emission of
+	NegotiatedProtocol() string
+	// PeerCertificate: gets @conn's peer's certificate after the handshake has
+	// completed or failed. (It is not set during the emission of
 	// Connection::accept-certificate.)
-	GetPeerCertificate() TlsCertificate
-	// GetPeerCertificateErrors: gets the errors associated with validating
-	// @conn's peer's certificate, after the handshake has completed or failed.
-	// (It is not set during the emission of Connection::accept-certificate.)
-	GetPeerCertificateErrors() TlsCertificateFlags
-	// GetRehandshakeMode: gets @conn rehandshaking mode. See
+	PeerCertificate() TlsCertificate
+	// PeerCertificateErrors: gets the errors associated with validating @conn's
+	// peer's certificate, after the handshake has completed or failed. (It is
+	// not set during the emission of Connection::accept-certificate.)
+	PeerCertificateErrors() TlsCertificateFlags
+	// RehandshakeMode: gets @conn rehandshaking mode. See
 	// g_tls_connection_set_rehandshake_mode() for details.
-	GetRehandshakeMode() TlsRehandshakeMode
-	// GetRequireCloseNotify: tests whether or not @conn expects a proper TLS
-	// close notification when the connection is closed. See
+	RehandshakeMode() TlsRehandshakeMode
+	// RequireCloseNotify: tests whether or not @conn expects a proper TLS close
+	// notification when the connection is closed. See
 	// g_tls_connection_set_require_close_notify() for details.
-	GetRequireCloseNotify() bool
-	// GetUseSystemCertdb: gets whether @conn uses the system certificate
-	// database to verify peer certificates. See
+	RequireCloseNotify() bool
+	// UseSystemCertdb: gets whether @conn uses the system certificate database
+	// to verify peer certificates. See
 	// g_tls_connection_set_use_system_certdb().
-	GetUseSystemCertdb() bool
+	UseSystemCertdb() bool
 	// Handshake: attempts a TLS handshake on @conn.
 	//
 	// On the client side, it is never necessary to call this method; although
@@ -20741,25 +20729,25 @@ func marshalTlsConnection(p uintptr) (interface{}, error) {
 
 func (t tlsConnection) EmitAcceptCertificate(peerCert TlsCertificate, errors TlsCertificateFlags) bool
 
-func (t tlsConnection) GetCertificate() TlsCertificate
+func (t tlsConnection) Certificate() TlsCertificate
 
-func (t tlsConnection) GetChannelBindingData(_type TlsChannelBindingType) ([]uint8, bool)
+func (t tlsConnection) ChannelBindingData(_type TlsChannelBindingType) ([]uint8, bool)
 
-func (t tlsConnection) GetDatabase() TlsDatabase
+func (t tlsConnection) Database() TlsDatabase
 
-func (t tlsConnection) GetInteraction() TlsInteraction
+func (t tlsConnection) Interaction() TlsInteraction
 
-func (t tlsConnection) GetNegotiatedProtocol() string
+func (t tlsConnection) NegotiatedProtocol() string
 
-func (t tlsConnection) GetPeerCertificate() TlsCertificate
+func (t tlsConnection) PeerCertificate() TlsCertificate
 
-func (t tlsConnection) GetPeerCertificateErrors() TlsCertificateFlags
+func (t tlsConnection) PeerCertificateErrors() TlsCertificateFlags
 
-func (t tlsConnection) GetRehandshakeMode() TlsRehandshakeMode
+func (t tlsConnection) RehandshakeMode() TlsRehandshakeMode
 
-func (t tlsConnection) GetRequireCloseNotify() bool
+func (t tlsConnection) RequireCloseNotify() bool
 
-func (t tlsConnection) GetUseSystemCertdb() bool
+func (t tlsConnection) UseSystemCertdb() bool
 
 func (t tlsConnection) Handshake(cancellable Cancellable) bool
 
@@ -21145,20 +21133,20 @@ func (t tlsInteraction) RequestCertificateFinish(result AsyncResult) TlsInteract
 type TlsPassword interface {
 	gextras.Objector
 
-	// GetDescription: get a description string about what the password will be
+	// Description: get a description string about what the password will be
 	// used for.
-	GetDescription() string
-	// GetFlags: get flags about the password.
-	GetFlags() TlsPasswordFlags
-	// GetValue: get the password value. If @length is not nil then it will be
+	Description() string
+	// Flags: get flags about the password.
+	Flags() TlsPasswordFlags
+	// Value: get the password value. If @length is not nil then it will be
 	// filled in with the length of the password value. (Note that the password
 	// value is not nul-terminated, so you can only pass nil for @length in
 	// contexts where you know the password will have a certain fixed length.)
-	GetValue(length uint) uint8
-	// GetWarning: get a user readable translated warning. Usually this warning
-	// is a representation of the password flags returned from
+	Value(length uint) uint8
+	// Warning: get a user readable translated warning. Usually this warning is
+	// a representation of the password flags returned from
 	// g_tls_password_get_flags().
-	GetWarning() string
+	Warning() string
 	// SetDescription: set a description string about what the password will be
 	// used for.
 	SetDescription(description string)
@@ -21204,13 +21192,13 @@ func marshalTlsPassword(p uintptr) (interface{}, error) {
 
 func NewTlsPassword(flags TlsPasswordFlags, description string) TlsPassword
 
-func (t tlsPassword) GetDescription() string
+func (t tlsPassword) Description() string
 
-func (t tlsPassword) GetFlags() TlsPasswordFlags
+func (t tlsPassword) Flags() TlsPasswordFlags
 
-func (t tlsPassword) GetValue(length uint) uint8
+func (t tlsPassword) Value(length uint) uint8
 
-func (t tlsPassword) GetWarning() string
+func (t tlsPassword) Warning() string
 
 func (t tlsPassword) SetDescription(description string)
 
@@ -21351,8 +21339,8 @@ func (u unixConnection) SendFd(fd int, cancellable Cancellable) bool
 type UnixCredentialsMessage interface {
 	SocketControlMessage
 
-	// GetCredentials: gets the credentials stored in @message.
-	GetCredentials() Credentials
+	// Credentials: gets the credentials stored in @message.
+	Credentials() Credentials
 }
 
 type unixCredentialsMessage struct {
@@ -21373,7 +21361,7 @@ func NewUnixCredentialsMessage() UnixCredentialsMessage
 
 func NewUnixCredentialsMessage(credentials Credentials) UnixCredentialsMessage
 
-func (u unixCredentialsMessage) GetCredentials() Credentials
+func (u unixCredentialsMessage) Credentials() Credentials
 
 // UnixFDList: a FDList contains a list of file descriptors. It owns the file
 // descriptors that it contains, closing them when finalized.
@@ -21412,9 +21400,9 @@ type UnixFDList interface {
 	// A possible cause of failure is exceeding the per-process or system-wide
 	// file descriptor limit.
 	Get(index_ int) int
-	// GetLength: gets the length of @list (ie: the number of file descriptors
+	// Length: gets the length of @list (ie: the number of file descriptors
 	// contained within).
-	GetLength() int
+	Length() int
 	// PeekFds: returns the array of file descriptors that is contained in this
 	// object.
 	//
@@ -21469,7 +21457,7 @@ func (u unixFDList) Append(fd int) int
 
 func (u unixFDList) Get(index_ int) int
 
-func (u unixFDList) GetLength() int
+func (u unixFDList) Length() int
 
 func (u unixFDList) PeekFds() (int, []int)
 
@@ -21499,10 +21487,10 @@ type UnixFDMessage interface {
 	// A possible cause of failure is exceeding the per-process or system-wide
 	// file descriptor limit.
 	AppendFd(fd int) bool
-	// GetFdList: gets the FDList contained in @message. This function does not
+	// FdList: gets the FDList contained in @message. This function does not
 	// return a reference to the caller, but the returned list is valid for the
 	// lifetime of @message.
-	GetFdList() UnixFDList
+	FdList() UnixFDList
 	// StealFds: returns the array of file descriptors that is contained in this
 	// object.
 	//
@@ -21541,7 +21529,7 @@ func NewUnixFDMessage(fdList UnixFDList) UnixFDMessage
 
 func (u unixFDMessage) AppendFd(fd int) bool
 
-func (u unixFDMessage) GetFdList() UnixFDList
+func (u unixFDMessage) FdList() UnixFDList
 
 func (u unixFDMessage) StealFds() (int, []int)
 
@@ -21557,11 +21545,11 @@ func (u unixFDMessage) StealFds() (int, []int)
 type UnixInputStream interface {
 	InputStream
 
-	// GetCloseFd: returns whether the file descriptor of @stream will be closed
+	// CloseFd: returns whether the file descriptor of @stream will be closed
 	// when the stream is closed.
-	GetCloseFd() bool
-	// GetFd: return the UNIX file descriptor that the stream reads from.
-	GetFd() int
+	CloseFd() bool
+	// Fd: return the UNIX file descriptor that the stream reads from.
+	Fd() int
 	// SetCloseFd: sets whether the file descriptor of @stream shall be closed
 	// when the stream is closed.
 	SetCloseFd(closeFd bool)
@@ -21583,9 +21571,9 @@ func marshalUnixInputStream(p uintptr) (interface{}, error) {
 
 func NewUnixInputStream(fd int, closeFd bool) UnixInputStream
 
-func (u unixInputStream) GetCloseFd() bool
+func (u unixInputStream) CloseFd() bool
 
-func (u unixInputStream) GetFd() int
+func (u unixInputStream) Fd() int
 
 func (u unixInputStream) SetCloseFd(closeFd bool)
 
@@ -21632,11 +21620,11 @@ func (u unixMountMonitor) SetRateLimit(limitMsec int)
 type UnixOutputStream interface {
 	OutputStream
 
-	// GetCloseFd: returns whether the file descriptor of @stream will be closed
+	// CloseFd: returns whether the file descriptor of @stream will be closed
 	// when the stream is closed.
-	GetCloseFd() bool
-	// GetFd: return the UNIX file descriptor that the stream writes to.
-	GetFd() int
+	CloseFd() bool
+	// Fd: return the UNIX file descriptor that the stream writes to.
+	Fd() int
 	// SetCloseFd: sets whether the file descriptor of @stream shall be closed
 	// when the stream is closed.
 	SetCloseFd(closeFd bool)
@@ -21658,9 +21646,9 @@ func marshalUnixOutputStream(p uintptr) (interface{}, error) {
 
 func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream
 
-func (u unixOutputStream) GetCloseFd() bool
+func (u unixOutputStream) CloseFd() bool
 
-func (u unixOutputStream) GetFd() int
+func (u unixOutputStream) Fd() int
 
 func (u unixOutputStream) SetCloseFd(closeFd bool)
 
@@ -21680,21 +21668,21 @@ func (u unixOutputStream) SetCloseFd(closeFd bool)
 type UnixSocketAddress interface {
 	SocketAddress
 
-	// GetAddressType: gets @address's type.
-	GetAddressType() UnixSocketAddressType
-	// GetIsAbstract: tests if @address is abstract.
-	GetIsAbstract() bool
-	// GetPath: gets @address's path, or for abstract sockets the "name".
+	// AddressType: gets @address's type.
+	AddressType() UnixSocketAddressType
+	// IsAbstract: tests if @address is abstract.
+	IsAbstract() bool
+	// Path: gets @address's path, or for abstract sockets the "name".
 	//
 	// Guaranteed to be zero-terminated, but an abstract socket may contain
 	// embedded zeros, and thus you should use
 	// g_unix_socket_address_get_path_len() to get the true length of this
 	// string.
-	GetPath() string
-	// GetPathLen: gets the length of @address's path.
+	Path() string
+	// PathLen: gets the length of @address's path.
 	//
 	// For details, see g_unix_socket_address_get_path().
-	GetPathLen() uint
+	PathLen() uint
 }
 
 type unixSocketAddress struct {
@@ -21717,28 +21705,28 @@ func NewUnixSocketAddress(path []byte) UnixSocketAddress
 
 func NewUnixSocketAddress(path []byte, _type UnixSocketAddressType) UnixSocketAddress
 
-func (u unixSocketAddress) GetAddressType() UnixSocketAddressType
+func (u unixSocketAddress) AddressType() UnixSocketAddressType
 
-func (u unixSocketAddress) GetIsAbstract() bool
+func (u unixSocketAddress) IsAbstract() bool
 
-func (u unixSocketAddress) GetPath() string
+func (u unixSocketAddress) Path() string
 
-func (u unixSocketAddress) GetPathLen() uint
+func (u unixSocketAddress) PathLen() uint
 
 // Vfs: entry point for using GIO functionality.
 type Vfs interface {
 	gextras.Objector
 
-	// GetFileForPath: gets a #GFile for @path.
-	GetFileForPath(path string) File
-	// GetFileForURI: gets a #GFile for @uri.
+	// FileForPath: gets a #GFile for @path.
+	FileForPath(path string) File
+	// FileForURI: gets a #GFile for @uri.
 	//
 	// This operation never fails, but the returned object might not support any
 	// I/O operation if the URI is malformed or if the URI scheme is not
 	// supported.
-	GetFileForURI(uri string) File
-	// GetSupportedURISchemes: gets a list of URI schemes supported by @vfs.
-	GetSupportedURISchemes() []string
+	FileForURI(uri string) File
+	// SupportedURISchemes: gets a list of URI schemes supported by @vfs.
+	SupportedURISchemes() []string
 	// IsActive: checks if the VFS is active.
 	IsActive() bool
 	// ParseName: this operation never fails, but the returned object might not
@@ -21786,11 +21774,11 @@ func marshalVfs(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (v vfs) GetFileForPath(path string) File
+func (v vfs) FileForPath(path string) File
 
-func (v vfs) GetFileForURI(uri string) File
+func (v vfs) FileForURI(uri string) File
 
-func (v vfs) GetSupportedURISchemes() []string
+func (v vfs) SupportedURISchemes() []string
 
 func (v vfs) IsActive() bool
 
@@ -21813,27 +21801,26 @@ func (v vfs) UnregisterURIScheme(scheme string) bool
 type VolumeMonitor interface {
 	gextras.Objector
 
-	// GetConnectedDrives: gets a list of drives connected to the system.
+	// ConnectedDrives: gets a list of drives connected to the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	GetConnectedDrives() *glib.List
-	// GetMountForUuid: finds a #GMount object by its UUID (see
-	// g_mount_get_uuid())
-	GetMountForUuid(uuid string) Mount
-	// GetMounts: gets a list of the mounts on the system.
+	ConnectedDrives() *glib.List
+	// MountForUuid: finds a #GMount object by its UUID (see g_mount_get_uuid())
+	MountForUuid(uuid string) Mount
+	// Mounts: gets a list of the mounts on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	GetMounts() *glib.List
-	// GetVolumeForUuid: finds a #GVolume object by its UUID (see
+	Mounts() *glib.List
+	// VolumeForUuid: finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid())
-	GetVolumeForUuid(uuid string) Volume
-	// GetVolumes: gets a list of the volumes on the system.
+	VolumeForUuid(uuid string) Volume
+	// Volumes: gets a list of the volumes on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
 	// have been unreffed with g_object_unref().
-	GetVolumes() *glib.List
+	Volumes() *glib.List
 }
 
 type volumeMonitor struct {
@@ -21850,22 +21837,22 @@ func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (v volumeMonitor) GetConnectedDrives() *glib.List
+func (v volumeMonitor) ConnectedDrives() *glib.List
 
-func (v volumeMonitor) GetMountForUuid(uuid string) Mount
+func (v volumeMonitor) MountForUuid(uuid string) Mount
 
-func (v volumeMonitor) GetMounts() *glib.List
+func (v volumeMonitor) Mounts() *glib.List
 
-func (v volumeMonitor) GetVolumeForUuid(uuid string) Volume
+func (v volumeMonitor) VolumeForUuid(uuid string) Volume
 
-func (v volumeMonitor) GetVolumes() *glib.List
+func (v volumeMonitor) Volumes() *glib.List
 
 // ZlibCompressor: zlib decompression
 type ZlibCompressor interface {
 	gextras.Objector
 
-	// GetFileInfo: returns the Compressor:file-info property.
-	GetFileInfo() FileInfo
+	// FileInfo: returns the Compressor:file-info property.
+	FileInfo() FileInfo
 	// SetFileInfo: sets @file_info in @compressor. If non-nil, and
 	// @compressor's Compressor:format property is
 	// G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be used to set the file name and
@@ -21893,7 +21880,7 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 
 func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor
 
-func (z zlibCompressor) GetFileInfo() FileInfo
+func (z zlibCompressor) FileInfo() FileInfo
 
 func (z zlibCompressor) SetFileInfo(fileInfo FileInfo)
 
@@ -21901,12 +21888,12 @@ func (z zlibCompressor) SetFileInfo(fileInfo FileInfo)
 type ZlibDecompressor interface {
 	gextras.Objector
 
-	// GetFileInfo: retrieves the Info constructed from the GZIP header data of
+	// FileInfo: retrieves the Info constructed from the GZIP header data of
 	// compressed data processed by @compressor, or nil if @decompressor's
 	// Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
 	// header data was not fully processed yet, or it not present in the data
 	// stream at all.
-	GetFileInfo() FileInfo
+	FileInfo() FileInfo
 }
 
 type zlibDecompressor struct {
@@ -21925,4 +21912,4 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 
 func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor
 
-func (z zlibDecompressor) GetFileInfo() FileInfo
+func (z zlibDecompressor) FileInfo() FileInfo

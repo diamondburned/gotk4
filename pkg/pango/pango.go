@@ -4093,39 +4093,37 @@ type Context interface {
 	// something applications won't do. Backends should call this function if
 	// they have attached extra data to the context and such data is changed.
 	Changed()
-	// GetBaseDir: retrieves the base direction for the context.
+	// BaseDir: retrieves the base direction for the context.
 	//
 	// See [method@Pango.Context.set_base_dir].
-	GetBaseDir() Direction
-	// GetBaseGravity: retrieves the base gravity for the context.
+	BaseDir() Direction
+	// BaseGravity: retrieves the base gravity for the context.
 	//
 	// See [method@Pango.Context.set_base_gravity].
-	GetBaseGravity() Gravity
-	// GetFontDescription: retrieve the default font description for the
-	// context.
-	GetFontDescription() *FontDescription
-	// GetFontMap: gets the `PangoFontMap` used to look up fonts for this
-	// context.
-	GetFontMap() FontMap
-	// GetGravity: retrieves the gravity for the context.
+	BaseGravity() Gravity
+	// FontDescription: retrieve the default font description for the context.
+	FontDescription() *FontDescription
+	// FontMap: gets the `PangoFontMap` used to look up fonts for this context.
+	FontMap() FontMap
+	// Gravity: retrieves the gravity for the context.
 	//
 	// This is similar to [method@Pango.Context.get_base_gravity], except for
 	// when the base gravity is PANGO_GRAVITY_AUTO for which
 	// [type_func@Pango.Gravity.get_for_matrix] is used to return the gravity
 	// from the current context matrix.
-	GetGravity() Gravity
-	// GetGravityHint: retrieves the gravity hint for the context.
+	Gravity() Gravity
+	// GravityHint: retrieves the gravity hint for the context.
 	//
 	// See [method@Pango.Context.set_gravity_hint] for details.
-	GetGravityHint() GravityHint
-	// GetLanguage: retrieves the global language tag for the context.
-	GetLanguage() *Language
-	// GetMatrix: gets the transformation matrix that will be applied when
+	GravityHint() GravityHint
+	// Language: retrieves the global language tag for the context.
+	Language() *Language
+	// Matrix: gets the transformation matrix that will be applied when
 	// rendering with this context.
 	//
 	// See [method@Pango.Context.set_matrix].
-	GetMatrix() *Matrix
-	// GetMetrics: get overall metric information for a particular font
+	Matrix() *Matrix
+	// Metrics: get overall metric information for a particular font
 	// description.
 	//
 	// Since the metrics may be substantially different for different scripts, a
@@ -4137,11 +4135,11 @@ type Context interface {
 	// names. If characters from multiple of these families would be used to
 	// render the string, then the returned fonts would be a composite of the
 	// metrics for the fonts loaded for the individual families.
-	GetMetrics(desc *FontDescription, language *Language) *FontMetrics
-	// GetRoundGlyphPositions: returns whether font rendering with this context
+	Metrics(desc *FontDescription, language *Language) *FontMetrics
+	// RoundGlyphPositions: returns whether font rendering with this context
 	// should round glyph positions and widths.
-	GetRoundGlyphPositions() bool
-	// GetSerial: returns the current serial number of @context.
+	RoundGlyphPositions() bool
+	// Serial: returns the current serial number of @context.
 	//
 	// The serial number is initialized to an small number larger than zero when
 	// a new context is created and is increased whenever the context is changed
@@ -4153,7 +4151,7 @@ type Context interface {
 	// This can be used to automatically detect changes to a `PangoContext`, and
 	// is only useful when implementing objects that need update when their
 	// `PangoContext` changes, like `PangoLayout`.
-	GetSerial() uint
+	Serial() uint
 	// ListFamilies: list all families for a context.
 	ListFamilies() ([]*FontFamily, int)
 	// LoadFont: loads the font in one of the fontmaps in the context that is
@@ -4235,27 +4233,27 @@ func NewContext() Context
 
 func (c context) Changed()
 
-func (c context) GetBaseDir() Direction
+func (c context) BaseDir() Direction
 
-func (c context) GetBaseGravity() Gravity
+func (c context) BaseGravity() Gravity
 
-func (c context) GetFontDescription() *FontDescription
+func (c context) FontDescription() *FontDescription
 
-func (c context) GetFontMap() FontMap
+func (c context) FontMap() FontMap
 
-func (c context) GetGravity() Gravity
+func (c context) Gravity() Gravity
 
-func (c context) GetGravityHint() GravityHint
+func (c context) GravityHint() GravityHint
 
-func (c context) GetLanguage() *Language
+func (c context) Language() *Language
 
-func (c context) GetMatrix() *Matrix
+func (c context) Matrix() *Matrix
 
-func (c context) GetMetrics(desc *FontDescription, language *Language) *FontMetrics
+func (c context) Metrics(desc *FontDescription, language *Language) *FontMetrics
 
-func (c context) GetRoundGlyphPositions() bool
+func (c context) RoundGlyphPositions() bool
 
-func (c context) GetSerial() uint
+func (c context) Serial() uint
 
 func (c context) ListFamilies() ([]*FontFamily, int)
 
@@ -4355,11 +4353,11 @@ type Font interface {
 	//
 	// Use [method@Pango.Font.describe] if you want the font size in points.
 	DescribeWithAbsoluteSize() *FontDescription
-	// GetCoverage: computes the coverage map for a given font and language tag.
-	GetCoverage(language *Language) Coverage
-	// GetFace: gets the `PangoFontFace` to which @font belongs.
-	GetFace() FontFace
-	// GetFontMap: gets the font map for which the font was created.
+	// Coverage: computes the coverage map for a given font and language tag.
+	Coverage(language *Language) Coverage
+	// Face: gets the `PangoFontFace` to which @font belongs.
+	Face() FontFace
+	// FontMap: gets the font map for which the font was created.
 	//
 	// Note that the font maintains a *weak* reference to the font map, so if
 	// all references to font map are dropped, the font map will be finalized
@@ -4369,9 +4367,8 @@ type Font interface {
 	// It is the responsibility of the user to ensure that the font map is kept
 	// alive. In most uses this is not an issue as a Context holds a reference
 	// to the font map.
-	GetFontMap() FontMap
-	// GetGlyphExtents: gets the logical and ink extents of a glyph within a
-	// font.
+	FontMap() FontMap
+	// GlyphExtents: gets the logical and ink extents of a glyph within a font.
 	//
 	// The coordinate system for each rectangle has its origin at the base line
 	// and horizontal origin of the character with increasing coordinates
@@ -4382,8 +4379,8 @@ type Font interface {
 	//
 	// If @font is nil, this function gracefully sets some sane values in the
 	// output variables and returns.
-	GetGlyphExtents(glyph Glyph) (Rectangle, Rectangle)
-	// GetMetrics: gets overall metric information for a font.
+	GlyphExtents(glyph Glyph) (Rectangle, Rectangle)
+	// Metrics: gets overall metric information for a font.
 	//
 	// Since the metrics may be substantially different for different scripts, a
 	// language tag can be provided to indicate that the metrics should be
@@ -4391,7 +4388,7 @@ type Font interface {
 	//
 	// If @font is nil, this function gracefully sets some sane values in the
 	// output variables and returns.
-	GetMetrics(language *Language) *FontMetrics
+	Metrics(language *Language) *FontMetrics
 	// HasChar: returns whether the font provides a glyph for this character.
 	//
 	// Returns true if @font can render @wc
@@ -4416,15 +4413,15 @@ func (f font) Describe() *FontDescription
 
 func (f font) DescribeWithAbsoluteSize() *FontDescription
 
-func (f font) GetCoverage(language *Language) Coverage
+func (f font) Coverage(language *Language) Coverage
 
-func (f font) GetFace() FontFace
+func (f font) Face() FontFace
 
-func (f font) GetFontMap() FontMap
+func (f font) FontMap() FontMap
 
-func (f font) GetGlyphExtents(glyph Glyph) (Rectangle, Rectangle)
+func (f font) GlyphExtents(glyph Glyph) (Rectangle, Rectangle)
 
-func (f font) GetMetrics(language *Language) *FontMetrics
+func (f font) Metrics(language *Language) *FontMetrics
 
 func (f font) HasChar(wc uint32) bool
 
@@ -4437,12 +4434,12 @@ type FontFace interface {
 	// `PangoFontFace`. The size field of the resulting font description will be
 	// unset.
 	Describe() *FontDescription
-	// GetFaceName: gets a name representing the style of this face among the
+	// FaceName: gets a name representing the style of this face among the
 	// different faces in the `PangoFontFamily` for the face. The name is
 	// suitable for displaying to users.
-	GetFaceName() string
-	// GetFamily: gets the `PangoFontFamily` that @face belongs to.
-	GetFamily() FontFamily
+	FaceName() string
+	// Family: gets the `PangoFontFamily` that @face belongs to.
+	Family() FontFamily
 	// IsSynthesized: returns whether a `PangoFontFace` is synthesized by the
 	// underlying font rendering engine from another face, perhaps by shearing,
 	// emboldening, or lightening it.
@@ -4472,9 +4469,9 @@ func marshalFontFace(p uintptr) (interface{}, error) {
 
 func (f fontFace) Describe() *FontDescription
 
-func (f fontFace) GetFaceName() string
+func (f fontFace) FaceName() string
 
-func (f fontFace) GetFamily() FontFamily
+func (f fontFace) Family() FontFamily
 
 func (f fontFace) IsSynthesized() bool
 
@@ -4488,14 +4485,14 @@ func (f fontFace) ListSizes() ([]int, int)
 type FontFamily interface {
 	gextras.Objector
 
-	// GetFace: gets the `PangoFontFace` of @family with the given name.
-	GetFace(name string) FontFace
-	// GetName: gets the name of the family.
+	// Face: gets the `PangoFontFace` of @family with the given name.
+	Face(name string) FontFace
+	// Name: gets the name of the family.
 	//
 	// The name is unique among all fonts for the font backend and can be used
 	// in a `PangoFontDescription` to specify that a face from this family is
 	// desired.
-	GetName() string
+	Name() string
 	// IsMonospace: a monospace font is a font designed for text display where
 	// the the characters form a regular grid.
 	//
@@ -4534,9 +4531,9 @@ func marshalFontFamily(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (f fontFamily) GetFace(name string) FontFace
+func (f fontFamily) Face(name string) FontFace
 
-func (f fontFamily) GetName() string
+func (f fontFamily) Name() string
 
 func (f fontFamily) IsMonospace() bool
 
@@ -4569,9 +4566,9 @@ type FontMap interface {
 	// toolkit has, among others, gtk_widget_get_pango_context(). Use those
 	// instead.
 	CreateContext() Context
-	// GetFamily: gets a font family by name.
-	GetFamily(name string) FontFamily
-	// GetSerial: returns the current serial number of @fontmap.
+	// Family: gets a font family by name.
+	Family(name string) FontFamily
+	// Serial: returns the current serial number of @fontmap.
 	//
 	// The serial number is initialized to an small number larger than zero when
 	// a new fontmap is created and is increased whenever the fontmap is
@@ -4583,7 +4580,7 @@ type FontMap interface {
 	//
 	// This can be used to automatically detect changes to a `PangoFontMap`,
 	// like in `PangoContext`.
-	GetSerial() uint
+	Serial() uint
 	// ListFamilies: list all families for a fontmap.
 	ListFamilies() ([]*FontFamily, int)
 	// LoadFont: load the font in the fontmap that is the closest match for
@@ -4612,9 +4609,9 @@ func (f fontMap) Changed()
 
 func (f fontMap) CreateContext() Context
 
-func (f fontMap) GetFamily(name string) FontFamily
+func (f fontMap) Family(name string) FontFamily
 
-func (f fontMap) GetSerial() uint
+func (f fontMap) Serial() uint
 
 func (f fontMap) ListFamilies() ([]*FontFamily, int)
 
@@ -4637,11 +4634,11 @@ type Fontset interface {
 	//
 	// If @func returns true, that stops the iteration.
 	Foreach(_func FontsetForeachFunc)
-	// GetFont: returns the font in the fontset that contains the best glyph for
-	// a Unicode character.
-	GetFont(wc uint) Font
-	// GetMetrics: get overall metric information for the fonts in the fontset.
-	GetMetrics() *FontMetrics
+	// Font: returns the font in the fontset that contains the best glyph for a
+	// Unicode character.
+	Font(wc uint) Font
+	// Metrics: get overall metric information for the fonts in the fontset.
+	Metrics() *FontMetrics
 }
 
 type fontset struct {
@@ -4660,9 +4657,9 @@ func marshalFontset(p uintptr) (interface{}, error) {
 
 func (f fontset) Foreach(_func FontsetForeachFunc)
 
-func (f fontset) GetFont(wc uint) Font
+func (f fontset) Font(wc uint) Font
 
-func (f fontset) GetMetrics() *FontMetrics
+func (f fontset) Metrics() *FontMetrics
 
 // FontsetSimple: `PangoFontsetSimple` is a implementation of the abstract
 // `PangoFontset` base class as an array of fonts.
@@ -4735,45 +4732,43 @@ type Layout interface {
 	// The attribute list, tab array, and text from the original layout are all
 	// copied by value.
 	Copy() Layout
-	// GetAlignment: gets the alignment for the layout: how partial lines are
+	// Alignment: gets the alignment for the layout: how partial lines are
 	// positioned within the horizontal space available.
-	GetAlignment() Alignment
-	// GetAttributes: gets the attribute list for the layout, if any.
-	GetAttributes() *AttrList
-	// GetAutoDir: gets whether to calculate the base direction for the layout
+	Alignment() Alignment
+	// Attributes: gets the attribute list for the layout, if any.
+	Attributes() *AttrList
+	// AutoDir: gets whether to calculate the base direction for the layout
 	// according to its contents.
 	//
 	// See [method@Pango.Layout.set_auto_dir].
-	GetAutoDir() bool
-	// GetBaseline: gets the Y position of baseline of the first line in
-	// @layout.
-	GetBaseline() int
-	// GetCharacterCount: returns the number of Unicode characters in the the
-	// text of @layout.
-	GetCharacterCount() int
-	// GetContext: retrieves the `PangoContext` used for this layout.
-	GetContext() Context
-	// GetCursorPos: given an index within a layout, determines the positions
-	// that of the strong and weak cursors if the insertion point is at that
-	// index.
+	AutoDir() bool
+	// Baseline: gets the Y position of baseline of the first line in @layout.
+	Baseline() int
+	// CharacterCount: returns the number of Unicode characters in the the text
+	// of @layout.
+	CharacterCount() int
+	// Context: retrieves the `PangoContext` used for this layout.
+	Context() Context
+	// CursorPos: given an index within a layout, determines the positions that
+	// of the strong and weak cursors if the insertion point is at that index.
 	//
 	// The position of each cursor is stored as a zero-width rectangle. The
 	// strong cursor location is the location where characters of the
 	// directionality equal to the base direction of the layout are inserted.
 	// The weak cursor location is the location where characters of the
 	// directionality opposite to the base direction of the layout are inserted.
-	GetCursorPos(index_ int) (Rectangle, Rectangle)
-	// GetDirection: gets the text direction at the given character position in
+	CursorPos(index_ int) (Rectangle, Rectangle)
+	// Direction: gets the text direction at the given character position in
 	// @layout.
-	GetDirection(index int) Direction
-	// GetEllipsize: gets the type of ellipsization being performed for @layout.
+	Direction(index int) Direction
+	// Ellipsize: gets the type of ellipsization being performed for @layout.
 	//
 	// See [method@Pango.Layout.set_ellipsize].
 	//
 	// Use [method@Pango.Layout.is_ellipsized] to query whether any paragraphs
 	// were actually ellipsized.
-	GetEllipsize() EllipsizeMode
-	// GetExtents: computes the logical and ink extents of @layout.
+	Ellipsize() EllipsizeMode
+	// Extents: computes the logical and ink extents of @layout.
 	//
 	// Logical extents are usually what you want for positioning things. Note
 	// that both extents may have non-zero x and y. You may want to use those to
@@ -4783,55 +4778,55 @@ type Layout interface {
 	//
 	// The extents are given in layout coordinates and in Pango units; layout
 	// coordinates begin at the top left corner of the layout.
-	GetExtents() (Rectangle, Rectangle)
-	// GetFontDescription: gets the font description for the layout, if any.
-	GetFontDescription() *FontDescription
-	// GetHeight: gets the height of layout used for ellipsization.
+	Extents() (Rectangle, Rectangle)
+	// FontDescription: gets the font description for the layout, if any.
+	FontDescription() *FontDescription
+	// Height: gets the height of layout used for ellipsization.
 	//
 	// See [method@Pango.Layout.set_height] for details.
-	GetHeight() int
-	// GetIndent: gets the paragraph indent width in Pango units.
+	Height() int
+	// Indent: gets the paragraph indent width in Pango units.
 	//
 	// A negative value indicates a hanging indentation.
-	GetIndent() int
-	// GetIter: returns an iterator to iterate over the visual extents of the
+	Indent() int
+	// Iter: returns an iterator to iterate over the visual extents of the
 	// layout.
-	GetIter() *LayoutIter
-	// GetJustify: gets whether each complete line should be stretched to fill
-	// the entire width of the layout.
-	GetJustify() bool
-	// GetLine: retrieves a particular line from a `PangoLayout`.
+	Iter() *LayoutIter
+	// Justify: gets whether each complete line should be stretched to fill the
+	// entire width of the layout.
+	Justify() bool
+	// Line: retrieves a particular line from a `PangoLayout`.
 	//
 	// Use the faster [method@Pango.Layout.get_line_readonly] if you do not plan
 	// to modify the contents of the line (glyphs, glyph widths, etc.).
-	GetLine(line int) *LayoutLine
-	// GetLineCount: retrieves the count of lines for the @layout.
-	GetLineCount() int
-	// GetLineReadonly: retrieves a particular line from a `PangoLayout`.
+	Line(line int) *LayoutLine
+	// LineCount: retrieves the count of lines for the @layout.
+	LineCount() int
+	// LineReadonly: retrieves a particular line from a `PangoLayout`.
 	//
 	// This is a faster alternative to [method@Pango.Layout.get_line], but the
 	// user is not expected to modify the contents of the line (glyphs, glyph
 	// widths, etc.).
-	GetLineReadonly(line int) *LayoutLine
-	// GetLineSpacing: gets the line spacing factor of @layout.
+	LineReadonly(line int) *LayoutLine
+	// LineSpacing: gets the line spacing factor of @layout.
 	//
 	// See [method@Pango.Layout.set_line_spacing].
-	GetLineSpacing() float32
-	// GetLines: returns the lines of the @layout as a list.
+	LineSpacing() float32
+	// Lines: returns the lines of the @layout as a list.
 	//
 	// Use the faster [method@Pango.Layout.get_lines_readonly] if you do not
 	// plan to modify the contents of the lines (glyphs, glyph widths, etc.).
-	GetLines() *glib.SList
-	// GetLinesReadonly: returns the lines of the @layout as a list.
+	Lines() *glib.SList
+	// LinesReadonly: returns the lines of the @layout as a list.
 	//
 	// This is a faster alternative to [method@Pango.Layout.get_lines], but the
 	// user is not expected to modify the contents of the lines (glyphs, glyph
 	// widths, etc.).
-	GetLinesReadonly() *glib.SList
-	// GetLogAttrs: retrieves an array of logical attributes for each character
-	// in the @layout.
-	GetLogAttrs() ([]*LogAttr, int)
-	// GetLogAttrsReadonly: retrieves an array of logical attributes for each
+	LinesReadonly() *glib.SList
+	// LogAttrs: retrieves an array of logical attributes for each character in
+	// the @layout.
+	LogAttrs() ([]*LogAttr, int)
+	// LogAttrsReadonly: retrieves an array of logical attributes for each
 	// character in the @layout.
 	//
 	// This is a faster alternative to [method@Pango.Layout.get_log_attrs]. The
@@ -4842,23 +4837,23 @@ type Layout interface {
 	// total number of characters in the layout, since there need to be
 	// attributes corresponding to both the position before the first character
 	// and the position after the last character.
-	GetLogAttrsReadonly() (int, []LogAttr)
-	// GetPixelExtents: computes the logical and ink extents of @layout in
-	// device units.
+	LogAttrsReadonly() (int, []LogAttr)
+	// PixelExtents: computes the logical and ink extents of @layout in device
+	// units.
 	//
 	// This function just calls [method@Pango.Layout.get_extents] followed by
 	// two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect
 	// such that the rounded rectangles fully contain the unrounded one (that
 	// is, passes them as first argument to `pango_extents_to_pixels()`).
-	GetPixelExtents() (Rectangle, Rectangle)
-	// GetPixelSize: determines the logical width and height of a `PangoLayout`
-	// in device units.
+	PixelExtents() (Rectangle, Rectangle)
+	// PixelSize: determines the logical width and height of a `PangoLayout` in
+	// device units.
 	//
 	// [method@Pango.Layout.get_size] returns the width and height scaled by
 	// PANGO_SCALE. This is simply a convenience function around
 	// [method@Pango.Layout.get_pixel_extents].
-	GetPixelSize() (int, int)
-	// GetSerial: returns the current serial number of @layout.
+	PixelSize() (int, int)
+	// Serial: returns the current serial number of @layout.
 	//
 	// The serial number is initialized to an small number larger than zero when
 	// a new layout is created and is increased whenever the layout is changed
@@ -4870,45 +4865,44 @@ type Layout interface {
 	// is useful for example to decide whether a layout needs redrawing. To
 	// force the serial to be increased, use
 	// [method@Pango.Layout.context_changed].
-	GetSerial() uint
-	// GetSingleParagraphMode: obtains whether @layout is in single paragraph
-	// mode.
+	Serial() uint
+	// SingleParagraphMode: obtains whether @layout is in single paragraph mode.
 	//
 	// See [method@Pango.Layout.set_single_paragraph_mode].
-	GetSingleParagraphMode() bool
-	// GetSize: determines the logical width and height of a `PangoLayout` in
-	// Pango units.
+	SingleParagraphMode() bool
+	// Size: determines the logical width and height of a `PangoLayout` in Pango
+	// units.
 	//
 	// This is simply a convenience function around
 	// [method@Pango.Layout.get_extents].
-	GetSize() (int, int)
-	// GetSpacing: gets the amount of spacing between the lines of the layout.
-	GetSpacing() int
-	// GetTabs: gets the current `PangoTabArray` used by this layout.
+	Size() (int, int)
+	// Spacing: gets the amount of spacing between the lines of the layout.
+	Spacing() int
+	// Tabs: gets the current `PangoTabArray` used by this layout.
 	//
 	// If no `PangoTabArray` has been set, then the default tabs are in use and
 	// nil is returned. Default tabs are every 8 spaces.
 	//
 	// The return value should be freed with [method@Pango.TabArray.free].
-	GetTabs() *TabArray
-	// GetText: gets the text in the layout. The returned text should not be
-	// freed or modified.
-	GetText() string
-	// GetUnknownGlyphsCount: counts the number of unknown glyphs in @layout.
+	Tabs() *TabArray
+	// Text: gets the text in the layout. The returned text should not be freed
+	// or modified.
+	Text() string
+	// UnknownGlyphsCount: counts the number of unknown glyphs in @layout.
 	//
 	// This function can be used to determine if there are any fonts available
 	// to render all characters in a certain string, or when used in combination
 	// with PANGO_ATTR_FALLBACK, to check if a certain font supports all the
 	// characters in the string.
-	GetUnknownGlyphsCount() int
-	// GetWidth: gets the width to which the lines of the `PangoLayout` should
+	UnknownGlyphsCount() int
+	// Width: gets the width to which the lines of the `PangoLayout` should
 	// wrap.
-	GetWidth() int
-	// GetWrap: gets the wrap mode for the layout.
+	Width() int
+	// Wrap: gets the wrap mode for the layout.
 	//
 	// Use [method@Pango.Layout.is_wrapped] to query whether any paragraphs were
 	// actually wrapped.
-	GetWrap() WrapMode
+	Wrap() WrapMode
 	// IndexToLineX: converts from byte @index_ within the @layout to line and X
 	// position.
 	//
@@ -5152,73 +5146,73 @@ func (l layout) ContextChanged()
 
 func (l layout) Copy() Layout
 
-func (l layout) GetAlignment() Alignment
+func (l layout) Alignment() Alignment
 
-func (l layout) GetAttributes() *AttrList
+func (l layout) Attributes() *AttrList
 
-func (l layout) GetAutoDir() bool
+func (l layout) AutoDir() bool
 
-func (l layout) GetBaseline() int
+func (l layout) Baseline() int
 
-func (l layout) GetCharacterCount() int
+func (l layout) CharacterCount() int
 
-func (l layout) GetContext() Context
+func (l layout) Context() Context
 
-func (l layout) GetCursorPos(index_ int) (Rectangle, Rectangle)
+func (l layout) CursorPos(index_ int) (Rectangle, Rectangle)
 
-func (l layout) GetDirection(index int) Direction
+func (l layout) Direction(index int) Direction
 
-func (l layout) GetEllipsize() EllipsizeMode
+func (l layout) Ellipsize() EllipsizeMode
 
-func (l layout) GetExtents() (Rectangle, Rectangle)
+func (l layout) Extents() (Rectangle, Rectangle)
 
-func (l layout) GetFontDescription() *FontDescription
+func (l layout) FontDescription() *FontDescription
 
-func (l layout) GetHeight() int
+func (l layout) Height() int
 
-func (l layout) GetIndent() int
+func (l layout) Indent() int
 
-func (l layout) GetIter() *LayoutIter
+func (l layout) Iter() *LayoutIter
 
-func (l layout) GetJustify() bool
+func (l layout) Justify() bool
 
-func (l layout) GetLine(line int) *LayoutLine
+func (l layout) Line(line int) *LayoutLine
 
-func (l layout) GetLineCount() int
+func (l layout) LineCount() int
 
-func (l layout) GetLineReadonly(line int) *LayoutLine
+func (l layout) LineReadonly(line int) *LayoutLine
 
-func (l layout) GetLineSpacing() float32
+func (l layout) LineSpacing() float32
 
-func (l layout) GetLines() *glib.SList
+func (l layout) Lines() *glib.SList
 
-func (l layout) GetLinesReadonly() *glib.SList
+func (l layout) LinesReadonly() *glib.SList
 
-func (l layout) GetLogAttrs() ([]*LogAttr, int)
+func (l layout) LogAttrs() ([]*LogAttr, int)
 
-func (l layout) GetLogAttrsReadonly() (int, []LogAttr)
+func (l layout) LogAttrsReadonly() (int, []LogAttr)
 
-func (l layout) GetPixelExtents() (Rectangle, Rectangle)
+func (l layout) PixelExtents() (Rectangle, Rectangle)
 
-func (l layout) GetPixelSize() (int, int)
+func (l layout) PixelSize() (int, int)
 
-func (l layout) GetSerial() uint
+func (l layout) Serial() uint
 
-func (l layout) GetSingleParagraphMode() bool
+func (l layout) SingleParagraphMode() bool
 
-func (l layout) GetSize() (int, int)
+func (l layout) Size() (int, int)
 
-func (l layout) GetSpacing() int
+func (l layout) Spacing() int
 
-func (l layout) GetTabs() *TabArray
+func (l layout) Tabs() *TabArray
 
-func (l layout) GetText() string
+func (l layout) Text() string
 
-func (l layout) GetUnknownGlyphsCount() int
+func (l layout) UnknownGlyphsCount() int
 
-func (l layout) GetWidth() int
+func (l layout) Width() int
 
-func (l layout) GetWrap() WrapMode
+func (l layout) Wrap() WrapMode
 
 func (l layout) IndexToLineX(index_ int, trailing bool) (int, int)
 
@@ -5330,18 +5324,18 @@ type Renderer interface {
 	// DrawTrapezoid: draws a trapezoid with the parallel sides aligned with the
 	// X axis using the given `PangoRenderer`; coordinates are in device space.
 	DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64)
-	// GetAlpha: gets the current alpha for the specified part.
-	GetAlpha(part RenderPart) uint16
-	// GetColor: gets the current rendering color for the specified part.
-	GetColor(part RenderPart) *Color
-	// GetLayout: gets the layout currently being rendered using @renderer.
+	// Alpha: gets the current alpha for the specified part.
+	Alpha(part RenderPart) uint16
+	// Color: gets the current rendering color for the specified part.
+	Color(part RenderPart) *Color
+	// Layout: gets the layout currently being rendered using @renderer.
 	//
 	// Calling this function only makes sense from inside a subclass's methods,
 	// like in its draw_shape vfunc, for example.
 	//
 	// The returned layout should not be modified while still being rendered.
-	GetLayout() Layout
-	// GetLayoutLine: gets the layout line currently being rendered using
+	Layout() Layout
+	// LayoutLine: gets the layout line currently being rendered using
 	// @renderer.
 	//
 	// Calling this function only makes sense from inside a subclass's methods,
@@ -5349,12 +5343,12 @@ type Renderer interface {
 	//
 	// The returned layout line should not be modified while still being
 	// rendered.
-	GetLayoutLine() *LayoutLine
-	// GetMatrix: gets the transformation matrix that will be applied when
+	LayoutLine() *LayoutLine
+	// Matrix: gets the transformation matrix that will be applied when
 	// rendering.
 	//
 	// See [method@Pango.Renderer.set_matrix].
-	GetMatrix() *Matrix
+	Matrix() *Matrix
 	// PartChanged: informs Pango that the way that the rendering is done for
 	// @part has changed.
 	//
@@ -5417,15 +5411,15 @@ func (r renderer) DrawRectangle(part RenderPart, x int, y int, width int, height
 
 func (r renderer) DrawTrapezoid(part RenderPart, y1 float64, x11 float64, x21 float64, y2 float64, x12 float64, x22 float64)
 
-func (r renderer) GetAlpha(part RenderPart) uint16
+func (r renderer) Alpha(part RenderPart) uint16
 
-func (r renderer) GetColor(part RenderPart) *Color
+func (r renderer) Color(part RenderPart) *Color
 
-func (r renderer) GetLayout() Layout
+func (r renderer) Layout() Layout
 
-func (r renderer) GetLayoutLine() *LayoutLine
+func (r renderer) LayoutLine() *LayoutLine
 
-func (r renderer) GetMatrix() *Matrix
+func (r renderer) Matrix() *Matrix
 
 func (r renderer) PartChanged(part RenderPart)
 

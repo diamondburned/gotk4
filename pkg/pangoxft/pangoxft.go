@@ -246,19 +246,19 @@ func SubstituteChanged(display *xlib.Display, screen int) {
 type Font interface {
 	pangofc.Font
 
-	// GetDisplay: returns the X display of the `XftFont` of a font.
-	GetDisplay() *xlib.Display
-	// GetGlyph: gets the glyph index for a given Unicode character for @font.
-	// If you only want to determine whether the font has the glyph, use
+	// Display: returns the X display of the `XftFont` of a font.
+	Display() *xlib.Display
+	// Glyph: gets the glyph index for a given Unicode character for @font. If
+	// you only want to determine whether the font has the glyph, use
 	// pango_xft_font_has_char().
 	//
 	// Use pango_fc_font_get_glyph() instead.
-	GetGlyph(wc uint32) uint
-	// GetUnknownGlyph: returns the index of a glyph suitable for drawing @wc as
-	// an unknown character.
+	Glyph(wc uint32) uint
+	// UnknownGlyph: returns the index of a glyph suitable for drawing @wc as an
+	// unknown character.
 	//
 	// Use PANGO_GET_UNKNOWN_GLYPH() instead.
-	GetUnknownGlyph(wc uint32) pango.Glyph
+	UnknownGlyph(wc uint32) pango.Glyph
 	// HasChar: determines whether @font has a glyph for the codepoint @wc.
 	//
 	// Use pango_fc_font_has_char() instead.
@@ -291,11 +291,11 @@ func marshalFont(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (f font) GetDisplay() *xlib.Display
+func (f font) Display() *xlib.Display
 
-func (f font) GetGlyph(wc uint32) uint
+func (f font) Glyph(wc uint32) uint
 
-func (f font) GetUnknownGlyph(wc uint32) pango.Glyph
+func (f font) UnknownGlyph(wc uint32) pango.Glyph
 
 func (f font) HasChar(wc uint32) bool
 

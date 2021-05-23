@@ -3420,7 +3420,7 @@ func AssertionMessageCmpstr(domain string, file string, line int, _func string, 
 	C.g_assertion_message_cmpstr(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
-func AssertionMessageError(domain string, file string, line int, _func string, expr string, error *Error, errorDomain Quark, errorCode int) {
+func AssertionMessageError(domain string, file string, line int, _func string, expr string, error **Error, errorDomain Quark, errorCode int) {
 	var arg0 string
 	arg0 = C.GoString(domain)
 	defer C.free(unsafe.Pointer(domain))
@@ -3440,7 +3440,7 @@ func AssertionMessageError(domain string, file string, line int, _func string, e
 	arg4 = C.GoString(expr)
 	defer C.free(unsafe.Pointer(expr))
 
-	var arg5 *Error
+	var arg5 **Error
 	arg5 = wrapError(error)
 
 	var arg6 Quark
@@ -3958,7 +3958,7 @@ func AtomicRcBoxRelease(memBlock interface{}) {
 // If the reference was the last one, it will call @clear_func to clear the
 // contents of @mem_block, and then will free the resources allocated for
 // @mem_block.
-func AtomicRcBoxReleaseFull(memBlock interface{}, clearFunc unsafe.Pointer) {
+func AtomicRcBoxReleaseFull(memBlock interface{}) {
 	var arg0 interface{}
 	arg0 = unsafe.Pointer(memBlock)
 
@@ -4849,7 +4849,7 @@ func ClearHandleID(tagPtr uint, clearFunc ClearHandleFunc) {
 //
 // @list_ptr must be a valid pointer. If @list_ptr points to a null #GList, this
 // does nothing.
-func ClearList(listPtr *List, destroy unsafe.Pointer) {
+func ClearList(listPtr *List) {
 	var arg0 *List
 	arg0 = wrapList(listPtr)
 
@@ -4869,7 +4869,7 @@ func ClearList(listPtr *List, destroy unsafe.Pointer) {
 // compatible with being called as `GDestroyNotify` using the standard calling
 // convention for the platform that GLib was compiled for; otherwise the program
 // will experience undefined behaviour.
-func ClearPointer(pp interface{}, destroy unsafe.Pointer) {
+func ClearPointer(pp interface{}) {
 	var arg0 interface{}
 	arg0 = unsafe.Pointer(pp)
 
@@ -4881,7 +4881,7 @@ func ClearPointer(pp interface{}, destroy unsafe.Pointer) {
 //
 // @slist_ptr must be a valid pointer. If @slist_ptr points to a null List, this
 // does nothing.
-func ClearSlist(slistPtr *SList, destroy unsafe.Pointer) {
+func ClearSlist(slistPtr *SList) {
 	var arg0 *SList
 	arg0 = wrapSList(slistPtr)
 
@@ -5396,7 +5396,7 @@ func DatalistIDRemoveNoNotify(datalist *Data, keyID Quark) interface{} {
 // (passed out in @old_destroy). Its up to the caller to free this as he wishes,
 // which may or may not include using @old_destroy as sometimes replacement
 // should not destroy the object in the normal way.
-func DatalistIDReplaceData(datalist *Data, keyID Quark, oldval interface{}, newval interface{}, destroy unsafe.Pointer) (oldDestroy unsafe.Pointer, ok bool) {
+func DatalistIDReplaceData(datalist *Data, keyID Quark, oldval interface{}, newval interface{}) (oldDestroy unsafe.Pointer, ok bool) {
 	var arg0 *Data
 	arg0 = wrapData(datalist)
 
@@ -5428,7 +5428,7 @@ func DatalistIDReplaceData(datalist *Data, keyID Quark, oldval interface{}, newv
 // and the function to be called when the element is removed from the datalist.
 // Any previous data with the same key is removed, and its destroy function is
 // called.
-func DatalistIDSetDataFull(datalist *Data, keyID Quark, data interface{}, destroyFunc unsafe.Pointer) {
+func DatalistIDSetDataFull(datalist *Data, keyID Quark, data interface{}) {
 	var arg0 *Data
 	arg0 = wrapData(datalist)
 
@@ -5551,7 +5551,7 @@ func DatasetIDRemoveNoNotify(datasetLocation interface{}, keyID Quark) interface
 // id, and also the function to call when the data element is destroyed. Any
 // previous data with the same key is removed, and its destroy function is
 // called.
-func DatasetIDSetDataFull(datasetLocation interface{}, keyID Quark, data interface{}, destroyFunc unsafe.Pointer) {
+func DatasetIDSetDataFull(datasetLocation interface{}, keyID Quark, data interface{}) {
 	var arg0 interface{}
 	arg0 = unsafe.Pointer(datasetLocation)
 
@@ -9758,15 +9758,15 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 // Note that @src is no longer valid after this call. If you want to keep using
 // the same GError*, you need to set it to nil after calling this function on
 // it.
-func PropagateError(src *Error) Error {
+func PropagateError(src **Error) *Error {
 	var arg0 **C.GError // out
 
-	var arg1 *Error
+	var arg1 **Error
 	arg1 = wrapError(src)
 
 	ret := C.g_propagate_error(&arg0, arg1)
 
-	var ret0 *Error
+	var ret0 **Error
 	ret0 = wrapError(arg0)
 
 	return ret0
@@ -10135,7 +10135,7 @@ func RcBoxRelease(memBlock interface{}) {
 // If the reference was the last one, it will call @clear_func to clear the
 // contents of @mem_block, and then will free the resources allocated for
 // @mem_block.
-func RcBoxReleaseFull(memBlock interface{}, clearFunc unsafe.Pointer) {
+func RcBoxReleaseFull(memBlock interface{}) {
 	var arg0 interface{}
 	arg0 = unsafe.Pointer(memBlock)
 
@@ -10712,7 +10712,7 @@ func SetApplicationName(applicationName string) {
 // g_set_error(), @message is not a printf()-style format string. Use this
 // function if @message contains text you don't have control over, that could
 // include printf() escape sequences.
-func SetErrorLiteral(domain Quark, code int, message string) Error {
+func SetErrorLiteral(domain Quark, code int, message string) *Error {
 	var arg0 **C.GError // out
 
 	var arg1 Quark
@@ -10730,7 +10730,7 @@ func SetErrorLiteral(domain Quark, code int, message string) Error {
 
 	ret := C.g_set_error_literal(&arg0, arg1, arg2, arg3)
 
-	var ret0 *Error
+	var ret0 **Error
 	ret0 = wrapError(arg0)
 
 	return ret0
@@ -13272,7 +13272,7 @@ func TestLogTypeName(logType TestLogType) string {
 // auto destruct allocated test resources at the end of a test run. Resources
 // are released in reverse queue order, that means enqueueing callback A before
 // callback B will cause B() to be called before A() during teardown.
-func TestQueueDestroy(destroyFunc unsafe.Pointer, destroyData interface{}) {
+func TestQueueDestroy(destroyData interface{}) {
 	var arg1 interface{}
 	arg1 = unsafe.Pointer(destroyData)
 
@@ -16805,8 +16805,8 @@ func VariantParse(_type *VariantType, text string, limit string, endptr string) 
 // @source_str must be exactly the same string that caused the error. If
 // @source_str was not nul-terminated when you passed it to g_variant_parse()
 // then you must add nul termination before using this function.
-func VariantParseErrorPrintContext(error *Error, sourceStr string) string {
-	var arg0 *Error
+func VariantParseErrorPrintContext(error **Error, sourceStr string) string {
+	var arg0 **Error
 	arg0 = wrapError(error)
 
 	var arg1 string
@@ -17074,7 +17074,7 @@ func NewBytes(data []uint8) *Bytes
 
 func NewBytes(data []uint8) *Bytes
 
-func NewBytes(data []uint8, freeFunc unsafe.Pointer, userData interface{}) *Bytes
+func NewBytes(data []uint8, userData interface{}) *Bytes
 
 // Checksum: an opaque structure representing a checksumming operation. To
 // create a new GChecksum, use g_checksum_new(). To free a GChecksum, use
@@ -17367,7 +17367,7 @@ func (e *Error) Native() unsafe.Pointer {
 	return unsafe.Pointer(e.native)
 }
 
-func NewError(domain Quark, code int, message string) *Error
+func NewError(domain Quark, code int, message string) **Error
 
 // HashTable: the Table struct is an opaque data structure to represent a [Hash
 // Table][glib-Hash-Tables]. It should only be accessed via the following
@@ -17843,7 +17843,7 @@ func (m *MarkupParseContext) Native() unsafe.Pointer {
 	return unsafe.Pointer(m.native)
 }
 
-func NewMarkupParseContext(parser *MarkupParser, flags MarkupParseFlags, userData interface{}, userDataDnotify unsafe.Pointer) *MarkupParseContext
+func NewMarkupParseContext(parser *MarkupParser, flags MarkupParseFlags, userData interface{}) *MarkupParseContext
 
 // MarkupParser: any of the fields in Parser can be nil, in which case they will
 // be ignored. Except for the @error function, any of these callbacks can set an
@@ -18121,7 +18121,7 @@ func (o *OptionGroup) Native() unsafe.Pointer {
 	return unsafe.Pointer(o.native)
 }
 
-func NewOptionGroup(name string, description string, helpDescription string, userData interface{}, destroy unsafe.Pointer) *OptionGroup
+func NewOptionGroup(name string, description string, helpDescription string, userData interface{}) *OptionGroup
 
 // PollFD represents a file descriptor, which events to poll for, and which
 // events occurred.
@@ -19622,7 +19622,7 @@ func NewVariant(elementType *VariantType, elements interface{}, nElements uint, 
 
 func NewVariant(_type *VariantType, bytes *Bytes, trusted bool) *Variant
 
-func NewVariant(_type *VariantType, data []uint8, trusted bool, notify unsafe.Pointer, userData interface{}) *Variant
+func NewVariant(_type *VariantType, data []uint8, trusted bool, userData interface{}) *Variant
 
 func NewVariant(value int32) *Variant
 

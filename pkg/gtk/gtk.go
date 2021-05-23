@@ -13154,7 +13154,7 @@ type DirectoryList interface {
 	//
 	// An error being set does not mean that no files were loaded, and all
 	// successfully queried files will remain in the list.
-	Error() *glib.Error
+	Error() **glib.Error
 	// File gets the file whose children are currently enumerated.
 	File() gio.File
 	// IOPriority gets the IO priority set via
@@ -13217,7 +13217,7 @@ func NewDirectoryList(attributes string, file gio.File) DirectoryList
 
 func (d directoryList) Attributes() string
 
-func (d directoryList) Error() *glib.Error
+func (d directoryList) Error() **glib.Error
 
 func (d directoryList) File() gio.File
 
@@ -16753,7 +16753,7 @@ type GLArea interface {
 	// Context retrieves the GLContext used by @area.
 	Context() gdk.GLContext
 	// Error gets the current error set on the @area.
-	Error() *glib.Error
+	Error() **glib.Error
 	// HasDepthBuffer returns whether the area has a depth buffer.
 	HasDepthBuffer() bool
 	// HasStencilBuffer returns whether the area has a stencil buffer.
@@ -16790,7 +16790,7 @@ type GLArea interface {
 	// SetError sets an error on the area which will be shown instead of the GL
 	// rendering. This is useful in the GLArea::create-context signal if GL
 	// context creation fails.
-	SetError(error *glib.Error)
+	SetError(error **glib.Error)
 	// SetHasDepthBuffer: if @has_depth_buffer is true the widget will allocate
 	// and enable a depth buffer for the target framebuffer. Otherwise there
 	// will be none.
@@ -16834,7 +16834,7 @@ func (g glArea) AutoRender() bool
 
 func (g glArea) Context() gdk.GLContext
 
-func (g glArea) Error() *glib.Error
+func (g glArea) Error() **glib.Error
 
 func (g glArea) HasDepthBuffer() bool
 
@@ -16850,7 +16850,7 @@ func (g glArea) QueueRender()
 
 func (g glArea) SetAutoRender(autoRender bool)
 
-func (g glArea) SetError(error *glib.Error)
+func (g glArea) SetError(error **glib.Error)
 
 func (g glArea) SetHasDepthBuffer(hasDepthBuffer bool)
 
@@ -21332,7 +21332,7 @@ type MediaStream interface {
 	//
 	// To unset an error, the stream must be reset via a call to
 	// gtk_media_stream_unprepared().
-	Gerror(error *glib.Error)
+	Gerror(error **glib.Error)
 	// Duration gets the duration of the stream. If the duration is not known, 0
 	// will be returned.
 	Duration() int64
@@ -21349,7 +21349,7 @@ type MediaStream interface {
 	// MediaStream itself does not provide a way to unset an error, but
 	// implementations may provide options. For example, a MediaFile will unset
 	// errors when a new source is set with ie gtk_media_file_set_file().
-	Error() *glib.Error
+	Error() **glib.Error
 	// Loop returns whether the stream is set to loop. See
 	// gtk_media_stream_set_loop() for details.
 	Loop() bool
@@ -21492,13 +21492,13 @@ func marshalMediaStream(p uintptr) (interface{}, error) {
 
 func (m mediaStream) Ended()
 
-func (m mediaStream) Gerror(error *glib.Error)
+func (m mediaStream) Gerror(error **glib.Error)
 
 func (m mediaStream) Duration() int64
 
 func (m mediaStream) GetEnded() bool
 
-func (m mediaStream) Error() *glib.Error
+func (m mediaStream) Error() **glib.Error
 
 func (m mediaStream) Loop() bool
 

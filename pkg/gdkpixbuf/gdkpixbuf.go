@@ -173,7 +173,7 @@ func marshalPixbufRotation(p uintptr) (interface{}, error) {
 // is "written" by gdk_pixbuf_save_to_callback(). If successful it should return
 // true. If an error occurs it should set @error and return false, in which case
 // gdk_pixbuf_save_to_callback() will fail with the same error.
-type PixbufSaveFunc func(buf []uint8) (err glib.Error, ok bool)
+type PixbufSaveFunc func(buf []uint8) (err *glib.Error, ok bool)
 
 //export cPixbufSaveFunc
 func cPixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
@@ -471,7 +471,7 @@ func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width in
 
 func NewPixbufFromBytes(data *glib.Bytes, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) Pixbuf
 
-func NewPixbufFromData(data []uint8, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int, destroyFn PixbufDestroyNotify) Pixbuf
+func NewPixbufFromData(data []uint8, colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int, rowstride int) Pixbuf
 
 func NewPixbufFromFile(filename string) Pixbuf
 

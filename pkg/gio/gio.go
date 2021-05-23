@@ -2656,7 +2656,7 @@ func cCancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
 
 // DBusInterfaceGetPropertyFunc: the type of the @get_property function in
 // BusInterfaceVTable.
-type DBusInterfaceGetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, error *glib.Error) *glib.Variant
+type DBusInterfaceGetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, error **glib.Error) *glib.Variant
 
 //export cDBusInterfaceGetPropertyFunc
 func cDBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) *C.GVariant {
@@ -2684,7 +2684,7 @@ func cDBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	propertyName = C.GoString(arg4)
 	defer C.free(unsafe.Pointer(arg4))
 
-	var error *glib.Error
+	var error **glib.Error
 	error = wrapError(arg5)
 
 	variant := v.(DBusInterfaceGetPropertyFunc)(connection, sender, objectPath, interfaceName, propertyName, error)
@@ -2731,7 +2731,7 @@ func cDBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *
 
 // DBusInterfaceSetPropertyFunc: the type of the @set_property function in
 // BusInterfaceVTable.
-type DBusInterfaceSetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, error *glib.Error) bool
+type DBusInterfaceSetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, error **glib.Error) bool
 
 //export cDBusInterfaceSetPropertyFunc
 func cDBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) C.gboolean {
@@ -2762,7 +2762,7 @@ func cDBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var value *glib.Variant
 	value = wrapVariant(arg5)
 
-	var error *glib.Error
+	var error **glib.Error
 	error = wrapError(arg6)
 
 	ok := v.(DBusInterfaceSetPropertyFunc)(connection, sender, objectPath, interfaceName, propertyName, value, error)
@@ -4445,8 +4445,8 @@ func DbusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 //
 // This function is typically only used in object mappings to put a #GError on
 // the wire. Regular applications should not use it.
-func DbusErrorEncodeGerror(error *glib.Error) string {
-	var arg0 *glib.Error
+func DbusErrorEncodeGerror(error **glib.Error) string {
+	var arg0 **glib.Error
 	arg0 = wrapError(error)
 
 	ret := C.g_dbus_error_encode_gerror(arg0)
@@ -4464,8 +4464,8 @@ func DbusErrorEncodeGerror(error *glib.Error) string {
 // returned from functions handling remote method calls (e.g.
 // g_dbus_connection_call_finish()) unless g_dbus_error_strip_remote_error() has
 // been used on @error.
-func DbusErrorGetRemoteError(error *glib.Error) string {
-	var arg0 *glib.Error
+func DbusErrorGetRemoteError(error **glib.Error) string {
+	var arg0 **glib.Error
 	arg0 = wrapError(error)
 
 	ret := C.g_dbus_error_get_remote_error(arg0)
@@ -4480,8 +4480,8 @@ func DbusErrorGetRemoteError(error *glib.Error) string {
 // DbusErrorIsRemoteError checks if @error represents an error received via
 // D-Bus from a remote peer. If so, use g_dbus_error_get_remote_error() to get
 // the name of the error.
-func DbusErrorIsRemoteError(error *glib.Error) bool {
-	var arg0 *glib.Error
+func DbusErrorIsRemoteError(error **glib.Error) bool {
+	var arg0 **glib.Error
 	arg0 = wrapError(error)
 
 	ret := C.g_dbus_error_is_remote_error(arg0)
@@ -4517,7 +4517,7 @@ func DbusErrorIsRemoteError(error *glib.Error) bool {
 //
 // This function is typically only used in object mappings to prepare #GError
 // instances for applications. Regular applications should not use it.
-func DbusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) *glib.Error {
+func DbusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) **glib.Error {
 	var arg0 string
 	arg0 = C.GoString(dbusErrorName)
 	defer C.free(unsafe.Pointer(dbusErrorName))
@@ -4528,7 +4528,7 @@ func DbusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) *gl
 
 	ret := C.g_dbus_error_new_for_dbus_error(arg0, arg1)
 
-	var ret0 *glib.Error
+	var ret0 **glib.Error
 	ret0 = wrapError(ret)
 
 	return ret0
@@ -4601,8 +4601,8 @@ func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uin
 // wire.
 //
 // This is typically used when presenting errors to the end user.
-func DbusErrorStripRemoteError(error *glib.Error) bool {
-	var arg0 *glib.Error
+func DbusErrorStripRemoteError(error **glib.Error) bool {
+	var arg0 **glib.Error
 	arg0 = wrapError(error)
 
 	ret := C.g_dbus_error_strip_remote_error(arg0)
@@ -5734,7 +5734,7 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 // SimpleAsyncReportGerrorInIdle reports an error in an idle function. Similar
 // to g_simple_async_report_error_in_idle(), but takes a #GError rather than
 // building a new one.
-func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error *glib.Error) {
+func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error **glib.Error) {
 	var arg0 gextras.Objector
 	arg0 = glib.Take(object)
 
@@ -5742,7 +5742,7 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 	arg1 = wrapAsyncReadyCallback(callback)
 
 	arg2 := C.gpointer(box.Assign(box.Callback, userData))
-	var arg3 *glib.Error
+	var arg3 **glib.Error
 	arg3 = wrapError(error)
 
 	C.g_simple_async_report_gerror_in_idle(arg0, arg1, arg3)
@@ -5752,7 +5752,7 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 // Similar to g_simple_async_report_gerror_in_idle(), but takes over the
 // caller's ownership of @error, so the caller does not have to free it any
 // more.
-func SimpleAsyncReportTakeGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error *glib.Error) {
+func SimpleAsyncReportTakeGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error **glib.Error) {
 	var arg0 gextras.Objector
 	arg0 = glib.Take(object)
 
@@ -5760,7 +5760,7 @@ func SimpleAsyncReportTakeGerrorInIdle(object gextras.Objector, callback AsyncRe
 	arg1 = wrapAsyncReadyCallback(callback)
 
 	arg2 := C.gpointer(box.Assign(box.Callback, userData))
-	var arg3 *glib.Error
+	var arg3 **glib.Error
 	arg3 = wrapError(error)
 
 	C.g_simple_async_report_take_gerror_in_idle(arg0, arg1, arg3)
@@ -10914,7 +10914,7 @@ type DBusConnection interface {
 	// note that @vtable will be copied.
 	//
 	// See this [server][gdbus-server] for an example of how to use this method.
-	RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, vtable *DBusInterfaceVTable, userData interface{}, userDataFreeFunc unsafe.Pointer) uint
+	RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, vtable *DBusInterfaceVTable, userData interface{}) uint
 	// RegisterObjectWithClosures: version of
 	// g_dbus_connection_register_object() using closures instead of a
 	// BusInterfaceVTable for easier binding in other languages.
@@ -10953,7 +10953,7 @@ type DBusConnection interface {
 	//
 	// See this [server][gdbus-subtree-server] for an example of how to use this
 	// method.
-	RegisterSubtree(objectPath string, vtable *DBusSubtreeVTable, flags DBusSubtreeFlags, userData interface{}, userDataFreeFunc unsafe.Pointer) uint
+	RegisterSubtree(objectPath string, vtable *DBusSubtreeVTable, flags DBusSubtreeFlags, userData interface{}) uint
 	// RemoveFilter removes a filter.
 	//
 	// Note that since filters run in a different thread, there is a race
@@ -11218,11 +11218,11 @@ func (d dBusConnection) UniqueName() string
 
 func (d dBusConnection) IsClosed() bool
 
-func (d dBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, vtable *DBusInterfaceVTable, userData interface{}, userDataFreeFunc unsafe.Pointer) uint
+func (d dBusConnection) RegisterObject(objectPath string, interfaceInfo *DBusInterfaceInfo, vtable *DBusInterfaceVTable, userData interface{}) uint
 
 func (d dBusConnection) RegisterObjectWithClosures(objectPath string, interfaceInfo *DBusInterfaceInfo, methodCallClosure *externglib.Closure, getPropertyClosure *externglib.Closure, setPropertyClosure *externglib.Closure) uint
 
-func (d dBusConnection) RegisterSubtree(objectPath string, vtable *DBusSubtreeVTable, flags DBusSubtreeFlags, userData interface{}, userDataFreeFunc unsafe.Pointer) uint
+func (d dBusConnection) RegisterSubtree(objectPath string, vtable *DBusSubtreeVTable, flags DBusSubtreeFlags, userData interface{}) uint
 
 func (d dBusConnection) RemoveFilter(filterID uint)
 
@@ -11719,7 +11719,7 @@ type DBusMethodInvocation interface {
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	ReturnGerror(error *glib.Error)
+	ReturnGerror(error **glib.Error)
 	// ReturnValue finishes handling a D-Bus method call by returning
 	// @parameters. If the @parameters GVariant is floating, it is consumed.
 	//
@@ -11764,7 +11764,7 @@ type DBusMethodInvocation interface {
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	TakeError(error *glib.Error)
+	TakeError(error **glib.Error)
 }
 
 type dBusMethodInvocation struct {
@@ -11805,13 +11805,13 @@ func (d dBusMethodInvocation) ReturnDbusError(errorName string, errorMessage str
 
 func (d dBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int, message string)
 
-func (d dBusMethodInvocation) ReturnGerror(error *glib.Error)
+func (d dBusMethodInvocation) ReturnGerror(error **glib.Error)
 
 func (d dBusMethodInvocation) ReturnValue(parameters *glib.Variant)
 
 func (d dBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList)
 
-func (d dBusMethodInvocation) TakeError(error *glib.Error)
+func (d dBusMethodInvocation) TakeError(error **glib.Error)
 
 // DBusObjectManagerClient is used to create, monitor and delete object proxies
 // for remote objects exported by a BusObjectManagerServer (or any code
@@ -14647,7 +14647,7 @@ type MemoryInputStream interface {
 	// AddBytes appends @bytes to data that can be read from the input stream.
 	AddBytes(bytes *glib.Bytes)
 	// AddData appends @data to data that can be read from the input stream
-	AddData(data []uint8, destroy unsafe.Pointer)
+	AddData(data []uint8)
 }
 
 type memoryInputStream struct {
@@ -14668,11 +14668,11 @@ func NewMemoryInputStream() MemoryInputStream
 
 func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) MemoryInputStream
 
-func NewMemoryInputStreamFromData(data []uint8, destroy unsafe.Pointer) MemoryInputStream
+func NewMemoryInputStreamFromData(data []uint8) MemoryInputStream
 
 func (m memoryInputStream) AddBytes(bytes *glib.Bytes)
 
-func (m memoryInputStream) AddData(data []uint8, destroy unsafe.Pointer)
+func (m memoryInputStream) AddData(data []uint8)
 
 // MemoryOutputStream is a class for using arbitrary memory chunks as output for
 // GIO streaming output operations.
@@ -17778,7 +17778,7 @@ type SimpleAsyncResult interface {
 	// unrelated g_simple_async_result_set_handle_cancellation() function.
 	SetCheckCancellable(checkCancellable Cancellable)
 	// SetFromError sets the result from a #GError.
-	SetFromError(error *glib.Error)
+	SetFromError(error **glib.Error)
 	// SetHandleCancellation sets whether to handle cancellation within the
 	// asynchronous operation.
 	//
@@ -17791,13 +17791,13 @@ type SimpleAsyncResult interface {
 	SetOpResGboolean(opRes bool)
 	// SetOpResGpointer sets the operation result within the asynchronous result
 	// to a pointer.
-	SetOpResGpointer(opRes interface{}, destroyOpRes unsafe.Pointer)
+	SetOpResGpointer(opRes interface{})
 	// SetOpResGssize sets the operation result within the asynchronous result
 	// to the given @op_res.
 	SetOpResGssize(opRes int)
 	// TakeError sets the result from @error, and takes over the caller's
 	// ownership of @error, so the caller does not need to free it any more.
-	TakeError(error *glib.Error)
+	TakeError(error **glib.Error)
 }
 
 type simpleAsyncResult struct {
@@ -17816,9 +17816,9 @@ func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 
 func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag interface{}) SimpleAsyncResult
 
-func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback AsyncReadyCallback, error *glib.Error) SimpleAsyncResult
+func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback AsyncReadyCallback, error **glib.Error) SimpleAsyncResult
 
-func NewSimpleAsyncResultTakeError(sourceObject gextras.Objector, callback AsyncReadyCallback, error *glib.Error) SimpleAsyncResult
+func NewSimpleAsyncResultTakeError(sourceObject gextras.Objector, callback AsyncReadyCallback, error **glib.Error) SimpleAsyncResult
 
 func (s simpleAsyncResult) Complete()
 
@@ -17838,17 +17838,17 @@ func (s simpleAsyncResult) RunInThread(_func SimpleAsyncThreadFunc, ioPriority i
 
 func (s simpleAsyncResult) SetCheckCancellable(checkCancellable Cancellable)
 
-func (s simpleAsyncResult) SetFromError(error *glib.Error)
+func (s simpleAsyncResult) SetFromError(error **glib.Error)
 
 func (s simpleAsyncResult) SetHandleCancellation(handleCancellation bool)
 
 func (s simpleAsyncResult) SetOpResGboolean(opRes bool)
 
-func (s simpleAsyncResult) SetOpResGpointer(opRes interface{}, destroyOpRes unsafe.Pointer)
+func (s simpleAsyncResult) SetOpResGpointer(opRes interface{})
 
 func (s simpleAsyncResult) SetOpResGssize(opRes int)
 
-func (s simpleAsyncResult) TakeError(error *glib.Error)
+func (s simpleAsyncResult) TakeError(error **glib.Error)
 
 // SimpleIOStream: GSimpleIOStream creates a OStream from an arbitrary Stream
 // and Stream. This allows any pair of input and output streams to be used with
@@ -20659,7 +20659,7 @@ type Task interface {
 	// on the error if you need to keep a local copy as well.
 	//
 	// See also g_task_return_new_error().
-	ReturnError(error *glib.Error)
+	ReturnError(error **glib.Error)
 	// ReturnErrorIfCancelled checks if @task's #GCancellable has been
 	// cancelled, and if so, sets @task's error accordingly and completes the
 	// task (see g_task_return_pointer() for more discussion of exactly what
@@ -20683,7 +20683,7 @@ type Task interface {
 	// Note that since the task may be completed before returning from
 	// g_task_return_pointer(), you cannot assume that @result is still valid
 	// after calling this, unless you are still holding another reference on it.
-	ReturnPointer(result interface{}, resultDestroy unsafe.Pointer)
+	ReturnPointer(result interface{})
 	// ReturnValue sets @task's result to @result (by copying it) and completes
 	// the task.
 	//
@@ -20790,7 +20790,7 @@ type Task interface {
 	SetSourceTag(sourceTag interface{})
 	// SetTaskData sets @task's task data (freeing the existing task data, if
 	// any).
-	SetTaskData(taskData interface{}, taskDataDestroy unsafe.Pointer)
+	SetTaskData(taskData interface{})
 }
 
 type task struct {
@@ -20843,13 +20843,13 @@ func (t task) PropagateValue() (value externglib.Value, ok bool)
 
 func (t task) ReturnBoolean(result bool)
 
-func (t task) ReturnError(error *glib.Error)
+func (t task) ReturnError(error **glib.Error)
 
 func (t task) ReturnErrorIfCancelled() bool
 
 func (t task) ReturnInt(result int)
 
-func (t task) ReturnPointer(result interface{}, resultDestroy unsafe.Pointer)
+func (t task) ReturnPointer(result interface{})
 
 func (t task) ReturnValue(result *externglib.Value)
 
@@ -20867,7 +20867,7 @@ func (t task) SetReturnOnCancel(returnOnCancel bool) bool
 
 func (t task) SetSourceTag(sourceTag interface{})
 
-func (t task) SetTaskData(taskData interface{}, taskDataDestroy unsafe.Pointer)
+func (t task) SetTaskData(taskData interface{})
 
 // TcpConnection: this is the subclass of Connection that is created for TCP/IP
 // sockets.
@@ -21846,7 +21846,7 @@ type TlsPassword interface {
 	// @length if using a nul-terminated password, and @length will be
 	// calculated automatically. (Note that the terminating nul is not
 	// considered part of the password in this case.)
-	SetValueFull(value []uint8, destroy unsafe.Pointer)
+	SetValueFull(value []uint8)
 	// SetWarning: set a user readable translated warning. Usually this warning
 	// is a representation of the password flags returned from
 	// g_tls_password_get_flags().
@@ -21883,7 +21883,7 @@ func (t tlsPassword) SetFlags(flags TlsPasswordFlags)
 
 func (t tlsPassword) SetValue(value []uint8)
 
-func (t tlsPassword) SetValueFull(value []uint8, destroy unsafe.Pointer)
+func (t tlsPassword) SetValueFull(value []uint8)
 
 func (t tlsPassword) SetWarning(warning string)
 

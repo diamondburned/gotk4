@@ -337,7 +337,7 @@ func marshalTransformCategory(p uintptr) (interface{}, error) {
 
 // ParseErrorFunc: the type of callback that is called when a parse error occurs
 // during deserialization of node data.
-type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, error *glib.Error)
+type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, error **glib.Error)
 
 //export cParseErrorFunc
 func cParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
@@ -352,7 +352,7 @@ func cParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C
 	var end *ParseLocation
 	end = wrapParseLocation(arg1)
 
-	var error *glib.Error
+	var error **glib.Error
 	error = wrapError(arg2)
 
 	v.(ParseErrorFunc)(start, end, error)

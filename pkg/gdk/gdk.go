@@ -2434,12 +2434,12 @@ type ContentDeserializer interface {
 	Value() *externglib.Value
 	// ReturnError: indicate that the deserialization has ended with an error.
 	// This function consumes @error.
-	ReturnError(error *glib.Error)
+	ReturnError(error **glib.Error)
 	// ReturnSuccess: indicate that the deserialization has been successfully
 	// completed.
 	ReturnSuccess()
 	// SetTaskData: associate data with the current deserialization operation.
-	SetTaskData(data interface{}, notify unsafe.Pointer)
+	SetTaskData(data interface{})
 }
 
 type contentDeserializer struct {
@@ -2472,11 +2472,11 @@ func (c contentDeserializer) UserData() interface{}
 
 func (c contentDeserializer) Value() *externglib.Value
 
-func (c contentDeserializer) ReturnError(error *glib.Error)
+func (c contentDeserializer) ReturnError(error **glib.Error)
 
 func (c contentDeserializer) ReturnSuccess()
 
-func (c contentDeserializer) SetTaskData(data interface{}, notify unsafe.Pointer)
+func (c contentDeserializer) SetTaskData(data interface{})
 
 // ContentProvider: a GdkContentProvider is used to provide content for the
 // clipboard in a number of formats.
@@ -2586,12 +2586,12 @@ type ContentSerializer interface {
 	Value() *externglib.Value
 	// ReturnError: indicate that the serialization has ended with an error.
 	// This function consumes @error.
-	ReturnError(error *glib.Error)
+	ReturnError(error **glib.Error)
 	// ReturnSuccess: indicate that the serialization has been successfully
 	// completed.
 	ReturnSuccess()
 	// SetTaskData: associate data with the current serialization operation.
-	SetTaskData(data interface{}, notify unsafe.Pointer)
+	SetTaskData(data interface{})
 }
 
 type contentSerializer struct {
@@ -2624,11 +2624,11 @@ func (c contentSerializer) UserData() interface{}
 
 func (c contentSerializer) Value() *externglib.Value
 
-func (c contentSerializer) ReturnError(error *glib.Error)
+func (c contentSerializer) ReturnError(error **glib.Error)
 
 func (c contentSerializer) ReturnSuccess()
 
-func (c contentSerializer) SetTaskData(data interface{}, notify unsafe.Pointer)
+func (c contentSerializer) SetTaskData(data interface{})
 
 // CrossingEvent: an event caused by a pointing device moving between surfaces.
 type CrossingEvent interface {
@@ -3860,7 +3860,7 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGLTexture(context GLContext, id uint, width int, height int, destroy unsafe.Pointer, data interface{}) GLTexture
+func NewGLTexture(context GLContext, id uint, width int, height int, data interface{}) GLTexture
 
 func (g glTexture) Release()
 

@@ -260,12 +260,14 @@ func iterateParams(attr gir.CallableAttrs, fn func(int, gir.Parameter) bool) boo
 	for i, param := range attr.Parameters.Parameters {
 		ignores.paramIgnore(param)
 
-		if param.Direction == "out" || ignores.ignore(i) {
-			continue
-		}
+		ignore := ignores.ignore(i) ||
+			// Ignore out params (treat as return).
+			(param.Direction == "out") ||
+			// Ignore exposing destroy notifiers.
+			(param.Name == "destroy_fn") ||
+			(param.Type != nil && strings.HasSuffix(param.Type.Name, "DestroyNotify"))
 
-		// Ignore exposing destroy notifiers.
-		if strings.HasSuffix(param.Name, "DestroyNotify") {
+		if ignore {
 			continue
 		}
 

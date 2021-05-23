@@ -15,7 +15,6 @@ import (
 // #include <gdk/wayland/gdkwayland.h>
 //
 // extern void cWaylandToplevelExported(GdkToplevel*, const char*, gpointer)
-//
 import "C"
 
 func init() {

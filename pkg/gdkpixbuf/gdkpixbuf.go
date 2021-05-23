@@ -18,7 +18,6 @@ import (
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 //
 // extern gboolean cPixbufSaveFunc(const gchar*, gsize, GError**, gpointer)
-//
 import "C"
 
 func init() {
@@ -174,7 +173,7 @@ func marshalPixbufRotation(p uintptr) (interface{}, error) {
 // is "written" by gdk_pixbuf_save_to_callback(). If successful it should return
 // true. If an error occurs it should set @error and return false, in which case
 // gdk_pixbuf_save_to_callback() will fail with the same error.
-type PixbufSaveFunc func(buf []uint8) (err *glib.Error, ok bool)
+type PixbufSaveFunc func(buf []uint8) (err glib.Error, ok bool)
 
 //export cPixbufSaveFunc
 func cPixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
@@ -187,7 +186,7 @@ func cPixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpoint
 	{
 		buf = make([]uint8, arg1)
 		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			buf[i] = uint8(src)
 		}
 	}

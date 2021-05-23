@@ -79,7 +79,7 @@ func (cg *callableGenerator) Block() string {
 			// Handle non-closure destroy notifiers: since we're always copying
 			// Go memory to C using malloc, we can just give it a free.
 			if param.Type != nil &&
-				param.Type.Name != "GDestroyNotify" &&
+				param.Type.Name != "GLib.DestroyNotify" &&
 				strings.HasSuffix(param.Type.Name, "DestroyNotify") {
 
 				// https://github.com/golang/go/issues/19835

@@ -154,7 +154,7 @@ func NewPaperSize(size int) *Paper {
 }
 
 // String returns the final string written from the Pen.
-func (p *Paper) String() string { return p.buf.String() }
+func (p *Paper) String() string { return strings.TrimSuffix(p.buf.String(), "\n") }
 
 // Pen is an utility writer.
 type Pen struct {

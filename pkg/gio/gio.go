@@ -54,8 +54,13 @@ import (
 // extern gboolean cSettingsGetMapping(GVariant*, gpointer*, gpointer)
 // extern gboolean cSocketSourceFunc(GSocket*, GIOCondition, gpointer)
 // extern GFile* cVfsFileLookupFunc(GVfs*, const char*, gpointer)
-//
+// // extern void callbackDelete(gpointer);
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -2651,7 +2656,7 @@ func cCancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
 
 // DBusInterfaceGetPropertyFunc: the type of the @get_property function in
 // BusInterfaceVTable.
-type DBusInterfaceGetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, error **glib.Error) *glib.Variant
+type DBusInterfaceGetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, error *glib.Error) *glib.Variant
 
 //export cDBusInterfaceGetPropertyFunc
 func cDBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) *C.GVariant {
@@ -2679,7 +2684,7 @@ func cDBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	propertyName = C.GoString(arg4)
 	defer C.free(unsafe.Pointer(arg4))
 
-	var error **glib.Error
+	var error *glib.Error
 	error = wrapError(arg5)
 
 	variant := v.(DBusInterfaceGetPropertyFunc)(connection, sender, objectPath, interfaceName, propertyName, error)
@@ -2726,7 +2731,7 @@ func cDBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *
 
 // DBusInterfaceSetPropertyFunc: the type of the @set_property function in
 // BusInterfaceVTable.
-type DBusInterfaceSetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, error **glib.Error) bool
+type DBusInterfaceSetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, error *glib.Error) bool
 
 //export cDBusInterfaceSetPropertyFunc
 func cDBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) C.gboolean {
@@ -2757,7 +2762,7 @@ func cDBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	var value *glib.Variant
 	value = wrapVariant(arg5)
 
-	var error **glib.Error
+	var error *glib.Error
 	error = wrapError(arg6)
 
 	ok := v.(DBusInterfaceSetPropertyFunc)(connection, sender, objectPath, interfaceName, propertyName, value, error)
@@ -2968,7 +2973,7 @@ func cDBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.g
 // The difference between returning nil and an array containing zero items is
 // that the standard DBus interfaces will returned to the remote introspector in
 // the empty array case, but not in the nil case.
-type DBusSubtreeIntrospectFunc func(connection DBusConnection, sender string, objectPath string, node string) **DBusInterfaceInfo
+type DBusSubtreeIntrospectFunc func(connection DBusConnection, sender string, objectPath string, node string) *DBusInterfaceInfo
 
 //export cDBusSubtreeIntrospectFunc
 func cDBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) **C.GDBusInterfaceInfo {
@@ -3327,7 +3332,7 @@ func ActionNameIsValid(actionName string) bool {
 // "app.action('target')". For strings, this third format must be used if *
 // target value is empty or contains characters other than alphanumerics, '-'
 // and '.'.
-func ActionParseDetailedName(detailedName string) (actionName string, targetValue *glib.Variant, ok bool) {
+func ActionParseDetailedName(detailedName string) (actionName string, targetValue glib.Variant, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(detailedName)
 	defer C.free(unsafe.Pointer(detailedName))
@@ -3342,7 +3347,7 @@ func ActionParseDetailedName(detailedName string) (actionName string, targetValu
 	ret0 = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(arg1))
 
-	var ret1 **glib.Variant
+	var ret1 *glib.Variant
 	ret1 = wrapVariant(arg2)
 
 	var ret2 bool
@@ -3725,7 +3730,7 @@ func BusOwnName(busType BusType, name string, flags BusNameOwnerFlags, busAcquir
 	arg5 = wrapBusNameLostCallback(nameLostHandler)
 
 	arg6 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_own_name(arg0, arg1, arg2, arg3, arg4, arg5, (*[0]byte)(C.free))
+	ret := C.g_bus_own_name(arg0, arg1, arg2, arg3, arg4, arg5, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3753,7 +3758,7 @@ func BusOwnNameOnConnection(connection DBusConnection, name string, flags BusNam
 	arg4 = wrapBusNameLostCallback(nameLostHandler)
 
 	arg5 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_own_name_on_connection(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.free))
+	ret := C.g_bus_own_name_on_connection(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3876,7 +3881,7 @@ func BusWatchName(busType BusType, name string, flags BusNameWatcherFlags, nameA
 	arg4 = wrapBusNameVanishedCallback(nameVanishedHandler)
 
 	arg5 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_watch_name(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.free))
+	ret := C.g_bus_watch_name(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3904,7 +3909,7 @@ func BusWatchNameOnConnection(connection DBusConnection, name string, flags BusN
 	arg4 = wrapBusNameVanishedCallback(nameVanishedHandler)
 
 	arg5 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_watch_name_on_connection(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.free))
+	ret := C.g_bus_watch_name_on_connection(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -4068,7 +4073,7 @@ func ContentTypeGetMIMEDirs() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -4120,7 +4125,7 @@ func ContentTypeGuess(filename string, data []uint8) (resultUncertain bool, utf8
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -4165,7 +4170,7 @@ func ContentTypeGuessForTree(root File) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -4817,7 +4822,7 @@ func DbusIsUniqueName(string string) bool {
 // NewDtlsClientConnection creates a new ClientConnection wrapping @base_socket
 // which is assumed to communicate with the server identified by
 // @server_identity.
-func NewDtlsClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) DatagramBased {
+func NewDtlsClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) DtlsClientConnection {
 	var arg0 DatagramBased
 	arg0 = wrapDatagramBased(baseSocket)
 
@@ -4826,14 +4831,14 @@ func NewDtlsClientConnection(baseSocket DatagramBased, serverIdentity SocketConn
 
 	ret := C.g_dtls_client_connection_new(arg0, arg1)
 
-	var ret0 DatagramBased
+	var ret0 DtlsClientConnection
 	ret0 = wrapDtlsClientConnection(ret)
 
 	return ret0
 }
 
 // NewDtlsServerConnection creates a new ServerConnection wrapping @base_socket.
-func NewDtlsServerConnection(baseSocket DatagramBased, certificate TlsCertificate) DatagramBased {
+func NewDtlsServerConnection(baseSocket DatagramBased, certificate TlsCertificate) DtlsServerConnection {
 	var arg0 DatagramBased
 	arg0 = wrapDatagramBased(baseSocket)
 
@@ -4842,7 +4847,7 @@ func NewDtlsServerConnection(baseSocket DatagramBased, certificate TlsCertificat
 
 	ret := C.g_dtls_server_connection_new(arg0, arg1)
 
-	var ret0 DatagramBased
+	var ret0 DtlsServerConnection
 	ret0 = wrapDtlsServerConnection(ret)
 
 	return ret0
@@ -4953,7 +4958,7 @@ func FileNewTmp(tmpl string) (iostream FileIOStream, file File) {
 
 	ret := C.g_file_new_tmp(arg0, &arg1)
 
-	var ret0 *FileIOStream
+	var ret0 FileIOStream
 	ret0 = wrapFileIOStream(externglib.Take(unsafe.Pointer(arg1)))
 
 	var ret1 File
@@ -5216,7 +5221,7 @@ func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, ioPriority int, cancellable 
 	var arg4 Cancellable
 	arg4 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
 
-	C.g_io_scheduler_push_job(arg0, (*[0]byte)(C.free), arg3, arg4)
+	C.g_io_scheduler_push_job(arg0, (*[0]byte)(C.callbackDelete), arg3, arg4)
 }
 
 // NewKeyfileSettingsBackend creates a keyfile-backed Backend.
@@ -5361,8 +5366,8 @@ func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 // implementations. Creates a new #GSource, as with g_pollable_source_new(), but
 // also attaching @child_source (with a dummy callback), and @cancellable, if
 // they are non-nil.
-func PollableSourceNewFull(pollableStream interface{}, childSource *glib.Source, cancellable Cancellable) *glib.Source {
-	var arg0 interface{}
+func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.Source, cancellable Cancellable) *glib.Source {
+	var arg0 gextras.Objector
 	arg0 = glib.Take(pollableStream)
 
 	var arg1 *glib.Source
@@ -5396,7 +5401,7 @@ func PollableStreamRead(stream InputStream, buffer []uint8, blocking bool, cance
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -5433,7 +5438,7 @@ func PollableStreamWrite(stream OutputStream, buffer []uint8, blocking bool, can
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -5476,7 +5481,7 @@ func PollableStreamWriteAll(stream OutputStream, buffer []uint8, blocking bool, 
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -5597,7 +5602,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -5805,7 +5810,7 @@ func TlsChannelBindingErrorQuark() glib.Quark {
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the @base_io_stream after this
 // function has returned.
-func NewTlsClientConnection(baseIOStream IOStream, serverIdentity SocketConnectable) IOStream {
+func NewTlsClientConnection(baseIOStream IOStream, serverIdentity SocketConnectable) TlsClientConnection {
 	var arg0 IOStream
 	arg0 = wrapIOStream(externglib.Take(unsafe.Pointer(baseIOStream)))
 
@@ -5814,7 +5819,7 @@ func NewTlsClientConnection(baseIOStream IOStream, serverIdentity SocketConnecta
 
 	ret := C.g_tls_client_connection_new(arg0, arg1)
 
-	var ret0 IOStream
+	var ret0 TlsClientConnection
 	ret0 = wrapTlsClientConnection(ret)
 
 	return ret0
@@ -5837,14 +5842,14 @@ func TlsErrorQuark() glib.Quark {
 // authorities in @anchors to verify certificate chains.
 //
 // The certificates in @anchors must be PEM encoded.
-func NewTlsFileDatabase(anchors string) TlsDatabase {
+func NewTlsFileDatabase(anchors string) TlsFileDatabase {
 	var arg0 string
 	arg0 = C.GoString(anchors)
 	defer C.free(unsafe.Pointer(anchors))
 
 	ret := C.g_tls_file_database_new(arg0)
 
-	var ret0 TlsDatabase
+	var ret0 TlsFileDatabase
 	ret0 = wrapTlsFileDatabase(ret)
 
 	return ret0
@@ -5856,7 +5861,7 @@ func NewTlsFileDatabase(anchors string) TlsDatabase {
 // See the documentation for Connection:base-io-stream for restrictions on when
 // application code can run operations on the @base_io_stream after this
 // function has returned.
-func NewTlsServerConnection(baseIOStream IOStream, certificate TlsCertificate) IOStream {
+func NewTlsServerConnection(baseIOStream IOStream, certificate TlsCertificate) TlsServerConnection {
 	var arg0 IOStream
 	arg0 = wrapIOStream(externglib.Take(unsafe.Pointer(baseIOStream)))
 
@@ -5865,7 +5870,7 @@ func NewTlsServerConnection(baseIOStream IOStream, certificate TlsCertificate) I
 
 	ret := C.g_tls_server_connection_new(arg0, arg1)
 
-	var ret0 IOStream
+	var ret0 TlsServerConnection
 	ret0 = wrapTlsServerConnection(ret)
 
 	return ret0
@@ -6368,7 +6373,7 @@ type ActionGroup interface {
 	GetActionStateType(actionName string) *glib.VariantType
 	HasAction(actionName string) bool
 	ListActions() []string
-	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
+	QueryAction(actionName string) (enabled bool, parameterType glib.VariantType, stateType glib.VariantType, stateHint glib.Variant, state glib.Variant, ok bool)
 }
 
 // ActionMap: the GActionMap interface is implemented by Group implementations
@@ -7256,7 +7261,7 @@ type PollableOutputStream interface {
 	CreateSource(cancellable Cancellable) *glib.Source
 	IsWritable() bool
 	WriteNonblocking(buffer []uint8, cancellable Cancellable) int
-	WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
+	WritevNonblocking(vectors []*OutputVector, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
 }
 
 // Proxy: a #GProxy handles connecting to a remote host via a given type of
@@ -8277,7 +8282,7 @@ func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher
 // `MSG_EOR` or `MSG_TRUNC`.
 type InputMessage struct {
 	// Address: return location for a Address, or nil
-	Address *SocketAddress
+	Address SocketAddress
 	// Vectors: pointer to an array of input vectors
 	Vectors []InputVector
 	// BytesReceived: will be set to the number of bytes that have been received
@@ -8287,7 +8292,7 @@ type InputMessage struct {
 	Flags int
 	// ControlMessages: return location for a caller-allocated array of
 	// ControlMessages, or nil
-	ControlMessages []*SocketControlMessage
+	ControlMessages []SocketControlMessage
 
 	native *C.GInputMessage
 }
@@ -8306,7 +8311,7 @@ func wrapInputMessage(p *C.GInputMessage) *InputMessage {
 	v.BytesReceived = uint(p.bytes_received)
 	v.Flags = int(p.flags)
 	{
-		v.ControlMessages = make([]*SocketControlMessage, p.num_control_messages)
+		v.ControlMessages = make([]SocketControlMessage, p.num_control_messages)
 		for i := 0; i < uintptr(p.num_control_messages); i++ {
 			src := (**C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			v.ControlMessages[i] = wrapSocketControlMessage(externglib.Take(unsafe.Pointer(src)))
@@ -8396,7 +8401,7 @@ func wrapOutputMessage(p *C.GOutputMessage) *OutputMessage {
 	{
 		v.ControlMessages = make([]SocketControlMessage, p.num_control_messages)
 		for i := 0; i < uintptr(p.num_control_messages); i++ {
-			src := (*C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (**C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			v.ControlMessages[i] = wrapSocketControlMessage(externglib.Take(unsafe.Pointer(src)))
 		}
 	}
@@ -9155,58 +9160,6 @@ type Application interface {
 	//
 	// See Entry for more documentation of the arguments.
 	AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
-	// AddMainOptionEntries adds main option entries to be handled by
-	// @application.
-	//
-	// This function is comparable to g_option_context_add_main_entries().
-	//
-	// After the commandline arguments are parsed, the
-	// #GApplication::handle-local-options signal will be emitted. At this
-	// point, the application can inspect the values pointed to by @arg_data in
-	// the given Entrys.
-	//
-	// Unlike Context, #GApplication supports giving a nil @arg_data for a
-	// non-callback Entry. This results in the argument in question being packed
-	// into a Dict which is also passed to #GApplication::handle-local-options,
-	// where it can be inspected and modified. If
-	// G_APPLICATION_HANDLES_COMMAND_LINE is set, then the resulting dictionary
-	// is sent to the primary instance, where
-	// g_application_command_line_get_options_dict() will return it. This
-	// "packing" is done according to the type of the argument -- booleans for
-	// normal flags, strings for strings, bytestrings for filenames, etc. The
-	// packing only occurs if the flag is given (ie: we do not pack a "false"
-	// #GVariant in the case that a flag is missing).
-	//
-	// In general, it is recommended that all commandline arguments are parsed
-	// locally. The options dictionary should then be used to transmit the
-	// result of the parsing to the primary instance, where
-	// g_variant_dict_lookup() can be used. For local options, it is possible to
-	// either use @arg_data in the usual way, or to consult (and potentially
-	// remove) the option from the options dictionary.
-	//
-	// This function is new in GLib 2.40. Before then, the only real choice was
-	// to send all of the commandline arguments (options and all) to the primary
-	// instance for handling. #GApplication ignored them completely on the local
-	// side. Calling this function "opts in" to the new behaviour, and in
-	// particular, means that unrecognised options will be treated as errors.
-	// Unrecognised options have never been ignored when
-	// G_APPLICATION_HANDLES_COMMAND_LINE is unset.
-	//
-	// If #GApplication::handle-local-options needs to see the list of
-	// filenames, then the use of G_OPTION_REMAINING is recommended. If
-	// @arg_data is nil then G_OPTION_REMAINING can be used as a key into the
-	// options dictionary. If you do use G_OPTION_REMAINING then you need to
-	// handle these arguments for yourself because once they are consumed, they
-	// will no longer be visible to the default handling (which treats them as
-	// filenames to be opened).
-	//
-	// It is important to use the proper GVariant format when retrieving the
-	// options with g_variant_dict_lookup(): - for G_OPTION_ARG_NONE, use `b` -
-	// for G_OPTION_ARG_STRING, use `&s` - for G_OPTION_ARG_INT, use `i` - for
-	// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
-	// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use
-	// `^a&s` - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
-	AddMainOptionEntries(entries []glib.OptionEntry)
 	// AddOptionGroup adds a Group to the commandline handling of @application.
 	//
 	// This function is comparable to g_option_context_add_group().
@@ -9237,7 +9190,7 @@ type Application interface {
 	//
 	// The binding holds a reference to @application while it is active, but not
 	// to @object. Instead, the binding is destroyed when @object is finalized.
-	BindBusyProperty(object interface{}, property string)
+	BindBusyProperty(object gextras.Objector, property string)
 	// ApplicationID gets the unique identifier for @application.
 	ApplicationID() string
 	// DbusConnection gets the BusConnection being used by the application, or
@@ -9577,7 +9530,7 @@ type Application interface {
 	// UnbindBusyProperty destroys a binding between @property and the busy
 	// state of @application that was previously created with
 	// g_application_bind_busy_property().
-	UnbindBusyProperty(object interface{}, property string)
+	UnbindBusyProperty(object gextras.Objector, property string)
 	// UnmarkBusy decreases the busy count of @application.
 	//
 	// When the busy count reaches zero, the new state will be propagated to
@@ -9622,11 +9575,9 @@ func (a application) Activate()
 
 func (a application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
 
-func (a application) AddMainOptionEntries(entries []glib.OptionEntry)
-
 func (a application) AddOptionGroup(group *glib.OptionGroup)
 
-func (a application) BindBusyProperty(object interface{}, property string)
+func (a application) BindBusyProperty(object gextras.Objector, property string)
 
 func (a application) ApplicationID() string
 
@@ -9680,7 +9631,7 @@ func (a application) SetOptionContextSummary(summary string)
 
 func (a application) SetResourceBasePath(resourcePath string)
 
-func (a application) UnbindBusyProperty(object interface{}, property string)
+func (a application) UnbindBusyProperty(object gextras.Objector, property string)
 
 func (a application) UnmarkBusy()
 
@@ -13342,7 +13293,7 @@ type FileInfo interface {
 	// does not contain a #GObject, nil will be returned.
 	AttributeObject(attribute string) gextras.Objector
 	// AttributeStatus gets the attribute status for an attribute key.
-	AttributeStatus(attribute string) FileAttributeStatus
+	AttributeStatus(attribute string) *FileAttributeStatus
 	// AttributeString gets the value of a string attribute. If the attribute
 	// does not contain a string, nil will be returned.
 	AttributeString(attribute string) string
@@ -13442,7 +13393,7 @@ type FileInfo interface {
 	//
 	// The attribute must exist in @info for this to work. Otherwise false is
 	// returned and @info is unchanged.
-	SetAttributeStatus(attribute string, status FileAttributeStatus) bool
+	SetAttributeStatus(attribute string, status *FileAttributeStatus) bool
 	// SetAttributeString sets the @attribute to contain the given @attr_value,
 	// if possible.
 	SetAttributeString(attribute string, attrValue string)
@@ -13542,7 +13493,7 @@ func (f fileInfo) AttributeInt64(attribute string) int64
 
 func (f fileInfo) AttributeObject(attribute string) gextras.Objector
 
-func (f fileInfo) AttributeStatus(attribute string) FileAttributeStatus
+func (f fileInfo) AttributeStatus(attribute string) *FileAttributeStatus
 
 func (f fileInfo) AttributeString(attribute string) string
 
@@ -13610,7 +13561,7 @@ func (f fileInfo) SetAttributeMask(mask *FileAttributeMatcher)
 
 func (f fileInfo) SetAttributeObject(attribute string, attrValue gextras.Objector)
 
-func (f fileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool
+func (f fileInfo) SetAttributeStatus(attribute string, status *FileAttributeStatus) bool
 
 func (f fileInfo) SetAttributeString(attribute string, attrValue string)
 
@@ -14260,11 +14211,11 @@ type InetSocketAddress interface {
 }
 
 type inetSocketAddress struct {
-	socketAddress
+	*socketAddress
 }
 
 func wrapInetSocketAddress(obj *externglib.Object) InetSocketAddress {
-	return inetSocketAddress{socketAddress{*externglib.Object{obj}}}
+	return inetSocketAddress{*socketAddress{*externglib.Object{obj}}}
 }
 
 func marshalInetSocketAddress(p uintptr) (interface{}, error) {
@@ -14595,19 +14546,19 @@ type ListStore interface {
 	//
 	// Use g_list_store_splice() to append multiple items at the same time
 	// efficiently.
-	Append(item interface{})
+	Append(item gextras.Objector)
 	// Find looks up the given @item in the list store by looping over the items
 	// until the first occurrence of @item. If @item was not found, then
 	// @position will not be set, and this method will return false.
 	//
 	// If you need to compare the two items with a custom comparison function,
 	// use g_list_store_find_with_equal_func() with a custom Func instead.
-	Find(item interface{}) (position uint, ok bool)
+	Find(item gextras.Objector) (position uint, ok bool)
 	// FindWithEqualFunc looks up the given @item in the list store by looping
 	// over the items and comparing them with @compare_func until the first
 	// occurrence of @item which matches. If @item was not found, then @position
 	// will not be set, and this method will return false.
-	FindWithEqualFunc(item interface{}, equalFunc glib.EqualFunc) (position uint, ok bool)
+	FindWithEqualFunc(item gextras.Objector, equalFunc glib.EqualFunc) (position uint, ok bool)
 	// Insert inserts @item into @store at @position. @item must be of type
 	// Store:item-type or derived from it. @position must be smaller than the
 	// length of the list, or equal to it to append.
@@ -14616,7 +14567,7 @@ type ListStore interface {
 	//
 	// Use g_list_store_splice() to insert multiple items at the same time
 	// efficiently.
-	Insert(position uint, item interface{})
+	Insert(position uint, item gextras.Objector)
 	// InsertSorted inserts @item into @store at a position to be determined by
 	// the @compare_func.
 	//
@@ -14625,7 +14576,7 @@ type ListStore interface {
 	// inserting items by way of this function.
 	//
 	// This function takes a ref on @item.
-	InsertSorted(item interface{}, compareFunc glib.CompareDataFunc) uint
+	InsertSorted(item gextras.Objector, compareFunc glib.CompareDataFunc) uint
 	// Remove removes the item from @store that is at @position. @position must
 	// be smaller than the current length of the list.
 	//
@@ -14668,15 +14619,15 @@ func marshalListStore(p uintptr) (interface{}, error) {
 
 func NewListStore(itemType externglib.Type) ListStore
 
-func (l listStore) Append(item interface{})
+func (l listStore) Append(item gextras.Objector)
 
-func (l listStore) Find(item interface{}) (position uint, ok bool)
+func (l listStore) Find(item gextras.Objector) (position uint, ok bool)
 
-func (l listStore) FindWithEqualFunc(item interface{}, equalFunc glib.EqualFunc) (position uint, ok bool)
+func (l listStore) FindWithEqualFunc(item gextras.Objector, equalFunc glib.EqualFunc) (position uint, ok bool)
 
-func (l listStore) Insert(position uint, item interface{})
+func (l listStore) Insert(position uint, item gextras.Objector)
 
-func (l listStore) InsertSorted(item interface{}, compareFunc glib.CompareDataFunc) uint
+func (l listStore) InsertSorted(item gextras.Objector, compareFunc glib.CompareDataFunc) uint
 
 func (l listStore) Remove(position uint)
 
@@ -14958,7 +14909,7 @@ type MenuAttributeIter interface {
 	// The value returned in @name remains valid for as long as the iterator
 	// remains at the current position. The value returned in @value must be
 	// unreffed using g_variant_unref() when it is no longer in use.
-	GetNext() (outName string, value *glib.Variant, ok bool)
+	GetNext() (outName string, value glib.Variant, ok bool)
 	// Value gets the value of the attribute at the current iterator position.
 	//
 	// The iterator is not advanced.
@@ -14990,7 +14941,7 @@ func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 
 func (m menuAttributeIter) Name() string
 
-func (m menuAttributeIter) GetNext() (outName string, value *glib.Variant, ok bool)
+func (m menuAttributeIter) GetNext() (outName string, value glib.Variant, ok bool)
 
 func (m menuAttributeIter) Value() *glib.Variant
 
@@ -15549,11 +15500,11 @@ type NativeSocketAddress interface {
 }
 
 type nativeSocketAddress struct {
-	socketAddress
+	*socketAddress
 }
 
 func wrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
-	return nativeSocketAddress{socketAddress{*externglib.Object{obj}}}
+	return nativeSocketAddress{*socketAddress{*externglib.Object{obj}}}
 }
 
 func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
@@ -16040,7 +15991,7 @@ type OutputStream interface {
 	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
 	// these are exceeded. For example, when writing to a local file on UNIX
 	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
-	Writev(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
+	Writev(vectors []*OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 	// WritevAll tries to write the bytes contained in the @n_vectors @vectors
 	// into the stream. Will block during the operation.
 	//
@@ -16062,7 +16013,7 @@ type OutputStream interface {
 	//
 	// The content of the individual elements of @vectors might be changed by
 	// this function.
-	WritevAll(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
+	WritevAll(vectors []*OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 	// WritevAllAsync: request an asynchronous write of the bytes contained in
 	// the @n_vectors @vectors into the stream. When the operation is finished
 	// @callback will be called. You can then call
@@ -16079,7 +16030,7 @@ type OutputStream interface {
 	// Note that no copy of @vectors will be made, so it must stay valid until
 	// @callback is called. The content of the individual elements of @vectors
 	// might be changed by this function.
-	WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	WritevAllAsync(vectors []*OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WritevAllFinish finishes an asynchronous stream write operation started
 	// with g_output_stream_writev_all_async().
 	//
@@ -16120,7 +16071,7 @@ type OutputStream interface {
 	//
 	// Note that no copy of @vectors will be made, so it must stay valid until
 	// @callback is called.
-	WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	WritevAsync(vectors []*OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WritevFinish finishes a stream writev operation.
 	WritevFinish(result AsyncResult) (bytesWritten uint, ok bool)
 }
@@ -16185,15 +16136,15 @@ func (o outputStream) WriteBytesFinish(result AsyncResult) int
 
 func (o outputStream) WriteFinish(result AsyncResult) int
 
-func (o outputStream) Writev(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
+func (o outputStream) Writev(vectors []*OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 
-func (o outputStream) WritevAll(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
+func (o outputStream) WritevAll(vectors []*OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 
-func (o outputStream) WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+func (o outputStream) WritevAllAsync(vectors []*OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
 func (o outputStream) WritevAllFinish(result AsyncResult) (bytesWritten uint, ok bool)
 
-func (o outputStream) WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+func (o outputStream) WritevAsync(vectors []*OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
 func (o outputStream) WritevFinish(result AsyncResult) (bytesWritten uint, ok bool)
 
@@ -16389,7 +16340,7 @@ func marshalPropertyAction(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewPropertyAction(name string, object interface{}, propertyName string) PropertyAction
+func NewPropertyAction(name string, object gextras.Objector, propertyName string) PropertyAction
 
 // ProxyAddress: support for proxied SocketAddress.
 type ProxyAddress interface {
@@ -16421,7 +16372,7 @@ type proxyAddress struct {
 }
 
 func wrapProxyAddress(obj *externglib.Object) ProxyAddress {
-	return proxyAddress{inetSocketAddress{socketAddress{*externglib.Object{obj}}}}
+	return proxyAddress{inetSocketAddress{*socketAddress{*externglib.Object{obj}}}}
 }
 
 func marshalProxyAddress(p uintptr) (interface{}, error) {
@@ -16927,7 +16878,7 @@ type Settings interface {
 	// can have only one binding per object property. If you bind the same
 	// property twice on the same object, the second binding overrides the first
 	// one.
-	Bind(key string, object interface{}, property string, flags SettingsBindFlags)
+	Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags)
 	// BindWithMapping: create a binding between the @key in the @settings
 	// object and the property @property of @object.
 	//
@@ -16938,7 +16889,7 @@ type Settings interface {
 	// can have only one binding per object property. If you bind the same
 	// property twice on the same object, the second binding overrides the first
 	// one.
-	BindWithMapping(key string, object interface{}, property string, flags SettingsBindFlags, getMapping SettingsBindGetMapping, setMapping SettingsBindSetMapping)
+	BindWithMapping(key string, object gextras.Objector, property string, flags SettingsBindFlags, getMapping SettingsBindGetMapping, setMapping SettingsBindSetMapping)
 	// BindWritable: create a binding between the writability of @key in the
 	// @settings object and the property @property of @object. The property must
 	// be boolean; "sensitive" or "visible" properties of widgets are the most
@@ -16956,7 +16907,7 @@ type Settings interface {
 	// can have only one binding per object property. If you bind the same
 	// property twice on the same object, the second binding overrides the first
 	// one.
-	BindWritable(key string, object interface{}, property string, inverted bool)
+	BindWritable(key string, object gextras.Objector, property string, inverted bool)
 	// CreateAction creates a #GAction corresponding to a given #GSettings key.
 	//
 	// The action has the same name as the key.
@@ -17290,11 +17241,11 @@ func NewSettingsWithPath(schemaID string, path string) Settings
 
 func (s settings) Apply()
 
-func (s settings) Bind(key string, object interface{}, property string, flags SettingsBindFlags)
+func (s settings) Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags)
 
-func (s settings) BindWithMapping(key string, object interface{}, property string, flags SettingsBindFlags, getMapping SettingsBindGetMapping, setMapping SettingsBindSetMapping)
+func (s settings) BindWithMapping(key string, object gextras.Objector, property string, flags SettingsBindFlags, getMapping SettingsBindGetMapping, setMapping SettingsBindSetMapping)
 
-func (s settings) BindWritable(key string, object interface{}, property string, inverted bool)
+func (s settings) BindWritable(key string, object gextras.Objector, property string, inverted bool)
 
 func (s settings) CreateAction(key string) Action
 
@@ -18445,7 +18396,7 @@ type Socket interface {
 	// is available, wait for the G_IO_IN condition.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (address SocketAddress, messages []*SocketControlMessage, numMessages int, gssize int)
+	ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (address SocketAddress, messages []SocketControlMessage, numMessages int, gssize int)
 	// ReceiveMessages: receive multiple data messages from @socket in one go.
 	// This is the most complicated and fully-featured version of this call. For
 	// easier use, see g_socket_receive(), g_socket_receive_from(), and
@@ -18550,7 +18501,7 @@ type Socket interface {
 	// common due to the way the underlying APIs work.)
 	//
 	// On error -1 is returned and @error is set accordingly.
-	SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int
+	SendMessage(address SocketAddress, vectors []*OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int
 	// SendMessageWithTimeout: this behaves exactly the same as
 	// g_socket_send_message(), except that the choice of timeout behavior is
 	// determined by the @timeout_us argument rather than by @socket's
@@ -18560,7 +18511,7 @@ type Socket interface {
 	// accordingly, or if the socket is currently not writable
 	// G_POLLABLE_RETURN_WOULD_BLOCK is returned. @bytes_written will contain 0
 	// in both cases.
-	SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
+	SendMessageWithTimeout(address SocketAddress, vectors []*OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
 	// SendMessages: send multiple data messages from @socket in one go. This is
 	// the most complicated and fully-featured version of this call. For easier
 	// use, see g_socket_send(), g_socket_send_to(), and
@@ -18799,7 +18750,7 @@ func (s socket) Receive(cancellable Cancellable) (buffer []uint8, size uint, gss
 
 func (s socket) ReceiveFrom(cancellable Cancellable) (address SocketAddress, buffer []uint8, size uint, gssize int)
 
-func (s socket) ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (address SocketAddress, messages []*SocketControlMessage, numMessages int, gssize int)
+func (s socket) ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (address SocketAddress, messages []SocketControlMessage, numMessages int, gssize int)
 
 func (s socket) ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) int
 
@@ -18807,9 +18758,9 @@ func (s socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable) (buf
 
 func (s socket) Send(buffer []uint8, cancellable Cancellable) int
 
-func (s socket) SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int
+func (s socket) SendMessage(address SocketAddress, vectors []*OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int
 
-func (s socket) SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
+func (s socket) SendMessageWithTimeout(address SocketAddress, vectors []*OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
 
 func (s socket) SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) int
 
@@ -19756,13 +19707,13 @@ type Subprocess interface {
 	// operation was cancelled. You should especially not attempt to interact
 	// with the pipes while the operation is in progress (either from another
 	// thread or if using the asynchronous version).
-	Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
+	Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf glib.Bytes, stderrBuf glib.Bytes, ok bool)
 	// CommunicateAsync asynchronous version of g_subprocess_communicate().
 	// Complete invocation with g_subprocess_communicate_finish().
 	CommunicateAsync(stdinBuf *glib.Bytes, cancellable Cancellable, callback AsyncReadyCallback)
 	// CommunicateFinish: complete an invocation of
 	// g_subprocess_communicate_async().
-	CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
+	CommunicateFinish(result AsyncResult) (stdoutBuf glib.Bytes, stderrBuf glib.Bytes, ok bool)
 	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
 	// output of the process as UTF-8, and returns it as a regular NUL
 	// terminated string.
@@ -19910,11 +19861,11 @@ func marshalSubprocess(p uintptr) (interface{}, error) {
 
 func NewSubprocessv(argv []string, flags SubprocessFlags) Subprocess
 
-func (s subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
+func (s subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf glib.Bytes, stderrBuf glib.Bytes, ok bool)
 
 func (s subprocess) CommunicateAsync(stdinBuf *glib.Bytes, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (s subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
+func (s subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf glib.Bytes, stderrBuf glib.Bytes, ok bool)
 
 func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, ok bool)
 
@@ -20652,7 +20603,7 @@ type Task interface {
 	ReturnOnCancel() bool
 	// SourceObject gets the source object from @task. Like
 	// g_async_result_get_source_object(), but does not ref the object.
-	SourceObject() interface{}
+	SourceObject() gextras.Objector
 	// SourceTag gets @task's source tag. See g_task_set_source_tag().
 	SourceTag() interface{}
 	// TaskData gets @task's `task_data`.
@@ -20856,7 +20807,7 @@ func marshalTask(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTask(sourceObject interface{}, cancellable Cancellable, callback AsyncReadyCallback) Task
+func NewTask(sourceObject gextras.Objector, cancellable Cancellable, callback AsyncReadyCallback) Task
 
 func (t task) AttachSource(source *glib.Source, callback glib.SourceFunc)
 
@@ -20874,7 +20825,7 @@ func (t task) Priority() int
 
 func (t task) ReturnOnCancel() bool
 
-func (t task) SourceObject() interface{}
+func (t task) SourceObject() gextras.Objector
 
 func (t task) SourceTag() interface{}
 
@@ -22070,11 +22021,11 @@ type UnixCredentialsMessage interface {
 }
 
 type unixCredentialsMessage struct {
-	socketControlMessage
+	*socketControlMessage
 }
 
 func wrapUnixCredentialsMessage(obj *externglib.Object) UnixCredentialsMessage {
-	return unixCredentialsMessage{socketControlMessage{*externglib.Object{obj}}}
+	return unixCredentialsMessage{*socketControlMessage{*externglib.Object{obj}}}
 }
 
 func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
@@ -22236,11 +22187,11 @@ type UnixFDMessage interface {
 }
 
 type unixFDMessage struct {
-	socketControlMessage
+	*socketControlMessage
 }
 
 func wrapUnixFDMessage(obj *externglib.Object) UnixFDMessage {
-	return unixFDMessage{socketControlMessage{*externglib.Object{obj}}}
+	return unixFDMessage{*socketControlMessage{*externglib.Object{obj}}}
 }
 
 func marshalUnixFDMessage(p uintptr) (interface{}, error) {
@@ -22410,11 +22361,11 @@ type UnixSocketAddress interface {
 }
 
 type unixSocketAddress struct {
-	socketAddress
+	*socketAddress
 }
 
 func wrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
-	return unixSocketAddress{socketAddress{*externglib.Object{obj}}}
+	return unixSocketAddress{*socketAddress{*externglib.Object{obj}}}
 }
 
 func marshalUnixSocketAddress(p uintptr) (interface{}, error) {

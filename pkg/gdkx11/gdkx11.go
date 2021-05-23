@@ -15,7 +15,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/x11/gdkx.h>
 //
-//
 import "C"
 
 func init() {
@@ -58,8 +57,8 @@ const (
 )
 
 // X11DeviceGetID returns the device ID as seen by XInput2.
-func X11DeviceGetID(device gdk.Device) int {
-	var arg0 gdk.Device
+func X11DeviceGetID(device X11DeviceXI2) int {
+	var arg0 X11DeviceXI2
 	arg0 = wrapX11DeviceXI2(externglib.Take(unsafe.Pointer(device)))
 
 	ret := C.gdk_x11_device_get_id(arg0)
@@ -71,7 +70,7 @@ func X11DeviceGetID(device gdk.Device) int {
 }
 
 // X11DeviceManagerLookup returns the Device that wraps the given device ID.
-func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) gdk.Device {
+func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) X11DeviceXI2 {
 	var arg0 X11DeviceManagerXI2
 	arg0 = wrapX11DeviceManagerXI2(externglib.Take(unsafe.Pointer(deviceManager)))
 
@@ -80,7 +79,7 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) gdk
 
 	ret := C.gdk_x11_device_manager_lookup(arg0, arg1)
 
-	var ret0 gdk.Device
+	var ret0 X11DeviceXI2
 	ret0 = wrapX11DeviceXI2(externglib.Take(unsafe.Pointer(ret)))
 
 	return ret0
@@ -106,8 +105,8 @@ func X11FreeTextList(list string) {
 }
 
 // X11GetServerTime: routine to get the current X server time stamp.
-func X11GetServerTime(surface gdk.Surface) uint32 {
-	var arg0 gdk.Surface
+func X11GetServerTime(surface X11Surface) uint32 {
+	var arg0 X11Surface
 	arg0 = wrapX11Surface(externglib.Take(unsafe.Pointer(surface)))
 
 	ret := C.gdk_x11_get_server_time(arg0)
@@ -122,8 +121,8 @@ func X11GetServerTime(surface gdk.Surface) uint32 {
 // @atom_name. This function caches the result, so if called repeatedly it is
 // much faster than XInternAtom(), which is a round trip to the server each
 // time.
-func X11GetXatomByNameForDisplay(display gdk.Display, atomName string) xlib.Atom {
-	var arg0 gdk.Display
+func X11GetXatomByNameForDisplay(display X11Display, atomName string) xlib.Atom {
+	var arg0 X11Display
 	arg0 = wrapX11Display(externglib.Take(unsafe.Pointer(display)))
 
 	var arg1 string
@@ -144,8 +143,8 @@ func X11GetXatomByNameForDisplay(display gdk.Display, atomName string) xlib.Atom
 // X11GetXatomNameForDisplay returns the name of an X atom for its display. This
 // function is meant mainly for debugging, so for convenience, unlike
 // XAtomName() and the result doesn’t need to be freed.
-func X11GetXatomNameForDisplay(display gdk.Display, xatom xlib.Atom) string {
-	var arg0 gdk.Display
+func X11GetXatomNameForDisplay(display X11Display, xatom xlib.Atom) string {
+	var arg0 X11Display
 	arg0 = wrapX11Display(externglib.Take(unsafe.Pointer(display)))
 
 	var arg1 xlib.Atom
@@ -165,13 +164,13 @@ func X11GetXatomNameForDisplay(display gdk.Display, xatom xlib.Atom) string {
 
 // X11LookupXdisplay: find the Display corresponding to @xdisplay, if any
 // exists.
-func X11LookupXdisplay(xdisplay *xlib.Display) gdk.Display {
+func X11LookupXdisplay(xdisplay *xlib.Display) X11Display {
 	var arg0 *xlib.Display
 	arg0 = wrapDisplay(xdisplay)
 
 	ret := C.gdk_x11_lookup_xdisplay(arg0)
 
-	var ret0 gdk.Display
+	var ret0 X11Display
 	ret0 = wrapX11Display(externglib.Take(unsafe.Pointer(ret)))
 
 	return ret0

@@ -280,6 +280,22 @@ func (ng *NamespaceGenerator) needsCallbackDelete() {
 	ng.pre.Words("func callbackDelete(ptr C.gpointer) {")
 	ng.pre.Words("  box.Delete(box.Callback, uintptr(ptr))")
 	ng.pre.Words("}")
+
+	ng.pre.Line()
+}
+
+// fullGIR returns the full GIR type name if it doesn't contain a namespace.
+func (ng *NamespaceGenerator) fullGIR(girType string) string {
+	// Skip builtin types.
+	_, isBuiltin := girPrimitiveGo[girType]
+	if isBuiltin {
+		return girType
+	}
+
+	if !strings.Contains(girType, ".") {
+		return ng.current.Namespace.Name + "." + girType
+	}
+	return girType
 }
 
 // PackageName returns the current namespace's package name.

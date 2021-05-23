@@ -8,7 +8,6 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/fontconfig"
-	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -18,7 +17,6 @@ import (
 // #include <pango/pangofc-fontmap.h>
 //
 // extern PangoFcDecoder* cDecoderFindFunc(FcPattern*, gpointer)
-//
 import "C"
 
 func init() {
@@ -121,7 +119,7 @@ type Font interface {
 	//
 	// The returned array is only valid as long as the font and its fontmap are
 	// valid.
-	Languages() **pango.Language
+	Languages() *pango.Language
 	// Pattern returns the FcPattern that @font is based on.
 	Pattern() *fontconfig.Pattern
 	// UnknownGlyph returns the index of a glyph suitable for drawing @wc as an
@@ -136,11 +134,6 @@ type Font interface {
 	//
 	// Since 1.44, it does nothing.
 	KernGlyphs(glyphs *pango.GlyphString)
-	// LockFace gets the FreeType `FT_Face` associated with a font.
-	//
-	// This face will be kept around until you call
-	// [method@PangoFc.Font.unlock_face].
-	LockFace() freetype2.Face
 	// UnlockFace releases a font previously obtained with
 	// [method@PangoFc.Font.lock_face].
 	UnlockFace()
@@ -162,7 +155,7 @@ func marshalFont(p uintptr) (interface{}, error) {
 
 func (f font) Glyph(wc uint32) uint
 
-func (f font) Languages() **pango.Language
+func (f font) Languages() *pango.Language
 
 func (f font) Pattern() *fontconfig.Pattern
 
@@ -171,8 +164,6 @@ func (f font) UnknownGlyph(wc uint32) pango.Glyph
 func (f font) HasChar(wc uint32) bool
 
 func (f font) KernGlyphs(glyphs *pango.GlyphString)
-
-func (f font) LockFace() freetype2.Face
 
 func (f font) UnlockFace()
 

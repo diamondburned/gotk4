@@ -13,7 +13,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <graphene-gobject.h>
 //
-//
 import "C"
 
 func init() {
@@ -246,10 +245,10 @@ func Point3DZero() *Point3D {
 }
 
 // PointZero returns a point fixed at (0, 0).
-func PointZero() *Point {
+func PointZero() Point {
 	ret := C.graphene_point_zero()
 
-	var ret0 *Point
+	var ret0 Point
 	ret0 = wrapPoint(ret)
 
 	return ret0
@@ -280,10 +279,10 @@ func RectZero() *Rect {
 
 // SizeZero: a constant pointer to a zero #graphene_size_t, useful for equality
 // checks and interpolations.
-func SizeZero() *Size {
+func SizeZero() Size {
 	ret := C.graphene_size_zero()
 
-	var ret0 *Size
+	var ret0 Size
 	ret0 = wrapSize(ret)
 
 	return ret0
@@ -650,7 +649,7 @@ func (p *Point) Native() unsafe.Pointer {
 	return unsafe.Pointer(p.native)
 }
 
-func NewPoint() *Point
+func NewPoint() Point
 
 // Point3D: a point with three components: X, Y, and Z.
 type Point3D struct {
@@ -922,7 +921,7 @@ func (s *Size) Native() unsafe.Pointer {
 	return unsafe.Pointer(s.native)
 }
 
-func NewSize() *Size
+func NewSize() Size
 
 // Sphere: a sphere, represented by its center and radius.
 type Sphere struct {

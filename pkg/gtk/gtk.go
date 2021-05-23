@@ -61,7 +61,6 @@ import (
 // extern void cTreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer)
 // extern gboolean cTreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer)
 // extern gboolean cTreeViewSearchEqualFunc(GtkTreeModel*, int, const char*, GtkTreeIter*, gpointer)
-//
 import "C"
 
 func init() {
@@ -640,7 +639,7 @@ func init() {
 // allocated to the widget by its parent. It is a subregion of its parents
 // allocation. See [GtkWidget’s geometry management
 // section][geometry-management] for more information.
-type Allocation gdk.Rectangle
+type Allocation *gdk.Rectangle
 
 // AccessibleAutocomplete: the possible values for the
 // GTK_ACCESSIBLE_PROPERTY_AUTOCOMPLETE accessible property.
@@ -3610,7 +3609,7 @@ func cCellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C
 // CustomFilterFunc: user function that is called to determine if the @item
 // should be matched. If the filter matches the item, this function must return
 // true. If the item should be filtered out, false must be returned.
-type CustomFilterFunc func(item interface{}) bool
+type CustomFilterFunc func(item gextras.Objector) bool
 
 //export cCustomFilterFunc
 func cCustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
@@ -3619,7 +3618,7 @@ func cCustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
 		panic(`callback not found`)
 	}
 
-	var item interface{}
+	var item *externglib.Object
 	item = glib.Take(arg0)
 
 	ok := v.(CustomFilterFunc)(item)
@@ -3698,7 +3697,7 @@ func cExpressionNotify(arg0 C.gpointer) {
 
 // FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with
 // gtk_flow_box_bind_model() for each item that gets added to the model.
-type FlowBoxCreateWidgetFunc func(item interface{}) Widget
+type FlowBoxCreateWidgetFunc func(item gextras.Objector) Widget
 
 //export cFlowBoxCreateWidgetFunc
 func cFlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
@@ -3707,7 +3706,7 @@ func cFlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
 		panic(`callback not found`)
 	}
 
-	var item interface{}
+	var item *externglib.Object
 	item = glib.Take(arg0)
 
 	widget := v.(FlowBoxCreateWidgetFunc)(item)
@@ -3781,7 +3780,7 @@ func cFontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpoi
 		panic(`callback not found`)
 	}
 
-	var family pango.fontFamily
+	var family *pango.fontFamily
 	family = wrapFontFamily(externglib.Take(unsafe.Pointer(arg0)))
 
 	var face pango.fontFace
@@ -3812,7 +3811,7 @@ func cIconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpoin
 
 // ListBoxCreateWidgetFunc: called for list boxes that are bound to a Model with
 // gtk_list_box_bind_model() for each item that gets added to the model.
-type ListBoxCreateWidgetFunc func(item interface{}) Widget
+type ListBoxCreateWidgetFunc func(item gextras.Objector) Widget
 
 //export cListBoxCreateWidgetFunc
 func cListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
@@ -3821,7 +3820,7 @@ func cListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
 		panic(`callback not found`)
 	}
 
-	var item interface{}
+	var item *externglib.Object
 	item = glib.Take(arg0)
 
 	widget := v.(ListBoxCreateWidgetFunc)(item)
@@ -3910,7 +3909,7 @@ func cListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2
 //
 // The returned items must conform to the item type of the model they are used
 // with.
-type MapListModelMapFunc func(item interface{}) interface{}
+type MapListModelMapFunc func(item gextras.Objector) gextras.Objector
 
 //export cMapListModelMapFunc
 func cMapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
@@ -3919,7 +3918,7 @@ func cMapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 		panic(`callback not found`)
 	}
 
-	var item interface{}
+	var item *externglib.Object
 	item = glib.Take(arg0)
 
 	object := v.(MapListModelMapFunc)(item)
@@ -4142,7 +4141,7 @@ func cTreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.Gtk
 // leaf node and will never have children. If it does not have children but may
 // get children later, it should return an empty model that is filled once
 // children arrive.
-type TreeListModelCreateModelFunc func(item interface{}) gio.ListModel
+type TreeListModelCreateModelFunc func(item gextras.Objector) gio.ListModel
 
 //export cTreeListModelCreateModelFunc
 func cTreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GListModel {
@@ -4151,7 +4150,7 @@ func cTreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GListMod
 		panic(`callback not found`)
 	}
 
-	var item interface{}
+	var item *externglib.Object
 	item = glib.Take(arg0)
 
 	listModel := v.(TreeListModelCreateModelFunc)(item)
@@ -4514,7 +4513,7 @@ func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods 
 	var ret0 uint
 	ret0 = uint(arg1)
 
-	var ret1 *gdk.ModifierType
+	var ret1 gdk.ModifierType
 	ret1 = ModifierType(arg2)
 
 	var ret2 bool
@@ -4564,12 +4563,12 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (accel
 
 		ret1 = make([]uint, length)
 		for i := 0; i < length; i++ {
-			src := (*C.guint)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
+			src := (C.guint)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
 			ret1[i] = uint(src)
 		}
 	}
 
-	var ret2 *gdk.ModifierType
+	var ret2 gdk.ModifierType
 	ret2 = ModifierType(arg4)
 
 	var ret3 bool
@@ -5741,17 +5740,17 @@ func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentPr
 // GTK_TYPE_TREE_ROW_DATA.
 //
 // The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path *TreePath, ok bool) {
+func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path TreePath, ok bool) {
 	var arg1 **C.GtkTreeModel // out
 
 	var arg2 **C.GtkTreePath // out
 
 	ret := C.gtk_tree_get_row_drag_data(&arg1, &arg2)
 
-	var ret0 *TreeModel
+	var ret0 TreeModel
 	ret0 = wrapTreeModel(arg1)
 
-	var ret1 **TreePath
+	var ret1 *TreePath
 	ret1 = wrapTreePath(arg2)
 
 	var ret2 bool
@@ -5808,7 +5807,7 @@ func TreeRowReferenceReordered(proxy gextras.Objector, path *TreePath, iter *Tre
 
 		arg3 = make([]int, length)
 		for i := 0; i < length; i++ {
-			src := (C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(newOrder)) + i))
+			src := (C.gint)(unsafe.Pointer(uintptr(unsafe.Pointer(newOrder)) + i))
 			arg3[i] = int(src)
 		}
 	}
@@ -6067,7 +6066,7 @@ type ColorChooser interface {
 	AddPalette(orientation Orientation, colorsPerLine int, nColors int, colors []gdk.RGBA)
 	GetRgba() gdk.RGBA
 	GetUseAlpha() bool
-	SetRgba(color *gdk.RGBA)
+	SetRgba(color gdk.RGBA)
 	SetUseAlpha(useAlpha bool)
 }
 
@@ -7076,7 +7075,7 @@ func wrapRecentData(p *C.GtkRecentData) *RecentData {
 
 		v.Groups = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (*C.char)(unsafe.Pointer(uintptr(unsafe.Pointer(p.groups)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p.groups)) + i))
 			v.Groups[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -7566,7 +7565,7 @@ type aboutDialog struct {
 }
 
 func wrapAboutDialog(obj *externglib.Object) AboutDialog {
-	return aboutDialog{window{widget{externglib.InitiallyUnowned{obj}}}}
+	return aboutDialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalAboutDialog(p uintptr) (interface{}, error) {
@@ -7687,7 +7686,7 @@ type actionBar struct {
 }
 
 func wrapActionBar(obj *externglib.Object) ActionBar {
-	return actionBar{widget{externglib.InitiallyUnowned{obj}}}
+	return actionBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalActionBar(p uintptr) (interface{}, error) {
@@ -7826,7 +7825,7 @@ type adjustment struct {
 }
 
 func wrapAdjustment(obj *externglib.Object) Adjustment {
-	return adjustment{externglib.InitiallyUnowned{obj}}
+	return adjustment{externglib.InitiallyUnowned{*externglib.Object{obj}}}
 }
 
 func marshalAdjustment(p uintptr) (interface{}, error) {
@@ -7993,7 +7992,7 @@ type appChooserButton struct {
 }
 
 func wrapAppChooserButton(obj *externglib.Object) AppChooserButton {
-	return appChooserButton{widget{externglib.InitiallyUnowned{obj}}}
+	return appChooserButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalAppChooserButton(p uintptr) (interface{}, error) {
@@ -8052,7 +8051,7 @@ type appChooserDialog struct {
 }
 
 func wrapAppChooserDialog(obj *externglib.Object) AppChooserDialog {
-	return appChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{obj}}}}}
+	return appChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
 }
 
 func marshalAppChooserDialog(p uintptr) (interface{}, error) {
@@ -8136,7 +8135,7 @@ type appChooserWidget struct {
 }
 
 func wrapAppChooserWidget(obj *externglib.Object) AppChooserWidget {
-	return appChooserWidget{widget{externglib.InitiallyUnowned{obj}}}
+	return appChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalAppChooserWidget(p uintptr) (interface{}, error) {
@@ -8504,7 +8503,7 @@ type applicationWindow struct {
 }
 
 func wrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
-	return applicationWindow{window{widget{externglib.InitiallyUnowned{obj}}}}
+	return applicationWindow{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalApplicationWindow(p uintptr) (interface{}, error) {
@@ -8573,7 +8572,7 @@ type aspectFrame struct {
 }
 
 func wrapAspectFrame(obj *externglib.Object) AspectFrame {
-	return aspectFrame{widget{externglib.InitiallyUnowned{obj}}}
+	return aspectFrame{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalAspectFrame(p uintptr) (interface{}, error) {
@@ -8737,7 +8736,7 @@ type assistant struct {
 }
 
 func wrapAssistant(obj *externglib.Object) Assistant {
-	return assistant{window{widget{externglib.InitiallyUnowned{obj}}}}
+	return assistant{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalAssistant(p uintptr) (interface{}, error) {
@@ -9018,7 +9017,7 @@ type box struct {
 }
 
 func wrapBox(obj *externglib.Object) Box {
-	return box{widget{externglib.InitiallyUnowned{obj}}}
+	return box{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalBox(p uintptr) (interface{}, error) {
@@ -9652,7 +9651,7 @@ type button struct {
 }
 
 func wrapButton(obj *externglib.Object) Button {
-	return button{widget{externglib.InitiallyUnowned{obj}}}
+	return button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalButton(p uintptr) (interface{}, error) {
@@ -9788,7 +9787,7 @@ type calendar struct {
 }
 
 func wrapCalendar(obj *externglib.Object) Calendar {
-	return calendar{widget{externglib.InitiallyUnowned{obj}}}
+	return calendar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCalendar(p uintptr) (interface{}, error) {
@@ -10330,7 +10329,7 @@ type cellArea struct {
 }
 
 func wrapCellArea(obj *externglib.Object) CellArea {
-	return cellArea{externglib.InitiallyUnowned{obj}}
+	return cellArea{externglib.InitiallyUnowned{*externglib.Object{obj}}}
 }
 
 func marshalCellArea(p uintptr) (interface{}, error) {
@@ -10457,7 +10456,7 @@ type cellAreaBox struct {
 }
 
 func wrapCellAreaBox(obj *externglib.Object) CellAreaBox {
-	return cellAreaBox{cellArea{externglib.InitiallyUnowned{obj}}}
+	return cellAreaBox{cellArea{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellAreaBox(p uintptr) (interface{}, error) {
@@ -10733,7 +10732,7 @@ type cellRenderer struct {
 }
 
 func wrapCellRenderer(obj *externglib.Object) CellRenderer {
-	return cellRenderer{externglib.InitiallyUnowned{obj}}
+	return cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}
 }
 
 func marshalCellRenderer(p uintptr) (interface{}, error) {
@@ -10808,7 +10807,7 @@ type cellRendererAccel struct {
 }
 
 func wrapCellRendererAccel(obj *externglib.Object) CellRendererAccel {
-	return cellRendererAccel{cellRendererText{cellRenderer{externglib.InitiallyUnowned{obj}}}}
+	return cellRendererAccel{cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalCellRendererAccel(p uintptr) (interface{}, error) {
@@ -10838,7 +10837,7 @@ type cellRendererCombo struct {
 }
 
 func wrapCellRendererCombo(obj *externglib.Object) CellRendererCombo {
-	return cellRendererCombo{cellRendererText{cellRenderer{externglib.InitiallyUnowned{obj}}}}
+	return cellRendererCombo{cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalCellRendererCombo(p uintptr) (interface{}, error) {
@@ -10870,7 +10869,7 @@ type cellRendererPixbuf struct {
 }
 
 func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuf {
-	return cellRendererPixbuf{cellRenderer{externglib.InitiallyUnowned{obj}}}
+	return cellRendererPixbuf{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
@@ -10892,7 +10891,7 @@ type cellRendererProgress struct {
 }
 
 func wrapCellRendererProgress(obj *externglib.Object) CellRendererProgress {
-	return cellRendererProgress{cellRenderer{externglib.InitiallyUnowned{obj}}}
+	return cellRendererProgress{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellRendererProgress(p uintptr) (interface{}, error) {
@@ -10925,7 +10924,7 @@ type cellRendererSpin struct {
 }
 
 func wrapCellRendererSpin(obj *externglib.Object) CellRendererSpin {
-	return cellRendererSpin{cellRendererText{cellRenderer{externglib.InitiallyUnowned{obj}}}}
+	return cellRendererSpin{cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalCellRendererSpin(p uintptr) (interface{}, error) {
@@ -10955,7 +10954,7 @@ type cellRendererSpinner struct {
 }
 
 func wrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
-	return cellRendererSpinner{cellRenderer{externglib.InitiallyUnowned{obj}}}
+	return cellRendererSpinner{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
@@ -10992,7 +10991,7 @@ type cellRendererText struct {
 }
 
 func wrapCellRendererText(obj *externglib.Object) CellRendererText {
-	return cellRendererText{cellRenderer{externglib.InitiallyUnowned{obj}}}
+	return cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellRendererText(p uintptr) (interface{}, error) {
@@ -11038,7 +11037,7 @@ type cellRendererToggle struct {
 }
 
 func wrapCellRendererToggle(obj *externglib.Object) CellRendererToggle {
-	return cellRendererToggle{cellRenderer{externglib.InitiallyUnowned{obj}}}
+	return cellRendererToggle{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellRendererToggle(p uintptr) (interface{}, error) {
@@ -11122,7 +11121,7 @@ type cellView struct {
 }
 
 func wrapCellView(obj *externglib.Object) CellView {
-	return cellView{widget{externglib.InitiallyUnowned{obj}}}
+	return cellView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellView(p uintptr) (interface{}, error) {
@@ -11224,7 +11223,7 @@ type centerBox struct {
 }
 
 func wrapCenterBox(obj *externglib.Object) CenterBox {
-	return centerBox{widget{externglib.InitiallyUnowned{obj}}}
+	return centerBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCenterBox(p uintptr) (interface{}, error) {
@@ -11398,7 +11397,7 @@ type checkButton struct {
 }
 
 func wrapCheckButton(obj *externglib.Object) CheckButton {
-	return checkButton{widget{externglib.InitiallyUnowned{obj}}}
+	return checkButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCheckButton(p uintptr) (interface{}, error) {
@@ -11482,7 +11481,7 @@ type colorButton struct {
 }
 
 func wrapColorButton(obj *externglib.Object) ColorButton {
-	return colorButton{widget{externglib.InitiallyUnowned{obj}}}
+	return colorButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalColorButton(p uintptr) (interface{}, error) {
@@ -11493,7 +11492,7 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 
 func NewColorButton() ColorButton
 
-func NewColorButtonWithRgba(rgba *gdk.RGBA) ColorButton
+func NewColorButtonWithRgba(rgba gdk.RGBA) ColorButton
 
 func (c colorButton) Modal() bool
 
@@ -11514,7 +11513,7 @@ type colorChooserDialog struct {
 }
 
 func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
-	return colorChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{obj}}}}}
+	return colorChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
 }
 
 func marshalColorChooserDialog(p uintptr) (interface{}, error) {
@@ -11554,7 +11553,7 @@ type colorChooserWidget struct {
 }
 
 func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidget {
-	return colorChooserWidget{widget{externglib.InitiallyUnowned{obj}}}
+	return colorChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalColorChooserWidget(p uintptr) (interface{}, error) {
@@ -11713,7 +11712,7 @@ type columnView struct {
 }
 
 func wrapColumnView(obj *externglib.Object) ColumnView {
-	return columnView{widget{externglib.InitiallyUnowned{obj}}}
+	return columnView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalColumnView(p uintptr) (interface{}, error) {
@@ -12050,7 +12049,7 @@ type comboBox struct {
 }
 
 func wrapComboBox(obj *externglib.Object) ComboBox {
-	return comboBox{widget{externglib.InitiallyUnowned{obj}}}
+	return comboBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalComboBox(p uintptr) (interface{}, error) {
@@ -12216,7 +12215,7 @@ type comboBoxText struct {
 }
 
 func wrapComboBoxText(obj *externglib.Object) ComboBoxText {
-	return comboBoxText{comboBox{widget{externglib.InitiallyUnowned{obj}}}}
+	return comboBoxText{comboBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalComboBoxText(p uintptr) (interface{}, error) {
@@ -12337,9 +12336,9 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewConstraint(target interface{}, targetAttribute ConstraintAttribute, relation ConstraintRelation, source interface{}, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint
+func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTarget, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint
 
-func NewConstraintConstant(target interface{}, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) Constraint
+func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, constant float64, strength int) Constraint
 
 func (c constraint) Constant() float64
 
@@ -13065,10 +13064,10 @@ type Dialog interface {
 	// area. The button widget is returned, but usually you don’t need it.
 	AddButton(buttonText string, responseID int) Widget
 	// ContentArea returns the content area of @dialog.
-	ContentArea() Widget
+	ContentArea() Box
 	// HeaderBar returns the header bar of @dialog. Note that the headerbar is
 	// only used by the dialog if the Dialog:use-header-bar property is true.
-	HeaderBar() Widget
+	HeaderBar() HeaderBar
 	// ResponseForWidget gets the response id of a widget in the action area of
 	// a dialog.
 	ResponseForWidget(widget Widget) int
@@ -13094,7 +13093,7 @@ type dialog struct {
 }
 
 func wrapDialog(obj *externglib.Object) Dialog {
-	return dialog{window{widget{externglib.InitiallyUnowned{obj}}}}
+	return dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalDialog(p uintptr) (interface{}, error) {
@@ -13109,9 +13108,9 @@ func (d dialog) AddActionWidget(child Widget, responseID int)
 
 func (d dialog) AddButton(buttonText string, responseID int) Widget
 
-func (d dialog) ContentArea() Widget
+func (d dialog) ContentArea() Box
 
-func (d dialog) HeaderBar() Widget
+func (d dialog) HeaderBar() HeaderBar
 
 func (d dialog) ResponseForWidget(widget Widget) int
 
@@ -13260,7 +13259,7 @@ type dragIcon struct {
 }
 
 func wrapDragIcon(obj *externglib.Object) DragIcon {
-	return dragIcon{widget{externglib.InitiallyUnowned{obj}}}
+	return dragIcon{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalDragIcon(p uintptr) (interface{}, error) {
@@ -13532,7 +13531,7 @@ type drawingArea struct {
 }
 
 func wrapDrawingArea(obj *externglib.Object) DrawingArea {
-	return drawingArea{widget{externglib.InitiallyUnowned{obj}}}
+	return drawingArea{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalDrawingArea(p uintptr) (interface{}, error) {
@@ -13643,7 +13642,7 @@ type DropDown interface {
 	Selected() uint
 	// SelectedItem gets the selected item. If no item is selected, nil is
 	// returned.
-	SelectedItem() interface{}
+	SelectedItem() gextras.Objector
 	// SetEnableSearch sets whether a search entry will be shown in the popup
 	// that allows to search for items in the list.
 	//
@@ -13669,7 +13668,7 @@ type dropDown struct {
 }
 
 func wrapDropDown(obj *externglib.Object) DropDown {
-	return dropDown{widget{externglib.InitiallyUnowned{obj}}}
+	return dropDown{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalDropDown(p uintptr) (interface{}, error) {
@@ -13694,7 +13693,7 @@ func (d dropDown) Model() gio.ListModel
 
 func (d dropDown) Selected() uint
 
-func (d dropDown) SelectedItem() interface{}
+func (d dropDown) SelectedItem() gextras.Objector
 
 func (d dropDown) SetEnableSearch(enableSearch bool)
 
@@ -13958,7 +13957,7 @@ type editableLabel struct {
 }
 
 func wrapEditableLabel(obj *externglib.Object) EditableLabel {
-	return editableLabel{widget{externglib.InitiallyUnowned{obj}}}
+	return editableLabel{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalEditableLabel(p uintptr) (interface{}, error) {
@@ -14004,7 +14003,7 @@ type emojiChooser struct {
 }
 
 func wrapEmojiChooser(obj *externglib.Object) EmojiChooser {
-	return emojiChooser{popover{widget{externglib.InitiallyUnowned{obj}}}}
+	return emojiChooser{popover{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalEmojiChooser(p uintptr) (interface{}, error) {
@@ -14345,7 +14344,7 @@ type entry struct {
 }
 
 func wrapEntry(obj *externglib.Object) Entry {
-	return entry{widget{externglib.InitiallyUnowned{obj}}}
+	return entry{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalEntry(p uintptr) (interface{}, error) {
@@ -15200,7 +15199,7 @@ type expander struct {
 }
 
 func wrapExpander(obj *externglib.Object) Expander {
-	return expander{widget{externglib.InitiallyUnowned{obj}}}
+	return expander{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalExpander(p uintptr) (interface{}, error) {
@@ -15410,7 +15409,7 @@ type fileChooserDialog struct {
 }
 
 func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
-	return fileChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{obj}}}}}
+	return fileChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
 }
 
 func marshalFileChooserDialog(p uintptr) (interface{}, error) {
@@ -15626,7 +15625,7 @@ type fileChooserWidget struct {
 }
 
 func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidget {
-	return fileChooserWidget{widget{externglib.InitiallyUnowned{obj}}}
+	return fileChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFileChooserWidget(p uintptr) (interface{}, error) {
@@ -15774,7 +15773,7 @@ type Filter interface {
 	// choose to omit implementing it, but FilterListModel uses it.
 	Strictness() FilterMatch
 	// Match checks if the given @item is matched by the filter or not.
-	Match(item interface{}) bool
+	Match(item gextras.Objector) bool
 }
 
 type filter struct {
@@ -15795,7 +15794,7 @@ func (f filter) Changed(change FilterChange)
 
 func (f filter) Strictness() FilterMatch
 
-func (f filter) Match(item interface{}) bool
+func (f filter) Match(item gextras.Objector) bool
 
 // FilterListModel is a list model that filters a given other listmodel. It
 // hides some elements from the other model according to criteria given by a
@@ -15951,7 +15950,7 @@ type fixed struct {
 }
 
 func wrapFixed(obj *externglib.Object) Fixed {
-	return fixed{widget{externglib.InitiallyUnowned{obj}}}
+	return fixed{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFixed(p uintptr) (interface{}, error) {
@@ -16281,7 +16280,7 @@ type flowBox struct {
 }
 
 func wrapFlowBox(obj *externglib.Object) FlowBox {
-	return flowBox{widget{externglib.InitiallyUnowned{obj}}}
+	return flowBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFlowBox(p uintptr) (interface{}, error) {
@@ -16389,7 +16388,7 @@ type flowBoxChild struct {
 }
 
 func wrapFlowBoxChild(obj *externglib.Object) FlowBoxChild {
-	return flowBoxChild{widget{externglib.InitiallyUnowned{obj}}}
+	return flowBoxChild{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFlowBoxChild(p uintptr) (interface{}, error) {
@@ -16450,7 +16449,7 @@ type fontButton struct {
 }
 
 func wrapFontButton(obj *externglib.Object) FontButton {
-	return fontButton{widget{externglib.InitiallyUnowned{obj}}}
+	return fontButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFontButton(p uintptr) (interface{}, error) {
@@ -16496,7 +16495,7 @@ type fontChooserDialog struct {
 }
 
 func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
-	return fontChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{obj}}}}}
+	return fontChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
 }
 
 func marshalFontChooserDialog(p uintptr) (interface{}, error) {
@@ -16533,7 +16532,7 @@ type fontChooserWidget struct {
 }
 
 func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidget {
-	return fontChooserWidget{widget{externglib.InitiallyUnowned{obj}}}
+	return fontChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFontChooserWidget(p uintptr) (interface{}, error) {
@@ -16612,7 +16611,7 @@ type frame struct {
 }
 
 func wrapFrame(obj *externglib.Object) Frame {
-	return frame{widget{externglib.InitiallyUnowned{obj}}}
+	return frame{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFrame(p uintptr) (interface{}, error) {
@@ -16818,7 +16817,7 @@ type glArea struct {
 }
 
 func wrapGLArea(obj *externglib.Object) GLArea {
-	return glArea{widget{externglib.InitiallyUnowned{obj}}}
+	return glArea{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalGLArea(p uintptr) (interface{}, error) {
@@ -17590,7 +17589,7 @@ type grid struct {
 }
 
 func wrapGrid(obj *externglib.Object) Grid {
-	return grid{widget{externglib.InitiallyUnowned{obj}}}
+	return grid{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalGrid(p uintptr) (interface{}, error) {
@@ -17877,7 +17876,7 @@ type gridView struct {
 }
 
 func wrapGridView(obj *externglib.Object) GridView {
-	return gridView{listBase{widget{externglib.InitiallyUnowned{obj}}}}
+	return gridView{listBase{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalGridView(p uintptr) (interface{}, error) {
@@ -18032,7 +18031,7 @@ type headerBar struct {
 }
 
 func wrapHeaderBar(obj *externglib.Object) HeaderBar {
-	return headerBar{widget{externglib.InitiallyUnowned{obj}}}
+	return headerBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalHeaderBar(p uintptr) (interface{}, error) {
@@ -18161,7 +18160,7 @@ type IMContext interface {
 	// PreeditString: retrieve the current preedit string for the input context,
 	// and a list of attributes to apply to the string. This string should be
 	// displayed inserted at the insertion point.
-	PreeditString() (str string, attrs *pango.AttrList, cursorPos int)
+	PreeditString() (str string, attrs pango.AttrList, cursorPos int)
 	// Surrounding retrieves context around the insertion point. Input methods
 	// typically want context in order to constrain input text based on existing
 	// text; this is important for languages such as Thai where only some
@@ -18223,7 +18222,7 @@ func (i imContext) FocusIn()
 
 func (i imContext) FocusOut()
 
-func (i imContext) PreeditString() (str string, attrs *pango.AttrList, cursorPos int)
+func (i imContext) PreeditString() (str string, attrs pango.AttrList, cursorPos int)
 
 func (i imContext) Surrounding() (text string, cursorIndex int, ok bool)
 
@@ -18575,14 +18574,14 @@ type IconView interface {
 	// currently has focus, then *@cell will be nil.
 	//
 	// The returned TreePath must be freed with gtk_tree_path_free().
-	Cursor() (path *TreePath, cell CellRenderer, ok bool)
+	Cursor() (path TreePath, cell CellRenderer, ok bool)
 	// DestItemAtPos determines the destination item for a given position.
-	DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconViewDropPosition, ok bool)
+	DestItemAtPos(dragX int, dragY int) (path TreePath, pos IconViewDropPosition, ok bool)
 	// DragDestItem gets information about the item that is highlighted for
 	// feedback.
-	DragDestItem() (path *TreePath, pos IconViewDropPosition)
+	DragDestItem() (path TreePath, pos IconViewDropPosition)
 	// ItemAtPos gets the path and cell for the icon at the given position.
-	ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok bool)
+	ItemAtPos(x int, y int) (path TreePath, cell CellRenderer, ok bool)
 	// ItemColumn gets the column in which the item @path is currently
 	// displayed. Column numbers start at 0.
 	ItemColumn(path *TreePath) int
@@ -18639,12 +18638,12 @@ type IconView interface {
 	// tooltips the item returned will be the cursor item. When true, then any
 	// of @model, @path and @iter which have been provided will be set to point
 	// to that row and the corresponding model.
-	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
+	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path TreePath, iter TreeIter, ok bool)
 	// VisibleRange sets @start_path and @end_path to be the first and last
 	// visible path. Note that there may be invisible paths in between.
 	//
 	// Both paths should be freed with gtk_tree_path_free() after use.
-	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
+	VisibleRange() (startPath TreePath, endPath TreePath, ok bool)
 	// ItemActivated activates the item determined by @path.
 	ItemActivated(path *TreePath)
 	// PathIsSelected returns true if the icon pointed to by @path is currently
@@ -18695,7 +18694,7 @@ type IconView interface {
 	// only happen when the widget is realized.
 	SetCursor(path *TreePath, cell CellRenderer, startEditing bool)
 	// SetDragDestItem sets the item that is highlighted for feedback.
-	SetDragDestItem(path *TreePath, pos IconViewDropPosition)
+	SetDragDestItem(path *TreePath, pos *IconViewDropPosition)
 	// SetItemOrientation sets the ::item-orientation property which determines
 	// whether the labels are drawn beside the icons instead of below.
 	SetItemOrientation(orientation Orientation)
@@ -18787,7 +18786,7 @@ type iconView struct {
 }
 
 func wrapIconView(obj *externglib.Object) IconView {
-	return iconView{widget{externglib.InitiallyUnowned{obj}}}
+	return iconView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalIconView(p uintptr) (interface{}, error) {
@@ -18816,13 +18815,13 @@ func (i iconView) ColumnSpacing() int
 
 func (i iconView) Columns() int
 
-func (i iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool)
+func (i iconView) Cursor() (path TreePath, cell CellRenderer, ok bool)
 
-func (i iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconViewDropPosition, ok bool)
+func (i iconView) DestItemAtPos(dragX int, dragY int) (path TreePath, pos IconViewDropPosition, ok bool)
 
-func (i iconView) DragDestItem() (path *TreePath, pos IconViewDropPosition)
+func (i iconView) DragDestItem() (path TreePath, pos IconViewDropPosition)
 
-func (i iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok bool)
+func (i iconView) ItemAtPos(x int, y int) (path TreePath, cell CellRenderer, ok bool)
 
 func (i iconView) ItemColumn(path *TreePath) int
 
@@ -18858,9 +18857,9 @@ func (i iconView) TextColumn() int
 
 func (i iconView) TooltipColumn() int
 
-func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
+func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path TreePath, iter TreeIter, ok bool)
 
-func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
+func (i iconView) VisibleRange() (startPath TreePath, endPath TreePath, ok bool)
 
 func (i iconView) ItemActivated(path *TreePath)
 
@@ -18882,7 +18881,7 @@ func (i iconView) SetColumns(columns int)
 
 func (i iconView) SetCursor(path *TreePath, cell CellRenderer, startEditing bool)
 
-func (i iconView) SetDragDestItem(path *TreePath, pos IconViewDropPosition)
+func (i iconView) SetDragDestItem(path *TreePath, pos *IconViewDropPosition)
 
 func (i iconView) SetItemOrientation(orientation Orientation)
 
@@ -19022,7 +19021,7 @@ type image struct {
 }
 
 func wrapImage(obj *externglib.Object) Image {
-	return image{widget{externglib.InitiallyUnowned{obj}}}
+	return image{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalImage(p uintptr) (interface{}, error) {
@@ -19142,7 +19141,7 @@ type InfoBar interface {
 	// clicking the button will emit the “response” signal with the given
 	// response_id. The button is appended to the end of the info bars's action
 	// area. The button widget is returned, but usually you don't need it.
-	AddButton(buttonText string, responseID int) Widget
+	AddButton(buttonText string, responseID int) Button
 	// AddChild adds a widget to the content area of the info bar.
 	AddChild(widget Widget)
 	// MessageType returns the message type of the message area.
@@ -19193,7 +19192,7 @@ type infoBar struct {
 }
 
 func wrapInfoBar(obj *externglib.Object) InfoBar {
-	return infoBar{widget{externglib.InitiallyUnowned{obj}}}
+	return infoBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalInfoBar(p uintptr) (interface{}, error) {
@@ -19206,7 +19205,7 @@ func NewInfoBar() InfoBar
 
 func (i infoBar) AddActionWidget(child Widget, responseID int)
 
-func (i infoBar) AddButton(buttonText string, responseID int) Widget
+func (i infoBar) AddButton(buttonText string, responseID int) Button
 
 func (i infoBar) AddChild(widget Widget)
 
@@ -19653,7 +19652,7 @@ type label struct {
 }
 
 func wrapLabel(obj *externglib.Object) Label {
-	return label{widget{externglib.InitiallyUnowned{obj}}}
+	return label{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalLabel(p uintptr) (interface{}, error) {
@@ -20037,7 +20036,7 @@ type levelBar struct {
 }
 
 func wrapLevelBar(obj *externglib.Object) LevelBar {
-	return levelBar{widget{externglib.InitiallyUnowned{obj}}}
+	return levelBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalLevelBar(p uintptr) (interface{}, error) {
@@ -20125,7 +20124,7 @@ type linkButton struct {
 }
 
 func wrapLinkButton(obj *externglib.Object) LinkButton {
-	return linkButton{button{widget{externglib.InitiallyUnowned{obj}}}}
+	return linkButton{button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalLinkButton(p uintptr) (interface{}, error) {
@@ -20156,7 +20155,7 @@ type listBase struct {
 }
 
 func wrapListBase(obj *externglib.Object) ListBase {
-	return listBase{widget{externglib.InitiallyUnowned{obj}}}
+	return listBase{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalListBase(p uintptr) (interface{}, error) {
@@ -20377,7 +20376,7 @@ type listBox struct {
 }
 
 func wrapListBox(obj *externglib.Object) ListBox {
-	return listBox{widget{externglib.InitiallyUnowned{obj}}}
+	return listBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalListBox(p uintptr) (interface{}, error) {
@@ -20503,7 +20502,7 @@ type listBoxRow struct {
 }
 
 func wrapListBoxRow(obj *externglib.Object) ListBoxRow {
-	return listBoxRow{widget{externglib.InitiallyUnowned{obj}}}
+	return listBoxRow{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalListBoxRow(p uintptr) (interface{}, error) {
@@ -20561,7 +20560,7 @@ type ListItem interface {
 	Child() Widget
 	// Item gets the item that is currently displayed in model that @self is
 	// currently bound to or nil if @self is unbound.
-	Item() interface{}
+	Item() gextras.Objector
 	// Position gets the position in the model that @self currently displays. If
 	// @self is unbound, GTK_INVALID_LIST_POSITION is returned.
 	Position() uint
@@ -20620,7 +20619,7 @@ func (l listItem) Activatable() bool
 
 func (l listItem) Child() Widget
 
-func (l listItem) Item() interface{}
+func (l listItem) Item() gextras.Objector
 
 func (l listItem) Position() uint
 
@@ -21038,7 +21037,7 @@ type listView struct {
 }
 
 func wrapListView(obj *externglib.Object) ListView {
-	return listView{listBase{widget{externglib.InitiallyUnowned{obj}}}}
+	return listView{listBase{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalListView(p uintptr) (interface{}, error) {
@@ -21113,7 +21112,7 @@ type lockButton struct {
 }
 
 func wrapLockButton(obj *externglib.Object) LockButton {
-	return lockButton{button{widget{externglib.InitiallyUnowned{obj}}}}
+	return lockButton{button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalLockButton(p uintptr) (interface{}, error) {
@@ -21213,7 +21212,7 @@ type mediaControls struct {
 }
 
 func wrapMediaControls(obj *externglib.Object) MediaControls {
-	return mediaControls{widget{externglib.InitiallyUnowned{obj}}}
+	return mediaControls{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalMediaControls(p uintptr) (interface{}, error) {
@@ -21716,7 +21715,7 @@ type menuButton struct {
 }
 
 func wrapMenuButton(obj *externglib.Object) MenuButton {
-	return menuButton{widget{externglib.InitiallyUnowned{obj}}}
+	return menuButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalMenuButton(p uintptr) (interface{}, error) {
@@ -21824,7 +21823,7 @@ type messageDialog struct {
 }
 
 func wrapMessageDialog(obj *externglib.Object) MessageDialog {
-	return messageDialog{dialog{window{widget{externglib.InitiallyUnowned{obj}}}}}
+	return messageDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
 }
 
 func marshalMessageDialog(p uintptr) (interface{}, error) {
@@ -22486,7 +22485,7 @@ type notebook struct {
 }
 
 func wrapNotebook(obj *externglib.Object) Notebook {
-	return notebook{widget{externglib.InitiallyUnowned{obj}}}
+	return notebook{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalNotebook(p uintptr) (interface{}, error) {
@@ -22770,7 +22769,7 @@ type overlay struct {
 }
 
 func wrapOverlay(obj *externglib.Object) Overlay {
-	return overlay{widget{externglib.InitiallyUnowned{obj}}}
+	return overlay{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalOverlay(p uintptr) (interface{}, error) {
@@ -23209,7 +23208,7 @@ type paned struct {
 }
 
 func wrapPaned(obj *externglib.Object) Paned {
-	return paned{widget{externglib.InitiallyUnowned{obj}}}
+	return paned{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalPaned(p uintptr) (interface{}, error) {
@@ -23304,7 +23303,7 @@ type passwordEntry struct {
 }
 
 func wrapPasswordEntry(obj *externglib.Object) PasswordEntry {
-	return passwordEntry{widget{externglib.InitiallyUnowned{obj}}}
+	return passwordEntry{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalPasswordEntry(p uintptr) (interface{}, error) {
@@ -23435,7 +23434,7 @@ type picture struct {
 }
 
 func wrapPicture(obj *externglib.Object) Picture {
-	return picture{widget{externglib.InitiallyUnowned{obj}}}
+	return picture{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalPicture(p uintptr) (interface{}, error) {
@@ -23632,7 +23631,7 @@ type popover struct {
 }
 
 func wrapPopover(obj *externglib.Object) Popover {
-	return popover{widget{externglib.InitiallyUnowned{obj}}}
+	return popover{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalPopover(p uintptr) (interface{}, error) {
@@ -23793,7 +23792,7 @@ type popoverMenu struct {
 }
 
 func wrapPopoverMenu(obj *externglib.Object) PopoverMenu {
-	return popoverMenu{popover{widget{externglib.InitiallyUnowned{obj}}}}
+	return popoverMenu{popover{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalPopoverMenu(p uintptr) (interface{}, error) {
@@ -23860,7 +23859,7 @@ type popoverMenuBar struct {
 }
 
 func wrapPopoverMenuBar(obj *externglib.Object) PopoverMenuBar {
-	return popoverMenuBar{widget{externglib.InitiallyUnowned{obj}}}
+	return popoverMenuBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
@@ -24816,7 +24815,7 @@ type progressBar struct {
 }
 
 func wrapProgressBar(obj *externglib.Object) ProgressBar {
-	return progressBar{widget{externglib.InitiallyUnowned{obj}}}
+	return progressBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalProgressBar(p uintptr) (interface{}, error) {
@@ -24993,7 +24992,7 @@ type _range struct {
 }
 
 func wrapRange(obj *externglib.Object) Range {
-	return _range{widget{externglib.InitiallyUnowned{obj}}}
+	return _range{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
@@ -25248,7 +25247,7 @@ type revealer struct {
 }
 
 func wrapRevealer(obj *externglib.Object) Revealer {
-	return revealer{widget{externglib.InitiallyUnowned{obj}}}
+	return revealer{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalRevealer(p uintptr) (interface{}, error) {
@@ -25424,7 +25423,7 @@ type scale struct {
 }
 
 func wrapScale(obj *externglib.Object) Scale {
-	return scale{_range{widget{externglib.InitiallyUnowned{obj}}}}
+	return scale{_range{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalScale(p uintptr) (interface{}, error) {
@@ -25479,9 +25478,9 @@ type ScaleButton interface {
 	// See gtk_range_get_adjustment() for details.
 	Adjustment() Adjustment
 	// MinusButton retrieves the minus button of the ScaleButton.
-	MinusButton() Widget
+	MinusButton() Button
 	// PlusButton retrieves the plus button of the ScaleButton.
-	PlusButton() Widget
+	PlusButton() Button
 	// Popup retrieves the popup of the ScaleButton.
 	Popup() Widget
 	// Value gets the current value of the scale button.
@@ -25504,7 +25503,7 @@ type scaleButton struct {
 }
 
 func wrapScaleButton(obj *externglib.Object) ScaleButton {
-	return scaleButton{widget{externglib.InitiallyUnowned{obj}}}
+	return scaleButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalScaleButton(p uintptr) (interface{}, error) {
@@ -25517,9 +25516,9 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) Scal
 
 func (s scaleButton) Adjustment() Adjustment
 
-func (s scaleButton) MinusButton() Widget
+func (s scaleButton) MinusButton() Button
 
-func (s scaleButton) PlusButton() Widget
+func (s scaleButton) PlusButton() Button
 
 func (s scaleButton) Popup() Widget
 
@@ -25581,7 +25580,7 @@ type scrollbar struct {
 }
 
 func wrapScrollbar(obj *externglib.Object) Scrollbar {
-	return scrollbar{widget{externglib.InitiallyUnowned{obj}}}
+	return scrollbar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalScrollbar(p uintptr) (interface{}, error) {
@@ -25791,7 +25790,7 @@ type ScrolledWindow interface {
 	// GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed (that is,
 	// if the slider part of the bar would be smaller than the trough — the
 	// display is larger than the page size).
-	SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
+	SetPolicy(hscrollbarPolicy *PolicyType, vscrollbarPolicy *PolicyType)
 	// SetPropagateNaturalHeight sets whether the natural height of the child
 	// should be calculated and propagated through the scrolled window’s
 	// requested natural height.
@@ -25816,7 +25815,7 @@ type scrolledWindow struct {
 }
 
 func wrapScrolledWindow(obj *externglib.Object) ScrolledWindow {
-	return scrolledWindow{widget{externglib.InitiallyUnowned{obj}}}
+	return scrolledWindow{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalScrolledWindow(p uintptr) (interface{}, error) {
@@ -25879,7 +25878,7 @@ func (s scrolledWindow) SetOverlayScrolling(overlayScrolling bool)
 
 func (s scrolledWindow) SetPlacement(windowPlacement CornerType)
 
-func (s scrolledWindow) SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
+func (s scrolledWindow) SetPolicy(hscrollbarPolicy *PolicyType, vscrollbarPolicy *PolicyType)
 
 func (s scrolledWindow) SetPropagateNaturalHeight(propagate bool)
 
@@ -25965,7 +25964,7 @@ type searchBar struct {
 }
 
 func wrapSearchBar(obj *externglib.Object) SearchBar {
-	return searchBar{widget{externglib.InitiallyUnowned{obj}}}
+	return searchBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSearchBar(p uintptr) (interface{}, error) {
@@ -26051,7 +26050,7 @@ type searchEntry struct {
 }
 
 func wrapSearchEntry(obj *externglib.Object) SearchEntry {
-	return searchEntry{widget{externglib.InitiallyUnowned{obj}}}
+	return searchEntry{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSearchEntry(p uintptr) (interface{}, error) {
@@ -26125,7 +26124,7 @@ type separator struct {
 }
 
 func wrapSeparator(obj *externglib.Object) Separator {
-	return separator{widget{externglib.InitiallyUnowned{obj}}}
+	return separator{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSeparator(p uintptr) (interface{}, error) {
@@ -26454,7 +26453,7 @@ type shortcutLabel struct {
 }
 
 func wrapShortcutLabel(obj *externglib.Object) ShortcutLabel {
-	return shortcutLabel{widget{externglib.InitiallyUnowned{obj}}}
+	return shortcutLabel{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalShortcutLabel(p uintptr) (interface{}, error) {
@@ -26489,13 +26488,13 @@ type ShortcutTrigger interface {
 	// Compare: the types of @trigger1 and @trigger2 are #gconstpointer only to
 	// allow use of this function as a Func. They must each be a
 	// ShortcutTrigger.
-	Compare(trigger2 interface{}) int
+	Compare(trigger2 ShortcutTrigger) int
 	// Equal checks if @trigger1 and @trigger2 trigger under the same
 	// conditions.
 	//
 	// The types of @one and @two are #gconstpointer only to allow use of this
 	// function with Table. They must each be a ShortcutTrigger.
-	Equal(trigger2 interface{}) bool
+	Equal(trigger2 ShortcutTrigger) bool
 	// Hash generates a hash value for a ShortcutTrigger.
 	//
 	// The output of this function is guaranteed to be the same for a given
@@ -26557,9 +26556,9 @@ func marshalShortcutTrigger(p uintptr) (interface{}, error) {
 
 func NewShortcutTriggerParseString(string string) ShortcutTrigger
 
-func (s shortcutTrigger) Compare(trigger2 interface{}) int
+func (s shortcutTrigger) Compare(trigger2 ShortcutTrigger) int
 
-func (s shortcutTrigger) Equal(trigger2 interface{}) bool
+func (s shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool
 
 func (s shortcutTrigger) Hash() uint
 
@@ -26588,7 +26587,7 @@ type shortcutsGroup struct {
 }
 
 func wrapShortcutsGroup(obj *externglib.Object) ShortcutsGroup {
-	return shortcutsGroup{box{widget{externglib.InitiallyUnowned{obj}}}}
+	return shortcutsGroup{box{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalShortcutsGroup(p uintptr) (interface{}, error) {
@@ -26616,7 +26615,7 @@ type shortcutsSection struct {
 }
 
 func wrapShortcutsSection(obj *externglib.Object) ShortcutsSection {
-	return shortcutsSection{box{widget{externglib.InitiallyUnowned{obj}}}}
+	return shortcutsSection{box{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalShortcutsSection(p uintptr) (interface{}, error) {
@@ -26637,7 +26636,7 @@ type shortcutsShortcut struct {
 }
 
 func wrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcut {
-	return shortcutsShortcut{widget{externglib.InitiallyUnowned{obj}}}
+	return shortcutsShortcut{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
@@ -26698,7 +26697,7 @@ type shortcutsWindow struct {
 }
 
 func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
-	return shortcutsWindow{window{widget{externglib.InitiallyUnowned{obj}}}}
+	return shortcutsWindow{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalShortcutsWindow(p uintptr) (interface{}, error) {
@@ -27075,33 +27074,33 @@ type Snapshot interface {
 	// @bounds and appends it to the current render node of @snapshot.
 	//
 	// You should try to avoid calling this function if @color is transparent.
-	AppendColor(color *gdk.RGBA, bounds *graphene.Rect)
+	AppendColor(color gdk.RGBA, bounds *graphene.Rect)
 	// AppendConicGradient appends a conic gradient node with the given stops to
 	// @snapshot.
-	AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
+	AppendConicGradient(bounds *graphene.Rect, center graphene.Point, rotation float32, stops []gsk.ColorStop)
 	// AppendInsetShadow appends an inset shadow into the box given by @outline.
-	AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+	AppendInsetShadow(outline *gsk.RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 
-	AppendLayout(layout pango.Layout, color *gdk.RGBA)
+	AppendLayout(layout pango.Layout, color gdk.RGBA)
 	// AppendLinearGradient appends a linear gradient node with the given stops
 	// to @snapshot.
-	AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
+	AppendLinearGradient(bounds *graphene.Rect, startPoint graphene.Point, endPoint graphene.Point, stops []gsk.ColorStop)
 	// AppendNode appends @node to the current render node of @snapshot, without
 	// changing the current node. If @snapshot does not have a current node yet,
 	// @node will become the initial node.
 	AppendNode(node gsk.RenderNode)
 	// AppendOutsetShadow appends an outset shadow node around the box given by
 	// @outline.
-	AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+	AppendOutsetShadow(outline *gsk.RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 	// AppendRadialGradient appends a radial gradient node with the given stops
 	// to @snapshot.
-	AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
+	AppendRadialGradient(bounds *graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 	// AppendRepeatingLinearGradient appends a repeating linear gradient node
 	// with the given stops to @snapshot.
-	AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
+	AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint graphene.Point, endPoint graphene.Point, stops []gsk.ColorStop)
 	// AppendRepeatingRadialGradient appends a repeating radial gradient node
 	// with the given stops to @snapshot.
-	AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
+	AppendRepeatingRadialGradient(bounds *graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 	// AppendTexture creates a new render node drawing the @texture into the
 	// given @bounds and appends it to the current render node of @snapshot.
 	AppendTexture(texture gdk.Texture, bounds *graphene.Rect)
@@ -27110,7 +27109,7 @@ type Snapshot interface {
 	FreeToNode() gsk.RenderNode
 	// FreeToPaintable returns a paintable for the node that was constructed by
 	// @snapshot and frees @snapshot.
-	FreeToPaintable(size *graphene.Size) gdk.Paintable
+	FreeToPaintable(size graphene.Size) gdk.Paintable
 	// GLShaderPopTexture removes the top element from the stack of render nodes
 	// and adds it to the nearest GskGLShaderNode below it. This must be called
 	// the same number of times as the number of textures is needed for the
@@ -27256,7 +27255,7 @@ type Snapshot interface {
 	// constructed by @snapshot. After calling this function, it is no longer
 	// possible to add more nodes to @snapshot. The only function that should be
 	// called after this is g_object_unref().
-	ToPaintable(size *graphene.Size) gdk.Paintable
+	ToPaintable(size graphene.Size) gdk.Paintable
 	// Transform transforms @snapshot's coordinate system with the given
 	// @transform.
 	Transform(transform *gsk.Transform)
@@ -27265,7 +27264,7 @@ type Snapshot interface {
 	TransformMatrix(matrix *graphene.Matrix)
 	// Translate translates @snapshot's coordinate system by @point in
 	// 2-dimensional space.
-	Translate(point *graphene.Point)
+	Translate(point graphene.Point)
 	// Translate3D translates @snapshot's coordinate system by @point.
 	Translate3D(point *graphene.Point3D)
 }
@@ -27290,31 +27289,31 @@ func (s snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32,
 
 func (s snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context
 
-func (s snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect)
+func (s snapshot) AppendColor(color gdk.RGBA, bounds *graphene.Rect)
 
-func (s snapshot) AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
+func (s snapshot) AppendConicGradient(bounds *graphene.Rect, center graphene.Point, rotation float32, stops []gsk.ColorStop)
 
-func (s snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+func (s snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 
-func (s snapshot) AppendLayout(layout pango.Layout, color *gdk.RGBA)
+func (s snapshot) AppendLayout(layout pango.Layout, color gdk.RGBA)
 
-func (s snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
+func (s snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint graphene.Point, endPoint graphene.Point, stops []gsk.ColorStop)
 
 func (s snapshot) AppendNode(node gsk.RenderNode)
 
-func (s snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+func (s snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 
-func (s snapshot) AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
+func (s snapshot) AppendRadialGradient(bounds *graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 
-func (s snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
+func (s snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint graphene.Point, endPoint graphene.Point, stops []gsk.ColorStop)
 
-func (s snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
+func (s snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 
 func (s snapshot) AppendTexture(texture gdk.Texture, bounds *graphene.Rect)
 
 func (s snapshot) FreeToNode() gsk.RenderNode
 
-func (s snapshot) FreeToPaintable(size *graphene.Size) gdk.Paintable
+func (s snapshot) FreeToPaintable(size graphene.Size) gdk.Paintable
 
 func (s snapshot) GLShaderPopTexture()
 
@@ -27366,13 +27365,13 @@ func (s snapshot) Scale3D(factorX float32, factorY float32, factorZ float32)
 
 func (s snapshot) ToNode() gsk.RenderNode
 
-func (s snapshot) ToPaintable(size *graphene.Size) gdk.Paintable
+func (s snapshot) ToPaintable(size graphene.Size) gdk.Paintable
 
 func (s snapshot) Transform(transform *gsk.Transform)
 
 func (s snapshot) TransformMatrix(matrix *graphene.Matrix)
 
-func (s snapshot) Translate(point *graphene.Point)
+func (s snapshot) Translate(point graphene.Point)
 
 func (s snapshot) Translate3D(point *graphene.Point3D)
 
@@ -27504,7 +27503,7 @@ type Sorter interface {
 	//
 	// The sorter may signal it conforms to additional constraints via the
 	// return value of gtk_sorter_get_order().
-	Compare(item1 interface{}, item2 interface{}) Ordering
+	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 	// Order gets the order that @self conforms to. See SorterOrder for details
 	// of the possible return values.
 	//
@@ -27528,7 +27527,7 @@ func marshalSorter(p uintptr) (interface{}, error) {
 
 func (s sorter) Changed(change SorterChange)
 
-func (s sorter) Compare(item1 interface{}, item2 interface{}) Ordering
+func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 
 func (s sorter) Order() SorterOrder
 
@@ -27716,7 +27715,7 @@ type spinButton struct {
 }
 
 func wrapSpinButton(obj *externglib.Object) SpinButton {
-	return spinButton{widget{externglib.InitiallyUnowned{obj}}}
+	return spinButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSpinButton(p uintptr) (interface{}, error) {
@@ -27807,7 +27806,7 @@ type spinner struct {
 }
 
 func wrapSpinner(obj *externglib.Object) Spinner {
-	return spinner{widget{externglib.InitiallyUnowned{obj}}}
+	return spinner{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSpinner(p uintptr) (interface{}, error) {
@@ -27968,7 +27967,7 @@ type stack struct {
 }
 
 func wrapStack(obj *externglib.Object) Stack {
-	return stack{widget{externglib.InitiallyUnowned{obj}}}
+	return stack{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalStack(p uintptr) (interface{}, error) {
@@ -28137,7 +28136,7 @@ type stackSidebar struct {
 }
 
 func wrapStackSidebar(obj *externglib.Object) StackSidebar {
-	return stackSidebar{widget{externglib.InitiallyUnowned{obj}}}
+	return stackSidebar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalStackSidebar(p uintptr) (interface{}, error) {
@@ -28191,7 +28190,7 @@ type stackSwitcher struct {
 }
 
 func wrapStackSwitcher(obj *externglib.Object) StackSwitcher {
-	return stackSwitcher{widget{externglib.InitiallyUnowned{obj}}}
+	return stackSwitcher{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalStackSwitcher(p uintptr) (interface{}, error) {
@@ -28265,7 +28264,7 @@ type statusbar struct {
 }
 
 func wrapStatusbar(obj *externglib.Object) Statusbar {
-	return statusbar{widget{externglib.InitiallyUnowned{obj}}}
+	return statusbar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalStatusbar(p uintptr) (interface{}, error) {
@@ -28732,7 +28731,7 @@ type _switch struct {
 }
 
 func wrapSwitch(obj *externglib.Object) Switch {
-	return _switch{widget{externglib.InitiallyUnowned{obj}}}
+	return _switch{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSwitch(p uintptr) (interface{}, error) {
@@ -28951,7 +28950,7 @@ type text struct {
 }
 
 func wrapText(obj *externglib.Object) Text {
-	return text{widget{externglib.InitiallyUnowned{obj}}}
+	return text{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalText(p uintptr) (interface{}, error) {
@@ -30213,7 +30212,7 @@ type textView struct {
 }
 
 func wrapTextView(obj *externglib.Object) TextView {
-	return textView{widget{externglib.InitiallyUnowned{obj}}}
+	return textView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalTextView(p uintptr) (interface{}, error) {
@@ -30448,7 +30447,7 @@ type toggleButton struct {
 }
 
 func wrapToggleButton(obj *externglib.Object) ToggleButton {
-	return toggleButton{button{widget{externglib.InitiallyUnowned{obj}}}}
+	return toggleButton{button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalToggleButton(p uintptr) (interface{}, error) {
@@ -30606,7 +30605,7 @@ type TreeExpander interface {
 	// This call is essentially equivalent to calling:
 	//
 	//    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
-	Item() interface{}
+	Item() gextras.Objector
 	// ListRow gets the list row managed by @self.
 	ListRow() TreeListRow
 	// SetChild sets the content widget to display.
@@ -30620,7 +30619,7 @@ type treeExpander struct {
 }
 
 func wrapTreeExpander(obj *externglib.Object) TreeExpander {
-	return treeExpander{widget{externglib.InitiallyUnowned{obj}}}
+	return treeExpander{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalTreeExpander(p uintptr) (interface{}, error) {
@@ -30633,7 +30632,7 @@ func NewTreeExpander() TreeExpander
 
 func (t treeExpander) Child() Widget
 
-func (t treeExpander) Item() interface{}
+func (t treeExpander) Item() gextras.Objector
 
 func (t treeExpander) ListRow() TreeListRow
 
@@ -30752,7 +30751,7 @@ type TreeListRow interface {
 	//
 	// The value returned by this function never changes until the row is
 	// destroyed.
-	Item() interface{}
+	Item() gextras.Objector
 	// Parent gets the row representing the parent for @self. That is the row
 	// that would need to be collapsed to make this row disappear.
 	//
@@ -30803,7 +30802,7 @@ func (t treeListRow) Depth() uint
 
 func (t treeListRow) Expanded() bool
 
-func (t treeListRow) Item() interface{}
+func (t treeListRow) Item() gextras.Objector
 
 func (t treeListRow) Parent() TreeListRow
 
@@ -31688,16 +31687,16 @@ type TreeView interface {
 	//
 	// The returned TreePath must be freed with gtk_tree_path_free() when you
 	// are done with it.
-	Cursor() (path *TreePath, focusColumn TreeViewColumn)
+	Cursor() (path TreePath, focusColumn TreeViewColumn)
 	// DestRowAtPos determines the destination row for a given position. @drag_x
 	// and @drag_y are expected to be in widget coordinates. This function is
 	// only meaningful if @tree_view is realized. Therefore this function will
 	// always return false if @tree_view is not realized or does not have a
 	// model.
-	DestRowAtPos(dragX int, dragY int) (path *TreePath, pos TreeViewDropPosition, ok bool)
+	DestRowAtPos(dragX int, dragY int) (path TreePath, pos TreeViewDropPosition, ok bool)
 	// DragDestRow gets information about the row that is highlighted for
 	// feedback.
-	DragDestRow() (path *TreePath, pos TreeViewDropPosition)
+	DragDestRow() (path TreePath, pos TreeViewDropPosition)
 	// EnableSearch returns whether or not the tree allows to start interactive
 	// searching by typing in text.
 	EnableSearch() bool
@@ -31747,7 +31746,7 @@ type TreeView interface {
 	// For converting widget coordinates (eg. the ones you get from
 	// GtkWidget::query-tooltip), please see
 	// gtk_tree_view_convert_widget_to_bin_window_coords().
-	PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
+	PathAtPos(x int, y int) (path TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 	// Reorderable retrieves whether the user can reorder the tree via
 	// drag-and-drop. See gtk_tree_view_set_reorderable().
 	Reorderable() bool
@@ -31783,12 +31782,12 @@ type TreeView interface {
 	// @model, @path and @iter which have been provided will be set to point to
 	// that row and the corresponding model. @x and @y will always be converted
 	// to be relative to @tree_view’s bin_window if @keyboard_tooltip is false.
-	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
+	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path TreePath, iter TreeIter, ok bool)
 	// VisibleRange sets @start_path and @end_path to be the first and last
 	// visible path. Note that there may be invisible paths in between.
 	//
 	// The paths should be freed with gtk_tree_path_free() after use.
-	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
+	VisibleRange() (startPath TreePath, endPath TreePath, ok bool)
 	// VisibleRect fills @visible_rect with the currently-visible region of the
 	// buffer, in tree coordinates. Convert to bin_window coordinates with
 	// gtk_tree_view_convert_tree_to_bin_window_coords(). Tree coordinates start
@@ -31826,7 +31825,7 @@ type TreeView interface {
 	// The @path, @column, @cell_x and @cell_y arguments will be filled in
 	// likewise as for gtk_tree_view_get_path_at_pos(). Please see
 	// gtk_tree_view_get_path_at_pos() for more information.
-	IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
+	IsBlankAtPos(x int, y int) (path TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 	// IsRubberBandingActive returns whether a rubber banding operation is
 	// currently being done in @tree_view.
 	IsRubberBandingActive() bool
@@ -31910,7 +31909,7 @@ type TreeView interface {
 	SetCursorOnCell(path *TreePath, focusColumn TreeViewColumn, focusCell CellRenderer, startEditing bool)
 	// SetDragDestRow sets the row that is highlighted for feedback. If @path is
 	// nil, an existing highlight is removed.
-	SetDragDestRow(path *TreePath, pos TreeViewDropPosition)
+	SetDragDestRow(path *TreePath, pos *TreeViewDropPosition)
 	// SetEnableSearch: if @enable_search is set, then the user can type in text
 	// to search through the tree interactively (this is sometimes called
 	// "typeahead find").
@@ -32053,7 +32052,7 @@ type treeView struct {
 }
 
 func wrapTreeView(obj *externglib.Object) TreeView {
-	return treeView{widget{externglib.InitiallyUnowned{obj}}}
+	return treeView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalTreeView(p uintptr) (interface{}, error) {
@@ -32108,11 +32107,11 @@ func (t treeView) Column(n int) TreeViewColumn
 
 func (t treeView) Columns() *glib.List
 
-func (t treeView) Cursor() (path *TreePath, focusColumn TreeViewColumn)
+func (t treeView) Cursor() (path TreePath, focusColumn TreeViewColumn)
 
-func (t treeView) DestRowAtPos(dragX int, dragY int) (path *TreePath, pos TreeViewDropPosition, ok bool)
+func (t treeView) DestRowAtPos(dragX int, dragY int) (path TreePath, pos TreeViewDropPosition, ok bool)
 
-func (t treeView) DragDestRow() (path *TreePath, pos TreeViewDropPosition)
+func (t treeView) DragDestRow() (path TreePath, pos TreeViewDropPosition)
 
 func (t treeView) EnableSearch() bool
 
@@ -32138,7 +32137,7 @@ func (t treeView) Model() TreeModel
 
 func (t treeView) NColumns() uint
 
-func (t treeView) PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
+func (t treeView) PathAtPos(x int, y int) (path TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 
 func (t treeView) Reorderable() bool
 
@@ -32158,9 +32157,9 @@ func (t treeView) ShowExpanders() bool
 
 func (t treeView) TooltipColumn() int
 
-func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
+func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path TreePath, iter TreeIter, ok bool)
 
-func (t treeView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
+func (t treeView) VisibleRange() (startPath TreePath, endPath TreePath, ok bool)
 
 func (t treeView) VisibleRect() gdk.Rectangle
 
@@ -32168,7 +32167,7 @@ func (t treeView) InsertColumn(column TreeViewColumn, position int) int
 
 func (t treeView) InsertColumnWithDataFunc(position int, title string, cell CellRenderer, _func TreeCellDataFunc) int
 
-func (t treeView) IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
+func (t treeView) IsBlankAtPos(x int, y int) (path TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 
 func (t treeView) IsRubberBandingActive() bool
 
@@ -32194,7 +32193,7 @@ func (t treeView) SetCursor(path *TreePath, focusColumn TreeViewColumn, startEdi
 
 func (t treeView) SetCursorOnCell(path *TreePath, focusColumn TreeViewColumn, focusCell CellRenderer, startEditing bool)
 
-func (t treeView) SetDragDestRow(path *TreePath, pos TreeViewDropPosition)
+func (t treeView) SetDragDestRow(path *TreePath, pos *TreeViewDropPosition)
 
 func (t treeView) SetEnableSearch(enableSearch bool)
 
@@ -32441,7 +32440,7 @@ type treeViewColumn struct {
 }
 
 func wrapTreeViewColumn(obj *externglib.Object) TreeViewColumn {
-	return treeViewColumn{externglib.InitiallyUnowned{obj}}
+	return treeViewColumn{externglib.InitiallyUnowned{*externglib.Object{obj}}}
 }
 
 func marshalTreeViewColumn(p uintptr) (interface{}, error) {
@@ -32604,7 +32603,7 @@ type video struct {
 }
 
 func wrapVideo(obj *externglib.Object) Video {
-	return video{widget{externglib.InitiallyUnowned{obj}}}
+	return video{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalVideo(p uintptr) (interface{}, error) {
@@ -32679,7 +32678,7 @@ type viewport struct {
 }
 
 func wrapViewport(obj *externglib.Object) Viewport {
-	return viewport{widget{externglib.InitiallyUnowned{obj}}}
+	return viewport{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalViewport(p uintptr) (interface{}, error) {
@@ -32709,7 +32708,7 @@ type volumeButton struct {
 }
 
 func wrapVolumeButton(obj *externglib.Object) VolumeButton {
-	return volumeButton{scaleButton{widget{externglib.InitiallyUnowned{obj}}}}
+	return volumeButton{scaleButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalVolumeButton(p uintptr) (interface{}, error) {
@@ -33169,7 +33168,7 @@ type Widget interface {
 	// ComputePoint translates the given @point in @widget's coordinates to
 	// coordinates relative to @target’s coordinate system. In order to perform
 	// this operation, both widgets must share a common root.
-	ComputePoint(target Widget, point *graphene.Point) (outPoint graphene.Point, ok bool)
+	ComputePoint(target Widget, point graphene.Point) (outPoint graphene.Point, ok bool)
 	// ComputeTransform computes a matrix suitable to describe a transformation
 	// from @widget's coordinate system into @target's coordinate system.
 	ComputeTransform(target Widget) (outTransform graphene.Matrix, ok bool)
@@ -34127,7 +34126,7 @@ type widget struct {
 }
 
 func wrapWidget(obj *externglib.Object) Widget {
-	return widget{externglib.InitiallyUnowned{obj}}
+	return widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}
 }
 
 func marshalWidget(p uintptr) (interface{}, error) {
@@ -34160,7 +34159,7 @@ func (w widget) ComputeBounds(target Widget) (outBounds graphene.Rect, ok bool)
 
 func (w widget) ComputeExpand(orientation Orientation) bool
 
-func (w widget) ComputePoint(target Widget, point *graphene.Point) (outPoint graphene.Point, ok bool)
+func (w widget) ComputePoint(target Widget, point graphene.Point) (outPoint graphene.Point, ok bool)
 
 func (w widget) ComputeTransform(target Widget) (outTransform graphene.Matrix, ok bool)
 
@@ -34895,7 +34894,7 @@ type window struct {
 }
 
 func wrapWindow(obj *externglib.Object) Window {
-	return window{widget{externglib.InitiallyUnowned{obj}}}
+	return window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalWindow(p uintptr) (interface{}, error) {
@@ -35090,7 +35089,7 @@ type windowControls struct {
 }
 
 func wrapWindowControls(obj *externglib.Object) WindowControls {
-	return windowControls{widget{externglib.InitiallyUnowned{obj}}}
+	return windowControls{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalWindowControls(p uintptr) (interface{}, error) {
@@ -35185,7 +35184,7 @@ type windowHandle struct {
 }
 
 func wrapWindowHandle(obj *externglib.Object) WindowHandle {
-	return windowHandle{widget{externglib.InitiallyUnowned{obj}}}
+	return windowHandle{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalWindowHandle(p uintptr) (interface{}, error) {

@@ -17,8 +17,13 @@ import (
 // #include <pango/pangocairo.h>
 //
 // extern void cShapeRendererFunc(cairo_t*, PangoAttrShape*, gboolean, gpointer)
-//
+// // extern void callbackDelete(gpointer);
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{})
@@ -143,7 +148,7 @@ func ContextSetShapeRenderer(context pango.Context, _func ShapeRendererFunc) {
 	arg1 = wrapShapeRendererFunc(_func)
 
 	arg2 := C.gpointer(box.Assign(box.Callback, data))
-	C.pango_cairo_context_set_shape_renderer(arg0, arg1, (*[0]byte)(C.free))
+	C.pango_cairo_context_set_shape_renderer(arg0, arg1, (*[0]byte)(C.callbackDelete))
 }
 
 // CreateContext creates a context object set up to match the current

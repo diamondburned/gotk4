@@ -64,6 +64,13 @@ ret:
 	return ptr
 }
 
+func cTypeOrGIRType(girType gir.Type) string {
+	if girType.CType == "" {
+		return girType.Name
+	}
+	return girType.CType
+}
+
 // builtinType is a convenient function to make a new resolvedType.
 func builtinType(imp, typ string, girType gir.Type) *ResolvedType {
 	if imp != "" {
@@ -76,28 +83,36 @@ func builtinType(imp, typ string, girType gir.Type) *ResolvedType {
 		Import:  imp,
 		Package: path.Base(imp),
 		GType:   girType.Name,
-		CType:   girType.CType,
+		CType:   cTypeOrGIRType(girType),
 		Ptr:     countPtrs(girType, nil),
 	}
 }
 
 // externGLibType returns an external GLib type from gotk3.
-func externGLibType(glibType string, typ gir.Type) *ResolvedType {
-	ptrs := strings.Count(glibType, "*")
-	glibType = strings.Repeat("*", ptrs) + "externglib." + strings.TrimPrefix(glibType, "*")
+func externGLibType(goType string, typ gir.Type, ctyp string) *ResolvedType {
+	if typ.CType != "" {
+		ctyp = typ.CType
+	}
+
+	ptrs := strings.Count(goType, "*")
+	goType = strings.Repeat("*", ptrs) + "externglib." + strings.TrimPrefix(goType, "*")
 
 	return &ResolvedType{
-		Builtin: &glibType,
+		Builtin: &goType,
 		Import:  "github.com/gotk3/gotk3/glib",
 		Package: "externglib",
 		GType:   typ.Name,
-		CType:   typ.CType,
+		CType:   ctyp,
 		Ptr:     uint8(ptrs),
 	}
 }
 
 // typeFromResult creates a resolved type from the given type result.
 func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *ResolvedType {
+	if typ.CType == "" {
+		return nil
+	}
+
 	var parent string
 	if result.Class != nil {
 		parent = result.Class.Parent
@@ -170,13 +185,20 @@ func (typ *ResolvedType) PublicType(needsNamespace bool) string {
 	name, _ := typ.Extern.Result.Info()
 	name = PascalToGo(name)
 
-	ptr := strings.Repeat("*", int(typ.Ptr))
-
-	if !needsNamespace {
-		return ptr + name
+	ptr := typ.Ptr
+	// Since classes are implemented as interfaces, we have to dereference a
+	// pointer if we have any.
+	if typ.Extern.Result.Class != nil && ptr > 0 {
+		ptr--
 	}
 
-	return ptr + typ.Package + "." + name
+	ptrStr := strings.Repeat("*", int(ptr))
+
+	if !needsNamespace {
+		return ptrStr + name
+	}
+
+	return ptrStr + typ.Package + "." + name
 }
 
 // CGoType returns the CGo type.
@@ -295,24 +317,22 @@ func (ng *NamespaceGenerator) ResolveTypeName(girType string) *ResolvedType {
 // ResolveType resolves the given type from the GIR type field. It returns nil
 // if the type is not known. It does not recursively traverse the type.
 func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
-	if typ.CType == "" {
-		// No CType; skip cache because the GIR type isn't from source.
-		typ.CType = typ.Name
-		return ng.resolveTypeUncached(typ)
-	}
+	// Build the full type name. This name should only be used for caching; it
+	// does not differentiate properly built-in types and is thus unreliable.
+	fullName := ng.fullGIR(typ.Name)
 
-	v, ok := typeCache.Load(typ.CType)
+	v, ok := typeCache.Load(fullName)
 	if ok {
 		return v.(*ResolvedType)
 	}
 
 	// Cache miss. Use singleflight to ensure we're not looking up multiple
 	// versions of the same type to prevent cache stampede.
-	v, _, _ = typeFlight.Do(typ.CType, func() (interface{}, error) {
+	v, _, _ = typeFlight.Do(fullName, func() (interface{}, error) {
 		resolved := ng.resolveTypeUncached(typ)
 		if resolved != nil {
 			// Save into the cache within the singleflight callback.
-			typeCache.Store(typ.CType, resolved)
+			typeCache.Store(fullName, resolved)
 
 			// Add the import in the same singleflight callback, but only if the
 			// namespace is not the current one.
@@ -395,13 +415,13 @@ func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 	case "GLib.DestroyNotify", "DestroyNotify": // This should be handled externally.
 		return builtinType("unsafe", "Pointer", typ)
 	case "GType":
-		return externGLibType("Type", typ)
+		return externGLibType("Type", typ, "GType")
 	case "GObject.GValue", "GObject.Value": // inconsistency???
-		return externGLibType("*Value", typ)
+		return externGLibType("*Value", typ, "GValue")
 	case "GObject.Object":
-		return externGLibType("*Object", typ)
+		return externGLibType("*Object", typ, "*GObject")
 	case "GObject.Closure":
-		return externGLibType("*Closure", typ)
+		return externGLibType("*Closure", typ, "*GClosure")
 	case "GObject.Callback":
 		// Callback is a special func(Any) Any type, so we treat it as
 		// interface{} similarly to object.Connect(). We can use glib's Closure
@@ -409,7 +429,9 @@ func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 		return builtinType("", "interface{}", typ)
 
 	case "GObject.InitiallyUnowned":
-		return externGLibType("InitiallyUnowned", typ)
+		t := externGLibType("InitiallyUnowned", typ, "*GInitiallyUnowned")
+		t.Parent = "GObject.Object"
+		return t
 
 	case "va_list":
 		// CGo cannot handle variadic argument lists.

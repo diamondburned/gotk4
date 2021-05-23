@@ -15,7 +15,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangoft2.h>
 //
-//
 import "C"
 
 func init() {

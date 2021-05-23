@@ -14,7 +14,6 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixdata.h>
 //
-//
 import "C"
 
 func init() {
@@ -152,7 +151,7 @@ func wrapPixdata(p *C.GdkPixdata) *Pixdata {
 
 		v.PixelData = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p.pixel_data)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p.pixel_data)) + i))
 			v.PixelData[i] = uint8(src)
 		}
 	}

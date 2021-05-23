@@ -31,7 +31,6 @@ import (
 // extern void cTestFixtureFunc(gpointer, gconstpointer)
 // extern gboolean cTestLogFatalFunc(const gchar*, GLogLevelFlags, const gchar*, gpointer)
 // extern gboolean cUnixFDSourceFunc(gint, GIOCondition, gpointer)
-//
 import "C"
 
 func init() {
@@ -4031,7 +4030,7 @@ func Base64Decode(text string) (outLen uint, guint8s []uint8) {
 	{
 		ret1 = make([]uint8, arg1)
 		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret1[i] = uint8(src)
 		}
 	}
@@ -4046,7 +4045,7 @@ func Base64DecodeInplace(text []uint8) uint8 {
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -4072,7 +4071,7 @@ func Base64DecodeStep(in []uint8, state int, save uint) (out []uint8, gsize uint
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -4096,7 +4095,7 @@ func Base64DecodeStep(in []uint8, state int, save uint) (out []uint8, gsize uint
 
 		ret0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
 			ret0[i] = uint8(src)
 		}
 	}
@@ -4114,7 +4113,7 @@ func Base64Encode(data []uint8) string {
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -4159,7 +4158,7 @@ func Base64EncodeClose(breakLines bool, state int, save int) (out []uint8, gsize
 
 		ret0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg1)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg1)) + i))
 			ret0[i] = uint8(src)
 		}
 	}
@@ -4194,7 +4193,7 @@ func Base64EncodeStep(in []uint8, breakLines bool, state int, save int) (out []u
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -4221,7 +4220,7 @@ func Base64EncodeStep(in []uint8, breakLines bool, state int, save int) (out []u
 
 		ret0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
 			ret0[i] = uint8(src)
 		}
 	}
@@ -4448,7 +4447,7 @@ func ByteArrayFree(array []uint8, freeSegment bool) uint8 {
 
 		arg0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(array)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(array)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -4482,7 +4481,7 @@ func ByteArrayFreeToBytes(array []uint8) *Bytes {
 
 		arg0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(array)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(array)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -4508,7 +4507,7 @@ func NewByteArray() []uint8 {
 
 		ret0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = uint8(src)
 		}
 	}
@@ -4524,7 +4523,7 @@ func ByteArrayNewTake(data []uint8) []uint8 {
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -4540,7 +4539,7 @@ func ByteArrayNewTake(data []uint8) []uint8 {
 
 		ret0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = uint8(src)
 		}
 	}
@@ -4561,7 +4560,7 @@ func ByteArraySteal(array []uint8) (len uint, guint8 uint8) {
 
 		arg0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(array)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(array)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -4592,7 +4591,7 @@ func ByteArrayUnref(array []uint8) {
 
 		arg0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(array)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(array)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -4850,8 +4849,8 @@ func ClearHandleID(tagPtr uint, clearFunc ClearHandleFunc) {
 //
 // @list_ptr must be a valid pointer. If @list_ptr points to a null #GList, this
 // does nothing.
-func ClearList(listPtr **List, destroy unsafe.Pointer) {
-	var arg0 **List
+func ClearList(listPtr *List, destroy unsafe.Pointer) {
+	var arg0 *List
 	arg0 = wrapList(listPtr)
 
 	C.g_clear_list(arg0, (*[0]byte)(C.free))
@@ -4882,8 +4881,8 @@ func ClearPointer(pp interface{}, destroy unsafe.Pointer) {
 //
 // @slist_ptr must be a valid pointer. If @slist_ptr points to a null List, this
 // does nothing.
-func ClearSlist(slistPtr **SList, destroy unsafe.Pointer) {
-	var arg0 **SList
+func ClearSlist(slistPtr *SList, destroy unsafe.Pointer) {
+	var arg0 *SList
 	arg0 = wrapSList(slistPtr)
 
 	C.g_clear_slist(arg0, (*[0]byte)(C.free))
@@ -4941,7 +4940,7 @@ func ComputeChecksumForData(checksumType ChecksumType, data []uint8) string {
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -5013,7 +5012,7 @@ func ComputeHMACForData(digestType ChecksumType, key []uint8, data []uint8) stri
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -5022,7 +5021,7 @@ func ComputeHMACForData(digestType ChecksumType, key []uint8, data []uint8) stri
 	{
 		arg3 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg3[i] = uint8(src)
 		}
 	}
@@ -5047,7 +5046,7 @@ func ComputeHMACForString(digestType ChecksumType, key []uint8, str string, leng
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -5086,7 +5085,7 @@ func Convert(str []uint8, toCodeset string, fromCodeset string) (bytesRead uint,
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -5115,7 +5114,7 @@ func Convert(str []uint8, toCodeset string, fromCodeset string) (bytesRead uint,
 	{
 		ret2 = make([]uint8, arg5)
 		for i := 0; i < uintptr(arg5); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret2[i] = uint8(src)
 		}
 	}
@@ -5155,7 +5154,7 @@ func ConvertWithFallback(str []uint8, toCodeset string, fromCodeset string, fall
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -5188,7 +5187,7 @@ func ConvertWithFallback(str []uint8, toCodeset string, fromCodeset string, fall
 	{
 		ret2 = make([]uint8, arg6)
 		for i := 0; i < uintptr(arg6); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret2[i] = uint8(src)
 		}
 	}
@@ -5219,7 +5218,7 @@ func ConvertWithIconv(str []uint8, converter IConv) (bytesRead uint, bytesWritte
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -5243,7 +5242,7 @@ func ConvertWithIconv(str []uint8, converter IConv) (bytesRead uint, bytesWritte
 	{
 		ret2 = make([]uint8, arg4)
 		for i := 0; i < uintptr(arg4); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret2[i] = uint8(src)
 		}
 	}
@@ -5253,8 +5252,8 @@ func ConvertWithIconv(str []uint8, converter IConv) (bytesRead uint, bytesWritte
 
 // DatalistClear frees all the data elements of the datalist. The data elements'
 // destroy functions are called if they have been set.
-func DatalistClear(datalist **Data) {
-	var arg0 **Data
+func DatalistClear(datalist *Data) {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	C.g_datalist_clear(arg0)
@@ -5269,8 +5268,8 @@ func DatalistClear(datalist **Data) {
 // @func can make changes to @datalist, but the iteration will not reflect
 // changes made during the g_datalist_foreach() call, other than skipping over
 // elements that are removed.
-func DatalistForeach(datalist **Data, _func DataForeachFunc) {
-	var arg0 **Data
+func DatalistForeach(datalist *Data, _func DataForeachFunc) {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	var arg1 DataForeachFunc
@@ -5282,8 +5281,8 @@ func DatalistForeach(datalist **Data, _func DataForeachFunc) {
 
 // DatalistGetData gets a data element, using its string identifier. This is
 // slower than g_datalist_id_get_data() because it compares strings.
-func DatalistGetData(datalist **Data, key string) interface{} {
-	var arg0 **Data
+func DatalistGetData(datalist *Data, key string) interface{} {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	var arg1 string
@@ -5300,8 +5299,8 @@ func DatalistGetData(datalist **Data, key string) interface{} {
 
 // DatalistGetFlags gets flags values packed in together with the datalist. See
 // g_datalist_set_flags().
-func DatalistGetFlags(datalist **Data) uint {
-	var arg0 **Data
+func DatalistGetFlags(datalist *Data) uint {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	ret := C.g_datalist_get_flags(arg0)
@@ -5325,8 +5324,8 @@ func DatalistGetFlags(datalist **Data) uint {
 //
 // This function can be useful to avoid races when multiple threads are using
 // the same datalist and the same key.
-func DatalistIDDupData(datalist **Data, keyID Quark, dupFunc DuplicateFunc) interface{} {
-	var arg0 **Data
+func DatalistIDDupData(datalist *Data, keyID Quark, dupFunc DuplicateFunc) interface{} {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	var arg1 Quark
@@ -5348,8 +5347,8 @@ func DatalistIDDupData(datalist **Data, keyID Quark, dupFunc DuplicateFunc) inte
 }
 
 // DatalistIDGetData retrieves the data element corresponding to @key_id.
-func DatalistIDGetData(datalist **Data, keyID Quark) interface{} {
-	var arg0 **Data
+func DatalistIDGetData(datalist *Data, keyID Quark) interface{} {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	var arg1 Quark
@@ -5368,8 +5367,8 @@ func DatalistIDGetData(datalist **Data, keyID Quark) interface{} {
 
 // DatalistIDRemoveNoNotify removes an element, without calling its destroy
 // notification function.
-func DatalistIDRemoveNoNotify(datalist **Data, keyID Quark) interface{} {
-	var arg0 **Data
+func DatalistIDRemoveNoNotify(datalist *Data, keyID Quark) interface{} {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	var arg1 Quark
@@ -5397,8 +5396,8 @@ func DatalistIDRemoveNoNotify(datalist **Data, keyID Quark) interface{} {
 // (passed out in @old_destroy). Its up to the caller to free this as he wishes,
 // which may or may not include using @old_destroy as sometimes replacement
 // should not destroy the object in the normal way.
-func DatalistIDReplaceData(datalist **Data, keyID Quark, oldval interface{}, newval interface{}, destroy unsafe.Pointer) (oldDestroy unsafe.Pointer, ok bool) {
-	var arg0 **Data
+func DatalistIDReplaceData(datalist *Data, keyID Quark, oldval interface{}, newval interface{}, destroy unsafe.Pointer) (oldDestroy unsafe.Pointer, ok bool) {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	var arg1 Quark
@@ -5429,8 +5428,8 @@ func DatalistIDReplaceData(datalist **Data, keyID Quark, oldval interface{}, new
 // and the function to be called when the element is removed from the datalist.
 // Any previous data with the same key is removed, and its destroy function is
 // called.
-func DatalistIDSetDataFull(datalist **Data, keyID Quark, data interface{}, destroyFunc unsafe.Pointer) {
-	var arg0 **Data
+func DatalistIDSetDataFull(datalist *Data, keyID Quark, data interface{}, destroyFunc unsafe.Pointer) {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	var arg1 Quark
@@ -5447,8 +5446,8 @@ func DatalistIDSetDataFull(datalist **Data, keyID Quark, data interface{}, destr
 
 // DatalistInit resets the datalist to nil. It does not free any memory or call
 // any destroy functions.
-func DatalistInit(datalist **Data) {
-	var arg0 **Data
+func DatalistInit(datalist *Data) {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	C.g_datalist_init(arg0)
@@ -5459,8 +5458,8 @@ func DatalistInit(datalist **Data) {
 // using any additional space. It is not generally useful except in
 // circumstances where space is very tight. (It is used in the base #GObject
 // type, for example.)
-func DatalistSetFlags(datalist **Data, flags uint) {
-	var arg0 **Data
+func DatalistSetFlags(datalist *Data, flags uint) {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	var arg1 uint
@@ -5471,8 +5470,8 @@ func DatalistSetFlags(datalist **Data, flags uint) {
 
 // DatalistUnsetFlags turns off flag values for a data list. See
 // g_datalist_unset_flags()
-func DatalistUnsetFlags(datalist **Data, flags uint) {
-	var arg0 **Data
+func DatalistUnsetFlags(datalist *Data, flags uint) {
+	var arg0 *Data
 	arg0 = wrapData(datalist)
 
 	var arg1 uint
@@ -6281,7 +6280,7 @@ func FileGetContents(filename string) (contents []uint8, length uint, ok bool) {
 	{
 		ret0 = make([]uint8, arg2)
 		for i := 0; i < uintptr(arg2); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret0[i] = uint8(src)
 		}
 	}
@@ -6358,7 +6357,7 @@ func FileSetContents(filename string, contents []uint8) bool {
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -6435,7 +6434,7 @@ func FileSetContentsFull(filename string, contents []uint8, flags FileSetContent
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -6971,7 +6970,7 @@ func GetFilenameCharsets() (filenameCharsets []string, ok bool) {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (**C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(arg0)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(arg0)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -7057,7 +7056,7 @@ func GetLanguageNames() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -7092,7 +7091,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -7133,7 +7132,7 @@ func GetLocaleVariants(locale string) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -8388,7 +8387,7 @@ func LocaleFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten ui
 	{
 		ret2 = make([]uint8, arg3)
 		for i := 0; i < uintptr(arg3); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			ret2[i] = uint8(src)
 		}
 	}
@@ -8411,7 +8410,7 @@ func LocaleToUTF8(opsysstring []uint8) (bytesRead uint, bytesWritten uint, utf8 
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -9759,7 +9758,7 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 // Note that @src is no longer valid after this call. If you want to keep using
 // the same GError*, you need to set it to nil after calling this function on
 // it.
-func PropagateError(src *Error) *Error {
+func PropagateError(src *Error) Error {
 	var arg0 **C.GError // out
 
 	var arg1 *Error
@@ -9767,7 +9766,7 @@ func PropagateError(src *Error) *Error {
 
 	ret := C.g_propagate_error(&arg0, arg1)
 
-	var ret0 **Error
+	var ret0 *Error
 	ret0 = wrapError(arg0)
 
 	return ret0
@@ -10392,12 +10391,12 @@ func RegexEscapeNUL(string string, length int) string {
 //
 // @string can contain nul characters that are replaced with "\0", in this case
 // remember to specify the correct length of @string in @length.
-func RegexEscapeString(string []byte) string {
-	var arg0 []byte
+func RegexEscapeString(string []string) string {
+	var arg0 []string
 	{
-		arg0 = make([]byte, a)
+		arg0 = make([]string, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -10496,7 +10495,7 @@ func RegexSplitSimple(pattern string, string string, compileOptions RegexCompile
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -10713,7 +10712,7 @@ func SetApplicationName(applicationName string) {
 // g_set_error(), @message is not a printf()-style format string. Use this
 // function if @message contains text you don't have control over, that could
 // include printf() escape sequences.
-func SetErrorLiteral(domain Quark, code int, message string) *Error {
+func SetErrorLiteral(domain Quark, code int, message string) Error {
 	var arg0 **C.GError // out
 
 	var arg1 Quark
@@ -10731,7 +10730,7 @@ func SetErrorLiteral(domain Quark, code int, message string) *Error {
 
 	ret := C.g_set_error_literal(&arg0, arg1, arg2, arg3)
 
-	var ret0 **Error
+	var ret0 *Error
 	ret0 = wrapError(arg0)
 
 	return ret0
@@ -11232,7 +11231,7 @@ func SpawnAsync(workingDirectory string, argv []string, envp []string, flags Spa
 
 	ret := C.g_spawn_async(arg0, arg1, arg2, arg3, arg4, &arg6)
 
-	var ret0 *Pid
+	var ret0 Pid
 	{
 		tmp := int(arg6)
 		ret0 = Pid(tmp)
@@ -11317,7 +11316,7 @@ func SpawnAsyncWithFds(workingDirectory string, argv []string, envp []string, fl
 
 	ret := C.g_spawn_async_with_fds(arg0, arg1, arg2, arg3, arg4, &arg6, arg7, arg8, arg9)
 
-	var ret0 *Pid
+	var ret0 Pid
 	{
 		tmp := int(arg6)
 		ret0 = Pid(tmp)
@@ -11537,7 +11536,7 @@ func SpawnAsyncWithPipes(workingDirectory string, argv []string, envp []string, 
 
 	ret := C.g_spawn_async_with_pipes(arg0, arg1, arg2, arg3, arg4, &arg6, &arg7, &arg8, &arg9)
 
-	var ret0 *Pid
+	var ret0 Pid
 	{
 		tmp := int(arg6)
 		ret0 = Pid(tmp)
@@ -11683,7 +11682,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []uint8, standardE
 
 		ret0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg1)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg1)) + i))
 			ret0[i] = uint8(src)
 		}
 	}
@@ -11697,7 +11696,7 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []uint8, standardE
 
 		ret1 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
 			ret1[i] = uint8(src)
 		}
 	}
@@ -11812,7 +11811,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 
 		ret0 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg6)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg6)) + i))
 			ret0[i] = uint8(src)
 		}
 	}
@@ -11826,7 +11825,7 @@ func SpawnSync(workingDirectory string, argv []string, envp []string, flags Spaw
 
 		ret1 = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg7)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(arg7)) + i))
 			ret1[i] = uint8(src)
 		}
 	}
@@ -12069,7 +12068,7 @@ func StrTokenizeAndFold(string string, translitLocale string) (asciiAlternates [
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (**C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(arg2)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -12084,7 +12083,7 @@ func StrTokenizeAndFold(string string, translitLocale string) (asciiAlternates [
 
 		ret1 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret1[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -12294,7 +12293,7 @@ func Strdupv(strArray string) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -12712,7 +12711,7 @@ func Strsplit(string string, delimiter string, maxTokens int) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -12764,7 +12763,7 @@ func StrsplitSet(string string, delimiters string, maxTokens int) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -14046,8 +14045,8 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 //
 // Note that execution of this function is of O(N) complexity where N denotes
 // the number of items on the stack.
-func TrashStackHeight(stackP **TrashStack) uint {
-	var arg0 **TrashStack
+func TrashStackHeight(stackP *TrashStack) uint {
+	var arg0 *TrashStack
 	arg0 = wrapTrashStack(stackP)
 
 	ret := C.g_trash_stack_height(arg0)
@@ -14059,8 +14058,8 @@ func TrashStackHeight(stackP **TrashStack) uint {
 }
 
 // TrashStackPeek returns the element at the top of a Stack which may be nil.
-func TrashStackPeek(stackP **TrashStack) interface{} {
-	var arg0 **TrashStack
+func TrashStackPeek(stackP *TrashStack) interface{} {
+	var arg0 *TrashStack
 	arg0 = wrapTrashStack(stackP)
 
 	ret := C.g_trash_stack_peek(arg0)
@@ -14072,8 +14071,8 @@ func TrashStackPeek(stackP **TrashStack) interface{} {
 }
 
 // TrashStackPop pops a piece of memory off a Stack.
-func TrashStackPop(stackP **TrashStack) interface{} {
-	var arg0 **TrashStack
+func TrashStackPop(stackP *TrashStack) interface{} {
+	var arg0 *TrashStack
 	arg0 = wrapTrashStack(stackP)
 
 	ret := C.g_trash_stack_pop(arg0)
@@ -14085,8 +14084,8 @@ func TrashStackPop(stackP **TrashStack) interface{} {
 }
 
 // TrashStackPush pushes a piece of memory onto a Stack.
-func TrashStackPush(stackP **TrashStack, dataP interface{}) {
-	var arg0 **TrashStack
+func TrashStackPush(stackP *TrashStack, dataP interface{}) {
+	var arg0 *TrashStack
 	arg0 = wrapTrashStack(stackP)
 
 	var arg1 interface{}
@@ -15283,7 +15282,7 @@ func URIEscapeBytes(unescaped []uint8, reservedCharsAllowed string) string {
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -15483,7 +15482,7 @@ func URIListExtractUris(uriList string) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -16594,7 +16593,7 @@ func UTF8Validate(str []uint8) (end string, ok bool) {
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}
@@ -16622,7 +16621,7 @@ func UTF8ValidateLen(str []uint8) (end string, ok bool) {
 	{
 		arg0 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg0[i] = uint8(src)
 		}
 	}

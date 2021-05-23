@@ -18,8 +18,13 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangoxft.h>
 //
-//
+// // extern void callbackDelete(gpointer);
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -209,7 +214,7 @@ func SetDefaultSubstitute(display *xlib.Display, screen int, _func SubstituteFun
 	arg2 = wrapSubstituteFunc(_func)
 
 	arg3 := C.gpointer(box.Assign(box.Callback, data))
-	C.pango_xft_set_default_substitute(arg0, arg1, arg2, (*[0]byte)(C.free))
+	C.pango_xft_set_default_substitute(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
 }
 
 // ShutdownDisplay: release any resources that have been cached for the
@@ -328,7 +333,7 @@ type Renderer interface {
 	pango.Renderer
 
 	// SetDefaultColor sets the default foreground color for a Renderer.
-	SetDefaultColor(defaultColor *pango.Color)
+	SetDefaultColor(defaultColor pango.Color)
 	// SetDraw sets the Draw object that the renderer is drawing to. The
 	// renderer must not be currently active.
 	SetDraw(draw *xft.Draw)
@@ -350,6 +355,6 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 
 func NewRenderer(display *xlib.Display, screen int) Renderer
 
-func (r renderer) SetDefaultColor(defaultColor *pango.Color)
+func (r renderer) SetDefaultColor(defaultColor pango.Color)
 
 func (r renderer) SetDraw(draw *xft.Draw)

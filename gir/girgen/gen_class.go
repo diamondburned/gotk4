@@ -70,6 +70,7 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	for {
 		parentType := cg.Ng.ResolveTypeName(parent)
 		if parentType == nil {
+			cg.Ng.logln(logWarn, "failed to resolve parent", parent, "for", class.Name)
 			return false
 		}
 
@@ -165,6 +166,7 @@ func (ng *NamespaceGenerator) generateClasses() {
 
 	for _, class := range ng.current.Namespace.Classes {
 		if !cg.Use(class) {
+			ng.logln(logInfo, "skipping class", class.Name)
 			continue
 		}
 

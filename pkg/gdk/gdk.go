@@ -20,8 +20,13 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 //
-//
+// // extern void callbackDelete(gpointer);
 import "C"
+
+//export callbackDelete
+func callbackDelete(ptr C.gpointer) {
+	box.Delete(box.Callback, uintptr(ptr))
+}
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
@@ -1006,11 +1011,11 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 }
 
 // CairoSetSourceRgba sets the specified RGBA as the source color of @cr.
-func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA) {
+func CairoSetSourceRgba(cr *cairo.Context, rgba RGBA) {
 	var arg0 *cairo.Context
 	arg0 = wrapContext(cr)
 
-	var arg1 *RGBA
+	var arg1 RGBA
 	arg1 = wrapRGBA(rgba)
 
 	C.gdk_cairo_set_source_rgba(arg0, arg1)
@@ -1065,7 +1070,7 @@ func ContentRegisterDeserializer(mimeType string, _type externglib.Type, deseria
 	arg2 = wrapContentDeserializeFunc(deserialize)
 
 	arg3 := C.gpointer(box.Assign(box.Callback, data))
-	C.gdk_content_register_deserializer(arg0, arg2, (*[0]byte)(C.free))
+	C.gdk_content_register_deserializer(arg0, arg2, (*[0]byte)(C.callbackDelete))
 }
 
 // ContentRegisterSerializer registers a function to convert objects of the
@@ -1079,7 +1084,7 @@ func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize
 	arg2 = wrapContentSerializeFunc(serialize)
 
 	arg3 := C.gpointer(box.Assign(box.Callback, data))
-	C.gdk_content_register_serializer(arg1, arg2, (*[0]byte)(C.free))
+	C.gdk_content_register_serializer(arg1, arg2, (*[0]byte)(C.callbackDelete))
 }
 
 // ContentSerializeAsync: serialize content and write it to the given output
@@ -1448,7 +1453,7 @@ func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin i
 
 		arg3 = make([]int, length)
 		for i := 0; i < length; i++ {
-			src := (C.int)(unsafe.Pointer(uintptr(unsafe.Pointer(indexRanges)) + i))
+			src := (C.gint)(unsafe.Pointer(uintptr(unsafe.Pointer(indexRanges)) + i))
 			arg3[i] = int(src)
 		}
 	}

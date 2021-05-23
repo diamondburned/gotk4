@@ -21,7 +21,6 @@ import (
 // #include <gsk/gsk.h>
 //
 // extern void cParseErrorFunc(const GskParseLocation*, const GskParseLocation*, const GError*, gpointer)
-//
 import "C"
 
 func init() {
@@ -377,7 +376,7 @@ func SerializationErrorQuark() glib.Quark {
 //
 // If @string does not describe a valid transform, false is returned and nil is
 // put in @out_transform.
-func TransformParse(string string) (outTransform *Transform, ok bool) {
+func TransformParse(string string) (outTransform Transform, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(string)
 	defer C.free(unsafe.Pointer(string))
@@ -386,7 +385,7 @@ func TransformParse(string string) (outTransform *Transform, ok bool) {
 
 	ret := C.gsk_transform_parse(arg0, &arg1)
 
-	var ret0 **Transform
+	var ret0 *Transform
 	ret0 = wrapTransform(arg1)
 
 	var ret1 bool
@@ -478,7 +477,7 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 // returning a RoundedRect will always return a normalized one.
 type RoundedRect struct {
 	// Bounds: the bounds of the rectangle
-	Bounds graphene.Rect
+	Bounds *graphene.Rect
 	// Corner: the size of the 4 rounded corners
 	Corner [4]graphene.Size
 
@@ -684,7 +683,7 @@ type BorderNode interface {
 	RenderNode
 
 	// Colors retrieves the colors of the border.
-	Colors() *gdk.RGBA
+	Colors() gdk.RGBA
 	// Outline retrieves the outline of the border.
 	Outline() *RoundedRect
 	// Widths retrieves the stroke widths of the border.
@@ -707,7 +706,7 @@ func marshalBorderNode(p uintptr) (interface{}, error) {
 
 func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) BorderNode
 
-func (b borderNode) Colors() *gdk.RGBA
+func (b borderNode) Colors() gdk.RGBA
 
 func (b borderNode) Outline() *RoundedRect
 
@@ -838,7 +837,7 @@ type ColorNode interface {
 	RenderNode
 
 	// Color retrieves the color of the given @node.
-	Color() *gdk.RGBA
+	Color() gdk.RGBA
 }
 
 type colorNode struct {
@@ -855,16 +854,16 @@ func marshalColorNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) ColorNode
+func NewColorNode(rgba gdk.RGBA, bounds *graphene.Rect) ColorNode
 
-func (c colorNode) Color() *gdk.RGBA
+func (c colorNode) Color() gdk.RGBA
 
 // ConicGradientNode: a render node for a conic gradient.
 type ConicGradientNode interface {
 	RenderNode
 
 	// Center retrieves the center pointer for the gradient.
-	Center() *graphene.Point
+	Center() graphene.Point
 	// ColorStops retrieves the color stops in the gradient.
 	ColorStops() (nStops uint, colorStops []ColorStop)
 	// NColorStops retrieves the number of color stops in the gradient.
@@ -887,9 +886,9 @@ func marshalConicGradientNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode
+func NewConicGradientNode(bounds *graphene.Rect, center graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode
 
-func (c conicGradientNode) Center() *graphene.Point
+func (c conicGradientNode) Center() graphene.Point
 
 func (c conicGradientNode) ColorStops() (nStops uint, colorStops []ColorStop)
 
@@ -1176,7 +1175,7 @@ type InsetShadowNode interface {
 	// BlurRadius retrieves the blur radius to apply to the shadow.
 	BlurRadius() float32
 	// Color retrieves the color of the inset shadow.
-	Color() *gdk.RGBA
+	Color() gdk.RGBA
 	// Dx retrieves the horizontal offset of the inset shadow.
 	Dx() float32
 	// Dy retrieves the vertical offset of the inset shadow.
@@ -1201,11 +1200,11 @@ func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) InsetShadowNode
+func NewInsetShadowNode(outline *RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) InsetShadowNode
 
 func (i insetShadowNode) BlurRadius() float32
 
-func (i insetShadowNode) Color() *gdk.RGBA
+func (i insetShadowNode) Color() gdk.RGBA
 
 func (i insetShadowNode) Dx() float32
 
@@ -1222,11 +1221,11 @@ type LinearGradientNode interface {
 	// ColorStops retrieves the color stops in the gradient.
 	ColorStops() (nStops uint, colorStops []ColorStop)
 	// End retrieves the final point of the linear gradient.
-	End() *graphene.Point
+	End() graphene.Point
 	// NColorStops retrieves the number of color stops in the gradient.
 	NColorStops() uint
 	// Start retrieves the initial point of the linear gradient.
-	Start() *graphene.Point
+	Start() graphene.Point
 }
 
 type linearGradientNode struct {
@@ -1243,15 +1242,15 @@ func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) LinearGradientNode
+func NewLinearGradientNode(bounds *graphene.Rect, start graphene.Point, end graphene.Point, colorStops []ColorStop) LinearGradientNode
 
 func (l linearGradientNode) ColorStops() (nStops uint, colorStops []ColorStop)
 
-func (l linearGradientNode) End() *graphene.Point
+func (l linearGradientNode) End() graphene.Point
 
 func (l linearGradientNode) NColorStops() uint
 
-func (l linearGradientNode) Start() *graphene.Point
+func (l linearGradientNode) Start() graphene.Point
 
 // OpacityNode: a render node controlling the opacity of its single child node.
 type OpacityNode interface {
@@ -1290,7 +1289,7 @@ type OutsetShadowNode interface {
 	// BlurRadius retrieves the blur radius of the shadow.
 	BlurRadius() float32
 	// Color retrieves the color of the outset shadow.
-	Color() *gdk.RGBA
+	Color() gdk.RGBA
 	// Dx retrieves the horizontal offset of the outset shadow.
 	Dx() float32
 	// Dy retrieves the vertical offset of the outset shadow.
@@ -1315,11 +1314,11 @@ func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) OutsetShadowNode
+func NewOutsetShadowNode(outline *RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) OutsetShadowNode
 
 func (o outsetShadowNode) BlurRadius() float32
 
-func (o outsetShadowNode) Color() *gdk.RGBA
+func (o outsetShadowNode) Color() gdk.RGBA
 
 func (o outsetShadowNode) Dx() float32
 
@@ -1334,7 +1333,7 @@ type RadialGradientNode interface {
 	RenderNode
 
 	// Center retrieves the center pointer for the gradient.
-	Center() *graphene.Point
+	Center() graphene.Point
 	// ColorStops retrieves the color stops in the gradient.
 	ColorStops() (nStops uint, colorStops []ColorStop)
 	// End retrieves the end value for the gradient.
@@ -1363,9 +1362,9 @@ func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode
+func NewRadialGradientNode(bounds *graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode
 
-func (r radialGradientNode) Center() *graphene.Point
+func (r radialGradientNode) Center() graphene.Point
 
 func (r radialGradientNode) ColorStops() (nStops uint, colorStops []ColorStop)
 
@@ -1493,7 +1492,7 @@ func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) RepeatingLinearGradientNode
+func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start graphene.Point, end graphene.Point, colorStops []ColorStop) RepeatingLinearGradientNode
 
 // RepeatingRadialGradientNode: a render node for a repeating radial gradient.
 type RepeatingRadialGradientNode interface {
@@ -1514,7 +1513,7 @@ func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RepeatingRadialGradientNode
+func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RepeatingRadialGradientNode
 
 // RoundedClipNode: a render node applying a rounded rectangle clip to its
 // single child.
@@ -1575,7 +1574,7 @@ func marshalShadowNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewShadowNode(child RenderNode, shadows []Shadow) ShadowNode
+func NewShadowNode(child RenderNode, shadows []*Shadow) ShadowNode
 
 func (s shadowNode) Child() RenderNode
 
@@ -1588,7 +1587,7 @@ type TextNode interface {
 	RenderNode
 
 	// Color retrieves the color used by the text @node.
-	Color() *gdk.RGBA
+	Color() gdk.RGBA
 	// Font returns the font used by the text @node.
 	Font() pango.Font
 	// Glyphs retrieves the glyph information in the @node.
@@ -1596,7 +1595,7 @@ type TextNode interface {
 	// NumGlyphs retrieves the number of glyphs in the text node.
 	NumGlyphs() uint
 	// Offset retrieves the offset applied to the text.
-	Offset() *graphene.Point
+	Offset() graphene.Point
 	// HasColorGlyphs checks whether the text @node has color glyphs.
 	HasColorGlyphs() bool
 }
@@ -1615,9 +1614,9 @@ func marshalTextNode(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewTextNode(font pango.Font, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) TextNode
+func NewTextNode(font pango.Font, glyphs *pango.GlyphString, color gdk.RGBA, offset graphene.Point) TextNode
 
-func (t textNode) Color() *gdk.RGBA
+func (t textNode) Color() gdk.RGBA
 
 func (t textNode) Font() pango.Font
 
@@ -1625,7 +1624,7 @@ func (t textNode) Glyphs() (nGlyphs uint, glyphInfos []pango.GlyphInfo)
 
 func (t textNode) NumGlyphs() uint
 
-func (t textNode) Offset() *graphene.Point
+func (t textNode) Offset() graphene.Point
 
 func (t textNode) HasColorGlyphs() bool
 

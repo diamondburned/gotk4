@@ -186,7 +186,7 @@ func cPixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpoint
 	{
 		buf = make([]uint8, arg1)
 		for i := 0; i < uintptr(arg1); i++ {
-			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			buf[i] = uint8(src)
 		}
 	}

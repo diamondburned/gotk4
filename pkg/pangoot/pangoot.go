@@ -334,11 +334,11 @@ type Info interface {
 	FindScript(tableType TableType, scriptTag Tag) (scriptIndex uint, ok bool)
 	// ListFeatures obtains the list of features for the given language of the
 	// given script.
-	ListFeatures(tableType TableType, tag Tag, scriptIndex uint, languageIndex uint) Tag
+	ListFeatures(tableType TableType, tag Tag, scriptIndex uint, languageIndex uint) *Tag
 	// ListLanguages obtains the list of available languages for a given script.
-	ListLanguages(tableType TableType, scriptIndex uint, languageTag Tag) Tag
+	ListLanguages(tableType TableType, scriptIndex uint, languageTag Tag) *Tag
 	// ListScripts obtains the list of available scripts.
-	ListScripts(tableType TableType) Tag
+	ListScripts(tableType TableType) *Tag
 }
 
 type info struct {
@@ -361,11 +361,11 @@ func (i info) FindLanguage(tableType TableType, scriptIndex uint, languageTag Ta
 
 func (i info) FindScript(tableType TableType, scriptTag Tag) (scriptIndex uint, ok bool)
 
-func (i info) ListFeatures(tableType TableType, tag Tag, scriptIndex uint, languageIndex uint) Tag
+func (i info) ListFeatures(tableType TableType, tag Tag, scriptIndex uint, languageIndex uint) *Tag
 
-func (i info) ListLanguages(tableType TableType, scriptIndex uint, languageTag Tag) Tag
+func (i info) ListLanguages(tableType TableType, scriptIndex uint, languageTag Tag) *Tag
 
-func (i info) ListScripts(tableType TableType) Tag
+func (i info) ListScripts(tableType TableType) *Tag
 
 // Ruleset: the OTRuleset structure holds a set of features selected from the
 // tables in an OpenType font. (A feature is an operation such as adjusting

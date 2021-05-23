@@ -2973,7 +2973,7 @@ func cDBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.g
 // The difference between returning nil and an array containing zero items is
 // that the standard DBus interfaces will returned to the remote introspector in
 // the empty array case, but not in the nil case.
-type DBusSubtreeIntrospectFunc func(connection DBusConnection, sender string, objectPath string, node string) *DBusInterfaceInfo
+type DBusSubtreeIntrospectFunc func(connection DBusConnection, sender string, objectPath string, node string) **DBusInterfaceInfo
 
 //export cDBusSubtreeIntrospectFunc
 func cDBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) **C.GDBusInterfaceInfo {
@@ -3332,7 +3332,7 @@ func ActionNameIsValid(actionName string) bool {
 // "app.action('target')". For strings, this third format must be used if *
 // target value is empty or contains characters other than alphanumerics, '-'
 // and '.'.
-func ActionParseDetailedName(detailedName string) (actionName string, targetValue glib.Variant, ok bool) {
+func ActionParseDetailedName(detailedName string) (actionName string, targetValue *glib.Variant, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(detailedName)
 	defer C.free(unsafe.Pointer(detailedName))
@@ -3347,7 +3347,7 @@ func ActionParseDetailedName(detailedName string) (actionName string, targetValu
 	ret0 = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(arg1))
 
-	var ret1 *glib.Variant
+	var ret1 **glib.Variant
 	ret1 = wrapVariant(arg2)
 
 	var ret2 bool
@@ -4073,7 +4073,7 @@ func ContentTypeGetMIMEDirs() []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -4125,7 +4125,7 @@ func ContentTypeGuess(filename string, data []uint8) (resultUncertain bool, utf8
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -4170,7 +4170,7 @@ func ContentTypeGuessForTree(root File) []string {
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -4445,8 +4445,8 @@ func DbusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 //
 // This function is typically only used in object mappings to put a #GError on
 // the wire. Regular applications should not use it.
-func DbusErrorEncodeGerror(error **glib.Error) string {
-	var arg0 **glib.Error
+func DbusErrorEncodeGerror(error *glib.Error) string {
+	var arg0 *glib.Error
 	arg0 = wrapError(error)
 
 	ret := C.g_dbus_error_encode_gerror(arg0)
@@ -4464,8 +4464,8 @@ func DbusErrorEncodeGerror(error **glib.Error) string {
 // returned from functions handling remote method calls (e.g.
 // g_dbus_connection_call_finish()) unless g_dbus_error_strip_remote_error() has
 // been used on @error.
-func DbusErrorGetRemoteError(error **glib.Error) string {
-	var arg0 **glib.Error
+func DbusErrorGetRemoteError(error *glib.Error) string {
+	var arg0 *glib.Error
 	arg0 = wrapError(error)
 
 	ret := C.g_dbus_error_get_remote_error(arg0)
@@ -4480,8 +4480,8 @@ func DbusErrorGetRemoteError(error **glib.Error) string {
 // DbusErrorIsRemoteError checks if @error represents an error received via
 // D-Bus from a remote peer. If so, use g_dbus_error_get_remote_error() to get
 // the name of the error.
-func DbusErrorIsRemoteError(error **glib.Error) bool {
-	var arg0 **glib.Error
+func DbusErrorIsRemoteError(error *glib.Error) bool {
+	var arg0 *glib.Error
 	arg0 = wrapError(error)
 
 	ret := C.g_dbus_error_is_remote_error(arg0)
@@ -4517,7 +4517,7 @@ func DbusErrorIsRemoteError(error **glib.Error) bool {
 //
 // This function is typically only used in object mappings to prepare #GError
 // instances for applications. Regular applications should not use it.
-func DbusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) **glib.Error {
+func DbusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) *glib.Error {
 	var arg0 string
 	arg0 = C.GoString(dbusErrorName)
 	defer C.free(unsafe.Pointer(dbusErrorName))
@@ -4528,7 +4528,7 @@ func DbusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) **g
 
 	ret := C.g_dbus_error_new_for_dbus_error(arg0, arg1)
 
-	var ret0 **glib.Error
+	var ret0 *glib.Error
 	ret0 = wrapError(ret)
 
 	return ret0
@@ -4601,8 +4601,8 @@ func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uin
 // wire.
 //
 // This is typically used when presenting errors to the end user.
-func DbusErrorStripRemoteError(error **glib.Error) bool {
-	var arg0 **glib.Error
+func DbusErrorStripRemoteError(error *glib.Error) bool {
+	var arg0 *glib.Error
 	arg0 = wrapError(error)
 
 	ret := C.g_dbus_error_strip_remote_error(arg0)
@@ -5401,7 +5401,7 @@ func PollableStreamRead(stream InputStream, buffer []uint8, blocking bool, cance
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -5438,7 +5438,7 @@ func PollableStreamWrite(stream OutputStream, buffer []uint8, blocking bool, can
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -5481,7 +5481,7 @@ func PollableStreamWriteAll(stream OutputStream, buffer []uint8, blocking bool, 
 	{
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (*C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			arg1[i] = uint8(src)
 		}
 	}
@@ -5602,7 +5602,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []
 
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
-			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
+			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
 			ret0[i] = C.GoString(src)
 			defer C.free(unsafe.Pointer(src))
 		}
@@ -5734,7 +5734,7 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 // SimpleAsyncReportGerrorInIdle reports an error in an idle function. Similar
 // to g_simple_async_report_error_in_idle(), but takes a #GError rather than
 // building a new one.
-func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error **glib.Error) {
+func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error *glib.Error) {
 	var arg0 gextras.Objector
 	arg0 = glib.Take(object)
 
@@ -5742,7 +5742,7 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 	arg1 = wrapAsyncReadyCallback(callback)
 
 	arg2 := C.gpointer(box.Assign(box.Callback, userData))
-	var arg3 **glib.Error
+	var arg3 *glib.Error
 	arg3 = wrapError(error)
 
 	C.g_simple_async_report_gerror_in_idle(arg0, arg1, arg3)
@@ -5752,7 +5752,7 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 // Similar to g_simple_async_report_gerror_in_idle(), but takes over the
 // caller's ownership of @error, so the caller does not have to free it any
 // more.
-func SimpleAsyncReportTakeGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error **glib.Error) {
+func SimpleAsyncReportTakeGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error *glib.Error) {
 	var arg0 gextras.Objector
 	arg0 = glib.Take(object)
 
@@ -5760,7 +5760,7 @@ func SimpleAsyncReportTakeGerrorInIdle(object gextras.Objector, callback AsyncRe
 	arg1 = wrapAsyncReadyCallback(callback)
 
 	arg2 := C.gpointer(box.Assign(box.Callback, userData))
-	var arg3 **glib.Error
+	var arg3 *glib.Error
 	arg3 = wrapError(error)
 
 	C.g_simple_async_report_take_gerror_in_idle(arg0, arg1, arg3)
@@ -6373,7 +6373,7 @@ type ActionGroup interface {
 	GetActionStateType(actionName string) *glib.VariantType
 	HasAction(actionName string) bool
 	ListActions() []string
-	QueryAction(actionName string) (enabled bool, parameterType glib.VariantType, stateType glib.VariantType, stateHint glib.Variant, state glib.Variant, ok bool)
+	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
 // ActionMap: the GActionMap interface is implemented by Group implementations
@@ -7261,7 +7261,7 @@ type PollableOutputStream interface {
 	CreateSource(cancellable Cancellable) *glib.Source
 	IsWritable() bool
 	WriteNonblocking(buffer []uint8, cancellable Cancellable) int
-	WritevNonblocking(vectors []*OutputVector, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
+	WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
 }
 
 // Proxy: a #GProxy handles connecting to a remote host via a given type of
@@ -8401,7 +8401,7 @@ func wrapOutputMessage(p *C.GOutputMessage) *OutputMessage {
 	{
 		v.ControlMessages = make([]SocketControlMessage, p.num_control_messages)
 		for i := 0; i < uintptr(p.num_control_messages); i++ {
-			src := (**C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (*C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			v.ControlMessages[i] = wrapSocketControlMessage(externglib.Take(unsafe.Pointer(src)))
 		}
 	}
@@ -11719,7 +11719,7 @@ type DBusMethodInvocation interface {
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	ReturnGerror(error **glib.Error)
+	ReturnGerror(error *glib.Error)
 	// ReturnValue finishes handling a D-Bus method call by returning
 	// @parameters. If the @parameters GVariant is floating, it is consumed.
 	//
@@ -11764,7 +11764,7 @@ type DBusMethodInvocation interface {
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	TakeError(error **glib.Error)
+	TakeError(error *glib.Error)
 }
 
 type dBusMethodInvocation struct {
@@ -11805,13 +11805,13 @@ func (d dBusMethodInvocation) ReturnDbusError(errorName string, errorMessage str
 
 func (d dBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int, message string)
 
-func (d dBusMethodInvocation) ReturnGerror(error **glib.Error)
+func (d dBusMethodInvocation) ReturnGerror(error *glib.Error)
 
 func (d dBusMethodInvocation) ReturnValue(parameters *glib.Variant)
 
 func (d dBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList)
 
-func (d dBusMethodInvocation) TakeError(error **glib.Error)
+func (d dBusMethodInvocation) TakeError(error *glib.Error)
 
 // DBusObjectManagerClient is used to create, monitor and delete object proxies
 // for remote objects exported by a BusObjectManagerServer (or any code
@@ -13293,7 +13293,7 @@ type FileInfo interface {
 	// does not contain a #GObject, nil will be returned.
 	AttributeObject(attribute string) gextras.Objector
 	// AttributeStatus gets the attribute status for an attribute key.
-	AttributeStatus(attribute string) *FileAttributeStatus
+	AttributeStatus(attribute string) FileAttributeStatus
 	// AttributeString gets the value of a string attribute. If the attribute
 	// does not contain a string, nil will be returned.
 	AttributeString(attribute string) string
@@ -13393,7 +13393,7 @@ type FileInfo interface {
 	//
 	// The attribute must exist in @info for this to work. Otherwise false is
 	// returned and @info is unchanged.
-	SetAttributeStatus(attribute string, status *FileAttributeStatus) bool
+	SetAttributeStatus(attribute string, status FileAttributeStatus) bool
 	// SetAttributeString sets the @attribute to contain the given @attr_value,
 	// if possible.
 	SetAttributeString(attribute string, attrValue string)
@@ -13493,7 +13493,7 @@ func (f fileInfo) AttributeInt64(attribute string) int64
 
 func (f fileInfo) AttributeObject(attribute string) gextras.Objector
 
-func (f fileInfo) AttributeStatus(attribute string) *FileAttributeStatus
+func (f fileInfo) AttributeStatus(attribute string) FileAttributeStatus
 
 func (f fileInfo) AttributeString(attribute string) string
 
@@ -13561,7 +13561,7 @@ func (f fileInfo) SetAttributeMask(mask *FileAttributeMatcher)
 
 func (f fileInfo) SetAttributeObject(attribute string, attrValue gextras.Objector)
 
-func (f fileInfo) SetAttributeStatus(attribute string, status *FileAttributeStatus) bool
+func (f fileInfo) SetAttributeStatus(attribute string, status FileAttributeStatus) bool
 
 func (f fileInfo) SetAttributeString(attribute string, attrValue string)
 
@@ -14211,11 +14211,11 @@ type InetSocketAddress interface {
 }
 
 type inetSocketAddress struct {
-	*socketAddress
+	socketAddress
 }
 
 func wrapInetSocketAddress(obj *externglib.Object) InetSocketAddress {
-	return inetSocketAddress{*socketAddress{*externglib.Object{obj}}}
+	return inetSocketAddress{socketAddress{*externglib.Object{obj}}}
 }
 
 func marshalInetSocketAddress(p uintptr) (interface{}, error) {
@@ -14909,7 +14909,7 @@ type MenuAttributeIter interface {
 	// The value returned in @name remains valid for as long as the iterator
 	// remains at the current position. The value returned in @value must be
 	// unreffed using g_variant_unref() when it is no longer in use.
-	GetNext() (outName string, value glib.Variant, ok bool)
+	GetNext() (outName string, value *glib.Variant, ok bool)
 	// Value gets the value of the attribute at the current iterator position.
 	//
 	// The iterator is not advanced.
@@ -14941,7 +14941,7 @@ func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 
 func (m menuAttributeIter) Name() string
 
-func (m menuAttributeIter) GetNext() (outName string, value glib.Variant, ok bool)
+func (m menuAttributeIter) GetNext() (outName string, value *glib.Variant, ok bool)
 
 func (m menuAttributeIter) Value() *glib.Variant
 
@@ -15500,11 +15500,11 @@ type NativeSocketAddress interface {
 }
 
 type nativeSocketAddress struct {
-	*socketAddress
+	socketAddress
 }
 
 func wrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
-	return nativeSocketAddress{*socketAddress{*externglib.Object{obj}}}
+	return nativeSocketAddress{socketAddress{*externglib.Object{obj}}}
 }
 
 func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
@@ -15991,7 +15991,7 @@ type OutputStream interface {
 	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
 	// these are exceeded. For example, when writing to a local file on UNIX
 	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
-	Writev(vectors []*OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
+	Writev(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 	// WritevAll tries to write the bytes contained in the @n_vectors @vectors
 	// into the stream. Will block during the operation.
 	//
@@ -16013,7 +16013,7 @@ type OutputStream interface {
 	//
 	// The content of the individual elements of @vectors might be changed by
 	// this function.
-	WritevAll(vectors []*OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
+	WritevAll(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 	// WritevAllAsync: request an asynchronous write of the bytes contained in
 	// the @n_vectors @vectors into the stream. When the operation is finished
 	// @callback will be called. You can then call
@@ -16030,7 +16030,7 @@ type OutputStream interface {
 	// Note that no copy of @vectors will be made, so it must stay valid until
 	// @callback is called. The content of the individual elements of @vectors
 	// might be changed by this function.
-	WritevAllAsync(vectors []*OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WritevAllFinish finishes an asynchronous stream write operation started
 	// with g_output_stream_writev_all_async().
 	//
@@ -16071,7 +16071,7 @@ type OutputStream interface {
 	//
 	// Note that no copy of @vectors will be made, so it must stay valid until
 	// @callback is called.
-	WritevAsync(vectors []*OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+	WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WritevFinish finishes a stream writev operation.
 	WritevFinish(result AsyncResult) (bytesWritten uint, ok bool)
 }
@@ -16136,15 +16136,15 @@ func (o outputStream) WriteBytesFinish(result AsyncResult) int
 
 func (o outputStream) WriteFinish(result AsyncResult) int
 
-func (o outputStream) Writev(vectors []*OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
+func (o outputStream) Writev(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 
-func (o outputStream) WritevAll(vectors []*OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
+func (o outputStream) WritevAll(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 
-func (o outputStream) WritevAllAsync(vectors []*OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+func (o outputStream) WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
 func (o outputStream) WritevAllFinish(result AsyncResult) (bytesWritten uint, ok bool)
 
-func (o outputStream) WritevAsync(vectors []*OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
+func (o outputStream) WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
 func (o outputStream) WritevFinish(result AsyncResult) (bytesWritten uint, ok bool)
 
@@ -16372,7 +16372,7 @@ type proxyAddress struct {
 }
 
 func wrapProxyAddress(obj *externglib.Object) ProxyAddress {
-	return proxyAddress{inetSocketAddress{*socketAddress{*externglib.Object{obj}}}}
+	return proxyAddress{inetSocketAddress{socketAddress{*externglib.Object{obj}}}}
 }
 
 func marshalProxyAddress(p uintptr) (interface{}, error) {
@@ -17778,7 +17778,7 @@ type SimpleAsyncResult interface {
 	// unrelated g_simple_async_result_set_handle_cancellation() function.
 	SetCheckCancellable(checkCancellable Cancellable)
 	// SetFromError sets the result from a #GError.
-	SetFromError(error **glib.Error)
+	SetFromError(error *glib.Error)
 	// SetHandleCancellation sets whether to handle cancellation within the
 	// asynchronous operation.
 	//
@@ -17797,7 +17797,7 @@ type SimpleAsyncResult interface {
 	SetOpResGssize(opRes int)
 	// TakeError sets the result from @error, and takes over the caller's
 	// ownership of @error, so the caller does not need to free it any more.
-	TakeError(error **glib.Error)
+	TakeError(error *glib.Error)
 }
 
 type simpleAsyncResult struct {
@@ -17816,9 +17816,9 @@ func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 
 func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag interface{}) SimpleAsyncResult
 
-func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback AsyncReadyCallback, error **glib.Error) SimpleAsyncResult
+func NewSimpleAsyncResultFromError(sourceObject gextras.Objector, callback AsyncReadyCallback, error *glib.Error) SimpleAsyncResult
 
-func NewSimpleAsyncResultTakeError(sourceObject gextras.Objector, callback AsyncReadyCallback, error **glib.Error) SimpleAsyncResult
+func NewSimpleAsyncResultTakeError(sourceObject gextras.Objector, callback AsyncReadyCallback, error *glib.Error) SimpleAsyncResult
 
 func (s simpleAsyncResult) Complete()
 
@@ -17838,7 +17838,7 @@ func (s simpleAsyncResult) RunInThread(_func SimpleAsyncThreadFunc, ioPriority i
 
 func (s simpleAsyncResult) SetCheckCancellable(checkCancellable Cancellable)
 
-func (s simpleAsyncResult) SetFromError(error **glib.Error)
+func (s simpleAsyncResult) SetFromError(error *glib.Error)
 
 func (s simpleAsyncResult) SetHandleCancellation(handleCancellation bool)
 
@@ -17848,7 +17848,7 @@ func (s simpleAsyncResult) SetOpResGpointer(opRes interface{})
 
 func (s simpleAsyncResult) SetOpResGssize(opRes int)
 
-func (s simpleAsyncResult) TakeError(error **glib.Error)
+func (s simpleAsyncResult) TakeError(error *glib.Error)
 
 // SimpleIOStream: GSimpleIOStream creates a OStream from an arbitrary Stream
 // and Stream. This allows any pair of input and output streams to be used with
@@ -18501,7 +18501,7 @@ type Socket interface {
 	// common due to the way the underlying APIs work.)
 	//
 	// On error -1 is returned and @error is set accordingly.
-	SendMessage(address SocketAddress, vectors []*OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int
+	SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int
 	// SendMessageWithTimeout: this behaves exactly the same as
 	// g_socket_send_message(), except that the choice of timeout behavior is
 	// determined by the @timeout_us argument rather than by @socket's
@@ -18511,7 +18511,7 @@ type Socket interface {
 	// accordingly, or if the socket is currently not writable
 	// G_POLLABLE_RETURN_WOULD_BLOCK is returned. @bytes_written will contain 0
 	// in both cases.
-	SendMessageWithTimeout(address SocketAddress, vectors []*OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
+	SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
 	// SendMessages: send multiple data messages from @socket in one go. This is
 	// the most complicated and fully-featured version of this call. For easier
 	// use, see g_socket_send(), g_socket_send_to(), and
@@ -18758,9 +18758,9 @@ func (s socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable) (buf
 
 func (s socket) Send(buffer []uint8, cancellable Cancellable) int
 
-func (s socket) SendMessage(address SocketAddress, vectors []*OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int
+func (s socket) SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int
 
-func (s socket) SendMessageWithTimeout(address SocketAddress, vectors []*OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
+func (s socket) SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
 
 func (s socket) SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) int
 
@@ -19707,13 +19707,13 @@ type Subprocess interface {
 	// operation was cancelled. You should especially not attempt to interact
 	// with the pipes while the operation is in progress (either from another
 	// thread or if using the asynchronous version).
-	Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf glib.Bytes, stderrBuf glib.Bytes, ok bool)
+	Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
 	// CommunicateAsync asynchronous version of g_subprocess_communicate().
 	// Complete invocation with g_subprocess_communicate_finish().
 	CommunicateAsync(stdinBuf *glib.Bytes, cancellable Cancellable, callback AsyncReadyCallback)
 	// CommunicateFinish: complete an invocation of
 	// g_subprocess_communicate_async().
-	CommunicateFinish(result AsyncResult) (stdoutBuf glib.Bytes, stderrBuf glib.Bytes, ok bool)
+	CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
 	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
 	// output of the process as UTF-8, and returns it as a regular NUL
 	// terminated string.
@@ -19861,11 +19861,11 @@ func marshalSubprocess(p uintptr) (interface{}, error) {
 
 func NewSubprocessv(argv []string, flags SubprocessFlags) Subprocess
 
-func (s subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf glib.Bytes, stderrBuf glib.Bytes, ok bool)
+func (s subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
 
 func (s subprocess) CommunicateAsync(stdinBuf *glib.Bytes, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (s subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf glib.Bytes, stderrBuf glib.Bytes, ok bool)
+func (s subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
 
 func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, ok bool)
 
@@ -20659,7 +20659,7 @@ type Task interface {
 	// on the error if you need to keep a local copy as well.
 	//
 	// See also g_task_return_new_error().
-	ReturnError(error **glib.Error)
+	ReturnError(error *glib.Error)
 	// ReturnErrorIfCancelled checks if @task's #GCancellable has been
 	// cancelled, and if so, sets @task's error accordingly and completes the
 	// task (see g_task_return_pointer() for more discussion of exactly what
@@ -20843,7 +20843,7 @@ func (t task) PropagateValue() (value externglib.Value, ok bool)
 
 func (t task) ReturnBoolean(result bool)
 
-func (t task) ReturnError(error **glib.Error)
+func (t task) ReturnError(error *glib.Error)
 
 func (t task) ReturnErrorIfCancelled() bool
 
@@ -22021,11 +22021,11 @@ type UnixCredentialsMessage interface {
 }
 
 type unixCredentialsMessage struct {
-	*socketControlMessage
+	socketControlMessage
 }
 
 func wrapUnixCredentialsMessage(obj *externglib.Object) UnixCredentialsMessage {
-	return unixCredentialsMessage{*socketControlMessage{*externglib.Object{obj}}}
+	return unixCredentialsMessage{socketControlMessage{*externglib.Object{obj}}}
 }
 
 func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
@@ -22187,11 +22187,11 @@ type UnixFDMessage interface {
 }
 
 type unixFDMessage struct {
-	*socketControlMessage
+	socketControlMessage
 }
 
 func wrapUnixFDMessage(obj *externglib.Object) UnixFDMessage {
-	return unixFDMessage{*socketControlMessage{*externglib.Object{obj}}}
+	return unixFDMessage{socketControlMessage{*externglib.Object{obj}}}
 }
 
 func marshalUnixFDMessage(p uintptr) (interface{}, error) {
@@ -22361,11 +22361,11 @@ type UnixSocketAddress interface {
 }
 
 type unixSocketAddress struct {
-	*socketAddress
+	socketAddress
 }
 
 func wrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
-	return unixSocketAddress{*socketAddress{*externglib.Object{obj}}}
+	return unixSocketAddress{socketAddress{*externglib.Object{obj}}}
 }
 
 func marshalUnixSocketAddress(p uintptr) (interface{}, error) {

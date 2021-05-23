@@ -319,7 +319,10 @@ func (ng *NamespaceGenerator) ResolveTypeName(girType string) *ResolvedType {
 func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	// Build the full type name. This name should only be used for caching; it
 	// does not differentiate properly built-in types and is thus unreliable.
-	fullName := ng.fullGIR(typ.Name)
+	//
+	// We also move the pointers from CType to the name to make the name unique
+	// across pointers.
+	fullName := movePtr(typ.CType, ng.fullGIR(typ.Name))
 
 	v, ok := typeCache.Load(fullName)
 	if ok {

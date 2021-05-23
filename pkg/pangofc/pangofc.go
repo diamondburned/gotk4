@@ -119,7 +119,7 @@ type Font interface {
 	//
 	// The returned array is only valid as long as the font and its fontmap are
 	// valid.
-	Languages() *pango.Language
+	Languages() **pango.Language
 	// Pattern returns the FcPattern that @font is based on.
 	Pattern() *fontconfig.Pattern
 	// UnknownGlyph returns the index of a glyph suitable for drawing @wc as an
@@ -155,7 +155,7 @@ func marshalFont(p uintptr) (interface{}, error) {
 
 func (f font) Glyph(wc uint32) uint
 
-func (f font) Languages() *pango.Language
+func (f font) Languages() **pango.Language
 
 func (f font) Pattern() *fontconfig.Pattern
 

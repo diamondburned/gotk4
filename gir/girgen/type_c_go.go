@@ -173,11 +173,9 @@ func (ng *NamespaceGenerator) _cgoTypeConverter(conv CGoConversion, typ gir.Type
 		return ""
 	case "GObject.GValue", "GObject.Value": // inconsistency???
 		return ""
-	case "GObject.Object":
+	case "GObject.Object", "GObject.InitiallyUnowned":
 		return directCallOrCreate(conv.Value, conv.Target, "glib.Take", create)
 	case "GObject.Closure":
-		return ""
-	case "GObject.InitiallyUnowned":
 		return ""
 	case "GObject.Callback":
 		// TODO: When is this ever needed? How do I even do this?

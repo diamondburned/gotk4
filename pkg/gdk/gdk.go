@@ -1011,11 +1011,11 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 }
 
 // CairoSetSourceRgba sets the specified RGBA as the source color of @cr.
-func CairoSetSourceRgba(cr *cairo.Context, rgba RGBA) {
+func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA) {
 	var arg0 *cairo.Context
 	arg0 = wrapContext(cr)
 
-	var arg1 RGBA
+	var arg1 *RGBA
 	arg1 = wrapRGBA(rgba)
 
 	C.gdk_cairo_set_source_rgba(arg0, arg1)
@@ -2434,7 +2434,7 @@ type ContentDeserializer interface {
 	Value() *externglib.Value
 	// ReturnError: indicate that the deserialization has ended with an error.
 	// This function consumes @error.
-	ReturnError(error **glib.Error)
+	ReturnError(error *glib.Error)
 	// ReturnSuccess: indicate that the deserialization has been successfully
 	// completed.
 	ReturnSuccess()
@@ -2472,7 +2472,7 @@ func (c contentDeserializer) UserData() interface{}
 
 func (c contentDeserializer) Value() *externglib.Value
 
-func (c contentDeserializer) ReturnError(error **glib.Error)
+func (c contentDeserializer) ReturnError(error *glib.Error)
 
 func (c contentDeserializer) ReturnSuccess()
 
@@ -2586,7 +2586,7 @@ type ContentSerializer interface {
 	Value() *externglib.Value
 	// ReturnError: indicate that the serialization has ended with an error.
 	// This function consumes @error.
-	ReturnError(error **glib.Error)
+	ReturnError(error *glib.Error)
 	// ReturnSuccess: indicate that the serialization has been successfully
 	// completed.
 	ReturnSuccess()
@@ -2624,7 +2624,7 @@ func (c contentSerializer) UserData() interface{}
 
 func (c contentSerializer) Value() *externglib.Value
 
-func (c contentSerializer) ReturnError(error **glib.Error)
+func (c contentSerializer) ReturnError(error *glib.Error)
 
 func (c contentSerializer) ReturnSuccess()
 

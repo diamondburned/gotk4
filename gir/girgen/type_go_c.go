@@ -1,6 +1,8 @@
 package girgen
 
 import (
+	"fmt"
+
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/internal/pen"
 )
@@ -60,6 +62,30 @@ func (ng *NamespaceGenerator) _gocTypeConverter(conv GoCConversion, typ gir.Type
 		// This should never be called, because the caller should never see a
 		// DestroyNotify, so there's no use to convert from Go to C.
 		ng.logln(logError, "unexpected DestroyNotify conversion from Go to C")
+		return ""
+
+	case "GType":
+		// Just a primitive.
+		return fmt.Sprintf("%s = C.GType(%s)", conv.Target, conv.Value)
+
+	case "GObject.GValue", "GObject.Value":
+		// https://pkg.go.dev/github.com/gotk3/gotk3/glib#Type
+		return fmt.Sprintf("%s = (*C.GValue)(%s.GValue)", conv.Target, conv.Value)
+
+	case "GObject.Object", "GObject.InitiallyUnowned":
+		// Use .Native() here instead of directly accessing the native pointer,
+		// since Value might be an Objector interface.
+		return fmt.Sprintf("%s = (%s)(%s.Native())", conv.Target, typ.CType, conv.Value)
+
+	// These are empty until they're filled out in type_c_go.go
+	case "GObject.Closure":
+		return ""
+	case "GObject.Callback":
+		return ""
+	case "va_list":
+		return ""
+	case "GObject.EnumValue", "GObject.TypeModule", "GObject.ParamSpec", "GObject.Parameter":
+		// Refer to ResolveType.
 		return ""
 	}
 

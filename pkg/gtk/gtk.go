@@ -639,7 +639,7 @@ func init() {
 // allocated to the widget by its parent. It is a subregion of its parents
 // allocation. See [GtkWidget’s geometry management
 // section][geometry-management] for more information.
-type Allocation *gdk.Rectangle
+type Allocation gdk.Rectangle
 
 // AccessibleAutocomplete: the possible values for the
 // GTK_ACCESSIBLE_PROPERTY_AUTOCOMPLETE accessible property.
@@ -3780,7 +3780,7 @@ func cFontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpoi
 		panic(`callback not found`)
 	}
 
-	var family *pango.fontFamily
+	var family pango.fontFamily
 	family = wrapFontFamily(externglib.Take(unsafe.Pointer(arg0)))
 
 	var face pango.fontFace
@@ -4513,7 +4513,7 @@ func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods 
 	var ret0 uint
 	ret0 = uint(arg1)
 
-	var ret1 gdk.ModifierType
+	var ret1 *gdk.ModifierType
 	ret1 = ModifierType(arg2)
 
 	var ret2 bool
@@ -4563,12 +4563,12 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (accel
 
 		ret1 = make([]uint, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
+			src := (*C.guint)(unsafe.Pointer(uintptr(unsafe.Pointer(arg3)) + i))
 			ret1[i] = uint(src)
 		}
 	}
 
-	var ret2 gdk.ModifierType
+	var ret2 *gdk.ModifierType
 	ret2 = ModifierType(arg4)
 
 	var ret3 bool
@@ -5740,17 +5740,17 @@ func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentPr
 // GTK_TYPE_TREE_ROW_DATA.
 //
 // The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path TreePath, ok bool) {
+func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path *TreePath, ok bool) {
 	var arg1 **C.GtkTreeModel // out
 
 	var arg2 **C.GtkTreePath // out
 
 	ret := C.gtk_tree_get_row_drag_data(&arg1, &arg2)
 
-	var ret0 TreeModel
+	var ret0 *TreeModel
 	ret0 = wrapTreeModel(arg1)
 
-	var ret1 *TreePath
+	var ret1 **TreePath
 	ret1 = wrapTreePath(arg2)
 
 	var ret2 bool
@@ -6066,7 +6066,7 @@ type ColorChooser interface {
 	AddPalette(orientation Orientation, colorsPerLine int, nColors int, colors []gdk.RGBA)
 	GetRgba() gdk.RGBA
 	GetUseAlpha() bool
-	SetRgba(color gdk.RGBA)
+	SetRgba(color *gdk.RGBA)
 	SetUseAlpha(useAlpha bool)
 }
 
@@ -11492,7 +11492,7 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 
 func NewColorButton() ColorButton
 
-func NewColorButtonWithRgba(rgba gdk.RGBA) ColorButton
+func NewColorButtonWithRgba(rgba *gdk.RGBA) ColorButton
 
 func (c colorButton) Modal() bool
 
@@ -13154,7 +13154,7 @@ type DirectoryList interface {
 	//
 	// An error being set does not mean that no files were loaded, and all
 	// successfully queried files will remain in the list.
-	Error() **glib.Error
+	Error() *glib.Error
 	// File gets the file whose children are currently enumerated.
 	File() gio.File
 	// IOPriority gets the IO priority set via
@@ -13217,7 +13217,7 @@ func NewDirectoryList(attributes string, file gio.File) DirectoryList
 
 func (d directoryList) Attributes() string
 
-func (d directoryList) Error() **glib.Error
+func (d directoryList) Error() *glib.Error
 
 func (d directoryList) File() gio.File
 
@@ -16753,7 +16753,7 @@ type GLArea interface {
 	// Context retrieves the GLContext used by @area.
 	Context() gdk.GLContext
 	// Error gets the current error set on the @area.
-	Error() **glib.Error
+	Error() *glib.Error
 	// HasDepthBuffer returns whether the area has a depth buffer.
 	HasDepthBuffer() bool
 	// HasStencilBuffer returns whether the area has a stencil buffer.
@@ -16790,7 +16790,7 @@ type GLArea interface {
 	// SetError sets an error on the area which will be shown instead of the GL
 	// rendering. This is useful in the GLArea::create-context signal if GL
 	// context creation fails.
-	SetError(error **glib.Error)
+	SetError(error *glib.Error)
 	// SetHasDepthBuffer: if @has_depth_buffer is true the widget will allocate
 	// and enable a depth buffer for the target framebuffer. Otherwise there
 	// will be none.
@@ -16834,7 +16834,7 @@ func (g glArea) AutoRender() bool
 
 func (g glArea) Context() gdk.GLContext
 
-func (g glArea) Error() **glib.Error
+func (g glArea) Error() *glib.Error
 
 func (g glArea) HasDepthBuffer() bool
 
@@ -16850,7 +16850,7 @@ func (g glArea) QueueRender()
 
 func (g glArea) SetAutoRender(autoRender bool)
 
-func (g glArea) SetError(error **glib.Error)
+func (g glArea) SetError(error *glib.Error)
 
 func (g glArea) SetHasDepthBuffer(hasDepthBuffer bool)
 
@@ -18160,7 +18160,7 @@ type IMContext interface {
 	// PreeditString: retrieve the current preedit string for the input context,
 	// and a list of attributes to apply to the string. This string should be
 	// displayed inserted at the insertion point.
-	PreeditString() (str string, attrs pango.AttrList, cursorPos int)
+	PreeditString() (str string, attrs *pango.AttrList, cursorPos int)
 	// Surrounding retrieves context around the insertion point. Input methods
 	// typically want context in order to constrain input text based on existing
 	// text; this is important for languages such as Thai where only some
@@ -18222,7 +18222,7 @@ func (i imContext) FocusIn()
 
 func (i imContext) FocusOut()
 
-func (i imContext) PreeditString() (str string, attrs pango.AttrList, cursorPos int)
+func (i imContext) PreeditString() (str string, attrs *pango.AttrList, cursorPos int)
 
 func (i imContext) Surrounding() (text string, cursorIndex int, ok bool)
 
@@ -18574,14 +18574,14 @@ type IconView interface {
 	// currently has focus, then *@cell will be nil.
 	//
 	// The returned TreePath must be freed with gtk_tree_path_free().
-	Cursor() (path TreePath, cell CellRenderer, ok bool)
+	Cursor() (path *TreePath, cell CellRenderer, ok bool)
 	// DestItemAtPos determines the destination item for a given position.
-	DestItemAtPos(dragX int, dragY int) (path TreePath, pos IconViewDropPosition, ok bool)
+	DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconViewDropPosition, ok bool)
 	// DragDestItem gets information about the item that is highlighted for
 	// feedback.
-	DragDestItem() (path TreePath, pos IconViewDropPosition)
+	DragDestItem() (path *TreePath, pos IconViewDropPosition)
 	// ItemAtPos gets the path and cell for the icon at the given position.
-	ItemAtPos(x int, y int) (path TreePath, cell CellRenderer, ok bool)
+	ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok bool)
 	// ItemColumn gets the column in which the item @path is currently
 	// displayed. Column numbers start at 0.
 	ItemColumn(path *TreePath) int
@@ -18638,12 +18638,12 @@ type IconView interface {
 	// tooltips the item returned will be the cursor item. When true, then any
 	// of @model, @path and @iter which have been provided will be set to point
 	// to that row and the corresponding model.
-	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path TreePath, iter TreeIter, ok bool)
+	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
 	// VisibleRange sets @start_path and @end_path to be the first and last
 	// visible path. Note that there may be invisible paths in between.
 	//
 	// Both paths should be freed with gtk_tree_path_free() after use.
-	VisibleRange() (startPath TreePath, endPath TreePath, ok bool)
+	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
 	// ItemActivated activates the item determined by @path.
 	ItemActivated(path *TreePath)
 	// PathIsSelected returns true if the icon pointed to by @path is currently
@@ -18694,7 +18694,7 @@ type IconView interface {
 	// only happen when the widget is realized.
 	SetCursor(path *TreePath, cell CellRenderer, startEditing bool)
 	// SetDragDestItem sets the item that is highlighted for feedback.
-	SetDragDestItem(path *TreePath, pos *IconViewDropPosition)
+	SetDragDestItem(path *TreePath, pos IconViewDropPosition)
 	// SetItemOrientation sets the ::item-orientation property which determines
 	// whether the labels are drawn beside the icons instead of below.
 	SetItemOrientation(orientation Orientation)
@@ -18815,13 +18815,13 @@ func (i iconView) ColumnSpacing() int
 
 func (i iconView) Columns() int
 
-func (i iconView) Cursor() (path TreePath, cell CellRenderer, ok bool)
+func (i iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool)
 
-func (i iconView) DestItemAtPos(dragX int, dragY int) (path TreePath, pos IconViewDropPosition, ok bool)
+func (i iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconViewDropPosition, ok bool)
 
-func (i iconView) DragDestItem() (path TreePath, pos IconViewDropPosition)
+func (i iconView) DragDestItem() (path *TreePath, pos IconViewDropPosition)
 
-func (i iconView) ItemAtPos(x int, y int) (path TreePath, cell CellRenderer, ok bool)
+func (i iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok bool)
 
 func (i iconView) ItemColumn(path *TreePath) int
 
@@ -18857,9 +18857,9 @@ func (i iconView) TextColumn() int
 
 func (i iconView) TooltipColumn() int
 
-func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path TreePath, iter TreeIter, ok bool)
+func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
 
-func (i iconView) VisibleRange() (startPath TreePath, endPath TreePath, ok bool)
+func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
 
 func (i iconView) ItemActivated(path *TreePath)
 
@@ -18881,7 +18881,7 @@ func (i iconView) SetColumns(columns int)
 
 func (i iconView) SetCursor(path *TreePath, cell CellRenderer, startEditing bool)
 
-func (i iconView) SetDragDestItem(path *TreePath, pos *IconViewDropPosition)
+func (i iconView) SetDragDestItem(path *TreePath, pos IconViewDropPosition)
 
 func (i iconView) SetItemOrientation(orientation Orientation)
 
@@ -21332,7 +21332,7 @@ type MediaStream interface {
 	//
 	// To unset an error, the stream must be reset via a call to
 	// gtk_media_stream_unprepared().
-	Gerror(error **glib.Error)
+	Gerror(error *glib.Error)
 	// Duration gets the duration of the stream. If the duration is not known, 0
 	// will be returned.
 	Duration() int64
@@ -21349,7 +21349,7 @@ type MediaStream interface {
 	// MediaStream itself does not provide a way to unset an error, but
 	// implementations may provide options. For example, a MediaFile will unset
 	// errors when a new source is set with ie gtk_media_file_set_file().
-	Error() **glib.Error
+	Error() *glib.Error
 	// Loop returns whether the stream is set to loop. See
 	// gtk_media_stream_set_loop() for details.
 	Loop() bool
@@ -21492,13 +21492,13 @@ func marshalMediaStream(p uintptr) (interface{}, error) {
 
 func (m mediaStream) Ended()
 
-func (m mediaStream) Gerror(error **glib.Error)
+func (m mediaStream) Gerror(error *glib.Error)
 
 func (m mediaStream) Duration() int64
 
 func (m mediaStream) GetEnded() bool
 
-func (m mediaStream) Error() **glib.Error
+func (m mediaStream) Error() *glib.Error
 
 func (m mediaStream) Loop() bool
 
@@ -25790,7 +25790,7 @@ type ScrolledWindow interface {
 	// GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed (that is,
 	// if the slider part of the bar would be smaller than the trough — the
 	// display is larger than the page size).
-	SetPolicy(hscrollbarPolicy *PolicyType, vscrollbarPolicy *PolicyType)
+	SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
 	// SetPropagateNaturalHeight sets whether the natural height of the child
 	// should be calculated and propagated through the scrolled window’s
 	// requested natural height.
@@ -25878,7 +25878,7 @@ func (s scrolledWindow) SetOverlayScrolling(overlayScrolling bool)
 
 func (s scrolledWindow) SetPlacement(windowPlacement CornerType)
 
-func (s scrolledWindow) SetPolicy(hscrollbarPolicy *PolicyType, vscrollbarPolicy *PolicyType)
+func (s scrolledWindow) SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
 
 func (s scrolledWindow) SetPropagateNaturalHeight(propagate bool)
 
@@ -27074,33 +27074,33 @@ type Snapshot interface {
 	// @bounds and appends it to the current render node of @snapshot.
 	//
 	// You should try to avoid calling this function if @color is transparent.
-	AppendColor(color gdk.RGBA, bounds *graphene.Rect)
+	AppendColor(color *gdk.RGBA, bounds *graphene.Rect)
 	// AppendConicGradient appends a conic gradient node with the given stops to
 	// @snapshot.
-	AppendConicGradient(bounds *graphene.Rect, center graphene.Point, rotation float32, stops []gsk.ColorStop)
+	AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
 	// AppendInsetShadow appends an inset shadow into the box given by @outline.
-	AppendInsetShadow(outline *gsk.RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+	AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 
-	AppendLayout(layout pango.Layout, color gdk.RGBA)
+	AppendLayout(layout pango.Layout, color *gdk.RGBA)
 	// AppendLinearGradient appends a linear gradient node with the given stops
 	// to @snapshot.
-	AppendLinearGradient(bounds *graphene.Rect, startPoint graphene.Point, endPoint graphene.Point, stops []gsk.ColorStop)
+	AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
 	// AppendNode appends @node to the current render node of @snapshot, without
 	// changing the current node. If @snapshot does not have a current node yet,
 	// @node will become the initial node.
 	AppendNode(node gsk.RenderNode)
 	// AppendOutsetShadow appends an outset shadow node around the box given by
 	// @outline.
-	AppendOutsetShadow(outline *gsk.RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+	AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 	// AppendRadialGradient appends a radial gradient node with the given stops
 	// to @snapshot.
-	AppendRadialGradient(bounds *graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
+	AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 	// AppendRepeatingLinearGradient appends a repeating linear gradient node
 	// with the given stops to @snapshot.
-	AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint graphene.Point, endPoint graphene.Point, stops []gsk.ColorStop)
+	AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
 	// AppendRepeatingRadialGradient appends a repeating radial gradient node
 	// with the given stops to @snapshot.
-	AppendRepeatingRadialGradient(bounds *graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
+	AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 	// AppendTexture creates a new render node drawing the @texture into the
 	// given @bounds and appends it to the current render node of @snapshot.
 	AppendTexture(texture gdk.Texture, bounds *graphene.Rect)
@@ -27109,7 +27109,7 @@ type Snapshot interface {
 	FreeToNode() gsk.RenderNode
 	// FreeToPaintable returns a paintable for the node that was constructed by
 	// @snapshot and frees @snapshot.
-	FreeToPaintable(size graphene.Size) gdk.Paintable
+	FreeToPaintable(size *graphene.Size) gdk.Paintable
 	// GLShaderPopTexture removes the top element from the stack of render nodes
 	// and adds it to the nearest GskGLShaderNode below it. This must be called
 	// the same number of times as the number of textures is needed for the
@@ -27255,7 +27255,7 @@ type Snapshot interface {
 	// constructed by @snapshot. After calling this function, it is no longer
 	// possible to add more nodes to @snapshot. The only function that should be
 	// called after this is g_object_unref().
-	ToPaintable(size graphene.Size) gdk.Paintable
+	ToPaintable(size *graphene.Size) gdk.Paintable
 	// Transform transforms @snapshot's coordinate system with the given
 	// @transform.
 	Transform(transform *gsk.Transform)
@@ -27264,7 +27264,7 @@ type Snapshot interface {
 	TransformMatrix(matrix *graphene.Matrix)
 	// Translate translates @snapshot's coordinate system by @point in
 	// 2-dimensional space.
-	Translate(point graphene.Point)
+	Translate(point *graphene.Point)
 	// Translate3D translates @snapshot's coordinate system by @point.
 	Translate3D(point *graphene.Point3D)
 }
@@ -27289,31 +27289,31 @@ func (s snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32,
 
 func (s snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context
 
-func (s snapshot) AppendColor(color gdk.RGBA, bounds *graphene.Rect)
+func (s snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect)
 
-func (s snapshot) AppendConicGradient(bounds *graphene.Rect, center graphene.Point, rotation float32, stops []gsk.ColorStop)
+func (s snapshot) AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
 
-func (s snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+func (s snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 
-func (s snapshot) AppendLayout(layout pango.Layout, color gdk.RGBA)
+func (s snapshot) AppendLayout(layout pango.Layout, color *gdk.RGBA)
 
-func (s snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint graphene.Point, endPoint graphene.Point, stops []gsk.ColorStop)
+func (s snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
 
 func (s snapshot) AppendNode(node gsk.RenderNode)
 
-func (s snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
+func (s snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 
-func (s snapshot) AppendRadialGradient(bounds *graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
+func (s snapshot) AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 
-func (s snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint graphene.Point, endPoint graphene.Point, stops []gsk.ColorStop)
+func (s snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
 
-func (s snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
+func (s snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 
 func (s snapshot) AppendTexture(texture gdk.Texture, bounds *graphene.Rect)
 
 func (s snapshot) FreeToNode() gsk.RenderNode
 
-func (s snapshot) FreeToPaintable(size graphene.Size) gdk.Paintable
+func (s snapshot) FreeToPaintable(size *graphene.Size) gdk.Paintable
 
 func (s snapshot) GLShaderPopTexture()
 
@@ -27365,13 +27365,13 @@ func (s snapshot) Scale3D(factorX float32, factorY float32, factorZ float32)
 
 func (s snapshot) ToNode() gsk.RenderNode
 
-func (s snapshot) ToPaintable(size graphene.Size) gdk.Paintable
+func (s snapshot) ToPaintable(size *graphene.Size) gdk.Paintable
 
 func (s snapshot) Transform(transform *gsk.Transform)
 
 func (s snapshot) TransformMatrix(matrix *graphene.Matrix)
 
-func (s snapshot) Translate(point graphene.Point)
+func (s snapshot) Translate(point *graphene.Point)
 
 func (s snapshot) Translate3D(point *graphene.Point3D)
 
@@ -31687,16 +31687,16 @@ type TreeView interface {
 	//
 	// The returned TreePath must be freed with gtk_tree_path_free() when you
 	// are done with it.
-	Cursor() (path TreePath, focusColumn TreeViewColumn)
+	Cursor() (path *TreePath, focusColumn TreeViewColumn)
 	// DestRowAtPos determines the destination row for a given position. @drag_x
 	// and @drag_y are expected to be in widget coordinates. This function is
 	// only meaningful if @tree_view is realized. Therefore this function will
 	// always return false if @tree_view is not realized or does not have a
 	// model.
-	DestRowAtPos(dragX int, dragY int) (path TreePath, pos TreeViewDropPosition, ok bool)
+	DestRowAtPos(dragX int, dragY int) (path *TreePath, pos TreeViewDropPosition, ok bool)
 	// DragDestRow gets information about the row that is highlighted for
 	// feedback.
-	DragDestRow() (path TreePath, pos TreeViewDropPosition)
+	DragDestRow() (path *TreePath, pos TreeViewDropPosition)
 	// EnableSearch returns whether or not the tree allows to start interactive
 	// searching by typing in text.
 	EnableSearch() bool
@@ -31746,7 +31746,7 @@ type TreeView interface {
 	// For converting widget coordinates (eg. the ones you get from
 	// GtkWidget::query-tooltip), please see
 	// gtk_tree_view_convert_widget_to_bin_window_coords().
-	PathAtPos(x int, y int) (path TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
+	PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 	// Reorderable retrieves whether the user can reorder the tree via
 	// drag-and-drop. See gtk_tree_view_set_reorderable().
 	Reorderable() bool
@@ -31782,12 +31782,12 @@ type TreeView interface {
 	// @model, @path and @iter which have been provided will be set to point to
 	// that row and the corresponding model. @x and @y will always be converted
 	// to be relative to @tree_view’s bin_window if @keyboard_tooltip is false.
-	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path TreePath, iter TreeIter, ok bool)
+	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
 	// VisibleRange sets @start_path and @end_path to be the first and last
 	// visible path. Note that there may be invisible paths in between.
 	//
 	// The paths should be freed with gtk_tree_path_free() after use.
-	VisibleRange() (startPath TreePath, endPath TreePath, ok bool)
+	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
 	// VisibleRect fills @visible_rect with the currently-visible region of the
 	// buffer, in tree coordinates. Convert to bin_window coordinates with
 	// gtk_tree_view_convert_tree_to_bin_window_coords(). Tree coordinates start
@@ -31825,7 +31825,7 @@ type TreeView interface {
 	// The @path, @column, @cell_x and @cell_y arguments will be filled in
 	// likewise as for gtk_tree_view_get_path_at_pos(). Please see
 	// gtk_tree_view_get_path_at_pos() for more information.
-	IsBlankAtPos(x int, y int) (path TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
+	IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 	// IsRubberBandingActive returns whether a rubber banding operation is
 	// currently being done in @tree_view.
 	IsRubberBandingActive() bool
@@ -31909,7 +31909,7 @@ type TreeView interface {
 	SetCursorOnCell(path *TreePath, focusColumn TreeViewColumn, focusCell CellRenderer, startEditing bool)
 	// SetDragDestRow sets the row that is highlighted for feedback. If @path is
 	// nil, an existing highlight is removed.
-	SetDragDestRow(path *TreePath, pos *TreeViewDropPosition)
+	SetDragDestRow(path *TreePath, pos TreeViewDropPosition)
 	// SetEnableSearch: if @enable_search is set, then the user can type in text
 	// to search through the tree interactively (this is sometimes called
 	// "typeahead find").
@@ -32107,11 +32107,11 @@ func (t treeView) Column(n int) TreeViewColumn
 
 func (t treeView) Columns() *glib.List
 
-func (t treeView) Cursor() (path TreePath, focusColumn TreeViewColumn)
+func (t treeView) Cursor() (path *TreePath, focusColumn TreeViewColumn)
 
-func (t treeView) DestRowAtPos(dragX int, dragY int) (path TreePath, pos TreeViewDropPosition, ok bool)
+func (t treeView) DestRowAtPos(dragX int, dragY int) (path *TreePath, pos TreeViewDropPosition, ok bool)
 
-func (t treeView) DragDestRow() (path TreePath, pos TreeViewDropPosition)
+func (t treeView) DragDestRow() (path *TreePath, pos TreeViewDropPosition)
 
 func (t treeView) EnableSearch() bool
 
@@ -32137,7 +32137,7 @@ func (t treeView) Model() TreeModel
 
 func (t treeView) NColumns() uint
 
-func (t treeView) PathAtPos(x int, y int) (path TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
+func (t treeView) PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 
 func (t treeView) Reorderable() bool
 
@@ -32157,9 +32157,9 @@ func (t treeView) ShowExpanders() bool
 
 func (t treeView) TooltipColumn() int
 
-func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path TreePath, iter TreeIter, ok bool)
+func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
 
-func (t treeView) VisibleRange() (startPath TreePath, endPath TreePath, ok bool)
+func (t treeView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
 
 func (t treeView) VisibleRect() gdk.Rectangle
 
@@ -32167,7 +32167,7 @@ func (t treeView) InsertColumn(column TreeViewColumn, position int) int
 
 func (t treeView) InsertColumnWithDataFunc(position int, title string, cell CellRenderer, _func TreeCellDataFunc) int
 
-func (t treeView) IsBlankAtPos(x int, y int) (path TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
+func (t treeView) IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 
 func (t treeView) IsRubberBandingActive() bool
 
@@ -32193,7 +32193,7 @@ func (t treeView) SetCursor(path *TreePath, focusColumn TreeViewColumn, startEdi
 
 func (t treeView) SetCursorOnCell(path *TreePath, focusColumn TreeViewColumn, focusCell CellRenderer, startEditing bool)
 
-func (t treeView) SetDragDestRow(path *TreePath, pos *TreeViewDropPosition)
+func (t treeView) SetDragDestRow(path *TreePath, pos TreeViewDropPosition)
 
 func (t treeView) SetEnableSearch(enableSearch bool)
 
@@ -33168,7 +33168,7 @@ type Widget interface {
 	// ComputePoint translates the given @point in @widget's coordinates to
 	// coordinates relative to @target’s coordinate system. In order to perform
 	// this operation, both widgets must share a common root.
-	ComputePoint(target Widget, point graphene.Point) (outPoint graphene.Point, ok bool)
+	ComputePoint(target Widget, point *graphene.Point) (outPoint graphene.Point, ok bool)
 	// ComputeTransform computes a matrix suitable to describe a transformation
 	// from @widget's coordinate system into @target's coordinate system.
 	ComputeTransform(target Widget) (outTransform graphene.Matrix, ok bool)
@@ -34159,7 +34159,7 @@ func (w widget) ComputeBounds(target Widget) (outBounds graphene.Rect, ok bool)
 
 func (w widget) ComputeExpand(orientation Orientation) bool
 
-func (w widget) ComputePoint(target Widget, point graphene.Point) (outPoint graphene.Point, ok bool)
+func (w widget) ComputePoint(target Widget, point *graphene.Point) (outPoint graphene.Point, ok bool)
 
 func (w widget) ComputeTransform(target Widget) (outTransform graphene.Matrix, ok bool)
 

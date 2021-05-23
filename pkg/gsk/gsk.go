@@ -356,7 +356,7 @@ func SerializationErrorQuark() glib.Quark {
 //
 // If @string does not describe a valid transform, false is returned and nil is
 // put in @out_transform.
-func TransformParse(string string) (*Transform, bool) {
+func TransformParse(string string) (outTransform *Transform, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(string)
 	defer C.free(unsafe.Pointer(string))
@@ -846,7 +846,7 @@ type ConicGradientNode interface {
 	// Center: retrieves the center pointer for the gradient.
 	Center() *graphene.Point
 	// ColorStops: retrieves the color stops in the gradient.
-	ColorStops() (uint, []ColorStop)
+	ColorStops() (nStops uint, colorStops []ColorStop)
 	// NColorStops: retrieves the number of color stops in the gradient.
 	NColorStops() uint
 	// Rotation: retrieves the rotation for the gradient in degrees.
@@ -871,7 +871,7 @@ func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotatio
 
 func (c conicGradientNode) Center() *graphene.Point
 
-func (c conicGradientNode) ColorStops() (uint, []ColorStop)
+func (c conicGradientNode) ColorStops() (nStops uint, colorStops []ColorStop)
 
 func (c conicGradientNode) NColorStops() uint
 
@@ -1200,7 +1200,7 @@ type LinearGradientNode interface {
 	RenderNode
 
 	// ColorStops: retrieves the color stops in the gradient.
-	ColorStops() (uint, []ColorStop)
+	ColorStops() (nStops uint, colorStops []ColorStop)
 	// End: retrieves the final point of the linear gradient.
 	End() *graphene.Point
 	// NColorStops: retrieves the number of color stops in the gradient.
@@ -1225,7 +1225,7 @@ func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 
 func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) LinearGradientNode
 
-func (l linearGradientNode) ColorStops() (uint, []ColorStop)
+func (l linearGradientNode) ColorStops() (nStops uint, colorStops []ColorStop)
 
 func (l linearGradientNode) End() *graphene.Point
 
@@ -1316,7 +1316,7 @@ type RadialGradientNode interface {
 	// Center: retrieves the center pointer for the gradient.
 	Center() *graphene.Point
 	// ColorStops: retrieves the color stops in the gradient.
-	ColorStops() (uint, []ColorStop)
+	ColorStops() (nStops uint, colorStops []ColorStop)
 	// End: retrieves the end value for the gradient.
 	End() float32
 	// Hradius: retrieves the horizonal radius for the gradient.
@@ -1347,7 +1347,7 @@ func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradiu
 
 func (r radialGradientNode) Center() *graphene.Point
 
-func (r radialGradientNode) ColorStops() (uint, []ColorStop)
+func (r radialGradientNode) ColorStops() (nStops uint, colorStops []ColorStop)
 
 func (r radialGradientNode) End() float32
 
@@ -1572,7 +1572,7 @@ type TextNode interface {
 	// Font: returns the font used by the text @node.
 	Font() pango.Font
 	// Glyphs: retrieves the glyph information in the @node.
-	Glyphs() (uint, []pango.GlyphInfo)
+	Glyphs() (nGlyphs uint, glyphInfos []pango.GlyphInfo)
 	// NumGlyphs: retrieves the number of glyphs in the text node.
 	NumGlyphs() uint
 	// Offset: retrieves the offset applied to the text.
@@ -1601,7 +1601,7 @@ func (t textNode) Color() *gdk.RGBA
 
 func (t textNode) Font() pango.Font
 
-func (t textNode) Glyphs() (uint, []pango.GlyphInfo)
+func (t textNode) Glyphs() (nGlyphs uint, glyphInfos []pango.GlyphInfo)
 
 func (t textNode) NumGlyphs() uint
 

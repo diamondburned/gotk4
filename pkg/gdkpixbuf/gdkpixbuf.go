@@ -170,7 +170,7 @@ type PixbufDestroyNotify func(pixels []uint8)
 //export cPixbufDestroyNotify
 func cPixbufDestroyNotify(arg0 *C.guchar, arg1 C.gpointer)
 
-type PixbufSaveFunc func(buf []uint8) (*glib.Error, bool)
+type PixbufSaveFunc func(buf []uint8) (error *glib.Error, ok bool)
 
 //export cPixbufSaveFunc
 func cPixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean
@@ -329,7 +329,7 @@ type Pixbuf interface {
 	// Pixels: queries a pointer to the pixel data of a pixbuf.
 	Pixels() []uint8
 	// PixelsWithLength: queries a pointer to the pixel data of a pixbuf.
-	PixelsWithLength() (uint, []uint8)
+	PixelsWithLength() (length uint, guint8s []uint8)
 	// Rowstride: queries the rowstride of a pixbuf, which is the number of
 	// bytes between the start of a row and the start of the next row.
 	Rowstride() int
@@ -374,7 +374,7 @@ type Pixbuf interface {
 	// SaveToBufferv: saves pixbuf to a new buffer in format @type, which is
 	// currently "jpeg", "tiff", "png", "ico" or "bmp". See
 	// gdk_pixbuf_save_to_buffer() for more details.
-	SaveToBufferv(_type string, optionKeys []string, optionValues []string) ([]uint8, uint, bool)
+	SaveToBufferv(_type string, optionKeys []string, optionValues []string) (buffer []uint8, bufferSize uint, ok bool)
 	// SaveToCallbackv: saves pixbuf to a callback in format @type, which is
 	// currently "jpeg", "png", "tiff", "ico" or "bmp". If @error is set, false
 	// will be returned. See gdk_pixbuf_save_to_callback () for more details.
@@ -512,7 +512,7 @@ func (p pixbuf) Options() *glib.HashTable
 
 func (p pixbuf) Pixels() []uint8
 
-func (p pixbuf) PixelsWithLength() (uint, []uint8)
+func (p pixbuf) PixelsWithLength() (length uint, guint8s []uint8)
 
 func (p pixbuf) Rowstride() int
 
@@ -532,7 +532,7 @@ func (p pixbuf) RotateSimple(angle PixbufRotation) Pixbuf
 
 func (p pixbuf) SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool)
 
-func (p pixbuf) SaveToBufferv(_type string, optionKeys []string, optionValues []string) ([]uint8, uint, bool)
+func (p pixbuf) SaveToBufferv(_type string, optionKeys []string, optionValues []string) (buffer []uint8, bufferSize uint, ok bool)
 
 func (p pixbuf) SaveToCallbackv(saveFunc PixbufSaveFunc, _type string, optionKeys []string, optionValues []string) bool
 

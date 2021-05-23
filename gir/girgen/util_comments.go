@@ -38,19 +38,26 @@ func GoDoc(doc *gir.Doc, indentLvl int, self string) string {
 	return CommentReflowLinesIndent(indentLvl, self, doc.String)
 }
 
-func nthWordIs(p, word string, n int) bool {
-	words := strings.SplitN(p, " ", n+2)
+// nthWord returns the nth word, or an empty string if none.
+func nthWord(paragraph string, n int) string {
+	words := strings.SplitN(paragraph, " ", n+2)
 	if len(words) < n+2 {
-		return false
+		return ""
 	}
-	return words[n] == word
+	return words[n]
+}
+
+// secondWordSimplePresent checks if the second word has a trailing "s".
+func secondWordSimplePresent(paragraph string) bool {
+	word := nthWord(paragraph, 1)
+	return strings.HasSuffix(word, "s")
 }
 
 // CommentReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go
 // comment strings. It is automatically indented.
 func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 	// hasIs checks if the paragraph already starts with "something is..."
-	hasIs := strings.HasPrefix(cmt, "#") && nthWordIs(cmt, "is", 1)
+	hasIs := strings.HasPrefix(cmt, "#") && secondWordSimplePresent(cmt)
 
 	if hasIs {
 		// Trim the first word away and replace it with the Go name.

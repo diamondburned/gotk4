@@ -2597,7 +2597,7 @@ type SettingsBindSetMapping func(value *externglib.Value, expectedType *glib.Var
 //export cSettingsBindSetMapping
 func cSettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) *C.GVariant
 
-type SettingsGetMapping func(value *glib.Variant) (interface{}, bool)
+type SettingsGetMapping func(value *glib.Variant) (result interface{}, ok bool)
 
 //export cSettingsGetMapping
 func cSettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.gboolean
@@ -2665,7 +2665,7 @@ func ActionNameIsValid(actionName string) bool {
 // "app.action('target')". For strings, this third format must be used if *
 // target value is empty or contains characters other than alphanumerics, '-'
 // and '.'.
-func ActionParseDetailedName(detailedName string) (string, *glib.Variant, bool) {
+func ActionParseDetailedName(detailedName string) (actionName string, targetValue *glib.Variant, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(detailedName)
 	defer C.free(unsafe.Pointer(detailedName))
@@ -3431,7 +3431,7 @@ func ContentTypeGetSymbolicIcon(_type string) Icon {
 // function is uncertain, @result_uncertain will be set to true. Either
 // @filename or @data may be nil, in which case the guess will be based solely
 // on the other argument.
-func ContentTypeGuess(filename string, data []uint8) (bool, string) {
+func ContentTypeGuess(filename string, data []uint8) (resultUncertain bool, utf8 string) {
 	var arg0 string
 	arg0 = C.GoString(filename)
 	defer C.free(unsafe.Pointer(filename))
@@ -3639,7 +3639,7 @@ func DbusAddressGetStream(address string, cancellable Cancellable, callback Asyn
 
 // DbusAddressGetStreamFinish: finishes an operation started with
 // g_dbus_address_get_stream().
-func DbusAddressGetStreamFinish(res AsyncResult) (string, IOStream) {
+func DbusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStream) {
 	var arg0 AsyncResult
 	arg0 = wrapAsyncResult(res)
 
@@ -3665,7 +3665,7 @@ func DbusAddressGetStreamFinish(res AsyncResult) (string, IOStream) {
 //
 // This is a synchronous failable function. See g_dbus_address_get_stream() for
 // the asynchronous version.
-func DbusAddressGetStreamSync(address string, cancellable Cancellable) (string, IOStream) {
+func DbusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid string, ioStream IOStream) {
 	var arg0 string
 	arg0 = C.GoString(address)
 	defer C.free(unsafe.Pointer(address))
@@ -4234,7 +4234,7 @@ func FileNewForURI(uri string) File {
 //
 // Unlike the other #GFile constructors, this will return nil if a temporary
 // file could not be created.
-func FileNewTmp(tmpl string) (FileIOStream, File) {
+func FileNewTmp(tmpl string) (iostream FileIOStream, file File) {
 	var arg0 string
 	arg0 = C.GoString(tmpl)
 	defer C.free(unsafe.Pointer(tmpl))
@@ -4747,7 +4747,7 @@ func PollableStreamWrite(stream OutputStream, buffer []uint8, blocking bool, can
 // be a OutputStream for which g_pollable_output_stream_can_poll() returns true
 // or else the behavior is undefined. If @blocking is true, then @stream does
 // not need to be a OutputStream.
-func PollableStreamWriteAll(stream OutputStream, buffer []uint8, blocking bool, cancellable Cancellable) (uint, bool) {
+func PollableStreamWriteAll(stream OutputStream, buffer []uint8, blocking bool, cancellable Cancellable) (bytesWritten uint, ok bool) {
 	var arg0 OutputStream
 	arg0 = wrapOutputStream(stream)
 
@@ -4872,7 +4872,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []
 // globally registered resources and if found returns information about it.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint32, bool) {
+func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(path)
 	defer C.free(unsafe.Pointer(path))
@@ -5194,7 +5194,7 @@ func UnixIsSystemFsType(fsType string) bool {
 // changed since with g_unix_mounts_changed_since().
 //
 // If more mounts have the same mount path, the last matching mount is returned.
-func UnixMountAt(mountPath string) (uint64, *UnixMountEntry) {
+func UnixMountAt(mountPath string) (timeRead uint64, unixMountEntry *UnixMountEntry) {
 	var arg0 string
 	arg0 = C.GoString(mountPath)
 	defer C.free(unsafe.Pointer(mountPath))
@@ -5246,7 +5246,7 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 // changed since with g_unix_mounts_changed_since().
 //
 // If more mounts have the same mount path, the last matching mount is returned.
-func UnixMountFor(filePath string) (uint64, *UnixMountEntry) {
+func UnixMountFor(filePath string) (timeRead uint64, unixMountEntry *UnixMountEntry) {
 	var arg0 string
 	arg0 = C.GoString(filePath)
 	defer C.free(unsafe.Pointer(filePath))
@@ -5455,7 +5455,7 @@ func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
 //
 // If more mount points have the same mount path, the last matching mount point
 // is returned.
-func UnixMountPointAt(mountPath string) (uint64, *UnixMountPoint) {
+func UnixMountPointAt(mountPath string) (timeRead uint64, unixMountPoint *UnixMountPoint) {
 	var arg0 string
 	arg0 = C.GoString(mountPath)
 	defer C.free(unsafe.Pointer(mountPath))
@@ -5491,7 +5491,7 @@ func UnixMountPointsChangedSince(time uint64) bool {
 // points. If @time_read is set, it will be filled with the mount timestamp,
 // allowing for checking if the mounts have changed with
 // g_unix_mount_points_changed_since().
-func UnixMountPointsGet() (uint64, *glib.List) {
+func UnixMountPointsGet() (timeRead uint64, list *glib.List) {
 	var arg0 *C.guint64 // out
 
 	ret := C.g_unix_mount_points_get(&arg0)
@@ -5522,7 +5522,7 @@ func UnixMountsChangedSince(time uint64) bool {
 // UnixMountsGet: gets a #GList of MountEntry containing the unix mounts. If
 // @time_read is set, it will be filled with the mount timestamp, allowing for
 // checking if the mounts have changed with g_unix_mounts_changed_since().
-func UnixMountsGet() (uint64, *glib.List) {
+func UnixMountsGet() (timeRead uint64, list *glib.List) {
 	var arg0 *C.guint64 // out
 
 	ret := C.g_unix_mounts_get(&arg0)
@@ -5536,7 +5536,7 @@ func UnixMountsGet() (uint64, *glib.List) {
 	return ret0, ret1
 }
 
-// #GAction represents a single named action
+// Action represents a single named action.
 //
 // The main interface to an action is that it can be activated with
 // g_action_activate(). This results in the 'activate' signal being emitted. An
@@ -5573,10 +5573,10 @@ type Action interface {
 	GetStateType() *glib.VariantType
 }
 
-// ActionGroup: group represents a group of actions. Actions can be used to
-// expose functionality in a structured way, either from one part of a program
-// to another, or to the outside world. Action groups are often used together
-// with a Model that provides additional representation data for displaying the
+// ActionGroup represents a group of actions. Actions can be used to expose
+// functionality in a structured way, either from one part of a program to
+// another, or to the outside world. Action groups are often used together with
+// a Model that provides additional representation data for displaying the
 // actions to the user, e.g. in a menu.
 //
 // The main way to interact with the actions in a GActionGroup is to activate
@@ -5628,7 +5628,7 @@ type ActionGroup interface {
 	GetActionStateType(actionName string) *glib.VariantType
 	HasAction(actionName string) bool
 	ListActions() []string
-	QueryAction(actionName string) (bool, *glib.VariantType, *glib.VariantType, *glib.Variant, *glib.Variant, bool)
+	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
 // ActionMap: the GActionMap interface is implemented by Group implementations
@@ -5901,7 +5901,7 @@ type AsyncResult interface {
 // Some example conversions are: character set conversion, compression,
 // decompression and regular expression replace.
 type Converter interface {
-	Convert(inbuf []uint8, outbuf []uint8, flags ConverterFlags) (uint, uint, ConverterResult)
+	Convert(inbuf []uint8, outbuf []uint8, flags ConverterFlags) (bytesRead uint, bytesWritten uint, converterResult ConverterResult)
 	Reset()
 }
 
@@ -6086,7 +6086,7 @@ type DtlsConnection interface {
 	CloseFinish(result AsyncResult) bool
 	EmitAcceptCertificate(peerCert TlsCertificate, errors TlsCertificateFlags) bool
 	GetCertificate() TlsCertificate
-	GetChannelBindingData(_type TlsChannelBindingType) ([]uint8, bool)
+	GetChannelBindingData(_type TlsChannelBindingType) (data []uint8, ok bool)
 	GetDatabase() TlsDatabase
 	GetInteraction() TlsInteraction
 	GetNegotiatedProtocol() string
@@ -6227,22 +6227,22 @@ type File interface {
 	HasURIScheme(uriScheme string) bool
 	Hash() uint
 	IsNative() bool
-	LoadBytes(cancellable Cancellable) (string, *glib.Bytes)
+	LoadBytes(cancellable Cancellable) (etagOut string, bytes *glib.Bytes)
 	LoadBytesAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	LoadBytesFinish(result AsyncResult) (string, *glib.Bytes)
-	LoadContents(cancellable Cancellable) ([]uint8, uint, string, bool)
+	LoadBytesFinish(result AsyncResult) (etagOut string, bytes *glib.Bytes)
+	LoadContents(cancellable Cancellable) (contents []uint8, length uint, etagOut string, ok bool)
 	LoadContentsAsync(cancellable Cancellable, callback AsyncReadyCallback)
-	LoadContentsFinish(res AsyncResult) ([]uint8, uint, string, bool)
+	LoadContentsFinish(res AsyncResult) (contents []uint8, length uint, etagOut string, ok bool)
 	LoadPartialContentsAsync(cancellable Cancellable, readMoreCallback FileReadMoreCallback, callback AsyncReadyCallback)
-	LoadPartialContentsFinish(res AsyncResult) ([]uint8, uint, string, bool)
+	LoadPartialContentsFinish(res AsyncResult) (contents []uint8, length uint, etagOut string, ok bool)
 	MakeDirectory(cancellable Cancellable) bool
 	MakeDirectoryAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	MakeDirectoryFinish(result AsyncResult) bool
 	MakeDirectoryWithParents(cancellable Cancellable) bool
 	MakeSymbolicLink(symlinkValue string, cancellable Cancellable) bool
-	MeasureDiskUsage(flags FileMeasureFlags, cancellable Cancellable, progressCallback FileMeasureProgressCallback) (uint64, uint64, uint64, bool)
+	MeasureDiskUsage(flags FileMeasureFlags, cancellable Cancellable, progressCallback FileMeasureProgressCallback) (diskUsage uint64, numDirs uint64, numFiles uint64, ok bool)
 	MeasureDiskUsageAsync(flags FileMeasureFlags, ioPriority int, cancellable Cancellable, progressCallback FileMeasureProgressCallback, callback AsyncReadyCallback)
-	MeasureDiskUsageFinish(result AsyncResult) (uint64, uint64, uint64, bool)
+	MeasureDiskUsageFinish(result AsyncResult) (diskUsage uint64, numDirs uint64, numFiles uint64, ok bool)
 	Monitor(flags FileMonitorFlags, cancellable Cancellable) FileMonitor
 	MonitorDirectory(flags FileMonitorFlags, cancellable Cancellable) FileMonitor
 	MonitorFile(flags FileMonitorFlags, cancellable Cancellable) FileMonitor
@@ -6275,10 +6275,10 @@ type File interface {
 	ReadFinish(res AsyncResult) FileInputStream
 	Replace(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) FileOutputStream
 	ReplaceAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	ReplaceContents(contents []uint8, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (string, bool)
+	ReplaceContents(contents []uint8, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) (newEtag string, ok bool)
 	ReplaceContentsAsync(contents []uint8, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable, callback AsyncReadyCallback)
 	ReplaceContentsBytesAsync(contents *glib.Bytes, etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable, callback AsyncReadyCallback)
-	ReplaceContentsFinish(res AsyncResult) (string, bool)
+	ReplaceContentsFinish(res AsyncResult) (newEtag string, ok bool)
 	ReplaceFinish(res AsyncResult) FileOutputStream
 	ReplaceReadwrite(etag string, makeBackup bool, flags FileCreateFlags, cancellable Cancellable) FileIOStream
 	ReplaceReadwriteAsync(etag string, makeBackup bool, flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
@@ -6292,7 +6292,7 @@ type File interface {
 	SetAttributeUint32(attribute string, value uint32, flags FileQueryInfoFlags, cancellable Cancellable) bool
 	SetAttributeUint64(attribute string, value uint64, flags FileQueryInfoFlags, cancellable Cancellable) bool
 	SetAttributesAsync(info FileInfo, flags FileQueryInfoFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
-	SetAttributesFinish(result AsyncResult) (FileInfo, bool)
+	SetAttributesFinish(result AsyncResult) (info FileInfo, ok bool)
 	SetAttributesFromInfo(info FileInfo, flags FileQueryInfoFlags, cancellable Cancellable) bool
 	SetDisplayName(displayName string, cancellable Cancellable) File
 	SetDisplayNameAsync(displayName string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
@@ -6431,9 +6431,9 @@ type ListModel interface {
 // LoadableIcon: extends the #GIcon interface and adds the ability to load icons
 // from streams.
 type LoadableIcon interface {
-	Load(size int, cancellable Cancellable) (string, InputStream)
+	Load(size int, cancellable Cancellable) (_type string, inputStream InputStream)
 	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
-	LoadFinish(res AsyncResult) (string, InputStream)
+	LoadFinish(res AsyncResult) (_type string, inputStream InputStream)
 }
 
 // Mount: the #GMount interface represents user-visible mounts. Note, when
@@ -6484,9 +6484,9 @@ type Mount interface {
 	Unshadow()
 }
 
-// NetworkMonitor: monitor provides an easy-to-use cross-platform API for
-// monitoring network connectivity. On Linux, the available implementations are
-// based on the kernel's netlink interface and on NetworkManager.
+// NetworkMonitor provides an easy-to-use cross-platform API for monitoring
+// network connectivity. On Linux, the available implementations are based on
+// the kernel's netlink interface and on NetworkManager.
 //
 // There is also an implementation for use inside Flatpak sandboxes.
 type NetworkMonitor interface {
@@ -6516,7 +6516,7 @@ type PollableOutputStream interface {
 	CreateSource(cancellable Cancellable) *glib.Source
 	IsWritable() bool
 	WriteNonblocking(buffer []uint8, cancellable Cancellable) int
-	WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (uint, PollableReturn)
+	WritevNonblocking(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
 }
 
 // Proxy: a #GProxy handles connecting to a remote host via a given type of
@@ -6531,8 +6531,8 @@ type Proxy interface {
 	SupportsHostname() bool
 }
 
-// ProxyResolver: resolver provides synchronous and asynchronous network proxy
-// resolution. Resolver is used within Client through the method
+// ProxyResolver provides synchronous and asynchronous network proxy resolution.
+// Resolver is used within Client through the method
 // g_socket_connectable_proxy_enumerate().
 //
 // Implementations of Resolver based on libproxy and GNOME settings can be found
@@ -8946,8 +8946,8 @@ func (a application) UnmarkBusy()
 
 func (a application) WithdrawNotification(id string)
 
-// ApplicationCommandLine: commandLine represents a command-line invocation of
-// an application. It is created by #GApplication and emitted in the
+// ApplicationCommandLine represents a command-line invocation of an
+// application. It is created by #GApplication and emitted in the
 // #GApplication::command-line signal and virtual function.
 //
 // The class contains the list of arguments that the program was invoked with.
@@ -9069,7 +9069,7 @@ type ApplicationCommandLine interface {
 	//
 	// The return value is nil-terminated and should be freed using
 	// g_strfreev().
-	Arguments() (int, []string)
+	Arguments() (argc int, filenames []string)
 	// Cwd: gets the working directory of the command line invocation. The
 	// string may contain non-utf8 data.
 	//
@@ -9182,7 +9182,7 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 
 func (a applicationCommandLine) CreateFileForArg(arg string) File
 
-func (a applicationCommandLine) Arguments() (int, []string)
+func (a applicationCommandLine) Arguments() (argc int, filenames []string)
 
 func (a applicationCommandLine) Cwd() string
 
@@ -9263,7 +9263,7 @@ type BufferedInputStream interface {
 	// PeekBuffer: returns the buffer with the currently available bytes. The
 	// returned buffer must not be modified and will become invalid when reading
 	// from the stream or filling the buffer.
-	PeekBuffer() (uint, []uint8)
+	PeekBuffer() (count uint, guint8s []uint8)
 	// ReadByte: tries to read a single byte from the stream or the buffer. Will
 	// block during this read.
 	//
@@ -9314,7 +9314,7 @@ func (b bufferedInputStream) BufferSize() uint
 
 func (b bufferedInputStream) Peek(buffer []uint8, offset uint) uint
 
-func (b bufferedInputStream) PeekBuffer() (uint, []uint8)
+func (b bufferedInputStream) PeekBuffer() (count uint, guint8s []uint8)
 
 func (b bufferedInputStream) ReadByte(cancellable Cancellable) int
 
@@ -9376,8 +9376,8 @@ func (b bufferedOutputStream) SetAutoGrow(autoGrow bool)
 
 func (b bufferedOutputStream) SetBufferSize(size uint)
 
-// BytesIcon: icon specifies an image held in memory in a common format (usually
-// png) to be used as icon.
+// BytesIcon specifies an image held in memory in a common format (usually png)
+// to be used as icon.
 type BytesIcon interface {
 	gextras.Objector
 
@@ -10052,12 +10052,12 @@ type DBusConnection interface {
 	CallWithUnixFdList(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
 	// CallWithUnixFdListFinish: finishes an operation started with
 	// g_dbus_connection_call_with_unix_fd_list().
-	CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant)
+	CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant)
 	// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
 	// and returns FDList objects.
 	//
 	// This method is only available on UNIX.
-	CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant)
+	CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant)
 	// Close: closes @connection. Note that this never causes the process to
 	// exit (this might only happen if the other end of a shared message bus
 	// connection disconnects, see BusConnection:exit-on-close).
@@ -10294,7 +10294,7 @@ type DBusConnection interface {
 	//
 	// Note that @message must be unlocked, unless @flags contain the
 	// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-	SendMessage(message DBusMessage, flags DBusSendMessageFlags) (uint32, bool)
+	SendMessage(message DBusMessage, flags DBusSendMessageFlags) (outSerial uint32, ok bool)
 	// SendMessageWithReply: asynchronously sends @message to the peer
 	// represented by @connection.
 	//
@@ -10364,7 +10364,7 @@ type DBusConnection interface {
 	//
 	// Note that @message must be unlocked, unless @flags contain the
 	// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-	SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (uint32, DBusMessage)
+	SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (outSerial uint32, dBusMessage DBusMessage)
 	// SetExitOnClose: sets whether the process should be terminated when
 	// @connection is closed by the remote peer. See BusConnection:exit-on-close
 	// for more details.
@@ -10490,9 +10490,9 @@ func (d dBusConnection) CallSync(busName string, objectPath string, interfaceNam
 
 func (d dBusConnection) CallWithUnixFdList(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (d dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant)
+func (d dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant)
 
-func (d dBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant)
+func (d dBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant)
 
 func (d dBusConnection) Close(cancellable Cancellable, callback AsyncReadyCallback)
 
@@ -10538,13 +10538,13 @@ func (d dBusConnection) RegisterSubtree(objectPath string, vtable *DBusSubtreeVT
 
 func (d dBusConnection) RemoveFilter(filterID uint)
 
-func (d dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFlags) (uint32, bool)
+func (d dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFlags) (outSerial uint32, ok bool)
 
 func (d dBusConnection) SendMessageWithReply(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable, callback AsyncReadyCallback) uint32
 
 func (d dBusConnection) SendMessageWithReplyFinish(res AsyncResult) DBusMessage
 
-func (d dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (uint32, DBusMessage)
+func (d dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (outSerial uint32, dBusMessage DBusMessage)
 
 func (d dBusConnection) SetExitOnClose(exitOnClose bool)
 
@@ -10840,7 +10840,7 @@ type DBusMessage interface {
 	SetUnixFdList(fdList UnixFDList)
 	// ToBlob: serializes @message to a blob. The byte order returned by
 	// g_dbus_message_get_byte_order() will be used.
-	ToBlob(capabilities DBusCapabilityFlags) (uint, []uint8)
+	ToBlob(capabilities DBusCapabilityFlags) (outSize uint, guint8s []uint8)
 	// ToGerror: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
 	// nothing and returns false.
 	//
@@ -10953,7 +10953,7 @@ func (d dBusMessage) SetSignature(value string)
 
 func (d dBusMessage) SetUnixFdList(fdList UnixFDList)
 
-func (d dBusMessage) ToBlob(capabilities DBusCapabilityFlags) (uint, []uint8)
+func (d dBusMessage) ToBlob(capabilities DBusCapabilityFlags) (outSize uint, guint8s []uint8)
 
 func (d dBusMessage) ToGerror() bool
 
@@ -11520,12 +11520,12 @@ type DBusProxy interface {
 	CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
 	// CallWithUnixFdListFinish: finishes an operation started with
 	// g_dbus_proxy_call_with_unix_fd_list().
-	CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant)
+	CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant)
 	// CallWithUnixFdListSync: like g_dbus_proxy_call_sync() but also takes and
 	// returns FDList objects.
 	//
 	// This method is only available on UNIX.
-	CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant)
+	CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant)
 	// CachedProperty: looks up the value for a property from the cache. This
 	// call does no blocking IO.
 	//
@@ -11631,9 +11631,9 @@ func (d dBusProxy) CallSync(methodName string, parameters *glib.Variant, flags D
 
 func (d dBusProxy) CallWithUnixFdList(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (d dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant)
+func (d dBusProxy) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant)
 
-func (d dBusProxy) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant)
+func (d dBusProxy) CallWithUnixFdListSync(methodName string, parameters *glib.Variant, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant)
 
 func (d dBusProxy) CachedProperty(propertyName string) *glib.Variant
 
@@ -11768,7 +11768,7 @@ type DataInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadLine(cancellable Cancellable) (uint, []uint8)
+	ReadLine(cancellable Cancellable) (length uint, guint8s []uint8)
 	// ReadLineAsync: the asynchronous version of
 	// g_data_input_stream_read_line(). It is an error to have two outstanding
 	// calls to this function.
@@ -11780,16 +11780,16 @@ type DataInputStream interface {
 	// ReadLineFinish: finish an asynchronous call started by
 	// g_data_input_stream_read_line_async(). Note the warning about string
 	// encoding in g_data_input_stream_read_line() applies here as well.
-	ReadLineFinish(result AsyncResult) (uint, []uint8)
+	ReadLineFinish(result AsyncResult) (length uint, guint8s []uint8)
 	// ReadLineFinishUTF8: finish an asynchronous call started by
 	// g_data_input_stream_read_line_async().
-	ReadLineFinishUTF8(result AsyncResult) (uint, string)
+	ReadLineFinishUTF8(result AsyncResult) (length uint, utf8 string)
 	// ReadLineUTF8: reads a UTF-8 encoded line from the data input stream.
 	//
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	ReadLineUTF8(cancellable Cancellable) (uint, string)
+	ReadLineUTF8(cancellable Cancellable) (length uint, utf8 string)
 	// ReadUint16: reads an unsigned 16-bit/2-byte value from @stream.
 	//
 	// In order to get the correct byte order for this read operation, see
@@ -11826,7 +11826,7 @@ type DataInputStream interface {
 	// marked as deprecated in a future release. Use
 	// g_data_input_stream_read_upto() instead, but note that that function does
 	// not consume the stop character.
-	ReadUntil(stopChars string, cancellable Cancellable) (uint, string)
+	ReadUntil(stopChars string, cancellable Cancellable) (length uint, utf8 string)
 	// ReadUntilAsync: the asynchronous version of
 	// g_data_input_stream_read_until(). It is an error to have two outstanding
 	// calls to this function.
@@ -11846,7 +11846,7 @@ type DataInputStream interface {
 	ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReadUntilFinish: finish an asynchronous call started by
 	// g_data_input_stream_read_until_async().
-	ReadUntilFinish(result AsyncResult) (uint, string)
+	ReadUntilFinish(result AsyncResult) (length uint, utf8 string)
 	// ReadUpto: reads a string from the data input stream, up to the first
 	// occurrence of any of the stop characters.
 	//
@@ -11858,7 +11858,7 @@ type DataInputStream interface {
 	// Note that @stop_chars may contain '\0' if @stop_chars_len is specified.
 	//
 	// The returned string will always be nul-terminated on success.
-	ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string)
+	ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (length uint, utf8 string)
 	// ReadUptoAsync: the asynchronous version of
 	// g_data_input_stream_read_upto(). It is an error to have two outstanding
 	// calls to this function.
@@ -11882,7 +11882,7 @@ type DataInputStream interface {
 	// g_data_input_stream_read_upto_async() again.
 	//
 	// The returned string will always be nul-terminated on success.
-	ReadUptoFinish(result AsyncResult) (uint, string)
+	ReadUptoFinish(result AsyncResult) (length uint, utf8 string)
 	// SetByteOrder: this function sets the byte order for the given @stream.
 	// All subsequent reads from the @stream will be read in the given @order.
 	SetByteOrder(order DataStreamByteOrder)
@@ -11923,15 +11923,15 @@ func (d dataInputStream) ReadInt32(cancellable Cancellable) int32
 
 func (d dataInputStream) ReadInt64(cancellable Cancellable) int64
 
-func (d dataInputStream) ReadLine(cancellable Cancellable) (uint, []uint8)
+func (d dataInputStream) ReadLine(cancellable Cancellable) (length uint, guint8s []uint8)
 
 func (d dataInputStream) ReadLineAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (d dataInputStream) ReadLineFinish(result AsyncResult) (uint, []uint8)
+func (d dataInputStream) ReadLineFinish(result AsyncResult) (length uint, guint8s []uint8)
 
-func (d dataInputStream) ReadLineFinishUTF8(result AsyncResult) (uint, string)
+func (d dataInputStream) ReadLineFinishUTF8(result AsyncResult) (length uint, utf8 string)
 
-func (d dataInputStream) ReadLineUTF8(cancellable Cancellable) (uint, string)
+func (d dataInputStream) ReadLineUTF8(cancellable Cancellable) (length uint, utf8 string)
 
 func (d dataInputStream) ReadUint16(cancellable Cancellable) uint16
 
@@ -11939,17 +11939,17 @@ func (d dataInputStream) ReadUint32(cancellable Cancellable) uint32
 
 func (d dataInputStream) ReadUint64(cancellable Cancellable) uint64
 
-func (d dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (uint, string)
+func (d dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (length uint, utf8 string)
 
 func (d dataInputStream) ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (d dataInputStream) ReadUntilFinish(result AsyncResult) (uint, string)
+func (d dataInputStream) ReadUntilFinish(result AsyncResult) (length uint, utf8 string)
 
-func (d dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (uint, string)
+func (d dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellable Cancellable) (length uint, utf8 string)
 
 func (d dataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (d dataInputStream) ReadUptoFinish(result AsyncResult) (uint, string)
+func (d dataInputStream) ReadUptoFinish(result AsyncResult) (length uint, utf8 string)
 
 func (d dataInputStream) SetByteOrder(order DataStreamByteOrder)
 
@@ -12081,7 +12081,7 @@ type DesktopAppInfo interface {
 	// StringList: looks up a string list value in the keyfile backing @info.
 	//
 	// The @key is looked up in the "Desktop Entry" group.
-	StringList(key string) (uint, []string)
+	StringList(key string) (length uint, utf8s []string)
 	// HasKey: returns whether @key exists in the "Desktop Entry" group of the
 	// keyfile backing @info.
 	HasKey(key string) bool
@@ -12178,7 +12178,7 @@ func (d desktopAppInfo) StartupWmClass() string
 
 func (d desktopAppInfo) String(key string) string
 
-func (d desktopAppInfo) StringList(key string) (uint, []string)
+func (d desktopAppInfo) StringList(key string) (length uint, utf8s []string)
 
 func (d desktopAppInfo) HasKey(key string) bool
 
@@ -12269,10 +12269,9 @@ func (e emblemedIcon) Emblems() *glib.List
 
 func (e emblemedIcon) Icon() Icon
 
-// FileEnumerator: enumerator allows you to operate on a set of #GFiles,
-// returning a Info structure for each file enumerated (e.g.
-// g_file_enumerate_children() will return a Enumerator for each of the children
-// within a directory).
+// FileEnumerator allows you to operate on a set of #GFiles, returning a Info
+// structure for each file enumerated (e.g. g_file_enumerate_children() will
+// return a Enumerator for each of the children within a directory).
 //
 // To get the next file's information from a Enumerator, use
 // g_file_enumerator_next_file() or its asynchronous version,
@@ -12373,7 +12372,7 @@ type FileEnumerator interface {
 	//    out:
 	//      g_object_unref (direnum); // Note: frees the last @info
 	//
-	Iterate(cancellable Cancellable) (FileInfo, File, bool)
+	Iterate(cancellable Cancellable) (outInfo FileInfo, outChild File, ok bool)
 	// NextFile: returns information for the next file in the enumerated object.
 	// Will block until the information is available. The Info returned from
 	// this function will contain attributes that match the attribute string
@@ -12440,7 +12439,7 @@ func (f fileEnumerator) HasPending() bool
 
 func (f fileEnumerator) IsClosed() bool
 
-func (f fileEnumerator) Iterate(cancellable Cancellable) (FileInfo, File, bool)
+func (f fileEnumerator) Iterate(cancellable Cancellable) (outInfo FileInfo, outChild File, ok bool)
 
 func (f fileEnumerator) NextFile(cancellable Cancellable) FileInfo
 
@@ -12525,8 +12524,7 @@ func (f fileIOStream) QueryInfoAsync(attributes string, ioPriority int, cancella
 
 func (f fileIOStream) QueryInfoFinish(result AsyncResult) FileInfo
 
-// FileIcon: icon specifies an icon by pointing to an image file to be used as
-// icon.
+// FileIcon specifies an icon by pointing to an image file to be used as icon.
 type FileIcon interface {
 	gextras.Objector
 
@@ -12597,7 +12595,7 @@ type FileInfo interface {
 	AttributeByteString(attribute string) string
 	// AttributeData: gets the attribute type, value and status for an attribute
 	// key.
-	AttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool)
+	AttributeData(attribute string) (_type FileAttributeType, valuePp interface{}, status FileAttributeStatus, ok bool)
 	// AttributeInt32: gets a signed 32-bit integer contained within the
 	// attribute. If the attribute does not contain a signed 32-bit integer, or
 	// is invalid, 0 will be returned.
@@ -12803,7 +12801,7 @@ func (f fileInfo) AttributeBoolean(attribute string) bool
 
 func (f fileInfo) AttributeByteString(attribute string) string
 
-func (f fileInfo) AttributeData(attribute string) (FileAttributeType, interface{}, FileAttributeStatus, bool)
+func (f fileInfo) AttributeData(attribute string) (_type FileAttributeType, valuePp interface{}, status FileAttributeStatus, ok bool)
 
 func (f fileInfo) AttributeInt32(attribute string) int32
 
@@ -13360,7 +13358,7 @@ func (i ioStream) SetPending() bool
 
 func (i ioStream) SpliceAsync(stream2 IOStream, flags IOStreamSpliceFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
-// InetAddress: address represents an IPv4 or IPv6 internet address. Use
+// InetAddress represents an IPv4 or IPv6 internet address. Use
 // g_resolver_lookup_by_name() or g_resolver_lookup_by_name_async() to look up
 // the Address for a hostname. Use g_resolver_lookup_by_address() or
 // g_resolver_lookup_by_address_async() to look up the hostname for a Address.
@@ -13462,10 +13460,10 @@ func (i inetAddress) ToBytes() uint8
 
 func (i inetAddress) ToString() string
 
-// InetAddressMask: addressMask represents a range of IPv4 or IPv6 addresses
-// described by a base address and a length indicating how many bits of the base
-// address are relevant for matching purposes. These are often given in string
-// form. Eg, "10.0.0.0/8", or "fe80::/10".
+// InetAddressMask represents a range of IPv4 or IPv6 addresses described by a
+// base address and a length indicating how many bits of the base address are
+// relevant for matching purposes. These are often given in string form. Eg,
+// "10.0.0.0/8", or "fe80::/10".
 type InetAddressMask interface {
 	gextras.Objector
 
@@ -13556,9 +13554,9 @@ func (i inetSocketAddress) Port() uint16
 
 func (i inetSocketAddress) ScopeID() uint32
 
-// InputStream: stream has functions to read from a stream
-// (g_input_stream_read()), to close a stream (g_input_stream_close()) and to
-// skip some content (g_input_stream_skip()).
+// InputStream has functions to read from a stream (g_input_stream_read()), to
+// close a stream (g_input_stream_close()) and to skip some content
+// (g_input_stream_skip()).
 //
 // To copy the content of an input stream to an output stream without manually
 // handling the reads and writes, use g_output_stream_splice().
@@ -13637,7 +13635,7 @@ type InputStream interface {
 	// partial result will be returned, without an error.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	Read(cancellable Cancellable) ([]uint8, uint, int)
+	Read(cancellable Cancellable) (buffer []uint8, count uint, gssize int)
 	// ReadAll: tries to read @count bytes from the stream into the buffer
 	// starting at @buffer. Will block during this read.
 	//
@@ -13658,7 +13656,7 @@ type InputStream interface {
 	// read before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_input_stream_read().
-	ReadAll(cancellable Cancellable) ([]uint8, uint, uint, bool)
+	ReadAll(cancellable Cancellable) (buffer []uint8, count uint, bytesRead uint, ok bool)
 	// ReadAllAsync: request an asynchronous read of @count bytes from the
 	// stream into the buffer starting at @buffer.
 	//
@@ -13669,7 +13667,7 @@ type InputStream interface {
 	// Any outstanding I/O request with higher priority (lower numerical value)
 	// will be executed before an outstanding request with lower priority.
 	// Default priority is G_PRIORITY_DEFAULT.
-	ReadAllAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) ([]uint8, uint)
+	ReadAllAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) (buffer []uint8, count uint)
 	// ReadAllFinish: finishes an asynchronous stream read operation started
 	// with g_input_stream_read_all_async().
 	//
@@ -13679,7 +13677,7 @@ type InputStream interface {
 	// read before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_input_stream_read_async().
-	ReadAllFinish(result AsyncResult) (uint, bool)
+	ReadAllFinish(result AsyncResult) (bytesRead uint, ok bool)
 	// ReadAsync: request an asynchronous read of @count bytes from the stream
 	// into the buffer starting at @buffer. When the operation is finished
 	// @callback will be called. You can then call g_input_stream_read_finish()
@@ -13704,7 +13702,7 @@ type InputStream interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
-	ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) ([]uint8, uint)
+	ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) (buffer []uint8, count uint)
 	// ReadBytes: like g_input_stream_read(), this tries to read @count bytes
 	// from the stream in a blocking fashion. However, rather than reading into
 	// a user-supplied buffer, this will create a new #GBytes containing the
@@ -13826,15 +13824,15 @@ func (i inputStream) HasPending() bool
 
 func (i inputStream) IsClosed() bool
 
-func (i inputStream) Read(cancellable Cancellable) ([]uint8, uint, int)
+func (i inputStream) Read(cancellable Cancellable) (buffer []uint8, count uint, gssize int)
 
-func (i inputStream) ReadAll(cancellable Cancellable) ([]uint8, uint, uint, bool)
+func (i inputStream) ReadAll(cancellable Cancellable) (buffer []uint8, count uint, bytesRead uint, ok bool)
 
-func (i inputStream) ReadAllAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) ([]uint8, uint)
+func (i inputStream) ReadAllAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) (buffer []uint8, count uint)
 
-func (i inputStream) ReadAllFinish(result AsyncResult) (uint, bool)
+func (i inputStream) ReadAllFinish(result AsyncResult) (bytesRead uint, ok bool)
 
-func (i inputStream) ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) ([]uint8, uint)
+func (i inputStream) ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) (buffer []uint8, count uint)
 
 func (i inputStream) ReadBytes(count uint, cancellable Cancellable) *glib.Bytes
 
@@ -13873,12 +13871,12 @@ type ListStore interface {
 	//
 	// If you need to compare the two items with a custom comparison function,
 	// use g_list_store_find_with_equal_func() with a custom Func instead.
-	Find(item interface{}) (uint, bool)
+	Find(item interface{}) (position uint, ok bool)
 	// FindWithEqualFunc: looks up the given @item in the list store by looping
 	// over the items and comparing them with @compare_func until the first
 	// occurrence of @item which matches. If @item was not found, then @position
 	// will not be set, and this method will return false.
-	FindWithEqualFunc(item interface{}, equalFunc glib.EqualFunc) (uint, bool)
+	FindWithEqualFunc(item interface{}, equalFunc glib.EqualFunc) (position uint, ok bool)
 	// Insert: inserts @item into @store at @position. @item must be of type
 	// Store:item-type or derived from it. @position must be smaller than the
 	// length of the list, or equal to it to append.
@@ -13941,9 +13939,9 @@ func NewListStore(itemType externglib.Type) ListStore
 
 func (l listStore) Append(item interface{})
 
-func (l listStore) Find(item interface{}) (uint, bool)
+func (l listStore) Find(item interface{}) (position uint, ok bool)
 
-func (l listStore) FindWithEqualFunc(item interface{}, equalFunc glib.EqualFunc) (uint, bool)
+func (l listStore) FindWithEqualFunc(item interface{}, equalFunc glib.EqualFunc) (position uint, ok bool)
 
 func (l listStore) Insert(position uint, item interface{})
 
@@ -14229,7 +14227,7 @@ type MenuAttributeIter interface {
 	// The value returned in @name remains valid for as long as the iterator
 	// remains at the current position. The value returned in @value must be
 	// unreffed using g_variant_unref() when it is no longer in use.
-	GetNext() (string, *glib.Variant, bool)
+	GetNext() (outName string, value *glib.Variant, ok bool)
 	// Value: gets the value of the attribute at the current iterator position.
 	//
 	// The iterator is not advanced.
@@ -14261,7 +14259,7 @@ func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 
 func (m menuAttributeIter) Name() string
 
-func (m menuAttributeIter) GetNext() (string, *glib.Variant, bool)
+func (m menuAttributeIter) GetNext() (outName string, value *glib.Variant, ok bool)
 
 func (m menuAttributeIter) Value() *glib.Variant
 
@@ -14460,7 +14458,7 @@ type MenuLinkIter interface {
 	// The value returned in @out_link remains valid for as long as the iterator
 	// remains at the current position. The value returned in @value must be
 	// unreffed using g_object_unref() when it is no longer in use.
-	GetNext() (string, MenuModel, bool)
+	GetNext() (outLink string, value MenuModel, ok bool)
 	// Value: gets the linked Model at the current iterator position.
 	//
 	// The iterator is not advanced.
@@ -14491,19 +14489,18 @@ func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 
 func (m menuLinkIter) Name() string
 
-func (m menuLinkIter) GetNext() (string, MenuModel, bool)
+func (m menuLinkIter) GetNext() (outLink string, value MenuModel, ok bool)
 
 func (m menuLinkIter) Value() MenuModel
 
 func (m menuLinkIter) Next() bool
 
-// MenuModel: model represents the contents of a menu -- an ordered list of menu
-// items. The items are associated with actions, which can be activated through
-// them. Items can be grouped in sections, and may have submenus associated with
-// them. Both items and sections usually have some representation data, such as
-// labels or icons. The type of the associated action (ie whether it is
-// stateful, and what kind of state it has) can influence the representation of
-// the item.
+// MenuModel represents the contents of a menu -- an ordered list of menu items.
+// The items are associated with actions, which can be activated through them.
+// Items can be grouped in sections, and may have submenus associated with them.
+// Both items and sections usually have some representation data, such as labels
+// or icons. The type of the associated action (ie whether it is stateful, and
+// what kind of state it has) can influence the representation of the item.
 //
 // The conceptual model of menus in Model is hierarchical: sections and submenus
 // are again represented by Models. Menus themselves do not define their own
@@ -14691,10 +14688,10 @@ func (m menuModel) IterateItemAttributes(itemIndex int) MenuAttributeIter
 
 func (m menuModel) IterateItemLinks(itemIndex int) MenuLinkIter
 
-// MountOperation: operation provides a mechanism for interacting with the user.
-// It can be used for authenticating mountable operations, such as loop mounting
-// files, hard drive partitions or server locations. It can also be used to ask
-// the user questions or show a list of applications preventing unmount or eject
+// MountOperation provides a mechanism for interacting with the user. It can be
+// used for authenticating mountable operations, such as loop mounting files,
+// hard drive partitions or server locations. It can also be used to ask the
+// user questions or show a list of applications preventing unmount or eject
 // operations from completing.
 //
 // Note that Operation is used for more than just #GMount objects – for example
@@ -14854,9 +14851,9 @@ func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// NetworkAddress: address provides an easy way to resolve a hostname and then
-// attempt to connect to that host, handling the possibility of multiple IP
-// addresses and multiple address families.
+// NetworkAddress provides an easy way to resolve a hostname and then attempt to
+// connect to that host, handling the possibility of multiple IP addresses and
+// multiple address families.
 //
 // The enumeration results of resolved addresses *may* be cached as long as this
 // object is kept alive which may have unexpected results if alive for too long.
@@ -15057,9 +15054,9 @@ func (n notification) SetTitle(title string)
 
 func (n notification) SetUrgent(urgent bool)
 
-// OutputStream: stream has functions to write to a stream
-// (g_output_stream_write()), to close a stream (g_output_stream_close()) and to
-// flush pending writes (g_output_stream_flush()).
+// OutputStream has functions to write to a stream (g_output_stream_write()), to
+// close a stream (g_output_stream_close()) and to flush pending writes
+// (g_output_stream_flush()).
 //
 // To copy the content of an input stream to an output stream without manually
 // handling the reads and writes, use g_output_stream_splice().
@@ -15195,7 +15192,7 @@ type OutputStream interface {
 	// written before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_write().
-	WriteAll(buffer []uint8, cancellable Cancellable) (uint, bool)
+	WriteAll(buffer []uint8, cancellable Cancellable) (bytesWritten uint, ok bool)
 	// WriteAllAsync: request an asynchronous write of @count bytes from @buffer
 	// into the stream. When the operation is finished @callback will be called.
 	// You can then call g_output_stream_write_all_finish() to get the result of
@@ -15221,7 +15218,7 @@ type OutputStream interface {
 	// written before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_write_async().
-	WriteAllFinish(result AsyncResult) (uint, bool)
+	WriteAllFinish(result AsyncResult) (bytesWritten uint, ok bool)
 	// WriteAsync: request an asynchronous write of @count bytes from @buffer
 	// into the stream. When the operation is finished @callback will be called.
 	// You can then call g_output_stream_write_finish() to get the result of the
@@ -15312,7 +15309,7 @@ type OutputStream interface {
 	// the aggregate buffer size, and will return G_IO_ERROR_INVALID_ARGUMENT if
 	// these are exceeded. For example, when writing to a local file on UNIX
 	// platforms, the aggregate buffer size must not exceed G_MAXSSIZE bytes.
-	Writev(vectors []OutputVector, cancellable Cancellable) (uint, bool)
+	Writev(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 	// WritevAll: tries to write the bytes contained in the @n_vectors @vectors
 	// into the stream. Will block during the operation.
 	//
@@ -15334,7 +15331,7 @@ type OutputStream interface {
 	//
 	// The content of the individual elements of @vectors might be changed by
 	// this function.
-	WritevAll(vectors []OutputVector, cancellable Cancellable) (uint, bool)
+	WritevAll(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 	// WritevAllAsync: request an asynchronous write of the bytes contained in
 	// the @n_vectors @vectors into the stream. When the operation is finished
 	// @callback will be called. You can then call
@@ -15361,7 +15358,7 @@ type OutputStream interface {
 	// written before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_writev_async().
-	WritevAllFinish(result AsyncResult) (uint, bool)
+	WritevAllFinish(result AsyncResult) (bytesWritten uint, ok bool)
 	// WritevAsync: request an asynchronous write of the bytes contained in
 	// @n_vectors @vectors into the stream. When the operation is finished
 	// @callback will be called. You can then call
@@ -15394,7 +15391,7 @@ type OutputStream interface {
 	// @callback is called.
 	WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// WritevFinish: finishes a stream writev operation.
-	WritevFinish(result AsyncResult) (uint, bool)
+	WritevFinish(result AsyncResult) (bytesWritten uint, ok bool)
 }
 
 type outputStream struct {
@@ -15441,11 +15438,11 @@ func (o outputStream) SpliceFinish(result AsyncResult) int
 
 func (o outputStream) Write(buffer []uint8, cancellable Cancellable) int
 
-func (o outputStream) WriteAll(buffer []uint8, cancellable Cancellable) (uint, bool)
+func (o outputStream) WriteAll(buffer []uint8, cancellable Cancellable) (bytesWritten uint, ok bool)
 
 func (o outputStream) WriteAllAsync(buffer []uint8, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (o outputStream) WriteAllFinish(result AsyncResult) (uint, bool)
+func (o outputStream) WriteAllFinish(result AsyncResult) (bytesWritten uint, ok bool)
 
 func (o outputStream) WriteAsync(buffer []uint8, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
@@ -15457,17 +15454,17 @@ func (o outputStream) WriteBytesFinish(result AsyncResult) int
 
 func (o outputStream) WriteFinish(result AsyncResult) int
 
-func (o outputStream) Writev(vectors []OutputVector, cancellable Cancellable) (uint, bool)
+func (o outputStream) Writev(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 
-func (o outputStream) WritevAll(vectors []OutputVector, cancellable Cancellable) (uint, bool)
+func (o outputStream) WritevAll(vectors []OutputVector, cancellable Cancellable) (bytesWritten uint, ok bool)
 
 func (o outputStream) WritevAllAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (o outputStream) WritevAllFinish(result AsyncResult) (uint, bool)
+func (o outputStream) WritevAllFinish(result AsyncResult) (bytesWritten uint, ok bool)
 
 func (o outputStream) WritevAsync(vectors []OutputVector, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (o outputStream) WritevFinish(result AsyncResult) (uint, bool)
+func (o outputStream) WritevFinish(result AsyncResult) (bytesWritten uint, ok bool)
 
 // Permission: a #GPermission represents the status of the caller's permission
 // to perform a certain action.
@@ -15744,10 +15741,10 @@ func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-// #GResolver provides cancellable synchronous and asynchronous DNS resolution,
+// Resolver provides cancellable synchronous and asynchronous DNS resolution,
 // for hostnames (g_resolver_lookup_by_address(), g_resolver_lookup_by_name()
 // and their async variants) and SRV (service) records
-// (g_resolver_lookup_service())
+// (g_resolver_lookup_service()).
 //
 // Address and Service provide wrappers around #GResolver functionality that
 // also implement Connectable, making it easy to connect to a remote
@@ -17550,7 +17547,7 @@ type Socket interface {
 	// Note that even for socket options that are a single byte in size, @value
 	// is still a pointer to a #gint variable, not a #guchar;
 	// g_socket_get_option() will handle the conversion internally.
-	Option(level int, optname int) (int, bool)
+	Option(level int, optname int) (value int, ok bool)
 	// Protocol: gets the socket protocol id the socket was created with. In
 	// case the protocol is unknown, -1 is returned.
 	Protocol() SocketProtocol
@@ -17653,14 +17650,14 @@ type Socket interface {
 	// is available, wait for the G_IO_IN condition.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	Receive(cancellable Cancellable) ([]uint8, uint, int)
+	Receive(cancellable Cancellable) (buffer []uint8, size uint, gssize int)
 	// ReceiveFrom: receive data (up to @size bytes) from a socket.
 	//
 	// If @address is non-nil then @address will be set equal to the source
 	// address of the received packet. @address is owned by the caller.
 	//
 	// See g_socket_receive() for additional information.
-	ReceiveFrom(cancellable Cancellable) (SocketAddress, []uint8, uint, int)
+	ReceiveFrom(cancellable Cancellable) (address SocketAddress, buffer []uint8, size uint, gssize int)
 	// ReceiveMessage: receive data from a socket. For receiving multiple
 	// messages, see g_socket_receive_messages(); for easier use, see
 	// g_socket_receive() and g_socket_receive_from().
@@ -17717,7 +17714,7 @@ type Socket interface {
 	// is available, wait for the G_IO_IN condition.
 	//
 	// On error -1 is returned and @error is set accordingly.
-	ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (SocketAddress, []*SocketControlMessage, int, int)
+	ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (address SocketAddress, messages []*SocketControlMessage, numMessages int, gssize int)
 	// ReceiveMessages: receive multiple data messages from @socket in one go.
 	// This is the most complicated and fully-featured version of this call. For
 	// easier use, see g_socket_receive(), g_socket_receive_from(), and
@@ -17771,7 +17768,7 @@ type Socket interface {
 	// ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
 	// except that the choice of blocking or non-blocking behavior is determined
 	// by the @blocking argument rather than by @socket's properties.
-	ReceiveWithBlocking(blocking bool, cancellable Cancellable) ([]uint8, uint, int)
+	ReceiveWithBlocking(blocking bool, cancellable Cancellable) (buffer []uint8, size uint, gssize int)
 	// Send: tries to send @size bytes from @buffer on the socket. This is
 	// mainly used by connection-oriented sockets; it is identical to
 	// g_socket_send_to() with @address set to nil.
@@ -17832,7 +17829,7 @@ type Socket interface {
 	// accordingly, or if the socket is currently not writable
 	// G_POLLABLE_RETURN_WOULD_BLOCK is returned. @bytes_written will contain 0
 	// in both cases.
-	SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (uint, PollableReturn)
+	SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
 	// SendMessages: send multiple data messages from @socket in one go. This is
 	// the most complicated and fully-featured version of this call. For easier
 	// use, see g_socket_send(), g_socket_send_to(), and
@@ -18041,7 +18038,7 @@ func (s socket) MulticastLoopback() bool
 
 func (s socket) MulticastTtl() uint
 
-func (s socket) Option(level int, optname int) (int, bool)
+func (s socket) Option(level int, optname int) (value int, ok bool)
 
 func (s socket) Protocol() SocketProtocol
 
@@ -18067,21 +18064,21 @@ func (s socket) LeaveMulticastGroupSsm(group InetAddress, sourceSpecific InetAdd
 
 func (s socket) Listen() bool
 
-func (s socket) Receive(cancellable Cancellable) ([]uint8, uint, int)
+func (s socket) Receive(cancellable Cancellable) (buffer []uint8, size uint, gssize int)
 
-func (s socket) ReceiveFrom(cancellable Cancellable) (SocketAddress, []uint8, uint, int)
+func (s socket) ReceiveFrom(cancellable Cancellable) (address SocketAddress, buffer []uint8, size uint, gssize int)
 
-func (s socket) ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (SocketAddress, []*SocketControlMessage, int, int)
+func (s socket) ReceiveMessage(vectors []InputVector, flags int, cancellable Cancellable) (address SocketAddress, messages []*SocketControlMessage, numMessages int, gssize int)
 
 func (s socket) ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) int
 
-func (s socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable) ([]uint8, uint, int)
+func (s socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable) (buffer []uint8, size uint, gssize int)
 
 func (s socket) Send(buffer []uint8, cancellable Cancellable) int
 
 func (s socket) SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) int
 
-func (s socket) SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (uint, PollableReturn)
+func (s socket) SendMessageWithTimeout(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, timeoutUs int64, cancellable Cancellable) (bytesWritten uint, pollableReturn PollableReturn)
 
 func (s socket) SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) int
 
@@ -18715,7 +18712,7 @@ type SocketListener interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Accept(cancellable Cancellable) (gextras.Objector, SocketConnection)
+	Accept(cancellable Cancellable) (sourceObject gextras.Objector, socketConnection SocketConnection)
 	// AcceptAsync: this is the asynchronous version of
 	// g_socket_listener_accept().
 	//
@@ -18725,7 +18722,7 @@ type SocketListener interface {
 	AcceptAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// AcceptFinish: finishes an async accept operation. See
 	// g_socket_listener_accept_async()
-	AcceptFinish(result AsyncResult) (gextras.Objector, SocketConnection)
+	AcceptFinish(result AsyncResult) (sourceObject gextras.Objector, socketConnection SocketConnection)
 	// AcceptSocket: blocks waiting for a client to connect to any of the
 	// sockets added to the listener. Returns the #GSocket that was accepted.
 	//
@@ -18739,7 +18736,7 @@ type SocketListener interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	AcceptSocket(cancellable Cancellable) (gextras.Objector, Socket)
+	AcceptSocket(cancellable Cancellable) (sourceObject gextras.Objector, socket Socket)
 	// AcceptSocketAsync: this is the asynchronous version of
 	// g_socket_listener_accept_socket().
 	//
@@ -18749,7 +18746,7 @@ type SocketListener interface {
 	AcceptSocketAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// AcceptSocketFinish: finishes an async accept operation. See
 	// g_socket_listener_accept_socket_async()
-	AcceptSocketFinish(result AsyncResult) (gextras.Objector, Socket)
+	AcceptSocketFinish(result AsyncResult) (sourceObject gextras.Objector, socket Socket)
 	// AddAddress: creates a socket of type @type and protocol @protocol, binds
 	// it to @address and adds it to the set of sockets we're accepting sockets
 	// from.
@@ -18772,7 +18769,7 @@ type SocketListener interface {
 	// Call g_socket_listener_close() to stop listening on @address; this will
 	// not be done automatically when you drop your final reference to
 	// @listener, as references may be held internally.
-	AddAddress(address SocketAddress, _type SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (SocketAddress, bool)
+	AddAddress(address SocketAddress, _type SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (effectiveAddress SocketAddress, ok bool)
 	// AddAnyInetPort: listens for TCP connections on any available port number
 	// for both IPv6 and IPv4 (if each is available).
 	//
@@ -18838,19 +18835,19 @@ func marshalSocketListener(p uintptr) (interface{}, error) {
 
 func NewSocketListener() SocketListener
 
-func (s socketListener) Accept(cancellable Cancellable) (gextras.Objector, SocketConnection)
+func (s socketListener) Accept(cancellable Cancellable) (sourceObject gextras.Objector, socketConnection SocketConnection)
 
 func (s socketListener) AcceptAsync(cancellable Cancellable, callback AsyncReadyCallback)
 
-func (s socketListener) AcceptFinish(result AsyncResult) (gextras.Objector, SocketConnection)
+func (s socketListener) AcceptFinish(result AsyncResult) (sourceObject gextras.Objector, socketConnection SocketConnection)
 
-func (s socketListener) AcceptSocket(cancellable Cancellable) (gextras.Objector, Socket)
+func (s socketListener) AcceptSocket(cancellable Cancellable) (sourceObject gextras.Objector, socket Socket)
 
 func (s socketListener) AcceptSocketAsync(cancellable Cancellable, callback AsyncReadyCallback)
 
-func (s socketListener) AcceptSocketFinish(result AsyncResult) (gextras.Objector, Socket)
+func (s socketListener) AcceptSocketFinish(result AsyncResult) (sourceObject gextras.Objector, socket Socket)
 
-func (s socketListener) AddAddress(address SocketAddress, _type SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (SocketAddress, bool)
+func (s socketListener) AddAddress(address SocketAddress, _type SocketType, protocol SocketProtocol, sourceObject gextras.Objector) (effectiveAddress SocketAddress, ok bool)
 
 func (s socketListener) AddAnyInetPort(sourceObject gextras.Objector) uint16
 
@@ -18938,7 +18935,7 @@ func (s socketService) Start()
 
 func (s socketService) Stop()
 
-// #GSubprocess allows the creation of and interaction with child processes
+// Subprocess allows the creation of and interaction with child processes.
 //
 // Processes can be communicated with using standard GIO-style APIs (ie: Stream,
 // Stream). There are GIO-style APIs to wait for process termination (ie:
@@ -19029,27 +19026,27 @@ type Subprocess interface {
 	// operation was cancelled. You should especially not attempt to interact
 	// with the pipes while the operation is in progress (either from another
 	// thread or if using the asynchronous version).
-	Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (*glib.Bytes, *glib.Bytes, bool)
+	Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
 	// CommunicateAsync: asynchronous version of g_subprocess_communicate().
 	// Complete invocation with g_subprocess_communicate_finish().
 	CommunicateAsync(stdinBuf *glib.Bytes, cancellable Cancellable, callback AsyncReadyCallback)
 	// CommunicateFinish: complete an invocation of
 	// g_subprocess_communicate_async().
-	CommunicateFinish(result AsyncResult) (*glib.Bytes, *glib.Bytes, bool)
+	CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
 	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
 	// output of the process as UTF-8, and returns it as a regular NUL
 	// terminated string.
 	//
 	// On error, @stdout_buf and @stderr_buf will be set to undefined values and
 	// should not be used.
-	CommunicateUTF8(stdinBuf string, cancellable Cancellable) (string, string, bool)
+	CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, ok bool)
 	// CommunicateUTF8Async: asynchronous version of
 	// g_subprocess_communicate_utf8(). Complete invocation with
 	// g_subprocess_communicate_utf8_finish().
 	CommunicateUTF8Async(stdinBuf string, cancellable Cancellable, callback AsyncReadyCallback)
 	// CommunicateUTF8Finish: complete an invocation of
 	// g_subprocess_communicate_utf8_async().
-	CommunicateUTF8Finish(result AsyncResult) (string, string, bool)
+	CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, ok bool)
 	// ForceExit: use an operating-system specific method to attempt an
 	// immediate, forceful termination of the process. There is no mechanism to
 	// determine whether or not the request itself was successful; however, you
@@ -19183,17 +19180,17 @@ func marshalSubprocess(p uintptr) (interface{}, error) {
 
 func NewSubprocess(argv []string, flags SubprocessFlags) Subprocess
 
-func (s subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (*glib.Bytes, *glib.Bytes, bool)
+func (s subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
 
 func (s subprocess) CommunicateAsync(stdinBuf *glib.Bytes, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (s subprocess) CommunicateFinish(result AsyncResult) (*glib.Bytes, *glib.Bytes, bool)
+func (s subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf *glib.Bytes, stderrBuf *glib.Bytes, ok bool)
 
-func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (string, string, bool)
+func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, ok bool)
 
 func (s subprocess) CommunicateUTF8Async(stdinBuf string, cancellable Cancellable, callback AsyncReadyCallback)
 
-func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (string, string, bool)
+func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, ok bool)
 
 func (s subprocess) ForceExit()
 
@@ -19967,7 +19964,7 @@ type Task interface {
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateValue() (externglib.Value, bool)
+	PropagateValue() (value externglib.Value, ok bool)
 	// ReturnBoolean: sets @task's result to @result and completes the task (see
 	// g_task_return_pointer() for more discussion of exactly what this means).
 	ReturnBoolean(result bool)
@@ -20161,7 +20158,7 @@ func (t task) PropagateInt() int
 
 func (t task) PropagatePointer() interface{}
 
-func (t task) PropagateValue() (externglib.Value, bool)
+func (t task) PropagateValue() (value externglib.Value, ok bool)
 
 func (t task) ReturnBoolean(result bool)
 
@@ -20558,7 +20555,7 @@ type TlsConnection interface {
 	// be available though. That could happen if TLS connection does not support
 	// @type or the binding data is not available yet due to additional
 	// negotiation or input required.
-	ChannelBindingData(_type TlsChannelBindingType) ([]uint8, bool)
+	ChannelBindingData(_type TlsChannelBindingType) (data []uint8, ok bool)
 	// Database: gets the certificate database that @conn uses to verify peer
 	// certificates. See g_tls_connection_set_database().
 	Database() TlsDatabase
@@ -20731,7 +20728,7 @@ func (t tlsConnection) EmitAcceptCertificate(peerCert TlsCertificate, errors Tls
 
 func (t tlsConnection) Certificate() TlsCertificate
 
-func (t tlsConnection) ChannelBindingData(_type TlsChannelBindingType) ([]uint8, bool)
+func (t tlsConnection) ChannelBindingData(_type TlsChannelBindingType) (data []uint8, ok bool)
 
 func (t tlsConnection) Database() TlsDatabase
 
@@ -20946,9 +20943,8 @@ func (t tlsDatabase) VerifyChainAsync(chain TlsCertificate, purpose string, iden
 
 func (t tlsDatabase) VerifyChainFinish(result AsyncResult) TlsCertificateFlags
 
-// TlsInteraction: interaction provides a mechanism for the TLS connection and
-// database code to interact with the user. It can be used to ask the user for
-// passwords.
+// TlsInteraction provides a mechanism for the TLS connection and database code
+// to interact with the user. It can be used to ask the user for passwords.
 //
 // To use a Interaction with a TLS connection use
 // g_tls_connection_set_interaction().
@@ -21415,7 +21411,7 @@ type UnixFDList interface {
 	//
 	// This function never returns nil. In case there are no file descriptors
 	// contained in @list, an empty array is returned.
-	PeekFds() (int, []int)
+	PeekFds() (length int, gints []int)
 	// StealFds: returns the array of file descriptors that is contained in this
 	// object.
 	//
@@ -21432,7 +21428,7 @@ type UnixFDList interface {
 	//
 	// This function never returns nil. In case there are no file descriptors
 	// contained in @list, an empty array is returned.
-	StealFds() (int, []int)
+	StealFds() (length int, gints []int)
 }
 
 type unixFDList struct {
@@ -21459,9 +21455,9 @@ func (u unixFDList) Get(index_ int) int
 
 func (u unixFDList) Length() int
 
-func (u unixFDList) PeekFds() (int, []int)
+func (u unixFDList) PeekFds() (length int, gints []int)
 
-func (u unixFDList) StealFds() (int, []int)
+func (u unixFDList) StealFds() (length int, gints []int)
 
 // UnixFDMessage: this ControlMessage contains a FDList. It may be sent using
 // g_socket_send_message() and received using g_socket_receive_message() over
@@ -21506,7 +21502,7 @@ type UnixFDMessage interface {
 	//
 	// This function never returns nil. In case there are no file descriptors
 	// contained in @message, an empty array is returned.
-	StealFds() (int, []int)
+	StealFds() (length int, gints []int)
 }
 
 type unixFDMessage struct {
@@ -21531,13 +21527,12 @@ func (u unixFDMessage) AppendFd(fd int) bool
 
 func (u unixFDMessage) FdList() UnixFDList
 
-func (u unixFDMessage) StealFds() (int, []int)
+func (u unixFDMessage) StealFds() (length int, gints []int)
 
-// UnixInputStream: inputStream implements Stream for reading from a UNIX file
-// descriptor, including asynchronous operations. (If the file descriptor refers
-// to a socket or pipe, this will use poll() to do asynchronous I/O. If it
-// refers to a regular file, it will fall back to doing asynchronous I/O in
-// another thread.)
+// UnixInputStream implements Stream for reading from a UNIX file descriptor,
+// including asynchronous operations. (If the file descriptor refers to a socket
+// or pipe, this will use poll() to do asynchronous I/O. If it refers to a
+// regular file, it will fall back to doing asynchronous I/O in another thread.)
 //
 // Note that `<gio/gunixinputstream.h>` belongs to the UNIX-specific GIO
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when
@@ -21608,11 +21603,10 @@ func NewUnixMountMonitor() UnixMountMonitor
 
 func (u unixMountMonitor) SetRateLimit(limitMsec int)
 
-// UnixOutputStream: outputStream implements Stream for writing to a UNIX file
-// descriptor, including asynchronous operations. (If the file descriptor refers
-// to a socket or pipe, this will use poll() to do asynchronous I/O. If it
-// refers to a regular file, it will fall back to doing asynchronous I/O in
-// another thread.)
+// UnixOutputStream implements Stream for writing to a UNIX file descriptor,
+// including asynchronous operations. (If the file descriptor refers to a socket
+// or pipe, this will use poll() to do asynchronous I/O. If it refers to a
+// regular file, it will fall back to doing asynchronous I/O in another thread.)
 //
 // Note that `<gio/gunixoutputstream.h>` belongs to the UNIX-specific GIO
 // interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file when

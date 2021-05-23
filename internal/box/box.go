@@ -33,8 +33,8 @@ func Assign(ctx Context, v interface{}) uintptr {
 // Get gets the value from the given fake pointer. The context must match the
 // given value in Assign.
 func Get(ctx Context, ptr uintptr) interface{} {
-	registries[ctx].Lock()
-	defer registries[ctx].Unlock()
+	registries[ctx].RLock()
+	defer registries[ctx].RUnlock()
 
 	return registries[ctx].slab.Get(ptr)
 }

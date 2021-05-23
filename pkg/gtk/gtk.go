@@ -3513,7 +3513,7 @@ type CustomFilterFunc func(item interface{}) bool
 //export cCustomFilterFunc
 func cCustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean
 
-type CustomMeasureFunc func(widget Widget, orientation Orientation, forSize int) (int, int, int, int)
+type CustomMeasureFunc func(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 
 //export cCustomMeasureFunc
 func cCustomMeasureFunc(arg0 *C.GtkWidget, arg1 C.GtkOrientation, arg2 C.int, arg3 *C.int, arg4 *C.int, arg5 *C.int, arg6 *C.int)
@@ -3822,7 +3822,7 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 //
 // If the parse fails, @accelerator_key and @accelerator_mods will be set to 0
 // (zero).
-func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
+func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods gdk.ModifierType, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(accelerator)
 	defer C.free(unsafe.Pointer(accelerator))
@@ -3858,7 +3858,7 @@ func AcceleratorParse(accelerator string) (uint, gdk.ModifierType, bool) {
 //
 // If the parse fails, @accelerator_key, @accelerator_mods and
 // @accelerator_codes will be set to 0 (zero).
-func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (uint, []uint, gdk.ModifierType, bool) {
+func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (acceleratorKey uint, acceleratorCodes []uint, acceleratorMods gdk.ModifierType, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(accelerator)
 	defer C.free(unsafe.Pointer(accelerator))
@@ -3932,7 +3932,7 @@ func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
 // BitsetIterInitAt: initializes @iter to point to @target. If @target is not
 // found, finds the next value after it. If no value >= @target exists in @set,
 // this function returns false.
-func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
+func BitsetIterInitAt(set *Bitset, target uint) (iter BitsetIter, value uint, ok bool) {
 	var arg0 *C.GtkBitsetIter // out
 
 	var arg1 *Bitset
@@ -3960,7 +3960,7 @@ func BitsetIterInitAt(set *Bitset, target uint) (BitsetIter, uint, bool) {
 // BitsetIterInitFirst: initializes an iterator for @set and points it to the
 // first value in @set. If @set is empty, false is returned and @value is set to
 // G_MAXUINT.
-func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
+func BitsetIterInitFirst(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 	var arg0 *C.GtkBitsetIter // out
 
 	var arg1 *Bitset
@@ -3984,7 +3984,7 @@ func BitsetIterInitFirst(set *Bitset) (BitsetIter, uint, bool) {
 
 // BitsetIterInitLast: initializes an iterator for @set and points it to the
 // last value in @set. If @set is empty, false is returned.
-func BitsetIterInitLast(set *Bitset) (BitsetIter, uint, bool) {
+func BitsetIterInitLast(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 	var arg0 *C.GtkBitsetIter // out
 
 	var arg1 *Bitset
@@ -4271,7 +4271,7 @@ func GetMinorVersion() uint {
 //
 // Input values must be in the [0.0, 1.0] range; output values will be in the
 // same range.
-func HSVToRGB(h float32, s float32, v float32) (float32, float32, float32) {
+func HSVToRGB(h float32, s float32, v float32) (r float32, g float32, b float32) {
 	var arg0 float32
 	arg0 = float32(h)
 
@@ -4798,7 +4798,7 @@ func RenderOption(context StyleContext, cr *cairo.Context, x float64, y float64,
 //
 // Input values must be in the [0.0, 1.0] range; output values will be in the
 // same range.
-func RGBToHSV(r float32, g float32, b float32) (float32, float32, float32) {
+func RGBToHSV(r float32, g float32, b float32) (h float32, s float32, v float32) {
 	var arg0 float32
 	arg0 = float32(r)
 
@@ -4996,7 +4996,7 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 
 // TestListAllTypes: return the type ids that have been registered after calling
 // gtk_test_register_all_types().
-func TestListAllTypes() (uint, []externglib.Type) {
+func TestListAllTypes() (nTypes uint, gTypes []externglib.Type) {
 	var arg0 *C.guint // out
 
 	ret := C.gtk_test_list_all_types(&arg0)
@@ -5051,7 +5051,7 @@ func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentPr
 // GTK_TYPE_TREE_ROW_DATA.
 //
 // The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(value *externglib.Value) (TreeModel, *TreePath, bool) {
+func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path *TreePath, ok bool) {
 	var arg1 **C.GtkTreeModel // out
 
 	var arg2 **C.GtkTreePath // out
@@ -5503,7 +5503,7 @@ type Editable interface {
 	GetEnableUndo() bool
 	GetMaxWidthChars() int
 	GetPosition() int
-	GetSelectionBounds() (int, int, bool)
+	GetSelectionBounds() (startPos int, endPos int, ok bool)
 	GetText() string
 	GetWidthChars() int
 	InitDelegate()
@@ -5615,7 +5615,7 @@ type FontChooser interface {
 type Native interface {
 	GetRenderer() gsk.Renderer
 	GetSurface() gdk.Surface
-	GetSurfaceTransform() (float64, float64)
+	GetSurfaceTransform() (x float64, y float64)
 	Realize()
 	Unrealize()
 }
@@ -5673,7 +5673,7 @@ type Root interface {
 // - When any of the adjustments emits the Adjustment::value-changed signal, the
 // scrollable widget should scroll its contents.
 type Scrollable interface {
-	GetBorder() (Border, bool)
+	GetBorder() (border Border, ok bool)
 	GetHadjustment() Adjustment
 	GetHscrollPolicy() ScrollablePolicy
 	GetVadjustment() Adjustment
@@ -5930,19 +5930,19 @@ type TreeModel interface {
 	Foreach(_func TreeModelForeachFunc)
 	GetColumnType(index_ int) externglib.Type
 	GetFlags() TreeModelFlags
-	GetIter(path *TreePath) (TreeIter, bool)
-	GetIterFirst() (TreeIter, bool)
-	GetIterFromString(pathString string) (TreeIter, bool)
+	GetIter(path *TreePath) (iter TreeIter, ok bool)
+	GetIterFirst() (iter TreeIter, ok bool)
+	GetIterFromString(pathString string) (iter TreeIter, ok bool)
 	GetNColumns() int
 	GetPath(iter *TreeIter) *TreePath
 	GetStringFromIter(iter *TreeIter) string
 	GetValue(iter *TreeIter, column int) externglib.Value
-	IterChildren(parent *TreeIter) (TreeIter, bool)
+	IterChildren(parent *TreeIter) (iter TreeIter, ok bool)
 	IterHasChild(iter *TreeIter) bool
 	IterNChildren(iter *TreeIter) int
 	IterNext(iter *TreeIter) bool
-	IterNthChild(parent *TreeIter, n int) (TreeIter, bool)
-	IterParent(child *TreeIter) (TreeIter, bool)
+	IterNthChild(parent *TreeIter, n int) (iter TreeIter, ok bool)
+	IterParent(child *TreeIter) (iter TreeIter, ok bool)
 	IterPrevious(iter *TreeIter) bool
 	RefNode(iter *TreeIter)
 	RowChanged(path *TreePath, iter *TreeIter)
@@ -5958,7 +5958,7 @@ type TreeModel interface {
 // sorting. The TreeView uses the methods provided by this interface to sort the
 // model.
 type TreeSortable interface {
-	GetSortColumnID() (int, SortType, bool)
+	GetSortColumnID() (sortColumnID int, order SortType, ok bool)
 	HasDefaultSortFunc() bool
 	SetDefaultSortFunc(sortFunc TreeIterCompareFunc)
 	SetSortColumnID(sortColumnID int, order SortType)
@@ -6386,8 +6386,8 @@ func (r *RecentData) Native() unsafe.Pointer {
 	return unsafe.Pointer(r.native)
 }
 
-// RecentInfo: recentInfo contains private data only, and should be accessed
-// using the provided API.
+// RecentInfo contains private data only, and should be accessed using the
+// provided API.
 //
 // RecentInfo contains all the meta-data associated with an entry in the
 // recently used files list.
@@ -7315,7 +7315,7 @@ func (a appChooserButton) SetShowDefaultItem(setting bool)
 
 func (a appChooserButton) SetShowDialogItem(setting bool)
 
-// AppChooserDialog: appChooserDialog shows a AppChooserWidget inside a Dialog.
+// AppChooserDialog shows a AppChooserWidget inside a Dialog.
 //
 // Note that AppChooserDialog does not have any interesting methods of its own.
 // Instead, you should get the embedded AppChooserWidget using
@@ -8720,7 +8720,7 @@ type Builder interface {
 	//
 	// Upon errors false will be returned and @error will be assigned a #GError
 	// from the K_BUILDER_ERROR domain.
-	ValueFromStringType(_type externglib.Type, string string) (externglib.Value, bool)
+	ValueFromStringType(_type externglib.Type, string string) (value externglib.Value, ok bool)
 }
 
 type builder struct {
@@ -8781,7 +8781,7 @@ func (b builder) SetScope(scope BuilderScope)
 
 func (b builder) SetTranslationDomain(domain string)
 
-func (b builder) ValueFromStringType(_type externglib.Type, string string) (externglib.Value, bool)
+func (b builder) ValueFromStringType(_type externglib.Type, string string) (value externglib.Value, ok bool)
 
 type BuilderCScope interface {
 	gextras.Objector
@@ -9503,7 +9503,7 @@ type CellArea interface {
 	// CellAtPosition: gets the CellRenderer at @x and @y coordinates inside
 	// @area and optionally returns the full cell allocation for it inside
 	// @cell_area.
-	CellAtPosition(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, CellRenderer)
+	CellAtPosition(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, x int, y int) (allocArea gdk.Rectangle, cellRenderer CellRenderer)
 	// CurrentPathString: gets the current TreePath string for the currently
 	// applied TreeIter, this is implicitly updated when
 	// gtk_cell_area_apply_attributes() is called and can be used to interact
@@ -9534,7 +9534,7 @@ type CellArea interface {
 	// important to check the @minimum_height and @natural_height of this call
 	// but rather to consult gtk_cell_area_context_get_preferred_height() after
 	// a series of requests.
-	PreferredHeight(context CellAreaContext, widget Widget) (int, int)
+	PreferredHeight(context CellAreaContext, widget Widget) (minimumHeight int, naturalHeight int)
 	// PreferredHeightForWidth: retrieves a cell area’s minimum and natural
 	// height if it would be given the specified @width.
 	//
@@ -9549,7 +9549,7 @@ type CellArea interface {
 	// requested with gtk_cell_area_get_preferred_width() again and then the
 	// full width of the requested rows checked again with
 	// gtk_cell_area_context_get_preferred_width().
-	PreferredHeightForWidth(context CellAreaContext, widget Widget, width int) (int, int)
+	PreferredHeightForWidth(context CellAreaContext, widget Widget, width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth: retrieves a cell area’s initial minimum and natural
 	// width.
 	//
@@ -9558,7 +9558,7 @@ type CellArea interface {
 	// important to check the @minimum_width and @natural_width of this call but
 	// rather to consult gtk_cell_area_context_get_preferred_width() after a
 	// series of requests.
-	PreferredWidth(context CellAreaContext, widget Widget) (int, int)
+	PreferredWidth(context CellAreaContext, widget Widget) (minimumWidth int, naturalWidth int)
 	// PreferredWidthForHeight: retrieves a cell area’s minimum and natural
 	// width if it would be given the specified @height.
 	//
@@ -9573,7 +9573,7 @@ type CellArea interface {
 	// requested with gtk_cell_area_get_preferred_height() again and then the
 	// full height of the requested rows checked again with
 	// gtk_cell_area_context_get_preferred_height().
-	PreferredWidthForHeight(context CellAreaContext, widget Widget, height int) (int, int)
+	PreferredWidthForHeight(context CellAreaContext, widget Widget, height int) (minimumWidth int, naturalWidth int)
 	// RequestMode: gets whether the area prefers a height-for-width layout or a
 	// width-for-height layout.
 	RequestMode() SizeRequestMode
@@ -9600,7 +9600,7 @@ type CellArea interface {
 	// this function to request size and then use
 	// gtk_cell_area_inner_cell_area() at render and event time since this
 	// function will add padding around the cell for focus painting.
-	RequestRenderer(renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (int, int)
+	RequestRenderer(renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (minimumSize int, naturalSize int)
 	// SetFocusCell: explicitly sets the currently focused cell to @renderer.
 	//
 	// This is generally called by implementations of CellAreaClass.focus() or
@@ -9668,7 +9668,7 @@ func (c cellArea) ForeachAlloc(context CellAreaContext, widget Widget, cellArea 
 
 func (c cellArea) CellAllocation(context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) gdk.Rectangle
 
-func (c cellArea) CellAtPosition(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, x int, y int) (gdk.Rectangle, CellRenderer)
+func (c cellArea) CellAtPosition(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, x int, y int) (allocArea gdk.Rectangle, cellRenderer CellRenderer)
 
 func (c cellArea) CurrentPathString() string
 
@@ -9682,13 +9682,13 @@ func (c cellArea) FocusFromSibling(renderer CellRenderer) CellRenderer
 
 func (c cellArea) FocusSiblings(renderer CellRenderer) *glib.List
 
-func (c cellArea) PreferredHeight(context CellAreaContext, widget Widget) (int, int)
+func (c cellArea) PreferredHeight(context CellAreaContext, widget Widget) (minimumHeight int, naturalHeight int)
 
-func (c cellArea) PreferredHeightForWidth(context CellAreaContext, widget Widget, width int) (int, int)
+func (c cellArea) PreferredHeightForWidth(context CellAreaContext, widget Widget, width int) (minimumHeight int, naturalHeight int)
 
-func (c cellArea) PreferredWidth(context CellAreaContext, widget Widget) (int, int)
+func (c cellArea) PreferredWidth(context CellAreaContext, widget Widget) (minimumWidth int, naturalWidth int)
 
-func (c cellArea) PreferredWidthForHeight(context CellAreaContext, widget Widget, height int) (int, int)
+func (c cellArea) PreferredWidthForHeight(context CellAreaContext, widget Widget, height int) (minimumWidth int, naturalWidth int)
 
 func (c cellArea) RequestMode() SizeRequestMode
 
@@ -9704,7 +9704,7 @@ func (c cellArea) Remove(renderer CellRenderer)
 
 func (c cellArea) RemoveFocusSibling(renderer CellRenderer, sibling CellRenderer)
 
-func (c cellArea) RequestRenderer(renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (int, int)
+func (c cellArea) RequestRenderer(renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (minimumSize int, naturalSize int)
 
 func (c cellArea) SetFocusCell(renderer CellRenderer)
 
@@ -9800,7 +9800,7 @@ type CellAreaContext interface {
 	// If the context was not allocated in width or height, or if the context
 	// was recently reset with gtk_cell_area_context_reset(), the returned value
 	// will be -1.
-	Allocation() (int, int)
+	Allocation() (width int, height int)
 	// Area: fetches the CellArea this @context was created by.
 	//
 	// This is generally unneeded by layouting widgets; however, it is important
@@ -9816,27 +9816,27 @@ type CellAreaContext interface {
 	//
 	// After gtk_cell_area_context_reset() is called and/or before ever
 	// requesting the size of a CellArea, the returned values are 0.
-	PreferredHeight() (int, int)
+	PreferredHeight() (minimumHeight int, naturalHeight int)
 	// PreferredHeightForWidth: gets the accumulative preferred height for
 	// @width for all rows which have been requested for the same said @width
 	// with this context.
 	//
 	// After gtk_cell_area_context_reset() is called and/or before ever
 	// requesting the size of a CellArea, the returned values are -1.
-	PreferredHeightForWidth(width int) (int, int)
+	PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth: gets the accumulative preferred width for all rows which
 	// have been requested with this context.
 	//
 	// After gtk_cell_area_context_reset() is called and/or before ever
 	// requesting the size of a CellArea, the returned values are 0.
-	PreferredWidth() (int, int)
+	PreferredWidth() (minimumWidth int, naturalWidth int)
 	// PreferredWidthForHeight: gets the accumulative preferred width for
 	// @height for all rows which have been requested for the same said @height
 	// with this context.
 	//
 	// After gtk_cell_area_context_reset() is called and/or before ever
 	// requesting the size of a CellArea, the returned values are -1.
-	PreferredWidthForHeight(height int) (int, int)
+	PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
 	// PushPreferredHeight: causes the minimum and/or natural height to grow if
 	// the new proposed sizes exceed the current minimum and natural height.
 	//
@@ -9889,17 +9889,17 @@ func marshalCellAreaContext(p uintptr) (interface{}, error) {
 
 func (c cellAreaContext) Allocate(width int, height int)
 
-func (c cellAreaContext) Allocation() (int, int)
+func (c cellAreaContext) Allocation() (width int, height int)
 
 func (c cellAreaContext) Area() CellArea
 
-func (c cellAreaContext) PreferredHeight() (int, int)
+func (c cellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int)
 
-func (c cellAreaContext) PreferredHeightForWidth(width int) (int, int)
+func (c cellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, naturalHeight int)
 
-func (c cellAreaContext) PreferredWidth() (int, int)
+func (c cellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int)
 
-func (c cellAreaContext) PreferredWidthForHeight(height int) (int, int)
+func (c cellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, naturalWidth int)
 
 func (c cellAreaContext) PushPreferredHeight(minimumHeight int, naturalHeight int)
 
@@ -9951,31 +9951,31 @@ type CellRenderer interface {
 	AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
 	// Alignment: fills in @xalign and @yalign with the appropriate values of
 	// @cell.
-	Alignment() (float32, float32)
+	Alignment() (xalign float32, yalign float32)
 	// FixedSize: fills in @width and @height with the appropriate size of
 	// @cell.
-	FixedSize() (int, int)
+	FixedSize() (width int, height int)
 	// IsExpanded: checks whether the given CellRenderer is expanded.
 	IsExpanded() bool
 	// IsExpander: checks whether the given CellRenderer is an expander.
 	IsExpander() bool
 	// Padding: fills in @xpad and @ypad with the appropriate values of @cell.
-	Padding() (int, int)
+	Padding() (xpad int, ypad int)
 	// PreferredHeight: retrieves a renderer’s natural size when rendered to
 	// @widget.
-	PreferredHeight(widget Widget) (int, int)
+	PreferredHeight(widget Widget) (minimumSize int, naturalSize int)
 	// PreferredHeightForWidth: retrieves a cell renderers’s minimum and natural
 	// height if it were rendered to @widget with the specified @width.
-	PreferredHeightForWidth(widget Widget, width int) (int, int)
+	PreferredHeightForWidth(widget Widget, width int) (minimumHeight int, naturalHeight int)
 	// PreferredSize: retrieves the minimum and natural size of a cell taking
 	// into account the widget’s preference for height-for-width management.
-	PreferredSize(widget Widget) (Requisition, Requisition)
+	PreferredSize(widget Widget) (minimumSize Requisition, naturalSize Requisition)
 	// PreferredWidth: retrieves a renderer’s natural size when rendered to
 	// @widget.
-	PreferredWidth(widget Widget) (int, int)
+	PreferredWidth(widget Widget) (minimumSize int, naturalSize int)
 	// PreferredWidthForHeight: retrieves a cell renderers’s minimum and natural
 	// width if it were rendered to @widget with the specified @height.
-	PreferredWidthForHeight(widget Widget, height int) (int, int)
+	PreferredWidthForHeight(widget Widget, height int) (minimumWidth int, naturalWidth int)
 	// RequestMode: gets whether the cell renderer prefers a height-for-width
 	// layout or a width-for-height layout.
 	RequestMode() SizeRequestMode
@@ -10043,25 +10043,25 @@ func (c cellRenderer) Activate(event gdk.Event, widget Widget, path string, back
 
 func (c cellRenderer) AlignedArea(widget Widget, flags CellRendererState, cellArea *gdk.Rectangle) gdk.Rectangle
 
-func (c cellRenderer) Alignment() (float32, float32)
+func (c cellRenderer) Alignment() (xalign float32, yalign float32)
 
-func (c cellRenderer) FixedSize() (int, int)
+func (c cellRenderer) FixedSize() (width int, height int)
 
 func (c cellRenderer) IsExpanded() bool
 
 func (c cellRenderer) IsExpander() bool
 
-func (c cellRenderer) Padding() (int, int)
+func (c cellRenderer) Padding() (xpad int, ypad int)
 
-func (c cellRenderer) PreferredHeight(widget Widget) (int, int)
+func (c cellRenderer) PreferredHeight(widget Widget) (minimumSize int, naturalSize int)
 
-func (c cellRenderer) PreferredHeightForWidth(widget Widget, width int) (int, int)
+func (c cellRenderer) PreferredHeightForWidth(widget Widget, width int) (minimumHeight int, naturalHeight int)
 
-func (c cellRenderer) PreferredSize(widget Widget) (Requisition, Requisition)
+func (c cellRenderer) PreferredSize(widget Widget) (minimumSize Requisition, naturalSize Requisition)
 
-func (c cellRenderer) PreferredWidth(widget Widget) (int, int)
+func (c cellRenderer) PreferredWidth(widget Widget) (minimumSize int, naturalSize int)
 
-func (c cellRenderer) PreferredWidthForHeight(widget Widget, height int) (int, int)
+func (c cellRenderer) PreferredWidthForHeight(widget Widget, height int) (minimumWidth int, naturalWidth int)
 
 func (c cellRenderer) RequestMode() SizeRequestMode
 
@@ -10093,9 +10093,9 @@ func (c cellRenderer) StartEditing(event gdk.Event, widget Widget, path string, 
 
 func (c cellRenderer) StopEditing(canceled bool)
 
-// CellRendererAccel: cellRendererAccel displays a keyboard accelerator (i.e. a
-// key combination like `Control + a`). If the cell renderer is editable, the
-// accelerator can be changed by simply typing the new combination.
+// CellRendererAccel displays a keyboard accelerator (i.e. a key combination
+// like `Control + a`). If the cell renderer is editable, the accelerator can be
+// changed by simply typing the new combination.
 type CellRendererAccel interface {
 	CellRendererText
 }
@@ -10116,11 +10116,11 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 
 func NewCellRendererAccel() CellRendererAccel
 
-// CellRendererCombo: cellRendererCombo renders text in a cell like
-// CellRendererText from which it is derived. But while CellRendererText offers
-// a simple entry to edit the text, CellRendererCombo offers a ComboBox widget
-// to edit the text. The values to display in the combo box are taken from the
-// tree model specified in the CellRendererCombo:model property.
+// CellRendererCombo renders text in a cell like CellRendererText from which it
+// is derived. But while CellRendererText offers a simple entry to edit the
+// text, CellRendererCombo offers a ComboBox widget to edit the text. The values
+// to display in the combo box are taken from the tree model specified in the
+// CellRendererCombo:model property.
 //
 // The combo cell renderer takes care of adding a text cell renderer to the
 // combo box and sets it to display the column specified by its
@@ -10178,9 +10178,8 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 
 func NewCellRendererPixbuf() CellRendererPixbuf
 
-// CellRendererProgress: cellRendererProgress renders a numeric value as a
-// progress par in a cell. Additionally, it can display a text on top of the
-// progress bar.
+// CellRendererProgress renders a numeric value as a progress par in a cell.
+// Additionally, it can display a text on top of the progress bar.
 type CellRendererProgress interface {
 	CellRenderer
 }
@@ -10201,11 +10200,10 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 
 func NewCellRendererProgress() CellRendererProgress
 
-// CellRendererSpin: cellRendererSpin renders text in a cell like
-// CellRendererText from which it is derived. But while CellRendererText offers
-// a simple entry to edit the text, CellRendererSpin offers a SpinButton widget.
-// Of course, that means that the text has to be parseable as a floating point
-// number.
+// CellRendererSpin renders text in a cell like CellRendererText from which it
+// is derived. But while CellRendererText offers a simple entry to edit the
+// text, CellRendererSpin offers a SpinButton widget. Of course, that means that
+// the text has to be parseable as a floating point number.
 //
 // The range of the spinbutton is taken from the adjustment property of the cell
 // renderer, which can be set explicitly or mapped to a column in the tree
@@ -10304,10 +10302,9 @@ func NewCellRendererText() CellRendererText
 
 func (c cellRendererText) SetFixedHeightFromFont(numberOfRows int)
 
-// CellRendererToggle: cellRendererToggle renders a toggle button in a cell. The
-// button is drawn as a radio or a checkbutton, depending on the
-// CellRendererToggle:radio property. When activated, it emits the
-// CellRendererToggle::toggled signal.
+// CellRendererToggle renders a toggle button in a cell. The button is drawn as
+// a radio or a checkbutton, depending on the CellRendererToggle:radio property.
+// When activated, it emits the CellRendererToggle::toggled signal.
 type CellRendererToggle interface {
 	CellRenderer
 
@@ -11258,7 +11255,7 @@ type ComboBox interface {
 	ActiveID() string
 	// ActiveIter: sets @iter to point to the currently active item, if any item
 	// is active. Otherwise, @iter is left unchanged.
-	ActiveIter() (TreeIter, bool)
+	ActiveIter() (iter TreeIter, ok bool)
 	// ButtonSensitivity: returns whether the combo box sets the dropdown button
 	// sensitive or not when there are no items in the model.
 	ButtonSensitivity() SensitivityType
@@ -11371,7 +11368,7 @@ func (c comboBox) Active() int
 
 func (c comboBox) ActiveID() string
 
-func (c comboBox) ActiveIter() (TreeIter, bool)
+func (c comboBox) ActiveIter() (iter TreeIter, ok bool)
 
 func (c comboBox) ButtonSensitivity() SensitivityType
 
@@ -11572,9 +11569,8 @@ func NewConstantExpression(value *externglib.Value) ConstantExpression
 
 func (c constantExpression) Value() *externglib.Value
 
-// Constraint: constraint describes a constraint between an attribute on a
-// widget and another attribute on another widget, expressed as a linear
-// equation like:
+// Constraint describes a constraint between an attribute on a widget and
+// another attribute on another widget, expressed as a linear equation like:
 //
 //
 //      target.attr1 = source.attr2 × multiplier + constant
@@ -13088,7 +13084,7 @@ type DropTarget interface {
 	Formats() *gdk.ContentFormats
 	// GTypes: gets the list of supported #GTypes for @self. If no type have
 	// been set, nil will be returned.
-	GTypes() (uint, []externglib.Type)
+	GTypes() (nTypes uint, gTypes []externglib.Type)
 	// Preload: gets the value of the GtkDropTarget:preload property.
 	Preload() bool
 	// Value: gets the value of the GtkDropTarget:value property.
@@ -13131,7 +13127,7 @@ func (d dropTarget) Drop() gdk.Drop
 
 func (d dropTarget) Formats() *gdk.ContentFormats
 
-func (d dropTarget) GTypes() (uint, []externglib.Type)
+func (d dropTarget) GTypes() (nTypes uint, gTypes []externglib.Type)
 
 func (d dropTarget) Preload() bool
 
@@ -15228,7 +15224,7 @@ type Fixed interface {
 	// child Widget in the given Fixed container.
 	//
 	// See also: gtk_fixed_get_child_transform().
-	ChildPosition(widget Widget) (float64, float64)
+	ChildPosition(widget Widget) (x float64, y float64)
 	// ChildTransform: retrieves the transformation for @widget set using
 	// gtk_fixed_set_child_transform().
 	ChildTransform(widget Widget) *gsk.Transform
@@ -15265,7 +15261,7 @@ func marshalFixed(p uintptr) (interface{}, error) {
 
 func NewFixed() Fixed
 
-func (f fixed) ChildPosition(widget Widget) (float64, float64)
+func (f fixed) ChildPosition(widget Widget) (x float64, y float64)
 
 func (f fixed) ChildTransform(widget Widget) *gsk.Transform
 
@@ -16067,7 +16063,7 @@ type GLArea interface {
 	HasStencilBuffer() bool
 	// RequiredVersion: retrieves the required version of OpenGL set using
 	// gtk_gl_area_set_required_version().
-	RequiredVersion() (int, int)
+	RequiredVersion() (major int, minor int)
 	// UseES: retrieves the value set by gtk_gl_area_set_use_es().
 	UseES() bool
 	// MakeCurrent: ensures that the GLContext used by @area is associated with
@@ -16147,7 +16143,7 @@ func (g glArea) HasDepthBuffer() bool
 
 func (g glArea) HasStencilBuffer() bool
 
-func (g glArea) RequiredVersion() (int, int)
+func (g glArea) RequiredVersion() (major int, minor int)
 
 func (g glArea) UseES() bool
 
@@ -16258,12 +16254,12 @@ type Gesture interface {
 	// Since there is no correlation between physical and pixel distances, these
 	// will look as if constrained in an infinitely small area, @rect width and
 	// height will thus be 0 regardless of the number of touchpoints.
-	BoundingBox() (gdk.Rectangle, bool)
+	BoundingBox() (rect gdk.Rectangle, ok bool)
 	// BoundingBoxCenter: if there are touch sequences being currently handled
 	// by @gesture, this function returns true and fills in @x and @y with the
 	// center of the bounding box containing all active touches. Otherwise,
 	// false will be returned.
-	BoundingBoxCenter() (float64, float64, bool)
+	BoundingBoxCenter() (x float64, y float64, ok bool)
 	// Device: returns the logical Device that is currently operating on
 	// @gesture, or nil if the gesture is not being interacted.
 	Device() gdk.Device
@@ -16282,7 +16278,7 @@ type Gesture interface {
 	// function returns true and fills in @x and @y with the last coordinates
 	// stored for that event sequence. The coordinates are always relative to
 	// the widget allocation.
-	Point(sequence *gdk.EventSequence) (float64, float64, bool)
+	Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool)
 	// SequenceState: returns the @sequence state, as seen by @gesture.
 	SequenceState(sequence *gdk.EventSequence) EventSequenceState
 	// Sequences: returns the list of EventSequences currently being interpreted
@@ -16375,9 +16371,9 @@ func marshalGesture(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (g gesture) BoundingBox() (gdk.Rectangle, bool)
+func (g gesture) BoundingBox() (rect gdk.Rectangle, ok bool)
 
-func (g gesture) BoundingBoxCenter() (float64, float64, bool)
+func (g gesture) BoundingBoxCenter() (x float64, y float64, ok bool)
 
 func (g gesture) Device() gdk.Device
 
@@ -16387,7 +16383,7 @@ func (g gesture) LastEvent(sequence *gdk.EventSequence) gdk.Event
 
 func (g gesture) LastUpdatedSequence() *gdk.EventSequence
 
-func (g gesture) Point(sequence *gdk.EventSequence) (float64, float64, bool)
+func (g gesture) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool)
 
 func (g gesture) SequenceState(sequence *gdk.EventSequence) EventSequenceState
 
@@ -16444,11 +16440,11 @@ type GestureDrag interface {
 	// Offset: if the @gesture is active, this function returns true and fills
 	// in @x and @y with the coordinates of the current point, as an offset to
 	// the starting drag point.
-	Offset() (float64, float64, bool)
+	Offset() (x float64, y float64, ok bool)
 	// StartPoint: if the @gesture is active, this function returns true and
 	// fills in @x and @y with the drag start coordinates, in window-relative
 	// coordinates.
-	StartPoint() (float64, float64, bool)
+	StartPoint() (x float64, y float64, ok bool)
 }
 
 type gestureDrag struct {
@@ -16467,9 +16463,9 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 
 func NewGestureDrag() GestureDrag
 
-func (g gestureDrag) Offset() (float64, float64, bool)
+func (g gestureDrag) Offset() (x float64, y float64, ok bool)
 
-func (g gestureDrag) StartPoint() (float64, float64, bool)
+func (g gestureDrag) StartPoint() (x float64, y float64, ok bool)
 
 // GestureLongPress is a Gesture implementation able to recognize long presses,
 // triggering the GestureLongPress::pressed after the timeout is exceeded.
@@ -16664,13 +16660,13 @@ type GestureStylus interface {
 	// must be called from either the GestureStylus::down,
 	// GestureStylus::motion, GestureStylus::up or GestureStylus::proximity
 	// signals.
-	Axes(axes []gdk.AxisUse) ([]float64, bool)
+	Axes(axes []gdk.AxisUse) (values []float64, ok bool)
 	// Axis: returns the current value for the requested @axis.
 	//
 	// This function must be called from the handler of one of the
 	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
 	// GestureStylus::proximity signals.
-	Axis(axis gdk.AxisUse) (float64, bool)
+	Axis(axis gdk.AxisUse) (value float64, ok bool)
 	// Backlog: by default, GTK will limit rate of input events. On stylus input
 	// where accuracy of strokes is paramount, this function returns the
 	// accumulated coordinate/timing state before the emission of the current
@@ -16682,7 +16678,7 @@ type GestureStylus interface {
 	// state in motion history.
 	//
 	// The @backlog is provided in chronological order.
-	Backlog() ([]*gdk.TimeCoord, uint, bool)
+	Backlog() (backlog []*gdk.TimeCoord, nElems uint, ok bool)
 	// DeviceTool: returns the DeviceTool currently driving input through this
 	// gesture. This function must be called from either the
 	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
@@ -16706,11 +16702,11 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 
 func NewGestureStylus() GestureStylus
 
-func (g gestureStylus) Axes(axes []gdk.AxisUse) ([]float64, bool)
+func (g gestureStylus) Axes(axes []gdk.AxisUse) (values []float64, ok bool)
 
-func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool)
+func (g gestureStylus) Axis(axis gdk.AxisUse) (value float64, ok bool)
 
-func (g gestureStylus) Backlog() ([]*gdk.TimeCoord, uint, bool)
+func (g gestureStylus) Backlog() (backlog []*gdk.TimeCoord, nElems uint, ok bool)
 
 func (g gestureStylus) DeviceTool() gdk.DeviceTool
 
@@ -16730,7 +16726,7 @@ type GestureSwipe interface {
 	// Velocity: if the gesture is recognized, this function returns true and
 	// fill in @velocity_x and @velocity_y with the recorded velocity, as per
 	// the last event(s) processed.
-	Velocity() (float64, float64, bool)
+	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
 type gestureSwipe struct {
@@ -16749,7 +16745,7 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 
 func NewGestureSwipe() GestureSwipe
 
-func (g gestureSwipe) Velocity() (float64, float64, bool)
+func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool)
 
 // GestureZoom is a Gesture implementation able to recognize pinch/zoom
 // gestures, whenever the distance between both tracked sequences changes, the
@@ -16855,7 +16851,7 @@ type Grid interface {
 	InsertRow(position int)
 	// QueryChild: queries the attach points and spans of @child inside the
 	// given Grid.
-	QueryChild(child Widget) (int, int, int, int)
+	QueryChild(child Widget) (column int, row int, width int, height int)
 	// Remove: removes a child from @grid, after it has been added with
 	// gtk_grid_attach() or gtk_grid_attach_next_to().
 	Remove(child Widget)
@@ -16932,7 +16928,7 @@ func (g grid) InsertNextTo(sibling Widget, side PositionType)
 
 func (g grid) InsertRow(position int)
 
-func (g grid) QueryChild(child Widget) (int, int, int, int)
+func (g grid) QueryChild(child Widget) (column int, row int, width int, height int)
 
 func (g grid) Remove(child Widget)
 
@@ -17369,9 +17365,9 @@ func (h headerBar) SetShowTitleButtons(setting bool)
 
 func (h headerBar) SetTitleWidget(titleWidget Widget)
 
-// IMContext: IMContext defines the interface for GTK input methods. An input
-// method is used by GTK text input widgets like Entry to map from key events to
-// Unicode character strings.
+// IMContext defines the interface for GTK input methods. An input method is
+// used by GTK text input widgets like Entry to map from key events to Unicode
+// character strings.
 //
 // The default input method can be set programmatically via the
 // Settings:gtk-im-module GtkSettings property. Alternatively, you may set the
@@ -17469,7 +17465,7 @@ type IMContext interface {
 	// PreeditString: retrieve the current preedit string for the input context,
 	// and a list of attributes to apply to the string. This string should be
 	// displayed inserted at the insertion point.
-	PreeditString() (string, *pango.AttrList, int)
+	PreeditString() (str string, attrs *pango.AttrList, cursorPos int)
 	// Surrounding: retrieves context around the insertion point. Input methods
 	// typically want context in order to constrain input text based on existing
 	// text; this is important for languages such as Thai where only some
@@ -17482,7 +17478,7 @@ type IMContext interface {
 	// gtk_im_context_set_surrounding(). Note that there is no obligation for a
 	// widget to respond to the ::retrieve_surrounding signal, so input methods
 	// must be prepared to function without context.
-	Surrounding() (string, int, bool)
+	Surrounding() (text string, cursorIndex int, ok bool)
 	// Reset: notify the input method that a change such as a change in cursor
 	// position has been made. This will typically cause the input method to
 	// clear the preedit state.
@@ -17531,9 +17527,9 @@ func (i imContext) FocusIn()
 
 func (i imContext) FocusOut()
 
-func (i imContext) PreeditString() (string, *pango.AttrList, int)
+func (i imContext) PreeditString() (str string, attrs *pango.AttrList, cursorPos int)
 
-func (i imContext) Surrounding() (string, int, bool)
+func (i imContext) Surrounding() (text string, cursorIndex int, ok bool)
 
 func (i imContext) Reset()
 
@@ -17678,11 +17674,10 @@ func (i iconPaintable) IconName() string
 
 func (i iconPaintable) IsSymbolic() bool
 
-// IconTheme: iconTheme provides a facility for looking up icons by name and
-// size. The main reason for using a name rather than simply providing a
-// filename is to allow different icons to be used depending on what “icon
-// theme” is selected by the user. The operation of icon themes on Linux and
-// Unix follows the [Icon Theme
+// IconTheme provides a facility for looking up icons by name and size. The main
+// reason for using a name rather than simply providing a filename is to allow
+// different icons to be used depending on what “icon theme” is selected by the
+// user. The operation of icon themes on Linux and Unix follows the [Icon Theme
 // Specification](http://www.freedesktop.org/Standards/icon-theme-spec) There is
 // a fallback icon theme, named `hicolor`, where applications should install
 // their icons, but additional icon themes can be installed as operating system
@@ -17838,9 +17833,9 @@ func (i iconTheme) SetSearchPath(path []string)
 
 func (i iconTheme) SetThemeName(themeName string)
 
-// IconView: iconView provides an alternative view on a TreeModel. It displays
-// the model as a grid of icons with labels. Like TreeView, it allows to select
-// one or multiple items (depending on the selection mode, see
+// IconView provides an alternative view on a TreeModel. It displays the model
+// as a grid of icons with labels. Like TreeView, it allows to select one or
+// multiple items (depending on the selection mode, see
 // gtk_icon_view_set_selection_mode()). In addition to selection with the arrow
 // keys, IconView supports rubberband selection, which is controlled by dragging
 // the pointer.
@@ -17875,7 +17870,7 @@ type IconView interface {
 	// specified by @path and @cell. If @cell is nil the main cell area is used.
 	//
 	// This function is only valid if @icon_view is realized.
-	CellRect(path *TreePath, cell CellRenderer) (gdk.Rectangle, bool)
+	CellRect(path *TreePath, cell CellRenderer) (rect gdk.Rectangle, ok bool)
 	// ColumnSpacing: returns the value of the ::column-spacing property.
 	ColumnSpacing() int
 	// Columns: returns the value of the ::columns property.
@@ -17885,14 +17880,14 @@ type IconView interface {
 	// currently has focus, then *@cell will be nil.
 	//
 	// The returned TreePath must be freed with gtk_tree_path_free().
-	Cursor() (*TreePath, CellRenderer, bool)
+	Cursor() (path *TreePath, cell CellRenderer, ok bool)
 	// DestItemAtPos: determines the destination item for a given position.
-	DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool)
+	DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconViewDropPosition, ok bool)
 	// DragDestItem: gets information about the item that is highlighted for
 	// feedback.
-	DragDestItem() (*TreePath, IconViewDropPosition)
+	DragDestItem() (path *TreePath, pos IconViewDropPosition)
 	// ItemAtPos: gets the path and cell for the icon at the given position.
-	ItemAtPos(x int, y int) (*TreePath, CellRenderer, bool)
+	ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok bool)
 	// ItemColumn: gets the column in which the item @path is currently
 	// displayed. Column numbers start at 0.
 	ItemColumn(path *TreePath) int
@@ -17949,12 +17944,12 @@ type IconView interface {
 	// tooltips the item returned will be the cursor item. When true, then any
 	// of @model, @path and @iter which have been provided will be set to point
 	// to that row and the corresponding model.
-	TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool)
+	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
 	// VisibleRange: sets @start_path and @end_path to be the first and last
 	// visible path. Note that there may be invisible paths in between.
 	//
 	// Both paths should be freed with gtk_tree_path_free() after use.
-	VisibleRange() (*TreePath, *TreePath, bool)
+	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
 	// ItemActivated: activates the item determined by @path.
 	ItemActivated(path *TreePath)
 	// PathIsSelected: returns true if the icon pointed to by @path is currently
@@ -18120,19 +18115,19 @@ func (i iconView) EnableModelDragSource(startButtonMask gdk.ModifierType, format
 
 func (i iconView) ActivateOnSingleClick() bool
 
-func (i iconView) CellRect(path *TreePath, cell CellRenderer) (gdk.Rectangle, bool)
+func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect gdk.Rectangle, ok bool)
 
 func (i iconView) ColumnSpacing() int
 
 func (i iconView) Columns() int
 
-func (i iconView) Cursor() (*TreePath, CellRenderer, bool)
+func (i iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool)
 
-func (i iconView) DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool)
+func (i iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconViewDropPosition, ok bool)
 
-func (i iconView) DragDestItem() (*TreePath, IconViewDropPosition)
+func (i iconView) DragDestItem() (path *TreePath, pos IconViewDropPosition)
 
-func (i iconView) ItemAtPos(x int, y int) (*TreePath, CellRenderer, bool)
+func (i iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok bool)
 
 func (i iconView) ItemColumn(path *TreePath) int
 
@@ -18168,9 +18163,9 @@ func (i iconView) TextColumn() int
 
 func (i iconView) TooltipColumn() int
 
-func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool)
+func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
 
-func (i iconView) VisibleRange() (*TreePath, *TreePath, bool)
+func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
 
 func (i iconView) ItemActivated(path *TreePath)
 
@@ -18774,7 +18769,7 @@ type Label interface {
 	// into coordinates inside the Layout, e.g. to take some action if some part
 	// of the label is clicked. Remember when using the Layout functions you
 	// need to convert to and from pixels using PANGO_PIXELS() or NGO_SCALE.
-	LayoutOffsets() (int, int)
+	LayoutOffsets() (x int, y int)
 	// Lines: gets the number of lines to which an ellipsized, wrapping label
 	// should be limited. See gtk_label_set_lines().
 	Lines() int
@@ -18792,7 +18787,7 @@ type Label interface {
 	Selectable() bool
 	// SelectionBounds: gets the selected range of characters in the label,
 	// returning true if there’s a selection.
-	SelectionBounds() (int, int, bool)
+	SelectionBounds() (start int, end int, ok bool)
 	// SingleLineMode: returns whether the label is in single line mode.
 	SingleLineMode() bool
 	// Text: fetches the text from a label widget, as displayed on the screen.
@@ -18991,7 +18986,7 @@ func (l label) Label() string
 
 func (l label) Layout() pango.Layout
 
-func (l label) LayoutOffsets() (int, int)
+func (l label) LayoutOffsets() (x int, y int)
 
 func (l label) Lines() int
 
@@ -19003,7 +18998,7 @@ func (l label) MnemonicWidget() Widget
 
 func (l label) Selectable() bool
 
-func (l label) SelectionBounds() (int, int, bool)
+func (l label) SelectionBounds() (start int, end int, ok bool)
 
 func (l label) SingleLineMode() bool
 
@@ -19176,7 +19171,7 @@ type LayoutManager interface {
 	//
 	// See [GtkWidget's geometry management section][geometry-management] for
 	// more details.
-	Measure(widget Widget, orientation Orientation, forSize int) (int, int, int, int)
+	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
 type layoutManager struct {
@@ -19203,7 +19198,7 @@ func (l layoutManager) Widget() Widget
 
 func (l layoutManager) LayoutChanged()
 
-func (l layoutManager) Measure(widget Widget, orientation Orientation, forSize int) (int, int, int, int)
+func (l layoutManager) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 
 // LevelBar: the LevelBar is a bar widget that can be used as a level indicator.
 // Typical use cases are displaying the strength of a password, or showing the
@@ -19319,7 +19314,7 @@ type LevelBar interface {
 	Mode() LevelBarMode
 	// OffsetValue: fetches the value specified for the offset marker @name in
 	// @self, returning true in case an offset named @name was found.
-	OffsetValue(name string) (float64, bool)
+	OffsetValue(name string) (value float64, ok bool)
 	// Value: returns the value of the LevelBar:value property.
 	Value() float64
 	// RemoveOffsetValue: removes an offset marker previously added with
@@ -19371,7 +19366,7 @@ func (l levelBar) MinValue() float64
 
 func (l levelBar) Mode() LevelBarMode
 
-func (l levelBar) OffsetValue(name string) (float64, bool)
+func (l levelBar) OffsetValue(name string) (value float64, ok bool)
 
 func (l levelBar) Value() float64
 
@@ -21073,10 +21068,9 @@ func (m menuButton) SetPopover(popover Widget)
 
 func (m menuButton) SetUseUnderline(useUnderline bool)
 
-// MessageDialog: messageDialog presents a dialog with some message text. It’s
-// simply a convenience widget; you could construct the equivalent of
-// MessageDialog from Dialog without too much effort, but MessageDialog saves
-// typing.
+// MessageDialog presents a dialog with some message text. It’s simply a
+// convenience widget; you could construct the equivalent of MessageDialog from
+// Dialog without too much effort, but MessageDialog saves typing.
 //
 // The easiest way to do a modal message dialog is to use the GTK_DIALOG_MODAL
 // flag, which will call gtk_window_set_modal() internally. The dialog will
@@ -22418,9 +22412,8 @@ func (p pageSetup) ToGvariant() *glib.Variant
 
 func (p pageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string)
 
-// Paned: paned has two panes, arranged either horizontally or vertically. The
-// division between the two panes is adjustable by the user by dragging a
-// handle.
+// Paned has two panes, arranged either horizontally or vertically. The division
+// between the two panes is adjustable by the user by dragging a handle.
 //
 // Child widgets are added to the panes of the widget with
 // gtk_paned_set_start_child() and gtk_paned_set_end_child(). The division
@@ -22883,11 +22876,11 @@ type Popover interface {
 	// property.
 	MnemonicsVisible() bool
 	// Offset: gets the offset previous set with gtk_popover_set_offset().
-	Offset() (int, int)
+	Offset() (xOffset int, yOffset int)
 	// PointingTo: if a rectangle to point to has been set, this function will
 	// return true and fill in @rect with such rectangle, otherwise it will
 	// return false and fill in @rect with the attached widget coordinates.
-	PointingTo() (gdk.Rectangle, bool)
+	PointingTo() (rect gdk.Rectangle, ok bool)
 	// Position: returns the preferred position of @popover.
 	Position() PositionType
 	// Popdown: pops @popover down.This is different than a gtk_widget_hide()
@@ -22967,9 +22960,9 @@ func (p popover) HasArrow() bool
 
 func (p popover) MnemonicsVisible() bool
 
-func (p popover) Offset() (int, int)
+func (p popover) Offset() (xOffset int, yOffset int)
 
-func (p popover) PointingTo() (gdk.Rectangle, bool)
+func (p popover) PointingTo() (rect gdk.Rectangle, ok bool)
 
 func (p popover) Position() PositionType
 
@@ -23277,7 +23270,7 @@ type PrintContext interface {
 	DPIY() float64
 	// HardMargins: obtains the hardware printer margins of the PrintContext, in
 	// units.
-	HardMargins() (float64, float64, float64, float64, bool)
+	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
 	// Height: obtains the height of the PrintContext, in pixels.
 	Height() float64
 	// PageSetup: obtains the PageSetup that determines the page dimensions of
@@ -23320,7 +23313,7 @@ func (p printContext) DPIX() float64
 
 func (p printContext) DPIY() float64
 
-func (p printContext) HardMargins() (float64, float64, float64, float64, bool)
+func (p printContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
 
 func (p printContext) Height() float64
 
@@ -23735,7 +23728,7 @@ type PrintSettings interface {
 	// OutputBin: gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 	OutputBin() string
 	// PageRanges: gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-	PageRanges() (int, []PageRange)
+	PageRanges() (numRanges int, pageRanges []PageRange)
 	// PageSet: gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
 	PageSet() PageSet
 	// PaperHeight: gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted
@@ -23920,7 +23913,7 @@ func (p printSettings) Orientation() PageOrientation
 
 func (p printSettings) OutputBin() string
 
-func (p printSettings) PageRanges() (int, []PageRange)
+func (p printSettings) PageRanges() (numRanges int, pageRanges []PageRange)
 
 func (p printSettings) PageSet() PageSet
 
@@ -24230,7 +24223,7 @@ type Range interface {
 	// dimension, in widget->window coordinates.
 	//
 	// This function is useful mainly for Range subclasses.
-	SliderRange() (int, int)
+	SliderRange() (sliderStart int, sliderEnd int)
 	// SliderSizeFixed: this function is useful mainly for Range subclasses.
 	//
 	// See gtk_range_set_slider_size_fixed().
@@ -24334,7 +24327,7 @@ func (_ _range) RoundDigits() int
 
 func (_ _range) ShowFillLevel() bool
 
-func (_ _range) SliderRange() (int, int)
+func (_ _range) SliderRange() (sliderStart int, sliderEnd int)
 
 func (_ _range) SliderSizeFixed() bool
 
@@ -24362,11 +24355,11 @@ func (_ _range) SetSliderSizeFixed(sizeFixed bool)
 
 func (_ _range) SetValue(value float64)
 
-// RecentManager: recentManager provides a facility for adding, removing and
-// looking up recently used files. Each recently used file is identified by its
-// URI, and has meta-data associated to it, like the names and command lines of
-// the applications that have registered it, the number of time each application
-// has registered the same file, the mime type of the file and whether the file
+// RecentManager provides a facility for adding, removing and looking up
+// recently used files. Each recently used file is identified by its URI, and
+// has meta-data associated to it, like the names and command lines of the
+// applications that have registered it, the number of time each application has
+// registered the same file, the mime type of the file and whether the file
 // should be displayed only by the applications that have registered it.
 //
 // The recently used files list is per user.
@@ -24702,7 +24695,7 @@ type Scale interface {
 	//
 	// If the Scale:draw-value property is false, the return values are
 	// undefined.
-	LayoutOffsets() (int, int)
+	LayoutOffsets() (x int, y int)
 	// ValuePos: gets the position in which the current value is displayed.
 	ValuePos() PositionType
 	// SetDigits: sets the number of decimal places that are displayed in the
@@ -24766,7 +24759,7 @@ func (s scale) HasOrigin() bool
 
 func (s scale) Layout() pango.Layout
 
-func (s scale) LayoutOffsets() (int, int)
+func (s scale) LayoutOffsets() (x int, y int)
 
 func (s scale) ValuePos() PositionType
 
@@ -24780,10 +24773,9 @@ func (s scale) SetHasOrigin(hasOrigin bool)
 
 func (s scale) SetValuePos(pos PositionType)
 
-// ScaleButton: scaleButton provides a button which pops up a scale widget. This
-// kind of widget is commonly used for volume controls in multimedia
-// applications, and GTK provides a VolumeButton subclass that is tailored for
-// this use case.
+// ScaleButton provides a button which pops up a scale widget. This kind of
+// widget is commonly used for volume controls in multimedia applications, and
+// GTK provides a VolumeButton subclass that is tailored for this use case.
 //
 //
 // CSS nodes
@@ -25033,7 +25025,7 @@ type ScrolledWindow interface {
 	Placement() CornerType
 	// Policy: retrieves the current policy values for the horizontal and
 	// vertical scrollbars. See gtk_scrolled_window_set_policy().
-	Policy() (PolicyType, PolicyType)
+	Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
 	// PropagateNaturalHeight: reports whether the natural height of the child
 	// will be calculated and propagated through the scrolled window’s requested
 	// natural height.
@@ -25167,7 +25159,7 @@ func (s scrolledWindow) OverlayScrolling() bool
 
 func (s scrolledWindow) Placement() CornerType
 
-func (s scrolledWindow) Policy() (PolicyType, PolicyType)
+func (s scrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
 
 func (s scrolledWindow) PropagateNaturalHeight() bool
 
@@ -26196,10 +26188,10 @@ func (s singleSelection) SetModel(model gio.ListModel)
 
 func (s singleSelection) SetSelected(position uint)
 
-// SizeGroup: sizeGroup provides a mechanism for grouping a number of widgets
-// together so they all request the same amount of space. This is typically
-// useful when you want a column of widgets to have the same size, but you can’t
-// use a Grid widget.
+// SizeGroup provides a mechanism for grouping a number of widgets together so
+// they all request the same amount of space. This is typically useful when you
+// want a column of widgets to have the same size, but you can’t use a Grid
+// widget.
 //
 // In detail, the size requested for each widget in a SizeGroup is the maximum
 // of the sizes that would have been requested for each widget in the size group
@@ -26969,13 +26961,13 @@ type SpinButton interface {
 	Digits() uint
 	// Increments: gets the current step and page the increments used by
 	// @spin_button. See gtk_spin_button_set_increments().
-	Increments() (float64, float64)
+	Increments() (step float64, page float64)
 	// Numeric: returns whether non-numeric text can be typed into the spin
 	// button. See gtk_spin_button_set_numeric().
 	Numeric() bool
 	// Range: gets the range allowed for @spin_button. See
 	// gtk_spin_button_set_range().
-	Range() (float64, float64)
+	Range() (min float64, max float64)
 	// SnapToTicks: returns whether the values are corrected to the nearest
 	// step. See gtk_spin_button_set_snap_to_ticks().
 	SnapToTicks() bool
@@ -27057,11 +27049,11 @@ func (s spinButton) ClimbRate() float64
 
 func (s spinButton) Digits() uint
 
-func (s spinButton) Increments() (float64, float64)
+func (s spinButton) Increments() (step float64, page float64)
 
 func (s spinButton) Numeric() bool
 
-func (s spinButton) Range() (float64, float64)
+func (s spinButton) Range() (min float64, max float64)
 
 func (s spinButton) SnapToTicks() bool
 
@@ -27915,7 +27907,7 @@ type StyleContext interface {
 	HasClass(className string) bool
 	// LookupColor: looks up and resolves a color name in the @context color
 	// map.
-	LookupColor(colorName string) (gdk.RGBA, bool)
+	LookupColor(colorName string) (color gdk.RGBA, ok bool)
 	// RemoveClass: removes @class_name from @context.
 	RemoveClass(className string)
 	// RemoveProvider: removes @provider from the style providers list in
@@ -27990,7 +27982,7 @@ func (s styleContext) State() StateFlags
 
 func (s styleContext) HasClass(className string) bool
 
-func (s styleContext) LookupColor(colorName string) (gdk.RGBA, bool)
+func (s styleContext) LookupColor(colorName string) (color gdk.RGBA, ok bool)
 
 func (s styleContext) RemoveClass(className string)
 
@@ -28489,7 +28481,7 @@ type TextBuffer interface {
 	EndUserAction()
 	// Bounds: retrieves the first and last iterators in the buffer, i.e. the
 	// entire buffer lies within the range [@start,@end).
-	Bounds() (TextIter, TextIter)
+	Bounds() (start TextIter, end TextIter)
 	// CanRedo: gets whether there is a redoable action in the history.
 	CanRedo() bool
 	// CanUndo: gets whether there is an undoable action in the history.
@@ -28525,7 +28517,7 @@ type TextBuffer interface {
 	// IterAtLine: initializes @iter to the start of the given line. If
 	// @line_number is greater than the number of lines in the @buffer, the end
 	// iterator is returned.
-	IterAtLine(lineNumber int) (TextIter, bool)
+	IterAtLine(lineNumber int) (iter TextIter, ok bool)
 	// IterAtLineIndex: obtains an iterator pointing to @byte_index within the
 	// given line. @byte_index must be the start of a UTF-8 character. Note
 	// bytes, not characters; UTF-8 may encode one character as multiple bytes.
@@ -28533,7 +28525,7 @@ type TextBuffer interface {
 	// If @line_number is greater than the number of lines in the @buffer, the
 	// end iterator is returned. And if @byte_index is off the end of the line,
 	// the iterator at the end of the line is returned.
-	IterAtLineIndex(lineNumber int, byteIndex int) (TextIter, bool)
+	IterAtLineIndex(lineNumber int, byteIndex int) (iter TextIter, ok bool)
 	// IterAtLineOffset: obtains an iterator pointing to @char_offset within the
 	// given line. Note characters, not bytes; UTF-8 may encode one character as
 	// multiple bytes.
@@ -28543,7 +28535,7 @@ type TextBuffer interface {
 	// If @line_number is greater than the number of lines in the @buffer, the
 	// end iterator is returned. And if @char_offset is off the end of the line,
 	// the iterator at the end of the line is returned.
-	IterAtLineOffset(lineNumber int, charOffset int) (TextIter, bool)
+	IterAtLineOffset(lineNumber int, charOffset int) (iter TextIter, ok bool)
 	// IterAtMark: initializes @iter with the current position of @mark.
 	IterAtMark(mark TextMark) TextIter
 	// IterAtOffset: initializes @iter to a position @char_offset chars from the
@@ -28583,7 +28575,7 @@ type TextBuffer interface {
 	// @start and @end are filled in with the same value). @start and @end will
 	// be in ascending order. If @start and @end are NULL, then they are not
 	// filled in, but the return value still indicates whether text is selected.
-	SelectionBounds() (TextIter, TextIter, bool)
+	SelectionBounds() (start TextIter, end TextIter, ok bool)
 	// SelectionContent: get a content provider for this buffer. It can be used
 	// to make the content of @buffer available in a Clipboard, see
 	// gdk_clipboard_set_content().
@@ -28802,7 +28794,7 @@ func (t textBuffer) EndIrreversibleAction()
 
 func (t textBuffer) EndUserAction()
 
-func (t textBuffer) Bounds() (TextIter, TextIter)
+func (t textBuffer) Bounds() (start TextIter, end TextIter)
 
 func (t textBuffer) CanRedo() bool
 
@@ -28820,11 +28812,11 @@ func (t textBuffer) GetInsert() TextMark
 
 func (t textBuffer) IterAtChildAnchor(anchor TextChildAnchor) TextIter
 
-func (t textBuffer) IterAtLine(lineNumber int) (TextIter, bool)
+func (t textBuffer) IterAtLine(lineNumber int) (iter TextIter, ok bool)
 
-func (t textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (TextIter, bool)
+func (t textBuffer) IterAtLineIndex(lineNumber int, byteIndex int) (iter TextIter, ok bool)
 
-func (t textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (TextIter, bool)
+func (t textBuffer) IterAtLineOffset(lineNumber int, charOffset int) (iter TextIter, ok bool)
 
 func (t textBuffer) IterAtMark(mark TextMark) TextIter
 
@@ -28840,7 +28832,7 @@ func (t textBuffer) Modified() bool
 
 func (t textBuffer) SelectionBound() TextMark
 
-func (t textBuffer) SelectionBounds() (TextIter, TextIter, bool)
+func (t textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool)
 
 func (t textBuffer) SelectionContent() gdk.ContentProvider
 
@@ -28915,7 +28907,7 @@ type TextChildAnchor interface {
 	// Widgets: gets a list of all widgets anchored at this child anchor.
 	//
 	// The order in which the widgets are returned is not defined.
-	Widgets() (uint, []Widget)
+	Widgets() (outLen uint, widgets []Widget)
 }
 
 type textChildAnchor struct {
@@ -28936,7 +28928,7 @@ func NewTextChildAnchor() TextChildAnchor
 
 func (t textChildAnchor) Deleted() bool
 
-func (t textChildAnchor) Widgets() (uint, []Widget)
+func (t textChildAnchor) Widgets() (outLen uint, widgets []Widget)
 
 // TextMark: you may wish to begin by reading the [text widget conceptual
 // overview][TextWidget] which gives an overview of all the objects and data
@@ -29205,7 +29197,7 @@ type TextView interface {
 	// BufferToWindowCoords: converts coordinate (@buffer_x, @buffer_y) to
 	// coordinates for the window @win, and stores the result in (@window_x,
 	// @window_y).
-	BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (int, int)
+	BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int)
 	// ForwardDisplayLine: moves the given @iter forward by one display
 	// (wrapped) line. A display line is different from a paragraph. Paragraphs
 	// are separated by newlines or other paragraph separator characters.
@@ -29252,7 +29244,7 @@ type TextView interface {
 	// The rectangle position is in buffer coordinates; use
 	// gtk_text_view_buffer_to_window_coords() to convert these coordinates to
 	// coordinates for one of the windows in the text view.
-	CursorLocations(iter *TextIter) (gdk.Rectangle, gdk.Rectangle)
+	CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle)
 	// CursorVisible: find out whether the cursor should be displayed.
 	CursorVisible() bool
 	// Editable: returns the default editability of the TextView. Tags in the
@@ -29280,7 +29272,7 @@ type TextView interface {
 	// currently-displayed portion. If you have coordinates from an event, you
 	// have to convert those to buffer coordinates with
 	// gtk_text_view_window_to_buffer_coords().
-	IterAtLocation(x int, y int) (TextIter, bool)
+	IterAtLocation(x int, y int) (iter TextIter, ok bool)
 	// IterAtPosition: retrieves the iterator pointing to the character at
 	// buffer coordinates @x and @y. Buffer coordinates are coordinates for the
 	// entire buffer, not just the currently-displayed portion. If you have
@@ -29289,7 +29281,7 @@ type TextView interface {
 	//
 	// Note that this is different from gtk_text_view_get_iter_at_location(),
 	// which returns cursor locations, i.e. positions between characters.
-	IterAtPosition(x int, y int) (TextIter, int, bool)
+	IterAtPosition(x int, y int) (iter TextIter, trailing int, ok bool)
 	// IterLocation: gets a rectangle which roughly contains the character at
 	// @iter. The rectangle position is in buffer coordinates; use
 	// gtk_text_view_buffer_to_window_coords() to convert these coordinates to
@@ -29305,12 +29297,12 @@ type TextView interface {
 	// coordinate @y. @y is in buffer coordinates, convert from window
 	// coordinates with gtk_text_view_window_to_buffer_coords(). If non-nil,
 	// @line_top will be filled with the coordinate of the top edge of the line.
-	LineAtY(y int) (TextIter, int)
+	LineAtY(y int) (targetIter TextIter, lineTop int)
 	// LineYrange: gets the y coordinate of the top of the line containing
 	// @iter, and the height of the line. The coordinate is a buffer coordinate;
 	// convert to window coordinates with
 	// gtk_text_view_buffer_to_window_coords().
-	LineYrange(iter *TextIter) (int, int)
+	LineYrange(iter *TextIter) (y int, height int)
 	// Monospace: gets the value of the TextView:monospace property.
 	Monospace() bool
 	// Overwrite: returns whether the TextView is in overwrite mode or not.
@@ -29526,7 +29518,7 @@ type TextView interface {
 	StartsDisplayLine(iter *TextIter) bool
 	// WindowToBufferCoords: converts coordinates on the window identified by
 	// @win to buffer coordinates, storing the result in (@buffer_x,@buffer_y).
-	WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (int, int)
+	WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
 }
 
 type textView struct {
@@ -29555,7 +29547,7 @@ func (t textView) BackwardDisplayLine(iter *TextIter) bool
 
 func (t textView) BackwardDisplayLineStart(iter *TextIter) bool
 
-func (t textView) BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (int, int)
+func (t textView) BufferToWindowCoords(win TextWindowType, bufferX int, bufferY int) (windowX int, windowY int)
 
 func (t textView) ForwardDisplayLine(iter *TextIter) bool
 
@@ -29567,7 +29559,7 @@ func (t textView) BottomMargin() int
 
 func (t textView) Buffer() TextBuffer
 
-func (t textView) CursorLocations(iter *TextIter) (gdk.Rectangle, gdk.Rectangle)
+func (t textView) CursorLocations(iter *TextIter) (strong gdk.Rectangle, weak gdk.Rectangle)
 
 func (t textView) CursorVisible() bool
 
@@ -29583,9 +29575,9 @@ func (t textView) InputHints() InputHints
 
 func (t textView) InputPurpose() InputPurpose
 
-func (t textView) IterAtLocation(x int, y int) (TextIter, bool)
+func (t textView) IterAtLocation(x int, y int) (iter TextIter, ok bool)
 
-func (t textView) IterAtPosition(x int, y int) (TextIter, int, bool)
+func (t textView) IterAtPosition(x int, y int) (iter TextIter, trailing int, ok bool)
 
 func (t textView) IterLocation(iter *TextIter) gdk.Rectangle
 
@@ -29593,9 +29585,9 @@ func (t textView) Justification() Justification
 
 func (t textView) LeftMargin() int
 
-func (t textView) LineAtY(y int) (TextIter, int)
+func (t textView) LineAtY(y int) (targetIter TextIter, lineTop int)
 
-func (t textView) LineYrange(iter *TextIter) (int, int)
+func (t textView) LineYrange(iter *TextIter) (y int, height int)
 
 func (t textView) Monospace() bool
 
@@ -29683,7 +29675,7 @@ func (t textView) SetWrapMode(wrapMode WrapMode)
 
 func (t textView) StartsDisplayLine(iter *TextIter) bool
 
-func (t textView) WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (int, int)
+func (t textView) WindowToBufferCoords(win TextWindowType, windowX int, windowY int) (bufferX int, bufferY int)
 
 // ToggleButton: a ToggleButton is a Button which will remain “pressed-in” when
 // clicked. Clicking again will cause the toggle button to return to its normal
@@ -30252,7 +30244,7 @@ type TreeModelFilter interface {
 	// ConvertChildIterToIter: sets @filter_iter to point to the row in @filter
 	// that corresponds to the row pointed at by @child_iter. If @filter_iter
 	// was not set, false is returned.
-	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+	ConvertChildIterToIter(childIter *TreeIter) (filterIter TreeIter, ok bool)
 	// ConvertChildPathToPath: converts @child_path to a path relative to
 	// @filter. That is, @child_path points to a path in the child model. The
 	// rerturned path will point to the same row in the filtered model. If
@@ -30346,7 +30338,7 @@ func marshalTreeModelFilter(p uintptr) (interface{}, error) {
 
 func (t treeModelFilter) ClearCache()
 
-func (t treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+func (t treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (filterIter TreeIter, ok bool)
 
 func (t treeModelFilter) ConvertChildPathToPath(childPath *TreePath) *TreePath
 
@@ -30469,7 +30461,7 @@ type TreeModelSort interface {
 	// @tree_model_sort that corresponds to the row pointed at by @child_iter.
 	// If @sort_iter was not set, false is returned. Note: a boolean is only
 	// returned since 2.14.
-	ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+	ConvertChildIterToIter(childIter *TreeIter) (sortIter TreeIter, ok bool)
 	// ConvertChildPathToPath: converts @child_path to a path relative to
 	// @tree_model_sort. That is, @child_path points to a path in the child
 	// model. The returned path will point to the same row in the sorted model.
@@ -30517,7 +30509,7 @@ func NewTreeModelSort(childModel TreeModel) TreeModelSort
 
 func (t treeModelSort) ClearCache()
 
-func (t treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool)
+func (t treeModelSort) ConvertChildIterToIter(childIter *TreeIter) (sortIter TreeIter, ok bool)
 
 func (t treeModelSort) ConvertChildPathToPath(childPath *TreePath) *TreePath
 
@@ -30569,14 +30561,14 @@ type TreeSelection interface {
 	// just want to test if @selection has any selected nodes. @model is filled
 	// with the current model as a convenience. This function will not work if
 	// you use @selection is K_SELECTION_MULTIPLE.
-	Selected() (TreeModel, TreeIter, bool)
+	Selected() (model TreeModel, iter TreeIter, ok bool)
 	// SelectedRows: creates a list of path of all selected rows. Additionally,
 	// if you are planning on modifying the model after calling this function,
 	// you may want to convert the returned list into a list of
 	// TreeRowReferences. To do this, you can use gtk_tree_row_reference_new().
 	//
 	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-	SelectedRows() (TreeModel, *glib.List)
+	SelectedRows() (model TreeModel, list *glib.List)
 	// TreeView: returns the tree view associated with @selection.
 	TreeView() TreeView
 	// UserData: returns the user data for the selection function.
@@ -30642,9 +30634,9 @@ func (t treeSelection) Mode() SelectionMode
 
 func (t treeSelection) SelectFunction() TreeSelectionFunc
 
-func (t treeSelection) Selected() (TreeModel, TreeIter, bool)
+func (t treeSelection) Selected() (model TreeModel, iter TreeIter, ok bool)
 
-func (t treeSelection) SelectedRows() (TreeModel, *glib.List)
+func (t treeSelection) SelectedRows() (model TreeModel, list *glib.List)
 
 func (t treeSelection) TreeView() TreeView
 
@@ -30942,22 +30934,22 @@ type TreeView interface {
 	ColumnsAutosize()
 	// ConvertBinWindowToTreeCoords: converts bin_window coordinates to
 	// coordinates for the tree (the full scrollable area of the tree).
-	ConvertBinWindowToTreeCoords(bx int, by int) (int, int)
+	ConvertBinWindowToTreeCoords(bx int, by int) (tx int, ty int)
 	// ConvertBinWindowToWidgetCoords: converts bin_window coordinates to widget
 	// relative coordinates.
-	ConvertBinWindowToWidgetCoords(bx int, by int) (int, int)
+	ConvertBinWindowToWidgetCoords(bx int, by int) (wx int, wy int)
 	// ConvertTreeToBinWindowCoords: converts tree coordinates (coordinates in
 	// full scrollable area of the tree) to bin_window coordinates.
-	ConvertTreeToBinWindowCoords(tx int, ty int) (int, int)
+	ConvertTreeToBinWindowCoords(tx int, ty int) (bx int, by int)
 	// ConvertTreeToWidgetCoords: converts tree coordinates (coordinates in full
 	// scrollable area of the tree) to widget coordinates.
-	ConvertTreeToWidgetCoords(tx int, ty int) (int, int)
+	ConvertTreeToWidgetCoords(tx int, ty int) (wx int, wy int)
 	// ConvertWidgetToBinWindowCoords: converts widget coordinates to
 	// coordinates for the bin_window.
-	ConvertWidgetToBinWindowCoords(wx int, wy int) (int, int)
+	ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int)
 	// ConvertWidgetToTreeCoords: converts widget coordinates to coordinates for
 	// the tree (the full scrollable area of the tree).
-	ConvertWidgetToTreeCoords(wx int, wy int) (int, int)
+	ConvertWidgetToTreeCoords(wx int, wy int) (tx int, ty int)
 	// CreateRowDragIcon: creates a #cairo_surface_t representation of the row
 	// at @path. This image is used for a drag icon.
 	CreateRowDragIcon(path *TreePath) gdk.Paintable
@@ -31009,16 +31001,16 @@ type TreeView interface {
 	//
 	// The returned TreePath must be freed with gtk_tree_path_free() when you
 	// are done with it.
-	Cursor() (*TreePath, TreeViewColumn)
+	Cursor() (path *TreePath, focusColumn TreeViewColumn)
 	// DestRowAtPos: determines the destination row for a given position.
 	// @drag_x and @drag_y are expected to be in widget coordinates. This
 	// function is only meaningful if @tree_view is realized. Therefore this
 	// function will always return false if @tree_view is not realized or does
 	// not have a model.
-	DestRowAtPos(dragX int, dragY int) (*TreePath, TreeViewDropPosition, bool)
+	DestRowAtPos(dragX int, dragY int) (path *TreePath, pos TreeViewDropPosition, ok bool)
 	// DragDestRow: gets information about the row that is highlighted for
 	// feedback.
-	DragDestRow() (*TreePath, TreeViewDropPosition)
+	DragDestRow() (path *TreePath, pos TreeViewDropPosition)
 	// EnableSearch: returns whether or not the tree allows to start interactive
 	// searching by typing in text.
 	EnableSearch() bool
@@ -31069,7 +31061,7 @@ type TreeView interface {
 	// For converting widget coordinates (eg. the ones you get from
 	// GtkWidget::query-tooltip), please see
 	// gtk_tree_view_convert_widget_to_bin_window_coords().
-	PathAtPos(x int, y int) (*TreePath, TreeViewColumn, int, int, bool)
+	PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 	// Reorderable: retrieves whether the user can reorder the tree via
 	// drag-and-drop. See gtk_tree_view_set_reorderable().
 	Reorderable() bool
@@ -31105,12 +31097,12 @@ type TreeView interface {
 	// @model, @path and @iter which have been provided will be set to point to
 	// that row and the corresponding model. @x and @y will always be converted
 	// to be relative to @tree_view’s bin_window if @keyboard_tooltip is false.
-	TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool)
+	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
 	// VisibleRange: sets @start_path and @end_path to be the first and last
 	// visible path. Note that there may be invisible paths in between.
 	//
 	// The paths should be freed with gtk_tree_path_free() after use.
-	VisibleRange() (*TreePath, *TreePath, bool)
+	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
 	// VisibleRect: fills @visible_rect with the currently-visible region of the
 	// buffer, in tree coordinates. Convert to bin_window coordinates with
 	// gtk_tree_view_convert_tree_to_bin_window_coords(). Tree coordinates start
@@ -31148,7 +31140,7 @@ type TreeView interface {
 	// The @path, @column, @cell_x and @cell_y arguments will be filled in
 	// likewise as for gtk_tree_view_get_path_at_pos(). Please see
 	// gtk_tree_view_get_path_at_pos() for more information.
-	IsBlankAtPos(x int, y int) (*TreePath, TreeViewColumn, int, int, bool)
+	IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 	// IsRubberBandingActive: returns whether a rubber banding operation is
 	// currently being done in @tree_view.
 	IsRubberBandingActive() bool
@@ -31396,17 +31388,17 @@ func (t treeView) CollapseRow(path *TreePath) bool
 
 func (t treeView) ColumnsAutosize()
 
-func (t treeView) ConvertBinWindowToTreeCoords(bx int, by int) (int, int)
+func (t treeView) ConvertBinWindowToTreeCoords(bx int, by int) (tx int, ty int)
 
-func (t treeView) ConvertBinWindowToWidgetCoords(bx int, by int) (int, int)
+func (t treeView) ConvertBinWindowToWidgetCoords(bx int, by int) (wx int, wy int)
 
-func (t treeView) ConvertTreeToBinWindowCoords(tx int, ty int) (int, int)
+func (t treeView) ConvertTreeToBinWindowCoords(tx int, ty int) (bx int, by int)
 
-func (t treeView) ConvertTreeToWidgetCoords(tx int, ty int) (int, int)
+func (t treeView) ConvertTreeToWidgetCoords(tx int, ty int) (wx int, wy int)
 
-func (t treeView) ConvertWidgetToBinWindowCoords(wx int, wy int) (int, int)
+func (t treeView) ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int)
 
-func (t treeView) ConvertWidgetToTreeCoords(wx int, wy int) (int, int)
+func (t treeView) ConvertWidgetToTreeCoords(wx int, wy int) (tx int, ty int)
 
 func (t treeView) CreateRowDragIcon(path *TreePath) gdk.Paintable
 
@@ -31430,11 +31422,11 @@ func (t treeView) Column(n int) TreeViewColumn
 
 func (t treeView) Columns() *glib.List
 
-func (t treeView) Cursor() (*TreePath, TreeViewColumn)
+func (t treeView) Cursor() (path *TreePath, focusColumn TreeViewColumn)
 
-func (t treeView) DestRowAtPos(dragX int, dragY int) (*TreePath, TreeViewDropPosition, bool)
+func (t treeView) DestRowAtPos(dragX int, dragY int) (path *TreePath, pos TreeViewDropPosition, ok bool)
 
-func (t treeView) DragDestRow() (*TreePath, TreeViewDropPosition)
+func (t treeView) DragDestRow() (path *TreePath, pos TreeViewDropPosition)
 
 func (t treeView) EnableSearch() bool
 
@@ -31460,7 +31452,7 @@ func (t treeView) Model() TreeModel
 
 func (t treeView) NColumns() uint
 
-func (t treeView) PathAtPos(x int, y int) (*TreePath, TreeViewColumn, int, int, bool)
+func (t treeView) PathAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 
 func (t treeView) Reorderable() bool
 
@@ -31480,9 +31472,9 @@ func (t treeView) ShowExpanders() bool
 
 func (t treeView) TooltipColumn() int
 
-func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool)
+func (t treeView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
 
-func (t treeView) VisibleRange() (*TreePath, *TreePath, bool)
+func (t treeView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
 
 func (t treeView) VisibleRect() gdk.Rectangle
 
@@ -31490,7 +31482,7 @@ func (t treeView) InsertColumn(column TreeViewColumn, position int) int
 
 func (t treeView) InsertColumnWithDataFunc(position int, title string, cell CellRenderer, _func TreeCellDataFunc) int
 
-func (t treeView) IsBlankAtPos(x int, y int) (*TreePath, TreeViewColumn, int, int, bool)
+func (t treeView) IsBlankAtPos(x int, y int) (path *TreePath, column TreeViewColumn, cellX int, cellY int, ok bool)
 
 func (t treeView) IsRubberBandingActive() bool
 
@@ -31584,10 +31576,10 @@ type TreeViewColumn interface {
 	// CellGetPosition: obtains the horizontal position and size of a cell in a
 	// column. If the cell is not found in the column, @start_pos and @width are
 	// not changed and false is returned.
-	CellGetPosition(cellRenderer CellRenderer) (int, int, bool)
+	CellGetPosition(cellRenderer CellRenderer) (xOffset int, width int, ok bool)
 	// CellGetSize: obtains the width and height needed to render the column.
 	// This is used primarily by the TreeView.
-	CellGetSize() (int, int, int, int)
+	CellGetSize() (xOffset int, yOffset int, width int, height int)
 	// CellIsVisible: returns true if any of the cells packed into the
 	// @tree_column are visible. For this to be meaningful, you must first
 	// initialize the cells with gtk_tree_view_column_cell_set_cell_data()
@@ -31779,9 +31771,9 @@ func NewTreeViewColumn(area CellArea) TreeViewColumn
 
 func (t treeViewColumn) AddAttribute(cellRenderer CellRenderer, attribute string, column int)
 
-func (t treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (int, int, bool)
+func (t treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (xOffset int, width int, ok bool)
 
-func (t treeViewColumn) CellGetSize() (int, int, int, int)
+func (t treeViewColumn) CellGetSize() (xOffset int, yOffset int, width int, height int)
 
 func (t treeViewColumn) CellIsVisible() bool
 
@@ -32476,7 +32468,7 @@ type Widget interface {
 	// and @bounds is set to the zero rectangle.
 	//
 	// It is valid for @widget and @target to be the same widget.
-	ComputeBounds(target Widget) (graphene.Rect, bool)
+	ComputeBounds(target Widget) (outBounds graphene.Rect, ok bool)
 	// ComputeExpand: computes whether a container should give this widget extra
 	// space when possible. Containers should check this, rather than looking at
 	// gtk_widget_get_hexpand() or gtk_widget_get_vexpand().
@@ -32492,10 +32484,10 @@ type Widget interface {
 	// ComputePoint: translates the given @point in @widget's coordinates to
 	// coordinates relative to @target’s coordinate system. In order to perform
 	// this operation, both widgets must share a common root.
-	ComputePoint(target Widget, point *graphene.Point) (graphene.Point, bool)
+	ComputePoint(target Widget, point *graphene.Point) (outPoint graphene.Point, ok bool)
 	// ComputeTransform: computes a matrix suitable to describe a transformation
 	// from @widget's coordinate system into @target's coordinate system.
-	ComputeTransform(target Widget) (graphene.Matrix, bool)
+	ComputeTransform(target Widget) (outTransform graphene.Matrix, ok bool)
 	// Contains: tests if the point at (@x, @y) is contained in @widget.
 	//
 	// The coordinates for (@x, @y) must be in widget coordinates, so (0, 0) is
@@ -32732,7 +32724,7 @@ type Widget interface {
 	// required height for the minimum width.
 	//
 	// Use gtk_widget_measure() if you want to support baseline alignment.
-	PreferredSize() (Requisition, Requisition)
+	PreferredSize() (minimumSize Requisition, naturalSize Requisition)
 	// PrevSibling: returns the widgets previous sibling.
 	//
 	// This API is primarily meant for widget implementations.
@@ -32796,7 +32788,7 @@ type Widget interface {
 	// natural requisition of the widget will be used instead. See
 	// gtk_widget_set_size_request(). To get the size a widget will actually
 	// request, call gtk_widget_measure() instead of this function.
-	SizeRequest() (int, int)
+	SizeRequest() (width int, height int)
 	// StateFlags: returns the widget state as a flag set. It is worth
 	// mentioning that the effective GTK_STATE_FLAG_INSENSITIVE state will be
 	// returned, that is, also based on parent insensitivity, even if @widget
@@ -33011,7 +33003,7 @@ type Widget interface {
 	//
 	// See [GtkWidget’s geometry management section][geometry-management] for a
 	// more details on implementing WidgetClass.measure().
-	Measure(orientation Orientation, forSize int) (int, int, int, int)
+	Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 	// MnemonicActivate: emits the Widget::mnemonic-activate signal.
 	MnemonicActivate(groupCycling bool) bool
 	// ObserveChildren: returns a Model to track the children of @widget.
@@ -33426,7 +33418,7 @@ type Widget interface {
 	// allocation to coordinates relative to @dest_widget’s allocations. In
 	// order to perform this operation, both widget must share a common
 	// toplevel.
-	TranslateCoordinates(destWidget Widget, srcX float64, srcY float64) (float64, float64, bool)
+	TranslateCoordinates(destWidget Widget, srcX float64, srcY float64) (destX float64, destY float64, ok bool)
 	// TriggerTooltipQuery: triggers a tooltip query on the display where the
 	// toplevel of @widget is located.
 	TriggerTooltipQuery()
@@ -33481,13 +33473,13 @@ func (w widget) Allocate(width int, height int, baseline int, transform *gsk.Tra
 
 func (w widget) ChildFocus(direction DirectionType) bool
 
-func (w widget) ComputeBounds(target Widget) (graphene.Rect, bool)
+func (w widget) ComputeBounds(target Widget) (outBounds graphene.Rect, ok bool)
 
 func (w widget) ComputeExpand(orientation Orientation) bool
 
-func (w widget) ComputePoint(target Widget, point *graphene.Point) (graphene.Point, bool)
+func (w widget) ComputePoint(target Widget, point *graphene.Point) (outPoint graphene.Point, ok bool)
 
-func (w widget) ComputeTransform(target Widget) (graphene.Matrix, bool)
+func (w widget) ComputeTransform(target Widget) (outTransform graphene.Matrix, ok bool)
 
 func (w widget) Contains(x float64, y float64) bool
 
@@ -33579,7 +33571,7 @@ func (w widget) PangoContext() pango.Context
 
 func (w widget) Parent() Widget
 
-func (w widget) PreferredSize() (Requisition, Requisition)
+func (w widget) PreferredSize() (minimumSize Requisition, naturalSize Requisition)
 
 func (w widget) PrevSibling() Widget
 
@@ -33601,7 +33593,7 @@ func (w widget) Settings() Settings
 
 func (w widget) Size(orientation Orientation) int
 
-func (w widget) SizeRequest() (int, int)
+func (w widget) SizeRequest() (width int, height int)
 
 func (w widget) StateFlags() StateFlags
 
@@ -33661,7 +33653,7 @@ func (w widget) ListMnemonicLabels() *glib.List
 
 func (w widget) Map()
 
-func (w widget) Measure(orientation Orientation, forSize int) (int, int, int, int)
+func (w widget) Measure(orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 
 func (w widget) MnemonicActivate(groupCycling bool) bool
 
@@ -33765,7 +33757,7 @@ func (w widget) SizeAllocate(allocation *Allocation, baseline int)
 
 func (w widget) SnapshotChild(child Widget, snapshot Snapshot)
 
-func (w widget) TranslateCoordinates(destWidget Widget, srcX float64, srcY float64) (float64, float64, bool)
+func (w widget) TranslateCoordinates(destWidget Widget, srcX float64, srcY float64) (destX float64, destY float64, ok bool)
 
 func (w widget) TriggerTooltipQuery()
 
@@ -33909,7 +33901,7 @@ type Window interface {
 	// DefaultSize: gets the default size of the window. A value of 0 for the
 	// width or height indicates that a default size has not been explicitly set
 	// for that dimension, so the “natural” size of the window will be used.
-	DefaultSize() (int, int)
+	DefaultSize() (width int, height int)
 	// DefaultWidget: returns the default widget for @window.
 	//
 	// See gtk_window_set_default_widget() for more details.
@@ -34247,7 +34239,7 @@ func (w window) Child() Widget
 
 func (w window) Decorated() bool
 
-func (w window) DefaultSize() (int, int)
+func (w window) DefaultSize() (width int, height int)
 
 func (w window) DefaultWidget() Widget
 

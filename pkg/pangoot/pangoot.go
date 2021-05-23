@@ -311,7 +311,7 @@ type Info interface {
 	// requested feature based on Unicode properties and data. However, this
 	// function will still return false in those cases. So, users may want to
 	// ignore the return value of this function in certain cases.
-	FindFeature(tableType TableType, featureTag Tag, scriptIndex uint, languageIndex uint) (uint, bool)
+	FindFeature(tableType TableType, featureTag Tag, scriptIndex uint, languageIndex uint) (featureIndex uint, ok bool)
 	// FindLanguage: finds the index of a language and its required feature
 	// index. If the language is not found, sets @language_index to
 	// PANGO_OT_DEFAULT_LANGUAGE and the required feature of the default
@@ -320,7 +320,7 @@ type Info interface {
 	// 'dflt' before falling back to the default language system, but that is
 	// transparent to the user. The user can simply ignore the return value of
 	// this function to automatically fall back to the default language system.
-	FindLanguage(tableType TableType, scriptIndex uint, languageTag Tag) (uint, uint, bool)
+	FindLanguage(tableType TableType, scriptIndex uint, languageTag Tag) (languageIndex uint, requiredFeatureIndex uint, ok bool)
 	// FindScript: finds the index of a script. If not found, tries to find the
 	// 'DFLT' and then 'dflt' scripts and return the index of that in
 	// @script_index. If none of those is found either, PANGO_OT_NO_SCRIPT is
@@ -330,7 +330,7 @@ type Info interface {
 	// handle PANGO_OT_NO_SCRIPT, so one can ignore the return value of this
 	// function completely and proceed, to enjoy the automatic fallback to the
 	// 'DFLT'/'dflt' script.
-	FindScript(tableType TableType, scriptTag Tag) (uint, bool)
+	FindScript(tableType TableType, scriptTag Tag) (scriptIndex uint, ok bool)
 	// ListFeatures: obtains the list of features for the given language of the
 	// given script.
 	ListFeatures(tableType TableType, tag Tag, scriptIndex uint, languageIndex uint) *Tag
@@ -355,11 +355,11 @@ func marshalInfo(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (i info) FindFeature(tableType TableType, featureTag Tag, scriptIndex uint, languageIndex uint) (uint, bool)
+func (i info) FindFeature(tableType TableType, featureTag Tag, scriptIndex uint, languageIndex uint) (featureIndex uint, ok bool)
 
-func (i info) FindLanguage(tableType TableType, scriptIndex uint, languageTag Tag) (uint, uint, bool)
+func (i info) FindLanguage(tableType TableType, scriptIndex uint, languageTag Tag) (languageIndex uint, requiredFeatureIndex uint, ok bool)
 
-func (i info) FindScript(tableType TableType, scriptTag Tag) (uint, bool)
+func (i info) FindScript(tableType TableType, scriptTag Tag) (scriptIndex uint, ok bool)
 
 func (i info) ListFeatures(tableType TableType, tag Tag, scriptIndex uint, languageIndex uint) *Tag
 
@@ -379,7 +379,7 @@ type Ruleset interface {
 	// AddFeature: adds a feature to the ruleset.
 	AddFeature(tableType TableType, featureIndex uint, propertyBit uint32)
 	// FeatureCount: gets the number of GSUB and GPOS features in the ruleset.
-	FeatureCount() (uint, uint, uint)
+	FeatureCount() (nGsubFeatures uint, nGposFeatures uint, guint uint)
 	// MaybeAddFeature: this is a convenience function that first tries to find
 	// the feature using pango_ot_info_find_feature() and the ruleset script and
 	// language passed to pango_ot_ruleset_new_for(), and if the feature is
@@ -423,7 +423,7 @@ func NewRuleset(info Info, desc *RulesetDescription) Ruleset
 
 func (r ruleset) AddFeature(tableType TableType, featureIndex uint, propertyBit uint32)
 
-func (r ruleset) FeatureCount() (uint, uint, uint)
+func (r ruleset) FeatureCount() (nGsubFeatures uint, nGposFeatures uint, guint uint)
 
 func (r ruleset) MaybeAddFeature(tableType TableType, featureTag Tag, propertyBit uint32) bool
 

@@ -436,7 +436,7 @@ func marshalKeyMatch(p uintptr) (interface{}, error) {
 	return KeyMatch(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MemoryFormat: memoryFormat describes a format that bytes can have in memory.
+// MemoryFormat describes a format that bytes can have in memory.
 //
 // It describes formats by listing the contents of the memory passed to it. So
 // GDK_MEMORY_A8R8G8B8 will be 1 byte (8 bits) of alpha, followed by a byte each
@@ -1143,7 +1143,7 @@ func DragActionIsUnique(action DragAction) bool {
 // return true and return in @angle the relative angle from @event1 to @event2.
 // The rotation direction for positive angles is from the positive X axis
 // towards the positive Y axis.
-func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
+func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 	var arg0 Event
 	arg0 = wrapEvent(event1)
 
@@ -1165,7 +1165,7 @@ func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 
 // EventsGetCenter: if both events contain X/Y information, the center of both
 // coordinates will be returned in @x and @y.
-func EventsGetCenter(event1 Event, event2 Event) (float64, float64, bool) {
+func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
 	var arg0 Event
 	arg0 = wrapEvent(event1)
 
@@ -1193,7 +1193,7 @@ func EventsGetCenter(event1 Event, event2 Event) (float64, float64, bool) {
 // EventsGetDistance: if both events have X/Y information, the distance between
 // both coordinates (as in a straight line going from @event1 to @event2) will
 // be returned.
-func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
+func EventsGetDistance(event1 Event, event2 Event) (distance float64, ok bool) {
 	var arg0 Event
 	arg0 = wrapEvent(event1)
 
@@ -1245,7 +1245,7 @@ func InternMIMEType(string string) string {
 
 // KeyvalConvertCase: obtains the upper- and lower-case versions of the keyval
 // @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
-func KeyvalConvertCase(symbol uint) (uint, uint) {
+func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 	var arg0 uint
 	arg0 = uint(symbol)
 
@@ -1632,7 +1632,7 @@ type DragSurface interface {
 // gdk_paintable_invalidate_contents(), gdk_paintable_invalidate_size(),
 // gdk_paintable_new_empty().
 type Paintable interface {
-	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (float64, float64)
+	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
 	GetCurrentImage() Paintable
 	GetFlags() PaintableFlags
 	GetIntrinsicAspectRatio() float64
@@ -2277,7 +2277,7 @@ type Clipboard interface {
 	ReadAsync(mimeTypes string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadFinish: finishes an asynchronous clipboard read started with
 	// gdk_clipboard_read_async().
-	ReadFinish(result gio.AsyncResult) (string, gio.InputStream)
+	ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream)
 	// ReadTextAsync: asynchronously request the @clipboard contents converted
 	// to a string. When the operation is finished @callback will be called. You
 	// can then call gdk_clipboard_read_text_finish() to get the result.
@@ -2367,7 +2367,7 @@ func (c clipboard) IsLocal() bool
 
 func (c clipboard) ReadAsync(mimeTypes string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
-func (c clipboard) ReadFinish(result gio.AsyncResult) (string, gio.InputStream)
+func (c clipboard) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream)
 
 func (c clipboard) ReadTextAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
@@ -2808,7 +2808,7 @@ type Device interface {
 	// location of the device in @win_x and @win_y in double precision. Returns
 	// nil if the surface tree under @device is not known to GDK (for example,
 	// belongs to another application).
-	SurfaceAtPosition() (float64, float64, Surface)
+	SurfaceAtPosition() (winX float64, winY float64, surface Surface)
 	// VendorID: returns the vendor ID of this device, or nil if this
 	// information couldn't be obtained. This ID is retrieved from the device,
 	// and is thus constant for it.
@@ -2881,7 +2881,7 @@ func (d device) Seat() Seat
 
 func (d device) Source() InputSource
 
-func (d device) SurfaceAtPosition() (float64, float64, Surface)
+func (d device) SurfaceAtPosition() (winX float64, winY float64, surface Surface)
 
 func (d device) VendorID() string
 
@@ -3031,7 +3031,7 @@ type Display interface {
 	// level.
 	//
 	// Free the returned arrays with g_free().
-	MapKeycode(keycode uint) ([]*KeymapKey, []uint, int, bool)
+	MapKeycode(keycode uint) (keys []*KeymapKey, keyvals []uint, nEntries int, ok bool)
 	// MapKeyval: obtains a list of keycode/group/level combinations that will
 	// generate @keyval. Groups and levels are two kinds of keyboard mode; in
 	// general, the level determines whether the top or bottom symbol on a key
@@ -3046,7 +3046,7 @@ type Display interface {
 	// The level is computed from the modifier mask.
 	//
 	// The returned array should be freed with g_free().
-	MapKeyval(keyval uint) ([]*KeymapKey, int, bool)
+	MapKeyval(keyval uint) (keys []*KeymapKey, nKeys int, ok bool)
 	// NotifyStartupComplete: indicates to the GUI environment that the
 	// application has finished loading, using a given identifier.
 	//
@@ -3093,7 +3093,7 @@ type Display interface {
 	// This function should rarely be needed, since EventKey already contains
 	// the translated keyval. It is exported for the benefit of virtualized test
 	// environments.
-	TranslateKey(keycode uint, state ModifierType, group int) (uint, int, int, ModifierType, bool)
+	TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
 }
 
 type display struct {
@@ -3144,9 +3144,9 @@ func (d display) IsRgba() bool
 
 func (d display) ListSeats() *glib.List
 
-func (d display) MapKeycode(keycode uint) ([]*KeymapKey, []uint, int, bool)
+func (d display) MapKeycode(keycode uint) (keys []*KeymapKey, keyvals []uint, nEntries int, ok bool)
 
-func (d display) MapKeyval(keyval uint) ([]*KeymapKey, int, bool)
+func (d display) MapKeyval(keyval uint) (keys []*KeymapKey, nKeys int, ok bool)
 
 func (d display) NotifyStartupComplete(startupID string)
 
@@ -3156,7 +3156,7 @@ func (d display) SupportsInputShapes() bool
 
 func (d display) Sync()
 
-func (d display) TranslateKey(keycode uint, state ModifierType, group int) (uint, int, int, ModifierType, bool)
+func (d display) TranslateKey(keycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumed ModifierType, ok bool)
 
 // DisplayManager: the purpose of the DisplayManager singleton object is to
 // offer notification when displays appear or disappear or the default display
@@ -3434,7 +3434,7 @@ type Drop interface {
 	ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// ReadFinish: finishes an async drop read operation, see
 	// gdk_drop_read_async().
-	ReadFinish(result gio.AsyncResult) (string, gio.InputStream)
+	ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream)
 	// ReadValueAsync: asynchronously request the drag operation's contents
 	// converted to the given @type. When the operation is finished @callback
 	// will be called. You can then call gdk_drop_read_value_finish() to get the
@@ -3494,7 +3494,7 @@ func (d drop) Surface() Surface
 
 func (d drop) ReadAsync(mimeTypes []string, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
-func (d drop) ReadFinish(result gio.AsyncResult) (string, gio.InputStream)
+func (d drop) ReadFinish(result gio.AsyncResult) (outMIMEType string, inputStream gio.InputStream)
 
 func (d drop) ReadValueAsync(_type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 
@@ -3593,7 +3593,7 @@ type FrameClock interface {
 	// presentation times are separated by the refresh interval, predicts a
 	// presentation time that is a multiple of the refresh interval after the
 	// last presentation time, and later than @base_time.
-	RefreshInfo(baseTime int64) (int64, int64)
+	RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
 	// Timings: retrieves a FrameTimings object holding timing information for
 	// the current frame or a recent frame. The FrameTimings object may not yet
 	// be complete: see gdk_frame_timings_get_complete().
@@ -3637,7 +3637,7 @@ func (f frameClock) FrameTime() int64
 
 func (f frameClock) HistoryStart() int64
 
-func (f frameClock) RefreshInfo(baseTime int64) (int64, int64)
+func (f frameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64)
 
 func (f frameClock) Timings(frameCounter int64) *FrameTimings
 
@@ -3702,7 +3702,7 @@ type GLContext interface {
 	ForwardCompatible() bool
 	// RequiredVersion: retrieves the major and minor version requested by
 	// calling gdk_gl_context_set_required_version().
-	RequiredVersion() (int, int)
+	RequiredVersion() (major int, minor int)
 	// SharedContext: retrieves the GLContext that this @context share data
 	// with.
 	SharedContext() GLContext
@@ -3714,7 +3714,7 @@ type GLContext interface {
 	// Version: retrieves the OpenGL version of the @context.
 	//
 	// The @context must be realized prior to calling this function.
-	Version() (int, int)
+	Version() (major int, minor int)
 	// IsLegacy: whether the GLContext is in legacy mode or not.
 	//
 	// The GLContext must be realized before calling this function.
@@ -3799,7 +3799,7 @@ func (g glContext) Display() Display
 
 func (g glContext) ForwardCompatible() bool
 
-func (g glContext) RequiredVersion() (int, int)
+func (g glContext) RequiredVersion() (major int, minor int)
 
 func (g glContext) SharedContext() GLContext
 
@@ -3807,7 +3807,7 @@ func (g glContext) Surface() Surface
 
 func (g glContext) UseES() bool
 
-func (g glContext) Version() (int, int)
+func (g glContext) Version() (major int, minor int)
 
 func (g glContext) IsLegacy() bool
 
@@ -3897,7 +3897,7 @@ type KeyEvent interface {
 	Level() uint
 	// Match: gets a keyval and modifier combination that will cause
 	// gdk_key_event_matches() to successfully match the given event.
-	Match() (uint, ModifierType, bool)
+	Match() (keyval uint, modifiers ModifierType, ok bool)
 	// IsModifier: extracts whether the key event is for a modifier key.
 	IsModifier() bool
 	// Matches: matches a key event against a keyboard shortcut that is
@@ -3932,7 +3932,7 @@ func (k keyEvent) Layout() uint
 
 func (k keyEvent) Level() uint
 
-func (k keyEvent) Match() (uint, ModifierType, bool)
+func (k keyEvent) Match() (keyval uint, modifiers ModifierType, ok bool)
 
 func (k keyEvent) IsModifier() bool
 
@@ -4069,11 +4069,11 @@ type PadEvent interface {
 	Event
 
 	// AxisValue: extracts the information from a pad strip or ring event.
-	AxisValue() (uint, float64)
+	AxisValue() (index uint, value float64)
 	// Button: extracts information about the pressed button from a pad event.
 	Button() uint
 	// GroupMode: extracts group and mode information from a pad event.
-	GroupMode() (uint, uint)
+	GroupMode() (group uint, mode uint)
 }
 
 type padEvent struct {
@@ -4090,11 +4090,11 @@ func marshalPadEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (p padEvent) AxisValue() (uint, float64)
+func (p padEvent) AxisValue() (index uint, value float64)
 
 func (p padEvent) Button() uint
 
-func (p padEvent) GroupMode() (uint, uint)
+func (p padEvent) GroupMode() (group uint, mode uint)
 
 // ProximityEvent: an event related to the proximity of a tool to a device.
 type ProximityEvent interface {
@@ -4122,7 +4122,7 @@ type ScrollEvent interface {
 	// Deltas: extracts the scroll deltas of a scroll event.
 	//
 	// The deltas will be zero unless the scroll direction is GDK_SCROLL_SMOOTH.
-	Deltas() (float64, float64)
+	Deltas() (deltaX float64, deltaY float64)
 	// Direction: extracts the direction of a scroll event.
 	Direction() ScrollDirection
 	// IsStop: check whether a scroll event is a stop scroll event. Scroll
@@ -4149,7 +4149,7 @@ func marshalScrollEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (s scrollEvent) Deltas() (float64, float64)
+func (s scrollEvent) Deltas() (deltaX float64, deltaY float64)
 
 func (s scrollEvent) Direction() ScrollDirection
 
@@ -4282,7 +4282,7 @@ type Surface interface {
 	// DevicePosition: obtains the current device position in doubles and
 	// modifier state. The position is given in coordinates relative to the
 	// upper left corner of @surface.
-	DevicePosition(device Device) (float64, float64, ModifierType, bool)
+	DevicePosition(device Device) (x float64, y float64, mask ModifierType, ok bool)
 	// Display: gets the Display associated with a Surface.
 	Display() Display
 	// FrameClock: gets the frame clock for the surface. The frame clock for a
@@ -4414,7 +4414,7 @@ func (s surface) Cursor() Cursor
 
 func (s surface) DeviceCursor(device Device) Cursor
 
-func (s surface) DevicePosition(device Device) (float64, float64, ModifierType, bool)
+func (s surface) DevicePosition(device Device) (x float64, y float64, mask ModifierType, ok bool)
 
 func (s surface) Display() Display
 
@@ -4537,7 +4537,7 @@ type TouchpadEvent interface {
 	Event
 
 	// Deltas: extracts delta information from a touchpad event.
-	Deltas() (float64, float64)
+	Deltas() (dx float64, dy float64)
 	// GesturePhase: extracts the touchpad gesture phase from a touchpad event.
 	GesturePhase() TouchpadGesturePhase
 	// NFingers: extracts the number of fingers from a touchpad event.
@@ -4562,7 +4562,7 @@ func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func (t touchpadEvent) Deltas() (float64, float64)
+func (t touchpadEvent) Deltas() (dx float64, dy float64)
 
 func (t touchpadEvent) GesturePhase() TouchpadGesturePhase
 

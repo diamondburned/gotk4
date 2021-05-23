@@ -151,28 +151,20 @@ func (ng *NamespaceGenerator) FnArgs(attrs gir.CallableAttrs) (string, bool) {
 	}
 
 	goArgs := make([]string, 0, len(attrs.Parameters.Parameters))
-	var ignores ignoreIxs
 
-	for i, param := range attrs.Parameters.Parameters {
-		ignores.paramIgnore(param)
-
-		// Skip output parameters or user_data args.
-		if param.Direction == "out" {
-			continue
-		}
-
-		// Skip user_data fields because we need them for the callback registry.
-		if ignores.ignore(i) {
-			continue
-		}
-
+	ok := iterateParams(attrs, func(_ int, param gir.Parameter) bool {
 		resolved, ok := ng.ResolveAnyType(param.AnyType, true)
 		if !ok {
-			return "", false
+			return false
 		}
 
 		goName := SnakeToGo(false, param.Name)
 		goArgs = append(goArgs, goName+" "+resolved)
+		return true
+	})
+
+	if !ok {
+		return "", false
 	}
 
 	return strings.Join(goArgs, ", "), true
@@ -183,40 +175,100 @@ func (ng *NamespaceGenerator) FnArgs(attrs gir.CallableAttrs) (string, bool) {
 func (ng *NamespaceGenerator) FnReturns(attrs gir.CallableAttrs) (string, bool) {
 	var returns []string
 
-	if attrs.Parameters != nil {
-		for _, param := range attrs.Parameters.Parameters {
-			if param.Direction != "out" {
-				continue
-			}
+	ok := iterateReturns(attrs, func(goName string, i int, any gir.AnyType) bool {
+		typ, ok := ng.ResolveAnyType(any, true)
+		if !ok {
+			return false
+		}
 
-			typ, ok := ng.ResolveAnyType(param.AnyType, true)
-			if !ok {
-				return "", false
-			}
-
+		// if parameter
+		if i != -1 {
 			// Hacky way to "dereference" a pointer once.
 			if strings.HasPrefix(typ, "*") {
 				typ = typ[1:]
 			}
-
-			returns = append(returns, typ)
-		}
-	}
-
-	if attrs.ReturnValue != nil {
-		typ, ok := ng.ResolveAnyType(attrs.ReturnValue.AnyType, true)
-		if !ok {
-			return "", false
 		}
 
-		returns = append(returns, typ)
-	}
+		returns = append(returns, goName+" "+typ)
+		return true
+	})
 
-	if len(returns) == 0 {
-		return "", true
+	if len(returns) == 0 || !ok {
+		return "", ok
 	}
 	if len(returns) == 1 {
-		return returns[0], true
+		// Only use the type if we have 1 return.
+		return strings.Split(returns[0], " ")[1], true
 	}
+
 	return "(" + strings.Join(returns, ", ") + ")", true
+}
+
+// iterateParams iterates over parameters.
+func iterateParams(attr gir.CallableAttrs, fn func(int, gir.Parameter) bool) bool {
+	if attr.Parameters == nil {
+		return true
+	}
+
+	var ignores ignoreIxs
+
+	for i, param := range attr.Parameters.Parameters {
+		ignores.paramIgnore(param)
+
+		if param.Direction == "out" || ignores.ignore(i) {
+			continue
+		}
+
+		if !fn(i, param) {
+			return false
+		}
+	}
+
+	return true
+}
+
+// iterateReturns iterates over returns. The given index integer is -1 if the
+// given type is from the return. The given string is the Go name.
+func iterateReturns(attr gir.CallableAttrs, fn func(string, int, gir.AnyType) bool) bool {
+	if attr.Parameters != nil {
+		for i, param := range attr.Parameters.Parameters {
+			if param.Direction != "out" || param.AnyType.VarArgs != nil {
+				continue
+			}
+
+			if !fn(SnakeToGo(false, param.Name), i, param.AnyType) {
+				return false
+			}
+		}
+	}
+
+	if !returnIsVoid(attr.ReturnValue) {
+		retName := anyTypeName(attr.ReturnValue.AnyType, "ret")
+		if !fn(UnexportPascal(retName), -1, attr.ReturnValue.AnyType) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func anyTypeName(typ gir.AnyType, or string) string {
+	switch {
+	case typ.Type != nil:
+		if typ.Type.Name == "gboolean" {
+			return "ok"
+		}
+		parts := strings.Split(typ.Type.Name, ".")
+		return parts[len(parts)-1]
+
+	case typ.Array != nil:
+		name := anyTypeName(typ.Array.AnyType, or)
+		if !strings.HasSuffix(name, "s") {
+			return name + "s"
+		}
+		return name
+
+	default:
+		return or
+	}
 }

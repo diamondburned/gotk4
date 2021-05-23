@@ -447,8 +447,8 @@ func marshalOverline(p uintptr) (interface{}, error) {
 	return Overline(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// RenderPart: renderPart defines different items to render for such purposes as
-// setting colors.
+// RenderPart defines different items to render for such purposes as setting
+// colors.
 type RenderPart int
 
 const (
@@ -1615,7 +1615,7 @@ func FindBaseDir(text string, length int) Direction {
 // If no delimiters are found, both @paragraph_delimiter_index and
 // @next_paragraph_start are filled with the length of @text (an index one off
 // the end).
-func FindParagraphBoundary(text string, length int) (int, int) {
+func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int, nextParagraphStart int) {
 	var arg0 string
 	arg0 = C.GoString(text)
 	defer C.free(unsafe.Pointer(text))
@@ -2041,7 +2041,7 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) uin
 // g_markup_parse_context_parse(), use this function to get the list of
 // attributes and text out of the markup. This function will not free @context,
 // use g_markup_parse_context_free() to do so.
-func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, bool) {
+func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, text string, accelChar uint32, ok bool) {
 	var arg0 *glib.MarkupParseContext
 	arg0 = wrapMarkupParseContext(context)
 
@@ -2111,7 +2111,7 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 // @possible_values. The list is slash-separated, eg. "none/start/middle/end".
 // If failed and @possible_values is not nil, returned string should be freed
 // using g_free().
-func ParseEnum(_type externglib.Type, str string, warn bool) (int, string, bool) {
+func ParseEnum(_type externglib.Type, str string, warn bool) (value int, possibleValues string, ok bool) {
 	var arg1 string
 	arg1 = C.GoString(str)
 	defer C.free(unsafe.Pointer(str))
@@ -2156,7 +2156,7 @@ func ParseEnum(_type externglib.Type, str string, warn bool) (int, string, bool)
 //
 // If any error happens, none of the output arguments are touched except for
 // @error.
-func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, bool) {
+func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *AttrList, text string, accelChar uint32, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(markupText)
 	defer C.free(unsafe.Pointer(markupText))
@@ -2197,7 +2197,7 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 // "semi_condensed", "normal", "semi_expanded", "expanded", "extra_expanded" and
 // "ultra_expanded". Case variations are ignored and the '_' characters may be
 // omitted.
-func ParseStretch(str string, warn bool) (Stretch, bool) {
+func ParseStretch(str string, warn bool) (stretch Stretch, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(str)
 	defer C.free(unsafe.Pointer(str))
@@ -2222,7 +2222,7 @@ func ParseStretch(str string, warn bool) (Stretch, bool) {
 //
 // The allowed values are "normal", "italic" and "oblique", case variations
 // being ignored.
-func ParseStyle(str string, warn bool) (Style, bool) {
+func ParseStyle(str string, warn bool) (style Style, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(str)
 	defer C.free(unsafe.Pointer(str))
@@ -2247,7 +2247,7 @@ func ParseStyle(str string, warn bool) (Style, bool) {
 //
 // The allowed values are "normal" and "smallcaps" or "small_caps", case
 // variations being ignored.
-func ParseVariant(str string, warn bool) (Variant, bool) {
+func ParseVariant(str string, warn bool) (variant Variant, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(str)
 	defer C.free(unsafe.Pointer(str))
@@ -2272,7 +2272,7 @@ func ParseVariant(str string, warn bool) (Variant, bool) {
 //
 // The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
 // "ultraleight" and integers. Case variations are ignored.
-func ParseWeight(str string, warn bool) (Weight, bool) {
+func ParseWeight(str string, warn bool) (weight Weight, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(str)
 	defer C.free(unsafe.Pointer(str))
@@ -2353,7 +2353,7 @@ func ReorderItems(logicalItems *glib.List) *glib.List {
 // ScanInt: scans an integer.
 //
 // Leading white space is skipped.
-func ScanInt(pos string) (int, bool) {
+func ScanInt(pos string) (out int, ok bool) {
 	var arg0 string
 	arg0 = C.GoString(pos)
 	defer C.free(unsafe.Pointer(pos))
@@ -4153,7 +4153,7 @@ type Context interface {
 	// `PangoContext` changes, like `PangoLayout`.
 	Serial() uint
 	// ListFamilies: list all families for a context.
-	ListFamilies() ([]*FontFamily, int)
+	ListFamilies() (families []*FontFamily, nFamilies int)
 	// LoadFont: loads the font in one of the fontmaps in the context that is
 	// the closest match for @desc.
 	LoadFont(desc *FontDescription) Font
@@ -4255,7 +4255,7 @@ func (c context) RoundGlyphPositions() bool
 
 func (c context) Serial() uint
 
-func (c context) ListFamilies() ([]*FontFamily, int)
+func (c context) ListFamilies() (families []*FontFamily, nFamilies int)
 
 func (c context) LoadFont(desc *FontDescription) Font
 
@@ -4300,7 +4300,7 @@ type Coverage interface {
 	// Set: modify a particular index within @coverage
 	Set(index_ int, level CoverageLevel)
 	// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
-	ToBytes() ([]uint8, int)
+	ToBytes() (bytes []uint8, nBytes int)
 	// Unref: decrease the reference count on the `PangoCoverage` by one.
 	//
 	// If the result is zero, free the coverage and all associated memory.
@@ -4333,7 +4333,7 @@ func (c coverage) Ref() Coverage
 
 func (c coverage) Set(index_ int, level CoverageLevel)
 
-func (c coverage) ToBytes() ([]uint8, int)
+func (c coverage) ToBytes() (bytes []uint8, nBytes int)
 
 func (c coverage) Unref()
 
@@ -4379,7 +4379,7 @@ type Font interface {
 	//
 	// If @font is nil, this function gracefully sets some sane values in the
 	// output variables and returns.
-	GlyphExtents(glyph Glyph) (Rectangle, Rectangle)
+	GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle)
 	// Metrics: gets overall metric information for a font.
 	//
 	// Since the metrics may be substantially different for different scripts, a
@@ -4419,7 +4419,7 @@ func (f font) Face() FontFace
 
 func (f font) FontMap() FontMap
 
-func (f font) GlyphExtents(glyph Glyph) (Rectangle, Rectangle)
+func (f font) GlyphExtents(glyph Glyph) (inkRect Rectangle, logicalRect Rectangle)
 
 func (f font) Metrics(language *Language) *FontMetrics
 
@@ -4450,7 +4450,7 @@ type FontFace interface {
 	// at the location pointed to by @sizes and 0 at the location pointed to by
 	// @n_sizes. The sizes returned are in Pango units and are sorted in
 	// ascending order.
-	ListSizes() ([]int, int)
+	ListSizes() (sizes []int, nSizes int)
 }
 
 type fontFace struct {
@@ -4475,7 +4475,7 @@ func (f fontFace) Family() FontFamily
 
 func (f fontFace) IsSynthesized() bool
 
-func (f fontFace) ListSizes() ([]int, int)
+func (f fontFace) ListSizes() (sizes []int, nSizes int)
 
 // FontFamily: a `PangoFontFamily` is used to represent a family of related font
 // faces.
@@ -4514,7 +4514,7 @@ type FontFamily interface {
 	//
 	// The faces in a family share a common design, but differ in slant, weight,
 	// width and other aspects.
-	ListFaces() ([]*FontFace, int)
+	ListFaces() (faces []*FontFace, nFaces int)
 }
 
 type fontFamily struct {
@@ -4539,7 +4539,7 @@ func (f fontFamily) IsMonospace() bool
 
 func (f fontFamily) IsVariable() bool
 
-func (f fontFamily) ListFaces() ([]*FontFace, int)
+func (f fontFamily) ListFaces() (faces []*FontFace, nFaces int)
 
 // FontMap: a `PangoFontMap` represents the set of fonts available for a
 // particular rendering system.
@@ -4582,7 +4582,7 @@ type FontMap interface {
 	// like in `PangoContext`.
 	Serial() uint
 	// ListFamilies: list all families for a fontmap.
-	ListFamilies() ([]*FontFamily, int)
+	ListFamilies() (families []*FontFamily, nFamilies int)
 	// LoadFont: load the font in the fontmap that is the closest match for
 	// @desc.
 	LoadFont(context Context, desc *FontDescription) Font
@@ -4613,7 +4613,7 @@ func (f fontMap) Family(name string) FontFamily
 
 func (f fontMap) Serial() uint
 
-func (f fontMap) ListFamilies() ([]*FontFamily, int)
+func (f fontMap) ListFamilies() (families []*FontFamily, nFamilies int)
 
 func (f fontMap) LoadFont(context Context, desc *FontDescription) Font
 
@@ -4757,7 +4757,7 @@ type Layout interface {
 	// directionality equal to the base direction of the layout are inserted.
 	// The weak cursor location is the location where characters of the
 	// directionality opposite to the base direction of the layout are inserted.
-	CursorPos(index_ int) (Rectangle, Rectangle)
+	CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle)
 	// Direction: gets the text direction at the given character position in
 	// @layout.
 	Direction(index int) Direction
@@ -4778,7 +4778,7 @@ type Layout interface {
 	//
 	// The extents are given in layout coordinates and in Pango units; layout
 	// coordinates begin at the top left corner of the layout.
-	Extents() (Rectangle, Rectangle)
+	Extents() (inkRect Rectangle, logicalRect Rectangle)
 	// FontDescription: gets the font description for the layout, if any.
 	FontDescription() *FontDescription
 	// Height: gets the height of layout used for ellipsization.
@@ -4825,7 +4825,7 @@ type Layout interface {
 	LinesReadonly() *glib.SList
 	// LogAttrs: retrieves an array of logical attributes for each character in
 	// the @layout.
-	LogAttrs() ([]*LogAttr, int)
+	LogAttrs() (attrs []*LogAttr, nAttrs int)
 	// LogAttrsReadonly: retrieves an array of logical attributes for each
 	// character in the @layout.
 	//
@@ -4837,7 +4837,7 @@ type Layout interface {
 	// total number of characters in the layout, since there need to be
 	// attributes corresponding to both the position before the first character
 	// and the position after the last character.
-	LogAttrsReadonly() (int, []LogAttr)
+	LogAttrsReadonly() (nAttrs int, logAttrs []LogAttr)
 	// PixelExtents: computes the logical and ink extents of @layout in device
 	// units.
 	//
@@ -4845,14 +4845,14 @@ type Layout interface {
 	// two [func@extents_to_pixels] calls, rounding @ink_rect and @logical_rect
 	// such that the rounded rectangles fully contain the unrounded one (that
 	// is, passes them as first argument to `pango_extents_to_pixels()`).
-	PixelExtents() (Rectangle, Rectangle)
+	PixelExtents() (inkRect Rectangle, logicalRect Rectangle)
 	// PixelSize: determines the logical width and height of a `PangoLayout` in
 	// device units.
 	//
 	// [method@Pango.Layout.get_size] returns the width and height scaled by
 	// PANGO_SCALE. This is simply a convenience function around
 	// [method@Pango.Layout.get_pixel_extents].
-	PixelSize() (int, int)
+	PixelSize() (width int, height int)
 	// Serial: returns the current serial number of @layout.
 	//
 	// The serial number is initialized to an small number larger than zero when
@@ -4875,7 +4875,7 @@ type Layout interface {
 	//
 	// This is simply a convenience function around
 	// [method@Pango.Layout.get_extents].
-	Size() (int, int)
+	Size() (width int, height int)
 	// Spacing: gets the amount of spacing between the lines of the layout.
 	Spacing() int
 	// Tabs: gets the current `PangoTabArray` used by this layout.
@@ -4907,7 +4907,7 @@ type Layout interface {
 	// position.
 	//
 	// The X position is measured from the left edge of the line.
-	IndexToLineX(index_ int, trailing bool) (int, int)
+	IndexToLineX(index_ int, trailing bool) (line int, xPos int)
 	// IndexToPos: converts from an index within a `PangoLayout` to the onscreen
 	// position corresponding to the grapheme at that index.
 	//
@@ -4944,7 +4944,7 @@ type Layout interface {
 	// to [method@Pango.Layout.move_cursor_visually] may move the cursor over
 	// multiple characters when multiple characters combine to form a single
 	// grapheme.
-	MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (int, int)
+	MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int)
 	// SetAlignment: sets the alignment for the layout: how partial lines are
 	// positioned within the horizontal space available.
 	SetAlignment(alignment Alignment)
@@ -5123,7 +5123,7 @@ type Layout interface {
 	// is chosen as described for [method@Pango.LayoutLine.x_to_index]. If
 	// either the X or Y positions were not inside the layout, then the function
 	// returns false; on an exact hit, it returns true.
-	XYToIndex(x int, y int) (int, int, bool)
+	XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
 }
 
 type layout struct {
@@ -5158,13 +5158,13 @@ func (l layout) CharacterCount() int
 
 func (l layout) Context() Context
 
-func (l layout) CursorPos(index_ int) (Rectangle, Rectangle)
+func (l layout) CursorPos(index_ int) (strongPos Rectangle, weakPos Rectangle)
 
 func (l layout) Direction(index int) Direction
 
 func (l layout) Ellipsize() EllipsizeMode
 
-func (l layout) Extents() (Rectangle, Rectangle)
+func (l layout) Extents() (inkRect Rectangle, logicalRect Rectangle)
 
 func (l layout) FontDescription() *FontDescription
 
@@ -5188,19 +5188,19 @@ func (l layout) Lines() *glib.SList
 
 func (l layout) LinesReadonly() *glib.SList
 
-func (l layout) LogAttrs() ([]*LogAttr, int)
+func (l layout) LogAttrs() (attrs []*LogAttr, nAttrs int)
 
-func (l layout) LogAttrsReadonly() (int, []LogAttr)
+func (l layout) LogAttrsReadonly() (nAttrs int, logAttrs []LogAttr)
 
-func (l layout) PixelExtents() (Rectangle, Rectangle)
+func (l layout) PixelExtents() (inkRect Rectangle, logicalRect Rectangle)
 
-func (l layout) PixelSize() (int, int)
+func (l layout) PixelSize() (width int, height int)
 
 func (l layout) Serial() uint
 
 func (l layout) SingleParagraphMode() bool
 
-func (l layout) Size() (int, int)
+func (l layout) Size() (width int, height int)
 
 func (l layout) Spacing() int
 
@@ -5214,7 +5214,7 @@ func (l layout) Width() int
 
 func (l layout) Wrap() WrapMode
 
-func (l layout) IndexToLineX(index_ int, trailing bool) (int, int)
+func (l layout) IndexToLineX(index_ int, trailing bool) (line int, xPos int)
 
 func (l layout) IndexToPos(index_ int) Rectangle
 
@@ -5222,7 +5222,7 @@ func (l layout) IsEllipsized() bool
 
 func (l layout) IsWrapped() bool
 
-func (l layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (int, int)
+func (l layout) MoveCursorVisually(strong bool, oldIndex int, oldTrailing int, direction int) (newIndex int, newTrailing int)
 
 func (l layout) SetAlignment(alignment Alignment)
 
@@ -5258,7 +5258,7 @@ func (l layout) SetWidth(width int)
 
 func (l layout) SetWrap(wrap WrapMode)
 
-func (l layout) XYToIndex(x int, y int) (int, int, bool)
+func (l layout) XYToIndex(x int, y int) (index_ int, trailing int, ok bool)
 
 // Renderer: `PangoRenderer` is a base class for objects that can render text
 // provided as `PangoGlyphString` or `PangoLayout`.

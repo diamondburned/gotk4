@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
+	"github.com/diamondburned/gotk4/internal/pen"
 )
 
 var callbackTmpl = newGoTemplate(`
@@ -12,7 +13,7 @@ var callbackTmpl = newGoTemplate(`
 	type {{ .GoName }} func{{ .Tail }}
 
 	//export c{{ .GoName }}
-	func c{{ .GoName }}{{ .CTail }}
+	func c{{ .GoName }}{{ .CTail }} {{ .CBlock }}
 `)
 
 type callbackGenerator struct {
@@ -64,6 +65,65 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 	}
 
 	return true
+}
+
+func (fg *callbackGenerator) CBlock() string {
+	// We need a data parameter to access our callbacks; we can't do this if
+	// there are no params.
+	if fg.Parameters == nil || len(fg.Parameters.Parameters) == 0 {
+		return ""
+	}
+
+	b := pen.NewBlock()
+
+	// indices in fg.Parameters.Parameters
+	var closureParam *int
+
+	for _, param := range fg.Parameters.Parameters {
+		if param.Closure != nil {
+			closureParam = param.Closure
+			break
+		}
+	}
+
+	// No data parameter to use; exit.
+	if closureParam == nil {
+		return ""
+	}
+
+	fg.Ng.addImport("github.com/diamondburned/gotk4/internal/box")
+
+	b.Linef("v := box.Get(box.Callback, uintptr(arg%d))", *closureParam)
+	b.Linef("if v == nil {")
+	b.Linef("  panic(`callback not found`)")
+	b.Linef("}")
+	b.EmptyLine()
+
+	argAt := func(i int) string { return fmt.Sprintf("arg%d", i) }
+	goArgs := pen.NewJoints(", ", len(fg.Parameters.Parameters))
+	goRets := pen.NewJoints(", ", len(fg.Parameters.Parameters)+1)
+
+	iterateParams(fg.CallableAttrs, func(i int, param gir.Parameter) bool {
+		goName := SnakeToGo(false, param.Name)
+		goType, _ := fg.Ng.ResolveAnyType(param.AnyType, false)
+		b.Linef("var %s %s", goName, goType)
+
+		conv := fg.Ng.CGoConverter(argAt(i), goName, param.AnyType, argAt)
+		b.Line(conv)
+		b.EmptyLine()
+
+		goArgs.Add(goName)
+		return true
+	})
+
+	iterateReturns(fg.CallableAttrs, func(goName string, i int, typ gir.AnyType) bool {
+		goRets.Add(goName)
+		return true
+	})
+
+	b.Linef("%s := v.(%s)(%s)", goRets.Join(), fg.GoName, goArgs.Join())
+
+	return b.String()
 }
 
 func (ng *NamespaceGenerator) generateCallbacks() {

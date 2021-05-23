@@ -270,7 +270,7 @@ type X11Display interface {
 	// gdk_x11_surface_set_group().
 	DefaultGroup() gdk.Surface
 	// GlxVersion: retrieves the version of the GLX implementation.
-	GlxVersion() (int, int, bool)
+	GlxVersion() (major int, minor int, ok bool)
 	// PrimaryMonitor: gets the primary monitor for the display.
 	//
 	// The primary monitor is considered the monitor where the “main desktop”
@@ -343,7 +343,7 @@ type X11Display interface {
 	SetSurfaceScale(scale int)
 	// StringToCompoundText: convert a string from the encoding of the current
 	// locale into a form suitable for storing in a window property.
-	StringToCompoundText(str string) (string, int, []uint8, int, int)
+	StringToCompoundText(str string) (encoding string, format int, ctext []uint8, length int, gint int)
 	// TextPropertyToTextList: convert a text string from the encoding as it is
 	// stored in a property into an array of strings in the encoding of the
 	// current locale. (The elements of the array represent the nul-separated
@@ -353,7 +353,7 @@ type X11Display interface {
 	// gdk_x11_display_grab().
 	Ungrab()
 	// UTF8ToCompoundText: converts from UTF-8 to compound text.
-	UTF8ToCompoundText(str string) (string, int, []uint8, int, bool)
+	UTF8ToCompoundText(str string) (encoding string, format int, ctext []uint8, length int, ok bool)
 }
 
 type x11Display struct {
@@ -378,7 +378,7 @@ func (x x11Display) ErrorTrapPush()
 
 func (x x11Display) DefaultGroup() gdk.Surface
 
-func (x x11Display) GlxVersion() (int, int, bool)
+func (x x11Display) GlxVersion() (major int, minor int, ok bool)
 
 func (x x11Display) PrimaryMonitor() gdk.Monitor
 
@@ -404,13 +404,13 @@ func (x x11Display) SetStartupNotificationID(startupID string)
 
 func (x x11Display) SetSurfaceScale(scale int)
 
-func (x x11Display) StringToCompoundText(str string) (string, int, []uint8, int, int)
+func (x x11Display) StringToCompoundText(str string) (encoding string, format int, ctext []uint8, length int, gint int)
 
 func (x x11Display) TextPropertyToTextList(encoding string, format int, text uint8, length int, list string) int
 
 func (x x11Display) Ungrab()
 
-func (x x11Display) UTF8ToCompoundText(str string) (string, int, []uint8, int, bool)
+func (x x11Display) UTF8ToCompoundText(str string) (encoding string, format int, ctext []uint8, length int, ok bool)
 
 type X11Drag interface {
 	gdk.Drag

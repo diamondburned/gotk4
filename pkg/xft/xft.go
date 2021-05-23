@@ -11,6 +11,8 @@ import (
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
+//
+//
 import "C"
 
 func init() {

@@ -12,6 +12,8 @@ import (
 // #cgo pkg-config: graphene-gobject-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <graphene-gobject.h>
+//
+//
 import "C"
 
 func init() {
@@ -71,76 +73,76 @@ const (
 	// EulerOrderZYX: rotate in the Z, Y, and X order. Deprecated in Graphene
 	// 1.10, it's an alias for GRAPHENE_EULER_ORDER_SZYX
 	EulerOrderZYX EulerOrder = 5
-	// EulerOrderSXYZ: defines a static rotation along the X, Y, and Z axes
+	// EulerOrderSXYZ defines a static rotation along the X, Y, and Z axes
 	// (Since: 1.10)
 	EulerOrderSXYZ EulerOrder = 6
-	// EulerOrderSXYX: defines a static rotation along the X, Y, and X axes
+	// EulerOrderSXYX defines a static rotation along the X, Y, and X axes
 	// (Since: 1.10)
 	EulerOrderSXYX EulerOrder = 7
-	// EulerOrderSXZY: defines a static rotation along the X, Z, and Y axes
+	// EulerOrderSXZY defines a static rotation along the X, Z, and Y axes
 	// (Since: 1.10)
 	EulerOrderSXZY EulerOrder = 8
-	// EulerOrderSXZX: defines a static rotation along the X, Z, and X axes
+	// EulerOrderSXZX defines a static rotation along the X, Z, and X axes
 	// (Since: 1.10)
 	EulerOrderSXZX EulerOrder = 9
-	// EulerOrderSYZX: defines a static rotation along the Y, Z, and X axes
+	// EulerOrderSYZX defines a static rotation along the Y, Z, and X axes
 	// (Since: 1.10)
 	EulerOrderSYZX EulerOrder = 10
-	// EulerOrderSYZY: defines a static rotation along the Y, Z, and Y axes
+	// EulerOrderSYZY defines a static rotation along the Y, Z, and Y axes
 	// (Since: 1.10)
 	EulerOrderSYZY EulerOrder = 11
-	// EulerOrderSYXZ: defines a static rotation along the Y, X, and Z axes
+	// EulerOrderSYXZ defines a static rotation along the Y, X, and Z axes
 	// (Since: 1.10)
 	EulerOrderSYXZ EulerOrder = 12
-	// EulerOrderSYXY: defines a static rotation along the Y, X, and Y axes
+	// EulerOrderSYXY defines a static rotation along the Y, X, and Y axes
 	// (Since: 1.10)
 	EulerOrderSYXY EulerOrder = 13
-	// EulerOrderSZXY: defines a static rotation along the Z, X, and Y axes
+	// EulerOrderSZXY defines a static rotation along the Z, X, and Y axes
 	// (Since: 1.10)
 	EulerOrderSZXY EulerOrder = 14
-	// EulerOrderSZXZ: defines a static rotation along the Z, X, and Z axes
+	// EulerOrderSZXZ defines a static rotation along the Z, X, and Z axes
 	// (Since: 1.10)
 	EulerOrderSZXZ EulerOrder = 15
-	// EulerOrderSZYX: defines a static rotation along the Z, Y, and X axes
+	// EulerOrderSZYX defines a static rotation along the Z, Y, and X axes
 	// (Since: 1.10)
 	EulerOrderSZYX EulerOrder = 16
-	// EulerOrderSZYZ: defines a static rotation along the Z, Y, and Z axes
+	// EulerOrderSZYZ defines a static rotation along the Z, Y, and Z axes
 	// (Since: 1.10)
 	EulerOrderSZYZ EulerOrder = 17
-	// EulerOrderRZYX: defines a relative rotation along the Z, Y, and X axes
+	// EulerOrderRZYX defines a relative rotation along the Z, Y, and X axes
 	// (Since: 1.10)
 	EulerOrderRZYX EulerOrder = 18
-	// EulerOrderRXYX: defines a relative rotation along the X, Y, and X axes
+	// EulerOrderRXYX defines a relative rotation along the X, Y, and X axes
 	// (Since: 1.10)
 	EulerOrderRXYX EulerOrder = 19
-	// EulerOrderRYZX: defines a relative rotation along the Y, Z, and X axes
+	// EulerOrderRYZX defines a relative rotation along the Y, Z, and X axes
 	// (Since: 1.10)
 	EulerOrderRYZX EulerOrder = 20
-	// EulerOrderRXZX: defines a relative rotation along the X, Z, and X axes
+	// EulerOrderRXZX defines a relative rotation along the X, Z, and X axes
 	// (Since: 1.10)
 	EulerOrderRXZX EulerOrder = 21
-	// EulerOrderRXZY: defines a relative rotation along the X, Z, and Y axes
+	// EulerOrderRXZY defines a relative rotation along the X, Z, and Y axes
 	// (Since: 1.10)
 	EulerOrderRXZY EulerOrder = 22
-	// EulerOrderRYZY: defines a relative rotation along the Y, Z, and Y axes
+	// EulerOrderRYZY defines a relative rotation along the Y, Z, and Y axes
 	// (Since: 1.10)
 	EulerOrderRYZY EulerOrder = 23
-	// EulerOrderRZXY: defines a relative rotation along the Z, X, and Y axes
+	// EulerOrderRZXY defines a relative rotation along the Z, X, and Y axes
 	// (Since: 1.10)
 	EulerOrderRZXY EulerOrder = 24
-	// EulerOrderRYXY: defines a relative rotation along the Y, X, and Y axes
+	// EulerOrderRYXY defines a relative rotation along the Y, X, and Y axes
 	// (Since: 1.10)
 	EulerOrderRYXY EulerOrder = 25
-	// EulerOrderRYXZ: defines a relative rotation along the Y, X, and Z axes
+	// EulerOrderRYXZ defines a relative rotation along the Y, X, and Z axes
 	// (Since: 1.10)
 	EulerOrderRYXZ EulerOrder = 26
-	// EulerOrderRZXZ: defines a relative rotation along the Z, X, and Z axes
+	// EulerOrderRZXZ defines a relative rotation along the Z, X, and Z axes
 	// (Since: 1.10)
 	EulerOrderRZXZ EulerOrder = 27
-	// EulerOrderRXYZ: defines a relative rotation along the X, Y, and Z axes
+	// EulerOrderRXYZ defines a relative rotation along the X, Y, and Z axes
 	// (Since: 1.10)
 	EulerOrderRXYZ EulerOrder = 28
-	// EulerOrderRZYZ: defines a relative rotation along the Z, Y, and Z axes
+	// EulerOrderRZYZ defines a relative rotation along the Z, Y, and Z axes
 	// (Since: 1.10)
 	EulerOrderRZYZ EulerOrder = 29
 )
@@ -233,7 +235,7 @@ func BoxZero() *Box {
 	return ret0
 }
 
-// Point3DZero: retrieves a constant point with all three coordinates set to 0.
+// Point3DZero retrieves a constant point with all three coordinates set to 0.
 func Point3DZero() *Point3D {
 	ret := C.graphene_point3d_zero()
 
@@ -243,7 +245,7 @@ func Point3DZero() *Point3D {
 	return ret0
 }
 
-// PointZero: returns a point fixed at (0, 0).
+// PointZero returns a point fixed at (0, 0).
 func PointZero() *Point {
 	ret := C.graphene_point_zero()
 
@@ -253,7 +255,7 @@ func PointZero() *Point {
 	return ret0
 }
 
-// RectAlloc: allocates a new #graphene_rect_t.
+// RectAlloc allocates a new #graphene_rect_t.
 //
 // The contents of the returned rectangle are undefined.
 func RectAlloc() *Rect {
@@ -265,7 +267,7 @@ func RectAlloc() *Rect {
 	return ret0
 }
 
-// RectZero: returns a degenerate rectangle with origin fixed at (0, 0) and a
+// RectZero returns a degenerate rectangle with origin fixed at (0, 0) and a
 // size of 0, 0.
 func RectZero() *Rect {
 	ret := C.graphene_rect_zero()
@@ -287,7 +289,7 @@ func SizeZero() *Size {
 	return ret0
 }
 
-// Vec2One: retrieves a constant vector with (1, 1) components.
+// Vec2One retrieves a constant vector with (1, 1) components.
 func Vec2One() *Vec2 {
 	ret := C.graphene_vec2_one()
 
@@ -297,7 +299,7 @@ func Vec2One() *Vec2 {
 	return ret0
 }
 
-// Vec2XAxis: retrieves a constant vector with (1, 0) components.
+// Vec2XAxis retrieves a constant vector with (1, 0) components.
 func Vec2XAxis() *Vec2 {
 	ret := C.graphene_vec2_x_axis()
 
@@ -307,7 +309,7 @@ func Vec2XAxis() *Vec2 {
 	return ret0
 }
 
-// Vec2YAxis: retrieves a constant vector with (0, 1) components.
+// Vec2YAxis retrieves a constant vector with (0, 1) components.
 func Vec2YAxis() *Vec2 {
 	ret := C.graphene_vec2_y_axis()
 
@@ -317,7 +319,7 @@ func Vec2YAxis() *Vec2 {
 	return ret0
 }
 
-// Vec2Zero: retrieves a constant vector with (0, 0) components.
+// Vec2Zero retrieves a constant vector with (0, 0) components.
 func Vec2Zero() *Vec2 {
 	ret := C.graphene_vec2_zero()
 
@@ -327,7 +329,7 @@ func Vec2Zero() *Vec2 {
 	return ret0
 }
 
-// Vec3One: provides a constant pointer to a vector with three components, all
+// Vec3One provides a constant pointer to a vector with three components, all
 // sets to 1.
 func Vec3One() *Vec3 {
 	ret := C.graphene_vec3_one()
@@ -338,7 +340,7 @@ func Vec3One() *Vec3 {
 	return ret0
 }
 
-// Vec3XAxis: provides a constant pointer to a vector with three components with
+// Vec3XAxis provides a constant pointer to a vector with three components with
 // values set to (1, 0, 0).
 func Vec3XAxis() *Vec3 {
 	ret := C.graphene_vec3_x_axis()
@@ -349,7 +351,7 @@ func Vec3XAxis() *Vec3 {
 	return ret0
 }
 
-// Vec3YAxis: provides a constant pointer to a vector with three components with
+// Vec3YAxis provides a constant pointer to a vector with three components with
 // values set to (0, 1, 0).
 func Vec3YAxis() *Vec3 {
 	ret := C.graphene_vec3_y_axis()
@@ -360,7 +362,7 @@ func Vec3YAxis() *Vec3 {
 	return ret0
 }
 
-// Vec3ZAxis: provides a constant pointer to a vector with three components with
+// Vec3ZAxis provides a constant pointer to a vector with three components with
 // values set to (0, 0, 1).
 func Vec3ZAxis() *Vec3 {
 	ret := C.graphene_vec3_z_axis()
@@ -371,7 +373,7 @@ func Vec3ZAxis() *Vec3 {
 	return ret0
 }
 
-// Vec3Zero: provides a constant pointer to a vector with three components, all
+// Vec3Zero provides a constant pointer to a vector with three components, all
 // sets to 0.
 func Vec3Zero() *Vec3 {
 	ret := C.graphene_vec3_zero()
@@ -382,8 +384,8 @@ func Vec3Zero() *Vec3 {
 	return ret0
 }
 
-// Vec4One: retrieves a pointer to a #graphene_vec4_t with all its components
-// set to 1.
+// Vec4One retrieves a pointer to a #graphene_vec4_t with all its components set
+// to 1.
 func Vec4One() *Vec4 {
 	ret := C.graphene_vec4_one()
 
@@ -393,7 +395,7 @@ func Vec4One() *Vec4 {
 	return ret0
 }
 
-// Vec4WAxis: retrieves a pointer to a #graphene_vec4_t with its components set
+// Vec4WAxis retrieves a pointer to a #graphene_vec4_t with its components set
 // to (0, 0, 0, 1).
 func Vec4WAxis() *Vec4 {
 	ret := C.graphene_vec4_w_axis()
@@ -404,7 +406,7 @@ func Vec4WAxis() *Vec4 {
 	return ret0
 }
 
-// Vec4XAxis: retrieves a pointer to a #graphene_vec4_t with its components set
+// Vec4XAxis retrieves a pointer to a #graphene_vec4_t with its components set
 // to (1, 0, 0, 0).
 func Vec4XAxis() *Vec4 {
 	ret := C.graphene_vec4_x_axis()
@@ -415,7 +417,7 @@ func Vec4XAxis() *Vec4 {
 	return ret0
 }
 
-// Vec4YAxis: retrieves a pointer to a #graphene_vec4_t with its components set
+// Vec4YAxis retrieves a pointer to a #graphene_vec4_t with its components set
 // to (0, 1, 0, 0).
 func Vec4YAxis() *Vec4 {
 	ret := C.graphene_vec4_y_axis()
@@ -426,7 +428,7 @@ func Vec4YAxis() *Vec4 {
 	return ret0
 }
 
-// Vec4ZAxis: retrieves a pointer to a #graphene_vec4_t with its components set
+// Vec4ZAxis retrieves a pointer to a #graphene_vec4_t with its components set
 // to (0, 0, 1, 0).
 func Vec4ZAxis() *Vec4 {
 	ret := C.graphene_vec4_z_axis()
@@ -437,7 +439,7 @@ func Vec4ZAxis() *Vec4 {
 	return ret0
 }
 
-// Vec4Zero: retrieves a pointer to a #graphene_vec4_t with all its components
+// Vec4Zero retrieves a pointer to a #graphene_vec4_t with all its components
 // set to 0.
 func Vec4Zero() *Vec4 {
 	ret := C.graphene_vec4_zero()

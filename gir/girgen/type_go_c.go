@@ -7,6 +7,18 @@ import (
 
 // Go to C type conversions.
 
+// GoCConversion describes the information needed to generate Go code to convert
+// Go types to C types.
+type GoCConversion struct {
+	Value  string
+	Target string
+	Type   gir.AnyType
+	Owner  gir.TransferOwnership
+
+	// ArgAt is used for array and closure generation.
+	ArgAt ArgAtFunc
+}
+
 // func (ng *NamespaceGenerator) GoCConverter(value, target string, any gir.AnyType) string {
 
 // }
@@ -19,29 +31,33 @@ import (
 
 // }
 
-func (ng *NamespaceGenerator) _gocTypeConverter(value, target string, typ gir.Type, create bool) string {
+func (ng *NamespaceGenerator) _gocTypeConverter(conv GoCConversion, typ gir.Type, create bool) string {
 	if prim, ok := girPrimitiveGo[typ.Name]; ok {
 		switch prim {
 		case "string":
 			p := pen.NewPiece()
-			p.Linef(directCallOrCreate(value, target, "C.CString", create))
-			p.Linef("defer C.free(unsafe.Pointer(%s))", value)
+			p.Linef(directCallOrCreate(conv.Value, conv.Target, "C.CString", create))
+			p.Linef("defer C.free(unsafe.Pointer(%s))", conv.Value)
 			return p.String()
 		case "bool":
 			ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
-			return directCallOrCreate(value, target, "gextras.Cbool", create)
+			return directCallOrCreate(conv.Value, conv.Target, "gextras.Cbool", create)
 		default:
-			return directCallOrCreate(value, target, "C."+typ.CType, create)
+			return directCallOrCreate(conv.Value, conv.Target, "C."+typ.CType, create)
 		}
 	}
 
 	switch typ.Name {
 	case "gpointer":
 		ng.addImport("github.com/diamondburned/gotk4/internal/box")
+
 		b := pen.NewBlock()
-		b.Linef("id := box.Assign(box.Boxed, %s)", value)
-		b.Linef("%s = C.gpointer(id)", target)
+		b.Linef("id := box.Assign(box.Boxed, %s)", conv.Value)
+		b.Linef("%s = C.gpointer(id)", conv.Target)
 		return b.String()
+
+	case "GLib.DestroyNotify", "DestroyNotify":
+
 	}
 
 	// TODO

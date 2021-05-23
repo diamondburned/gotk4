@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk"
@@ -18,6 +19,9 @@ import (
 // #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gsk/gsk.h>
+//
+// extern void cParseErrorFunc(const GskParseLocation*, const GskParseLocation*, const GError*, gpointer)
+//
 import "C"
 
 func init() {
@@ -93,45 +97,44 @@ const (
 	// BlendModeMultiply: the source color is multiplied by the destination and
 	// replaces the destination
 	BlendModeMultiply BlendMode = 1
-	// BlendModeScreen: multiplies the complements of the destination and source
+	// BlendModeScreen multiplies the complements of the destination and source
 	// color values, then complements the result.
 	BlendModeScreen BlendMode = 2
-	// BlendModeOverlay: multiplies or screens the colors, depending on the
+	// BlendModeOverlay multiplies or screens the colors, depending on the
 	// destination color value. This is the inverse of hard-list
 	BlendModeOverlay BlendMode = 3
-	// BlendModeDarken: selects the darker of the destination and source colors
+	// BlendModeDarken selects the darker of the destination and source colors
 	BlendModeDarken BlendMode = 4
-	// BlendModeLighten: selects the lighter of the destination and source
-	// colors
+	// BlendModeLighten selects the lighter of the destination and source colors
 	BlendModeLighten BlendMode = 5
-	// BlendModeColorDodge: brightens the destination color to reflect the
-	// source color
+	// BlendModeColorDodge brightens the destination color to reflect the source
+	// color
 	BlendModeColorDodge BlendMode = 6
-	// BlendModeColorBurn: darkens the destination color to reflect the source
+	// BlendModeColorBurn darkens the destination color to reflect the source
 	// color
 	BlendModeColorBurn BlendMode = 7
-	// BlendModeHardLight: multiplies or screens the colors, depending on the
+	// BlendModeHardLight multiplies or screens the colors, depending on the
 	// source color value
 	BlendModeHardLight BlendMode = 8
-	// BlendModeSoftLight: darkens or lightens the colors, depending on the
+	// BlendModeSoftLight darkens or lightens the colors, depending on the
 	// source color value
 	BlendModeSoftLight BlendMode = 9
-	// BlendModeDifference: subtracts the darker of the two constituent colors
+	// BlendModeDifference subtracts the darker of the two constituent colors
 	// from the lighter color
 	BlendModeDifference BlendMode = 10
-	// BlendModeExclusion: produces an effect similar to that of the difference
+	// BlendModeExclusion produces an effect similar to that of the difference
 	// mode but lower in contrast
 	BlendModeExclusion BlendMode = 11
-	// BlendModeColor: creates a color with the hue and saturation of the source
+	// BlendModeColor creates a color with the hue and saturation of the source
 	// color and the luminosity of the destination color
 	BlendModeColor BlendMode = 12
-	// BlendModeHue: creates a color with the hue of the source color and the
+	// BlendModeHue creates a color with the hue of the source color and the
 	// saturation and luminosity of the destination color
 	BlendModeHue BlendMode = 13
-	// BlendModeSaturation: creates a color with the saturation of the source
+	// BlendModeSaturation creates a color with the saturation of the source
 	// color and the hue and luminosity of the destination color
 	BlendModeSaturation BlendMode = 14
-	// BlendModeLuminosity: creates a color with the luminosity of the source
+	// BlendModeLuminosity creates a color with the luminosity of the source
 	// color and the hue and saturation of the destination color
 	BlendModeLuminosity BlendMode = 15
 )
@@ -276,7 +279,7 @@ func marshalScalingFilter(p uintptr) (interface{}, error) {
 	return ScalingFilter(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SerializationError: errors that can happen during (de)serialization.
+// SerializationError errors that can happen during (de)serialization.
 type SerializationError int
 
 const (
@@ -333,10 +336,28 @@ func marshalTransformCategory(p uintptr) (interface{}, error) {
 	return TransformCategory(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
+// ParseErrorFunc: the type of callback that is called when a parse error occurs
+// during deserialization of node data.
 type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, error *glib.Error)
 
 //export cParseErrorFunc
-func cParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer)
+func cParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
+	v := box.Get(box.Callback, uintptr(arg3))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var start *ParseLocation
+	start = wrapParseLocation(arg0)
+
+	var end *ParseLocation
+	end = wrapParseLocation(arg1)
+
+	var error *glib.Error
+	error = wrapError(arg2)
+
+	v.(ParseErrorFunc)(start, end, error)
+}
 
 func SerializationErrorQuark() glib.Quark {
 	ret := C.gsk_serialization_error_quark()
@@ -350,7 +371,7 @@ func SerializationErrorQuark() glib.Quark {
 	return ret0
 }
 
-// TransformParse: parses the given @string into a transform and puts it in
+// TransformParse parses the given @string into a transform and puts it in
 // @out_transform. Strings printed via gsk_transform_to_string() can be read in
 // again successfully using this function.
 //
@@ -469,12 +490,11 @@ func wrapRoundedRect(p *C.GskRoundedRect) *RoundedRect {
 
 	v.Bounds = wrapRect(p.bounds)
 	{
-		var a [4]graphene.Size
 		cArray := ([4]graphene_size_t)(p.corner)
 
 		for i := 0; i < 4; i++ {
 			src := cArray[i]
-			a[i] = wrapSize(src)
+			v.Corner[i] = wrapSize(src)
 		}
 	}
 
@@ -599,11 +619,11 @@ func NewTransform() *Transform
 type BlendNode interface {
 	RenderNode
 
-	// BlendMode: retrieves the blend mode used by @node.
+	// BlendMode retrieves the blend mode used by @node.
 	BlendMode() BlendMode
-	// BottomChild: retrieves the bottom RenderNode child of the @node.
+	// BottomChild retrieves the bottom RenderNode child of the @node.
 	BottomChild() RenderNode
-	// TopChild: retrieves the top RenderNode child of the @node.
+	// TopChild retrieves the top RenderNode child of the @node.
 	TopChild() RenderNode
 }
 
@@ -633,9 +653,9 @@ func (b blendNode) TopChild() RenderNode
 type BlurNode interface {
 	RenderNode
 
-	// Child: retrieves the child RenderNode of the blur @node.
+	// Child retrieves the child RenderNode of the blur @node.
 	Child() RenderNode
-	// Radius: retrieves the blur radius of the @node.
+	// Radius retrieves the blur radius of the @node.
 	Radius() float32
 }
 
@@ -663,11 +683,11 @@ func (b blurNode) Radius() float32
 type BorderNode interface {
 	RenderNode
 
-	// Colors: retrieves the colors of the border.
+	// Colors retrieves the colors of the border.
 	Colors() *gdk.RGBA
-	// Outline: retrieves the outline of the border.
+	// Outline retrieves the outline of the border.
 	Outline() *RoundedRect
-	// Widths: retrieves the stroke widths of the border.
+	// Widths retrieves the stroke widths of the border.
 	Widths() [4]float32
 }
 
@@ -697,13 +717,13 @@ func (b borderNode) Widths() [4]float32
 type CairoNode interface {
 	RenderNode
 
-	// DrawContext: creates a Cairo context for drawing using the surface
+	// DrawContext creates a Cairo context for drawing using the surface
 	// associated to the render node.
 	//
 	// If no surface exists yet, a surface will be created optimized for
 	// rendering to @renderer.
 	DrawContext() *cairo.Context
-	// Surface: retrieves the Cairo surface used by the render node.
+	// Surface retrieves the Cairo surface used by the render node.
 	Surface() *cairo.Surface
 }
 
@@ -751,9 +771,9 @@ func NewCairoRenderer() CairoRenderer
 type ClipNode interface {
 	RenderNode
 
-	// Child: gets the child node that is getting clipped by the given @node.
+	// Child gets the child node that is getting clipped by the given @node.
 	Child() RenderNode
-	// Clip: retrieves the clip rectangle for @node.
+	// Clip retrieves the clip rectangle for @node.
 	Clip() *graphene.Rect
 }
 
@@ -782,12 +802,12 @@ func (c clipNode) Clip() *graphene.Rect
 type ColorMatrixNode interface {
 	RenderNode
 
-	// Child: gets the child node that is getting its colors modified by the
+	// Child gets the child node that is getting its colors modified by the
 	// given @node.
 	Child() RenderNode
-	// ColorMatrix: retrieves the color matrix used by the @node.
+	// ColorMatrix retrieves the color matrix used by the @node.
 	ColorMatrix() *graphene.Matrix
-	// ColorOffset: retrieves the color offset used by the @node.
+	// ColorOffset retrieves the color offset used by the @node.
 	ColorOffset() *graphene.Vec4
 }
 
@@ -817,7 +837,7 @@ func (c colorMatrixNode) ColorOffset() *graphene.Vec4
 type ColorNode interface {
 	RenderNode
 
-	// Color: retrieves the color of the given @node.
+	// Color retrieves the color of the given @node.
 	Color() *gdk.RGBA
 }
 
@@ -843,13 +863,13 @@ func (c colorNode) Color() *gdk.RGBA
 type ConicGradientNode interface {
 	RenderNode
 
-	// Center: retrieves the center pointer for the gradient.
+	// Center retrieves the center pointer for the gradient.
 	Center() *graphene.Point
-	// ColorStops: retrieves the color stops in the gradient.
+	// ColorStops retrieves the color stops in the gradient.
 	ColorStops() (nStops uint, colorStops []ColorStop)
-	// NColorStops: retrieves the number of color stops in the gradient.
+	// NColorStops retrieves the number of color stops in the gradient.
 	NColorStops() uint
-	// Rotation: retrieves the rotation for the gradient in degrees.
+	// Rotation retrieves the rotation for the gradient in degrees.
 	Rotation() float32
 }
 
@@ -881,9 +901,9 @@ func (c conicGradientNode) Rotation() float32
 type ContainerNode interface {
 	RenderNode
 
-	// Child: gets one of the children of @container.
+	// Child gets one of the children of @container.
 	Child(idx uint) RenderNode
-	// NChildren: retrieves the number of direct children of @node.
+	// NChildren retrieves the number of direct children of @node.
 	NChildren() uint
 }
 
@@ -911,11 +931,11 @@ func (c containerNode) NChildren() uint
 type CrossFadeNode interface {
 	RenderNode
 
-	// EndChild: retrieves the child RenderNode at the end of the cross-fade.
+	// EndChild retrieves the child RenderNode at the end of the cross-fade.
 	EndChild() RenderNode
-	// Progress: retrieves the progress value of the cross fade.
+	// Progress retrieves the progress value of the cross fade.
 	Progress() float32
-	// StartChild: retrieves the child RenderNode at the beginning of the
+	// StartChild retrieves the child RenderNode at the beginning of the
 	// cross-fade.
 	StartChild() RenderNode
 }
@@ -947,9 +967,9 @@ func (c crossFadeNode) StartChild() RenderNode
 type DebugNode interface {
 	RenderNode
 
-	// Child: gets the child node that is getting drawn by the given @node.
+	// Child gets the child node that is getting drawn by the given @node.
 	Child() RenderNode
-	// Message: gets the debug message that was set on this node
+	// Message gets the debug message that was set on this node
 	Message() string
 }
 
@@ -997,44 +1017,44 @@ func NewGLRenderer() GLRenderer
 type GLShader interface {
 	gextras.Objector
 
-	// Compile: tries to compile the @shader for the given @renderer, and
-	// reports false with an error if there is a problem. You should use this
-	// function before relying on the shader for rendering and use a fallback
-	// with a simpler shader or without shaders if it fails.
+	// Compile tries to compile the @shader for the given @renderer, and reports
+	// false with an error if there is a problem. You should use this function
+	// before relying on the shader for rendering and use a fallback with a
+	// simpler shader or without shaders if it fails.
 	//
 	// Note that this will modify the rendering state (for example change the
 	// current GL context) and requires the renderer to be set up. This means
 	// that the widget has to be realized. Commonly you want to call this from
 	// the realize signal of a widget, or during widget snapshot.
 	Compile(renderer Renderer) bool
-	// FindUniformByName: looks for a uniform by the name @name, and returns the
+	// FindUniformByName looks for a uniform by the name @name, and returns the
 	// index of the uniform, or -1 if it was not found.
 	FindUniformByName(name string) int
-	// ArgBool: gets the value of the uniform @idx in the @args block. The
+	// ArgBool gets the value of the uniform @idx in the @args block. The
 	// uniform must be of bool type.
 	ArgBool(args *glib.Bytes, idx int) bool
-	// ArgFloat: gets the value of the uniform @idx in the @args block. The
+	// ArgFloat gets the value of the uniform @idx in the @args block. The
 	// uniform must be of float type.
 	ArgFloat(args *glib.Bytes, idx int) float32
-	// ArgInt: gets the value of the uniform @idx in the @args block. The
-	// uniform must be of int type.
+	// ArgInt gets the value of the uniform @idx in the @args block. The uniform
+	// must be of int type.
 	ArgInt(args *glib.Bytes, idx int) int32
-	// ArgUint: gets the value of the uniform @idx in the @args block. The
+	// ArgUint gets the value of the uniform @idx in the @args block. The
 	// uniform must be of uint type.
 	ArgUint(args *glib.Bytes, idx int) uint32
-	// ArgVec2: gets the value of the uniform @idx in the @args block. The
+	// ArgVec2 gets the value of the uniform @idx in the @args block. The
 	// uniform must be of vec2 type.
 	ArgVec2(args *glib.Bytes, idx int, outValue *graphene.Vec2)
-	// ArgVec3: gets the value of the uniform @idx in the @args block. The
+	// ArgVec3 gets the value of the uniform @idx in the @args block. The
 	// uniform must be of vec3 type.
 	ArgVec3(args *glib.Bytes, idx int, outValue *graphene.Vec3)
-	// ArgVec4: gets the value of the uniform @idx in the @args block. The
+	// ArgVec4 gets the value of the uniform @idx in the @args block. The
 	// uniform must be of vec4 type.
 	ArgVec4(args *glib.Bytes, idx int, outValue *graphene.Vec4)
 	// ArgsSize: get the size of the data block used to specify arguments for
 	// this shader.
 	ArgsSize() uint
-	// NTextures: returns the number of textures that the shader requires.
+	// NTextures returns the number of textures that the shader requires.
 	//
 	// This can be used to check that the a passed shader works in your usecase.
 	// It is determined by looking at the highest u_textureN value that the
@@ -1042,10 +1062,10 @@ type GLShader interface {
 	NTextures() int
 	// NUniforms: get the number of declared uniforms for this shader.
 	NUniforms() int
-	// Resource: gets the resource path for the GLSL sourcecode being used to
+	// Resource gets the resource path for the GLSL sourcecode being used to
 	// render this shader.
 	Resource() string
-	// Source: gets the GLSL sourcecode being used to render this shader.
+	// Source gets the GLSL sourcecode being used to render this shader.
 	Source() *glib.Bytes
 	// UniformName: get the name of the declared uniform for this shader at
 	// index @idx.
@@ -1072,9 +1092,9 @@ func marshalGLShader(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewGLShader(sourcecode *glib.Bytes) GLShader
+func NewGLShaderFromBytes(sourcecode *glib.Bytes) GLShader
 
-func NewGLShader(resourcePath string) GLShader
+func NewGLShaderFromResource(resourcePath string) GLShader
 
 func (g glShader) Compile(renderer Renderer) bool
 
@@ -1115,13 +1135,13 @@ func (g glShader) UniformType(idx int) GLUniformType
 type GLShaderNode interface {
 	RenderNode
 
-	// Args: gets args for the node.
+	// Args gets args for the node.
 	Args() *glib.Bytes
-	// Child: gets one of the children.
+	// Child gets one of the children.
 	Child(idx uint) RenderNode
-	// NChildren: returns the number of children
+	// NChildren returns the number of children
 	NChildren() uint
-	// Shader: gets shader code for the node.
+	// Shader gets shader code for the node.
 	Shader() GLShader
 }
 
@@ -1153,17 +1173,17 @@ func (g glShaderNode) Shader() GLShader
 type InsetShadowNode interface {
 	RenderNode
 
-	// BlurRadius: retrieves the blur radius to apply to the shadow.
+	// BlurRadius retrieves the blur radius to apply to the shadow.
 	BlurRadius() float32
-	// Color: retrieves the color of the inset shadow.
+	// Color retrieves the color of the inset shadow.
 	Color() *gdk.RGBA
-	// Dx: retrieves the horizontal offset of the inset shadow.
+	// Dx retrieves the horizontal offset of the inset shadow.
 	Dx() float32
-	// Dy: retrieves the vertical offset of the inset shadow.
+	// Dy retrieves the vertical offset of the inset shadow.
 	Dy() float32
-	// Outline: retrieves the outline rectangle of the inset shadow.
+	// Outline retrieves the outline rectangle of the inset shadow.
 	Outline() *RoundedRect
-	// Spread: retrieves how much the shadow spreads inwards.
+	// Spread retrieves how much the shadow spreads inwards.
 	Spread() float32
 }
 
@@ -1199,13 +1219,13 @@ func (i insetShadowNode) Spread() float32
 type LinearGradientNode interface {
 	RenderNode
 
-	// ColorStops: retrieves the color stops in the gradient.
+	// ColorStops retrieves the color stops in the gradient.
 	ColorStops() (nStops uint, colorStops []ColorStop)
-	// End: retrieves the final point of the linear gradient.
+	// End retrieves the final point of the linear gradient.
 	End() *graphene.Point
-	// NColorStops: retrieves the number of color stops in the gradient.
+	// NColorStops retrieves the number of color stops in the gradient.
 	NColorStops() uint
-	// Start: retrieves the initial point of the linear gradient.
+	// Start retrieves the initial point of the linear gradient.
 	Start() *graphene.Point
 }
 
@@ -1237,9 +1257,9 @@ func (l linearGradientNode) Start() *graphene.Point
 type OpacityNode interface {
 	RenderNode
 
-	// Child: gets the child node that is getting opacityed by the given @node.
+	// Child gets the child node that is getting opacityed by the given @node.
 	Child() RenderNode
-	// Opacity: gets the transparency factor for an opacity node.
+	// Opacity gets the transparency factor for an opacity node.
 	Opacity() float32
 }
 
@@ -1267,17 +1287,17 @@ func (o opacityNode) Opacity() float32
 type OutsetShadowNode interface {
 	RenderNode
 
-	// BlurRadius: retrieves the blur radius of the shadow.
+	// BlurRadius retrieves the blur radius of the shadow.
 	BlurRadius() float32
-	// Color: retrieves the color of the outset shadow.
+	// Color retrieves the color of the outset shadow.
 	Color() *gdk.RGBA
-	// Dx: retrieves the horizontal offset of the outset shadow.
+	// Dx retrieves the horizontal offset of the outset shadow.
 	Dx() float32
-	// Dy: retrieves the vertical offset of the outset shadow.
+	// Dy retrieves the vertical offset of the outset shadow.
 	Dy() float32
-	// Outline: retrieves the outline rectangle of the outset shadow.
+	// Outline retrieves the outline rectangle of the outset shadow.
 	Outline() *RoundedRect
-	// Spread: retrieves how much the shadow spreads outwards.
+	// Spread retrieves how much the shadow spreads outwards.
 	Spread() float32
 }
 
@@ -1313,19 +1333,19 @@ func (o outsetShadowNode) Spread() float32
 type RadialGradientNode interface {
 	RenderNode
 
-	// Center: retrieves the center pointer for the gradient.
+	// Center retrieves the center pointer for the gradient.
 	Center() *graphene.Point
-	// ColorStops: retrieves the color stops in the gradient.
+	// ColorStops retrieves the color stops in the gradient.
 	ColorStops() (nStops uint, colorStops []ColorStop)
-	// End: retrieves the end value for the gradient.
+	// End retrieves the end value for the gradient.
 	End() float32
-	// Hradius: retrieves the horizonal radius for the gradient.
+	// Hradius retrieves the horizonal radius for the gradient.
 	Hradius() float32
-	// NColorStops: retrieves the number of color stops in the gradient.
+	// NColorStops retrieves the number of color stops in the gradient.
 	NColorStops() uint
-	// Start: retrieves the start value for the gradient.
+	// Start retrieves the start value for the gradient.
 	Start() float32
-	// Vradius: retrieves the vertical radius for the gradient.
+	// Vradius retrieves the vertical radius for the gradient.
 	Vradius() float32
 }
 
@@ -1364,15 +1384,15 @@ func (r radialGradientNode) Vradius() float32
 type Renderer interface {
 	gextras.Objector
 
-	// Surface: retrieves the Surface set using gsk_renderer_realize(). If the
+	// Surface retrieves the Surface set using gsk_renderer_realize(). If the
 	// renderer has not been realized yet, nil will be returned.
 	Surface() gdk.Surface
-	// IsRealized: checks whether the @renderer is realized or not.
+	// IsRealized checks whether the @renderer is realized or not.
 	IsRealized() bool
-	// Realize: creates the resources needed by the @renderer to render the
-	// scene graph.
+	// Realize creates the resources needed by the @renderer to render the scene
+	// graph.
 	Realize(surface gdk.Surface) bool
-	// Render: renders the scene graph, described by a tree of RenderNode
+	// Render renders the scene graph, described by a tree of RenderNode
 	// instances, ensuring that the given @region gets redrawn.
 	//
 	// Renderers must ensure that changes of the contents given by the @root
@@ -1383,7 +1403,7 @@ type Renderer interface {
 	// The @renderer will acquire a reference on the RenderNode tree while the
 	// rendering is in progress.
 	Render(root RenderNode, region *cairo.Region)
-	// RenderTexture: renders the scene graph, described by a tree of RenderNode
+	// RenderTexture renders the scene graph, described by a tree of RenderNode
 	// instances, to a Texture.
 	//
 	// The @renderer will acquire a reference on the RenderNode tree while the
@@ -1392,7 +1412,7 @@ type Renderer interface {
 	// If you want to apply any transformations to @root, you should put it into
 	// a transform node and pass that node instead.
 	RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture
-	// Unrealize: releases all the resources created by gsk_renderer_realize().
+	// Unrealize releases all the resources created by gsk_renderer_realize().
 	Unrealize()
 }
 
@@ -1410,7 +1430,7 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	return wrapWidget(obj), nil
 }
 
-func NewRenderer(surface gdk.Surface) Renderer
+func NewRendererForSurface(surface gdk.Surface) Renderer
 
 func (r renderer) Surface() gdk.Surface
 
@@ -1428,9 +1448,9 @@ func (r renderer) Unrealize()
 type RepeatNode interface {
 	RenderNode
 
-	// Child: retrieves the child of @node.
+	// Child retrieves the child of @node.
 	Child() RenderNode
-	// ChildBounds: retrieves the bounding rectangle of the child of @node.
+	// ChildBounds retrieves the bounding rectangle of the child of @node.
 	ChildBounds() *graphene.Rect
 }
 
@@ -1501,9 +1521,9 @@ func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Poin
 type RoundedClipNode interface {
 	RenderNode
 
-	// Child: gets the child node that is getting clipped by the given @node.
+	// Child gets the child node that is getting clipped by the given @node.
 	Child() RenderNode
-	// Clip: retrievs the rounded rectangle used to clip the contents of the
+	// Clip retrievs the rounded rectangle used to clip the contents of the
 	// @node.
 	Clip() *RoundedRect
 }
@@ -1533,11 +1553,11 @@ func (r roundedClipNode) Clip() *RoundedRect
 type ShadowNode interface {
 	RenderNode
 
-	// Child: retrieves the child RenderNode of the shadow @node.
+	// Child retrieves the child RenderNode of the shadow @node.
 	Child() RenderNode
-	// NShadows: retrieves the number of shadows in the @node.
+	// NShadows retrieves the number of shadows in the @node.
 	NShadows() uint
-	// Shadow: retrieves the shadow data at the given index @i.
+	// Shadow retrieves the shadow data at the given index @i.
 	Shadow(i uint) *Shadow
 }
 
@@ -1567,17 +1587,17 @@ func (s shadowNode) Shadow(i uint) *Shadow
 type TextNode interface {
 	RenderNode
 
-	// Color: retrieves the color used by the text @node.
+	// Color retrieves the color used by the text @node.
 	Color() *gdk.RGBA
-	// Font: returns the font used by the text @node.
+	// Font returns the font used by the text @node.
 	Font() pango.Font
-	// Glyphs: retrieves the glyph information in the @node.
+	// Glyphs retrieves the glyph information in the @node.
 	Glyphs() (nGlyphs uint, glyphInfos []pango.GlyphInfo)
-	// NumGlyphs: retrieves the number of glyphs in the text node.
+	// NumGlyphs retrieves the number of glyphs in the text node.
 	NumGlyphs() uint
-	// Offset: retrieves the offset applied to the text.
+	// Offset retrieves the offset applied to the text.
 	Offset() *graphene.Point
-	// HasColorGlyphs: checks whether the text @node has color glyphs.
+	// HasColorGlyphs checks whether the text @node has color glyphs.
 	HasColorGlyphs() bool
 }
 
@@ -1613,7 +1633,7 @@ func (t textNode) HasColorGlyphs() bool
 type TextureNode interface {
 	RenderNode
 
-	// Texture: retrieves the Texture used when creating this RenderNode.
+	// Texture retrieves the Texture used when creating this RenderNode.
 	Texture() gdk.Texture
 }
 
@@ -1639,10 +1659,9 @@ func (t textureNode) Texture() gdk.Texture
 type TransformNode interface {
 	RenderNode
 
-	// Child: gets the child node that is getting transformed by the given
-	// @node.
+	// Child gets the child node that is getting transformed by the given @node.
 	Child() RenderNode
-	// Transform: retrieves the Transform used by the @node.
+	// Transform retrieves the Transform used by the @node.
 	Transform() *Transform
 }
 

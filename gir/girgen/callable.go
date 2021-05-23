@@ -49,10 +49,20 @@ func (cg *callableGenerator) Block() string {
 
 	if cg.Parameters != nil {
 		args = make([]string, 0, len(cg.Parameters.Parameters))
+		var closure *int // user-data arg
+		var destroy *int
 
 		for i, param := range cg.Parameters.Parameters {
+			if param.Closure != nil {
+				closure = param.Closure
+			}
+			if param.Destroy != nil {
+				destroy = param.Destroy
+			}
+
 			ignores.paramIgnore(param)
 			targ := argNamer(i)
+			valn := SnakeToGo(false, param.Name)
 
 			if param.Direction == "out" {
 				block.Linef("var %s %s // out", targ, anyTypeCGo(param.AnyType))
@@ -66,18 +76,48 @@ func (cg *callableGenerator) Block() string {
 				continue
 			}
 
+			// Handle non-closure destroy notifiers: since we're always copying
+			// Go memory to C using malloc, we can just give it a free.
+			if param.Type != nil &&
+				param.Type.Name != "GDestroyNotify" &&
+				strings.HasSuffix(param.Type.Name, "DestroyNotify") {
+
+				// https://github.com/golang/go/issues/19835
+				args = append(args, "(*[0]byte)(C.free)")
+				continue
+			}
+
+			if closure != nil && *closure == i {
+				cg.Ng.addImport("github.com/diamondburned/gotk4/internal/box")
+				// TODO: this is probably not always gpointer. Handle with
+				// anyCGoType.
+				block.Linef("%s := C.gpointer(box.Assign(box.Callback, %s))", targ, valn)
+				continue
+			}
+
+			if destroy != nil && *destroy == i {
+				cg.Ng.needsCallbackDelete()
+				// TODO: this is probably not always true.
+				// https://github.com/golang/go/issues/19835
+				args = append(args, "(*[0]byte)(C.callbackDelete)")
+				continue
+			}
+
 			// Skip user_data fields because we need them for the callback
 			// registry.
 			if ignores.ignore(i) {
 				continue
 			}
 
-			valn := SnakeToGo(false, param.Name)
-
 			// TODO: nullability.
 			// TODO: GoCConverter.
 
-			conv := cg.Ng.CGoConverter(valn, targ, param.AnyType, func(int) string { return "a" })
+			conv := cg.Ng.CGoConverter(CGoConversion{
+				Value:  valn,
+				Target: targ,
+				Type:   param.AnyType,
+				ArgAt:  func(int) string { return "a" },
+			})
 			if conv == "" {
 				continue
 			}
@@ -115,7 +155,12 @@ func (cg *callableGenerator) Block() string {
 		retvars.Add(retName)
 
 		block.Linef("var %s %s", retName, resolved)
-		block.Linef(cg.Ng.CGoConverter(ret.Name, retName, ret.Type, argNamer))
+		block.Line(cg.Ng.CGoConverter(CGoConversion{
+			Value:  ret.Name,
+			Target: retName,
+			Type:   ret.Type,
+			ArgAt:  argNamer,
+		}))
 		block.EmptyLine()
 	}
 
@@ -219,6 +264,11 @@ func iterateParams(attr gir.CallableAttrs, fn func(int, gir.Parameter) bool) boo
 			continue
 		}
 
+		// Ignore exposing destroy notifiers.
+		if strings.HasSuffix(param.Name, "DestroyNotify") {
+			continue
+		}
+
 		if !fn(i, param) {
 			return false
 		}
@@ -236,7 +286,12 @@ func iterateReturns(attr gir.CallableAttrs, fn func(string, int, gir.AnyType) bo
 				continue
 			}
 
-			if !fn(SnakeToGo(false, param.Name), i, param.AnyType) {
+			name := SnakeToGo(false, param.Name)
+			if name == "error" {
+				name = "err"
+			}
+
+			if !fn(name, i, param.AnyType) {
 				return false
 			}
 		}

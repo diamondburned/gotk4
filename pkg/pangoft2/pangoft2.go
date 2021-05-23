@@ -5,7 +5,6 @@ package pangoft2
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/fontconfig"
 	"github.com/diamondburned/gotk4/pkg/freetype2"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
@@ -15,6 +14,8 @@ import (
 // #cgo pkg-config: pangoft2
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangoft2.h>
+//
+//
 import "C"
 
 func init() {
@@ -25,16 +26,11 @@ func init() {
 	})
 }
 
-type SubstituteFunc func(pattern *fontconfig.Pattern, data interface{})
-
-//export cSubstituteFunc
-func cSubstituteFunc(arg0 *C.FcPattern, arg1 C.gpointer)
-
-// FontGetCoverage: gets the Coverage for a `PangoFT2Font`. Use
+// FontGetCoverage gets the Coverage for a `PangoFT2Font`. Use
 // pango_font_get_coverage() instead.
 func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 	var arg0 pango.Font
-	arg0 = wrapFont(font)
+	arg0 = wrapFont(externglib.Take(unsafe.Pointer(font)))
 
 	var arg1 *pango.Language
 	arg1 = wrapLanguage(language)
@@ -42,19 +38,19 @@ func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 	ret := C.pango_ft2_font_get_coverage(arg0, arg1)
 
 	var ret0 pango.Coverage
-	ret0 = wrapCoverage(ret)
+	ret0 = wrapCoverage(externglib.Take(unsafe.Pointer(ret)))
 
 	return ret0
 }
 
-// FontGetFace: returns the native FreeType2 `FT_Face` structure used for this
+// FontGetFace returns the native FreeType2 `FT_Face` structure used for this
 // Font. This may be useful if you want to use FreeType2 functions directly.
 //
 // Use pango_fc_font_lock_face() instead; when you are done with a face from
 // pango_fc_font_lock_face() you must call pango_fc_font_unlock_face().
 func FontGetFace(font pango.Font) freetype2.Face {
 	var arg0 pango.Font
-	arg0 = wrapFont(font)
+	arg0 = wrapFont(externglib.Take(unsafe.Pointer(font)))
 
 	ret := C.pango_ft2_font_get_face(arg0)
 
@@ -64,13 +60,12 @@ func FontGetFace(font pango.Font) freetype2.Face {
 	return ret0
 }
 
-// FontGetKerning: retrieves kerning information for a combination of two
-// glyphs.
+// FontGetKerning retrieves kerning information for a combination of two glyphs.
 //
 // Use pango_fc_font_kern_glyphs() instead.
 func FontGetKerning(font pango.Font, left pango.Glyph, right pango.Glyph) int {
 	var arg0 pango.Font
-	arg0 = wrapFont(font)
+	arg0 = wrapFont(externglib.Take(unsafe.Pointer(font)))
 
 	var arg1 pango.Glyph
 	{
@@ -92,7 +87,7 @@ func FontGetKerning(font pango.Font, left pango.Glyph, right pango.Glyph) int {
 	return ret0
 }
 
-// GetContext: retrieves a `PangoContext` for the default PangoFT2 fontmap (see
+// GetContext retrieves a `PangoContext` for the default PangoFT2 fontmap (see
 // pango_ft2_font_map_for_display()) and sets the resolution for the default
 // fontmap to @dpi_x by @dpi_y.
 func GetContext(dpiX float64, dpiY float64) pango.Context {
@@ -105,7 +100,7 @@ func GetContext(dpiX float64, dpiY float64) pango.Context {
 	ret := C.pango_ft2_get_context(arg0, arg1)
 
 	var ret0 pango.Context
-	ret0 = wrapContext(ret)
+	ret0 = wrapContext(externglib.Take(unsafe.Pointer(ret)))
 
 	return ret0
 }
@@ -117,7 +112,7 @@ func GetContext(dpiX float64, dpiY float64) pango.Context {
 // font, use PANGO_GET_UNKNOWN_GLYPH() instead.
 func GetUnknownGlyph(font pango.Font) pango.Glyph {
 	var arg0 pango.Font
-	arg0 = wrapFont(font)
+	arg0 = wrapFont(externglib.Take(unsafe.Pointer(font)))
 
 	ret := C.pango_ft2_get_unknown_glyph(arg0)
 
@@ -130,13 +125,13 @@ func GetUnknownGlyph(font pango.Font) pango.Glyph {
 	return ret0
 }
 
-// Render: renders a GlyphString onto a FreeType2 bitmap.
+// Render renders a GlyphString onto a FreeType2 bitmap.
 func Render(bitmap *freetype2.Bitmap, font pango.Font, glyphs *pango.GlyphString, x int, y int) {
 	var arg0 *freetype2.Bitmap
 	arg0 = wrapBitmap(bitmap)
 
 	var arg1 pango.Font
-	arg1 = wrapFont(font)
+	arg1 = wrapFont(externglib.Take(unsafe.Pointer(font)))
 
 	var arg2 *pango.GlyphString
 	arg2 = wrapGlyphString(glyphs)
@@ -156,7 +151,7 @@ func RenderLayout(bitmap *freetype2.Bitmap, layout pango.Layout, x int, y int) {
 	arg0 = wrapBitmap(bitmap)
 
 	var arg1 pango.Layout
-	arg1 = wrapLayout(layout)
+	arg1 = wrapLayout(externglib.Take(unsafe.Pointer(layout)))
 
 	var arg2 int
 	arg2 = int(x)
@@ -213,7 +208,7 @@ func RenderLayoutSubpixel(bitmap *freetype2.Bitmap, layout pango.Layout, x int, 
 	arg0 = wrapBitmap(bitmap)
 
 	var arg1 pango.Layout
-	arg1 = wrapLayout(layout)
+	arg1 = wrapLayout(externglib.Take(unsafe.Pointer(layout)))
 
 	var arg2 int
 	arg2 = int(x)
@@ -224,7 +219,7 @@ func RenderLayoutSubpixel(bitmap *freetype2.Bitmap, layout pango.Layout, x int, 
 	C.pango_ft2_render_layout_subpixel(arg0, arg1, arg2, arg3)
 }
 
-// RenderTransformed: renders a GlyphString onto a FreeType2 bitmap, possibly
+// RenderTransformed renders a GlyphString onto a FreeType2 bitmap, possibly
 // transforming the layed-out coordinates through a transformation matrix. Note
 // that the transformation matrix for @font is not changed, so to produce
 // correct rendering results, the @font must have been loaded using a Context
@@ -237,7 +232,7 @@ func RenderTransformed(bitmap *freetype2.Bitmap, matrix *pango.Matrix, font pang
 	arg1 = wrapMatrix(matrix)
 
 	var arg2 pango.Font
-	arg2 = wrapFont(font)
+	arg2 = wrapFont(externglib.Take(unsafe.Pointer(font)))
 
 	var arg3 *pango.GlyphString
 	arg3 = wrapGlyphString(glyphs)
@@ -265,14 +260,14 @@ type FontMap interface {
 
 	// CreateContext: create a `PangoContext` for the given fontmap.
 	CreateContext() pango.Context
-	// SetDefaultSubstitute: sets a function that will be called to do final
+	// SetDefaultSubstitute sets a function that will be called to do final
 	// configuration substitution on a `FcPattern` before it is used to load the
 	// font.
 	//
 	// This function can be used to do things like set hinting and antialiasing
 	// options.
 	SetDefaultSubstitute(_func SubstituteFunc)
-	// SetResolution: sets the horizontal and vertical resolutions for the
+	// SetResolution sets the horizontal and vertical resolutions for the
 	// fontmap.
 	SetResolution(dpiX float64, dpiY float64)
 	// SubstituteChanged: call this function any time the results of the default

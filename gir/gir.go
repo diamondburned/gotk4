@@ -228,13 +228,13 @@ func (res *TypeFindResult) Info() (name, ctype string) {
 	case res.Enum != nil:
 		return res.Enum.Name, res.Enum.CType
 	case res.Function != nil:
-		return res.Function.Name, ""
+		return res.Function.Name, res.Function.CIdentifier
 	case res.Union != nil:
 		return res.Union.Name, res.Union.CType
 	case res.Bitfield != nil:
 		return res.Bitfield.Name, res.Bitfield.CType
 	case res.Callback != nil:
-		return res.Callback.Name, ""
+		return res.Callback.Name, res.Callback.CIdentifier
 	}
 
 	panic("TypeFindResult has all fields nil")
@@ -262,7 +262,7 @@ func (repos *Repositories) FindType(nspName, typ string) *TypeFindResult {
 	}
 
 	v, _, _ = typeResultFlight.Do(fullType, func() (interface{}, error) {
-		result := repos.findType(nspName, typ)
+		result := repos.findType(fullType)
 		if result != nil {
 			typeResultCache.Store(fullType, result)
 		}
@@ -273,14 +273,11 @@ func (repos *Repositories) FindType(nspName, typ string) *TypeFindResult {
 	return v.(*TypeFindResult)
 }
 
-func (repos *Repositories) findType(nspName, typ string) *TypeFindResult {
-	var r TypeFindResult
+func (repos *Repositories) findType(typ string) *TypeFindResult {
+	namespace, typ := SplitGIRType(typ)
 
-	if namespace, typeName := SplitGIRType(typ); namespace != "" {
-		r.NamespaceFindResult = repos.FindNamespace(namespace)
-		typ = typeName
-	} else {
-		r.NamespaceFindResult = repos.FindNamespace(nspName)
+	r := TypeFindResult{
+		NamespaceFindResult: repos.FindNamespace(namespace),
 	}
 
 	if r.NamespaceFindResult == nil {

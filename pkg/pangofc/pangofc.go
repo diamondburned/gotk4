@@ -5,6 +5,7 @@ package pangofc
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/fontconfig"
 	"github.com/diamondburned/gotk4/pkg/freetype2"
@@ -15,6 +16,9 @@ import (
 // #cgo pkg-config: pangofc
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangofc-fontmap.h>
+//
+// extern PangoFcDecoder* cDecoderFindFunc(FcPattern*, gpointer)
+//
 import "C"
 
 func init() {
@@ -33,15 +37,22 @@ func init() {
 	})
 }
 
+// DecoderFindFunc: callback function passed to
+// [method@PangoFc.FontMap.add_decoder_find_func].
 type DecoderFindFunc func(pattern *fontconfig.Pattern) Decoder
 
 //export cDecoderFindFunc
-func cDecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder
+func cDecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder {
+	v := box.Get(box.Callback, uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
 
-type SubstituteFunc func(pattern *fontconfig.Pattern, data interface{})
+	var pattern *fontconfig.Pattern
+	pattern = wrapPattern(arg0)
 
-//export cSubstituteFunc
-func cSubstituteFunc(arg0 *C.FcPattern, arg1 C.gpointer)
+	decoder := v.(DecoderFindFunc)(pattern)
+}
 
 // Decoder: `PangoFcDecoder` is a virtual base class that implementations will
 // inherit from.
@@ -55,13 +66,13 @@ func cSubstituteFunc(arg0 *C.FcPattern, arg1 C.gpointer)
 type Decoder interface {
 	gextras.Objector
 
-	// Charset: generates an `FcCharSet` of supported characters for the @fcfont
+	// Charset generates an `FcCharSet` of supported characters for the @fcfont
 	// given.
 	//
 	// The returned `FcCharSet` will be a reference to an internal value stored
 	// by the `PangoFcDecoder` and must not be modified or freed.
 	Charset(fcfont Font) *fontconfig.CharSet
-	// Glyph: generates a `PangoGlyph` for the given Unicode point using the
+	// Glyph generates a `PangoGlyph` for the given Unicode point using the
 	// custom decoder.
 	//
 	// For complex scripts where there can be multiple glyphs for a single
@@ -99,38 +110,38 @@ func (d decoder) Glyph(fcfont Font, wc uint32) pango.Glyph
 type Font interface {
 	pango.Font
 
-	// Glyph: gets the glyph index for a given Unicode character for @font.
+	// Glyph gets the glyph index for a given Unicode character for @font.
 	//
 	// If you only want to determine whether the font has the glyph, use
 	// [method@PangoFc.Font.has_char].
 	Glyph(wc uint32) uint
-	// Languages: returns the languages that are supported by @font.
+	// Languages returns the languages that are supported by @font.
 	//
 	// This corresponds to the FC_LANG member of the FcPattern.
 	//
 	// The returned array is only valid as long as the font and its fontmap are
 	// valid.
 	Languages() **pango.Language
-	// Pattern: returns the FcPattern that @font is based on.
+	// Pattern returns the FcPattern that @font is based on.
 	Pattern() *fontconfig.Pattern
-	// UnknownGlyph: returns the index of a glyph suitable for drawing @wc as an
+	// UnknownGlyph returns the index of a glyph suitable for drawing @wc as an
 	// unknown character.
 	//
 	// Use PANGO_GET_UNKNOWN_GLYPH() instead.
 	UnknownGlyph(wc uint32) pango.Glyph
-	// HasChar: determines whether @font has a glyph for the codepoint @wc.
+	// HasChar determines whether @font has a glyph for the codepoint @wc.
 	HasChar(wc uint32) bool
 	// KernGlyphs: this function used to adjust each adjacent pair of glyphs in
 	// @glyphs according to kerning information in @font.
 	//
 	// Since 1.44, it does nothing.
 	KernGlyphs(glyphs *pango.GlyphString)
-	// LockFace: gets the FreeType `FT_Face` associated with a font.
+	// LockFace gets the FreeType `FT_Face` associated with a font.
 	//
 	// This face will be kept around until you call
 	// [method@PangoFc.Font.unlock_face].
 	LockFace() freetype2.Face
-	// UnlockFace: releases a font previously obtained with
+	// UnlockFace releases a font previously obtained with
 	// [method@PangoFc.Font.lock_face].
 	UnlockFace()
 }
@@ -189,33 +200,33 @@ type FontMap interface {
 	// default_substitute() virtual function of the font map, or if fontconfig
 	// has been reinitialized to new configuration.
 	CacheClear()
-	// ConfigChanged: informs font map that the fontconfig configuration (i.e.,
+	// ConfigChanged informs font map that the fontconfig configuration (i.e.,
 	// FcConfig object) used by this font map has changed.
 	//
 	// This currently calls [method@PangoFc.FontMap.cache_clear] which ensures
 	// that list of fonts, etc will be regenerated using the updated
 	// configuration.
 	ConfigChanged()
-	// CreateContext: creates a new context for this fontmap.
+	// CreateContext creates a new context for this fontmap.
 	//
 	// This function is intended only for backend implementations deriving from
 	// `PangoFcFontMap`; it is possible that a backend will store additional
 	// information needed for correct operation on the `PangoContext` after
 	// calling this function.
 	CreateContext() pango.Context
-	// FindDecoder: finds the decoder to use for @pattern.
+	// FindDecoder finds the decoder to use for @pattern.
 	//
 	// Decoders can be added to a font map using
 	// [method@PangoFc.FontMap.add_decoder_find_func].
 	FindDecoder(pattern *fontconfig.Pattern) Decoder
-	// SetDefaultSubstitute: sets a function that will be called to do final
+	// SetDefaultSubstitute sets a function that will be called to do final
 	// configuration substitution on a `FcPattern` before it is used to load the
 	// font.
 	//
 	// This function can be used to do things like set hinting and antialiasing
 	// options.
 	SetDefaultSubstitute(_func SubstituteFunc)
-	// Shutdown: clears all cached information for the fontmap and marks all
+	// Shutdown clears all cached information for the fontmap and marks all
 	// fonts open for the fontmap as dead.
 	//
 	// See the shutdown() virtual function of `PangoFcFont`.

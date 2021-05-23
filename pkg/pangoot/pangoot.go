@@ -15,6 +15,8 @@ import (
 // #cgo pkg-config: pangoot
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pango-ot.h>
+//
+//
 import "C"
 
 func init() {
@@ -50,7 +52,7 @@ const (
 	TableTypeGpos TableType = 1
 )
 
-// TagFromLanguage: finds the OpenType language-system tag best describing
+// TagFromLanguage finds the OpenType language-system tag best describing
 // @language.
 func TagFromLanguage(language *pango.Language) Tag {
 	var arg0 *pango.Language
@@ -67,7 +69,7 @@ func TagFromLanguage(language *pango.Language) Tag {
 	return ret0
 }
 
-// TagFromScript: finds the OpenType script tag corresponding to @script.
+// TagFromScript finds the OpenType script tag corresponding to @script.
 //
 // The PANGO_SCRIPT_COMMON, PANGO_SCRIPT_INHERITED, and PANGO_SCRIPT_UNKNOWN
 // scripts are mapped to the OpenType 'DFLT' script tag that is also defined as
@@ -91,7 +93,7 @@ func TagFromScript(script pango.Script) Tag {
 	return ret0
 }
 
-// TagToLanguage: finds a Language corresponding to @language_tag.
+// TagToLanguage finds a Language corresponding to @language_tag.
 func TagToLanguage(languageTag Tag) *pango.Language {
 	var arg0 Tag
 	{
@@ -107,7 +109,7 @@ func TagToLanguage(languageTag Tag) *pango.Language {
 	return ret0
 }
 
-// TagToScript: finds the Script corresponding to @script_tag.
+// TagToScript finds the Script corresponding to @script_tag.
 //
 // The 'DFLT' script tag is mapped to PANGO_SCRIPT_COMMON.
 //
@@ -302,7 +304,7 @@ func (r *RulesetDescription) Native() unsafe.Pointer {
 type Info interface {
 	gextras.Objector
 
-	// FindFeature: finds the index of a feature. If the feature is not found,
+	// FindFeature finds the index of a feature. If the feature is not found,
 	// sets @feature_index to PANGO_OT_NO_FEATURE, which is safe to pass to
 	// pango_ot_ruleset_add_feature() and similar functions.
 	//
@@ -312,7 +314,7 @@ type Info interface {
 	// function will still return false in those cases. So, users may want to
 	// ignore the return value of this function in certain cases.
 	FindFeature(tableType TableType, featureTag Tag, scriptIndex uint, languageIndex uint) (featureIndex uint, ok bool)
-	// FindLanguage: finds the index of a language and its required feature
+	// FindLanguage finds the index of a language and its required feature
 	// index. If the language is not found, sets @language_index to
 	// PANGO_OT_DEFAULT_LANGUAGE and the required feature of the default
 	// language system is returned in required_feature_index. For best
@@ -321,7 +323,7 @@ type Info interface {
 	// transparent to the user. The user can simply ignore the return value of
 	// this function to automatically fall back to the default language system.
 	FindLanguage(tableType TableType, scriptIndex uint, languageTag Tag) (languageIndex uint, requiredFeatureIndex uint, ok bool)
-	// FindScript: finds the index of a script. If not found, tries to find the
+	// FindScript finds the index of a script. If not found, tries to find the
 	// 'DFLT' and then 'dflt' scripts and return the index of that in
 	// @script_index. If none of those is found either, PANGO_OT_NO_SCRIPT is
 	// placed in @script_index.
@@ -331,13 +333,12 @@ type Info interface {
 	// function completely and proceed, to enjoy the automatic fallback to the
 	// 'DFLT'/'dflt' script.
 	FindScript(tableType TableType, scriptTag Tag) (scriptIndex uint, ok bool)
-	// ListFeatures: obtains the list of features for the given language of the
+	// ListFeatures obtains the list of features for the given language of the
 	// given script.
 	ListFeatures(tableType TableType, tag Tag, scriptIndex uint, languageIndex uint) *Tag
-	// ListLanguages: obtains the list of available languages for a given
-	// script.
+	// ListLanguages obtains the list of available languages for a given script.
 	ListLanguages(tableType TableType, scriptIndex uint, languageTag Tag) *Tag
-	// ListScripts: obtains the list of available scripts.
+	// ListScripts obtains the list of available scripts.
 	ListScripts(tableType TableType) *Tag
 }
 
@@ -376,9 +377,9 @@ func (i info) ListScripts(tableType TableType) *Tag
 type Ruleset interface {
 	gextras.Objector
 
-	// AddFeature: adds a feature to the ruleset.
+	// AddFeature adds a feature to the ruleset.
 	AddFeature(tableType TableType, featureIndex uint, propertyBit uint32)
-	// FeatureCount: gets the number of GSUB and GPOS features in the ruleset.
+	// FeatureCount gets the number of GSUB and GPOS features in the ruleset.
 	FeatureCount() (nGsubFeatures uint, nGposFeatures uint, guint uint)
 	// MaybeAddFeature: this is a convenience function that first tries to find
 	// the feature using pango_ot_info_find_feature() and the ruleset script and
@@ -393,10 +394,10 @@ type Ruleset interface {
 	// feature tag using PANGO_OT_TAG_MAKE() and calls
 	// pango_ot_ruleset_maybe_add_feature() on it.
 	MaybeAddFeatures(tableType TableType, features *FeatureMap, nFeatures uint) uint
-	// Position: performs the OpenType GPOS positioning on @buffer using the
+	// Position performs the OpenType GPOS positioning on @buffer using the
 	// features in @ruleset
 	Position(buffer *Buffer)
-	// Substitute: performs the OpenType GSUB substitution on @buffer using the
+	// Substitute performs the OpenType GSUB substitution on @buffer using the
 	// features in @ruleset
 	Substitute(buffer *Buffer)
 }
@@ -417,9 +418,9 @@ func marshalRuleset(p uintptr) (interface{}, error) {
 
 func NewRuleset(info Info) Ruleset
 
-func NewRuleset(info Info, script pango.Script, language *pango.Language) Ruleset
+func NewRulesetFor(info Info, script pango.Script, language *pango.Language) Ruleset
 
-func NewRuleset(info Info, desc *RulesetDescription) Ruleset
+func NewRulesetFromDescription(info Info, desc *RulesetDescription) Ruleset
 
 func (r ruleset) AddFeature(tableType TableType, featureIndex uint, propertyBit uint32)
 

@@ -32,6 +32,9 @@ func (j *Joints) Addf(f string, v ...interface{}) {
 	j.Add(fmt.Sprintf(f, v...))
 }
 
+// Len returns the length of joints
+func (j *Joints) Len() int { return len(j.strs) }
+
 // Join joins the joints.
 func (j *Joints) Join() string { return strings.Join(j.strs, j.sep) }
 
@@ -131,6 +134,28 @@ func (b *Block) String() string {
 	return "{\n" + strings.TrimSuffix(b.str.String(), "\n") + "\n}"
 }
 
+// Paper wraps a Pen and its own buffer.
+type Paper struct {
+	Pen
+	buf strings.Builder
+}
+
+// NewPaper creates a new Paper that preallocates 5MB.
+func NewPaper() *Paper {
+	return NewPaperSize(10 * 1024 * 1024) // 5MB
+}
+
+// NewPaperSize creates a new Paper with the given size to preallocate.
+func NewPaperSize(size int) *Paper {
+	p := Paper{}
+	p.buf.Grow(size)
+	p.Pen = *New(&p.buf)
+	return &p
+}
+
+// String returns the final string written from the Pen.
+func (p *Paper) String() string { return p.buf.String() }
+
 // Pen is an utility writer.
 type Pen struct {
 	bufio.Writer
@@ -188,6 +213,20 @@ func (p *Pen) Words(words ...string) {
 	p.Line()
 }
 
+// Wordf writes a Sprintf-formatted line.
+func (p *Pen) Wordf(f string, v ...interface{}) {
+	if p.err != nil {
+		return
+	}
+
+	_, p.err = fmt.Fprintf(&p.Writer, f, v...)
+	if p.err != nil {
+		return
+	}
+
+	p.Line()
+}
+
 // Line adds a line.
 func (p *Pen) Line() {
 	if p.err != nil {
@@ -196,6 +235,16 @@ func (p *Pen) Line() {
 
 	p.err = p.WriteByte('\n')
 	return
+}
+
+// Flush flushes multiple pens or any flushers.
+func Flush(flushers ...interface{ Flush() error }) error {
+	for _, flusher := range flushers {
+		if err := flusher.Flush(); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // Flush flushes the internal buffer into the writer.

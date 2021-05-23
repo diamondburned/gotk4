@@ -13,6 +13,8 @@ import (
 // #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixdata.h>
+//
+//
 import "C"
 
 func init() {
@@ -90,7 +92,7 @@ const (
 	PixdataTypeEncodingMask PixdataType = 0b1111000000000000000000000000
 )
 
-// PixbufFromPixdata: converts a Pixdata to a Pixbuf. If @copy_pixels is true or
+// PixbufFromPixdata converts a Pixdata to a Pixbuf. If @copy_pixels is true or
 // if the pixel data is run-length-encoded, the pixel data is copied into
 // newly-allocated memory; otherwise it is reused.
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
@@ -103,7 +105,7 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
 	ret := C.gdk_pixbuf_from_pixdata(arg0, arg1)
 
 	var ret0 gdkpixbuf.Pixbuf
-	ret0 = wrapPixbuf(ret)
+	ret0 = wrapPixbuf(externglib.Take(unsafe.Pointer(ret)))
 
 	return ret0
 }
@@ -114,7 +116,7 @@ type Pixdata struct {
 	// Magic: magic number. A valid Pixdata structure must have
 	// K_PIXBUF_MAGIC_NUMBER here.
 	Magic uint32
-	// Length: less than 1 to disable length checks, otherwise
+	// Length less than 1 to disable length checks, otherwise
 	// K_PIXDATA_HEADER_LENGTH + length of @pixel_data.
 	Length int32
 	// PixdataType: information about colorspace, sample width and encoding, in
@@ -142,7 +144,18 @@ func wrapPixdata(p *C.GdkPixdata) *Pixdata {
 	v.Rowstride = uint32(p.rowstride)
 	v.Width = uint32(p.width)
 	v.Height = uint32(p.height)
-	v.PixelData = ([0]uint8)(p.pixel_data)
+	{
+		var length uint
+		for p := unsafe.Pointer(p.pixel_data); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
+			length++
+		}
+
+		v.PixelData = make([]uint8, length)
+		for i := 0; i < length; i++ {
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p.pixel_data)) + i))
+			v.PixelData[i] = uint8(src)
+		}
+	}
 
 	return &v
 }

@@ -5,6 +5,7 @@ package gdkwayland
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/pkg/gdk"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -12,6 +13,9 @@ import (
 // #cgo pkg-config: gtk4-wayland
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/wayland/gdkwayland.h>
+//
+// extern void cWaylandToplevelExported(GdkToplevel*, const char*, gpointer)
+//
 import "C"
 
 func init() {
@@ -36,15 +40,33 @@ func init() {
 	})
 }
 
+// WaylandToplevelExported: callback that gets called when the handle for a
+// surface has been obtained from the Wayland compositor. The @handle can be
+// passed to other processes, for the purpose of marking surfaces as transient
+// for out-of-process surfaces.
 type WaylandToplevelExported func(toplevel WaylandToplevel, handle string)
 
 //export cWaylandToplevelExported
-func cWaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer)
+func cWaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
+	v := box.Get(box.Callback, uintptr(arg2))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	var toplevel waylandToplevel
+	toplevel = wrapWaylandToplevel(externglib.Take(unsafe.Pointer(arg0)))
+
+	var handle string
+	handle = C.GoString(arg1)
+	defer C.free(unsafe.Pointer(arg1))
+
+	v.(WaylandToplevelExported)(toplevel, handle)
+}
 
 type WaylandDevice interface {
 	gdk.Device
 
-	// NodePath: returns the `/dev/input/event*` path of this device.
+	// NodePath returns the `/dev/input/event*` path of this device.
 	//
 	// For Devices that possibly coalesce multiple hardware devices (eg. mouse,
 	// keyboard, touch,...), this function will return nil.
@@ -52,11 +74,11 @@ type WaylandDevice interface {
 	// This is most notably implemented for devices of type GDK_SOURCE_PEN,
 	// GDK_SOURCE_TABLET_PAD.
 	NodePath() string
-	// WlKeyboard: returns the Wayland wl_keyboard of a Device.
+	// WlKeyboard returns the Wayland wl_keyboard of a Device.
 	WlKeyboard() interface{}
-	// WlPointer: returns the Wayland wl_pointer of a Device.
+	// WlPointer returns the Wayland wl_pointer of a Device.
 	WlPointer() interface{}
-	// WlSeat: returns the Wayland wl_seat of a Device.
+	// WlSeat returns the Wayland wl_seat of a Device.
 	WlSeat() interface{}
 }
 
@@ -85,20 +107,20 @@ func (w waylandDevice) WlSeat() interface{}
 type WaylandDisplay interface {
 	gdk.Display
 
-	// StartupNotificationID: gets the startup notification ID for a Wayland
+	// StartupNotificationID gets the startup notification ID for a Wayland
 	// display, or nil if no ID has been defined.
 	StartupNotificationID() string
-	// WlCompositor: returns the Wayland global singleton compositor of a
+	// WlCompositor returns the Wayland global singleton compositor of a
 	// Display.
 	WlCompositor() interface{}
-	// WlDisplay: returns the Wayland wl_display of a Display.
+	// WlDisplay returns the Wayland wl_display of a Display.
 	WlDisplay() interface{}
-	// QueryRegistry: returns true if the the interface was found in the display
+	// QueryRegistry returns true if the the interface was found in the display
 	// `wl_registry.global` handler.
 	QueryRegistry(global string) bool
-	// SetCursorTheme: sets the cursor theme for the given @display.
+	// SetCursorTheme sets the cursor theme for the given @display.
 	SetCursorTheme(name string, size int)
-	// SetStartupNotificationID: sets the startup notification ID for a display.
+	// SetStartupNotificationID sets the startup notification ID for a display.
 	//
 	// This is usually taken from the value of the DESKTOP_STARTUP_ID
 	// environment variable, but in some cases (such as the application not
@@ -139,7 +161,7 @@ func (w waylandDisplay) SetStartupNotificationID(startupID string)
 type WaylandMonitor interface {
 	gdk.Monitor
 
-	// WlOutput: returns the Wayland wl_output of a Monitor.
+	// WlOutput returns the Wayland wl_output of a Monitor.
 	WlOutput() interface{}
 }
 
@@ -180,7 +202,7 @@ func marshalWaylandPopup(p uintptr) (interface{}, error) {
 type WaylandSeat interface {
 	gdk.Seat
 
-	// WlSeat: returns the Wayland `wl_seat` of a Seat.
+	// WlSeat returns the Wayland `wl_seat` of a Seat.
 	WlSeat() interface{}
 }
 
@@ -203,7 +225,7 @@ func (w waylandSeat) WlSeat() interface{}
 type WaylandSurface interface {
 	gdk.Surface
 
-	// WlSurface: returns the Wayland surface of a Surface.
+	// WlSurface returns the Wayland surface of a Surface.
 	WlSurface() interface{}
 }
 
@@ -244,9 +266,9 @@ type WaylandToplevel interface {
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
 	ExportHandle(callback WaylandToplevelExported) bool
-	// SetApplicationID: sets the application id on a Toplevel.
+	// SetApplicationID sets the application id on a Toplevel.
 	SetApplicationID(applicationID string)
-	// SetTransientForExported: marks @toplevel as transient for the surface to
+	// SetTransientForExported marks @toplevel as transient for the surface to
 	// which the given @parent_handle_str refers. Typically, the handle will
 	// originate from a gdk_wayland_toplevel_export_handle() call in another
 	// process.
@@ -254,7 +276,7 @@ type WaylandToplevel interface {
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
 	SetTransientForExported(parentHandleStr string) bool
-	// UnexportHandle: destroys the handle that was obtained with
+	// UnexportHandle destroys the handle that was obtained with
 	// gdk_wayland_toplevel_export_handle().
 	//
 	// It is an error to call this function on a surface that does not have a

@@ -10,17 +10,20 @@ import (
 
 var callbackTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .Name }}
-	type {{ .GoName }} func{{ .Tail }}
+	type {{ .GoName }} func{{ .GoTail }}
 
 	//export c{{ .GoName }}
-	func c{{ .GoName }}{{ .CTail }} {{ .CBlock }}
+	func c{{ .GoName }}{{ .CGoTail }} {{ .CBlock }}
 `)
 
 type callbackGenerator struct {
 	gir.Callback
-	GoName string
-	CTail  string
-	Tail   string
+	GoName  string
+	GoTail  string
+	CGoTail string
+
+	Closure *int
+	Destroy *int
 
 	Ng *NamespaceGenerator
 }
@@ -31,69 +34,74 @@ func newCallbackGenerator(ng *NamespaceGenerator) callbackGenerator {
 
 // Use sets the callback generator to the given GIR callback.
 func (fg *callbackGenerator) Use(cb gir.Callback) bool {
-	call := fg.Ng.FnCall(cb.CallableAttrs)
-	if call == "" {
+	// We can't use the callback if it has no closure parameters.
+	if cb.Parameters == nil || len(cb.Parameters.Parameters) == 0 {
+		return false
+	}
+	// Don't generate destroy notifiers. It's an edge case that we handle
+	// separately and mostly manually. There are also no good ways to detect
+	// this.
+	if strings.HasSuffix(cb.Name, "DestroyNotify") {
+		return false
+	}
+
+	fg.Closure = nil
+	for _, param := range cb.Parameters.Parameters {
+		if param.Closure != nil {
+			fg.Closure = param.Closure
+			break
+		}
+	}
+	if fg.Closure == nil {
 		return false
 	}
 
 	fg.GoName = PascalToGo(cb.Name)
-	fg.Tail = call
-	fg.CTail = "()"
+	fg.Callback = cb
 
-	if cb.Parameters != nil {
-		ctail := make([]string, 0, len(cb.Parameters.Parameters))
-
-		for i, callback := range cb.Parameters.Parameters {
-			ctype := anyTypeCGo(callback.AnyType)
-			if ctype == "" {
-				return false // probably var_args
-			}
-
-			ctail = append(ctail, fmt.Sprintf("arg%d %s", i, ctype))
-		}
-
-		fg.CTail = "(" + strings.Join(ctail, ", ") + ")"
+	fg.GoTail = fg.Ng.FnCall(cb.CallableAttrs)
+	if fg.GoTail == "" {
+		return false
 	}
 
+	cgotail := pen.NewJoints(", ", len(cb.Parameters.Parameters))
+	ctail := pen.NewJoints(", ", len(cb.Parameters.Parameters))
+
+	for i, param := range cb.Parameters.Parameters {
+		ctype := anyTypeC(param.AnyType)
+		if ctype == "" {
+			return false // probably var_args
+		}
+
+		ctail.Add(ctype)
+		cgotype := anyTypeCGo(param.AnyType)
+		cgotail.Addf("arg%d %s", i, cgotype)
+	}
+
+	fg.CGoTail = "(" + cgotail.Join() + ")"
+	cReturn := "void"
+
 	if !returnIsVoid(cb.ReturnValue) {
-		ctype := anyTypeCGo(cb.ReturnValue.AnyType)
+		ctype := anyTypeC(cb.ReturnValue.AnyType)
 		if ctype == "" {
 			return false
 		}
 
-		fg.CTail += " " + ctype
+		cReturn = ctype
+		fg.CGoTail += " " + anyTypeCGo(cb.ReturnValue.AnyType)
 	}
+
+	fg.Ng.cgo.Wordf("extern %s %s(%s)", cReturn, "c"+fg.GoName, ctail.Join())
 
 	return true
 }
 
 func (fg *callbackGenerator) CBlock() string {
-	// We need a data parameter to access our callbacks; we can't do this if
-	// there are no params.
-	if fg.Parameters == nil || len(fg.Parameters.Parameters) == 0 {
-		return ""
-	}
-
 	b := pen.NewBlock()
-
-	// indices in fg.Parameters.Parameters
-	var closureParam *int
-
-	for _, param := range fg.Parameters.Parameters {
-		if param.Closure != nil {
-			closureParam = param.Closure
-			break
-		}
-	}
-
-	// No data parameter to use; exit.
-	if closureParam == nil {
-		return ""
-	}
 
 	fg.Ng.addImport("github.com/diamondburned/gotk4/internal/box")
 
-	b.Linef("v := box.Get(box.Callback, uintptr(arg%d))", *closureParam)
+	b.Linef("v := box.Get(box.Callback, uintptr(arg%d))", *fg.Closure)
 	b.Linef("if v == nil {")
 	b.Linef("  panic(`callback not found`)")
 	b.Linef("}")
@@ -108,8 +116,12 @@ func (fg *callbackGenerator) CBlock() string {
 		goType, _ := fg.Ng.ResolveAnyType(param.AnyType, false)
 		b.Linef("var %s %s", goName, goType)
 
-		conv := fg.Ng.CGoConverter(argAt(i), goName, param.AnyType, argAt)
-		b.Line(conv)
+		b.Line(fg.Ng.CGoConverter(CGoConversion{
+			Value:  argAt(i),
+			Target: goName,
+			Type:   param.AnyType,
+			ArgAt:  argAt,
+		}))
 		b.EmptyLine()
 
 		goArgs.Add(goName)
@@ -120,6 +132,11 @@ func (fg *callbackGenerator) CBlock() string {
 		goRets.Add(goName)
 		return true
 	})
+
+	if goRets.Len() == 0 {
+		b.Linef("v.(%s)(%s)", fg.GoName, goArgs.Join())
+		return b.String()
+	}
 
 	b.Linef("%s := v.(%s)(%s)", goRets.Join(), fg.GoName, goArgs.Join())
 

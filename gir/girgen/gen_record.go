@@ -117,12 +117,12 @@ func (rg *recordGenerator) Use(rec gir.Record) bool {
 }
 
 func (rg *recordGenerator) Convert(field recordField, cStruct, goStruct string) string {
-	return rg.Ng.CGoConverter(
-		cStruct+"."+field.Name,
-		goStruct+"."+field.GoName,
-		field.AnyType,
-		func(i int) string { return cStruct + "." + cgoField(rg.Fields[i].Name) },
-	)
+	return rg.Ng.CGoConverter(CGoConversion{
+		Value:  cStruct + "." + field.Name,
+		Target: goStruct + "." + field.GoName,
+		Type:   field.AnyType,
+		ArgAt:  func(i int) string { return cStruct + "." + cgoField(rg.Fields[i].Name) },
+	})
 }
 
 func (rg *recordGenerator) publicFields() []recordField {

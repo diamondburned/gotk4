@@ -32,8 +32,9 @@ var classTmpl = newGoTemplate(`
 	}
 
 	{{ range .Constructors }}
-	{{ with $tail := ($.CtorCall .CallableAttrs) }}
-	func New{{ $.InterfaceName }}{{ $tail }}
+	{{ $tail := ($.CtorCall .CallableAttrs) }}
+	{{ if $tail }}
+	func {{ $.CtorName . }}{{ $tail }}
 	{{ end }}
 	{{ end }}
 
@@ -117,6 +118,12 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.StructName = UnexportPascal(cg.InterfaceName)
 
 	return true
+}
+
+func (cg *classGenerator) CtorName(ctor gir.Constructor) string {
+	name := SnakeToGo(true, ctor.Name)
+	name = strings.TrimPrefix(name, "New")
+	return "New" + cg.InterfaceName + name
 }
 
 // CtorCall generates a FnCall for a constructor.

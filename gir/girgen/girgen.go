@@ -1,12 +1,12 @@
 package girgen
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"log"
 	"path"
 	"strconv"
+	"strings"
 	"text/template"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -121,12 +121,10 @@ func (g *Generator) UseNamespace(namespace string) *NamespaceGenerator {
 		return nil
 	}
 
-	buf := bytes.Buffer{}
-	buf.Grow(4 * 1024 * 1024) // 4MB
-
 	return &NamespaceGenerator{
-		pen:  pen.New(&buf),
-		body: &buf,
+		pen: pen.NewPaper(),          // 4MB
+		pre: pen.NewPaperSize(10240), // 10KB
+		cgo: pen.NewPaperSize(10240), // 10KB
 
 		imports: map[string]string{},
 		pkgPath: g.ImportPath(gir.GoNamespace(res.Namespace)),
@@ -179,18 +177,36 @@ func (ig ignoreIxs) ignore(i int) bool {
 
 // NamespaceGenerator is a generator for a specific namespace.
 type NamespaceGenerator struct {
-	pen  *pen.Pen
-	body *bytes.Buffer
+	pen *pen.Paper // body
+	pre *pen.Paper
+	cgo *pen.Paper
 
 	pkgPath string            // package name
 	imports map[string]string // optional alias value
 
 	gen     *Generator
 	current *gir.NamespaceFindResult
+
+	// inserted keeps track of what was inserted once.
+	inserted struct {
+		CallbackDelete bool
+	}
 }
 
 // Generate generates the current namespace into the given writer.
 func (ng *NamespaceGenerator) Generate(w io.Writer) error {
+	pkgs := []string{"#cgo pkg-config:"}
+	for _, pkg := range ng.current.Repository.Packages {
+		pkgs = append(pkgs, pkg.Name)
+	}
+
+	ng.cgo.Words(pkgs...)
+	ng.cgo.Words("#cgo CFLAGS: -Wno-deprecated-declarations")
+	for _, cIncl := range ng.current.Repository.CIncludes {
+		ng.cgo.Wordf("#include <%s>", cIncl.Name)
+	}
+	ng.cgo.Line()
+
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
 	// CALL GENERATION FUNCTIONS HERE !!!
@@ -206,7 +222,7 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 	ng.generateRecords()
 	ng.generateClasses()
 
-	if err := ng.pen.Flush(); err != nil {
+	if err := pen.Flush(ng.pen, ng.cgo, ng.pre); err != nil {
 		ng.logln(logError, "generation error:", err)
 		return err
 	}
@@ -233,25 +249,14 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 		pen.Line()
 	}
 
-	pkgs := []string{"// #cgo pkg-config:"}
-	for _, pkg := range ng.current.Repository.Packages {
-		pkgs = append(pkgs, pkg.Name)
+	for _, line := range strings.Split(ng.cgo.String(), "\n") {
+		pen.Words("//", line)
 	}
-
-	pen.Words(pkgs...)
-	pen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
-	for _, cIncl := range ng.current.Repository.CIncludes {
-		pen.Words("// #include", fmt.Sprintf("<%s>", cIncl.Name))
-	}
-	// pen.Words("// extern void callbackDelete(gpointer);")
 	pen.Words(`import "C"`)
 	pen.Line()
 
-	// TODO: detect when this is needed.
-	// pen.Words("//export callbackDelete")
-	// pen.Block(`func callbackDelete(ptr C.gpointer) { callback.Delete(uintptr(ptr)) }`)
-
-	pen.Write(ng.body.Bytes())
+	pen.WriteString(ng.pre.String())
+	pen.WriteString(ng.pen.String())
 
 	if err := pen.Flush(); err != nil {
 		ng.logln(logError, "final file write error:", err)
@@ -259,6 +264,22 @@ func (ng *NamespaceGenerator) Generate(w io.Writer) error {
 	}
 
 	return nil
+}
+
+func (ng *NamespaceGenerator) needsCallbackDelete() {
+	if ng.inserted.CallbackDelete {
+		return
+	}
+
+	ng.inserted.CallbackDelete = true
+	ng.addImport("github.com/diamondburned/gotk4/internal/box")
+
+	ng.cgo.Words("// extern void callbackDelete(gpointer);")
+
+	ng.pre.Words("//export callbackDelete")
+	ng.pre.Words("func callbackDelete(ptr C.gpointer) {")
+	ng.pre.Words("  box.Delete(box.Callback, uintptr(ptr))")
+	ng.pre.Words("}")
 }
 
 // PackageName returns the current namespace's package name.

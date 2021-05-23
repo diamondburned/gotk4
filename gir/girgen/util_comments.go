@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 
 	"github.com/diamondburned/gotk4/gir"
 )
@@ -47,24 +48,39 @@ func nthWord(paragraph string, n int) string {
 	return words[n]
 }
 
-// secondWordSimplePresent checks if the second word has a trailing "s".
-func secondWordSimplePresent(paragraph string) bool {
-	word := nthWord(paragraph, 1)
-	return strings.HasSuffix(word, "s")
+// nthWordSimplePresent checks if the second word has a trailing "s".
+func nthWordSimplePresent(paragraph string, n int) bool {
+	word := nthWord(paragraph, n)
+	return !strings.EqualFold(word, "this") && strings.HasSuffix(word, "s")
+}
+
+// lowerFirstLetter lower-cases the first letter in the paragraph.
+func lowerFirstWord(paragraph string) string {
+	r, sz := utf8.DecodeRuneInString(paragraph)
+	if sz > 0 {
+		return string(unicode.ToLower(r)) + paragraph[sz:]
+	}
+	return string(paragraph)
 }
 
 // CommentReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go
 // comment strings. It is automatically indented.
 func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
-	// hasIs checks if the paragraph already starts with "something is..."
-	hasIs := strings.HasPrefix(cmt, "#") && secondWordSimplePresent(cmt)
+	// true if the sentence isn't already Go-idiomatic.
+	needsColon := false
 
-	if hasIs {
+	switch {
+	case strings.HasPrefix(cmt, "#") && nthWordSimplePresent(cmt, 1):
 		// Trim the first word away and replace it with the Go name.
 		cmt = self + " " + strings.SplitN(cmt, " ", 2)[1]
-	} else {
+
+	case nthWordSimplePresent(cmt, 0):
+		cmt = self + " " + lowerFirstWord(cmt)
+
+	default:
 		// Trim the word "this" away to make the sentence gramatically correct.
 		cmt = strings.TrimPrefix(cmt, "this ")
+		needsColon = true
 	}
 
 	// Wipe the namespace prefix syntax.
@@ -160,7 +176,7 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 		// Normal paragraphs.
 		default:
 			paragraph = strings.TrimSpace(cmtWhitespaceProc.Replace(paragraph))
-			if i == 0 && !hasIs {
+			if i == 0 && needsColon {
 				// Prefix the paragraph with the current entity.
 				paragraph = fmt.Sprintf("%s: %s", self, lowerFirstLetter(paragraph))
 			}

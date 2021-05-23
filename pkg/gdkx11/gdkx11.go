@@ -14,6 +14,8 @@ import (
 // #cgo pkg-config: gtk4-x11
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/x11/gdkx.h>
+//
+//
 import "C"
 
 func init() {
@@ -55,10 +57,10 @@ const (
 	X11DeviceTypeFloating X11DeviceType = 2
 )
 
-// X11DeviceGetID: returns the device ID as seen by XInput2.
+// X11DeviceGetID returns the device ID as seen by XInput2.
 func X11DeviceGetID(device gdk.Device) int {
 	var arg0 gdk.Device
-	arg0 = wrapX11DeviceXI2(device)
+	arg0 = wrapX11DeviceXI2(externglib.Take(unsafe.Pointer(device)))
 
 	ret := C.gdk_x11_device_get_id(arg0)
 
@@ -68,10 +70,10 @@ func X11DeviceGetID(device gdk.Device) int {
 	return ret0
 }
 
-// X11DeviceManagerLookup: returns the Device that wraps the given device ID.
+// X11DeviceManagerLookup returns the Device that wraps the given device ID.
 func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) gdk.Device {
 	var arg0 X11DeviceManagerXI2
-	arg0 = wrapX11DeviceManagerXI2(deviceManager)
+	arg0 = wrapX11DeviceManagerXI2(externglib.Take(unsafe.Pointer(deviceManager)))
 
 	var arg1 int
 	arg1 = int(deviceID)
@@ -79,12 +81,12 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) gdk
 	ret := C.gdk_x11_device_manager_lookup(arg0, arg1)
 
 	var ret0 gdk.Device
-	ret0 = wrapX11DeviceXI2(ret)
+	ret0 = wrapX11DeviceXI2(externglib.Take(unsafe.Pointer(ret)))
 
 	return ret0
 }
 
-// X11FreeCompoundText: frees the data returned from
+// X11FreeCompoundText frees the data returned from
 // gdk_x11_display_string_to_compound_text().
 func X11FreeCompoundText(ctext uint8) {
 	var arg0 uint8
@@ -93,7 +95,7 @@ func X11FreeCompoundText(ctext uint8) {
 	C.gdk_x11_free_compound_text(arg0)
 }
 
-// X11FreeTextList: frees the array of strings created by
+// X11FreeTextList frees the array of strings created by
 // gdk_x11_display_text_property_to_text_list().
 func X11FreeTextList(list string) {
 	var arg0 string
@@ -106,7 +108,7 @@ func X11FreeTextList(list string) {
 // X11GetServerTime: routine to get the current X server time stamp.
 func X11GetServerTime(surface gdk.Surface) uint32 {
 	var arg0 gdk.Surface
-	arg0 = wrapX11Surface(surface)
+	arg0 = wrapX11Surface(externglib.Take(unsafe.Pointer(surface)))
 
 	ret := C.gdk_x11_get_server_time(arg0)
 
@@ -116,13 +118,13 @@ func X11GetServerTime(surface gdk.Surface) uint32 {
 	return ret0
 }
 
-// X11GetXatomByNameForDisplay: returns the X atom for a Display corresponding
-// to @atom_name. This function caches the result, so if called repeatedly it is
+// X11GetXatomByNameForDisplay returns the X atom for a Display corresponding to
+// @atom_name. This function caches the result, so if called repeatedly it is
 // much faster than XInternAtom(), which is a round trip to the server each
 // time.
 func X11GetXatomByNameForDisplay(display gdk.Display, atomName string) xlib.Atom {
 	var arg0 gdk.Display
-	arg0 = wrapX11Display(display)
+	arg0 = wrapX11Display(externglib.Take(unsafe.Pointer(display)))
 
 	var arg1 string
 	arg1 = C.GoString(atomName)
@@ -139,12 +141,12 @@ func X11GetXatomByNameForDisplay(display gdk.Display, atomName string) xlib.Atom
 	return ret0
 }
 
-// X11GetXatomNameForDisplay: returns the name of an X atom for its display.
-// This function is meant mainly for debugging, so for convenience, unlike
+// X11GetXatomNameForDisplay returns the name of an X atom for its display. This
+// function is meant mainly for debugging, so for convenience, unlike
 // XAtomName() and the result doesn’t need to be freed.
 func X11GetXatomNameForDisplay(display gdk.Display, xatom xlib.Atom) string {
 	var arg0 gdk.Display
-	arg0 = wrapX11Display(display)
+	arg0 = wrapX11Display(externglib.Take(unsafe.Pointer(display)))
 
 	var arg1 xlib.Atom
 	{
@@ -170,14 +172,14 @@ func X11LookupXdisplay(xdisplay *xlib.Display) gdk.Display {
 	ret := C.gdk_x11_lookup_xdisplay(arg0)
 
 	var ret0 gdk.Display
-	ret0 = wrapX11Display(ret)
+	ret0 = wrapX11Display(externglib.Take(unsafe.Pointer(ret)))
 
 	return ret0
 }
 
-// X11SetSmClientID: sets the `SM_CLIENT_ID` property on the application’s
-// leader window so that the window manager can save the application’s state
-// using the X11R6 ICCCM session management protocol.
+// X11SetSmClientID sets the `SM_CLIENT_ID` property on the application’s leader
+// window so that the window manager can save the application’s state using the
+// X11R6 ICCCM session management protocol.
 //
 // See the X Session Management Library documentation for more information on
 // session management and the Inter-Client Communication Conventions Manual
@@ -246,7 +248,7 @@ func marshalX11DeviceXI2(p uintptr) (interface{}, error) {
 type X11Display interface {
 	gdk.Display
 
-	// ErrorTrapPop: pops the error trap pushed by
+	// ErrorTrapPop pops the error trap pushed by
 	// gdk_x11_display_error_trap_push(). Will XSync() if necessary and will
 	// always block until the error is known to have occurred or not occurred,
 	// so the error code can be returned.
@@ -254,24 +256,24 @@ type X11Display interface {
 	// If you don’t need to use the return value,
 	// gdk_x11_display_error_trap_pop_ignored() would be more efficient.
 	ErrorTrapPop() int
-	// ErrorTrapPopIgnored: pops the error trap pushed by
+	// ErrorTrapPopIgnored pops the error trap pushed by
 	// gdk_x11_display_error_trap_push(). Does not block to see if an error
 	// occurred; merely records the range of requests to ignore errors for, and
 	// ignores those errors if they arrive asynchronously.
 	ErrorTrapPopIgnored()
-	// ErrorTrapPush: begins a range of X requests on @display for which X error
+	// ErrorTrapPush begins a range of X requests on @display for which X error
 	// events will be ignored. Unignored errors (when no trap is pushed) will
 	// abort the application. Use gdk_x11_display_error_trap_pop() or
 	// gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
 	// function.
 	ErrorTrapPush()
-	// DefaultGroup: returns the default group leader surface for all toplevel
+	// DefaultGroup returns the default group leader surface for all toplevel
 	// surfaces on @display. This surface is implicitly created by GDK. See
 	// gdk_x11_surface_set_group().
 	DefaultGroup() gdk.Surface
-	// GlxVersion: retrieves the version of the GLX implementation.
+	// GlxVersion retrieves the version of the GLX implementation.
 	GlxVersion() (major int, minor int, ok bool)
-	// PrimaryMonitor: gets the primary monitor for the display.
+	// PrimaryMonitor gets the primary monitor for the display.
 	//
 	// The primary monitor is considered the monitor where the “main desktop”
 	// lives. While normal application surfaces typically allow the window
@@ -281,15 +283,15 @@ type X11Display interface {
 	// If no monitor is the designated primary monitor, any monitor (usually the
 	// first) may be returned.
 	PrimaryMonitor() gdk.Monitor
-	// Screen: retrieves the X11Screen of the @display.
+	// Screen retrieves the X11Screen of the @display.
 	Screen() X11Screen
-	// StartupNotificationID: gets the startup notification ID for a display.
+	// StartupNotificationID gets the startup notification ID for a display.
 	StartupNotificationID() string
-	// UserTime: returns the timestamp of the last user interaction on @display.
+	// UserTime returns the timestamp of the last user interaction on @display.
 	// The timestamp is taken from events caused by user interaction such as key
 	// presses or pointer movements. See gdk_x11_surface_set_user_time().
 	UserTime() uint32
-	// Xcursor: returns the X cursor belonging to a Cursor, potentially creating
+	// Xcursor returns the X cursor belonging to a Cursor, potentially creating
 	// the cursor.
 	//
 	// Be aware that the returned cursor may not be unique to @cursor. It may
@@ -297,18 +299,18 @@ type X11Display interface {
 	// don't support the XCursor extension, all cursors may even fall back to a
 	// few default cursors.
 	Xcursor(cursor gdk.Cursor) xlib.Cursor
-	// Xdisplay: returns the X display of a Display.
+	// Xdisplay returns the X display of a Display.
 	Xdisplay() *xlib.Display
-	// Xrootwindow: returns the root X window used by Display.
+	// Xrootwindow returns the root X window used by Display.
 	Xrootwindow() xlib.Window
-	// Xscreen: returns the X Screen used by Display.
+	// Xscreen returns the X Screen used by Display.
 	Xscreen() *xlib.Screen
 	// Grab: call XGrabServer() on @display. To ungrab the display again, use
 	// gdk_x11_display_ungrab().
 	//
 	// gdk_x11_display_grab()/gdk_x11_display_ungrab() calls can be nested.
 	Grab()
-	// SetCursorTheme: sets the cursor theme from which the images for cursor
+	// SetCursorTheme sets the cursor theme from which the images for cursor
 	// should be taken.
 	//
 	// If the windowing system supports it, existing cursors created with
@@ -318,7 +320,7 @@ type X11Display interface {
 	// theme changes by listening for change notification for the corresponding
 	// Setting).
 	SetCursorTheme(theme string, size int)
-	// SetStartupNotificationID: sets the startup notification ID for a display.
+	// SetStartupNotificationID sets the startup notification ID for a display.
 	//
 	// This is usually taken from the value of the DESKTOP_STARTUP_ID
 	// environment variable, but in some cases (such as the application not
@@ -333,7 +335,7 @@ type X11Display interface {
 	// complete (for example, when opening a window or when calling
 	// gdk_display_notify_startup_complete()).
 	SetStartupNotificationID(startupID string)
-	// SetSurfaceScale: forces a specific window scale for all windows on this
+	// SetSurfaceScale forces a specific window scale for all windows on this
 	// display, instead of using the default or user configured scale. This is
 	// can be used to disable scaling support by setting @scale to 1, or to
 	// programmatically set the window scale.
@@ -352,7 +354,7 @@ type X11Display interface {
 	// Ungrab: ungrab @display after it has been grabbed with
 	// gdk_x11_display_grab().
 	Ungrab()
-	// UTF8ToCompoundText: converts from UTF-8 to compound text.
+	// UTF8ToCompoundText converts from UTF-8 to compound text.
 	UTF8ToCompoundText(str string) (encoding string, format int, ctext []uint8, length int, ok bool)
 }
 
@@ -433,9 +435,9 @@ func marshalX11Drag(p uintptr) (interface{}, error) {
 type X11Monitor interface {
 	gdk.Monitor
 
-	// Output: returns the XID of the Output corresponding to @monitor.
+	// Output returns the XID of the Output corresponding to @monitor.
 	Output() xlib.XID
-	// Workarea: retrieves the size and position of the “work area” on a monitor
+	// Workarea retrieves the size and position of the “work area” on a monitor
 	// within the display coordinate space. The returned geometry is in
 	// ”application pixels”, not in ”device pixels” (see
 	// gdk_monitor_get_scale_factor()).
@@ -463,25 +465,25 @@ func (x x11Monitor) Workarea() gdk.Rectangle
 type X11Screen interface {
 	gextras.Objector
 
-	// CurrentDesktop: returns the current workspace for @screen when running
+	// CurrentDesktop returns the current workspace for @screen when running
 	// under a window manager that supports multiple workspaces, as described in
 	// the [Extended Window Manager
 	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification.
 	CurrentDesktop() uint32
-	// MonitorOutput: gets the XID of the specified output/monitor. If the X
+	// MonitorOutput gets the XID of the specified output/monitor. If the X
 	// server does not support version 1.2 of the RANDR extension, 0 is
 	// returned.
 	MonitorOutput(monitorNum int) xlib.XID
-	// NumberOfDesktops: returns the number of workspaces for @screen when
+	// NumberOfDesktops returns the number of workspaces for @screen when
 	// running under a window manager that supports multiple workspaces, as
 	// described in the [Extended Window Manager
 	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification.
 	NumberOfDesktops() uint32
-	// ScreenNumber: returns the index of a X11Screen.
+	// ScreenNumber returns the index of a X11Screen.
 	ScreenNumber() int
-	// WindowManagerName: returns the name of the window manager for @screen.
+	// WindowManagerName returns the name of the window manager for @screen.
 	WindowManagerName() string
-	// Xscreen: returns the screen of a X11Screen.
+	// Xscreen returns the screen of a X11Screen.
 	Xscreen() *xlib.Screen
 	// SupportsNetWmHint: this function is specific to the X11 backend of GDK,
 	// and indicates whether the window manager supports a certain hint from the
@@ -530,19 +532,19 @@ func (x x11Screen) SupportsNetWmHint(propertyName string) bool
 type X11Surface interface {
 	gdk.Surface
 
-	// Desktop: gets the number of the workspace @surface is on.
+	// Desktop gets the number of the workspace @surface is on.
 	Desktop() uint32
-	// Group: returns the group this surface belongs to.
+	// Group returns the group this surface belongs to.
 	Group() gdk.Surface
-	// Xid: returns the X resource (surface) belonging to a Surface.
+	// Xid returns the X resource (surface) belonging to a Surface.
 	Xid() xlib.Window
-	// MoveToCurrentDesktop: moves the surface to the correct workspace when
+	// MoveToCurrentDesktop moves the surface to the correct workspace when
 	// running under a window manager that supports multiple workspaces, as
 	// described in the [Extended Window Manager
 	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification. Will
 	// not do anything if the surface is already on all workspaces.
 	MoveToCurrentDesktop()
-	// MoveToDesktop: moves the surface to the given workspace when running unde
+	// MoveToDesktop moves the surface to the given workspace when running unde
 	// a window manager that supports multiple workspaces, as described in the
 	// [Extended Window Manager
 	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification.
@@ -555,13 +557,13 @@ type X11Surface interface {
 	// disabled. This is the case for a surface embedded via the XEMBED
 	// protocol.
 	SetFrameSyncEnabled(frameSyncEnabled bool)
-	// SetGroup: sets the group leader of @surface to be @leader. See the ICCCM
+	// SetGroup sets the group leader of @surface to be @leader. See the ICCCM
 	// for details.
 	SetGroup(leader gdk.Surface)
-	// SetSkipPagerHint: sets a hint on @surface that pagers should not display
+	// SetSkipPagerHint sets a hint on @surface that pagers should not display
 	// it. See the EWMH for details.
 	SetSkipPagerHint(skipsPager bool)
-	// SetSkipTaskbarHint: sets a hint on @surface that taskbars should not
+	// SetSkipTaskbarHint sets a hint on @surface that taskbars should not
 	// display it. See the EWMH for details.
 	SetSkipTaskbarHint(skipsTaskbar bool)
 	// SetThemeVariant: GTK applications can request a dark theme variant. In
@@ -574,7 +576,7 @@ type X11Surface interface {
 	// should only be used by applications which do not use GTK to create
 	// toplevel surfaces.
 	SetThemeVariant(variant string)
-	// SetUrgencyHint: sets a hint on @surface that it needs user attention. See
+	// SetUrgencyHint sets a hint on @surface that it needs user attention. See
 	// the ICCCM for details.
 	SetUrgencyHint(urgent bool)
 	// SetUserTime: the application can use this call to update the

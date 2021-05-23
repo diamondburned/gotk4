@@ -224,17 +224,19 @@ func (ng *NamespaceGenerator) resolveArrayType(array gir.Array, pub bool) (strin
 // anyTypeCGo returns the CGo type for a GIR AnyType. An empty string is
 // returned if none is made.
 func anyTypeCGo(any gir.AnyType) string {
-	movePtr := func(c string) string {
-		c = strings.TrimPrefix(c, "const ")
-		cgo := "C." + strings.ReplaceAll(c, "*", "")
-		return movePtr(c, cgo)
-	}
+	c := strings.TrimPrefix(anyTypeC(any), "const ")
+	cgo := "C." + strings.ReplaceAll(c, "*", "")
+	return movePtr(c, cgo)
+}
 
+// anyTypeC returns the C type for a GIR AnyType. An empty string is returned if
+// none is made.
+func anyTypeC(any gir.AnyType) string {
 	switch {
 	case any.Array != nil:
-		return movePtr(any.Array.CType)
+		return any.Array.CType
 	case any.Type != nil:
-		return movePtr(any.Type.CType)
+		return any.Type.CType
 	default:
 		return ""
 	}
@@ -294,9 +296,9 @@ func (ng *NamespaceGenerator) ResolveTypeName(girType string) *ResolvedType {
 // if the type is not known. It does not recursively traverse the type.
 func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	if typ.CType == "" {
-		// Some aliases may not have a CType, for some reason. Create our own.
-		// Mutating typ here is fine, since it's a copy.
-		typ.CType = "gir_" + ng.current.Namespace.Name + "." + typ.Name
+		// No CType; skip cache because the GIR type isn't from source.
+		typ.CType = typ.Name
+		return ng.resolveTypeUncached(typ)
 	}
 
 	v, ok := typeCache.Load(typ.CType)
@@ -433,6 +435,12 @@ func (ng *NamespaceGenerator) resolveTypeUncached(typ gir.Type) *ResolvedType {
 		if check(typ.Name) {
 			log.Fatalf("missing gir type %s in the type tree\n", typ.Name)
 		}
+	}
+
+	// CType is required here so we can properly account for pointers.
+	if typ.CType == "" {
+		ng.logln(logWarn, "type name", typ.Name, "missing CType")
+		return nil
 	}
 
 	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, typ.Name)

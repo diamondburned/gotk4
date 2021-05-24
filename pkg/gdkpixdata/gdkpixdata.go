@@ -96,7 +96,7 @@ const (
 // newly-allocated memory; otherwise it is reused.
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
 	var arg0 *Pixdata
-	arg0 = wrapPixdata(pixdata)
+	arg0 = gdkpixdata.WrapPixdata(pixdata)
 
 	var arg1 bool
 	arg1 = gextras.Gobool(copyPixels)
@@ -104,7 +104,7 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
 	ret := C.gdk_pixbuf_from_pixdata(arg0, arg1)
 
 	var ret0 gdkpixbuf.Pixbuf
-	ret0 = wrapPixbuf(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gdkpixbuf.WrapPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -134,7 +134,10 @@ type Pixdata struct {
 	native *C.GdkPixdata
 }
 
-func wrapPixdata(p *C.GdkPixdata) *Pixdata {
+// WrapPixdata wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
+	p := (*C.GdkPixdata)(ptr)
 	var v Pixdata
 
 	v.Magic = uint32(p.magic)
@@ -161,9 +164,7 @@ func wrapPixdata(p *C.GdkPixdata) *Pixdata {
 
 func marshalPixdata(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkPixdata)(unsafe.Pointer(b))
-
-	return wrapPixdata(c)
+	return WrapPixdata(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GdkPixdata. The caller is expected to

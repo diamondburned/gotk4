@@ -17,7 +17,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 //
-// extern gboolean cPixbufSaveFunc(const gchar*, gsize, GError**, gpointer)
+// extern gboolean gotk4_PixbufSaveFunc(const gchar*, gsize, GError**, gpointer)
 import "C"
 
 func init() {
@@ -175,8 +175,8 @@ func marshalPixbufRotation(p uintptr) (interface{}, error) {
 // gdk_pixbuf_save_to_callback() will fail with the same error.
 type PixbufSaveFunc func(buf []uint8) (err *glib.Error, ok bool)
 
-//export cPixbufSaveFunc
-func cPixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
+//export gotk4_PixbufSaveFunc
+func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
@@ -199,8 +199,9 @@ func PixbufErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -210,7 +211,10 @@ type PixbufFormat struct {
 	native *C.GdkPixbufFormat
 }
 
-func wrapPixbufFormat(p *C.GdkPixbufFormat) *PixbufFormat {
+// WrapPixbufFormat wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPixbufFormat(ptr unsafe.Pointer) *PixbufFormat {
+	p := (*C.GdkPixbufFormat)(ptr)
 	v := PixbufFormat{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -221,12 +225,12 @@ func wrapPixbufFormat(p *C.GdkPixbufFormat) *PixbufFormat {
 
 func marshalPixbufFormat(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkPixbufFormat)(unsafe.Pointer(b))
-
-	return wrapPixbufFormat(c)
+	return WrapPixbufFormat(unsafe.Pointer(b))
 }
 
-func (p *PixbufFormat) free() {}
+func (p *PixbufFormat) free() {
+	C.free(unsafe.Pointer(p.native))
+}
 
 // Native returns the pointer to *C.GdkPixbufFormat. The caller is expected to
 // cast.
@@ -268,7 +272,7 @@ type Pixbuf interface {
 	// When the destination rectangle contains parts not in the source image,
 	// the data at the edges of the source image is replicated to infinity.
 	//
-	// ![](composite.png)
+	// ! (composite.png)
 	Composite(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int)
 	// CompositeColor creates a transformation of the source image @src by
 	// scaling by @scale_x and @scale_y then translating by @offset_x and
@@ -457,14 +461,16 @@ type pixbuf struct {
 	*externglib.Object
 }
 
-func wrapPixbuf(obj *externglib.Object) Pixbuf {
+// WrapPixbuf wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPixbuf(obj *externglib.Object) Pixbuf {
 	return pixbuf{*externglib.Object{obj}}
 }
 
 func marshalPixbuf(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPixbuf(obj), nil
 }
 
 func NewPixbuf(colorspace Colorspace, hasAlpha bool, bitsPerSample int, width int, height int) Pixbuf
@@ -631,14 +637,16 @@ type pixbufAnimation struct {
 	*externglib.Object
 }
 
-func wrapPixbufAnimation(obj *externglib.Object) PixbufAnimation {
+// WrapPixbufAnimation wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPixbufAnimation(obj *externglib.Object) PixbufAnimation {
 	return pixbufAnimation{*externglib.Object{obj}}
 }
 
 func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPixbufAnimation(obj), nil
 }
 
 func NewPixbufAnimationFromFile(filename string) PixbufAnimation
@@ -720,14 +728,16 @@ type pixbufAnimationIter struct {
 	*externglib.Object
 }
 
-func wrapPixbufAnimationIter(obj *externglib.Object) PixbufAnimationIter {
+// WrapPixbufAnimationIter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPixbufAnimationIter(obj *externglib.Object) PixbufAnimationIter {
 	return pixbufAnimationIter{*externglib.Object{obj}}
 }
 
 func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPixbufAnimationIter(obj), nil
 }
 
 func (p pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool
@@ -803,14 +813,16 @@ type pixbufLoader struct {
 	*externglib.Object
 }
 
-func wrapPixbufLoader(obj *externglib.Object) PixbufLoader {
+// WrapPixbufLoader wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPixbufLoader(obj *externglib.Object) PixbufLoader {
 	return pixbufLoader{*externglib.Object{obj}}
 }
 
 func marshalPixbufLoader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPixbufLoader(obj), nil
 }
 
 func NewPixbufLoader() PixbufLoader
@@ -852,14 +864,16 @@ type pixbufSimpleAnim struct {
 	pixbufAnimation
 }
 
-func wrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnim {
+// WrapPixbufSimpleAnim wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPixbufSimpleAnim(obj *externglib.Object) PixbufSimpleAnim {
 	return pixbufSimpleAnim{pixbufAnimation{*externglib.Object{obj}}}
 }
 
 func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPixbufSimpleAnim(obj), nil
 }
 
 func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim
@@ -878,12 +892,14 @@ type pixbufSimpleAnimIter struct {
 	pixbufAnimationIter
 }
 
-func wrapPixbufSimpleAnimIter(obj *externglib.Object) PixbufSimpleAnimIter {
+// WrapPixbufSimpleAnimIter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPixbufSimpleAnimIter(obj *externglib.Object) PixbufSimpleAnimIter {
 	return pixbufSimpleAnimIter{pixbufAnimationIter{*externglib.Object{obj}}}
 }
 
 func marshalPixbufSimpleAnimIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPixbufSimpleAnimIter(obj), nil
 }

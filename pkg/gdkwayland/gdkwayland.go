@@ -14,7 +14,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/wayland/gdkwayland.h>
 //
-// extern void cWaylandToplevelExported(GdkToplevel*, const char*, gpointer)
+// extern void gotk4_WaylandToplevelExported(GdkToplevel*, const char*, gpointer)
 import "C"
 
 func init() {
@@ -45,18 +45,18 @@ func init() {
 // for out-of-process surfaces.
 type WaylandToplevelExported func(toplevel WaylandToplevel, handle string)
 
-//export cWaylandToplevelExported
-func cWaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
+//export gotk4_WaylandToplevelExported
+func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var toplevel waylandToplevel
-	toplevel = wrapWaylandToplevel(externglib.Take(unsafe.Pointer(arg0)))
+	toplevel = gdkwayland.WrapWaylandToplevel(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var handle string
-	handle = C.GoString(arg1)
+	arg1 = C.GoString(handle)
 	defer C.free(unsafe.Pointer(arg1))
 
 	v.(WaylandToplevelExported)(toplevel, handle)
@@ -82,17 +82,19 @@ type WaylandDevice interface {
 }
 
 type waylandDevice struct {
-	gdk.device
+	gdk.Device
 }
 
-func wrapWaylandDevice(obj *externglib.Object) WaylandDevice {
-	return waylandDevice{gdk.device{*externglib.Object{obj}}}
+// WrapWaylandDevice wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWaylandDevice(obj *externglib.Object) WaylandDevice {
+	return waylandDevice{gdk.WrapDevice(obj)}
 }
 
 func marshalWaylandDevice(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWaylandDevice(obj), nil
 }
 
 func (w waylandDevice) NodePath() string
@@ -132,17 +134,19 @@ type WaylandDisplay interface {
 }
 
 type waylandDisplay struct {
-	gdk.display
+	gdk.Display
 }
 
-func wrapWaylandDisplay(obj *externglib.Object) WaylandDisplay {
-	return waylandDisplay{gdk.display{*externglib.Object{obj}}}
+// WrapWaylandDisplay wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWaylandDisplay(obj *externglib.Object) WaylandDisplay {
+	return waylandDisplay{gdk.WrapDisplay(obj)}
 }
 
 func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWaylandDisplay(obj), nil
 }
 
 func (w waylandDisplay) StartupNotificationID() string
@@ -165,17 +169,19 @@ type WaylandMonitor interface {
 }
 
 type waylandMonitor struct {
-	gdk.monitor
+	gdk.Monitor
 }
 
-func wrapWaylandMonitor(obj *externglib.Object) WaylandMonitor {
-	return waylandMonitor{gdk.monitor{*externglib.Object{obj}}}
+// WrapWaylandMonitor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWaylandMonitor(obj *externglib.Object) WaylandMonitor {
+	return waylandMonitor{gdk.WrapMonitor(obj)}
 }
 
 func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWaylandMonitor(obj), nil
 }
 
 func (w waylandMonitor) WlOutput() interface{}
@@ -188,14 +194,16 @@ type waylandPopup struct {
 	waylandSurface
 }
 
-func wrapWaylandPopup(obj *externglib.Object) WaylandPopup {
-	return waylandPopup{waylandSurface{gdk.surface{*externglib.Object{obj}}}}
+// WrapWaylandPopup wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWaylandPopup(obj *externglib.Object) WaylandPopup {
+	return waylandPopup{waylandSurface{gdk.WrapSurface(obj)}}
 }
 
 func marshalWaylandPopup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWaylandPopup(obj), nil
 }
 
 type WaylandSeat interface {
@@ -206,17 +214,19 @@ type WaylandSeat interface {
 }
 
 type waylandSeat struct {
-	gdk.seat
+	gdk.Seat
 }
 
-func wrapWaylandSeat(obj *externglib.Object) WaylandSeat {
-	return waylandSeat{gdk.seat{*externglib.Object{obj}}}
+// WrapWaylandSeat wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWaylandSeat(obj *externglib.Object) WaylandSeat {
+	return waylandSeat{gdk.WrapSeat(obj)}
 }
 
 func marshalWaylandSeat(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWaylandSeat(obj), nil
 }
 
 func (w waylandSeat) WlSeat() interface{}
@@ -229,17 +239,19 @@ type WaylandSurface interface {
 }
 
 type waylandSurface struct {
-	gdk.surface
+	gdk.Surface
 }
 
-func wrapWaylandSurface(obj *externglib.Object) WaylandSurface {
-	return waylandSurface{gdk.surface{*externglib.Object{obj}}}
+// WrapWaylandSurface wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWaylandSurface(obj *externglib.Object) WaylandSurface {
+	return waylandSurface{gdk.WrapSurface(obj)}
 }
 
 func marshalWaylandSurface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWaylandSurface(obj), nil
 }
 
 func (w waylandSurface) WlSurface() interface{}
@@ -290,14 +302,16 @@ type waylandToplevel struct {
 	waylandSurface
 }
 
-func wrapWaylandToplevel(obj *externglib.Object) WaylandToplevel {
-	return waylandToplevel{waylandSurface{gdk.surface{*externglib.Object{obj}}}}
+// WrapWaylandToplevel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWaylandToplevel(obj *externglib.Object) WaylandToplevel {
+	return waylandToplevel{waylandSurface{gdk.WrapSurface(obj)}}
 }
 
 func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWaylandToplevel(obj), nil
 }
 
 func (w waylandToplevel) ExportHandle(callback WaylandToplevelExported) bool

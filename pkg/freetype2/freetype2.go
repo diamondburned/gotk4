@@ -35,7 +35,10 @@ type Bitmap struct {
 	native *C.FT_Bitmap
 }
 
-func wrapBitmap(p *C.FT_Bitmap) *Bitmap {
+// WrapBitmap wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBitmap(ptr unsafe.Pointer) *Bitmap {
+	p := (*C.FT_Bitmap)(ptr)
 	v := Bitmap{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -46,12 +49,12 @@ func wrapBitmap(p *C.FT_Bitmap) *Bitmap {
 
 func marshalBitmap(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.FT_Bitmap)(unsafe.Pointer(b))
-
-	return wrapBitmap(c)
+	return WrapBitmap(unsafe.Pointer(b))
 }
 
-func (b *Bitmap) free() {}
+func (b *Bitmap) free() {
+	C.free(unsafe.Pointer(b.native))
+}
 
 // Native returns the pointer to *C.FT_Bitmap. The caller is expected to
 // cast.
@@ -63,7 +66,10 @@ type Face struct {
 	native *C.FT_Face
 }
 
-func wrapFace(p *C.FT_Face) *Face {
+// WrapFace wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFace(ptr unsafe.Pointer) *Face {
+	p := (*C.FT_Face)(ptr)
 	v := Face{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -74,12 +80,12 @@ func wrapFace(p *C.FT_Face) *Face {
 
 func marshalFace(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.FT_Face)(unsafe.Pointer(b))
-
-	return wrapFace(c)
+	return WrapFace(unsafe.Pointer(b))
 }
 
-func (f *Face) free() {}
+func (f *Face) free() {
+	C.free(unsafe.Pointer(f.native))
+}
 
 // Native returns the pointer to *C.FT_Face. The caller is expected to
 // cast.
@@ -91,7 +97,10 @@ type Library struct {
 	native *C.FT_Library
 }
 
-func wrapLibrary(p *C.FT_Library) *Library {
+// WrapLibrary wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapLibrary(ptr unsafe.Pointer) *Library {
+	p := (*C.FT_Library)(ptr)
 	v := Library{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -102,12 +111,12 @@ func wrapLibrary(p *C.FT_Library) *Library {
 
 func marshalLibrary(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.FT_Library)(unsafe.Pointer(b))
-
-	return wrapLibrary(c)
+	return WrapLibrary(unsafe.Pointer(b))
 }
 
-func (l *Library) free() {}
+func (l *Library) free() {
+	C.free(unsafe.Pointer(l.native))
+}
 
 // Native returns the pointer to *C.FT_Library. The caller is expected to
 // cast.

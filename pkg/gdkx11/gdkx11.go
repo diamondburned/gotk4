@@ -59,7 +59,7 @@ const (
 // X11DeviceGetID returns the device ID as seen by XInput2.
 func X11DeviceGetID(device X11DeviceXI2) int {
 	var arg0 X11DeviceXI2
-	arg0 = wrapX11DeviceXI2(externglib.Take(unsafe.Pointer(device)))
+	arg0 = gdkx11.WrapX11DeviceXI2(externglib.Take(unsafe.Pointer(device.Native())))
 
 	ret := C.gdk_x11_device_get_id(arg0)
 
@@ -72,7 +72,7 @@ func X11DeviceGetID(device X11DeviceXI2) int {
 // X11DeviceManagerLookup returns the Device that wraps the given device ID.
 func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) X11DeviceXI2 {
 	var arg0 X11DeviceManagerXI2
-	arg0 = wrapX11DeviceManagerXI2(externglib.Take(unsafe.Pointer(deviceManager)))
+	arg0 = gdkx11.WrapX11DeviceManagerXI2(externglib.Take(unsafe.Pointer(deviceManager.Native())))
 
 	var arg1 int
 	arg1 = int(deviceID)
@@ -80,7 +80,7 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) X11
 	ret := C.gdk_x11_device_manager_lookup(arg0, arg1)
 
 	var ret0 X11DeviceXI2
-	ret0 = wrapX11DeviceXI2(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gdkx11.WrapX11DeviceXI2(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -98,7 +98,7 @@ func X11FreeCompoundText(ctext uint8) {
 // gdk_x11_display_text_property_to_text_list().
 func X11FreeTextList(list string) {
 	var arg0 string
-	arg0 = C.GoString(list)
+	list = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(list))
 
 	C.gdk_x11_free_text_list(arg0)
@@ -107,7 +107,7 @@ func X11FreeTextList(list string) {
 // X11GetServerTime: routine to get the current X server time stamp.
 func X11GetServerTime(surface X11Surface) uint32 {
 	var arg0 X11Surface
-	arg0 = wrapX11Surface(externglib.Take(unsafe.Pointer(surface)))
+	arg0 = gdkx11.WrapX11Surface(externglib.Take(unsafe.Pointer(surface.Native())))
 
 	ret := C.gdk_x11_get_server_time(arg0)
 
@@ -123,18 +123,19 @@ func X11GetServerTime(surface X11Surface) uint32 {
 // time.
 func X11GetXatomByNameForDisplay(display X11Display, atomName string) xlib.Atom {
 	var arg0 X11Display
-	arg0 = wrapX11Display(externglib.Take(unsafe.Pointer(display)))
+	arg0 = gdkx11.WrapX11Display(externglib.Take(unsafe.Pointer(display.Native())))
 
 	var arg1 string
-	arg1 = C.GoString(atomName)
+	atomName = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(atomName))
 
 	ret := C.gdk_x11_get_xatom_by_name_for_display(arg0, arg1)
 
 	var ret0 xlib.Atom
 	{
-		tmp := uint32(ret)
-		ret0 = Atom(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = xlib.Atom(tmp)
 	}
 
 	return ret0
@@ -145,18 +146,19 @@ func X11GetXatomByNameForDisplay(display X11Display, atomName string) xlib.Atom 
 // XAtomName() and the result doesn’t need to be freed.
 func X11GetXatomNameForDisplay(display X11Display, xatom xlib.Atom) string {
 	var arg0 X11Display
-	arg0 = wrapX11Display(externglib.Take(unsafe.Pointer(display)))
+	arg0 = gdkx11.WrapX11Display(externglib.Take(unsafe.Pointer(display.Native())))
 
 	var arg1 xlib.Atom
 	{
-		tmp := uint32(xatom)
-		arg1 = Atom(tmp)
+		var tmp uint32
+		tmp = uint32(xatom)
+		arg1 = xlib.Atom(tmp)
 	}
 
 	ret := C.gdk_x11_get_xatom_name_for_display(arg0, arg1)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -166,12 +168,12 @@ func X11GetXatomNameForDisplay(display X11Display, xatom xlib.Atom) string {
 // exists.
 func X11LookupXdisplay(xdisplay *xlib.Display) X11Display {
 	var arg0 *xlib.Display
-	arg0 = wrapDisplay(xdisplay)
+	arg0 = xlib.WrapDisplay(xdisplay)
 
 	ret := C.gdk_x11_lookup_xdisplay(arg0)
 
 	var ret0 X11Display
-	ret0 = wrapX11Display(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gdkx11.WrapX11Display(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -184,7 +186,7 @@ func X11LookupXdisplay(xdisplay *xlib.Display) X11Display {
 // session management and the Inter-Client Communication Conventions Manual
 func X11SetSmClientID(smClientID string) {
 	var arg0 string
-	arg0 = C.GoString(smClientID)
+	smClientID = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(smClientID))
 
 	C.gdk_x11_set_sm_client_id(arg0)
@@ -195,17 +197,19 @@ type X11AppLaunchContext interface {
 }
 
 type x11AppLaunchContext struct {
-	gdk.appLaunchContext
+	gdk.AppLaunchContext
 }
 
-func wrapX11AppLaunchContext(obj *externglib.Object) X11AppLaunchContext {
-	return x11AppLaunchContext{gdk.appLaunchContext{gio.appLaunchContext{*externglib.Object{obj}}}}
+// WrapX11AppLaunchContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11AppLaunchContext(obj *externglib.Object) X11AppLaunchContext {
+	return x11AppLaunchContext{gdk.WrapAppLaunchContext(obj)}
 }
 
 func marshalX11AppLaunchContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapX11AppLaunchContext(obj), nil
 }
 
 type X11DeviceManagerXI2 interface {
@@ -216,14 +220,16 @@ type x11DeviceManagerXI2 struct {
 	*externglib.Object
 }
 
-func wrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
+// WrapX11DeviceManagerXI2 wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11DeviceManagerXI2(obj *externglib.Object) X11DeviceManagerXI2 {
 	return x11DeviceManagerXI2{*externglib.Object{obj}}
 }
 
 func marshalX11DeviceManagerXI2(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapX11DeviceManagerXI2(obj), nil
 }
 
 type X11DeviceXI2 interface {
@@ -231,17 +237,19 @@ type X11DeviceXI2 interface {
 }
 
 type x11DeviceXI2 struct {
-	gdk.device
+	gdk.Device
 }
 
-func wrapX11DeviceXI2(obj *externglib.Object) X11DeviceXI2 {
-	return x11DeviceXI2{gdk.device{*externglib.Object{obj}}}
+// WrapX11DeviceXI2 wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11DeviceXI2(obj *externglib.Object) X11DeviceXI2 {
+	return x11DeviceXI2{gdk.WrapDevice(obj)}
 }
 
 func marshalX11DeviceXI2(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapX11DeviceXI2(obj), nil
 }
 
 type X11Display interface {
@@ -358,17 +366,19 @@ type X11Display interface {
 }
 
 type x11Display struct {
-	gdk.display
+	gdk.Display
 }
 
-func wrapX11Display(obj *externglib.Object) X11Display {
-	return x11Display{gdk.display{*externglib.Object{obj}}}
+// WrapX11Display wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11Display(obj *externglib.Object) X11Display {
+	return x11Display{gdk.WrapDisplay(obj)}
 }
 
 func marshalX11Display(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapX11Display(obj), nil
 }
 
 func (x x11Display) ErrorTrapPop() int
@@ -418,17 +428,19 @@ type X11Drag interface {
 }
 
 type x11Drag struct {
-	gdk.drag
+	gdk.Drag
 }
 
-func wrapX11Drag(obj *externglib.Object) X11Drag {
-	return x11Drag{gdk.drag{*externglib.Object{obj}}}
+// WrapX11Drag wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11Drag(obj *externglib.Object) X11Drag {
+	return x11Drag{gdk.WrapDrag(obj)}
 }
 
 func marshalX11Drag(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapX11Drag(obj), nil
 }
 
 type X11Monitor interface {
@@ -444,17 +456,19 @@ type X11Monitor interface {
 }
 
 type x11Monitor struct {
-	gdk.monitor
+	gdk.Monitor
 }
 
-func wrapX11Monitor(obj *externglib.Object) X11Monitor {
-	return x11Monitor{gdk.monitor{*externglib.Object{obj}}}
+// WrapX11Monitor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11Monitor(obj *externglib.Object) X11Monitor {
+	return x11Monitor{gdk.WrapMonitor(obj)}
 }
 
 func marshalX11Monitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapX11Monitor(obj), nil
 }
 
 func (x x11Monitor) Output() xlib.XID
@@ -466,8 +480,8 @@ type X11Screen interface {
 
 	// CurrentDesktop returns the current workspace for @screen when running
 	// under a window manager that supports multiple workspaces, as described in
-	// the [Extended Window Manager
-	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification.
+	// the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	CurrentDesktop() uint32
 	// MonitorOutput gets the XID of the specified output/monitor. If the X
 	// server does not support version 1.2 of the RANDR extension, 0 is
@@ -475,8 +489,8 @@ type X11Screen interface {
 	MonitorOutput(monitorNum int) xlib.XID
 	// NumberOfDesktops returns the number of workspaces for @screen when
 	// running under a window manager that supports multiple workspaces, as
-	// described in the [Extended Window Manager
-	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification.
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	NumberOfDesktops() uint32
 	// ScreenNumber returns the index of a X11Screen.
 	ScreenNumber() int
@@ -486,8 +500,8 @@ type X11Screen interface {
 	Xscreen() *xlib.Screen
 	// SupportsNetWmHint: this function is specific to the X11 backend of GDK,
 	// and indicates whether the window manager supports a certain hint from the
-	// [Extended Window Manager
-	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification.
+	// Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	//
 	// When using this function, keep in mind that the window manager can change
 	// over time; so you shouldn’t use this function in a way that impacts
@@ -504,14 +518,16 @@ type x11Screen struct {
 	*externglib.Object
 }
 
-func wrapX11Screen(obj *externglib.Object) X11Screen {
+// WrapX11Screen wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11Screen(obj *externglib.Object) X11Screen {
 	return x11Screen{*externglib.Object{obj}}
 }
 
 func marshalX11Screen(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapX11Screen(obj), nil
 }
 
 func (x x11Screen) CurrentDesktop() uint32
@@ -539,14 +555,14 @@ type X11Surface interface {
 	Xid() xlib.Window
 	// MoveToCurrentDesktop moves the surface to the correct workspace when
 	// running under a window manager that supports multiple workspaces, as
-	// described in the [Extended Window Manager
-	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification. Will
-	// not do anything if the surface is already on all workspaces.
+	// described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification. Will not do
+	// anything if the surface is already on all workspaces.
 	MoveToCurrentDesktop()
 	// MoveToDesktop moves the surface to the given workspace when running unde
 	// a window manager that supports multiple workspaces, as described in the
-	// [Extended Window Manager
-	// Hints](http://www.freedesktop.org/Standards/wm-spec) specification.
+	// Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec) specification.
 	MoveToDesktop(desktop uint32)
 	// SetFrameSyncEnabled: this function can be used to disable frame
 	// synchronization for a surface. Normally frame synchronziation will be
@@ -598,17 +614,19 @@ type X11Surface interface {
 }
 
 type x11Surface struct {
-	gdk.surface
+	gdk.Surface
 }
 
-func wrapX11Surface(obj *externglib.Object) X11Surface {
-	return x11Surface{gdk.surface{*externglib.Object{obj}}}
+// WrapX11Surface wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapX11Surface(obj *externglib.Object) X11Surface {
+	return x11Surface{gdk.WrapSurface(obj)}
 }
 
 func marshalX11Surface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapX11Surface(obj), nil
 }
 
 func (x x11Surface) Desktop() uint32

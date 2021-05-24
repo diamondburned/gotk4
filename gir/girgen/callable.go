@@ -112,7 +112,7 @@ func (cg *callableGenerator) Block() string {
 			// TODO: nullability.
 			// TODO: GoCConverter.
 
-			conv := cg.Ng.CGoConverter(CGoConversion{
+			conv := cg.Ng.CGoConverter(TypeConversion{
 				Value:  valn,
 				Target: targ,
 				Type:   param.AnyType,
@@ -155,7 +155,7 @@ func (cg *callableGenerator) Block() string {
 		retvars.Add(retName)
 
 		block.Linef("var %s %s", retName, resolved)
-		block.Line(cg.Ng.CGoConverter(CGoConversion{
+		block.Line(cg.Ng.CGoConverter(TypeConversion{
 			Value:  ret.Name,
 			Target: retName,
 			Type:   ret.Type,

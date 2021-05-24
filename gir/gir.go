@@ -208,7 +208,6 @@ type TypeFindResult struct {
 
 	// TODO: Constant, Annotations, Boxed
 	// TODO: Methods
-	// TODO: Enum Members
 }
 
 // Info gets the name and C type of the resulting type. The name returned is in

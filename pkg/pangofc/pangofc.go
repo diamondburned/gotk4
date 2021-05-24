@@ -16,7 +16,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pangofc-fontmap.h>
 //
-// extern PangoFcDecoder* cDecoderFindFunc(FcPattern*, gpointer)
+// extern PangoFcDecoder* gotk4_DecoderFindFunc(FcPattern*, gpointer)
 import "C"
 
 func init() {
@@ -39,15 +39,15 @@ func init() {
 // [method@PangoFc.FontMap.add_decoder_find_func].
 type DecoderFindFunc func(pattern *fontconfig.Pattern) Decoder
 
-//export cDecoderFindFunc
-func cDecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder {
+//export gotk4_DecoderFindFunc
+func gotk4_DecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var pattern *fontconfig.Pattern
-	pattern = wrapPattern(arg0)
+	pattern = fontconfig.WrapPattern(arg0)
 
 	decoder := v.(DecoderFindFunc)(pattern)
 }
@@ -84,14 +84,16 @@ type decoder struct {
 	*externglib.Object
 }
 
-func wrapDecoder(obj *externglib.Object) Decoder {
+// WrapDecoder wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDecoder(obj *externglib.Object) Decoder {
 	return decoder{*externglib.Object{obj}}
 }
 
 func marshalDecoder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDecoder(obj), nil
 }
 
 func (d decoder) Charset(fcfont Font) *fontconfig.CharSet
@@ -140,17 +142,19 @@ type Font interface {
 }
 
 type font struct {
-	pango.font
+	pango.Font
 }
 
-func wrapFont(obj *externglib.Object) Font {
-	return font{pango.font{*externglib.Object{obj}}}
+// WrapFont wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFont(obj *externglib.Object) Font {
+	return font{pango.WrapFont(obj)}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFont(obj), nil
 }
 
 func (f font) Glyph(wc uint32) uint
@@ -236,17 +240,19 @@ type FontMap interface {
 }
 
 type fontMap struct {
-	pango.fontMap
+	pango.FontMap
 }
 
-func wrapFontMap(obj *externglib.Object) FontMap {
-	return fontMap{pango.fontMap{*externglib.Object{obj}}}
+// WrapFontMap wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFontMap(obj *externglib.Object) FontMap {
+	return fontMap{pango.WrapFontMap(obj)}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFontMap(obj), nil
 }
 
 func (f fontMap) AddDecoderFindFunc(findfunc DecoderFindFunc)

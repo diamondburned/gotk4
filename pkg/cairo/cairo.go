@@ -589,7 +589,10 @@ type Context struct {
 	native *C.cairo_t
 }
 
-func wrapContext(p *C.cairo_t) *Context {
+// WrapContext wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapContext(ptr unsafe.Pointer) *Context {
+	p := (*C.cairo_t)(ptr)
 	v := Context{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -600,12 +603,12 @@ func wrapContext(p *C.cairo_t) *Context {
 
 func marshalContext(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_t)(unsafe.Pointer(b))
-
-	return wrapContext(c)
+	return WrapContext(unsafe.Pointer(b))
 }
 
-func (c *Context) free() {}
+func (c *Context) free() {
+	C.free(unsafe.Pointer(c.native))
+}
 
 // Native returns the pointer to *C.cairo_t. The caller is expected to
 // cast.
@@ -617,7 +620,10 @@ type Device struct {
 	native *C.cairo_device_t
 }
 
-func wrapDevice(p *C.cairo_device_t) *Device {
+// WrapDevice wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDevice(ptr unsafe.Pointer) *Device {
+	p := (*C.cairo_device_t)(ptr)
 	v := Device{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -628,12 +634,12 @@ func wrapDevice(p *C.cairo_device_t) *Device {
 
 func marshalDevice(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_device_t)(unsafe.Pointer(b))
-
-	return wrapDevice(c)
+	return WrapDevice(unsafe.Pointer(b))
 }
 
-func (d *Device) free() {}
+func (d *Device) free() {
+	C.free(unsafe.Pointer(d.native))
+}
 
 // Native returns the pointer to *C.cairo_device_t. The caller is expected to
 // cast.
@@ -645,7 +651,10 @@ type Surface struct {
 	native *C.cairo_surface_t
 }
 
-func wrapSurface(p *C.cairo_surface_t) *Surface {
+// WrapSurface wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSurface(ptr unsafe.Pointer) *Surface {
+	p := (*C.cairo_surface_t)(ptr)
 	v := Surface{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -656,12 +665,12 @@ func wrapSurface(p *C.cairo_surface_t) *Surface {
 
 func marshalSurface(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_surface_t)(unsafe.Pointer(b))
-
-	return wrapSurface(c)
+	return WrapSurface(unsafe.Pointer(b))
 }
 
-func (s *Surface) free() {}
+func (s *Surface) free() {
+	C.free(unsafe.Pointer(s.native))
+}
 
 // Native returns the pointer to *C.cairo_surface_t. The caller is expected to
 // cast.
@@ -673,7 +682,10 @@ type Matrix struct {
 	native *C.cairo_matrix_t
 }
 
-func wrapMatrix(p *C.cairo_matrix_t) *Matrix {
+// WrapMatrix wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapMatrix(ptr unsafe.Pointer) *Matrix {
+	p := (*C.cairo_matrix_t)(ptr)
 	v := Matrix{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -684,12 +696,12 @@ func wrapMatrix(p *C.cairo_matrix_t) *Matrix {
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_matrix_t)(unsafe.Pointer(b))
-
-	return wrapMatrix(c)
+	return WrapMatrix(unsafe.Pointer(b))
 }
 
-func (m *Matrix) free() {}
+func (m *Matrix) free() {
+	C.free(unsafe.Pointer(m.native))
+}
 
 // Native returns the pointer to *C.cairo_matrix_t. The caller is expected to
 // cast.
@@ -701,7 +713,10 @@ type Pattern struct {
 	native *C.cairo_pattern_t
 }
 
-func wrapPattern(p *C.cairo_pattern_t) *Pattern {
+// WrapPattern wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPattern(ptr unsafe.Pointer) *Pattern {
+	p := (*C.cairo_pattern_t)(ptr)
 	v := Pattern{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -712,12 +727,12 @@ func wrapPattern(p *C.cairo_pattern_t) *Pattern {
 
 func marshalPattern(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_pattern_t)(unsafe.Pointer(b))
-
-	return wrapPattern(c)
+	return WrapPattern(unsafe.Pointer(b))
 }
 
-func (p *Pattern) free() {}
+func (p *Pattern) free() {
+	C.free(unsafe.Pointer(p.native))
+}
 
 // Native returns the pointer to *C.cairo_pattern_t. The caller is expected to
 // cast.
@@ -729,7 +744,10 @@ type Region struct {
 	native *C.cairo_region_t
 }
 
-func wrapRegion(p *C.cairo_region_t) *Region {
+// WrapRegion wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRegion(ptr unsafe.Pointer) *Region {
+	p := (*C.cairo_region_t)(ptr)
 	v := Region{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -740,12 +758,12 @@ func wrapRegion(p *C.cairo_region_t) *Region {
 
 func marshalRegion(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_region_t)(unsafe.Pointer(b))
-
-	return wrapRegion(c)
+	return WrapRegion(unsafe.Pointer(b))
 }
 
-func (r *Region) free() {}
+func (r *Region) free() {
+	C.free(unsafe.Pointer(r.native))
+}
 
 // Native returns the pointer to *C.cairo_region_t. The caller is expected to
 // cast.
@@ -757,7 +775,10 @@ type FontOptions struct {
 	native *C.cairo_font_options_t
 }
 
-func wrapFontOptions(p *C.cairo_font_options_t) *FontOptions {
+// WrapFontOptions wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFontOptions(ptr unsafe.Pointer) *FontOptions {
+	p := (*C.cairo_font_options_t)(ptr)
 	v := FontOptions{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -768,12 +789,12 @@ func wrapFontOptions(p *C.cairo_font_options_t) *FontOptions {
 
 func marshalFontOptions(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_font_options_t)(unsafe.Pointer(b))
-
-	return wrapFontOptions(c)
+	return WrapFontOptions(unsafe.Pointer(b))
 }
 
-func (f *FontOptions) free() {}
+func (f *FontOptions) free() {
+	C.free(unsafe.Pointer(f.native))
+}
 
 // Native returns the pointer to *C.cairo_font_options_t. The caller is expected to
 // cast.
@@ -785,7 +806,10 @@ type FontFace struct {
 	native *C.cairo_font_face_t
 }
 
-func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
+// WrapFontFace wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFontFace(ptr unsafe.Pointer) *FontFace {
+	p := (*C.cairo_font_face_t)(ptr)
 	v := FontFace{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -796,12 +820,12 @@ func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
 
 func marshalFontFace(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_font_face_t)(unsafe.Pointer(b))
-
-	return wrapFontFace(c)
+	return WrapFontFace(unsafe.Pointer(b))
 }
 
-func (f *FontFace) free() {}
+func (f *FontFace) free() {
+	C.free(unsafe.Pointer(f.native))
+}
 
 // Native returns the pointer to *C.cairo_font_face_t. The caller is expected to
 // cast.
@@ -813,7 +837,10 @@ type ScaledFont struct {
 	native *C.cairo_scaled_font_t
 }
 
-func wrapScaledFont(p *C.cairo_scaled_font_t) *ScaledFont {
+// WrapScaledFont wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapScaledFont(ptr unsafe.Pointer) *ScaledFont {
+	p := (*C.cairo_scaled_font_t)(ptr)
 	v := ScaledFont{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -824,12 +851,12 @@ func wrapScaledFont(p *C.cairo_scaled_font_t) *ScaledFont {
 
 func marshalScaledFont(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_scaled_font_t)(unsafe.Pointer(b))
-
-	return wrapScaledFont(c)
+	return WrapScaledFont(unsafe.Pointer(b))
 }
 
-func (s *ScaledFont) free() {}
+func (s *ScaledFont) free() {
+	C.free(unsafe.Pointer(s.native))
+}
 
 // Native returns the pointer to *C.cairo_scaled_font_t. The caller is expected to
 // cast.
@@ -841,7 +868,10 @@ type Path struct {
 	native *C.cairo_path_t
 }
 
-func wrapPath(p *C.cairo_path_t) *Path {
+// WrapPath wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPath(ptr unsafe.Pointer) *Path {
+	p := (*C.cairo_path_t)(ptr)
 	v := Path{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -852,12 +882,12 @@ func wrapPath(p *C.cairo_path_t) *Path {
 
 func marshalPath(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_path_t)(unsafe.Pointer(b))
-
-	return wrapPath(c)
+	return WrapPath(unsafe.Pointer(b))
 }
 
-func (p *Path) free() {}
+func (p *Path) free() {
+	C.free(unsafe.Pointer(p.native))
+}
 
 // Native returns the pointer to *C.cairo_path_t. The caller is expected to
 // cast.
@@ -877,7 +907,10 @@ type Rectangle struct {
 	native *C.cairo_rectangle_t
 }
 
-func wrapRectangle(p *C.cairo_rectangle_t) *Rectangle {
+// WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
+	p := (*C.cairo_rectangle_t)(ptr)
 	var v Rectangle
 
 	v.X = float64(p.x)
@@ -890,9 +923,7 @@ func wrapRectangle(p *C.cairo_rectangle_t) *Rectangle {
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_rectangle_t)(unsafe.Pointer(b))
-
-	return wrapRectangle(c)
+	return WrapRectangle(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.cairo_rectangle_t. The caller is expected to
@@ -913,7 +944,10 @@ type RectangleInt struct {
 	native *C.cairo_rectangle_int_t
 }
 
-func wrapRectangleInt(p *C.cairo_rectangle_int_t) *RectangleInt {
+// WrapRectangleInt wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRectangleInt(ptr unsafe.Pointer) *RectangleInt {
+	p := (*C.cairo_rectangle_int_t)(ptr)
 	var v RectangleInt
 
 	v.X = int(p.x)
@@ -926,9 +960,7 @@ func wrapRectangleInt(p *C.cairo_rectangle_int_t) *RectangleInt {
 
 func marshalRectangleInt(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.cairo_rectangle_int_t)(unsafe.Pointer(b))
-
-	return wrapRectangleInt(c)
+	return WrapRectangleInt(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.cairo_rectangle_int_t. The caller is expected to

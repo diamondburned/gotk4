@@ -32,7 +32,10 @@ type Pattern struct {
 	native *C.FcPattern
 }
 
-func wrapPattern(p *C.FcPattern) *Pattern {
+// WrapPattern wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPattern(ptr unsafe.Pointer) *Pattern {
+	p := (*C.FcPattern)(ptr)
 	v := Pattern{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -43,12 +46,12 @@ func wrapPattern(p *C.FcPattern) *Pattern {
 
 func marshalPattern(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.FcPattern)(unsafe.Pointer(b))
-
-	return wrapPattern(c)
+	return WrapPattern(unsafe.Pointer(b))
 }
 
-func (p *Pattern) free() {}
+func (p *Pattern) free() {
+	C.free(unsafe.Pointer(p.native))
+}
 
 // Native returns the pointer to *C.FcPattern. The caller is expected to
 // cast.
@@ -60,7 +63,10 @@ type CharSet struct {
 	native *C.FcCharSet
 }
 
-func wrapCharSet(p *C.FcCharSet) *CharSet {
+// WrapCharSet wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCharSet(ptr unsafe.Pointer) *CharSet {
+	p := (*C.FcCharSet)(ptr)
 	v := CharSet{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -71,12 +77,12 @@ func wrapCharSet(p *C.FcCharSet) *CharSet {
 
 func marshalCharSet(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.FcCharSet)(unsafe.Pointer(b))
-
-	return wrapCharSet(c)
+	return WrapCharSet(unsafe.Pointer(b))
 }
 
-func (c *CharSet) free() {}
+func (c *CharSet) free() {
+	C.free(unsafe.Pointer(c.native))
+}
 
 // Native returns the pointer to *C.FcCharSet. The caller is expected to
 // cast.

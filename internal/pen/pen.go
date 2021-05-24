@@ -57,7 +57,11 @@ func (p *Piece) ensureCap() {
 // Writef writes using Printf.
 func (p *Piece) Writef(f string, v ...interface{}) *Piece {
 	p.ensureCap()
-	fmt.Fprintf(&p.str, f, v...)
+	if len(v) == 0 {
+		p.str.WriteString(f)
+	} else {
+		fmt.Fprintf(&p.str, f, v...)
+	}
 	return p
 }
 
@@ -123,9 +127,13 @@ func (b *Block) Line(line string) {
 	b.str.WriteByte('\n')
 }
 
-// Linef writes a line using Printf.
+// Linef writes a line using Printf. If v is none, then f is taken literally.
 func (b *Block) Linef(f string, v ...interface{}) {
-	fmt.Fprintf(&b.str, f, v...)
+	if len(v) == 0 {
+		b.str.WriteString(f)
+	} else {
+		fmt.Fprintf(&b.str, f, v...)
+	}
 	b.str.WriteByte('\n')
 }
 
@@ -219,7 +227,12 @@ func (p *Pen) Wordf(f string, v ...interface{}) {
 		return
 	}
 
-	_, p.err = fmt.Fprintf(&p.Writer, f, v...)
+	if len(v) == 0 {
+		_, p.err = p.WriteString(f)
+	} else {
+		_, p.err = fmt.Fprintf(&p.Writer, f, v...)
+	}
+
 	if p.err != nil {
 		return
 	}

@@ -20,7 +20,7 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gsk/gsk.h>
 //
-// extern void cParseErrorFunc(const GskParseLocation*, const GskParseLocation*, const GError*, gpointer)
+// extern void gotk4_ParseErrorFunc(const GskParseLocation*, const GskParseLocation*, const GError*, gpointer)
 import "C"
 
 func init() {
@@ -339,21 +339,21 @@ func marshalTransformCategory(p uintptr) (interface{}, error) {
 // during deserialization of node data.
 type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, error *glib.Error)
 
-//export cParseErrorFunc
-func cParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
+//export gotk4_ParseErrorFunc
+func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var start *ParseLocation
-	start = wrapParseLocation(arg0)
+	start = gsk.WrapParseLocation(arg0)
 
 	var end *ParseLocation
-	end = wrapParseLocation(arg1)
+	end = gsk.WrapParseLocation(arg1)
 
 	var error *glib.Error
-	error = wrapError(arg2)
+	error = glib.WrapError(arg2)
 
 	v.(ParseErrorFunc)(start, end, error)
 }
@@ -363,8 +363,9 @@ func SerializationErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -378,7 +379,7 @@ func SerializationErrorQuark() glib.Quark {
 // put in @out_transform.
 func TransformParse(string string) (outTransform *Transform, ok bool) {
 	var arg0 string
-	arg0 = C.GoString(string)
+	string = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(string))
 
 	var arg1 **C.GskTransform // out
@@ -386,7 +387,7 @@ func TransformParse(string string) (outTransform *Transform, ok bool) {
 	ret := C.gsk_transform_parse(arg0, &arg1)
 
 	var ret0 **Transform
-	ret0 = wrapTransform(arg1)
+	ret0 = gsk.WrapTransform(arg1)
 
 	var ret1 bool
 	ret1 = gextras.Gobool(ret)
@@ -404,20 +405,21 @@ type ColorStop struct {
 	native *C.GskColorStop
 }
 
-func wrapColorStop(p *C.GskColorStop) *ColorStop {
+// WrapColorStop wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapColorStop(ptr unsafe.Pointer) *ColorStop {
+	p := (*C.GskColorStop)(ptr)
 	var v ColorStop
 
 	v.Offset = float32(p.offset)
-	v.Color = wrapRGBA(p.color)
+	v.Color = gdk.WrapRGBA(p.color)
 
 	return &v
 }
 
 func marshalColorStop(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GskColorStop)(unsafe.Pointer(b))
-
-	return wrapColorStop(c)
+	return WrapColorStop(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GskColorStop. The caller is expected to
@@ -442,7 +444,10 @@ type ParseLocation struct {
 	native *C.GskParseLocation
 }
 
-func wrapParseLocation(p *C.GskParseLocation) *ParseLocation {
+// WrapParseLocation wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapParseLocation(ptr unsafe.Pointer) *ParseLocation {
+	p := (*C.GskParseLocation)(ptr)
 	var v ParseLocation
 
 	v.Bytes = uint(p.bytes)
@@ -456,9 +461,7 @@ func wrapParseLocation(p *C.GskParseLocation) *ParseLocation {
 
 func marshalParseLocation(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GskParseLocation)(unsafe.Pointer(b))
-
-	return wrapParseLocation(c)
+	return WrapParseLocation(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GskParseLocation. The caller is expected to
@@ -484,16 +487,19 @@ type RoundedRect struct {
 	native *C.GskRoundedRect
 }
 
-func wrapRoundedRect(p *C.GskRoundedRect) *RoundedRect {
+// WrapRoundedRect wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRoundedRect(ptr unsafe.Pointer) *RoundedRect {
+	p := (*C.GskRoundedRect)(ptr)
 	var v RoundedRect
 
-	v.Bounds = wrapRect(p.bounds)
+	v.Bounds = graphene.WrapRect(p.bounds)
 	{
 		cArray := ([4]graphene_size_t)(p.corner)
 
 		for i := 0; i < 4; i++ {
 			src := cArray[i]
-			v.Corner[i] = wrapSize(src)
+			v.Corner[i] = graphene.WrapSize(src)
 		}
 	}
 
@@ -502,9 +508,7 @@ func wrapRoundedRect(p *C.GskRoundedRect) *RoundedRect {
 
 func marshalRoundedRect(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GskRoundedRect)(unsafe.Pointer(b))
-
-	return wrapRoundedRect(c)
+	return WrapRoundedRect(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GskRoundedRect. The caller is expected to
@@ -518,7 +522,10 @@ type ShaderArgsBuilder struct {
 	native *C.GskShaderArgsBuilder
 }
 
-func wrapShaderArgsBuilder(p *C.GskShaderArgsBuilder) *ShaderArgsBuilder {
+// WrapShaderArgsBuilder wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapShaderArgsBuilder(ptr unsafe.Pointer) *ShaderArgsBuilder {
+	p := (*C.GskShaderArgsBuilder)(ptr)
 	v := ShaderArgsBuilder{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -529,12 +536,12 @@ func wrapShaderArgsBuilder(p *C.GskShaderArgsBuilder) *ShaderArgsBuilder {
 
 func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GskShaderArgsBuilder)(unsafe.Pointer(b))
-
-	return wrapShaderArgsBuilder(c)
+	return WrapShaderArgsBuilder(unsafe.Pointer(b))
 }
 
-func (s *ShaderArgsBuilder) free() {}
+func (s *ShaderArgsBuilder) free() {
+	C.free(unsafe.Pointer(s.native))
+}
 
 // Native returns the pointer to *C.GskShaderArgsBuilder. The caller is expected to
 // cast.
@@ -558,10 +565,13 @@ type Shadow struct {
 	native *C.GskShadow
 }
 
-func wrapShadow(p *C.GskShadow) *Shadow {
+// WrapShadow wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapShadow(ptr unsafe.Pointer) *Shadow {
+	p := (*C.GskShadow)(ptr)
 	var v Shadow
 
-	v.Color = wrapRGBA(p.color)
+	v.Color = gdk.WrapRGBA(p.color)
 	v.Dx = float32(p.dx)
 	v.Dy = float32(p.dy)
 	v.Radius = float32(p.radius)
@@ -571,9 +581,7 @@ func wrapShadow(p *C.GskShadow) *Shadow {
 
 func marshalShadow(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GskShadow)(unsafe.Pointer(b))
-
-	return wrapShadow(c)
+	return WrapShadow(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GskShadow. The caller is expected to
@@ -587,7 +595,10 @@ type Transform struct {
 	native *C.GskTransform
 }
 
-func wrapTransform(p *C.GskTransform) *Transform {
+// WrapTransform wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTransform(ptr unsafe.Pointer) *Transform {
+	p := (*C.GskTransform)(ptr)
 	v := Transform{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -598,12 +609,12 @@ func wrapTransform(p *C.GskTransform) *Transform {
 
 func marshalTransform(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GskTransform)(unsafe.Pointer(b))
-
-	return wrapTransform(c)
+	return WrapTransform(unsafe.Pointer(b))
 }
 
-func (t *Transform) free() {}
+func (t *Transform) free() {
+	C.free(unsafe.Pointer(t.native))
+}
 
 // Native returns the pointer to *C.GskTransform. The caller is expected to
 // cast.
@@ -630,14 +641,16 @@ type blendNode struct {
 	renderNode
 }
 
-func wrapBlendNode(obj *externglib.Object) BlendNode {
+// WrapBlendNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBlendNode(obj *externglib.Object) BlendNode {
 	return blendNode{renderNode{obj}}
 }
 
 func marshalBlendNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBlendNode(obj), nil
 }
 
 func NewBlendNode(bottom RenderNode, top RenderNode, blendMode BlendMode) BlendNode
@@ -662,14 +675,16 @@ type blurNode struct {
 	renderNode
 }
 
-func wrapBlurNode(obj *externglib.Object) BlurNode {
+// WrapBlurNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBlurNode(obj *externglib.Object) BlurNode {
 	return blurNode{renderNode{obj}}
 }
 
 func marshalBlurNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBlurNode(obj), nil
 }
 
 func NewBlurNode(child RenderNode, radius float32) BlurNode
@@ -694,14 +709,16 @@ type borderNode struct {
 	renderNode
 }
 
-func wrapBorderNode(obj *externglib.Object) BorderNode {
+// WrapBorderNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBorderNode(obj *externglib.Object) BorderNode {
 	return borderNode{renderNode{obj}}
 }
 
 func marshalBorderNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBorderNode(obj), nil
 }
 
 func NewBorderNode(outline *RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) BorderNode
@@ -730,14 +747,16 @@ type cairoNode struct {
 	renderNode
 }
 
-func wrapCairoNode(obj *externglib.Object) CairoNode {
+// WrapCairoNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCairoNode(obj *externglib.Object) CairoNode {
 	return cairoNode{renderNode{obj}}
 }
 
 func marshalCairoNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCairoNode(obj), nil
 }
 
 func NewCairoNode(bounds *graphene.Rect) CairoNode
@@ -754,14 +773,16 @@ type cairoRenderer struct {
 	renderer
 }
 
-func wrapCairoRenderer(obj *externglib.Object) CairoRenderer {
+// WrapCairoRenderer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCairoRenderer(obj *externglib.Object) CairoRenderer {
 	return cairoRenderer{renderer{*externglib.Object{obj}}}
 }
 
 func marshalCairoRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCairoRenderer(obj), nil
 }
 
 func NewCairoRenderer() CairoRenderer
@@ -780,14 +801,16 @@ type clipNode struct {
 	renderNode
 }
 
-func wrapClipNode(obj *externglib.Object) ClipNode {
+// WrapClipNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapClipNode(obj *externglib.Object) ClipNode {
 	return clipNode{renderNode{obj}}
 }
 
 func marshalClipNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapClipNode(obj), nil
 }
 
 func NewClipNode(child RenderNode, clip *graphene.Rect) ClipNode
@@ -814,14 +837,16 @@ type colorMatrixNode struct {
 	renderNode
 }
 
-func wrapColorMatrixNode(obj *externglib.Object) ColorMatrixNode {
+// WrapColorMatrixNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapColorMatrixNode(obj *externglib.Object) ColorMatrixNode {
 	return colorMatrixNode{renderNode{obj}}
 }
 
 func marshalColorMatrixNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapColorMatrixNode(obj), nil
 }
 
 func NewColorMatrixNode(child RenderNode, colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) ColorMatrixNode
@@ -844,14 +869,16 @@ type colorNode struct {
 	renderNode
 }
 
-func wrapColorNode(obj *externglib.Object) ColorNode {
+// WrapColorNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapColorNode(obj *externglib.Object) ColorNode {
 	return colorNode{renderNode{obj}}
 }
 
 func marshalColorNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapColorNode(obj), nil
 }
 
 func NewColorNode(rgba *gdk.RGBA, bounds *graphene.Rect) ColorNode
@@ -876,14 +903,16 @@ type conicGradientNode struct {
 	renderNode
 }
 
-func wrapConicGradientNode(obj *externglib.Object) ConicGradientNode {
+// WrapConicGradientNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapConicGradientNode(obj *externglib.Object) ConicGradientNode {
 	return conicGradientNode{renderNode{obj}}
 }
 
 func marshalConicGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapConicGradientNode(obj), nil
 }
 
 func NewConicGradientNode(bounds *graphene.Rect, center *graphene.Point, rotation float32, colorStops []ColorStop) ConicGradientNode
@@ -910,14 +939,16 @@ type containerNode struct {
 	renderNode
 }
 
-func wrapContainerNode(obj *externglib.Object) ContainerNode {
+// WrapContainerNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapContainerNode(obj *externglib.Object) ContainerNode {
 	return containerNode{renderNode{obj}}
 }
 
 func marshalContainerNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapContainerNode(obj), nil
 }
 
 func NewContainerNode(children []RenderNode) ContainerNode
@@ -943,14 +974,16 @@ type crossFadeNode struct {
 	renderNode
 }
 
-func wrapCrossFadeNode(obj *externglib.Object) CrossFadeNode {
+// WrapCrossFadeNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCrossFadeNode(obj *externglib.Object) CrossFadeNode {
 	return crossFadeNode{renderNode{obj}}
 }
 
 func marshalCrossFadeNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCrossFadeNode(obj), nil
 }
 
 func NewCrossFadeNode(start RenderNode, end RenderNode, progress float32) CrossFadeNode
@@ -976,14 +1009,16 @@ type debugNode struct {
 	renderNode
 }
 
-func wrapDebugNode(obj *externglib.Object) DebugNode {
+// WrapDebugNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDebugNode(obj *externglib.Object) DebugNode {
 	return debugNode{renderNode{obj}}
 }
 
 func marshalDebugNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDebugNode(obj), nil
 }
 
 func NewDebugNode(child RenderNode, message string) DebugNode
@@ -1000,14 +1035,16 @@ type glRenderer struct {
 	renderer
 }
 
-func wrapGLRenderer(obj *externglib.Object) GLRenderer {
+// WrapGLRenderer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGLRenderer(obj *externglib.Object) GLRenderer {
 	return glRenderer{renderer{*externglib.Object{obj}}}
 }
 
 func marshalGLRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGLRenderer(obj), nil
 }
 
 func NewGLRenderer() GLRenderer
@@ -1081,14 +1118,16 @@ type glShader struct {
 	*externglib.Object
 }
 
-func wrapGLShader(obj *externglib.Object) GLShader {
+// WrapGLShader wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGLShader(obj *externglib.Object) GLShader {
 	return glShader{*externglib.Object{obj}}
 }
 
 func marshalGLShader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGLShader(obj), nil
 }
 
 func NewGLShaderFromBytes(sourcecode *glib.Bytes) GLShader
@@ -1148,14 +1187,16 @@ type glShaderNode struct {
 	renderNode
 }
 
-func wrapGLShaderNode(obj *externglib.Object) GLShaderNode {
+// WrapGLShaderNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGLShaderNode(obj *externglib.Object) GLShaderNode {
 	return glShaderNode{renderNode{obj}}
 }
 
 func marshalGLShaderNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGLShaderNode(obj), nil
 }
 
 func NewGLShaderNode(shader GLShader, bounds *graphene.Rect, args *glib.Bytes, children []RenderNode) GLShaderNode
@@ -1190,14 +1231,16 @@ type insetShadowNode struct {
 	renderNode
 }
 
-func wrapInsetShadowNode(obj *externglib.Object) InsetShadowNode {
+// WrapInsetShadowNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapInsetShadowNode(obj *externglib.Object) InsetShadowNode {
 	return insetShadowNode{renderNode{obj}}
 }
 
 func marshalInsetShadowNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapInsetShadowNode(obj), nil
 }
 
 func NewInsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) InsetShadowNode
@@ -1232,14 +1275,16 @@ type linearGradientNode struct {
 	renderNode
 }
 
-func wrapLinearGradientNode(obj *externglib.Object) LinearGradientNode {
+// WrapLinearGradientNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapLinearGradientNode(obj *externglib.Object) LinearGradientNode {
 	return linearGradientNode{renderNode{obj}}
 }
 
 func marshalLinearGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapLinearGradientNode(obj), nil
 }
 
 func NewLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) LinearGradientNode
@@ -1266,14 +1311,16 @@ type opacityNode struct {
 	renderNode
 }
 
-func wrapOpacityNode(obj *externglib.Object) OpacityNode {
+// WrapOpacityNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapOpacityNode(obj *externglib.Object) OpacityNode {
 	return opacityNode{renderNode{obj}}
 }
 
 func marshalOpacityNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapOpacityNode(obj), nil
 }
 
 func NewOpacityNode(child RenderNode, opacity float32) OpacityNode
@@ -1304,14 +1351,16 @@ type outsetShadowNode struct {
 	renderNode
 }
 
-func wrapOutsetShadowNode(obj *externglib.Object) OutsetShadowNode {
+// WrapOutsetShadowNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapOutsetShadowNode(obj *externglib.Object) OutsetShadowNode {
 	return outsetShadowNode{renderNode{obj}}
 }
 
 func marshalOutsetShadowNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapOutsetShadowNode(obj), nil
 }
 
 func NewOutsetShadowNode(outline *RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) OutsetShadowNode
@@ -1352,14 +1401,16 @@ type radialGradientNode struct {
 	renderNode
 }
 
-func wrapRadialGradientNode(obj *externglib.Object) RadialGradientNode {
+// WrapRadialGradientNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRadialGradientNode(obj *externglib.Object) RadialGradientNode {
 	return radialGradientNode{renderNode{obj}}
 }
 
 func marshalRadialGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRadialGradientNode(obj), nil
 }
 
 func NewRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RadialGradientNode
@@ -1419,14 +1470,16 @@ type renderer struct {
 	*externglib.Object
 }
 
-func wrapRenderer(obj *externglib.Object) Renderer {
+// WrapRenderer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRenderer(obj *externglib.Object) Renderer {
 	return renderer{*externglib.Object{obj}}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRenderer(obj), nil
 }
 
 func NewRendererForSurface(surface gdk.Surface) Renderer
@@ -1457,14 +1510,16 @@ type repeatNode struct {
 	renderNode
 }
 
-func wrapRepeatNode(obj *externglib.Object) RepeatNode {
+// WrapRepeatNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRepeatNode(obj *externglib.Object) RepeatNode {
 	return repeatNode{renderNode{obj}}
 }
 
 func marshalRepeatNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRepeatNode(obj), nil
 }
 
 func NewRepeatNode(bounds *graphene.Rect, child RenderNode, childBounds *graphene.Rect) RepeatNode
@@ -1482,14 +1537,16 @@ type repeatingLinearGradientNode struct {
 	renderNode
 }
 
-func wrapRepeatingLinearGradientNode(obj *externglib.Object) RepeatingLinearGradientNode {
+// WrapRepeatingLinearGradientNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRepeatingLinearGradientNode(obj *externglib.Object) RepeatingLinearGradientNode {
 	return repeatingLinearGradientNode{renderNode{obj}}
 }
 
 func marshalRepeatingLinearGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRepeatingLinearGradientNode(obj), nil
 }
 
 func NewRepeatingLinearGradientNode(bounds *graphene.Rect, start *graphene.Point, end *graphene.Point, colorStops []ColorStop) RepeatingLinearGradientNode
@@ -1503,14 +1560,16 @@ type repeatingRadialGradientNode struct {
 	renderNode
 }
 
-func wrapRepeatingRadialGradientNode(obj *externglib.Object) RepeatingRadialGradientNode {
+// WrapRepeatingRadialGradientNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRepeatingRadialGradientNode(obj *externglib.Object) RepeatingRadialGradientNode {
 	return repeatingRadialGradientNode{renderNode{obj}}
 }
 
 func marshalRepeatingRadialGradientNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRepeatingRadialGradientNode(obj), nil
 }
 
 func NewRepeatingRadialGradientNode(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, colorStops []ColorStop) RepeatingRadialGradientNode
@@ -1531,14 +1590,16 @@ type roundedClipNode struct {
 	renderNode
 }
 
-func wrapRoundedClipNode(obj *externglib.Object) RoundedClipNode {
+// WrapRoundedClipNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRoundedClipNode(obj *externglib.Object) RoundedClipNode {
 	return roundedClipNode{renderNode{obj}}
 }
 
 func marshalRoundedClipNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRoundedClipNode(obj), nil
 }
 
 func NewRoundedClipNode(child RenderNode, clip *RoundedRect) RoundedClipNode
@@ -1564,14 +1625,16 @@ type shadowNode struct {
 	renderNode
 }
 
-func wrapShadowNode(obj *externglib.Object) ShadowNode {
+// WrapShadowNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapShadowNode(obj *externglib.Object) ShadowNode {
 	return shadowNode{renderNode{obj}}
 }
 
 func marshalShadowNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapShadowNode(obj), nil
 }
 
 func NewShadowNode(child RenderNode, shadows []Shadow) ShadowNode
@@ -1604,14 +1667,16 @@ type textNode struct {
 	renderNode
 }
 
-func wrapTextNode(obj *externglib.Object) TextNode {
+// WrapTextNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTextNode(obj *externglib.Object) TextNode {
 	return textNode{renderNode{obj}}
 }
 
 func marshalTextNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTextNode(obj), nil
 }
 
 func NewTextNode(font pango.Font, glyphs *pango.GlyphString, color *gdk.RGBA, offset *graphene.Point) TextNode
@@ -1640,14 +1705,16 @@ type textureNode struct {
 	renderNode
 }
 
-func wrapTextureNode(obj *externglib.Object) TextureNode {
+// WrapTextureNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTextureNode(obj *externglib.Object) TextureNode {
 	return textureNode{renderNode{obj}}
 }
 
 func marshalTextureNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTextureNode(obj), nil
 }
 
 func NewTextureNode(texture gdk.Texture, bounds *graphene.Rect) TextureNode
@@ -1668,14 +1735,16 @@ type transformNode struct {
 	renderNode
 }
 
-func wrapTransformNode(obj *externglib.Object) TransformNode {
+// WrapTransformNode wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTransformNode(obj *externglib.Object) TransformNode {
 	return transformNode{renderNode{obj}}
 }
 
 func marshalTransformNode(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTransformNode(obj), nil
 }
 
 func NewTransformNode(child RenderNode, transform *Transform) TransformNode
@@ -1692,14 +1761,16 @@ type vulkanRenderer struct {
 	renderer
 }
 
-func wrapVulkanRenderer(obj *externglib.Object) VulkanRenderer {
+// WrapVulkanRenderer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapVulkanRenderer(obj *externglib.Object) VulkanRenderer {
 	return vulkanRenderer{renderer{*externglib.Object{obj}}}
 }
 
 func marshalVulkanRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapVulkanRenderer(obj), nil
 }
 
 func NewVulkanRenderer() VulkanRenderer

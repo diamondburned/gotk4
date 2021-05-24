@@ -21,46 +21,46 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 //
-// extern int cAssistantPageFunc(int, gpointer)
-// extern gboolean cCellAllocCallback(GtkCellRenderer*, const GdkRectangle*, const GdkRectangle*, gpointer)
-// extern gboolean cCellCallback(GtkCellRenderer*, gpointer)
-// extern void cCellLayoutDataFunc(GtkCellLayout*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer)
-// extern gboolean cCustomFilterFunc(gpointer, gpointer)
-// extern void cDrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer)
-// extern gboolean cEntryCompletionMatchFunc(GtkEntryCompletion*, const char*, GtkTreeIter*, gpointer)
-// extern void cExpressionNotify(gpointer)
-// extern GtkWidget* cFlowBoxCreateWidgetFunc(gpointer, gpointer)
-// extern gboolean cFlowBoxFilterFunc(GtkFlowBoxChild*, gpointer)
-// extern void cFlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer)
-// extern int cFlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer)
-// extern gboolean cFontFilterFunc(const PangoFontFamily*, const PangoFontFace*, gpointer)
-// extern void cIconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer)
-// extern GtkWidget* cListBoxCreateWidgetFunc(gpointer, gpointer)
-// extern gboolean cListBoxFilterFunc(GtkListBoxRow*, gpointer)
-// extern void cListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer)
-// extern int cListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer)
-// extern void cListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer)
-// extern gpointer cMapListModelMapFunc(gpointer, gpointer)
-// extern void cMenuButtonCreatePopupFunc(GtkMenuButton*, gpointer)
-// extern void cPageSetupDoneFunc(GtkPageSetup*, gpointer)
-// extern void cPrintSettingsFunc(const char*, const char*, gpointer)
-// extern char* cScaleFormatValueFunc(GtkScale*, double, gpointer)
-// extern gboolean cShortcutFunc(GtkWidget*, GVariant*, gpointer)
-// extern gboolean cTextCharPredicate(gunichar, gpointer)
-// extern void cTextTagTableForeach(GtkTextTag*, gpointer)
-// extern gboolean cTickCallback(GtkWidget*, GdkFrameClock*, gpointer)
-// extern void cTreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer)
-// extern int cTreeIterCompareFunc(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, gpointer)
-// extern GListModel* cTreeListModelCreateModelFunc(gpointer, gpointer)
-// extern void cTreeModelFilterModifyFunc(GtkTreeModel*, GtkTreeIter*, GValue*, int, gpointer)
-// extern gboolean cTreeModelFilterVisibleFunc(GtkTreeModel*, GtkTreeIter*, gpointer)
-// extern gboolean cTreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer)
-// extern void cTreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer)
-// extern gboolean cTreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer)
-// extern gboolean cTreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer)
-// extern void cTreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer)
-// extern gboolean cTreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer)
-// extern gboolean cTreeViewSearchEqualFunc(GtkTreeModel*, int, const char*, GtkTreeIter*, gpointer)
+// extern int gotk4_AssistantPageFunc(int, gpointer)
+// extern gboolean gotk4_CellAllocCallback(GtkCellRenderer*, const GdkRectangle*, const GdkRectangle*, gpointer)
+// extern gboolean gotk4_CellCallback(GtkCellRenderer*, gpointer)
+// extern void gotk4_CellLayoutDataFunc(GtkCellLayout*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer)
+// extern gboolean gotk4_CustomFilterFunc(gpointer, gpointer)
+// extern void gotk4_DrawingAreaDrawFunc(GtkDrawingArea*, cairo_t*, int, int, gpointer)
+// extern gboolean gotk4_EntryCompletionMatchFunc(GtkEntryCompletion*, const char*, GtkTreeIter*, gpointer)
+// extern void gotk4_ExpressionNotify(gpointer)
+// extern GtkWidget* gotk4_FlowBoxCreateWidgetFunc(gpointer, gpointer)
+// extern gboolean gotk4_FlowBoxFilterFunc(GtkFlowBoxChild*, gpointer)
+// extern void gotk4_FlowBoxForeachFunc(GtkFlowBox*, GtkFlowBoxChild*, gpointer)
+// extern int gotk4_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer)
+// extern gboolean gotk4_FontFilterFunc(const PangoFontFamily*, const PangoFontFace*, gpointer)
+// extern void gotk4_IconViewForeachFunc(GtkIconView*, GtkTreePath*, gpointer)
+// extern GtkWidget* gotk4_ListBoxCreateWidgetFunc(gpointer, gpointer)
+// extern gboolean gotk4_ListBoxFilterFunc(GtkListBoxRow*, gpointer)
+// extern void gotk4_ListBoxForeachFunc(GtkListBox*, GtkListBoxRow*, gpointer)
+// extern int gotk4_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer)
+// extern void gotk4_ListBoxUpdateHeaderFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer)
+// extern gpointer gotk4_MapListModelMapFunc(gpointer, gpointer)
+// extern void gotk4_MenuButtonCreatePopupFunc(GtkMenuButton*, gpointer)
+// extern void gotk4_PageSetupDoneFunc(GtkPageSetup*, gpointer)
+// extern void gotk4_PrintSettingsFunc(const char*, const char*, gpointer)
+// extern char* gotk4_ScaleFormatValueFunc(GtkScale*, double, gpointer)
+// extern gboolean gotk4_ShortcutFunc(GtkWidget*, GVariant*, gpointer)
+// extern gboolean gotk4_TextCharPredicate(gunichar, gpointer)
+// extern void gotk4_TextTagTableForeach(GtkTextTag*, gpointer)
+// extern gboolean gotk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer)
+// extern void gotk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer)
+// extern int gotk4_TreeIterCompareFunc(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, gpointer)
+// extern GListModel* gotk4_TreeListModelCreateModelFunc(gpointer, gpointer)
+// extern void gotk4_TreeModelFilterModifyFunc(GtkTreeModel*, GtkTreeIter*, GValue*, int, gpointer)
+// extern gboolean gotk4_TreeModelFilterVisibleFunc(GtkTreeModel*, GtkTreeIter*, gpointer)
+// extern gboolean gotk4_TreeModelForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer)
+// extern void gotk4_TreeSelectionForeachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer)
+// extern gboolean gotk4_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer)
+// extern gboolean gotk4_TreeViewColumnDropFunc(GtkTreeView*, GtkTreeViewColumn*, GtkTreeViewColumn*, GtkTreeViewColumn*, gpointer)
+// extern void gotk4_TreeViewMappingFunc(GtkTreeView*, GtkTreePath*, gpointer)
+// extern gboolean gotk4_TreeViewRowSeparatorFunc(GtkTreeModel*, GtkTreeIter*, gpointer)
+// extern gboolean gotk4_TreeViewSearchEqualFunc(GtkTreeModel*, int, const char*, GtkTreeIter*, gpointer)
 import "C"
 
 func init() {
@@ -1270,14 +1270,14 @@ const (
 	// BuilderErrorMissingAttribute: an attribute that is required by Builder
 	// was missing.
 	BuilderErrorMissingAttribute BuilderError = 2
-	// BuilderErrorInvalidAttribute: builder found an attribute that it doesn’t
+	// BuilderErrorInvalidAttribute: Builder found an attribute that it doesn’t
 	// understand.
 	BuilderErrorInvalidAttribute BuilderError = 3
-	// BuilderErrorInvalidTag: builder found a tag that it doesn’t understand.
+	// BuilderErrorInvalidTag: Builder found a tag that it doesn’t understand.
 	BuilderErrorInvalidTag BuilderError = 4
 	// BuilderErrorMissingPropertyValue: a required property value was missing.
 	BuilderErrorMissingPropertyValue BuilderError = 5
-	// BuilderErrorInvalidValue: builder couldn’t parse some attribute value.
+	// BuilderErrorInvalidValue: Builder couldn’t parse some attribute value.
 	BuilderErrorInvalidValue BuilderError = 6
 	// BuilderErrorVersionMismatch: the input file requires a newer version of
 	// GTK.
@@ -1315,8 +1315,8 @@ func marshalBuilderError(p uintptr) (interface{}, error) {
 // gtk_dialog_add_buttons().
 //
 // > Please note that GTK_BUTTONS_OK, GTK_BUTTONS_YES_NO > and
-// GTK_BUTTONS_OK_CANCEL are discouraged by the > [GNOME Human Interface
-// Guidelines](http://library.gnome.org/devel/hig-book/stable/).
+// GTK_BUTTONS_OK_CANCEL are discouraged by the > GNOME Human Interface
+// Guidelines (http://library.gnome.org/devel/hig-book/stable/).
 type ButtonsType int
 
 const (
@@ -2022,21 +2022,21 @@ func marshalNotebookTab(p uintptr) (interface{}, error) {
 type NumberUpLayout int
 
 const (
-	// NumberUpLayoutLrtb: ![](layout-lrtb.png)
+	// NumberUpLayoutLrtb: ! (layout-lrtb.png)
 	NumberUpLayoutLrtb NumberUpLayout = 0
-	// NumberUpLayoutLrbt: ![](layout-lrbt.png)
+	// NumberUpLayoutLrbt: ! (layout-lrbt.png)
 	NumberUpLayoutLrbt NumberUpLayout = 1
-	// NumberUpLayoutRltb: ![](layout-rltb.png)
+	// NumberUpLayoutRltb: ! (layout-rltb.png)
 	NumberUpLayoutRltb NumberUpLayout = 2
-	// NumberUpLayoutRlbt: ![](layout-rlbt.png)
+	// NumberUpLayoutRlbt: ! (layout-rlbt.png)
 	NumberUpLayoutRlbt NumberUpLayout = 3
-	// NumberUpLayoutTblr: ![](layout-tblr.png)
+	// NumberUpLayoutTblr: ! (layout-tblr.png)
 	NumberUpLayoutTblr NumberUpLayout = 4
-	// NumberUpLayoutTbrl: ![](layout-tbrl.png)
+	// NumberUpLayoutTbrl: ! (layout-tbrl.png)
 	NumberUpLayoutTbrl NumberUpLayout = 5
-	// NumberUpLayoutBtlr: ![](layout-btlr.png)
+	// NumberUpLayoutBtlr: ! (layout-btlr.png)
 	NumberUpLayoutBtlr NumberUpLayout = 6
-	// NumberUpLayoutBtrl: ![](layout-btrl.png)
+	// NumberUpLayoutBtrl: ! (layout-btrl.png)
 	NumberUpLayoutBtrl NumberUpLayout = 7
 )
 
@@ -3526,8 +3526,8 @@ func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 // handling the behavior of the “last” button.
 type AssistantPageFunc func(currentPage int) int
 
-//export cAssistantPageFunc
-func cAssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
+//export gotk4_AssistantPageFunc
+func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -3544,21 +3544,21 @@ func cAssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
 // gtk_cell_area_foreach_alloc().
 type CellAllocCallback func(renderer CellRenderer, cellArea *gdk.Rectangle, cellBackground *gdk.Rectangle) bool
 
-//export cCellAllocCallback
-func cCellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) C.gboolean {
+//export gotk4_CellAllocCallback
+func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var renderer cellRenderer
-	renderer = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg0)))
+	renderer = gtk.WrapCellRenderer(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var cellArea *gdk.Rectangle
-	cellArea = wrapRectangle(arg1)
+	cellArea = gdk.WrapRectangle(arg1)
 
 	var cellBackground *gdk.Rectangle
-	cellBackground = wrapRectangle(arg2)
+	cellBackground = gdk.WrapRectangle(arg2)
 
 	ok := v.(CellAllocCallback)(renderer, cellArea, cellBackground)
 }
@@ -3567,15 +3567,15 @@ func cCellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.G
 // cell renderers of a CellArea, see gtk_cell_area_foreach().
 type CellCallback func(renderer CellRenderer) bool
 
-//export cCellCallback
-func cCellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
+//export gotk4_CellCallback
+func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var renderer cellRenderer
-	renderer = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg0)))
+	renderer = gtk.WrapCellRenderer(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	ok := v.(CellCallback)(renderer)
 }
@@ -3584,24 +3584,22 @@ func cCellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
 // cell renderer(s) as appropriate.
 type CellLayoutDataFunc func(cellLayout CellLayout, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
 
-//export cCellLayoutDataFunc
-func cCellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
+//export gotk4_CellLayoutDataFunc
+func gotk4_CellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var cellLayout CellLayout
-	cellLayout = wrapCellLayout(arg0)
 
 	var cell cellRenderer
-	cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg1)))
+	cell = gtk.WrapCellRenderer(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	var treeModel TreeModel
-	treeModel = wrapTreeModel(arg2)
 
 	var iter *TreeIter
-	iter = wrapTreeIter(arg3)
+	iter = gtk.WrapTreeIter(arg3)
 
 	v.(CellLayoutDataFunc)(cellLayout, cell, treeModel, iter)
 }
@@ -3611,15 +3609,15 @@ func cCellLayoutDataFunc(arg0 *C.GtkCellLayout, arg1 *C.GtkCellRenderer, arg2 *C
 // true. If the item should be filtered out, false must be returned.
 type CustomFilterFunc func(item gextras.Objector) bool
 
-//export cCustomFilterFunc
-func cCustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
+//export gotk4_CustomFilterFunc
+func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var item *externglib.Object
-	item = glib.Take(arg0)
+	item = externglib.Take(unsafe.Pointer(arg0.Native()))
 
 	ok := v.(CustomFilterFunc)(item)
 }
@@ -3631,18 +3629,18 @@ func cCustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
 // must not call any widget functions that cause changes.
 type DrawingAreaDrawFunc func(drawingArea DrawingArea, cr *cairo.Context, width int, height int)
 
-//export cDrawingAreaDrawFunc
-func cDrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
+//export gotk4_DrawingAreaDrawFunc
+func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var drawingArea drawingArea
-	drawingArea = wrapDrawingArea(externglib.Take(unsafe.Pointer(arg0)))
+	drawingArea = gtk.WrapDrawingArea(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var cr *cairo.Context
-	cr = wrapContext(arg1)
+	cr = cairo.WrapContext(arg1)
 
 	var width int
 	width = int(arg2)
@@ -3661,22 +3659,22 @@ func cDrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, a
 // (GTK_EDITABLE (gtk_entry_completion_get_entry ()))`.
 type EntryCompletionMatchFunc func(completion EntryCompletion, key string, iter *TreeIter) bool
 
-//export cEntryCompletionMatchFunc
-func cEntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
+//export gotk4_EntryCompletionMatchFunc
+func gotk4_EntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var completion entryCompletion
-	completion = wrapEntryCompletion(externglib.Take(unsafe.Pointer(arg0)))
+	completion = gtk.WrapEntryCompletion(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var key string
-	key = C.GoString(arg1)
+	arg1 = C.GoString(key)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var iter *TreeIter
-	iter = wrapTreeIter(arg2)
+	iter = gtk.WrapTreeIter(arg2)
 
 	ok := v.(EntryCompletionMatchFunc)(completion, key, iter)
 }
@@ -3685,8 +3683,8 @@ func cEntryCompletionMatchFunc(arg0 *C.GtkEntryCompletion, arg1 *C.char, arg2 *C
 // expression value changes.
 type ExpressionNotify func()
 
-//export cExpressionNotify
-func cExpressionNotify(arg0 C.gpointer) {
+//export gotk4_ExpressionNotify
+func gotk4_ExpressionNotify(arg0 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
@@ -3699,15 +3697,15 @@ func cExpressionNotify(arg0 C.gpointer) {
 // gtk_flow_box_bind_model() for each item that gets added to the model.
 type FlowBoxCreateWidgetFunc func(item gextras.Objector) Widget
 
-//export cFlowBoxCreateWidgetFunc
-func cFlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
+//export gotk4_FlowBoxCreateWidgetFunc
+func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var item *externglib.Object
-	item = glib.Take(arg0)
+	item = externglib.Take(unsafe.Pointer(arg0.Native()))
 
 	widget := v.(FlowBoxCreateWidgetFunc)(item)
 }
@@ -3716,15 +3714,15 @@ func cFlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
 // is added. It lets you control if the child should be visible or not.
 type FlowBoxFilterFunc func(child FlowBoxChild) bool
 
-//export cFlowBoxFilterFunc
-func cFlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
+//export gotk4_FlowBoxFilterFunc
+func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var child flowBoxChild
-	child = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg0)))
+	child = gtk.WrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	ok := v.(FlowBoxFilterFunc)(child)
 }
@@ -3733,18 +3731,18 @@ func cFlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
 // will be called on every selected child of the @box.
 type FlowBoxForeachFunc func(box FlowBox, child FlowBoxChild)
 
-//export cFlowBoxForeachFunc
-func cFlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
+//export gotk4_FlowBoxForeachFunc
+func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var box flowBox
-	box = wrapFlowBox(externglib.Take(unsafe.Pointer(arg0)))
+	box = gtk.WrapFlowBox(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var child flowBoxChild
-	child = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1)))
+	child = gtk.WrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	v.(FlowBoxForeachFunc)(box, child)
 }
@@ -3753,18 +3751,18 @@ func cFlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpo
 // come first.
 type FlowBoxSortFunc func(child1 FlowBoxChild, child2 FlowBoxChild) int
 
-//export cFlowBoxSortFunc
-func cFlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.int {
+//export gotk4_FlowBoxSortFunc
+func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.int {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var child1 flowBoxChild
-	child1 = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg0)))
+	child1 = gtk.WrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var child2 flowBoxChild
-	child2 = wrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1)))
+	child2 = gtk.WrapFlowBoxChild(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	gint := v.(FlowBoxSortFunc)(child1, child2)
 }
@@ -3773,18 +3771,18 @@ func cFlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.g
 // shown in a FontChooser. See gtk_font_chooser_set_filter_func().
 type FontFilterFunc func(family pango.FontFamily, face pango.FontFace) bool
 
-//export cFontFilterFunc
-func cFontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) C.gboolean {
+//export gotk4_FontFilterFunc
+func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var family pango.fontFamily
-	family = wrapFontFamily(externglib.Take(unsafe.Pointer(arg0)))
+	family = pango.WrapFontFamily(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var face pango.fontFace
-	face = wrapFontFace(externglib.Take(unsafe.Pointer(arg1)))
+	face = pango.WrapFontFace(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	ok := v.(FontFilterFunc)(family, face)
 }
@@ -3793,18 +3791,18 @@ func cFontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpoi
 // map all selected rows. It will be called on every selected row in the view.
 type IconViewForeachFunc func(iconView IconView, path *TreePath)
 
-//export cIconViewForeachFunc
-func cIconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
+//export gotk4_IconViewForeachFunc
+func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var iconView iconView
-	iconView = wrapIconView(externglib.Take(unsafe.Pointer(arg0)))
+	iconView = gtk.WrapIconView(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var path *TreePath
-	path = wrapTreePath(arg1)
+	path = gtk.WrapTreePath(arg1)
 
 	v.(IconViewForeachFunc)(iconView, path)
 }
@@ -3813,15 +3811,15 @@ func cIconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpoin
 // gtk_list_box_bind_model() for each item that gets added to the model.
 type ListBoxCreateWidgetFunc func(item gextras.Objector) Widget
 
-//export cListBoxCreateWidgetFunc
-func cListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
+//export gotk4_ListBoxCreateWidgetFunc
+func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var item *externglib.Object
-	item = glib.Take(arg0)
+	item = externglib.Take(unsafe.Pointer(arg0.Native()))
 
 	widget := v.(ListBoxCreateWidgetFunc)(item)
 }
@@ -3830,15 +3828,15 @@ func cListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
 // lets you control if the row should be visible or not.
 type ListBoxFilterFunc func(row ListBoxRow) bool
 
-//export cListBoxFilterFunc
-func cListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
+//export gotk4_ListBoxFilterFunc
+func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var row listBoxRow
-	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg0)))
+	row = gtk.WrapListBoxRow(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	ok := v.(ListBoxFilterFunc)(row)
 }
@@ -3847,18 +3845,18 @@ func cListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
 // will be called on every selected child of the @box.
 type ListBoxForeachFunc func(box ListBox, row ListBoxRow)
 
-//export cListBoxForeachFunc
-func cListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
+//export gotk4_ListBoxForeachFunc
+func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var box listBox
-	box = wrapListBox(externglib.Take(unsafe.Pointer(arg0)))
+	box = gtk.WrapListBox(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var row listBoxRow
-	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	row = gtk.WrapListBoxRow(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	v.(ListBoxForeachFunc)(box, row)
 }
@@ -3866,18 +3864,18 @@ func cListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpoin
 // ListBoxSortFunc: compare two rows to determine which should be first.
 type ListBoxSortFunc func(row1 ListBoxRow, row2 ListBoxRow) int
 
-//export cListBoxSortFunc
-func cListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.int {
+//export gotk4_ListBoxSortFunc
+func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.int {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var row1 listBoxRow
-	row1 = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg0)))
+	row1 = gtk.WrapListBoxRow(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var row2 listBoxRow
-	row2 = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	row2 = gtk.WrapListBoxRow(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	gint := v.(ListBoxSortFunc)(row1, row2)
 }
@@ -3888,18 +3886,18 @@ func cListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpoin
 // state of the current header widget.
 type ListBoxUpdateHeaderFunc func(row ListBoxRow, before ListBoxRow)
 
-//export cListBoxUpdateHeaderFunc
-func cListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
+//export gotk4_ListBoxUpdateHeaderFunc
+func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var row listBoxRow
-	row = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg0)))
+	row = gtk.WrapListBoxRow(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var before listBoxRow
-	before = wrapListBoxRow(externglib.Take(unsafe.Pointer(arg1)))
+	before = gtk.WrapListBoxRow(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	v.(ListBoxUpdateHeaderFunc)(row, before)
 }
@@ -3911,15 +3909,15 @@ func cListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2
 // with.
 type MapListModelMapFunc func(item gextras.Objector) gextras.Objector
 
-//export cMapListModelMapFunc
-func cMapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
+//export gotk4_MapListModelMapFunc
+func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var item *externglib.Object
-	item = glib.Take(arg0)
+	item = externglib.Take(unsafe.Pointer(arg0.Native()))
 
 	object := v.(MapListModelMapFunc)(item)
 }
@@ -3930,15 +3928,15 @@ func cMapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 // gtk_menu_button_set_popover() or gtk_menu_button_set_menu_model().
 type MenuButtonCreatePopupFunc func(menuButton MenuButton)
 
-//export cMenuButtonCreatePopupFunc
-func cMenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
+//export gotk4_MenuButtonCreatePopupFunc
+func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var menuButton menuButton
-	menuButton = wrapMenuButton(externglib.Take(unsafe.Pointer(arg0)))
+	menuButton = gtk.WrapMenuButton(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	v.(MenuButtonCreatePopupFunc)(menuButton)
 }
@@ -3950,34 +3948,34 @@ func cMenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
 // also serves as destroy notify for @data.
 type PageSetupDoneFunc func(pageSetup PageSetup)
 
-//export cPageSetupDoneFunc
-func cPageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
+//export gotk4_PageSetupDoneFunc
+func gotk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var pageSetup pageSetup
-	pageSetup = wrapPageSetup(externglib.Take(unsafe.Pointer(arg0)))
+	pageSetup = gtk.WrapPageSetup(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	v.(PageSetupDoneFunc)(pageSetup)
 }
 
 type PrintSettingsFunc func(key string, value string)
 
-//export cPrintSettingsFunc
-func cPrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
+//export gotk4_PrintSettingsFunc
+func gotk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var key string
-	key = C.GoString(arg0)
+	arg0 = C.GoString(key)
 	defer C.free(unsafe.Pointer(arg0))
 
 	var value string
-	value = C.GoString(arg1)
+	arg1 = C.GoString(value)
 	defer C.free(unsafe.Pointer(arg1))
 
 	v.(PrintSettingsFunc)(key, value)
@@ -3985,15 +3983,15 @@ func cPrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
 
 type ScaleFormatValueFunc func(scale Scale, value float64) string
 
-//export cScaleFormatValueFunc
-func cScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) *C.char {
+//export gotk4_ScaleFormatValueFunc
+func gotk4_ScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) *C.char {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var scale scale
-	scale = wrapScale(externglib.Take(unsafe.Pointer(arg0)))
+	scale = gtk.WrapScale(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var value float64
 	value = float64(arg1)
@@ -4004,18 +4002,18 @@ func cScaleFormatValueFunc(arg0 *C.GtkScale, arg1 C.double, arg2 C.gpointer) *C.
 // ShortcutFunc: prototype for shortcuts based on user callbacks.
 type ShortcutFunc func(widget Widget, args *glib.Variant) bool
 
-//export cShortcutFunc
-func cShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
+//export gotk4_ShortcutFunc
+func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var widget widget
-	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
+	widget = gtk.WrapWidget(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var args *glib.Variant
-	args = wrapVariant(arg1)
+	args = glib.WrapVariant(arg1)
 
 	ok := v.(ShortcutFunc)(widget, args)
 }
@@ -4024,8 +4022,8 @@ func cShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.gbool
 // gtk_text_iter_forward_find_char() and gtk_text_iter_backward_find_char().
 type TextCharPredicate func(ch uint32) bool
 
-//export cTextCharPredicate
-func cTextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
+//export gotk4_TextCharPredicate
+func gotk4_TextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
@@ -4041,15 +4039,15 @@ func cTextCharPredicate(arg0 C.gunichar, arg1 C.gpointer) C.gboolean {
 // iterate over every TextTag inside a TextTagTable.
 type TextTagTableForeach func(tag TextTag)
 
-//export cTextTagTableForeach
-func cTextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
+//export gotk4_TextTagTableForeach
+func gotk4_TextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var tag textTag
-	tag = wrapTextTag(externglib.Take(unsafe.Pointer(arg0)))
+	tag = gtk.WrapTextTag(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	v.(TextTagTableForeach)(tag)
 }
@@ -4058,18 +4056,18 @@ func cTextTagTableForeach(arg0 *C.GtkTextTag, arg1 C.gpointer) {
 // gtk_widget_add_tick_callback().
 type TickCallback func(widget Widget, frameClock gdk.FrameClock) bool
 
-//export cTickCallback
-func cTickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
+//export gotk4_TickCallback
+func gotk4_TickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var widget widget
-	widget = wrapWidget(externglib.Take(unsafe.Pointer(arg0)))
+	widget = gtk.WrapWidget(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var frameClock gdk.frameClock
-	frameClock = wrapFrameClock(externglib.Take(unsafe.Pointer(arg1)))
+	frameClock = gdk.WrapFrameClock(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	ok := v.(TickCallback)(widget, frameClock)
 }
@@ -4082,24 +4080,23 @@ func cTickCallback(arg0 *C.GtkWidget, arg1 *C.GdkFrameClock, arg2 C.gpointer) C.
 // gtk_tree_view_column_set_cell_data_func()
 type TreeCellDataFunc func(treeColumn TreeViewColumn, cell CellRenderer, treeModel TreeModel, iter *TreeIter)
 
-//export cTreeCellDataFunc
-func cTreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
+//export gotk4_TreeCellDataFunc
+func gotk4_TreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 *C.GtkTreeModel, arg3 *C.GtkTreeIter, arg4 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var treeColumn treeViewColumn
-	treeColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg0)))
+	treeColumn = gtk.WrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var cell cellRenderer
-	cell = wrapCellRenderer(externglib.Take(unsafe.Pointer(arg1)))
+	cell = gtk.WrapCellRenderer(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	var treeModel TreeModel
-	treeModel = wrapTreeModel(arg2)
 
 	var iter *TreeIter
-	iter = wrapTreeIter(arg3)
+	iter = gtk.WrapTreeIter(arg3)
 
 	v.(TreeCellDataFunc)(treeColumn, cell, treeModel, iter)
 }
@@ -4115,21 +4112,20 @@ func cTreeCellDataFunc(arg0 *C.GtkTreeViewColumn, arg1 *C.GtkCellRenderer, arg2 
 // the “price” column could be one which returns `price_of(@a) - price_of(@b)`.
 type TreeIterCompareFunc func(model TreeModel, a *TreeIter, b *TreeIter) int
 
-//export cTreeIterCompareFunc
-func cTreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.int {
+//export gotk4_TreeIterCompareFunc
+func gotk4_TreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.int {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var model TreeModel
-	model = wrapTreeModel(arg0)
 
 	var a *TreeIter
-	a = wrapTreeIter(arg1)
+	a = gtk.WrapTreeIter(arg1)
 
 	var b *TreeIter
-	b = wrapTreeIter(arg2)
+	b = gtk.WrapTreeIter(arg2)
 
 	gint := v.(TreeIterCompareFunc)(model, a, b)
 }
@@ -4143,15 +4139,15 @@ func cTreeIterCompareFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.Gtk
 // children arrive.
 type TreeListModelCreateModelFunc func(item gextras.Objector) gio.ListModel
 
-//export cTreeListModelCreateModelFunc
-func cTreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GListModel {
+//export gotk4_TreeListModelCreateModelFunc
+func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GListModel {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var item *externglib.Object
-	item = glib.Take(arg0)
+	item = externglib.Take(unsafe.Pointer(arg0.Native()))
 
 	listModel := v.(TreeListModelCreateModelFunc)(item)
 }
@@ -4164,18 +4160,17 @@ func cTreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GListMod
 // efficient operation.
 type TreeModelFilterModifyFunc func(model TreeModel, iter *TreeIter, column int) externglib.Value
 
-//export cTreeModelFilterModifyFunc
-func cTreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.int, arg4 C.gpointer) {
+//export gotk4_TreeModelFilterModifyFunc
+func gotk4_TreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 *C.GValue, arg3 C.int, arg4 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var model TreeModel
-	model = wrapTreeModel(arg0)
 
 	var iter *TreeIter
-	iter = wrapTreeIter(arg1)
+	iter = gtk.WrapTreeIter(arg1)
 
 	var column int
 	column = int(arg3)
@@ -4187,18 +4182,17 @@ func cTreeModelFilterModifyFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 
 // indicated by @iter is visible.
 type TreeModelFilterVisibleFunc func(model TreeModel, iter *TreeIter) bool
 
-//export cTreeModelFilterVisibleFunc
-func cTreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
+//export gotk4_TreeModelFilterVisibleFunc
+func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var model TreeModel
-	model = wrapTreeModel(arg0)
 
 	var iter *TreeIter
-	iter = wrapTreeIter(arg1)
+	iter = gtk.WrapTreeIter(arg1)
 
 	ok := v.(TreeModelFilterVisibleFunc)(model, iter)
 }
@@ -4207,21 +4201,20 @@ func cTreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2
 // to iterate over the rows in a tree model.
 type TreeModelForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter) bool
 
-//export cTreeModelForeachFunc
-func cTreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
+//export gotk4_TreeModelForeachFunc
+func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var model TreeModel
-	model = wrapTreeModel(arg0)
 
 	var path *TreePath
-	path = wrapTreePath(arg1)
+	path = gtk.WrapTreePath(arg1)
 
 	var iter *TreeIter
-	iter = wrapTreeIter(arg2)
+	iter = gtk.WrapTreeIter(arg2)
 
 	ok := v.(TreeModelForeachFunc)(model, path, iter)
 }
@@ -4231,21 +4224,20 @@ func cTreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.Gt
 // called on every selected row in the view.
 type TreeSelectionForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter)
 
-//export cTreeSelectionForeachFunc
-func cTreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
+//export gotk4_TreeSelectionForeachFunc
+func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var model TreeModel
-	model = wrapTreeModel(arg0)
 
 	var path *TreePath
-	path = wrapTreePath(arg1)
+	path = gtk.WrapTreePath(arg1)
 
 	var iter *TreeIter
-	iter = wrapTreeIter(arg2)
+	iter = gtk.WrapTreeIter(arg2)
 
 	v.(TreeSelectionForeachFunc)(model, path, iter)
 }
@@ -4256,21 +4248,20 @@ func cTreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *
 // of true indicates to @selection that it is okay to change the selection.
 type TreeSelectionFunc func(selection TreeSelection, model TreeModel, path *TreePath, pathCurrentlySelected bool) bool
 
-//export cTreeSelectionFunc
-func cTreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) C.gboolean {
+//export gotk4_TreeSelectionFunc
+func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var selection treeSelection
-	selection = wrapTreeSelection(externglib.Take(unsafe.Pointer(arg0)))
+	selection = gtk.WrapTreeSelection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var model TreeModel
-	model = wrapTreeModel(arg1)
 
 	var path *TreePath
-	path = wrapTreePath(arg2)
+	path = gtk.WrapTreePath(arg2)
 
 	var pathCurrentlySelected bool
 	pathCurrentlySelected = gextras.Gobool(arg3)
@@ -4288,24 +4279,24 @@ func cTreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.
 // to the user.
 type TreeViewColumnDropFunc func(treeView TreeView, column TreeViewColumn, prevColumn TreeViewColumn, nextColumn TreeViewColumn) bool
 
-//export cTreeViewColumnDropFunc
-func cTreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) C.gboolean {
+//export gotk4_TreeViewColumnDropFunc
+func gotk4_TreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg2 *C.GtkTreeViewColumn, arg3 *C.GtkTreeViewColumn, arg4 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var treeView treeView
-	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
+	treeView = gtk.WrapTreeView(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var column treeViewColumn
-	column = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg1)))
+	column = gtk.WrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	var prevColumn treeViewColumn
-	prevColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg2)))
+	prevColumn = gtk.WrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg2.Native())))
 
 	var nextColumn treeViewColumn
-	nextColumn = wrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg3)))
+	nextColumn = gtk.WrapTreeViewColumn(externglib.Take(unsafe.Pointer(arg3.Native())))
 
 	ok := v.(TreeViewColumnDropFunc)(treeView, column, prevColumn, nextColumn)
 }
@@ -4313,18 +4304,18 @@ func cTreeViewColumnDropFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreeViewColumn, arg
 // TreeViewMappingFunc: function used for gtk_tree_view_map_expanded_rows().
 type TreeViewMappingFunc func(treeView TreeView, path *TreePath)
 
-//export cTreeViewMappingFunc
-func cTreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
+//export gotk4_TreeViewMappingFunc
+func gotk4_TreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var treeView treeView
-	treeView = wrapTreeView(externglib.Take(unsafe.Pointer(arg0)))
+	treeView = gtk.WrapTreeView(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var path *TreePath
-	path = wrapTreePath(arg1)
+	path = gtk.WrapTreePath(arg1)
 
 	v.(TreeViewMappingFunc)(treeView, path)
 }
@@ -4335,18 +4326,17 @@ func cTreeViewMappingFunc(arg0 *C.GtkTreeView, arg1 *C.GtkTreePath, arg2 C.gpoin
 // TreeViewRowSeparatorFunc returns.
 type TreeViewRowSeparatorFunc func(model TreeModel, iter *TreeIter) bool
 
-//export cTreeViewRowSeparatorFunc
-func cTreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
+//export gotk4_TreeViewRowSeparatorFunc
+func gotk4_TreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var model TreeModel
-	model = wrapTreeModel(arg0)
 
 	var iter *TreeIter
-	iter = wrapTreeIter(arg1)
+	iter = gtk.WrapTreeIter(arg1)
 
 	ok := v.(TreeViewRowSeparatorFunc)(model, iter)
 }
@@ -4357,25 +4347,24 @@ func cTreeViewRowSeparatorFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter, arg2 C
 // to strcmp() returning 0 for equal strings.
 type TreeViewSearchEqualFunc func(model TreeModel, column int, key string, iter *TreeIter) bool
 
-//export cTreeViewSearchEqualFunc
-func cTreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.char, arg3 *C.GtkTreeIter, arg4 C.gpointer) C.gboolean {
+//export gotk4_TreeViewSearchEqualFunc
+func gotk4_TreeViewSearchEqualFunc(arg0 *C.GtkTreeModel, arg1 C.int, arg2 *C.char, arg3 *C.GtkTreeIter, arg4 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var model TreeModel
-	model = wrapTreeModel(arg0)
 
 	var column int
 	column = int(arg1)
 
 	var key string
-	key = C.GoString(arg2)
+	arg2 = C.GoString(key)
 	defer C.free(unsafe.Pointer(arg2))
 
 	var iter *TreeIter
-	iter = wrapTreeIter(arg3)
+	iter = gtk.WrapTreeIter(arg3)
 
 	ok := v.(TreeViewSearchEqualFunc)(model, column, key, iter)
 }
@@ -4389,7 +4378,7 @@ func AcceleratorGetDefaultModMask() gdk.ModifierType {
 	ret := C.gtk_accelerator_get_default_mod_mask()
 
 	var ret0 gdk.ModifierType
-	ret0 = ModifierType(ret)
+	ret0 = gdk.ModifierType(ret)
 
 	return ret0
 }
@@ -4401,12 +4390,12 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 	arg0 = uint(acceleratorKey)
 
 	var arg1 gdk.ModifierType
-	arg1 = ModifierType(acceleratorMods)
+	arg1 = gdk.ModifierType(acceleratorMods)
 
 	ret := C.gtk_accelerator_get_label(arg0, arg1)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4420,7 +4409,7 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 // gtk_accelerator_parse() instead.
 func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var arg0 gdk.Display
-	arg0 = wrapDisplay(externglib.Take(unsafe.Pointer(display)))
+	arg0 = gdk.WrapDisplay(externglib.Take(unsafe.Pointer(display.Native())))
 
 	var arg1 uint
 	arg1 = uint(acceleratorKey)
@@ -4429,12 +4418,12 @@ func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, ke
 	arg2 = uint(keycode)
 
 	var arg3 gdk.ModifierType
-	arg3 = ModifierType(acceleratorMods)
+	arg3 = gdk.ModifierType(acceleratorMods)
 
 	ret := C.gtk_accelerator_get_label_with_keycode(arg0, arg1, arg2, arg3)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4451,12 +4440,12 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 	arg0 = uint(acceleratorKey)
 
 	var arg1 gdk.ModifierType
-	arg1 = ModifierType(acceleratorMods)
+	arg1 = gdk.ModifierType(acceleratorMods)
 
 	ret := C.gtk_accelerator_name(arg0, arg1)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4469,7 +4458,7 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 // instead.
 func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var arg0 gdk.Display
-	arg0 = wrapDisplay(externglib.Take(unsafe.Pointer(display)))
+	arg0 = gdk.WrapDisplay(externglib.Take(unsafe.Pointer(display.Native())))
 
 	var arg1 uint
 	arg1 = uint(acceleratorKey)
@@ -4478,12 +4467,12 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 	arg2 = uint(keycode)
 
 	var arg3 gdk.ModifierType
-	arg3 = ModifierType(acceleratorMods)
+	arg3 = gdk.ModifierType(acceleratorMods)
 
 	ret := C.gtk_accelerator_name_with_keycode(arg0, arg1, arg2, arg3)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4501,7 +4490,7 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 // (zero).
 func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods gdk.ModifierType, ok bool) {
 	var arg0 string
-	arg0 = C.GoString(accelerator)
+	accelerator = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(accelerator))
 
 	var arg1 *C.guint // out
@@ -4514,7 +4503,7 @@ func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods 
 	ret0 = uint(arg1)
 
 	var ret1 *gdk.ModifierType
-	ret1 = ModifierType(arg2)
+	ret1 = (*gdk.ModifierType)(arg2)
 
 	var ret2 bool
 	ret2 = gextras.Gobool(ret)
@@ -4537,11 +4526,11 @@ func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods 
 // @accelerator_codes will be set to 0 (zero).
 func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (acceleratorKey uint, acceleratorCodes []uint, acceleratorMods gdk.ModifierType, ok bool) {
 	var arg0 string
-	arg0 = C.GoString(accelerator)
+	accelerator = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(accelerator))
 
 	var arg1 gdk.Display
-	arg1 = wrapDisplay(externglib.Take(unsafe.Pointer(display)))
+	arg1 = gdk.WrapDisplay(externglib.Take(unsafe.Pointer(display.Native())))
 
 	var arg2 *C.guint // out
 
@@ -4569,7 +4558,7 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (accel
 	}
 
 	var ret2 *gdk.ModifierType
-	ret2 = ModifierType(arg4)
+	ret2 = (*gdk.ModifierType)(arg4)
 
 	var ret3 bool
 	ret3 = gextras.Gobool(ret)
@@ -4586,7 +4575,7 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	arg0 = uint(keyval)
 
 	var arg1 gdk.ModifierType
-	arg1 = ModifierType(modifiers)
+	arg1 = gdk.ModifierType(modifiers)
 
 	ret := C.gtk_accelerator_valid(arg0, arg1)
 
@@ -4624,7 +4613,7 @@ func BitsetIterInitAt(set *Bitset, target uint) (iter BitsetIter, value uint, ok
 	var arg0 *C.GtkBitsetIter // out
 
 	var arg1 *Bitset
-	arg1 = wrapBitset(set)
+	arg1 = gtk.WrapBitset(set)
 
 	var arg2 uint
 	arg2 = uint(target)
@@ -4634,7 +4623,7 @@ func BitsetIterInitAt(set *Bitset, target uint) (iter BitsetIter, value uint, ok
 	ret := C.gtk_bitset_iter_init_at(&arg0, arg1, arg2, &arg3)
 
 	var ret0 *BitsetIter
-	ret0 = wrapBitsetIter(arg0)
+	ret0 = gtk.WrapBitsetIter(arg0)
 
 	var ret1 uint
 	ret1 = uint(arg3)
@@ -4652,14 +4641,14 @@ func BitsetIterInitFirst(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 	var arg0 *C.GtkBitsetIter // out
 
 	var arg1 *Bitset
-	arg1 = wrapBitset(set)
+	arg1 = gtk.WrapBitset(set)
 
 	var arg2 *C.guint // out
 
 	ret := C.gtk_bitset_iter_init_first(&arg0, arg1, &arg2)
 
 	var ret0 *BitsetIter
-	ret0 = wrapBitsetIter(arg0)
+	ret0 = gtk.WrapBitsetIter(arg0)
 
 	var ret1 uint
 	ret1 = uint(arg2)
@@ -4676,14 +4665,14 @@ func BitsetIterInitLast(set *Bitset) (iter BitsetIter, value uint, ok bool) {
 	var arg0 *C.GtkBitsetIter // out
 
 	var arg1 *Bitset
-	arg1 = wrapBitset(set)
+	arg1 = gtk.WrapBitset(set)
 
 	var arg2 *C.guint // out
 
 	ret := C.gtk_bitset_iter_init_last(&arg0, arg1, &arg2)
 
 	var ret0 *BitsetIter
-	ret0 = wrapBitsetIter(arg0)
+	ret0 = gtk.WrapBitsetIter(arg0)
 
 	var ret1 uint
 	ret1 = uint(arg2)
@@ -4699,8 +4688,9 @@ func BuilderErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -4737,7 +4727,7 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	ret := C.gtk_check_version(arg0, arg1, arg2)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4748,8 +4738,9 @@ func ConstraintVflParserErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -4760,8 +4751,9 @@ func CSSParserErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -4772,8 +4764,9 @@ func CSSParserWarningQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -4804,7 +4797,7 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 	arg1 = uint(nRequestedSizes)
 
 	var arg2 *RequestedSize
-	arg2 = wrapRequestedSize(sizes)
+	arg2 = gtk.WrapRequestedSize(sizes)
 
 	ret := C.gtk_distribute_natural_allocation(arg0, arg1, arg2)
 
@@ -4820,8 +4813,9 @@ func FileChooserErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -4863,7 +4857,7 @@ func GetDefaultLanguage() *pango.Language {
 	ret := C.gtk_get_default_language()
 
 	var ret0 *pango.Language
-	ret0 = wrapLanguage(ret)
+	ret0 = pango.WrapLanguage(ret)
 
 	return ret0
 }
@@ -4898,6 +4892,7 @@ func GetInterfaceAge() uint {
 //    setlocale (LC_ALL, new_locale);
 //    direction = gtk_get_locale_direction ();
 //    gtk_widget_set_default_direction (direction);
+//
 func GetLocaleDirection() TextDirection {
 	ret := C.gtk_get_locale_direction()
 
@@ -4994,8 +4989,9 @@ func IconThemeErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -5054,12 +5050,11 @@ func IsInitialized() bool {
 // NativeGetForSurface finds the GtkNative associated with the surface.
 func NativeGetForSurface(surface gdk.Surface) Native {
 	var arg0 gdk.Surface
-	arg0 = wrapSurface(externglib.Take(unsafe.Pointer(surface)))
+	arg0 = gdk.WrapSurface(externglib.Take(unsafe.Pointer(surface.Native())))
 
 	ret := C.gtk_native_get_for_surface(arg0)
 
 	var ret0 Native
-	ret0 = wrapNative(ret)
 
 	return ret0
 }
@@ -5070,7 +5065,7 @@ func PaperSizeGetDefault() string {
 	ret := C.gtk_paper_size_get_default()
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -5084,7 +5079,7 @@ func PaperSizeGetPaperSizes(includeCustom bool) *glib.List {
 	ret := C.gtk_paper_size_get_paper_sizes(arg0)
 
 	var ret0 *glib.List
-	ret0 = wrapList(ret)
+	ret0 = glib.WrapList(ret)
 
 	return ret0
 }
@@ -5095,8 +5090,9 @@ func PrintErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -5111,18 +5107,18 @@ func PrintErrorQuark() glib.Quark {
 // dialog. See gtk_print_run_page_setup_dialog_async() if this is a problem.
 func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintSettings) PageSetup {
 	var arg0 Window
-	arg0 = wrapWindow(externglib.Take(unsafe.Pointer(parent)))
+	arg0 = gtk.WrapWindow(externglib.Take(unsafe.Pointer(parent.Native())))
 
 	var arg1 PageSetup
-	arg1 = wrapPageSetup(externglib.Take(unsafe.Pointer(pageSetup)))
+	arg1 = gtk.WrapPageSetup(externglib.Take(unsafe.Pointer(pageSetup.Native())))
 
 	var arg2 PrintSettings
-	arg2 = wrapPrintSettings(externglib.Take(unsafe.Pointer(settings)))
+	arg2 = gtk.WrapPrintSettings(externglib.Take(unsafe.Pointer(settings.Native())))
 
 	ret := C.gtk_print_run_page_setup_dialog(arg0, arg1, arg2)
 
 	var ret0 PageSetup
-	ret0 = wrapPageSetup(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gtk.WrapPageSetup(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5135,19 +5131,16 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 // @done_cb from a signal handler for the ::response signal of the dialog.
 func PrintRunPageSetupDialogAsync(parent Window, pageSetup PageSetup, settings PrintSettings, doneCb PageSetupDoneFunc) {
 	var arg0 Window
-	arg0 = wrapWindow(externglib.Take(unsafe.Pointer(parent)))
+	arg0 = gtk.WrapWindow(externglib.Take(unsafe.Pointer(parent.Native())))
 
 	var arg1 PageSetup
-	arg1 = wrapPageSetup(externglib.Take(unsafe.Pointer(pageSetup)))
+	arg1 = gtk.WrapPageSetup(externglib.Take(unsafe.Pointer(pageSetup.Native())))
 
 	var arg2 PrintSettings
-	arg2 = wrapPrintSettings(externglib.Take(unsafe.Pointer(settings)))
-
-	var arg3 PageSetupDoneFunc
-	arg3 = wrapPageSetupDoneFunc(doneCb)
+	arg2 = gtk.WrapPrintSettings(externglib.Take(unsafe.Pointer(settings.Native())))
 
 	arg4 := C.gpointer(box.Assign(box.Callback, data))
-	C.gtk_print_run_page_setup_dialog_async(arg0, arg1, arg2, arg3)
+	C.gtk_print_run_page_setup_dialog_async(arg0, arg1, arg2)
 }
 
 func RecentManagerErrorQuark() glib.Quark {
@@ -5155,8 +5148,9 @@ func RecentManagerErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -5166,10 +5160,10 @@ func RecentManagerErrorQuark() glib.Quark {
 // GTK_STATE_FLAG_CHECKED determines whether there is activity going on.
 func RenderActivity(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(x)
@@ -5190,13 +5184,13 @@ func RenderActivity(context StyleContext, cr *cairo.Context, x float64, y float6
 //
 // Typical arrow rendering at 0, 1⁄2 π;, π; and 3⁄2 π:
 //
-// ![](arrows.png)
+// ! (arrows.png)
 func RenderArrow(context StyleContext, cr *cairo.Context, angle float64, x float64, y float64, size float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(angle)
@@ -5218,13 +5212,13 @@ func RenderArrow(context StyleContext, cr *cairo.Context, angle float64, x float
 // Typical background rendering, showing the effect of `background-image`,
 // `border-width` and `border-radius`:
 //
-// ![](background.png)
+// ! (background.png)
 func RenderBackground(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(x)
@@ -5249,13 +5243,13 @@ func RenderBackground(context StyleContext, cr *cairo.Context, x float64, y floa
 //
 // Typical checkmark rendering:
 //
-// ![](checks.png)
+// ! (checks.png)
 func RenderCheck(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(x)
@@ -5278,13 +5272,13 @@ func RenderCheck(context StyleContext, cr *cairo.Context, x float64, y float64, 
 //
 // Typical expander rendering:
 //
-// ![](expanders.png)
+// ! (expanders.png)
 func RenderExpander(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(x)
@@ -5306,13 +5300,13 @@ func RenderExpander(context StyleContext, cr *cairo.Context, x float64, y float6
 //
 // Typical focus rendering:
 //
-// ![](focus.png)
+// ! (focus.png)
 func RenderFocus(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(x)
@@ -5335,13 +5329,13 @@ func RenderFocus(context StyleContext, cr *cairo.Context, x float64, y float64, 
 // Examples of frame rendering, showing the effect of `border-image`,
 // `border-color`, `border-width`, `border-radius` and junctions:
 //
-// ![](frames.png)
+// ! (frames.png)
 func RenderFrame(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(x)
@@ -5363,13 +5357,13 @@ func RenderFrame(context StyleContext, cr *cairo.Context, x float64, y float64, 
 //
 // Handles rendered for the paned and grip classes:
 //
-// ![](handles.png)
+// ! (handles.png)
 func RenderHandle(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(x)
@@ -5394,13 +5388,13 @@ func RenderHandle(context StyleContext, cr *cairo.Context, x float64, y float64,
 // displays with high pixel densities.
 func RenderIcon(context StyleContext, cr *cairo.Context, texture gdk.Texture, x float64, y float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 gdk.Texture
-	arg2 = wrapTexture(externglib.Take(unsafe.Pointer(texture)))
+	arg2 = gdk.WrapTexture(externglib.Take(unsafe.Pointer(texture.Native())))
 
 	var arg3 float64
 	arg3 = float64(x)
@@ -5414,10 +5408,10 @@ func RenderIcon(context StyleContext, cr *cairo.Context, texture gdk.Texture, x 
 // RenderLayout renders @layout on the coordinates @x, @y
 func RenderLayout(context StyleContext, cr *cairo.Context, x float64, y float64, layout pango.Layout) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(x)
@@ -5426,7 +5420,7 @@ func RenderLayout(context StyleContext, cr *cairo.Context, x float64, y float64,
 	arg3 = float64(y)
 
 	var arg4 pango.Layout
-	arg4 = wrapLayout(externglib.Take(unsafe.Pointer(layout)))
+	arg4 = pango.WrapLayout(externglib.Take(unsafe.Pointer(layout.Native())))
 
 	C.gtk_render_layout(arg0, arg1, arg2, arg3, arg4)
 }
@@ -5434,10 +5428,10 @@ func RenderLayout(context StyleContext, cr *cairo.Context, x float64, y float64,
 // RenderLine renders a line from (x0, y0) to (x1, y1).
 func RenderLine(context StyleContext, cr *cairo.Context, x0 float64, y0 float64, x1 float64, y1 float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(x0)
@@ -5460,13 +5454,13 @@ func RenderLine(context StyleContext, cr *cairo.Context, x0 float64, y0 float64,
 //
 // Typical option mark rendering:
 //
-// ![](options.png)
+// ! (options.png)
 func RenderOption(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64) {
 	var arg0 StyleContext
-	arg0 = wrapStyleContext(externglib.Take(unsafe.Pointer(context)))
+	arg0 = gtk.WrapStyleContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg1 *cairo.Context
-	arg1 = wrapContext(cr)
+	arg1 = cairo.WrapContext(cr)
 
 	var arg2 float64
 	arg2 = float64(x)
@@ -5529,10 +5523,10 @@ func SetDebugFlags(flags DebugFlags) {
 // uri, or shows an error dialog if that fails.
 func ShowURI(parent Window, uri string, timestamp uint32) {
 	var arg0 Window
-	arg0 = wrapWindow(externglib.Take(unsafe.Pointer(parent)))
+	arg0 = gtk.WrapWindow(externglib.Take(unsafe.Pointer(parent.Native())))
 
 	var arg1 string
-	arg1 = C.GoString(uri)
+	uri = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(uri))
 
 	var arg2 uint32
@@ -5551,34 +5545,28 @@ func ShowURI(parent Window, uri string, timestamp uint32) {
 // for sandbox helpers to parent their dialogs properly.
 func ShowURIFull(parent Window, uri string, timestamp uint32, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg0 Window
-	arg0 = wrapWindow(externglib.Take(unsafe.Pointer(parent)))
+	arg0 = gtk.WrapWindow(externglib.Take(unsafe.Pointer(parent.Native())))
 
 	var arg1 string
-	arg1 = C.GoString(uri)
+	uri = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(uri))
 
 	var arg2 uint32
 	arg2 = uint32(timestamp)
 
 	var arg3 gio.Cancellable
-	arg3 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
+	arg3 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
-	var arg4 gio.AsyncReadyCallback
-	arg4 = wrapAsyncReadyCallback(callback)
-
-	C.gtk_show_uri_full(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_show_uri_full(arg0, arg1, arg2, arg3)
 }
 
 // ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of
 // the operation.
 func ShowURIFullFinish(parent Window, result gio.AsyncResult) bool {
 	var arg0 Window
-	arg0 = wrapWindow(externglib.Take(unsafe.Pointer(parent)))
+	arg0 = gtk.WrapWindow(externglib.Take(unsafe.Pointer(parent.Native())))
 
-	var arg1 gio.AsyncResult
-	arg1 = wrapAsyncResult(result)
-
-	ret := C.gtk_show_uri_full_finish(arg0, arg1)
+	ret := C.gtk_show_uri_full_finish(arg0)
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -5588,26 +5576,23 @@ func ShowURIFullFinish(parent Window, result gio.AsyncResult) bool {
 
 func TestAccessibleAssertionMessageRole(domain string, file string, line int, _func string, expr string, accessible Accessible, expectedRole AccessibleRole, actualRole AccessibleRole) {
 	var arg0 string
-	arg0 = C.GoString(domain)
+	domain = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(domain))
 
 	var arg1 string
-	arg1 = C.GoString(file)
+	file = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(file))
 
 	var arg2 int
 	arg2 = int(line)
 
 	var arg3 string
-	arg3 = C.GoString(_func)
+	_func = C.GoString(arg3)
 	defer C.free(unsafe.Pointer(_func))
 
 	var arg4 string
-	arg4 = C.GoString(expr)
+	expr = C.GoString(arg4)
 	defer C.free(unsafe.Pointer(expr))
-
-	var arg5 Accessible
-	arg5 = wrapAccessible(accessible)
 
 	var arg6 AccessibleRole
 	arg6 = AccessibleRole(expectedRole)
@@ -5615,18 +5600,15 @@ func TestAccessibleAssertionMessageRole(domain string, file string, line int, _f
 	var arg7 AccessibleRole
 	arg7 = AccessibleRole(actualRole)
 
-	C.gtk_test_accessible_assertion_message_role(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	C.gtk_test_accessible_assertion_message_role(arg0, arg1, arg2, arg3, arg4, arg6, arg7)
 }
 
 // TestAccessibleHasProperty checks whether the Accessible has @property set.
 func TestAccessibleHasProperty(accessible Accessible, property AccessibleProperty) bool {
-	var arg0 Accessible
-	arg0 = wrapAccessible(accessible)
-
 	var arg1 AccessibleProperty
 	arg1 = AccessibleProperty(property)
 
-	ret := C.gtk_test_accessible_has_property(arg0, arg1)
+	ret := C.gtk_test_accessible_has_property(arg1)
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -5636,13 +5618,10 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 
 // TestAccessibleHasRelation checks whether the Accessible has @relation set.
 func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelation) bool {
-	var arg0 Accessible
-	arg0 = wrapAccessible(accessible)
-
 	var arg1 AccessibleRelation
 	arg1 = AccessibleRelation(relation)
 
-	ret := C.gtk_test_accessible_has_relation(arg0, arg1)
+	ret := C.gtk_test_accessible_has_relation(arg1)
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -5653,13 +5632,10 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 // TestAccessibleHasRole checks whether the Accessible:accessible-role of the
 // accessible is @role.
 func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
-	var arg0 Accessible
-	arg0 = wrapAccessible(accessible)
-
 	var arg1 AccessibleRole
 	arg1 = AccessibleRole(role)
 
-	ret := C.gtk_test_accessible_has_role(arg0, arg1)
+	ret := C.gtk_test_accessible_has_role(arg1)
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -5669,13 +5645,10 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 
 // TestAccessibleHasState checks whether the Accessible has @state set.
 func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
-	var arg0 Accessible
-	arg0 = wrapAccessible(accessible)
-
 	var arg1 AccessibleState
 	arg1 = AccessibleState(state)
 
-	ret := C.gtk_test_accessible_has_state(arg0, arg1)
+	ret := C.gtk_test_accessible_has_state(arg1)
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -5714,7 +5687,7 @@ func TestRegisterAllTypes() {
 // @widget relayouting or on interaction with the display server.
 func TestWidgetWaitForDraw(widget Widget) {
 	var arg0 Widget
-	arg0 = wrapWidget(externglib.Take(unsafe.Pointer(widget)))
+	arg0 = gtk.WrapWidget(externglib.Take(unsafe.Pointer(widget.Native())))
 
 	C.gtk_test_widget_wait_for_draw(arg0)
 }
@@ -5722,16 +5695,13 @@ func TestWidgetWaitForDraw(widget Widget) {
 // TreeCreateRowDragContent creates a content provider for dragging @path from
 // @tree_model.
 func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentProvider {
-	var arg0 TreeModel
-	arg0 = wrapTreeModel(treeModel)
-
 	var arg1 *TreePath
-	arg1 = wrapTreePath(path)
+	arg1 = gtk.WrapTreePath(path)
 
-	ret := C.gtk_tree_create_row_drag_content(arg0, arg1)
+	ret := C.gtk_tree_create_row_drag_content(arg1)
 
 	var ret0 gdk.ContentProvider
-	ret0 = wrapContentProvider(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gdk.WrapContentProvider(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5748,10 +5718,9 @@ func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path *Tre
 	ret := C.gtk_tree_get_row_drag_data(&arg1, &arg2)
 
 	var ret0 *TreeModel
-	ret0 = wrapTreeModel(arg1)
 
 	var ret1 **TreePath
-	ret1 = wrapTreePath(arg2)
+	ret1 = gtk.WrapTreePath(arg2)
 
 	var ret2 bool
 	ret2 = gextras.Gobool(ret)
@@ -5764,10 +5733,10 @@ func TreeGetRowDragData(value *externglib.Value) (treeModel TreeModel, path *Tre
 // TreeModel::row-deleted signal.
 func TreeRowReferenceDeleted(proxy gextras.Objector, path *TreePath) {
 	var arg0 gextras.Objector
-	arg0 = glib.Take(proxy)
+	arg0 = externglib.Take(unsafe.Pointer(proxy.Native()))
 
 	var arg1 *TreePath
-	arg1 = wrapTreePath(path)
+	arg1 = gtk.WrapTreePath(path)
 
 	C.gtk_tree_row_reference_deleted(arg0, arg1)
 }
@@ -5777,10 +5746,10 @@ func TreeRowReferenceDeleted(proxy gextras.Objector, path *TreePath) {
 // TreeModel::row-inserted signal.
 func TreeRowReferenceInserted(proxy gextras.Objector, path *TreePath) {
 	var arg0 gextras.Objector
-	arg0 = glib.Take(proxy)
+	arg0 = externglib.Take(unsafe.Pointer(proxy.Native()))
 
 	var arg1 *TreePath
-	arg1 = wrapTreePath(path)
+	arg1 = gtk.WrapTreePath(path)
 
 	C.gtk_tree_row_reference_inserted(arg0, arg1)
 }
@@ -5790,13 +5759,13 @@ func TreeRowReferenceInserted(proxy gextras.Objector, path *TreePath) {
 // TreeModel::rows-reordered signal.
 func TreeRowReferenceReordered(proxy gextras.Objector, path *TreePath, iter *TreeIter, newOrder []int) {
 	var arg0 gextras.Objector
-	arg0 = glib.Take(proxy)
+	arg0 = externglib.Take(unsafe.Pointer(proxy.Native()))
 
 	var arg1 *TreePath
-	arg1 = wrapTreePath(path)
+	arg1 = gtk.WrapTreePath(path)
 
 	var arg2 *TreeIter
-	arg2 = wrapTreeIter(iter)
+	arg2 = gtk.WrapTreeIter(iter)
 
 	var arg3 []int
 	{
@@ -5821,7 +5790,7 @@ func ValueDupExpression(value *externglib.Value) Expression {
 	ret := C.gtk_value_dup_expression()
 
 	var ret0 Expression
-	ret0 = wrapExpression(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gtk.WrapExpression(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5831,7 +5800,7 @@ func ValueGetExpression(value *externglib.Value) Expression {
 	ret := C.gtk_value_get_expression()
 
 	var ret0 Expression
-	ret0 = wrapExpression(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gtk.WrapExpression(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5841,7 +5810,7 @@ func ValueGetExpression(value *externglib.Value) Expression {
 // The #GValue will acquire a reference to the @expression.
 func ValueSetExpression(value *externglib.Value, expression Expression) {
 	var arg1 Expression
-	arg1 = wrapExpression(externglib.Take(unsafe.Pointer(expression)))
+	arg1 = gtk.WrapExpression(externglib.Take(unsafe.Pointer(expression.Native())))
 
 	C.gtk_value_set_expression(arg1)
 }
@@ -5851,7 +5820,7 @@ func ValueSetExpression(value *externglib.Value, expression Expression) {
 // This function transfers the ownership of the @expression to the #GValue.
 func ValueTakeExpression(value *externglib.Value, expression Expression) {
 	var arg1 Expression
-	arg1 = wrapExpression(externglib.Take(unsafe.Pointer(expression)))
+	arg1 = gtk.WrapExpression(externglib.Take(unsafe.Pointer(expression.Native())))
 
 	C.gtk_value_take_expression(arg1)
 }
@@ -5860,9 +5829,9 @@ func ValueTakeExpression(value *externglib.Value, expression Expression) {
 // like a Widget, in a way that can be consumed by Assistive Technologies, or
 // “AT”. Every accessible implementation has:
 //
-// - a “role”, represented by a value of the AccessibleRole enumeration - an
-// “attribute”, represented by a set of AccessibleState, AccessibleProperty and
-// AccessibleRelation values
+//    - a “role”, represented by a value of the AccessibleRole enumeration
+//    - an “attribute”, represented by a set of AccessibleState,
+//      AccessibleProperty and AccessibleRelation values
 //
 // The role cannot be changed after instantiating a Accessible implementation.
 //
@@ -5973,6 +5942,8 @@ type CellEditable interface {
 // which specifies a property of the cell renderer; the content of the element
 // is the attribute value.
 //
+// This is an example of a UI definition fragment specifying attributes:
+//
 //
 //    <object class="GtkCellView">
 //      <child>
@@ -5982,16 +5953,17 @@ type CellEditable interface {
 //        </attributes>
 //      </child>"
 //    </object>
+//    ]|
 //
-// Furthermore for implementations of GtkCellLayout that use a CellArea to lay
-// out cells (all GtkCellLayouts in GTK use a GtkCellArea) [cell
-// properties][cell-properties] can also be defined in the format by specifying
-// the custom <cell-packing> attribute which can contain multiple <property>
-// elements defined in the normal way.
+//    Furthermore for implementations of GtkCellLayout that use a CellArea
+//    to lay out cells (all GtkCellLayouts in GTK use a GtkCellArea)
+//    [cell properties][cell-properties] can also be defined in the format by
+//    specifying the custom <cell-packing> attribute which can contain multiple
+//    <property> elements defined in the normal way.
 //
-// Here is a UI definition fragment specifying cell properties:
+//    Here is a UI definition fragment specifying cell properties:
 //
-//
+//    |[
 //    <object class="GtkTreeViewColumn">
 //      <child>
 //        <object class="GtkCellRendererText"/>
@@ -6001,25 +5973,32 @@ type CellEditable interface {
 //        </cell-packing>
 //      </child>"
 //    </object>
+//    ]|
+//
 //
 //
 // Subclassing GtkCellLayout implementations
 //
-// When subclassing a widget that implements CellLayout like IconView or
-// ComboBox, there are some considerations related to the fact that these
-// widgets internally use a CellArea. The cell area is exposed as a
-// construct-only property by these widgets. This means that it is possible to
-// e.g. do
 //
+//    When subclassing a widget that implements CellLayout like
+//    IconView or ComboBox, there are some considerations related
+//    to the fact that these widgets internally use a CellArea.
+//    The cell area is exposed as a construct-only property by these
+//    widgets. This means that it is possible to e.g. do
+//
+//    |[<!-- language="C" -->
 //    combo = g_object_new (GTK_TYPE_COMBO_BOX, "cell-area", my_cell_area, NULL);
+//    ]|
 //
-// to use a custom cell area with a combo box. But construct properties are only
-// initialized after instance init() functions have run, which means that using
-// functions which rely on the existence of the cell area in your subclass’
-// init() function will cause the default cell area to be instantiated. In this
-// case, a provided construct property value will be ignored (with a warning, to
-// alert you to the problem).
+//    to use a custom cell area with a combo box. But construct properties
+//    are only initialized after instance init()
+//    functions have run, which means that using functions which rely on
+//    the existence of the cell area in your subclass’ init() function will
+//    cause the default cell area to be instantiated. In this case, a provided
+//    construct property value will be ignored (with a warning, to alert
+//    you to the problem).
 //
+//    |[<!-- language="C" -->
 //    static void
 //    my_combo_box_init (MyComboBox *b)
 //    {
@@ -6080,7 +6059,7 @@ type ColorChooser interface {
 // Editable::insert-text, an application can convert all entry into a widget
 // into uppercase.
 //
-// Forcing entry to uppercase
+// Forcing entry to uppercase.
 //
 //    #include <ctype.h>
 //
@@ -6103,20 +6082,22 @@ type ColorChooser interface {
 //
 //      g_free (result);
 //    }
+//    ]|
 //
 //
 //
 // Implementing GtkEditable
 //
-// The most likely scenario for implementing GtkEditable on your own widget is
-// that you will embed a Text inside a complex widget, and want to delegate the
-// editable functionality to that text widget. GtkEditable provides some utility
-// functions to make this easy.
 //
-// In your class_init function, call gtk_editable_install_properties(), passing
-// the first available property ID:
+//    The most likely scenario for implementing GtkEditable on your own widget
+//    is that you will embed a Text inside a complex widget, and want to
+//    delegate the editable functionality to that text widget. GtkEditable
+//    provides some utility functions to make this easy.
 //
+//    In your class_init function, call gtk_editable_install_properties(),
+//    passing the first available property ID:
 //
+//    |[
 //    static void
 //    my_class_init (MyClass *class)
 //    {
@@ -6125,11 +6106,12 @@ type ColorChooser interface {
 //       gtk_editable_install_properties (object_clas, NUM_PROPERTIES);
 //       ...
 //    }
+//    ]|
 //
-// In your interface_init function for the GtkEditable interface, provide an
-// implementation for the get_delegate vfunc that returns your text widget:
+//    In your interface_init function for the GtkEditable interface, provide
+//    an implementation for the get_delegate vfunc that returns your text widget:
 //
-//
+//    |[
 //    GtkEditable *
 //    get_editable_delegate (GtkEditable *editable)
 //    {
@@ -6141,16 +6123,16 @@ type ColorChooser interface {
 //    {
 //      iface->get_delegate = get_editable_delegate;
 //    }
+//    ]|
 //
+//    You don't need to provide any other vfuncs. The default implementations
+//    work by forwarding to the delegate that the EditableInterface.get_delegate()
+//    vfunc returns.
 //
-// You don't need to provide any other vfuncs. The default implementations work
-// by forwarding to the delegate that the EditableInterface.get_delegate() vfunc
-// returns.
+//    In your instance_init function, create your text widget, and then call
+//    gtk_editable_init_delegate():
 //
-// In your instance_init function, create your text widget, and then call
-// gtk_editable_init_delegate():
-//
-//
+//    |[
 //    static void
 //    my_widget_init (MyWidget *self)
 //    {
@@ -6159,11 +6141,12 @@ type ColorChooser interface {
 //      gtk_editable_init_delegate (GTK_EDITABLE (self));
 //      ...
 //    }
+//    ]|
 //
-// In your dispose function, call gtk_editable_finish_delegate() before
-// destroying your text widget:
+//    In your dispose function, call gtk_editable_finish_delegate() before
+//    destroying your text widget:
 //
-//
+//    |[
 //    static void
 //    my_widget_dispose (GObject *object)
 //    {
@@ -6172,11 +6155,12 @@ type ColorChooser interface {
 //      g_clear_pointer (&self->text_widget, gtk_widget_unparent);
 //      ...
 //    }
+//    ]|
 //
-// Finally, use gtk_editable_delegate_set_property() in your `set_property`
-// function (and similar for `get_property`), to set the editable properties:
+//    Finally, use gtk_editable_delegate_set_property() in your `set_property`
+//    function (and similar for `get_property`), to set the editable properties:
 //
-//
+//    |[
 //      ...
 //      if (gtk_editable_delegate_set_property (object, prop_id, value, pspec))
 //        return;
@@ -6515,39 +6499,6 @@ type TreeDragSource interface {
 //
 // Acquiring a TreeIter-struct
 //
-//    // Three ways of getting the iter pointing to the location
-//    GtkTreePath *path;
-//    GtkTreeIter iter;
-//    GtkTreeIter parent_iter;
-//
-//    // get the iterator from a string
-//    gtk_tree_model_get_iter_from_string (model,
-//                                         &iter,
-//                                         "3:2:5");
-//
-//    // get the iterator from a path
-//    path = gtk_tree_path_new_from_string ("3:2:5");
-//    gtk_tree_model_get_iter (model, &iter, path);
-//    gtk_tree_path_free (path);
-//
-//    // walk the tree to find the iterator
-//    gtk_tree_model_iter_nth_child (model, &iter,
-//                                   NULL, 3);
-//    parent_iter = iter;
-//    gtk_tree_model_iter_nth_child (model, &iter,
-//                                   &parent_iter, 2);
-//    parent_iter = iter;
-//    gtk_tree_model_iter_nth_child (model, &iter,
-//                                   &parent_iter, 5);
-//
-//
-// This second example shows a quick way of iterating through a list and getting
-// a string and an integer from each row. The populate_model() function used
-// below is not shown, as it is specific to the ListStore. For information on
-// how to write such a function, see the ListStore documentation.
-//
-// Reading data from a TreeModel
-//
 //    enum
 //    {
 //      STRING_COLUMN,
@@ -6669,8 +6620,8 @@ type TreeSortable interface {
 // Bitset is a data structure for representing a set of unsigned integers.
 // Another name for this data structure is "bitmap".
 //
-// The current implementation is based on [roaring
-// bitmaps](https://roaringbitmap.org/).
+// The current implementation is based on roaring bitmaps
+// (https://roaringbitmap.org/).
 //
 // A bitset allows adding a set of integers and provides support for set
 // operations like unions, intersections and checks for equality or if a value
@@ -6685,7 +6636,10 @@ type Bitset struct {
 	native *C.GtkBitset
 }
 
-func wrapBitset(p *C.GtkBitset) *Bitset {
+// WrapBitset wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBitset(ptr unsafe.Pointer) *Bitset {
+	p := (*C.GtkBitset)(ptr)
 	v := Bitset{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -6696,12 +6650,12 @@ func wrapBitset(p *C.GtkBitset) *Bitset {
 
 func marshalBitset(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkBitset)(unsafe.Pointer(b))
-
-	return wrapBitset(c)
+	return WrapBitset(unsafe.Pointer(b))
 }
 
-func (b *Bitset) free() {}
+func (b *Bitset) free() {
+	C.free(unsafe.Pointer(b.native))
+}
 
 // Native returns the pointer to *C.GtkBitset. The caller is expected to
 // cast.
@@ -6721,7 +6675,10 @@ type BitsetIter struct {
 	native *C.GtkBitsetIter
 }
 
-func wrapBitsetIter(p *C.GtkBitsetIter) *BitsetIter {
+// WrapBitsetIter wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBitsetIter(ptr unsafe.Pointer) *BitsetIter {
+	p := (*C.GtkBitsetIter)(ptr)
 	v := BitsetIter{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -6732,12 +6689,12 @@ func wrapBitsetIter(p *C.GtkBitsetIter) *BitsetIter {
 
 func marshalBitsetIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkBitsetIter)(unsafe.Pointer(b))
-
-	return wrapBitsetIter(c)
+	return WrapBitsetIter(unsafe.Pointer(b))
 }
 
-func (b *BitsetIter) free() {}
+func (b *BitsetIter) free() {
+	C.free(unsafe.Pointer(b.native))
+}
 
 // Native returns the pointer to *C.GtkBitsetIter. The caller is expected to
 // cast.
@@ -6760,7 +6717,10 @@ type Border struct {
 	native *C.GtkBorder
 }
 
-func wrapBorder(p *C.GtkBorder) *Border {
+// WrapBorder wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBorder(ptr unsafe.Pointer) *Border {
+	p := (*C.GtkBorder)(ptr)
 	var v Border
 
 	v.Left = int16(p.left)
@@ -6773,9 +6733,7 @@ func wrapBorder(p *C.GtkBorder) *Border {
 
 func marshalBorder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkBorder)(unsafe.Pointer(b))
-
-	return wrapBorder(c)
+	return WrapBorder(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GtkBorder. The caller is expected to
@@ -6791,7 +6749,10 @@ type BuildableParser struct {
 	native *C.GtkBuildableParser
 }
 
-func wrapBuildableParser(p *C.GtkBuildableParser) *BuildableParser {
+// WrapBuildableParser wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBuildableParser(ptr unsafe.Pointer) *BuildableParser {
+	p := (*C.GtkBuildableParser)(ptr)
 	v := BuildableParser{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -6802,12 +6763,12 @@ func wrapBuildableParser(p *C.GtkBuildableParser) *BuildableParser {
 
 func marshalBuildableParser(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkBuildableParser)(unsafe.Pointer(b))
-
-	return wrapBuildableParser(c)
+	return WrapBuildableParser(unsafe.Pointer(b))
 }
 
-func (b *BuildableParser) free() {}
+func (b *BuildableParser) free() {
+	C.free(unsafe.Pointer(b.native))
+}
 
 // Native returns the pointer to *C.GtkBuildableParser. The caller is expected to
 // cast.
@@ -6842,7 +6803,10 @@ type CSSLocation struct {
 	native *C.GtkCssLocation
 }
 
-func wrapCSSLocation(p *C.GtkCssLocation) *CSSLocation {
+// WrapCSSLocation wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCSSLocation(ptr unsafe.Pointer) *CSSLocation {
+	p := (*C.GtkCssLocation)(ptr)
 	var v CSSLocation
 
 	v.Bytes = uint(p.bytes)
@@ -6856,9 +6820,7 @@ func wrapCSSLocation(p *C.GtkCssLocation) *CSSLocation {
 
 func marshalCSSLocation(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkCssLocation)(unsafe.Pointer(b))
-
-	return wrapCSSLocation(c)
+	return WrapCSSLocation(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GtkCssLocation. The caller is expected to
@@ -6874,7 +6836,10 @@ type CSSSection struct {
 	native *C.GtkCssSection
 }
 
-func wrapCSSSection(p *C.GtkCssSection) *CSSSection {
+// WrapCSSSection wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapCSSSection(ptr unsafe.Pointer) *CSSSection {
+	p := (*C.GtkCssSection)(ptr)
 	v := CSSSection{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -6885,12 +6850,12 @@ func wrapCSSSection(p *C.GtkCssSection) *CSSSection {
 
 func marshalCSSSection(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkCssSection)(unsafe.Pointer(b))
-
-	return wrapCSSSection(c)
+	return WrapCSSSection(unsafe.Pointer(b))
 }
 
-func (c *CSSSection) free() {}
+func (c *CSSSection) free() {
+	C.free(unsafe.Pointer(c.native))
+}
 
 // Native returns the pointer to *C.GtkCssSection. The caller is expected to
 // cast.
@@ -6918,15 +6883,18 @@ type PadActionEntry struct {
 	native *C.GtkPadActionEntry
 }
 
-func wrapPadActionEntry(p *C.GtkPadActionEntry) *PadActionEntry {
+// WrapPadActionEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPadActionEntry(ptr unsafe.Pointer) *PadActionEntry {
+	p := (*C.GtkPadActionEntry)(ptr)
 	var v PadActionEntry
 
 	v.Type = PadActionType(p._type)
 	v.Index = int(p.index)
 	v.Mode = int(p.mode)
-	v.Label = C.GoString(p.label)
+	p.label = C.GoString(v.Label)
 	defer C.free(unsafe.Pointer(p.label))
-	v.ActionName = C.GoString(p.action_name)
+	p.action_name = C.GoString(v.ActionName)
 	defer C.free(unsafe.Pointer(p.action_name))
 
 	return &v
@@ -6934,9 +6902,7 @@ func wrapPadActionEntry(p *C.GtkPadActionEntry) *PadActionEntry {
 
 func marshalPadActionEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkPadActionEntry)(unsafe.Pointer(b))
-
-	return wrapPadActionEntry(c)
+	return WrapPadActionEntry(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GtkPadActionEntry. The caller is expected to
@@ -6955,7 +6921,10 @@ type PageRange struct {
 	native *C.GtkPageRange
 }
 
-func wrapPageRange(p *C.GtkPageRange) *PageRange {
+// WrapPageRange wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPageRange(ptr unsafe.Pointer) *PageRange {
+	p := (*C.GtkPageRange)(ptr)
 	var v PageRange
 
 	v.Start = int(p.start)
@@ -6966,9 +6935,7 @@ func wrapPageRange(p *C.GtkPageRange) *PageRange {
 
 func marshalPageRange(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkPageRange)(unsafe.Pointer(b))
-
-	return wrapPageRange(c)
+	return WrapPageRange(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GtkPageRange. The caller is expected to
@@ -6977,12 +6944,11 @@ func (p *PageRange) Native() unsafe.Pointer {
 	return unsafe.Pointer(p.native)
 }
 
-// PaperSize: gtkPaperSize handles paper sizes. It uses the standard called [PWG
-// 5101.1-2002 PWG: Standard for Media Standardized
-// Names](http://www.pwg.org/standards.html) to name the paper sizes (and to get
-// the data for the page sizes). In addition to standard paper sizes,
-// GtkPaperSize allows to construct custom paper sizes with arbitrary
-// dimensions.
+// PaperSize: gtkPaperSize handles paper sizes. It uses the standard called PWG
+// 5101.1-2002 PWG: Standard for Media Standardized Names
+// (http://www.pwg.org/standards.html) to name the paper sizes (and to get the
+// data for the page sizes). In addition to standard paper sizes, GtkPaperSize
+// allows to construct custom paper sizes with arbitrary dimensions.
 //
 // The PaperSize object stores not only the dimensions (width and height) of a
 // paper size and its name, it also provides default [print
@@ -6991,7 +6957,10 @@ type PaperSize struct {
 	native *C.GtkPaperSize
 }
 
-func wrapPaperSize(p *C.GtkPaperSize) *PaperSize {
+// WrapPaperSize wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPaperSize(ptr unsafe.Pointer) *PaperSize {
+	p := (*C.GtkPaperSize)(ptr)
 	v := PaperSize{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -7002,12 +6971,12 @@ func wrapPaperSize(p *C.GtkPaperSize) *PaperSize {
 
 func marshalPaperSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkPaperSize)(unsafe.Pointer(b))
-
-	return wrapPaperSize(c)
+	return WrapPaperSize(unsafe.Pointer(b))
 }
 
-func (p *PaperSize) free() {}
+func (p *PaperSize) free() {
+	C.free(unsafe.Pointer(p.native))
+}
 
 // Native returns the pointer to *C.GtkPaperSize. The caller is expected to
 // cast.
@@ -7054,18 +7023,21 @@ type RecentData struct {
 	native *C.GtkRecentData
 }
 
-func wrapRecentData(p *C.GtkRecentData) *RecentData {
+// WrapRecentData wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRecentData(ptr unsafe.Pointer) *RecentData {
+	p := (*C.GtkRecentData)(ptr)
 	var v RecentData
 
-	v.DisplayName = C.GoString(p.display_name)
+	p.display_name = C.GoString(v.DisplayName)
 	defer C.free(unsafe.Pointer(p.display_name))
-	v.Description = C.GoString(p.description)
+	p.description = C.GoString(v.Description)
 	defer C.free(unsafe.Pointer(p.description))
-	v.MIMEType = C.GoString(p.mime_type)
+	p.mime_type = C.GoString(v.MIMEType)
 	defer C.free(unsafe.Pointer(p.mime_type))
-	v.AppName = C.GoString(p.app_name)
+	p.app_name = C.GoString(v.AppName)
 	defer C.free(unsafe.Pointer(p.app_name))
-	v.AppExec = C.GoString(p.app_exec)
+	p.app_exec = C.GoString(v.AppExec)
 	defer C.free(unsafe.Pointer(p.app_exec))
 	{
 		var length uint
@@ -7076,7 +7048,7 @@ func wrapRecentData(p *C.GtkRecentData) *RecentData {
 		v.Groups = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(p.groups)) + i))
-			v.Groups[i] = C.GoString(src)
+			src = C.GoString(v.Groups[i])
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
@@ -7087,9 +7059,7 @@ func wrapRecentData(p *C.GtkRecentData) *RecentData {
 
 func marshalRecentData(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkRecentData)(unsafe.Pointer(b))
-
-	return wrapRecentData(c)
+	return WrapRecentData(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GtkRecentData. The caller is expected to
@@ -7107,7 +7077,10 @@ type RecentInfo struct {
 	native *C.GtkRecentInfo
 }
 
-func wrapRecentInfo(p *C.GtkRecentInfo) *RecentInfo {
+// WrapRecentInfo wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRecentInfo(ptr unsafe.Pointer) *RecentInfo {
+	p := (*C.GtkRecentInfo)(ptr)
 	v := RecentInfo{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -7118,12 +7091,12 @@ func wrapRecentInfo(p *C.GtkRecentInfo) *RecentInfo {
 
 func marshalRecentInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkRecentInfo)(unsafe.Pointer(b))
-
-	return wrapRecentInfo(c)
+	return WrapRecentInfo(unsafe.Pointer(b))
 }
 
-func (r *RecentInfo) free() {}
+func (r *RecentInfo) free() {
+	C.free(unsafe.Pointer(r.native))
+}
 
 // Native returns the pointer to *C.GtkRecentInfo. The caller is expected to
 // cast.
@@ -7146,10 +7119,13 @@ type RequestedSize struct {
 	native *C.GtkRequestedSize
 }
 
-func wrapRequestedSize(p *C.GtkRequestedSize) *RequestedSize {
+// WrapRequestedSize wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRequestedSize(ptr unsafe.Pointer) *RequestedSize {
+	p := (*C.GtkRequestedSize)(ptr)
 	var v RequestedSize
 
-	v.Data = unsafe.Pointer(p.data)
+	v.Data = box.Get(uintptr(p.data))
 	v.MinimumSize = int(p.minimum_size)
 	v.NaturalSize = int(p.natural_size)
 
@@ -7158,9 +7134,7 @@ func wrapRequestedSize(p *C.GtkRequestedSize) *RequestedSize {
 
 func marshalRequestedSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkRequestedSize)(unsafe.Pointer(b))
-
-	return wrapRequestedSize(c)
+	return WrapRequestedSize(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GtkRequestedSize. The caller is expected to
@@ -7181,7 +7155,10 @@ type Requisition struct {
 	native *C.GtkRequisition
 }
 
-func wrapRequisition(p *C.GtkRequisition) *Requisition {
+// WrapRequisition wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRequisition(ptr unsafe.Pointer) *Requisition {
+	p := (*C.GtkRequisition)(ptr)
 	var v Requisition
 
 	v.Width = int(p.width)
@@ -7192,9 +7169,7 @@ func wrapRequisition(p *C.GtkRequisition) *Requisition {
 
 func marshalRequisition(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkRequisition)(unsafe.Pointer(b))
-
-	return wrapRequisition(c)
+	return WrapRequisition(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GtkRequisition. The caller is expected to
@@ -7216,10 +7191,13 @@ type SettingsValue struct {
 	native *C.GtkSettingsValue
 }
 
-func wrapSettingsValue(p *C.GtkSettingsValue) *SettingsValue {
+// WrapSettingsValue wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsValue(ptr unsafe.Pointer) *SettingsValue {
+	p := (*C.GtkSettingsValue)(ptr)
 	var v SettingsValue
 
-	v.Origin = C.GoString(p.origin)
+	p.origin = C.GoString(v.Origin)
 	defer C.free(unsafe.Pointer(p.origin))
 
 	return &v
@@ -7227,9 +7205,7 @@ func wrapSettingsValue(p *C.GtkSettingsValue) *SettingsValue {
 
 func marshalSettingsValue(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkSettingsValue)(unsafe.Pointer(b))
-
-	return wrapSettingsValue(c)
+	return WrapSettingsValue(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GtkSettingsValue. The caller is expected to
@@ -7245,7 +7221,10 @@ type TextIter struct {
 	native *C.GtkTextIter
 }
 
-func wrapTextIter(p *C.GtkTextIter) *TextIter {
+// WrapTextIter wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTextIter(ptr unsafe.Pointer) *TextIter {
+	p := (*C.GtkTextIter)(ptr)
 	v := TextIter{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -7256,12 +7235,12 @@ func wrapTextIter(p *C.GtkTextIter) *TextIter {
 
 func marshalTextIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkTextIter)(unsafe.Pointer(b))
-
-	return wrapTextIter(c)
+	return WrapTextIter(unsafe.Pointer(b))
 }
 
-func (t *TextIter) free() {}
+func (t *TextIter) free() {
+	C.free(unsafe.Pointer(t.native))
+}
 
 // Native returns the pointer to *C.GtkTextIter. The caller is expected to
 // cast.
@@ -7285,22 +7264,23 @@ type TreeIter struct {
 	native *C.GtkTreeIter
 }
 
-func wrapTreeIter(p *C.GtkTreeIter) *TreeIter {
+// WrapTreeIter wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTreeIter(ptr unsafe.Pointer) *TreeIter {
+	p := (*C.GtkTreeIter)(ptr)
 	var v TreeIter
 
 	v.Stamp = int(p.stamp)
-	v.UserData = unsafe.Pointer(p.user_data)
-	v.UserData2 = unsafe.Pointer(p.user_data2)
-	v.UserData3 = unsafe.Pointer(p.user_data3)
+	v.UserData = box.Get(uintptr(p.user_data))
+	v.UserData2 = box.Get(uintptr(p.user_data2))
+	v.UserData3 = box.Get(uintptr(p.user_data3))
 
 	return &v
 }
 
 func marshalTreeIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkTreeIter)(unsafe.Pointer(b))
-
-	return wrapTreeIter(c)
+	return WrapTreeIter(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GtkTreeIter. The caller is expected to
@@ -7313,7 +7293,10 @@ type TreePath struct {
 	native *C.GtkTreePath
 }
 
-func wrapTreePath(p *C.GtkTreePath) *TreePath {
+// WrapTreePath wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTreePath(ptr unsafe.Pointer) *TreePath {
+	p := (*C.GtkTreePath)(ptr)
 	v := TreePath{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -7324,12 +7307,12 @@ func wrapTreePath(p *C.GtkTreePath) *TreePath {
 
 func marshalTreePath(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkTreePath)(unsafe.Pointer(b))
-
-	return wrapTreePath(c)
+	return WrapTreePath(unsafe.Pointer(b))
 }
 
-func (t *TreePath) free() {}
+func (t *TreePath) free() {
+	C.free(unsafe.Pointer(t.native))
+}
 
 // Native returns the pointer to *C.GtkTreePath. The caller is expected to
 // cast.
@@ -7352,7 +7335,10 @@ type TreeRowReference struct {
 	native *C.GtkTreeRowReference
 }
 
-func wrapTreeRowReference(p *C.GtkTreeRowReference) *TreeRowReference {
+// WrapTreeRowReference wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTreeRowReference(ptr unsafe.Pointer) *TreeRowReference {
+	p := (*C.GtkTreeRowReference)(ptr)
 	v := TreeRowReference{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -7363,12 +7349,12 @@ func wrapTreeRowReference(p *C.GtkTreeRowReference) *TreeRowReference {
 
 func marshalTreeRowReference(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GtkTreeRowReference)(unsafe.Pointer(b))
-
-	return wrapTreeRowReference(c)
+	return WrapTreeRowReference(unsafe.Pointer(b))
 }
 
-func (t *TreeRowReference) free() {}
+func (t *TreeRowReference) free() {
+	C.free(unsafe.Pointer(t.native))
+}
 
 // Native returns the pointer to *C.GtkTreeRowReference. The caller is expected to
 // cast.
@@ -7399,14 +7385,16 @@ type atContext struct {
 	*externglib.Object
 }
 
-func wrapATContext(obj *externglib.Object) ATContext {
+// WrapATContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapATContext(obj *externglib.Object) ATContext {
 	return atContext{*externglib.Object{obj}}
 }
 
 func marshalATContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapATContext(obj), nil
 }
 
 func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, display gdk.Display) ATContext
@@ -7439,9 +7427,11 @@ func (a atContext) AccessibleRole() AccessibleRole
 // (where \s is replaced by the name of the application, but in order to ensure
 // proper translation of the title, applications should set the title property
 // explicitly when constructing a GtkAboutDialog, as shown in the following
-// example: |[<!-- language="C" --> GFile *logo_file = g_file_new_for_path
-// ("./logo.png"); GdkTexture *example_logo = gdk_texture_new_from_file
-// (logo_file, NULL); g_object_unref (logo_file);
+// example:
+//
+//    GFile *logo_file = g_file_new_for_path ("./logo.png");
+//    GdkTexture *example_logo = gdk_texture_new_from_file (logo_file, NULL);
+//    g_object_unref (logo_file);
 //
 //    gtk_show_about_dialog (NULL,
 //                           "program-name", "ExampleCode",
@@ -7450,10 +7440,11 @@ func (a atContext) AccessibleRole() AccessibleRole
 //                           NULL);
 //
 //
-//    # CSS nodes
 //
-//    GtkAboutDialog has a single CSS node with the name window and style
-//    class .aboutdialog.
+// CSS nodes
+//
+// GtkAboutDialog has a single CSS node with the name window and style class
+// .aboutdialog.
 type AboutDialog interface {
 	Window
 
@@ -7542,12 +7533,16 @@ type AboutDialog interface {
 	// The intended use for this string is to display the translator of the
 	// language which is currently used in the user interface. Using gettext(),
 	// a simple way to achieve that is to mark the string for translation:
-	// |[<!-- language="C" --> GtkWidget *about = gtk_about_dialog_new ();
-	// gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
-	// _("translator-credits")); ]| It is a good idea to use the customary msgid
-	// “translator-credits” for this purpose, since translators will already
-	// know the purpose of that msgid, and since AboutDialog will detect if
-	// “translator-credits” is untranslated and hide the tab.
+	//
+	//    GtkWidget *about = gtk_about_dialog_new ();
+	//     gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
+	//                                              _("translator-credits"));
+	//
+	//
+	// It is a good idea to use the customary msgid “translator-credits” for
+	// this purpose, since translators will already know the purpose of that
+	// msgid, and since AboutDialog will detect if “translator-credits” is
+	// untranslated and hide the tab.
 	SetTranslatorCredits(translatorCredits string)
 	// SetVersion sets the version string to display in the about dialog.
 	SetVersion(version string)
@@ -7564,14 +7559,16 @@ type aboutDialog struct {
 	window
 }
 
-func wrapAboutDialog(obj *externglib.Object) AboutDialog {
+// WrapAboutDialog wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAboutDialog(obj *externglib.Object) AboutDialog {
 	return aboutDialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalAboutDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAboutDialog(obj), nil
 }
 
 func NewAboutDialog() AboutDialog
@@ -7685,14 +7682,16 @@ type actionBar struct {
 	widget
 }
 
-func wrapActionBar(obj *externglib.Object) ActionBar {
+// WrapActionBar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapActionBar(obj *externglib.Object) ActionBar {
 	return actionBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalActionBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapActionBar(obj), nil
 }
 
 func NewActionBar() ActionBar
@@ -7720,14 +7719,16 @@ type activateAction struct {
 	shortcutAction
 }
 
-func wrapActivateAction(obj *externglib.Object) ActivateAction {
+// WrapActivateAction wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapActivateAction(obj *externglib.Object) ActivateAction {
 	return activateAction{shortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalActivateAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapActivateAction(obj), nil
 }
 
 // Adjustment: the Adjustment object represents a value which has an associated
@@ -7824,14 +7825,16 @@ type adjustment struct {
 	externglib.InitiallyUnowned
 }
 
-func wrapAdjustment(obj *externglib.Object) Adjustment {
+// WrapAdjustment wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAdjustment(obj *externglib.Object) Adjustment {
 	return adjustment{externglib.InitiallyUnowned{*externglib.Object{obj}}}
 }
 
 func marshalAdjustment(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAdjustment(obj), nil
 }
 
 func NewAdjustment(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) Adjustment
@@ -7883,14 +7886,16 @@ type alternativeTrigger struct {
 	shortcutTrigger
 }
 
-func wrapAlternativeTrigger(obj *externglib.Object) AlternativeTrigger {
+// WrapAlternativeTrigger wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAlternativeTrigger(obj *externglib.Object) AlternativeTrigger {
 	return alternativeTrigger{shortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalAlternativeTrigger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAlternativeTrigger(obj), nil
 }
 
 func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) AlternativeTrigger
@@ -7907,14 +7912,16 @@ type anyFilter struct {
 	multiFilter
 }
 
-func wrapAnyFilter(obj *externglib.Object) AnyFilter {
+// WrapAnyFilter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAnyFilter(obj *externglib.Object) AnyFilter {
 	return anyFilter{multiFilter{filter{*externglib.Object{obj}}}}
 }
 
 func marshalAnyFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAnyFilter(obj), nil
 }
 
 func NewAnyFilter() AnyFilter
@@ -7991,14 +7998,16 @@ type appChooserButton struct {
 	widget
 }
 
-func wrapAppChooserButton(obj *externglib.Object) AppChooserButton {
+// WrapAppChooserButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAppChooserButton(obj *externglib.Object) AppChooserButton {
 	return appChooserButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalAppChooserButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAppChooserButton(obj), nil
 }
 
 func NewAppChooserButton(contentType string) AppChooserButton
@@ -8050,14 +8059,16 @@ type appChooserDialog struct {
 	dialog
 }
 
-func wrapAppChooserDialog(obj *externglib.Object) AppChooserDialog {
+// WrapAppChooserDialog wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAppChooserDialog(obj *externglib.Object) AppChooserDialog {
 	return appChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
 }
 
 func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAppChooserDialog(obj), nil
 }
 
 func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppChooserDialog
@@ -8134,14 +8145,16 @@ type appChooserWidget struct {
 	widget
 }
 
-func wrapAppChooserWidget(obj *externglib.Object) AppChooserWidget {
+// WrapAppChooserWidget wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAppChooserWidget(obj *externglib.Object) AppChooserWidget {
 	return appChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAppChooserWidget(obj), nil
 }
 
 func NewAppChooserWidget(contentType string) AppChooserWidget
@@ -8191,7 +8204,8 @@ func (a appChooserWidget) SetShowRecommended(setting bool)
 // same applies to actions associated with ApplicationWindow and to the
 // “activate” and “open” #GApplication methods.
 //
-// Automatic resources {#automatic-resources}
+//
+// Automatic resources
 //
 // Application will automatically load menus from the Builder resource located
 // at "gtk/menus.ui", relative to the application's resource base path (see
@@ -8215,10 +8229,11 @@ func (a appChooserWidget) SetShowRecommended(setting bool)
 // displays the shortcuts window, associate the item with the action
 // win.show-help-overlay.
 //
-// A simple application {#gtkapplication}
 //
-// [A simple
-// example](https://gitlab.gnome.org/GNOME/gtk/tree/master/examples/bp/bloatpad.c)
+// A simple application
+//
+// A simple example
+// (https://gitlab.gnome.org/GNOME/gtk/tree/master/examples/bp/bloatpad.c)
 //
 // GtkApplication optionally registers with a session manager of the users
 // session (if you set the Application:register-session property) and offers
@@ -8231,10 +8246,12 @@ func (a appChooserWidget) SetShowRecommended(setting bool)
 // but it can be expected to inform the user about the negative consequences of
 // ending the session while inhibitors are present.
 //
-// See Also {#seealso} [HowDoI: Using
-// GtkApplication](https://wiki.gnome.org/HowDoI/GtkApplication), [Getting
-// Started with GTK:
-// Basics](https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
+//
+// See Also
+//
+// HowDoI: Using GtkApplication (https://wiki.gnome.org/HowDoI/GtkApplication),
+// Getting Started with GTK: Basics
+// (https://developer.gnome.org/gtk3/stable/gtk-getting-started.html#id-1.2.3.3)
 type Application interface {
 	gio.Application
 
@@ -8367,17 +8384,19 @@ type Application interface {
 }
 
 type application struct {
-	gio.application
+	gio.Application
 }
 
-func wrapApplication(obj *externglib.Object) Application {
-	return application{gio.application{*externglib.Object{obj}}}
+// WrapApplication wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapApplication(obj *externglib.Object) Application {
+	return application{gio.WrapApplication(obj)}
 }
 
 func marshalApplication(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapApplication(obj), nil
 }
 
 func NewApplication(applicationID string, flags gio.ApplicationFlags) Application
@@ -8502,14 +8521,16 @@ type applicationWindow struct {
 	window
 }
 
-func wrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
+// WrapApplicationWindow wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapApplicationWindow(obj *externglib.Object) ApplicationWindow {
 	return applicationWindow{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapApplicationWindow(obj), nil
 }
 
 func NewApplicationWindow(application Application) ApplicationWindow
@@ -8571,14 +8592,16 @@ type aspectFrame struct {
 	widget
 }
 
-func wrapAspectFrame(obj *externglib.Object) AspectFrame {
+// WrapAspectFrame wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAspectFrame(obj *externglib.Object) AspectFrame {
 	return aspectFrame{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalAspectFrame(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAspectFrame(obj), nil
 }
 
 func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame
@@ -8735,14 +8758,16 @@ type assistant struct {
 	window
 }
 
-func wrapAssistant(obj *externglib.Object) Assistant {
+// WrapAssistant wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAssistant(obj *externglib.Object) Assistant {
 	return assistant{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalAssistant(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAssistant(obj), nil
 }
 
 func NewAssistant() Assistant
@@ -8804,14 +8829,16 @@ type assistantPage struct {
 	*externglib.Object
 }
 
-func wrapAssistantPage(obj *externglib.Object) AssistantPage {
+// WrapAssistantPage wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAssistantPage(obj *externglib.Object) AssistantPage {
 	return assistantPage{*externglib.Object{obj}}
 }
 
 func marshalAssistantPage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAssistantPage(obj), nil
 }
 
 func (a assistantPage) Child() Widget
@@ -8829,14 +8856,16 @@ type binLayout struct {
 	layoutManager
 }
 
-func wrapBinLayout(obj *externglib.Object) BinLayout {
+// WrapBinLayout wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBinLayout(obj *externglib.Object) BinLayout {
 	return binLayout{layoutManager{*externglib.Object{obj}}}
 }
 
 func marshalBinLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBinLayout(obj), nil
 }
 
 func NewBinLayout() BinLayout
@@ -8878,14 +8907,16 @@ type bookmarkList struct {
 	*externglib.Object
 }
 
-func wrapBookmarkList(obj *externglib.Object) BookmarkList {
+// WrapBookmarkList wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBookmarkList(obj *externglib.Object) BookmarkList {
 	return bookmarkList{*externglib.Object{obj}}
 }
 
 func marshalBookmarkList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBookmarkList(obj), nil
 }
 
 func NewBookmarkList(filename string, attributes string) BookmarkList
@@ -8924,14 +8955,16 @@ type boolFilter struct {
 	filter
 }
 
-func wrapBoolFilter(obj *externglib.Object) BoolFilter {
+// WrapBoolFilter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBoolFilter(obj *externglib.Object) BoolFilter {
 	return boolFilter{filter{*externglib.Object{obj}}}
 }
 
 func marshalBoolFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBoolFilter(obj), nil
 }
 
 func NewBoolFilter(expression Expression) BoolFilter
@@ -9016,14 +9049,16 @@ type box struct {
 	widget
 }
 
-func wrapBox(obj *externglib.Object) Box {
+// WrapBox wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBox(obj *externglib.Object) Box {
 	return box{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalBox(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBox(obj), nil
 }
 
 func NewBox(orientation Orientation, spacing int) Box
@@ -9090,14 +9125,16 @@ type boxLayout struct {
 	layoutManager
 }
 
-func wrapBoxLayout(obj *externglib.Object) BoxLayout {
+// WrapBoxLayout wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBoxLayout(obj *externglib.Object) BoxLayout {
 	return boxLayout{layoutManager{*externglib.Object{obj}}}
 }
 
 func marshalBoxLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBoxLayout(obj), nil
 }
 
 func NewBoxLayout(orientation Orientation) BoxLayout
@@ -9143,7 +9180,8 @@ func (b boxLayout) SetSpacing(spacing uint)
 // some container to make use of them. Non-widget objects need to be reffed with
 // g_object_ref() to keep them beyond the lifespan of the builder.
 //
-// GtkBuilder UI Definitions {ILDER-UI}
+//
+// GtkBuilder UI Definitions
 //
 // GtkBuilder parses textual descriptions of user interfaces which are specified
 // in XML format. We refer to these descriptions as “GtkBuilder UI definitions”
@@ -9267,6 +9305,7 @@ func (b boxLayout) SetSpacing(spacing uint)
 //        </child>
 //      </object>
 //    </interface>
+//
 //
 // Beyond this general structure, several object classes define their own XML
 // DTD fragments for filling in the ANY placeholders in the DTD above. Note that
@@ -9435,14 +9474,16 @@ type builder struct {
 	*externglib.Object
 }
 
-func wrapBuilder(obj *externglib.Object) Builder {
+// WrapBuilder wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBuilder(obj *externglib.Object) Builder {
 	return builder{*externglib.Object{obj}}
 }
 
 func marshalBuilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBuilder(obj), nil
 }
 
 func NewBuilder() Builder
@@ -9511,14 +9552,16 @@ type builderCScope struct {
 	*externglib.Object
 }
 
-func wrapBuilderCScope(obj *externglib.Object) BuilderCScope {
+// WrapBuilderCScope wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBuilderCScope(obj *externglib.Object) BuilderCScope {
 	return builderCScope{*externglib.Object{obj}}
 }
 
 func marshalBuilderCScope(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBuilderCScope(obj), nil
 }
 
 func NewBuilderCScope() BuilderCScope
@@ -9530,6 +9573,8 @@ func (b builderCScope) LookupCallbackSymbol(callbackName string) interface{}
 // BuilderListItemFactory is a ListItemFactory that creates widgets by
 // instantiating Builder UI templates. The templates must be extending ListItem,
 // and typically use Expressions to obtain data from the items in the model.
+//
+// Example:
 //
 //
 //      <interface>
@@ -9546,6 +9591,7 @@ func (b builderCScope) LookupCallbackSymbol(callbackName string) interface{}
 //          </property>
 //        </template>
 //      </interface>
+//
 type BuilderListItemFactory interface {
 	ListItemFactory
 
@@ -9563,14 +9609,16 @@ type builderListItemFactory struct {
 	listItemFactory
 }
 
-func wrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactory {
+// WrapBuilderListItemFactory wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBuilderListItemFactory(obj *externglib.Object) BuilderListItemFactory {
 	return builderListItemFactory{listItemFactory{*externglib.Object{obj}}}
 }
 
 func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBuilderListItemFactory(obj), nil
 }
 
 func NewBuilderListItemFactoryFromBytes(scope BuilderScope, bytes *glib.Bytes) BuilderListItemFactory
@@ -9650,14 +9698,16 @@ type button struct {
 	widget
 }
 
-func wrapButton(obj *externglib.Object) Button {
+// WrapButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapButton(obj *externglib.Object) Button {
 	return button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapButton(obj), nil
 }
 
 func NewButton() Button
@@ -9696,14 +9746,16 @@ type cClosureExpression struct {
 	expression
 }
 
-func wrapCClosureExpression(obj *externglib.Object) CClosureExpression {
+// WrapCClosureExpression wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCClosureExpression(obj *externglib.Object) CClosureExpression {
 	return cClosureExpression{expression{obj}}
 }
 
 func marshalCClosureExpression(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCClosureExpression(obj), nil
 }
 
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.
@@ -9735,6 +9787,7 @@ func marshalCClosureExpression(p uintptr) (interface{}, error) {
 //    │   ╰── button
 //    ╰── grid
 //        ╰── label[.day-name][.week-number][.day-number][.other-month][.today]
+//
 //
 // GtkCalendar has a main node with name calendar. It contains a subnode called
 // header containing the widgets for switching between years and months.
@@ -9786,14 +9839,16 @@ type calendar struct {
 	widget
 }
 
-func wrapCalendar(obj *externglib.Object) Calendar {
+// WrapCalendar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCalendar(obj *externglib.Object) Calendar {
 	return calendar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCalendar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCalendar(obj), nil
 }
 
 func NewCalendar() Calendar
@@ -9831,14 +9886,16 @@ type callbackAction struct {
 	shortcutAction
 }
 
-func wrapCallbackAction(obj *externglib.Object) CallbackAction {
+// WrapCallbackAction wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCallbackAction(obj *externglib.Object) CallbackAction {
 	return callbackAction{shortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalCallbackAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCallbackAction(obj), nil
 }
 
 func NewCallbackAction(callback ShortcutFunc) CallbackAction
@@ -9886,176 +9943,6 @@ func NewCallbackAction(callback ShortcutFunc) CallbackAction
 //
 // In order to request the width of all the rows at the root level of a
 // TreeModel one would do the following:
-//
-//    GtkTreeIter iter;
-//    int         minimum_width;
-//    int         natural_width;
-//
-//    valid = gtk_tree_model_get_iter_first (model, &iter);
-//    while (valid)
-//      {
-//        gtk_cell_area_apply_attributes (area, model, &iter, FALSE, FALSE);
-//        gtk_cell_area_get_preferred_width (area, context, widget, NULL, NULL);
-//
-//        valid = gtk_tree_model_iter_next (model, &iter);
-//      }
-//    gtk_cell_area_context_get_preferred_width (context, &minimum_width, &natural_width);
-//
-//
-// Note that in this example it’s not important to observe the returned minimum
-// and natural width of the area for each row unless the cell-layouting object
-// is actually interested in the widths of individual rows. The overall width is
-// however stored in the accompanying CellAreaContext object and can be
-// consulted at any time.
-//
-// This can be useful since CellLayout widgets usually have to support
-// requesting and rendering rows in treemodels with an exceedingly large amount
-// of rows. The CellLayout widget in that case would calculate the required
-// width of the rows in an idle or timeout source (see g_timeout_add()) and when
-// the widget is requested its actual width in WidgetClass.measure() it can
-// simply consult the width accumulated so far in the CellAreaContext object.
-//
-// A simple example where rows are rendered from top to bottom and take up the
-// full width of the layouting widget would look like:
-//
-//    static void
-//    foo_get_preferred_width (GtkWidget       *widget,
-//                             int             *minimum_size,
-//                             int             *natural_size)
-//    {
-//      Foo        *foo  = FOO (widget);
-//      FooPrivate *priv = foo->priv;
-//
-//      foo_ensure_at_least_one_handfull_of_rows_have_been_requested (foo);
-//
-//      gtk_cell_area_context_get_preferred_width (priv->context, minimum_size, natural_size);
-//    }
-//
-//
-// In the above example the Foo widget has to make sure that some row sizes have
-// been calculated (the amount of rows that Foo judged was appropriate to
-// request space for in a single timeout iteration) before simply returning the
-// amount of space required by the area via the CellAreaContext.
-//
-// Requesting the height for width (or width for height) of an area is a similar
-// task except in this case the CellAreaContext does not store the data
-// (actually, it does not know how much space the layouting widget plans to
-// allocate it for every row. It’s up to the layouting widget to render each row
-// of data with the appropriate height and width which was requested by the
-// CellArea).
-//
-// In order to request the height for width of all the rows at the root level of
-// a TreeModel one would do the following:
-//
-//    GtkTreeIter iter;
-//    int         minimum_height;
-//    int         natural_height;
-//    int         full_minimum_height = 0;
-//    int         full_natural_height = 0;
-//
-//    valid = gtk_tree_model_get_iter_first (model, &iter);
-//    while (valid)
-//      {
-//        gtk_cell_area_apply_attributes (area, model, &iter, FALSE, FALSE);
-//        gtk_cell_area_get_preferred_height_for_width (area, context, widget,
-//                                                      width, &minimum_height, &natural_height);
-//
-//        if (width_is_for_allocation)
-//           cache_row_height (&iter, minimum_height, natural_height);
-//
-//        full_minimum_height += minimum_height;
-//        full_natural_height += natural_height;
-//
-//        valid = gtk_tree_model_iter_next (model, &iter);
-//      }
-//
-//
-// Note that in the above example we would need to cache the heights returned
-// for each row so that we would know what sizes to render the areas for each
-// row. However we would only want to really cache the heights if the request is
-// intended for the layouting widgets real allocation.
-//
-// In some cases the layouting widget is requested the height for an arbitrary
-// for_width, this is a special case for layouting widgets who need to request
-// size for tens of thousands of rows. For this case it’s only important that
-// the layouting widget calculate one reasonably sized chunk of rows and return
-// that height synchronously. The reasoning here is that any layouting widget is
-// at least capable of synchronously calculating enough height to fill the
-// screen height (or scrolled window height) in response to a single call to
-// WidgetClass.measure(). Returning a perfect height for width that is larger
-// than the screen area is inconsequential since after the layouting receives an
-// allocation from a scrolled window it simply continues to drive the scrollbar
-// values while more and more height is required for the row heights that are
-// calculated in the background.
-//
-//
-// Rendering Areas
-//
-// Once area sizes have been acquired at least for the rows in the visible area
-// of the layouting widget they can be rendered at WidgetClass.snapshot() time.
-//
-// A crude example of how to render all the rows at the root level runs as
-// follows:
-//
-//    GtkAllocation allocation;
-//    GdkRectangle  cell_area = { 0, };
-//    GtkTreeIter   iter;
-//    int           minimum_width;
-//    int           natural_width;
-//
-//    gtk_widget_get_allocation (widget, &allocation);
-//    cell_area.width = allocation.width;
-//
-//    valid = gtk_tree_model_get_iter_first (model, &iter);
-//    while (valid)
-//      {
-//        cell_area.height = get_cached_height_for_row (&iter);
-//
-//        gtk_cell_area_apply_attributes (area, model, &iter, FALSE, FALSE);
-//        gtk_cell_area_render (area, context, widget, cr,
-//                              &cell_area, &cell_area, state_flags, FALSE);
-//
-//        cell_area.y += cell_area.height;
-//
-//        valid = gtk_tree_model_iter_next (model, &iter);
-//      }
-//
-//
-// Note that the cached height in this example really depends on how the
-// layouting widget works. The layouting widget might decide to give every row
-// its minimum or natural height or, if the model content is expected to fit
-// inside the layouting widget without scrolling, it would make sense to
-// calculate the allocation for each row at the time the widget is allocated
-// using gtk_distribute_natural_allocation().
-//
-//
-// Handling Events and Driving Keyboard Focus
-//
-// Passing events to the area is as simple as handling events on any normal
-// widget and then passing them to the gtk_cell_area_event() API as they come
-// in. Usually CellArea is only interested in button events, however some
-// customized derived areas can be implemented who are interested in handling
-// other events. Handling an event can trigger the CellArea::focus-changed
-// signal to fire; as well as CellArea::add-editable in the case that an
-// editable cell was clicked and needs to start editing. You can call
-// gtk_cell_area_stop_editing() at any time to cancel any cell editing that is
-// currently in progress.
-//
-// The CellArea drives keyboard focus from cell to cell in a way similar to
-// Widget. For layouting widgets that support giving focus to cells it’s
-// important to remember to pass GTK_CELL_RENDERER_FOCUSED to the area functions
-// for the row that has focus and to tell the area to paint the focus at render
-// time.
-//
-// Layouting widgets that accept focus on cells should implement the
-// WidgetClass.focus() virtual method. The layouting widget is always
-// responsible for knowing where TreeModel rows are rendered inside the widget,
-// so at WidgetClass.focus() time the layouting widget should use the CellArea
-// methods to navigate focus inside the area and then observe the
-// GtkDirectionType to pass the focus to adjacent rows and areas.
-//
-// A basic example of how the WidgetClass.focus() virtual method should be
-// implemented:
 //
 //    static gboolean
 //    foo_focus (GtkWidget       *widget,
@@ -10328,14 +10215,16 @@ type cellArea struct {
 	externglib.InitiallyUnowned
 }
 
-func wrapCellArea(obj *externglib.Object) CellArea {
+// WrapCellArea wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellArea(obj *externglib.Object) CellArea {
 	return cellArea{externglib.InitiallyUnowned{*externglib.Object{obj}}}
 }
 
 func marshalCellArea(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellArea(obj), nil
 }
 
 func (c cellArea) Activate(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
@@ -10455,14 +10344,16 @@ type cellAreaBox struct {
 	cellArea
 }
 
-func wrapCellAreaBox(obj *externglib.Object) CellAreaBox {
+// WrapCellAreaBox wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellAreaBox(obj *externglib.Object) CellAreaBox {
 	return cellAreaBox{cellArea{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellAreaBox(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellAreaBox(obj), nil
 }
 
 func NewCellAreaBox() CellAreaBox
@@ -10580,14 +10471,16 @@ type cellAreaContext struct {
 	*externglib.Object
 }
 
-func wrapCellAreaContext(obj *externglib.Object) CellAreaContext {
+// WrapCellAreaContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellAreaContext(obj *externglib.Object) CellAreaContext {
 	return cellAreaContext{*externglib.Object{obj}}
 }
 
 func marshalCellAreaContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellAreaContext(obj), nil
 }
 
 func (c cellAreaContext) Allocate(width int, height int)
@@ -10731,14 +10624,16 @@ type cellRenderer struct {
 	externglib.InitiallyUnowned
 }
 
-func wrapCellRenderer(obj *externglib.Object) CellRenderer {
+// WrapCellRenderer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRenderer(obj *externglib.Object) CellRenderer {
 	return cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}
 }
 
 func marshalCellRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellRenderer(obj), nil
 }
 
 func (c cellRenderer) Activate(event gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) bool
@@ -10806,14 +10701,16 @@ type cellRendererAccel struct {
 	cellRendererText
 }
 
-func wrapCellRendererAccel(obj *externglib.Object) CellRendererAccel {
+// WrapCellRendererAccel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRendererAccel(obj *externglib.Object) CellRendererAccel {
 	return cellRendererAccel{cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellRendererAccel(obj), nil
 }
 
 func NewCellRendererAccel() CellRendererAccel
@@ -10836,14 +10733,16 @@ type cellRendererCombo struct {
 	cellRendererText
 }
 
-func wrapCellRendererCombo(obj *externglib.Object) CellRendererCombo {
+// WrapCellRendererCombo wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRendererCombo(obj *externglib.Object) CellRendererCombo {
 	return cellRendererCombo{cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellRendererCombo(obj), nil
 }
 
 func NewCellRendererCombo() CellRendererCombo
@@ -10868,14 +10767,16 @@ type cellRendererPixbuf struct {
 	cellRenderer
 }
 
-func wrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuf {
+// WrapCellRendererPixbuf wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRendererPixbuf(obj *externglib.Object) CellRendererPixbuf {
 	return cellRendererPixbuf{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellRendererPixbuf(obj), nil
 }
 
 func NewCellRendererPixbuf() CellRendererPixbuf
@@ -10890,14 +10791,16 @@ type cellRendererProgress struct {
 	cellRenderer
 }
 
-func wrapCellRendererProgress(obj *externglib.Object) CellRendererProgress {
+// WrapCellRendererProgress wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRendererProgress(obj *externglib.Object) CellRendererProgress {
 	return cellRendererProgress{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellRendererProgress(obj), nil
 }
 
 func NewCellRendererProgress() CellRendererProgress
@@ -10923,14 +10826,16 @@ type cellRendererSpin struct {
 	cellRendererText
 }
 
-func wrapCellRendererSpin(obj *externglib.Object) CellRendererSpin {
+// WrapCellRendererSpin wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRendererSpin(obj *externglib.Object) CellRendererSpin {
 	return cellRendererSpin{cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellRendererSpin(obj), nil
 }
 
 func NewCellRendererSpin() CellRendererSpin
@@ -10953,14 +10858,16 @@ type cellRendererSpinner struct {
 	cellRenderer
 }
 
-func wrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
+// WrapCellRendererSpinner wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRendererSpinner(obj *externglib.Object) CellRendererSpinner {
 	return cellRendererSpinner{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellRendererSpinner(obj), nil
 }
 
 func NewCellRendererSpinner() CellRendererSpinner
@@ -10990,14 +10897,16 @@ type cellRendererText struct {
 	cellRenderer
 }
 
-func wrapCellRendererText(obj *externglib.Object) CellRendererText {
+// WrapCellRendererText wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRendererText(obj *externglib.Object) CellRendererText {
 	return cellRendererText{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellRendererText(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellRendererText(obj), nil
 }
 
 func NewCellRendererText() CellRendererText
@@ -11036,14 +10945,16 @@ type cellRendererToggle struct {
 	cellRenderer
 }
 
-func wrapCellRendererToggle(obj *externglib.Object) CellRendererToggle {
+// WrapCellRendererToggle wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellRendererToggle(obj *externglib.Object) CellRendererToggle {
 	return cellRendererToggle{cellRenderer{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellRendererToggle(obj), nil
 }
 
 func NewCellRendererToggle() CellRendererToggle
@@ -11120,14 +11031,16 @@ type cellView struct {
 	widget
 }
 
-func wrapCellView(obj *externglib.Object) CellView {
+// WrapCellView wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCellView(obj *externglib.Object) CellView {
 	return cellView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCellView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCellView(obj), nil
 }
 
 func NewCellView() CellView
@@ -11222,14 +11135,16 @@ type centerBox struct {
 	widget
 }
 
-func wrapCenterBox(obj *externglib.Object) CenterBox {
+// WrapCenterBox wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCenterBox(obj *externglib.Object) CenterBox {
 	return centerBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCenterBox(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCenterBox(obj), nil
 }
 
 func NewCenterBox() CenterBox
@@ -11290,14 +11205,16 @@ type centerLayout struct {
 	layoutManager
 }
 
-func wrapCenterLayout(obj *externglib.Object) CenterLayout {
+// WrapCenterLayout wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCenterLayout(obj *externglib.Object) CenterLayout {
 	return centerLayout{layoutManager{*externglib.Object{obj}}}
 }
 
 func marshalCenterLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCenterLayout(obj), nil
 }
 
 func NewCenterLayout() CenterLayout
@@ -11329,6 +11246,7 @@ func (c centerLayout) SetStartWidget(widget Widget)
 //    checkbutton[.text-button]
 //    ├── check
 //    ╰── [label]
+//
 //
 // A CheckButton has a main node with name checkbutton. If the CheckButton:label
 // property is set, it contains a label child. The indicator node is named check
@@ -11396,14 +11314,16 @@ type checkButton struct {
 	widget
 }
 
-func wrapCheckButton(obj *externglib.Object) CheckButton {
+// WrapCheckButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCheckButton(obj *externglib.Object) CheckButton {
 	return checkButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalCheckButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCheckButton(obj), nil
 }
 
 func NewCheckButton() CheckButton
@@ -11438,14 +11358,16 @@ type closureExpression struct {
 	expression
 }
 
-func wrapClosureExpression(obj *externglib.Object) ClosureExpression {
+// WrapClosureExpression wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapClosureExpression(obj *externglib.Object) ClosureExpression {
 	return closureExpression{expression{obj}}
 }
 
 func marshalClosureExpression(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapClosureExpression(obj), nil
 }
 
 func NewClosureExpression(valueType externglib.Type, closure *externglib.Closure, nParams uint, params []Expression) ClosureExpression
@@ -11459,6 +11381,7 @@ func NewClosureExpression(valueType externglib.Type, closure *externglib.Closure
 //    colorbutton
 //    ╰── button.color
 //        ╰── [content]
+//
 //
 // GtkColorButton has a single CSS node with name colorbutton which contains a
 // button node. To differentiate it from a plain Button, it gets the .color
@@ -11480,14 +11403,16 @@ type colorButton struct {
 	widget
 }
 
-func wrapColorButton(obj *externglib.Object) ColorButton {
+// WrapColorButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapColorButton(obj *externglib.Object) ColorButton {
 	return colorButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalColorButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapColorButton(obj), nil
 }
 
 func NewColorButton() ColorButton
@@ -11512,14 +11437,16 @@ type colorChooserDialog struct {
 	dialog
 }
 
-func wrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
+// WrapColorChooserDialog wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapColorChooserDialog(obj *externglib.Object) ColorChooserDialog {
 	return colorChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
 }
 
 func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapColorChooserDialog(obj), nil
 }
 
 func NewColorChooserDialog(title string, parent Window) ColorChooserDialog
@@ -11552,14 +11479,16 @@ type colorChooserWidget struct {
 	widget
 }
 
-func wrapColorChooserWidget(obj *externglib.Object) ColorChooserWidget {
+// WrapColorChooserWidget wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapColorChooserWidget(obj *externglib.Object) ColorChooserWidget {
 	return colorChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapColorChooserWidget(obj), nil
 }
 
 func NewColorChooserWidget() ColorChooserWidget
@@ -11589,7 +11518,7 @@ func NewColorChooserWidget() ColorChooserWidget
 // via Drag-and-Drop of the column headers. This can be enabled or disabled with
 // the ColumnView:reorderable and ColumnViewColumn:resizable properties.
 //
-// To learn more about the list widget framework, see the [overview](Widget).
+// To learn more about the list widget framework, see the overview (Widget).
 //
 // CSS nodes
 //
@@ -11616,7 +11545,7 @@ func NewColorChooserWidget() ColorChooserWidget
 // selection, a node with name rubberband is used.
 //
 // The main columnview node may also carry style classes to select the style of
-// [list presentation](ListContainers.html#list-styles): .rich-list,
+// list presentation (ListContainers.html#list-styles): .rich-list,
 // .navigation-sidebar or .data-table.
 //
 //
@@ -11661,6 +11590,8 @@ type ColumnView interface {
 	// See gtk_column_view_column_set_sorter() for setting up per-column
 	// sorting.
 	//
+	// Here is an example:
+	//
 	//
 	//      gtk_column_view_column_set_sorter (column, sorter);
 	//      gtk_column_view_append_column (view, column);
@@ -11668,6 +11599,7 @@ type ColumnView interface {
 	//      model = gtk_sort_list_model_new (store, sorter);
 	//      selection = gtk_no_selection_new (model);
 	//      gtk_column_view_set_model (view, selection);
+	//
 	Sorter() Sorter
 	// InsertColumn inserts a column at the given position in the columns of
 	// @self.
@@ -11711,14 +11643,16 @@ type columnView struct {
 	widget
 }
 
-func wrapColumnView(obj *externglib.Object) ColumnView {
+// WrapColumnView wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapColumnView(obj *externglib.Object) ColumnView {
 	return columnView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalColumnView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapColumnView(obj), nil
 }
 
 func NewColumnView(model SelectionModel) ColumnView
@@ -11835,14 +11769,16 @@ type columnViewColumn struct {
 	*externglib.Object
 }
 
-func wrapColumnViewColumn(obj *externglib.Object) ColumnViewColumn {
+// WrapColumnViewColumn wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapColumnViewColumn(obj *externglib.Object) ColumnViewColumn {
 	return columnViewColumn{*externglib.Object{obj}}
 }
 
 func marshalColumnViewColumn(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapColumnViewColumn(obj), nil
 }
 
 func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn
@@ -11908,22 +11844,12 @@ func (c columnViewColumn) SetVisible(visible bool)
 //
 //    combobox
 //    ├── box.linked
-//    │   ╰── button.combo
-//    │       ╰── box
-//    │           ├── cellview
-//    │           ╰── arrow
-//    ╰── window.popup
-//
-// A normal combobox contains a box with the .linked class, a button with the
-// .combo class and inside those buttons, there are a cellview and an arrow.
-//
-//    combobox
-//    ├── box.linked
 //    │   ├── entry.combo
 //    │   ╰── button.combo
 //    │       ╰── box
 //    │           ╰── arrow
 //    ╰── window.popup
+//
 //
 // A GtkComboBox with an entry has a single CSS node with name combobox. It
 // contains a box with the .linked class. That box contains an entry and a
@@ -12048,14 +11974,16 @@ type comboBox struct {
 	widget
 }
 
-func wrapComboBox(obj *externglib.Object) ComboBox {
+// WrapComboBox wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapComboBox(obj *externglib.Object) ComboBox {
 	return comboBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalComboBox(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapComboBox(obj), nil
 }
 
 func NewComboBox() ComboBox
@@ -12140,6 +12068,8 @@ func (c comboBox) SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc)
 // corresponding to the appended text and also supports the regular translation
 // attributes “translatable”, “context” and “comments”.
 //
+// Here is a UI definition fragment specifying GtkComboBoxText items:
+//
 //
 //    <object class="GtkComboBoxText">
 //      <items>
@@ -12148,14 +12078,20 @@ func (c comboBox) SetRowSeparatorFunc(_func TreeViewRowSeparatorFunc)
 //        <item translatable="yes" id="subway">Subway</item>
 //      </items>
 //    </object>
+//    ]|
+//
+//
 //
 // CSS nodes
 //
+//
+//    |[<!-- language="plain" -->
 //    combobox
 //    ╰── box.linked
 //        ├── entry.combo
 //        ├── button.combo
 //        ╰── window.popup
+//
 //
 // GtkComboBoxText has a single CSS node with name combobox. It adds the style
 // class .combo to the main CSS nodes of its entry and button children, and the
@@ -12214,14 +12150,16 @@ type comboBoxText struct {
 	comboBox
 }
 
-func wrapComboBoxText(obj *externglib.Object) ComboBoxText {
+// WrapComboBoxText wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapComboBoxText(obj *externglib.Object) ComboBoxText {
 	return comboBoxText{comboBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalComboBoxText(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapComboBoxText(obj), nil
 }
 
 func NewComboBoxText() ComboBoxText
@@ -12257,14 +12195,16 @@ type constantExpression struct {
 	expression
 }
 
-func wrapConstantExpression(obj *externglib.Object) ConstantExpression {
+// WrapConstantExpression wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapConstantExpression(obj *externglib.Object) ConstantExpression {
 	return constantExpression{expression{obj}}
 }
 
 func marshalConstantExpression(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapConstantExpression(obj), nil
 }
 
 func NewConstantExpressionForValue(value *externglib.Value) ConstantExpression
@@ -12276,6 +12216,7 @@ func (c constantExpression) Value() *externglib.Value
 //
 //
 //      target.attr1 = source.attr2 × multiplier + constant
+//
 //
 // Each Constraint is part of a system that will be solved by a ConstraintLayout
 // in order to allocate and position each child widget.
@@ -12326,14 +12267,16 @@ type constraint struct {
 	*externglib.Object
 }
 
-func wrapConstraint(obj *externglib.Object) Constraint {
+// WrapConstraint wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapConstraint(obj *externglib.Object) Constraint {
 	return constraint{*externglib.Object{obj}}
 }
 
 func marshalConstraint(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapConstraint(obj), nil
 }
 
 func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute, relation ConstraintRelation, source ConstraintTarget, sourceAttribute ConstraintAttribute, multiplier float64, constant float64, strength int) Constraint
@@ -12409,14 +12352,16 @@ type constraintGuide struct {
 	*externglib.Object
 }
 
-func wrapConstraintGuide(obj *externglib.Object) ConstraintGuide {
+// WrapConstraintGuide wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapConstraintGuide(obj *externglib.Object) ConstraintGuide {
 	return constraintGuide{*externglib.Object{obj}}
 }
 
 func marshalConstraintGuide(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapConstraintGuide(obj), nil
 }
 
 func NewConstraintGuide() ConstraintGuide
@@ -12499,104 +12444,114 @@ func (c constraintGuide) SetStrength(strength ConstraintStrength)
 //                      strength="strong" />
 //        </constraints>
 //      </object>
+//    ]|
 //
-// The definition above will add two constraints to the GtkConstraintLayout:
+//    The definition above will add two constraints to the GtkConstraintLayout:
 //
-// - a required constraint between the leading edge of "button" and the leading
-// edge of the widget using the constraint layout, plus 12 pixels - a strong,
-// constant constraint making the width of "button" greater than, or equal to
-// 250 pixels
+//     - a required constraint between the leading edge of "button" and
+//       the leading edge of the widget using the constraint layout, plus
+//       12 pixels
+//     - a strong, constant constraint making the width of "button" greater
+//       than, or equal to 250 pixels
 //
-// The "target" and "target-attribute" attributes are required.
+//    The "target" and "target-attribute" attributes are required.
 //
-// The "source" and "source-attribute" attributes of the "constraint" element
-// are optional; if they are not specified, the constraint is assumed to be a
-// constant.
+//    The "source" and "source-attribute" attributes of the "constraint"
+//    element are optional; if they are not specified, the constraint is
+//    assumed to be a constant.
 //
-// The "relation" attribute is optional; if not specified, the constraint is
-// assumed to be an equality.
+//    The "relation" attribute is optional; if not specified, the constraint
+//    is assumed to be an equality.
 //
-// The "strength" attribute is optional; if not specified, the constraint is
-// assumed to be required.
+//    The "strength" attribute is optional; if not specified, the constraint
+//    is assumed to be required.
 //
-// The "source" and "target" attributes can be set to "super" to indicate that
-// the constraint target is the widget using the GtkConstraintLayout.
+//    The "source" and "target" attributes can be set to "super" to indicate
+//    that the constraint target is the widget using the GtkConstraintLayout.
 //
-// There can be "constant" and "multiplier" attributes.
+//    There can be "constant" and "multiplier" attributes.
 //
-// Additionally, the "constraints" element can also contain a description of the
-// ConstraintGuides used by the layout:
+//    Additionally, the "constraints" element can also contain a description
+//    of the ConstraintGuides used by the layout:
 //
-//
+//    |[
 //      <constraints>
 //        <guide min-width="100" max-width="500" name="hspace"/>
 //        <guide min-height="64" nat-height="128" name="vspace" strength="strong"/>
 //      </constraints>
+//    ]|
 //
-// The "guide" element has the following optional attributes:
+//    The "guide" element has the following optional attributes:
 //
-// - "min-width", "nat-width", and "max-width", describe the minimum, natural,
-// and maximum width of the guide, respectively - "min-height", "nat-height",
-// and "max-height", describe the minimum, natural, and maximum height of the
-// guide, respectively - "strength" describes the strength of the constraint on
-// the natural size of the guide; if not specified, the constraint is assumed to
-// have a medium strength - "name" describes a name for the guide, useful when
-// debugging
+//      - "min-width", "nat-width", and "max-width", describe the minimum,
+//        natural, and maximum width of the guide, respectively
+//      - "min-height", "nat-height", and "max-height", describe the minimum,
+//        natural, and maximum height of the guide, respectively
+//      - "strength" describes the strength of the constraint on the natural
+//        size of the guide; if not specified, the constraint is assumed to
+//        have a medium strength
+//      - "name" describes a name for the guide, useful when debugging
+//
 //
 //
 // Using the Visual Format Language
 //
-// Complex constraints can be described using a compact syntax called VFL, or
-// *Visual Format Language*.
 //
-// The Visual Format Language describes all the constraints on a row or column,
-// typically starting from the leading edge towards the trailing one. Each
-// element of the layout is composed by "views", which identify a
-// ConstraintTarget.
+//    Complex constraints can be described using a compact syntax called VFL,
+//    or *Visual Format Language*.
 //
-// For instance:
+//    The Visual Format Language describes all the constraints on a row or
+//    column, typically starting from the leading edge towards the trailing
+//    one. Each element of the layout is composed by "views", which identify
+//    a ConstraintTarget.
 //
+//    For instance:
 //
+//    |[
 //      [button]-[textField]
+//    ]|
 //
-// Describes a constraint that binds the trailing edge of "button" to the
-// leading edge of "textField", leaving a default space between the two.
+//    Describes a constraint that binds the trailing edge of "button" to the
+//    leading edge of "textField", leaving a default space between the two.
 //
-// Using VFL is also possible to specify predicates that describe constraints on
-// attributes like width and height:
+//    Using VFL is also possible to specify predicates that describe constraints
+//    on attributes like width and height:
 //
-//
+//    |[
 //      // Width must be greater than, or equal to 50
 //      [button(>=50)]
 //
 //      // Width of button1 must be equal to width of button2
 //      [button1(==button2)]
+//    ]|
 //
+//    The default orientation for a VFL description is horizontal, unless
+//    otherwise specified:
 //
-// The default orientation for a VFL description is horizontal, unless otherwise
-// specified:
-//
-//
+//    |[
 //      // horizontal orientation, default attribute: width
 //      H:[button(>=150)]
 //
 //      // vertical orientation, default attribute: height
 //      V:[button1(==button2)]
+//    ]|
 //
+//    It's also possible to specify multiple predicates, as well as their
+//    strength:
 //
-// It's also possible to specify multiple predicates, as well as their strength:
-//
-//
+//    |[
 //      // minimum width of button must be 150
 //      // natural width of button can be 250
 //      [button(>=150@required, ==250@medium)]
+//    ]|
 //
-// Finally, it's also possible to use simple arithmetic operators:
+//    Finally, it's also possible to use simple arithmetic operators:
 //
-//
+//    |[
 //      // width of button1 must be equal to width of button2
 //      // divided by 2 plus 12
 //      [button1(button2 / 2 + 12)]
+//
 type ConstraintLayout interface {
 	LayoutManager
 
@@ -12605,9 +12560,11 @@ type ConstraintLayout interface {
 	// The Constraint:source and Constraint:target properties of @constraint can
 	// be:
 	//
-	// - set to nil to indicate that the constraint refers to the widget using
-	// @layout - set to the Widget using @layout - set to a child of the Widget
-	// using @layout - set to a guide that is part of @layout
+	//    - set to nil to indicate that the constraint refers to the
+	//      widget using @layout
+	//    - set to the Widget using @layout
+	//    - set to a child of the Widget using @layout
+	//    - set to a guide that is part of @layout
 	//
 	// The @layout acquires the ownership of @constraint after calling this
 	// function.
@@ -12616,45 +12573,13 @@ type ConstraintLayout interface {
 	// formal description using a compact description syntax called VFL, or
 	// "Visual Format Language".
 	//
-	// The Visual Format Language is based on Apple's AutoLayout
-	// [VFL](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/VisualFormatLanguage.html).
+	// The Visual Format Language is based on Apple's AutoLayout VFL
+	// (https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/VisualFormatLanguage.html).
 	//
 	// The @views dictionary is used to match ConstraintTargets to the symbolic
 	// view name inside the VFL.
 	//
 	// The VFL grammar is:
-	//
-	//         <visualFormatString> = (<orientation>)?
-	//                                (<superview><connection>)?
-	//                                <view>(<connection><view>)*
-	//                                (<connection><superview>)?
-	//                <orientation> = 'H' | 'V'
-	//                  <superview> = '|'
-	//                 <connection> = '' | '-' <predicateList> '-' | '-'
-	//              <predicateList> = <simplePredicate> | <predicateListWithParens>
-	//            <simplePredicate> = <metricName> | <positiveNumber>
-	//    <predicateListWithParens> = '(' <predicate> (',' <predicate>)* ')'
-	//                  <predicate> = (<relation>)? <objectOfPredicate> (<operatorList>)? ('@' <priority>)?
-	//                   <relation> = '==' | '<=' | '>='
-	//          <objectOfPredicate> = <constant> | <viewName> | ('.' <attributeName>)?
-	//                   <priority> = <positiveNumber> | 'required' | 'strong' | 'medium' | 'weak'
-	//                   <constant> = <number>
-	//               <operatorList> = (<multiplyOperator>)? (<addOperator>)?
-	//           <multiplyOperator> = [ '*' | '/' ] <positiveNumber>
-	//                <addOperator> = [ '+' | '-' ] <positiveNumber>
-	//                   <viewName> = [A-Za-z_]([A-Za-z0-9_]*) // A C identifier
-	//                 <metricName> = [A-Za-z_]([A-Za-z0-9_]*) // A C identifier
-	//              <attributeName> = 'top' | 'bottom' | 'left' | 'right' | 'width' | 'height' |
-	//                                'start' | 'end' | 'centerX' | 'centerY' | 'baseline'
-	//             <positiveNumber> // A positive real number parseable by g_ascii_strtod()
-	//                     <number> // A real number parseable by g_ascii_strtod()
-	//
-	// **Note**: The VFL grammar used by GTK is slightly different than the one
-	// defined by Apple, as it can use symbolic values for the constraint's
-	// strength instead of numeric values; additionally, GTK allows adding
-	// simple arithmetic operations inside predicates.
-	//
-	// Examples of VFL descriptions are:
 	//
 	//      // Default spacing
 	//      [button]-[textField]
@@ -12729,14 +12654,16 @@ type constraintLayout struct {
 	layoutManager
 }
 
-func wrapConstraintLayout(obj *externglib.Object) ConstraintLayout {
+// WrapConstraintLayout wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapConstraintLayout(obj *externglib.Object) ConstraintLayout {
 	return constraintLayout{layoutManager{*externglib.Object{obj}}}
 }
 
 func marshalConstraintLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapConstraintLayout(obj), nil
 }
 
 func NewConstraintLayout() ConstraintLayout
@@ -12766,14 +12693,16 @@ type constraintLayoutChild struct {
 	layoutChild
 }
 
-func wrapConstraintLayoutChild(obj *externglib.Object) ConstraintLayoutChild {
+// WrapConstraintLayoutChild wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapConstraintLayoutChild(obj *externglib.Object) ConstraintLayoutChild {
 	return constraintLayoutChild{layoutChild{*externglib.Object{obj}}}
 }
 
 func marshalConstraintLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapConstraintLayoutChild(obj), nil
 }
 
 // CSSProvider: gtkCssProvider is an object implementing the StyleProvider
@@ -12836,14 +12765,16 @@ type cssProvider struct {
 	*externglib.Object
 }
 
-func wrapCSSProvider(obj *externglib.Object) CSSProvider {
+// WrapCSSProvider wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCSSProvider(obj *externglib.Object) CSSProvider {
 	return cssProvider{*externglib.Object{obj}}
 }
 
 func marshalCSSProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCSSProvider(obj), nil
 }
 
 func NewCSSProvider() CSSProvider
@@ -12880,14 +12811,16 @@ type customFilter struct {
 	filter
 }
 
-func wrapCustomFilter(obj *externglib.Object) CustomFilter {
+// WrapCustomFilter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCustomFilter(obj *externglib.Object) CustomFilter {
 	return customFilter{filter{*externglib.Object{obj}}}
 }
 
 func marshalCustomFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCustomFilter(obj), nil
 }
 
 func NewCustomFilter(matchFunc CustomFilterFunc) CustomFilter
@@ -12908,14 +12841,16 @@ type customLayout struct {
 	layoutManager
 }
 
-func wrapCustomLayout(obj *externglib.Object) CustomLayout {
+// WrapCustomLayout wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCustomLayout(obj *externglib.Object) CustomLayout {
 	return customLayout{layoutManager{*externglib.Object{obj}}}
 }
 
 func marshalCustomLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCustomLayout(obj), nil
 }
 
 func NewCustomLayout(requestMode CustomRequestModeFunc, measure CustomMeasureFunc, allocate CustomAllocateFunc) CustomLayout
@@ -12940,14 +12875,16 @@ type customSorter struct {
 	sorter
 }
 
-func wrapCustomSorter(obj *externglib.Object) CustomSorter {
+// WrapCustomSorter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCustomSorter(obj *externglib.Object) CustomSorter {
 	return customSorter{sorter{*externglib.Object{obj}}}
 }
 
 func marshalCustomSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCustomSorter(obj), nil
 }
 
 func NewCustomSorter(sortFunc glib.CompareDataFunc) CustomSorter
@@ -12990,28 +12927,44 @@ func (c customSorter) SetSortFunc(sortFunc glib.CompareDataFunc)
 // some effort. But you’d need to create the dialog contents manually if you had
 // more than a simple message in the dialog.
 //
-// An example for simple GtkDialog usage: |[<!-- language="C" --> // Function to
-// open a dialog box with a message void quick_message (GtkWindow *parent, char
-// *message) { GtkWidget *dialog, *label, *content_area; GtkDialogFlags flags;
+// An example for simple GtkDialog usage:
 //
-// // Create the widgets flags = GTK_DIALOG_DESTROY_WITH_PARENT; dialog =
-// // gtk_dialog_new_with_buttons ("Message", parent, flags, _("_OK"),
-// // GTK_RESPONSE_NONE, NULL); content_area = gtk_dialog_get_content_area
-// // (GTK_DIALOG (dialog)); label = gtk_label_new (message);
+//    // Function to open a dialog box with a message
+//    void
+//    quick_message (GtkWindow *parent, char *message)
+//    {
+//     GtkWidget *dialog, *label, *content_area;
+//     GtkDialogFlags flags;
 //
-// // Ensure that the dialog box is destroyed when the user responds
+//     // Create the widgets
+//     flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+//     dialog = gtk_dialog_new_with_buttons ("Message",
+//                                           parent,
+//                                           flags,
+//                                           _("_OK"),
+//                                           GTK_RESPONSE_NONE,
+//                                           NULL);
+//     content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+//     label = gtk_label_new (message);
 //
-// g_signal_connect_swapped (dialog, "response", G_CALLBACK
-// (gtk_window_destroy), dialog);
+//     // Ensure that the dialog box is destroyed when the user responds
 //
-// // Add the label, and show everything we’ve added
+//     g_signal_connect_swapped (dialog,
+//                               "response",
+//                               G_CALLBACK (gtk_window_destroy),
+//                               dialog);
+//
+//     // Add the label, and show everything we’ve added
 //
 //     gtk_box_append (GTK_BOX (content_area), label);
 //     gtk_widget_show (dialog);
 //    }
+//    ]|
 //
 //
-//    # GtkDialog as GtkBuildable
+//
+// GtkDialog as GtkBuildable
+//
 //
 //    The GtkDialog implementation of the Buildable interface exposes the
 //    @content_area as an internal child with the name “content_area”.
@@ -13029,7 +12982,8 @@ func (c customSorter) SetSortFunc(sortFunc glib.CompareDataFunc)
 //    on the “use-header-bar“ property. The response id has to be associated
 //    with the action widget using the <action-widgets> element.
 //
-//
+//    An example of a Dialog UI definition fragment:
+//    |[
 //    <object class="GtkDialog" id="dialog1">
 //      <child type="action">
 //        <object class="GtkButton" id="button_cancel"/>
@@ -13043,6 +12997,7 @@ func (c customSorter) SetSortFunc(sortFunc glib.CompareDataFunc)
 //        <action-widget response="ok" default="true">button_ok</action-widget>
 //      </action-widgets>
 //    </object>
+//
 //
 //
 // Accessibility
@@ -13092,14 +13047,16 @@ type dialog struct {
 	window
 }
 
-func wrapDialog(obj *externglib.Object) Dialog {
+// WrapDialog wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDialog(obj *externglib.Object) Dialog {
 	return dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDialog(obj), nil
 }
 
 func NewDialog() Dialog
@@ -13203,14 +13160,16 @@ type directoryList struct {
 	*externglib.Object
 }
 
-func wrapDirectoryList(obj *externglib.Object) DirectoryList {
+// WrapDirectoryList wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDirectoryList(obj *externglib.Object) DirectoryList {
 	return directoryList{*externglib.Object{obj}}
 }
 
 func marshalDirectoryList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDirectoryList(obj), nil
 }
 
 func NewDirectoryList(attributes string, file gio.File) DirectoryList
@@ -13258,14 +13217,16 @@ type dragIcon struct {
 	widget
 }
 
-func wrapDragIcon(obj *externglib.Object) DragIcon {
+// WrapDragIcon wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDragIcon(obj *externglib.Object) DragIcon {
 	return dragIcon{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalDragIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDragIcon(obj), nil
 }
 
 func (d dragIcon) Child() Widget
@@ -13281,48 +13242,6 @@ func (d dragIcon) SetChild(child Widget)
 // gtk_widget_add_controller().
 //
 //    static void
-//    my_widget_init (MyWidget *self)
-//    {
-//      GtkDragSource *drag_source = gtk_drag_source_new ();
-//
-//      g_signal_connect (drag_source, "prepare", G_CALLBACK (on_drag_prepare), self);
-//      g_signal_connect (drag_source, "drag-begin", G_CALLBACK (on_drag_begin), self);
-//
-//      gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (drag_source));
-//    }
-//
-//
-// Setting up the content provider and icon ahead of time only makes sense when
-// the data does not change. More commonly, you will want to set them up just in
-// time. To do so, DragSource has DragSource::prepare and DragSource::drag-begin
-// signals.
-//
-// The ::prepare signal is emitted before a drag is started, and can be used to
-// set the content provider and actions that the drag should be started with.
-//
-//    static GdkContentProvider *
-//    on_drag_prepare (GtkDragSource *source,
-//                     double         x,
-//                     double         y,
-//                     MyWidget      *self)
-//    {
-//      // This widget supports two types of content: GFile objects
-//      // and GdkPixbuf objects; GTK will handle the serialization
-//      // of these types automatically
-//      GFile *file = my_widget_get_file (self);
-//      GdkPixbuf *pixbuf = my_widget_get_pixbuf (self);
-//
-//      return gdk_content_provider_new_union ((GdkContentProvider *[2]) {
-//          gdk_content_provider_new_typed (G_TYPE_FILE, file),
-//          gdk_content_provider_new_typed (GDK_TYPE_PIXBUF, pixbuf),
-//        }, 2);
-//    }
-//
-//
-// The ::drag-begin signal is emitted after the Drag object has been created,
-// and can be used to set up the drag icon.
-//
-//    static void
 //    on_drag_begin (GtkDragSource *source,
 //                   GtkDrag       *drag,
 //                   MyWidget      *self)
@@ -13332,6 +13251,7 @@ func (d dragIcon) SetChild(child Widget)
 //      gtk_drag_source_set_icon (source, paintable, 0, 0);
 //      g_object_unref (paintable);
 //    }
+//
 //
 // During the DND operation, GtkDragSource emits signals that can be used to
 // obtain updates about the status of the operation, but it is not normally
@@ -13386,14 +13306,16 @@ type dragSource struct {
 	gestureSingle
 }
 
-func wrapDragSource(obj *externglib.Object) DragSource {
+// WrapDragSource wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDragSource(obj *externglib.Object) DragSource {
 	return dragSource{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
 }
 
 func marshalDragSource(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDragSource(obj), nil
 }
 
 func NewDragSource() DragSource
@@ -13530,14 +13452,16 @@ type drawingArea struct {
 	widget
 }
 
-func wrapDrawingArea(obj *externglib.Object) DrawingArea {
+// WrapDrawingArea wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDrawingArea(obj *externglib.Object) DrawingArea {
 	return drawingArea{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalDrawingArea(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDrawingArea(obj), nil
 }
 
 func NewDrawingArea() DrawingArea
@@ -13577,14 +13501,16 @@ type dropControllerMotion struct {
 	eventController
 }
 
-func wrapDropControllerMotion(obj *externglib.Object) DropControllerMotion {
+// WrapDropControllerMotion wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDropControllerMotion(obj *externglib.Object) DropControllerMotion {
 	return dropControllerMotion{eventController{*externglib.Object{obj}}}
 }
 
 func marshalDropControllerMotion(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDropControllerMotion(obj), nil
 }
 
 func NewDropControllerMotion() DropControllerMotion
@@ -13667,14 +13593,16 @@ type dropDown struct {
 	widget
 }
 
-func wrapDropDown(obj *externglib.Object) DropDown {
+// WrapDropDown wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDropDown(obj *externglib.Object) DropDown {
 	return dropDown{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalDropDown(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDropDown(obj), nil
 }
 
 func NewDropDown(model gio.ListModel, expression Expression) DropDown
@@ -13755,12 +13683,15 @@ func (d dropDown) SetSelected(position uint)
 //
 // DropTarget supports more options, such as:
 //
-// * rejecting potential drops via the DropTarget::accept signal and the
-// gtk_drop_target_reject() function to let other drop targets handle the drop *
-// tracking an ongoing drag operation before the drop via the DropTarget::enter,
-// DropTarget::motion and DropTarget::leave signals * configuring how to receive
-// data by setting the DropTarget:preload property and listening for its
-// availability via the DropTarget:value property
+//    * rejecting potential drops via the DropTarget::accept signal
+//      and the gtk_drop_target_reject() function to let other drop
+//      targets handle the drop
+//    * tracking an ongoing drag operation before the drop via the
+//      DropTarget::enter, DropTarget::motion and
+//      DropTarget::leave signals
+//    * configuring how to receive data by setting the
+//      DropTarget:preload property and listening for its availability
+//      via the DropTarget:value property
 //
 // However, DropTarget is ultimately modeled in a synchronous way and only
 // supports data transferred via #GType. If you want full control over an
@@ -13809,14 +13740,16 @@ type dropTarget struct {
 	eventController
 }
 
-func wrapDropTarget(obj *externglib.Object) DropTarget {
+// WrapDropTarget wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDropTarget(obj *externglib.Object) DropTarget {
 	return dropTarget{eventController{*externglib.Object{obj}}}
 }
 
 func marshalDropTarget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDropTarget(obj), nil
 }
 
 func NewDropTarget(_type externglib.Type, actions gdk.DragAction) DropTarget
@@ -13895,14 +13828,16 @@ type dropTargetAsync struct {
 	eventController
 }
 
-func wrapDropTargetAsync(obj *externglib.Object) DropTargetAsync {
+// WrapDropTargetAsync wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDropTargetAsync(obj *externglib.Object) DropTargetAsync {
 	return dropTargetAsync{eventController{*externglib.Object{obj}}}
 }
 
 func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDropTargetAsync(obj), nil
 }
 
 func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) DropTargetAsync
@@ -13934,6 +13869,7 @@ func (d dropTargetAsync) SetFormats(formats *gdk.ContentFormats)
 //        ├── label
 //        ╰── text
 //
+//
 // GtkEditableLabel has a main node with the name editablelabel. When the entry
 // is in editing mode, it gets the .editing style class.
 //
@@ -13956,14 +13892,16 @@ type editableLabel struct {
 	widget
 }
 
-func wrapEditableLabel(obj *externglib.Object) EditableLabel {
+// WrapEditableLabel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEditableLabel(obj *externglib.Object) EditableLabel {
 	return editableLabel{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalEditableLabel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEditableLabel(obj), nil
 }
 
 func NewEditableLabel(str string) EditableLabel
@@ -13980,6 +13918,8 @@ func (e editableLabel) StopEditing(commit bool)
 // GtkEmojiChooser emits the EmojiChooser::emoji-picked signal when an Emoji is
 // selected.
 //
+// CSS nodes
+//
 //    popover
 //    ├── box.emoji-searchbar
 //    │   ╰── entry.search
@@ -13987,6 +13927,7 @@ func (e editableLabel) StopEditing(commit bool)
 //        ├── button.image-button.emoji-section
 //        ├── ...
 //        ╰── button.image-button.emoji-section
+//
 //
 // Every EmojiChooser consists of a main node called popover. The contents of
 // the popover are largely implementation defined and supposed to inherit
@@ -14002,14 +13943,16 @@ type emojiChooser struct {
 	popover
 }
 
-func wrapEmojiChooser(obj *externglib.Object) EmojiChooser {
+// WrapEmojiChooser wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEmojiChooser(obj *externglib.Object) EmojiChooser {
 	return emojiChooser{popover{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalEmojiChooser(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEmojiChooser(obj), nil
 }
 
 func NewEmojiChooser() EmojiChooser
@@ -14051,34 +13994,41 @@ func NewEmojiChooser() EmojiChooser
 //    ├── image.left
 //    ├── image.right
 //    ╰── [progress[.pulse]]
+//    ]|
 //
-// GtkEntry has a main node with the name entry. Depending on the properties of
-// the entry, the style classes .read-only and .flat may appear. The style
-// classes .warning and .error may also be used with entries.
+//    GtkEntry has a main node with the name entry. Depending on the properties
+//    of the entry, the style classes .read-only and .flat may appear. The style
+//    classes .warning and .error may also be used with entries.
 //
-// When the entry shows icons, it adds subnodes with the name image and the
-// style class .left or .right, depending on where the icon appears.
+//    When the entry shows icons, it adds subnodes with the name image and the
+//    style class .left or .right, depending on where the icon appears.
 //
-// When the entry shows progress, it adds a subnode with the name progress. The
-// node has the style class .pulse when the shown progress is pulsing.
+//    When the entry shows progress, it adds a subnode with the name progress.
+//    The node has the style class .pulse when the shown progress is pulsing.
 //
-// For all the subnodes added to the text node in various situations, see Text.
+//    For all the subnodes added to the text node in various situations,
+//    see Text.
+//
 //
 //
 // GtkEntry as GtkBuildable
 //
-// The GtkEntry implementation of the GtkBuildable interface supports a custom
-// <attributes> element, which supports any number of <attribute> elements. The
-// <attribute> element has attributes named “name“, “value“, “start“ and “end“
-// and allows you to specify Attribute values for this label.
 //
+//    The GtkEntry implementation of the GtkBuildable interface supports a
+//    custom <attributes> element, which supports any number of <attribute>
+//    elements. The <attribute> element has attributes named “name“, “value“,
+//    “start“ and “end“ and allows you to specify Attribute values for
+//    this label.
 //
+//    An example of a UI definition fragment specifying Pango attributes:
+//    |[
 //    <object class="GtkEnry">
 //      <attributes>
 //        <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
 //        <attribute name="background" value="red" start="5" end="10"/>
 //      </attributes>
 //    </object>
+//
 //
 // The start and end attributes specify the range of characters to which the
 // Pango attribute applies. If start and end are not specified, the attribute is
@@ -14343,14 +14293,16 @@ type entry struct {
 	widget
 }
 
-func wrapEntry(obj *externglib.Object) Entry {
+// WrapEntry wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEntry(obj *externglib.Object) Entry {
 	return entry{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalEntry(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEntry(obj), nil
 }
 
 func NewEntry() Entry
@@ -14540,14 +14492,16 @@ type entryBuffer struct {
 	*externglib.Object
 }
 
-func wrapEntryBuffer(obj *externglib.Object) EntryBuffer {
+// WrapEntryBuffer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEntryBuffer(obj *externglib.Object) EntryBuffer {
 	return entryBuffer{*externglib.Object{obj}}
 }
 
 func marshalEntryBuffer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEntryBuffer(obj), nil
 }
 
 func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer
@@ -14692,14 +14646,16 @@ type entryCompletion struct {
 	*externglib.Object
 }
 
-func wrapEntryCompletion(obj *externglib.Object) EntryCompletion {
+// WrapEntryCompletion wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEntryCompletion(obj *externglib.Object) EntryCompletion {
 	return entryCompletion{*externglib.Object{obj}}
 }
 
 func marshalEntryCompletion(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEntryCompletion(obj), nil
 }
 
 func NewEntryCompletion() EntryCompletion
@@ -14803,14 +14759,16 @@ type eventController struct {
 	*externglib.Object
 }
 
-func wrapEventController(obj *externglib.Object) EventController {
+// WrapEventController wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEventController(obj *externglib.Object) EventController {
 	return eventController{*externglib.Object{obj}}
 }
 
 func marshalEventController(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEventController(obj), nil
 }
 
 func (e eventController) CurrentEvent() gdk.Event
@@ -14854,14 +14812,16 @@ type eventControllerFocus struct {
 	eventController
 }
 
-func wrapEventControllerFocus(obj *externglib.Object) EventControllerFocus {
+// WrapEventControllerFocus wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEventControllerFocus(obj *externglib.Object) EventControllerFocus {
 	return eventControllerFocus{eventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEventControllerFocus(obj), nil
 }
 
 func NewEventControllerFocus() EventControllerFocus
@@ -14894,14 +14854,16 @@ type eventControllerKey struct {
 	eventController
 }
 
-func wrapEventControllerKey(obj *externglib.Object) EventControllerKey {
+// WrapEventControllerKey wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEventControllerKey(obj *externglib.Object) EventControllerKey {
 	return eventControllerKey{eventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEventControllerKey(obj), nil
 }
 
 func NewEventControllerKey() EventControllerKey
@@ -14925,14 +14887,16 @@ type eventControllerLegacy struct {
 	eventController
 }
 
-func wrapEventControllerLegacy(obj *externglib.Object) EventControllerLegacy {
+// WrapEventControllerLegacy wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEventControllerLegacy(obj *externglib.Object) EventControllerLegacy {
 	return eventControllerLegacy{eventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEventControllerLegacy(obj), nil
 }
 
 func NewEventControllerLegacy() EventControllerLegacy
@@ -14954,14 +14918,16 @@ type eventControllerMotion struct {
 	eventController
 }
 
-func wrapEventControllerMotion(obj *externglib.Object) EventControllerMotion {
+// WrapEventControllerMotion wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEventControllerMotion(obj *externglib.Object) EventControllerMotion {
 	return eventControllerMotion{eventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEventControllerMotion(obj), nil
 }
 
 func NewEventControllerMotion() EventControllerMotion
@@ -15015,14 +14981,16 @@ type eventControllerScroll struct {
 	eventController
 }
 
-func wrapEventControllerScroll(obj *externglib.Object) EventControllerScroll {
+// WrapEventControllerScroll wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEventControllerScroll(obj *externglib.Object) EventControllerScroll {
 	return eventControllerScroll{eventController{*externglib.Object{obj}}}
 }
 
 func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEventControllerScroll(obj), nil
 }
 
 func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerScroll
@@ -15039,14 +15007,16 @@ type everyFilter struct {
 	multiFilter
 }
 
-func wrapEveryFilter(obj *externglib.Object) EveryFilter {
+// WrapEveryFilter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEveryFilter(obj *externglib.Object) EveryFilter {
 	return everyFilter{multiFilter{filter{*externglib.Object{obj}}}}
 }
 
 func marshalEveryFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEveryFilter(obj), nil
 }
 
 func NewEveryFilter() EveryFilter
@@ -15069,62 +15039,13 @@ func NewEveryFilter() EveryFilter
 // monitor its expansion state. You should watch this property with a signal
 // connection as follows:
 //
-//    static void
-//    expander_callback (GObject    *object,
-//                       GParamSpec *param_spec,
-//                       gpointer    user_data)
-//    {
-//      GtkExpander *expander;
-//
-//      expander = GTK_EXPANDER (object);
-//
-//      if (gtk_expander_get_expanded (expander))
-//        {
-//          // Show or create widgets
-//        }
-//      else
-//        {
-//          // Hide or destroy widgets
-//        }
-//    }
-//
-//    static void
-//    create_expander (void)
-//    {
-//      GtkWidget *expander = gtk_expander_new_with_mnemonic ("_More Options");
-//      g_signal_connect (expander, "notify::expanded",
-//                        G_CALLBACK (expander_callback), NULL);
-//
-//      // ...
-//    }
-//
-//
-//
-// GtkExpander as GtkBuildable
-//
-// The GtkExpander implementation of the GtkBuildable interface supports placing
-// a child in the label position by specifying “label” as the “type” attribute
-// of a <child> element. A normal content child can be specified without
-// specifying a <child> type attribute.
-//
-//
-//    <object class="GtkExpander">
-//      <child type="label">
-//        <object class="GtkLabel" id="expander-label"/>
-//      </child>
-//      <child>
-//        <object class="GtkEntry" id="expander-content"/>
-//      </child>
-//    </object>
-//
-// CSS nodes
-//
 //    expander
 //    ╰── box
 //        ├── title
 //        │   ├── arrow
 //        │   ╰── <label widget>
 //        ╰── <child>
+//
 //
 // GtkExpander has three CSS nodes, the main node with the name expander, a
 // subnode with name title and node below it with name arrow. The arrow of an
@@ -15198,14 +15119,16 @@ type expander struct {
 	widget
 }
 
-func wrapExpander(obj *externglib.Object) Expander {
+// WrapExpander wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapExpander(obj *externglib.Object) Expander {
 	return expander{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalExpander(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapExpander(obj), nil
 }
 
 func NewExpander(label string) Expander
@@ -15252,7 +15175,8 @@ func (e expander) SetUseUnderline(useUnderline bool)
 // FileChooserNative API, which will use a platform-specific dialog if available
 // and fall back to GtkFileChooserDialog otherwise.
 //
-// Typical usage {#gtkfilechooser-typical-usage}
+//
+// Typical usage
 //
 // In the simplest of cases, you can the following code to use FileChooserDialog
 // to select a file for opening:
@@ -15292,11 +15216,11 @@ func (e expander) SetUseUnderline(useUnderline bool)
 //      g_signal_connect (dialog, "response",
 //                        G_CALLBACK (on_open_response),
 //                        NULL);
+//    ]|
 //
+//    To use a dialog for saving, you can use this:
 //
-// To use a dialog for saving, you can use this:
-//
-//
+//    |[
 //    static void
 //    on_save_response (GtkDialog *dialog,
 //                      int        response)
@@ -15338,39 +15262,47 @@ func (e expander) SetUseUnderline(useUnderline bool)
 //      g_signal_connect (dialog, "response",
 //                        G_CALLBACK (on_save_response),
 //                        NULL);
+//    ]|
 //
 //
-// Setting up a file chooser dialog {#gtkfilechooserdialog-setting-up}
 //
-// There are various cases in which you may need to use a FileChooserDialog:
-//
-// - To select a file for opening. Use K_FILE_CHOOSER_ACTION_OPEN.
-//
-// - To save a file for the first time. Use K_FILE_CHOOSER_ACTION_SAVE, and
-// suggest a name such as “Untitled” with gtk_file_chooser_set_current_name().
-//
-// - To save a file under a different name. Use K_FILE_CHOOSER_ACTION_SAVE, and
-// set the existing file with gtk_file_chooser_set_file().
-//
-// - To choose a folder instead of a file. Use
-// K_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-//
-// Note that old versions of the file chooser’s documentation suggested using
-// gtk_file_chooser_set_current_folder() in various situations, with the
-// intention of letting the application suggest a reasonable default folder.
-// This is no longer considered to be a good policy, as now the file chooser is
-// able to make good suggestions on its own. In general, you should only cause
-// the file chooser to show a specific folder when it is appropriate to use
-// gtk_file_chooser_set_file(), i.e. when you are doing a Save As command and
-// you already have a file saved somewhere.
-//
-// Response Codes {#gtkfilechooserdialog-responses}
-//
-// FileChooserDialog inherits from Dialog, so buttons that go in its action area
-// have response codes such as K_RESPONSE_ACCEPT and K_RESPONSE_CANCEL. For
-// example, you could call gtk_file_chooser_dialog_new() as follows:
+// Setting up a file chooser dialog
 //
 //
+//    There are various cases in which you may need to use a FileChooserDialog:
+//
+//    - To select a file for opening. Use K_FILE_CHOOSER_ACTION_OPEN.
+//
+//    - To save a file for the first time. Use K_FILE_CHOOSER_ACTION_SAVE,
+//      and suggest a name such as “Untitled” with gtk_file_chooser_set_current_name().
+//
+//    - To save a file under a different name. Use K_FILE_CHOOSER_ACTION_SAVE,
+//      and set the existing file with gtk_file_chooser_set_file().
+//
+//    - To choose a folder instead of a file. Use K_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+//
+//    Note that old versions of the file chooser’s documentation suggested
+//    using gtk_file_chooser_set_current_folder() in various
+//    situations, with the intention of letting the application
+//    suggest a reasonable default folder.  This is no longer
+//    considered to be a good policy, as now the file chooser is
+//    able to make good suggestions on its own.  In general, you
+//    should only cause the file chooser to show a specific folder
+//    when it is appropriate to use gtk_file_chooser_set_file(),
+//    i.e. when you are doing a Save As command and you already
+//    have a file saved somewhere.
+//
+//
+//
+// Response Codes
+//
+//
+//    FileChooserDialog inherits from Dialog, so buttons that
+//    go in its action area have response codes such as
+//    K_RESPONSE_ACCEPT and K_RESPONSE_CANCEL.  For example, you
+//    could call gtk_file_chooser_dialog_new() as follows:
+//
+//    |[
 //    GtkWidget *dialog;
 //    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
 //
@@ -15408,14 +15340,16 @@ type fileChooserDialog struct {
 	dialog
 }
 
-func wrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
+// WrapFileChooserDialog wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileChooserDialog(obj *externglib.Object) FileChooserDialog {
 	return fileChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
 }
 
 func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileChooserDialog(obj), nil
 }
 
 // FileChooserNative is an abstraction of a dialog box suitable for use with
@@ -15439,43 +15373,11 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 // toplevel widgets, and GTK does not keep them alive. It is your responsibility
 // to keep a reference until you are done with the object.
 //
-// Typical usage {#gtkfilechoosernative-typical-usage}
+//
+// Typical usage
 //
 // In the simplest of cases, you can the following code to use FileChooserDialog
 // to select a file for opening:
-//
-//    static void
-//    on_response (GtkNativeDialog *native,
-//                 int              response)
-//    {
-//      if (response == GTK_RESPONSE_ACCEPT)
-//        {
-//          GtkFileChooser *chooser = GTK_FILE_CHOOSER (native);
-//          GFile *file = gtk_file_chooser_get_file (chooser);
-//
-//          open_file (file);
-//
-//          g_object_unref (file);
-//        }
-//
-//      g_object_unref (native);
-//    }
-//
-//      // ...
-//      GtkFileChooserNative *native;
-//      GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-//
-//      native = gtk_file_chooser_native_new ("Open File",
-//                                            parent_window,
-//                                            action,
-//                                            "_Open",
-//                                            "_Cancel");
-//
-//      g_signal_connect (native, "response", G_CALLBACK (on_response), NULL);
-//      gtk_native_dialog_show (GTK_NATIVE_DIALOG (native));
-//
-//
-// To use a dialog for saving, you can use this:
 //
 //    static void
 //    on_response (GtkNativeDialog *native,
@@ -15518,14 +15420,16 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 // For more information on how to best set up a file dialog, see
 // FileChooserDialog.
 //
-// Response Codes {#gtkfilechooserdialognative-responses}
+//
+// Response Codes
 //
 // FileChooserNative inherits from NativeDialog, which means it will return
 // K_RESPONSE_ACCEPT if the user accepted, and K_RESPONSE_CANCEL if he pressed
 // cancel. It can also return K_RESPONSE_DELETE_EVENT if the window was
 // unexpectedly closed.
 //
-// Differences from FileChooserDialog {#gtkfilechooserdialognative-differences}
+// Differences from FileChooserDialog ##
+// {#gtkfilechooserdialognative-differences}
 //
 // There are a few things in the GtkFileChooser API that are not possible to use
 // with FileChooserNative, as such use would prohibit the use of a native
@@ -15534,7 +15438,8 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 // No operations that change the dialog work while the dialog is visible. Set
 // all the properties that are required before showing the dialog.
 //
-// Win32 details {#gtkfilechooserdialognative-win32}
+//
+// Win32 details
 //
 // On windows the IFileDialog implementation (added in Windows Vista) is used.
 // It supports many of the features that FileChooserDialog does, but there are
@@ -15545,14 +15450,15 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 // If any of these features are used the regular FileChooserDialog will be used
 // in place of the native one.
 //
-// Portal details {#gtkfilechooserdialognative-portal}
+//
+// Portal details
 //
 // When the org.freedesktop.portal.FileChooser portal is available on the
 // session bus, it is used to bring up an out-of-process file chooser. Depending
 // on the kind of session the application is running in, this may or may not be
 // a GTK file chooser.
 //
-// macOS details {#gtkfilechooserdialognative-macos}
+// macOS details
 //
 // On macOS the NSSavePanel and NSOpenPanel classes are used to provide native
 // file chooser dialogs. Some features provided by FileChooserDialog are not
@@ -15588,14 +15494,16 @@ type fileChooserNative struct {
 	nativeDialog
 }
 
-func wrapFileChooserNative(obj *externglib.Object) FileChooserNative {
+// WrapFileChooserNative wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileChooserNative(obj *externglib.Object) FileChooserNative {
 	return fileChooserNative{nativeDialog{*externglib.Object{obj}}}
 }
 
 func marshalFileChooserNative(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileChooserNative(obj), nil
 }
 
 func NewFileChooserNative(title string, parent Window, action FileChooserAction, acceptLabel string, cancelLabel string) FileChooserNative
@@ -15624,14 +15532,16 @@ type fileChooserWidget struct {
 	widget
 }
 
-func wrapFileChooserWidget(obj *externglib.Object) FileChooserWidget {
+// WrapFileChooserWidget wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileChooserWidget(obj *externglib.Object) FileChooserWidget {
 	return fileChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFileChooserWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileChooserWidget(obj), nil
 }
 
 func NewFileChooserWidget(action FileChooserAction) FileChooserWidget
@@ -15659,6 +15569,8 @@ func NewFileChooserWidget(action FileChooserAction) FileChooserWidget
 // rules within. Specifying a <mime-type> or <pattern> has the same effect as as
 // calling gtk_file_filter_add_mime_type() or gtk_file_filter_add_pattern().
 //
+// An example of a UI definition fragment specifying GtkFileFilter rules:
+//
 //
 //    <object class="GtkFileFilter">
 //      <property name="name" translatable="yes">Text and Images</property>
@@ -15671,6 +15583,7 @@ func NewFileChooserWidget(action FileChooserAction) FileChooserWidget
 //        <pattern>*.png</pattern>
 //      </patterns>
 //    </object>
+//
 type FileFilter interface {
 	Filter
 
@@ -15705,14 +15618,16 @@ type fileFilter struct {
 	filter
 }
 
-func wrapFileFilter(obj *externglib.Object) FileFilter {
+// WrapFileFilter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileFilter(obj *externglib.Object) FileFilter {
 	return fileFilter{filter{*externglib.Object{obj}}}
 }
 
 func marshalFileFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileFilter(obj), nil
 }
 
 func NewFileFilter() FileFilter
@@ -15780,14 +15695,16 @@ type filter struct {
 	*externglib.Object
 }
 
-func wrapFilter(obj *externglib.Object) Filter {
+// WrapFilter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFilter(obj *externglib.Object) Filter {
 	return filter{*externglib.Object{obj}}
 }
 
 func marshalFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFilter(obj), nil
 }
 
 func (f filter) Changed(change FilterChange)
@@ -15825,6 +15742,7 @@ type FilterListModel interface {
 	//      model = gtk_filter_list_model_get_model (self);
 	//      percentage = pending / (double) g_list_model_get_n_items (model);
 	//
+	//
 	// If no filter operation is ongoing - in particular when
 	// FilterListModel:incremental is false - this function returns 0.
 	Pending() uint
@@ -15857,14 +15775,16 @@ type filterListModel struct {
 	*externglib.Object
 }
 
-func wrapFilterListModel(obj *externglib.Object) FilterListModel {
+// WrapFilterListModel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFilterListModel(obj *externglib.Object) FilterListModel {
 	return filterListModel{*externglib.Object{obj}}
 }
 
 func marshalFilterListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFilterListModel(obj), nil
 }
 
 func NewFilterListModel(model gio.ListModel, filter Filter) FilterListModel
@@ -15949,14 +15869,16 @@ type fixed struct {
 	widget
 }
 
-func wrapFixed(obj *externglib.Object) Fixed {
+// WrapFixed wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFixed(obj *externglib.Object) Fixed {
 	return fixed{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFixed(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFixed(obj), nil
 }
 
 func NewFixed() Fixed
@@ -16010,14 +15932,16 @@ type fixedLayout struct {
 	layoutManager
 }
 
-func wrapFixedLayout(obj *externglib.Object) FixedLayout {
+// WrapFixedLayout wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFixedLayout(obj *externglib.Object) FixedLayout {
 	return fixedLayout{layoutManager{*externglib.Object{obj}}}
 }
 
 func marshalFixedLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFixedLayout(obj), nil
 }
 
 func NewFixedLayout() FixedLayout
@@ -16035,14 +15959,16 @@ type fixedLayoutChild struct {
 	layoutChild
 }
 
-func wrapFixedLayoutChild(obj *externglib.Object) FixedLayoutChild {
+// WrapFixedLayoutChild wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFixedLayoutChild(obj *externglib.Object) FixedLayoutChild {
 	return fixedLayoutChild{layoutChild{*externglib.Object{obj}}}
 }
 
 func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFixedLayoutChild(obj), nil
 }
 
 func (f fixedLayoutChild) Transform() *gsk.Transform
@@ -16069,14 +15995,16 @@ type flattenListModel struct {
 	*externglib.Object
 }
 
-func wrapFlattenListModel(obj *externglib.Object) FlattenListModel {
+// WrapFlattenListModel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFlattenListModel(obj *externglib.Object) FlattenListModel {
 	return flattenListModel{*externglib.Object{obj}}
 }
 
 func marshalFlattenListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFlattenListModel(obj), nil
 }
 
 func NewFlattenListModel(model gio.ListModel) FlattenListModel
@@ -16120,6 +16048,7 @@ func (f flattenListModel) SetModel(model gio.ListModel)
 //    │   ╰── <child>
 //    ┊
 //    ╰── [rubberband]
+//
 //
 // GtkFlowBox uses a single CSS node with name flowbox. GtkFlowBoxChild uses a
 // single CSS node with name flowboxchild. For rubberband selection, a subnode
@@ -16279,14 +16208,16 @@ type flowBox struct {
 	widget
 }
 
-func wrapFlowBox(obj *externglib.Object) FlowBox {
+// WrapFlowBox wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFlowBox(obj *externglib.Object) FlowBox {
 	return flowBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFlowBox(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFlowBox(obj), nil
 }
 
 func NewFlowBox() FlowBox
@@ -16387,14 +16318,16 @@ type flowBoxChild struct {
 	widget
 }
 
-func wrapFlowBoxChild(obj *externglib.Object) FlowBoxChild {
+// WrapFlowBoxChild wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFlowBoxChild(obj *externglib.Object) FlowBoxChild {
 	return flowBoxChild{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFlowBoxChild(obj), nil
 }
 
 func NewFlowBoxChild() FlowBoxChild
@@ -16418,6 +16351,7 @@ func (f flowBoxChild) SetChild(child Widget)
 //    fontbutton
 //    ╰── button.font
 //        ╰── [content]
+//
 //
 // GtkFontButton has a single CSS node with name fontbutton which contains a
 // button node with the .font style class.
@@ -16448,14 +16382,16 @@ type fontButton struct {
 	widget
 }
 
-func wrapFontButton(obj *externglib.Object) FontButton {
+// WrapFontButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFontButton(obj *externglib.Object) FontButton {
 	return fontButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFontButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFontButton(obj), nil
 }
 
 func NewFontButton() FontButton
@@ -16494,14 +16430,16 @@ type fontChooserDialog struct {
 	dialog
 }
 
-func wrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
+// WrapFontChooserDialog wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFontChooserDialog(obj *externglib.Object) FontChooserDialog {
 	return fontChooserDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
 }
 
 func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFontChooserDialog(obj), nil
 }
 
 func NewFontChooserDialog(title string, parent Window) FontChooserDialog
@@ -16531,14 +16469,16 @@ type fontChooserWidget struct {
 	widget
 }
 
-func wrapFontChooserWidget(obj *externglib.Object) FontChooserWidget {
+// WrapFontChooserWidget wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFontChooserWidget(obj *externglib.Object) FontChooserWidget {
 	return fontChooserWidget{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFontChooserWidget(obj), nil
 }
 
 func NewFontChooserWidget() FontChooserWidget
@@ -16559,6 +16499,8 @@ func NewFontChooserWidget() FontChooserWidget
 // a <child> element. A normal content child can be specified without specifying
 // a <child> type attribute.
 //
+// An example of a UI definition fragment with GtkFrame:
+//
 //
 //    <object class="GtkFrame">
 //      <child type="label">
@@ -16568,12 +16510,18 @@ func NewFontChooserWidget() FontChooserWidget
 //        <object class="GtkEntry" id="frame_content"/>
 //      </child>
 //    </object>
+//    ]|
+//
+//
 //
 // CSS nodes
 //
+//
+//    |[<!-- language="plain" -->
 //    frame
 //    ├── <label widget>
 //    ╰── <child>
+//
 //
 // GtkFrame has a main CSS node with name “frame”, which is used to draw the
 // visible border. You can set the appearance of the border using CSS properties
@@ -16610,14 +16558,16 @@ type frame struct {
 	widget
 }
 
-func wrapFrame(obj *externglib.Object) Frame {
+// WrapFrame wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFrame(obj *externglib.Object) Frame {
 	return frame{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalFrame(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFrame(obj), nil
 }
 
 func NewFrame(label string) Frame
@@ -16656,50 +16606,6 @@ func (f frame) SetLabelWidget(labelWidget Widget)
 //
 // The simplest way to draw using OpenGL commands in a GLArea is to create a
 // widget instance and connect to the GLArea::render signal:
-//
-//    <!-- language="C" -->
-//
-//
-//
-// The `render()` function will be called when the GLArea is ready for you to
-// draw its content:
-//
-//      static gboolean
-//      render (GtkGLArea *area, GdkGLContext *context)
-//      {
-//        // inside this function it's safe to use GL; the given
-//        // GLContext has been made current to the drawable
-//        // surface used by the GLArea and the viewport has
-//        // already been set to be the size of the allocation
-//
-//        // we can start by clearing the buffer
-//        glClearColor (0, 0, 0, 0);
-//        glClear (GL_COLOR_BUFFER_BIT);
-//
-//        // draw your object
-//        // draw_an_object ();
-//
-//        // we completed our drawing; the draw commands will be
-//        // flushed at the end of the signal emission chain, and
-//        // the buffers will be drawn on the window
-//        return TRUE;
-//      }
-//
-//      void setup_glarea (void)
-//      {
-//        // create a GtkGLArea instance
-//        GtkWidget *gl_area = gtk_gl_area_new ();
-//
-//        // connect to the "render" signal
-//        g_signal_connect (gl_area, "render", G_CALLBACK (render), NULL);
-//      }
-//
-//
-// If you need to initialize OpenGL state, e.g. buffer objects or shaders, you
-// should use the Widget::realize signal; you can use the Widget::unrealize
-// signal to clean up. Since the GLContext creation and initialization may fail,
-// you will need to check for errors, using gtk_gl_area_get_error(). An example
-// of how to safely initialize the GL state is:
 //
 //      static void
 //      on_realize (GtkGLarea *area)
@@ -16816,14 +16722,16 @@ type glArea struct {
 	widget
 }
 
-func wrapGLArea(obj *externglib.Object) GLArea {
+// WrapGLArea wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGLArea(obj *externglib.Object) GLArea {
 	return glArea{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalGLArea(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGLArea(obj), nil
 }
 
 func NewGLArea() GLArea
@@ -16893,7 +16801,8 @@ func (g glArea) SetUseES(useES bool)
 // toplevel, and gestures that are attached to containers above the widget get a
 // chance to interact with events that have not been handled yet.
 //
-// States of a sequence {#touch-sequence-states}
+//
+// States of a sequence
 //
 // Whenever input interaction happens, a single event may trigger a cascade of
 // Gestures, both across the parents of the widget receiving the event and in
@@ -17058,14 +16967,16 @@ type gesture struct {
 	eventController
 }
 
-func wrapGesture(obj *externglib.Object) Gesture {
+// WrapGesture wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGesture(obj *externglib.Object) Gesture {
 	return gesture{eventController{*externglib.Object{obj}}}
 }
 
 func marshalGesture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGesture(obj), nil
 }
 
 func (g gesture) BoundingBox() (rect gdk.Rectangle, ok bool)
@@ -17114,14 +17025,16 @@ type gestureClick struct {
 	gestureSingle
 }
 
-func wrapGestureClick(obj *externglib.Object) GestureClick {
+// WrapGestureClick wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGestureClick(obj *externglib.Object) GestureClick {
 	return gestureClick{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureClick(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGestureClick(obj), nil
 }
 
 func NewGestureClick() GestureClick
@@ -17148,14 +17061,16 @@ type gestureDrag struct {
 	gestureSingle
 }
 
-func wrapGestureDrag(obj *externglib.Object) GestureDrag {
+// WrapGestureDrag wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGestureDrag(obj *externglib.Object) GestureDrag {
 	return gestureDrag{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureDrag(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGestureDrag(obj), nil
 }
 
 func NewGestureDrag() GestureDrag
@@ -17186,14 +17101,16 @@ type gestureLongPress struct {
 	gestureSingle
 }
 
-func wrapGestureLongPress(obj *externglib.Object) GestureLongPress {
+// WrapGestureLongPress wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGestureLongPress(obj *externglib.Object) GestureLongPress {
 	return gestureLongPress{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGestureLongPress(obj), nil
 }
 
 func NewGestureLongPress() GestureLongPress
@@ -17228,14 +17145,16 @@ type gesturePan struct {
 	gestureDrag
 }
 
-func wrapGesturePan(obj *externglib.Object) GesturePan {
+// WrapGesturePan wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGesturePan(obj *externglib.Object) GesturePan {
 	return gesturePan{gestureDrag{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}}
 }
 
 func marshalGesturePan(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGesturePan(obj), nil
 }
 
 func NewGesturePan(orientation Orientation) GesturePan
@@ -17260,14 +17179,16 @@ type gestureRotate struct {
 	gesture
 }
 
-func wrapGestureRotate(obj *externglib.Object) GestureRotate {
+// WrapGestureRotate wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGestureRotate(obj *externglib.Object) GestureRotate {
 	return gestureRotate{gesture{eventController{*externglib.Object{obj}}}}
 }
 
 func marshalGestureRotate(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGestureRotate(obj), nil
 }
 
 func NewGestureRotate() GestureRotate
@@ -17322,14 +17243,16 @@ type gestureSingle struct {
 	gesture
 }
 
-func wrapGestureSingle(obj *externglib.Object) GestureSingle {
+// WrapGestureSingle wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGestureSingle(obj *externglib.Object) GestureSingle {
 	return gestureSingle{gesture{eventController{*externglib.Object{obj}}}}
 }
 
 func marshalGestureSingle(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGestureSingle(obj), nil
 }
 
 func (g gestureSingle) Button() uint
@@ -17387,14 +17310,16 @@ type gestureStylus struct {
 	gestureSingle
 }
 
-func wrapGestureStylus(obj *externglib.Object) GestureStylus {
+// WrapGestureStylus wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGestureStylus(obj *externglib.Object) GestureStylus {
 	return gestureStylus{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureStylus(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGestureStylus(obj), nil
 }
 
 func NewGestureStylus() GestureStylus
@@ -17430,14 +17355,16 @@ type gestureSwipe struct {
 	gestureSingle
 }
 
-func wrapGestureSwipe(obj *externglib.Object) GestureSwipe {
+// WrapGestureSwipe wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGestureSwipe(obj *externglib.Object) GestureSwipe {
 	return gestureSwipe{gestureSingle{gesture{eventController{*externglib.Object{obj}}}}}
 }
 
 func marshalGestureSwipe(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGestureSwipe(obj), nil
 }
 
 func NewGestureSwipe() GestureSwipe
@@ -17460,14 +17387,16 @@ type gestureZoom struct {
 	gesture
 }
 
-func wrapGestureZoom(obj *externglib.Object) GestureZoom {
+// WrapGestureZoom wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGestureZoom(obj *externglib.Object) GestureZoom {
 	return gestureZoom{gesture{eventController{*externglib.Object{obj}}}}
 }
 
 func marshalGestureZoom(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGestureZoom(obj), nil
 }
 
 func NewGestureZoom() GestureZoom
@@ -17588,14 +17517,16 @@ type grid struct {
 	widget
 }
 
-func wrapGrid(obj *externglib.Object) Grid {
+// WrapGrid wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGrid(obj *externglib.Object) Grid {
 	return grid{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalGrid(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGrid(obj), nil
 }
 
 func NewGrid() Grid
@@ -17708,14 +17639,16 @@ type gridLayout struct {
 	layoutManager
 }
 
-func wrapGridLayout(obj *externglib.Object) GridLayout {
+// WrapGridLayout wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGridLayout(obj *externglib.Object) GridLayout {
 	return gridLayout{layoutManager{*externglib.Object{obj}}}
 }
 
 func marshalGridLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGridLayout(obj), nil
 }
 
 func NewGridLayout() GridLayout
@@ -17771,14 +17704,16 @@ type gridLayoutChild struct {
 	layoutChild
 }
 
-func wrapGridLayoutChild(obj *externglib.Object) GridLayoutChild {
+// WrapGridLayoutChild wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGridLayoutChild(obj *externglib.Object) GridLayoutChild {
 	return gridLayoutChild{layoutChild{*externglib.Object{obj}}}
 }
 
 func marshalGridLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGridLayoutChild(obj), nil
 }
 
 func (g gridLayoutChild) Column() int
@@ -17809,7 +17744,7 @@ func (g gridLayoutChild) SetRowSpan(span int)
 // it is possible to turn on _rubberband selection_, using
 // GridView:enable-rubberband.
 //
-// To learn more about the list widget framework, see the [overview](Widget).
+// To learn more about the list widget framework, see the overview (Widget).
 //
 // CSS nodes
 //
@@ -17820,6 +17755,7 @@ func (g gridLayoutChild) SetRowSpan(span int)
 //    │
 //    ┊
 //    ╰── [rubberband]
+//
 //
 // GtkGridView uses a single CSS node with name gridview. Each child uses a
 // single CSS node with name child. For rubberband selection, a subnode with
@@ -17875,14 +17811,16 @@ type gridView struct {
 	listBase
 }
 
-func wrapGridView(obj *externglib.Object) GridView {
+// WrapGridView wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGridView(obj *externglib.Object) GridView {
 	return gridView{listBase{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalGridView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGridView(obj), nil
 }
 
 func NewGridView(model SelectionModel, factory ListItemFactory) GridView
@@ -17946,9 +17884,14 @@ func (g gridView) SetSingleClickActivate(singleClickActivate bool)
 //        </object>
 //      </property>
 //    </object>
+//    ]|
+//
+//
 //
 // CSS nodes
 //
+//
+//    |[<!-- language="plain" -->
 //    headerbar
 //    ╰── windowhandle
 //        ╰── box
@@ -17959,6 +17902,7 @@ func (g gridView) SetSingleClickActivate(singleClickActivate bool)
 //            ╰── box.end
 //                ├── [other children]
 //                ╰── windowcontrols.end
+//
 //
 // A HeaderBar's CSS node is called `headerbar`. It contains a `windowhandle`
 // subnode, which contains a `box` subnode, which contains two `box` subnodes at
@@ -18030,14 +17974,16 @@ type headerBar struct {
 	widget
 }
 
-func wrapHeaderBar(obj *externglib.Object) HeaderBar {
+// WrapHeaderBar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapHeaderBar(obj *externglib.Object) HeaderBar {
 	return headerBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalHeaderBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapHeaderBar(obj), nil
 }
 
 func NewHeaderBar() HeaderBar
@@ -18089,33 +18035,12 @@ func (h headerBar) SetTitleWidget(titleWidget Widget)
 // implements a subclass of IMContext or IMContextSimple and exports these four
 // functions:
 //
-//    void im_module_init(GTypeModule *module);
-//    ]|
-//    This function should register the #GType of the IMContext subclass which
-//    implements the input method by means of g_type_module_register_type(). Note
-//    that g_type_register_static() cannot be used as the type needs to be
-//    registered dynamically.
-//
-//    void im_module_exit(void);
-//    ]|
-//    Here goes any cleanup code your input method might require on module unload.
-//
-//    void im_module_list(const GtkIMContextInfo ***contexts, int *n_contexts)
-//    {
-//      *contexts = info_list;
-//      *n_contexts = G_N_ELEMENTS (info_list);
-//    }
-//    ]|
-//    This function returns the list of input methods provided by the module. The
-//    example implementation above shows a common solution and simply returns a
-//    pointer to statically defined array of IMContextInfo items for each
-//    provided input method.
-//
 //    GtkIMContext * im_module_create(const char *context_id);
-//    ]|
-//    This function should return a pointer to a newly created instance of the
-//    IMContext subclass identified by @context_id. The context ID is the same
-//    as specified in the IMContextInfo array returned by im_module_list().
+//
+//
+// This function should return a pointer to a newly created instance of the
+// IMContext subclass identified by @context_id. The context ID is the same as
+// specified in the IMContextInfo array returned by im_module_list().
 //
 // After a new loadable input method module has been installed on the system,
 // the configuration file `gtk.immodules` needs to be regenerated by
@@ -18202,14 +18127,16 @@ type imContext struct {
 	*externglib.Object
 }
 
-func wrapIMContext(obj *externglib.Object) IMContext {
+// WrapIMContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapIMContext(obj *externglib.Object) IMContext {
 	return imContext{*externglib.Object{obj}}
 }
 
 func marshalIMContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapIMContext(obj), nil
 }
 
 func (i imContext) DeleteSurrounding(offset int, nChars int) bool
@@ -18273,14 +18200,16 @@ type imContextSimple struct {
 	imContext
 }
 
-func wrapIMContextSimple(obj *externglib.Object) IMContextSimple {
+// WrapIMContextSimple wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapIMContextSimple(obj *externglib.Object) IMContextSimple {
 	return imContextSimple{imContext{*externglib.Object{obj}}}
 }
 
 func marshalIMContextSimple(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapIMContextSimple(obj), nil
 }
 
 func NewIMContextSimple() IMContextSimple
@@ -18305,14 +18234,16 @@ type imMulticontext struct {
 	imContext
 }
 
-func wrapIMMulticontext(obj *externglib.Object) IMMulticontext {
+// WrapIMMulticontext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapIMMulticontext(obj *externglib.Object) IMMulticontext {
 	return imMulticontext{imContext{*externglib.Object{obj}}}
 }
 
 func marshalIMMulticontext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapIMMulticontext(obj), nil
 }
 
 func NewIMMulticontext() IMMulticontext
@@ -18351,14 +18282,16 @@ type iconPaintable struct {
 	*externglib.Object
 }
 
-func wrapIconPaintable(obj *externglib.Object) IconPaintable {
+// WrapIconPaintable wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapIconPaintable(obj *externglib.Object) IconPaintable {
 	return iconPaintable{*externglib.Object{obj}}
 }
 
 func marshalIconPaintable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapIconPaintable(obj), nil
 }
 
 func NewIconPaintableForFile(file gio.File, size int, scale int) IconPaintable
@@ -18372,8 +18305,8 @@ func (i iconPaintable) IsSymbolic() bool
 // IconTheme provides a facility for looking up icons by name and size. The main
 // reason for using a name rather than simply providing a filename is to allow
 // different icons to be used depending on what “icon theme” is selected by the
-// user. The operation of icon themes on Linux and Unix follows the [Icon Theme
-// Specification](http://www.freedesktop.org/Standards/icon-theme-spec) There is
+// user. The operation of icon themes on Linux and Unix follows the Icon Theme
+// Specification (http://www.freedesktop.org/Standards/icon-theme-spec) There is
 // a fallback icon theme, named `hicolor`, where applications should install
 // their icons, but additional icon themes can be installed as operating system
 // vendors and users choose.
@@ -18383,8 +18316,11 @@ func (i iconPaintable) IsSymbolic() bool
 // acts as a database of all the icons in the current theme. You can create new
 // IconTheme objects, but it’s much more efficient to use the standard icon
 // theme of the Widget so that the icon information is shared with other people
-// looking up icons. |[<!-- language="C" --> GtkIconTheme *icon_theme;
-// GtkIconPaintable *icon; GdkPaintable *paintable;
+// looking up icons.
+//
+//    GtkIconTheme *icon_theme;
+//    GtkIconPaintable *icon;
+//    GdkPaintable *paintable;
 //
 //    icon_theme = gtk_icon_theme_get_for_display (gtk_widget_get_display (my_widget));
 //    icon = gtk_icon_theme_lookup_icon (icon_theme,
@@ -18487,14 +18423,16 @@ type iconTheme struct {
 	*externglib.Object
 }
 
-func wrapIconTheme(obj *externglib.Object) IconTheme {
+// WrapIconTheme wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapIconTheme(obj *externglib.Object) IconTheme {
 	return iconTheme{*externglib.Object{obj}}
 }
 
 func marshalIconTheme(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapIconTheme(obj), nil
 }
 
 func NewIconTheme() IconTheme
@@ -18542,6 +18480,7 @@ func (i iconTheme) SetThemeName(themeName string)
 //
 //    iconview.view
 //    ╰── [rubberband]
+//
 //
 // GtkIconView has a single CSS node with name iconview and style class .view.
 // For rubberband selection, a subnode with name rubberband is used.
@@ -18617,7 +18556,10 @@ type IconView interface {
 	// this function, you may want to convert the returned list into a list of
 	// TreeRowReferences. To do this, you can use gtk_tree_row_reference_new().
 	//
+	// To free the return value, use:
+	//
 	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
+	//
 	SelectedItems() *glib.List
 	// SelectionMode gets the selection mode of the @icon_view.
 	SelectionMode() SelectionMode
@@ -18785,14 +18727,16 @@ type iconView struct {
 	widget
 }
 
-func wrapIconView(obj *externglib.Object) IconView {
+// WrapIconView wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapIconView(obj *externglib.Object) IconView {
 	return iconView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalIconView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapIconView(obj), nil
 }
 
 func NewIconView() IconView
@@ -18924,13 +18868,17 @@ func (i iconView) UnsetModelDragSource()
 // Image: the Image widget displays an image. Various kinds of object can be
 // displayed as an image; most typically, you would load a Texture from a file,
 // and then display that. There’s a convenience function to do this,
-// gtk_image_new_from_file(), used as follows: |[<!-- language="C" --> GtkWidget
-// *image; image = gtk_image_new_from_file ("myfile.png"); ]| If the file isn’t
-// loaded successfully, the image will contain a “broken image” icon similar to
-// that used in many web browsers. If you want to handle errors in loading the
-// file yourself, for example by displaying an error message, then load the
-// image with gdk_texture_new_from_file(), then create the Image with
-// gtk_image_new_from_paintable().
+// gtk_image_new_from_file(), used as follows:
+//
+//      GtkWidget *image;
+//      image = gtk_image_new_from_file ("myfile.png");
+//
+//
+// If the file isn’t loaded successfully, the image will contain a “broken
+// image” icon similar to that used in many web browsers. If you want to handle
+// errors in loading the file yourself, for example by displaying an error
+// message, then load the image with gdk_texture_new_from_file(), then create
+// the Image with gtk_image_new_from_paintable().
 //
 // Sometimes an application will want to avoid depending on external data files,
 // such as image files. See the documentation of #GResource for details. In this
@@ -19020,14 +18968,16 @@ type image struct {
 	widget
 }
 
-func wrapImage(obj *externglib.Object) Image {
+// WrapImage wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapImage(obj *externglib.Object) Image {
 	return image{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalImage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapImage(obj), nil
 }
 
 func NewImage() Image
@@ -19092,18 +19042,32 @@ func (i image) SetPixelSize(pixelSize int)
 // gtk_info_bar_set_message_type(). GTK may use the message type to determine
 // how the message is displayed.
 //
-// A simple example for using a InfoBar: |[<!-- language="C" --> GtkWidget
-// *message_label; GtkWidget *widget; GtkWidget *grid; GtkInfoBar *bar;
+// A simple example for using a InfoBar:
 //
-// // set up info bar widget = gtk_info_bar_new (); bar = GTK_INFO_BAR (widget);
-// // grid = gtk_grid_new ();
+//    GtkWidget *message_label;
+//    GtkWidget *widget;
+//    GtkWidget *grid;
+//    GtkInfoBar *bar;
 //
-// message_label = gtk_label_new (""); gtk_info_bar_add_child (bar,
-// message_label); gtk_info_bar_add_button (bar, _("_OK"), GTK_RESPONSE_OK);
-// g_signal_connect (bar, "response", G_CALLBACK (gtk_widget_hide), NULL);
-// gtk_grid_attach (GTK_GRID (grid), widget, 0, 2, 1, 1);
+//    // set up info bar
+//    widget = gtk_info_bar_new ();
+//    bar = GTK_INFO_BAR (widget);
+//    grid = gtk_grid_new ();
 //
-// // ...
+//    message_label = gtk_label_new ("");
+//    gtk_info_bar_add_child (bar, message_label);
+//    gtk_info_bar_add_button (bar,
+//                             _("_OK"),
+//                             GTK_RESPONSE_OK);
+//    g_signal_connect (bar,
+//                      "response",
+//                      G_CALLBACK (gtk_widget_hide),
+//                      NULL);
+//    gtk_grid_attach (GTK_GRID (grid),
+//                     widget,
+//                     0, 2, 1, 1);
+//
+//    // ...
 //
 //    // show an error message
 //    gtk_label_set_text (GTK_LABEL (message_label), "An error occurred!");
@@ -19111,24 +19075,25 @@ func (i image) SetPixelSize(pixelSize int)
 //    gtk_widget_show (bar);
 //
 //
-//    # GtkInfoBar as GtkBuildable
 //
-//    The GtkInfoBar implementation of the GtkBuildable interface exposes
-//    the content area and action area as internal children with the names
-//    “content_area” and “action_area”.
+// GtkInfoBar as GtkBuildable
 //
-//    GtkInfoBar supports a custom <action-widgets> element, which can contain
-//    multiple <action-widget> elements. The “response” attribute specifies a
-//    numeric response, and the content of the element is the id of widget
-//    (which should be a child of the dialogs @action_area).
+// The GtkInfoBar implementation of the GtkBuildable interface exposes the
+// content area and action area as internal children with the names
+// “content_area” and “action_area”.
 //
-//    # CSS nodes
+// GtkInfoBar supports a custom <action-widgets> element, which can contain
+// multiple <action-widget> elements. The “response” attribute specifies a
+// numeric response, and the content of the element is the id of widget (which
+// should be a child of the dialogs @action_area).
 //
-//    GtkInfoBar has a single CSS node with name infobar. The node may get
-//    one of the style classes .info, .warning, .error or .question, depending
-//    on the message type.
-//    If the info bar shows a close button, that button will have the .close
-//    style class applied.
+//
+// CSS nodes
+//
+// GtkInfoBar has a single CSS node with name infobar. The node may get one of
+// the style classes .info, .warning, .error or .question, depending on the
+// message type. If the info bar shows a close button, that button will have the
+// .close style class applied.
 type InfoBar interface {
 	Widget
 
@@ -19191,14 +19156,16 @@ type infoBar struct {
 	widget
 }
 
-func wrapInfoBar(obj *externglib.Object) InfoBar {
+// WrapInfoBar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapInfoBar(obj *externglib.Object) InfoBar {
 	return infoBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalInfoBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapInfoBar(obj), nil
 }
 
 func NewInfoBar() InfoBar
@@ -19247,14 +19214,16 @@ type keyvalTrigger struct {
 	shortcutTrigger
 }
 
-func wrapKeyvalTrigger(obj *externglib.Object) KeyvalTrigger {
+// WrapKeyvalTrigger wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapKeyvalTrigger(obj *externglib.Object) KeyvalTrigger {
 	return keyvalTrigger{shortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapKeyvalTrigger(obj), nil
 }
 
 func NewKeyvalTrigger(keyval uint, modifiers gdk.ModifierType) KeyvalTrigger
@@ -19268,159 +19237,13 @@ func (k keyvalTrigger) Modifiers() gdk.ModifierType
 //
 // CSS nodes
 //
-//    label
-//    ├── [selection]
-//    ├── [link]
-//    ┊
-//    ╰── [link]
-//
-// GtkLabel has a single CSS node with the name label. A wide variety of style
-// classes may be applied to labels, such as .title, .subtitle, .dim-label, etc.
-// In the ShortcutsWindow, labels are used with the .keycap style class.
-//
-// If the label has a selection, it gets a subnode with name selection.
-//
-// If the label has links, there is one subnode per link. These subnodes carry
-// the link or visited state depending on whether they have been visited. In
-// this case, label node also gets a .link style class.
-//
-//
-// GtkLabel as GtkBuildable
-//
-// The GtkLabel implementation of the GtkBuildable interface supports a custom
-// <attributes> element, which supports any number of <attribute> elements. The
-// <attribute> element has attributes named “name“, “value“, “start“ and “end“
-// and allows you to specify Attribute values for this label.
-//
-//
-//    <object class="GtkLabel">
-//      <attributes>
-//        <attribute name="weight" value="PANGO_WEIGHT_BOLD"/>
-//        <attribute name="background" value="red" start="5" end="10"/>
-//      </attributes>
-//    </object>
-//
-// The start and end attributes specify the range of characters to which the
-// Pango attribute applies. If start and end are not specified, the attribute is
-// applied to the whole text. Note that specifying ranges does not make much
-// sense with translatable attributes. Use markup embedded in the translatable
-// content instead.
-//
-//
-// Accessibility
-//
-// GtkLabel uses the K_ACCESSIBLE_ROLE_LABEL role.
-//
-//
-// Mnemonics
-//
-// Labels may contain “mnemonics”. Mnemonics are underlined characters in the
-// label, used for keyboard navigation. Mnemonics are created by providing a
-// string with an underscore before the mnemonic character, such as `"_File"`,
-// to the functions gtk_label_new_with_mnemonic() or
-// gtk_label_set_text_with_mnemonic().
-//
-// Mnemonics automatically activate any activatable widget the label is inside,
-// such as a Button; if the label is not inside the mnemonic’s target widget,
-// you have to tell the label about the target using
-// gtk_label_set_mnemonic_widget(). Here’s a simple example where the label is
-// inside a button:
-//
-//    // Pressing Alt+H will activate this button
-//    GtkWidget *button = gtk_button_new ();
-//    GtkWidget *label = gtk_label_new_with_mnemonic ("_Hello");
-//    gtk_button_set_child (GTK_BUTTON (button), label);
-//
-// There’s a convenience function to create buttons with a mnemonic label
-// already inside:
-//
-//    // Pressing Alt+H will activate this button
-//    GtkWidget *button = gtk_button_new_with_mnemonic ("_Hello");
-//
-// To create a mnemonic for a widget alongside the label, such as a Entry, you
-// have to point the label at the entry with gtk_label_set_mnemonic_widget():
-//
-//    // Pressing Alt+H will focus the entry
-//    GtkWidget *entry = gtk_entry_new ();
-//    GtkWidget *label = gtk_label_new_with_mnemonic ("_Hello");
-//    gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
-//
-// Markup (styled text)
-//
-// To make it easy to format text in a label (changing colors, fonts, etc.),
-// label text can be provided in a simple [markup format][PangoMarkupFormat].
-//
-//    GtkWidget *label = gtk_label_new (NULL);
-//    gtk_label_set_markup (GTK_LABEL (label), "<small>Small text</small>");
-//
-// (See [complete documentation][PangoMarkupFormat] of available tags in the
-// Pango manual.)
-//
-// The markup passed to gtk_label_set_markup() must be valid; for example,
-// literal <, > and & characters must be escaped as &lt;, &gt;, and &amp;. If
-// you pass text obtained from the user, file, or a network to
-// gtk_label_set_markup(), you’ll want to escape it with g_markup_escape_text()
-// or g_markup_printf_escaped().
-//
-// Markup strings are just a convenient way to set the AttrList on a label;
-// gtk_label_set_attributes() may be a simpler way to set attributes in some
-// cases. Be careful though; AttrList tends to cause internationalization
-// problems, unless you’re applying attributes to the entire string (i.e. unless
-// you set the range of each attribute to [0, G_MAXINT)). The reason is that
-// specifying the start_index and end_index for a Attribute requires knowledge
-// of the exact string being displayed, so translations will cause problems.
-//
-//
-// Selectable labels
-//
-// Labels can be made selectable with gtk_label_set_selectable(). Selectable
-// labels allow the user to copy the label contents to the clipboard. Only
-// labels that contain useful-to-copy information — such as error messages —
-// should be made selectable.
-//
-// Text layout {#label-text-layout}
-//
-// A label can contain any number of paragraphs, but will have performance
-// problems if it contains more than a small number. Paragraphs are separated by
-// newlines or other paragraph separators understood by Pango.
-//
-// Labels can automatically wrap text if you call gtk_label_set_wrap().
-//
-// gtk_label_set_justify() sets how the lines in a label align with one another.
-// If you want to set how the label as a whole aligns in its available space,
-// see the Widget:halign and Widget:valign properties.
-//
-// The Label:width-chars and Label:max-width-chars properties can be used to
-// control the size allocation of ellipsized or wrapped labels. For ellipsizing
-// labels, if either is specified (and less than the actual text size), it is
-// used as the minimum width, and the actual text size is used as the natural
-// width of the label. For wrapping labels, width-chars is used as the minimum
-// width, if specified, and max-width-chars is used as the natural width. Even
-// if max-width-chars specified, wrapping labels will be rewrapped to use all of
-// the available width.
-//
-// Note that the interpretation of Label:width-chars and Label:max-width-chars
-// has changed a bit with the introduction of [width-for-height geometry
-// management.][geometry-management]
-//
-//
-// Links
-//
-// GTK supports markup for clickable hyperlinks in addition to regular Pango
-// markup. The markup for links is borrowed from HTML, using the `<a>` with
-// “href“, “title“ and “class“ attributes. GTK renders links similar to the way
-// they appear in web browsers, with colored, underlined text. The “title“
-// attribute is displayed as a tooltip on the link. The “class“ attribute is
-// used as style class on the CSS node for the link.
-//
-// An example looks like this:
-//
 //    const char *text =
 //    "Go to the"
 //    "<a href=\"http://www.gtk.org title=\"&lt;i&gt;Our&lt;/i&gt; website\">"
 //    "GTK website</a> for more...";
 //    GtkWidget *label = gtk_label_new (NULL);
 //    gtk_label_set_markup (GTK_LABEL (label), text);
+//
 //
 // It is possible to implement custom handling for links and their tooltips with
 // the Label::activate-link signal and the gtk_label_get_current_uri() function.
@@ -19651,14 +19474,16 @@ type label struct {
 	widget
 }
 
-func wrapLabel(obj *externglib.Object) Label {
+// WrapLabel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapLabel(obj *externglib.Object) Label {
 	return label{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalLabel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapLabel(obj), nil
 }
 
 func NewLabel(str string) Label
@@ -19775,14 +19600,16 @@ type layoutChild struct {
 	*externglib.Object
 }
 
-func wrapLayoutChild(obj *externglib.Object) LayoutChild {
+// WrapLayoutChild wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapLayoutChild(obj *externglib.Object) LayoutChild {
 	return layoutChild{*externglib.Object{obj}}
 }
 
 func marshalLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapLayoutChild(obj), nil
 }
 
 func (l layoutChild) ChildWidget() Widget
@@ -19823,6 +19650,7 @@ func (l layoutChild) LayoutManager() LayoutManager
 //                           "child-widget", child,
 //                           NULL);
 //    }
+//
 //
 // The LayoutChild:layout-manager and LayoutChild:child-widget properties on the
 // newly created LayoutChild instance are mandatory. The LayoutManager will
@@ -19871,14 +19699,16 @@ type layoutManager struct {
 	*externglib.Object
 }
 
-func wrapLayoutManager(obj *externglib.Object) LayoutManager {
+// WrapLayoutManager wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapLayoutManager(obj *externglib.Object) LayoutManager {
 	return layoutManager{*externglib.Object{obj}}
 }
 
 func marshalLayoutManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapLayoutManager(obj), nil
 }
 
 func (l layoutManager) Allocate(widget Widget, width int, height int, baseline int)
@@ -19909,68 +19739,13 @@ func (l layoutManager) Measure(widget Widget, orientation Orientation, forSize i
 //
 // Adding a custom offset on the bar
 //
-//    <!-- language="C" -->
-//
-//    static GtkWidget *
-//    create_level_bar (void)
-//    {
-//      GtkWidget *widget;
-//      GtkLevelBar *bar;
-//
-//      widget = gtk_level_bar_new ();
-//      bar = GTK_LEVEL_BAR (widget);
-//
-//      // This changes the value of the default low offset
-//
-//      gtk_level_bar_add_offset_value (bar,
-//                                      GTK_LEVEL_BAR_OFFSET_LOW,
-//                                      0.10);
-//
-//      // This adds a new offset to the bar; the application will
-//      // be able to change its color CSS like this:
-//      //
-//      // levelbar block.my-offset {
-//      //   background-color: magenta;
-//      //   border-style: solid;
-//      //   border-color: black;
-//      //   border-style: 1px;
-//      // }
-//
-//      gtk_level_bar_add_offset_value (bar, "my-offset", 0.60);
-//
-//      return widget;
-//    }
-//
-//
-// The default interval of values is between zero and one, but it’s possible to
-// modify the interval using gtk_level_bar_set_min_value() and
-// gtk_level_bar_set_max_value(). The value will be always drawn in proportion
-// to the admissible interval, i.e. a value of 15 with a specified interval
-// between 10 and 20 is equivalent to a value of 0.5 with an interval between 0
-// and 1. When K_LEVEL_BAR_MODE_DISCRETE is used, the bar level is rendered as a
-// finite number of separated blocks instead of a single one. The number of
-// blocks that will be rendered is equal to the number of units specified by the
-// admissible interval.
-//
-// For instance, to build a bar rendered with five blocks, it’s sufficient to
-// set the minimum value to 0 and the maximum value to 5 after changing the
-// indicator mode to discrete.
-//
-//
-// GtkLevelBar as GtkBuildable
-//
-// The GtkLevelBar implementation of the GtkBuildable interface supports a
-// custom <offsets> element, which can contain any number of <offset> elements,
-// each of which must have name and value attributes.
-//
-// CSS nodes
-//
 //    levelbar[.discrete]
 //    ╰── trough
 //        ├── block.filled.level-name
 //        ┊
 //        ├── block.empty
 //        ┊
+//
 //
 // GtkLevelBar has a main CSS node with name levelbar and one of the style
 // classes .discrete or .continuous and a subnode with name trough. Below the
@@ -20035,14 +19810,16 @@ type levelBar struct {
 	widget
 }
 
-func wrapLevelBar(obj *externglib.Object) LevelBar {
+// WrapLevelBar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapLevelBar(obj *externglib.Object) LevelBar {
 	return levelBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalLevelBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapLevelBar(obj), nil
 }
 
 func NewLevelBar() LevelBar
@@ -20123,14 +19900,16 @@ type linkButton struct {
 	button
 }
 
-func wrapLinkButton(obj *externglib.Object) LinkButton {
+// WrapLinkButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapLinkButton(obj *externglib.Object) LinkButton {
 	return linkButton{button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalLinkButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapLinkButton(obj), nil
 }
 
 func NewLinkButton(uri string) LinkButton
@@ -20154,14 +19933,16 @@ type listBase struct {
 	widget
 }
 
-func wrapListBase(obj *externglib.Object) ListBase {
+// WrapListBase wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapListBase(obj *externglib.Object) ListBase {
 	return listBase{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalListBase(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapListBase(obj), nil
 }
 
 // ListBox: a GtkListBox is a vertical container that contains GtkListBoxRow
@@ -20195,13 +19976,14 @@ func marshalListBase(p uintptr) (interface{}, error) {
 //    list[.separators][.rich-list][.navigation-sidebar]
 //    ╰── row[.activatable]
 //
+//
 // GtkListBox uses a single CSS node named list. It may carry the .separators
 // style class, when the ListBox:show-separators property is set. Each
 // GtkListBoxRow uses a single CSS node named row. The row nodes get the
 // .activatable style class added when appropriate.
 //
-// The main list node may also carry style classes to select the style of [list
-// presentation](ListContainers.html#list-styles): .rich-list,
+// The main list node may also carry style classes to select the style of list
+// presentation (ListContainers.html#list-styles): .rich-list,
 // .navigation-sidebar or .data-table.
 //
 //
@@ -20375,14 +20157,16 @@ type listBox struct {
 	widget
 }
 
-func wrapListBox(obj *externglib.Object) ListBox {
+// WrapListBox wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapListBox(obj *externglib.Object) ListBox {
 	return listBox{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalListBox(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapListBox(obj), nil
 }
 
 func NewListBox() ListBox
@@ -20501,14 +20285,16 @@ type listBoxRow struct {
 	widget
 }
 
-func wrapListBoxRow(obj *externglib.Object) ListBoxRow {
+// WrapListBoxRow wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapListBoxRow(obj *externglib.Object) ListBoxRow {
 	return listBoxRow{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalListBoxRow(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapListBoxRow(obj), nil
 }
 
 func NewListBoxRow() ListBoxRow
@@ -20605,14 +20391,16 @@ type listItem struct {
 	*externglib.Object
 }
 
-func wrapListItem(obj *externglib.Object) ListItem {
+// WrapListItem wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapListItem(obj *externglib.Object) ListItem {
 	return listItem{*externglib.Object{obj}}
 }
 
 func marshalListItem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapListItem(obj), nil
 }
 
 func (l listItem) Activatable() bool
@@ -20681,14 +20469,16 @@ type listItemFactory struct {
 	*externglib.Object
 }
 
-func wrapListItemFactory(obj *externglib.Object) ListItemFactory {
+// WrapListItemFactory wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapListItemFactory(obj *externglib.Object) ListItemFactory {
 	return listItemFactory{*externglib.Object{obj}}
 }
 
 func marshalListItemFactory(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapListItemFactory(obj), nil
 }
 
 // ListStore: the ListStore object is a list model for use with a TreeView
@@ -20706,80 +20496,7 @@ func marshalListItemFactory(p uintptr) (interface{}, error) {
 // emit the TreeModel::row_changed signal. This most commonly affects lists with
 // Textures stored.
 //
-// An example for creating a simple list store: |[<!-- language="C" --> enum {
-// COLUMN_STRING, COLUMN_INT, COLUMN_BOOLEAN, N_COLUMNS };
-//
-// { GtkListStore *list_store; GtkTreePath *path; GtkTreeIter iter; int i;
-//
-// list_store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_INT,
-// G_TYPE_BOOLEAN);
-//
-// for (i = 0; i < 10; i++) { char *some_data;
-//
-// some_data = get_some_data (i);
-//
-// // Add a new row to the model gtk_list_store_append (list_store, &iter);
-// // gtk_list_store_set (list_store, &iter, COLUMN_STRING, some_data, COLUMN_INT,
-// // i, COLUMN_BOOLEAN, FALSE, -1);
-//
-// // As the store will keep a copy of the string internally, // we free
-// // some_data. g_free (some_data); }
-//
-//      // Modify a particular row
-//      path = gtk_tree_path_new_from_string ("4");
-//      gtk_tree_model_get_iter (GTK_TREE_MODEL (list_store),
-//                               &iter,
-//                               path);
-//      gtk_tree_path_free (path);
-//      gtk_list_store_set (list_store, &iter,
-//                          COLUMN_BOOLEAN, TRUE,
-//                          -1);
-//    }
-//
-//
-//    # Performance Considerations
-//
-//    Internally, the ListStore was originally implemented with a linked list
-//    with a tail pointer.  As a result, it was fast at data insertion and deletion,
-//    and not fast at random data access.  The ListStore sets the
-//    K_TREE_MODEL_ITERS_PERSIST flag, which means that TreeIters can be
-//    cached while the row exists.  Thus, if access to a particular row is needed
-//    often and your code is expected to run on older versions of GTK, it is worth
-//    keeping the iter around.
-//
-//    # Atomic Operations
-//
-//    It is important to note that only the methods
-//    gtk_list_store_insert_with_values() and gtk_list_store_insert_with_valuesv()
-//    are atomic, in the sense that the row is being appended to the store and the
-//    values filled in in a single operation with regard to TreeModel signaling.
-//    In contrast, using e.g. gtk_list_store_append() and then gtk_list_store_set()
-//    will first create a row, which triggers the TreeModel::row-inserted signal
-//    on ListStore. The row, however, is still empty, and any signal handler
-//    connecting to TreeModel::row-inserted on this particular store should be prepared
-//    for the situation that the row might be empty. This is especially important
-//    if you are wrapping the ListStore inside a TreeModelFilter and are
-//    using a TreeModelFilterVisibleFunc. Using any of the non-atomic operations
-//    to append rows to the ListStore will cause the
-//    TreeModelFilterVisibleFunc to be visited with an empty row first; the
-//    function must be prepared for that.
-//
-//    # GtkListStore as GtkBuildable
-//
-//    The GtkListStore implementation of the GtkBuildable interface allows
-//    to specify the model columns with a <columns> element that may contain
-//    multiple <column> elements, each specifying one model column. The “type”
-//    attribute specifies the data type for the column.
-//
-//    Additionally, it is possible to specify content for the list store
-//    in the UI definition, with the <data> element. It can contain multiple
-//    <row> elements, each specifying to content for one row of the list model.
-//    Inside a <row>, the <col> elements specify the content for individual cells.
-//
-//    Note that it is probably more common to define your models in the code,
-//    and one might consider it a layering violation to specify the content of
-//    a list store in a UI definition, data, not presentation, and common wisdom
-//    is to separate the two, as far as possible.
+// An example for creating a simple list store:
 //
 //    <object class="GtkListStore">
 //      <columns>
@@ -20800,6 +20517,7 @@ func marshalListItemFactory(p uintptr) (interface{}, error) {
 //        </row>
 //      </data>
 //    </object>
+//
 type ListStore interface {
 	gextras.Objector
 
@@ -20879,14 +20597,16 @@ type listStore struct {
 	*externglib.Object
 }
 
-func wrapListStore(obj *externglib.Object) ListStore {
+// WrapListStore wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapListStore(obj *externglib.Object) ListStore {
 	return listStore{*externglib.Object{obj}}
 }
 
 func marshalListStore(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapListStore(obj), nil
 }
 
 func NewListStorev(nColumns int, types []externglib.Type) ListStore
@@ -20938,46 +20658,67 @@ func (l listStore) Swap(a *TreeIter, b *TreeIter)
 //
 // If you need multiple columns with headers, see ColumnView.
 //
-// To learn more about the list widget framework, see the [overview](Widget).
+// To learn more about the list widget framework, see the overview (Widget).
 //
-// An example of using GtkListView: |[ static void setup_listitem_cb
-// (GtkListItemFactory *factory, GtkListItem *list_item) { GtkWidget *image;
+// An example of using GtkListView:
 //
-// image = gtk_image_new (); gtk_image_set_icon_size (GTK_IMAGE (image),
-// GTK_ICON_SIZE_LARGE); gtk_list_item_set_child (list_item, image); }
 //
-// static void bind_listitem_cb (GtkListItemFactory *factory, GtkListItem
-// *list_item) { GtkWidget *image; GAppInfo *app_info;
+//    static void
+//    setup_listitem_cb (GtkListItemFactory *factory,
+//                       GtkListItem        *list_item)
+//    {
+//      GtkWidget *image;
 //
-// image = gtk_list_item_get_child (list_item); app_info =
-// gtk_list_item_get_item (list_item); gtk_image_set_from_gicon (GTK_IMAGE
-// (image), g_app_info_get_icon (app_info)); }
+//      image = gtk_image_new ();
+//      gtk_image_set_icon_size (GTK_IMAGE (image), GTK_ICON_SIZE_LARGE);
+//      gtk_list_item_set_child (list_item, image);
+//    }
 //
-// static void activate_cb (GtkListView *list, guint position, gpointer unused)
-// { GAppInfo *app_info;
+//    static void
+//    bind_listitem_cb (GtkListItemFactory *factory,
+//                      GtkListItem        *list_item)
+//    {
+//      GtkWidget *image;
+//      GAppInfo *app_info;
 //
-// app_info = g_list_model_get_item (G_LIST_MODEL (gtk_list_view_get_model
-// (list)), position); g_app_info_launch (app_info, NULL, NULL, NULL);
-// g_object_unref (app_info); }
+//      image = gtk_list_item_get_child (list_item);
+//      app_info = gtk_list_item_get_item (list_item);
+//      gtk_image_set_from_gicon (GTK_IMAGE (image), g_app_info_get_icon (app_info));
+//    }
 //
-// ...
+//    static void
+//    activate_cb (GtkListView  *list,
+//                 guint         position,
+//                 gpointer      unused)
+//    {
+//      GAppInfo *app_info;
 //
-// model = create_application_list ();
+//      app_info = g_list_model_get_item (G_LIST_MODEL (gtk_list_view_get_model (list)), position);
+//      g_app_info_launch (app_info, NULL, NULL, NULL);
+//      g_object_unref (app_info);
+//    }
 //
-// factory = gtk_signal_list_item_factory_new (); g_signal_connect (factory,
-// "setup", G_CALLBACK (setup_listitem_cb), NULL); g_signal_connect (factory,
-// "bind", G_CALLBACK (bind_listitem_cb), NULL);
+//    ...
 //
-// list = gtk_list_view_new (GTK_SELECTION_MODEL (gtk_single_selection_new
-// (model)), factory);
+//      model = create_application_list ();
 //
-// g_signal_connect (list, "activate", G_CALLBACK (activate_cb), NULL);
+//      factory = gtk_signal_list_item_factory_new ();
+//      g_signal_connect (factory, "setup", G_CALLBACK (setup_listitem_cb), NULL);
+//      g_signal_connect (factory, "bind", G_CALLBACK (bind_listitem_cb), NULL);
+//
+//      list = gtk_list_view_new (GTK_SELECTION_MODEL (gtk_single_selection_new (model)), factory);
+//
+//      g_signal_connect (list, "activate", G_CALLBACK (activate_cb), NULL);
 //
 //      gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (sw), list);
+//    ]|
 //
 //
-//    # CSS nodes
 //
+// CSS nodes
+//
+//
+//    |[<!-- language="plain" -->
 //    listview[.separators][.rich-list][.navigation-sidebar][.data-table]
 //    ├── row
 //    │
@@ -20988,19 +20729,20 @@ func (l listStore) Swap(a *TreeIter, b *TreeIter)
 //
 //
 //
-//    GtkListView uses a single CSS node named listview. It may carry the
-//    .separators style class, when ListView:show-separators property
-//    is set. Each child widget uses a single CSS node named row. For
-//    rubberband selection, a node with name rubberband is used.
+// GtkListView uses a single CSS node named listview. It may carry the
+// .separators style class, when ListView:show-separators property is set. Each
+// child widget uses a single CSS node named row. For rubberband selection, a
+// node with name rubberband is used.
 //
-//    The main listview node may also carry style classes to select
-//    the style of [list presentation](ListContainers.html#list-styles):
-//    .rich-list, .navigation-sidebar or .data-table.
+// The main listview node may also carry style classes to select the style of
+// list presentation (ListContainers.html#list-styles): .rich-list,
+// .navigation-sidebar or .data-table.
 //
-//    # Accessibility
 //
-//    GtkListView uses the K_ACCESSIBLE_ROLE_LIST role, and the list
-//    items use the K_ACCESSIBLE_ROLE_LIST_ITEM role.
+// Accessibility
+//
+// GtkListView uses the K_ACCESSIBLE_ROLE_LIST role, and the list items use the
+// K_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListView interface {
 	ListBase
 
@@ -21036,14 +20778,16 @@ type listView struct {
 	listBase
 }
 
-func wrapListView(obj *externglib.Object) ListView {
+// WrapListView wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapListView(obj *externglib.Object) ListView {
 	return listView{listBase{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalListView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapListView(obj), nil
 }
 
 func NewListView(model SelectionModel, factory ListItemFactory) ListView
@@ -21078,19 +20822,19 @@ func (l listView) SetSingleClickActivate(singleClickActivate bool)
 // If the user is not currently allowed to perform the action, but can obtain
 // the permission, the widget looks like this:
 //
-// ![](lockbutton-locked.png)
+// ! (lockbutton-locked.png)
 //
 // and the user can click the button to request the permission. Depending on the
 // platform, this may pop up an authentication dialog or ask the user to
 // authenticate in some other way. Once the user has obtained the permission,
 // the widget changes to this:
 //
-// ![](lockbutton-unlocked.png)
+// ! (lockbutton-unlocked.png)
 //
 // and the permission can be dropped again by clicking the button. If the user
 // is not able to obtain the permission at all, the widget looks like this:
 //
-// ![](lockbutton-sorry.png)
+// ! (lockbutton-sorry.png)
 //
 // If the user has the permission and cannot drop it, the button is hidden.
 //
@@ -21111,14 +20855,16 @@ type lockButton struct {
 	button
 }
 
-func wrapLockButton(obj *externglib.Object) LockButton {
+// WrapLockButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapLockButton(obj *externglib.Object) LockButton {
 	return lockButton{button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalLockButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapLockButton(obj), nil
 }
 
 func NewLockButton(permission gio.Permission) LockButton
@@ -21130,22 +20876,31 @@ func (l lockButton) SetPermission(permission gio.Permission)
 // MapListModel is a list model that takes a list model and maps the items in
 // that model to different items according to a MapListModelMapFunc.
 //
-// Example: Create a list of EventControllers |[ static gpointer
-// map_to_controllers (gpointer widget, gpointer data) { gpointer result =
-// gtk_widget_observe_controllers (widget); g_object_unref (widget); return
-// result; }
+// Example: Create a list of EventControllers
 //
-// widgets = gtk_widget_observe_children (widget);
 //
-// controllers = gtk_map_list_model_new (G_TYPE_LIST_MODEL, widgets,
-// map_to_controllers, NULL, NULL);
+//      static gpointer
+//      map_to_controllers (gpointer widget,
+//                          gpointer data)
+//     {
+//        gpointer result = gtk_widget_observe_controllers (widget);
+//        g_object_unref (widget);
+//        return result;
+//     }
+//
+//      widgets = gtk_widget_observe_children (widget);
+//
+//      controllers = gtk_map_list_model_new (G_TYPE_LIST_MODEL,
+//                                            widgets,
+//                                            map_to_controllers,
+//                                            NULL, NULL);
 //
 //      model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER,
 //                                          controllers);
 //
 //
-//    MapListModel will attempt to discard the mapped objects as soon as
-//    they are no longer needed and recreate them if necessary.
+// MapListModel will attempt to discard the mapped objects as soon as they are
+// no longer needed and recreate them if necessary.
 type MapListModel interface {
 	gextras.Objector
 
@@ -21176,14 +20931,16 @@ type mapListModel struct {
 	*externglib.Object
 }
 
-func wrapMapListModel(obj *externglib.Object) MapListModel {
+// WrapMapListModel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMapListModel(obj *externglib.Object) MapListModel {
 	return mapListModel{*externglib.Object{obj}}
 }
 
 func marshalMapListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMapListModel(obj), nil
 }
 
 func NewMapListModel(model gio.ListModel, mapFunc MapListModelMapFunc) MapListModel
@@ -21211,14 +20968,16 @@ type mediaControls struct {
 	widget
 }
 
-func wrapMediaControls(obj *externglib.Object) MediaControls {
+// WrapMediaControls wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMediaControls(obj *externglib.Object) MediaControls {
 	return mediaControls{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalMediaControls(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMediaControls(obj), nil
 }
 
 func NewMediaControls(stream MediaStream) MediaControls
@@ -21269,14 +21028,16 @@ type mediaFile struct {
 	mediaStream
 }
 
-func wrapMediaFile(obj *externglib.Object) MediaFile {
+// WrapMediaFile wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMediaFile(obj *externglib.Object) MediaFile {
 	return mediaFile{mediaStream{*externglib.Object{obj}}}
 }
 
 func marshalMediaFile(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMediaFile(obj), nil
 }
 
 func NewMediaFile() MediaFile
@@ -21480,14 +21241,16 @@ type mediaStream struct {
 	*externglib.Object
 }
 
-func wrapMediaStream(obj *externglib.Object) MediaStream {
+// WrapMediaStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMediaStream(obj *externglib.Object) MediaStream {
 	return mediaStream{*externglib.Object{obj}}
 }
 
 func marshalMediaStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMediaStream(obj), nil
 }
 
 func (m mediaStream) Ended()
@@ -21572,63 +21335,64 @@ func (m mediaStream) Update(timestamp int64)
 //
 // - halign = start
 //
-// ![](down-start.png)
+//    ! (down-start.png)
 //
 // - halign = center
 //
-// ![](down-center.png)
+//    ! (down-center.png)
 //
 // - halign = end
 //
-// ![](down-end.png)
+//    ! (down-end.png)
 //
 // Direction = Up
 //
 // - halign = start
 //
-// ![](up-start.png)
+//    ! (up-start.png)
 //
 // - halign = center
 //
-// ![](up-center.png)
+//    ! (up-center.png)
 //
 // - halign = end
 //
-// ![](up-end.png)
+//    ! (up-end.png)
 //
 // Direction = Left
 //
 // - valign = start
 //
-// ![](left-start.png)
+//    ! (left-start.png)
 //
 // - valign = center
 //
-// ![](left-center.png)
+//    ! (left-center.png)
 //
 // - valign = end
 //
-// ![](left-end.png)
+//    ! (left-end.png)
 //
 // Direction = Right
 //
 // - valign = start
 //
-// ![](right-start.png)
+//    ! (right-start.png)
 //
 // - valign = center
 //
-// ![](right-center.png)
+//    ! (right-center.png)
 //
 // - valign = end
 //
-// ![](right-end.png)
+//    ! (right-end.png)
 //
 // CSS nodes
 //
 //    menubutton
 //    ╰── button.toggle
 //        ╰── [content]
+//
 //
 // GtkMenuButton has a single CSS node with name menubutton which contains a
 // toggle button node.
@@ -21664,7 +21428,8 @@ type MenuButton interface {
 	// SetCreatePopupFunc sets @func to be called when a popup is about to be
 	// shown. @func should use one of
 	//
-	// - gtk_menu_button_set_popover() - gtk_menu_button_set_menu_model()
+	//    - gtk_menu_button_set_popover()
+	//    - gtk_menu_button_set_menu_model()
 	//
 	// to set a popup for @menu_button. If @func is non-nil, @menu_button will
 	// always be sensitive.
@@ -21714,14 +21479,16 @@ type menuButton struct {
 	widget
 }
 
-func wrapMenuButton(obj *externglib.Object) MenuButton {
+// WrapMenuButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMenuButton(obj *externglib.Object) MenuButton {
 	return menuButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalMenuButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMenuButton(obj), nil
 }
 
 func NewMenuButton() MenuButton
@@ -21770,19 +21537,7 @@ func (m menuButton) SetUseUnderline(useUnderline bool)
 // You can use the Dialog::response signal to know when the user dismissed the
 // dialog.
 //
-// An example for using a modal dialog: |[<!-- language="C" --> GtkDialogFlags
-// flags = GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL; dialog =
-// gtk_message_dialog_new (parent_window, flags, GTK_MESSAGE_ERROR,
-// GTK_BUTTONS_CLOSE, "Error reading “s”: s", filename, g_strerror (errno)); //
-// Destroy the dialog when the user responds to it // (e.g. clicks a button)
-//
-//     g_signal_connect (dialog, "response",
-//                       G_CALLBACK (gtk_window_destroy),
-//                       NULL);
-//
-//
-//    You might do a non-modal MessageDialog simply by omitting the
-//    GTK_DIALOG_MODAL flag:
+// An example for using a modal dialog:
 //
 //     GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
 //     dialog = gtk_message_dialog_new (parent_window,
@@ -21800,10 +21555,11 @@ func (m menuButton) SetUseUnderline(useUnderline bool)
 //                       NULL);
 //
 //
-//    # GtkMessageDialog as GtkBuildable
 //
-//    The GtkMessageDialog implementation of the GtkBuildable interface exposes
-//    the message area as an internal child with the name “message_area”.
+// GtkMessageDialog as GtkBuildable
+//
+// The GtkMessageDialog implementation of the GtkBuildable interface exposes the
+// message area as an internal child with the name “message_area”.
 type MessageDialog interface {
 	Dialog
 
@@ -21822,14 +21578,16 @@ type messageDialog struct {
 	dialog
 }
 
-func wrapMessageDialog(obj *externglib.Object) MessageDialog {
+// WrapMessageDialog wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMessageDialog(obj *externglib.Object) MessageDialog {
 	return messageDialog{dialog{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}}
 }
 
 func marshalMessageDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMessageDialog(obj), nil
 }
 
 func (m messageDialog) MessageArea() Widget
@@ -21845,14 +21603,16 @@ type mnemonicAction struct {
 	shortcutAction
 }
 
-func wrapMnemonicAction(obj *externglib.Object) MnemonicAction {
+// WrapMnemonicAction wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMnemonicAction(obj *externglib.Object) MnemonicAction {
 	return mnemonicAction{shortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalMnemonicAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMnemonicAction(obj), nil
 }
 
 // MnemonicTrigger: a ShortcutTrigger that triggers when a specific mnemonic is
@@ -21868,14 +21628,16 @@ type mnemonicTrigger struct {
 	shortcutTrigger
 }
 
-func wrapMnemonicTrigger(obj *externglib.Object) MnemonicTrigger {
+// WrapMnemonicTrigger wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMnemonicTrigger(obj *externglib.Object) MnemonicTrigger {
 	return mnemonicTrigger{shortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMnemonicTrigger(obj), nil
 }
 
 func NewMnemonicTrigger(keyval uint) MnemonicTrigger
@@ -21903,17 +21665,19 @@ type MountOperation interface {
 }
 
 type mountOperation struct {
-	gio.mountOperation
+	gio.MountOperation
 }
 
-func wrapMountOperation(obj *externglib.Object) MountOperation {
-	return mountOperation{gio.mountOperation{*externglib.Object{obj}}}
+// WrapMountOperation wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMountOperation(obj *externglib.Object) MountOperation {
+	return mountOperation{gio.WrapMountOperation(obj)}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMountOperation(obj), nil
 }
 
 func NewMountOperation(parent Window) MountOperation
@@ -21951,14 +21715,16 @@ type multiFilter struct {
 	filter
 }
 
-func wrapMultiFilter(obj *externglib.Object) MultiFilter {
+// WrapMultiFilter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMultiFilter(obj *externglib.Object) MultiFilter {
 	return multiFilter{filter{*externglib.Object{obj}}}
 }
 
 func marshalMultiFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMultiFilter(obj), nil
 }
 
 func (m multiFilter) Append(filter Filter)
@@ -21981,14 +21747,16 @@ type multiSelection struct {
 	*externglib.Object
 }
 
-func wrapMultiSelection(obj *externglib.Object) MultiSelection {
+// WrapMultiSelection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMultiSelection(obj *externglib.Object) MultiSelection {
 	return multiSelection{*externglib.Object{obj}}
 }
 
 func marshalMultiSelection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMultiSelection(obj), nil
 }
 
 func NewMultiSelection(model gio.ListModel) MultiSelection
@@ -22017,14 +21785,16 @@ type multiSorter struct {
 	sorter
 }
 
-func wrapMultiSorter(obj *externglib.Object) MultiSorter {
+// WrapMultiSorter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMultiSorter(obj *externglib.Object) MultiSorter {
 	return multiSorter{sorter{*externglib.Object{obj}}}
 }
 
 func marshalMultiSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMultiSorter(obj), nil
 }
 
 func NewMultiSorter() MultiSorter
@@ -22045,14 +21815,16 @@ type namedAction struct {
 	shortcutAction
 }
 
-func wrapNamedAction(obj *externglib.Object) NamedAction {
+// WrapNamedAction wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNamedAction(obj *externglib.Object) NamedAction {
 	return namedAction{shortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalNamedAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNamedAction(obj), nil
 }
 
 func NewNamedAction(name string) NamedAction
@@ -22131,14 +21903,16 @@ type nativeDialog struct {
 	*externglib.Object
 }
 
-func wrapNativeDialog(obj *externglib.Object) NativeDialog {
+// WrapNativeDialog wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNativeDialog(obj *externglib.Object) NativeDialog {
 	return nativeDialog{*externglib.Object{obj}}
 }
 
 func marshalNativeDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNativeDialog(obj), nil
 }
 
 func (n nativeDialog) Destroy()
@@ -22170,14 +21944,16 @@ type neverTrigger struct {
 	shortcutTrigger
 }
 
-func wrapNeverTrigger(obj *externglib.Object) NeverTrigger {
+// WrapNeverTrigger wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNeverTrigger(obj *externglib.Object) NeverTrigger {
 	return neverTrigger{shortcutTrigger{*externglib.Object{obj}}}
 }
 
 func marshalNeverTrigger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNeverTrigger(obj), nil
 }
 
 // NoSelection: gtkNoSelection is an implementation of the SelectionModel
@@ -22199,14 +21975,16 @@ type noSelection struct {
 	*externglib.Object
 }
 
-func wrapNoSelection(obj *externglib.Object) NoSelection {
+// WrapNoSelection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNoSelection(obj *externglib.Object) NoSelection {
 	return noSelection{*externglib.Object{obj}}
 }
 
 func marshalNoSelection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNoSelection(obj), nil
 }
 
 func NewNoSelection(model gio.ListModel) NoSelection
@@ -22237,6 +22015,8 @@ func (n noSelection) SetModel(model gio.ListModel)
 // To add a child widget in the notebooks action area, specify "action-start" or
 // “action-end” as the “type” attribute of the <child> element.
 //
+// An example of a UI definition fragment with GtkNotebook:
+//
 //
 //    <object class="GtkNotebook">
 //      <child>
@@ -22250,9 +22030,14 @@ func (n noSelection) SetModel(model gio.ListModel)
 //        </object>
 //      </child>
 //    </object>
+//    ]|
+//
+//
 //
 // CSS nodes
 //
+//
+//    |[<!-- language="plain" -->
 //    notebook
 //    ├── header.top
 //    │   ├── [<action widget>]
@@ -22270,6 +22055,7 @@ func (n noSelection) SetModel(model gio.ListModel)
 //        ├── <child>
 //        ┊
 //        ╰── <child>
+//
 //
 // GtkNotebook has a main CSS node with name `notebook`, a subnode with name
 // `header` and below that a subnode with name `tabs` which contains one subnode
@@ -22297,9 +22083,10 @@ func (n noSelection) SetModel(model gio.ListModel)
 //
 // GtkNotebook uses the following roles:
 //
-// - GTK_ACCESSIBLE_ROLE_GROUP for the notebook widget -
-// GTK_ACCESSIBLE_ROLE_TAB_LIST for the list of tabs - GTK_ACCESSIBLE_ROLE_TAB
-// role for each tab - GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page
+//    - GTK_ACCESSIBLE_ROLE_GROUP for the notebook widget
+//    - GTK_ACCESSIBLE_ROLE_TAB_LIST for the list of tabs
+//    - GTK_ACCESSIBLE_ROLE_TAB role for each tab
+//    - GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page
 type Notebook interface {
 	Widget
 
@@ -22484,14 +22271,16 @@ type notebook struct {
 	widget
 }
 
-func wrapNotebook(obj *externglib.Object) Notebook {
+// WrapNotebook wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNotebook(obj *externglib.Object) Notebook {
 	return notebook{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalNotebook(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNotebook(obj), nil
 }
 
 func NewNotebook() Notebook
@@ -22598,14 +22387,16 @@ type notebookPage struct {
 	*externglib.Object
 }
 
-func wrapNotebookPage(obj *externglib.Object) NotebookPage {
+// WrapNotebookPage wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNotebookPage(obj *externglib.Object) NotebookPage {
 	return notebookPage{*externglib.Object{obj}}
 }
 
 func marshalNotebookPage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNotebookPage(obj), nil
 }
 
 func (n notebookPage) Child() Widget
@@ -22619,14 +22410,16 @@ type nothingAction struct {
 	shortcutAction
 }
 
-func wrapNothingAction(obj *externglib.Object) NothingAction {
+// WrapNothingAction wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNothingAction(obj *externglib.Object) NothingAction {
 	return nothingAction{shortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalNothingAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNothingAction(obj), nil
 }
 
 // NumericSorter: gtkNumericSorter is a Sorter that compares numbers.
@@ -22657,14 +22450,16 @@ type numericSorter struct {
 	sorter
 }
 
-func wrapNumericSorter(obj *externglib.Object) NumericSorter {
+// WrapNumericSorter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNumericSorter(obj *externglib.Object) NumericSorter {
 	return numericSorter{sorter{*externglib.Object{obj}}}
 }
 
 func marshalNumericSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNumericSorter(obj), nil
 }
 
 func NewNumericSorter(expression Expression) NumericSorter
@@ -22688,14 +22483,16 @@ type objectExpression struct {
 	expression
 }
 
-func wrapObjectExpression(obj *externglib.Object) ObjectExpression {
+// WrapObjectExpression wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapObjectExpression(obj *externglib.Object) ObjectExpression {
 	return objectExpression{expression{obj}}
 }
 
 func marshalObjectExpression(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapObjectExpression(obj), nil
 }
 
 func NewObjectExpression(object gextras.Objector) ObjectExpression
@@ -22768,14 +22565,16 @@ type overlay struct {
 	widget
 }
 
-func wrapOverlay(obj *externglib.Object) Overlay {
+// WrapOverlay wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapOverlay(obj *externglib.Object) Overlay {
 	return overlay{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalOverlay(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapOverlay(obj), nil
 }
 
 func NewOverlay() Overlay
@@ -22809,14 +22608,16 @@ type overlayLayout struct {
 	layoutManager
 }
 
-func wrapOverlayLayout(obj *externglib.Object) OverlayLayout {
+// WrapOverlayLayout wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapOverlayLayout(obj *externglib.Object) OverlayLayout {
 	return overlayLayout{layoutManager{*externglib.Object{obj}}}
 }
 
 func marshalOverlayLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapOverlayLayout(obj), nil
 }
 
 func NewOverlayLayout() OverlayLayout
@@ -22838,14 +22639,16 @@ type overlayLayoutChild struct {
 	layoutChild
 }
 
-func wrapOverlayLayoutChild(obj *externglib.Object) OverlayLayoutChild {
+// WrapOverlayLayoutChild wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapOverlayLayoutChild(obj *externglib.Object) OverlayLayoutChild {
 	return overlayLayoutChild{layoutChild{*externglib.Object{obj}}}
 }
 
 func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapOverlayLayoutChild(obj), nil
 }
 
 func (o overlayLayoutChild) ClipOverlay() bool
@@ -22878,9 +22681,13 @@ func (o overlayLayoutChild) SetMeasure(measure bool)
 // mode are triggered.
 //
 // A simple example of PadController usage, assigning button 1 in all modes and
-// pad devices to an "invert-selection" action: |[ GtkPadActionEntry
-// *pad_actions[] = { { GTK_PAD_ACTION_BUTTON, 1, -1, "Invert selection",
-// "pad-actions.invert-selection" }, … };
+// pad devices to an "invert-selection" action:
+//
+//
+//      GtkPadActionEntry *pad_actions[] = {
+//        { GTK_PAD_ACTION_BUTTON, 1, -1, "Invert selection", "pad-actions.invert-selection" },
+//        …
+//      };
 //
 //      …
 //      action_group = g_simple_action_group_new ();
@@ -22891,9 +22698,9 @@ func (o overlayLayoutChild) SetMeasure(measure bool)
 //      pad_controller = gtk_pad_controller_new (action_group, NULL);
 //
 //
-//    The actions belonging to rings/strips will be activated with a parameter
-//    of type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it
-//    is required that those are made stateful and accepting this Type.
+// The actions belonging to rings/strips will be activated with a parameter of
+// type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it is
+// required that those are made stateful and accepting this Type.
 type PadController interface {
 	EventController
 
@@ -22916,14 +22723,16 @@ type padController struct {
 	eventController
 }
 
-func wrapPadController(obj *externglib.Object) PadController {
+// WrapPadController wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPadController(obj *externglib.Object) PadController {
 	return padController{eventController{*externglib.Object{obj}}}
 }
 
 func marshalPadController(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPadController(obj), nil
 }
 
 func NewPadController(group gio.ActionGroup, pad gdk.Device) PadController
@@ -22938,10 +22747,13 @@ func (p padController) SetActionEntries(entries []PadActionEntry)
 // splitting this out of the PrintSettings is that these affect the actual
 // layout of the page, and thus need to be set long before user prints.
 //
-// Margins {#print-margins} The margins specified in this object are the “print
-// margins”, i.e. the parts of the page that the printer cannot print on. These
-// are different from the layout margins that a word processor uses; they are
-// typically used to determine the minimal size for the layout margins
+//
+// Margins
+//
+// The margins specified in this object are the “print margins”, i.e. the parts
+// of the page that the printer cannot print on. These are different from the
+// layout margins that a word processor uses; they are typically used to
+// determine the minimal size for the layout margins.
 //
 // To obtain a PageSetup use gtk_page_setup_new() to get the defaults, or use
 // gtk_print_run_page_setup_dialog() to show the page setup dialog and receive
@@ -23040,14 +22852,16 @@ type pageSetup struct {
 	*externglib.Object
 }
 
-func wrapPageSetup(obj *externglib.Object) PageSetup {
+// WrapPageSetup wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPageSetup(obj *externglib.Object) PageSetup {
 	return pageSetup{*externglib.Object{obj}}
 }
 
 func marshalPageSetup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPageSetup(obj), nil
 }
 
 func NewPageSetup() PageSetup
@@ -23131,21 +22945,6 @@ func (p pageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string)
 //
 // CSS nodes
 //
-//    paned
-//    ├── <child>
-//    ├── separator[.wide]
-//    ╰── <child>
-//
-// GtkPaned has a main CSS node with name paned, and a subnode for the separator
-// with name separator. The subnode gets a .wide style class when the paned is
-// supposed to be wide.
-//
-// In horizontal orientation, the nodes are arranged based on the text
-// direction, so in left-to-right mode, :first-child will select the leftmost
-// child, while it will select the rightmost child in RTL layouts.
-//
-// Creating a paned widget with minimum sizes
-//
 //    GtkWidget *hpaned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
 //    GtkWidget *frame1 = gtk_frame_new (NULL);
 //    GtkWidget *frame2 = gtk_frame_new (NULL);
@@ -23207,14 +23006,16 @@ type paned struct {
 	widget
 }
 
-func wrapPaned(obj *externglib.Object) Paned {
+// WrapPaned wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPaned(obj *externglib.Object) Paned {
 	return paned{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalPaned(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPaned(obj), nil
 }
 
 func NewPaned(orientation Orientation) Paned
@@ -23270,6 +23071,7 @@ func (p paned) SetWideHandle(wide bool)
 //        ├── image.caps-lock-indicator
 //        ┊
 //
+//
 // GtkPasswordEntry has a single CSS node with name entry that carries a
 // .passwordstyle class. The text Css node below it has a child with name image
 // and style class .caps-lock-indicator for the Caps Lock icon, and possibly
@@ -23302,14 +23104,16 @@ type passwordEntry struct {
 	widget
 }
 
-func wrapPasswordEntry(obj *externglib.Object) PasswordEntry {
+// WrapPasswordEntry wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPasswordEntry(obj *externglib.Object) PasswordEntry {
 	return passwordEntry{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalPasswordEntry(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPasswordEntry(obj), nil
 }
 
 func NewPasswordEntry() PasswordEntry
@@ -23325,13 +23129,17 @@ func (p passwordEntry) SetShowPeekIcon(showPeekIcon bool)
 // Picture: the Picture widget displays a Paintable. Many convenience functions
 // are provided to make pictures simple to use. For example, if you want to load
 // an image from a file, and then display that, there’s a convenience function
-// to do this: |[<!-- language="C" --> GtkWidget *widget; widget =
-// gtk_picture_new_for_filename ("myfile.png"); ]| If the file isn’t loaded
-// successfully, the picture will contain a “broken image” icon similar to that
-// used in many web browsers. If you want to handle errors in loading the file
-// yourself, for example by displaying an error message, then load the image
-// with gdk_texture_new_from_file(), then create the Picture with
-// gtk_picture_new_for_paintable().
+// to do this:
+//
+//      GtkWidget *widget;
+//      widget = gtk_picture_new_for_filename ("myfile.png");
+//
+//
+// If the file isn’t loaded successfully, the picture will contain a “broken
+// image” icon similar to that used in many web browsers. If you want to handle
+// errors in loading the file yourself, for example by displaying an error
+// message, then load the image with gdk_texture_new_from_file(), then create
+// the Picture with gtk_picture_new_for_paintable().
 //
 // Sometimes an application will want to avoid depending on external data files,
 // such as image files. See the documentation of #GResource for details. In this
@@ -23433,14 +23241,16 @@ type picture struct {
 	widget
 }
 
-func wrapPicture(obj *externglib.Object) Picture {
+// WrapPicture wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPicture(obj *externglib.Object) Picture {
 	return picture{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalPicture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPicture(obj), nil
 }
 
 func NewPicture() Picture
@@ -23522,13 +23332,19 @@ func (p picture) SetResource(resourcePath string)
 //        <attribute name="verb-icon">edit-paste-symbolic</attribute>
 //      </item>
 //    </section>
+//    ]|
+//
+//
 //
 // CSS nodes
 //
+//
+//    |[<!-- language="plain" -->
 //    popover[.menu]
 //    ├── arrow
 //    ╰── contents.background
 //        ╰── <child>
+//
 //
 // The contents child node always gets the .background style class and the
 // popover itself gets the .menu style class if the popover is menu-like (i.e.
@@ -23630,14 +23446,16 @@ type popover struct {
 	widget
 }
 
-func wrapPopover(obj *externglib.Object) Popover {
+// WrapPopover wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPopover(obj *externglib.Object) Popover {
 	return popover{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalPopover(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPopover(obj), nil
 }
 
 func NewPopover() Popover
@@ -23717,6 +23535,7 @@ func (p popover) SetPosition(position PositionType)
 //      </section>
 //    </menu>
 //
+//
 // Attribute values can be translated using gettext, like other Builder content.
 // `<attribute>` elements can be marked for translation with a
 // `translatable="yes"` attribute. It is also possible to specify message
@@ -23791,14 +23610,16 @@ type popoverMenu struct {
 	popover
 }
 
-func wrapPopoverMenu(obj *externglib.Object) PopoverMenu {
+// WrapPopoverMenu wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPopoverMenu(obj *externglib.Object) PopoverMenu {
 	return popoverMenu{popover{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPopoverMenu(obj), nil
 }
 
 func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu
@@ -23825,6 +23646,7 @@ func (p popoverMenu) SetMenuModel(model gio.MenuModel)
 //    ┊   ╰── popover
 //    ╰── item
 //        ╰── popover
+//
 //
 // GtkPopoverMenuBar has a single CSS node with name menubar, below which each
 // item has its CSS node, and below that the corresponding popover.
@@ -23858,14 +23680,16 @@ type popoverMenuBar struct {
 	widget
 }
 
-func wrapPopoverMenuBar(obj *externglib.Object) PopoverMenuBar {
+// WrapPopoverMenuBar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPopoverMenuBar(obj *externglib.Object) PopoverMenuBar {
 	return popoverMenuBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPopoverMenuBar(obj), nil
 }
 
 func NewPopoverMenuBarFromModel(model gio.MenuModel) PopoverMenuBar
@@ -23985,14 +23809,16 @@ type printContext struct {
 	*externglib.Object
 }
 
-func wrapPrintContext(obj *externglib.Object) PrintContext {
+// WrapPrintContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPrintContext(obj *externglib.Object) PrintContext {
 	return printContext{*externglib.Object{obj}}
 }
 
 func marshalPrintContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPrintContext(obj), nil
 }
 
 func (p printContext) CreatePangoContext() pango.Context
@@ -24149,6 +23975,12 @@ type PrintOperation interface {
 	// operation. Furthermore, it may use a recursive mainloop to show the print
 	// dialog.
 	//
+	// If you call gtk_print_operation_set_allow_async() or set the
+	// PrintOperation:allow-async property the operation will run asynchronously
+	// if this is supported on the platform. The PrintOperation::done signal
+	// will be emitted with the result of the operation when the it is done
+	// (i.e. when the dialog is canceled, or when the print succeeds or fails).
+	//
 	//    if (settings != NULL)
 	//      gtk_print_operation_set_print_settings (print, settings);
 	//
@@ -24184,6 +24016,7 @@ type PrintOperation interface {
 	//    g_object_unref (settings);
 	//       settings = g_object_ref (gtk_print_operation_get_print_settings (print));
 	//     }
+	//
 	//
 	// Note that gtk_print_operation_run() can only be called once on a given
 	// PrintOperation.
@@ -24284,14 +24117,16 @@ type printOperation struct {
 	*externglib.Object
 }
 
-func wrapPrintOperation(obj *externglib.Object) PrintOperation {
+// WrapPrintOperation wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPrintOperation(obj *externglib.Object) PrintOperation {
 	return printOperation{*externglib.Object{obj}}
 }
 
 func marshalPrintOperation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPrintOperation(obj), nil
 }
 
 func NewPrintOperation() PrintOperation
@@ -24547,14 +24382,16 @@ type printSettings struct {
 	*externglib.Object
 }
 
-func wrapPrintSettings(obj *externglib.Object) PrintSettings {
+// WrapPrintSettings wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPrintSettings(obj *externglib.Object) PrintSettings {
 	return printSettings{*externglib.Object{obj}}
 }
 
 func marshalPrintSettings(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPrintSettings(obj), nil
 }
 
 func NewPrintSettings() PrintSettings
@@ -24739,6 +24576,7 @@ func (p printSettings) Unset(key string)
 //    ╰── trough[.empty][.full]
 //        ╰── progress[.pulse]
 //
+//
 // GtkProgressBar has a main CSS node with name progressbar and subnodes with
 // names text and trough, of which the latter has a subnode named progress. The
 // text subnode is only present if text is shown. The progress subnode has the
@@ -24814,14 +24652,16 @@ type progressBar struct {
 	widget
 }
 
-func wrapProgressBar(obj *externglib.Object) ProgressBar {
+// WrapProgressBar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapProgressBar(obj *externglib.Object) ProgressBar {
 	return progressBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalProgressBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapProgressBar(obj), nil
 }
 
 func NewProgressBar() ProgressBar
@@ -24864,14 +24704,16 @@ type propertyExpression struct {
 	expression
 }
 
-func wrapPropertyExpression(obj *externglib.Object) PropertyExpression {
+// WrapPropertyExpression wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPropertyExpression(obj *externglib.Object) PropertyExpression {
 	return propertyExpression{expression{obj}}
 }
 
 func marshalPropertyExpression(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPropertyExpression(obj), nil
 }
 
 func NewPropertyExpression(thisType externglib.Type, expression Expression, propertyName string) PropertyExpression
@@ -24991,14 +24833,16 @@ type _range struct {
 	widget
 }
 
-func wrapRange(obj *externglib.Object) Range {
+// WrapRange wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRange(obj *externglib.Object) Range {
 	return _range{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalRange(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRange(obj), nil
 }
 
 func (_ _range) Adjustment() Adjustment
@@ -25059,18 +24903,6 @@ func (_ _range) SetValue(value float64)
 // default manager created by GTK
 //
 // Adding a new recently used file is as simple as:
-//
-//    GtkRecentManager *manager;
-//
-//    manager = gtk_recent_manager_get_default ();
-//    gtk_recent_manager_add_item (manager, file_uri);
-//
-//
-// The RecentManager will try to gather all the needed information from the file
-// itself through GIO.
-//
-// Looking up the meta-data associated with a recently used file given its URI
-// requires calling gtk_recent_manager_lookup_item():
 //
 //    GtkRecentManager *manager;
 //    GtkRecentInfo *info;
@@ -25155,14 +24987,16 @@ type recentManager struct {
 	*externglib.Object
 }
 
-func wrapRecentManager(obj *externglib.Object) RecentManager {
+// WrapRecentManager wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRecentManager(obj *externglib.Object) RecentManager {
 	return recentManager{*externglib.Object{obj}}
 }
 
 func marshalRecentManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRecentManager(obj), nil
 }
 
 func NewRecentManager() RecentManager
@@ -25246,14 +25080,16 @@ type revealer struct {
 	widget
 }
 
-func wrapRevealer(obj *externglib.Object) Revealer {
+// WrapRevealer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRevealer(obj *externglib.Object) Revealer {
 	return revealer{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalRevealer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRevealer(obj), nil
 }
 
 func NewRevealer() Revealer
@@ -25316,6 +25152,7 @@ func (r revealer) SetTransitionType(transition RevealerTransitionType)
 //        ├── [fill]
 //        ├── [highlight]
 //        ╰── slider
+//
 //
 // GtkScale has a main CSS node with name scale and a subnode for its contents,
 // with subnodes named trough and slider.
@@ -25422,14 +25259,16 @@ type scale struct {
 	_range
 }
 
-func wrapScale(obj *externglib.Object) Scale {
+// WrapScale wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapScale(obj *externglib.Object) Scale {
 	return scale{_range{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalScale(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapScale(obj), nil
 }
 
 func NewScale(orientation Orientation, adjustment Adjustment) Scale
@@ -25502,14 +25341,16 @@ type scaleButton struct {
 	widget
 }
 
-func wrapScaleButton(obj *externglib.Object) ScaleButton {
+// WrapScaleButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapScaleButton(obj *externglib.Object) ScaleButton {
 	return scaleButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalScaleButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapScaleButton(obj), nil
 }
 
 func NewScaleButton(min float64, max float64, step float64, icons []string) ScaleButton
@@ -25550,6 +25391,7 @@ func (s scaleButton) SetValue(value float64)
 //        ╰── trough
 //            ╰── slider
 //
+//
 // GtkScrollbar has a main CSS node with name scrollbar and a subnode for its
 // contents. The main node gets the .horizontal or .vertical style classes
 // applied, depending on the scrollbar's orientation.
@@ -25579,14 +25421,16 @@ type scrollbar struct {
 	widget
 }
 
-func wrapScrollbar(obj *externglib.Object) Scrollbar {
+// WrapScrollbar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapScrollbar(obj *externglib.Object) Scrollbar {
 	return scrollbar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalScrollbar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapScrollbar(obj), nil
 }
 
 func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar
@@ -25814,14 +25658,16 @@ type scrolledWindow struct {
 	widget
 }
 
-func wrapScrolledWindow(obj *externglib.Object) ScrolledWindow {
+// WrapScrolledWindow wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapScrolledWindow(obj *externglib.Object) ScrolledWindow {
 	return scrolledWindow{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalScrolledWindow(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapScrolledWindow(obj), nil
 }
 
 func NewScrolledWindow() ScrolledWindow
@@ -25907,8 +25753,8 @@ func (s scrolledWindow) UnsetPlacement()
 //
 // Creating a search bar
 //
-// [A simple
-// example](https://gitlab.gnome.org/GNOME/gtk/tree/master/examples/search-bar.c)
+// A simple example
+// (https://gitlab.gnome.org/GNOME/gtk/tree/master/examples/search-bar.c)
 //
 // CSS nodes
 //
@@ -25917,6 +25763,7 @@ func (s scrolledWindow) UnsetPlacement()
 //        ╰── box
 //             ├── [child]
 //             ╰── [button.close]
+//
 //
 // GtkSearchBar has a main CSS node with name searchbar. It has a child node
 // with name revealer that contains a node with name box. The box node contains
@@ -25963,14 +25810,16 @@ type searchBar struct {
 	widget
 }
 
-func wrapSearchBar(obj *externglib.Object) SearchBar {
+// WrapSearchBar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSearchBar(obj *externglib.Object) SearchBar {
 	return searchBar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSearchBar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSearchBar(obj), nil
 }
 
 func NewSearchBar() SearchBar
@@ -26020,6 +25869,7 @@ func (s searchBar) SetShowCloseButton(visible bool)
 //    entry.search
 //    ╰── text
 //
+//
 // GtkSearchEntry has a single CSS node with name entry that carries a .sarch
 // style class, and the text node is a child of that.
 //
@@ -26049,14 +25899,16 @@ type searchEntry struct {
 	widget
 }
 
-func wrapSearchEntry(obj *externglib.Object) SearchEntry {
+// WrapSearchEntry wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSearchEntry(obj *externglib.Object) SearchEntry {
 	return searchEntry{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSearchEntry(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSearchEntry(obj), nil
 }
 
 func NewSearchEntry() SearchEntry
@@ -26084,14 +25936,16 @@ type selectionFilterModel struct {
 	*externglib.Object
 }
 
-func wrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModel {
+// WrapSelectionFilterModel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSelectionFilterModel(obj *externglib.Object) SelectionFilterModel {
 	return selectionFilterModel{*externglib.Object{obj}}
 }
 
 func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSelectionFilterModel(obj), nil
 }
 
 func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel
@@ -26123,14 +25977,16 @@ type separator struct {
 	widget
 }
 
-func wrapSeparator(obj *externglib.Object) Separator {
+// WrapSeparator wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSeparator(obj *externglib.Object) Separator {
 	return separator{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSeparator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSeparator(obj), nil
 }
 
 func NewSeparator(orientation Orientation) Separator
@@ -26138,10 +25994,10 @@ func NewSeparator(orientation Orientation) Separator
 // Settings gtkSettings provide a mechanism to share global settings between
 // applications.
 //
-// On the X window system, this sharing is realized by an
-// [XSettings](http://www.freedesktop.org/wiki/Specifications/xsettings-spec)
-// manager that is usually part of the desktop environment, along with utilities
-// that let the user change these settings.
+// On the X window system, this sharing is realized by an XSettings
+// (http://www.freedesktop.org/wiki/Specifications/xsettings-spec) manager that
+// is usually part of the desktop environment, along with utilities that let the
+// user change these settings.
 //
 // On Wayland, the settings are obtained either via a settings portal, or by
 // reading desktop settings from DConf.
@@ -26174,14 +26030,16 @@ type settings struct {
 	*externglib.Object
 }
 
-func wrapSettings(obj *externglib.Object) Settings {
+// WrapSettings wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSettings(obj *externglib.Object) Settings {
 	return settings{*externglib.Object{obj}}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSettings(obj), nil
 }
 
 func (s settings) ResetProperty(name string)
@@ -26223,14 +26081,16 @@ type shortcut struct {
 	*externglib.Object
 }
 
-func wrapShortcut(obj *externglib.Object) Shortcut {
+// WrapShortcut wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapShortcut(obj *externglib.Object) Shortcut {
 	return shortcut{*externglib.Object{obj}}
 }
 
 func marshalShortcut(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapShortcut(obj), nil
 }
 
 func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut
@@ -26261,12 +26121,12 @@ func (s shortcut) SetTrigger(trigger ShortcutTrigger)
 //
 // GTK provides various actions:
 //
-// - MnemonicAction: a shortcut action that calls gtk_widget_mnemonic_activate()
-// - CallbackAction: a shortcut action that invokes a given callback -
-// SignalAction: a shortcut action that emits a given signal - ActivateAction: a
-// shortcut action that calls gtk_widget_activate() - NamedAction: a shortcut
-// action that calls gtk_widget_activate_action() - NothingAction: a shortcut
-// action that does nothing
+//    - MnemonicAction: a shortcut action that calls gtk_widget_mnemonic_activate()
+//    - CallbackAction: a shortcut action that invokes a given callback
+//    - SignalAction: a shortcut action that emits a given signal
+//    - ActivateAction: a shortcut action that calls gtk_widget_activate()
+//    - NamedAction: a shortcut action that calls gtk_widget_activate_action()
+//    - NothingAction: a shortcut action that does nothing
 //
 //
 // GtkShortcutAction as GtkBuildable
@@ -26298,14 +26158,16 @@ type shortcutAction struct {
 	*externglib.Object
 }
 
-func wrapShortcutAction(obj *externglib.Object) ShortcutAction {
+// WrapShortcutAction wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapShortcutAction(obj *externglib.Object) ShortcutAction {
 	return shortcutAction{*externglib.Object{obj}}
 }
 
 func marshalShortcutAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapShortcutAction(obj), nil
 }
 
 func NewShortcutActionParseString(string string) ShortcutAction
@@ -26335,6 +26197,8 @@ func (s shortcutAction) ToString() string
 // GtkShortcutControllers can be creates in ui files to set up shortcuts in the
 // same place as the widgets.
 //
+// An example of a UI definition fragment with GtkShortcutController:
+//
 //
 //      <object class='GtkButton'>
 //        <child>
@@ -26349,6 +26213,7 @@ func (s shortcutAction) ToString() string
 //          </object>
 //        </child>
 //      </object>
+//
 //
 // This example creates a ActivateAction for triggering the `activate` signal of
 // the GtkButton. See gtk_shortcut_action_parse_string() for the syntax for
@@ -26405,14 +26270,16 @@ type shortcutController struct {
 	eventController
 }
 
-func wrapShortcutController(obj *externglib.Object) ShortcutController {
+// WrapShortcutController wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapShortcutController(obj *externglib.Object) ShortcutController {
 	return shortcutController{eventController{*externglib.Object{obj}}}
 }
 
 func marshalShortcutController(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapShortcutController(obj), nil
 }
 
 func NewShortcutController() ShortcutController
@@ -26452,14 +26319,16 @@ type shortcutLabel struct {
 	widget
 }
 
-func wrapShortcutLabel(obj *externglib.Object) ShortcutLabel {
+// WrapShortcutLabel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapShortcutLabel(obj *externglib.Object) ShortcutLabel {
 	return shortcutLabel{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalShortcutLabel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapShortcutLabel(obj), nil
 }
 
 func NewShortcutLabel(accelerator string) ShortcutLabel
@@ -26544,14 +26413,16 @@ type shortcutTrigger struct {
 	*externglib.Object
 }
 
-func wrapShortcutTrigger(obj *externglib.Object) ShortcutTrigger {
+// WrapShortcutTrigger wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapShortcutTrigger(obj *externglib.Object) ShortcutTrigger {
 	return shortcutTrigger{*externglib.Object{obj}}
 }
 
 func marshalShortcutTrigger(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapShortcutTrigger(obj), nil
 }
 
 func NewShortcutTriggerParseString(string string) ShortcutTrigger
@@ -26586,14 +26457,16 @@ type shortcutsGroup struct {
 	box
 }
 
-func wrapShortcutsGroup(obj *externglib.Object) ShortcutsGroup {
+// WrapShortcutsGroup wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapShortcutsGroup(obj *externglib.Object) ShortcutsGroup {
 	return shortcutsGroup{box{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalShortcutsGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapShortcutsGroup(obj), nil
 }
 
 // ShortcutsSection: a GtkShortcutsSection collects all the keyboard shortcuts
@@ -26614,14 +26487,16 @@ type shortcutsSection struct {
 	box
 }
 
-func wrapShortcutsSection(obj *externglib.Object) ShortcutsSection {
+// WrapShortcutsSection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapShortcutsSection(obj *externglib.Object) ShortcutsSection {
 	return shortcutsSection{box{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalShortcutsSection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapShortcutsSection(obj), nil
 }
 
 // ShortcutsShortcut: a GtkShortcutsShortcut represents a single keyboard
@@ -26635,14 +26510,16 @@ type shortcutsShortcut struct {
 	widget
 }
 
-func wrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcut {
+// WrapShortcutsShortcut wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapShortcutsShortcut(obj *externglib.Object) ShortcutsShortcut {
 	return shortcutsShortcut{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapShortcutsShortcut(obj), nil
 }
 
 // ShortcutsWindow: a GtkShortcutsWindow shows brief information about the
@@ -26660,34 +26537,34 @@ func marshalShortcutsShortcut(p uintptr) (interface{}, error) {
 //
 // A simple example:
 //
-// ![](gedit-shortcuts.png)
+// ! (gedit-shortcuts.png)
 //
 // This example has as single section. As you can see, the shortcut groups are
 // arranged in columns, and spread across several pages if there are too many to
 // find on a single page.
 //
-// The .ui file for this example can be found
-// [here](https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-gedit.ui).
+// The .ui file for this example can be found here
+// (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-gedit.ui).
 //
 // An example with multiple views:
 //
-// ![](clocks-shortcuts.png)
+// ! (clocks-shortcuts.png)
 //
 // This example shows a ShortcutsWindow that has been configured to show only
 // the shortcuts relevant to the "stopwatch" view.
 //
-// The .ui file for this example can be found
-// [here](https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-clocks.ui).
+// The .ui file for this example can be found here
+// (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-clocks.ui).
 //
 // An example with multiple sections:
 //
-// ![](builder-shortcuts.png)
+// ! (builder-shortcuts.png)
 //
 // This example shows a ShortcutsWindow with two sections, "Editor Shortcuts"
 // and "Terminal Shortcuts".
 //
-// The .ui file for this example can be found
-// [here](https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
+// The .ui file for this example can be found here
+// (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
 type ShortcutsWindow interface {
 	Window
 }
@@ -26696,14 +26573,16 @@ type shortcutsWindow struct {
 	window
 }
 
-func wrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
+// WrapShortcutsWindow wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapShortcutsWindow(obj *externglib.Object) ShortcutsWindow {
 	return shortcutsWindow{window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapShortcutsWindow(obj), nil
 }
 
 // SignalAction: a ShortcutAction that emits a signal.
@@ -26721,14 +26600,16 @@ type signalAction struct {
 	shortcutAction
 }
 
-func wrapSignalAction(obj *externglib.Object) SignalAction {
+// WrapSignalAction wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSignalAction(obj *externglib.Object) SignalAction {
 	return signalAction{shortcutAction{*externglib.Object{obj}}}
 }
 
 func marshalSignalAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSignalAction(obj), nil
 }
 
 func NewSignalAction(signalName string) SignalAction
@@ -26739,26 +26620,28 @@ func (s signalAction) SignalName() string
 // code can connect to to manage listitems. Signals are emitted for every
 // listitem in the same order:
 //
-// 1. SignalListItemFactory::setup is emitted to set up permanent things on the
-// listitem. This usually means constructing the widgets used in the row and
-// adding them to the listitem.
+//    1. SignalListItemFactory::setup is emitted to set up permanent things
+//    on the listitem. This usually means constructing the widgets used in the
+//    row and adding them to the listitem.
 //
-// 2. SignalListItemFactory::bind is emitted to bind the item passed via
-// ListItem:item to the widgets that have been created in step 1 or to add
-// item-specific widgets. Signals are connected to listen to changes - both to
-// changes in the item to update the widgets or to changes in the widgets to
-// update the item. After this signal has been called, the listitem may be shown
-// in a list widget.
+//    2. SignalListItemFactory::bind is emitted to bind the item passed via
+//    ListItem:item to the widgets that have been created in step 1 or to
+//    add item-specific widgets. Signals are connected to listen to changes -
+//    both to changes in the item to update the widgets or to changes in the
+//    widgets to update the item. After this signal has been called, the
+//    listitem may be shown in a list widget.
 //
-// 3. SignalListItemFactory::unbind is emitted to undo everything done in step
-// 2. Usually this means disconnecting signal handlers. Once this signal has
-// been called, the listitem will no longer be used in a list widget.
+//    3. SignalListItemFactory::unbind is emitted to undo everything done
+//    in step 2. Usually this means disconnecting signal handlers. Once this
+//    signal has been called, the listitem will no longer be used in a list
+//    widget.
 //
-// 4. SignalListItemFactory::bind and SignalListItemFactory::unbind may be
-// emitted multiple times again to bind the listitem for use with new items. By
-// reusing listitems, potentially costly setup can be avoided. However, it means
-// code needs to make sure to properly clean up the listitem in step 3 so that
-// no information from the previous use leaks into the next use.
+//    4. SignalListItemFactory::bind and SignalListItemFactory::unbind
+//    may be emitted multiple times again to bind the listitem for use with
+//    new items. By reusing listitems, potentially costly setup can be
+//    avoided. However, it means code needs to make sure to properly clean
+//    up the listitem in step 3 so that no information from the previous
+//    use leaks into the next use.
 //
 // 5. SignalListItemFactory::teardown is emitted to allow undoing the effects of
 // SignalListItemFactory::setup. After this signal was emitted on a listitem,
@@ -26780,14 +26663,16 @@ type signalListItemFactory struct {
 	listItemFactory
 }
 
-func wrapSignalListItemFactory(obj *externglib.Object) SignalListItemFactory {
+// WrapSignalListItemFactory wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSignalListItemFactory(obj *externglib.Object) SignalListItemFactory {
 	return signalListItemFactory{listItemFactory{*externglib.Object{obj}}}
 }
 
 func marshalSignalListItemFactory(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSignalListItemFactory(obj), nil
 }
 
 func NewSignalListItemFactory() SignalListItemFactory
@@ -26846,14 +26731,16 @@ type singleSelection struct {
 	*externglib.Object
 }
 
-func wrapSingleSelection(obj *externglib.Object) SingleSelection {
+// WrapSingleSelection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSingleSelection(obj *externglib.Object) SingleSelection {
 	return singleSelection{*externglib.Object{obj}}
 }
 
 func marshalSingleSelection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSingleSelection(obj), nil
 }
 
 func NewSingleSelection(model gio.ListModel) SingleSelection
@@ -26930,6 +26817,8 @@ func (s singleSelection) SetSelected(position uint)
 // that may contain multiple <widget> elements, one for each member of the size
 // group. The ”name” attribute gives the id of the widget.
 //
+// An example of a UI definition fragment with GtkSizeGroup:
+//
 //
 //    <object class="GtkSizeGroup">
 //      <property name="mode">horizontal</property>
@@ -26938,6 +26827,7 @@ func (s singleSelection) SetSelected(position uint)
 //        <widget name="radio2"/>
 //      </widgets>
 //    </object>
+//
 type SizeGroup interface {
 	gextras.Objector
 
@@ -26969,14 +26859,16 @@ type sizeGroup struct {
 	*externglib.Object
 }
 
-func wrapSizeGroup(obj *externglib.Object) SizeGroup {
+// WrapSizeGroup wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSizeGroup(obj *externglib.Object) SizeGroup {
 	return sizeGroup{*externglib.Object{obj}}
 }
 
 func marshalSizeGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSizeGroup(obj), nil
 }
 
 func NewSizeGroup(mode SizeGroupMode) SizeGroup
@@ -27025,14 +26917,16 @@ type sliceListModel struct {
 	*externglib.Object
 }
 
-func wrapSliceListModel(obj *externglib.Object) SliceListModel {
+// WrapSliceListModel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSliceListModel(obj *externglib.Object) SliceListModel {
 	return sliceListModel{*externglib.Object{obj}}
 }
 
 func marshalSliceListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSliceListModel(obj), nil
 }
 
 func NewSliceListModel(model gio.ListModel, offset uint, size uint) SliceListModel
@@ -27270,17 +27164,19 @@ type Snapshot interface {
 }
 
 type snapshot struct {
-	gdk.snapshot
+	gdk.Snapshot
 }
 
-func wrapSnapshot(obj *externglib.Object) Snapshot {
-	return snapshot{gdk.snapshot{*externglib.Object{obj}}}
+// WrapSnapshot wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSnapshot(obj *externglib.Object) Snapshot {
+	return snapshot{gdk.WrapSnapshot(obj)}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSnapshot(obj), nil
 }
 
 func NewSnapshot() Snapshot
@@ -27399,9 +27295,12 @@ type SortListModel interface {
 	// finish the sorting operation if this was a linear algorithm. So this
 	// number is not related to how many items are already correctly sorted.
 	//
-	//    pending = gtk_sort_list_model_get_pending (self);
-	//    model = gtk_sort_list_model_get_model (self);
-	//    progress = 1.0 - pending / (double) MAX (1, g_list_model_get_n_items (model));
+	// If you want to estimate the progress, you can use code like this:
+	//
+	//      pending = gtk_sort_list_model_get_pending (self);
+	//      model = gtk_sort_list_model_get_model (self);
+	//      progress = 1.0 - pending / (double) MAX (1, g_list_model_get_n_items (model));
+	//
 	//
 	// If no sort operation is ongoing - in particular when
 	// SortListModel:incremental is false - this function returns 0.
@@ -27436,14 +27335,16 @@ type sortListModel struct {
 	*externglib.Object
 }
 
-func wrapSortListModel(obj *externglib.Object) SortListModel {
+// WrapSortListModel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSortListModel(obj *externglib.Object) SortListModel {
 	return sortListModel{*externglib.Object{obj}}
 }
 
 func marshalSortListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSortListModel(obj), nil
 }
 
 func NewSortListModel(model gio.ListModel, sorter Sorter) SortListModel
@@ -27515,14 +27416,16 @@ type sorter struct {
 	*externglib.Object
 }
 
-func wrapSorter(obj *externglib.Object) Sorter {
+// WrapSorter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSorter(obj *externglib.Object) Sorter {
 	return sorter{*externglib.Object{obj}}
 }
 
 func marshalSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSorter(obj), nil
 }
 
 func (s sorter) Changed(change SorterChange)
@@ -27547,80 +27450,13 @@ func (s sorter) Order() SorterOrder
 //
 // Using a GtkSpinButton to get an integer
 //
-//    // Provides a function to retrieve an integer value from a GtkSpinButton
-//    // and creates a spin button to model percentage values.
-//
-//    int
-//    grab_int_value (GtkSpinButton *button,
-//                    gpointer       user_data)
-//    {
-//      return gtk_spin_button_get_value_as_int (button);
-//    }
-//
-//    void
-//    create_integer_spin_button (void)
-//    {
-//
-//      GtkWidget *window, *button;
-//      GtkAdjustment *adjustment;
-//
-//      adjustment = gtk_adjustment_new (50.0, 0.0, 100.0, 1.0, 5.0, 0.0);
-//
-//      window = gtk_window_new ();
-//
-//      // creates the spinbutton, with no decimal places
-//      button = gtk_spin_button_new (adjustment, 1.0, 0);
-//      gtk_window_set_child (GTK_WINDOW (window), button);
-//
-//      gtk_widget_show (window);
-//    }
-//
-//
-// Using a GtkSpinButton to get a floating point value
-//
-//    // Provides a function to retrieve a floating point value from a
-//    // GtkSpinButton, and creates a high precision spin button.
-//
-//    float
-//    grab_float_value (GtkSpinButton *button,
-//                      gpointer       user_data)
-//    {
-//      return gtk_spin_button_get_value (button);
-//    }
-//
-//    void
-//    create_floating_spin_button (void)
-//    {
-//      GtkWidget *window, *button;
-//      GtkAdjustment *adjustment;
-//
-//      adjustment = gtk_adjustment_new (2.500, 0.0, 5.0, 0.001, 0.1, 0.0);
-//
-//      window = gtk_window_new ();
-//
-//      // creates the spinbutton, with three decimal places
-//      button = gtk_spin_button_new (adjustment, 0.001, 3);
-//      gtk_window_set_child (GTK_WINDOW (window), button);
-//
-//      gtk_widget_show (window);
-//    }
-//
-//
-// CSS nodes
-//
-//    spinbutton.horizontal
-//    ├── text
-//    │    ├── undershoot.left
-//    │    ╰── undershoot.right
-//    ├── button.down
-//    ╰── button.up
-//
 //    spinbutton.vertical
 //    ├── button.up
 //    ├── text
 //    │    ├── undershoot.left
 //    │    ╰── undershoot.right
 //    ╰── button.down
+//
 //
 // GtkSpinButtons main CSS node has the name spinbutton. It creates subnodes for
 // the entry and the two buttons, with these names. The button nodes have the
@@ -27714,14 +27550,16 @@ type spinButton struct {
 	widget
 }
 
-func wrapSpinButton(obj *externglib.Object) SpinButton {
+// WrapSpinButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSpinButton(obj *externglib.Object) SpinButton {
 	return spinButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSpinButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSpinButton(obj), nil
 }
 
 func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinButton
@@ -27805,14 +27643,16 @@ type spinner struct {
 	widget
 }
 
-func wrapSpinner(obj *externglib.Object) Spinner {
+// WrapSpinner wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSpinner(obj *externglib.Object) Spinner {
 	return spinner{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSpinner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSpinner(obj), nil
 }
 
 func NewSpinner() Spinner
@@ -27838,7 +27678,11 @@ func (s spinner) Stop()
 // additional per-child properties. You obtain the StackPage for a child with
 // gtk_stack_get_page().
 //
+//
 // GtkStack as GtkBuildable
+//
+// To set child-specific properties in a .ui file, create GtkStackPage objects
+// explicitly, and set the child widget as a property on it:
 //
 //
 //      <object class="GtkStack" id="stack">
@@ -27853,6 +27697,7 @@ func (s spinner) Stop()
 //            </property>
 //          </object>
 //        </child>
+//
 //
 //
 // CSS nodes
@@ -27966,14 +27811,16 @@ type stack struct {
 	widget
 }
 
-func wrapStack(obj *externglib.Object) Stack {
+// WrapStack wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStack(obj *externglib.Object) Stack {
 	return stack{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalStack(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapStack(obj), nil
 }
 
 func NewStack() Stack
@@ -28068,14 +27915,16 @@ type stackPage struct {
 	*externglib.Object
 }
 
-func wrapStackPage(obj *externglib.Object) StackPage {
+// WrapStackPage wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStackPage(obj *externglib.Object) StackPage {
 	return stackPage{*externglib.Object{obj}}
 }
 
 func marshalStackPage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapStackPage(obj), nil
 }
 
 func (s stackPage) Child() Widget
@@ -28135,14 +27984,16 @@ type stackSidebar struct {
 	widget
 }
 
-func wrapStackSidebar(obj *externglib.Object) StackSidebar {
+// WrapStackSidebar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStackSidebar(obj *externglib.Object) StackSidebar {
 	return stackSidebar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalStackSidebar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapStackSidebar(obj), nil
 }
 
 func NewStackSidebar() StackSidebar
@@ -28189,14 +28040,16 @@ type stackSwitcher struct {
 	widget
 }
 
-func wrapStackSwitcher(obj *externglib.Object) StackSwitcher {
+// WrapStackSwitcher wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStackSwitcher(obj *externglib.Object) StackSwitcher {
 	return stackSwitcher{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalStackSwitcher(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapStackSwitcher(obj), nil
 }
 
 func NewStackSwitcher() StackSwitcher
@@ -28263,14 +28116,16 @@ type statusbar struct {
 	widget
 }
 
-func wrapStatusbar(obj *externglib.Object) Statusbar {
+// WrapStatusbar wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStatusbar(obj *externglib.Object) Statusbar {
 	return statusbar{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalStatusbar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapStatusbar(obj), nil
 }
 
 func NewStatusbar() Statusbar
@@ -28318,14 +28173,16 @@ type stringFilter struct {
 	filter
 }
 
-func wrapStringFilter(obj *externglib.Object) StringFilter {
+// WrapStringFilter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStringFilter(obj *externglib.Object) StringFilter {
 	return stringFilter{filter{*externglib.Object{obj}}}
 }
 
 func marshalStringFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapStringFilter(obj), nil
 }
 
 func NewStringFilter(expression Expression) StringFilter
@@ -28361,6 +28218,8 @@ func (s stringFilter) SetSearch(search string)
 // elements for each item. Each <item> element supports the regular translation
 // attributes “translatable”, “context” and “comments”.
 //
+// Here is a UI definition fragment specifying a GtkStringList
+//
 //
 //    <object class="GtkStringList">
 //      <items>
@@ -28369,6 +28228,7 @@ func (s stringFilter) SetSearch(search string)
 //        <item translatable="yes">Subway</item>
 //      </items>
 //    </object>
+//
 type StringList interface {
 	gextras.Objector
 
@@ -28406,6 +28266,7 @@ type StringList interface {
 	//
 	//
 	//    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
+	//
 	Take(string string)
 }
 
@@ -28413,14 +28274,16 @@ type stringList struct {
 	*externglib.Object
 }
 
-func wrapStringList(obj *externglib.Object) StringList {
+// WrapStringList wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStringList(obj *externglib.Object) StringList {
 	return stringList{*externglib.Object{obj}}
 }
 
 func marshalStringList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapStringList(obj), nil
 }
 
 func NewStringList(strings []string) StringList
@@ -28446,14 +28309,16 @@ type stringObject struct {
 	*externglib.Object
 }
 
-func wrapStringObject(obj *externglib.Object) StringObject {
+// WrapStringObject wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStringObject(obj *externglib.Object) StringObject {
 	return stringObject{*externglib.Object{obj}}
 }
 
 func marshalStringObject(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapStringObject(obj), nil
 }
 
 func NewStringObject(string string) StringObject
@@ -28487,14 +28352,16 @@ type stringSorter struct {
 	sorter
 }
 
-func wrapStringSorter(obj *externglib.Object) StringSorter {
+// WrapStringSorter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStringSorter(obj *externglib.Object) StringSorter {
 	return stringSorter{sorter{*externglib.Object{obj}}}
 }
 
 func marshalStringSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapStringSorter(obj), nil
 }
 
 func NewStringSorter(expression Expression) StringSorter
@@ -28521,7 +28388,8 @@ func (s stringSorter) SetIgnoreCase(ignoreCase bool)
 // will also be updated automatically if any of these settings change on the
 // widget.
 //
-// Style Classes {#gtkstylecontext-classes}
+//
+// Style Classes
 //
 // Widgets can add style classes to their context, which can be used to
 // associate different styles by class. The documentation for individual widgets
@@ -28556,9 +28424,13 @@ type StyleContext interface {
 	//
 	//     <!-- language="CSS" -->
 	//    entry.search { ... }
+	//    ]|
 	//
-	//     <!-- language="CSS" -->
+	//    While any widget defining a “search” class would be
+	//    matched by:
+	//    |[ <!-- language="CSS" -->
 	//    .search { ... }
+	//
 	AddClass(className string)
 	// AddProvider adds a style provider to @context, to be used in style
 	// construction. Note that a style provider added by this function only
@@ -28638,14 +28510,16 @@ type styleContext struct {
 	*externglib.Object
 }
 
-func wrapStyleContext(obj *externglib.Object) StyleContext {
+// WrapStyleContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapStyleContext(obj *externglib.Object) StyleContext {
 	return styleContext{*externglib.Object{obj}}
 }
 
 func marshalStyleContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapStyleContext(obj), nil
 }
 
 func (s styleContext) AddClass(className string)
@@ -28699,6 +28573,7 @@ func (s styleContext) ToString(flags StyleContextPrintFlags) string
 //    ├── label
 //    ╰── slider
 //
+//
 // GtkSwitch has four css nodes, the main node with the name switch and subnodes
 // for the slider and the on and off labels. Neither of them is using any style
 // classes.
@@ -28730,14 +28605,16 @@ type _switch struct {
 	widget
 }
 
-func wrapSwitch(obj *externglib.Object) Switch {
+// WrapSwitch wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSwitch(obj *externglib.Object) Switch {
 	return _switch{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalSwitch(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSwitch(obj), nil
 }
 
 func NewSwitch() Switch
@@ -28777,6 +28654,7 @@ func (_ _switch) SetState(state bool)
 //    ├── [selection]
 //    ├── [block-cursor]
 //    ╰── [window.popup]
+//
 //
 // GtkText has a main node with the name text. Depending on the properties of
 // the widget, the .read-only style class may appear.
@@ -28905,9 +28783,8 @@ type Text interface {
 	// If the current contents are longer than the given length, then they will
 	// be truncated to fit.
 	//
-	//    This is equivalent to getting @self's EntryBuffer and
-	//    calling gtk_entry_buffer_set_max_length() on it.
-	//
+	// This is equivalent to getting @self's EntryBuffer and calling
+	// gtk_entry_buffer_set_max_length() on it. ]|
 	SetMaxLength(length int)
 	// SetOverwriteMode sets whether the text is overwritten when typing in the
 	// Text.
@@ -28949,14 +28826,16 @@ type text struct {
 	widget
 }
 
-func wrapText(obj *externglib.Object) Text {
+// WrapText wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapText(obj *externglib.Object) Text {
 	return text{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalText(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapText(obj), nil
 }
 
 func NewText() Text
@@ -29432,14 +29311,16 @@ type textBuffer struct {
 	*externglib.Object
 }
 
-func wrapTextBuffer(obj *externglib.Object) TextBuffer {
+// WrapTextBuffer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTextBuffer(obj *externglib.Object) TextBuffer {
 	return textBuffer{*externglib.Object{obj}}
 }
 
 func marshalTextBuffer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTextBuffer(obj), nil
 }
 
 func NewTextBuffer(table TextTagTable) TextBuffer
@@ -29600,14 +29481,16 @@ type textChildAnchor struct {
 	*externglib.Object
 }
 
-func wrapTextChildAnchor(obj *externglib.Object) TextChildAnchor {
+// WrapTextChildAnchor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTextChildAnchor(obj *externglib.Object) TextChildAnchor {
 	return textChildAnchor{*externglib.Object{obj}}
 }
 
 func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTextChildAnchor(obj), nil
 }
 
 func NewTextChildAnchor() TextChildAnchor
@@ -29668,14 +29551,16 @@ type textMark struct {
 	*externglib.Object
 }
 
-func wrapTextMark(obj *externglib.Object) TextMark {
+// WrapTextMark wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTextMark(obj *externglib.Object) TextMark {
 	return textMark{*externglib.Object{obj}}
 }
 
 func marshalTextMark(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTextMark(obj), nil
 }
 
 func NewTextMark(name string, leftGravity bool) TextMark
@@ -29734,14 +29619,16 @@ type textTag struct {
 	*externglib.Object
 }
 
-func wrapTextTag(obj *externglib.Object) TextTag {
+// WrapTextTag wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTextTag(obj *externglib.Object) TextTag {
 	return textTag{*externglib.Object{obj}}
 }
 
 func marshalTextTag(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTextTag(obj), nil
 }
 
 func NewTextTag(name string) TextTag
@@ -29762,12 +29649,15 @@ func (t textTag) SetPriority(priority int)
 // The GtkTextTagTable implementation of the GtkBuildable interface supports
 // adding tags by specifying “tag” as the “type” attribute of a <child> element.
 //
+// An example of a UI definition fragment specifying tags:
+//
 //
 //    <object class="GtkTextTagTable">
 //     <child type="tag">
 //       <object class="GtkTextTag"/>
 //     </child>
 //    </object>
+//
 type TextTagTable interface {
 	gextras.Objector
 
@@ -29796,14 +29686,16 @@ type textTagTable struct {
 	*externglib.Object
 }
 
-func wrapTextTagTable(obj *externglib.Object) TextTagTable {
+// WrapTextTagTable wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTextTagTable(obj *externglib.Object) TextTagTable {
 	return textTagTable{*externglib.Object{obj}}
 }
 
 func marshalTextTagTable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTextTagTable(obj), nil
 }
 
 func NewTextTagTable() TextTagTable
@@ -29832,6 +29724,7 @@ func (t textTagTable) Remove(tag TextTag)
 //    ├── border.right
 //    ├── border.bottom
 //    ╰── [window.popup]
+//
 //
 // GtkTextView has a main css node with name textview and style class .view, and
 // subnodes for each of the border windows, and the main text area, with names
@@ -30211,14 +30104,16 @@ type textView struct {
 	widget
 }
 
-func wrapTextView(obj *externglib.Object) TextView {
+// WrapTextView wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTextView(obj *externglib.Object) TextView {
 	return textView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalTextView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTextView(obj), nil
 }
 
 func NewTextView() TextView
@@ -30385,7 +30280,7 @@ func (t textView) WindowToBufferCoords(win TextWindowType, windowX int, windowY 
 // GtkToggleButton has a single CSS node with name button. To differentiate it
 // from a plain Button, it gets the .toggle style class.
 //
-// Creating two ToggleButton widgets
+// Creating two ToggleButton widgets.
 //
 //    static void output_state (GtkToggleButton *source, gpointer user_data) {
 //      printf ("Active: d\n", gtk_toggle_button_get_active (source));
@@ -30446,14 +30341,16 @@ type toggleButton struct {
 	button
 }
 
-func wrapToggleButton(obj *externglib.Object) ToggleButton {
+// WrapToggleButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapToggleButton(obj *externglib.Object) ToggleButton {
 	return toggleButton{button{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalToggleButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapToggleButton(obj), nil
 }
 
 func NewToggleButton() ToggleButton
@@ -30490,8 +30387,8 @@ func (t toggleButton) Toggled()
 // tooltip’s markup, setting an image from a named icon, or even putting in a
 // custom widget.
 //
-// Return true from your query-tooltip handler. This causes the tooltip to be
-// show. If you return false, it will not be shown.
+//    Return true from your query-tooltip handler. This causes the tooltip to be
+//    show. If you return false, it will not be shown.
 type Tooltip interface {
 	gextras.Objector
 
@@ -30534,14 +30431,16 @@ type tooltip struct {
 	*externglib.Object
 }
 
-func wrapTooltip(obj *externglib.Object) Tooltip {
+// WrapTooltip wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTooltip(obj *externglib.Object) Tooltip {
 	return tooltip{*externglib.Object{obj}}
 }
 
 func marshalTooltip(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTooltip(obj), nil
 }
 
 func (t tooltip) SetCustom(customWidget Widget)
@@ -30582,6 +30481,7 @@ func (t tooltip) SetTipArea(rect *gdk.Rectangle)
 //    ├── [expander]
 //    ╰── <child>
 //
+//
 // GtkTreeExpander has zero or one CSS nodes with the name "expander" that
 // should display the expander icon. The node will be `:checked` when it is
 // expanded. If the node is not expandable, an "indent" node will be displayed
@@ -30604,7 +30504,8 @@ type TreeExpander interface {
 	//
 	// This call is essentially equivalent to calling:
 	//
-	//    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
+	//      gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
+	//
 	Item() gextras.Objector
 	// ListRow gets the list row managed by @self.
 	ListRow() TreeListRow
@@ -30618,14 +30519,16 @@ type treeExpander struct {
 	widget
 }
 
-func wrapTreeExpander(obj *externglib.Object) TreeExpander {
+// WrapTreeExpander wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTreeExpander(obj *externglib.Object) TreeExpander {
 	return treeExpander{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalTreeExpander(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTreeExpander(obj), nil
 }
 
 func NewTreeExpander() TreeExpander
@@ -30692,14 +30595,16 @@ type treeListModel struct {
 	*externglib.Object
 }
 
-func wrapTreeListModel(obj *externglib.Object) TreeListModel {
+// WrapTreeListModel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTreeListModel(obj *externglib.Object) TreeListModel {
 	return treeListModel{*externglib.Object{obj}}
 }
 
 func marshalTreeListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTreeListModel(obj), nil
 }
 
 func NewTreeListModel(root gio.ListModel, passthrough bool, autoexpand bool, createFunc TreeListModelCreateModelFunc) TreeListModel
@@ -30784,14 +30689,16 @@ type treeListRow struct {
 	*externglib.Object
 }
 
-func wrapTreeListRow(obj *externglib.Object) TreeListRow {
+// WrapTreeListRow wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTreeListRow(obj *externglib.Object) TreeListRow {
 	return treeListRow{*externglib.Object{obj}}
 }
 
 func marshalTreeListRow(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTreeListRow(obj), nil
 }
 
 func (t treeListRow) ChildRow(position uint) TreeListRow
@@ -30824,6 +30731,7 @@ func (t treeListRow) SetExpanded(expanded bool)
 //    sort_model = gtk_sort_list_model_new (tree_model, sorter);
 //    selection = gtk_single_selection_new (sort_model);
 //    gtk_column_view_set_model (view, G_LIST_MODEL (selection));
+//
 type TreeListRowSorter interface {
 	Sorter
 
@@ -30840,14 +30748,16 @@ type treeListRowSorter struct {
 	sorter
 }
 
-func wrapTreeListRowSorter(obj *externglib.Object) TreeListRowSorter {
+// WrapTreeListRowSorter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTreeListRowSorter(obj *externglib.Object) TreeListRowSorter {
 	return treeListRowSorter{sorter{*externglib.Object{obj}}}
 }
 
 func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTreeListRowSorter(obj), nil
 }
 
 func NewTreeListRowSorter(sorter Sorter) TreeListRowSorter
@@ -31012,14 +30922,16 @@ type treeModelFilter struct {
 	*externglib.Object
 }
 
-func wrapTreeModelFilter(obj *externglib.Object) TreeModelFilter {
+// WrapTreeModelFilter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTreeModelFilter(obj *externglib.Object) TreeModelFilter {
 	return treeModelFilter{*externglib.Object{obj}}
 }
 
 func marshalTreeModelFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTreeModelFilter(obj), nil
 }
 
 func (t treeModelFilter) ClearCache()
@@ -31058,40 +30970,6 @@ func (t treeModelFilter) SetVisibleFunc(_func TreeModelFilterVisibleFunc)
 // the second.
 //
 // Using a TreeModelSort
-//
-//    {
-//      GtkTreeView *tree_view1;
-//      GtkTreeView *tree_view2;
-//      GtkTreeModel *sort_model1;
-//      GtkTreeModel *sort_model2;
-//      GtkTreeModel *child_model;
-//
-//      // get the child model
-//      child_model = get_my_model ();
-//
-//      // Create the first tree
-//      sort_model1 = gtk_tree_model_sort_new_with_model (child_model);
-//      tree_view1 = gtk_tree_view_new_with_model (sort_model1);
-//
-//      // Create the second tree
-//      sort_model2 = gtk_tree_model_sort_new_with_model (child_model);
-//      tree_view2 = gtk_tree_view_new_with_model (sort_model2);
-//
-//      // Now we can sort the two models independently
-//      gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (sort_model1),
-//                                            COLUMN_1, GTK_SORT_ASCENDING);
-//      gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (sort_model2),
-//                                            COLUMN_1, GTK_SORT_DESCENDING);
-//    }
-//
-//
-// To demonstrate how to access the underlying child model from the sort model,
-// the next example will be a callback for the TreeSelection
-// TreeSelection::changed signal. In this callback, we get a string from
-// COLUMN_1 of the model. We then modify the string, find the same selected row
-// on the child model, and change the row there.
-//
-// Accessing the child model of in a selection changed callback
 //
 //    void
 //    selection_changed (GtkTreeSelection *selection, gpointer data)
@@ -31181,14 +31059,16 @@ type treeModelSort struct {
 	*externglib.Object
 }
 
-func wrapTreeModelSort(obj *externglib.Object) TreeModelSort {
+// WrapTreeModelSort wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTreeModelSort(obj *externglib.Object) TreeModelSort {
 	return treeModelSort{*externglib.Object{obj}}
 }
 
 func marshalTreeModelSort(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTreeModelSort(obj), nil
 }
 
 func NewTreeModelSortWithModel(childModel TreeModel) TreeModelSort
@@ -31253,7 +31133,10 @@ type TreeSelection interface {
 	// you may want to convert the returned list into a list of
 	// TreeRowReferences. To do this, you can use gtk_tree_row_reference_new().
 	//
+	// To free the return value, use:
+	//
 	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
+	//
 	SelectedRows() (model TreeModel, list *glib.List)
 	// TreeView returns the tree view associated with @selection.
 	TreeView() TreeView
@@ -31304,14 +31187,16 @@ type treeSelection struct {
 	*externglib.Object
 }
 
-func wrapTreeSelection(obj *externglib.Object) TreeSelection {
+// WrapTreeSelection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTreeSelection(obj *externglib.Object) TreeSelection {
 	return treeSelection{*externglib.Object{obj}}
 }
 
 func marshalTreeSelection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTreeSelection(obj), nil
 }
 
 func (t treeSelection) CountSelectedRows() int
@@ -31368,6 +31253,8 @@ func (t treeSelection) UnselectRange(startPath *TreePath, endPath *TreePath)
 // elements, each specifying one model column. The “type” attribute specifies
 // the data type for the column.
 //
+// An example of a UI Definition fragment for a tree store:
+//
 //
 //    <object class="GtkTreeStore">
 //      <columns>
@@ -31376,6 +31263,7 @@ func (t treeSelection) UnselectRange(startPath *TreePath, endPath *TreePath)
 //        <column type="gint"/>
 //      </columns>
 //    </object>
+//
 type TreeStore interface {
 	gextras.Objector
 
@@ -31478,14 +31366,16 @@ type treeStore struct {
 	*externglib.Object
 }
 
-func wrapTreeStore(obj *externglib.Object) TreeStore {
+// WrapTreeStore wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTreeStore(obj *externglib.Object) TreeStore {
 	return treeStore{*externglib.Object{obj}}
 }
 
 func marshalTreeStore(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTreeStore(obj), nil
 }
 
 func NewTreeStorev(nColumns int, types []externglib.Type) TreeStore
@@ -31536,7 +31426,7 @@ func (t treeStore) Swap(a *TreeIter, b *TreeIter)
 // Several different coordinate systems are exposed in the GtkTreeView API.
 // These are:
 //
-// ![](tree-view-coordinates.png)
+// ! (tree-view-coordinates.png)
 //
 // Coordinate systems in GtkTreeView API:
 //
@@ -31563,6 +31453,8 @@ func (t treeStore) Swap(a *TreeIter, b *TreeIter)
 // TreeViewColumn objects as <child> elements and exposes the internal
 // TreeSelection in UI definitions.
 //
+// An example of a UI definition fragment with GtkTreeView:
+//
 //
 //    <object class="GtkTreeView" id="treeview">
 //      <property name="model">liststore1</property>
@@ -31583,9 +31475,14 @@ func (t treeStore) Swap(a *TreeIter, b *TreeIter)
 //        </object>
 //      </child>
 //    </object>
+//    ]|
+//
+//
 //
 // CSS nodes
 //
+//
+//    |[<!-- language="plain" -->
 //    treeview.view
 //    ├── header
 //    │   ├── <column header>
@@ -31594,6 +31491,7 @@ func (t treeStore) Swap(a *TreeIter, b *TreeIter)
 //    │
 //    ├── [rubberband]
 //    ╰── [dndtarget]
+//
 //
 // GtkTreeView has a main CSS node with name treeview and style class .view. It
 // has a subnode with name header, which is the parent for all the column header
@@ -32051,14 +31949,16 @@ type treeView struct {
 	widget
 }
 
-func wrapTreeView(obj *externglib.Object) TreeView {
+// WrapTreeView wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTreeView(obj *externglib.Object) TreeView {
 	return treeView{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalTreeView(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTreeView(obj), nil
 }
 
 func NewTreeView() TreeView
@@ -32439,14 +32339,16 @@ type treeViewColumn struct {
 	externglib.InitiallyUnowned
 }
 
-func wrapTreeViewColumn(obj *externglib.Object) TreeViewColumn {
+// WrapTreeViewColumn wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTreeViewColumn(obj *externglib.Object) TreeViewColumn {
 	return treeViewColumn{externglib.InitiallyUnowned{*externglib.Object{obj}}}
 }
 
 func marshalTreeViewColumn(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTreeViewColumn(obj), nil
 }
 
 func NewTreeViewColumn() TreeViewColumn
@@ -32602,14 +32504,16 @@ type video struct {
 	widget
 }
 
-func wrapVideo(obj *externglib.Object) Video {
+// WrapVideo wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapVideo(obj *externglib.Object) Video {
 	return video{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalVideo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapVideo(obj), nil
 }
 
 func NewVideo() Video
@@ -32677,14 +32581,16 @@ type viewport struct {
 	widget
 }
 
-func wrapViewport(obj *externglib.Object) Viewport {
+// WrapViewport wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapViewport(obj *externglib.Object) Viewport {
 	return viewport{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalViewport(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapViewport(obj), nil
 }
 
 func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport
@@ -32707,14 +32613,16 @@ type volumeButton struct {
 	scaleButton
 }
 
-func wrapVolumeButton(obj *externglib.Object) VolumeButton {
+// WrapVolumeButton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapVolumeButton(obj *externglib.Object) VolumeButton {
 	return volumeButton{scaleButton{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}}
 }
 
 func marshalVolumeButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapVolumeButton(obj), nil
 }
 
 func NewVolumeButton() VolumeButton
@@ -32722,7 +32630,8 @@ func NewVolumeButton() VolumeButton
 // Widget: gtkWidget is the base class all widgets in GTK derive from. It
 // manages the widget lifecycle, states and style.
 //
-// Height-for-width Geometry Management {#geometry-management}
+//
+// Height-for-width Geometry Management
 //
 // GTK uses a height-for-width (and width-for-height) geometry management
 // system. Height-for-width means that a widget can change how much vertical
@@ -32793,244 +32702,6 @@ func NewVolumeButton() VolumeButton
 //
 // Here are some examples of how a GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH widget
 // generally deals with width-for-height requests:
-//
-//    static void
-//    foo_widget_measure (GtkWidget      *widget,
-//                        GtkOrientation  orientation,
-//                        int             for_size,
-//                        int            *minimum_size,
-//                        int            *natural_size,
-//                        int            *minimum_baseline,
-//                        int            *natural_baseline)
-//    {
-//      if (orientation == GTK_ORIENTATION_HORIZONTAL)
-//        {
-//          // Calculate minimum and natural width
-//        }
-//      else // VERTICAL
-//        {
-//           if (i_am_in_height_for_width_mode)
-//             {
-//               int min_width, dummy;
-//
-//               // First, get the minimum width of our widget
-//               GTK_WIDGET_GET_CLASS (widget)->measure (widget, GTK_ORIENTATION_HORIZONTAL, -1,
-//                                                       &min_width, &dummy, &dummy, &dummy);
-//
-//               // Now use the minimum width to retrieve the minimum and natural height to display
-//               // that width.
-//               GTK_WIDGET_GET_CLASS (widget)->measure (widget, GTK_ORIENTATION_VERTICAL, min_width,
-//                                                       minimum_size, natural_size, &dummy, &dummy);
-//             }
-//           else
-//             {
-//               // ... some widgets do both.
-//             }
-//       }
-//    }
-//
-//
-// Often a widget needs to get its own request during size request or
-// allocation. For example, when computing height it may need to also compute
-// width. Or when deciding how to use an allocation, the widget may need to know
-// its natural size. In these cases, the widget should be careful to call its
-// virtual methods directly, like in the code example above.
-//
-// It will not work to use the wrapper function gtk_widget_measure() inside your
-// own WidgetClass.size-allocate() implementation. These return a request
-// adjusted by SizeGroup, the widget's align and expand flags as well as its CSS
-// style. If a widget used the wrappers inside its virtual method
-// implementations, then the adjustments (such as widget margins) would be
-// applied twice. GTK therefore does not allow this and will warn if you try to
-// do it.
-//
-// Of course if you are getting the size request for another widget, such as a
-// child widget, you must use gtk_widget_measure(). Otherwise, you would not
-// properly consider widget margins, SizeGroup, and so forth.
-//
-// GTK also supports baseline vertical alignment of widgets. This means that
-// widgets are positioned such that the typographical baseline of widgets in the
-// same row are aligned. This happens if a widget supports baselines, has a
-// vertical alignment of GTK_ALIGN_BASELINE, and is inside a widget that
-// supports baselines and has a natural “row” that it aligns to the baseline, or
-// a baseline assigned to it by the grandparent.
-//
-// Baseline alignment support for a widget is also done by the
-// WidgetClass.measure() virtual function. It allows you to report both a
-// minimum and natural size.
-//
-// If a widget ends up baseline aligned it will be allocated all the space in
-// the parent as if it was GTK_ALIGN_FILL, but the selected baseline can be
-// found via gtk_widget_get_allocated_baseline(). If this has a value other than
-// -1 you need to align the widget such that the baseline appears at the
-// position.
-//
-//
-// GtkWidget as GtkBuildable
-//
-// The GtkWidget implementation of the Buildable interface supports a custom
-// elements to specify various aspects of widgets that are not directly
-// expressed as properties.
-//
-// If the parent widget uses a LayoutManager, Widget supports a custom
-// `<layout>` element, used to define layout properties:
-//
-//    <object class="MyGrid" id="grid1">
-//      <child>
-//        <object class="GtkLabel" id="label1">
-//          <property name="label">Description</property>
-//          <layout>
-//            <property name="column">0</property>
-//            <property name="row">0</property>
-//            <property name="row-span">1</property>
-//            <property name="column-span">1</property>
-//          </layout>
-//        </object>
-//      </child>
-//      <child>
-//        <object class="GtkEntry" id="description_entry">
-//          <layout>
-//            <property name="column">1</property>
-//            <property name="row">0</property>
-//            <property name="row-span">1</property>
-//            <property name="column-span">1</property>
-//          </layout>
-//        </object>
-//      </child>
-//    </object>
-//
-// GtkWidget allows style information such as style classes to be associated
-// with widgets, using the custom `<style>` element:
-//
-//    <object class="GtkButton" id="button1">
-//      <style>
-//        <class name="my-special-button-class"/>
-//        <class name="dark-button"/>
-//      </style>
-//    </object>
-//
-// GtkWidget allows defining accessibility information, such as properties,
-// relations, and states, using the custom `<accessibility>` element:
-//
-//    <object class="GtkButton" id="button1">
-//      <accessibility>
-//        <property name="label">Download</property>
-//        <relation name="labelled-by">label1</relation>
-//      </accessibility>
-//    </object>
-//
-// Building composite widgets from template XML {#composite-templates}
-//
-// GtkWidget exposes some facilities to automate the procedure of creating
-// composite widgets using Builder interface description language.
-//
-// To create composite widgets with Builder XML, one must associate the
-// interface description with the widget class at class initialization time
-// using gtk_widget_class_set_template().
-//
-// The interface description semantics expected in composite template
-// descriptions is slightly different from regular Builder XML.
-//
-// Unlike regular interface descriptions, gtk_widget_class_set_template() will
-// expect a `<template>` tag as a direct child of the toplevel `<interface>`
-// tag. The `<template>` tag must specify the “class” attribute which must be
-// the type name of the widget. Optionally, the “parent” attribute may be
-// specified to specify the direct parent type of the widget type, this is
-// ignored by the GtkBuilder but required for Glade to introspect what kind of
-// properties and internal children exist for a given type when the actual type
-// does not exist.
-//
-// The XML which is contained inside the `<template>` tag behaves as if it were
-// added to the `<object>` tag defining @widget itself. You may set properties
-// on @widget by inserting `<property>` tags into the `<template>` tag, and also
-// add `<child>` tags to add children and extend @widget in the normal way you
-// would with `<object>` tags.
-//
-// Additionally, `<object>` tags can also be added before and after the initial
-// `<template>` tag in the normal way, allowing one to define auxiliary objects
-// which might be referenced by other widgets declared as children of the
-// `<template>` tag.
-//
-// An example of a GtkBuilder Template Definition:
-//
-//    <interface>
-//      <template class="FooWidget" parent="GtkBox">
-//        <property name="orientation">horizontal</property>
-//        <property name="spacing">4</property>
-//        <child>
-//          <object class="GtkButton" id="hello_button">
-//            <property name="label">Hello World</property>
-//            <signal name="clicked" handler="hello_button_clicked" object="FooWidget" swapped="yes"/>
-//          </object>
-//        </child>
-//        <child>
-//          <object class="GtkButton" id="goodbye_button">
-//            <property name="label">Goodbye World</property>
-//          </object>
-//        </child>
-//      </template>
-//    </interface>
-//
-// Typically, you'll place the template fragment into a file that is bundled
-// with your project, using #GResource. In order to load the template, you need
-// to call gtk_widget_class_set_template_from_resource() from the class
-// initialization of your Widget type:
-//
-//    static void
-//    foo_widget_class_init (FooWidgetClass *klass)
-//    {
-//      // ...
-//
-//      gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass),
-//                                                   "/com/example/ui/foowidget.ui");
-//    }
-//
-//
-// You will also need to call gtk_widget_init_template() from the instance
-// initialization function:
-//
-//    static void
-//    foo_widget_init (FooWidget *self)
-//    {
-//      // ...
-//      gtk_widget_init_template (GTK_WIDGET (self));
-//    }
-//
-// You can access widgets defined in the template using the
-// gtk_widget_get_template_child() function, but you will typically declare a
-// pointer in the instance private data structure of your type using the same
-// name as the widget in the template definition, and call
-// gtk_widget_class_bind_template_child_private() with that name, e.g.
-//
-//    typedef struct {
-//      GtkWidget *hello_button;
-//      GtkWidget *goodbye_button;
-//    } FooWidgetPrivate;
-//
-//    G_DEFINE_TYPE_WITH_PRIVATE (FooWidget, foo_widget, GTK_TYPE_BOX)
-//
-//    static void
-//    foo_widget_class_init (FooWidgetClass *klass)
-//    {
-//      // ...
-//      gtk_widget_class_set_template_from_resource (GTK_WIDGET_CLASS (klass),
-//                                                   "/com/example/ui/foowidget.ui");
-//      gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (klass),
-//                                                    FooWidget, hello_button);
-//      gtk_widget_class_bind_template_child_private (GTK_WIDGET_CLASS (klass),
-//                                                    FooWidget, goodbye_button);
-//    }
-//
-//    static void
-//    foo_widget_init (FooWidget *widget)
-//    {
-//
-//    }
-//
-//
-// You can also use gtk_widget_class_bind_template_callback() to connect a
-// signal callback defined in the template with a function visible in the scope
-// of the class, e.g.
 //
 //    // the signal handler has the instance and user data swapped
 //    // because of the swapped="yes" attribute in the template XML
@@ -34125,14 +33796,16 @@ type widget struct {
 	externglib.InitiallyUnowned
 }
 
-func wrapWidget(obj *externglib.Object) Widget {
+// WrapWidget wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWidget(obj *externglib.Object) Widget {
 	return widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}
 }
 
 func marshalWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWidget(obj), nil
 }
 
 func (w widget) ActionSetEnabled(actionName string, enabled bool)
@@ -34483,14 +34156,16 @@ type widgetPaintable struct {
 	*externglib.Object
 }
 
-func wrapWidgetPaintable(obj *externglib.Object) WidgetPaintable {
+// WrapWidgetPaintable wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWidgetPaintable(obj *externglib.Object) WidgetPaintable {
 	return widgetPaintable{*externglib.Object{obj}}
 }
 
 func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWidgetPaintable(obj), nil
 }
 
 func NewWidgetPaintable(widget Widget) WidgetPaintable
@@ -34516,6 +34191,7 @@ func (w widgetPaintable) SetWidget(widget Widget)
 //    window.background
 //    ├── <child>
 //    ╰── <titlebar child>.titlebar [.default-decoration]
+//
 //
 // GtkWindow has a main CSS node with name window and style class .background.
 //
@@ -34893,14 +34569,16 @@ type window struct {
 	widget
 }
 
-func wrapWindow(obj *externglib.Object) Window {
+// WrapWindow wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWindow(obj *externglib.Object) Window {
 	return window{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalWindow(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWindow(obj), nil
 }
 
 func NewWindow() Window
@@ -35032,15 +34710,20 @@ func (w window) Unminimize()
 //        </object>
 //      </child>
 //    </object>
+//    ]|
+//
 //
 //
 // CSS nodes
 //
+//
+//    |[<!-- language="plain" -->
 //    windowcontrols
 //    ├── [image.icon]
 //    ├── [button.minimize]
 //    ├── [button.maximize]
 //    ╰── [button.close]
+//
 //
 // A WindowControls' CSS node is called windowcontrols. It contains subnodes
 // corresponding to each title button. Which of the title buttons exist and
@@ -35088,14 +34771,16 @@ type windowControls struct {
 	widget
 }
 
-func wrapWindowControls(obj *externglib.Object) WindowControls {
+// WrapWindowControls wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWindowControls(obj *externglib.Object) WindowControls {
 	return windowControls{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalWindowControls(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWindowControls(obj), nil
 }
 
 func NewWindowControls(side PackType) WindowControls
@@ -35139,14 +34824,16 @@ type windowGroup struct {
 	*externglib.Object
 }
 
-func wrapWindowGroup(obj *externglib.Object) WindowGroup {
+// WrapWindowGroup wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWindowGroup(obj *externglib.Object) WindowGroup {
 	return windowGroup{*externglib.Object{obj}}
 }
 
 func marshalWindowGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWindowGroup(obj), nil
 }
 
 func NewWindowGroup() WindowGroup
@@ -35183,14 +34870,16 @@ type windowHandle struct {
 	widget
 }
 
-func wrapWindowHandle(obj *externglib.Object) WindowHandle {
+// WrapWindowHandle wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapWindowHandle(obj *externglib.Object) WindowHandle {
 	return windowHandle{widget{externglib.InitiallyUnowned{*externglib.Object{obj}}}}
 }
 
 func marshalWindowHandle(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapWindowHandle(obj), nil
 }
 
 func NewWindowHandle() WindowHandle

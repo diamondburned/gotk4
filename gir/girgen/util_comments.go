@@ -1,7 +1,6 @@
 package girgen
 
 import (
-	"fmt"
 	"go/doc"
 	"html"
 	"regexp"
@@ -19,15 +18,12 @@ const (
 
 var (
 	cmtNamespaceRegex = regexp.MustCompile(`#[A-Z]\w+?[A-Z]`)
-	cmtArgumentsRegex = regexp.MustCompile(`@\w+`)
+	cmtArgumentRegex  = regexp.MustCompile(`@\w+`)
 	cmtPrimitiveRegex = regexp.MustCompile(`%\w+`)
-	cmtFunctionsRegex = regexp.MustCompile(`\w+\(\)`)
-	cmtMdHeadingRegex = regexp.MustCompile(`#+ `)
-	cmtOpenBlockRegex = regexp.MustCompile(`(?ms)\|\[(?:&lt;!--.*--&gt;\n)?(.*)(?:\]\|)?`)
-	cmtWhitespaceProc = strings.NewReplacer(
-		"\n\n", "\n\n",
-		"\n", " ",
-	)
+	cmtFunctionRegex  = regexp.MustCompile(`\w+\(\)`)
+	cmtHeadingRegex   = regexp.MustCompile(`\n*#+ (.*?)(?: ?#+ ?\{#.*?\})?\n+`)
+	cmtCodeblockRegex = regexp.MustCompile(`(?ms)\n*\|\[(?:<!--.*-->\n)?(.*)(?:\]\|)?\]\|\n*`)
+	cmtHyperlinkRegex = regexp.MustCompile(`\[(.*?)\]\((.*?)\)`)
 )
 
 // GoDoc renders a Go documentation string from the given GIR doc. If doc is
@@ -66,8 +62,7 @@ func lowerFirstWord(paragraph string) string {
 // CommentReflowLinesIndent reflows the given cmt paragraphs into idiomatic Go
 // comment strings. It is automatically indented.
 func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
-	// true if the sentence isn't already Go-idiomatic.
-	needsColon := false
+	cmt = html.UnescapeString(cmt)
 
 	switch {
 	case strings.HasPrefix(cmt, "#") && nthWordSimplePresent(cmt, 1):
@@ -80,14 +75,37 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 	default:
 		// Trim the word "this" away to make the sentence gramatically correct.
 		cmt = strings.TrimPrefix(cmt, "this ")
-		needsColon = true
+		cmt = self + ": " + lowerFirstLetter(cmt)
 	}
+
+	// Fix up the codeblocks and render it using GoDoc format.
+	cmt = cmtCodeblockRegex.ReplaceAllStringFunc(cmt, func(match string) string {
+		matches := cmtCodeblockRegex.FindStringSubmatch(match)
+
+		lines := strings.Split(matches[1], "\n")
+		for i, line := range lines {
+			lines[i] = "   " + line
+		}
+
+		// Use our own new lines.
+		return "\n\n" + strings.Join(lines, "\n") + "\n\n"
+	})
+
+	// Fix up headers in the preprocessing stage. We also sanitize the trailing
+	// new lines here.
+	cmt = cmtHeadingRegex.ReplaceAllString(cmt, "\n\n$1\n\n")
 
 	// Wipe the namespace prefix syntax.
 	cmt = cmtNamespaceRegex.ReplaceAllStringFunc(cmt, func(str string) string {
 		// Replace "#?" with just "?".
 		return str[len(str)-1:]
 	})
+
+	// Undo all hyperlinks.
+	cmt = cmtHyperlinkRegex.ReplaceAllString(cmt, "$1 ($2)")
+
+	// Fix up new lines before we throw this into ToText so to not confuse it.
+	cmt = tidyParagraphs(cmt)
 
 	// TODO: Replace snake-cased functions with known ones in the namespace.
 	// Prepend a C prefix otherwise.
@@ -126,69 +144,9 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 		}
 	})
 
-	// Split into paragraphs and parse each of them.
-	paragraphs := strings.Split(cmt, "\n\n")
-	codeblock := false
-
-	for i, paragraph := range paragraphs {
-		codeblockChange := openOrCloseCodeblock(paragraph)
-
-		switch {
-		// Codeblock:
-		case codeblock || codeblockChange:
-			// Toggle codeblock state.
-			if codeblockChange {
-				codeblock = !codeblock
-			}
-
-			// Parse the codeblock.
-			var lines []string
-			if m := cmtOpenBlockRegex.FindStringSubmatch(paragraph); m != nil {
-				lines = strings.Split(m[1], "\n")
-			} else {
-				paragraph = strings.TrimSuffix(paragraph, "]|")
-				lines = strings.Split(paragraph, "\n")
-			}
-
-			// Edge case w/ GVariant's comment.
-			if len(lines) > 0 && lines[len(lines)-1] == "]|" {
-				lines = lines[:len(lines)-1]
-				codeblock = false
-			}
-
-			// Render the codeblock in GoDoc markup.
-			for i, line := range lines {
-				lines[i] = "  " + line
-			}
-
-			paragraphs[i] = strings.Join(lines, "\n")
-
-		// Headings, but account for any number of hashes.
-		case strings.HasPrefix(strings.SplitN(paragraph, " ", 2)[0], "#"):
-			// Go's heading syntax doesn't require the hash.
-			paragraph = cmtMdHeadingRegex.ReplaceAllString(paragraph, "")
-			// Ensure there's no period.
-			paragraphs[i] = strings.TrimSuffix(paragraph, ".")
-
-		case !codeblock:
-			fallthrough
-
-		// Normal paragraphs.
-		default:
-			paragraph = strings.TrimSpace(cmtWhitespaceProc.Replace(paragraph))
-			if i == 0 && needsColon {
-				// Prefix the paragraph with the current entity.
-				paragraph = fmt.Sprintf("%s: %s", self, lowerFirstLetter(paragraph))
-			}
-			paragraphs[i] = paragraph
-		}
-	}
-
 	// Account for the indentation in the column limit.
 	col := CommentsColumnLimit - (CommentsTabWidth * indentLvl)
 
-	cmt = strings.Join(paragraphs, "\n\n")
-	cmt = html.UnescapeString(cmt)
 	cmt = docText(cmt, col)
 
 	ident := strings.Repeat("\t", indentLvl)
@@ -203,6 +161,21 @@ func CommentReflowLinesIndent(indentLvl int, self, cmt string) string {
 	}
 
 	return strings.Join(lines, "\n")
+}
+
+// tidyParagraphs cleans up new lines without touching codeblocks.
+func tidyParagraphs(text string) string {
+	paragraphs := strings.Split(text, "\n\n")
+
+	for i, paragraph := range paragraphs {
+		if strings.HasPrefix(paragraph, " ") {
+			continue
+		}
+
+		paragraphs[i] = strings.ReplaceAll(paragraph, "\n", " ")
+	}
+
+	return strings.Join(paragraphs, "\n\n")
 }
 
 func docText(p string, col int) string {

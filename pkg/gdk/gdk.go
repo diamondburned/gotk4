@@ -922,10 +922,10 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 // Calling this may change the current GL context.
 func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
 	var arg0 *cairo.Context
-	arg0 = wrapContext(cr)
+	arg0 = cairo.WrapContext(cr)
 
 	var arg1 Surface
-	arg1 = wrapSurface(externglib.Take(unsafe.Pointer(surface)))
+	arg1 = gdk.WrapSurface(externglib.Take(unsafe.Pointer(surface.Native())))
 
 	var arg2 int
 	arg2 = int(source)
@@ -954,10 +954,10 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType 
 // CairoRectangle adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var arg0 *cairo.Context
-	arg0 = wrapContext(cr)
+	arg0 = cairo.WrapContext(cr)
 
 	var arg1 *Rectangle
-	arg1 = wrapRectangle(rectangle)
+	arg1 = gdk.WrapRectangle(rectangle)
 
 	C.gdk_cairo_rectangle(arg0, arg1)
 }
@@ -965,10 +965,10 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 // CairoRegion adds the given region to the current path of @cr.
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var arg0 *cairo.Context
-	arg0 = wrapContext(cr)
+	arg0 = cairo.WrapContext(cr)
 
 	var arg1 *cairo.Region
-	arg1 = wrapRegion(region)
+	arg1 = cairo.WrapRegion(region)
 
 	C.gdk_cairo_region(arg0, arg1)
 }
@@ -980,12 +980,12 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 // cairo_surface_set_device_offset().
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var arg0 *cairo.Surface
-	arg0 = wrapSurface(surface)
+	arg0 = cairo.WrapSurface(surface)
 
 	ret := C.gdk_cairo_region_create_from_surface(arg0)
 
 	var ret0 *cairo.Region
-	ret0 = wrapRegion(ret)
+	ret0 = cairo.WrapRegion(ret)
 
 	return ret0
 }
@@ -996,10 +996,10 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 // the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
 	var arg0 *cairo.Context
-	arg0 = wrapContext(cr)
+	arg0 = cairo.WrapContext(cr)
 
 	var arg1 gdkpixbuf.Pixbuf
-	arg1 = wrapPixbuf(externglib.Take(unsafe.Pointer(pixbuf)))
+	arg1 = gdkpixbuf.WrapPixbuf(externglib.Take(unsafe.Pointer(pixbuf.Native())))
 
 	var arg2 float64
 	arg2 = float64(pixbufX)
@@ -1013,10 +1013,10 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 // CairoSetSourceRgba sets the specified RGBA as the source color of @cr.
 func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA) {
 	var arg0 *cairo.Context
-	arg0 = wrapContext(cr)
+	arg0 = cairo.WrapContext(cr)
 
 	var arg1 *RGBA
-	arg1 = wrapRGBA(rgba)
+	arg1 = gdk.WrapRGBA(rgba)
 
 	C.gdk_cairo_set_source_rgba(arg0, arg1)
 }
@@ -1027,31 +1027,25 @@ func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA) {
 // result of the operation.
 func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg0 gio.InputStream
-	arg0 = wrapInputStream(externglib.Take(unsafe.Pointer(stream)))
+	arg0 = gio.WrapInputStream(externglib.Take(unsafe.Pointer(stream.Native())))
 
 	var arg1 string
-	arg1 = C.GoString(mimeType)
+	mimeType = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(mimeType))
 
 	var arg3 int
 	arg3 = int(ioPriority)
 
 	var arg4 gio.Cancellable
-	arg4 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
-
-	var arg5 gio.AsyncReadyCallback
-	arg5 = wrapAsyncReadyCallback(callback)
+	arg4 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	arg6 := C.gpointer(box.Assign(box.Callback, userData))
-	C.gdk_content_deserialize_async(arg0, arg1, arg3, arg4, arg5)
+	C.gdk_content_deserialize_async(arg0, arg1, arg3, arg4)
 }
 
 // ContentDeserializeFinish finishes a content deserialization operation.
 func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) bool {
-	var arg0 gio.AsyncResult
-	arg0 = wrapAsyncResult(result)
-
-	ret := C.gdk_content_deserialize_finish(arg0)
+	ret := C.gdk_content_deserialize_finish()
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -1063,28 +1057,22 @@ func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) b
 // @type from a serialized representation with the given mime type.
 func ContentRegisterDeserializer(mimeType string, _type externglib.Type, deserialize ContentDeserializeFunc) {
 	var arg0 string
-	arg0 = C.GoString(mimeType)
+	mimeType = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(mimeType))
 
-	var arg2 ContentDeserializeFunc
-	arg2 = wrapContentDeserializeFunc(deserialize)
-
 	arg3 := C.gpointer(box.Assign(box.Callback, data))
-	C.gdk_content_register_deserializer(arg0, arg2, (*[0]byte)(C.callbackDelete))
+	C.gdk_content_register_deserializer(arg0, (*[0]byte)(C.callbackDelete))
 }
 
 // ContentRegisterSerializer registers a function to convert objects of the
 // given @type to a serialized representation with the given mime type.
 func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize ContentSerializeFunc) {
 	var arg1 string
-	arg1 = C.GoString(mimeType)
+	mimeType = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(mimeType))
 
-	var arg2 ContentSerializeFunc
-	arg2 = wrapContentSerializeFunc(serialize)
-
 	arg3 := C.gpointer(box.Assign(box.Callback, data))
-	C.gdk_content_register_serializer(arg1, arg2, (*[0]byte)(C.callbackDelete))
+	C.gdk_content_register_serializer(arg1, (*[0]byte)(C.callbackDelete))
 }
 
 // ContentSerializeAsync: serialize content and write it to the given output
@@ -1093,31 +1081,25 @@ func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize
 // the operation.
 func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *externglib.Value, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg0 gio.OutputStream
-	arg0 = wrapOutputStream(externglib.Take(unsafe.Pointer(stream)))
+	arg0 = gio.WrapOutputStream(externglib.Take(unsafe.Pointer(stream.Native())))
 
 	var arg1 string
-	arg1 = C.GoString(mimeType)
+	mimeType = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(mimeType))
 
 	var arg3 int
 	arg3 = int(ioPriority)
 
 	var arg4 gio.Cancellable
-	arg4 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
-
-	var arg5 gio.AsyncReadyCallback
-	arg5 = wrapAsyncReadyCallback(callback)
+	arg4 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	arg6 := C.gpointer(box.Assign(box.Callback, userData))
-	C.gdk_content_serialize_async(arg0, arg1, arg3, arg4, arg5)
+	C.gdk_content_serialize_async(arg0, arg1, arg3, arg4)
 }
 
 // ContentSerializeFinish finishes a content serialization operation.
 func ContentSerializeFinish(result gio.AsyncResult) bool {
-	var arg0 gio.AsyncResult
-	arg0 = wrapAsyncResult(result)
-
-	ret := C.gdk_content_serialize_finish(arg0)
+	ret := C.gdk_content_serialize_finish()
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -1147,10 +1129,10 @@ func DragActionIsUnique(action DragAction) bool {
 // towards the positive Y axis.
 func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 	var arg0 Event
-	arg0 = wrapEvent(externglib.Take(unsafe.Pointer(event1)))
+	arg0 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event1.Native())))
 
 	var arg1 Event
-	arg1 = wrapEvent(externglib.Take(unsafe.Pointer(event2)))
+	arg1 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event2.Native())))
 
 	var arg2 *C.double // out
 
@@ -1169,10 +1151,10 @@ func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 // coordinates will be returned in @x and @y.
 func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
 	var arg0 Event
-	arg0 = wrapEvent(externglib.Take(unsafe.Pointer(event1)))
+	arg0 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event1.Native())))
 
 	var arg1 Event
-	arg1 = wrapEvent(externglib.Take(unsafe.Pointer(event2)))
+	arg1 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event2.Native())))
 
 	var arg2 *C.double // out
 
@@ -1197,10 +1179,10 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 // be returned.
 func EventsGetDistance(event1 Event, event2 Event) (distance float64, ok bool) {
 	var arg0 Event
-	arg0 = wrapEvent(externglib.Take(unsafe.Pointer(event1)))
+	arg0 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event1.Native())))
 
 	var arg1 Event
-	arg1 = wrapEvent(externglib.Take(unsafe.Pointer(event2)))
+	arg1 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event2.Native())))
 
 	var arg2 *C.double // out
 
@@ -1220,8 +1202,9 @@ func GLErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -1233,13 +1216,13 @@ func GLErrorQuark() glib.Quark {
 // for the syntax if mime types.
 func InternMIMEType(string string) string {
 	var arg0 string
-	arg0 = C.GoString(string)
+	string = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.gdk_intern_mime_type(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -1272,7 +1255,7 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 // without the leading “GDK_KEY_”.
 func KeyvalFromName(keyvalName string) uint {
 	var arg0 string
-	arg0 = C.GoString(keyvalName)
+	keyvalName = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(keyvalName))
 
 	ret := C.gdk_keyval_from_name(arg0)
@@ -1320,7 +1303,7 @@ func KeyvalName(keyval uint) string {
 	ret := C.gdk_keyval_name(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -1383,7 +1366,6 @@ func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable {
 	ret := C.gdk_paintable_new_empty(arg0, arg1)
 
 	var ret0 Paintable
-	ret0 = wrapPaintable(ret)
 
 	return ret0
 }
@@ -1399,7 +1381,7 @@ func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable {
 // text, such as when text is selected.
 func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, indexRanges int, nRanges int) *cairo.Region {
 	var arg0 pango.Layout
-	arg0 = wrapLayout(externglib.Take(unsafe.Pointer(layout)))
+	arg0 = pango.WrapLayout(externglib.Take(unsafe.Pointer(layout.Native())))
 
 	var arg1 int
 	arg1 = int(xOrigin)
@@ -1416,7 +1398,7 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 	ret := C.gdk_pango_layout_get_clip_region(arg0, arg1, arg2, arg3, arg4)
 
 	var ret0 *cairo.Region
-	ret0 = wrapRegion(ret)
+	ret0 = cairo.WrapRegion(ret)
 
 	return ret0
 }
@@ -1436,7 +1418,7 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 // text, such as when text is selected.
 func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin int, indexRanges []int, nRanges int) *cairo.Region {
 	var arg0 *pango.LayoutLine
-	arg0 = wrapLayoutLine(line)
+	arg0 = pango.WrapLayoutLine(line)
 
 	var arg1 int
 	arg1 = int(xOrigin)
@@ -1464,7 +1446,7 @@ func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin i
 	ret := C.gdk_pango_layout_line_get_clip_region(arg0, arg1, arg2, arg3, arg4)
 
 	var ret0 *cairo.Region
-	ret0 = wrapRegion(ret)
+	ret0 = cairo.WrapRegion(ret)
 
 	return ret0
 }
@@ -1477,7 +1459,7 @@ func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin i
 // will contain an alpha channel if the @surface contains one.
 func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) gdkpixbuf.Pixbuf {
 	var arg0 *cairo.Surface
-	arg0 = wrapSurface(surface)
+	arg0 = cairo.WrapSurface(surface)
 
 	var arg1 int
 	arg1 = int(srcX)
@@ -1494,7 +1476,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	ret := C.gdk_pixbuf_get_from_surface(arg0, arg1, arg2, arg3, arg4)
 
 	var ret0 gdkpixbuf.Pixbuf
-	ret0 = wrapPixbuf(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gdkpixbuf.WrapPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -1504,12 +1486,12 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 // certainly convert the pixbuf back into a texture to draw it on screen.
 func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 	var arg0 Texture
-	arg0 = wrapTexture(externglib.Take(unsafe.Pointer(texture)))
+	arg0 = gdk.WrapTexture(externglib.Take(unsafe.Pointer(texture.Native())))
 
 	ret := C.gdk_pixbuf_get_from_texture(arg0)
 
 	var ret0 gdkpixbuf.Pixbuf
-	ret0 = wrapPixbuf(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gdkpixbuf.WrapPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -1521,9 +1503,13 @@ func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 //
 // By default, GDK tries all included backends.
 //
-// For example, |[<!-- language="C" --> gdk_set_allowed_backends
-// ("wayland,quartz,*"); ]| instructs GDK to try the Wayland backend first,
-// followed by the Quartz backend, and then all others.
+// For example,
+//
+//    gdk_set_allowed_backends ("wayland,quartz,*");
+//
+//
+// instructs GDK to try the Wayland backend first, followed by the Quartz
+// backend, and then all others.
 //
 // If the `GDK_BACKEND` environment variable is set, it determines what backends
 // are tried in what order, while still respecting the set of allowed backends
@@ -1536,7 +1522,7 @@ func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 // gtk_init_check() in order to take effect.
 func SetAllowedBackends(backends string) {
 	var arg0 string
-	arg0 = C.GoString(backends)
+	backends = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(backends))
 
 	C.gdk_set_allowed_backends(arg0)
@@ -1568,8 +1554,9 @@ func VulkanErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -1606,10 +1593,10 @@ type DragSurface interface {
 
 // Paintable is a simple interface used by GDK and GTK to represent objects that
 // can be painted anywhere at any size without requiring any sort of layout. The
-// interface is inspired by similar concepts elsewhere, such as
-// [ClutterContent](https://developer.gnome.org/clutter/stable/ClutterContent.html),
-// [HTML/CSS Paint Sources](https://www.w3.org/TR/css-images-4/#paint-source),
-// or [SVG Paint Servers](https://www.w3.org/TR/SVG2/pservers.html).
+// interface is inspired by similar concepts elsewhere, such as ClutterContent
+// (https://developer.gnome.org/clutter/stable/ClutterContent.html), HTML/CSS
+// Paint Sources (https://www.w3.org/TR/css-images-4/#paint-source), or SVG
+// Paint Servers (https://www.w3.org/TR/SVG2/pservers.html).
 //
 // A Paintable can be snapshot at any time and size using
 // gdk_paintable_snapshot(). How the paintable interprets that size and if it
@@ -1727,7 +1714,10 @@ type ContentFormats struct {
 	native *C.GdkContentFormats
 }
 
-func wrapContentFormats(p *C.GdkContentFormats) *ContentFormats {
+// WrapContentFormats wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapContentFormats(ptr unsafe.Pointer) *ContentFormats {
+	p := (*C.GdkContentFormats)(ptr)
 	v := ContentFormats{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -1738,12 +1728,12 @@ func wrapContentFormats(p *C.GdkContentFormats) *ContentFormats {
 
 func marshalContentFormats(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkContentFormats)(unsafe.Pointer(b))
-
-	return wrapContentFormats(c)
+	return WrapContentFormats(unsafe.Pointer(b))
 }
 
-func (c *ContentFormats) free() {}
+func (c *ContentFormats) free() {
+	C.free(unsafe.Pointer(c.native))
+}
 
 // Native returns the pointer to *C.GdkContentFormats. The caller is expected to
 // cast.
@@ -1762,7 +1752,10 @@ type ContentFormatsBuilder struct {
 	native *C.GdkContentFormatsBuilder
 }
 
-func wrapContentFormatsBuilder(p *C.GdkContentFormatsBuilder) *ContentFormatsBuilder {
+// WrapContentFormatsBuilder wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapContentFormatsBuilder(ptr unsafe.Pointer) *ContentFormatsBuilder {
+	p := (*C.GdkContentFormatsBuilder)(ptr)
 	v := ContentFormatsBuilder{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -1773,12 +1766,12 @@ func wrapContentFormatsBuilder(p *C.GdkContentFormatsBuilder) *ContentFormatsBui
 
 func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b))
-
-	return wrapContentFormatsBuilder(c)
+	return WrapContentFormatsBuilder(unsafe.Pointer(b))
 }
 
-func (c *ContentFormatsBuilder) free() {}
+func (c *ContentFormatsBuilder) free() {
+	C.free(unsafe.Pointer(c.native))
+}
 
 // Native returns the pointer to *C.GdkContentFormatsBuilder. The caller is expected to
 // cast.
@@ -1794,7 +1787,10 @@ type EventSequence struct {
 	native *C.GdkEventSequence
 }
 
-func wrapEventSequence(p *C.GdkEventSequence) *EventSequence {
+// WrapEventSequence wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapEventSequence(ptr unsafe.Pointer) *EventSequence {
+	p := (*C.GdkEventSequence)(ptr)
 	v := EventSequence{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -1805,12 +1801,12 @@ func wrapEventSequence(p *C.GdkEventSequence) *EventSequence {
 
 func marshalEventSequence(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkEventSequence)(unsafe.Pointer(b))
-
-	return wrapEventSequence(c)
+	return WrapEventSequence(unsafe.Pointer(b))
 }
 
-func (e *EventSequence) free() {}
+func (e *EventSequence) free() {
+	C.free(unsafe.Pointer(e.native))
+}
 
 // Native returns the pointer to *C.GdkEventSequence. The caller is expected to
 // cast.
@@ -1828,7 +1824,10 @@ type FrameTimings struct {
 	native *C.GdkFrameTimings
 }
 
-func wrapFrameTimings(p *C.GdkFrameTimings) *FrameTimings {
+// WrapFrameTimings wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFrameTimings(ptr unsafe.Pointer) *FrameTimings {
+	p := (*C.GdkFrameTimings)(ptr)
 	v := FrameTimings{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -1839,12 +1838,12 @@ func wrapFrameTimings(p *C.GdkFrameTimings) *FrameTimings {
 
 func marshalFrameTimings(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkFrameTimings)(unsafe.Pointer(b))
-
-	return wrapFrameTimings(c)
+	return WrapFrameTimings(unsafe.Pointer(b))
 }
 
-func (f *FrameTimings) free() {}
+func (f *FrameTimings) free() {
+	C.free(unsafe.Pointer(f.native))
+}
 
 // Native returns the pointer to *C.GdkFrameTimings. The caller is expected to
 // cast.
@@ -1874,7 +1873,10 @@ type KeymapKey struct {
 	native *C.GdkKeymapKey
 }
 
-func wrapKeymapKey(p *C.GdkKeymapKey) *KeymapKey {
+// WrapKeymapKey wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapKeymapKey(ptr unsafe.Pointer) *KeymapKey {
+	p := (*C.GdkKeymapKey)(ptr)
 	var v KeymapKey
 
 	v.Keycode = uint(p.keycode)
@@ -1886,9 +1888,7 @@ func wrapKeymapKey(p *C.GdkKeymapKey) *KeymapKey {
 
 func marshalKeymapKey(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkKeymapKey)(unsafe.Pointer(b))
-
-	return wrapKeymapKey(c)
+	return WrapKeymapKey(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GdkKeymapKey. The caller is expected to
@@ -1908,16 +1908,16 @@ func (k *KeymapKey) Native() unsafe.Pointer {
 // on both that rectangle and the popup. The anchors specify a side or corner to
 // place next to each other.
 //
-// ![Popup anchors](popup-anchors.png)
+// !Popup anchors (popup-anchors.png)
 //
 // For cases where placing the anchors next to each other would make the popup
 // extend offscreen, the layout includes some hints for how to resolve this
 // problem. The hints may suggest to flip the anchor position to the other side,
 // or to 'slide' the popup along a side, or to resize it.
 //
-// ![Flipping popups](popup-flip.png)
+// !Flipping popups (popup-flip.png)
 //
-// ![Sliding popups](popup-slide.png)
+// !Sliding popups (popup-slide.png)
 //
 // These hints may be combined.
 //
@@ -1933,7 +1933,10 @@ type PopupLayout struct {
 	native *C.GdkPopupLayout
 }
 
-func wrapPopupLayout(p *C.GdkPopupLayout) *PopupLayout {
+// WrapPopupLayout wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapPopupLayout(ptr unsafe.Pointer) *PopupLayout {
+	p := (*C.GdkPopupLayout)(ptr)
 	v := PopupLayout{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -1944,12 +1947,12 @@ func wrapPopupLayout(p *C.GdkPopupLayout) *PopupLayout {
 
 func marshalPopupLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkPopupLayout)(unsafe.Pointer(b))
-
-	return wrapPopupLayout(c)
+	return WrapPopupLayout(unsafe.Pointer(b))
 }
 
-func (p *PopupLayout) free() {}
+func (p *PopupLayout) free() {
+	C.free(unsafe.Pointer(p.native))
+}
 
 // Native returns the pointer to *C.GdkPopupLayout. The caller is expected to
 // cast.
@@ -1975,7 +1978,10 @@ type RGBA struct {
 	native *C.GdkRGBA
 }
 
-func wrapRGBA(p *C.GdkRGBA) *RGBA {
+// WrapRGBA wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRGBA(ptr unsafe.Pointer) *RGBA {
+	p := (*C.GdkRGBA)(ptr)
 	var v RGBA
 
 	v.Red = float32(p.red)
@@ -1988,9 +1994,7 @@ func wrapRGBA(p *C.GdkRGBA) *RGBA {
 
 func marshalRGBA(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkRGBA)(unsafe.Pointer(b))
-
-	return wrapRGBA(c)
+	return WrapRGBA(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GdkRGBA. The caller is expected to
@@ -2014,7 +2018,10 @@ type Rectangle struct {
 	native *C.GdkRectangle
 }
 
-func wrapRectangle(p *C.GdkRectangle) *Rectangle {
+// WrapRectangle wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
+	p := (*C.GdkRectangle)(ptr)
 	var v Rectangle
 
 	v.X = int(p.x)
@@ -2027,9 +2034,7 @@ func wrapRectangle(p *C.GdkRectangle) *Rectangle {
 
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkRectangle)(unsafe.Pointer(b))
-
-	return wrapRectangle(c)
+	return WrapRectangle(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GdkRectangle. The caller is expected to
@@ -2050,21 +2055,22 @@ type TimeCoord struct {
 	native *C.GdkTimeCoord
 }
 
-func wrapTimeCoord(p *C.GdkTimeCoord) *TimeCoord {
+// WrapTimeCoord wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapTimeCoord(ptr unsafe.Pointer) *TimeCoord {
+	p := (*C.GdkTimeCoord)(ptr)
 	var v TimeCoord
 
 	v.Time = uint32(p.time)
 	v.Flags = AxisFlags(p.flags)
-	v.Axes = ([12]float64)(p.axes)
+	v.Axes = [12]float64(p.axes)
 
 	return &v
 }
 
 func marshalTimeCoord(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkTimeCoord)(unsafe.Pointer(b))
-
-	return wrapTimeCoord(c)
+	return WrapTimeCoord(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GdkTimeCoord. The caller is expected to
@@ -2082,7 +2088,10 @@ type ToplevelLayout struct {
 	native *C.GdkToplevelLayout
 }
 
-func wrapToplevelLayout(p *C.GdkToplevelLayout) *ToplevelLayout {
+// WrapToplevelLayout wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapToplevelLayout(ptr unsafe.Pointer) *ToplevelLayout {
+	p := (*C.GdkToplevelLayout)(ptr)
 	v := ToplevelLayout{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -2093,12 +2102,12 @@ func wrapToplevelLayout(p *C.GdkToplevelLayout) *ToplevelLayout {
 
 func marshalToplevelLayout(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GdkToplevelLayout)(unsafe.Pointer(b))
-
-	return wrapToplevelLayout(c)
+	return WrapToplevelLayout(unsafe.Pointer(b))
 }
 
-func (t *ToplevelLayout) free() {}
+func (t *ToplevelLayout) free() {
+	C.free(unsafe.Pointer(t.native))
+}
 
 // Native returns the pointer to *C.GdkToplevelLayout. The caller is expected to
 // cast.
@@ -2134,8 +2143,8 @@ type AppLaunchContext interface {
 	Display() Display
 	// SetDesktop sets the workspace on which applications will be launched when
 	// using this context when running under a window manager that supports
-	// multiple workspaces, as described in the [Extended Window Manager
-	// Hints](http://www.freedesktop.org/Standards/wm-spec).
+	// multiple workspaces, as described in the Extended Window Manager Hints
+	// (http://www.freedesktop.org/Standards/wm-spec).
 	//
 	// When the workspace is not specified or @desktop is set to -1, it is up to
 	// the window manager to pick one, typically it will be the current
@@ -2168,17 +2177,19 @@ type AppLaunchContext interface {
 }
 
 type appLaunchContext struct {
-	gio.appLaunchContext
+	gio.AppLaunchContext
 }
 
-func wrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
-	return appLaunchContext{gio.appLaunchContext{*externglib.Object{obj}}}
+// WrapAppLaunchContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
+	return appLaunchContext{gio.WrapAppLaunchContext(obj)}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAppLaunchContext(obj), nil
 }
 
 func (a appLaunchContext) Display() Display
@@ -2203,14 +2214,16 @@ type buttonEvent struct {
 	event
 }
 
-func wrapButtonEvent(obj *externglib.Object) ButtonEvent {
+// WrapButtonEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapButtonEvent(obj *externglib.Object) ButtonEvent {
 	return buttonEvent{event{obj}}
 }
 
 func marshalButtonEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapButtonEvent(obj), nil
 }
 
 func (b buttonEvent) Button() uint
@@ -2236,14 +2249,16 @@ type cairoContext struct {
 	drawContext
 }
 
-func wrapCairoContext(obj *externglib.Object) CairoContext {
+// WrapCairoContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCairoContext(obj *externglib.Object) CairoContext {
 	return cairoContext{drawContext{*externglib.Object{obj}}}
 }
 
 func marshalCairoContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCairoContext(obj), nil
 }
 
 func (c cairoContext) CairoCreate() *cairo.Context
@@ -2360,14 +2375,16 @@ type clipboard struct {
 	*externglib.Object
 }
 
-func wrapClipboard(obj *externglib.Object) Clipboard {
+// WrapClipboard wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapClipboard(obj *externglib.Object) Clipboard {
 	return clipboard{*externglib.Object{obj}}
 }
 
 func marshalClipboard(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapClipboard(obj), nil
 }
 
 func (c clipboard) Content() ContentProvider
@@ -2446,14 +2463,16 @@ type contentDeserializer struct {
 	*externglib.Object
 }
 
-func wrapContentDeserializer(obj *externglib.Object) ContentDeserializer {
+// WrapContentDeserializer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapContentDeserializer(obj *externglib.Object) ContentDeserializer {
 	return contentDeserializer{*externglib.Object{obj}}
 }
 
 func marshalContentDeserializer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapContentDeserializer(obj), nil
 }
 
 func (c contentDeserializer) Cancellable() gio.Cancellable
@@ -2530,14 +2549,16 @@ type contentProvider struct {
 	*externglib.Object
 }
 
-func wrapContentProvider(obj *externglib.Object) ContentProvider {
+// WrapContentProvider wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapContentProvider(obj *externglib.Object) ContentProvider {
 	return contentProvider{*externglib.Object{obj}}
 }
 
 func marshalContentProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapContentProvider(obj), nil
 }
 
 func NewContentProviderForBytes(mimeType string, bytes *glib.Bytes) ContentProvider
@@ -2598,14 +2619,16 @@ type contentSerializer struct {
 	*externglib.Object
 }
 
-func wrapContentSerializer(obj *externglib.Object) ContentSerializer {
+// WrapContentSerializer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapContentSerializer(obj *externglib.Object) ContentSerializer {
 	return contentSerializer{*externglib.Object{obj}}
 }
 
 func marshalContentSerializer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapContentSerializer(obj), nil
 }
 
 func (c contentSerializer) Cancellable() gio.Cancellable
@@ -2646,14 +2669,16 @@ type crossingEvent struct {
 	event
 }
 
-func wrapCrossingEvent(obj *externglib.Object) CrossingEvent {
+// WrapCrossingEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCrossingEvent(obj *externglib.Object) CrossingEvent {
 	return crossingEvent{event{obj}}
 }
 
 func marshalCrossingEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCrossingEvent(obj), nil
 }
 
 func (c crossingEvent) Detail() NotifyType
@@ -2703,14 +2728,16 @@ type cursor struct {
 	*externglib.Object
 }
 
-func wrapCursor(obj *externglib.Object) Cursor {
+// WrapCursor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCursor(obj *externglib.Object) Cursor {
 	return cursor{*externglib.Object{obj}}
 }
 
 func marshalCursor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCursor(obj), nil
 }
 
 func NewCursorFromName(name string, fallback Cursor) Cursor
@@ -2739,14 +2766,16 @@ type dndEvent struct {
 	event
 }
 
-func wrapDNDEvent(obj *externglib.Object) DNDEvent {
+// WrapDNDEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDNDEvent(obj *externglib.Object) DNDEvent {
 	return dndEvent{event{obj}}
 }
 
 func marshalDNDEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDNDEvent(obj), nil
 }
 
 func (d dndEvent) Drop() Drop
@@ -2760,14 +2789,16 @@ type deleteEvent struct {
 	event
 }
 
-func wrapDeleteEvent(obj *externglib.Object) DeleteEvent {
+// WrapDeleteEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDeleteEvent(obj *externglib.Object) DeleteEvent {
 	return deleteEvent{event{obj}}
 }
 
 func marshalDeleteEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDeleteEvent(obj), nil
 }
 
 // Device: the Device object represents a single input device, such as a
@@ -2858,14 +2889,16 @@ type device struct {
 	*externglib.Object
 }
 
-func wrapDevice(obj *externglib.Object) Device {
+// WrapDevice wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDevice(obj *externglib.Object) Device {
 	return device{*externglib.Object{obj}}
 }
 
 func marshalDevice(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDevice(obj), nil
 }
 
 func (d device) CapsLockState() bool
@@ -2927,14 +2960,16 @@ type deviceTool struct {
 	*externglib.Object
 }
 
-func wrapDeviceTool(obj *externglib.Object) DeviceTool {
+// WrapDeviceTool wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDeviceTool(obj *externglib.Object) DeviceTool {
 	return deviceTool{*externglib.Object{obj}}
 }
 
 func marshalDeviceTool(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDeviceTool(obj), nil
 }
 
 func (d deviceTool) Axes() AxisFlags
@@ -3113,14 +3148,16 @@ type display struct {
 	*externglib.Object
 }
 
-func wrapDisplay(obj *externglib.Object) Display {
+// WrapDisplay wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDisplay(obj *externglib.Object) Display {
 	return display{*externglib.Object{obj}}
 }
 
 func marshalDisplay(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDisplay(obj), nil
 }
 
 func (d display) Beep()
@@ -3189,7 +3226,7 @@ func (d display) TranslateKey(keycode uint, state ModifierType, group int) (keyv
 // application against. At runtime, use type-check macros like
 // GDK_IS_X11_DISPLAY() to find out which backend is in use:
 //
-// Backend-specific code {#backend-specific}
+// Backend-specific code
 //
 //    #ifdef GDK_WINDOWING_X11
 //      if (GDK_IS_X11_DISPLAY (display))
@@ -3206,6 +3243,7 @@ func (d display) TranslateKey(keycode uint, state ModifierType, group int) (keyv
 //      else
 //    #endif
 //      g_error ("Unsupported GDK backend");
+//
 type DisplayManager interface {
 	gextras.Objector
 
@@ -3223,14 +3261,16 @@ type displayManager struct {
 	*externglib.Object
 }
 
-func wrapDisplayManager(obj *externglib.Object) DisplayManager {
+// WrapDisplayManager wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDisplayManager(obj *externglib.Object) DisplayManager {
 	return displayManager{*externglib.Object{obj}}
 }
 
 func marshalDisplayManager(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDisplayManager(obj), nil
 }
 
 func (d displayManager) DefaultDisplay() Display
@@ -3287,14 +3327,16 @@ type drag struct {
 	*externglib.Object
 }
 
-func wrapDrag(obj *externglib.Object) Drag {
+// WrapDrag wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDrag(obj *externglib.Object) Drag {
 	return drag{*externglib.Object{obj}}
 }
 
 func marshalDrag(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDrag(obj), nil
 }
 
 func (d drag) DropDone(success bool)
@@ -3384,14 +3426,16 @@ type drawContext struct {
 	*externglib.Object
 }
 
-func wrapDrawContext(obj *externglib.Object) DrawContext {
+// WrapDrawContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDrawContext(obj *externglib.Object) DrawContext {
 	return drawContext{*externglib.Object{obj}}
 }
 
 func marshalDrawContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDrawContext(obj), nil
 }
 
 func (d drawContext) BeginFrame(region *cairo.Region)
@@ -3481,14 +3525,16 @@ type drop struct {
 	*externglib.Object
 }
 
-func wrapDrop(obj *externglib.Object) Drop {
+// WrapDrop wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDrop(obj *externglib.Object) Drop {
 	return drop{*externglib.Object{obj}}
 }
 
 func marshalDrop(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDrop(obj), nil
 }
 
 func (d drop) Finish(action DragAction)
@@ -3528,14 +3574,16 @@ type focusEvent struct {
 	event
 }
 
-func wrapFocusEvent(obj *externglib.Object) FocusEvent {
+// WrapFocusEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFocusEvent(obj *externglib.Object) FocusEvent {
 	return focusEvent{event{obj}}
 }
 
 func marshalFocusEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFocusEvent(obj), nil
 }
 
 func (f focusEvent) In() bool
@@ -3595,7 +3643,7 @@ type FrameClock interface {
 	// time of the conceptual “previous frame,” which may be either the actual
 	// previous frame time, or if that’s too old, an updated time.
 	FrameTime() int64
-	// HistoryStart: frameClock internally keeps a history of FrameTimings
+	// HistoryStart: FrameClock internally keeps a history of FrameTimings
 	// objects for recent frames that can be retrieved with
 	// gdk_frame_clock_get_timings(). The set of stored frames is the set from
 	// the counter values given by gdk_frame_clock_get_history_start() and
@@ -3626,14 +3674,16 @@ type frameClock struct {
 	*externglib.Object
 }
 
-func wrapFrameClock(obj *externglib.Object) FrameClock {
+// WrapFrameClock wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFrameClock(obj *externglib.Object) FrameClock {
 	return frameClock{*externglib.Object{obj}}
 }
 
 func marshalFrameClock(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFrameClock(obj), nil
 }
 
 func (f frameClock) BeginUpdating()
@@ -3695,7 +3745,8 @@ func (f frameClock) RequestPhase(phase FrameClockPhase)
 // is possible to have multiple contexts, so you always need to ensure that the
 // one which you want to draw with is the current one before issuing commands:
 //
-//    gdk_gl_context_make_current (context);
+//      gdk_gl_context_make_current (context);
+//
 //
 // You can now perform your drawing using OpenGL commands.
 //
@@ -3794,14 +3845,16 @@ type glContext struct {
 	drawContext
 }
 
-func wrapGLContext(obj *externglib.Object) GLContext {
+// WrapGLContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGLContext(obj *externglib.Object) GLContext {
 	return glContext{drawContext{*externglib.Object{obj}}}
 }
 
 func marshalGLContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGLContext(obj), nil
 }
 
 func (g glContext) DebugEnabled() bool
@@ -3850,14 +3903,16 @@ type glTexture struct {
 	texture
 }
 
-func wrapGLTexture(obj *externglib.Object) GLTexture {
+// WrapGLTexture wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGLTexture(obj *externglib.Object) GLTexture {
 	return glTexture{texture{*externglib.Object{obj}}}
 }
 
 func marshalGLTexture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGLTexture(obj), nil
 }
 
 func NewGLTexture(context GLContext, id uint, width int, height int, data interface{}) GLTexture
@@ -3878,14 +3933,16 @@ type grabBrokenEvent struct {
 	event
 }
 
-func wrapGrabBrokenEvent(obj *externglib.Object) GrabBrokenEvent {
+// WrapGrabBrokenEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapGrabBrokenEvent(obj *externglib.Object) GrabBrokenEvent {
 	return grabBrokenEvent{event{obj}}
 }
 
 func marshalGrabBrokenEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapGrabBrokenEvent(obj), nil
 }
 
 func (g grabBrokenEvent) GrabSurface() Surface
@@ -3923,14 +3980,16 @@ type keyEvent struct {
 	event
 }
 
-func wrapKeyEvent(obj *externglib.Object) KeyEvent {
+// WrapKeyEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapKeyEvent(obj *externglib.Object) KeyEvent {
 	return keyEvent{event{obj}}
 }
 
 func marshalKeyEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapKeyEvent(obj), nil
 }
 
 func (k keyEvent) ConsumedModifiers() ModifierType
@@ -3958,14 +4017,16 @@ type memoryTexture struct {
 	texture
 }
 
-func wrapMemoryTexture(obj *externglib.Object) MemoryTexture {
+// WrapMemoryTexture wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMemoryTexture(obj *externglib.Object) MemoryTexture {
 	return memoryTexture{texture{*externglib.Object{obj}}}
 }
 
 func marshalMemoryTexture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMemoryTexture(obj), nil
 }
 
 func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) MemoryTexture
@@ -4024,14 +4085,16 @@ type monitor struct {
 	*externglib.Object
 }
 
-func wrapMonitor(obj *externglib.Object) Monitor {
+// WrapMonitor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMonitor(obj *externglib.Object) Monitor {
 	return monitor{*externglib.Object{obj}}
 }
 
 func marshalMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMonitor(obj), nil
 }
 
 func (m monitor) Connector() string
@@ -4065,14 +4128,16 @@ type motionEvent struct {
 	event
 }
 
-func wrapMotionEvent(obj *externglib.Object) MotionEvent {
+// WrapMotionEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMotionEvent(obj *externglib.Object) MotionEvent {
 	return motionEvent{event{obj}}
 }
 
 func marshalMotionEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMotionEvent(obj), nil
 }
 
 // PadEvent: an event related to a pad-based device.
@@ -4091,14 +4156,16 @@ type padEvent struct {
 	event
 }
 
-func wrapPadEvent(obj *externglib.Object) PadEvent {
+// WrapPadEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPadEvent(obj *externglib.Object) PadEvent {
 	return padEvent{event{obj}}
 }
 
 func marshalPadEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPadEvent(obj), nil
 }
 
 func (p padEvent) AxisValue() (index uint, value float64)
@@ -4116,14 +4183,16 @@ type proximityEvent struct {
 	event
 }
 
-func wrapProximityEvent(obj *externglib.Object) ProximityEvent {
+// WrapProximityEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapProximityEvent(obj *externglib.Object) ProximityEvent {
 	return proximityEvent{event{obj}}
 }
 
 func marshalProximityEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapProximityEvent(obj), nil
 }
 
 // ScrollEvent: an event related to a scrolling motion.
@@ -4150,14 +4219,16 @@ type scrollEvent struct {
 	event
 }
 
-func wrapScrollEvent(obj *externglib.Object) ScrollEvent {
+// WrapScrollEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapScrollEvent(obj *externglib.Object) ScrollEvent {
 	return scrollEvent{event{obj}}
 }
 
 func marshalScrollEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapScrollEvent(obj), nil
 }
 
 func (s scrollEvent) Deltas() (deltaX float64, deltaY float64)
@@ -4189,14 +4260,16 @@ type seat struct {
 	*externglib.Object
 }
 
-func wrapSeat(obj *externglib.Object) Seat {
+// WrapSeat wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSeat(obj *externglib.Object) Seat {
 	return seat{*externglib.Object{obj}}
 }
 
 func marshalSeat(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSeat(obj), nil
 }
 
 func (s seat) Capabilities() SeatCapabilities
@@ -4220,14 +4293,16 @@ type snapshot struct {
 	*externglib.Object
 }
 
-func wrapSnapshot(obj *externglib.Object) Snapshot {
+// WrapSnapshot wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSnapshot(obj *externglib.Object) Snapshot {
 	return snapshot{*externglib.Object{obj}}
 }
 
 func marshalSnapshot(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSnapshot(obj), nil
 }
 
 // Surface: a Surface is a (usually) rectangular region on the screen. It’s a
@@ -4395,14 +4470,16 @@ type surface struct {
 	*externglib.Object
 }
 
-func wrapSurface(obj *externglib.Object) Surface {
+// WrapSurface wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSurface(obj *externglib.Object) Surface {
 	return surface{*externglib.Object{obj}}
 }
 
 func marshalSurface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSurface(obj), nil
 }
 
 func NewSurfacePopup(parent Surface, autohide bool) Surface
@@ -4469,6 +4546,8 @@ type Texture interface {
 	// CAIRO_FORMAT_ARGB32, so every downloaded pixel requires 4 bytes of
 	// memory.
 	//
+	// Downloading a texture into a Cairo image surface:
+	//
 	//    surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
 	//                                          gdk_texture_get_width (texture),
 	//                                          gdk_texture_get_height (texture));
@@ -4476,6 +4555,7 @@ type Texture interface {
 	//                          cairo_image_surface_get_data (surface),
 	//                          cairo_image_surface_get_stride (surface));
 	//    cairo_surface_mark_dirty (surface);
+	//
 	Download(data []uint8, stride uint)
 	// Height returns the height of the @texture, in pixels.
 	Height() int
@@ -4494,14 +4574,16 @@ type texture struct {
 	*externglib.Object
 }
 
-func wrapTexture(obj *externglib.Object) Texture {
+// WrapTexture wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTexture(obj *externglib.Object) Texture {
 	return texture{*externglib.Object{obj}}
 }
 
 func marshalTexture(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTexture(obj), nil
 }
 
 func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture
@@ -4531,14 +4613,16 @@ type touchEvent struct {
 	event
 }
 
-func wrapTouchEvent(obj *externglib.Object) TouchEvent {
+// WrapTouchEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTouchEvent(obj *externglib.Object) TouchEvent {
 	return touchEvent{event{obj}}
 }
 
 func marshalTouchEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTouchEvent(obj), nil
 }
 
 func (t touchEvent) EmulatingPointer() bool
@@ -4563,14 +4647,16 @@ type touchpadEvent struct {
 	event
 }
 
-func wrapTouchpadEvent(obj *externglib.Object) TouchpadEvent {
+// WrapTouchpadEvent wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTouchpadEvent(obj *externglib.Object) TouchpadEvent {
 	return touchpadEvent{event{obj}}
 }
 
 func marshalTouchpadEvent(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTouchpadEvent(obj), nil
 }
 
 func (t touchpadEvent) Deltas() (dx float64, dy float64)
@@ -4600,12 +4686,14 @@ type vulkanContext struct {
 	drawContext
 }
 
-func wrapVulkanContext(obj *externglib.Object) VulkanContext {
+// WrapVulkanContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapVulkanContext(obj *externglib.Object) VulkanContext {
 	return vulkanContext{drawContext{*externglib.Object{obj}}}
 }
 
 func marshalVulkanContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapVulkanContext(obj), nil
 }

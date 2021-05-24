@@ -11,6 +11,51 @@ import (
 	"golang.org/x/sync/singleflight"
 )
 
+// ArgAtFunc is the function to get the argument name at the given index. This
+// function is primarily used for certain type conversions that need to access
+// multiple variables.
+type ArgAtFunc func(i int) string
+
+// TypeConversion describes the type information to convert from and to.
+type TypeConversion struct {
+	Value  string
+	Target string
+	Type   gir.AnyType
+	Owner  gir.TransferOwnership
+
+	// ArgAt is used for array and closure generation.
+	ArgAt ArgAtFunc
+	// BoxCast is an optional Go type that the boxed value should be casted to,
+	// but only if the Type is a gpointer. This is only useful to convert from C
+	// to Go.
+	BoxCast string
+}
+
+// call is a helper function around directCall.
+func (conv TypeConversion) call(typ string) string {
+	return directCall(conv.Value, conv.Target, typ)
+}
+
+// callf is a helper function around directCall and Sprintf.
+func (conv TypeConversion) callf(typf string, typv ...interface{}) string {
+	if len(typv) == 0 {
+		return conv.call(typf)
+	}
+	return conv.call(fmt.Sprintf(typf, typv...))
+}
+
+// directCall generates a Go function call or type conversion that is
+//
+//    value = typ(target)
+//
+func directCall(value, target, typ string) string {
+	if strings.Contains(typ, "*") {
+		typ = "(" + typ + ")"
+	}
+
+	return target + " = " + typ + "(" + value + ")"
+}
+
 // ResolvedType is a resolved type from a given gir.Type.
 type ResolvedType struct {
 	// either or
@@ -201,10 +246,15 @@ func (typ *ResolvedType) PublicType(needsNamespace bool) string {
 	return ptrStr + typ.Package + "." + name
 }
 
+var cgoReplacer = strings.NewReplacer(
+	"const ", "",
+	"volatile ", "",
+)
+
 // CGoType returns the CGo type.
 func (typ *ResolvedType) CGoType() string {
 	ptr := strings.Count(typ.CType, "*")
-	val := strings.ReplaceAll(strings.TrimPrefix(typ.CType, "const "), "*", "")
+	val := strings.ReplaceAll(cgoReplacer.Replace(typ.CType), "*", "")
 
 	return strings.Repeat("*", ptr) + "C." + val
 }

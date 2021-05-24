@@ -14,6 +14,7 @@ var (
 		"Es",
 		"Id",
 		"Io",
+		"Fs",
 		"Rgb",
 		"Hsv",
 		"Uri",

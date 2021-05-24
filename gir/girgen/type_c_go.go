@@ -11,64 +11,28 @@ import (
 
 // TODO: GoTypeConverter converts Go types to C with GIR type.
 
-// ArgAtFunc is the function to get the argument name at the given index. This
-// function is primarily used for certain type conversions that need to access
-// multiple variables.
-type ArgAtFunc func(i int) string
-
-// CGoConversion describes the information needed to generate Go code to convert
-// C types to Go types.
-type CGoConversion struct {
-	Value  string
-	Target string
-	Type   gir.AnyType
-	Owner  gir.TransferOwnership
-
-	// ArgAt is used for array and closure generation.
-	ArgAt ArgAtFunc
-}
-
-// copy creates a copy of CGoConversion with the given value and target. If the
-// variables are empty, then the values aren't changed in the copy.
-func (conv CGoConversion) copy(value, target string) CGoConversion {
-	if value != "" {
-		conv.Value = value
-	}
-	if target != "" {
-		conv.Target = target
-	}
-	return conv
-}
-
 // CGoConverter returns Go code that is the conversion from the given C value
 // type to its respective Go value type. An empty string returned is invalid.
 //
 // The given argPrefix is used to get the nth parameter by concatenating the
 // prefix with the index number. This is used for length parameters.
-func (ng *NamespaceGenerator) CGoConverter(conv CGoConversion) string {
+func (ng *NamespaceGenerator) CGoConverter(conv TypeConversion) string {
 	switch {
 	case conv.Type.Array != nil:
-		return ng.cgoArrayConverter(conv, *conv.Type.Array)
+		return ng.cgoArrayConverter(conv)
 	case conv.Type.Type != nil:
-		return ng.cgoTypeConverter(conv, *conv.Type.Type)
+		return ng.cgoTypeConverter(conv)
 	}
 
 	// Ignore VarArgs.
 	return ""
 }
 
-func directCallOrCreate(value, target, typ string, create bool) string {
-	var op = " = "
-	if create {
-		op = " := "
-	}
+func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversion) string {
+	array := conv.Type.Array
 
-	return target + op + typ + "(" + value + ")"
-}
-
-func (ng *NamespaceGenerator) cgoArrayConverter(conv CGoConversion, array gir.Array) string {
 	if array.Type == nil {
-		ng.gen.logln(logWarn, "skipping nested array", array)
+		ng.gen.logln(logWarn, "skipping nested array", array.CType)
 		return ""
 	}
 
@@ -80,7 +44,12 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv CGoConversion, array gir.Ar
 	innerCGoType := innerResolved.CGoType()
 
 	// Generate a type converter from "src" to "${target}[i]" variables.
-	innerConv := ng.cgoTypeConverter(conv.copy("src", conv.Target+"[i]"), *array.Type)
+	innerTypeConv := conv
+	innerTypeConv.Value = "src"
+	innerTypeConv.Target = conv.Target + "[i]"
+	innerTypeConv.Type = array.AnyType
+
+	innerConv := ng.CGoConverter(innerTypeConv)
 	if innerConv == "" {
 		return ""
 	}
@@ -92,7 +61,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv CGoConversion, array gir.Ar
 		// Detect if the underlying is a compatible Go primitive type. If it is,
 		// then we can directly cast a fixed-size array.
 		if primitiveGo, ok := girPrimitiveGo[array.Type.Name]; ok {
-			return fmt.Sprintf("%s = ([%d]%s)(%s)", conv.Target, array.FixedSize, primitiveGo, conv.Value)
+			return conv.callf("[%d]%s", array.FixedSize, primitiveGo)
 		}
 
 		// TODO: nested array support
@@ -141,45 +110,59 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv CGoConversion, array gir.Ar
 	return b.String()
 }
 
-func (ng *NamespaceGenerator) cgoTypeConverter(conv CGoConversion, typ gir.Type) string {
-	return ng._cgoTypeConverter(conv, typ, false)
-}
+func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversion) string {
+	typ := conv.Type.Type
 
-func (ng *NamespaceGenerator) _cgoTypeConverter(conv CGoConversion, typ gir.Type, create bool) string {
 	// Resolve primitive types.
 	if prim, ok := girPrimitiveGo[typ.Name]; ok {
 		// Edge cases.
 		switch prim {
 		case "string":
 			p := pen.NewPiece()
-			p.Linef(directCallOrCreate(conv.Value, conv.Target, "C.GoString", create))
+			p.Linef("%s = C.GoString(%s)", conv.Value, conv.Target)
 			p.Linef("defer C.free(unsafe.Pointer(%s))", conv.Value)
 			return p.String()
 		case "bool":
 			ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
-			return directCallOrCreate(conv.Value, conv.Target, "gextras.Gobool", create)
+			return directCall(conv.Value, conv.Target, "gextras.Gobool")
 		default:
-			return directCallOrCreate(conv.Value, conv.Target, prim, create)
+			return directCall(conv.Value, conv.Target, prim)
 		}
 	}
 
 	// Resolve special-case GLib types.
 	switch typ.Name {
 	case "gpointer":
-		return directCallOrCreate(conv.Value, conv.Target, "unsafe.Pointer", create)
-	case "GLib.DestroyNotify", "DestroyNotify":
-		return ""
-	case "GType":
-		return ""
-	case "GObject.GValue", "GObject.Value": // inconsistency???
-		return ""
+		ng.addImport("github.com/diamondburned/gotk4/internal/box")
+
+		if conv.BoxCast == "" {
+			return fmt.Sprintf(
+				"%s = box.Get(uintptr(%s))",
+				conv.Target, conv.Value,
+			)
+		}
+
+		return fmt.Sprintf(
+			"%s = box.Get(uintptr(%s)).(%s)",
+			conv.Target, conv.Value, conv.BoxCast,
+		)
+
 	case "GObject.Object", "GObject.InitiallyUnowned":
-		return directCallOrCreate(conv.Value, conv.Target, "glib.Take", create)
+		return cgoTakeObject(conv, "")
+
+	case "GLib.DestroyNotify", "DestroyNotify":
+		// There's no Go equivalent for C's DestroyNotify; the user should never
+		// see this.
+		return ""
+
+	case "GType":
+		return "" // TODO
+	case "GObject.GValue", "GObject.Value":
+		return "" // TODO
 	case "GObject.Closure":
-		return ""
+		return "" // TODO
 	case "GObject.Callback":
-		// TODO: When is this ever needed? How do I even do this?
-		return ""
+		return "" // TODO
 	case "va_list":
 		// CGo cannot handle variadic argument lists.
 		return ""
@@ -194,42 +177,58 @@ func (ng *NamespaceGenerator) _cgoTypeConverter(conv CGoConversion, typ gir.Type
 		return ""
 	}
 
-	resolved := typeFromResult(ng.gen, typ, result)
+	resolved := typeFromResult(ng.gen, *typ, result)
 
-	exportedName, _ := resolved.Extern.Result.Info()
-	exportedName = PascalToGo(exportedName)
+	// goName contains the pointer.
+	goName := ng.PublicType(resolved)
 
 	// Resolve alias.
 	if result.Alias != nil {
+		rootType := ng.ResolveType(result.Alias.Type)
+		if rootType == nil {
+			ng.logln(logWarn, "alias", result.Alias.Name, "lacks conv for", result.Alias.Type.Name)
+			return ""
+		}
+
+		rootConv := conv
+		rootConv.Type = gir.AnyType{Type: &result.Alias.Type}
+		rootConv.Target = "tmp"
+
 		b := pen.NewBlock()
-		b.Line(ng._cgoTypeConverter(conv.copy("", "tmp"), result.Alias.Type, true))
-		b.Line(directCallOrCreate("tmp", conv.Target, exportedName, false))
+		b.Linef("var tmp %s", ng.PublicType(rootType))
+		b.Linef(ng.CGoConverter(rootConv))
+		b.Linef("%s = %s(tmp)", conv.Target, goName)
 		return b.String()
 	}
 
 	// Resolve castable number types.
 	if result.Enum != nil || result.Bitfield != nil {
-		return directCallOrCreate(conv.Value, conv.Target, exportedName, false)
+		return conv.call(goName)
 	}
 
-	if result.Class != nil {
-		var gobjectFunction string
-		switch conv.Owner.TransferOwnership {
-		case "full", "container":
-			// Full or container means we implicitly own the object, so we must
-			// not take another reference.
-			gobjectFunction = "AssumeOwnership"
-		default:
-			// Else the object is either unowned by us or it's a floating
-			// reference. Take our own or sink the object.
-			gobjectFunction = "Take"
+	if result.Class != nil || result.Record != nil {
+		// externName doesn't contain the pointer.
+		externName, _ := resolved.Extern.Result.Info()
+		externName = PascalToGo(externName)
+		wrapName := resolved.Package + ".Wrap" + externName
+
+		switch {
+		case result.Class != nil:
+			return cgoTakeObject(conv, wrapName)
+		case result.Record != nil:
+			return conv.call(wrapName)
 		}
-
-		return fmt.Sprintf(
-			"%s = wrap%s(externglib.%s(unsafe.Pointer(%s)))",
-			conv.Target, exportedName, gobjectFunction, conv.Value,
-		)
 	}
+
+	if result.Callback != nil {
+		ng.logln(logError, "idk what to do with C->Go callback", goName)
+		return ""
+	}
+
+	// TODO: function
+	// TODO: union
+	// TODO: callback
+	// TODO: interface
 
 	// TODO: callbacks and functions are handled differently. Unsure if they're
 	// doable.
@@ -238,5 +237,32 @@ func (ng *NamespaceGenerator) _cgoTypeConverter(conv CGoConversion, typ gir.Type
 
 	// Assume the wrap function. This so far works for classes and records.
 	// TODO: handle wrap functions from another package.
-	return directCallOrCreate(conv.Value, conv.Target, "wrap"+exportedName, false)
+	return ""
+}
+
+// cgoTakeObject generates a glib.Take or glib.AssumeOwnership.
+func cgoTakeObject(conv TypeConversion, wrap string) string {
+	var gobjectFunction string
+	switch conv.Owner.TransferOwnership {
+	case "full", "container":
+		// Full or container means we implicitly own the object, so we must
+		// not take another reference.
+		gobjectFunction = "AssumeOwnership"
+	default:
+		// Else the object is either unowned by us or it's a floating
+		// reference. Take our own or sink the object.
+		gobjectFunction = "Take"
+	}
+
+	if wrap == "" {
+		return fmt.Sprintf(
+			"%s = externglib.%s(unsafe.Pointer(%s.Native()))",
+			conv.Target, gobjectFunction, conv.Value,
+		)
+	}
+
+	return fmt.Sprintf(
+		"%s = %s(externglib.%s(unsafe.Pointer(%s.Native())))",
+		conv.Target, wrap, gobjectFunction, conv.Value,
+	)
 }

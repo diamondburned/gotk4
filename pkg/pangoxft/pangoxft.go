@@ -44,7 +44,7 @@ func init() {
 // the given screen of the given display.
 func GetContext(display *xlib.Display, screen int) pango.Context {
 	var arg0 *xlib.Display
-	arg0 = wrapDisplay(display)
+	arg0 = xlib.WrapDisplay(display)
 
 	var arg1 int
 	arg1 = int(screen)
@@ -52,7 +52,7 @@ func GetContext(display *xlib.Display, screen int) pango.Context {
 	ret := C.pango_xft_get_context(arg0, arg1)
 
 	var ret0 pango.Context
-	ret0 = wrapContext(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = pango.WrapContext(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -61,7 +61,7 @@ func GetContext(display *xlib.Display, screen int) pango.Context {
 // fontmap is owned by Pango and will be valid until the display is closed.
 func GetFontMap(display *xlib.Display, screen int) pango.FontMap {
 	var arg0 *xlib.Display
-	arg0 = wrapDisplay(display)
+	arg0 = xlib.WrapDisplay(display)
 
 	var arg1 int
 	arg1 = int(screen)
@@ -69,7 +69,7 @@ func GetFontMap(display *xlib.Display, screen int) pango.FontMap {
 	ret := C.pango_xft_get_font_map(arg0, arg1)
 
 	var ret0 pango.FontMap
-	ret0 = wrapFontMap(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = pango.WrapFontMap(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -77,25 +77,27 @@ func GetFontMap(display *xlib.Display, screen int) pango.FontMap {
 // PictureRender renders a GlyphString onto an Xrender Picture object.
 func PictureRender(display *xlib.Display, srcPicture xlib.Picture, destPicture xlib.Picture, font pango.Font, glyphs *pango.GlyphString, x int, y int) {
 	var arg0 *xlib.Display
-	arg0 = wrapDisplay(display)
+	arg0 = xlib.WrapDisplay(display)
 
 	var arg1 xlib.Picture
 	{
-		tmp := uint32(srcPicture)
-		arg1 = Picture(tmp)
+		var tmp uint32
+		tmp = uint32(srcPicture)
+		arg1 = xlib.Picture(tmp)
 	}
 
 	var arg2 xlib.Picture
 	{
-		tmp := uint32(destPicture)
-		arg2 = Picture(tmp)
+		var tmp uint32
+		tmp = uint32(destPicture)
+		arg2 = xlib.Picture(tmp)
 	}
 
 	var arg3 pango.Font
-	arg3 = wrapFont(externglib.Take(unsafe.Pointer(font)))
+	arg3 = pango.WrapFont(externglib.Take(unsafe.Pointer(font.Native())))
 
 	var arg4 *pango.GlyphString
-	arg4 = wrapGlyphString(glyphs)
+	arg4 = pango.WrapGlyphString(glyphs)
 
 	var arg5 int
 	arg5 = int(x)
@@ -109,16 +111,16 @@ func PictureRender(display *xlib.Display, srcPicture xlib.Picture, destPicture x
 // Render renders a GlyphString onto an XftDraw object wrapping an X drawable.
 func Render(draw *xft.Draw, color *xft.Color, font pango.Font, glyphs *pango.GlyphString, x int, y int) {
 	var arg0 *xft.Draw
-	arg0 = wrapDraw(draw)
+	arg0 = xft.WrapDraw(draw)
 
 	var arg1 *xft.Color
-	arg1 = wrapColor(color)
+	arg1 = xft.WrapColor(color)
 
 	var arg2 pango.Font
-	arg2 = wrapFont(externglib.Take(unsafe.Pointer(font)))
+	arg2 = pango.WrapFont(externglib.Take(unsafe.Pointer(font.Native())))
 
 	var arg3 *pango.GlyphString
-	arg3 = wrapGlyphString(glyphs)
+	arg3 = pango.WrapGlyphString(glyphs)
 
 	var arg4 int
 	arg4 = int(x)
@@ -132,13 +134,13 @@ func Render(draw *xft.Draw, color *xft.Color, font pango.Font, glyphs *pango.Gly
 // RenderLayout: render a Layout onto a Draw
 func RenderLayout(draw *xft.Draw, color *xft.Color, layout pango.Layout, x int, y int) {
 	var arg0 *xft.Draw
-	arg0 = wrapDraw(draw)
+	arg0 = xft.WrapDraw(draw)
 
 	var arg1 *xft.Color
-	arg1 = wrapColor(color)
+	arg1 = xft.WrapColor(color)
 
 	var arg2 pango.Layout
-	arg2 = wrapLayout(externglib.Take(unsafe.Pointer(layout)))
+	arg2 = pango.WrapLayout(externglib.Take(unsafe.Pointer(layout.Native())))
 
 	var arg3 int
 	arg3 = int(x)
@@ -152,13 +154,13 @@ func RenderLayout(draw *xft.Draw, color *xft.Color, layout pango.Layout, x int, 
 // RenderLayoutLine: render a LayoutLine onto a Draw
 func RenderLayoutLine(draw *xft.Draw, color *xft.Color, line *pango.LayoutLine, x int, y int) {
 	var arg0 *xft.Draw
-	arg0 = wrapDraw(draw)
+	arg0 = xft.WrapDraw(draw)
 
 	var arg1 *xft.Color
-	arg1 = wrapColor(color)
+	arg1 = xft.WrapColor(color)
 
 	var arg2 *pango.LayoutLine
-	arg2 = wrapLayoutLine(line)
+	arg2 = pango.WrapLayoutLine(line)
 
 	var arg3 int
 	arg3 = int(x)
@@ -176,19 +178,19 @@ func RenderLayoutLine(draw *xft.Draw, color *xft.Color, line *pango.LayoutLine, 
 // identical transformation matrix to that passed in to this function.
 func RenderTransformed(draw *xft.Draw, color *xft.Color, matrix *pango.Matrix, font pango.Font, glyphs *pango.GlyphString, x int, y int) {
 	var arg0 *xft.Draw
-	arg0 = wrapDraw(draw)
+	arg0 = xft.WrapDraw(draw)
 
 	var arg1 *xft.Color
-	arg1 = wrapColor(color)
+	arg1 = xft.WrapColor(color)
 
 	var arg2 *pango.Matrix
-	arg2 = wrapMatrix(matrix)
+	arg2 = pango.WrapMatrix(matrix)
 
 	var arg3 pango.Font
-	arg3 = wrapFont(externglib.Take(unsafe.Pointer(font)))
+	arg3 = pango.WrapFont(externglib.Take(unsafe.Pointer(font.Native())))
 
 	var arg4 *pango.GlyphString
-	arg4 = wrapGlyphString(glyphs)
+	arg4 = pango.WrapGlyphString(glyphs)
 
 	var arg5 int
 	arg5 = int(x)
@@ -205,16 +207,13 @@ func RenderTransformed(draw *xft.Draw, color *xft.Color, matrix *pango.Matrix, f
 // options.
 func SetDefaultSubstitute(display *xlib.Display, screen int, _func SubstituteFunc) {
 	var arg0 *xlib.Display
-	arg0 = wrapDisplay(display)
+	arg0 = xlib.WrapDisplay(display)
 
 	var arg1 int
 	arg1 = int(screen)
 
-	var arg2 SubstituteFunc
-	arg2 = wrapSubstituteFunc(_func)
-
 	arg3 := C.gpointer(box.Assign(box.Callback, data))
-	C.pango_xft_set_default_substitute(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
+	C.pango_xft_set_default_substitute(arg0, arg1, (*[0]byte)(C.callbackDelete))
 }
 
 // ShutdownDisplay: release any resources that have been cached for the
@@ -222,7 +221,7 @@ func SetDefaultSubstitute(display *xlib.Display, screen int, _func SubstituteFun
 // resources are released automatically, without needing to call this function.
 func ShutdownDisplay(display *xlib.Display, screen int) {
 	var arg0 *xlib.Display
-	arg0 = wrapDisplay(display)
+	arg0 = xlib.WrapDisplay(display)
 
 	var arg1 int
 	arg1 = int(screen)
@@ -236,7 +235,7 @@ func ShutdownDisplay(display *xlib.Display, screen int) {
 // same input pattern, you must call this function.
 func SubstituteChanged(display *xlib.Display, screen int) {
 	var arg0 *xlib.Display
-	arg0 = wrapDisplay(display)
+	arg0 = xlib.WrapDisplay(display)
 
 	var arg1 int
 	arg1 = int(screen)
@@ -281,17 +280,19 @@ type Font interface {
 }
 
 type font struct {
-	pangofc.font
+	pangofc.Font
 }
 
-func wrapFont(obj *externglib.Object) Font {
-	return font{pangofc.font{pango.font{*externglib.Object{obj}}}}
+// WrapFont wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFont(obj *externglib.Object) Font {
+	return font{pangofc.WrapFont(obj)}
 }
 
 func marshalFont(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFont(obj), nil
 }
 
 func (f font) Display() *xlib.Display
@@ -313,17 +314,19 @@ type FontMap interface {
 }
 
 type fontMap struct {
-	pangofc.fontMap
+	pangofc.FontMap
 }
 
-func wrapFontMap(obj *externglib.Object) FontMap {
-	return fontMap{pangofc.fontMap{pango.fontMap{*externglib.Object{obj}}}}
+// WrapFontMap wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFontMap(obj *externglib.Object) FontMap {
+	return fontMap{pangofc.WrapFontMap(obj)}
 }
 
 func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFontMap(obj), nil
 }
 
 // Renderer is a subclass of Renderer used for rendering with Pango's Xft
@@ -340,17 +343,19 @@ type Renderer interface {
 }
 
 type renderer struct {
-	pango.renderer
+	pango.Renderer
 }
 
-func wrapRenderer(obj *externglib.Object) Renderer {
-	return renderer{pango.renderer{*externglib.Object{obj}}}
+// WrapRenderer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRenderer(obj *externglib.Object) Renderer {
+	return renderer{pango.WrapRenderer(obj)}
 }
 
 func marshalRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRenderer(obj), nil
 }
 
 func NewRenderer(display *xlib.Display, screen int) Renderer

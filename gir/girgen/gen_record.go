@@ -35,7 +35,10 @@ var recordTmpl = newGoTemplate(`
 		native *C.{{ .CType }}
 	}
 
-	func wrap{{ .GoName }}(p *C.{{ .CType }}) *{{ .GoName }} {
+	// Wrap{{ .GoName }} wraps the C unsafe.Pointer to be the right type. It is
+	// primarily used internally.
+	func Wrap{{ .GoName }}(ptr unsafe.Pointer) *{{ .GoName }} {
+		p := (*C.{{ .CType }})(ptr)
 		{{ if .NeedsNative -}}
 		v := {{ .GoName }}{native: p}
 		{{ else -}}
@@ -55,15 +58,15 @@ var recordTmpl = newGoTemplate(`
 
 	func marshal{{ .GoName }}(p uintptr) (interface{}, error) {
 		b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-		c := (*C.{{ .CType }})(unsafe.Pointer(b))
-
-		return wrap{{ .GoName }}(c)
+		return Wrap{{ .GoName }}(unsafe.Pointer(b))
 	}
 
 	{{ $recv := (FirstLetter .GoName) }}
 
 	{{ if .NeedsNative }}
-	func ({{ $recv }} *{{ .GoName }}) free() {}
+	func ({{ $recv }} *{{ .GoName }}) free() {
+		C.free(unsafe.Pointer({{ $recv }}.native))
+	}
 	{{ end }}
 
 	// Native returns the pointer to *C.{{ .CType }}. The caller is expected to
@@ -117,7 +120,7 @@ func (rg *recordGenerator) Use(rec gir.Record) bool {
 }
 
 func (rg *recordGenerator) Convert(field recordField, cStruct, goStruct string) string {
-	return rg.Ng.CGoConverter(CGoConversion{
+	return rg.Ng.CGoConverter(TypeConversion{
 		Value:  cStruct + "." + field.Name,
 		Target: goStruct + "." + field.GoName,
 		Type:   field.AnyType,

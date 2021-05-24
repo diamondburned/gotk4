@@ -26,34 +26,34 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 //
-// extern void cAsyncReadyCallback(GObject*, GAsyncResult*, gpointer)
-// extern void cBusAcquiredCallback(GDBusConnection*, const gchar*, gpointer)
-// extern void cBusNameAcquiredCallback(GDBusConnection*, const gchar*, gpointer)
-// extern void cBusNameAppearedCallback(GDBusConnection*, const gchar*, const gchar*, gpointer)
-// extern void cBusNameLostCallback(GDBusConnection*, const gchar*, gpointer)
-// extern void cBusNameVanishedCallback(GDBusConnection*, const gchar*, gpointer)
-// extern gboolean cCancellableSourceFunc(GCancellable*, gpointer)
-// extern GVariant* cDBusInterfaceGetPropertyFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GError**, gpointer)
-// extern void cDBusInterfaceMethodCallFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GVariant*, GDBusMethodInvocation*, gpointer)
-// extern gboolean cDBusInterfaceSetPropertyFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GVariant*, GError**, gpointer)
-// extern GDBusMessage* cDBusMessageFilterFunction(GDBusConnection*, GDBusMessage*, gboolean, gpointer)
-// extern GType cDBusProxyTypeFunc(GDBusObjectManagerClient*, const gchar*, const gchar*, gpointer)
-// extern void cDBusSignalCallback(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GVariant*, gpointer)
-// extern const GDBusInterfaceVTable* cDBusSubtreeDispatchFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, gpointer*, gpointer)
-// extern gchar** cDBusSubtreeEnumerateFunc(GDBusConnection*, const gchar*, const gchar*, gpointer)
-// extern GDBusInterfaceInfo** cDBusSubtreeIntrospectFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, gpointer)
-// extern gboolean cDatagramBasedSourceFunc(GDatagramBased*, GIOCondition, gpointer)
-// extern void cDesktopAppLaunchCallback(GDesktopAppInfo*, GPid, gpointer)
-// extern void cFileMeasureProgressCallback(gboolean, guint64, guint64, guint64, gpointer)
-// extern void cFileProgressCallback(goffset, goffset, gpointer)
-// extern gboolean cFileReadMoreCallback(const char*, goffset, gpointer)
-// extern gboolean cIOSchedulerJobFunc(GIOSchedulerJob*, GCancellable*, gpointer)
-// extern gboolean cPollableSourceFunc(GObject*, gpointer)
-// extern gboolean cSettingsBindGetMapping(GValue*, GVariant*, gpointer)
-// extern GVariant* cSettingsBindSetMapping(const GValue*, const GVariantType*, gpointer)
-// extern gboolean cSettingsGetMapping(GVariant*, gpointer*, gpointer)
-// extern gboolean cSocketSourceFunc(GSocket*, GIOCondition, gpointer)
-// extern GFile* cVfsFileLookupFunc(GVfs*, const char*, gpointer)
+// extern void gotk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer)
+// extern void gotk4_BusAcquiredCallback(GDBusConnection*, const gchar*, gpointer)
+// extern void gotk4_BusNameAcquiredCallback(GDBusConnection*, const gchar*, gpointer)
+// extern void gotk4_BusNameAppearedCallback(GDBusConnection*, const gchar*, const gchar*, gpointer)
+// extern void gotk4_BusNameLostCallback(GDBusConnection*, const gchar*, gpointer)
+// extern void gotk4_BusNameVanishedCallback(GDBusConnection*, const gchar*, gpointer)
+// extern gboolean gotk4_CancellableSourceFunc(GCancellable*, gpointer)
+// extern GVariant* gotk4_DBusInterfaceGetPropertyFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GError**, gpointer)
+// extern void gotk4_DBusInterfaceMethodCallFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GVariant*, GDBusMethodInvocation*, gpointer)
+// extern gboolean gotk4_DBusInterfaceSetPropertyFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GVariant*, GError**, gpointer)
+// extern GDBusMessage* gotk4_DBusMessageFilterFunction(GDBusConnection*, GDBusMessage*, gboolean, gpointer)
+// extern GType gotk4_DBusProxyTypeFunc(GDBusObjectManagerClient*, const gchar*, const gchar*, gpointer)
+// extern void gotk4_DBusSignalCallback(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, GVariant*, gpointer)
+// extern const GDBusInterfaceVTable* gotk4_DBusSubtreeDispatchFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, const gchar*, gpointer*, gpointer)
+// extern gchar** gotk4_DBusSubtreeEnumerateFunc(GDBusConnection*, const gchar*, const gchar*, gpointer)
+// extern GDBusInterfaceInfo** gotk4_DBusSubtreeIntrospectFunc(GDBusConnection*, const gchar*, const gchar*, const gchar*, gpointer)
+// extern gboolean gotk4_DatagramBasedSourceFunc(GDatagramBased*, GIOCondition, gpointer)
+// extern void gotk4_DesktopAppLaunchCallback(GDesktopAppInfo*, GPid, gpointer)
+// extern void gotk4_FileMeasureProgressCallback(gboolean, guint64, guint64, guint64, gpointer)
+// extern void gotk4_FileProgressCallback(goffset, goffset, gpointer)
+// extern gboolean gotk4_FileReadMoreCallback(const char*, goffset, gpointer)
+// extern gboolean gotk4_IOSchedulerJobFunc(GIOSchedulerJob*, GCancellable*, gpointer)
+// extern gboolean gotk4_PollableSourceFunc(GObject*, gpointer)
+// extern gboolean gotk4_SettingsBindGetMapping(GValue*, GVariant*, gpointer)
+// extern GVariant* gotk4_SettingsBindSetMapping(const GValue*, const GVariantType*, gpointer)
+// extern gboolean gotk4_SettingsGetMapping(GVariant*, gpointer*, gpointer)
+// extern gboolean gotk4_SocketSourceFunc(GSocket*, GIOCondition, gpointer)
+// extern GFile* gotk4_VfsFileLookupFunc(GVfs*, const char*, gpointer)
 // // extern void callbackDelete(gpointer);
 import "C"
 
@@ -949,10 +949,17 @@ func marshalFilesystemPreviewType(p uintptr) (interface{}, error) {
 // Note that this domain may be extended in future GLib releases. In general,
 // new error codes either only apply to new APIs, or else replace
 // G_IO_ERROR_FAILED in cases that were not explicitly distinguished before. You
-// should therefore avoid writing code like |[<!-- language="C" --> if
-// (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED)) { // Assume that
-// this is EPRINTERONFIRE ... } ]| but should instead treat all unrecognized
-// error codes the same as IO_ERROR_FAILED.
+// should therefore avoid writing code like
+//
+//    if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED))
+//      {
+//        // Assume that this is EPRINTERONFIRE
+//        ...
+//      }
+//
+//
+// but should instead treat all unrecognized error codes the same as
+// IO_ERROR_FAILED.
 //
 // See also Return for a cheaper way of returning G_IO_ERROR_WOULD_BLOCK to
 // callers without allocating a #GError.
@@ -1096,8 +1103,12 @@ func marshalIOModuleScopeFlags(p uintptr) (interface{}, error) {
 
 // MemoryMonitorWarningLevel: memory availability warning levels.
 //
+// Note that because new values might be added, it is recommended that
+// applications check MonitorWarningLevel as ranges, for example:
+//
 //    if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
 //      drop_caches ();
+//
 type MemoryMonitorWarningLevel int
 
 const (
@@ -1193,7 +1204,7 @@ func marshalNotificationPriority(p uintptr) (interface{}, error) {
 // PasswordSave is used to indicate the lifespan of a saved password.
 //
 // #Gvfs stores passwords in the Gnome keyring when this flag allows it to, and
-// later retrieves it again from there
+// later retrieves it again from there.
 type PasswordSave int
 
 const (
@@ -1267,12 +1278,12 @@ func marshalResolverError(p uintptr) (interface{}, error) {
 //
 // G_RESOLVER_RECORD_TXT records are returned as variants with the signature
 // `(as)`, representing an array of the strings in the text record. Note: Most
-// TXT records only contain a single string, but [RFC
-// 1035](https://tools.ietf.org/html/rfc1035#section-3.3.14) does allow a record
-// to contain multiple strings. The RFC which defines the interpretation of a
+// TXT records only contain a single string, but RFC 1035
+// (https://tools.ietf.org/html/rfc1035#section-3.3.14) does allow a record to
+// contain multiple strings. The RFC which defines the interpretation of a
 // specific TXT record will likely require concatenation of multiple strings if
-// they are present, as with [RFC
-// 7208](https://tools.ietf.org/html/rfc7208#section-3.3).
+// they are present, as with RFC 7208
+// (https://tools.ietf.org/html/rfc7208#section-3.3).
 //
 // G_RESOLVER_RECORD_SOA records are returned as variants with the signature
 // `(ssuuuuu)`, representing a string containing the primary name server, a
@@ -1504,18 +1515,16 @@ func marshalTlsChannelBindingError(p uintptr) (interface{}, error) {
 
 // TlsChannelBindingType: the type of TLS channel binding data to retrieve from
 // Connection or Connection, as documented by RFC 5929. The
-// [`tls-unique-for-telnet`](https://tools.ietf.org/html/rfc5929#section-5)
+// `tls-unique-for-telnet` (https://tools.ietf.org/html/rfc5929#section-5)
 // binding type is not currently implemented.
 type TlsChannelBindingType int
 
 const (
-	// TlsChannelBindingTypeUnique:
-	// [`tls-unique`](https://tools.ietf.org/html/rfc5929#section-3) binding
-	// type
+	// TlsChannelBindingTypeUnique: `tls-unique`
+	// (https://tools.ietf.org/html/rfc5929#section-3) binding type
 	TlsChannelBindingTypeUnique TlsChannelBindingType = 0
-	// TlsChannelBindingTypeServerEndPoint:
-	// [`tls-server-end-point`](https://tools.ietf.org/html/rfc5929#section-4)
-	// binding type
+	// TlsChannelBindingTypeServerEndPoint: `tls-server-end-point`
+	// (https://tools.ietf.org/html/rfc5929#section-4) binding type
 	TlsChannelBindingTypeServerEndPoint TlsChannelBindingType = 1
 )
 
@@ -1969,8 +1978,8 @@ const (
 	DBusProxyFlagsDoNotAutoStart DBusProxyFlags = 0b100
 	// DBusProxyFlagsGetInvalidatedProperties: if set, the property value for
 	// any __invalidated property__ will be (asynchronously) retrieved upon
-	// receiving the
-	// [`PropertiesChanged`](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties)
+	// receiving the `PropertiesChanged`
+	// (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties)
 	// D-Bus signal and the property will not cause emission of the
 	// BusProxy::g-properties-changed signal. When the value is received the
 	// BusProxy::g-properties-changed signal is emitted for the property along
@@ -2510,18 +2519,17 @@ func marshalTlsPasswordFlags(p uintptr) (interface{}, error) {
 // it asynchronously in a later iteration of the main context.
 type AsyncReadyCallback func(sourceObject gextras.Objector, res AsyncResult)
 
-//export cAsyncReadyCallback
-func cAsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
+//export gotk4_AsyncReadyCallback
+func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var sourceObject *externglib.Object
-	sourceObject = glib.Take(arg0)
+	sourceObject = externglib.Take(unsafe.Pointer(arg0.Native()))
 
 	var res AsyncResult
-	res = wrapAsyncResult(arg1)
 
 	v.(AsyncReadyCallback)(sourceObject, res)
 }
@@ -2530,18 +2538,18 @@ func cAsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpointer)
 // obtained.
 type BusAcquiredCallback func(connection DBusConnection, name string)
 
-//export cBusAcquiredCallback
-func cBusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
+//export gotk4_BusAcquiredCallback
+func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var name string
-	name = C.GoString(arg1)
+	arg1 = C.GoString(name)
 	defer C.free(unsafe.Pointer(arg1))
 
 	v.(BusAcquiredCallback)(connection, name)
@@ -2550,18 +2558,18 @@ func cBusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointe
 // BusNameAcquiredCallback: invoked when the name is acquired.
 type BusNameAcquiredCallback func(connection DBusConnection, name string)
 
-//export cBusNameAcquiredCallback
-func cBusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
+//export gotk4_BusNameAcquiredCallback
+func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var name string
-	name = C.GoString(arg1)
+	arg1 = C.GoString(name)
 	defer C.free(unsafe.Pointer(arg1))
 
 	v.(BusNameAcquiredCallback)(connection, name)
@@ -2571,22 +2579,22 @@ func cBusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpo
 // to have an owner.
 type BusNameAppearedCallback func(connection DBusConnection, name string, nameOwner string)
 
-//export cBusNameAppearedCallback
-func cBusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
+//export gotk4_BusNameAppearedCallback
+func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var name string
-	name = C.GoString(arg1)
+	arg1 = C.GoString(name)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var nameOwner string
-	nameOwner = C.GoString(arg2)
+	arg2 = C.GoString(nameOwner)
 	defer C.free(unsafe.Pointer(arg2))
 
 	v.(BusNameAppearedCallback)(connection, name, nameOwner)
@@ -2596,18 +2604,18 @@ func cBusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 // closed.
 type BusNameLostCallback func(connection DBusConnection, name string)
 
-//export cBusNameLostCallback
-func cBusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
+//export gotk4_BusNameLostCallback
+func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var name string
-	name = C.GoString(arg1)
+	arg1 = C.GoString(name)
 	defer C.free(unsafe.Pointer(arg1))
 
 	v.(BusNameLostCallback)(connection, name)
@@ -2620,18 +2628,18 @@ func cBusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointe
 // established has been closed. In that case, @connection will be nil.
 type BusNameVanishedCallback func(connection DBusConnection, name string)
 
-//export cBusNameVanishedCallback
-func cBusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
+//export gotk4_BusNameVanishedCallback
+func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var name string
-	name = C.GoString(arg1)
+	arg1 = C.GoString(name)
 	defer C.free(unsafe.Pointer(arg1))
 
 	v.(BusNameVanishedCallback)(connection, name)
@@ -2641,15 +2649,15 @@ func cBusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpo
 // #GSource returned by g_cancellable_source_new().
 type CancellableSourceFunc func(cancellable Cancellable) bool
 
-//export cCancellableSourceFunc
-func cCancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
+//export gotk4_CancellableSourceFunc
+func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var cancellable cancellable
-	cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(arg0)))
+	cancellable = gio.WrapCancellable(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	ok := v.(CancellableSourceFunc)(cancellable)
 }
@@ -2658,34 +2666,34 @@ func cCancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboolean {
 // BusInterfaceVTable.
 type DBusInterfaceGetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, error **glib.Error) *glib.Variant
 
-//export cDBusInterfaceGetPropertyFunc
-func cDBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) *C.GVariant {
+//export gotk4_DBusInterfaceGetPropertyFunc
+func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 **C.GError, arg6 C.gpointer) *C.GVariant {
 	v := box.Get(box.Callback, uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
-	sender = C.GoString(arg1)
+	arg1 = C.GoString(sender)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var objectPath string
-	objectPath = C.GoString(arg2)
+	arg2 = C.GoString(objectPath)
 	defer C.free(unsafe.Pointer(arg2))
 
 	var interfaceName string
-	interfaceName = C.GoString(arg3)
+	arg3 = C.GoString(interfaceName)
 	defer C.free(unsafe.Pointer(arg3))
 
 	var propertyName string
-	propertyName = C.GoString(arg4)
+	arg4 = C.GoString(propertyName)
 	defer C.free(unsafe.Pointer(arg4))
 
 	var error **glib.Error
-	error = wrapError(arg5)
+	error = glib.WrapError(arg5)
 
 	variant := v.(DBusInterfaceGetPropertyFunc)(connection, sender, objectPath, interfaceName, propertyName, error)
 }
@@ -2694,37 +2702,37 @@ func cDBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 // BusInterfaceVTable.
 type DBusInterfaceMethodCallFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, invocation DBusMethodInvocation)
 
-//export cDBusInterfaceMethodCallFunc
-func cDBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 *C.GDBusMethodInvocation, arg7 C.gpointer) {
+//export gotk4_DBusInterfaceMethodCallFunc
+func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 *C.GDBusMethodInvocation, arg7 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg7))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
-	sender = C.GoString(arg1)
+	arg1 = C.GoString(sender)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var objectPath string
-	objectPath = C.GoString(arg2)
+	arg2 = C.GoString(objectPath)
 	defer C.free(unsafe.Pointer(arg2))
 
 	var interfaceName string
-	interfaceName = C.GoString(arg3)
+	arg3 = C.GoString(interfaceName)
 	defer C.free(unsafe.Pointer(arg3))
 
 	var methodName string
-	methodName = C.GoString(arg4)
+	arg4 = C.GoString(methodName)
 	defer C.free(unsafe.Pointer(arg4))
 
 	var parameters *glib.Variant
-	parameters = wrapVariant(arg5)
+	parameters = glib.WrapVariant(arg5)
 
 	var invocation dBusMethodInvocation
-	invocation = wrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg6)))
+	invocation = gio.WrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg6.Native())))
 
 	v.(DBusInterfaceMethodCallFunc)(connection, sender, objectPath, interfaceName, methodName, parameters, invocation)
 }
@@ -2733,37 +2741,37 @@ func cDBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *
 // BusInterfaceVTable.
 type DBusInterfaceSetPropertyFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, propertyName string, value *glib.Variant, error **glib.Error) bool
 
-//export cDBusInterfaceSetPropertyFunc
-func cDBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) C.gboolean {
+//export gotk4_DBusInterfaceSetPropertyFunc
+func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 **C.GError, arg7 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg7))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
-	sender = C.GoString(arg1)
+	arg1 = C.GoString(sender)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var objectPath string
-	objectPath = C.GoString(arg2)
+	arg2 = C.GoString(objectPath)
 	defer C.free(unsafe.Pointer(arg2))
 
 	var interfaceName string
-	interfaceName = C.GoString(arg3)
+	arg3 = C.GoString(interfaceName)
 	defer C.free(unsafe.Pointer(arg3))
 
 	var propertyName string
-	propertyName = C.GoString(arg4)
+	arg4 = C.GoString(propertyName)
 	defer C.free(unsafe.Pointer(arg4))
 
 	var value *glib.Variant
-	value = wrapVariant(arg5)
+	value = glib.WrapVariant(arg5)
 
 	var error **glib.Error
-	error = wrapError(arg6)
+	error = glib.WrapError(arg6)
 
 	ok := v.(DBusInterfaceSetPropertyFunc)(connection, sender, objectPath, interfaceName, propertyName, value, error)
 }
@@ -2773,42 +2781,76 @@ func cDBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 //
 // A filter function is passed a BusMessage and expected to return a BusMessage
 // too. Passive filter functions that don't modify the message can simply return
-// the @message object: |[ static GDBusMessage * passive_filter (GDBusConnection
-// *connection GDBusMessage *message, gboolean incoming, gpointer user_data) {
-// // inspect @message return message; } ]| Filter functions that wants to drop
-// a message can simply return nil: |[ static GDBusMessage * drop_filter
-// (GDBusConnection *connection GDBusMessage *message, gboolean incoming,
-// gpointer user_data) { if (should_drop_message) { g_object_unref (message);
-// message = NULL; } return message; } ]| Finally, a filter function may modify
-// a message by copying it: |[ static GDBusMessage * modifying_filter
-// (GDBusConnection *connection GDBusMessage *message, gboolean incoming,
-// gpointer user_data) { GDBusMessage *copy; GError *error;
+// the @message object:
 //
-// error = NULL; copy = g_dbus_message_copy (message, &error); // handle @error
-// being set g_object_unref (message);
 //
-// // modify @copy
+//    static GDBusMessage *
+//    passive_filter (GDBusConnection *connection
+//                    GDBusMessage    *message,
+//                    gboolean         incoming,
+//                    gpointer         user_data)
+//    {
+//      // inspect @message
+//      return message;
+//    }
+//    ]|
+//    Filter functions that wants to drop a message can simply return nil:
+//    |[
+//    static GDBusMessage *
+//    drop_filter (GDBusConnection *connection
+//                 GDBusMessage    *message,
+//                 gboolean         incoming,
+//                 gpointer         user_data)
+//    {
+//      if (should_drop_message)
+//        {
+//          g_object_unref (message);
+//          message = NULL;
+//        }
+//      return message;
+//    }
+//    ]|
+//    Finally, a filter function may modify a message by copying it:
+//    |[
+//    static GDBusMessage *
+//    modifying_filter (GDBusConnection *connection
+//                      GDBusMessage    *message,
+//                      gboolean         incoming,
+//                      gpointer         user_data)
+//    {
+//      GDBusMessage *copy;
+//      GError *error;
 //
-// return copy; } ]| If the returned BusMessage is different from @message and
-// cannot be sent on @connection (it could use features, such as file
-// descriptors, not compatible with @connection), then a warning is logged to
-// standard error. Applications can check this ahead of time using
-// g_dbus_message_to_blob() passing a BusCapabilityFlags value obtained from
-// @connection.
+//      error = NULL;
+//      copy = g_dbus_message_copy (message, &error);
+//      // handle @error being set
+//      g_object_unref (message);
+//
+//      // modify @copy
+//
+//      return copy;
+//    }
+//
+//
+// If the returned BusMessage is different from @message and cannot be sent on
+// @connection (it could use features, such as file descriptors, not compatible
+// with @connection), then a warning is logged to standard error. Applications
+// can check this ahead of time using g_dbus_message_to_blob() passing a
+// BusCapabilityFlags value obtained from @connection.
 type DBusMessageFilterFunction func(connection DBusConnection, message DBusMessage, incoming bool) DBusMessage
 
-//export cDBusMessageFilterFunction
-func cDBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessage, arg2 C.gboolean, arg3 C.gpointer) *C.GDBusMessage {
+//export gotk4_DBusMessageFilterFunction
+func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessage, arg2 C.gboolean, arg3 C.gpointer) *C.GDBusMessage {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var message dBusMessage
-	message = wrapDBusMessage(externglib.Take(unsafe.Pointer(arg1)))
+	message = gio.WrapDBusMessage(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	var incoming bool
 	incoming = gextras.Gobool(arg2)
@@ -2824,22 +2866,22 @@ func cDBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessage, a
 // loop][g-main-context-push-thread-default] that @manager was constructed in.
 type DBusProxyTypeFunc func(manager DBusObjectManagerClient, objectPath string, interfaceName string) externglib.Type
 
-//export cDBusProxyTypeFunc
-func cDBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) C.GType {
+//export gotk4_DBusProxyTypeFunc
+func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) C.GType {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var manager dBusObjectManagerClient
-	manager = wrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg0)))
+	manager = gio.WrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var objectPath string
-	objectPath = C.GoString(arg1)
+	arg1 = C.GoString(objectPath)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var interfaceName string
-	interfaceName = C.GoString(arg2)
+	arg2 = C.GoString(interfaceName)
 	defer C.free(unsafe.Pointer(arg2))
 
 	gType := v.(DBusProxyTypeFunc)(manager, objectPath, interfaceName)
@@ -2849,34 +2891,34 @@ func cDBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, arg2 *C
 // g_dbus_connection_signal_subscribe().
 type DBusSignalCallback func(connection DBusConnection, senderName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant)
 
-//export cDBusSignalCallback
-func cDBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 C.gpointer) {
+//export gotk4_DBusSignalCallback
+func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant, arg6 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var senderName string
-	senderName = C.GoString(arg1)
+	arg1 = C.GoString(senderName)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var objectPath string
-	objectPath = C.GoString(arg2)
+	arg2 = C.GoString(objectPath)
 	defer C.free(unsafe.Pointer(arg2))
 
 	var interfaceName string
-	interfaceName = C.GoString(arg3)
+	arg3 = C.GoString(interfaceName)
 	defer C.free(unsafe.Pointer(arg3))
 
 	var signalName string
-	signalName = C.GoString(arg4)
+	arg4 = C.GoString(signalName)
 	defer C.free(unsafe.Pointer(arg4))
 
 	var parameters *glib.Variant
-	parameters = wrapVariant(arg5)
+	parameters = glib.WrapVariant(arg5)
 
 	v.(DBusSignalCallback)(connection, senderName, objectPath, interfaceName, signalName, parameters)
 }
@@ -2888,34 +2930,34 @@ func cDBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, 
 // object path (ie: it never contains a slash).
 type DBusSubtreeDispatchFunc func(connection DBusConnection, sender string, objectPath string, interfaceName string, node string, outUserData interface{}) *DBusInterfaceVTable
 
-//export cDBusSubtreeDispatchFunc
-func cDBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.gpointer, arg6 C.gpointer) *C.GDBusInterfaceVTable {
+//export gotk4_DBusSubtreeDispatchFunc
+func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.gpointer, arg6 C.gpointer) *C.GDBusInterfaceVTable {
 	v := box.Get(box.Callback, uintptr(arg6))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
-	sender = C.GoString(arg1)
+	arg1 = C.GoString(sender)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var objectPath string
-	objectPath = C.GoString(arg2)
+	arg2 = C.GoString(objectPath)
 	defer C.free(unsafe.Pointer(arg2))
 
 	var interfaceName string
-	interfaceName = C.GoString(arg3)
+	arg3 = C.GoString(interfaceName)
 	defer C.free(unsafe.Pointer(arg3))
 
 	var node string
-	node = C.GoString(arg4)
+	arg4 = C.GoString(node)
 	defer C.free(unsafe.Pointer(arg4))
 
 	var outUserData interface{}
-	outUserData = unsafe.Pointer(arg5)
+	outUserData = box.Get(uintptr(arg5))
 
 	dBusInterfaceVTable := v.(DBusSubtreeDispatchFunc)(connection, sender, objectPath, interfaceName, node, outUserData)
 }
@@ -2934,22 +2976,22 @@ func cDBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 // The return value will be freed with g_strfreev().
 type DBusSubtreeEnumerateFunc func(connection DBusConnection, sender string, objectPath string) []string
 
-//export cDBusSubtreeEnumerateFunc
-func cDBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) **C.gchar {
+//export gotk4_DBusSubtreeEnumerateFunc
+func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) **C.gchar {
 	v := box.Get(box.Callback, uintptr(arg3))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
-	sender = C.GoString(arg1)
+	arg1 = C.GoString(sender)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var objectPath string
-	objectPath = C.GoString(arg2)
+	arg2 = C.GoString(objectPath)
 	defer C.free(unsafe.Pointer(arg2))
 
 	utf8s := v.(DBusSubtreeEnumerateFunc)(connection, sender, objectPath)
@@ -2975,26 +3017,26 @@ func cDBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.g
 // the empty array case, but not in the nil case.
 type DBusSubtreeIntrospectFunc func(connection DBusConnection, sender string, objectPath string, node string) **DBusInterfaceInfo
 
-//export cDBusSubtreeIntrospectFunc
-func cDBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) **C.GDBusInterfaceInfo {
+//export gotk4_DBusSubtreeIntrospectFunc
+func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) **C.GDBusInterfaceInfo {
 	v := box.Get(box.Callback, uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var connection dBusConnection
-	connection = wrapDBusConnection(externglib.Take(unsafe.Pointer(arg0)))
+	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
-	sender = C.GoString(arg1)
+	arg1 = C.GoString(sender)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var objectPath string
-	objectPath = C.GoString(arg2)
+	arg2 = C.GoString(objectPath)
 	defer C.free(unsafe.Pointer(arg2))
 
 	var node string
-	node = C.GoString(arg3)
+	arg3 = C.GoString(node)
 	defer C.free(unsafe.Pointer(arg3))
 
 	dBusInterfaceInfo := v.(DBusSubtreeIntrospectFunc)(connection, sender, objectPath, node)
@@ -3004,18 +3046,17 @@ func cDBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.
 // the #GSource returned by g_datagram_based_create_source().
 type DatagramBasedSourceFunc func(datagramBased DatagramBased, condition glib.IOCondition) bool
 
-//export cDatagramBasedSourceFunc
-func cDatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
+//export gotk4_DatagramBasedSourceFunc
+func gotk4_DatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var datagramBased DatagramBased
-	datagramBased = wrapDatagramBased(arg0)
 
 	var condition glib.IOCondition
-	condition = IOCondition(arg1)
+	condition = glib.IOCondition(arg1)
 
 	ok := v.(DatagramBasedSourceFunc)(datagramBased, condition)
 }
@@ -3025,20 +3066,21 @@ func cDatagramBasedSourceFunc(arg0 *C.GDatagramBased, arg1 C.GIOCondition, arg2 
 // processes. This callback is invoked once for each, providing the process ID.
 type DesktopAppLaunchCallback func(appinfo DesktopAppInfo, pid glib.Pid)
 
-//export cDesktopAppLaunchCallback
-func cDesktopAppLaunchCallback(arg0 *C.GDesktopAppInfo, arg1 C.GPid, arg2 C.gpointer) {
+//export gotk4_DesktopAppLaunchCallback
+func gotk4_DesktopAppLaunchCallback(arg0 *C.GDesktopAppInfo, arg1 C.GPid, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var appinfo desktopAppInfo
-	appinfo = wrapDesktopAppInfo(externglib.Take(unsafe.Pointer(arg0)))
+	appinfo = gio.WrapDesktopAppInfo(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var pid glib.Pid
 	{
-		tmp := int(arg1)
-		pid = Pid(tmp)
+		var tmp int
+		tmp = int(arg1)
+		pid = glib.Pid(tmp)
 	}
 
 	v.(DesktopAppLaunchCallback)(appinfo, pid)
@@ -3073,8 +3115,8 @@ func cDesktopAppLaunchCallback(arg0 *C.GDesktopAppInfo, arg1 C.GPid, arg2 C.gpoi
 // Always check the async result to get the final value.
 type FileMeasureProgressCallback func(reporting bool, currentSize uint64, numDirs uint64, numFiles uint64)
 
-//export cFileMeasureProgressCallback
-func cFileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint64, arg3 C.guint64, arg4 C.gpointer) {
+//export gotk4_FileMeasureProgressCallback
+func gotk4_FileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint64, arg3 C.guint64, arg4 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg4))
 	if v == nil {
 		panic(`callback not found`)
@@ -3100,8 +3142,8 @@ func cFileMeasureProgressCallback(arg0 C.gboolean, arg1 C.guint64, arg2 C.guint6
 // far along that operation is to the application.
 type FileProgressCallback func(currentNumBytes int64, totalNumBytes int64)
 
-//export cFileProgressCallback
-func cFileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
+//export gotk4_FileProgressCallback
+func gotk4_FileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -3123,15 +3165,15 @@ func cFileProgressCallback(arg0 C.goffset, arg1 C.goffset, arg2 C.gpointer) {
 // otherwise.
 type FileReadMoreCallback func(fileContents string, fileSize int64) bool
 
-//export cFileReadMoreCallback
-func cFileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C.gboolean {
+//export gotk4_FileReadMoreCallback
+func gotk4_FileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var fileContents string
-	fileContents = C.GoString(arg0)
+	arg0 = C.GoString(fileContents)
 	defer C.free(unsafe.Pointer(arg0))
 
 	var fileSize int64
@@ -3146,18 +3188,18 @@ func cFileReadMoreCallback(arg0 *C.char, arg1 C.goffset, arg2 C.gpointer) C.gboo
 // have been cancelled.
 type IOSchedulerJobFunc func(job *IOSchedulerJob, cancellable Cancellable) bool
 
-//export cIOSchedulerJobFunc
-func cIOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg2 C.gpointer) C.gboolean {
+//export gotk4_IOSchedulerJobFunc
+func gotk4_IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var job *IOSchedulerJob
-	job = wrapIOSchedulerJob(arg0)
+	job = gio.WrapIOSchedulerJob(arg0)
 
 	var cancellable cancellable
-	cancellable = wrapCancellable(externglib.Take(unsafe.Pointer(arg1)))
+	cancellable = gio.WrapCancellable(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	ok := v.(IOSchedulerJobFunc)(job, cancellable)
 }
@@ -3167,15 +3209,15 @@ func cIOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg2 C.g
 // g_pollable_output_stream_create_source().
 type PollableSourceFunc func(pollableStream gextras.Objector) bool
 
-//export cPollableSourceFunc
-func cPollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
+//export gotk4_PollableSourceFunc
+func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg1))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var pollableStream *externglib.Object
-	pollableStream = glib.Take(arg0)
+	pollableStream = externglib.Take(unsafe.Pointer(arg0.Native()))
 
 	ok := v.(PollableSourceFunc)(pollableStream)
 }
@@ -3185,8 +3227,8 @@ func cPollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
 // hold values of the appropriate type.
 type SettingsBindGetMapping func(value *externglib.Value, variant *glib.Variant) bool
 
-//export cSettingsBindGetMapping
-func cSettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
+//export gotk4_SettingsBindGetMapping
+func gotk4_SettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -3195,7 +3237,7 @@ func cSettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) 
 	var value *externglib.Value
 
 	var variant *glib.Variant
-	variant = wrapVariant(arg1)
+	variant = glib.WrapVariant(arg1)
 
 	ok := v.(SettingsBindGetMapping)(value, variant)
 }
@@ -3204,8 +3246,8 @@ func cSettingsBindGetMapping(arg0 *C.GValue, arg1 *C.GVariant, arg2 C.gpointer) 
 // object property value to a #GVariant for storing it in #GSettings.
 type SettingsBindSetMapping func(value *externglib.Value, expectedType *glib.VariantType) *glib.Variant
 
-//export cSettingsBindSetMapping
-func cSettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) *C.GVariant {
+//export gotk4_SettingsBindSetMapping
+func gotk4_SettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpointer) *C.GVariant {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
@@ -3214,7 +3256,7 @@ func cSettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpoint
 	var value *externglib.Value
 
 	var expectedType *glib.VariantType
-	expectedType = wrapVariantType(arg1)
+	expectedType = glib.WrapVariantType(arg1)
 
 	variant := v.(SettingsBindSetMapping)(value, expectedType)
 }
@@ -3231,15 +3273,15 @@ func cSettingsBindSetMapping(arg0 *C.GValue, arg1 *C.GVariantType, arg2 C.gpoint
 // this case.
 type SettingsGetMapping func(value *glib.Variant) (result interface{}, ok bool)
 
-//export cSettingsGetMapping
-func cSettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.gboolean {
+//export gotk4_SettingsGetMapping
+func gotk4_SettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var value *glib.Variant
-	value = wrapVariant(arg0)
+	value = glib.WrapVariant(arg0)
 
 	result, ok := v.(SettingsGetMapping)(value)
 }
@@ -3248,18 +3290,18 @@ func cSettingsGetMapping(arg0 *C.GVariant, arg1 *C.gpointer, arg2 C.gpointer) C.
 // #GSource returned by g_socket_create_source().
 type SocketSourceFunc func(socket Socket, condition glib.IOCondition) bool
 
-//export cSocketSourceFunc
-func cSocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
+//export gotk4_SocketSourceFunc
+func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) C.gboolean {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var socket socket
-	socket = wrapSocket(externglib.Take(unsafe.Pointer(arg0)))
+	socket = gio.WrapSocket(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var condition glib.IOCondition
-	condition = IOCondition(arg1)
+	condition = glib.IOCondition(arg1)
 
 	ok := v.(SocketSourceFunc)(socket, condition)
 }
@@ -3272,18 +3314,18 @@ func cSocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointer) C.
 // for @uri, or nil to continue with the default implementation.
 type VfsFileLookupFunc func(vfs Vfs, identifier string) File
 
-//export cVfsFileLookupFunc
-func cVfsFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
+//export gotk4_VfsFileLookupFunc
+func gotk4_VfsFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
 	v := box.Get(box.Callback, uintptr(arg2))
 	if v == nil {
 		panic(`callback not found`)
 	}
 
 	var vfs vfs
-	vfs = wrapVfs(externglib.Take(unsafe.Pointer(arg0)))
+	vfs = gio.WrapVfs(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var identifier string
-	identifier = C.GoString(arg1)
+	arg1 = C.GoString(identifier)
 	defer C.free(unsafe.Pointer(arg1))
 
 	file := v.(VfsFileLookupFunc)(vfs, identifier)
@@ -3298,7 +3340,7 @@ func cVfsFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFile {
 // @action_name must not be nil.
 func ActionNameIsValid(actionName string) bool {
 	var arg0 string
-	arg0 = C.GoString(actionName)
+	actionName = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(actionName))
 
 	ret := C.g_action_name_is_valid(arg0)
@@ -3334,7 +3376,7 @@ func ActionNameIsValid(actionName string) bool {
 // and '.'.
 func ActionParseDetailedName(detailedName string) (actionName string, targetValue *glib.Variant, ok bool) {
 	var arg0 string
-	arg0 = C.GoString(detailedName)
+	detailedName = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(detailedName))
 
 	var arg1 **C.gchar // out
@@ -3344,11 +3386,11 @@ func ActionParseDetailedName(detailedName string) (actionName string, targetValu
 	ret := C.g_action_parse_detailed_name(arg0, &arg1, &arg2)
 
 	var ret0 string
-	ret0 = C.GoString(arg1)
+	arg1 = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var ret1 **glib.Variant
-	ret1 = wrapVariant(arg2)
+	ret1 = glib.WrapVariant(arg2)
 
 	var ret2 bool
 	ret2 = gextras.Gobool(ret)
@@ -3369,16 +3411,16 @@ func ActionParseDetailedName(detailedName string) (actionName string, targetValu
 // function.
 func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) string {
 	var arg0 string
-	arg0 = C.GoString(actionName)
+	actionName = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(actionName))
 
 	var arg1 *glib.Variant
-	arg1 = wrapVariant(targetValue)
+	arg1 = glib.WrapVariant(targetValue)
 
 	ret := C.g_action_print_detailed_name(arg0, arg1)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -3387,18 +3429,18 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 // AppInfoCreateFromCommandline creates a new Info from the given information.
 //
 // Note that for @commandline, the quoting rules of the Exec key of the
-// [freedesktop.org Desktop Entry
-// Specification](http://freedesktop.org/Standards/desktop-entry-spec) are
-// applied. For example, if the @commandline contains percent-encoded URIs, the
+// freedesktop.org Desktop Entry Specification
+// (http://freedesktop.org/Standards/desktop-entry-spec) are applied. For
+// example, if the @commandline contains percent-encoded URIs, the
 // percent-character must be doubled in order to prevent it from being swallowed
 // by Exec key unquoting. See the specification for exact quoting rules.
 func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) AppInfo {
 	var arg0 string
-	arg0 = C.GoString(commandline)
+	commandline = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(commandline))
 
 	var arg1 string
-	arg1 = C.GoString(applicationName)
+	applicationName = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(applicationName))
 
 	var arg2 AppInfoCreateFlags
@@ -3407,7 +3449,6 @@ func AppInfoCreateFromCommandline(commandline string, applicationName string, fl
 	ret := C.g_app_info_create_from_commandline(arg0, arg1, arg2)
 
 	var ret0 AppInfo
-	ret0 = wrapAppInfo(ret)
 
 	return ret0
 }
@@ -3423,7 +3464,7 @@ func AppInfoGetAll() *glib.List {
 	ret := C.g_app_info_get_all()
 
 	var ret0 *glib.List
-	ret0 = wrapList(ret)
+	ret0 = glib.WrapList(ret)
 
 	return ret0
 }
@@ -3433,13 +3474,13 @@ func AppInfoGetAll() *glib.List {
 // g_app_info_get_recommended_for_type() and g_app_info_get_fallback_for_type().
 func AppInfoGetAllForType(contentType string) *glib.List {
 	var arg0 string
-	arg0 = C.GoString(contentType)
+	contentType = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(contentType))
 
 	ret := C.g_app_info_get_all_for_type(arg0)
 
 	var ret0 *glib.List
-	ret0 = wrapList(ret)
+	ret0 = glib.WrapList(ret)
 
 	return ret0
 }
@@ -3447,7 +3488,7 @@ func AppInfoGetAllForType(contentType string) *glib.List {
 // AppInfoGetDefaultForType gets the default Info for a given content type.
 func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfo {
 	var arg0 string
-	arg0 = C.GoString(contentType)
+	contentType = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(contentType))
 
 	var arg1 bool
@@ -3456,7 +3497,6 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfo 
 	ret := C.g_app_info_get_default_for_type(arg0, arg1)
 
 	var ret0 AppInfo
-	ret0 = wrapAppInfo(ret)
 
 	return ret0
 }
@@ -3466,13 +3506,12 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfo 
 // but not including the ':', e.g. "http", "ftp" or "sip".
 func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfo {
 	var arg0 string
-	arg0 = C.GoString(uriScheme)
+	uriScheme = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(uriScheme))
 
 	ret := C.g_app_info_get_default_for_uri_scheme(arg0)
 
 	var ret0 AppInfo
-	ret0 = wrapAppInfo(ret)
 
 	return ret0
 }
@@ -3482,13 +3521,13 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfo {
 // by MIME type subclassing and not directly.
 func AppInfoGetFallbackForType(contentType string) *glib.List {
 	var arg0 string
-	arg0 = C.GoString(contentType)
+	contentType = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(contentType))
 
 	ret := C.g_app_info_get_fallback_for_type(arg0)
 
 	var ret0 *glib.List
-	ret0 = wrapList(ret)
+	ret0 = glib.WrapList(ret)
 
 	return ret0
 }
@@ -3500,13 +3539,13 @@ func AppInfoGetFallbackForType(contentType string) *glib.List {
 // g_app_info_set_as_last_used_for_type() has been called.
 func AppInfoGetRecommendedForType(contentType string) *glib.List {
 	var arg0 string
-	arg0 = C.GoString(contentType)
+	contentType = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(contentType))
 
 	ret := C.g_app_info_get_recommended_for_type(arg0)
 
 	var ret0 *glib.List
-	ret0 = wrapList(ret)
+	ret0 = glib.WrapList(ret)
 
 	return ret0
 }
@@ -3520,11 +3559,11 @@ func AppInfoGetRecommendedForType(contentType string) *glib.List {
 // g_app_info_launch_default_for_uri_async() instead.
 func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContext) bool {
 	var arg0 string
-	arg0 = C.GoString(uri)
+	uri = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(uri))
 
 	var arg1 AppLaunchContext
-	arg1 = wrapAppLaunchContext(externglib.Take(unsafe.Pointer(context)))
+	arg1 = gio.WrapAppLaunchContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	ret := C.g_app_info_launch_default_for_uri(arg0, arg1)
 
@@ -3546,29 +3585,23 @@ func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContext) bool {
 // in receiving error information from their activation.
 func AppInfoLaunchDefaultForURIAsync(uri string, context AppLaunchContext, cancellable Cancellable, callback AsyncReadyCallback) {
 	var arg0 string
-	arg0 = C.GoString(uri)
+	uri = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(uri))
 
 	var arg1 AppLaunchContext
-	arg1 = wrapAppLaunchContext(externglib.Take(unsafe.Pointer(context)))
+	arg1 = gio.WrapAppLaunchContext(externglib.Take(unsafe.Pointer(context.Native())))
 
 	var arg2 Cancellable
-	arg2 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
-
-	var arg3 AsyncReadyCallback
-	arg3 = wrapAsyncReadyCallback(callback)
+	arg2 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	arg4 := C.gpointer(box.Assign(box.Callback, userData))
-	C.g_app_info_launch_default_for_uri_async(arg0, arg1, arg2, arg3)
+	C.g_app_info_launch_default_for_uri_async(arg0, arg1, arg2)
 }
 
 // AppInfoLaunchDefaultForURIFinish finishes an asynchronous
 // launch-default-for-uri operation.
 func AppInfoLaunchDefaultForURIFinish(result AsyncResult) bool {
-	var arg0 AsyncResult
-	arg0 = wrapAsyncResult(result)
-
-	ret := C.g_app_info_launch_default_for_uri_finish(arg0)
+	ret := C.g_app_info_launch_default_for_uri_finish()
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -3582,7 +3615,7 @@ func AppInfoLaunchDefaultForURIFinish(result AsyncResult) bool {
 // g_app_info_remove_supports_type().
 func AppInfoResetTypeAssociations(contentType string) {
 	var arg0 string
-	arg0 = C.GoString(contentType)
+	contentType = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(contentType))
 
 	C.g_app_info_reset_type_associations(arg0)
@@ -3600,13 +3633,10 @@ func BusGet(busType BusType, cancellable Cancellable, callback AsyncReadyCallbac
 	arg0 = BusType(busType)
 
 	var arg1 Cancellable
-	arg1 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
-
-	var arg2 AsyncReadyCallback
-	arg2 = wrapAsyncReadyCallback(callback)
+	arg1 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	arg3 := C.gpointer(box.Assign(box.Callback, userData))
-	C.g_bus_get(arg0, arg1, arg2)
+	C.g_bus_get(arg0, arg1)
 }
 
 // BusGetFinish finishes an operation started with g_bus_get().
@@ -3619,13 +3649,10 @@ func BusGet(busType BusType, cancellable Cancellable, callback AsyncReadyCallbac
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
 func BusGetFinish(res AsyncResult) DBusConnection {
-	var arg0 AsyncResult
-	arg0 = wrapAsyncResult(res)
-
-	ret := C.g_bus_get_finish(arg0)
+	ret := C.g_bus_get_finish()
 
 	var ret0 DBusConnection
-	ret0 = wrapDBusConnection(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -3650,12 +3677,12 @@ func BusGetSync(busType BusType, cancellable Cancellable) DBusConnection {
 	arg0 = BusType(busType)
 
 	var arg1 Cancellable
-	arg1 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
+	arg1 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	ret := C.g_bus_get_sync(arg0, arg1)
 
 	var ret0 DBusConnection
-	ret0 = wrapDBusConnection(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -3714,23 +3741,14 @@ func BusOwnName(busType BusType, name string, flags BusNameOwnerFlags, busAcquir
 	arg0 = BusType(busType)
 
 	var arg1 string
-	arg1 = C.GoString(name)
+	name = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(name))
 
 	var arg2 BusNameOwnerFlags
 	arg2 = BusNameOwnerFlags(flags)
 
-	var arg3 BusAcquiredCallback
-	arg3 = wrapBusAcquiredCallback(busAcquiredHandler)
-
-	var arg4 BusNameAcquiredCallback
-	arg4 = wrapBusNameAcquiredCallback(nameAcquiredHandler)
-
-	var arg5 BusNameLostCallback
-	arg5 = wrapBusNameLostCallback(nameLostHandler)
-
 	arg6 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_own_name(arg0, arg1, arg2, arg3, arg4, arg5, (*[0]byte)(C.callbackDelete))
+	ret := C.g_bus_own_name(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3742,23 +3760,17 @@ func BusOwnName(busType BusType, name string, flags BusNameOwnerFlags, busAcquir
 // instead of a Type.
 func BusOwnNameOnConnection(connection DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredHandler BusNameAcquiredCallback, nameLostHandler BusNameLostCallback) uint {
 	var arg0 DBusConnection
-	arg0 = wrapDBusConnection(externglib.Take(unsafe.Pointer(connection)))
+	arg0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(connection.Native())))
 
 	var arg1 string
-	arg1 = C.GoString(name)
+	name = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(name))
 
 	var arg2 BusNameOwnerFlags
 	arg2 = BusNameOwnerFlags(flags)
 
-	var arg3 BusNameAcquiredCallback
-	arg3 = wrapBusNameAcquiredCallback(nameAcquiredHandler)
-
-	var arg4 BusNameLostCallback
-	arg4 = wrapBusNameLostCallback(nameLostHandler)
-
 	arg5 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_own_name_on_connection(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.callbackDelete))
+	ret := C.g_bus_own_name_on_connection(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3770,10 +3782,10 @@ func BusOwnNameOnConnection(connection DBusConnection, name string, flags BusNam
 // using closures instead of callbacks for easier binding in other languages.
 func BusOwnNameOnConnectionWithClosures(connection DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredClosure *externglib.Closure, nameLostClosure *externglib.Closure) uint {
 	var arg0 DBusConnection
-	arg0 = wrapDBusConnection(externglib.Take(unsafe.Pointer(connection)))
+	arg0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(connection.Native())))
 
 	var arg1 string
-	arg1 = C.GoString(name)
+	name = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(name))
 
 	var arg2 BusNameOwnerFlags
@@ -3794,7 +3806,7 @@ func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlag
 	arg0 = BusType(busType)
 
 	var arg1 string
-	arg1 = C.GoString(name)
+	name = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(name))
 
 	var arg2 BusNameOwnerFlags
@@ -3868,20 +3880,14 @@ func BusWatchName(busType BusType, name string, flags BusNameWatcherFlags, nameA
 	arg0 = BusType(busType)
 
 	var arg1 string
-	arg1 = C.GoString(name)
+	name = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(name))
 
 	var arg2 BusNameWatcherFlags
 	arg2 = BusNameWatcherFlags(flags)
 
-	var arg3 BusNameAppearedCallback
-	arg3 = wrapBusNameAppearedCallback(nameAppearedHandler)
-
-	var arg4 BusNameVanishedCallback
-	arg4 = wrapBusNameVanishedCallback(nameVanishedHandler)
-
 	arg5 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_watch_name(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.callbackDelete))
+	ret := C.g_bus_watch_name(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3893,23 +3899,17 @@ func BusWatchName(busType BusType, name string, flags BusNameWatcherFlags, nameA
 // instead of a Type.
 func BusWatchNameOnConnection(connection DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedHandler BusNameAppearedCallback, nameVanishedHandler BusNameVanishedCallback) uint {
 	var arg0 DBusConnection
-	arg0 = wrapDBusConnection(externglib.Take(unsafe.Pointer(connection)))
+	arg0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(connection.Native())))
 
 	var arg1 string
-	arg1 = C.GoString(name)
+	name = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(name))
 
 	var arg2 BusNameWatcherFlags
 	arg2 = BusNameWatcherFlags(flags)
 
-	var arg3 BusNameAppearedCallback
-	arg3 = wrapBusNameAppearedCallback(nameAppearedHandler)
-
-	var arg4 BusNameVanishedCallback
-	arg4 = wrapBusNameVanishedCallback(nameVanishedHandler)
-
 	arg5 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_watch_name_on_connection(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.callbackDelete))
+	ret := C.g_bus_watch_name_on_connection(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3922,10 +3922,10 @@ func BusWatchNameOnConnection(connection DBusConnection, name string, flags BusN
 // easier binding in other languages.
 func BusWatchNameOnConnectionWithClosures(connection DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedClosure *externglib.Closure, nameVanishedClosure *externglib.Closure) uint {
 	var arg0 DBusConnection
-	arg0 = wrapDBusConnection(externglib.Take(unsafe.Pointer(connection)))
+	arg0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(connection.Native())))
 
 	var arg1 string
-	arg1 = C.GoString(name)
+	name = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(name))
 
 	var arg2 BusNameWatcherFlags
@@ -3946,7 +3946,7 @@ func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcher
 	arg0 = BusType(busType)
 
 	var arg1 string
-	arg1 = C.GoString(name)
+	name = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(name))
 
 	var arg2 BusNameWatcherFlags
@@ -3965,7 +3965,7 @@ func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcher
 // batch files).
 func ContentTypeCanBeExecutable(_type string) bool {
 	var arg0 string
-	arg0 = C.GoString(_type)
+	_type = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_can_be_executable(arg0)
@@ -3979,11 +3979,11 @@ func ContentTypeCanBeExecutable(_type string) bool {
 // ContentTypeEquals compares two content types for equality.
 func ContentTypeEquals(type1 string, type2 string) bool {
 	var arg0 string
-	arg0 = C.GoString(type1)
+	type1 = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(type1))
 
 	var arg1 string
-	arg1 = C.GoString(type2)
+	type2 = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(type2))
 
 	ret := C.g_content_type_equals(arg0, arg1)
@@ -3998,13 +3998,13 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 // name.
 func ContentTypeFromMIMEType(mimeType string) string {
 	var arg0 string
-	arg0 = C.GoString(mimeType)
+	mimeType = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(mimeType))
 
 	ret := C.g_content_type_from_mime_type(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4014,13 +4014,13 @@ func ContentTypeFromMIMEType(mimeType string) string {
 // type.
 func ContentTypeGetDescription(_type string) string {
 	var arg0 string
-	arg0 = C.GoString(_type)
+	_type = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_get_description(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4028,18 +4028,18 @@ func ContentTypeGetDescription(_type string) string {
 
 // ContentTypeGetGenericIconName gets the generic icon name for a content type.
 //
-// See the
-// [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+// See the shared-mime-info
+// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
 // specification for more on the generic icon name.
 func ContentTypeGetGenericIconName(_type string) string {
 	var arg0 string
-	arg0 = C.GoString(_type)
+	_type = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_get_generic_icon_name(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4048,13 +4048,12 @@ func ContentTypeGetGenericIconName(_type string) string {
 // ContentTypeGetIcon gets the icon for a content type.
 func ContentTypeGetIcon(_type string) Icon {
 	var arg0 string
-	arg0 = C.GoString(_type)
+	_type = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_get_icon(arg0)
 
 	var ret0 Icon
-	ret0 = wrapIcon(ret)
 
 	return ret0
 }
@@ -4074,7 +4073,7 @@ func ContentTypeGetMIMEDirs() []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			ret0[i] = C.GoString(src)
+			src = C.GoString(ret0[i])
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
@@ -4086,13 +4085,13 @@ func ContentTypeGetMIMEDirs() []string {
 // registered.
 func ContentTypeGetMIMEType(_type string) string {
 	var arg0 string
-	arg0 = C.GoString(_type)
+	_type = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_get_mime_type(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4101,13 +4100,12 @@ func ContentTypeGetMIMEType(_type string) string {
 // ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
 func ContentTypeGetSymbolicIcon(_type string) Icon {
 	var arg0 string
-	arg0 = C.GoString(_type)
+	_type = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_get_symbolic_icon(arg0)
 
 	var ret0 Icon
-	ret0 = wrapIcon(ret)
 
 	return ret0
 }
@@ -4118,7 +4116,7 @@ func ContentTypeGetSymbolicIcon(_type string) Icon {
 // on the other argument.
 func ContentTypeGuess(filename string, data []uint8) (resultUncertain bool, utf8 string) {
 	var arg0 string
-	arg0 = C.GoString(filename)
+	filename = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(filename))
 
 	var arg1 []uint8
@@ -4138,7 +4136,7 @@ func ContentTypeGuess(filename string, data []uint8) (resultUncertain bool, utf8
 	ret0 = gextras.Gobool(arg3)
 
 	var ret1 string
-	ret1 = C.GoString(ret)
+	ret = C.GoString(ret1)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0, ret1
@@ -4150,16 +4148,14 @@ func ContentTypeGuess(filename string, data []uint8) (resultUncertain bool, utf8
 //
 // The types returned all have the form x-content/foo, e.g. x-content/audio-cdda
 // (for audio CDs) or x-content/image-dcf (for a camera memory card). See the
-// [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+// shared-mime-info
+// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
 // specification for more on x-content types.
 //
 // This function is useful in the implementation of
 // g_mount_guess_content_type().
 func ContentTypeGuessForTree(root File) []string {
-	var arg0 File
-	arg0 = wrapFile(root)
-
-	ret := C.g_content_type_guess_for_tree(arg0)
+	ret := C.g_content_type_guess_for_tree()
 
 	var ret0 []string
 	{
@@ -4171,7 +4167,7 @@ func ContentTypeGuessForTree(root File) []string {
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			ret0[i] = C.GoString(src)
+			src = C.GoString(ret0[i])
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
@@ -4182,11 +4178,11 @@ func ContentTypeGuessForTree(root File) []string {
 // ContentTypeIsA determines if @type is a subset of @supertype.
 func ContentTypeIsA(_type string, supertype string) bool {
 	var arg0 string
-	arg0 = C.GoString(_type)
+	_type = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(_type))
 
 	var arg1 string
-	arg1 = C.GoString(supertype)
+	supertype = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(supertype))
 
 	ret := C.g_content_type_is_a(arg0, arg1)
@@ -4201,11 +4197,11 @@ func ContentTypeIsA(_type string, supertype string) bool {
 // Convenience wrapper around g_content_type_is_a().
 func ContentTypeIsMIMEType(_type string, mimeType string) bool {
 	var arg0 string
-	arg0 = C.GoString(_type)
+	_type = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(_type))
 
 	var arg1 string
-	arg1 = C.GoString(mimeType)
+	mimeType = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(mimeType))
 
 	ret := C.g_content_type_is_mime_type(arg0, arg1)
@@ -4221,7 +4217,7 @@ func ContentTypeIsMIMEType(_type string, mimeType string) bool {
 // it is "*" and on OSX it is a dynamic type or octet-stream.
 func ContentTypeIsUnknown(_type string) bool {
 	var arg0 string
-	arg0 = C.GoString(_type)
+	_type = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_is_unknown(arg0)
@@ -4235,8 +4231,8 @@ func ContentTypeIsUnknown(_type string) bool {
 // ContentTypeSetMIMEDirs: set the list of directories used by GIO to load the
 // MIME database. If @dirs is nil, the directories used are the default:
 //
-// - the `mime` subdirectory of the directory in `$XDG_DATA_HOME` - the `mime`
-// subdirectory of every directory in `$XDG_DATA_DIRS`
+//    - the `mime` subdirectory of the directory in `$XDG_DATA_HOME`
+//    - the `mime` subdirectory of every directory in `$XDG_DATA_DIRS`
 //
 // This function is intended to be used when writing tests that depend on
 // information stored in the MIME database, in order to control the data.
@@ -4265,7 +4261,7 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 		arg0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(dirs)) + i))
-			arg0[i] = C.GoString(src)
+			src = C.GoString(arg0[i])
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
@@ -4280,7 +4276,7 @@ func ContentTypesGetRegistered() *glib.List {
 	ret := C.g_content_types_get_registered()
 
 	var ret0 *glib.List
-	ret0 = wrapList(ret)
+	ret0 = glib.WrapList(ret)
 
 	return ret0
 }
@@ -4293,13 +4289,13 @@ func ContentTypesGetRegistered() *glib.List {
 // `unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-3A0`.
 func DbusAddressEscapeValue(string string) string {
 	var arg0 string
-	arg0 = C.GoString(string)
+	string = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_address_escape_value(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4309,19 +4305,19 @@ func DbusAddressEscapeValue(string string) string {
 // well-known message bus instance specified by @bus_type. This may involve
 // using various platform specific mechanisms.
 //
-// The returned address will be in the [D-Bus address
-// format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+// The returned address will be in the D-Bus address format
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 func DbusAddressGetForBusSync(busType BusType, cancellable Cancellable) string {
 	var arg0 BusType
 	arg0 = BusType(busType)
 
 	var arg1 Cancellable
-	arg1 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
+	arg1 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	ret := C.g_dbus_address_get_for_bus_sync(arg0, arg1)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4330,8 +4326,8 @@ func DbusAddressGetForBusSync(busType BusType, cancellable Cancellable) string {
 // DbusAddressGetStream: asynchronously connects to an endpoint specified by
 // @address and sets up the connection so it is in a state to run the
 // client-side of the D-Bus authentication conversation. @address must be in the
-// [D-Bus address
-// format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+// D-Bus address format
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
 // When the operation is finished, @callback will be invoked. You can then call
 // g_dbus_address_get_stream_finish() to get the result of the operation.
@@ -4340,35 +4336,29 @@ func DbusAddressGetForBusSync(busType BusType, cancellable Cancellable) string {
 // g_dbus_address_get_stream_sync() for the synchronous version.
 func DbusAddressGetStream(address string, cancellable Cancellable, callback AsyncReadyCallback) {
 	var arg0 string
-	arg0 = C.GoString(address)
+	address = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(address))
 
 	var arg1 Cancellable
-	arg1 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
-
-	var arg2 AsyncReadyCallback
-	arg2 = wrapAsyncReadyCallback(callback)
+	arg1 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	arg3 := C.gpointer(box.Assign(box.Callback, userData))
-	C.g_dbus_address_get_stream(arg0, arg1, arg2)
+	C.g_dbus_address_get_stream(arg0, arg1)
 }
 
 // DbusAddressGetStreamFinish finishes an operation started with
 // g_dbus_address_get_stream().
 func DbusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStream) {
-	var arg0 AsyncResult
-	arg0 = wrapAsyncResult(res)
-
 	var arg1 **C.gchar // out
 
-	ret := C.g_dbus_address_get_stream_finish(arg0, &arg1)
+	ret := C.g_dbus_address_get_stream_finish(&arg1)
 
 	var ret0 string
-	ret0 = C.GoString(arg1)
+	arg1 = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var ret1 IOStream
-	ret1 = wrapIOStream(externglib.Take(unsafe.Pointer(ret)))
+	ret1 = gio.WrapIOStream(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0, ret1
 }
@@ -4376,29 +4366,29 @@ func DbusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStr
 // DbusAddressGetStreamSync: synchronously connects to an endpoint specified by
 // @address and sets up the connection so it is in a state to run the
 // client-side of the D-Bus authentication conversation. @address must be in the
-// [D-Bus address
-// format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+// D-Bus address format
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
 // This is a synchronous failable function. See g_dbus_address_get_stream() for
 // the asynchronous version.
 func DbusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid string, ioStream IOStream) {
 	var arg0 string
-	arg0 = C.GoString(address)
+	address = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(address))
 
 	var arg1 **C.gchar // out
 
 	var arg2 Cancellable
-	arg2 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
+	arg2 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	ret := C.g_dbus_address_get_stream_sync(arg0, &arg1, arg2)
 
 	var ret0 string
-	ret0 = C.GoString(arg1)
+	arg1 = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var ret1 IOStream
-	ret1 = wrapIOStream(externglib.Take(unsafe.Pointer(ret)))
+	ret1 = gio.WrapIOStream(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0, ret1
 }
@@ -4417,18 +4407,18 @@ func DbusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 		arg0 = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(annotations)) + i))
-			arg0[i] = wrapDBusAnnotationInfo(src)
+			arg0[i] = gio.WrapDBusAnnotationInfo(src)
 		}
 	}
 
 	var arg1 string
-	arg1 = C.GoString(name)
+	name = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(name))
 
 	ret := C.g_dbus_annotation_info_lookup(arg0, arg1)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4447,12 +4437,12 @@ func DbusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 // the wire. Regular applications should not use it.
 func DbusErrorEncodeGerror(error *glib.Error) string {
 	var arg0 *glib.Error
-	arg0 = wrapError(error)
+	arg0 = glib.WrapError(error)
 
 	ret := C.g_dbus_error_encode_gerror(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4466,12 +4456,12 @@ func DbusErrorEncodeGerror(error *glib.Error) string {
 // been used on @error.
 func DbusErrorGetRemoteError(error *glib.Error) string {
 	var arg0 *glib.Error
-	arg0 = wrapError(error)
+	arg0 = glib.WrapError(error)
 
 	ret := C.g_dbus_error_get_remote_error(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4482,7 +4472,7 @@ func DbusErrorGetRemoteError(error *glib.Error) string {
 // the name of the error.
 func DbusErrorIsRemoteError(error *glib.Error) bool {
 	var arg0 *glib.Error
-	arg0 = wrapError(error)
+	arg0 = glib.WrapError(error)
 
 	ret := C.g_dbus_error_is_remote_error(arg0)
 
@@ -4519,17 +4509,17 @@ func DbusErrorIsRemoteError(error *glib.Error) bool {
 // instances for applications. Regular applications should not use it.
 func DbusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) *glib.Error {
 	var arg0 string
-	arg0 = C.GoString(dbusErrorName)
+	dbusErrorName = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(dbusErrorName))
 
 	var arg1 string
-	arg1 = C.GoString(dbusErrorMessage)
+	dbusErrorMessage = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(dbusErrorMessage))
 
 	ret := C.g_dbus_error_new_for_dbus_error(arg0, arg1)
 
 	var ret0 *glib.Error
-	ret0 = wrapError(ret)
+	ret0 = glib.WrapError(ret)
 
 	return ret0
 }
@@ -4539,8 +4529,9 @@ func DbusErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -4554,15 +4545,16 @@ func DbusErrorQuark() glib.Quark {
 func DbusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
 	var arg0 glib.Quark
 	{
-		tmp := uint32(errorDomain)
-		arg0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(errorDomain)
+		arg0 = glib.Quark(tmp)
 	}
 
 	var arg1 int
 	arg1 = int(errorCode)
 
 	var arg2 string
-	arg2 = C.GoString(dbusErrorName)
+	dbusErrorName = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(dbusErrorName))
 
 	ret := C.g_dbus_error_register_error(arg0, arg1, arg2)
@@ -4577,7 +4569,7 @@ func DbusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName
 // domain with D-Bus error names.
 func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uint, entries []DBusErrorEntry) {
 	var arg0 string
-	arg0 = C.GoString(errorDomainQuarkName)
+	errorDomainQuarkName = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(errorDomainQuarkName))
 
 	var arg1 uint
@@ -4588,7 +4580,7 @@ func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uin
 		arg2 = make([]DBusErrorEntry, a)
 		for i := 0; i < uintptr(a); i++ {
 			src := (C.GDBusErrorEntry)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			arg2[i] = wrapDBusErrorEntry(src)
+			arg2[i] = gio.WrapDBusErrorEntry(src)
 		}
 	}
 
@@ -4603,7 +4595,7 @@ func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uin
 // This is typically used when presenting errors to the end user.
 func DbusErrorStripRemoteError(error *glib.Error) bool {
 	var arg0 *glib.Error
-	arg0 = wrapError(error)
+	arg0 = glib.WrapError(error)
 
 	ret := C.g_dbus_error_strip_remote_error(arg0)
 
@@ -4618,15 +4610,16 @@ func DbusErrorStripRemoteError(error *glib.Error) bool {
 func DbusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
 	var arg0 glib.Quark
 	{
-		tmp := uint32(errorDomain)
-		arg0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(errorDomain)
+		arg0 = glib.Quark(tmp)
 	}
 
 	var arg1 int
 	arg1 = int(errorCode)
 
 	var arg2 string
-	arg2 = C.GoString(dbusErrorName)
+	dbusErrorName = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(dbusErrorName))
 
 	ret := C.g_dbus_error_unregister_error(arg0, arg1, arg2)
@@ -4646,7 +4639,7 @@ func DbusGenerateGuid() string {
 	ret := C.g_dbus_generate_guid()
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -4675,12 +4668,12 @@ func DbusGenerateGuid() string {
 // to a #GValue.
 func DbusGValueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *glib.Variant {
 	var arg1 *glib.VariantType
-	arg1 = wrapVariantType(_type)
+	arg1 = glib.WrapVariantType(_type)
 
 	ret := C.g_dbus_gvalue_to_gvariant(arg1)
 
 	var ret0 *glib.Variant
-	ret0 = wrapVariant(ret)
+	ret0 = glib.WrapVariant(ret)
 
 	return ret0
 }
@@ -4698,7 +4691,7 @@ func DbusGValueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *gl
 // @out_gvalue.
 func DbusGvariantToGValue(value *glib.Variant) externglib.Value {
 	var arg0 *glib.Variant
-	arg0 = wrapVariant(value)
+	arg0 = glib.WrapVariant(value)
 
 	var arg1 *C.GValue // out
 
@@ -4709,14 +4702,14 @@ func DbusGvariantToGValue(value *glib.Variant) externglib.Value {
 	return ret0
 }
 
-// DbusIsAddress checks if @string is a [D-Bus
-// address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+// DbusIsAddress checks if @string is a D-Bus address
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
 // This doesn't check if @string is actually supported by BusServer or
 // BusConnection - use g_dbus_is_supported_address() to do more checks.
 func DbusIsAddress(string string) bool {
 	var arg0 string
-	arg0 = C.GoString(string)
+	string = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_address(arg0)
@@ -4733,7 +4726,7 @@ func DbusIsAddress(string string) bool {
 // example, D-Bus GUIDs are not RFC-4122 compliant).
 func DbusIsGuid(string string) bool {
 	var arg0 string
-	arg0 = C.GoString(string)
+	string = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_guid(arg0)
@@ -4747,7 +4740,7 @@ func DbusIsGuid(string string) bool {
 // DbusIsInterfaceName checks if @string is a valid D-Bus interface name.
 func DbusIsInterfaceName(string string) bool {
 	var arg0 string
-	arg0 = C.GoString(string)
+	string = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_interface_name(arg0)
@@ -4762,7 +4755,7 @@ func DbusIsInterfaceName(string string) bool {
 // method) name.
 func DbusIsMemberName(string string) bool {
 	var arg0 string
-	arg0 = C.GoString(string)
+	string = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_member_name(arg0)
@@ -4777,7 +4770,7 @@ func DbusIsMemberName(string string) bool {
 // well-known).
 func DbusIsName(string string) bool {
 	var arg0 string
-	arg0 = C.GoString(string)
+	string = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_name(arg0)
@@ -4790,11 +4783,11 @@ func DbusIsName(string string) bool {
 
 // DbusIsSupportedAddress: like g_dbus_is_address() but also checks if the
 // library supports the transports in @string and that key/value pairs for each
-// transport are valid. See the specification of the [D-Bus address
-// format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+// transport are valid. See the specification of the D-Bus address format
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 func DbusIsSupportedAddress(string string) bool {
 	var arg0 string
-	arg0 = C.GoString(string)
+	string = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_supported_address(arg0)
@@ -4808,7 +4801,7 @@ func DbusIsSupportedAddress(string string) bool {
 // DbusIsUniqueName checks if @string is a valid D-Bus unique bus name.
 func DbusIsUniqueName(string string) bool {
 	var arg0 string
-	arg0 = C.GoString(string)
+	string = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_unique_name(arg0)
@@ -4823,32 +4816,21 @@ func DbusIsUniqueName(string string) bool {
 // which is assumed to communicate with the server identified by
 // @server_identity.
 func NewDtlsClientConnection(baseSocket DatagramBased, serverIdentity SocketConnectable) DtlsClientConnection {
-	var arg0 DatagramBased
-	arg0 = wrapDatagramBased(baseSocket)
-
-	var arg1 SocketConnectable
-	arg1 = wrapSocketConnectable(serverIdentity)
-
-	ret := C.g_dtls_client_connection_new(arg0, arg1)
+	ret := C.g_dtls_client_connection_new()
 
 	var ret0 DtlsClientConnection
-	ret0 = wrapDtlsClientConnection(ret)
 
 	return ret0
 }
 
 // NewDtlsServerConnection creates a new ServerConnection wrapping @base_socket.
 func NewDtlsServerConnection(baseSocket DatagramBased, certificate TlsCertificate) DtlsServerConnection {
-	var arg0 DatagramBased
-	arg0 = wrapDatagramBased(baseSocket)
-
 	var arg1 TlsCertificate
-	arg1 = wrapTlsCertificate(externglib.Take(unsafe.Pointer(certificate)))
+	arg1 = gio.WrapTlsCertificate(externglib.Take(unsafe.Pointer(certificate.Native())))
 
-	ret := C.g_dtls_server_connection_new(arg0, arg1)
+	ret := C.g_dtls_server_connection_new(arg1)
 
 	var ret0 DtlsServerConnection
-	ret0 = wrapDtlsServerConnection(ret)
 
 	return ret0
 }
@@ -4868,13 +4850,12 @@ func NewDtlsServerConnection(baseSocket DatagramBased, certificate TlsCertificat
 // arguments of type G_OPTION_ARG_FILENAME.
 func FileNewForCommandlineArg(arg string) File {
 	var arg0 string
-	arg0 = C.GoString(arg)
+	arg = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(arg))
 
 	ret := C.g_file_new_for_commandline_arg(arg0)
 
 	var ret0 File
-	ret0 = wrapFile(ret)
 
 	return ret0
 }
@@ -4892,17 +4873,16 @@ func FileNewForCommandlineArg(arg string) File {
 // See also g_application_command_line_create_file_for_arg().
 func FileNewForCommandlineArgAndCwd(arg string, cwd string) File {
 	var arg0 string
-	arg0 = C.GoString(arg)
+	arg = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(arg))
 
 	var arg1 string
-	arg1 = C.GoString(cwd)
+	cwd = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(cwd))
 
 	ret := C.g_file_new_for_commandline_arg_and_cwd(arg0, arg1)
 
 	var ret0 File
-	ret0 = wrapFile(ret)
 
 	return ret0
 }
@@ -4912,13 +4892,12 @@ func FileNewForCommandlineArgAndCwd(arg string, cwd string) File {
 // is malformed.
 func FileNewForPath(path string) File {
 	var arg0 string
-	arg0 = C.GoString(path)
+	path = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(path))
 
 	ret := C.g_file_new_for_path(arg0)
 
 	var ret0 File
-	ret0 = wrapFile(ret)
 
 	return ret0
 }
@@ -4928,13 +4907,12 @@ func FileNewForPath(path string) File {
 // malformed or if the uri type is not supported.
 func FileNewForURI(uri string) File {
 	var arg0 string
-	arg0 = C.GoString(uri)
+	uri = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(uri))
 
 	ret := C.g_file_new_for_uri(arg0)
 
 	var ret0 File
-	ret0 = wrapFile(ret)
 
 	return ret0
 }
@@ -4951,7 +4929,7 @@ func FileNewForURI(uri string) File {
 // file could not be created.
 func FileNewTmp(tmpl string) (iostream FileIOStream, file File) {
 	var arg0 string
-	arg0 = C.GoString(tmpl)
+	tmpl = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(tmpl))
 
 	var arg1 **C.GFileIOStream // out
@@ -4959,10 +4937,9 @@ func FileNewTmp(tmpl string) (iostream FileIOStream, file File) {
 	ret := C.g_file_new_tmp(arg0, &arg1)
 
 	var ret0 FileIOStream
-	ret0 = wrapFileIOStream(externglib.Take(unsafe.Pointer(arg1)))
+	ret0 = gio.WrapFileIOStream(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	var ret1 File
-	ret1 = wrapFile(ret)
 
 	return ret0, ret1
 }
@@ -4973,13 +4950,12 @@ func FileNewTmp(tmpl string) (iostream FileIOStream, file File) {
 // be parsed.
 func FileParseName(parseName string) File {
 	var arg0 string
-	arg0 = C.GoString(parseName)
+	parseName = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(parseName))
 
 	ret := C.g_file_parse_name(arg0)
 
 	var ret0 File
-	ret0 = wrapFile(ret)
 
 	return ret0
 }
@@ -4988,12 +4964,11 @@ func FileParseName(parseName string) File {
 // g_icon_serialize().
 func IconDeserialize(value *glib.Variant) Icon {
 	var arg0 *glib.Variant
-	arg0 = wrapVariant(value)
+	arg0 = glib.WrapVariant(value)
 
 	ret := C.g_icon_deserialize(arg0)
 
 	var ret0 Icon
-	ret0 = wrapIcon(ret)
 
 	return ret0
 }
@@ -5001,7 +4976,7 @@ func IconDeserialize(value *glib.Variant) Icon {
 // IconHash gets a hash for an icon.
 func IconHash(icon interface{}) uint {
 	var arg0 interface{}
-	arg0 = unsafe.Pointer(icon)
+	arg0 = box.Get(uintptr(icon))
 
 	ret := C.g_icon_hash(arg0)
 
@@ -5019,13 +4994,12 @@ func IconHash(icon interface{}) uint {
 // to calling g_icon_new_for_string().
 func IconNewForString(str string) Icon {
 	var arg0 string
-	arg0 = C.GoString(str)
+	str = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(str))
 
 	ret := C.g_icon_new_for_string(arg0)
 
 	var ret0 Icon
-	ret0 = wrapIcon(ret)
 
 	return ret0
 }
@@ -5055,8 +5029,9 @@ func IOErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -5069,11 +5044,11 @@ func IOErrorQuark() glib.Quark {
 // point, the existing OExtension object is returned.
 func IOExtensionPointImplement(extensionPointName string, _type externglib.Type, extensionName string, priority int) *IOExtension {
 	var arg0 string
-	arg0 = C.GoString(extensionPointName)
+	extensionPointName = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(extensionPointName))
 
 	var arg2 string
-	arg2 = C.GoString(extensionName)
+	extensionName = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(extensionName))
 
 	var arg3 int
@@ -5082,7 +5057,7 @@ func IOExtensionPointImplement(extensionPointName string, _type externglib.Type,
 	ret := C.g_io_extension_point_implement(arg0, arg2, arg3)
 
 	var ret0 *IOExtension
-	ret0 = wrapIOExtension(ret)
+	ret0 = gio.WrapIOExtension(ret)
 
 	return ret0
 }
@@ -5090,13 +5065,13 @@ func IOExtensionPointImplement(extensionPointName string, _type externglib.Type,
 // IOExtensionPointLookup looks up an existing extension point.
 func IOExtensionPointLookup(name string) *IOExtensionPoint {
 	var arg0 string
-	arg0 = C.GoString(name)
+	name = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(name))
 
 	ret := C.g_io_extension_point_lookup(arg0)
 
 	var ret0 *IOExtensionPoint
-	ret0 = wrapIOExtensionPoint(ret)
+	ret0 = gio.WrapIOExtensionPoint(ret)
 
 	return ret0
 }
@@ -5104,13 +5079,13 @@ func IOExtensionPointLookup(name string) *IOExtensionPoint {
 // IOExtensionPointRegister registers an extension point.
 func IOExtensionPointRegister(name string) *IOExtensionPoint {
 	var arg0 string
-	arg0 = C.GoString(name)
+	name = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(name))
 
 	ret := C.g_io_extension_point_register(arg0)
 
 	var ret0 *IOExtensionPoint
-	ret0 = wrapIOExtensionPoint(ret)
+	ret0 = gio.WrapIOExtensionPoint(ret)
 
 	return ret0
 }
@@ -5122,13 +5097,13 @@ func IOExtensionPointRegister(name string) *IOExtensionPoint {
 // delayed/lazy loading of modules.
 func IOModulesLoadAllInDirectory(dirname string) *glib.List {
 	var arg0 string
-	arg0 = C.GoString(dirname)
+	dirname = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(dirname))
 
 	ret := C.g_io_modules_load_all_in_directory(arg0)
 
 	var ret0 *glib.List
-	ret0 = wrapList(ret)
+	ret0 = glib.WrapList(ret)
 
 	return ret0
 }
@@ -5141,16 +5116,16 @@ func IOModulesLoadAllInDirectory(dirname string) *glib.List {
 // delayed/lazy loading of modules.
 func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) *glib.List {
 	var arg0 string
-	arg0 = C.GoString(dirname)
+	dirname = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(dirname))
 
 	var arg1 *IOModuleScope
-	arg1 = wrapIOModuleScope(scope)
+	arg1 = gio.WrapIOModuleScope(scope)
 
 	ret := C.g_io_modules_load_all_in_directory_with_scope(arg0, arg1)
 
 	var ret0 *glib.List
-	ret0 = wrapList(ret)
+	ret0 = glib.WrapList(ret)
 
 	return ret0
 }
@@ -5167,7 +5142,7 @@ func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) 
 // g_io_modules_load_all_in_directory().
 func IOModulesScanAllInDirectory(dirname string) {
 	var arg0 string
-	arg0 = C.GoString(dirname)
+	dirname = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(dirname))
 
 	C.g_io_modules_scan_all_in_directory(arg0)
@@ -5186,11 +5161,11 @@ func IOModulesScanAllInDirectory(dirname string) {
 // g_io_modules_load_all_in_directory().
 func IOModulesScanAllInDirectoryWithScope(dirname string, scope *IOModuleScope) {
 	var arg0 string
-	arg0 = C.GoString(dirname)
+	dirname = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(dirname))
 
 	var arg1 *IOModuleScope
-	arg1 = wrapIOModuleScope(scope)
+	arg1 = gio.WrapIOModuleScope(scope)
 
 	C.g_io_modules_scan_all_in_directory_with_scope(arg0, arg1)
 }
@@ -5211,17 +5186,14 @@ func IOSchedulerCancelAllJobs() {
 // If @cancellable is not nil, it can be used to cancel the I/O job by calling
 // g_cancellable_cancel() or by calling g_io_scheduler_cancel_all_jobs().
 func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, ioPriority int, cancellable Cancellable) {
-	var arg0 IOSchedulerJobFunc
-	arg0 = wrapIOSchedulerJobFunc(jobFunc)
-
 	arg1 := C.gpointer(box.Assign(box.Callback, userData))
 	var arg3 int
 	arg3 = int(ioPriority)
 
 	var arg4 Cancellable
-	arg4 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
+	arg4 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
-	C.g_io_scheduler_push_job(arg0, (*[0]byte)(C.callbackDelete), arg3, arg4)
+	C.g_io_scheduler_push_job((*[0]byte)(C.callbackDelete), arg3, arg4)
 }
 
 // NewKeyfileSettingsBackend creates a keyfile-backed Backend.
@@ -5241,19 +5213,21 @@ func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, ioPriority int, cancellable 
 //
 //      [toplevel]
 //      enabled=true
+//    ]|
 //
-// If @root_group is nil then it is not permitted to store keys directly below
-// the @root_path.
+//    If @root_group is nil then it is not permitted to store keys
+//    directly below the @root_path.
 //
-// For keys not stored directly below @root_path (ie: in a sub-path), the name
-// of the subpath (with the final slash stripped) is used as the name of the
-// keyfile group. To continue the example, if
-// "/apps/example/profiles/default/font-size" were set to 12 then the following
-// would appear in the keyfile:
+//    For keys not stored directly below @root_path (ie: in a sub-path),
+//    the name of the subpath (with the final slash stripped) is used as
+//    the name of the keyfile group.  To continue the example, if
+//    "/apps/example/profiles/default/font-size" were set to
+//    12 then the following would appear in the keyfile:
 //
-//
+//    |[
 //      [profiles/default]
 //      font-size=12
+//
 //
 // The backend will refuse writes (and return writability as being false) for
 // keys outside of @root_path and, in the event that @root_group is nil, also
@@ -5270,21 +5244,21 @@ func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, ioPriority int, cancellable 
 // of locked keys from a text file with the name `locks` in the same location.
 func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup string) SettingsBackend {
 	var arg0 string
-	arg0 = C.GoString(filename)
+	filename = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(filename))
 
 	var arg1 string
-	arg1 = C.GoString(rootPath)
+	rootPath = C.GoString(arg1)
 	defer C.free(unsafe.Pointer(rootPath))
 
 	var arg2 string
-	arg2 = C.GoString(rootGroup)
+	rootGroup = C.GoString(arg2)
 	defer C.free(unsafe.Pointer(rootGroup))
 
 	ret := C.g_keyfile_settings_backend_new(arg0, arg1, arg2)
 
 	var ret0 SettingsBackend
-	ret0 = wrapSettingsBackend(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gio.WrapSettingsBackend(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5295,7 +5269,6 @@ func MemoryMonitorDupDefault() MemoryMonitor {
 	ret := C.g_memory_monitor_dup_default()
 
 	var ret0 MemoryMonitor
-	ret0 = wrapMemoryMonitor(ret)
 
 	return ret0
 }
@@ -5309,7 +5282,7 @@ func NewMemorySettingsBackend() SettingsBackend {
 	ret := C.g_memory_settings_backend_new()
 
 	var ret0 SettingsBackend
-	ret0 = wrapSettingsBackend(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gio.WrapSettingsBackend(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5319,7 +5292,6 @@ func NetworkMonitorGetDefault() NetworkMonitor {
 	ret := C.g_network_monitor_get_default()
 
 	var ret0 NetworkMonitor
-	ret0 = wrapNetworkMonitor(ret)
 
 	return ret0
 }
@@ -5340,7 +5312,7 @@ func NewNullSettingsBackend() SettingsBackend {
 	ret := C.g_null_settings_backend_new()
 
 	var ret0 SettingsBackend
-	ret0 = wrapSettingsBackend(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gio.WrapSettingsBackend(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5352,12 +5324,12 @@ func NewNullSettingsBackend() SettingsBackend {
 // trigger.
 func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 	var arg0 gextras.Objector
-	arg0 = glib.Take(pollableStream)
+	arg0 = externglib.Take(unsafe.Pointer(pollableStream.Native()))
 
 	ret := C.g_pollable_source_new(arg0)
 
 	var ret0 *glib.Source
-	ret0 = wrapSource(ret)
+	ret0 = glib.WrapSource(ret)
 
 	return ret0
 }
@@ -5368,18 +5340,18 @@ func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 // they are non-nil.
 func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.Source, cancellable Cancellable) *glib.Source {
 	var arg0 gextras.Objector
-	arg0 = glib.Take(pollableStream)
+	arg0 = externglib.Take(unsafe.Pointer(pollableStream.Native()))
 
 	var arg1 *glib.Source
-	arg1 = wrapSource(childSource)
+	arg1 = glib.WrapSource(childSource)
 
 	var arg2 Cancellable
-	arg2 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
+	arg2 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	ret := C.g_pollable_source_new_full(arg0, arg1, arg2)
 
 	var ret0 *glib.Source
-	ret0 = wrapSource(ret)
+	ret0 = glib.WrapSource(ret)
 
 	return ret0
 }
@@ -5395,7 +5367,7 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.So
 // InputStream.
 func PollableStreamRead(stream InputStream, buffer []uint8, blocking bool, cancellable Cancellable) int {
 	var arg0 InputStream
-	arg0 = wrapInputStream(externglib.Take(unsafe.Pointer(stream)))
+	arg0 = gio.WrapInputStream(externglib.Take(unsafe.Pointer(stream.Native())))
 
 	var arg1 []uint8
 	{
@@ -5410,7 +5382,7 @@ func PollableStreamRead(stream InputStream, buffer []uint8, blocking bool, cance
 	arg3 = gextras.Gobool(blocking)
 
 	var arg4 Cancellable
-	arg4 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
+	arg4 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	ret := C.g_pollable_stream_read(arg0, arg1, arg3, arg4)
 
@@ -5432,7 +5404,7 @@ func PollableStreamRead(stream InputStream, buffer []uint8, blocking bool, cance
 // OutputStream.
 func PollableStreamWrite(stream OutputStream, buffer []uint8, blocking bool, cancellable Cancellable) int {
 	var arg0 OutputStream
-	arg0 = wrapOutputStream(externglib.Take(unsafe.Pointer(stream)))
+	arg0 = gio.WrapOutputStream(externglib.Take(unsafe.Pointer(stream.Native())))
 
 	var arg1 []uint8
 	{
@@ -5447,7 +5419,7 @@ func PollableStreamWrite(stream OutputStream, buffer []uint8, blocking bool, can
 	arg3 = gextras.Gobool(blocking)
 
 	var arg4 Cancellable
-	arg4 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
+	arg4 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	ret := C.g_pollable_stream_write(arg0, arg1, arg3, arg4)
 
@@ -5475,7 +5447,7 @@ func PollableStreamWrite(stream OutputStream, buffer []uint8, blocking bool, can
 // not need to be a OutputStream.
 func PollableStreamWriteAll(stream OutputStream, buffer []uint8, blocking bool, cancellable Cancellable) (bytesWritten uint, ok bool) {
 	var arg0 OutputStream
-	arg0 = wrapOutputStream(externglib.Take(unsafe.Pointer(stream)))
+	arg0 = gio.WrapOutputStream(externglib.Take(unsafe.Pointer(stream.Native())))
 
 	var arg1 []uint8
 	{
@@ -5492,7 +5464,7 @@ func PollableStreamWriteAll(stream OutputStream, buffer []uint8, blocking bool, 
 	var arg4 *C.gsize // out
 
 	var arg5 Cancellable
-	arg5 = wrapCancellable(externglib.Take(unsafe.Pointer(cancellable)))
+	arg5 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
 
 	ret := C.g_pollable_stream_write_all(arg0, arg1, arg3, &arg4, arg5)
 
@@ -5509,13 +5481,12 @@ func PollableStreamWriteAll(stream OutputStream, buffer []uint8, blocking bool, 
 // implementation that supports the specified protocol.
 func ProxyGetDefaultForProtocol(protocol string) Proxy {
 	var arg0 string
-	arg0 = C.GoString(protocol)
+	protocol = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(protocol))
 
 	ret := C.g_proxy_get_default_for_protocol(arg0)
 
 	var ret0 Proxy
-	ret0 = wrapProxy(ret)
 
 	return ret0
 }
@@ -5525,7 +5496,6 @@ func ProxyResolverGetDefault() ProxyResolver {
 	ret := C.g_proxy_resolver_get_default()
 
 	var ret0 ProxyResolver
-	ret0 = wrapProxyResolver(ret)
 
 	return ret0
 }
@@ -5536,8 +5506,9 @@ func ResolverErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -5549,8 +5520,9 @@ func ResourceErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -5567,13 +5539,13 @@ func ResourceErrorQuark() glib.Quark {
 // it, an error from g_mapped_file_new() will be returned.
 func ResourceLoad(filename string) *Resource {
 	var arg0 string
-	arg0 = C.GoString(filename)
+	filename = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(filename))
 
 	ret := C.g_resource_load(arg0)
 
 	var ret0 *Resource
-	ret0 = wrapResource(ret)
+	ret0 = gio.WrapResource(ret)
 
 	return ret0
 }
@@ -5585,7 +5557,7 @@ func ResourceLoad(filename string) *Resource {
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []string {
 	var arg0 string
-	arg0 = C.GoString(path)
+	path = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(path))
 
 	var arg1 ResourceLookupFlags
@@ -5603,7 +5575,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []
 		ret0 = make([]string, length)
 		for i := 0; i < length; i++ {
 			src := (C.utf8)(unsafe.Pointer(uintptr(unsafe.Pointer(ret)) + i))
-			ret0[i] = C.GoString(src)
+			src = C.GoString(ret0[i])
 			defer C.free(unsafe.Pointer(src))
 		}
 	}
@@ -5617,7 +5589,7 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, ok bool) {
 	var arg0 string
-	arg0 = C.GoString(path)
+	path = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(path))
 
 	var arg1 ResourceLookupFlags
@@ -5656,7 +5628,7 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, 
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Bytes {
 	var arg0 string
-	arg0 = C.GoString(path)
+	path = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(path))
 
 	var arg1 ResourceLookupFlags
@@ -5665,7 +5637,7 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Byt
 	ret := C.g_resources_lookup_data(arg0, arg1)
 
 	var ret0 *glib.Bytes
-	ret0 = wrapBytes(ret)
+	ret0 = glib.WrapBytes(ret)
 
 	return ret0
 }
@@ -5677,7 +5649,7 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Byt
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) InputStream {
 	var arg0 string
-	arg0 = C.GoString(path)
+	path = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(path))
 
 	var arg1 ResourceLookupFlags
@@ -5686,7 +5658,7 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) InputStre
 	ret := C.g_resources_open_stream(arg0, arg1)
 
 	var ret0 InputStream
-	ret0 = wrapInputStream(externglib.Take(unsafe.Pointer(ret)))
+	ret0 = gio.WrapInputStream(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5696,7 +5668,7 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) InputStre
 // the global resource lookup functions like g_resources_lookup_data().
 func ResourcesRegister(resource *Resource) {
 	var arg0 *Resource
-	arg0 = wrapResource(resource)
+	arg0 = gio.WrapResource(resource)
 
 	C.g_resources_register(arg0)
 }
@@ -5705,7 +5677,7 @@ func ResourcesRegister(resource *Resource) {
 // resources.
 func ResourcesUnregister(resource *Resource) {
 	var arg0 *Resource
-	arg0 = wrapResource(resource)
+	arg0 = gio.WrapResource(resource)
 
 	C.g_resources_unregister(arg0)
 }
@@ -5726,7 +5698,7 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 	ret := C.g_settings_schema_source_get_default()
 
 	var ret0 *SettingsSchemaSource
-	ret0 = wrapSettingsSchemaSource(ret)
+	ret0 = gio.WrapSettingsSchemaSource(ret)
 
 	return ret0
 }
@@ -5736,16 +5708,13 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 // building a new one.
 func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error *glib.Error) {
 	var arg0 gextras.Objector
-	arg0 = glib.Take(object)
-
-	var arg1 AsyncReadyCallback
-	arg1 = wrapAsyncReadyCallback(callback)
+	arg0 = externglib.Take(unsafe.Pointer(object.Native()))
 
 	arg2 := C.gpointer(box.Assign(box.Callback, userData))
 	var arg3 *glib.Error
-	arg3 = wrapError(error)
+	arg3 = glib.WrapError(error)
 
-	C.g_simple_async_report_gerror_in_idle(arg0, arg1, arg3)
+	C.g_simple_async_report_gerror_in_idle(arg0, arg3)
 }
 
 // SimpleAsyncReportTakeGerrorInIdle reports an error in an idle function.
@@ -5754,28 +5723,25 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 // more.
 func SimpleAsyncReportTakeGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error *glib.Error) {
 	var arg0 gextras.Objector
-	arg0 = glib.Take(object)
-
-	var arg1 AsyncReadyCallback
-	arg1 = wrapAsyncReadyCallback(callback)
+	arg0 = externglib.Take(unsafe.Pointer(object.Native()))
 
 	arg2 := C.gpointer(box.Assign(box.Callback, userData))
 	var arg3 *glib.Error
-	arg3 = wrapError(error)
+	arg3 = glib.WrapError(error)
 
-	C.g_simple_async_report_take_gerror_in_idle(arg0, arg1, arg3)
+	C.g_simple_async_report_take_gerror_in_idle(arg0, arg3)
 }
 
 // SrvTargetListSort sorts @targets in place according to the algorithm in RFC
 // 2782.
 func SrvTargetListSort(targets *glib.List) *glib.List {
 	var arg0 *glib.List
-	arg0 = wrapList(targets)
+	arg0 = glib.WrapList(targets)
 
 	ret := C.g_srv_target_list_sort(arg0)
 
 	var ret0 *glib.List
-	ret0 = wrapList(ret)
+	ret0 = glib.WrapList(ret)
 
 	return ret0
 }
@@ -5785,7 +5751,6 @@ func TlsBackendGetDefault() TlsBackend {
 	ret := C.g_tls_backend_get_default()
 
 	var ret0 TlsBackend
-	ret0 = wrapTlsBackend(ret)
 
 	return ret0
 }
@@ -5796,8 +5761,9 @@ func TlsChannelBindingErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -5812,15 +5778,11 @@ func TlsChannelBindingErrorQuark() glib.Quark {
 // function has returned.
 func NewTlsClientConnection(baseIOStream IOStream, serverIdentity SocketConnectable) TlsClientConnection {
 	var arg0 IOStream
-	arg0 = wrapIOStream(externglib.Take(unsafe.Pointer(baseIOStream)))
+	arg0 = gio.WrapIOStream(externglib.Take(unsafe.Pointer(baseIOStream.Native())))
 
-	var arg1 SocketConnectable
-	arg1 = wrapSocketConnectable(serverIdentity)
-
-	ret := C.g_tls_client_connection_new(arg0, arg1)
+	ret := C.g_tls_client_connection_new(arg0)
 
 	var ret0 TlsClientConnection
-	ret0 = wrapTlsClientConnection(ret)
 
 	return ret0
 }
@@ -5831,8 +5793,9 @@ func TlsErrorQuark() glib.Quark {
 
 	var ret0 glib.Quark
 	{
-		tmp := uint32(ret)
-		ret0 = Quark(tmp)
+		var tmp uint32
+		tmp = uint32(ret)
+		ret0 = glib.Quark(tmp)
 	}
 
 	return ret0
@@ -5844,13 +5807,12 @@ func TlsErrorQuark() glib.Quark {
 // The certificates in @anchors must be PEM encoded.
 func NewTlsFileDatabase(anchors string) TlsFileDatabase {
 	var arg0 string
-	arg0 = C.GoString(anchors)
+	anchors = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(anchors))
 
 	ret := C.g_tls_file_database_new(arg0)
 
 	var ret0 TlsFileDatabase
-	ret0 = wrapTlsFileDatabase(ret)
 
 	return ret0
 }
@@ -5863,15 +5825,14 @@ func NewTlsFileDatabase(anchors string) TlsFileDatabase {
 // function has returned.
 func NewTlsServerConnection(baseIOStream IOStream, certificate TlsCertificate) TlsServerConnection {
 	var arg0 IOStream
-	arg0 = wrapIOStream(externglib.Take(unsafe.Pointer(baseIOStream)))
+	arg0 = gio.WrapIOStream(externglib.Take(unsafe.Pointer(baseIOStream.Native())))
 
 	var arg1 TlsCertificate
-	arg1 = wrapTlsCertificate(externglib.Take(unsafe.Pointer(certificate)))
+	arg1 = gio.WrapTlsCertificate(externglib.Take(unsafe.Pointer(certificate.Native())))
 
 	ret := C.g_tls_server_connection_new(arg0, arg1)
 
 	var ret0 TlsServerConnection
-	ret0 = wrapTlsServerConnection(ret)
 
 	return ret0
 }
@@ -5882,7 +5843,7 @@ func NewTlsServerConnection(baseIOStream IOStream, certificate TlsCertificate) T
 // to the casual user.
 func UnixIsMountPathSystemInternal(mountPath string) bool {
 	var arg0 string
-	arg0 = C.GoString(mountPath)
+	mountPath = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(mountPath))
 
 	ret := C.g_unix_is_mount_path_system_internal(arg0)
@@ -5903,7 +5864,7 @@ func UnixIsMountPathSystemInternal(mountPath string) bool {
 // The list of device paths considered ‘system’ ones may change over time.
 func UnixIsSystemDevicePath(devicePath string) bool {
 	var arg0 string
-	arg0 = C.GoString(devicePath)
+	devicePath = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(devicePath))
 
 	ret := C.g_unix_is_system_device_path(arg0)
@@ -5914,16 +5875,16 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 	return ret0
 }
 
-// UnixIsSystemFsType determines if @fs_type is considered a type of file system
+// UnixIsSystemFSType determines if @fs_type is considered a type of file system
 // which is only used in implementation of the OS. This is primarily used for
 // hiding mounted volumes that are intended as APIs for programs to read, and
 // system administrators at a shell; rather than something that should, for
 // example, appear in a GUI. For example, the Linux `/proc` filesystem.
 //
 // The list of file system types considered ‘system’ ones may change over time.
-func UnixIsSystemFsType(fsType string) bool {
+func UnixIsSystemFSType(fsType string) bool {
 	var arg0 string
-	arg0 = C.GoString(fsType)
+	fsType = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(fsType))
 
 	ret := C.g_unix_is_system_fs_type(arg0)
@@ -5941,7 +5902,7 @@ func UnixIsSystemFsType(fsType string) bool {
 // If more mounts have the same mount path, the last matching mount is returned.
 func UnixMountAt(mountPath string) (timeRead uint64, unixMountEntry *UnixMountEntry) {
 	var arg0 string
-	arg0 = C.GoString(mountPath)
+	mountPath = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(mountPath))
 
 	var arg1 *C.guint64 // out
@@ -5952,7 +5913,7 @@ func UnixMountAt(mountPath string) (timeRead uint64, unixMountEntry *UnixMountEn
 	ret0 = uint64(arg1)
 
 	var ret1 *UnixMountEntry
-	ret1 = wrapUnixMountEntry(ret)
+	ret1 = gio.WrapUnixMountEntry(ret)
 
 	return ret0, ret1
 }
@@ -5960,10 +5921,10 @@ func UnixMountAt(mountPath string) (timeRead uint64, unixMountEntry *UnixMountEn
 // UnixMountCompare compares two unix mounts.
 func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mount1)
+	arg0 = gio.WrapUnixMountEntry(mount1)
 
 	var arg1 *UnixMountEntry
-	arg1 = wrapUnixMountEntry(mount2)
+	arg1 = gio.WrapUnixMountEntry(mount2)
 
 	ret := C.g_unix_mount_compare(arg0, arg1)
 
@@ -5976,12 +5937,12 @@ func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
 // UnixMountCopy makes a copy of @mount_entry.
 func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_copy(arg0)
 
 	var ret0 *UnixMountEntry
-	ret0 = wrapUnixMountEntry(ret)
+	ret0 = gio.WrapUnixMountEntry(ret)
 
 	return ret0
 }
@@ -5993,7 +5954,7 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 // If more mounts have the same mount path, the last matching mount is returned.
 func UnixMountFor(filePath string) (timeRead uint64, unixMountEntry *UnixMountEntry) {
 	var arg0 string
-	arg0 = C.GoString(filePath)
+	filePath = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(filePath))
 
 	var arg1 *C.guint64 // out
@@ -6004,7 +5965,7 @@ func UnixMountFor(filePath string) (timeRead uint64, unixMountEntry *UnixMountEn
 	ret0 = uint64(arg1)
 
 	var ret1 *UnixMountEntry
-	ret1 = wrapUnixMountEntry(ret)
+	ret1 = gio.WrapUnixMountEntry(ret)
 
 	return ret0, ret1
 }
@@ -6012,7 +5973,7 @@ func UnixMountFor(filePath string) (timeRead uint64, unixMountEntry *UnixMountEn
 // UnixMountFree frees a unix mount.
 func UnixMountFree(mountEntry *UnixMountEntry) {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	C.g_unix_mount_free(arg0)
 }
@@ -6020,26 +5981,26 @@ func UnixMountFree(mountEntry *UnixMountEntry) {
 // UnixMountGetDevicePath gets the device path for a unix mount.
 func UnixMountGetDevicePath(mountEntry *UnixMountEntry) string {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_get_device_path(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
 }
 
-// UnixMountGetFsType gets the filesystem type for the unix mount.
-func UnixMountGetFsType(mountEntry *UnixMountEntry) string {
+// UnixMountGetFSType gets the filesystem type for the unix mount.
+func UnixMountGetFSType(mountEntry *UnixMountEntry) string {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_get_fs_type(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -6048,12 +6009,12 @@ func UnixMountGetFsType(mountEntry *UnixMountEntry) string {
 // UnixMountGetMountPath gets the mount path for a unix mount.
 func UnixMountGetMountPath(mountEntry *UnixMountEntry) string {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_get_mount_path(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -6066,12 +6027,12 @@ func UnixMountGetMountPath(mountEntry *UnixMountEntry) string {
 // MountEntry as an argument.
 func UnixMountGetOptions(mountEntry *UnixMountEntry) string {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_get_options(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -6084,12 +6045,12 @@ func UnixMountGetOptions(mountEntry *UnixMountEntry) string {
 // /dev/sda1 /mnt/foo" and "/bar" for "mount --bind /mnt/foo/bar /mnt/bar".
 func UnixMountGetRootPath(mountEntry *UnixMountEntry) string {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_get_root_path(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -6098,7 +6059,7 @@ func UnixMountGetRootPath(mountEntry *UnixMountEntry) string {
 // UnixMountGuessCanEject guesses whether a Unix mount can be ejected.
 func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_guess_can_eject(arg0)
 
@@ -6111,12 +6072,11 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 // UnixMountGuessIcon guesses the icon of a Unix mount.
 func UnixMountGuessIcon(mountEntry *UnixMountEntry) Icon {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_guess_icon(arg0)
 
 	var ret0 Icon
-	ret0 = wrapIcon(ret)
 
 	return ret0
 }
@@ -6125,12 +6085,12 @@ func UnixMountGuessIcon(mountEntry *UnixMountEntry) Icon {
 // translated string.
 func UnixMountGuessName(mountEntry *UnixMountEntry) string {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_guess_name(arg0)
 
 	var ret0 string
-	ret0 = C.GoString(ret)
+	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
 	return ret0
@@ -6140,7 +6100,7 @@ func UnixMountGuessName(mountEntry *UnixMountEntry) string {
 // in the UI.
 func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_guess_should_display(arg0)
 
@@ -6153,12 +6113,11 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 // UnixMountGuessSymbolicIcon guesses the symbolic icon of a Unix mount.
 func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Icon {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_guess_symbolic_icon(arg0)
 
 	var ret0 Icon
-	ret0 = wrapIcon(ret)
 
 	return ret0
 }
@@ -6166,7 +6125,7 @@ func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Icon {
 // UnixMountIsReadonly checks if a unix mount is mounted read only.
 func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_is_readonly(arg0)
 
@@ -6184,7 +6143,7 @@ func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
 // file system types and device paths are ignored.
 func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
 	var arg0 *UnixMountEntry
-	arg0 = wrapUnixMountEntry(mountEntry)
+	arg0 = gio.WrapUnixMountEntry(mountEntry)
 
 	ret := C.g_unix_mount_is_system_internal(arg0)
 
@@ -6202,7 +6161,7 @@ func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
 // is returned.
 func UnixMountPointAt(mountPath string) (timeRead uint64, unixMountPoint *UnixMountPoint) {
 	var arg0 string
-	arg0 = C.GoString(mountPath)
+	mountPath = C.GoString(arg0)
 	defer C.free(unsafe.Pointer(mountPath))
 
 	var arg1 *C.guint64 // out
@@ -6213,7 +6172,7 @@ func UnixMountPointAt(mountPath string) (timeRead uint64, unixMountPoint *UnixMo
 	ret0 = uint64(arg1)
 
 	var ret1 *UnixMountPoint
-	ret1 = wrapUnixMountPoint(ret)
+	ret1 = gio.WrapUnixMountPoint(ret)
 
 	return ret0, ret1
 }
@@ -6245,7 +6204,7 @@ func UnixMountPointsGet() (timeRead uint64, list *glib.List) {
 	ret0 = uint64(arg0)
 
 	var ret1 *glib.List
-	ret1 = wrapList(ret)
+	ret1 = glib.WrapList(ret)
 
 	return ret0, ret1
 }
@@ -6276,7 +6235,7 @@ func UnixMountsGet() (timeRead uint64, list *glib.List) {
 	ret0 = uint64(arg0)
 
 	var ret1 *glib.List
-	ret1 = wrapList(ret)
+	ret1 = glib.WrapList(ret)
 
 	return ret0, ret1
 }
@@ -6297,7 +6256,7 @@ func UnixMountsGet() (timeRead uint64, list *glib.List) {
 // The state may have a hint associated with it, specifying its valid range.
 //
 // #GAction is merely the interface to the concept of an action, as described
-// above. Various implementations of actions exist, including Action
+// above. Various implementations of actions exist, including Action.
 //
 // In all cases, the implementing class is responsible for storing the name of
 // the action, the parameter type, the enabled state, the optional state type
@@ -6390,7 +6349,7 @@ type ActionMap interface {
 	RemoveAction(actionName string)
 }
 
-// AppInfo: info and LaunchContext are used for describing and launching
+// AppInfo: Info and LaunchContext are used for describing and launching
 // applications installed on the system.
 //
 // As of GLib 2.20, URIs will always be converted to POSIX paths (using
@@ -6593,46 +6552,60 @@ type AsyncInitable interface {
 // "_finish()" later; however, the "_finish()" function may be called at most
 // once.
 //
-// Example of a typical asynchronous operation flow: |[<!-- language="C" -->
-// void _theoretical_frobnitz_async (Theoretical *t, GCancellable *c,
-// GAsyncReadyCallback cb, gpointer u);
+// Example of a typical asynchronous operation flow:
 //
-// gboolean _theoretical_frobnitz_finish (Theoretical *t, GAsyncResult *res,
-// GError **e);
+//    void _theoretical_frobnitz_async (Theoretical         *t,
+//                                      GCancellable        *c,
+//                                      GAsyncReadyCallback  cb,
+//                                      gpointer             u);
 //
-// static void frobnitz_result_func (GObject *source_object, GAsyncResult *res,
-// gpointer user_data) { gboolean success = FALSE;
+//    gboolean _theoretical_frobnitz_finish (Theoretical   *t,
+//                                           GAsyncResult  *res,
+//                                           GError       **e);
 //
-// success = _theoretical_frobnitz_finish (source_object, res, NULL);
+//    static void
+//    frobnitz_result_func (GObject      *source_object,
+//    		 GAsyncResult *res,
+//    		 gpointer      user_data)
+//    {
+//      gboolean success = FALSE;
 //
-// if (success) g_printf ("Hurray!\n"); else g_printf ("Uh oh!\n");
+//      success = _theoretical_frobnitz_finish (source_object, res, NULL);
 //
-// ...
+//      if (success)
+//        g_printf ("Hurray!\n");
+//      else
+//        g_printf ("Uh oh!\n");
 //
-// }
+//      ...
 //
-// int main (int argc, void *argv[]) { ...
+//    }
 //
-// _theoretical_frobnitz_async (theoretical_data, NULL, frobnitz_result_func,
-// NULL);
+//    int main (int argc, void *argv[])
+//    {
+//       ...
+//
+//       _theoretical_frobnitz_async (theoretical_data,
+//                                    NULL,
+//                                    frobnitz_result_func,
+//                                    NULL);
 //
 //       ...
 //    }
 //
 //
-//    The callback for an asynchronous operation is called only once, and is
-//    always called, even in the case of a cancelled operation. On cancellation
-//    the result is a G_IO_ERROR_CANCELLED error.
+// The callback for an asynchronous operation is called only once, and is always
+// called, even in the case of a cancelled operation. On cancellation the result
+// is a G_IO_ERROR_CANCELLED error.
 //
-//    ## I/O Priority # {#io-priority}
+// I/O Priority
 //
-//    Many I/O-related asynchronous operations have a priority parameter,
-//    which is used in certain cases to determine the order in which
-//    operations are executed. They are not used to determine system-wide
-//    I/O scheduling. Priorities are integers, with lower numbers indicating
-//    higher priority. It is recommended to choose priorities between
-//    G_PRIORITY_LOW and G_PRIORITY_HIGH, with G_PRIORITY_DEFAULT
-//    as a default.
+// Many I/O-related asynchronous operations have a priority parameter, which is
+// used in certain cases to determine the order in which operations are
+// executed. They are not used to determine system-wide I/O scheduling.
+// Priorities are integers, with lower numbers indicating higher priority. It is
+// recommended to choose priorities between G_PRIORITY_LOW and G_PRIORITY_HIGH,
+// with G_PRIORITY_DEFAULT as a default.
 type AsyncResult interface {
 	GetSourceObject() gextras.Objector
 	GetUserData() interface{}
@@ -6671,7 +6644,8 @@ type DBusObject interface {
 
 // DBusObjectManager: the BusObjectManager type is the base type for service-
 // and client-side implementations of the standardized
-// [org.freedesktop.DBus.ObjectManager](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
+// org.freedesktop.DBus.ObjectManager
+// (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
 // interface.
 //
 // See BusObjectManagerClient for the client-side implementation and
@@ -6743,15 +6717,15 @@ type DesktopAppInfoLookup interface {
 	GetDefaultForURIScheme(uriScheme string) AppInfo
 }
 
-// #GDrive - this represent a piece of hardware connected to the machine. It's
-// generally only created for removable hardware or hardware with removable
-// media
+// Drive: #GDrive - this represent a piece of hardware connected to the machine.
+// It's generally only created for removable hardware or hardware with removable
+// media.
 //
 // #GDrive is a container class for #GVolume objects that stem from the same
 // piece of media. As such, #GDrive abstracts a drive with (or without)
 // removable media and provides operations for querying whether media is
 // available, determining whether media change is automatically detected and
-// ejecting the media
+// ejecting the media.
 //
 // If the #GDrive reports that media isn't automatically detected, one can poll
 // for media; typically one should not do this periodically as a poll for media
@@ -6763,7 +6737,7 @@ type DesktopAppInfoLookup interface {
 // enclosures and starting/stopping multi-disk devices such as RAID devices.
 // Note that the actual semantics and side-effects of starting/stopping a
 // #GDrive may vary according to implementation. To choose the correct verbs in
-// e.g. a file manager, use g_drive_get_start_stop_type()
+// e.g. a file manager, use g_drive_get_start_stop_type().
 //
 // For porting from GnomeVFS note that there is no equivalent of #GDrive in that
 // API.
@@ -6877,7 +6851,7 @@ type DtlsConnection interface {
 // g_file_get_child() to get a child within a directory,
 // g_file_resolve_relative_path() to resolve a relative path between two
 // #GFiles. There can be multiple hierarchies, so you may not end up at the same
-// root if you repeatedly call g_file_get_parent() on two different files
+// root if you repeatedly call g_file_get_parent() on two different files.
 //
 // All #GFiles have a basename (get with g_file_get_basename()). These names are
 // byte strings that are used to identify the file on the filesystem (relative
@@ -6921,14 +6895,15 @@ type DtlsConnection interface {
 // g_file_unmount_mountable_with_operation() to unmount a mountable file. -
 // g_file_eject_mountable_with_operation() to eject a mountable file.
 //
-// Entity Tags {#gfile-etag}
+//
+// Entity Tags
 //
 // One notable feature of #GFiles are entity tags, or "etags" for short. Entity
 // tags are somewhat like a more abstract version of the traditional mtime, and
 // can be used to quickly determine if the file has been modified from the
-// version on the file system. See the HTTP 1.1
-// [specification](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html) for
-// HTTP Etag headers, which are a very similar concept.
+// version on the file system. See the HTTP 1.1 specification
+// (http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html) for HTTP Etag
+// headers, which are a very similar concept.
 type File interface {
 	AppendTo(flags FileCreateFlags, cancellable Cancellable) FileOutputStream
 	AppendToAsync(flags FileCreateFlags, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
@@ -7072,7 +7047,7 @@ type FileDescriptorBased interface {
 //
 // #GIcon does not provide the actual pixmap for the icon as this is out of
 // GIO's scope, however implementations of #GIcon may contain the name of an
-// icon (see Icon), or the path to an icon (see Icon)
+// icon (see Icon), or the path to an icon (see Icon).
 //
 // To obtain a hash of a #GIcon, see g_icon_hash().
 //
@@ -7187,7 +7162,7 @@ type LoadableIcon interface {
 // #GMount is a "mounted" filesystem that you can access. Mounted is in quotes
 // because it's not the same as a unix mount, it might be a gvfs mount, but you
 // can still access the files on it if you use GIO. Might or might not be
-// related to a volume object
+// related to a volume object.
 //
 // Unmounting a #GMount instance is an asynchronous operation. For more
 // information about asynchronous operations, see Result and #GTask. To unmount
@@ -7319,11 +7294,11 @@ type RemoteActionGroup interface {
 //
 // #GSeekable on fixed-sized streams is approximately the same as POSIX lseek()
 // on a block device (for example: attempting to seek past the end of the device
-// is an error). Fixed streams typically cannot be truncated
+// is an error). Fixed streams typically cannot be truncated.
 //
 // #GSeekable on resizable streams is approximately the same as POSIX lseek() on
 // a normal file. Seeking past the end and writing data will usually cause the
-// stream to resize by introducing zero bytes
+// stream to resize by introducing zero bytes.
 type Seekable interface {
 	CanSeek() bool
 	CanTruncate() bool
@@ -7440,7 +7415,8 @@ type TlsClientConnection interface {
 // successfully. If an @error is present when g_volume_mount_finish() is called,
 // then it will be filled with any error information.
 //
-// Volume Identifiers {#volume-identifier}
+//
+// Volume Identifiers
 //
 // It is sometimes necessary to directly access the underlying operating system
 // object behind a volume (e.g. for passing a volume to an application via the
@@ -7451,10 +7427,7 @@ type TlsClientConnection interface {
 // VOLUME_IDENTIFIER_KIND_UUID, VOLUME_IDENTIFIER_KIND_LABEL, etc. Use
 // g_volume_get_identifier() to obtain an identifier for a volume.
 //
-// Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs
-// hal volume monitor is in use. Other volume monitors will generally be able to
-// provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used
-// to obtain a hal device by means of libhal_manager_find_device_string_match().
+//    Note that VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available when the gvfs hal volume monitor is in use. Other volume monitors will generally be able to provide the VOLUME_IDENTIFIER_KIND_UNIX_DEVICE identifier, which can be used to obtain a hal device by means of libhal_manager_find_device_string_match().
 type Volume interface {
 	CanEject() bool
 	CanMount() bool
@@ -7502,14 +7475,17 @@ type ActionEntry struct {
 	native *C.GActionEntry
 }
 
-func wrapActionEntry(p *C.GActionEntry) *ActionEntry {
+// WrapActionEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapActionEntry(ptr unsafe.Pointer) *ActionEntry {
+	p := (*C.GActionEntry)(ptr)
 	v := ActionEntry{native: p}
 
-	v.Name = C.GoString(p.name)
+	p.name = C.GoString(v.Name)
 	defer C.free(unsafe.Pointer(p.name))
-	v.ParameterType = C.GoString(p.parameter_type)
+	p.parameter_type = C.GoString(v.ParameterType)
 	defer C.free(unsafe.Pointer(p.parameter_type))
-	v.State = C.GoString(p.state)
+	p.state = C.GoString(v.State)
 	defer C.free(unsafe.Pointer(p.state))
 
 	runtime.SetFinalizer(&v, nil)
@@ -7520,12 +7496,12 @@ func wrapActionEntry(p *C.GActionEntry) *ActionEntry {
 
 func marshalActionEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GActionEntry)(unsafe.Pointer(b))
-
-	return wrapActionEntry(c)
+	return WrapActionEntry(unsafe.Pointer(b))
 }
 
-func (a *ActionEntry) free() {}
+func (a *ActionEntry) free() {
+	C.free(unsafe.Pointer(a.native))
+}
 
 // Native returns the pointer to *C.GActionEntry. The caller is expected to
 // cast.
@@ -7548,13 +7524,16 @@ type DBusAnnotationInfo struct {
 	native *C.GDBusAnnotationInfo
 }
 
-func wrapDBusAnnotationInfo(p *C.GDBusAnnotationInfo) *DBusAnnotationInfo {
+// WrapDBusAnnotationInfo wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusAnnotationInfo(ptr unsafe.Pointer) *DBusAnnotationInfo {
+	p := (*C.GDBusAnnotationInfo)(ptr)
 	var v DBusAnnotationInfo
 
 	v.RefCount = int(p.ref_count)
-	v.Key = C.GoString(p.key)
+	p.key = C.GoString(v.Key)
 	defer C.free(unsafe.Pointer(p.key))
-	v.Value = C.GoString(p.value)
+	p.value = C.GoString(v.Value)
 	defer C.free(unsafe.Pointer(p.value))
 	{
 		var length uint
@@ -7565,7 +7544,7 @@ func wrapDBusAnnotationInfo(p *C.GDBusAnnotationInfo) *DBusAnnotationInfo {
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = wrapDBusAnnotationInfo(src)
+			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
 		}
 	}
 
@@ -7574,9 +7553,7 @@ func wrapDBusAnnotationInfo(p *C.GDBusAnnotationInfo) *DBusAnnotationInfo {
 
 func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GDBusAnnotationInfo)(unsafe.Pointer(b))
-
-	return wrapDBusAnnotationInfo(c)
+	return WrapDBusAnnotationInfo(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GDBusAnnotationInfo. The caller is expected to
@@ -7600,13 +7577,16 @@ type DBusArgInfo struct {
 	native *C.GDBusArgInfo
 }
 
-func wrapDBusArgInfo(p *C.GDBusArgInfo) *DBusArgInfo {
+// WrapDBusArgInfo wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusArgInfo(ptr unsafe.Pointer) *DBusArgInfo {
+	p := (*C.GDBusArgInfo)(ptr)
 	var v DBusArgInfo
 
 	v.RefCount = int(p.ref_count)
-	v.Name = C.GoString(p.name)
+	p.name = C.GoString(v.Name)
 	defer C.free(unsafe.Pointer(p.name))
-	v.Signature = C.GoString(p.signature)
+	p.signature = C.GoString(v.Signature)
 	defer C.free(unsafe.Pointer(p.signature))
 	{
 		var length uint
@@ -7617,7 +7597,7 @@ func wrapDBusArgInfo(p *C.GDBusArgInfo) *DBusArgInfo {
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = wrapDBusAnnotationInfo(src)
+			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
 		}
 	}
 
@@ -7626,9 +7606,7 @@ func wrapDBusArgInfo(p *C.GDBusArgInfo) *DBusArgInfo {
 
 func marshalDBusArgInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GDBusArgInfo)(unsafe.Pointer(b))
-
-	return wrapDBusArgInfo(c)
+	return WrapDBusArgInfo(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GDBusArgInfo. The caller is expected to
@@ -7647,11 +7625,14 @@ type DBusErrorEntry struct {
 	native *C.GDBusErrorEntry
 }
 
-func wrapDBusErrorEntry(p *C.GDBusErrorEntry) *DBusErrorEntry {
+// WrapDBusErrorEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusErrorEntry(ptr unsafe.Pointer) *DBusErrorEntry {
+	p := (*C.GDBusErrorEntry)(ptr)
 	var v DBusErrorEntry
 
 	v.ErrorCode = int(p.error_code)
-	v.DbusErrorName = C.GoString(p.dbus_error_name)
+	p.dbus_error_name = C.GoString(v.DbusErrorName)
 	defer C.free(unsafe.Pointer(p.dbus_error_name))
 
 	return &v
@@ -7659,9 +7640,7 @@ func wrapDBusErrorEntry(p *C.GDBusErrorEntry) *DBusErrorEntry {
 
 func marshalDBusErrorEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GDBusErrorEntry)(unsafe.Pointer(b))
-
-	return wrapDBusErrorEntry(c)
+	return WrapDBusErrorEntry(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GDBusErrorEntry. The caller is expected to
@@ -7693,11 +7672,14 @@ type DBusInterfaceInfo struct {
 	native *C.GDBusInterfaceInfo
 }
 
-func wrapDBusInterfaceInfo(p *C.GDBusInterfaceInfo) *DBusInterfaceInfo {
+// WrapDBusInterfaceInfo wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusInterfaceInfo(ptr unsafe.Pointer) *DBusInterfaceInfo {
+	p := (*C.GDBusInterfaceInfo)(ptr)
 	var v DBusInterfaceInfo
 
 	v.RefCount = int(p.ref_count)
-	v.Name = C.GoString(p.name)
+	p.name = C.GoString(v.Name)
 	defer C.free(unsafe.Pointer(p.name))
 	{
 		var length uint
@@ -7708,7 +7690,7 @@ func wrapDBusInterfaceInfo(p *C.GDBusInterfaceInfo) *DBusInterfaceInfo {
 		v.Methods = make([]*DBusMethodInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusMethodInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.methods)) + i))
-			v.Methods[i] = wrapDBusMethodInfo(src)
+			v.Methods[i] = gio.WrapDBusMethodInfo(src)
 		}
 	}
 	{
@@ -7720,7 +7702,7 @@ func wrapDBusInterfaceInfo(p *C.GDBusInterfaceInfo) *DBusInterfaceInfo {
 		v.Signals = make([]*DBusSignalInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusSignalInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.signals)) + i))
-			v.Signals[i] = wrapDBusSignalInfo(src)
+			v.Signals[i] = gio.WrapDBusSignalInfo(src)
 		}
 	}
 	{
@@ -7732,7 +7714,7 @@ func wrapDBusInterfaceInfo(p *C.GDBusInterfaceInfo) *DBusInterfaceInfo {
 		v.Properties = make([]*DBusPropertyInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusPropertyInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.properties)) + i))
-			v.Properties[i] = wrapDBusPropertyInfo(src)
+			v.Properties[i] = gio.WrapDBusPropertyInfo(src)
 		}
 	}
 	{
@@ -7744,7 +7726,7 @@ func wrapDBusInterfaceInfo(p *C.GDBusInterfaceInfo) *DBusInterfaceInfo {
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = wrapDBusAnnotationInfo(src)
+			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
 		}
 	}
 
@@ -7753,9 +7735,7 @@ func wrapDBusInterfaceInfo(p *C.GDBusInterfaceInfo) *DBusInterfaceInfo {
 
 func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GDBusInterfaceInfo)(unsafe.Pointer(b))
-
-	return wrapDBusInterfaceInfo(c)
+	return WrapDBusInterfaceInfo(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GDBusInterfaceInfo. The caller is expected to
@@ -7813,12 +7793,11 @@ type DBusInterfaceVTable struct {
 	native *C.GDBusInterfaceVTable
 }
 
-func wrapDBusInterfaceVTable(p *C.GDBusInterfaceVTable) *DBusInterfaceVTable {
+// WrapDBusInterfaceVTable wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusInterfaceVTable(ptr unsafe.Pointer) *DBusInterfaceVTable {
+	p := (*C.GDBusInterfaceVTable)(ptr)
 	v := DBusInterfaceVTable{native: p}
-
-	v.MethodCall = wrapDBusInterfaceMethodCallFunc(p.method_call)
-	v.GetProperty = wrapDBusInterfaceGetPropertyFunc(p.get_property)
-	v.SetProperty = wrapDBusInterfaceSetPropertyFunc(p.set_property)
 
 	runtime.SetFinalizer(&v, nil)
 	runtime.SetFinalizer(&v, (*DBusInterfaceVTable).free)
@@ -7828,12 +7807,12 @@ func wrapDBusInterfaceVTable(p *C.GDBusInterfaceVTable) *DBusInterfaceVTable {
 
 func marshalDBusInterfaceVTable(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GDBusInterfaceVTable)(unsafe.Pointer(b))
-
-	return wrapDBusInterfaceVTable(c)
+	return WrapDBusInterfaceVTable(unsafe.Pointer(b))
 }
 
-func (d *DBusInterfaceVTable) free() {}
+func (d *DBusInterfaceVTable) free() {
+	C.free(unsafe.Pointer(d.native))
+}
 
 // Native returns the pointer to *C.GDBusInterfaceVTable. The caller is expected to
 // cast.
@@ -7860,11 +7839,14 @@ type DBusMethodInfo struct {
 	native *C.GDBusMethodInfo
 }
 
-func wrapDBusMethodInfo(p *C.GDBusMethodInfo) *DBusMethodInfo {
+// WrapDBusMethodInfo wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusMethodInfo(ptr unsafe.Pointer) *DBusMethodInfo {
+	p := (*C.GDBusMethodInfo)(ptr)
 	var v DBusMethodInfo
 
 	v.RefCount = int(p.ref_count)
-	v.Name = C.GoString(p.name)
+	p.name = C.GoString(v.Name)
 	defer C.free(unsafe.Pointer(p.name))
 	{
 		var length uint
@@ -7875,7 +7857,7 @@ func wrapDBusMethodInfo(p *C.GDBusMethodInfo) *DBusMethodInfo {
 		v.InArgs = make([]*DBusArgInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.in_args)) + i))
-			v.InArgs[i] = wrapDBusArgInfo(src)
+			v.InArgs[i] = gio.WrapDBusArgInfo(src)
 		}
 	}
 	{
@@ -7887,7 +7869,7 @@ func wrapDBusMethodInfo(p *C.GDBusMethodInfo) *DBusMethodInfo {
 		v.OutArgs = make([]*DBusArgInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.out_args)) + i))
-			v.OutArgs[i] = wrapDBusArgInfo(src)
+			v.OutArgs[i] = gio.WrapDBusArgInfo(src)
 		}
 	}
 	{
@@ -7899,7 +7881,7 @@ func wrapDBusMethodInfo(p *C.GDBusMethodInfo) *DBusMethodInfo {
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = wrapDBusAnnotationInfo(src)
+			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
 		}
 	}
 
@@ -7908,9 +7890,7 @@ func wrapDBusMethodInfo(p *C.GDBusMethodInfo) *DBusMethodInfo {
 
 func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GDBusMethodInfo)(unsafe.Pointer(b))
-
-	return wrapDBusMethodInfo(c)
+	return WrapDBusMethodInfo(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GDBusMethodInfo. The caller is expected to
@@ -7939,11 +7919,14 @@ type DBusNodeInfo struct {
 	native *C.GDBusNodeInfo
 }
 
-func wrapDBusNodeInfo(p *C.GDBusNodeInfo) *DBusNodeInfo {
+// WrapDBusNodeInfo wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusNodeInfo(ptr unsafe.Pointer) *DBusNodeInfo {
+	p := (*C.GDBusNodeInfo)(ptr)
 	var v DBusNodeInfo
 
 	v.RefCount = int(p.ref_count)
-	v.Path = C.GoString(p.path)
+	p.path = C.GoString(v.Path)
 	defer C.free(unsafe.Pointer(p.path))
 	{
 		var length uint
@@ -7954,7 +7937,7 @@ func wrapDBusNodeInfo(p *C.GDBusNodeInfo) *DBusNodeInfo {
 		v.Interfaces = make([]*DBusInterfaceInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusInterfaceInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.interfaces)) + i))
-			v.Interfaces[i] = wrapDBusInterfaceInfo(src)
+			v.Interfaces[i] = gio.WrapDBusInterfaceInfo(src)
 		}
 	}
 	{
@@ -7966,7 +7949,7 @@ func wrapDBusNodeInfo(p *C.GDBusNodeInfo) *DBusNodeInfo {
 		v.Nodes = make([]*DBusNodeInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusNodeInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.nodes)) + i))
-			v.Nodes[i] = wrapDBusNodeInfo(src)
+			v.Nodes[i] = gio.WrapDBusNodeInfo(src)
 		}
 	}
 	{
@@ -7978,7 +7961,7 @@ func wrapDBusNodeInfo(p *C.GDBusNodeInfo) *DBusNodeInfo {
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = wrapDBusAnnotationInfo(src)
+			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
 		}
 	}
 
@@ -7987,9 +7970,7 @@ func wrapDBusNodeInfo(p *C.GDBusNodeInfo) *DBusNodeInfo {
 
 func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GDBusNodeInfo)(unsafe.Pointer(b))
-
-	return wrapDBusNodeInfo(c)
+	return WrapDBusNodeInfo(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GDBusNodeInfo. The caller is expected to
@@ -8017,13 +7998,16 @@ type DBusPropertyInfo struct {
 	native *C.GDBusPropertyInfo
 }
 
-func wrapDBusPropertyInfo(p *C.GDBusPropertyInfo) *DBusPropertyInfo {
+// WrapDBusPropertyInfo wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusPropertyInfo(ptr unsafe.Pointer) *DBusPropertyInfo {
+	p := (*C.GDBusPropertyInfo)(ptr)
 	var v DBusPropertyInfo
 
 	v.RefCount = int(p.ref_count)
-	v.Name = C.GoString(p.name)
+	p.name = C.GoString(v.Name)
 	defer C.free(unsafe.Pointer(p.name))
-	v.Signature = C.GoString(p.signature)
+	p.signature = C.GoString(v.Signature)
 	defer C.free(unsafe.Pointer(p.signature))
 	v.Flags = DBusPropertyInfoFlags(p.flags)
 	{
@@ -8035,7 +8019,7 @@ func wrapDBusPropertyInfo(p *C.GDBusPropertyInfo) *DBusPropertyInfo {
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = wrapDBusAnnotationInfo(src)
+			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
 		}
 	}
 
@@ -8044,9 +8028,7 @@ func wrapDBusPropertyInfo(p *C.GDBusPropertyInfo) *DBusPropertyInfo {
 
 func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GDBusPropertyInfo)(unsafe.Pointer(b))
-
-	return wrapDBusPropertyInfo(c)
+	return WrapDBusPropertyInfo(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GDBusPropertyInfo. The caller is expected to
@@ -8071,11 +8053,14 @@ type DBusSignalInfo struct {
 	native *C.GDBusSignalInfo
 }
 
-func wrapDBusSignalInfo(p *C.GDBusSignalInfo) *DBusSignalInfo {
+// WrapDBusSignalInfo wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusSignalInfo(ptr unsafe.Pointer) *DBusSignalInfo {
+	p := (*C.GDBusSignalInfo)(ptr)
 	var v DBusSignalInfo
 
 	v.RefCount = int(p.ref_count)
-	v.Name = C.GoString(p.name)
+	p.name = C.GoString(v.Name)
 	defer C.free(unsafe.Pointer(p.name))
 	{
 		var length uint
@@ -8086,7 +8071,7 @@ func wrapDBusSignalInfo(p *C.GDBusSignalInfo) *DBusSignalInfo {
 		v.Args = make([]*DBusArgInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.args)) + i))
-			v.Args[i] = wrapDBusArgInfo(src)
+			v.Args[i] = gio.WrapDBusArgInfo(src)
 		}
 	}
 	{
@@ -8098,7 +8083,7 @@ func wrapDBusSignalInfo(p *C.GDBusSignalInfo) *DBusSignalInfo {
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
 			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = wrapDBusAnnotationInfo(src)
+			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
 		}
 	}
 
@@ -8107,9 +8092,7 @@ func wrapDBusSignalInfo(p *C.GDBusSignalInfo) *DBusSignalInfo {
 
 func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GDBusSignalInfo)(unsafe.Pointer(b))
-
-	return wrapDBusSignalInfo(c)
+	return WrapDBusSignalInfo(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GDBusSignalInfo. The caller is expected to
@@ -8131,12 +8114,11 @@ type DBusSubtreeVTable struct {
 	native *C.GDBusSubtreeVTable
 }
 
-func wrapDBusSubtreeVTable(p *C.GDBusSubtreeVTable) *DBusSubtreeVTable {
+// WrapDBusSubtreeVTable wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapDBusSubtreeVTable(ptr unsafe.Pointer) *DBusSubtreeVTable {
+	p := (*C.GDBusSubtreeVTable)(ptr)
 	v := DBusSubtreeVTable{native: p}
-
-	v.Enumerate = wrapDBusSubtreeEnumerateFunc(p.enumerate)
-	v.Introspect = wrapDBusSubtreeIntrospectFunc(p.introspect)
-	v.Dispatch = wrapDBusSubtreeDispatchFunc(p.dispatch)
 
 	runtime.SetFinalizer(&v, nil)
 	runtime.SetFinalizer(&v, (*DBusSubtreeVTable).free)
@@ -8146,12 +8128,12 @@ func wrapDBusSubtreeVTable(p *C.GDBusSubtreeVTable) *DBusSubtreeVTable {
 
 func marshalDBusSubtreeVTable(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GDBusSubtreeVTable)(unsafe.Pointer(b))
-
-	return wrapDBusSubtreeVTable(c)
+	return WrapDBusSubtreeVTable(unsafe.Pointer(b))
 }
 
-func (d *DBusSubtreeVTable) free() {}
+func (d *DBusSubtreeVTable) free() {
+	C.free(unsafe.Pointer(d.native))
+}
 
 // Native returns the pointer to *C.GDBusSubtreeVTable. The caller is expected to
 // cast.
@@ -8171,10 +8153,13 @@ type FileAttributeInfo struct {
 	native *C.GFileAttributeInfo
 }
 
-func wrapFileAttributeInfo(p *C.GFileAttributeInfo) *FileAttributeInfo {
+// WrapFileAttributeInfo wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileAttributeInfo(ptr unsafe.Pointer) *FileAttributeInfo {
+	p := (*C.GFileAttributeInfo)(ptr)
 	var v FileAttributeInfo
 
-	v.Name = C.GoString(p.name)
+	p.name = C.GoString(v.Name)
 	defer C.free(unsafe.Pointer(p.name))
 	v.Type = FileAttributeType(p._type)
 	v.Flags = FileAttributeInfoFlags(p.flags)
@@ -8184,9 +8169,7 @@ func wrapFileAttributeInfo(p *C.GFileAttributeInfo) *FileAttributeInfo {
 
 func marshalFileAttributeInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GFileAttributeInfo)(unsafe.Pointer(b))
-
-	return wrapFileAttributeInfo(c)
+	return WrapFileAttributeInfo(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GFileAttributeInfo. The caller is expected to
@@ -8206,10 +8189,13 @@ type FileAttributeInfoList struct {
 	native *C.GFileAttributeInfoList
 }
 
-func wrapFileAttributeInfoList(p *C.GFileAttributeInfoList) *FileAttributeInfoList {
+// WrapFileAttributeInfoList wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileAttributeInfoList(ptr unsafe.Pointer) *FileAttributeInfoList {
+	p := (*C.GFileAttributeInfoList)(ptr)
 	var v FileAttributeInfoList
 
-	v.Infos = wrapFileAttributeInfo(p.infos)
+	v.Infos = gio.WrapFileAttributeInfo(p.infos)
 	v.NInfos = int(p.n_infos)
 
 	return &v
@@ -8217,9 +8203,7 @@ func wrapFileAttributeInfoList(p *C.GFileAttributeInfoList) *FileAttributeInfoLi
 
 func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GFileAttributeInfoList)(unsafe.Pointer(b))
-
-	return wrapFileAttributeInfoList(c)
+	return WrapFileAttributeInfoList(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GFileAttributeInfoList. The caller is expected to
@@ -8235,7 +8219,10 @@ type FileAttributeMatcher struct {
 	native *C.GFileAttributeMatcher
 }
 
-func wrapFileAttributeMatcher(p *C.GFileAttributeMatcher) *FileAttributeMatcher {
+// WrapFileAttributeMatcher wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFileAttributeMatcher(ptr unsafe.Pointer) *FileAttributeMatcher {
+	p := (*C.GFileAttributeMatcher)(ptr)
 	v := FileAttributeMatcher{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -8246,12 +8233,12 @@ func wrapFileAttributeMatcher(p *C.GFileAttributeMatcher) *FileAttributeMatcher 
 
 func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GFileAttributeMatcher)(unsafe.Pointer(b))
-
-	return wrapFileAttributeMatcher(c)
+	return WrapFileAttributeMatcher(unsafe.Pointer(b))
 }
 
-func (f *FileAttributeMatcher) free() {}
+func (f *FileAttributeMatcher) free() {
+	C.free(unsafe.Pointer(f.native))
+}
 
 // Native returns the pointer to *C.GFileAttributeMatcher. The caller is expected to
 // cast.
@@ -8297,15 +8284,18 @@ type InputMessage struct {
 	native *C.GInputMessage
 }
 
-func wrapInputMessage(p *C.GInputMessage) *InputMessage {
+// WrapInputMessage wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapInputMessage(ptr unsafe.Pointer) *InputMessage {
+	p := (*C.GInputMessage)(ptr)
 	var v InputMessage
 
-	v.Address = wrapSocketAddress(externglib.Take(unsafe.Pointer(p.address)))
+	v.Address = gio.WrapSocketAddress(externglib.Take(unsafe.Pointer(p.address.Native())))
 	{
 		v.Vectors = make([]InputVector, p.num_vectors)
 		for i := 0; i < uintptr(p.num_vectors); i++ {
 			src := (C.GInputVector)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			v.Vectors[i] = wrapInputVector(src)
+			v.Vectors[i] = gio.WrapInputVector(src)
 		}
 	}
 	v.BytesReceived = uint(p.bytes_received)
@@ -8314,7 +8304,7 @@ func wrapInputMessage(p *C.GInputMessage) *InputMessage {
 		v.ControlMessages = make([]SocketControlMessage, p.num_control_messages)
 		for i := 0; i < uintptr(p.num_control_messages); i++ {
 			src := (**C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			v.ControlMessages[i] = wrapSocketControlMessage(externglib.Take(unsafe.Pointer(src)))
+			v.ControlMessages[i] = gio.WrapSocketControlMessage(externglib.Take(unsafe.Pointer(src.Native())))
 		}
 	}
 
@@ -8323,9 +8313,7 @@ func wrapInputMessage(p *C.GInputMessage) *InputMessage {
 
 func marshalInputMessage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GInputMessage)(unsafe.Pointer(b))
-
-	return wrapInputMessage(c)
+	return WrapInputMessage(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GInputMessage. The caller is expected to
@@ -8346,10 +8334,13 @@ type InputVector struct {
 	native *C.GInputVector
 }
 
-func wrapInputVector(p *C.GInputVector) *InputVector {
+// WrapInputVector wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapInputVector(ptr unsafe.Pointer) *InputVector {
+	p := (*C.GInputVector)(ptr)
 	var v InputVector
 
-	v.Buffer = unsafe.Pointer(p.buffer)
+	v.Buffer = box.Get(uintptr(p.buffer))
 	v.Size = uint(p.size)
 
 	return &v
@@ -8357,9 +8348,7 @@ func wrapInputVector(p *C.GInputVector) *InputVector {
 
 func marshalInputVector(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GInputVector)(unsafe.Pointer(b))
-
-	return wrapInputVector(c)
+	return WrapInputVector(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GInputVector. The caller is expected to
@@ -8391,18 +8380,21 @@ type OutputMessage struct {
 	native *C.GOutputMessage
 }
 
-func wrapOutputMessage(p *C.GOutputMessage) *OutputMessage {
+// WrapOutputMessage wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapOutputMessage(ptr unsafe.Pointer) *OutputMessage {
+	p := (*C.GOutputMessage)(ptr)
 	var v OutputMessage
 
-	v.Address = wrapSocketAddress(externglib.Take(unsafe.Pointer(p.address)))
-	v.Vectors = wrapOutputVector(p.vectors)
+	v.Address = gio.WrapSocketAddress(externglib.Take(unsafe.Pointer(p.address.Native())))
+	v.Vectors = gio.WrapOutputVector(p.vectors)
 	v.NumVectors = uint(p.num_vectors)
 	v.BytesSent = uint(p.bytes_sent)
 	{
 		v.ControlMessages = make([]SocketControlMessage, p.num_control_messages)
 		for i := 0; i < uintptr(p.num_control_messages); i++ {
 			src := (*C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			v.ControlMessages[i] = wrapSocketControlMessage(externglib.Take(unsafe.Pointer(src)))
+			v.ControlMessages[i] = gio.WrapSocketControlMessage(externglib.Take(unsafe.Pointer(src.Native())))
 		}
 	}
 
@@ -8411,9 +8403,7 @@ func wrapOutputMessage(p *C.GOutputMessage) *OutputMessage {
 
 func marshalOutputMessage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GOutputMessage)(unsafe.Pointer(b))
-
-	return wrapOutputMessage(c)
+	return WrapOutputMessage(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GOutputMessage. The caller is expected to
@@ -8434,10 +8424,13 @@ type OutputVector struct {
 	native *C.GOutputVector
 }
 
-func wrapOutputVector(p *C.GOutputVector) *OutputVector {
+// WrapOutputVector wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapOutputVector(ptr unsafe.Pointer) *OutputVector {
+	p := (*C.GOutputVector)(ptr)
 	var v OutputVector
 
-	v.Buffer = unsafe.Pointer(p.buffer)
+	v.Buffer = box.Get(uintptr(p.buffer))
 	v.Size = uint(p.size)
 
 	return &v
@@ -8445,9 +8438,7 @@ func wrapOutputVector(p *C.GOutputVector) *OutputVector {
 
 func marshalOutputVector(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GOutputVector)(unsafe.Pointer(b))
-
-	return wrapOutputVector(c)
+	return WrapOutputVector(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.GOutputVector. The caller is expected to
@@ -8511,6 +8502,8 @@ func (o *OutputVector) Native() unsafe.Pointer {
 // file that describes the bundle, and a set of files that the XML references.
 // These are combined into a binary resource bundle.
 //
+// An example resource description:
+//
 //
 //    <?xml version="1.0" encoding="UTF-8"?>
 //    <gresources>
@@ -8521,66 +8514,60 @@ func (o *OutputVector) Native() unsafe.Pointer {
 //        <file alias="example.css">data/example.css</file>
 //      </gresource>
 //    </gresources>
+//    ]|
 //
-//
+//    This will create a resource bundle with the following files:
+//    |[
 //    /org/gtk/Example/data/splashscreen.png
 //    /org/gtk/Example/dialog.ui
 //    /org/gtk/Example/menumarkup.xml
 //    /org/gtk/Example/example.css
+//    ]|
 //
-// Note that all resources in the process share the same namespace, so use
-// Java-style path prefixes (like in the above example) to avoid conflicts.
+//    Note that all resources in the process share the same namespace, so use Java-style
+//    path prefixes (like in the above example) to avoid conflicts.
 //
-// You can then use [glib-compile-resources][glib-compile-resources] to compile
-// the XML to a binary bundle that you can load with g_resource_load(). However,
-// its more common to use the --generate-source and --generate-header arguments
-// to create a source file and header to link directly into your application.
-// This will generate `get_resource()`, `register_resource()` and
-// `unregister_resource()` functions, prefixed by the `--c-name` argument passed
-// to [glib-compile-resources][glib-compile-resources]. `get_resource()` returns
-// the generated #GResource object. The register and unregister functions
-// register the resource so its files can be accessed using
-// g_resources_lookup_data().
+//    You can then use [glib-compile-resources][glib-compile-resources] to compile the XML to a
+//    binary bundle that you can load with g_resource_load(). However, its more common to use the --generate-source and
+//    --generate-header arguments to create a source file and header to link directly into your application.
+//    This will generate `get_resource()`, `register_resource()` and
+//    `unregister_resource()` functions, prefixed by the `--c-name` argument passed
+//    to [glib-compile-resources][glib-compile-resources]. `get_resource()` returns
+//    the generated #GResource object. The register and unregister functions
+//    register the resource so its files can be accessed using
+//    g_resources_lookup_data().
 //
-// Once a #GResource has been created and registered all the data in it can be
-// accessed globally in the process by using API calls like
-// g_resources_open_stream() to stream the data or g_resources_lookup_data() to
-// get a direct pointer to the data. You can also use URIs like
-// "resource:///org/gtk/Example/data/splashscreen.png" with #GFile to access the
-// resource data.
+//    Once a #GResource has been created and registered all the data in it can be accessed globally in the process by
+//    using API calls like g_resources_open_stream() to stream the data or g_resources_lookup_data() to get a direct pointer
+//    to the data. You can also use URIs like "resource:///org/gtk/Example/data/splashscreen.png" with #GFile to access
+//    the resource data.
 //
-// Some higher-level APIs, such as Application, will automatically load
-// resources from certain well-known paths in the resource namespace as a
-// convenience. See the documentation for those APIs for details.
+//    Some higher-level APIs, such as Application, will automatically load
+//    resources from certain well-known paths in the resource namespace as a
+//    convenience. See the documentation for those APIs for details.
 //
-// There are two forms of the generated source, the default version uses the
-// compiler support for constructor and destructor functions (where available)
-// to automatically create and register the #GResource on startup or library
-// load time. If you pass `--manual-register`, two functions to
-// register/unregister the resource are created instead. This requires an
-// explicit initialization call in your application/library, but it works on all
-// platforms, even on the minor ones where constructors are not supported.
-// (Constructor support is available for at least Win32, Mac OS and Linux.)
+//    There are two forms of the generated source, the default version uses the compiler support for constructor
+//    and destructor functions (where available) to automatically create and register the #GResource on startup
+//    or library load time. If you pass `--manual-register`, two functions to register/unregister the resource are created
+//    instead. This requires an explicit initialization call in your application/library, but it works on all platforms,
+//    even on the minor ones where constructors are not supported. (Constructor support is available for at least Win32, Mac OS and Linux.)
 //
-// Note that resource data can point directly into the data segment of e.g. a
-// library, so if you are unloading libraries during runtime you need to be very
-// careful with keeping around pointers to data from a resource, as this goes
-// away when the library is unloaded. However, in practice this is not generally
-// a problem, since most resource accesses are for your own resources, and
-// resource data is often used once, during parsing, and then released.
+//    Note that resource data can point directly into the data segment of e.g. a library, so if you are unloading libraries
+//    during runtime you need to be very careful with keeping around pointers to data from a resource, as this goes away
+//    when the library is unloaded. However, in practice this is not generally a problem, since most resource accesses
+//    are for your own resources, and resource data is often used once, during parsing, and then released.
 //
-// When debugging a program or testing a change to an installed version, it is
-// often useful to be able to replace resources in the program or library,
-// without recompiling, for debugging or quick hacking and testing purposes.
-// Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment
-// variable to selectively overlay resources with replacements from the
-// filesystem. It is a G_SEARCHPATH_SEPARATOR-separated list of substitutions to
-// perform during resource lookups.
+//    When debugging a program or testing a change to an installed version, it is often useful to be able to
+//    replace resources in the program or library, without recompiling, for debugging or quick hacking and testing
+//    purposes. Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment variable to selectively overlay
+//    resources with replacements from the filesystem.  It is a G_SEARCHPATH_SEPARATOR-separated list of substitutions to perform
+//    during resource lookups.
 //
-// A substitution has the form
+//    A substitution has the form
 //
-//
+//    |[
 //       /org/gtk/libgtk=/home/desrt/gtk-overlay
+//
 //
 // The part before the `=` is the resource subpath for which the overlay
 // applies. The part after is a filesystem path which contains files and
@@ -8602,7 +8589,10 @@ type Resource struct {
 	native *C.GResource
 }
 
-func wrapResource(p *C.GResource) *Resource {
+// WrapResource wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapResource(ptr unsafe.Pointer) *Resource {
+	p := (*C.GResource)(ptr)
 	v := Resource{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -8613,12 +8603,12 @@ func wrapResource(p *C.GResource) *Resource {
 
 func marshalResource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GResource)(unsafe.Pointer(b))
-
-	return wrapResource(c)
+	return WrapResource(unsafe.Pointer(b))
 }
 
-func (r *Resource) free() {}
+func (r *Resource) free() {
+	C.free(unsafe.Pointer(r.native))
+}
 
 // Native returns the pointer to *C.GResource. The caller is expected to
 // cast.
@@ -8644,60 +8634,6 @@ func NewResource(data *glib.Bytes) *Resource
 //
 // Consider the following example:
 //
-//    typedef struct
-//    {
-//       ...
-//       GSettingsSchemaSource *schema_source;
-//       ...
-//    } Plugin;
-//
-//    Plugin *
-//    initialise_plugin (const gchar *dir)
-//    {
-//      Plugin *plugin;
-//
-//      ...
-//
-//      plugin->schema_source =
-//        g_settings_schema_source_new_from_directory (dir,
-//          g_settings_schema_source_get_default (), FALSE, NULL);
-//
-//      ...
-//
-//      return plugin;
-//    }
-//
-//    ...
-//
-//    GSettings *
-//    plugin_get_settings (Plugin      *plugin,
-//                         const gchar *schema_id)
-//    {
-//      GSettingsSchema *schema;
-//
-//      if (schema_id == NULL)
-//        schema_id = plugin->identifier;
-//
-//      schema = g_settings_schema_source_lookup (plugin->schema_source,
-//                                                schema_id, FALSE);
-//
-//      if (schema == NULL)
-//        {
-//          ... disable the plugin or abort, etc ...
-//        }
-//
-//      return g_settings_new_full (schema, NULL, NULL);
-//    }
-//
-//
-// The code above shows how hooks should be added to the code that initialises
-// (or enables) the plugin to create the schema source and how an API can be
-// added to the plugin system to provide a convenient way for the plugin to
-// access its settings, using the schemas that it ships.
-//
-// From the standpoint of the plugin, it would need to ensure that it ships a
-// gschemas.compiled file as part of itself, and then simply do the following:
-//
 //    {
 //      GSettings *settings;
 //      gint some_value;
@@ -8716,7 +8652,10 @@ type SettingsSchema struct {
 	native *C.GSettingsSchema
 }
 
-func wrapSettingsSchema(p *C.GSettingsSchema) *SettingsSchema {
+// WrapSettingsSchema wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsSchema(ptr unsafe.Pointer) *SettingsSchema {
+	p := (*C.GSettingsSchema)(ptr)
 	v := SettingsSchema{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -8727,12 +8666,12 @@ func wrapSettingsSchema(p *C.GSettingsSchema) *SettingsSchema {
 
 func marshalSettingsSchema(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GSettingsSchema)(unsafe.Pointer(b))
-
-	return wrapSettingsSchema(c)
+	return WrapSettingsSchema(unsafe.Pointer(b))
 }
 
-func (s *SettingsSchema) free() {}
+func (s *SettingsSchema) free() {
+	C.free(unsafe.Pointer(s.native))
+}
 
 // Native returns the pointer to *C.GSettingsSchema. The caller is expected to
 // cast.
@@ -8746,7 +8685,10 @@ type SettingsSchemaKey struct {
 	native *C.GSettingsSchemaKey
 }
 
-func wrapSettingsSchemaKey(p *C.GSettingsSchemaKey) *SettingsSchemaKey {
+// WrapSettingsSchemaKey wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsSchemaKey(ptr unsafe.Pointer) *SettingsSchemaKey {
+	p := (*C.GSettingsSchemaKey)(ptr)
 	v := SettingsSchemaKey{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -8757,12 +8699,12 @@ func wrapSettingsSchemaKey(p *C.GSettingsSchemaKey) *SettingsSchemaKey {
 
 func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GSettingsSchemaKey)(unsafe.Pointer(b))
-
-	return wrapSettingsSchemaKey(c)
+	return WrapSettingsSchemaKey(unsafe.Pointer(b))
 }
 
-func (s *SettingsSchemaKey) free() {}
+func (s *SettingsSchemaKey) free() {
+	C.free(unsafe.Pointer(s.native))
+}
 
 // Native returns the pointer to *C.GSettingsSchemaKey. The caller is expected to
 // cast.
@@ -8776,7 +8718,10 @@ type SettingsSchemaSource struct {
 	native *C.GSettingsSchemaSource
 }
 
-func wrapSettingsSchemaSource(p *C.GSettingsSchemaSource) *SettingsSchemaSource {
+// WrapSettingsSchemaSource wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSettingsSchemaSource(ptr unsafe.Pointer) *SettingsSchemaSource {
+	p := (*C.GSettingsSchemaSource)(ptr)
 	v := SettingsSchemaSource{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -8787,12 +8732,12 @@ func wrapSettingsSchemaSource(p *C.GSettingsSchemaSource) *SettingsSchemaSource 
 
 func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GSettingsSchemaSource)(unsafe.Pointer(b))
-
-	return wrapSettingsSchemaSource(c)
+	return WrapSettingsSchemaSource(unsafe.Pointer(b))
 }
 
-func (s *SettingsSchemaSource) free() {}
+func (s *SettingsSchemaSource) free() {
+	C.free(unsafe.Pointer(s.native))
+}
 
 // Native returns the pointer to *C.GSettingsSchemaSource. The caller is expected to
 // cast.
@@ -8818,7 +8763,10 @@ type SrvTarget struct {
 	native *C.GSrvTarget
 }
 
-func wrapSrvTarget(p *C.GSrvTarget) *SrvTarget {
+// WrapSrvTarget wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapSrvTarget(ptr unsafe.Pointer) *SrvTarget {
+	p := (*C.GSrvTarget)(ptr)
 	v := SrvTarget{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -8829,12 +8777,12 @@ func wrapSrvTarget(p *C.GSrvTarget) *SrvTarget {
 
 func marshalSrvTarget(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GSrvTarget)(unsafe.Pointer(b))
-
-	return wrapSrvTarget(c)
+	return WrapSrvTarget(unsafe.Pointer(b))
 }
 
-func (s *SrvTarget) free() {}
+func (s *SrvTarget) free() {
+	C.free(unsafe.Pointer(s.native))
+}
 
 // Native returns the pointer to *C.GSrvTarget. The caller is expected to
 // cast.
@@ -8850,7 +8798,10 @@ type StaticResource struct {
 	native *C.GStaticResource
 }
 
-func wrapStaticResource(p *C.GStaticResource) *StaticResource {
+// WrapStaticResource wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapStaticResource(ptr unsafe.Pointer) *StaticResource {
+	p := (*C.GStaticResource)(ptr)
 	v := StaticResource{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -8861,12 +8812,12 @@ func wrapStaticResource(p *C.GStaticResource) *StaticResource {
 
 func marshalStaticResource(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GStaticResource)(unsafe.Pointer(b))
-
-	return wrapStaticResource(c)
+	return WrapStaticResource(unsafe.Pointer(b))
 }
 
-func (s *StaticResource) free() {}
+func (s *StaticResource) free() {
+	C.free(unsafe.Pointer(s.native))
+}
 
 // Native returns the pointer to *C.GStaticResource. The caller is expected to
 // cast.
@@ -8880,7 +8831,10 @@ type UnixMountEntry struct {
 	native *C.GUnixMountEntry
 }
 
-func wrapUnixMountEntry(p *C.GUnixMountEntry) *UnixMountEntry {
+// WrapUnixMountEntry wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixMountEntry(ptr unsafe.Pointer) *UnixMountEntry {
+	p := (*C.GUnixMountEntry)(ptr)
 	v := UnixMountEntry{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -8891,12 +8845,12 @@ func wrapUnixMountEntry(p *C.GUnixMountEntry) *UnixMountEntry {
 
 func marshalUnixMountEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GUnixMountEntry)(unsafe.Pointer(b))
-
-	return wrapUnixMountEntry(c)
+	return WrapUnixMountEntry(unsafe.Pointer(b))
 }
 
-func (u *UnixMountEntry) free() {}
+func (u *UnixMountEntry) free() {
+	C.free(unsafe.Pointer(u.native))
+}
 
 // Native returns the pointer to *C.GUnixMountEntry. The caller is expected to
 // cast.
@@ -8910,7 +8864,10 @@ type UnixMountPoint struct {
 	native *C.GUnixMountPoint
 }
 
-func wrapUnixMountPoint(p *C.GUnixMountPoint) *UnixMountPoint {
+// WrapUnixMountPoint wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapUnixMountPoint(ptr unsafe.Pointer) *UnixMountPoint {
+	p := (*C.GUnixMountPoint)(ptr)
 	v := UnixMountPoint{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -8921,12 +8878,12 @@ func wrapUnixMountPoint(p *C.GUnixMountPoint) *UnixMountPoint {
 
 func marshalUnixMountPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.GUnixMountPoint)(unsafe.Pointer(b))
-
-	return wrapUnixMountPoint(c)
+	return WrapUnixMountPoint(unsafe.Pointer(b))
 }
 
-func (u *UnixMountPoint) free() {}
+func (u *UnixMountPoint) free() {
+	C.free(unsafe.Pointer(u.native))
+}
 
 // Native returns the pointer to *C.GUnixMountPoint. The caller is expected to
 // cast.
@@ -8957,14 +8914,16 @@ type appInfoMonitor struct {
 	*externglib.Object
 }
 
-func wrapAppInfoMonitor(obj *externglib.Object) AppInfoMonitor {
+// WrapAppInfoMonitor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAppInfoMonitor(obj *externglib.Object) AppInfoMonitor {
 	return appInfoMonitor{*externglib.Object{obj}}
 }
 
 func marshalAppInfoMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAppInfoMonitor(obj), nil
 }
 
 // AppLaunchContext: integrating the launch with the launching application. This
@@ -8986,9 +8945,9 @@ type AppLaunchContext interface {
 	// returns the `DESKTOP_STARTUP_ID` for the launched operation, if
 	// supported.
 	//
-	// Startup notification IDs are defined in the [FreeDesktop.Org Startup
-	// Notifications
-	// standard](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
+	// Startup notification IDs are defined in the FreeDesktop.Org Startup
+	// Notifications standard
+	// (http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
 	StartupNotifyID(info AppInfo, files *glib.List) string
 	// LaunchFailed: called when an application has failed to launch, so that it
 	// can cancel the application startup notification started in
@@ -9006,14 +8965,16 @@ type appLaunchContext struct {
 	*externglib.Object
 }
 
-func wrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
+// WrapAppLaunchContext wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapAppLaunchContext(obj *externglib.Object) AppLaunchContext {
 	return appLaunchContext{*externglib.Object{obj}}
 }
 
 func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapAppLaunchContext(obj), nil
 }
 
 func NewAppLaunchContext() AppLaunchContext
@@ -9065,8 +9026,8 @@ func (a appLaunchContext) Unsetenv(variable string)
 // g_application_run() promptly returns. See the code examples below.
 //
 // If used, the expected form of an application identifier is the same as that
-// of of a [D-Bus well-known bus
-// name](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus).
+// of of a D-Bus well-known bus name
+// (https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus).
 // Examples include: `com.example.MyApp`,
 // `org.example.internal_apps.Calculator`, `org._7_zip.Archiver`. For details on
 // valid application identifiers, see g_application_id_is_valid().
@@ -9129,13 +9090,16 @@ func (a appLaunchContext) Unsetenv(variable string)
 // the primary instance or the local instance, respectively.
 //
 // For an example of opening files with a GApplication, see
-// [gapplication-example-open.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-open.c).
+// gapplication-example-open.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-open.c).
 //
 // For an example of using actions with GApplication, see
-// [gapplication-example-actions.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-actions.c).
+// gapplication-example-actions.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-actions.c).
 //
 // For an example of using extra D-Bus hooks with GApplication, see
-// [gapplication-example-dbushooks.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
+// gapplication-example-dbushooks.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
 type Application interface {
 	gextras.Objector
 
@@ -9353,14 +9317,14 @@ type Application interface {
 	// add commandline flags to the list of recognised options by way of
 	// g_application_add_main_option_entries(). After this, the
 	// #GApplication::handle-local-options signal is emitted, from which the
-	// application can inspect the values of its Entrys
+	// application can inspect the values of its Entrys.
 	//
 	// #GApplication::handle-local-options is a good place to handle options
 	// such as `--version`, where an immediate reply from the local process is
 	// desired (instead of communicating with an already-running instance). A
 	// #GApplication::handle-local-options handler can stop further processing
 	// by returning a non-negative value, which then becomes the exit status of
-	// the process
+	// the process.
 	//
 	// What happens next depends on the flags: if
 	// G_APPLICATION_HANDLES_COMMAND_LINE was specified then the remaining
@@ -9559,14 +9523,16 @@ type application struct {
 	*externglib.Object
 }
 
-func wrapApplication(obj *externglib.Object) Application {
+// WrapApplication wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapApplication(obj *externglib.Object) Application {
 	return application{*externglib.Object{obj}}
 }
 
 func marshalApplication(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapApplication(obj), nil
 }
 
 func NewApplication(applicationID string, flags ApplicationFlags) Application
@@ -9668,76 +9634,47 @@ func (a application) WithdrawNotification(id string)
 // Normally, the commandline is completely handled in the
 // #GApplication::command-line handler. The launching instance exits once the
 // signal handler in the primary instance has returned, and the return value of
-// the signal handler becomes the exit status of the launching instance. |[<!--
-// language="C" --> static int command_line (GApplication *application,
-// GApplicationCommandLine *cmdline) { gchar **argv; gint argc; gint i;
+// the signal handler becomes the exit status of the launching instance.
 //
-// argv = g_application_command_line_get_arguments (cmdline, &argc);
+//    static gboolean
+//    my_cmdline_handler (gpointer data)
+//    {
+//      GApplicationCommandLine *cmdline = data;
 //
-// g_application_command_line_print (cmdline, "This text is written back\n" "to
-// stdout of the caller\n");
+//      // do the heavy lifting in an idle
 //
-// for (i = 0; i < argc; i++) g_print ("argument d: s\n", i, argv[i]);
+//      g_application_command_line_set_exit_status (cmdline, 0);
+//      g_object_unref (cmdline); // this releases the application
 //
-// g_strfreev (argv);
+//      return G_SOURCE_REMOVE;
+//    }
 //
-// return 0; } ]| The complete example can be found here:
-// [gapplication-example-cmdline.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline.c)
+//    static int
+//    command_line (GApplication            *application,
+//                  GApplicationCommandLine *cmdline)
+//    {
+//      // keep the application running until we are done with this commandline
+//      g_application_hold (application);
 //
-// In more complicated cases, the handling of the comandline can be split
-// between the launcher and the primary instance. |[<!-- language="C" --> static
-// gboolean test_local_cmdline (GApplication *application, gchar ***arguments,
-// gint *exit_status) { gint i, j; gchar **argv;
+//      g_object_set_data_full (G_OBJECT (cmdline),
+//                              "application", application,
+//                              (GDestroyNotify)g_application_release);
 //
-// argv = *arguments;
+//      g_object_ref (cmdline);
+//      g_idle_add (my_cmdline_handler, cmdline);
 //
-// i = 1; while (argv[i]) { if (g_str_has_prefix (argv[i], "--local-")) {
-// g_print ("handling argument s locally\n", argv[i]); g_free (argv[i]); for (j
-// = i; argv[j]; j++) argv[j] = argv[j + 1]; } else { g_print ("not handling
-// argument s locally\n", argv[i]); i++; } }
+//      return 0;
+//    }
 //
-// *exit_status = 0;
 //
-// return FALSE; }
+// In this example the commandline is not completely handled before the
+// #GApplication::command-line handler returns. Instead, we keep a reference to
+// the CommandLine object and handle it later (in this example, in an idle).
+// Note that it is necessary to hold the application until you are done with the
+// commandline.
 //
-// static void test_application_class_init (TestApplicationClass *class) {
-// G_APPLICATION_CLASS (class)->local_command_line = test_local_cmdline;
-//
-// ... } ]| In this example of split commandline handling, options that start
-// with `--local-` are handled locally, all other options are passed to the
-// #GApplication::command-line handler which runs in the primary instance.
-//
-// The complete example can be found here:
-// [gapplication-example-cmdline2.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline2.c)
-//
-// If handling the commandline requires a lot of work, it may be better to defer
-// it. |[<!-- language="C" --> static gboolean my_cmdline_handler (gpointer
-// data) { GApplicationCommandLine *cmdline = data;
-//
-// // do the heavy lifting in an idle
-//
-// g_application_command_line_set_exit_status (cmdline, 0); g_object_unref
-// (cmdline); // this releases the application
-//
-// return G_SOURCE_REMOVE; }
-//
-// static int command_line (GApplication *application, GApplicationCommandLine
-// *cmdline) { // keep the application running until we are done with this
-// commandline g_application_hold (application);
-//
-// g_object_set_data_full (G_OBJECT (cmdline), "application", application,
-// (GDestroyNotify)g_application_release);
-//
-// g_object_ref (cmdline); g_idle_add (my_cmdline_handler, cmdline);
-//
-// return 0; } ]| In this example the commandline is not completely handled
-// before the #GApplication::command-line handler returns. Instead, we keep a
-// reference to the CommandLine object and handle it later (in this example, in
-// an idle). Note that it is necessary to hold the application until you are
-// done with the commandline.
-//
-// The complete example can be found here:
-// [gapplication-example-cmdline3.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c)
+// The complete example can be found here: gapplication-example-cmdline3.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c)
 type ApplicationCommandLine interface {
 	gextras.Objector
 
@@ -9860,14 +9797,16 @@ type applicationCommandLine struct {
 	*externglib.Object
 }
 
-func wrapApplicationCommandLine(obj *externglib.Object) ApplicationCommandLine {
+// WrapApplicationCommandLine wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapApplicationCommandLine(obj *externglib.Object) ApplicationCommandLine {
 	return applicationCommandLine{*externglib.Object{obj}}
 }
 
 func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapApplicationCommandLine(obj), nil
 }
 
 func (a applicationCommandLine) CreateFileForArg(arg string) File
@@ -9978,14 +9917,16 @@ type bufferedInputStream struct {
 	filterInputStream
 }
 
-func wrapBufferedInputStream(obj *externglib.Object) BufferedInputStream {
+// WrapBufferedInputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBufferedInputStream(obj *externglib.Object) BufferedInputStream {
 	return bufferedInputStream{filterInputStream{inputStream{*externglib.Object{obj}}}}
 }
 
 func marshalBufferedInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBufferedInputStream(obj), nil
 }
 
 func NewBufferedInputStream(baseStream InputStream) BufferedInputStream
@@ -10044,14 +9985,16 @@ type bufferedOutputStream struct {
 	filterOutputStream
 }
 
-func wrapBufferedOutputStream(obj *externglib.Object) BufferedOutputStream {
+// WrapBufferedOutputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBufferedOutputStream(obj *externglib.Object) BufferedOutputStream {
 	return bufferedOutputStream{filterOutputStream{outputStream{*externglib.Object{obj}}}}
 }
 
 func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBufferedOutputStream(obj), nil
 }
 
 func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream
@@ -10079,14 +10022,16 @@ type bytesIcon struct {
 	*externglib.Object
 }
 
-func wrapBytesIcon(obj *externglib.Object) BytesIcon {
+// WrapBytesIcon wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapBytesIcon(obj *externglib.Object) BytesIcon {
 	return bytesIcon{*externglib.Object{obj}}
 }
 
 func marshalBytesIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapBytesIcon(obj), nil
 }
 
 func NewBytesIcon(bytes *glib.Bytes) BytesIcon
@@ -10234,14 +10179,16 @@ type cancellable struct {
 	*externglib.Object
 }
 
-func wrapCancellable(obj *externglib.Object) Cancellable {
+// WrapCancellable wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCancellable(obj *externglib.Object) Cancellable {
 	return cancellable{*externglib.Object{obj}}
 }
 
 func marshalCancellable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCancellable(obj), nil
 }
 
 func NewCancellable() Cancellable
@@ -10287,14 +10234,16 @@ type charsetConverter struct {
 	*externglib.Object
 }
 
-func wrapCharsetConverter(obj *externglib.Object) CharsetConverter {
+// WrapCharsetConverter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCharsetConverter(obj *externglib.Object) CharsetConverter {
 	return charsetConverter{*externglib.Object{obj}}
 }
 
 func marshalCharsetConverter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCharsetConverter(obj), nil
 }
 
 func NewCharsetConverter(toCharset string, fromCharset string) CharsetConverter
@@ -10320,14 +10269,16 @@ type converterInputStream struct {
 	filterInputStream
 }
 
-func wrapConverterInputStream(obj *externglib.Object) ConverterInputStream {
+// WrapConverterInputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapConverterInputStream(obj *externglib.Object) ConverterInputStream {
 	return converterInputStream{filterInputStream{inputStream{*externglib.Object{obj}}}}
 }
 
 func marshalConverterInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapConverterInputStream(obj), nil
 }
 
 func NewConverterInputStream(baseStream InputStream, converter Converter) ConverterInputStream
@@ -10349,14 +10300,16 @@ type converterOutputStream struct {
 	filterOutputStream
 }
 
-func wrapConverterOutputStream(obj *externglib.Object) ConverterOutputStream {
+// WrapConverterOutputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapConverterOutputStream(obj *externglib.Object) ConverterOutputStream {
 	return converterOutputStream{filterOutputStream{outputStream{*externglib.Object{obj}}}}
 }
 
 func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapConverterOutputStream(obj), nil
 }
 
 func NewConverterOutputStream(baseStream OutputStream, converter Converter) ConverterOutputStream
@@ -10448,14 +10401,16 @@ type credentials struct {
 	*externglib.Object
 }
 
-func wrapCredentials(obj *externglib.Object) Credentials {
+// WrapCredentials wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapCredentials(obj *externglib.Object) Credentials {
 	return credentials{*externglib.Object{obj}}
 }
 
 func marshalCredentials(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapCredentials(obj), nil
 }
 
 func NewCredentials() Credentials
@@ -10485,14 +10440,16 @@ type dBusActionGroup struct {
 	*externglib.Object
 }
 
-func wrapDBusActionGroup(obj *externglib.Object) DBusActionGroup {
+// WrapDBusActionGroup wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusActionGroup(obj *externglib.Object) DBusActionGroup {
 	return dBusActionGroup{*externglib.Object{obj}}
 }
 
 func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusActionGroup(obj), nil
 }
 
 // DBusAuthObserver: the BusAuthObserver type provides a mechanism for
@@ -10508,28 +10465,6 @@ func marshalDBusActionGroup(p uintptr) (interface{}, error) {
 // connections with the `EXTERNAL` mechanism, which makes use of credentials
 // passing and is the recommended mechanism for modern Unix platforms such as
 // Linux and the BSD family, you would use a signal handler like this:
-//
-//    static gboolean
-//    on_allow_mechanism (GDBusAuthObserver *observer,
-//                        const gchar       *mechanism,
-//                        gpointer           user_data)
-//    {
-//      if (g_strcmp0 (mechanism, "EXTERNAL") == 0)
-//        {
-//          return TRUE;
-//        }
-//
-//      return FALSE;
-//    }
-//
-//
-// Controlling Authorization {#auth-observer}
-//
-// By default, a BusServer or server-side BusConnection will accept connections
-// from any successfully authenticated user (but not from anonymous connections
-// using the `ANONYMOUS` mechanism). If you only want to allow D-Bus connections
-// from processes owned by the same uid as the server, you would use a signal
-// handler like the following:
 //
 //    static gboolean
 //    on_authorize_authenticated_peer (GDBusAuthObserver *observer,
@@ -10567,14 +10502,16 @@ type dBusAuthObserver struct {
 	*externglib.Object
 }
 
-func wrapDBusAuthObserver(obj *externglib.Object) DBusAuthObserver {
+// WrapDBusAuthObserver wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusAuthObserver(obj *externglib.Object) DBusAuthObserver {
 	return dBusAuthObserver{*externglib.Object{obj}}
 }
 
 func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusAuthObserver(obj), nil
 }
 
 func NewDBusAuthObserver() DBusAuthObserver
@@ -10611,25 +10548,29 @@ func (d dBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStream, credential
 // In particular, if initialization fails with a #GError, the only valid thing
 // you can do with that BusConnection is to free it with g_object_unref().
 //
-// An example D-Bus server {#gdbus-server}
 //
-// Here is an example for a D-Bus server:
-// [gdbus-example-server.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-server.c)
+// An example D-Bus server
 //
-// An example for exporting a subtree {#gdbus-subtree-server}
+// Here is an example for a D-Bus server: gdbus-example-server.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-server.c)
 //
-// Here is an example for exporting a subtree:
-// [gdbus-example-subtree.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-subtree.c)
 //
-// An example for file descriptor passing {#gdbus-unix-fd-client}
+// An example for exporting a subtree
 //
-// Here is an example for passing UNIX file descriptors:
-// [gdbus-unix-fd-client.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-unix-fd-client.c)
+// Here is an example for exporting a subtree: gdbus-example-subtree.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-subtree.c)
 //
-// An example for exporting a GObject {#gdbus-export}
 //
-// Here is an example for exporting a #GObject:
-// [gdbus-example-export.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c)
+// An example for file descriptor passing
+//
+// Here is an example for passing UNIX file descriptors: gdbus-unix-fd-client.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-unix-fd-client.c)
+//
+//
+// An example for exporting a GObject
+//
+// Here is an example for exporting a #GObject: gdbus-example-export.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c)
 type DBusConnection interface {
 	gextras.Objector
 
@@ -10675,20 +10616,24 @@ type DBusConnection interface {
 	// type. Unless it’s G_VARIANT_TYPE_UNIT, the @reply_type will be a tuple
 	// containing one or more values.
 	//
-	//    g_dbus_connection_call (connection,
-	//                            "org.freedesktop.StringThings",
-	//                            "/org/freedesktop/StringThings",
-	//                            "org.freedesktop.StringThings",
-	//                            "TwoStrings",
-	//                            g_variant_new ("(ss)",
-	//                                           "Thing One",
-	//                                           "Thing Two"),
-	//                            NULL,
-	//                            G_DBUS_CALL_FLAGS_NONE,
-	//                            -1,
-	//                            NULL,
-	//                            (GAsyncReadyCallback) two_strings_done,
-	//                            NULL);
+	// If the @parameters #GVariant is floating, it is consumed. This allows
+	// convenient 'inline' use of g_variant_new(), e.g.:
+	//
+	//     g_dbus_connection_call (connection,
+	//                             "org.freedesktop.StringThings",
+	//                             "/org/freedesktop/StringThings",
+	//                             "org.freedesktop.StringThings",
+	//                             "TwoStrings",
+	//                             g_variant_new ("(ss)",
+	//                                            "Thing One",
+	//                                            "Thing Two"),
+	//                             NULL,
+	//                             G_DBUS_CALL_FLAGS_NONE,
+	//                             -1,
+	//                             NULL,
+	//                             (GAsyncReadyCallback) two_strings_done,
+	//                             NULL);
+	//
 	//
 	// This is an asynchronous method. When the operation is finished, @callback
 	// will be invoked in the [thread-default main
@@ -10718,19 +10663,23 @@ type DBusConnection interface {
 	// if you give a @reply_type then any non-nil return value will be of this
 	// type.
 	//
-	//    g_dbus_connection_call_sync (connection,
-	//                                 "org.freedesktop.StringThings",
-	//                                 "/org/freedesktop/StringThings",
-	//                                 "org.freedesktop.StringThings",
-	//                                 "TwoStrings",
-	//                                 g_variant_new ("(ss)",
-	//                                                "Thing One",
-	//                                                "Thing Two"),
-	//                                 NULL,
-	//                                 G_DBUS_CALL_FLAGS_NONE,
-	//                                 -1,
-	//                                 NULL,
-	//                                 &error);
+	// If the @parameters #GVariant is floating, it is consumed. This allows
+	// convenient 'inline' use of g_variant_new(), e.g.:
+	//
+	//     g_dbus_connection_call_sync (connection,
+	//                                  "org.freedesktop.StringThings",
+	//                                  "/org/freedesktop/StringThings",
+	//                                  "org.freedesktop.StringThings",
+	//                                  "TwoStrings",
+	//                                  g_variant_new ("(ss)",
+	//                                                 "Thing One",
+	//                                                 "Thing Two"),
+	//                                  NULL,
+	//                                  G_DBUS_CALL_FLAGS_NONE,
+	//                                  -1,
+	//                                  NULL,
+	//                                  &error);
+	//
 	//
 	// The calling thread is blocked until a reply is received. See
 	// g_dbus_connection_call() for the asynchronous version of this method.
@@ -11150,14 +11099,16 @@ type dBusConnection struct {
 	*externglib.Object
 }
 
-func wrapDBusConnection(obj *externglib.Object) DBusConnection {
+// WrapDBusConnection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusConnection(obj *externglib.Object) DBusConnection {
 	return dBusConnection{*externglib.Object{obj}}
 }
 
 func marshalDBusConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusConnection(obj), nil
 }
 
 func NewDBusConnectionFinish(res AsyncResult) DBusConnection
@@ -11312,14 +11263,16 @@ type dBusInterfaceSkeleton struct {
 	*externglib.Object
 }
 
-func wrapDBusInterfaceSkeleton(obj *externglib.Object) DBusInterfaceSkeleton {
+// WrapDBusInterfaceSkeleton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusInterfaceSkeleton(obj *externglib.Object) DBusInterfaceSkeleton {
 	return dBusInterfaceSkeleton{*externglib.Object{obj}}
 }
 
 func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusInterfaceSkeleton(obj), nil
 }
 
 func (d dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath string) bool
@@ -11359,14 +11312,16 @@ type dBusMenuModel struct {
 	menuModel
 }
 
-func wrapDBusMenuModel(obj *externglib.Object) DBusMenuModel {
+// WrapDBusMenuModel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusMenuModel(obj *externglib.Object) DBusMenuModel {
 	return dBusMenuModel{menuModel{*externglib.Object{obj}}}
 }
 
 func marshalDBusMenuModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusMenuModel(obj), nil
 }
 
 // DBusMessage: a type for representing D-Bus messages that can be sent or
@@ -11445,6 +11400,10 @@ type DBusMessage interface {
 	NewMethodReply() DBusMessage
 	// Print produces a human-readable multi-line description of @message.
 	//
+	// The contents of the description has no ABI guarantees, the contents and
+	// formatting is subject to change at any time. Typical output looks
+	// something like this:
+	//
 	//
 	//    Flags:   none
 	//    Version: 0
@@ -11471,6 +11430,7 @@ type DBusMessage interface {
 	//    Body: ()
 	//    UNIX File Descriptors:
 	//      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
+	//
 	Print(indent uint) string
 	// SetBody sets the body @message. As a side-effect the
 	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field is set to the type
@@ -11540,14 +11500,16 @@ type dBusMessage struct {
 	*externglib.Object
 }
 
-func wrapDBusMessage(obj *externglib.Object) DBusMessage {
+// WrapDBusMessage wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusMessage(obj *externglib.Object) DBusMessage {
 	return dBusMessage{*externglib.Object{obj}}
 }
 
 func marshalDBusMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusMessage(obj), nil
 }
 
 func NewDBusMessage() DBusMessage
@@ -11771,14 +11733,16 @@ type dBusMethodInvocation struct {
 	*externglib.Object
 }
 
-func wrapDBusMethodInvocation(obj *externglib.Object) DBusMethodInvocation {
+// WrapDBusMethodInvocation wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusMethodInvocation(obj *externglib.Object) DBusMethodInvocation {
 	return dBusMethodInvocation{*externglib.Object{obj}}
 }
 
 func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusMethodInvocation(obj), nil
 }
 
 func (d dBusMethodInvocation) Connection() DBusConnection
@@ -11815,8 +11779,8 @@ func (d dBusMethodInvocation) TakeError(error *glib.Error)
 
 // DBusObjectManagerClient is used to create, monitor and delete object proxies
 // for remote objects exported by a BusObjectManagerServer (or any code
-// implementing the
-// [org.freedesktop.DBus.ObjectManager](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
+// implementing the org.freedesktop.DBus.ObjectManager
+// (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
 // interface).
 //
 // Once an instance of this type has been created, you can connect to the
@@ -11897,14 +11861,16 @@ type dBusObjectManagerClient struct {
 	*externglib.Object
 }
 
-func wrapDBusObjectManagerClient(obj *externglib.Object) DBusObjectManagerClient {
+// WrapDBusObjectManagerClient wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusObjectManagerClient(obj *externglib.Object) DBusObjectManagerClient {
 	return dBusObjectManagerClient{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusObjectManagerClient(obj), nil
 }
 
 func NewDBusObjectManagerClientFinish(res AsyncResult) DBusObjectManagerClient
@@ -11924,8 +11890,8 @@ func (d dBusObjectManagerClient) Name() string
 func (d dBusObjectManagerClient) NameOwner() string
 
 // DBusObjectManagerServer is used to export BusObject instances using the
-// standardized
-// [org.freedesktop.DBus.ObjectManager](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
+// standardized org.freedesktop.DBus.ObjectManager
+// (http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
 // interface. For example, remote D-Bus clients can get all objects and
 // properties in a single call. Additionally, any change in the object hierarchy
 // is broadcast using signals. This means that D-Bus clients can keep caches up
@@ -11981,14 +11947,16 @@ type dBusObjectManagerServer struct {
 	*externglib.Object
 }
 
-func wrapDBusObjectManagerServer(obj *externglib.Object) DBusObjectManagerServer {
+// WrapDBusObjectManagerServer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusObjectManagerServer(obj *externglib.Object) DBusObjectManagerServer {
 	return dBusObjectManagerServer{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusObjectManagerServer(obj), nil
 }
 
 func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer
@@ -12020,14 +11988,16 @@ type dBusObjectProxy struct {
 	*externglib.Object
 }
 
-func wrapDBusObjectProxy(obj *externglib.Object) DBusObjectProxy {
+// WrapDBusObjectProxy wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusObjectProxy(obj *externglib.Object) DBusObjectProxy {
 	return dBusObjectProxy{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusObjectProxy(obj), nil
 }
 
 func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObjectProxy
@@ -12070,14 +12040,16 @@ type dBusObjectSkeleton struct {
 	*externglib.Object
 }
 
-func wrapDBusObjectSkeleton(obj *externglib.Object) DBusObjectSkeleton {
+// WrapDBusObjectSkeleton wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusObjectSkeleton(obj *externglib.Object) DBusObjectSkeleton {
 	return dBusObjectSkeleton{*externglib.Object{obj}}
 }
 
 func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusObjectSkeleton(obj), nil
 }
 
 func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton
@@ -12126,7 +12098,8 @@ func (d dBusObjectSkeleton) SetObjectPath(objectPath string)
 // was constructed.
 //
 // An example using a proxy for a well-known name can be found in
-// [gdbus-example-watch-proxy.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c)
+// gdbus-example-watch-proxy.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c)
 type DBusProxy interface {
 	gextras.Objector
 
@@ -12142,16 +12115,20 @@ type DBusProxy interface {
 	// value not compatible with the D-Bus protocol, the operation fails with
 	// G_IO_ERROR_INVALID_ARGUMENT.
 	//
-	//    g_dbus_proxy_call (proxy,
-	//                       "TwoStrings",
-	//                       g_variant_new ("(ss)",
-	//                                      "Thing One",
-	//                                      "Thing Two"),
-	//                       G_DBUS_CALL_FLAGS_NONE,
-	//                       -1,
-	//                       NULL,
-	//                       (GAsyncReadyCallback) two_strings_done,
-	//                       &data);
+	// If the @parameters #GVariant is floating, it is consumed. This allows
+	// convenient 'inline' use of g_variant_new(), e.g.:
+	//
+	//     g_dbus_proxy_call (proxy,
+	//                        "TwoStrings",
+	//                        g_variant_new ("(ss)",
+	//                                       "Thing One",
+	//                                       "Thing Two"),
+	//                        G_DBUS_CALL_FLAGS_NONE,
+	//                        -1,
+	//                        NULL,
+	//                        (GAsyncReadyCallback) two_strings_done,
+	//                        &data);
+	//
 	//
 	// If @proxy has an expected interface (see BusProxy:g-interface-info) and
 	// @method_name is referenced by it, then the return value is checked
@@ -12181,15 +12158,19 @@ type DBusProxy interface {
 	// contains a value not compatible with the D-Bus protocol, the operation
 	// fails with G_IO_ERROR_INVALID_ARGUMENT.
 	//
-	//    g_dbus_proxy_call_sync (proxy,
-	//                            "TwoStrings",
-	//                            g_variant_new ("(ss)",
-	//                                           "Thing One",
-	//                                           "Thing Two"),
-	//                            G_DBUS_CALL_FLAGS_NONE,
-	//                            -1,
-	//                            NULL,
-	//                            &error);
+	// If the @parameters #GVariant is floating, it is consumed. This allows
+	// convenient 'inline' use of g_variant_new(), e.g.:
+	//
+	//     g_dbus_proxy_call_sync (proxy,
+	//                             "TwoStrings",
+	//                             g_variant_new ("(ss)",
+	//                                            "Thing One",
+	//                                            "Thing Two"),
+	//                             G_DBUS_CALL_FLAGS_NONE,
+	//                             -1,
+	//                             NULL,
+	//                             &error);
+	//
 	//
 	// The calling thread is blocked until a reply is received. See
 	// g_dbus_proxy_call() for the asynchronous version of this method.
@@ -12255,11 +12236,15 @@ type DBusProxy interface {
 	// @property_name is referenced by it, then @value is checked against the
 	// type of the property.
 	//
-	//    g_dbus_proxy_set_cached_property (proxy,
-	//                                      "SomeProperty",
-	//                                      g_variant_new ("(si)",
-	//                                                    "A String",
-	//                                                    42));
+	// If the @value #GVariant is floating, it is consumed. This allows
+	// convenient 'inline' use of g_variant_new(), e.g.
+	//
+	//     g_dbus_proxy_set_cached_property (proxy,
+	//                                       "SomeProperty",
+	//                                       g_variant_new ("(si)",
+	//                                                     "A String",
+	//                                                     42));
+	//
 	//
 	// Normally you will not need to use this method since @proxy is tracking
 	// changes using the `org.freedesktop.DBus.Properties.PropertiesChanged`
@@ -12290,14 +12275,16 @@ type dBusProxy struct {
 	*externglib.Object
 }
 
-func wrapDBusProxy(obj *externglib.Object) DBusProxy {
+// WrapDBusProxy wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusProxy(obj *externglib.Object) DBusProxy {
 	return dBusProxy{*externglib.Object{obj}}
 }
 
 func marshalDBusProxy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusProxy(obj), nil
 }
 
 func NewDBusProxyFinish(res AsyncResult) DBusProxy
@@ -12356,7 +12343,8 @@ func (d dBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo)
 // session or system bus, you should instead use g_bus_own_name().
 //
 // An example of peer-to-peer communication with G-DBus can be found in
-// [gdbus-example-peer.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-peer.c).
+// gdbus-example-peer.c
+// (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-peer.c).
 //
 // Note that a minimal BusServer will accept connections from any peer. In many
 // use-cases it will be necessary to add a BusAuthObserver that only accepts
@@ -12365,8 +12353,8 @@ func (d dBusProxy) SetInterfaceInfo(info *DBusInterfaceInfo)
 type DBusServer interface {
 	gextras.Objector
 
-	// ClientAddress gets a [D-Bus
-	// address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
+	// ClientAddress gets a D-Bus address
+	// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
 	// string that can be used by clients to connect to @server.
 	ClientAddress() string
 	// Flags gets the flags for @server.
@@ -12385,14 +12373,16 @@ type dBusServer struct {
 	*externglib.Object
 }
 
-func wrapDBusServer(obj *externglib.Object) DBusServer {
+// WrapDBusServer wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDBusServer(obj *externglib.Object) DBusServer {
 	return dBusServer{*externglib.Object{obj}}
 }
 
 func marshalDBusServer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDBusServer(obj), nil
 }
 
 func NewDBusServerSync(address string, flags DBusServerFlags, guid string, observer DBusAuthObserver, cancellable Cancellable) DBusServer
@@ -12584,14 +12574,16 @@ type dataInputStream struct {
 	bufferedInputStream
 }
 
-func wrapDataInputStream(obj *externglib.Object) DataInputStream {
+// WrapDataInputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDataInputStream(obj *externglib.Object) DataInputStream {
 	return dataInputStream{bufferedInputStream{filterInputStream{inputStream{*externglib.Object{obj}}}}}
 }
 
 func marshalDataInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDataInputStream(obj), nil
 }
 
 func NewDataInputStream(baseStream InputStream) DataInputStream
@@ -12671,14 +12663,16 @@ type dataOutputStream struct {
 	filterOutputStream
 }
 
-func wrapDataOutputStream(obj *externglib.Object) DataOutputStream {
+// WrapDataOutputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDataOutputStream(obj *externglib.Object) DataOutputStream {
 	return dataOutputStream{filterOutputStream{outputStream{*externglib.Object{obj}}}}
 }
 
 func marshalDataOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDataOutputStream(obj), nil
 }
 
 func NewDataOutputStream(baseStream OutputStream) DataOutputStream
@@ -12823,14 +12817,16 @@ type desktopAppInfo struct {
 	*externglib.Object
 }
 
-func wrapDesktopAppInfo(obj *externglib.Object) DesktopAppInfo {
+// WrapDesktopAppInfo wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapDesktopAppInfo(obj *externglib.Object) DesktopAppInfo {
 	return desktopAppInfo{*externglib.Object{obj}}
 }
 
 func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapDesktopAppInfo(obj), nil
 }
 
 func NewDesktopAppInfo(desktopID string) DesktopAppInfo
@@ -12893,14 +12889,16 @@ type emblem struct {
 	*externglib.Object
 }
 
-func wrapEmblem(obj *externglib.Object) Emblem {
+// WrapEmblem wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEmblem(obj *externglib.Object) Emblem {
 	return emblem{*externglib.Object{obj}}
 }
 
 func marshalEmblem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEmblem(obj), nil
 }
 
 func NewEmblem(icon Icon) Emblem
@@ -12934,14 +12932,16 @@ type emblemedIcon struct {
 	*externglib.Object
 }
 
-func wrapEmblemedIcon(obj *externglib.Object) EmblemedIcon {
+// WrapEmblemedIcon wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapEmblemedIcon(obj *externglib.Object) EmblemedIcon {
 	return emblemedIcon{*externglib.Object{obj}}
 }
 
 func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapEmblemedIcon(obj), nil
 }
 
 func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon
@@ -13011,9 +13011,12 @@ type FileEnumerator interface {
 	// source directory of @enumerator. This function is primarily intended to
 	// be used inside loops with g_file_enumerator_next_file().
 	//
-	//    gchar *name = g_file_info_get_name (info);
-	//    GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
-	//                                     name);
+	// This is a convenience method that's equivalent to:
+	//
+	//      gchar *name = g_file_info_get_name (info);
+	//      GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
+	//                                       name);
+	//
 	Child(info FileInfo) File
 	// Container: get the #GFile container which is being enumerated.
 	Container() File
@@ -13100,14 +13103,16 @@ type fileEnumerator struct {
 	*externglib.Object
 }
 
-func wrapFileEnumerator(obj *externglib.Object) FileEnumerator {
+// WrapFileEnumerator wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileEnumerator(obj *externglib.Object) FileEnumerator {
 	return fileEnumerator{*externglib.Object{obj}}
 }
 
 func marshalFileEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileEnumerator(obj), nil
 }
 
 func (f fileEnumerator) Close(cancellable Cancellable) bool
@@ -13191,14 +13196,16 @@ type fileIOStream struct {
 	ioStream
 }
 
-func wrapFileIOStream(obj *externglib.Object) FileIOStream {
+// WrapFileIOStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileIOStream(obj *externglib.Object) FileIOStream {
 	return fileIOStream{ioStream{*externglib.Object{obj}}}
 }
 
 func marshalFileIOStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileIOStream(obj), nil
 }
 
 func (f fileIOStream) Etag() string
@@ -13221,14 +13228,16 @@ type fileIcon struct {
 	*externglib.Object
 }
 
-func wrapFileIcon(obj *externglib.Object) FileIcon {
+// WrapFileIcon wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileIcon(obj *externglib.Object) FileIcon {
 	return fileIcon{*externglib.Object{obj}}
 }
 
 func marshalFileIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileIcon(obj), nil
 }
 
 func NewFileIcon(file File) FileIcon
@@ -13461,14 +13470,16 @@ type fileInfo struct {
 	*externglib.Object
 }
 
-func wrapFileInfo(obj *externglib.Object) FileInfo {
+// WrapFileInfo wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileInfo(obj *externglib.Object) FileInfo {
 	return fileInfo{*externglib.Object{obj}}
 }
 
 func marshalFileInfo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileInfo(obj), nil
 }
 
 func NewFileInfo() FileInfo
@@ -13640,14 +13651,16 @@ type fileInputStream struct {
 	inputStream
 }
 
-func wrapFileInputStream(obj *externglib.Object) FileInputStream {
+// WrapFileInputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileInputStream(obj *externglib.Object) FileInputStream {
 	return fileInputStream{inputStream{*externglib.Object{obj}}}
 }
 
 func marshalFileInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileInputStream(obj), nil
 }
 
 func (f fileInputStream) QueryInfo(attributes string, cancellable Cancellable) FileInfo
@@ -13690,14 +13703,16 @@ type fileMonitor struct {
 	*externglib.Object
 }
 
-func wrapFileMonitor(obj *externglib.Object) FileMonitor {
+// WrapFileMonitor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileMonitor(obj *externglib.Object) FileMonitor {
 	return fileMonitor{*externglib.Object{obj}}
 }
 
 func marshalFileMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileMonitor(obj), nil
 }
 
 func (f fileMonitor) Cancel() bool
@@ -13760,14 +13775,16 @@ type fileOutputStream struct {
 	outputStream
 }
 
-func wrapFileOutputStream(obj *externglib.Object) FileOutputStream {
+// WrapFileOutputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFileOutputStream(obj *externglib.Object) FileOutputStream {
 	return fileOutputStream{outputStream{*externglib.Object{obj}}}
 }
 
 func marshalFileOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFileOutputStream(obj), nil
 }
 
 func (f fileOutputStream) Etag() string
@@ -13797,14 +13814,16 @@ type filenameCompleter struct {
 	*externglib.Object
 }
 
-func wrapFilenameCompleter(obj *externglib.Object) FilenameCompleter {
+// WrapFilenameCompleter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFilenameCompleter(obj *externglib.Object) FilenameCompleter {
 	return filenameCompleter{*externglib.Object{obj}}
 }
 
 func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFilenameCompleter(obj), nil
 }
 
 func NewFilenameCompleter() FilenameCompleter
@@ -13836,14 +13855,16 @@ type filterInputStream struct {
 	inputStream
 }
 
-func wrapFilterInputStream(obj *externglib.Object) FilterInputStream {
+// WrapFilterInputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFilterInputStream(obj *externglib.Object) FilterInputStream {
 	return filterInputStream{inputStream{*externglib.Object{obj}}}
 }
 
 func marshalFilterInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFilterInputStream(obj), nil
 }
 
 func (f filterInputStream) BaseStream() InputStream
@@ -13873,14 +13894,16 @@ type filterOutputStream struct {
 	outputStream
 }
 
-func wrapFilterOutputStream(obj *externglib.Object) FilterOutputStream {
+// WrapFilterOutputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapFilterOutputStream(obj *externglib.Object) FilterOutputStream {
 	return filterOutputStream{outputStream{*externglib.Object{obj}}}
 }
 
 func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapFilterOutputStream(obj), nil
 }
 
 func (f filterOutputStream) BaseStream() OutputStream
@@ -14011,14 +14034,16 @@ type ioStream struct {
 	*externglib.Object
 }
 
-func wrapIOStream(obj *externglib.Object) IOStream {
+// WrapIOStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapIOStream(obj *externglib.Object) IOStream {
 	return ioStream{*externglib.Object{obj}}
 }
 
 func marshalIOStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapIOStream(obj), nil
 }
 
 func (i ioStream) ClearPending()
@@ -14094,14 +14119,16 @@ type inetAddress struct {
 	*externglib.Object
 }
 
-func wrapInetAddress(obj *externglib.Object) InetAddress {
+// WrapInetAddress wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapInetAddress(obj *externglib.Object) InetAddress {
 	return inetAddress{*externglib.Object{obj}}
 }
 
 func marshalInetAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapInetAddress(obj), nil
 }
 
 func NewInetAddressAny(family SocketFamily) InetAddress
@@ -14167,14 +14194,16 @@ type inetAddressMask struct {
 	*externglib.Object
 }
 
-func wrapInetAddressMask(obj *externglib.Object) InetAddressMask {
+// WrapInetAddressMask wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapInetAddressMask(obj *externglib.Object) InetAddressMask {
 	return inetAddressMask{*externglib.Object{obj}}
 }
 
 func marshalInetAddressMask(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapInetAddressMask(obj), nil
 }
 
 func NewInetAddressMask(addr InetAddress, length uint) InetAddressMask
@@ -14214,14 +14243,16 @@ type inetSocketAddress struct {
 	socketAddress
 }
 
-func wrapInetSocketAddress(obj *externglib.Object) InetSocketAddress {
+// WrapInetSocketAddress wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapInetSocketAddress(obj *externglib.Object) InetSocketAddress {
 	return inetSocketAddress{socketAddress{*externglib.Object{obj}}}
 }
 
 func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapInetSocketAddress(obj), nil
 }
 
 func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress
@@ -14484,14 +14515,16 @@ type inputStream struct {
 	*externglib.Object
 }
 
-func wrapInputStream(obj *externglib.Object) InputStream {
+// WrapInputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapInputStream(obj *externglib.Object) InputStream {
 	return inputStream{*externglib.Object{obj}}
 }
 
 func marshalInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapInputStream(obj), nil
 }
 
 func (i inputStream) ClearPending()
@@ -14607,14 +14640,16 @@ type listStore struct {
 	*externglib.Object
 }
 
-func wrapListStore(obj *externglib.Object) ListStore {
+// WrapListStore wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapListStore(obj *externglib.Object) ListStore {
 	return listStore{*externglib.Object{obj}}
 }
 
 func marshalListStore(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapListStore(obj), nil
 }
 
 func NewListStore(itemType externglib.Type) ListStore
@@ -14654,14 +14689,16 @@ type memoryInputStream struct {
 	inputStream
 }
 
-func wrapMemoryInputStream(obj *externglib.Object) MemoryInputStream {
+// WrapMemoryInputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMemoryInputStream(obj *externglib.Object) MemoryInputStream {
 	return memoryInputStream{inputStream{*externglib.Object{obj}}}
 }
 
 func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMemoryInputStream(obj), nil
 }
 
 func NewMemoryInputStream() MemoryInputStream
@@ -14721,14 +14758,16 @@ type memoryOutputStream struct {
 	outputStream
 }
 
-func wrapMemoryOutputStream(obj *externglib.Object) MemoryOutputStream {
+// WrapMemoryOutputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMemoryOutputStream(obj *externglib.Object) MemoryOutputStream {
 	return memoryOutputStream{outputStream{*externglib.Object{obj}}}
 }
 
 func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMemoryOutputStream(obj), nil
 }
 
 func NewMemoryOutputStream(data interface{}, size uint, reallocFunction ReallocFunc) MemoryOutputStream
@@ -14843,14 +14882,16 @@ type menu struct {
 	menuModel
 }
 
-func wrapMenu(obj *externglib.Object) Menu {
+// WrapMenu wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMenu(obj *externglib.Object) Menu {
 	return menu{menuModel{*externglib.Object{obj}}}
 }
 
 func marshalMenu(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMenu(obj), nil
 }
 
 func NewMenu() Menu
@@ -14929,14 +14970,16 @@ type menuAttributeIter struct {
 	*externglib.Object
 }
 
-func wrapMenuAttributeIter(obj *externglib.Object) MenuAttributeIter {
+// WrapMenuAttributeIter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMenuAttributeIter(obj *externglib.Object) MenuAttributeIter {
 	return menuAttributeIter{*externglib.Object{obj}}
 }
 
 func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMenuAttributeIter(obj), nil
 }
 
 func (m menuAttributeIter) Name() string
@@ -15079,14 +15122,16 @@ type menuItem struct {
 	*externglib.Object
 }
 
-func wrapMenuItem(obj *externglib.Object) MenuItem {
+// WrapMenuItem wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMenuItem(obj *externglib.Object) MenuItem {
 	return menuItem{*externglib.Object{obj}}
 }
 
 func marshalMenuItem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMenuItem(obj), nil
 }
 
 func NewMenuItem(label string, detailedAction string) MenuItem
@@ -15159,14 +15204,16 @@ type menuLinkIter struct {
 	*externglib.Object
 }
 
-func wrapMenuLinkIter(obj *externglib.Object) MenuLinkIter {
+// WrapMenuLinkIter wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMenuLinkIter(obj *externglib.Object) MenuLinkIter {
 	return menuLinkIter{*externglib.Object{obj}}
 }
 
 func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMenuLinkIter(obj), nil
 }
 
 func (m menuLinkIter) Name() string
@@ -15192,9 +15239,10 @@ func (m menuLinkIter) Next() bool
 //
 // As an example, consider the visible portions of this menu:
 //
-// An example menu {#menu-example}
 //
-// ![](menu-example.png)
+// An example menu
+//
+// ! (menu-example.png)
 //
 // There are 8 "menus" visible in the screenshot: one menubar, two submenus and
 // 5 sections:
@@ -15211,9 +15259,10 @@ func (m menuLinkIter) Next() bool
 // blocks within the large block represent items in that menu. Some items
 // contain references to other menus.
 //
-// A menu example {#menu-model}
 //
-// ![](menu-model.png)
+// A menu example
+//
+// ! (menu-model.png)
 //
 // Notice that the separators visible in the [example][menu-example] appear
 // nowhere in the [menu model][menu-model]. This is because separators are not
@@ -15346,14 +15395,16 @@ type menuModel struct {
 	*externglib.Object
 }
 
-func wrapMenuModel(obj *externglib.Object) MenuModel {
+// WrapMenuModel wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMenuModel(obj *externglib.Object) MenuModel {
 	return menuModel{*externglib.Object{obj}}
 }
 
 func marshalMenuModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMenuModel(obj), nil
 }
 
 func (m menuModel) ItemAttributeValue(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
@@ -15386,9 +15437,9 @@ func (m menuModel) IterateItemLinks(itemIndex int) MenuLinkIter
 // details.
 //
 // The term ‘TCRYPT’ is used to mean ‘compatible with TrueCrypt and VeraCrypt’.
-// [TrueCrypt](https://en.wikipedia.org/wiki/TrueCrypt) is a discontinued system
+// TrueCrypt (https://en.wikipedia.org/wiki/TrueCrypt) is a discontinued system
 // for encrypting file containers, partitions or whole disks, typically used
-// with Windows. [VeraCrypt](https://www.veracrypt.fr/) is a maintained fork of
+// with Windows. VeraCrypt (https://www.veracrypt.fr/) is a maintained fork of
 // TrueCrypt with various improvements and auditing fixes.
 type MountOperation interface {
 	gextras.Objector
@@ -15444,14 +15495,16 @@ type mountOperation struct {
 	*externglib.Object
 }
 
-func wrapMountOperation(obj *externglib.Object) MountOperation {
+// WrapMountOperation wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapMountOperation(obj *externglib.Object) MountOperation {
 	return mountOperation{*externglib.Object{obj}}
 }
 
 func marshalMountOperation(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapMountOperation(obj), nil
 }
 
 func NewMountOperation() MountOperation
@@ -15503,14 +15556,16 @@ type nativeSocketAddress struct {
 	socketAddress
 }
 
-func wrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
+// WrapNativeSocketAddress wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNativeSocketAddress(obj *externglib.Object) NativeSocketAddress {
 	return nativeSocketAddress{socketAddress{*externglib.Object{obj}}}
 }
 
 func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNativeSocketAddress(obj), nil
 }
 
 func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress
@@ -15523,14 +15578,16 @@ type nativeVolumeMonitor struct {
 	volumeMonitor
 }
 
-func wrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitor {
+// WrapNativeVolumeMonitor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNativeVolumeMonitor(obj *externglib.Object) NativeVolumeMonitor {
 	return nativeVolumeMonitor{volumeMonitor{*externglib.Object{obj}}}
 }
 
 func marshalNativeVolumeMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNativeVolumeMonitor(obj), nil
 }
 
 // NetworkAddress provides an easy way to resolve a hostname and then attempt to
@@ -15557,14 +15614,16 @@ type networkAddress struct {
 	*externglib.Object
 }
 
-func wrapNetworkAddress(obj *externglib.Object) NetworkAddress {
+// WrapNetworkAddress wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNetworkAddress(obj *externglib.Object) NetworkAddress {
 	return networkAddress{*externglib.Object{obj}}
 }
 
 func marshalNetworkAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNetworkAddress(obj), nil
 }
 
 func NewNetworkAddress(hostname string, port uint16) NetworkAddress
@@ -15606,14 +15665,16 @@ type networkService struct {
 	*externglib.Object
 }
 
-func wrapNetworkService(obj *externglib.Object) NetworkService {
+// WrapNetworkService wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNetworkService(obj *externglib.Object) NetworkService {
 	return networkService{*externglib.Object{obj}}
 }
 
 func marshalNetworkService(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNetworkService(obj), nil
 }
 
 func NewNetworkService(service string, protocol string, domain string) NetworkService
@@ -15706,14 +15767,16 @@ type notification struct {
 	*externglib.Object
 }
 
-func wrapNotification(obj *externglib.Object) Notification {
+// WrapNotification wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapNotification(obj *externglib.Object) Notification {
 	return notification{*externglib.Object{obj}}
 }
 
 func marshalNotification(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapNotification(obj), nil
 }
 
 func NewNotification(title string) Notification
@@ -16080,14 +16143,16 @@ type outputStream struct {
 	*externglib.Object
 }
 
-func wrapOutputStream(obj *externglib.Object) OutputStream {
+// WrapOutputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapOutputStream(obj *externglib.Object) OutputStream {
 	return outputStream{*externglib.Object{obj}}
 }
 
 func marshalOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapOutputStream(obj), nil
 }
 
 func (o outputStream) ClearPending()
@@ -16244,14 +16309,16 @@ type permission struct {
 	*externglib.Object
 }
 
-func wrapPermission(obj *externglib.Object) Permission {
+// WrapPermission wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPermission(obj *externglib.Object) Permission {
 	return permission{*externglib.Object{obj}}
 }
 
 func marshalPermission(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPermission(obj), nil
 }
 
 func (p permission) Acquire(cancellable Cancellable) bool
@@ -16330,14 +16397,16 @@ type propertyAction struct {
 	*externglib.Object
 }
 
-func wrapPropertyAction(obj *externglib.Object) PropertyAction {
+// WrapPropertyAction wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapPropertyAction(obj *externglib.Object) PropertyAction {
 	return propertyAction{*externglib.Object{obj}}
 }
 
 func marshalPropertyAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapPropertyAction(obj), nil
 }
 
 func NewPropertyAction(name string, object gextras.Objector, propertyName string) PropertyAction
@@ -16371,14 +16440,16 @@ type proxyAddress struct {
 	inetSocketAddress
 }
 
-func wrapProxyAddress(obj *externglib.Object) ProxyAddress {
+// WrapProxyAddress wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapProxyAddress(obj *externglib.Object) ProxyAddress {
 	return proxyAddress{inetSocketAddress{socketAddress{*externglib.Object{obj}}}}
 }
 
 func marshalProxyAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapProxyAddress(obj), nil
 }
 
 func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) ProxyAddress
@@ -16413,14 +16484,16 @@ type proxyAddressEnumerator struct {
 	socketAddressEnumerator
 }
 
-func wrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumerator {
+// WrapProxyAddressEnumerator wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumerator {
 	return proxyAddressEnumerator{socketAddressEnumerator{*externglib.Object{obj}}}
 }
 
 func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapProxyAddressEnumerator(obj), nil
 }
 
 // Resolver provides cancellable synchronous and asynchronous DNS resolution,
@@ -16576,14 +16649,16 @@ type resolver struct {
 	*externglib.Object
 }
 
-func wrapResolver(obj *externglib.Object) Resolver {
+// WrapResolver wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapResolver(obj *externglib.Object) Resolver {
 	return resolver{*externglib.Object{obj}}
 }
 
 func marshalResolver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapResolver(obj), nil
 }
 
 func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) string
@@ -16679,59 +16754,74 @@ func (r resolver) SetDefault()
 // on the <default> element to disambiguate multiple defaults which use the same
 // string.
 //
+// For example:
+//
 //
 //     <!-- Translators: A list of words which are not allowed to be typed, in
 //          GVariant serialization syntax.
 //          See: https://developer.gnome.org/glib/stable/gvariant-text.html -->
 //     <default l10n='messages' context='Banned words'>['bad', 'words']</default>
+//    ]|
 //
-// Translations of default values must remain syntactically valid serialized
-// #GVariants (e.g. retaining any surrounding quotation marks) or runtime errors
-// will occur.
+//    Translations of default values must remain syntactically valid serialized
+//    #GVariants (e.g. retaining any surrounding quotation marks) or runtime
+//    errors will occur.
 //
-// GSettings uses schemas in a compact binary form that is created by the
-// [glib-compile-schemas][glib-compile-schemas] utility. The input is a schema
-// description in an XML format.
+//    GSettings uses schemas in a compact binary form that is created
+//    by the [glib-compile-schemas][glib-compile-schemas]
+//    utility. The input is a schema description in an XML format.
 //
-// A DTD for the gschema XML format can be found here:
-// [gschema.dtd](https://git.gnome.org/browse/glib/tree/gio/gschema.dtd)
+//    A DTD for the gschema XML format can be found here:
+//    gschema.dtd (https://git.gnome.org/browse/glib/tree/gio/gschema.dtd)
 //
-// The [glib-compile-schemas][glib-compile-schemas] tool expects schema files to
-// have the extension `.gschema.xml`.
+//    The [glib-compile-schemas][glib-compile-schemas] tool expects schema
+//    files to have the extension `.gschema.xml`.
 //
-// At runtime, schemas are identified by their id (as specified in the id
-// attribute of the <schema> element). The convention for schema ids is to use a
-// dotted name, similar in style to a D-Bus bus name, e.g.
-// "org.gnome.SessionManager". In particular, if the settings are for a specific
-// service that owns a D-Bus bus name, the D-Bus bus name and schema id should
-// match. For schemas which deal with settings not associated with one named
-// application, the id should not use StudlyCaps, e.g.
-// "org.gnome.font-rendering".
+//    At runtime, schemas are identified by their id (as specified in the
+//    id attribute of the <schema> element). The convention for schema
+//    ids is to use a dotted name, similar in style to a D-Bus bus name,
+//    e.g. "org.gnome.SessionManager". In particular, if the settings are
+//    for a specific service that owns a D-Bus bus name, the D-Bus bus name
+//    and schema id should match. For schemas which deal with settings not
+//    associated with one named application, the id should not use
+//    StudlyCaps, e.g. "org.gnome.font-rendering".
 //
-// In addition to #GVariant types, keys can have types that have enumerated
-// types. These can be described by a <choice>, <enum> or <flags> element, as
-// seen in the [example][schema-enumerated]. The underlying type of such a key
-// is string, but you can use g_settings_get_enum(), g_settings_set_enum(),
-// g_settings_get_flags(), g_settings_set_flags() access the numeric values
-// corresponding to the string value of enum and flags keys.
+//    In addition to #GVariant types, keys can have types that have
+//    enumerated types. These can be described by a <choice>,
+//    <enum> or <flags> element, as seen in the
+//    [example][schema-enumerated]. The underlying type of such a key
+//    is string, but you can use g_settings_get_enum(), g_settings_set_enum(),
+//    g_settings_get_flags(), g_settings_set_flags() access the numeric values
+//    corresponding to the string value of enum and flags keys.
 //
-// An example for default value: |[ <schemalist> <schema id="org.gtk.Test"
-// path="/org/gtk/Test/" gettext-domain="test">
+//    An example for default value:
+//    |[
+//    <schemalist>
+//      <schema id="org.gtk.Test" path="/org/gtk/Test/" gettext-domain="test">
 //
-// <key name="greeting" type="s"> <default l10n="messages">"Hello,
-// earthlings"</default> <summary>A greeting</summary> <description> Greeting of
-// the invading martians </description> </key>
+//        <key name="greeting" type="s">
+//          <default l10n="messages">"Hello, earthlings"</default>
+//          <summary>A greeting</summary>
+//          <description>
+//            Greeting of the invading martians
+//          </description>
+//        </key>
 //
-// <key name="box" type="(ii)"> <default>(20,30)</default> </key>
+//        <key name="box" type="(ii)">
+//          <default>(20,30)</default>
+//        </key>
 //
-// <key name="empty-string" type="s"> <default>""</default> <summary>Empty
-// strings have to be provided in GVariant form</summary> </key>
+//        <key name="empty-string" type="s">
+//          <default>""</default>
+//          <summary>Empty strings have to be provided in GVariant form</summary>
+//        </key>
 //
 //      </schema>
 //    </schemalist>
+//    ]|
 //
-//
-//
+//    An example for ranges, choices and enumerated types:
+//    |[
 //    <schemalist>
 //
 //      <enum id="org.gtk.Test.myenum">
@@ -16774,76 +16864,124 @@ func (r resolver) SetDefault()
 //        </key>
 //      </schema>
 //    </schemalist>
+//    ]|
+//
 //
 //
 // Vendor overrides
 //
 //
+//    Default values are defined in the schemas that get installed by
+//    an application. Sometimes, it is necessary for a vendor or distributor
+//    to adjust these defaults. Since patching the XML source for the schema
+//    is inconvenient and error-prone,
+//    [glib-compile-schemas][glib-compile-schemas] reads so-called vendor
+//    override' files. These are keyfiles in the same directory as the XML
+//    schema sources which can override default values. The schema id serves
+//    as the group name in the key file, and the values are expected in
+//    serialized GVariant form, as in the following example:
+//    |[
 //        [org.gtk.Example]
 //        key1='string'
 //        key2=1.5
+//    ]|
 //
-// glib-compile-schemas expects schema files to have the extension
-// `.gschema.override`.
+//    glib-compile-schemas expects schema files to have the extension
+//    `.gschema.override`.
+//
 //
 //
 // Binding
 //
-// A very convenient feature of GSettings lets you bind #GObject properties
-// directly to settings, using g_settings_bind(). Once a GObject property has
-// been bound to a setting, changes on either side are automatically propagated
-// to the other side. GSettings handles details like mapping between GObject and
-// GVariant types, and preventing infinite cycles.
 //
-// This makes it very easy to hook up a preferences dialog to the underlying
-// settings. To make this even more convenient, GSettings looks for a boolean
-// property with the name "sensitivity" and automatically binds it to the
-// writability of the bound setting. If this 'magic' gets in the way, it can be
-// suppressed with the SETTINGS_BIND_NO_SENSITIVITY flag.
+//    A very convenient feature of GSettings lets you bind #GObject properties
+//    directly to settings, using g_settings_bind(). Once a GObject property
+//    has been bound to a setting, changes on either side are automatically
+//    propagated to the other side. GSettings handles details like mapping
+//    between GObject and GVariant types, and preventing infinite cycles.
 //
-// Relocatable schemas {#gsettings-relocatable}
-//
-// A relocatable schema is one with no `path` attribute specified on its
-// <schema> element. By using g_settings_new_with_path(), a #GSettings object
-// can be instantiated for a relocatable schema, assigning a path to the
-// instance. Paths passed to g_settings_new_with_path() will typically be
-// constructed dynamically from a constant prefix plus some form of instance
-// identifier; but they must still be valid GSettings paths. Paths could also be
-// constant and used with a globally installed schema originating from a
-// dependency library.
+//    This makes it very easy to hook up a preferences dialog to the
+//    underlying settings. To make this even more convenient, GSettings
+//    looks for a boolean property with the name "sensitivity" and
+//    automatically binds it to the writability of the bound setting.
+//    If this 'magic' gets in the way, it can be suppressed with the
+//    SETTINGS_BIND_NO_SENSITIVITY flag.
 //
 //
+//
+// Relocatable schemas
+//
+//
+//    A relocatable schema is one with no `path` attribute specified on its
+//    <schema> element. By using g_settings_new_with_path(), a #GSettings object
+//    can be instantiated for a relocatable schema, assigning a path to the
+//    instance. Paths passed to g_settings_new_with_path() will typically be
+//    constructed dynamically from a constant prefix plus some form of instance
+//    identifier; but they must still be valid GSettings paths. Paths could also
+//    be constant and used with a globally installed schema originating from a
+//    dependency library.
+//
+//    For example, a relocatable schema could be used to store geometry information
+//    for different windows in an application. If the schema ID was
+//    `org.foo.MyApp.Window`, it could be instantiated for paths
+//    `/org/foo/MyApp/main/`, `/org/foo/MyApp/document-1/`,
+//    `/org/foo/MyApp/document-2/`, etc. If any of the paths are well-known
+//    they can be specified as <child> elements in the parent schema, e.g.:
+//    |[
 //    <schema id="org.foo.MyApp" path="/org/foo/MyApp/">
 //      <child name="main" schema="org.foo.MyApp.Window"/>
 //    </schema>
+//    ]|
 //
-// Build system integration {#gsettings-build-system}
 //
 //
+// Build system integration
+//
+//
+//    GSettings comes with autotools integration to simplify compiling and
+//    installing schemas. To add GSettings support to an application, add the
+//    following to your `configure.ac`:
+//    |[
 //    GLIB_GSETTINGS
+//    ]|
 //
-// In the appropriate `Makefile.am`, use the following snippet to compile and
-// install the named schema: |[ gsettings_SCHEMAS = org.foo.MyApp.gschema.xml
-// EXTRA_DIST = $(gsettings_SCHEMAS)
+//    In the appropriate `Makefile.am`, use the following snippet to compile and
+//    install the named schema:
+//    |[
+//    gsettings_SCHEMAS = org.foo.MyApp.gschema.xml
+//    EXTRA_DIST = $(gsettings_SCHEMAS)
 //
 //    @GSETTINGS_RULES@
+//    ]|
 //
-//
-//
+//    No changes are needed to the build system to mark a schema XML file for
+//    translation. Assuming it sets the `gettext-domain` attribute, a schema may
+//    be marked for translation by adding it to `POTFILES.in`, assuming gettext
+//    0.19 is in use (the preferred method for translation):
+//    |[
 //    data/org.foo.MyApp.gschema.xml
+//    ]|
 //
-//
+//    Alternatively, if intltool 0.50.1 is in use:
+//    |[
 //    [type: gettext/gsettings]data/org.foo.MyApp.gschema.xml
+//    ]|
 //
-// GSettings will use gettext to look up translations for the <summary> and
-// <description> elements, and also any <default> elements which have a `l10n`
-// attribute set. Translations must not be included in the `.gschema.xml` file
-// by the build system, for example by using intltool XML rules with a
-// `.gschema.xml.in` template.
+//    GSettings will use gettext to look up translations for the <summary> and
+//    <description> elements, and also any <default> elements which have a `l10n`
+//    attribute set. Translations must not be included in the `.gschema.xml` file
+//    by the build system, for example by using intltool XML rules with a
+//    `.gschema.xml.in` template.
 //
-//
+//    If an enumerated type defined in a C header file is to be used in a GSettings
+//    schema, it can either be defined manually using an <enum> element in the
+//    schema XML, or it can be extracted automatically from the C header. This
+//    approach is preferred, as it ensures the two representations are always
+//    synchronised. To do so, add the following to the relevant `Makefile.am`:
+//    |[
 //    gsettings_ENUM_NAMESPACE = org.foo.MyApp
 //    gsettings_ENUM_FILES = my-app-enums.h my-app-misc.h
+//
 //
 // `gsettings_ENUM_NAMESPACE` specifies the schema namespace for the enum files,
 // which are specified in `gsettings_ENUM_FILES`. This will generate a
@@ -17219,14 +17357,16 @@ type settings struct {
 	*externglib.Object
 }
 
-func wrapSettings(obj *externglib.Object) Settings {
+// WrapSettings wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSettings(obj *externglib.Object) Settings {
 	return settings{*externglib.Object{obj}}
 }
 
 func marshalSettings(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSettings(obj), nil
 }
 
 func NewSettings(schemaID string) Settings
@@ -17431,14 +17571,16 @@ type settingsBackend struct {
 	*externglib.Object
 }
 
-func wrapSettingsBackend(obj *externglib.Object) SettingsBackend {
+// WrapSettingsBackend wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSettingsBackend(obj *externglib.Object) SettingsBackend {
 	return settingsBackend{*externglib.Object{obj}}
 }
 
 func marshalSettingsBackend(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSettingsBackend(obj), nil
 }
 
 func (s settingsBackend) Changed(key string, originTag interface{})
@@ -17490,14 +17632,16 @@ type simpleAction struct {
 	*externglib.Object
 }
 
-func wrapSimpleAction(obj *externglib.Object) SimpleAction {
+// WrapSimpleAction wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSimpleAction(obj *externglib.Object) SimpleAction {
 	return simpleAction{*externglib.Object{obj}}
 }
 
 func marshalSimpleAction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSimpleAction(obj), nil
 }
 
 func NewSimpleAction(name string, parameterType *glib.VariantType) SimpleAction
@@ -17539,14 +17683,16 @@ type simpleActionGroup struct {
 	*externglib.Object
 }
 
-func wrapSimpleActionGroup(obj *externglib.Object) SimpleActionGroup {
+// WrapSimpleActionGroup wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSimpleActionGroup(obj *externglib.Object) SimpleActionGroup {
 	return simpleActionGroup{*externglib.Object{obj}}
 }
 
 func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSimpleActionGroup(obj), nil
 }
 
 func NewSimpleActionGroup() SimpleActionGroup
@@ -17804,14 +17950,16 @@ type simpleAsyncResult struct {
 	*externglib.Object
 }
 
-func wrapSimpleAsyncResult(obj *externglib.Object) SimpleAsyncResult {
+// WrapSimpleAsyncResult wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSimpleAsyncResult(obj *externglib.Object) SimpleAsyncResult {
 	return simpleAsyncResult{*externglib.Object{obj}}
 }
 
 func marshalSimpleAsyncResult(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSimpleAsyncResult(obj), nil
 }
 
 func NewSimpleAsyncResult(sourceObject gextras.Objector, callback AsyncReadyCallback, sourceTag interface{}) SimpleAsyncResult
@@ -17866,14 +18014,16 @@ type simpleIOStream struct {
 	ioStream
 }
 
-func wrapSimpleIOStream(obj *externglib.Object) SimpleIOStream {
+// WrapSimpleIOStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSimpleIOStream(obj *externglib.Object) SimpleIOStream {
 	return simpleIOStream{ioStream{*externglib.Object{obj}}}
 }
 
 func marshalSimpleIOStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSimpleIOStream(obj), nil
 }
 
 func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) SimpleIOStream
@@ -17891,14 +18041,16 @@ type simplePermission struct {
 	permission
 }
 
-func wrapSimplePermission(obj *externglib.Object) SimplePermission {
+// WrapSimplePermission wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSimplePermission(obj *externglib.Object) SimplePermission {
 	return simplePermission{permission{*externglib.Object{obj}}}
 }
 
 func marshalSimplePermission(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSimplePermission(obj), nil
 }
 
 func NewSimplePermission(allowed bool) SimplePermission
@@ -17939,14 +18091,16 @@ type simpleProxyResolver struct {
 	*externglib.Object
 }
 
-func wrapSimpleProxyResolver(obj *externglib.Object) SimpleProxyResolver {
+// WrapSimpleProxyResolver wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSimpleProxyResolver(obj *externglib.Object) SimpleProxyResolver {
 	return simpleProxyResolver{*externglib.Object{obj}}
 }
 
 func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSimpleProxyResolver(obj), nil
 }
 
 func (s simpleProxyResolver) SetDefaultProxy(defaultProxy string)
@@ -17962,12 +18116,12 @@ func (s simpleProxyResolver) SetURIProxy(uriScheme string, proxy string)
 // #GSocket is the platform independent base upon which the higher level network
 // primitives are based. Applications are not typically meant to use it
 // directly, but rather through classes like Client, Service and Connection.
-// However there may be cases where direct use of #GSocket is useful
+// However there may be cases where direct use of #GSocket is useful.
 //
 // #GSocket implements the #GInitable interface, so if it is manually
 // constructed by e.g. g_object_new() you must call g_initable_init() and check
 // the results before using the object. This is done automatically in
-// g_socket_new() and g_socket_new_from_fd(), so these functions can return nil
+// g_socket_new() and g_socket_new_from_fd(), so these functions can return nil.
 //
 // Sockets operate in two general modes, blocking or non-blocking. When in
 // blocking mode all operations (which don’t take an explicit blocking
@@ -17990,7 +18144,7 @@ func (s simpleProxyResolver) SetURIProxy(uriScheme string, proxy string)
 // oriented types you must first establish a connection by either connecting to
 // an address or accepting a connection from another address. For connectionless
 // socket types the target/source address is specified or received in each I/O
-// operation
+// operation.
 //
 // All socket file descriptors are set to be close-on-exec.
 //
@@ -18664,14 +18818,16 @@ type socket struct {
 	*externglib.Object
 }
 
-func wrapSocket(obj *externglib.Object) Socket {
+// WrapSocket wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSocket(obj *externglib.Object) Socket {
 	return socket{*externglib.Object{obj}}
 }
 
 func marshalSocket(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSocket(obj), nil
 }
 
 func NewSocket(family SocketFamily, _type SocketType, protocol SocketProtocol) Socket
@@ -18814,14 +18970,16 @@ type socketAddress struct {
 	*externglib.Object
 }
 
-func wrapSocketAddress(obj *externglib.Object) SocketAddress {
+// WrapSocketAddress wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSocketAddress(obj *externglib.Object) SocketAddress {
 	return socketAddress{*externglib.Object{obj}}
 }
 
 func marshalSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSocketAddress(obj), nil
 }
 
 func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress
@@ -18877,14 +19035,16 @@ type socketAddressEnumerator struct {
 	*externglib.Object
 }
 
-func wrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumerator {
+// WrapSocketAddressEnumerator wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSocketAddressEnumerator(obj *externglib.Object) SocketAddressEnumerator {
 	return socketAddressEnumerator{*externglib.Object{obj}}
 }
 
 func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSocketAddressEnumerator(obj), nil
 }
 
 func (s socketAddressEnumerator) Next(cancellable Cancellable) SocketAddress
@@ -19156,14 +19316,16 @@ type socketClient struct {
 	*externglib.Object
 }
 
-func wrapSocketClient(obj *externglib.Object) SocketClient {
+// WrapSocketClient wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSocketClient(obj *externglib.Object) SocketClient {
 	return socketClient{*externglib.Object{obj}}
 }
 
 func marshalSocketClient(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSocketClient(obj), nil
 }
 
 func NewSocketClient() SocketClient
@@ -19284,14 +19446,16 @@ type socketConnection struct {
 	ioStream
 }
 
-func wrapSocketConnection(obj *externglib.Object) SocketConnection {
+// WrapSocketConnection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSocketConnection(obj *externglib.Object) SocketConnection {
 	return socketConnection{ioStream{*externglib.Object{obj}}}
 }
 
 func marshalSocketConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSocketConnection(obj), nil
 }
 
 func (s socketConnection) Connect(address SocketAddress, cancellable Cancellable) bool
@@ -19350,14 +19514,16 @@ type socketControlMessage struct {
 	*externglib.Object
 }
 
-func wrapSocketControlMessage(obj *externglib.Object) SocketControlMessage {
+// WrapSocketControlMessage wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSocketControlMessage(obj *externglib.Object) SocketControlMessage {
 	return socketControlMessage{*externglib.Object{obj}}
 }
 
 func marshalSocketControlMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSocketControlMessage(obj), nil
 }
 
 func (s socketControlMessage) Level() int
@@ -19504,14 +19670,16 @@ type socketListener struct {
 	*externglib.Object
 }
 
-func wrapSocketListener(obj *externglib.Object) SocketListener {
+// WrapSocketListener wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSocketListener(obj *externglib.Object) SocketListener {
 	return socketListener{*externglib.Object{obj}}
 }
 
 func marshalSocketListener(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSocketListener(obj), nil
 }
 
 func NewSocketListener() SocketListener
@@ -19598,14 +19766,16 @@ type socketService struct {
 	socketListener
 }
 
-func wrapSocketService(obj *externglib.Object) SocketService {
+// WrapSocketService wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSocketService(obj *externglib.Object) SocketService {
 	return socketService{socketListener{*externglib.Object{obj}}}
 }
 
 func marshalSocketService(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSocketService(obj), nil
 }
 
 func NewSocketService() SocketService
@@ -19641,12 +19811,12 @@ func (s socketService) Stop()
 // child process, avoiding dangling-fd issues that are caused by a simple
 // fork()/exec(). The only open file descriptors in the spawned process are ones
 // that were explicitly specified by the #GSubprocess API (unless
-// G_SUBPROCESS_FLAGS_INHERIT_FDS was specified)
+// G_SUBPROCESS_FLAGS_INHERIT_FDS was specified).
 //
 // #GSubprocess will quickly reap all child processes as they exit, avoiding
 // "zombie processes" remaining around for long periods of time.
 // g_subprocess_wait() can be used to wait for this to happen, but it will
-// happen even without the call being explicitly made
+// happen even without the call being explicitly made.
 //
 // As a matter of principle, #GSubprocess has no API that accepts shell-style
 // space-separated strings. It will, however, match the typical shell behaviour
@@ -19657,7 +19827,7 @@ func (s socketService) Stop()
 // subprocess with arguments and support for most typical kinds of input and
 // output redirection). See g_subprocess_new(). The Launcher API is provided for
 // more complicated cases (advanced types of redirection, environment variable
-// manipulation, change of working directory, child setup functions, etc)
+// manipulation, change of working directory, child setup functions, etc).
 //
 // A typical use of #GSubprocess will involve calling g_subprocess_new(),
 // followed by g_subprocess_wait_async() or g_subprocess_wait(). After the
@@ -19849,14 +20019,16 @@ type subprocess struct {
 	*externglib.Object
 }
 
-func wrapSubprocess(obj *externglib.Object) Subprocess {
+// WrapSubprocess wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSubprocess(obj *externglib.Object) Subprocess {
 	return subprocess{*externglib.Object{obj}}
 }
 
 func marshalSubprocess(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSubprocess(obj), nil
 }
 
 func NewSubprocessv(argv []string, flags SubprocessFlags) Subprocess
@@ -20107,14 +20279,16 @@ type subprocessLauncher struct {
 	*externglib.Object
 }
 
-func wrapSubprocessLauncher(obj *externglib.Object) SubprocessLauncher {
+// WrapSubprocessLauncher wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapSubprocessLauncher(obj *externglib.Object) SubprocessLauncher {
 	return subprocessLauncher{*externglib.Object{obj}}
 }
 
 func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapSubprocessLauncher(obj), nil
 }
 
 func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher
@@ -20167,246 +20341,7 @@ func (s subprocessLauncher) Unsetenv(variable string)
 // function (as a Result), and you can use g_task_propagate_pointer() or the
 // like to extract the return value.
 //
-// Here is an example for using GTask as a GAsyncResult: |[<!-- language="C" -->
-// typedef struct { CakeFrostingType frosting; char *message; } DecorationData;
-//
-// static void decoration_data_free (DecorationData *decoration) { g_free
-// (decoration->message); g_slice_free (DecorationData, decoration); }
-//
-// static void baked_cb (Cake *cake, gpointer user_data) { GTask *task =
-// user_data; DecorationData *decoration = g_task_get_task_data (task); GError
-// *error = NULL;
-//
-// if (cake == NULL) { g_task_return_new_error (task, BAKER_ERROR,
-// BAKER_ERROR_NO_FLOUR, "Go to the supermarket"); g_object_unref (task);
-// return; }
-//
-// if (!cake_decorate (cake, decoration->frosting, decoration->message, &error))
-// { g_object_unref (cake); // g_task_return_error() takes ownership of error
-// g_task_return_error (task, error); g_object_unref (task); return; }
-//
-// g_task_return_pointer (task, cake, g_object_unref); g_object_unref (task); }
-//
-// void baker_bake_cake_async (Baker *self, guint radius, CakeFlavor flavor,
-// CakeFrostingType frosting, const char *message, GCancellable *cancellable,
-// GAsyncReadyCallback callback, gpointer user_data) { GTask *task;
-// DecorationData *decoration; Cake *cake;
-//
-// task = g_task_new (self, cancellable, callback, user_data); if (radius < 3) {
-// g_task_return_new_error (task, BAKER_ERROR, BAKER_ERROR_TOO_SMALL, "ucm
-// radius cakes are silly", radius); g_object_unref (task); return; }
-//
-// cake = _baker_get_cached_cake (self, radius, flavor, frosting, message); if
-// (cake != NULL) { // _baker_get_cached_cake() returns a reffed cake
-// g_task_return_pointer (task, cake, g_object_unref); g_object_unref (task);
-// return; }
-//
-// decoration = g_slice_new (DecorationData); decoration->frosting = frosting;
-// decoration->message = g_strdup (message); g_task_set_task_data (task,
-// decoration, (GDestroyNotify) decoration_data_free);
-//
-// _baker_begin_cake (self, radius, flavor, cancellable, baked_cb, task); }
-//
-// Cake * baker_bake_cake_finish (Baker *self, GAsyncResult *result, GError
-// **error) { g_return_val_if_fail (g_task_is_valid (result, self), NULL);
-//
-//          return g_task_propagate_pointer (G_TASK (result), error);
-//        }
-//
-//
-//    ## Chained asynchronous operations
-//
-//    #GTask also tries to simplify asynchronous operations that
-//    internally chain together several smaller asynchronous
-//    operations. g_task_get_cancellable(), g_task_get_context(),
-//    and g_task_get_priority() allow you to get back the task's
-//    #GCancellable, Context, and [I/O priority][io-priority]
-//    when starting a new subtask, so you don't have to keep track
-//    of them yourself. g_task_attach_source() simplifies the case
-//    of waiting for a source to fire (automatically using the correct
-//    Context and priority).
-//
-//        typedef struct {
-//          Cake *cake;
-//          CakeFrostingType frosting;
-//          char *message;
-//        } BakingData;
-//
-//        static void
-//        decoration_data_free (BakingData *bd)
-//        {
-//          if (bd->cake)
-//            g_object_unref (bd->cake);
-//          g_free (bd->message);
-//          g_slice_free (BakingData, bd);
-//        }
-//
-//        static void
-//        decorated_cb (Cake         *cake,
-//                      GAsyncResult *result,
-//                      gpointer      user_data)
-//        {
-//          GTask *task = user_data;
-//          GError *error = NULL;
-//
-//          if (!cake_decorate_finish (cake, result, &error))
-//            {
-//              g_object_unref (cake);
-//              g_task_return_error (task, error);
-//              g_object_unref (task);
-//              return;
-//            }
-//
-//          // baking_data_free() will drop its ref on the cake, so we have to
-//          // take another here to give to the caller.
-//          g_task_return_pointer (task, g_object_ref (cake), g_object_unref);
-//          g_object_unref (task);
-//        }
-//
-//        static gboolean
-//        decorator_ready (gpointer user_data)
-//        {
-//          GTask *task = user_data;
-//          BakingData *bd = g_task_get_task_data (task);
-//
-//          cake_decorate_async (bd->cake, bd->frosting, bd->message,
-//                               g_task_get_cancellable (task),
-//                               decorated_cb, task);
-//
-//          return G_SOURCE_REMOVE;
-//        }
-//
-//        static void
-//        baked_cb (Cake     *cake,
-//                  gpointer  user_data)
-//        {
-//          GTask *task = user_data;
-//          BakingData *bd = g_task_get_task_data (task);
-//          GError *error = NULL;
-//
-//          if (cake == NULL)
-//            {
-//              g_task_return_new_error (task, BAKER_ERROR, BAKER_ERROR_NO_FLOUR,
-//                                       "Go to the supermarket");
-//              g_object_unref (task);
-//              return;
-//            }
-//
-//          bd->cake = cake;
-//
-//          // Bail out now if the user has already cancelled
-//          if (g_task_return_error_if_cancelled (task))
-//            {
-//              g_object_unref (task);
-//              return;
-//            }
-//
-//          if (cake_decorator_available (cake))
-//            decorator_ready (task);
-//          else
-//            {
-//              GSource *source;
-//
-//              source = cake_decorator_wait_source_new (cake);
-//              // Attach @source to @task's GMainContext and have it call
-//              // decorator_ready() when it is ready.
-//              g_task_attach_source (task, source, decorator_ready);
-//              g_source_unref (source);
-//            }
-//        }
-//
-//        void
-//        baker_bake_cake_async (Baker               *self,
-//                               guint                radius,
-//                               CakeFlavor           flavor,
-//                               CakeFrostingType     frosting,
-//                               const char          *message,
-//                               gint                 priority,
-//                               GCancellable        *cancellable,
-//                               GAsyncReadyCallback  callback,
-//                               gpointer             user_data)
-//        {
-//          GTask *task;
-//          BakingData *bd;
-//
-//          task = g_task_new (self, cancellable, callback, user_data);
-//          g_task_set_priority (task, priority);
-//
-//          bd = g_slice_new0 (BakingData);
-//          bd->frosting = frosting;
-//          bd->message = g_strdup (message);
-//          g_task_set_task_data (task, bd, (GDestroyNotify) baking_data_free);
-//
-//          _baker_begin_cake (self, radius, flavor, cancellable, baked_cb, task);
-//        }
-//
-//        Cake *
-//        baker_bake_cake_finish (Baker         *self,
-//                                GAsyncResult  *result,
-//                                GError       **error)
-//        {
-//          g_return_val_if_fail (g_task_is_valid (result, self), NULL);
-//
-//          return g_task_propagate_pointer (G_TASK (result), error);
-//        }
-//
-//
-//
-// Asynchronous operations from synchronous ones
-//
-// You can use g_task_run_in_thread() to turn a synchronous operation into an
-// asynchronous one, by running it in a thread. When it completes, the result
-// will be dispatched to the [thread-default main
-// context][g-main-context-push-thread-default] where the #GTask was created.
-//
-// Running a task in a thread: |[<!-- language="C" --> typedef struct { guint
-// radius; CakeFlavor flavor; CakeFrostingType frosting; char *message; }
-// CakeData;
-//
-// static void cake_data_free (CakeData *cake_data) { g_free
-// (cake_data->message); g_slice_free (CakeData, cake_data); }
-//
-// static void bake_cake_thread (GTask *task, gpointer source_object, gpointer
-// task_data, GCancellable *cancellable) { Baker *self = source_object; CakeData
-// *cake_data = task_data; Cake *cake; GError *error = NULL;
-//
-// cake = bake_cake (baker, cake_data->radius, cake_data->flavor,
-// cake_data->frosting, cake_data->message, cancellable, &error); if (cake)
-// g_task_return_pointer (task, cake, g_object_unref); else g_task_return_error
-// (task, error); }
-//
-// void baker_bake_cake_async (Baker *self, guint radius, CakeFlavor flavor,
-// CakeFrostingType frosting, const char *message, GCancellable *cancellable,
-// GAsyncReadyCallback callback, gpointer user_data) { CakeData *cake_data;
-// GTask *task;
-//
-// cake_data = g_slice_new (CakeData); cake_data->radius = radius;
-// cake_data->flavor = flavor; cake_data->frosting = frosting;
-// cake_data->message = g_strdup (message); task = g_task_new (self,
-// cancellable, callback, user_data); g_task_set_task_data (task, cake_data,
-// (GDestroyNotify) cake_data_free); g_task_run_in_thread (task,
-// bake_cake_thread); g_object_unref (task); }
-//
-// Cake * baker_bake_cake_finish (Baker *self, GAsyncResult *result, GError
-// **error) { g_return_val_if_fail (g_task_is_valid (result, self), NULL);
-//
-//          return g_task_propagate_pointer (G_TASK (result), error);
-//        }
-//
-//
-//    ## Adding cancellability to uncancellable tasks
-//
-//    Finally, g_task_run_in_thread() and g_task_run_in_thread_sync()
-//    can be used to turn an uncancellable operation into a
-//    cancellable one. If you call g_task_set_return_on_cancel(),
-//    passing true, then if the task's #GCancellable is cancelled,
-//    it will return control back to the caller immediately, while
-//    allowing the task thread to continue running in the background
-//    (and simply discarding its result when it finally does finish).
-//    Provided that the task thread is careful about how it uses
-//    locks and other externally-visible resources, this allows you
-//    to make "GLib-friendly" asynchronous and cancellable
-//    synchronous variants of blocking APIs.
+// Here is an example for using GTask as a GAsyncResult:
 //
 //        static void
 //        bake_cake_thread (GTask         *task,
@@ -20502,68 +20437,43 @@ func (s subprocessLauncher) Unsetenv(variable string)
 // Porting from GSimpleAsyncResult
 //
 // #GTask's API attempts to be simpler than AsyncResult's in several ways: - You
-// can save task-specific data with g_task_set_task_data(), and
-//
-//    retrieve it later with g_task_get_task_data(). This replaces the
-//    abuse of g_simple_async_result_set_op_res_gpointer() for the same
-//    purpose with AsyncResult.
-//
-// - In addition to the task data, #GTask also keeps track of the
-//
-//    [priority][io-priority], #GCancellable, and
-//    Context associated with the task, so tasks that consist of
-//    a chain of simpler asynchronous operations will have easy access
-//    to those values when starting each sub-task.
-//
-// - g_task_return_error_if_cancelled() provides simplified
-//
-//    handling for cancellation. In addition, cancellation
-//    overrides any other #GTask return value by default, like
-//    AsyncResult does when
-//    g_simple_async_result_set_check_cancellable() is called.
-//    (You can use g_task_set_check_cancellable() to turn off that
-//    behavior.) On the other hand, g_task_run_in_thread()
-//    guarantees that it will always run your
-//    `task_func`, even if the task's #GCancellable
-//    is already cancelled before the task gets a chance to run;
-//    you can start your `task_func` with a
-//    g_task_return_error_if_cancelled() check if you need the
-//    old behavior.
-//
-// - The "return" methods (eg, g_task_return_pointer())
-//
-//    automatically cause the task to be "completed" as well, and
-//    there is no need to worry about the "complete" vs "complete
-//    in idle" distinction. (#GTask automatically figures out
-//    whether the task's callback can be invoked directly, or
-//    if it needs to be sent to another Context, or delayed
-//    until the next iteration of the current Context.)
-//
-// - The "finish" functions for #GTask based operations are generally
-//
-//    much simpler than AsyncResult ones, normally consisting
-//    of only a single call to g_task_propagate_pointer() or the like.
-//    Since g_task_propagate_pointer() "steals" the return value from
-//    the #GTask, it is not necessary to juggle pointers around to
-//    prevent it from being freed twice.
-//
-// - With AsyncResult, it was common to call
-//
-//    g_simple_async_result_propagate_error() from the
-//    `_finish()` wrapper function, and have
-//    virtual method implementations only deal with successful
-//    returns. This behavior is deprecated, because it makes it
-//    difficult for a subclass to chain to a parent class's async
-//    methods. Instead, the wrapper function should just be a
-//    simple wrapper, and the virtual method should call an
-//    appropriate `g_task_propagate_` function.
-//    Note that wrapper methods can now use
-//    g_async_result_legacy_propagate_error() to do old-style
-//    AsyncResult error-returning behavior, and
-//    g_async_result_is_tagged() to check if a result is tagged as
-//    having come from the `_async()` wrapper
-//    function (for "short-circuit" results, such as when passing
-//    0 to g_input_stream_read_async())
+// can save task-specific data with g_task_set_task_data(), and retrieve it
+// later with g_task_get_task_data(). This replaces the abuse of
+// g_simple_async_result_set_op_res_gpointer() for the same purpose with
+// AsyncResult. - In addition to the task data, #GTask also keeps track of the
+// [priority][io-priority], #GCancellable, and Context associated with the task,
+// so tasks that consist of a chain of simpler asynchronous operations will have
+// easy access to those values when starting each sub-task. -
+// g_task_return_error_if_cancelled() provides simplified handling for
+// cancellation. In addition, cancellation overrides any other #GTask return
+// value by default, like AsyncResult does when
+// g_simple_async_result_set_check_cancellable() is called. (You can use
+// g_task_set_check_cancellable() to turn off that behavior.) On the other hand,
+// g_task_run_in_thread() guarantees that it will always run your `task_func`,
+// even if the task's #GCancellable is already cancelled before the task gets a
+// chance to run; you can start your `task_func` with a
+// g_task_return_error_if_cancelled() check if you need the old behavior. - The
+// "return" methods (eg, g_task_return_pointer()) automatically cause the task
+// to be "completed" as well, and there is no need to worry about the "complete"
+// vs "complete in idle" distinction. (#GTask automatically figures out whether
+// the task's callback can be invoked directly, or if it needs to be sent to
+// another Context, or delayed until the next iteration of the current Context.)
+// - The "finish" functions for #GTask based operations are generally much
+// simpler than AsyncResult ones, normally consisting of only a single call to
+// g_task_propagate_pointer() or the like. Since g_task_propagate_pointer()
+// "steals" the return value from the #GTask, it is not necessary to juggle
+// pointers around to prevent it from being freed twice. - With AsyncResult, it
+// was common to call g_simple_async_result_propagate_error() from the
+// `_finish()` wrapper function, and have virtual method implementations only
+// deal with successful returns. This behavior is deprecated, because it makes
+// it difficult for a subclass to chain to a parent class's async methods.
+// Instead, the wrapper function should just be a simple wrapper, and the
+// virtual method should call an appropriate `g_task_propagate_` function. Note
+// that wrapper methods can now use g_async_result_legacy_propagate_error() to
+// do old-style AsyncResult error-returning behavior, and
+// g_async_result_is_tagged() to check if a result is tagged as having come from
+// the `_async()` wrapper function (for "short-circuit" results, such as when
+// passing 0 to g_input_stream_read_async()).
 type Task interface {
 	gextras.Objector
 
@@ -20797,14 +20707,16 @@ type task struct {
 	*externglib.Object
 }
 
-func wrapTask(obj *externglib.Object) Task {
+// WrapTask wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTask(obj *externglib.Object) Task {
 	return task{*externglib.Object{obj}}
 }
 
 func marshalTask(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTask(obj), nil
 }
 
 func NewTask(sourceObject gextras.Objector, cancellable Cancellable, callback AsyncReadyCallback) Task
@@ -20894,14 +20806,16 @@ type tcpConnection struct {
 	socketConnection
 }
 
-func wrapTcpConnection(obj *externglib.Object) TcpConnection {
+// WrapTcpConnection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTcpConnection(obj *externglib.Object) TcpConnection {
 	return tcpConnection{socketConnection{ioStream{*externglib.Object{obj}}}}
 }
 
 func marshalTcpConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTcpConnection(obj), nil
 }
 
 func (t tcpConnection) GracefulDisconnect() bool
@@ -20923,14 +20837,16 @@ type tcpWrapperConnection struct {
 	tcpConnection
 }
 
-func wrapTcpWrapperConnection(obj *externglib.Object) TcpWrapperConnection {
+// WrapTcpWrapperConnection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTcpWrapperConnection(obj *externglib.Object) TcpWrapperConnection {
 	return tcpWrapperConnection{tcpConnection{socketConnection{ioStream{*externglib.Object{obj}}}}}
 }
 
 func marshalTcpWrapperConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTcpWrapperConnection(obj), nil
 }
 
 func NewTcpWrapperConnection(baseIOStream IOStream, socket Socket) TcpWrapperConnection
@@ -20962,40 +20878,50 @@ func (t tcpWrapperConnection) BaseIOStream() IOStream
 // The service file should list your service along with an absolute path to the
 // uninstalled service executable in your source tree. Using autotools we would
 // achieve this by adding a file such as `my-server.service.in` in the services
-// directory and have it processed by configure. |[ [D-BUS Service]
-// Name=org.gtk.GDBus.Examples.ObjectManager
-// Exec=@abs_top_builddir@/gio/tests/gdbus-example-objectmanager-server ]| You
-// will also need to indicate this service directory in your test fixtures, so
-// you will need to pass the path while compiling your test cases. Typically
-// this is done with autotools with an added preprocessor flag specified to
-// compile your tests such as: |[
-// -DTEST_SERVICES=\""$(abs_top_builddir)/tests/services"\" ]| Once you have a
-// service definition file which is local to your source tree, you can proceed
-// to set up a GTest fixture using the DBus scaffolding.
+// directory and have it processed by configure.
 //
-// An example of a test fixture for D-Bus services can be found here:
-// [gdbus-test-fixture.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-test-fixture.c)
 //
-// Note that these examples only deal with isolating the D-Bus aspect of your
-// service. To successfully run isolated unit tests on your service you may need
-// some additional modifications to your test case fixture. For example; if your
-// service uses GSettings and installs a schema then it is important that your
-// test service not load the schema in the ordinary installed location (chances
-// are that your service and schema files are not yet installed, or worse; there
-// is an older version of the schema file sitting in the install location).
+//        [D-BUS Service]
+//        Name=org.gtk.GDBus.Examples.ObjectManager
+//        Exec=@abs_top_builddir@/gio/tests/gdbus-example-objectmanager-server
+//    ]|
+//    You will also need to indicate this service directory in your test
+//    fixtures, so you will need to pass the path while compiling your
+//    test cases. Typically this is done with autotools with an added
+//    preprocessor flag specified to compile your tests such as:
+//    |[
+//        -DTEST_SERVICES=\""$(abs_top_builddir)/tests/services"\"
+//    ]|
+//        Once you have a service definition file which is local to your source tree,
+//    you can proceed to set up a GTest fixture using the DBus scaffolding.
 //
-// Most of the time we can work around these obstacles using the environment.
-// Since the environment is inherited by the D-Bus daemon created by DBus and
-// then in turn inherited by any services the D-Bus daemon activates, using the
-// setup routine for your fixture is a practical place to help sandbox your
-// runtime environment. For the rather typical GSettings case we can work around
-// this by setting `GSETTINGS_SCHEMA_DIR` to the in tree directory holding your
-// schemas in the above fixture_setup() routine.
+//    An example of a test fixture for D-Bus services can be found
+//    here:
+//    gdbus-test-fixture.c (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-test-fixture.c)
 //
-// The GSettings schemas need to be locally pre-compiled for this to work. This
-// can be achieved by compiling the schemas locally as a step before running
-// test cases, an autotools setup might do the following in the directory
-// holding schemas: |[ all-am: $(GLIB_COMPILE_SCHEMAS) .
+//    Note that these examples only deal with isolating the D-Bus aspect of your
+//    service. To successfully run isolated unit tests on your service you may need
+//    some additional modifications to your test case fixture. For example; if your
+//    service uses GSettings and installs a schema then it is important that your test service
+//    not load the schema in the ordinary installed location (chances are that your service
+//    and schema files are not yet installed, or worse; there is an older version of the
+//    schema file sitting in the install location).
+//
+//    Most of the time we can work around these obstacles using the
+//    environment. Since the environment is inherited by the D-Bus daemon
+//    created by DBus and then in turn inherited by any services the
+//    D-Bus daemon activates, using the setup routine for your fixture is
+//    a practical place to help sandbox your runtime environment. For the
+//    rather typical GSettings case we can work around this by setting
+//    `GSETTINGS_SCHEMA_DIR` to the in tree directory holding your schemas
+//    in the above fixture_setup() routine.
+//
+//    The GSettings schemas need to be locally pre-compiled for this to work. This can be achieved
+//    by compiling the schemas locally as a step before running test cases, an autotools setup might
+//    do the following in the directory holding schemas:
+//    |[
+//        all-am:
+//                $(GLIB_COMPILE_SCHEMAS) .
 //
 //        CLEANFILES += gschemas.compiled
 //
@@ -21040,14 +20966,16 @@ type testDBus struct {
 	*externglib.Object
 }
 
-func wrapTestDBus(obj *externglib.Object) TestDBus {
+// WrapTestDBus wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTestDBus(obj *externglib.Object) TestDBus {
 	return testDBus{*externglib.Object{obj}}
 }
 
 func marshalTestDBus(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTestDBus(obj), nil
 }
 
 func NewTestDBus(flags TestDBusFlags) TestDBus
@@ -21091,14 +21019,16 @@ type themedIcon struct {
 	*externglib.Object
 }
 
-func wrapThemedIcon(obj *externglib.Object) ThemedIcon {
+// WrapThemedIcon wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapThemedIcon(obj *externglib.Object) ThemedIcon {
 	return themedIcon{*externglib.Object{obj}}
 }
 
 func marshalThemedIcon(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapThemedIcon(obj), nil
 }
 
 func NewThemedIcon(iconname string) ThemedIcon
@@ -21134,14 +21064,16 @@ type threadedSocketService struct {
 	socketService
 }
 
-func wrapThreadedSocketService(obj *externglib.Object) ThreadedSocketService {
+// WrapThreadedSocketService wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapThreadedSocketService(obj *externglib.Object) ThreadedSocketService {
 	return threadedSocketService{socketService{socketListener{*externglib.Object{obj}}}}
 }
 
 func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapThreadedSocketService(obj), nil
 }
 
 func NewThreadedSocketService(maxThreads int) ThreadedSocketService
@@ -21185,14 +21117,16 @@ type tlsCertificate struct {
 	*externglib.Object
 }
 
-func wrapTlsCertificate(obj *externglib.Object) TlsCertificate {
+// WrapTlsCertificate wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTlsCertificate(obj *externglib.Object) TlsCertificate {
 	return tlsCertificate{*externglib.Object{obj}}
 }
 
 func marshalTlsCertificate(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTlsCertificate(obj), nil
 }
 
 func NewTlsCertificateFromFile(file string) TlsCertificate
@@ -21225,17 +21159,17 @@ type TlsConnection interface {
 	// ChannelBindingData: query the TLS backend for TLS channel binding data of
 	// @type for @conn.
 	//
-	// This call retrieves TLS channel binding data as specified in RFC
-	// [5056](https://tools.ietf.org/html/rfc5056), RFC
-	// [5929](https://tools.ietf.org/html/rfc5929), and related RFCs. The
-	// binding data is returned in @data. The @data is resized by the callee
-	// using Array buffer management and will be freed when the @data is
-	// destroyed by g_byte_array_unref(). If @data is nil, it will only check
-	// whether TLS backend is able to fetch the data (e.g. whether @type is
-	// supported by the TLS backend). It does not guarantee that the data will
-	// be available though. That could happen if TLS connection does not support
-	// @type or the binding data is not available yet due to additional
-	// negotiation or input required.
+	// This call retrieves TLS channel binding data as specified in RFC 5056
+	// (https://tools.ietf.org/html/rfc5056), RFC 5929
+	// (https://tools.ietf.org/html/rfc5929), and related RFCs. The binding data
+	// is returned in @data. The @data is resized by the callee using Array
+	// buffer management and will be freed when the @data is destroyed by
+	// g_byte_array_unref(). If @data is nil, it will only check whether TLS
+	// backend is able to fetch the data (e.g. whether @type is supported by the
+	// TLS backend). It does not guarantee that the data will be available
+	// though. That could happen if TLS connection does not support @type or the
+	// binding data is not available yet due to additional negotiation or input
+	// required.
 	ChannelBindingData(_type TlsChannelBindingType) (data []uint8, ok bool)
 	// Database gets the certificate database that @conn uses to verify peer
 	// certificates. See g_tls_connection_set_database().
@@ -21314,8 +21248,8 @@ type TlsConnection interface {
 	// protocol after the handshake. Specifying nil for the the value of
 	// @protocols will disable ALPN negotiation.
 	//
-	// See [IANA TLS ALPN Protocol
-	// IDs](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
+	// See IANA TLS ALPN Protocol IDs
+	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
 	// for a list of registered protocol IDs.
 	SetAdvertisedProtocols(protocols []string)
 	// SetCertificate: this sets the certificate that @conn will present to its
@@ -21395,14 +21329,16 @@ type tlsConnection struct {
 	ioStream
 }
 
-func wrapTlsConnection(obj *externglib.Object) TlsConnection {
+// WrapTlsConnection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTlsConnection(obj *externglib.Object) TlsConnection {
 	return tlsConnection{ioStream{*externglib.Object{obj}}}
 }
 
 func marshalTlsConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTlsConnection(obj), nil
 }
 
 func (t tlsConnection) EmitAcceptCertificate(peerCert TlsCertificate, errors TlsCertificateFlags) bool
@@ -21588,14 +21524,16 @@ type tlsDatabase struct {
 	*externglib.Object
 }
 
-func wrapTlsDatabase(obj *externglib.Object) TlsDatabase {
+// WrapTlsDatabase wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTlsDatabase(obj *externglib.Object) TlsDatabase {
 	return tlsDatabase{*externglib.Object{obj}}
 }
 
 func marshalTlsDatabase(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTlsDatabase(obj), nil
 }
 
 func (t tlsDatabase) CreateCertificateHandle(certificate TlsCertificate) string
@@ -21780,14 +21718,16 @@ type tlsInteraction struct {
 	*externglib.Object
 }
 
-func wrapTlsInteraction(obj *externglib.Object) TlsInteraction {
+// WrapTlsInteraction wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTlsInteraction(obj *externglib.Object) TlsInteraction {
 	return tlsInteraction{*externglib.Object{obj}}
 }
 
 func marshalTlsInteraction(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTlsInteraction(obj), nil
 }
 
 func (t tlsInteraction) AskPassword(password TlsPassword, cancellable Cancellable) TlsInteractionResult
@@ -21857,14 +21797,16 @@ type tlsPassword struct {
 	*externglib.Object
 }
 
-func wrapTlsPassword(obj *externglib.Object) TlsPassword {
+// WrapTlsPassword wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapTlsPassword(obj *externglib.Object) TlsPassword {
 	return tlsPassword{*externglib.Object{obj}}
 }
 
 func marshalTlsPassword(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapTlsPassword(obj), nil
 }
 
 func NewTlsPassword(flags TlsPasswordFlags, description string) TlsPassword
@@ -21978,14 +21920,16 @@ type unixConnection struct {
 	socketConnection
 }
 
-func wrapUnixConnection(obj *externglib.Object) UnixConnection {
+// WrapUnixConnection wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapUnixConnection(obj *externglib.Object) UnixConnection {
 	return unixConnection{socketConnection{ioStream{*externglib.Object{obj}}}}
 }
 
 func marshalUnixConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapUnixConnection(obj), nil
 }
 
 func (u unixConnection) ReceiveCredentials(cancellable Cancellable) Credentials
@@ -22024,14 +21968,16 @@ type unixCredentialsMessage struct {
 	socketControlMessage
 }
 
-func wrapUnixCredentialsMessage(obj *externglib.Object) UnixCredentialsMessage {
+// WrapUnixCredentialsMessage wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapUnixCredentialsMessage(obj *externglib.Object) UnixCredentialsMessage {
 	return unixCredentialsMessage{socketControlMessage{*externglib.Object{obj}}}
 }
 
 func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapUnixCredentialsMessage(obj), nil
 }
 
 func NewUnixCredentialsMessage() UnixCredentialsMessage
@@ -22116,14 +22062,16 @@ type unixFDList struct {
 	*externglib.Object
 }
 
-func wrapUnixFDList(obj *externglib.Object) UnixFDList {
+// WrapUnixFDList wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapUnixFDList(obj *externglib.Object) UnixFDList {
 	return unixFDList{*externglib.Object{obj}}
 }
 
 func marshalUnixFDList(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapUnixFDList(obj), nil
 }
 
 func NewUnixFDList() UnixFDList
@@ -22190,14 +22138,16 @@ type unixFDMessage struct {
 	socketControlMessage
 }
 
-func wrapUnixFDMessage(obj *externglib.Object) UnixFDMessage {
+// WrapUnixFDMessage wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapUnixFDMessage(obj *externglib.Object) UnixFDMessage {
 	return unixFDMessage{socketControlMessage{*externglib.Object{obj}}}
 }
 
 func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapUnixFDMessage(obj), nil
 }
 
 func NewUnixFDMessage() UnixFDMessage
@@ -22235,14 +22185,16 @@ type unixInputStream struct {
 	inputStream
 }
 
-func wrapUnixInputStream(obj *externglib.Object) UnixInputStream {
+// WrapUnixInputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapUnixInputStream(obj *externglib.Object) UnixInputStream {
 	return unixInputStream{inputStream{*externglib.Object{obj}}}
 }
 
 func marshalUnixInputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapUnixInputStream(obj), nil
 }
 
 func NewUnixInputStream(fd int, closeFd bool) UnixInputStream
@@ -22270,14 +22222,16 @@ type unixMountMonitor struct {
 	*externglib.Object
 }
 
-func wrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitor {
+// WrapUnixMountMonitor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapUnixMountMonitor(obj *externglib.Object) UnixMountMonitor {
 	return unixMountMonitor{*externglib.Object{obj}}
 }
 
 func marshalUnixMountMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapUnixMountMonitor(obj), nil
 }
 
 func NewUnixMountMonitor() UnixMountMonitor
@@ -22309,14 +22263,16 @@ type unixOutputStream struct {
 	outputStream
 }
 
-func wrapUnixOutputStream(obj *externglib.Object) UnixOutputStream {
+// WrapUnixOutputStream wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapUnixOutputStream(obj *externglib.Object) UnixOutputStream {
 	return unixOutputStream{outputStream{*externglib.Object{obj}}}
 }
 
 func marshalUnixOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapUnixOutputStream(obj), nil
 }
 
 func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream
@@ -22364,14 +22320,16 @@ type unixSocketAddress struct {
 	socketAddress
 }
 
-func wrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
+// WrapUnixSocketAddress wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapUnixSocketAddress(obj *externglib.Object) UnixSocketAddress {
 	return unixSocketAddress{socketAddress{*externglib.Object{obj}}}
 }
 
 func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapUnixSocketAddress(obj), nil
 }
 
 func NewUnixSocketAddress(path string) UnixSocketAddress
@@ -22439,14 +22397,16 @@ type vfs struct {
 	*externglib.Object
 }
 
-func wrapVfs(obj *externglib.Object) Vfs {
+// WrapVfs wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapVfs(obj *externglib.Object) Vfs {
 	return vfs{*externglib.Object{obj}}
 }
 
 func marshalVfs(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapVfs(obj), nil
 }
 
 func (v vfs) FileForPath(path string) File
@@ -22502,14 +22462,16 @@ type volumeMonitor struct {
 	*externglib.Object
 }
 
-func wrapVolumeMonitor(obj *externglib.Object) VolumeMonitor {
+// WrapVolumeMonitor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapVolumeMonitor(obj *externglib.Object) VolumeMonitor {
 	return volumeMonitor{*externglib.Object{obj}}
 }
 
 func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapVolumeMonitor(obj), nil
 }
 
 func (v volumeMonitor) ConnectedDrives() *glib.List
@@ -22543,14 +22505,16 @@ type zlibCompressor struct {
 	*externglib.Object
 }
 
-func wrapZlibCompressor(obj *externglib.Object) ZlibCompressor {
+// WrapZlibCompressor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapZlibCompressor(obj *externglib.Object) ZlibCompressor {
 	return zlibCompressor{*externglib.Object{obj}}
 }
 
 func marshalZlibCompressor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapZlibCompressor(obj), nil
 }
 
 func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor
@@ -22575,14 +22539,16 @@ type zlibDecompressor struct {
 	*externglib.Object
 }
 
-func wrapZlibDecompressor(obj *externglib.Object) ZlibDecompressor {
+// WrapZlibDecompressor wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapZlibDecompressor(obj *externglib.Object) ZlibDecompressor {
 	return zlibDecompressor{*externglib.Object{obj}}
 }
 
 func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapZlibDecompressor(obj), nil
 }
 
 func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor

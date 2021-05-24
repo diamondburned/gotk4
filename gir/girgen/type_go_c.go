@@ -3,60 +3,55 @@ package girgen
 import (
 	"fmt"
 
-	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/internal/pen"
 )
 
 // Go to C type conversions.
 
-// GoCConversion describes the information needed to generate Go code to convert
-// Go types to C types.
-type GoCConversion struct {
-	Value  string
-	Target string
-	Type   gir.AnyType
-	Owner  gir.TransferOwnership
+func (ng *NamespaceGenerator) GoCConverter(conv TypeConversion) string {
+	switch {
+	case conv.Type.Type != nil:
+		return ng.gocTypeConverter(conv)
+	default:
+		return ""
+	}
 
-	// ArgAt is used for array and closure generation.
-	ArgAt ArgAtFunc
 }
 
-// func (ng *NamespaceGenerator) GoCConverter(value, target string, any gir.AnyType) string {
+func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversion) string {
+	array := conv.Type.Array
 
-// }
+	if array.Type == nil {
+		ng.logln(logWarn, "skipping nested array", array.CType)
+	}
 
-// func (ng *NamespaceGenerator) gocArrayConverter(value, target string, array gir.Array) string {
+	return ""
+}
 
-// }
+func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversion) string {
+	typ := conv.Type.Type
 
-// func (ng *NamespaceGenerator) gocTypeConverter(value, target string, typ gir.Type) string {
-
-// }
-
-func (ng *NamespaceGenerator) _gocTypeConverter(conv GoCConversion, typ gir.Type, create bool) string {
 	if prim, ok := girPrimitiveGo[typ.Name]; ok {
 		switch prim {
 		case "string":
 			p := pen.NewPiece()
-			p.Linef(directCallOrCreate(conv.Value, conv.Target, "C.CString", create))
+			p.Linef("%s = (*C.gchar)(C.CString(%s))", conv.Target, conv.Value)
 			p.Linef("defer C.free(unsafe.Pointer(%s))", conv.Value)
 			return p.String()
+
 		case "bool":
 			ng.addImport("github.com/diamondburned/gotk4/internal/gextras")
-			return directCallOrCreate(conv.Value, conv.Target, "gextras.Cbool", create)
+			return conv.call("gextras.Cbool")
+
 		default:
-			return directCallOrCreate(conv.Value, conv.Target, "C."+typ.CType, create)
+			return conv.call("C." + typ.CType)
 		}
 	}
 
 	switch typ.Name {
 	case "gpointer":
 		ng.addImport("github.com/diamondburned/gotk4/internal/box")
-
-		b := pen.NewBlock()
-		b.Linef("id := box.Assign(box.Boxed, %s)", conv.Value)
-		b.Linef("%s = C.gpointer(id)", conv.Target)
-		return b.String()
+		return fmt.Sprintf("%s = C.gpointer(box.Assign(%s))", conv.Target, conv.Value)
 
 	case "GLib.DestroyNotify", "DestroyNotify":
 		// This should never be called, because the caller should never see a
@@ -87,6 +82,35 @@ func (ng *NamespaceGenerator) _gocTypeConverter(conv GoCConversion, typ gir.Type
 	case "GObject.EnumValue", "GObject.TypeModule", "GObject.ParamSpec", "GObject.Parameter":
 		// Refer to ResolveType.
 		return ""
+	}
+
+	result := ng.gen.Repos.FindType(ng.current.Namespace.Name, typ.Name)
+	if result == nil {
+		return ""
+	}
+
+	resolved := typeFromResult(ng.gen, *typ, result)
+
+	exportedName, _ := resolved.Extern.Result.Info()
+	exportedName = PascalToGo(exportedName)
+
+	if result.Enum != nil || result.Bitfield != nil {
+		// Direct cast-able.
+		return fmt.Sprintf("%s = (%s)(%s)", conv.Target, resolved.CGoType(), conv.Value)
+	}
+
+	if result.Class != nil {
+		// gextras.Objector has Native() uintptr.
+		return fmt.Sprintf(
+			"%s = (%s)(%s.Native())",
+			conv.Target, resolved.CGoType(), conv.Value,
+		)
+	}
+
+	if result.Callback != nil {
+		// Return the constant function here. The function will dynamically load
+		// the user_data, which will match with the "gpointer" case above.
+		return fmt.Sprintf("%s = (*[0]byte)(C.%s%s)", conv.Target, callbackPrefix, exportedName)
 	}
 
 	// TODO

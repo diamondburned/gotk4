@@ -8,12 +8,15 @@ import (
 	"github.com/diamondburned/gotk4/internal/pen"
 )
 
+// callbackPrefix is the prefix to prepend to a C callback that bridges Cgo.
+const callbackPrefix = "gotk4_"
+
 var callbackTmpl = newGoTemplate(`
 	{{ GoDoc .Doc 0 .Name }}
 	type {{ .GoName }} func{{ .GoTail }}
 
-	//export c{{ .GoName }}
-	func c{{ .GoName }}{{ .CGoTail }} {{ .CBlock }}
+	//export gotk4_{{ .GoName }}
+	func gotk4_{{ .GoName }}{{ .CGoTail }} {{ .CBlock }}
 `)
 
 type callbackGenerator struct {
@@ -91,7 +94,7 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 		fg.CGoTail += " " + anyTypeCGo(cb.ReturnValue.AnyType)
 	}
 
-	fg.Ng.cgo.Wordf("extern %s %s(%s)", cReturn, "c"+fg.GoName, ctail.Join())
+	fg.Ng.cgo.Wordf("extern %s %s(%s)", cReturn, callbackPrefix+fg.GoName, ctail.Join())
 
 	return true
 }
@@ -116,7 +119,7 @@ func (fg *callbackGenerator) CBlock() string {
 		goType, _ := fg.Ng.ResolveAnyType(param.AnyType, false)
 		b.Linef("var %s %s", goName, goType)
 
-		b.Line(fg.Ng.CGoConverter(CGoConversion{
+		b.Line(fg.Ng.CGoConverter(TypeConversion{
 			Value:  argAt(i),
 			Target: goName,
 			Type:   param.AnyType,

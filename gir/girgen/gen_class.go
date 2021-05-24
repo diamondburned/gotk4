@@ -18,17 +18,19 @@ var classTmpl = newGoTemplate(`
 	}
 
 	type {{ .StructName }} struct {
-		{{ $.Ng.ImplType (index .TypeTree 0) }}
+		{{ .StructEmbeds }}
 	}
 
-	func wrap{{ .InterfaceName }}(obj *externglib.Object) {{ .InterfaceName }} {
+	// Wrap{{ .InterfaceName }} wraps a GObject to the right type. It is
+	// primarily used internally.
+	func Wrap{{ .InterfaceName }}(obj *externglib.Object) {{ .InterfaceName }} {
 		return {{ .Wrap "obj" }}
 	}
 
 	func marshal{{ .InterfaceName }}(p uintptr) (interface{}, error) {
 		val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 		obj := externglib.Take(unsafe.Pointer(val))
-		return wrapWidget(obj), nil
+		return Wrap{{ .InterfaceName }}(obj), nil
 	}
 
 	{{ range .Constructors }}
@@ -46,6 +48,7 @@ var classTmpl = newGoTemplate(`
 type classGenerator struct {
 	gir.Class
 	StructName    string
+	StructEmbeds  string
 	InterfaceName string
 
 	TypeTree []*ResolvedType
@@ -118,6 +121,15 @@ func (cg *classGenerator) Use(class gir.Class) bool {
 	cg.InterfaceName = PascalToGo(class.Name)
 	cg.StructName = UnexportPascal(cg.InterfaceName)
 
+	// Treat StructEmbeds specially: we can only embed our own implementation
+	// types, since they're unexported, so we embed interface types if it's not
+	// our package.
+	if parent := cg.TypeTree[0]; parent.NeedsNamespace(cg.Ng.current) {
+		cg.StructEmbeds = parent.PublicType(true)
+	} else {
+		cg.StructEmbeds = parent.ImplType(false)
+	}
+
 	return true
 }
 
@@ -140,20 +152,32 @@ func (cg *classGenerator) CtorCall(attrs gir.CallableAttrs) string {
 // Wrap returns the wrap string around the given variable name of type
 // *glib.Object.
 func (cg *classGenerator) Wrap(objName string) string {
-	var p pen.Piece
+	p := pen.NewPiece()
 	p.Write(cg.StructName).Char('{')
 
+	// stack of characters to append afterwards
+	stack := make([]byte, 1, 25)
+	stack[0] = '}'
+
 	for _, typ := range cg.TypeTree {
+		// Extern type is not in the same package, so we can't reference the
+		// exported type. Use the Wrap function instead.
+		if typ.NeedsNamespace(cg.Ng.current) && typ.Extern != nil {
+			p.Writef("%s.Wrap%s(", typ.Package, typ.PublicType(false))
+			stack = append(stack, ')')
+
+			break
+		}
+
 		p.Writef("%s{", cg.Ng.ImplType(typ))
+		stack = append(stack, '}')
 	}
 
 	p.Write(objName)
 
-	for range cg.TypeTree {
-		p.Char('}')
+	for i := len(stack) - 1; i >= 0; i-- {
+		p.Char(stack[i])
 	}
-
-	p.Char('}')
 
 	return p.String()
 }

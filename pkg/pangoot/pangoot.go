@@ -55,13 +55,14 @@ const (
 // @language.
 func TagFromLanguage(language *pango.Language) Tag {
 	var arg0 *pango.Language
-	arg0 = wrapLanguage(language)
+	arg0 = pango.WrapLanguage(language)
 
 	ret := C.pango_ot_tag_from_language(arg0)
 
 	var ret0 Tag
 	{
-		tmp := uint32(ret)
+		var tmp uint32
+		tmp = uint32(ret)
 		ret0 = Tag(tmp)
 	}
 
@@ -79,13 +80,14 @@ func TagFromLanguage(language *pango.Language) Tag {
 // OT tag 'kana'.
 func TagFromScript(script pango.Script) Tag {
 	var arg0 pango.Script
-	arg0 = Script(script)
+	arg0 = pango.Script(script)
 
 	ret := C.pango_ot_tag_from_script(arg0)
 
 	var ret0 Tag
 	{
-		tmp := uint32(ret)
+		var tmp uint32
+		tmp = uint32(ret)
 		ret0 = Tag(tmp)
 	}
 
@@ -96,14 +98,15 @@ func TagFromScript(script pango.Script) Tag {
 func TagToLanguage(languageTag Tag) *pango.Language {
 	var arg0 Tag
 	{
-		tmp := uint32(languageTag)
+		var tmp uint32
+		tmp = uint32(languageTag)
 		arg0 = Tag(tmp)
 	}
 
 	ret := C.pango_ot_tag_to_language(arg0)
 
 	var ret0 *pango.Language
-	ret0 = wrapLanguage(ret)
+	ret0 = pango.WrapLanguage(ret)
 
 	return ret0
 }
@@ -119,14 +122,15 @@ func TagToLanguage(languageTag Tag) *pango.Language {
 func TagToScript(scriptTag Tag) pango.Script {
 	var arg0 Tag
 	{
-		tmp := uint32(scriptTag)
+		var tmp uint32
+		tmp = uint32(scriptTag)
 		arg0 = Tag(tmp)
 	}
 
 	ret := C.pango_ot_tag_to_script(arg0)
 
 	var ret0 pango.Script
-	ret0 = Script(ret)
+	ret0 = pango.Script(ret)
 
 	return ret0
 }
@@ -135,7 +139,10 @@ type Buffer struct {
 	native *C.PangoOTBuffer
 }
 
-func wrapBuffer(p *C.PangoOTBuffer) *Buffer {
+// WrapBuffer wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapBuffer(ptr unsafe.Pointer) *Buffer {
+	p := (*C.PangoOTBuffer)(ptr)
 	v := Buffer{native: p}
 
 	runtime.SetFinalizer(&v, nil)
@@ -146,12 +153,12 @@ func wrapBuffer(p *C.PangoOTBuffer) *Buffer {
 
 func marshalBuffer(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.PangoOTBuffer)(unsafe.Pointer(b))
-
-	return wrapBuffer(c)
+	return WrapBuffer(unsafe.Pointer(b))
 }
 
-func (b *Buffer) free() {}
+func (b *Buffer) free() {
+	C.free(unsafe.Pointer(b.native))
+}
 
 // Native returns the pointer to *C.PangoOTBuffer. The caller is expected to
 // cast.
@@ -174,10 +181,13 @@ type FeatureMap struct {
 	native *C.PangoOTFeatureMap
 }
 
-func wrapFeatureMap(p *C.PangoOTFeatureMap) *FeatureMap {
+// WrapFeatureMap wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapFeatureMap(ptr unsafe.Pointer) *FeatureMap {
+	p := (*C.PangoOTFeatureMap)(ptr)
 	var v FeatureMap
 
-	v.FeatureName = ([5]byte)(p.feature_name)
+	v.FeatureName = [5]byte(p.feature_name)
 	v.PropertyBit = uint32(p.property_bit)
 
 	return &v
@@ -185,9 +195,7 @@ func wrapFeatureMap(p *C.PangoOTFeatureMap) *FeatureMap {
 
 func marshalFeatureMap(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.PangoOTFeatureMap)(unsafe.Pointer(b))
-
-	return wrapFeatureMap(c)
+	return WrapFeatureMap(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.PangoOTFeatureMap. The caller is expected to
@@ -217,7 +225,10 @@ type Glyph struct {
 	native *C.PangoOTGlyph
 }
 
-func wrapGlyph(p *C.PangoOTGlyph) *Glyph {
+// WrapGlyph wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapGlyph(ptr unsafe.Pointer) *Glyph {
+	p := (*C.PangoOTGlyph)(ptr)
 	var v Glyph
 
 	v.Glyph = uint32(p.glyph)
@@ -232,9 +243,7 @@ func wrapGlyph(p *C.PangoOTGlyph) *Glyph {
 
 func marshalGlyph(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.PangoOTGlyph)(unsafe.Pointer(b))
-
-	return wrapGlyph(c)
+	return WrapGlyph(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.PangoOTGlyph. The caller is expected to
@@ -272,16 +281,19 @@ type RulesetDescription struct {
 	native *C.PangoOTRulesetDescription
 }
 
-func wrapRulesetDescription(p *C.PangoOTRulesetDescription) *RulesetDescription {
+// WrapRulesetDescription wraps the C unsafe.Pointer to be the right type. It is
+// primarily used internally.
+func WrapRulesetDescription(ptr unsafe.Pointer) *RulesetDescription {
+	p := (*C.PangoOTRulesetDescription)(ptr)
 	var v RulesetDescription
 
-	v.Script = Script(p.script)
-	v.Language = wrapLanguage(p.language)
-	v.StaticGsubFeatures = wrapFeatureMap(p.static_gsub_features)
+	v.Script = pango.Script(p.script)
+	v.Language = pango.WrapLanguage(p.language)
+	v.StaticGsubFeatures = pangoot.WrapFeatureMap(p.static_gsub_features)
 	v.NStaticGsubFeatures = uint(p.n_static_gsub_features)
-	v.StaticGposFeatures = wrapFeatureMap(p.static_gpos_features)
+	v.StaticGposFeatures = pangoot.WrapFeatureMap(p.static_gpos_features)
 	v.NStaticGposFeatures = uint(p.n_static_gpos_features)
-	v.OtherFeatures = wrapFeatureMap(p.other_features)
+	v.OtherFeatures = pangoot.WrapFeatureMap(p.other_features)
 	v.NOtherFeatures = uint(p.n_other_features)
 
 	return &v
@@ -289,9 +301,7 @@ func wrapRulesetDescription(p *C.PangoOTRulesetDescription) *RulesetDescription 
 
 func marshalRulesetDescription(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	c := (*C.PangoOTRulesetDescription)(unsafe.Pointer(b))
-
-	return wrapRulesetDescription(c)
+	return WrapRulesetDescription(unsafe.Pointer(b))
 }
 
 // Native returns the pointer to *C.PangoOTRulesetDescription. The caller is expected to
@@ -345,14 +355,16 @@ type info struct {
 	*externglib.Object
 }
 
-func wrapInfo(obj *externglib.Object) Info {
+// WrapInfo wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapInfo(obj *externglib.Object) Info {
 	return info{*externglib.Object{obj}}
 }
 
 func marshalInfo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapInfo(obj), nil
 }
 
 func (i info) FindFeature(tableType TableType, featureTag Tag, scriptIndex uint, languageIndex uint) (featureIndex uint, ok bool)
@@ -405,14 +417,16 @@ type ruleset struct {
 	*externglib.Object
 }
 
-func wrapRuleset(obj *externglib.Object) Ruleset {
+// WrapRuleset wraps a GObject to the right type. It is
+// primarily used internally.
+func WrapRuleset(obj *externglib.Object) Ruleset {
 	return ruleset{*externglib.Object{obj}}
 }
 
 func marshalRuleset(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return wrapWidget(obj), nil
+	return WrapRuleset(obj), nil
 }
 
 func NewRuleset(info Info) Ruleset

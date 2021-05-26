@@ -921,54 +921,54 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 //
 // Calling this may change the current GL context.
 func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
-	var arg0 *cairo.Context
-	arg0 = cairo.WrapContext(cr)
+	var arg0 *C.cairo_t
+	arg0 = (*C.C.cairo_t)(cr.Native())
 
-	var arg1 Surface
-	arg1 = gdk.WrapSurface(externglib.Take(unsafe.Pointer(surface.Native())))
+	var arg1 *C.GdkSurface
+	arg1 = (*C.C.GdkSurface)(surface.Native())
 
-	var arg2 int
-	arg2 = int(source)
+	var arg2 C.int
+	arg2 = C.int(source)
 
-	var arg3 int
-	arg3 = int(sourceType)
+	var arg3 C.int
+	arg3 = C.int(sourceType)
 
-	var arg4 int
-	arg4 = int(bufferScale)
+	var arg4 C.int
+	arg4 = C.int(bufferScale)
 
-	var arg5 int
-	arg5 = int(x)
+	var arg5 C.int
+	arg5 = C.int(x)
 
-	var arg6 int
-	arg6 = int(y)
+	var arg6 C.int
+	arg6 = C.int(y)
 
-	var arg7 int
-	arg7 = int(width)
+	var arg7 C.int
+	arg7 = C.int(width)
 
-	var arg8 int
-	arg8 = int(height)
+	var arg8 C.int
+	arg8 = C.int(height)
 
 	C.gdk_cairo_draw_from_gl(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
 // CairoRectangle adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
-	var arg0 *cairo.Context
-	arg0 = cairo.WrapContext(cr)
+	var arg0 *C.cairo_t
+	arg0 = (*C.C.cairo_t)(cr.Native())
 
-	var arg1 *Rectangle
-	arg1 = gdk.WrapRectangle(rectangle)
+	var arg1 *C.GdkRectangle
+	arg1 = (*C.C.GdkRectangle)(rectangle.Native())
 
 	C.gdk_cairo_rectangle(arg0, arg1)
 }
 
 // CairoRegion adds the given region to the current path of @cr.
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
-	var arg0 *cairo.Context
-	arg0 = cairo.WrapContext(cr)
+	var arg0 *C.cairo_t
+	arg0 = (*C.C.cairo_t)(cr.Native())
 
-	var arg1 *cairo.Region
-	arg1 = cairo.WrapRegion(region)
+	var arg1 *C.cairo_region_t
+	arg1 = (*C.C.cairo_region_t)(region.Native())
 
 	C.gdk_cairo_region(arg0, arg1)
 }
@@ -979,8 +979,8 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
-	var arg0 *cairo.Surface
-	arg0 = cairo.WrapSurface(surface)
+	var arg0 *C.cairo_surface_t
+	arg0 = (*C.C.cairo_surface_t)(surface.Native())
 
 	ret := C.gdk_cairo_region_create_from_surface(arg0)
 
@@ -995,28 +995,28 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
-	var arg0 *cairo.Context
-	arg0 = cairo.WrapContext(cr)
+	var arg0 *C.cairo_t
+	arg0 = (*C.C.cairo_t)(cr.Native())
 
-	var arg1 gdkpixbuf.Pixbuf
-	arg1 = gdkpixbuf.WrapPixbuf(externglib.Take(unsafe.Pointer(pixbuf.Native())))
+	var arg1 *C.GdkPixbuf
+	arg1 = (*C.C.GdkPixbuf)(pixbuf.Native())
 
-	var arg2 float64
-	arg2 = float64(pixbufX)
+	var arg2 C.double
+	arg2 = C.double(pixbufX)
 
-	var arg3 float64
-	arg3 = float64(pixbufY)
+	var arg3 C.double
+	arg3 = C.double(pixbufY)
 
 	C.gdk_cairo_set_source_pixbuf(arg0, arg1, arg2, arg3)
 }
 
 // CairoSetSourceRgba sets the specified RGBA as the source color of @cr.
 func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA) {
-	var arg0 *cairo.Context
-	arg0 = cairo.WrapContext(cr)
+	var arg0 *C.cairo_t
+	arg0 = (*C.C.cairo_t)(cr.Native())
 
-	var arg1 *RGBA
-	arg1 = gdk.WrapRGBA(rgba)
+	var arg1 *C.GdkRGBA
+	arg1 = (*C.C.GdkRGBA)(rgba.Native())
 
 	C.gdk_cairo_set_source_rgba(arg0, arg1)
 }
@@ -1026,26 +1026,35 @@ func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA) {
 // will be called. You can then call gdk_content_deserialize_finish() to get the
 // result of the operation.
 func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var arg0 gio.InputStream
-	arg0 = gio.WrapInputStream(externglib.Take(unsafe.Pointer(stream.Native())))
+	var arg0 *C.GInputStream
+	arg0 = (*C.C.GInputStream)(stream.Native())
 
-	var arg1 string
-	mimeType = C.GoString(arg1)
+	var arg1 *C.char
+	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(mimeType))
 
-	var arg3 int
-	arg3 = int(ioPriority)
+	var arg2 C.GType
+	arg2 = C.GType(_type)
 
-	var arg4 gio.Cancellable
-	arg4 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg3 C.int
+	arg3 = C.int(ioPriority)
+
+	var arg4 *C.GCancellable
+	arg4 = (*C.C.GCancellable)(cancellable.Native())
+
+	var arg5 C.GAsyncReadyCallback
+	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	arg6 := C.gpointer(box.Assign(box.Callback, userData))
-	C.gdk_content_deserialize_async(arg0, arg1, arg3, arg4)
+	C.gdk_content_deserialize_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // ContentDeserializeFinish finishes a content deserialization operation.
 func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) bool {
-	ret := C.gdk_content_deserialize_finish()
+	var arg1 *C.GValue
+	arg1 = (*C.GValue)(value.GValue)
+
+	ret := C.gdk_content_deserialize_finish(arg1)
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -1056,23 +1065,35 @@ func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) b
 // ContentRegisterDeserializer registers a function to create objects of a given
 // @type from a serialized representation with the given mime type.
 func ContentRegisterDeserializer(mimeType string, _type externglib.Type, deserialize ContentDeserializeFunc) {
-	var arg0 string
-	mimeType = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(mimeType))
 
+	var arg1 C.GType
+	arg1 = C.GType(_type)
+
+	var arg2 C.GdkContentDeserializeFunc
+	arg2 = (*[0]byte)(C.gotk4_ContentDeserializeFunc)
+
 	arg3 := C.gpointer(box.Assign(box.Callback, data))
-	C.gdk_content_register_deserializer(arg0, (*[0]byte)(C.callbackDelete))
+	C.gdk_content_register_deserializer(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
 }
 
 // ContentRegisterSerializer registers a function to convert objects of the
 // given @type to a serialized representation with the given mime type.
 func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize ContentSerializeFunc) {
-	var arg1 string
-	mimeType = C.GoString(arg1)
+	var arg0 C.GType
+	arg0 = C.GType(_type)
+
+	var arg1 *C.char
+	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(mimeType))
 
+	var arg2 C.GdkContentSerializeFunc
+	arg2 = (*[0]byte)(C.gotk4_ContentSerializeFunc)
+
 	arg3 := C.gpointer(box.Assign(box.Callback, data))
-	C.gdk_content_register_serializer(arg1, (*[0]byte)(C.callbackDelete))
+	C.gdk_content_register_serializer(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
 }
 
 // ContentSerializeAsync: serialize content and write it to the given output
@@ -1080,21 +1101,27 @@ func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize
 // called. You can then call gdk_content_serialize_finish() to get the result of
 // the operation.
 func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *externglib.Value, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var arg0 gio.OutputStream
-	arg0 = gio.WrapOutputStream(externglib.Take(unsafe.Pointer(stream.Native())))
+	var arg0 *C.GOutputStream
+	arg0 = (*C.C.GOutputStream)(stream.Native())
 
-	var arg1 string
-	mimeType = C.GoString(arg1)
+	var arg1 *C.char
+	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(mimeType))
 
-	var arg3 int
-	arg3 = int(ioPriority)
+	var arg2 *C.GValue
+	arg2 = (*C.GValue)(value.GValue)
 
-	var arg4 gio.Cancellable
-	arg4 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg3 C.int
+	arg3 = C.int(ioPriority)
+
+	var arg4 *C.GCancellable
+	arg4 = (*C.C.GCancellable)(cancellable.Native())
+
+	var arg5 C.GAsyncReadyCallback
+	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	arg6 := C.gpointer(box.Assign(box.Callback, userData))
-	C.gdk_content_serialize_async(arg0, arg1, arg3, arg4)
+	C.gdk_content_serialize_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // ContentSerializeFinish finishes a content serialization operation.
@@ -1112,8 +1139,8 @@ func ContentSerializeFinish(result gio.AsyncResult) bool {
 //
 // When @action is 0 - ie no action was given, true is returned.
 func DragActionIsUnique(action DragAction) bool {
-	var arg0 DragAction
-	arg0 = DragAction(action)
+	var arg0 C.GdkDragAction
+	arg0 = (C.C.GdkDragAction)(action)
 
 	ret := C.gdk_drag_action_is_unique(arg0)
 
@@ -1128,11 +1155,11 @@ func DragActionIsUnique(action DragAction) bool {
 // The rotation direction for positive angles is from the positive X axis
 // towards the positive Y axis.
 func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
-	var arg0 Event
-	arg0 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event1.Native())))
+	var arg0 *C.GdkEvent
+	arg0 = (*C.C.GdkEvent)(event1.Native())
 
-	var arg1 Event
-	arg1 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event2.Native())))
+	var arg1 *C.GdkEvent
+	arg1 = (*C.C.GdkEvent)(event2.Native())
 
 	var arg2 *C.double // out
 
@@ -1150,11 +1177,11 @@ func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 // EventsGetCenter: if both events contain X/Y information, the center of both
 // coordinates will be returned in @x and @y.
 func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
-	var arg0 Event
-	arg0 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event1.Native())))
+	var arg0 *C.GdkEvent
+	arg0 = (*C.C.GdkEvent)(event1.Native())
 
-	var arg1 Event
-	arg1 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event2.Native())))
+	var arg1 *C.GdkEvent
+	arg1 = (*C.C.GdkEvent)(event2.Native())
 
 	var arg2 *C.double // out
 
@@ -1178,11 +1205,11 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 // both coordinates (as in a straight line going from @event1 to @event2) will
 // be returned.
 func EventsGetDistance(event1 Event, event2 Event) (distance float64, ok bool) {
-	var arg0 Event
-	arg0 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event1.Native())))
+	var arg0 *C.GdkEvent
+	arg0 = (*C.C.GdkEvent)(event1.Native())
 
-	var arg1 Event
-	arg1 = gdk.WrapEvent(externglib.Take(unsafe.Pointer(event2.Native())))
+	var arg1 *C.GdkEvent
+	arg1 = (*C.C.GdkEvent)(event2.Native())
 
 	var arg2 *C.double // out
 
@@ -1215,8 +1242,8 @@ func GLErrorQuark() glib.Quark {
 // If @string is not a valid mime type, nil is returned instead. See RFC 2048
 // for the syntax if mime types.
 func InternMIMEType(string string) string {
-	var arg0 string
-	string = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.gdk_intern_mime_type(arg0)
@@ -1231,8 +1258,8 @@ func InternMIMEType(string string) string {
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval
 // @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
-	var arg0 uint
-	arg0 = uint(symbol)
+	var arg0 C.guint
+	arg0 = C.guint(symbol)
 
 	var arg1 *C.guint // out
 
@@ -1254,8 +1281,8 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 // The names are the same as those in the `gdk/gdkkeysyms.h` header file but
 // without the leading “GDK_KEY_”.
 func KeyvalFromName(keyvalName string) uint {
-	var arg0 string
-	keyvalName = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(keyvalName))
 	defer C.free(unsafe.Pointer(keyvalName))
 
 	ret := C.gdk_keyval_from_name(arg0)
@@ -1268,8 +1295,8 @@ func KeyvalFromName(keyvalName string) uint {
 
 // KeyvalIsLower returns true if the given key value is in lower case.
 func KeyvalIsLower(keyval uint) bool {
-	var arg0 uint
-	arg0 = uint(keyval)
+	var arg0 C.guint
+	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_is_lower(arg0)
 
@@ -1281,8 +1308,8 @@ func KeyvalIsLower(keyval uint) bool {
 
 // KeyvalIsUpper returns true if the given key value is in upper case.
 func KeyvalIsUpper(keyval uint) bool {
-	var arg0 uint
-	arg0 = uint(keyval)
+	var arg0 C.guint
+	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_is_upper(arg0)
 
@@ -1297,8 +1324,8 @@ func KeyvalIsUpper(keyval uint) bool {
 // The names are the same as those in the `gdk/gdkkeysyms.h` header file but
 // without the leading “GDK_KEY_”.
 func KeyvalName(keyval uint) string {
-	var arg0 uint
-	arg0 = uint(keyval)
+	var arg0 C.guint
+	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_name(arg0)
 
@@ -1311,8 +1338,8 @@ func KeyvalName(keyval uint) string {
 
 // KeyvalToLower converts a key value to lower case, if applicable.
 func KeyvalToLower(keyval uint) uint {
-	var arg0 uint
-	arg0 = uint(keyval)
+	var arg0 C.guint
+	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_to_lower(arg0)
 
@@ -1328,8 +1355,8 @@ func KeyvalToLower(keyval uint) uint {
 // Note that the conversion does not take the current locale into consideration,
 // which might be expected for particular keyvals, such as GDK_KEY_KP_Decimal.
 func KeyvalToUnicode(keyval uint) uint32 {
-	var arg0 uint
-	arg0 = uint(keyval)
+	var arg0 C.guint
+	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_to_unicode(arg0)
 
@@ -1341,8 +1368,8 @@ func KeyvalToUnicode(keyval uint) uint32 {
 
 // KeyvalToUpper converts a key value to upper case, if applicable.
 func KeyvalToUpper(keyval uint) uint {
-	var arg0 uint
-	arg0 = uint(keyval)
+	var arg0 C.guint
+	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_to_upper(arg0)
 
@@ -1357,11 +1384,11 @@ func KeyvalToUpper(keyval uint) uint {
 // PaintableInterface.get_current_image() virtual function when the paintable is
 // in an incomplete state (like a MediaStream before receiving the first frame).
 func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable {
-	var arg0 int
-	arg0 = int(intrinsicWidth)
+	var arg0 C.int
+	arg0 = C.int(intrinsicWidth)
 
-	var arg1 int
-	arg1 = int(intrinsicHeight)
+	var arg1 C.int
+	arg1 = C.int(intrinsicHeight)
 
 	ret := C.gdk_paintable_new_empty(arg0, arg1)
 
@@ -1380,20 +1407,20 @@ func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable {
 // the clip region. The clip region is mainly useful for highlightling parts of
 // text, such as when text is selected.
 func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, indexRanges int, nRanges int) *cairo.Region {
-	var arg0 pango.Layout
-	arg0 = pango.WrapLayout(externglib.Take(unsafe.Pointer(layout.Native())))
+	var arg0 *C.PangoLayout
+	arg0 = (*C.C.PangoLayout)(layout.Native())
 
-	var arg1 int
-	arg1 = int(xOrigin)
+	var arg1 C.int
+	arg1 = C.int(xOrigin)
 
-	var arg2 int
-	arg2 = int(yOrigin)
+	var arg2 C.int
+	arg2 = C.int(yOrigin)
 
-	var arg3 int
-	arg3 = int(indexRanges)
+	var arg3 *C.int
+	arg3 = (*C.int)(indexRanges)
 
-	var arg4 int
-	arg4 = int(nRanges)
+	var arg4 C.int
+	arg4 = C.int(nRanges)
 
 	ret := C.gdk_pango_layout_get_clip_region(arg0, arg1, arg2, arg3, arg4)
 
@@ -1417,31 +1444,22 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 // clip region. The clip region is mainly useful for highlightling parts of
 // text, such as when text is selected.
 func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin int, indexRanges []int, nRanges int) *cairo.Region {
-	var arg0 *pango.LayoutLine
-	arg0 = pango.WrapLayoutLine(line)
+	var arg0 *C.PangoLayoutLine
+	arg0 = (*C.C.PangoLayoutLine)(line.Native())
 
-	var arg1 int
-	arg1 = int(xOrigin)
+	var arg1 C.int
+	arg1 = C.int(xOrigin)
 
-	var arg2 int
-	arg2 = int(yOrigin)
+	var arg2 C.int
+	arg2 = C.int(yOrigin)
 
-	var arg3 []int
+	var arg3 *C.int
 	{
-		var length uint
-		for p := unsafe.Pointer(indexRanges); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
 
-		arg3 = make([]int, length)
-		for i := 0; i < length; i++ {
-			src := (C.gint)(unsafe.Pointer(uintptr(unsafe.Pointer(indexRanges)) + i))
-			arg3[i] = int(src)
-		}
 	}
 
-	var arg4 int
-	arg4 = int(nRanges)
+	var arg4 C.int
+	arg4 = C.int(nRanges)
 
 	ret := C.gdk_pango_layout_line_get_clip_region(arg0, arg1, arg2, arg3, arg4)
 
@@ -1458,20 +1476,20 @@ func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin i
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the @surface contains one.
 func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) gdkpixbuf.Pixbuf {
-	var arg0 *cairo.Surface
-	arg0 = cairo.WrapSurface(surface)
+	var arg0 *C.cairo_surface_t
+	arg0 = (*C.C.cairo_surface_t)(surface.Native())
 
-	var arg1 int
-	arg1 = int(srcX)
+	var arg1 C.int
+	arg1 = C.int(srcX)
 
-	var arg2 int
-	arg2 = int(srcY)
+	var arg2 C.int
+	arg2 = C.int(srcY)
 
-	var arg3 int
-	arg3 = int(width)
+	var arg3 C.int
+	arg3 = C.int(width)
 
-	var arg4 int
-	arg4 = int(height)
+	var arg4 C.int
+	arg4 = C.int(height)
 
 	ret := C.gdk_pixbuf_get_from_surface(arg0, arg1, arg2, arg3, arg4)
 
@@ -1485,8 +1503,8 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 // generally not be used in newly written code as later stages will almost
 // certainly convert the pixbuf back into a texture to draw it on screen.
 func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
-	var arg0 Texture
-	arg0 = gdk.WrapTexture(externglib.Take(unsafe.Pointer(texture.Native())))
+	var arg0 *C.GdkTexture
+	arg0 = (*C.C.GdkTexture)(texture.Native())
 
 	ret := C.gdk_pixbuf_get_from_texture(arg0)
 
@@ -1521,8 +1539,8 @@ func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 // This call must happen prior to gdk_display_open(), gtk_init(), or
 // gtk_init_check() in order to take effect.
 func SetAllowedBackends(backends string) {
-	var arg0 string
-	backends = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(backends))
 	defer C.free(unsafe.Pointer(backends))
 
 	C.gdk_set_allowed_backends(arg0)
@@ -1538,8 +1556,8 @@ func ToplevelSizeGetType() externglib.Type {
 
 // UnicodeToKeyval: convert from a ISO10646 character to a key symbol.
 func UnicodeToKeyval(wc uint32) uint {
-	var arg0 uint32
-	arg0 = uint32(wc)
+	var arg0 C.guint32
+	arg0 = C.guint32(wc)
 
 	ret := C.gdk_unicode_to_keyval(arg0)
 
@@ -1732,7 +1750,12 @@ func marshalContentFormats(p uintptr) (interface{}, error) {
 }
 
 func (c *ContentFormats) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ContentFormats) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.GdkContentFormats. The caller is expected to
@@ -1770,7 +1793,12 @@ func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 }
 
 func (c *ContentFormatsBuilder) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ContentFormatsBuilder) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.GdkContentFormatsBuilder. The caller is expected to
@@ -1805,7 +1833,12 @@ func marshalEventSequence(p uintptr) (interface{}, error) {
 }
 
 func (e *EventSequence) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *EventSequence) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.GdkEventSequence. The caller is expected to
@@ -1842,7 +1875,12 @@ func marshalFrameTimings(p uintptr) (interface{}, error) {
 }
 
 func (f *FrameTimings) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FrameTimings) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.GdkFrameTimings. The caller is expected to
@@ -1877,11 +1915,14 @@ type KeymapKey struct {
 // primarily used internally.
 func WrapKeymapKey(ptr unsafe.Pointer) *KeymapKey {
 	p := (*C.GdkKeymapKey)(ptr)
-	var v KeymapKey
+	v := KeymapKey{native: p}
 
 	v.Keycode = uint(p.keycode)
 	v.Group = int(p.group)
 	v.Level = int(p.level)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*KeymapKey).free)
 
 	return &v
 }
@@ -1889,6 +1930,15 @@ func WrapKeymapKey(ptr unsafe.Pointer) *KeymapKey {
 func marshalKeymapKey(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapKeymapKey(unsafe.Pointer(b))
+}
+
+func (k *KeymapKey) free() {
+	C.free(k.Native())
+}
+
+// Native returns the underlying source pointer.
+func (k *KeymapKey) Native() unsafe.Pointer {
+	return unsafe.Pointer(k.native)
 }
 
 // Native returns the pointer to *C.GdkKeymapKey. The caller is expected to
@@ -1951,7 +2001,12 @@ func marshalPopupLayout(p uintptr) (interface{}, error) {
 }
 
 func (p *PopupLayout) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PopupLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.GdkPopupLayout. The caller is expected to
@@ -1982,12 +2037,15 @@ type RGBA struct {
 // primarily used internally.
 func WrapRGBA(ptr unsafe.Pointer) *RGBA {
 	p := (*C.GdkRGBA)(ptr)
-	var v RGBA
+	v := RGBA{native: p}
 
 	v.Red = float32(p.red)
 	v.Green = float32(p.green)
 	v.Blue = float32(p.blue)
 	v.Alpha = float32(p.alpha)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RGBA).free)
 
 	return &v
 }
@@ -1995,6 +2053,15 @@ func WrapRGBA(ptr unsafe.Pointer) *RGBA {
 func marshalRGBA(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapRGBA(unsafe.Pointer(b))
+}
+
+func (r *RGBA) free() {
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RGBA) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.GdkRGBA. The caller is expected to
@@ -2022,12 +2089,15 @@ type Rectangle struct {
 // primarily used internally.
 func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
 	p := (*C.GdkRectangle)(ptr)
-	var v Rectangle
+	v := Rectangle{native: p}
 
 	v.X = int(p.x)
 	v.Y = int(p.y)
 	v.Width = int(p.width)
 	v.Height = int(p.height)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Rectangle).free)
 
 	return &v
 }
@@ -2035,6 +2105,15 @@ func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapRectangle(unsafe.Pointer(b))
+}
+
+func (r *Rectangle) free() {
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.GdkRectangle. The caller is expected to
@@ -2059,11 +2138,14 @@ type TimeCoord struct {
 // primarily used internally.
 func WrapTimeCoord(ptr unsafe.Pointer) *TimeCoord {
 	p := (*C.GdkTimeCoord)(ptr)
-	var v TimeCoord
+	v := TimeCoord{native: p}
 
 	v.Time = uint32(p.time)
 	v.Flags = AxisFlags(p.flags)
 	v.Axes = [12]float64(p.axes)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*TimeCoord).free)
 
 	return &v
 }
@@ -2071,6 +2153,15 @@ func WrapTimeCoord(ptr unsafe.Pointer) *TimeCoord {
 func marshalTimeCoord(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapTimeCoord(unsafe.Pointer(b))
+}
+
+func (t *TimeCoord) free() {
+	C.free(t.Native())
+}
+
+// Native returns the underlying source pointer.
+func (t *TimeCoord) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // Native returns the pointer to *C.GdkTimeCoord. The caller is expected to
@@ -2106,7 +2197,12 @@ func marshalToplevelLayout(p uintptr) (interface{}, error) {
 }
 
 func (t *ToplevelLayout) free() {
-	C.free(unsafe.Pointer(t.native))
+	C.free(t.Native())
+}
+
+// Native returns the underlying source pointer.
+func (t *ToplevelLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // Native returns the pointer to *C.GdkToplevelLayout. The caller is expected to

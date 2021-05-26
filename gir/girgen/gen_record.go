@@ -30,9 +30,11 @@ var recordTmpl = newGoTemplate(`
 		{{ GoDoc .Doc 1 .GoName }}
 		{{ .GoName }} {{ .GoType }}
 		{{ end }}
-
 		{{ end }}
+
+		{{ if .NeedsNative }}
 		native *C.{{ .CType }}
+		{{ end }}
 	}
 
 	// Wrap{{ .GoName }} wraps the C unsafe.Pointer to be the right type. It is
@@ -65,7 +67,12 @@ var recordTmpl = newGoTemplate(`
 
 	{{ if .NeedsNative }}
 	func ({{ $recv }} *{{ .GoName }}) free() {
-		C.free(unsafe.Pointer({{ $recv }}.native))
+		C.free({{ $recv }}.Native())
+	}
+
+	// Native returns the underlying source pointer.
+	func ({{ $recv }} *{{ .GoName }}) Native() unsafe.Pointer {
+		return unsafe.Pointer({{ $recv }}.native)
 	}
 	{{ end }}
 
@@ -113,7 +120,8 @@ func (rg *recordGenerator) Use(rec gir.Record) bool {
 
 	rg.Record = rec
 	rg.GoName = PascalToGo(rec.Name)
-	rg.NeedsNative = rg.needsNative()
+	// rg.NeedsNative = rg.needsNative()
+	rg.NeedsNative = true
 	rg.PublicFields = rg.publicFields()
 
 	return true

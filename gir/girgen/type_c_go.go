@@ -58,9 +58,9 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversion) string {
 
 	switch {
 	case array.FixedSize > 0:
-		// Detect if the underlying is a compatible Go primitive type. If it is,
-		// then we can directly cast a fixed-size array.
-		if primitiveGo, ok := girPrimitiveGo[array.Type.Name]; ok {
+		// Detect if the underlying is a compatible Go primitive type that isn't
+		// a string. If it is, then we can directly cast a fixed-size array.
+		if primitiveGo, ok := girPrimitiveGo[array.Type.Name]; ok && primitiveGo != "string" {
 			return conv.callf("[%d]%s", array.FixedSize, primitiveGo)
 		}
 
@@ -210,7 +210,11 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversion) string {
 		// externName doesn't contain the pointer.
 		externName, _ := resolved.Extern.Result.Info()
 		externName = PascalToGo(externName)
-		wrapName := resolved.Package + ".Wrap" + externName
+
+		wrapName := "Wrap" + externName
+		if resolved.NeedsNamespace(ng.current) {
+			wrapName = resolved.Package + "." + wrapName
+		}
 
 		switch {
 		case result.Class != nil:

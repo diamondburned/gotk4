@@ -83,7 +83,12 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 }
 
 func (d *Display) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *Display) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.Display. The caller is expected to
@@ -114,7 +119,12 @@ func marshalScreen(p uintptr) (interface{}, error) {
 }
 
 func (s *Screen) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *Screen) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.Screen. The caller is expected to
@@ -145,7 +155,12 @@ func marshalVisual(p uintptr) (interface{}, error) {
 }
 
 func (v *Visual) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *Visual) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.Visual. The caller is expected to
@@ -176,7 +191,12 @@ func marshalXConfigureEvent(p uintptr) (interface{}, error) {
 }
 
 func (x *XConfigureEvent) free() {
-	C.free(unsafe.Pointer(x.native))
+	C.free(x.Native())
+}
+
+// Native returns the underlying source pointer.
+func (x *XConfigureEvent) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 // Native returns the pointer to *C.XConfigureEvent. The caller is expected to
@@ -207,7 +227,12 @@ func marshalXImage(p uintptr) (interface{}, error) {
 }
 
 func (x *XImage) free() {
-	C.free(unsafe.Pointer(x.native))
+	C.free(x.Native())
+}
+
+// Native returns the underlying source pointer.
+func (x *XImage) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 // Native returns the pointer to *C.XImage. The caller is expected to
@@ -238,7 +263,12 @@ func marshalXFontStruct(p uintptr) (interface{}, error) {
 }
 
 func (x *XFontStruct) free() {
-	C.free(unsafe.Pointer(x.native))
+	C.free(x.Native())
+}
+
+// Native returns the underlying source pointer.
+func (x *XFontStruct) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 // Native returns the pointer to *C.XFontStruct. The caller is expected to
@@ -269,7 +299,12 @@ func marshalXTrapezoid(p uintptr) (interface{}, error) {
 }
 
 func (x *XTrapezoid) free() {
-	C.free(unsafe.Pointer(x.native))
+	C.free(x.Native())
+}
+
+// Native returns the underlying source pointer.
+func (x *XTrapezoid) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 // Native returns the pointer to *C.XTrapezoid. The caller is expected to
@@ -300,7 +335,12 @@ func marshalXVisualInfo(p uintptr) (interface{}, error) {
 }
 
 func (x *XVisualInfo) free() {
-	C.free(unsafe.Pointer(x.native))
+	C.free(x.Native())
+}
+
+// Native returns the underlying source pointer.
+func (x *XVisualInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 // Native returns the pointer to *C.XVisualInfo. The caller is expected to
@@ -331,7 +371,12 @@ func marshalXWindowAttributes(p uintptr) (interface{}, error) {
 }
 
 func (x *XWindowAttributes) free() {
-	C.free(unsafe.Pointer(x.native))
+	C.free(x.Native())
+}
+
+// Native returns the underlying source pointer.
+func (x *XWindowAttributes) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 // Native returns the pointer to *C.XWindowAttributes. The caller is expected to

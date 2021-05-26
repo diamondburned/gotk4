@@ -3,6 +3,7 @@
 package gdkpixdata
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
@@ -95,11 +96,11 @@ const (
 // if the pixel data is run-length-encoded, the pixel data is copied into
 // newly-allocated memory; otherwise it is reused.
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
-	var arg0 *Pixdata
-	arg0 = gdkpixdata.WrapPixdata(pixdata)
+	var arg0 *C.GdkPixdata
+	arg0 = (*C.C.GdkPixdata)(pixdata.Native())
 
-	var arg1 bool
-	arg1 = gextras.Gobool(copyPixels)
+	var arg1 C.gboolean
+	arg1 = gextras.Cbool(copyPixels)
 
 	ret := C.gdk_pixbuf_from_pixdata(arg0, arg1)
 
@@ -138,7 +139,7 @@ type Pixdata struct {
 // primarily used internally.
 func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
 	p := (*C.GdkPixdata)(ptr)
-	var v Pixdata
+	v := Pixdata{native: p}
 
 	v.Magic = uint32(p.magic)
 	v.Length = int32(p.length)
@@ -154,10 +155,13 @@ func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
 
 		v.PixelData = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p.pixel_data)) + i))
+			src := (C.C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p.pixel_data)) + i))
 			v.PixelData[i] = uint8(src)
 		}
 	}
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Pixdata).free)
 
 	return &v
 }
@@ -165,6 +169,15 @@ func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
 func marshalPixdata(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapPixdata(unsafe.Pointer(b))
+}
+
+func (p *Pixdata) free() {
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *Pixdata) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.GdkPixdata. The caller is expected to

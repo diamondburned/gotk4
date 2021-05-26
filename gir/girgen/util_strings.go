@@ -45,6 +45,7 @@ var (
 		"Tolower", "ToLower",
 		"Toupper", "ToUpper",
 		"Xdigit", "XDigit",
+		"Dbus", "DBus",
 		"Gtype", "GType",
 		"Gvalue", "GValue",
 	)

@@ -56,31 +56,6 @@ func directCall(value, target, typ string) string {
 	return target + " = " + typ + "(" + value + ")"
 }
 
-// ResolvedType is a resolved type from a given gir.Type.
-type ResolvedType struct {
-	// either or
-	Extern  *ExternType // optional
-	Builtin *string     // optional
-
-	Import  string // Full import path.
-	Package string // Package name, also import alias.
-
-	Parent string // GIR Type, optional
-	GType  string
-	CType  string
-	Ptr    uint8
-}
-
-// ExternType is an externally resolved type.
-type ExternType struct {
-	Result *gir.TypeFindResult
-}
-
-var (
-	typeCache  sync.Map
-	typeFlight singleflight.Group
-)
-
 func countPtrs(typ gir.Type, result *gir.TypeFindResult) uint8 {
 	ptr := uint8(strings.Count(typ.CType, "*"))
 
@@ -109,12 +84,129 @@ ret:
 	return ptr
 }
 
+var ctypePrefixEraser = strings.NewReplacer(
+	"const", "",
+	"volatile", "",
+)
+
+// movePtr moves the same number of pointers from the given orig string into
+// another string.
+func movePtr(orig, into string) string {
+	ptr := strings.Count(orig, "*")
+	return strings.Repeat("*", ptr) + into
+}
+
+// anyTypeIsVoid returns true if AnyType is a void type.
+func anyTypeIsVoid(any gir.AnyType) bool {
+	return any.Type != nil && any.Type.Name == "none"
+}
+
+// anyTypeCGo returns the CGo type for a GIR AnyType. An empty string is
+// returned if none is made.
+func anyTypeCGo(any gir.AnyType) string {
+	return cgoType(anyTypeC(any))
+}
+
+// anyTypeC returns the C type for a GIR AnyType. An empty string is returned if
+// none is made.
+func anyTypeC(any gir.AnyType) string {
+	switch {
+	case any.Array != nil:
+		return any.Array.CType
+	case any.Type != nil:
+		return any.Type.CType
+	default:
+		return ""
+	}
+}
+
+// cgoType turns the given C type into CGo.
+func cgoType(cType string) string {
+	oldType := cType
+	cType = ctypePrefixEraser.Replace(cType)
+	cType = strings.ReplaceAll(cType, "*", "")
+	cType = strings.TrimSpace(cType)
+
+	if replace, ok := cgoPrimitiveTypes[cType]; ok {
+		cType = replace
+	}
+
+	return movePtr(oldType, "C."+cType)
+}
+
+// returnIsVoid returns true if the return type is void.
+func returnIsVoid(ret *gir.ReturnValue) bool {
+	return ret == nil || (ret != nil && anyTypeIsVoid(ret.AnyType))
+}
+
+// girPrimitiveGo maps the given GIR primitive type to a Go primitive type.
+var girPrimitiveGo = map[string]string{
+	"none":        "",
+	"gboolean":    "bool",
+	"gfloat":      "float32",
+	"gdouble":     "float64",
+	"long double": "float64",
+	"gint":        "int",
+	"gssize":      "int",
+	"gint8":       "int8",
+	"gint16":      "int16",
+	"gshort":      "int16",
+	"gint32":      "int32",
+	"glong":       "int32",
+	"int32":       "int32",
+	"gint64":      "int64",
+	"guint":       "uint",
+	"gsize":       "uint",
+	"guchar":      "byte",
+	"gchar":       "byte",
+	"guint8":      "uint8",
+	"guint16":     "uint16",
+	"gushort":     "uint16",
+	"guint32":     "uint32",
+	"gulong":      "uint32",
+	"gunichar":    "uint32",
+	"guint64":     "uint64",
+	"utf8":        "string",
+	"filename":    "string",
+}
+
+// cgoPrimitiveTypes contains edge cases for referencing C primitive types from
+// CGo.
+var cgoPrimitiveTypes = map[string]string{
+	"long double": "longdouble",
+}
+
 func cTypeOrGIRType(girType gir.Type) string {
 	if girType.CType == "" {
 		return girType.Name
 	}
-	return girType.CType
+	return cgoType(girType.CType)
 }
+
+// ResolvedType is a resolved type from a given gir.Type.
+type ResolvedType struct {
+	// either or
+	Extern  *ExternType // optional
+	Builtin *string     // optional
+
+	Import  string // Full import path.
+	Package string // Package name, also import alias.
+
+	Parent string // GIR Type, optional
+	GType  string
+	CType  string
+	Ptr    uint8
+}
+
+// ExternType is an externally resolved type.
+type ExternType struct {
+	Result *gir.TypeFindResult
+}
+
+var (
+	typeCache  sync.Map
+	typeFlight singleflight.Group
+)
 
 // builtinType is a convenient function to make a new resolvedType.
 func builtinType(imp, typ string, girType gir.Type) *ResolvedType {
@@ -147,7 +239,7 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *ResolvedType {
 		Import:  "github.com/gotk3/gotk3/glib",
 		Package: "externglib",
 		GType:   typ.Name,
-		CType:   ctyp,
+		CType:   cgoType(ctyp),
 		Ptr:     uint8(ptrs),
 	}
 }
@@ -173,7 +265,7 @@ func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *R
 		Package: pkg,
 		Parent:  parent,
 		GType:   typ.Name,
-		CType:   typ.CType,
+		CType:   cgoType(typ.CType),
 		Ptr:     countPtrs(typ, result),
 	}
 }
@@ -246,24 +338,12 @@ func (typ *ResolvedType) PublicType(needsNamespace bool) string {
 	return ptrStr + typ.Package + "." + name
 }
 
-var cgoReplacer = strings.NewReplacer(
-	"const ", "",
-	"volatile ", "",
-)
-
 // CGoType returns the CGo type.
 func (typ *ResolvedType) CGoType() string {
 	ptr := strings.Count(typ.CType, "*")
-	val := strings.ReplaceAll(cgoReplacer.Replace(typ.CType), "*", "")
+	val := strings.ReplaceAll(typ.CType, "*", "")
 
 	return strings.Repeat("*", ptr) + "C." + val
-}
-
-// movePtr moves the same number of pointers from the given orig string into
-// another string.
-func movePtr(orig, into string) string {
-	ptr := strings.Count(orig, "*")
-	return strings.Repeat("*", ptr) + into
 }
 
 // PublicType returns the generated public Go type of the given resolved type.
@@ -291,27 +371,6 @@ func (ng *NamespaceGenerator) resolveArrayType(array gir.Array, pub bool) (strin
 	}
 
 	return arrayPrefix + child, true
-}
-
-// anyTypeCGo returns the CGo type for a GIR AnyType. An empty string is
-// returned if none is made.
-func anyTypeCGo(any gir.AnyType) string {
-	c := strings.TrimPrefix(anyTypeC(any), "const ")
-	cgo := "C." + strings.ReplaceAll(c, "*", "")
-	return movePtr(c, cgo)
-}
-
-// anyTypeC returns the C type for a GIR AnyType. An empty string is returned if
-// none is made.
-func anyTypeC(any gir.AnyType) string {
-	switch {
-	case any.Array != nil:
-		return any.Array.CType
-	case any.Type != nil:
-		return any.Type.CType
-	default:
-		return ""
-	}
 }
 
 // ResolveAnyType generates the Go type signature for the AnyType union. An
@@ -399,47 +458,6 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 
 	// may be a non-nil interface to a nil pointer.
 	return v.(*ResolvedType)
-}
-
-// anyTypeIsVoid returns true if AnyType is a void type.
-func anyTypeIsVoid(any gir.AnyType) bool {
-	return any.Type != nil && any.Type.Name == "none"
-}
-
-// returnIsVoid returns true if the return type is void.
-func returnIsVoid(ret *gir.ReturnValue) bool {
-	return ret == nil || (ret != nil && anyTypeIsVoid(ret.AnyType))
-}
-
-// girPrimitiveGo maps the given GIR primitive type to a Go primitive type.
-var girPrimitiveGo = map[string]string{
-	"none":        "",
-	"gboolean":    "bool",
-	"gfloat":      "float32",
-	"gdouble":     "float64",
-	"long double": "float64",
-	"gint":        "int",
-	"gssize":      "int",
-	"gint8":       "int8",
-	"gint16":      "int16",
-	"gshort":      "int16",
-	"gint32":      "int32",
-	"glong":       "int32",
-	"int32":       "int32",
-	"gint64":      "int64",
-	"guint":       "uint",
-	"gsize":       "uint",
-	"guchar":      "byte",
-	"gchar":       "byte",
-	"guint8":      "uint8",
-	"guint16":     "uint16",
-	"gushort":     "uint16",
-	"guint32":     "uint32",
-	"gulong":      "uint32",
-	"gunichar":    "uint32",
-	"guint64":     "uint64",
-	"utf8":        "string",
-	"filename":    "string",
 }
 
 // gextrasObjector references the gextras.Objector interface.

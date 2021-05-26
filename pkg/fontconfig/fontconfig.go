@@ -50,7 +50,12 @@ func marshalPattern(p uintptr) (interface{}, error) {
 }
 
 func (p *Pattern) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *Pattern) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.FcPattern. The caller is expected to
@@ -81,7 +86,12 @@ func marshalCharSet(p uintptr) (interface{}, error) {
 }
 
 func (c *CharSet) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CharSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.FcCharSet. The caller is expected to

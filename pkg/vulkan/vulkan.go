@@ -833,7 +833,12 @@ func marshalFlags(p uintptr) (interface{}, error) {
 }
 
 func (f *Flags) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *Flags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFlags. The caller is expected to
@@ -864,7 +869,12 @@ func marshalBool32(p uintptr) (interface{}, error) {
 }
 
 func (b *Bool32) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *Bool32) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBool32. The caller is expected to
@@ -895,7 +905,12 @@ func marshalDeviceSize(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceSize) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceSize. The caller is expected to
@@ -926,7 +941,12 @@ func marshalSampleMask(p uintptr) (interface{}, error) {
 }
 
 func (s *SampleMask) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SampleMask) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSampleMask. The caller is expected to
@@ -957,7 +977,12 @@ func marshalInstance(p uintptr) (interface{}, error) {
 }
 
 func (i *Instance) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *Instance) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkInstance. The caller is expected to
@@ -988,7 +1013,12 @@ func marshalPhysicalDevice(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDevice) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDevice) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDevice. The caller is expected to
@@ -1019,7 +1049,12 @@ func marshalDevice(p uintptr) (interface{}, error) {
 }
 
 func (d *Device) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *Device) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDevice. The caller is expected to
@@ -1050,7 +1085,12 @@ func marshalQueue(p uintptr) (interface{}, error) {
 }
 
 func (q *Queue) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *Queue) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueue. The caller is expected to
@@ -1081,7 +1121,12 @@ func marshalSemaphore(p uintptr) (interface{}, error) {
 }
 
 func (s *Semaphore) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *Semaphore) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSemaphore. The caller is expected to
@@ -1112,7 +1157,12 @@ func marshalCommandBuffer(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandBuffer) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandBuffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandBuffer. The caller is expected to
@@ -1143,7 +1193,12 @@ func marshalFence(p uintptr) (interface{}, error) {
 }
 
 func (f *Fence) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *Fence) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFence. The caller is expected to
@@ -1174,7 +1229,12 @@ func marshalDeviceMemory(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceMemory) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceMemory) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceMemory. The caller is expected to
@@ -1205,7 +1265,12 @@ func marshalBuffer(p uintptr) (interface{}, error) {
 }
 
 func (b *Buffer) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *Buffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBuffer. The caller is expected to
@@ -1236,7 +1301,12 @@ func marshalImage(p uintptr) (interface{}, error) {
 }
 
 func (i *Image) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *Image) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImage. The caller is expected to
@@ -1267,7 +1337,12 @@ func marshalEvent(p uintptr) (interface{}, error) {
 }
 
 func (e *Event) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *Event) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkEvent. The caller is expected to
@@ -1298,7 +1373,12 @@ func marshalQueryPool(p uintptr) (interface{}, error) {
 }
 
 func (q *QueryPool) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueryPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueryPool. The caller is expected to
@@ -1329,7 +1409,12 @@ func marshalBufferView(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferView) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferView) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferView. The caller is expected to
@@ -1360,7 +1445,12 @@ func marshalImageView(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageView) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageView) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageView. The caller is expected to
@@ -1391,7 +1481,12 @@ func marshalShaderModule(p uintptr) (interface{}, error) {
 }
 
 func (s *ShaderModule) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShaderModule) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShaderModule. The caller is expected to
@@ -1422,7 +1517,12 @@ func marshalPipelineCache(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineCache) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCache) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCache. The caller is expected to
@@ -1453,7 +1553,12 @@ func marshalPipelineLayout(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineLayout) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineLayout. The caller is expected to
@@ -1484,7 +1589,12 @@ func marshalRenderPass(p uintptr) (interface{}, error) {
 }
 
 func (r *RenderPass) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPass) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPass. The caller is expected to
@@ -1515,7 +1625,12 @@ func marshalPipeline(p uintptr) (interface{}, error) {
 }
 
 func (p *Pipeline) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *Pipeline) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipeline. The caller is expected to
@@ -1546,7 +1661,12 @@ func marshalDescriptorSetLayout(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorSetLayout) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetLayout. The caller is expected to
@@ -1577,7 +1697,12 @@ func marshalSampler(p uintptr) (interface{}, error) {
 }
 
 func (s *Sampler) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *Sampler) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSampler. The caller is expected to
@@ -1608,7 +1733,12 @@ func marshalDescriptorPool(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorPool) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorPool. The caller is expected to
@@ -1639,7 +1769,12 @@ func marshalDescriptorSet(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorSet) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSet. The caller is expected to
@@ -1670,7 +1805,12 @@ func marshalFramebuffer(p uintptr) (interface{}, error) {
 }
 
 func (f *Framebuffer) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *Framebuffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFramebuffer. The caller is expected to
@@ -1701,7 +1841,12 @@ func marshalCommandPool(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandPool) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandPool) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandPool. The caller is expected to
@@ -1732,7 +1877,12 @@ func marshalPipelineCacheHeaderVersion(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineCacheHeaderVersion) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCacheHeaderVersion) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCacheHeaderVersion. The caller is expected to
@@ -1763,7 +1913,12 @@ func marshalResult(p uintptr) (interface{}, error) {
 }
 
 func (r *Result) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *Result) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkResult. The caller is expected to
@@ -1794,7 +1949,12 @@ func marshalStructureType(p uintptr) (interface{}, error) {
 }
 
 func (s *StructureType) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *StructureType) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkStructureType. The caller is expected to
@@ -1825,7 +1985,12 @@ func marshalSystemAllocationScope(p uintptr) (interface{}, error) {
 }
 
 func (s *SystemAllocationScope) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SystemAllocationScope) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSystemAllocationScope. The caller is expected to
@@ -1856,7 +2021,12 @@ func marshalInternalAllocationType(p uintptr) (interface{}, error) {
 }
 
 func (i *InternalAllocationType) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *InternalAllocationType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkInternalAllocationType. The caller is expected to
@@ -1887,7 +2057,12 @@ func marshalFormat(p uintptr) (interface{}, error) {
 }
 
 func (f *Format) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *Format) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFormat. The caller is expected to
@@ -1918,7 +2093,12 @@ func marshalImageType(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageType) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageType. The caller is expected to
@@ -1949,7 +2129,12 @@ func marshalImageTiling(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageTiling) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageTiling) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageTiling. The caller is expected to
@@ -1980,7 +2165,12 @@ func marshalPhysicalDeviceType(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceType) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceType) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceType. The caller is expected to
@@ -2011,7 +2201,12 @@ func marshalQueryType(p uintptr) (interface{}, error) {
 }
 
 func (q *QueryType) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueryType) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueryType. The caller is expected to
@@ -2042,7 +2237,12 @@ func marshalSharingMode(p uintptr) (interface{}, error) {
 }
 
 func (s *SharingMode) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SharingMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSharingMode. The caller is expected to
@@ -2073,7 +2273,12 @@ func marshalImageLayout(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageLayout) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageLayout. The caller is expected to
@@ -2104,7 +2309,12 @@ func marshalImageViewType(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageViewType) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageViewType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageViewType. The caller is expected to
@@ -2135,7 +2345,12 @@ func marshalComponentSwizzle(p uintptr) (interface{}, error) {
 }
 
 func (c *ComponentSwizzle) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ComponentSwizzle) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkComponentSwizzle. The caller is expected to
@@ -2166,7 +2381,12 @@ func marshalVertexInputRate(p uintptr) (interface{}, error) {
 }
 
 func (v *VertexInputRate) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *VertexInputRate) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkVertexInputRate. The caller is expected to
@@ -2197,7 +2417,12 @@ func marshalPrimitiveTopology(p uintptr) (interface{}, error) {
 }
 
 func (p *PrimitiveTopology) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PrimitiveTopology) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPrimitiveTopology. The caller is expected to
@@ -2228,7 +2453,12 @@ func marshalPolygonMode(p uintptr) (interface{}, error) {
 }
 
 func (p *PolygonMode) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PolygonMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPolygonMode. The caller is expected to
@@ -2259,7 +2489,12 @@ func marshalFrontFace(p uintptr) (interface{}, error) {
 }
 
 func (f *FrontFace) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FrontFace) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFrontFace. The caller is expected to
@@ -2290,7 +2525,12 @@ func marshalCompareOp(p uintptr) (interface{}, error) {
 }
 
 func (c *CompareOp) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CompareOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCompareOp. The caller is expected to
@@ -2321,7 +2561,12 @@ func marshalStencilOp(p uintptr) (interface{}, error) {
 }
 
 func (s *StencilOp) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *StencilOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkStencilOp. The caller is expected to
@@ -2352,7 +2597,12 @@ func marshalLogicOp(p uintptr) (interface{}, error) {
 }
 
 func (l *LogicOp) free() {
-	C.free(unsafe.Pointer(l.native))
+	C.free(l.Native())
+}
+
+// Native returns the underlying source pointer.
+func (l *LogicOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // Native returns the pointer to *C.VkLogicOp. The caller is expected to
@@ -2383,7 +2633,12 @@ func marshalBlendFactor(p uintptr) (interface{}, error) {
 }
 
 func (b *BlendFactor) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BlendFactor) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBlendFactor. The caller is expected to
@@ -2414,7 +2669,12 @@ func marshalBlendOp(p uintptr) (interface{}, error) {
 }
 
 func (b *BlendOp) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BlendOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBlendOp. The caller is expected to
@@ -2445,7 +2705,12 @@ func marshalDynamicState(p uintptr) (interface{}, error) {
 }
 
 func (d *DynamicState) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DynamicState) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDynamicState. The caller is expected to
@@ -2476,7 +2741,12 @@ func marshalFilter(p uintptr) (interface{}, error) {
 }
 
 func (f *Filter) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *Filter) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFilter. The caller is expected to
@@ -2507,7 +2777,12 @@ func marshalSamplerMipmapMode(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerMipmapMode) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerMipmapMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerMipmapMode. The caller is expected to
@@ -2538,7 +2813,12 @@ func marshalSamplerAddressMode(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerAddressMode) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerAddressMode) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerAddressMode. The caller is expected to
@@ -2569,7 +2849,12 @@ func marshalBorderColor(p uintptr) (interface{}, error) {
 }
 
 func (b *BorderColor) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BorderColor) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBorderColor. The caller is expected to
@@ -2600,7 +2885,12 @@ func marshalDescriptorType(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorType) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorType) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorType. The caller is expected to
@@ -2631,7 +2921,12 @@ func marshalAttachmentLoadOp(p uintptr) (interface{}, error) {
 }
 
 func (a *AttachmentLoadOp) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttachmentLoadOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAttachmentLoadOp. The caller is expected to
@@ -2662,7 +2957,12 @@ func marshalAttachmentStoreOp(p uintptr) (interface{}, error) {
 }
 
 func (a *AttachmentStoreOp) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttachmentStoreOp) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAttachmentStoreOp. The caller is expected to
@@ -2693,7 +2993,12 @@ func marshalPipelineBindPoint(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineBindPoint) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineBindPoint) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineBindPoint. The caller is expected to
@@ -2724,7 +3029,12 @@ func marshalCommandBufferLevel(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandBufferLevel) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandBufferLevel) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandBufferLevel. The caller is expected to
@@ -2755,7 +3065,12 @@ func marshalIndexType(p uintptr) (interface{}, error) {
 }
 
 func (i *IndexType) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *IndexType) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkIndexType. The caller is expected to
@@ -2786,7 +3101,12 @@ func marshalSubpassContents(p uintptr) (interface{}, error) {
 }
 
 func (s *SubpassContents) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassContents) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassContents. The caller is expected to
@@ -2817,7 +3137,12 @@ func marshalObjectType(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectType) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectType) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectType. The caller is expected to
@@ -2848,7 +3173,12 @@ func marshalVendorID(p uintptr) (interface{}, error) {
 }
 
 func (v *VendorID) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *VendorID) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkVendorId. The caller is expected to
@@ -2879,7 +3209,12 @@ func marshalInstanceCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (i *InstanceCreateFlags) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *InstanceCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkInstanceCreateFlags. The caller is expected to
@@ -2910,7 +3245,12 @@ func marshalFormatFeatureFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (f *FormatFeatureFlagBits) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FormatFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFormatFeatureFlagBits. The caller is expected to
@@ -2941,7 +3281,12 @@ func marshalFormatFeatureFlags(p uintptr) (interface{}, error) {
 }
 
 func (f *FormatFeatureFlags) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FormatFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFormatFeatureFlags. The caller is expected to
@@ -2972,7 +3317,12 @@ func marshalImageUsageFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageUsageFlagBits) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageUsageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageUsageFlagBits. The caller is expected to
@@ -3003,7 +3353,12 @@ func marshalImageUsageFlags(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageUsageFlags) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageUsageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageUsageFlags. The caller is expected to
@@ -3034,7 +3389,12 @@ func marshalImageCreateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageCreateFlagBits) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageCreateFlagBits. The caller is expected to
@@ -3065,7 +3425,12 @@ func marshalImageCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageCreateFlags) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageCreateFlags. The caller is expected to
@@ -3096,7 +3461,12 @@ func marshalSampleCountFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (s *SampleCountFlagBits) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SampleCountFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSampleCountFlagBits. The caller is expected to
@@ -3127,7 +3497,12 @@ func marshalSampleCountFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *SampleCountFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SampleCountFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSampleCountFlags. The caller is expected to
@@ -3158,7 +3533,12 @@ func marshalQueueFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (q *QueueFlagBits) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueueFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueueFlagBits. The caller is expected to
@@ -3189,7 +3569,12 @@ func marshalQueueFlags(p uintptr) (interface{}, error) {
 }
 
 func (q *QueueFlags) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueueFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueueFlags. The caller is expected to
@@ -3220,7 +3605,12 @@ func marshalMemoryPropertyFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryPropertyFlagBits) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryPropertyFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryPropertyFlagBits. The caller is expected to
@@ -3251,7 +3641,12 @@ func marshalMemoryPropertyFlags(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryPropertyFlags) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryPropertyFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryPropertyFlags. The caller is expected to
@@ -3282,7 +3677,12 @@ func marshalMemoryHeapFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryHeapFlagBits) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryHeapFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryHeapFlagBits. The caller is expected to
@@ -3313,7 +3713,12 @@ func marshalMemoryHeapFlags(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryHeapFlags) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryHeapFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryHeapFlags. The caller is expected to
@@ -3344,7 +3749,12 @@ func marshalDeviceCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceCreateFlags) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceCreateFlags. The caller is expected to
@@ -3375,7 +3785,12 @@ func marshalDeviceQueueCreateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceQueueCreateFlagBits) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceQueueCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceQueueCreateFlagBits. The caller is expected to
@@ -3406,7 +3821,12 @@ func marshalDeviceQueueCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceQueueCreateFlags) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceQueueCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceQueueCreateFlags. The caller is expected to
@@ -3437,7 +3857,12 @@ func marshalPipelineStageFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineStageFlagBits) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineStageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineStageFlagBits. The caller is expected to
@@ -3468,7 +3893,12 @@ func marshalPipelineStageFlags(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineStageFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineStageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineStageFlags. The caller is expected to
@@ -3499,7 +3929,12 @@ func marshalMemoryMapFlags(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryMapFlags) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryMapFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryMapFlags. The caller is expected to
@@ -3530,7 +3965,12 @@ func marshalImageAspectFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageAspectFlagBits) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageAspectFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageAspectFlagBits. The caller is expected to
@@ -3561,7 +4001,12 @@ func marshalImageAspectFlags(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageAspectFlags) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageAspectFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageAspectFlags. The caller is expected to
@@ -3592,7 +4037,12 @@ func marshalSparseImageFormatFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageFormatFlagBits) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageFormatFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageFormatFlagBits. The caller is expected to
@@ -3623,7 +4073,12 @@ func marshalSparseImageFormatFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageFormatFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageFormatFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageFormatFlags. The caller is expected to
@@ -3654,7 +4109,12 @@ func marshalSparseMemoryBindFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseMemoryBindFlagBits) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseMemoryBindFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseMemoryBindFlagBits. The caller is expected to
@@ -3685,7 +4145,12 @@ func marshalSparseMemoryBindFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseMemoryBindFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseMemoryBindFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseMemoryBindFlags. The caller is expected to
@@ -3716,7 +4181,12 @@ func marshalFenceCreateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (f *FenceCreateFlagBits) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FenceCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFenceCreateFlagBits. The caller is expected to
@@ -3747,7 +4217,12 @@ func marshalFenceCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (f *FenceCreateFlags) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FenceCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFenceCreateFlags. The caller is expected to
@@ -3778,7 +4253,12 @@ func marshalSemaphoreCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *SemaphoreCreateFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SemaphoreCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSemaphoreCreateFlags. The caller is expected to
@@ -3809,7 +4289,12 @@ func marshalEventCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (e *EventCreateFlags) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *EventCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkEventCreateFlags. The caller is expected to
@@ -3840,7 +4325,12 @@ func marshalQueryPoolCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (q *QueryPoolCreateFlags) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueryPoolCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueryPoolCreateFlags. The caller is expected to
@@ -3871,7 +4361,12 @@ func marshalQueryPipelineStatisticFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (q *QueryPipelineStatisticFlagBits) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueryPipelineStatisticFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueryPipelineStatisticFlagBits. The caller is expected to
@@ -3902,7 +4397,12 @@ func marshalQueryPipelineStatisticFlags(p uintptr) (interface{}, error) {
 }
 
 func (q *QueryPipelineStatisticFlags) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueryPipelineStatisticFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueryPipelineStatisticFlags. The caller is expected to
@@ -3933,7 +4433,12 @@ func marshalQueryResultFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (q *QueryResultFlagBits) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueryResultFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueryResultFlagBits. The caller is expected to
@@ -3964,7 +4469,12 @@ func marshalQueryResultFlags(p uintptr) (interface{}, error) {
 }
 
 func (q *QueryResultFlags) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueryResultFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueryResultFlags. The caller is expected to
@@ -3995,7 +4505,12 @@ func marshalBufferCreateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferCreateFlagBits) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferCreateFlagBits. The caller is expected to
@@ -4026,7 +4541,12 @@ func marshalBufferCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferCreateFlags) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferCreateFlags. The caller is expected to
@@ -4057,7 +4577,12 @@ func marshalBufferUsageFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferUsageFlagBits) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferUsageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferUsageFlagBits. The caller is expected to
@@ -4088,7 +4613,12 @@ func marshalBufferUsageFlags(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferUsageFlags) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferUsageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferUsageFlags. The caller is expected to
@@ -4119,7 +4649,12 @@ func marshalBufferViewCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferViewCreateFlags) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferViewCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferViewCreateFlags. The caller is expected to
@@ -4150,7 +4685,12 @@ func marshalImageViewCreateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageViewCreateFlagBits) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageViewCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageViewCreateFlagBits. The caller is expected to
@@ -4181,7 +4721,12 @@ func marshalImageViewCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageViewCreateFlags) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageViewCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageViewCreateFlags. The caller is expected to
@@ -4212,7 +4757,12 @@ func marshalShaderModuleCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *ShaderModuleCreateFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShaderModuleCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShaderModuleCreateFlags. The caller is expected to
@@ -4243,7 +4793,12 @@ func marshalPipelineCacheCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineCacheCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCacheCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCacheCreateFlags. The caller is expected to
@@ -4274,7 +4829,12 @@ func marshalPipelineCreateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineCreateFlagBits) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCreateFlagBits. The caller is expected to
@@ -4305,7 +4865,12 @@ func marshalPipelineCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCreateFlags. The caller is expected to
@@ -4336,7 +4901,12 @@ func marshalPipelineShaderStageCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineShaderStageCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineShaderStageCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineShaderStageCreateFlags. The caller is expected to
@@ -4367,7 +4937,12 @@ func marshalShaderStageFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (s *ShaderStageFlagBits) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShaderStageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShaderStageFlagBits. The caller is expected to
@@ -4398,7 +4973,12 @@ func marshalPipelineVertexInputStateCreateFlags(p uintptr) (interface{}, error) 
 }
 
 func (p *PipelineVertexInputStateCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineVertexInputStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineVertexInputStateCreateFlags. The caller is expected to
@@ -4429,7 +5009,12 @@ func marshalPipelineInputAssemblyStateCreateFlags(p uintptr) (interface{}, error
 }
 
 func (p *PipelineInputAssemblyStateCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineInputAssemblyStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineInputAssemblyStateCreateFlags. The caller is expected to
@@ -4460,7 +5045,12 @@ func marshalPipelineTessellationStateCreateFlags(p uintptr) (interface{}, error)
 }
 
 func (p *PipelineTessellationStateCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineTessellationStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineTessellationStateCreateFlags. The caller is expected to
@@ -4491,7 +5081,12 @@ func marshalPipelineViewportStateCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineViewportStateCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineViewportStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineViewportStateCreateFlags. The caller is expected to
@@ -4522,7 +5117,12 @@ func marshalPipelineRasterizationStateCreateFlags(p uintptr) (interface{}, error
 }
 
 func (p *PipelineRasterizationStateCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineRasterizationStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineRasterizationStateCreateFlags. The caller is expected to
@@ -4553,7 +5153,12 @@ func marshalCullModeFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (c *CullModeFlagBits) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CullModeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCullModeFlagBits. The caller is expected to
@@ -4584,7 +5189,12 @@ func marshalCullModeFlags(p uintptr) (interface{}, error) {
 }
 
 func (c *CullModeFlags) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CullModeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCullModeFlags. The caller is expected to
@@ -4615,7 +5225,12 @@ func marshalPipelineMultisampleStateCreateFlags(p uintptr) (interface{}, error) 
 }
 
 func (p *PipelineMultisampleStateCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineMultisampleStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineMultisampleStateCreateFlags. The caller is expected to
@@ -4646,7 +5261,12 @@ func marshalPipelineDepthStencilStateCreateFlags(p uintptr) (interface{}, error)
 }
 
 func (p *PipelineDepthStencilStateCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineDepthStencilStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineDepthStencilStateCreateFlags. The caller is expected to
@@ -4677,7 +5297,12 @@ func marshalPipelineColorBlendStateCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineColorBlendStateCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineColorBlendStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineColorBlendStateCreateFlags. The caller is expected to
@@ -4708,7 +5333,12 @@ func marshalColorComponentFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (c *ColorComponentFlagBits) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ColorComponentFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkColorComponentFlagBits. The caller is expected to
@@ -4739,7 +5369,12 @@ func marshalColorComponentFlags(p uintptr) (interface{}, error) {
 }
 
 func (c *ColorComponentFlags) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ColorComponentFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkColorComponentFlags. The caller is expected to
@@ -4770,7 +5405,12 @@ func marshalPipelineDynamicStateCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineDynamicStateCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineDynamicStateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineDynamicStateCreateFlags. The caller is expected to
@@ -4801,7 +5441,12 @@ func marshalPipelineLayoutCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineLayoutCreateFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineLayoutCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineLayoutCreateFlags. The caller is expected to
@@ -4832,7 +5477,12 @@ func marshalShaderStageFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *ShaderStageFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShaderStageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShaderStageFlags. The caller is expected to
@@ -4863,7 +5513,12 @@ func marshalSamplerCreateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerCreateFlagBits) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerCreateFlagBits. The caller is expected to
@@ -4894,7 +5549,12 @@ func marshalSamplerCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerCreateFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerCreateFlags. The caller is expected to
@@ -4925,7 +5585,12 @@ func marshalDescriptorSetLayoutCreateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorSetLayoutCreateFlagBits) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetLayoutCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutCreateFlagBits. The caller is expected to
@@ -4956,7 +5621,12 @@ func marshalDescriptorSetLayoutCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorSetLayoutCreateFlags) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetLayoutCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutCreateFlags. The caller is expected to
@@ -4987,7 +5657,12 @@ func marshalDescriptorPoolCreateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorPoolCreateFlagBits) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorPoolCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorPoolCreateFlagBits. The caller is expected to
@@ -5018,7 +5693,12 @@ func marshalDescriptorPoolCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorPoolCreateFlags) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorPoolCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorPoolCreateFlags. The caller is expected to
@@ -5049,7 +5729,12 @@ func marshalDescriptorPoolResetFlags(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorPoolResetFlags) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorPoolResetFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorPoolResetFlags. The caller is expected to
@@ -5080,7 +5765,12 @@ func marshalFramebufferCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (f *FramebufferCreateFlags) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FramebufferCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFramebufferCreateFlags. The caller is expected to
@@ -5111,7 +5801,12 @@ func marshalRenderPassCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (r *RenderPassCreateFlags) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPassCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPassCreateFlags. The caller is expected to
@@ -5142,7 +5837,12 @@ func marshalAttachmentDescriptionFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (a *AttachmentDescriptionFlagBits) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttachmentDescriptionFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAttachmentDescriptionFlagBits. The caller is expected to
@@ -5173,7 +5873,12 @@ func marshalAttachmentDescriptionFlags(p uintptr) (interface{}, error) {
 }
 
 func (a *AttachmentDescriptionFlags) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttachmentDescriptionFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAttachmentDescriptionFlags. The caller is expected to
@@ -5204,7 +5909,12 @@ func marshalSubpassDescriptionFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (s *SubpassDescriptionFlagBits) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassDescriptionFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassDescriptionFlagBits. The caller is expected to
@@ -5235,7 +5945,12 @@ func marshalSubpassDescriptionFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *SubpassDescriptionFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassDescriptionFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassDescriptionFlags. The caller is expected to
@@ -5266,7 +5981,12 @@ func marshalAccessFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (a *AccessFlagBits) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AccessFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAccessFlagBits. The caller is expected to
@@ -5297,7 +6017,12 @@ func marshalAccessFlags(p uintptr) (interface{}, error) {
 }
 
 func (a *AccessFlags) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AccessFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAccessFlags. The caller is expected to
@@ -5328,7 +6053,12 @@ func marshalDependencyFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (d *DependencyFlagBits) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DependencyFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDependencyFlagBits. The caller is expected to
@@ -5359,7 +6089,12 @@ func marshalDependencyFlags(p uintptr) (interface{}, error) {
 }
 
 func (d *DependencyFlags) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DependencyFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDependencyFlags. The caller is expected to
@@ -5390,7 +6125,12 @@ func marshalCommandPoolCreateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandPoolCreateFlagBits) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandPoolCreateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandPoolCreateFlagBits. The caller is expected to
@@ -5421,7 +6161,12 @@ func marshalCommandPoolCreateFlags(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandPoolCreateFlags) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandPoolCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandPoolCreateFlags. The caller is expected to
@@ -5452,7 +6197,12 @@ func marshalCommandPoolResetFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandPoolResetFlagBits) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandPoolResetFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandPoolResetFlagBits. The caller is expected to
@@ -5483,7 +6233,12 @@ func marshalCommandPoolResetFlags(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandPoolResetFlags) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandPoolResetFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandPoolResetFlags. The caller is expected to
@@ -5514,7 +6269,12 @@ func marshalCommandBufferUsageFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandBufferUsageFlagBits) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandBufferUsageFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandBufferUsageFlagBits. The caller is expected to
@@ -5545,7 +6305,12 @@ func marshalCommandBufferUsageFlags(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandBufferUsageFlags) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandBufferUsageFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandBufferUsageFlags. The caller is expected to
@@ -5576,7 +6341,12 @@ func marshalQueryControlFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (q *QueryControlFlagBits) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueryControlFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueryControlFlagBits. The caller is expected to
@@ -5607,7 +6377,12 @@ func marshalQueryControlFlags(p uintptr) (interface{}, error) {
 }
 
 func (q *QueryControlFlags) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueryControlFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueryControlFlags. The caller is expected to
@@ -5638,7 +6413,12 @@ func marshalCommandBufferResetFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandBufferResetFlagBits) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandBufferResetFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandBufferResetFlagBits. The caller is expected to
@@ -5669,7 +6449,12 @@ func marshalCommandBufferResetFlags(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandBufferResetFlags) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandBufferResetFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandBufferResetFlags. The caller is expected to
@@ -5700,7 +6485,12 @@ func marshalStencilFaceFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (s *StencilFaceFlagBits) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *StencilFaceFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkStencilFaceFlagBits. The caller is expected to
@@ -5731,7 +6521,12 @@ func marshalStencilFaceFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *StencilFaceFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *StencilFaceFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkStencilFaceFlags. The caller is expected to
@@ -5762,7 +6557,12 @@ func marshalApplicationInfo(p uintptr) (interface{}, error) {
 }
 
 func (a *ApplicationInfo) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *ApplicationInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkApplicationInfo. The caller is expected to
@@ -5793,7 +6593,12 @@ func marshalInstanceCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (i *InstanceCreateInfo) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *InstanceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkInstanceCreateInfo. The caller is expected to
@@ -5824,7 +6629,12 @@ func marshalAllocationCallbacks(p uintptr) (interface{}, error) {
 }
 
 func (a *AllocationCallbacks) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AllocationCallbacks) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAllocationCallbacks. The caller is expected to
@@ -5855,7 +6665,12 @@ func marshalPhysicalDeviceFeatures(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceFeatures) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceFeatures. The caller is expected to
@@ -5886,7 +6701,12 @@ func marshalFormatProperties(p uintptr) (interface{}, error) {
 }
 
 func (f *FormatProperties) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFormatProperties. The caller is expected to
@@ -5917,7 +6737,12 @@ func marshalExtent3D(p uintptr) (interface{}, error) {
 }
 
 func (e *Extent3D) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *Extent3D) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExtent3D. The caller is expected to
@@ -5948,7 +6773,12 @@ func marshalImageFormatProperties(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageFormatProperties) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageFormatProperties. The caller is expected to
@@ -5979,7 +6809,12 @@ func marshalPhysicalDeviceLimits(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceLimits) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceLimits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceLimits. The caller is expected to
@@ -6010,7 +6845,12 @@ func marshalPhysicalDeviceSparseProperties(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceSparseProperties) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceSparseProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceSparseProperties. The caller is expected to
@@ -6041,7 +6881,12 @@ func marshalPhysicalDeviceProperties(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceProperties) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceProperties. The caller is expected to
@@ -6072,7 +6917,12 @@ func marshalQueueFamilyProperties(p uintptr) (interface{}, error) {
 }
 
 func (q *QueueFamilyProperties) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueueFamilyProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueueFamilyProperties. The caller is expected to
@@ -6103,7 +6953,12 @@ func marshalMemoryType(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryType) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryType) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryType. The caller is expected to
@@ -6134,7 +6989,12 @@ func marshalMemoryHeap(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryHeap) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryHeap) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryHeap. The caller is expected to
@@ -6165,7 +7025,12 @@ func marshalPhysicalDeviceMemoryProperties(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceMemoryProperties) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMemoryProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMemoryProperties. The caller is expected to
@@ -6196,7 +7061,12 @@ func marshalDeviceQueueCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceQueueCreateInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceQueueCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceQueueCreateInfo. The caller is expected to
@@ -6227,7 +7097,12 @@ func marshalDeviceCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceCreateInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceCreateInfo. The caller is expected to
@@ -6258,7 +7133,12 @@ func marshalExtensionProperties(p uintptr) (interface{}, error) {
 }
 
 func (e *ExtensionProperties) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExtensionProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExtensionProperties. The caller is expected to
@@ -6289,7 +7169,12 @@ func marshalLayerProperties(p uintptr) (interface{}, error) {
 }
 
 func (l *LayerProperties) free() {
-	C.free(unsafe.Pointer(l.native))
+	C.free(l.Native())
+}
+
+// Native returns the underlying source pointer.
+func (l *LayerProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // Native returns the pointer to *C.VkLayerProperties. The caller is expected to
@@ -6320,7 +7205,12 @@ func marshalSubmitInfo(p uintptr) (interface{}, error) {
 }
 
 func (s *SubmitInfo) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubmitInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubmitInfo. The caller is expected to
@@ -6351,7 +7241,12 @@ func marshalMemoryAllocateInfo(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryAllocateInfo) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryAllocateInfo. The caller is expected to
@@ -6382,7 +7277,12 @@ func marshalMappedMemoryRange(p uintptr) (interface{}, error) {
 }
 
 func (m *MappedMemoryRange) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MappedMemoryRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMappedMemoryRange. The caller is expected to
@@ -6413,7 +7313,12 @@ func marshalMemoryRequirements(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryRequirements) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryRequirements) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryRequirements. The caller is expected to
@@ -6444,7 +7349,12 @@ func marshalSparseImageFormatProperties(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageFormatProperties) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageFormatProperties. The caller is expected to
@@ -6475,7 +7385,12 @@ func marshalSparseImageMemoryRequirements(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageMemoryRequirements) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageMemoryRequirements) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageMemoryRequirements. The caller is expected to
@@ -6506,7 +7421,12 @@ func marshalSparseMemoryBind(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseMemoryBind) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseMemoryBind) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseMemoryBind. The caller is expected to
@@ -6537,7 +7457,12 @@ func marshalSparseBufferMemoryBindInfo(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseBufferMemoryBindInfo) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseBufferMemoryBindInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseBufferMemoryBindInfo. The caller is expected to
@@ -6568,7 +7493,12 @@ func marshalSparseImageOpaqueMemoryBindInfo(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageOpaqueMemoryBindInfo) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageOpaqueMemoryBindInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageOpaqueMemoryBindInfo. The caller is expected to
@@ -6599,7 +7529,12 @@ func marshalImageSubresource(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageSubresource) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageSubresource) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageSubresource. The caller is expected to
@@ -6630,7 +7565,12 @@ func marshalOffset3D(p uintptr) (interface{}, error) {
 }
 
 func (o *Offset3D) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *Offset3D) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkOffset3D. The caller is expected to
@@ -6661,7 +7601,12 @@ func marshalSparseImageMemoryBind(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageMemoryBind) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageMemoryBind) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageMemoryBind. The caller is expected to
@@ -6692,7 +7637,12 @@ func marshalSparseImageMemoryBindInfo(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageMemoryBindInfo) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageMemoryBindInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageMemoryBindInfo. The caller is expected to
@@ -6723,7 +7673,12 @@ func marshalBindSparseInfo(p uintptr) (interface{}, error) {
 }
 
 func (b *BindSparseInfo) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindSparseInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindSparseInfo. The caller is expected to
@@ -6754,7 +7709,12 @@ func marshalFenceCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (f *FenceCreateInfo) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FenceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFenceCreateInfo. The caller is expected to
@@ -6785,7 +7745,12 @@ func marshalSemaphoreCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (s *SemaphoreCreateInfo) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SemaphoreCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSemaphoreCreateInfo. The caller is expected to
@@ -6816,7 +7781,12 @@ func marshalEventCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (e *EventCreateInfo) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *EventCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkEventCreateInfo. The caller is expected to
@@ -6847,7 +7817,12 @@ func marshalQueryPoolCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (q *QueryPoolCreateInfo) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueryPoolCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueryPoolCreateInfo. The caller is expected to
@@ -6878,7 +7853,12 @@ func marshalBufferCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferCreateInfo) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferCreateInfo. The caller is expected to
@@ -6909,7 +7889,12 @@ func marshalBufferViewCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferViewCreateInfo) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferViewCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferViewCreateInfo. The caller is expected to
@@ -6940,7 +7925,12 @@ func marshalImageCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageCreateInfo) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageCreateInfo. The caller is expected to
@@ -6971,7 +7961,12 @@ func marshalSubresourceLayout(p uintptr) (interface{}, error) {
 }
 
 func (s *SubresourceLayout) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubresourceLayout) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubresourceLayout. The caller is expected to
@@ -7002,7 +7997,12 @@ func marshalComponentMapping(p uintptr) (interface{}, error) {
 }
 
 func (c *ComponentMapping) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ComponentMapping) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkComponentMapping. The caller is expected to
@@ -7033,7 +8033,12 @@ func marshalImageSubresourceRange(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageSubresourceRange) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageSubresourceRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageSubresourceRange. The caller is expected to
@@ -7064,7 +8069,12 @@ func marshalImageViewCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageViewCreateInfo) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageViewCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageViewCreateInfo. The caller is expected to
@@ -7095,7 +8105,12 @@ func marshalShaderModuleCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (s *ShaderModuleCreateInfo) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShaderModuleCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShaderModuleCreateInfo. The caller is expected to
@@ -7126,7 +8141,12 @@ func marshalPipelineCacheCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineCacheCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCacheCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCacheCreateInfo. The caller is expected to
@@ -7157,7 +8177,12 @@ func marshalSpecializationMapEntry(p uintptr) (interface{}, error) {
 }
 
 func (s *SpecializationMapEntry) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SpecializationMapEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSpecializationMapEntry. The caller is expected to
@@ -7188,7 +8213,12 @@ func marshalSpecializationInfo(p uintptr) (interface{}, error) {
 }
 
 func (s *SpecializationInfo) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SpecializationInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSpecializationInfo. The caller is expected to
@@ -7219,7 +8249,12 @@ func marshalPipelineShaderStageCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineShaderStageCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineShaderStageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineShaderStageCreateInfo. The caller is expected to
@@ -7250,7 +8285,12 @@ func marshalVertexInputBindingDescription(p uintptr) (interface{}, error) {
 }
 
 func (v *VertexInputBindingDescription) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *VertexInputBindingDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkVertexInputBindingDescription. The caller is expected to
@@ -7281,7 +8321,12 @@ func marshalVertexInputAttributeDescription(p uintptr) (interface{}, error) {
 }
 
 func (v *VertexInputAttributeDescription) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *VertexInputAttributeDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkVertexInputAttributeDescription. The caller is expected to
@@ -7312,7 +8357,12 @@ func marshalPipelineVertexInputStateCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineVertexInputStateCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineVertexInputStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineVertexInputStateCreateInfo. The caller is expected to
@@ -7343,7 +8393,12 @@ func marshalPipelineInputAssemblyStateCreateInfo(p uintptr) (interface{}, error)
 }
 
 func (p *PipelineInputAssemblyStateCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineInputAssemblyStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineInputAssemblyStateCreateInfo. The caller is expected to
@@ -7374,7 +8429,12 @@ func marshalPipelineTessellationStateCreateInfo(p uintptr) (interface{}, error) 
 }
 
 func (p *PipelineTessellationStateCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineTessellationStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineTessellationStateCreateInfo. The caller is expected to
@@ -7405,7 +8465,12 @@ func marshalViewport(p uintptr) (interface{}, error) {
 }
 
 func (v *Viewport) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *Viewport) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkViewport. The caller is expected to
@@ -7436,7 +8501,12 @@ func marshalOffset2D(p uintptr) (interface{}, error) {
 }
 
 func (o *Offset2D) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *Offset2D) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkOffset2D. The caller is expected to
@@ -7467,7 +8537,12 @@ func marshalExtent2D(p uintptr) (interface{}, error) {
 }
 
 func (e *Extent2D) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *Extent2D) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExtent2D. The caller is expected to
@@ -7498,7 +8573,12 @@ func marshalRect2D(p uintptr) (interface{}, error) {
 }
 
 func (r *Rect2D) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *Rect2D) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRect2D. The caller is expected to
@@ -7529,7 +8609,12 @@ func marshalPipelineViewportStateCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineViewportStateCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineViewportStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineViewportStateCreateInfo. The caller is expected to
@@ -7560,7 +8645,12 @@ func marshalPipelineRasterizationStateCreateInfo(p uintptr) (interface{}, error)
 }
 
 func (p *PipelineRasterizationStateCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineRasterizationStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineRasterizationStateCreateInfo. The caller is expected to
@@ -7591,7 +8681,12 @@ func marshalPipelineMultisampleStateCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineMultisampleStateCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineMultisampleStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineMultisampleStateCreateInfo. The caller is expected to
@@ -7622,7 +8717,12 @@ func marshalStencilOpState(p uintptr) (interface{}, error) {
 }
 
 func (s *StencilOpState) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *StencilOpState) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkStencilOpState. The caller is expected to
@@ -7653,7 +8753,12 @@ func marshalPipelineDepthStencilStateCreateInfo(p uintptr) (interface{}, error) 
 }
 
 func (p *PipelineDepthStencilStateCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineDepthStencilStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineDepthStencilStateCreateInfo. The caller is expected to
@@ -7684,7 +8789,12 @@ func marshalPipelineColorBlendAttachmentState(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineColorBlendAttachmentState) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineColorBlendAttachmentState) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineColorBlendAttachmentState. The caller is expected to
@@ -7715,7 +8825,12 @@ func marshalPipelineColorBlendStateCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineColorBlendStateCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineColorBlendStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineColorBlendStateCreateInfo. The caller is expected to
@@ -7746,7 +8861,12 @@ func marshalPipelineDynamicStateCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineDynamicStateCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineDynamicStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineDynamicStateCreateInfo. The caller is expected to
@@ -7777,7 +8897,12 @@ func marshalGraphicsPipelineCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (g *GraphicsPipelineCreateInfo) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GraphicsPipelineCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.VkGraphicsPipelineCreateInfo. The caller is expected to
@@ -7808,7 +8933,12 @@ func marshalComputePipelineCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (c *ComputePipelineCreateInfo) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ComputePipelineCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkComputePipelineCreateInfo. The caller is expected to
@@ -7839,7 +8969,12 @@ func marshalPushConstantRange(p uintptr) (interface{}, error) {
 }
 
 func (p *PushConstantRange) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PushConstantRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPushConstantRange. The caller is expected to
@@ -7870,7 +9005,12 @@ func marshalPipelineLayoutCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineLayoutCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineLayoutCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineLayoutCreateInfo. The caller is expected to
@@ -7901,7 +9041,12 @@ func marshalSamplerCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerCreateInfo) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerCreateInfo. The caller is expected to
@@ -7932,7 +9077,12 @@ func marshalDescriptorSetLayoutBinding(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorSetLayoutBinding) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetLayoutBinding) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutBinding. The caller is expected to
@@ -7963,7 +9113,12 @@ func marshalDescriptorSetLayoutCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorSetLayoutCreateInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetLayoutCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutCreateInfo. The caller is expected to
@@ -7994,7 +9149,12 @@ func marshalDescriptorPoolSize(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorPoolSize) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorPoolSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorPoolSize. The caller is expected to
@@ -8025,7 +9185,12 @@ func marshalDescriptorPoolCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorPoolCreateInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorPoolCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorPoolCreateInfo. The caller is expected to
@@ -8056,7 +9221,12 @@ func marshalDescriptorSetAllocateInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorSetAllocateInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetAllocateInfo. The caller is expected to
@@ -8087,7 +9257,12 @@ func marshalDescriptorImageInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorImageInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorImageInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorImageInfo. The caller is expected to
@@ -8118,7 +9293,12 @@ func marshalDescriptorBufferInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorBufferInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorBufferInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorBufferInfo. The caller is expected to
@@ -8149,7 +9329,12 @@ func marshalWriteDescriptorSet(p uintptr) (interface{}, error) {
 }
 
 func (w *WriteDescriptorSet) free() {
-	C.free(unsafe.Pointer(w.native))
+	C.free(w.Native())
+}
+
+// Native returns the underlying source pointer.
+func (w *WriteDescriptorSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(w.native)
 }
 
 // Native returns the pointer to *C.VkWriteDescriptorSet. The caller is expected to
@@ -8180,7 +9365,12 @@ func marshalCopyDescriptorSet(p uintptr) (interface{}, error) {
 }
 
 func (c *CopyDescriptorSet) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CopyDescriptorSet) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCopyDescriptorSet. The caller is expected to
@@ -8211,7 +9401,12 @@ func marshalFramebufferCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (f *FramebufferCreateInfo) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FramebufferCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFramebufferCreateInfo. The caller is expected to
@@ -8242,7 +9437,12 @@ func marshalAttachmentDescription(p uintptr) (interface{}, error) {
 }
 
 func (a *AttachmentDescription) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttachmentDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAttachmentDescription. The caller is expected to
@@ -8273,7 +9473,12 @@ func marshalAttachmentReference(p uintptr) (interface{}, error) {
 }
 
 func (a *AttachmentReference) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttachmentReference) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAttachmentReference. The caller is expected to
@@ -8304,7 +9509,12 @@ func marshalSubpassDescription(p uintptr) (interface{}, error) {
 }
 
 func (s *SubpassDescription) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassDescription. The caller is expected to
@@ -8335,7 +9545,12 @@ func marshalSubpassDependency(p uintptr) (interface{}, error) {
 }
 
 func (s *SubpassDependency) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassDependency) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassDependency. The caller is expected to
@@ -8366,7 +9581,12 @@ func marshalRenderPassCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (r *RenderPassCreateInfo) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPassCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPassCreateInfo. The caller is expected to
@@ -8397,7 +9617,12 @@ func marshalCommandPoolCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandPoolCreateInfo) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandPoolCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandPoolCreateInfo. The caller is expected to
@@ -8428,7 +9653,12 @@ func marshalCommandBufferAllocateInfo(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandBufferAllocateInfo) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandBufferAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandBufferAllocateInfo. The caller is expected to
@@ -8459,7 +9689,12 @@ func marshalCommandBufferInheritanceInfo(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandBufferInheritanceInfo) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandBufferInheritanceInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandBufferInheritanceInfo. The caller is expected to
@@ -8490,7 +9725,12 @@ func marshalCommandBufferBeginInfo(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandBufferBeginInfo) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandBufferBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandBufferBeginInfo. The caller is expected to
@@ -8521,7 +9761,12 @@ func marshalBufferCopy(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferCopy) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferCopy) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferCopy. The caller is expected to
@@ -8552,7 +9797,12 @@ func marshalImageSubresourceLayers(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageSubresourceLayers) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageSubresourceLayers) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageSubresourceLayers. The caller is expected to
@@ -8583,7 +9833,12 @@ func marshalImageCopy(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageCopy) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageCopy) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageCopy. The caller is expected to
@@ -8614,7 +9869,12 @@ func marshalImageBlit(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageBlit) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageBlit) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageBlit. The caller is expected to
@@ -8645,7 +9905,12 @@ func marshalBufferImageCopy(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferImageCopy) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferImageCopy) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferImageCopy. The caller is expected to
@@ -8676,7 +9941,12 @@ func marshalClearColorValue(p uintptr) (interface{}, error) {
 }
 
 func (c *ClearColorValue) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ClearColorValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkClearColorValue. The caller is expected to
@@ -8707,7 +9977,12 @@ func marshalClearDepthStencilValue(p uintptr) (interface{}, error) {
 }
 
 func (c *ClearDepthStencilValue) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ClearDepthStencilValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkClearDepthStencilValue. The caller is expected to
@@ -8738,7 +10013,12 @@ func marshalClearValue(p uintptr) (interface{}, error) {
 }
 
 func (c *ClearValue) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ClearValue) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkClearValue. The caller is expected to
@@ -8769,7 +10049,12 @@ func marshalClearAttachment(p uintptr) (interface{}, error) {
 }
 
 func (c *ClearAttachment) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ClearAttachment) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkClearAttachment. The caller is expected to
@@ -8800,7 +10085,12 @@ func marshalClearRect(p uintptr) (interface{}, error) {
 }
 
 func (c *ClearRect) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ClearRect) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkClearRect. The caller is expected to
@@ -8831,7 +10121,12 @@ func marshalImageResolve(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageResolve) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageResolve) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageResolve. The caller is expected to
@@ -8862,7 +10157,12 @@ func marshalMemoryBarrier(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryBarrier) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryBarrier) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryBarrier. The caller is expected to
@@ -8893,7 +10193,12 @@ func marshalBufferMemoryBarrier(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferMemoryBarrier) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferMemoryBarrier) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferMemoryBarrier. The caller is expected to
@@ -8924,7 +10229,12 @@ func marshalImageMemoryBarrier(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageMemoryBarrier) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageMemoryBarrier) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageMemoryBarrier. The caller is expected to
@@ -8955,7 +10265,12 @@ func marshalRenderPassBeginInfo(p uintptr) (interface{}, error) {
 }
 
 func (r *RenderPassBeginInfo) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPassBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPassBeginInfo. The caller is expected to
@@ -8986,7 +10301,12 @@ func marshalDispatchIndirectCommand(p uintptr) (interface{}, error) {
 }
 
 func (d *DispatchIndirectCommand) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DispatchIndirectCommand) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDispatchIndirectCommand. The caller is expected to
@@ -9017,7 +10337,12 @@ func marshalDrawIndexedIndirectCommand(p uintptr) (interface{}, error) {
 }
 
 func (d *DrawIndexedIndirectCommand) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DrawIndexedIndirectCommand) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDrawIndexedIndirectCommand. The caller is expected to
@@ -9048,7 +10373,12 @@ func marshalDrawIndirectCommand(p uintptr) (interface{}, error) {
 }
 
 func (d *DrawIndirectCommand) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DrawIndirectCommand) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDrawIndirectCommand. The caller is expected to
@@ -9079,7 +10409,12 @@ func marshalBaseOutStructure(p uintptr) (interface{}, error) {
 }
 
 func (b *BaseOutStructure) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BaseOutStructure) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBaseOutStructure. The caller is expected to
@@ -9110,7 +10445,12 @@ func marshalBaseInStructure(p uintptr) (interface{}, error) {
 }
 
 func (b *BaseInStructure) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BaseInStructure) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBaseInStructure. The caller is expected to
@@ -9141,7 +10481,12 @@ func marshalSamplerYcbcrConversion(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerYcbcrConversion) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrConversion) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversion. The caller is expected to
@@ -9172,7 +10517,12 @@ func marshalDescriptorUpdateTemplate(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorUpdateTemplate) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorUpdateTemplate) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplate. The caller is expected to
@@ -9203,7 +10553,12 @@ func marshalPointClippingBehavior(p uintptr) (interface{}, error) {
 }
 
 func (p *PointClippingBehavior) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PointClippingBehavior) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPointClippingBehavior. The caller is expected to
@@ -9234,7 +10589,12 @@ func marshalTessellationDomainOrigin(p uintptr) (interface{}, error) {
 }
 
 func (t *TessellationDomainOrigin) free() {
-	C.free(unsafe.Pointer(t.native))
+	C.free(t.Native())
+}
+
+// Native returns the underlying source pointer.
+func (t *TessellationDomainOrigin) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // Native returns the pointer to *C.VkTessellationDomainOrigin. The caller is expected to
@@ -9265,7 +10625,12 @@ func marshalSamplerYcbcrModelConversion(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerYcbcrModelConversion) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrModelConversion) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrModelConversion. The caller is expected to
@@ -9296,7 +10661,12 @@ func marshalSamplerYcbcrRange(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerYcbcrRange) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrRange) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrRange. The caller is expected to
@@ -9327,7 +10697,12 @@ func marshalChromaLocation(p uintptr) (interface{}, error) {
 }
 
 func (c *ChromaLocation) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ChromaLocation) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkChromaLocation. The caller is expected to
@@ -9358,7 +10733,12 @@ func marshalDescriptorUpdateTemplateType(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorUpdateTemplateType) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorUpdateTemplateType) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateType. The caller is expected to
@@ -9389,7 +10769,12 @@ func marshalSubgroupFeatureFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (s *SubgroupFeatureFlagBits) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubgroupFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubgroupFeatureFlagBits. The caller is expected to
@@ -9420,7 +10805,12 @@ func marshalSubgroupFeatureFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *SubgroupFeatureFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubgroupFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubgroupFeatureFlags. The caller is expected to
@@ -9451,7 +10841,12 @@ func marshalPeerMemoryFeatureFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (p *PeerMemoryFeatureFlagBits) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PeerMemoryFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPeerMemoryFeatureFlagBits. The caller is expected to
@@ -9482,7 +10877,12 @@ func marshalPeerMemoryFeatureFlags(p uintptr) (interface{}, error) {
 }
 
 func (p *PeerMemoryFeatureFlags) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PeerMemoryFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPeerMemoryFeatureFlags. The caller is expected to
@@ -9513,7 +10913,12 @@ func marshalMemoryAllocateFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryAllocateFlagBits) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryAllocateFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryAllocateFlagBits. The caller is expected to
@@ -9544,7 +10949,12 @@ func marshalMemoryAllocateFlags(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryAllocateFlags) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryAllocateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryAllocateFlags. The caller is expected to
@@ -9575,7 +10985,12 @@ func marshalCommandPoolTrimFlags(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandPoolTrimFlags) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandPoolTrimFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandPoolTrimFlags. The caller is expected to
@@ -9606,7 +11021,12 @@ func marshalDescriptorUpdateTemplateCreateFlags(p uintptr) (interface{}, error) 
 }
 
 func (d *DescriptorUpdateTemplateCreateFlags) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorUpdateTemplateCreateFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateFlags. The caller is expected to
@@ -9637,7 +11057,12 @@ func marshalExternalMemoryHandleTypeFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryHandleTypeFlagBits) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryHandleTypeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagBits. The caller is expected to
@@ -9668,7 +11093,12 @@ func marshalExternalMemoryHandleTypeFlags(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryHandleTypeFlags) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryHandleTypeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlags. The caller is expected to
@@ -9699,7 +11129,12 @@ func marshalExternalMemoryFeatureFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryFeatureFlagBits) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlagBits. The caller is expected to
@@ -9730,7 +11165,12 @@ func marshalExternalMemoryFeatureFlags(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryFeatureFlags) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlags. The caller is expected to
@@ -9761,7 +11201,12 @@ func marshalExternalFenceHandleTypeFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalFenceHandleTypeFlagBits) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalFenceHandleTypeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalFenceHandleTypeFlagBits. The caller is expected to
@@ -9792,7 +11237,12 @@ func marshalExternalFenceHandleTypeFlags(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalFenceHandleTypeFlags) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalFenceHandleTypeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalFenceHandleTypeFlags. The caller is expected to
@@ -9823,7 +11273,12 @@ func marshalExternalFenceFeatureFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalFenceFeatureFlagBits) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalFenceFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalFenceFeatureFlagBits. The caller is expected to
@@ -9854,7 +11309,12 @@ func marshalExternalFenceFeatureFlags(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalFenceFeatureFlags) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalFenceFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalFenceFeatureFlags. The caller is expected to
@@ -9885,7 +11345,12 @@ func marshalFenceImportFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (f *FenceImportFlagBits) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FenceImportFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFenceImportFlagBits. The caller is expected to
@@ -9916,7 +11381,12 @@ func marshalFenceImportFlags(p uintptr) (interface{}, error) {
 }
 
 func (f *FenceImportFlags) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FenceImportFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFenceImportFlags. The caller is expected to
@@ -9947,7 +11417,12 @@ func marshalSemaphoreImportFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (s *SemaphoreImportFlagBits) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SemaphoreImportFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSemaphoreImportFlagBits. The caller is expected to
@@ -9978,7 +11453,12 @@ func marshalSemaphoreImportFlags(p uintptr) (interface{}, error) {
 }
 
 func (s *SemaphoreImportFlags) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SemaphoreImportFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSemaphoreImportFlags. The caller is expected to
@@ -10009,7 +11489,12 @@ func marshalExternalSemaphoreHandleTypeFlagBits(p uintptr) (interface{}, error) 
 }
 
 func (e *ExternalSemaphoreHandleTypeFlagBits) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalSemaphoreHandleTypeFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlagBits. The caller is expected to
@@ -10040,7 +11525,12 @@ func marshalExternalSemaphoreHandleTypeFlags(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalSemaphoreHandleTypeFlags) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalSemaphoreHandleTypeFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlags. The caller is expected to
@@ -10071,7 +11561,12 @@ func marshalExternalSemaphoreFeatureFlagBits(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalSemaphoreFeatureFlagBits) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalSemaphoreFeatureFlagBits) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalSemaphoreFeatureFlagBits. The caller is expected to
@@ -10102,7 +11597,12 @@ func marshalExternalSemaphoreFeatureFlags(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalSemaphoreFeatureFlags) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalSemaphoreFeatureFlags) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalSemaphoreFeatureFlags. The caller is expected to
@@ -10133,7 +11633,12 @@ func marshalPhysicalDeviceSubgroupProperties(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceSubgroupProperties) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceSubgroupProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceSubgroupProperties. The caller is expected to
@@ -10164,7 +11669,12 @@ func marshalBindBufferMemoryInfo(p uintptr) (interface{}, error) {
 }
 
 func (b *BindBufferMemoryInfo) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindBufferMemoryInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindBufferMemoryInfo. The caller is expected to
@@ -10195,7 +11705,12 @@ func marshalBindImageMemoryInfo(p uintptr) (interface{}, error) {
 }
 
 func (b *BindImageMemoryInfo) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindImageMemoryInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindImageMemoryInfo. The caller is expected to
@@ -10226,7 +11741,12 @@ func marshalPhysicalDevice16BitStorageFeatures(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDevice16BitStorageFeatures) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDevice16BitStorageFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDevice16BitStorageFeatures. The caller is expected to
@@ -10257,7 +11777,12 @@ func marshalMemoryDedicatedRequirements(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryDedicatedRequirements) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryDedicatedRequirements) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryDedicatedRequirements. The caller is expected to
@@ -10288,7 +11813,12 @@ func marshalMemoryDedicatedAllocateInfo(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryDedicatedAllocateInfo) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryDedicatedAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryDedicatedAllocateInfo. The caller is expected to
@@ -10319,7 +11849,12 @@ func marshalMemoryAllocateFlagsInfo(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryAllocateFlagsInfo) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryAllocateFlagsInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryAllocateFlagsInfo. The caller is expected to
@@ -10350,7 +11885,12 @@ func marshalDeviceGroupRenderPassBeginInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupRenderPassBeginInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupRenderPassBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupRenderPassBeginInfo. The caller is expected to
@@ -10381,7 +11921,12 @@ func marshalDeviceGroupCommandBufferBeginInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupCommandBufferBeginInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupCommandBufferBeginInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupCommandBufferBeginInfo. The caller is expected to
@@ -10412,7 +11957,12 @@ func marshalDeviceGroupSubmitInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupSubmitInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupSubmitInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupSubmitInfo. The caller is expected to
@@ -10443,7 +11993,12 @@ func marshalDeviceGroupBindSparseInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupBindSparseInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupBindSparseInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupBindSparseInfo. The caller is expected to
@@ -10474,7 +12029,12 @@ func marshalBindBufferMemoryDeviceGroupInfo(p uintptr) (interface{}, error) {
 }
 
 func (b *BindBufferMemoryDeviceGroupInfo) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindBufferMemoryDeviceGroupInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindBufferMemoryDeviceGroupInfo. The caller is expected to
@@ -10505,7 +12065,12 @@ func marshalBindImageMemoryDeviceGroupInfo(p uintptr) (interface{}, error) {
 }
 
 func (b *BindImageMemoryDeviceGroupInfo) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindImageMemoryDeviceGroupInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindImageMemoryDeviceGroupInfo. The caller is expected to
@@ -10536,7 +12101,12 @@ func marshalPhysicalDeviceGroupProperties(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceGroupProperties) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceGroupProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceGroupProperties. The caller is expected to
@@ -10567,7 +12137,12 @@ func marshalDeviceGroupDeviceCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupDeviceCreateInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupDeviceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupDeviceCreateInfo. The caller is expected to
@@ -10598,7 +12173,12 @@ func marshalBufferMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferMemoryRequirementsInfo2) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferMemoryRequirementsInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferMemoryRequirementsInfo2. The caller is expected to
@@ -10629,7 +12209,12 @@ func marshalImageMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageMemoryRequirementsInfo2) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageMemoryRequirementsInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageMemoryRequirementsInfo2. The caller is expected to
@@ -10660,7 +12245,12 @@ func marshalImageSparseMemoryRequirementsInfo2(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageSparseMemoryRequirementsInfo2) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageSparseMemoryRequirementsInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageSparseMemoryRequirementsInfo2. The caller is expected to
@@ -10691,7 +12281,12 @@ func marshalMemoryRequirements2(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryRequirements2) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryRequirements2) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryRequirements2. The caller is expected to
@@ -10722,7 +12317,12 @@ func marshalMemoryRequirements2KHR(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryRequirements2KHR) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryRequirements2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryRequirements2KHR. The caller is expected to
@@ -10753,7 +12353,12 @@ func marshalSparseImageMemoryRequirements2(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageMemoryRequirements2) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageMemoryRequirements2) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageMemoryRequirements2. The caller is expected to
@@ -10784,7 +12389,12 @@ func marshalPhysicalDeviceFeatures2(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceFeatures2) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceFeatures2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceFeatures2. The caller is expected to
@@ -10815,7 +12425,12 @@ func marshalPhysicalDeviceProperties2(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceProperties2) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceProperties2. The caller is expected to
@@ -10846,7 +12461,12 @@ func marshalFormatProperties2(p uintptr) (interface{}, error) {
 }
 
 func (f *FormatProperties2) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FormatProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFormatProperties2. The caller is expected to
@@ -10877,7 +12497,12 @@ func marshalImageFormatProperties2(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageFormatProperties2) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageFormatProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageFormatProperties2. The caller is expected to
@@ -10908,7 +12533,12 @@ func marshalPhysicalDeviceImageFormatInfo2(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceImageFormatInfo2) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceImageFormatInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceImageFormatInfo2. The caller is expected to
@@ -10939,7 +12569,12 @@ func marshalQueueFamilyProperties2(p uintptr) (interface{}, error) {
 }
 
 func (q *QueueFamilyProperties2) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueueFamilyProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueueFamilyProperties2. The caller is expected to
@@ -10970,7 +12605,12 @@ func marshalPhysicalDeviceMemoryProperties2(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceMemoryProperties2) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMemoryProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMemoryProperties2. The caller is expected to
@@ -11001,7 +12641,12 @@ func marshalSparseImageFormatProperties2(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageFormatProperties2) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageFormatProperties2) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageFormatProperties2. The caller is expected to
@@ -11032,7 +12677,12 @@ func marshalPhysicalDeviceSparseImageFormatInfo2(p uintptr) (interface{}, error)
 }
 
 func (p *PhysicalDeviceSparseImageFormatInfo2) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceSparseImageFormatInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceSparseImageFormatInfo2. The caller is expected to
@@ -11063,7 +12713,12 @@ func marshalPhysicalDevicePointClippingProperties(p uintptr) (interface{}, error
 }
 
 func (p *PhysicalDevicePointClippingProperties) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDevicePointClippingProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDevicePointClippingProperties. The caller is expected to
@@ -11094,7 +12749,12 @@ func marshalInputAttachmentAspectReference(p uintptr) (interface{}, error) {
 }
 
 func (i *InputAttachmentAspectReference) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *InputAttachmentAspectReference) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkInputAttachmentAspectReference. The caller is expected to
@@ -11125,7 +12785,12 @@ func marshalRenderPassInputAttachmentAspectCreateInfo(p uintptr) (interface{}, e
 }
 
 func (r *RenderPassInputAttachmentAspectCreateInfo) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPassInputAttachmentAspectCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPassInputAttachmentAspectCreateInfo. The caller is expected to
@@ -11156,7 +12821,12 @@ func marshalImageViewUsageCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageViewUsageCreateInfo) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageViewUsageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageViewUsageCreateInfo. The caller is expected to
@@ -11187,7 +12857,12 @@ func marshalPipelineTessellationDomainOriginStateCreateInfo(p uintptr) (interfac
 }
 
 func (p *PipelineTessellationDomainOriginStateCreateInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineTessellationDomainOriginStateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineTessellationDomainOriginStateCreateInfo. The caller is expected to
@@ -11218,7 +12893,12 @@ func marshalRenderPassMultiviewCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (r *RenderPassMultiviewCreateInfo) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPassMultiviewCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPassMultiviewCreateInfo. The caller is expected to
@@ -11249,7 +12929,12 @@ func marshalPhysicalDeviceMultiviewFeatures(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceMultiviewFeatures) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMultiviewFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMultiviewFeatures. The caller is expected to
@@ -11280,7 +12965,12 @@ func marshalPhysicalDeviceMultiviewProperties(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceMultiviewProperties) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMultiviewProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMultiviewProperties. The caller is expected to
@@ -11311,7 +13001,12 @@ func marshalPhysicalDeviceVariablePointersFeatures(p uintptr) (interface{}, erro
 }
 
 func (p *PhysicalDeviceVariablePointersFeatures) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceVariablePointersFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceVariablePointersFeatures. The caller is expected to
@@ -11342,7 +13037,12 @@ func marshalPhysicalDeviceVariablePointerFeatures(p uintptr) (interface{}, error
 }
 
 func (p *PhysicalDeviceVariablePointerFeatures) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceVariablePointerFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceVariablePointerFeatures. The caller is expected to
@@ -11373,7 +13073,12 @@ func marshalPhysicalDeviceProtectedMemoryFeatures(p uintptr) (interface{}, error
 }
 
 func (p *PhysicalDeviceProtectedMemoryFeatures) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceProtectedMemoryFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceProtectedMemoryFeatures. The caller is expected to
@@ -11404,7 +13109,12 @@ func marshalPhysicalDeviceProtectedMemoryProperties(p uintptr) (interface{}, err
 }
 
 func (p *PhysicalDeviceProtectedMemoryProperties) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceProtectedMemoryProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceProtectedMemoryProperties. The caller is expected to
@@ -11435,7 +13145,12 @@ func marshalDeviceQueueInfo2(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceQueueInfo2) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceQueueInfo2) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceQueueInfo2. The caller is expected to
@@ -11466,7 +13181,12 @@ func marshalProtectedSubmitInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *ProtectedSubmitInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *ProtectedSubmitInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkProtectedSubmitInfo. The caller is expected to
@@ -11497,7 +13217,12 @@ func marshalSamplerYcbcrConversionCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerYcbcrConversionCreateInfo) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrConversionCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionCreateInfo. The caller is expected to
@@ -11528,7 +13253,12 @@ func marshalSamplerYcbcrConversionInfo(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerYcbcrConversionInfo) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrConversionInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionInfo. The caller is expected to
@@ -11559,7 +13289,12 @@ func marshalBindImagePlaneMemoryInfo(p uintptr) (interface{}, error) {
 }
 
 func (b *BindImagePlaneMemoryInfo) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindImagePlaneMemoryInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindImagePlaneMemoryInfo. The caller is expected to
@@ -11590,7 +13325,12 @@ func marshalImagePlaneMemoryRequirementsInfo(p uintptr) (interface{}, error) {
 }
 
 func (i *ImagePlaneMemoryRequirementsInfo) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImagePlaneMemoryRequirementsInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImagePlaneMemoryRequirementsInfo. The caller is expected to
@@ -11621,7 +13361,12 @@ func marshalPhysicalDeviceSamplerYcbcrConversionFeatures(p uintptr) (interface{}
 }
 
 func (p *PhysicalDeviceSamplerYcbcrConversionFeatures) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceSamplerYcbcrConversionFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceSamplerYcbcrConversionFeatures. The caller is expected to
@@ -11652,7 +13397,12 @@ func marshalSamplerYcbcrConversionImageFormatProperties(p uintptr) (interface{},
 }
 
 func (s *SamplerYcbcrConversionImageFormatProperties) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrConversionImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionImageFormatProperties. The caller is expected to
@@ -11683,7 +13433,12 @@ func marshalDescriptorUpdateTemplateEntry(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorUpdateTemplateEntry) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorUpdateTemplateEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateEntry. The caller is expected to
@@ -11714,7 +13469,12 @@ func marshalDescriptorUpdateTemplateCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorUpdateTemplateCreateInfo) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorUpdateTemplateCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateInfo. The caller is expected to
@@ -11745,7 +13505,12 @@ func marshalExternalMemoryProperties(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryProperties) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryProperties. The caller is expected to
@@ -11776,7 +13541,12 @@ func marshalPhysicalDeviceExternalImageFormatInfo(p uintptr) (interface{}, error
 }
 
 func (p *PhysicalDeviceExternalImageFormatInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceExternalImageFormatInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalImageFormatInfo. The caller is expected to
@@ -11807,7 +13577,12 @@ func marshalExternalImageFormatProperties(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalImageFormatProperties) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalImageFormatProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalImageFormatProperties. The caller is expected to
@@ -11838,7 +13613,12 @@ func marshalPhysicalDeviceExternalBufferInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceExternalBufferInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceExternalBufferInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalBufferInfo. The caller is expected to
@@ -11869,7 +13649,12 @@ func marshalExternalBufferProperties(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalBufferProperties) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalBufferProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalBufferProperties. The caller is expected to
@@ -11900,7 +13685,12 @@ func marshalPhysicalDeviceIDProperties(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceIDProperties) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceIDProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceIDProperties. The caller is expected to
@@ -11931,7 +13721,12 @@ func marshalExternalMemoryImageCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryImageCreateInfo) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryImageCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryImageCreateInfo. The caller is expected to
@@ -11962,7 +13757,12 @@ func marshalExternalMemoryBufferCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryBufferCreateInfo) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryBufferCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryBufferCreateInfo. The caller is expected to
@@ -11993,7 +13793,12 @@ func marshalExportMemoryAllocateInfo(p uintptr) (interface{}, error) {
 }
 
 func (e *ExportMemoryAllocateInfo) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExportMemoryAllocateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExportMemoryAllocateInfo. The caller is expected to
@@ -12024,7 +13829,12 @@ func marshalPhysicalDeviceExternalFenceInfo(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceExternalFenceInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceExternalFenceInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalFenceInfo. The caller is expected to
@@ -12055,7 +13865,12 @@ func marshalExternalFenceProperties(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalFenceProperties) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalFenceProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalFenceProperties. The caller is expected to
@@ -12086,7 +13901,12 @@ func marshalExportFenceCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (e *ExportFenceCreateInfo) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExportFenceCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExportFenceCreateInfo. The caller is expected to
@@ -12117,7 +13937,12 @@ func marshalExportSemaphoreCreateInfo(p uintptr) (interface{}, error) {
 }
 
 func (e *ExportSemaphoreCreateInfo) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExportSemaphoreCreateInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExportSemaphoreCreateInfo. The caller is expected to
@@ -12148,7 +13973,12 @@ func marshalPhysicalDeviceExternalSemaphoreInfo(p uintptr) (interface{}, error) 
 }
 
 func (p *PhysicalDeviceExternalSemaphoreInfo) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceExternalSemaphoreInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalSemaphoreInfo. The caller is expected to
@@ -12179,7 +14009,12 @@ func marshalExternalSemaphoreProperties(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalSemaphoreProperties) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalSemaphoreProperties) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalSemaphoreProperties. The caller is expected to
@@ -12210,7 +14045,12 @@ func marshalPhysicalDeviceMaintenance3Properties(p uintptr) (interface{}, error)
 }
 
 func (p *PhysicalDeviceMaintenance3Properties) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMaintenance3Properties) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMaintenance3Properties. The caller is expected to
@@ -12241,7 +14081,12 @@ func marshalDescriptorSetLayoutSupport(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorSetLayoutSupport) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetLayoutSupport) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutSupport. The caller is expected to
@@ -12272,7 +14117,12 @@ func marshalPhysicalDeviceShaderDrawParametersFeatures(p uintptr) (interface{}, 
 }
 
 func (p *PhysicalDeviceShaderDrawParametersFeatures) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceShaderDrawParametersFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceShaderDrawParametersFeatures. The caller is expected to
@@ -12303,7 +14153,12 @@ func marshalPhysicalDeviceShaderDrawParameterFeatures(p uintptr) (interface{}, e
 }
 
 func (p *PhysicalDeviceShaderDrawParameterFeatures) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceShaderDrawParameterFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceShaderDrawParameterFeatures. The caller is expected to
@@ -12334,7 +14189,12 @@ func marshalSurfaceKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceKHR. The caller is expected to
@@ -12365,7 +14225,12 @@ func marshalColorSpaceKHR(p uintptr) (interface{}, error) {
 }
 
 func (c *ColorSpaceKHR) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ColorSpaceKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkColorSpaceKHR. The caller is expected to
@@ -12396,7 +14261,12 @@ func marshalPresentModeKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PresentModeKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PresentModeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPresentModeKHR. The caller is expected to
@@ -12427,7 +14297,12 @@ func marshalSurfaceTransformFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceTransformFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceTransformFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceTransformFlagBitsKHR. The caller is expected to
@@ -12458,7 +14333,12 @@ func marshalSurfaceTransformFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceTransformFlagsKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceTransformFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceTransformFlagsKHR. The caller is expected to
@@ -12489,7 +14369,12 @@ func marshalCompositeAlphaFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (c *CompositeAlphaFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CompositeAlphaFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCompositeAlphaFlagBitsKHR. The caller is expected to
@@ -12520,7 +14405,12 @@ func marshalCompositeAlphaFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (c *CompositeAlphaFlagsKHR) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CompositeAlphaFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCompositeAlphaFlagsKHR. The caller is expected to
@@ -12551,7 +14441,12 @@ func marshalSurfaceCapabilitiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceCapabilitiesKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceCapabilitiesKHR. The caller is expected to
@@ -12582,7 +14477,12 @@ func marshalSurfaceFormatKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceFormatKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceFormatKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceFormatKHR. The caller is expected to
@@ -12613,7 +14513,12 @@ func marshalSwapchainKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SwapchainKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SwapchainKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSwapchainKHR. The caller is expected to
@@ -12644,7 +14549,12 @@ func marshalSwapchainCreateFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SwapchainCreateFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SwapchainCreateFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSwapchainCreateFlagBitsKHR. The caller is expected to
@@ -12675,7 +14585,12 @@ func marshalSwapchainCreateFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SwapchainCreateFlagsKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SwapchainCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSwapchainCreateFlagsKHR. The caller is expected to
@@ -12706,7 +14621,12 @@ func marshalDeviceGroupPresentModeFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupPresentModeFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupPresentModeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupPresentModeFlagBitsKHR. The caller is expected to
@@ -12737,7 +14657,12 @@ func marshalDeviceGroupPresentModeFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupPresentModeFlagsKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupPresentModeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupPresentModeFlagsKHR. The caller is expected to
@@ -12768,7 +14693,12 @@ func marshalSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SwapchainCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SwapchainCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSwapchainCreateInfoKHR. The caller is expected to
@@ -12799,7 +14729,12 @@ func marshalPresentInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PresentInfoKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PresentInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPresentInfoKHR. The caller is expected to
@@ -12830,7 +14765,12 @@ func marshalImageSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageSwapchainCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageSwapchainCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageSwapchainCreateInfoKHR. The caller is expected to
@@ -12861,7 +14801,12 @@ func marshalBindImageMemorySwapchainInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (b *BindImageMemorySwapchainInfoKHR) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindImageMemorySwapchainInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindImageMemorySwapchainInfoKHR. The caller is expected to
@@ -12892,7 +14837,12 @@ func marshalAcquireNextImageInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (a *AcquireNextImageInfoKHR) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AcquireNextImageInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAcquireNextImageInfoKHR. The caller is expected to
@@ -12923,7 +14873,12 @@ func marshalDeviceGroupPresentCapabilitiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupPresentCapabilitiesKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupPresentCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupPresentCapabilitiesKHR. The caller is expected to
@@ -12954,7 +14909,12 @@ func marshalDeviceGroupPresentInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupPresentInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupPresentInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupPresentInfoKHR. The caller is expected to
@@ -12985,7 +14945,12 @@ func marshalDeviceGroupSwapchainCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupSwapchainCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupSwapchainCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupSwapchainCreateInfoKHR. The caller is expected to
@@ -13016,7 +14981,12 @@ func marshalDisplayKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayKHR. The caller is expected to
@@ -13047,7 +15017,12 @@ func marshalDisplayModeKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayModeKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayModeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayModeKHR. The caller is expected to
@@ -13078,7 +15053,12 @@ func marshalDisplayPlaneAlphaFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPlaneAlphaFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPlaneAlphaFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPlaneAlphaFlagBitsKHR. The caller is expected to
@@ -13109,7 +15089,12 @@ func marshalDisplayPlaneAlphaFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPlaneAlphaFlagsKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPlaneAlphaFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPlaneAlphaFlagsKHR. The caller is expected to
@@ -13140,7 +15125,12 @@ func marshalDisplayModeCreateFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayModeCreateFlagsKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayModeCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayModeCreateFlagsKHR. The caller is expected to
@@ -13171,7 +15161,12 @@ func marshalDisplaySurfaceCreateFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplaySurfaceCreateFlagsKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplaySurfaceCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplaySurfaceCreateFlagsKHR. The caller is expected to
@@ -13202,7 +15197,12 @@ func marshalDisplayPropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPropertiesKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPropertiesKHR. The caller is expected to
@@ -13233,7 +15233,12 @@ func marshalDisplayModeParametersKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayModeParametersKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayModeParametersKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayModeParametersKHR. The caller is expected to
@@ -13264,7 +15269,12 @@ func marshalDisplayModePropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayModePropertiesKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayModePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayModePropertiesKHR. The caller is expected to
@@ -13295,7 +15305,12 @@ func marshalDisplayModeCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayModeCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayModeCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayModeCreateInfoKHR. The caller is expected to
@@ -13326,7 +15341,12 @@ func marshalDisplayPlaneCapabilitiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPlaneCapabilitiesKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPlaneCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPlaneCapabilitiesKHR. The caller is expected to
@@ -13357,7 +15377,12 @@ func marshalDisplayPlanePropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPlanePropertiesKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPlanePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPlanePropertiesKHR. The caller is expected to
@@ -13388,7 +15413,12 @@ func marshalDisplaySurfaceCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplaySurfaceCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplaySurfaceCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplaySurfaceCreateInfoKHR. The caller is expected to
@@ -13419,7 +15449,12 @@ func marshalDisplayPresentInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPresentInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPresentInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPresentInfoKHR. The caller is expected to
@@ -13450,7 +15485,12 @@ func marshalRenderPassMultiviewCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (r *RenderPassMultiviewCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPassMultiviewCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPassMultiviewCreateInfoKHR. The caller is expected to
@@ -13481,7 +15521,12 @@ func marshalPhysicalDeviceMultiviewFeaturesKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceMultiviewFeaturesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMultiviewFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMultiviewFeaturesKHR. The caller is expected to
@@ -13512,7 +15557,12 @@ func marshalPhysicalDeviceMultiviewPropertiesKHR(p uintptr) (interface{}, error)
 }
 
 func (p *PhysicalDeviceMultiviewPropertiesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMultiviewPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMultiviewPropertiesKHR. The caller is expected to
@@ -13543,7 +15593,12 @@ func marshalPhysicalDeviceFeatures2KHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceFeatures2KHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceFeatures2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceFeatures2KHR. The caller is expected to
@@ -13574,7 +15629,12 @@ func marshalPhysicalDeviceProperties2KHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceProperties2KHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceProperties2KHR. The caller is expected to
@@ -13605,7 +15665,12 @@ func marshalFormatProperties2KHR(p uintptr) (interface{}, error) {
 }
 
 func (f *FormatProperties2KHR) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FormatProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFormatProperties2KHR. The caller is expected to
@@ -13636,7 +15701,12 @@ func marshalImageFormatProperties2KHR(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageFormatProperties2KHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageFormatProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageFormatProperties2KHR. The caller is expected to
@@ -13667,7 +15737,12 @@ func marshalPhysicalDeviceImageFormatInfo2KHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceImageFormatInfo2KHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceImageFormatInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceImageFormatInfo2KHR. The caller is expected to
@@ -13698,7 +15773,12 @@ func marshalQueueFamilyProperties2KHR(p uintptr) (interface{}, error) {
 }
 
 func (q *QueueFamilyProperties2KHR) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueueFamilyProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueueFamilyProperties2KHR. The caller is expected to
@@ -13729,7 +15809,12 @@ func marshalPhysicalDeviceMemoryProperties2KHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceMemoryProperties2KHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMemoryProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMemoryProperties2KHR. The caller is expected to
@@ -13760,7 +15845,12 @@ func marshalSparseImageFormatProperties2KHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageFormatProperties2KHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageFormatProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageFormatProperties2KHR. The caller is expected to
@@ -13791,7 +15881,12 @@ func marshalPhysicalDeviceSparseImageFormatInfo2KHR(p uintptr) (interface{}, err
 }
 
 func (p *PhysicalDeviceSparseImageFormatInfo2KHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceSparseImageFormatInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceSparseImageFormatInfo2KHR. The caller is expected to
@@ -13822,7 +15917,12 @@ func marshalPeerMemoryFeatureFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PeerMemoryFeatureFlagsKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PeerMemoryFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPeerMemoryFeatureFlagsKHR. The caller is expected to
@@ -13853,7 +15953,12 @@ func marshalPeerMemoryFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PeerMemoryFeatureFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PeerMemoryFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPeerMemoryFeatureFlagBitsKHR. The caller is expected to
@@ -13884,7 +15989,12 @@ func marshalMemoryAllocateFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryAllocateFlagsKHR) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryAllocateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryAllocateFlagsKHR. The caller is expected to
@@ -13915,7 +16025,12 @@ func marshalMemoryAllocateFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryAllocateFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryAllocateFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryAllocateFlagBitsKHR. The caller is expected to
@@ -13946,7 +16061,12 @@ func marshalMemoryAllocateFlagsInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryAllocateFlagsInfoKHR) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryAllocateFlagsInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryAllocateFlagsInfoKHR. The caller is expected to
@@ -13977,7 +16097,12 @@ func marshalDeviceGroupRenderPassBeginInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupRenderPassBeginInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupRenderPassBeginInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupRenderPassBeginInfoKHR. The caller is expected to
@@ -14008,7 +16133,12 @@ func marshalDeviceGroupCommandBufferBeginInfoKHR(p uintptr) (interface{}, error)
 }
 
 func (d *DeviceGroupCommandBufferBeginInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupCommandBufferBeginInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupCommandBufferBeginInfoKHR. The caller is expected to
@@ -14039,7 +16169,12 @@ func marshalDeviceGroupSubmitInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupSubmitInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupSubmitInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupSubmitInfoKHR. The caller is expected to
@@ -14070,7 +16205,12 @@ func marshalDeviceGroupBindSparseInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupBindSparseInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupBindSparseInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupBindSparseInfoKHR. The caller is expected to
@@ -14101,7 +16241,12 @@ func marshalBindBufferMemoryDeviceGroupInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (b *BindBufferMemoryDeviceGroupInfoKHR) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindBufferMemoryDeviceGroupInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindBufferMemoryDeviceGroupInfoKHR. The caller is expected to
@@ -14132,7 +16277,12 @@ func marshalBindImageMemoryDeviceGroupInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (b *BindImageMemoryDeviceGroupInfoKHR) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindImageMemoryDeviceGroupInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindImageMemoryDeviceGroupInfoKHR. The caller is expected to
@@ -14163,7 +16313,12 @@ func marshalCommandPoolTrimFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (c *CommandPoolTrimFlagsKHR) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandPoolTrimFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandPoolTrimFlagsKHR. The caller is expected to
@@ -14194,7 +16349,12 @@ func marshalPhysicalDeviceGroupPropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceGroupPropertiesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceGroupPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceGroupPropertiesKHR. The caller is expected to
@@ -14225,7 +16385,12 @@ func marshalDeviceGroupDeviceCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGroupDeviceCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGroupDeviceCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGroupDeviceCreateInfoKHR. The caller is expected to
@@ -14256,7 +16421,12 @@ func marshalExternalMemoryHandleTypeFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryHandleTypeFlagsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryHandleTypeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagsKHR. The caller is expected to
@@ -14287,7 +16457,12 @@ func marshalExternalMemoryHandleTypeFlagBitsKHR(p uintptr) (interface{}, error) 
 }
 
 func (e *ExternalMemoryHandleTypeFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagBitsKHR. The caller is expected to
@@ -14318,7 +16493,12 @@ func marshalExternalMemoryFeatureFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryFeatureFlagsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlagsKHR. The caller is expected to
@@ -14349,7 +16529,12 @@ func marshalExternalMemoryFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryFeatureFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlagBitsKHR. The caller is expected to
@@ -14380,7 +16565,12 @@ func marshalExternalMemoryPropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryPropertiesKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryPropertiesKHR. The caller is expected to
@@ -14411,7 +16601,12 @@ func marshalPhysicalDeviceExternalImageFormatInfoKHR(p uintptr) (interface{}, er
 }
 
 func (p *PhysicalDeviceExternalImageFormatInfoKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceExternalImageFormatInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalImageFormatInfoKHR. The caller is expected to
@@ -14442,7 +16637,12 @@ func marshalExternalImageFormatPropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalImageFormatPropertiesKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalImageFormatPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalImageFormatPropertiesKHR. The caller is expected to
@@ -14473,7 +16673,12 @@ func marshalPhysicalDeviceExternalBufferInfoKHR(p uintptr) (interface{}, error) 
 }
 
 func (p *PhysicalDeviceExternalBufferInfoKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceExternalBufferInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalBufferInfoKHR. The caller is expected to
@@ -14504,7 +16709,12 @@ func marshalExternalBufferPropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalBufferPropertiesKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalBufferPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalBufferPropertiesKHR. The caller is expected to
@@ -14535,7 +16745,12 @@ func marshalPhysicalDeviceIDPropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceIDPropertiesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceIDPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceIDPropertiesKHR. The caller is expected to
@@ -14566,7 +16781,12 @@ func marshalExternalMemoryImageCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryImageCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryImageCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryImageCreateInfoKHR. The caller is expected to
@@ -14597,7 +16817,12 @@ func marshalExternalMemoryBufferCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryBufferCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryBufferCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryBufferCreateInfoKHR. The caller is expected to
@@ -14628,7 +16853,12 @@ func marshalExportMemoryAllocateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExportMemoryAllocateInfoKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExportMemoryAllocateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExportMemoryAllocateInfoKHR. The caller is expected to
@@ -14659,7 +16889,12 @@ func marshalImportMemoryFdInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (i *ImportMemoryFdInfoKHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImportMemoryFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImportMemoryFdInfoKHR. The caller is expected to
@@ -14690,7 +16925,12 @@ func marshalMemoryFdPropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryFdPropertiesKHR) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryFdPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryFdPropertiesKHR. The caller is expected to
@@ -14721,7 +16961,12 @@ func marshalMemoryGetFdInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryGetFdInfoKHR) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryGetFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryGetFdInfoKHR. The caller is expected to
@@ -14752,7 +16997,12 @@ func marshalExternalSemaphoreHandleTypeFlagsKHR(p uintptr) (interface{}, error) 
 }
 
 func (e *ExternalSemaphoreHandleTypeFlagsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalSemaphoreHandleTypeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlagsKHR. The caller is expected to
@@ -14783,7 +17033,12 @@ func marshalExternalSemaphoreHandleTypeFlagBitsKHR(p uintptr) (interface{}, erro
 }
 
 func (e *ExternalSemaphoreHandleTypeFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalSemaphoreHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalSemaphoreHandleTypeFlagBitsKHR. The caller is expected to
@@ -14814,7 +17069,12 @@ func marshalExternalSemaphoreFeatureFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalSemaphoreFeatureFlagsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalSemaphoreFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalSemaphoreFeatureFlagsKHR. The caller is expected to
@@ -14845,7 +17105,12 @@ func marshalExternalSemaphoreFeatureFlagBitsKHR(p uintptr) (interface{}, error) 
 }
 
 func (e *ExternalSemaphoreFeatureFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalSemaphoreFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalSemaphoreFeatureFlagBitsKHR. The caller is expected to
@@ -14876,7 +17141,12 @@ func marshalPhysicalDeviceExternalSemaphoreInfoKHR(p uintptr) (interface{}, erro
 }
 
 func (p *PhysicalDeviceExternalSemaphoreInfoKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceExternalSemaphoreInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalSemaphoreInfoKHR. The caller is expected to
@@ -14907,7 +17177,12 @@ func marshalExternalSemaphorePropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalSemaphorePropertiesKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalSemaphorePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalSemaphorePropertiesKHR. The caller is expected to
@@ -14938,7 +17213,12 @@ func marshalSemaphoreImportFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SemaphoreImportFlagsKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SemaphoreImportFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSemaphoreImportFlagsKHR. The caller is expected to
@@ -14969,7 +17249,12 @@ func marshalSemaphoreImportFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SemaphoreImportFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SemaphoreImportFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSemaphoreImportFlagBitsKHR. The caller is expected to
@@ -15000,7 +17285,12 @@ func marshalExportSemaphoreCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExportSemaphoreCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExportSemaphoreCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExportSemaphoreCreateInfoKHR. The caller is expected to
@@ -15031,7 +17321,12 @@ func marshalImportSemaphoreFdInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (i *ImportSemaphoreFdInfoKHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImportSemaphoreFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImportSemaphoreFdInfoKHR. The caller is expected to
@@ -15062,7 +17357,12 @@ func marshalSemaphoreGetFdInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SemaphoreGetFdInfoKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SemaphoreGetFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSemaphoreGetFdInfoKHR. The caller is expected to
@@ -15093,7 +17393,12 @@ func marshalPhysicalDevicePushDescriptorPropertiesKHR(p uintptr) (interface{}, e
 }
 
 func (p *PhysicalDevicePushDescriptorPropertiesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDevicePushDescriptorPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDevicePushDescriptorPropertiesKHR. The caller is expected to
@@ -15124,7 +17429,12 @@ func marshalPhysicalDeviceFloat16Int8FeaturesKHR(p uintptr) (interface{}, error)
 }
 
 func (p *PhysicalDeviceFloat16Int8FeaturesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceFloat16Int8FeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceFloat16Int8FeaturesKHR. The caller is expected to
@@ -15155,7 +17465,12 @@ func marshalPhysicalDevice16BitStorageFeaturesKHR(p uintptr) (interface{}, error
 }
 
 func (p *PhysicalDevice16BitStorageFeaturesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDevice16BitStorageFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDevice16BitStorageFeaturesKHR. The caller is expected to
@@ -15186,7 +17501,12 @@ func marshalRectLayerKHR(p uintptr) (interface{}, error) {
 }
 
 func (r *RectLayerKHR) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RectLayerKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRectLayerKHR. The caller is expected to
@@ -15217,7 +17537,12 @@ func marshalPresentRegionKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PresentRegionKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PresentRegionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPresentRegionKHR. The caller is expected to
@@ -15248,7 +17573,12 @@ func marshalPresentRegionsKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PresentRegionsKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PresentRegionsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPresentRegionsKHR. The caller is expected to
@@ -15279,7 +17609,12 @@ func marshalDescriptorUpdateTemplateKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorUpdateTemplateKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorUpdateTemplateKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateKHR. The caller is expected to
@@ -15310,7 +17645,12 @@ func marshalDescriptorUpdateTemplateTypeKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorUpdateTemplateTypeKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorUpdateTemplateTypeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateTypeKHR. The caller is expected to
@@ -15341,7 +17681,12 @@ func marshalDescriptorUpdateTemplateCreateFlagsKHR(p uintptr) (interface{}, erro
 }
 
 func (d *DescriptorUpdateTemplateCreateFlagsKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorUpdateTemplateCreateFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateFlagsKHR. The caller is expected to
@@ -15372,7 +17717,12 @@ func marshalDescriptorUpdateTemplateEntryKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorUpdateTemplateEntryKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorUpdateTemplateEntryKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateEntryKHR. The caller is expected to
@@ -15403,7 +17753,12 @@ func marshalDescriptorUpdateTemplateCreateInfoKHR(p uintptr) (interface{}, error
 }
 
 func (d *DescriptorUpdateTemplateCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorUpdateTemplateCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorUpdateTemplateCreateInfoKHR. The caller is expected to
@@ -15434,7 +17789,12 @@ func marshalAttachmentDescription2KHR(p uintptr) (interface{}, error) {
 }
 
 func (a *AttachmentDescription2KHR) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttachmentDescription2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAttachmentDescription2KHR. The caller is expected to
@@ -15465,7 +17825,12 @@ func marshalAttachmentReference2KHR(p uintptr) (interface{}, error) {
 }
 
 func (a *AttachmentReference2KHR) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttachmentReference2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAttachmentReference2KHR. The caller is expected to
@@ -15496,7 +17861,12 @@ func marshalSubpassDescription2KHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SubpassDescription2KHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassDescription2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassDescription2KHR. The caller is expected to
@@ -15527,7 +17897,12 @@ func marshalSubpassDependency2KHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SubpassDependency2KHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassDependency2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassDependency2KHR. The caller is expected to
@@ -15558,7 +17933,12 @@ func marshalRenderPassCreateInfo2KHR(p uintptr) (interface{}, error) {
 }
 
 func (r *RenderPassCreateInfo2KHR) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPassCreateInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPassCreateInfo2KHR. The caller is expected to
@@ -15589,7 +17969,12 @@ func marshalSubpassBeginInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SubpassBeginInfoKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassBeginInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassBeginInfoKHR. The caller is expected to
@@ -15620,7 +18005,12 @@ func marshalSubpassEndInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SubpassEndInfoKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassEndInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassEndInfoKHR. The caller is expected to
@@ -15651,7 +18041,12 @@ func marshalSharedPresentSurfaceCapabilitiesKHR(p uintptr) (interface{}, error) 
 }
 
 func (s *SharedPresentSurfaceCapabilitiesKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SharedPresentSurfaceCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSharedPresentSurfaceCapabilitiesKHR. The caller is expected to
@@ -15682,7 +18077,12 @@ func marshalExternalFenceHandleTypeFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalFenceHandleTypeFlagsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalFenceHandleTypeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalFenceHandleTypeFlagsKHR. The caller is expected to
@@ -15713,7 +18113,12 @@ func marshalExternalFenceHandleTypeFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalFenceHandleTypeFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalFenceHandleTypeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalFenceHandleTypeFlagBitsKHR. The caller is expected to
@@ -15744,7 +18149,12 @@ func marshalExternalFenceFeatureFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalFenceFeatureFlagsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalFenceFeatureFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalFenceFeatureFlagsKHR. The caller is expected to
@@ -15775,7 +18185,12 @@ func marshalExternalFenceFeatureFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalFenceFeatureFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalFenceFeatureFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalFenceFeatureFlagBitsKHR. The caller is expected to
@@ -15806,7 +18221,12 @@ func marshalPhysicalDeviceExternalFenceInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceExternalFenceInfoKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceExternalFenceInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalFenceInfoKHR. The caller is expected to
@@ -15837,7 +18257,12 @@ func marshalExternalFencePropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalFencePropertiesKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalFencePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalFencePropertiesKHR. The caller is expected to
@@ -15868,7 +18293,12 @@ func marshalFenceImportFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (f *FenceImportFlagsKHR) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FenceImportFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFenceImportFlagsKHR. The caller is expected to
@@ -15899,7 +18329,12 @@ func marshalFenceImportFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (f *FenceImportFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FenceImportFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFenceImportFlagBitsKHR. The caller is expected to
@@ -15930,7 +18365,12 @@ func marshalExportFenceCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (e *ExportFenceCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExportFenceCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExportFenceCreateInfoKHR. The caller is expected to
@@ -15961,7 +18401,12 @@ func marshalImportFenceFdInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (i *ImportFenceFdInfoKHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImportFenceFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImportFenceFdInfoKHR. The caller is expected to
@@ -15992,7 +18437,12 @@ func marshalFenceGetFdInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (f *FenceGetFdInfoKHR) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FenceGetFdInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFenceGetFdInfoKHR. The caller is expected to
@@ -16023,7 +18473,12 @@ func marshalPointClippingBehaviorKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PointClippingBehaviorKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PointClippingBehaviorKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPointClippingBehaviorKHR. The caller is expected to
@@ -16054,7 +18509,12 @@ func marshalTessellationDomainOriginKHR(p uintptr) (interface{}, error) {
 }
 
 func (t *TessellationDomainOriginKHR) free() {
-	C.free(unsafe.Pointer(t.native))
+	C.free(t.Native())
+}
+
+// Native returns the underlying source pointer.
+func (t *TessellationDomainOriginKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // Native returns the pointer to *C.VkTessellationDomainOriginKHR. The caller is expected to
@@ -16085,7 +18545,12 @@ func marshalPhysicalDevicePointClippingPropertiesKHR(p uintptr) (interface{}, er
 }
 
 func (p *PhysicalDevicePointClippingPropertiesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDevicePointClippingPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDevicePointClippingPropertiesKHR. The caller is expected to
@@ -16116,7 +18581,12 @@ func marshalRenderPassInputAttachmentAspectCreateInfoKHR(p uintptr) (interface{}
 }
 
 func (r *RenderPassInputAttachmentAspectCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPassInputAttachmentAspectCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPassInputAttachmentAspectCreateInfoKHR. The caller is expected to
@@ -16147,7 +18617,12 @@ func marshalInputAttachmentAspectReferenceKHR(p uintptr) (interface{}, error) {
 }
 
 func (i *InputAttachmentAspectReferenceKHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *InputAttachmentAspectReferenceKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkInputAttachmentAspectReferenceKHR. The caller is expected to
@@ -16178,7 +18653,12 @@ func marshalImageViewUsageCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageViewUsageCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageViewUsageCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageViewUsageCreateInfoKHR. The caller is expected to
@@ -16209,7 +18689,12 @@ func marshalPipelineTessellationDomainOriginStateCreateInfoKHR(p uintptr) (inter
 }
 
 func (p *PipelineTessellationDomainOriginStateCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineTessellationDomainOriginStateCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineTessellationDomainOriginStateCreateInfoKHR. The caller is expected to
@@ -16240,7 +18725,12 @@ func marshalPhysicalDeviceSurfaceInfo2KHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceSurfaceInfo2KHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceSurfaceInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceSurfaceInfo2KHR. The caller is expected to
@@ -16271,7 +18761,12 @@ func marshalSurfaceCapabilities2KHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceCapabilities2KHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceCapabilities2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceCapabilities2KHR. The caller is expected to
@@ -16302,7 +18797,12 @@ func marshalSurfaceFormat2KHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceFormat2KHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceFormat2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceFormat2KHR. The caller is expected to
@@ -16333,7 +18833,12 @@ func marshalPhysicalDeviceVariablePointerFeaturesKHR(p uintptr) (interface{}, er
 }
 
 func (p *PhysicalDeviceVariablePointerFeaturesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceVariablePointerFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceVariablePointerFeaturesKHR. The caller is expected to
@@ -16364,7 +18869,12 @@ func marshalPhysicalDeviceVariablePointersFeaturesKHR(p uintptr) (interface{}, e
 }
 
 func (p *PhysicalDeviceVariablePointersFeaturesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceVariablePointersFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceVariablePointersFeaturesKHR. The caller is expected to
@@ -16395,7 +18905,12 @@ func marshalDisplayProperties2KHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayProperties2KHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayProperties2KHR. The caller is expected to
@@ -16426,7 +18941,12 @@ func marshalDisplayPlaneProperties2KHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPlaneProperties2KHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPlaneProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPlaneProperties2KHR. The caller is expected to
@@ -16457,7 +18977,12 @@ func marshalDisplayModeProperties2KHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayModeProperties2KHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayModeProperties2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayModeProperties2KHR. The caller is expected to
@@ -16488,7 +19013,12 @@ func marshalDisplayPlaneInfo2KHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPlaneInfo2KHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPlaneInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPlaneInfo2KHR. The caller is expected to
@@ -16519,7 +19049,12 @@ func marshalDisplayPlaneCapabilities2KHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPlaneCapabilities2KHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPlaneCapabilities2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPlaneCapabilities2KHR. The caller is expected to
@@ -16550,7 +19085,12 @@ func marshalMemoryDedicatedRequirementsKHR(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryDedicatedRequirementsKHR) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryDedicatedRequirementsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryDedicatedRequirementsKHR. The caller is expected to
@@ -16581,7 +19121,12 @@ func marshalMemoryDedicatedAllocateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryDedicatedAllocateInfoKHR) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryDedicatedAllocateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryDedicatedAllocateInfoKHR. The caller is expected to
@@ -16612,7 +19157,12 @@ func marshalBufferMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferMemoryRequirementsInfo2KHR) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferMemoryRequirementsInfo2KHR. The caller is expected to
@@ -16643,7 +19193,12 @@ func marshalImageMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageMemoryRequirementsInfo2KHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageMemoryRequirementsInfo2KHR. The caller is expected to
@@ -16674,7 +19229,12 @@ func marshalImageSparseMemoryRequirementsInfo2KHR(p uintptr) (interface{}, error
 }
 
 func (i *ImageSparseMemoryRequirementsInfo2KHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageSparseMemoryRequirementsInfo2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageSparseMemoryRequirementsInfo2KHR. The caller is expected to
@@ -16705,7 +19265,12 @@ func marshalSparseImageMemoryRequirements2KHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SparseImageMemoryRequirements2KHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SparseImageMemoryRequirements2KHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSparseImageMemoryRequirements2KHR. The caller is expected to
@@ -16736,7 +19301,12 @@ func marshalImageFormatListCreateInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageFormatListCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageFormatListCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageFormatListCreateInfoKHR. The caller is expected to
@@ -16767,7 +19337,12 @@ func marshalSamplerYcbcrConversionKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerYcbcrConversionKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrConversionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionKHR. The caller is expected to
@@ -16798,7 +19373,12 @@ func marshalSamplerYcbcrModelConversionKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerYcbcrModelConversionKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrModelConversionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrModelConversionKHR. The caller is expected to
@@ -16829,7 +19409,12 @@ func marshalSamplerYcbcrRangeKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerYcbcrRangeKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrRangeKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrRangeKHR. The caller is expected to
@@ -16860,7 +19445,12 @@ func marshalChromaLocationKHR(p uintptr) (interface{}, error) {
 }
 
 func (c *ChromaLocationKHR) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ChromaLocationKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkChromaLocationKHR. The caller is expected to
@@ -16891,7 +19481,12 @@ func marshalSamplerYcbcrConversionCreateInfoKHR(p uintptr) (interface{}, error) 
 }
 
 func (s *SamplerYcbcrConversionCreateInfoKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrConversionCreateInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionCreateInfoKHR. The caller is expected to
@@ -16922,7 +19517,12 @@ func marshalSamplerYcbcrConversionInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerYcbcrConversionInfoKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrConversionInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionInfoKHR. The caller is expected to
@@ -16953,7 +19553,12 @@ func marshalBindImagePlaneMemoryInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (b *BindImagePlaneMemoryInfoKHR) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindImagePlaneMemoryInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindImagePlaneMemoryInfoKHR. The caller is expected to
@@ -16984,7 +19589,12 @@ func marshalImagePlaneMemoryRequirementsInfoKHR(p uintptr) (interface{}, error) 
 }
 
 func (i *ImagePlaneMemoryRequirementsInfoKHR) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImagePlaneMemoryRequirementsInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImagePlaneMemoryRequirementsInfoKHR. The caller is expected to
@@ -17015,7 +19625,12 @@ func marshalPhysicalDeviceSamplerYcbcrConversionFeaturesKHR(p uintptr) (interfac
 }
 
 func (p *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceSamplerYcbcrConversionFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceSamplerYcbcrConversionFeaturesKHR. The caller is expected to
@@ -17046,7 +19661,12 @@ func marshalSamplerYcbcrConversionImageFormatPropertiesKHR(p uintptr) (interface
 }
 
 func (s *SamplerYcbcrConversionImageFormatPropertiesKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerYcbcrConversionImageFormatPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerYcbcrConversionImageFormatPropertiesKHR. The caller is expected to
@@ -17077,7 +19697,12 @@ func marshalBindBufferMemoryInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (b *BindBufferMemoryInfoKHR) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindBufferMemoryInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindBufferMemoryInfoKHR. The caller is expected to
@@ -17108,7 +19733,12 @@ func marshalBindImageMemoryInfoKHR(p uintptr) (interface{}, error) {
 }
 
 func (b *BindImageMemoryInfoKHR) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindImageMemoryInfoKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindImageMemoryInfoKHR. The caller is expected to
@@ -17139,7 +19769,12 @@ func marshalPhysicalDeviceMaintenance3PropertiesKHR(p uintptr) (interface{}, err
 }
 
 func (p *PhysicalDeviceMaintenance3PropertiesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMaintenance3PropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMaintenance3PropertiesKHR. The caller is expected to
@@ -17170,7 +19805,12 @@ func marshalDescriptorSetLayoutSupportKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorSetLayoutSupportKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetLayoutSupportKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutSupportKHR. The caller is expected to
@@ -17201,7 +19841,12 @@ func marshalPhysicalDevice8BitStorageFeaturesKHR(p uintptr) (interface{}, error)
 }
 
 func (p *PhysicalDevice8BitStorageFeaturesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDevice8BitStorageFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDevice8BitStorageFeaturesKHR. The caller is expected to
@@ -17232,7 +19877,12 @@ func marshalPhysicalDeviceShaderAtomicInt64FeaturesKHR(p uintptr) (interface{}, 
 }
 
 func (p *PhysicalDeviceShaderAtomicInt64FeaturesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceShaderAtomicInt64FeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceShaderAtomicInt64FeaturesKHR. The caller is expected to
@@ -17263,7 +19913,12 @@ func marshalDriverIDKHR(p uintptr) (interface{}, error) {
 }
 
 func (d *DriverIDKHR) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DriverIDKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDriverIdKHR. The caller is expected to
@@ -17294,7 +19949,12 @@ func marshalConformanceVersionKHR(p uintptr) (interface{}, error) {
 }
 
 func (c *ConformanceVersionKHR) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ConformanceVersionKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkConformanceVersionKHR. The caller is expected to
@@ -17325,7 +19985,12 @@ func marshalPhysicalDeviceDriverPropertiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceDriverPropertiesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceDriverPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceDriverPropertiesKHR. The caller is expected to
@@ -17356,7 +20021,12 @@ func marshalPhysicalDeviceFloatControlsPropertiesKHR(p uintptr) (interface{}, er
 }
 
 func (p *PhysicalDeviceFloatControlsPropertiesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceFloatControlsPropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceFloatControlsPropertiesKHR. The caller is expected to
@@ -17387,7 +20057,12 @@ func marshalResolveModeFlagBitsKHR(p uintptr) (interface{}, error) {
 }
 
 func (r *ResolveModeFlagBitsKHR) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *ResolveModeFlagBitsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkResolveModeFlagBitsKHR. The caller is expected to
@@ -17418,7 +20093,12 @@ func marshalResolveModeFlagsKHR(p uintptr) (interface{}, error) {
 }
 
 func (r *ResolveModeFlagsKHR) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *ResolveModeFlagsKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkResolveModeFlagsKHR. The caller is expected to
@@ -17449,7 +20129,12 @@ func marshalSubpassDescriptionDepthStencilResolveKHR(p uintptr) (interface{}, er
 }
 
 func (s *SubpassDescriptionDepthStencilResolveKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassDescriptionDepthStencilResolveKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassDescriptionDepthStencilResolveKHR. The caller is expected to
@@ -17480,7 +20165,12 @@ func marshalPhysicalDeviceDepthStencilResolvePropertiesKHR(p uintptr) (interface
 }
 
 func (p *PhysicalDeviceDepthStencilResolvePropertiesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceDepthStencilResolvePropertiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceDepthStencilResolvePropertiesKHR. The caller is expected to
@@ -17511,7 +20201,12 @@ func marshalPhysicalDeviceVulkanMemoryModelFeaturesKHR(p uintptr) (interface{}, 
 }
 
 func (p *PhysicalDeviceVulkanMemoryModelFeaturesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceVulkanMemoryModelFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceVulkanMemoryModelFeaturesKHR. The caller is expected to
@@ -17542,7 +20237,12 @@ func marshalSurfaceProtectedCapabilitiesKHR(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceProtectedCapabilitiesKHR) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceProtectedCapabilitiesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceProtectedCapabilitiesKHR. The caller is expected to
@@ -17573,7 +20273,12 @@ func marshalPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR(p uintptr) (int
 }
 
 func (p *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceUniformBufferStandardLayoutFeaturesKHR) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceUniformBufferStandardLayoutFeaturesKHR. The caller is expected to
@@ -17604,7 +20309,12 @@ func marshalDebugReportCallbackEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugReportCallbackEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugReportCallbackEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugReportCallbackEXT. The caller is expected to
@@ -17635,7 +20345,12 @@ func marshalDebugReportObjectTypeEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugReportObjectTypeEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugReportObjectTypeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugReportObjectTypeEXT. The caller is expected to
@@ -17666,7 +20381,12 @@ func marshalDebugReportFlagBitsEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugReportFlagBitsEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugReportFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugReportFlagBitsEXT. The caller is expected to
@@ -17697,7 +20417,12 @@ func marshalDebugReportFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugReportFlagsEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugReportFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugReportFlagsEXT. The caller is expected to
@@ -17728,7 +20453,12 @@ func marshalDebugReportCallbackCreateInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugReportCallbackCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugReportCallbackCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugReportCallbackCreateInfoEXT. The caller is expected to
@@ -17759,7 +20489,12 @@ func marshalRasterizationOrderAMD(p uintptr) (interface{}, error) {
 }
 
 func (r *RasterizationOrderAMD) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RasterizationOrderAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRasterizationOrderAMD. The caller is expected to
@@ -17790,7 +20525,12 @@ func marshalPipelineRasterizationStateRasterizationOrderAMD(p uintptr) (interfac
 }
 
 func (p *PipelineRasterizationStateRasterizationOrderAMD) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineRasterizationStateRasterizationOrderAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineRasterizationStateRasterizationOrderAMD. The caller is expected to
@@ -17821,7 +20561,12 @@ func marshalDebugMarkerObjectNameInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugMarkerObjectNameInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugMarkerObjectNameInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugMarkerObjectNameInfoEXT. The caller is expected to
@@ -17852,7 +20597,12 @@ func marshalDebugMarkerObjectTagInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugMarkerObjectTagInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugMarkerObjectTagInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugMarkerObjectTagInfoEXT. The caller is expected to
@@ -17883,7 +20633,12 @@ func marshalDebugMarkerMarkerInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugMarkerMarkerInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugMarkerMarkerInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugMarkerMarkerInfoEXT. The caller is expected to
@@ -17914,7 +20669,12 @@ func marshalDedicatedAllocationImageCreateInfoNV(p uintptr) (interface{}, error)
 }
 
 func (d *DedicatedAllocationImageCreateInfoNV) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DedicatedAllocationImageCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDedicatedAllocationImageCreateInfoNV. The caller is expected to
@@ -17945,7 +20705,12 @@ func marshalDedicatedAllocationBufferCreateInfoNV(p uintptr) (interface{}, error
 }
 
 func (d *DedicatedAllocationBufferCreateInfoNV) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DedicatedAllocationBufferCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDedicatedAllocationBufferCreateInfoNV. The caller is expected to
@@ -17976,7 +20741,12 @@ func marshalDedicatedAllocationMemoryAllocateInfoNV(p uintptr) (interface{}, err
 }
 
 func (d *DedicatedAllocationMemoryAllocateInfoNV) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DedicatedAllocationMemoryAllocateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDedicatedAllocationMemoryAllocateInfoNV. The caller is expected to
@@ -18007,7 +20777,12 @@ func marshalPipelineRasterizationStateStreamCreateFlagsEXT(p uintptr) (interface
 }
 
 func (p *PipelineRasterizationStateStreamCreateFlagsEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineRasterizationStateStreamCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineRasterizationStateStreamCreateFlagsEXT. The caller is expected to
@@ -18038,7 +20813,12 @@ func marshalPhysicalDeviceTransformFeedbackFeaturesEXT(p uintptr) (interface{}, 
 }
 
 func (p *PhysicalDeviceTransformFeedbackFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceTransformFeedbackFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceTransformFeedbackFeaturesEXT. The caller is expected to
@@ -18069,7 +20849,12 @@ func marshalPhysicalDeviceTransformFeedbackPropertiesEXT(p uintptr) (interface{}
 }
 
 func (p *PhysicalDeviceTransformFeedbackPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceTransformFeedbackPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceTransformFeedbackPropertiesEXT. The caller is expected to
@@ -18100,7 +20885,12 @@ func marshalPipelineRasterizationStateStreamCreateInfoEXT(p uintptr) (interface{
 }
 
 func (p *PipelineRasterizationStateStreamCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineRasterizationStateStreamCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineRasterizationStateStreamCreateInfoEXT. The caller is expected to
@@ -18131,7 +20921,12 @@ func marshalImageViewHandleInfoNVX(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageViewHandleInfoNVX) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageViewHandleInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageViewHandleInfoNVX. The caller is expected to
@@ -18162,7 +20957,12 @@ func marshalTextureLODGatherFormatPropertiesAMD(p uintptr) (interface{}, error) 
 }
 
 func (t *TextureLODGatherFormatPropertiesAMD) free() {
-	C.free(unsafe.Pointer(t.native))
+	C.free(t.Native())
+}
+
+// Native returns the underlying source pointer.
+func (t *TextureLODGatherFormatPropertiesAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // Native returns the pointer to *C.VkTextureLODGatherFormatPropertiesAMD. The caller is expected to
@@ -18193,7 +20993,12 @@ func marshalShaderInfoTypeAMD(p uintptr) (interface{}, error) {
 }
 
 func (s *ShaderInfoTypeAMD) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShaderInfoTypeAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShaderInfoTypeAMD. The caller is expected to
@@ -18224,7 +21029,12 @@ func marshalShaderResourceUsageAMD(p uintptr) (interface{}, error) {
 }
 
 func (s *ShaderResourceUsageAMD) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShaderResourceUsageAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShaderResourceUsageAMD. The caller is expected to
@@ -18255,7 +21065,12 @@ func marshalShaderStatisticsInfoAMD(p uintptr) (interface{}, error) {
 }
 
 func (s *ShaderStatisticsInfoAMD) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShaderStatisticsInfoAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShaderStatisticsInfoAMD. The caller is expected to
@@ -18286,7 +21101,12 @@ func marshalPhysicalDeviceCornerSampledImageFeaturesNV(p uintptr) (interface{}, 
 }
 
 func (p *PhysicalDeviceCornerSampledImageFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceCornerSampledImageFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceCornerSampledImageFeaturesNV. The caller is expected to
@@ -18317,7 +21137,12 @@ func marshalExternalMemoryHandleTypeFlagBitsNV(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryHandleTypeFlagBitsNV) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryHandleTypeFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagBitsNV. The caller is expected to
@@ -18348,7 +21173,12 @@ func marshalExternalMemoryHandleTypeFlagsNV(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryHandleTypeFlagsNV) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryHandleTypeFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryHandleTypeFlagsNV. The caller is expected to
@@ -18379,7 +21209,12 @@ func marshalExternalMemoryFeatureFlagBitsNV(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryFeatureFlagBitsNV) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryFeatureFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlagBitsNV. The caller is expected to
@@ -18410,7 +21245,12 @@ func marshalExternalMemoryFeatureFlagsNV(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryFeatureFlagsNV) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryFeatureFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryFeatureFlagsNV. The caller is expected to
@@ -18441,7 +21281,12 @@ func marshalExternalImageFormatPropertiesNV(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalImageFormatPropertiesNV) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalImageFormatPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalImageFormatPropertiesNV. The caller is expected to
@@ -18472,7 +21317,12 @@ func marshalExternalMemoryImageCreateInfoNV(p uintptr) (interface{}, error) {
 }
 
 func (e *ExternalMemoryImageCreateInfoNV) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExternalMemoryImageCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExternalMemoryImageCreateInfoNV. The caller is expected to
@@ -18503,7 +21353,12 @@ func marshalExportMemoryAllocateInfoNV(p uintptr) (interface{}, error) {
 }
 
 func (e *ExportMemoryAllocateInfoNV) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *ExportMemoryAllocateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.VkExportMemoryAllocateInfoNV. The caller is expected to
@@ -18534,7 +21389,12 @@ func marshalValidationCheckEXT(p uintptr) (interface{}, error) {
 }
 
 func (v *ValidationCheckEXT) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ValidationCheckEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkValidationCheckEXT. The caller is expected to
@@ -18565,7 +21425,12 @@ func marshalValidationFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (v *ValidationFlagsEXT) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ValidationFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkValidationFlagsEXT. The caller is expected to
@@ -18596,7 +21461,12 @@ func marshalImageViewASTCDecodeModeEXT(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageViewASTCDecodeModeEXT) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageViewASTCDecodeModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageViewASTCDecodeModeEXT. The caller is expected to
@@ -18627,7 +21497,12 @@ func marshalPhysicalDeviceASTCDecodeFeaturesEXT(p uintptr) (interface{}, error) 
 }
 
 func (p *PhysicalDeviceASTCDecodeFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceASTCDecodeFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceASTCDecodeFeaturesEXT. The caller is expected to
@@ -18658,7 +21533,12 @@ func marshalConditionalRenderingFlagBitsEXT(p uintptr) (interface{}, error) {
 }
 
 func (c *ConditionalRenderingFlagBitsEXT) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ConditionalRenderingFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkConditionalRenderingFlagBitsEXT. The caller is expected to
@@ -18689,7 +21569,12 @@ func marshalConditionalRenderingFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (c *ConditionalRenderingFlagsEXT) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ConditionalRenderingFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkConditionalRenderingFlagsEXT. The caller is expected to
@@ -18720,7 +21605,12 @@ func marshalConditionalRenderingBeginInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (c *ConditionalRenderingBeginInfoEXT) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ConditionalRenderingBeginInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkConditionalRenderingBeginInfoEXT. The caller is expected to
@@ -18751,7 +21641,12 @@ func marshalPhysicalDeviceConditionalRenderingFeaturesEXT(p uintptr) (interface{
 }
 
 func (p *PhysicalDeviceConditionalRenderingFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceConditionalRenderingFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceConditionalRenderingFeaturesEXT. The caller is expected to
@@ -18782,7 +21677,12 @@ func marshalCommandBufferInheritanceConditionalRenderingInfoEXT(p uintptr) (inte
 }
 
 func (c *CommandBufferInheritanceConditionalRenderingInfoEXT) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CommandBufferInheritanceConditionalRenderingInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCommandBufferInheritanceConditionalRenderingInfoEXT. The caller is expected to
@@ -18813,7 +21713,12 @@ func marshalObjectTableNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectTableNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectTableNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectTableNVX. The caller is expected to
@@ -18844,7 +21749,12 @@ func marshalIndirectCommandsLayoutNVX(p uintptr) (interface{}, error) {
 }
 
 func (i *IndirectCommandsLayoutNVX) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *IndirectCommandsLayoutNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkIndirectCommandsLayoutNVX. The caller is expected to
@@ -18875,7 +21785,12 @@ func marshalIndirectCommandsTokenTypeNVX(p uintptr) (interface{}, error) {
 }
 
 func (i *IndirectCommandsTokenTypeNVX) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *IndirectCommandsTokenTypeNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkIndirectCommandsTokenTypeNVX. The caller is expected to
@@ -18906,7 +21821,12 @@ func marshalObjectEntryTypeNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectEntryTypeNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectEntryTypeNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectEntryTypeNVX. The caller is expected to
@@ -18937,7 +21857,12 @@ func marshalIndirectCommandsLayoutUsageFlagBitsNVX(p uintptr) (interface{}, erro
 }
 
 func (i *IndirectCommandsLayoutUsageFlagBitsNVX) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *IndirectCommandsLayoutUsageFlagBitsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkIndirectCommandsLayoutUsageFlagBitsNVX. The caller is expected to
@@ -18968,7 +21893,12 @@ func marshalIndirectCommandsLayoutUsageFlagsNVX(p uintptr) (interface{}, error) 
 }
 
 func (i *IndirectCommandsLayoutUsageFlagsNVX) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *IndirectCommandsLayoutUsageFlagsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkIndirectCommandsLayoutUsageFlagsNVX. The caller is expected to
@@ -18999,7 +21929,12 @@ func marshalObjectEntryUsageFlagBitsNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectEntryUsageFlagBitsNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectEntryUsageFlagBitsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectEntryUsageFlagBitsNVX. The caller is expected to
@@ -19030,7 +21965,12 @@ func marshalObjectEntryUsageFlagsNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectEntryUsageFlagsNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectEntryUsageFlagsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectEntryUsageFlagsNVX. The caller is expected to
@@ -19061,7 +22001,12 @@ func marshalDeviceGeneratedCommandsFeaturesNVX(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGeneratedCommandsFeaturesNVX) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGeneratedCommandsFeaturesNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGeneratedCommandsFeaturesNVX. The caller is expected to
@@ -19092,7 +22037,12 @@ func marshalDeviceGeneratedCommandsLimitsNVX(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceGeneratedCommandsLimitsNVX) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceGeneratedCommandsLimitsNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceGeneratedCommandsLimitsNVX. The caller is expected to
@@ -19123,7 +22073,12 @@ func marshalIndirectCommandsTokenNVX(p uintptr) (interface{}, error) {
 }
 
 func (i *IndirectCommandsTokenNVX) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *IndirectCommandsTokenNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkIndirectCommandsTokenNVX. The caller is expected to
@@ -19154,7 +22109,12 @@ func marshalIndirectCommandsLayoutTokenNVX(p uintptr) (interface{}, error) {
 }
 
 func (i *IndirectCommandsLayoutTokenNVX) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *IndirectCommandsLayoutTokenNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkIndirectCommandsLayoutTokenNVX. The caller is expected to
@@ -19185,7 +22145,12 @@ func marshalIndirectCommandsLayoutCreateInfoNVX(p uintptr) (interface{}, error) 
 }
 
 func (i *IndirectCommandsLayoutCreateInfoNVX) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *IndirectCommandsLayoutCreateInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkIndirectCommandsLayoutCreateInfoNVX. The caller is expected to
@@ -19216,7 +22181,12 @@ func marshalCmdProcessCommandsInfoNVX(p uintptr) (interface{}, error) {
 }
 
 func (c *CmdProcessCommandsInfoNVX) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CmdProcessCommandsInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCmdProcessCommandsInfoNVX. The caller is expected to
@@ -19247,7 +22217,12 @@ func marshalCmdReserveSpaceForCommandsInfoNVX(p uintptr) (interface{}, error) {
 }
 
 func (c *CmdReserveSpaceForCommandsInfoNVX) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CmdReserveSpaceForCommandsInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCmdReserveSpaceForCommandsInfoNVX. The caller is expected to
@@ -19278,7 +22253,12 @@ func marshalObjectTableCreateInfoNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectTableCreateInfoNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectTableCreateInfoNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectTableCreateInfoNVX. The caller is expected to
@@ -19309,7 +22289,12 @@ func marshalObjectTableEntryNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectTableEntryNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectTableEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectTableEntryNVX. The caller is expected to
@@ -19340,7 +22325,12 @@ func marshalObjectTablePipelineEntryNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectTablePipelineEntryNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectTablePipelineEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectTablePipelineEntryNVX. The caller is expected to
@@ -19371,7 +22361,12 @@ func marshalObjectTableDescriptorSetEntryNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectTableDescriptorSetEntryNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectTableDescriptorSetEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectTableDescriptorSetEntryNVX. The caller is expected to
@@ -19402,7 +22397,12 @@ func marshalObjectTableVertexBufferEntryNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectTableVertexBufferEntryNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectTableVertexBufferEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectTableVertexBufferEntryNVX. The caller is expected to
@@ -19433,7 +22433,12 @@ func marshalObjectTableIndexBufferEntryNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectTableIndexBufferEntryNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectTableIndexBufferEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectTableIndexBufferEntryNVX. The caller is expected to
@@ -19464,7 +22469,12 @@ func marshalObjectTablePushConstantEntryNVX(p uintptr) (interface{}, error) {
 }
 
 func (o *ObjectTablePushConstantEntryNVX) free() {
-	C.free(unsafe.Pointer(o.native))
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *ObjectTablePushConstantEntryNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.VkObjectTablePushConstantEntryNVX. The caller is expected to
@@ -19495,7 +22505,12 @@ func marshalViewportWScalingNV(p uintptr) (interface{}, error) {
 }
 
 func (v *ViewportWScalingNV) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ViewportWScalingNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkViewportWScalingNV. The caller is expected to
@@ -19526,7 +22541,12 @@ func marshalPipelineViewportWScalingStateCreateInfoNV(p uintptr) (interface{}, e
 }
 
 func (p *PipelineViewportWScalingStateCreateInfoNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineViewportWScalingStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineViewportWScalingStateCreateInfoNV. The caller is expected to
@@ -19557,7 +22577,12 @@ func marshalSurfaceCounterFlagBitsEXT(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceCounterFlagBitsEXT) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceCounterFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceCounterFlagBitsEXT. The caller is expected to
@@ -19588,7 +22613,12 @@ func marshalSurfaceCounterFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceCounterFlagsEXT) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceCounterFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceCounterFlagsEXT. The caller is expected to
@@ -19619,7 +22649,12 @@ func marshalSurfaceCapabilities2EXT(p uintptr) (interface{}, error) {
 }
 
 func (s *SurfaceCapabilities2EXT) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SurfaceCapabilities2EXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSurfaceCapabilities2EXT. The caller is expected to
@@ -19650,7 +22685,12 @@ func marshalDisplayPowerStateEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPowerStateEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPowerStateEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPowerStateEXT. The caller is expected to
@@ -19681,7 +22721,12 @@ func marshalDeviceEventTypeEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceEventTypeEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceEventTypeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceEventTypeEXT. The caller is expected to
@@ -19712,7 +22757,12 @@ func marshalDisplayEventTypeEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayEventTypeEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayEventTypeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayEventTypeEXT. The caller is expected to
@@ -19743,7 +22793,12 @@ func marshalDisplayPowerInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayPowerInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayPowerInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayPowerInfoEXT. The caller is expected to
@@ -19774,7 +22829,12 @@ func marshalDeviceEventInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceEventInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceEventInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceEventInfoEXT. The caller is expected to
@@ -19805,7 +22865,12 @@ func marshalDisplayEventInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DisplayEventInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayEventInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayEventInfoEXT. The caller is expected to
@@ -19836,7 +22901,12 @@ func marshalSwapchainCounterCreateInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (s *SwapchainCounterCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SwapchainCounterCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSwapchainCounterCreateInfoEXT. The caller is expected to
@@ -19867,7 +22937,12 @@ func marshalRefreshCycleDurationGOOGLE(p uintptr) (interface{}, error) {
 }
 
 func (r *RefreshCycleDurationGOOGLE) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RefreshCycleDurationGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRefreshCycleDurationGOOGLE. The caller is expected to
@@ -19898,7 +22973,12 @@ func marshalPastPresentationTimingGOOGLE(p uintptr) (interface{}, error) {
 }
 
 func (p *PastPresentationTimingGOOGLE) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PastPresentationTimingGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPastPresentationTimingGOOGLE. The caller is expected to
@@ -19929,7 +23009,12 @@ func marshalPresentTimeGOOGLE(p uintptr) (interface{}, error) {
 }
 
 func (p *PresentTimeGOOGLE) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PresentTimeGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPresentTimeGOOGLE. The caller is expected to
@@ -19960,7 +23045,12 @@ func marshalPresentTimesInfoGOOGLE(p uintptr) (interface{}, error) {
 }
 
 func (p *PresentTimesInfoGOOGLE) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PresentTimesInfoGOOGLE) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPresentTimesInfoGOOGLE. The caller is expected to
@@ -19991,7 +23081,12 @@ func marshalPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX(p uintptr) (in
 }
 
 func (p *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMultiviewPerViewAttributesPropertiesNVX) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMultiviewPerViewAttributesPropertiesNVX. The caller is expected to
@@ -20022,7 +23117,12 @@ func marshalViewportCoordinateSwizzleNV(p uintptr) (interface{}, error) {
 }
 
 func (v *ViewportCoordinateSwizzleNV) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ViewportCoordinateSwizzleNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkViewportCoordinateSwizzleNV. The caller is expected to
@@ -20053,7 +23153,12 @@ func marshalPipelineViewportSwizzleStateCreateFlagsNV(p uintptr) (interface{}, e
 }
 
 func (p *PipelineViewportSwizzleStateCreateFlagsNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineViewportSwizzleStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineViewportSwizzleStateCreateFlagsNV. The caller is expected to
@@ -20084,7 +23189,12 @@ func marshalViewportSwizzleNV(p uintptr) (interface{}, error) {
 }
 
 func (v *ViewportSwizzleNV) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ViewportSwizzleNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkViewportSwizzleNV. The caller is expected to
@@ -20115,7 +23225,12 @@ func marshalPipelineViewportSwizzleStateCreateInfoNV(p uintptr) (interface{}, er
 }
 
 func (p *PipelineViewportSwizzleStateCreateInfoNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineViewportSwizzleStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineViewportSwizzleStateCreateInfoNV. The caller is expected to
@@ -20146,7 +23261,12 @@ func marshalDiscardRectangleModeEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DiscardRectangleModeEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DiscardRectangleModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDiscardRectangleModeEXT. The caller is expected to
@@ -20177,7 +23297,12 @@ func marshalPipelineDiscardRectangleStateCreateFlagsEXT(p uintptr) (interface{},
 }
 
 func (p *PipelineDiscardRectangleStateCreateFlagsEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineDiscardRectangleStateCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineDiscardRectangleStateCreateFlagsEXT. The caller is expected to
@@ -20208,7 +23333,12 @@ func marshalPhysicalDeviceDiscardRectanglePropertiesEXT(p uintptr) (interface{},
 }
 
 func (p *PhysicalDeviceDiscardRectanglePropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceDiscardRectanglePropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceDiscardRectanglePropertiesEXT. The caller is expected to
@@ -20239,7 +23369,12 @@ func marshalPipelineDiscardRectangleStateCreateInfoEXT(p uintptr) (interface{}, 
 }
 
 func (p *PipelineDiscardRectangleStateCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineDiscardRectangleStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineDiscardRectangleStateCreateInfoEXT. The caller is expected to
@@ -20270,7 +23405,12 @@ func marshalConservativeRasterizationModeEXT(p uintptr) (interface{}, error) {
 }
 
 func (c *ConservativeRasterizationModeEXT) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ConservativeRasterizationModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkConservativeRasterizationModeEXT. The caller is expected to
@@ -20301,7 +23441,12 @@ func marshalPipelineRasterizationConservativeStateCreateFlagsEXT(p uintptr) (int
 }
 
 func (p *PipelineRasterizationConservativeStateCreateFlagsEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineRasterizationConservativeStateCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineRasterizationConservativeStateCreateFlagsEXT. The caller is expected to
@@ -20332,7 +23477,12 @@ func marshalPhysicalDeviceConservativeRasterizationPropertiesEXT(p uintptr) (int
 }
 
 func (p *PhysicalDeviceConservativeRasterizationPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceConservativeRasterizationPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceConservativeRasterizationPropertiesEXT. The caller is expected to
@@ -20363,7 +23513,12 @@ func marshalPipelineRasterizationConservativeStateCreateInfoEXT(p uintptr) (inte
 }
 
 func (p *PipelineRasterizationConservativeStateCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineRasterizationConservativeStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineRasterizationConservativeStateCreateInfoEXT. The caller is expected to
@@ -20394,7 +23549,12 @@ func marshalPipelineRasterizationDepthClipStateCreateFlagsEXT(p uintptr) (interf
 }
 
 func (p *PipelineRasterizationDepthClipStateCreateFlagsEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineRasterizationDepthClipStateCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineRasterizationDepthClipStateCreateFlagsEXT. The caller is expected to
@@ -20425,7 +23585,12 @@ func marshalPhysicalDeviceDepthClipEnableFeaturesEXT(p uintptr) (interface{}, er
 }
 
 func (p *PhysicalDeviceDepthClipEnableFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceDepthClipEnableFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceDepthClipEnableFeaturesEXT. The caller is expected to
@@ -20456,7 +23621,12 @@ func marshalPipelineRasterizationDepthClipStateCreateInfoEXT(p uintptr) (interfa
 }
 
 func (p *PipelineRasterizationDepthClipStateCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineRasterizationDepthClipStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineRasterizationDepthClipStateCreateInfoEXT. The caller is expected to
@@ -20487,7 +23657,12 @@ func marshalXYColorEXT(p uintptr) (interface{}, error) {
 }
 
 func (x *XYColorEXT) free() {
-	C.free(unsafe.Pointer(x.native))
+	C.free(x.Native())
+}
+
+// Native returns the underlying source pointer.
+func (x *XYColorEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(x.native)
 }
 
 // Native returns the pointer to *C.VkXYColorEXT. The caller is expected to
@@ -20518,7 +23693,12 @@ func marshalHdrMetadataEXT(p uintptr) (interface{}, error) {
 }
 
 func (h *HdrMetadataEXT) free() {
-	C.free(unsafe.Pointer(h.native))
+	C.free(h.Native())
+}
+
+// Native returns the underlying source pointer.
+func (h *HdrMetadataEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
 }
 
 // Native returns the pointer to *C.VkHdrMetadataEXT. The caller is expected to
@@ -20549,7 +23729,12 @@ func marshalDebugUtilsMessengerEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugUtilsMessengerEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsMessengerEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsMessengerEXT. The caller is expected to
@@ -20580,7 +23765,12 @@ func marshalDebugUtilsMessengerCallbackDataFlagsEXT(p uintptr) (interface{}, err
 }
 
 func (d *DebugUtilsMessengerCallbackDataFlagsEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsMessengerCallbackDataFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsMessengerCallbackDataFlagsEXT. The caller is expected to
@@ -20611,7 +23801,12 @@ func marshalDebugUtilsMessengerCreateFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugUtilsMessengerCreateFlagsEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsMessengerCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsMessengerCreateFlagsEXT. The caller is expected to
@@ -20642,7 +23837,12 @@ func marshalDebugUtilsMessageSeverityFlagBitsEXT(p uintptr) (interface{}, error)
 }
 
 func (d *DebugUtilsMessageSeverityFlagBitsEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsMessageSeverityFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsMessageSeverityFlagBitsEXT. The caller is expected to
@@ -20673,7 +23873,12 @@ func marshalDebugUtilsMessageSeverityFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugUtilsMessageSeverityFlagsEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsMessageSeverityFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsMessageSeverityFlagsEXT. The caller is expected to
@@ -20704,7 +23909,12 @@ func marshalDebugUtilsMessageTypeFlagBitsEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugUtilsMessageTypeFlagBitsEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsMessageTypeFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsMessageTypeFlagBitsEXT. The caller is expected to
@@ -20735,7 +23945,12 @@ func marshalDebugUtilsMessageTypeFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugUtilsMessageTypeFlagsEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsMessageTypeFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsMessageTypeFlagsEXT. The caller is expected to
@@ -20766,7 +23981,12 @@ func marshalDebugUtilsObjectNameInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugUtilsObjectNameInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsObjectNameInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsObjectNameInfoEXT. The caller is expected to
@@ -20797,7 +24017,12 @@ func marshalDebugUtilsObjectTagInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugUtilsObjectTagInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsObjectTagInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsObjectTagInfoEXT. The caller is expected to
@@ -20828,7 +24053,12 @@ func marshalDebugUtilsLabelEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugUtilsLabelEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsLabelEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsLabelEXT. The caller is expected to
@@ -20859,7 +24089,12 @@ func marshalDebugUtilsMessengerCallbackDataEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugUtilsMessengerCallbackDataEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsMessengerCallbackDataEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsMessengerCallbackDataEXT. The caller is expected to
@@ -20890,7 +24125,12 @@ func marshalDebugUtilsMessengerCreateInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DebugUtilsMessengerCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DebugUtilsMessengerCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDebugUtilsMessengerCreateInfoEXT. The caller is expected to
@@ -20921,7 +24161,12 @@ func marshalSamplerReductionModeEXT(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerReductionModeEXT) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerReductionModeEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerReductionModeEXT. The caller is expected to
@@ -20952,7 +24197,12 @@ func marshalSamplerReductionModeCreateInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (s *SamplerReductionModeCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SamplerReductionModeCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSamplerReductionModeCreateInfoEXT. The caller is expected to
@@ -20983,7 +24233,12 @@ func marshalPhysicalDeviceSamplerFilterMinmaxPropertiesEXT(p uintptr) (interface
 }
 
 func (p *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceSamplerFilterMinmaxPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceSamplerFilterMinmaxPropertiesEXT. The caller is expected to
@@ -21014,7 +24269,12 @@ func marshalPhysicalDeviceInlineUniformBlockFeaturesEXT(p uintptr) (interface{},
 }
 
 func (p *PhysicalDeviceInlineUniformBlockFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceInlineUniformBlockFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceInlineUniformBlockFeaturesEXT. The caller is expected to
@@ -21045,7 +24305,12 @@ func marshalPhysicalDeviceInlineUniformBlockPropertiesEXT(p uintptr) (interface{
 }
 
 func (p *PhysicalDeviceInlineUniformBlockPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceInlineUniformBlockPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceInlineUniformBlockPropertiesEXT. The caller is expected to
@@ -21076,7 +24341,12 @@ func marshalWriteDescriptorSetInlineUniformBlockEXT(p uintptr) (interface{}, err
 }
 
 func (w *WriteDescriptorSetInlineUniformBlockEXT) free() {
-	C.free(unsafe.Pointer(w.native))
+	C.free(w.Native())
+}
+
+// Native returns the underlying source pointer.
+func (w *WriteDescriptorSetInlineUniformBlockEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(w.native)
 }
 
 // Native returns the pointer to *C.VkWriteDescriptorSetInlineUniformBlockEXT. The caller is expected to
@@ -21107,7 +24377,12 @@ func marshalDescriptorPoolInlineUniformBlockCreateInfoEXT(p uintptr) (interface{
 }
 
 func (d *DescriptorPoolInlineUniformBlockCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorPoolInlineUniformBlockCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorPoolInlineUniformBlockCreateInfoEXT. The caller is expected to
@@ -21138,7 +24413,12 @@ func marshalSampleLocationEXT(p uintptr) (interface{}, error) {
 }
 
 func (s *SampleLocationEXT) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SampleLocationEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSampleLocationEXT. The caller is expected to
@@ -21169,7 +24449,12 @@ func marshalSampleLocationsInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (s *SampleLocationsInfoEXT) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SampleLocationsInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSampleLocationsInfoEXT. The caller is expected to
@@ -21200,7 +24485,12 @@ func marshalAttachmentSampleLocationsEXT(p uintptr) (interface{}, error) {
 }
 
 func (a *AttachmentSampleLocationsEXT) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttachmentSampleLocationsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAttachmentSampleLocationsEXT. The caller is expected to
@@ -21231,7 +24521,12 @@ func marshalSubpassSampleLocationsEXT(p uintptr) (interface{}, error) {
 }
 
 func (s *SubpassSampleLocationsEXT) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SubpassSampleLocationsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSubpassSampleLocationsEXT. The caller is expected to
@@ -21262,7 +24557,12 @@ func marshalRenderPassSampleLocationsBeginInfoEXT(p uintptr) (interface{}, error
 }
 
 func (r *RenderPassSampleLocationsBeginInfoEXT) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPassSampleLocationsBeginInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPassSampleLocationsBeginInfoEXT. The caller is expected to
@@ -21293,7 +24593,12 @@ func marshalPipelineSampleLocationsStateCreateInfoEXT(p uintptr) (interface{}, e
 }
 
 func (p *PipelineSampleLocationsStateCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineSampleLocationsStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineSampleLocationsStateCreateInfoEXT. The caller is expected to
@@ -21324,7 +24629,12 @@ func marshalPhysicalDeviceSampleLocationsPropertiesEXT(p uintptr) (interface{}, 
 }
 
 func (p *PhysicalDeviceSampleLocationsPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceSampleLocationsPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceSampleLocationsPropertiesEXT. The caller is expected to
@@ -21355,7 +24665,12 @@ func marshalMultisamplePropertiesEXT(p uintptr) (interface{}, error) {
 }
 
 func (m *MultisamplePropertiesEXT) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MultisamplePropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMultisamplePropertiesEXT. The caller is expected to
@@ -21386,7 +24701,12 @@ func marshalBlendOverlapEXT(p uintptr) (interface{}, error) {
 }
 
 func (b *BlendOverlapEXT) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BlendOverlapEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBlendOverlapEXT. The caller is expected to
@@ -21417,7 +24737,12 @@ func marshalPhysicalDeviceBlendOperationAdvancedFeaturesEXT(p uintptr) (interfac
 }
 
 func (p *PhysicalDeviceBlendOperationAdvancedFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceBlendOperationAdvancedFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT. The caller is expected to
@@ -21448,7 +24773,12 @@ func marshalPhysicalDeviceBlendOperationAdvancedPropertiesEXT(p uintptr) (interf
 }
 
 func (p *PhysicalDeviceBlendOperationAdvancedPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceBlendOperationAdvancedPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT. The caller is expected to
@@ -21479,7 +24809,12 @@ func marshalPipelineColorBlendAdvancedStateCreateInfoEXT(p uintptr) (interface{}
 }
 
 func (p *PipelineColorBlendAdvancedStateCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineColorBlendAdvancedStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineColorBlendAdvancedStateCreateInfoEXT. The caller is expected to
@@ -21510,7 +24845,12 @@ func marshalPipelineCoverageToColorStateCreateFlagsNV(p uintptr) (interface{}, e
 }
 
 func (p *PipelineCoverageToColorStateCreateFlagsNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCoverageToColorStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCoverageToColorStateCreateFlagsNV. The caller is expected to
@@ -21541,7 +24881,12 @@ func marshalPipelineCoverageToColorStateCreateInfoNV(p uintptr) (interface{}, er
 }
 
 func (p *PipelineCoverageToColorStateCreateInfoNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCoverageToColorStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCoverageToColorStateCreateInfoNV. The caller is expected to
@@ -21572,7 +24917,12 @@ func marshalCoverageModulationModeNV(p uintptr) (interface{}, error) {
 }
 
 func (c *CoverageModulationModeNV) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CoverageModulationModeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCoverageModulationModeNV. The caller is expected to
@@ -21603,7 +24953,12 @@ func marshalPipelineCoverageModulationStateCreateFlagsNV(p uintptr) (interface{}
 }
 
 func (p *PipelineCoverageModulationStateCreateFlagsNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCoverageModulationStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCoverageModulationStateCreateFlagsNV. The caller is expected to
@@ -21634,7 +24989,12 @@ func marshalPipelineCoverageModulationStateCreateInfoNV(p uintptr) (interface{},
 }
 
 func (p *PipelineCoverageModulationStateCreateInfoNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCoverageModulationStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCoverageModulationStateCreateInfoNV. The caller is expected to
@@ -21665,7 +25025,12 @@ func marshalDrmFormatModifierPropertiesEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DrmFormatModifierPropertiesEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DrmFormatModifierPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDrmFormatModifierPropertiesEXT. The caller is expected to
@@ -21696,7 +25061,12 @@ func marshalDrmFormatModifierPropertiesListEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DrmFormatModifierPropertiesListEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DrmFormatModifierPropertiesListEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDrmFormatModifierPropertiesListEXT. The caller is expected to
@@ -21727,7 +25097,12 @@ func marshalPhysicalDeviceImageDrmFormatModifierInfoEXT(p uintptr) (interface{},
 }
 
 func (p *PhysicalDeviceImageDrmFormatModifierInfoEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceImageDrmFormatModifierInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceImageDrmFormatModifierInfoEXT. The caller is expected to
@@ -21758,7 +25133,12 @@ func marshalImageDrmFormatModifierListCreateInfoEXT(p uintptr) (interface{}, err
 }
 
 func (i *ImageDrmFormatModifierListCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageDrmFormatModifierListCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageDrmFormatModifierListCreateInfoEXT. The caller is expected to
@@ -21789,7 +25169,12 @@ func marshalImageDrmFormatModifierExplicitCreateInfoEXT(p uintptr) (interface{},
 }
 
 func (i *ImageDrmFormatModifierExplicitCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageDrmFormatModifierExplicitCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageDrmFormatModifierExplicitCreateInfoEXT. The caller is expected to
@@ -21820,7 +25205,12 @@ func marshalImageDrmFormatModifierPropertiesEXT(p uintptr) (interface{}, error) 
 }
 
 func (i *ImageDrmFormatModifierPropertiesEXT) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageDrmFormatModifierPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageDrmFormatModifierPropertiesEXT. The caller is expected to
@@ -21851,7 +25241,12 @@ func marshalValidationCacheEXT(p uintptr) (interface{}, error) {
 }
 
 func (v *ValidationCacheEXT) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ValidationCacheEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkValidationCacheEXT. The caller is expected to
@@ -21882,7 +25277,12 @@ func marshalValidationCacheHeaderVersionEXT(p uintptr) (interface{}, error) {
 }
 
 func (v *ValidationCacheHeaderVersionEXT) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ValidationCacheHeaderVersionEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkValidationCacheHeaderVersionEXT. The caller is expected to
@@ -21913,7 +25313,12 @@ func marshalValidationCacheCreateFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (v *ValidationCacheCreateFlagsEXT) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ValidationCacheCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkValidationCacheCreateFlagsEXT. The caller is expected to
@@ -21944,7 +25349,12 @@ func marshalValidationCacheCreateInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (v *ValidationCacheCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ValidationCacheCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkValidationCacheCreateInfoEXT. The caller is expected to
@@ -21975,7 +25385,12 @@ func marshalShaderModuleValidationCacheCreateInfoEXT(p uintptr) (interface{}, er
 }
 
 func (s *ShaderModuleValidationCacheCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShaderModuleValidationCacheCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShaderModuleValidationCacheCreateInfoEXT. The caller is expected to
@@ -22006,7 +25421,12 @@ func marshalDescriptorBindingFlagBitsEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorBindingFlagBitsEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorBindingFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorBindingFlagBitsEXT. The caller is expected to
@@ -22037,7 +25457,12 @@ func marshalDescriptorBindingFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (d *DescriptorBindingFlagsEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorBindingFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorBindingFlagsEXT. The caller is expected to
@@ -22068,7 +25493,12 @@ func marshalDescriptorSetLayoutBindingFlagsCreateInfoEXT(p uintptr) (interface{}
 }
 
 func (d *DescriptorSetLayoutBindingFlagsCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetLayoutBindingFlagsCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetLayoutBindingFlagsCreateInfoEXT. The caller is expected to
@@ -22099,7 +25529,12 @@ func marshalPhysicalDeviceDescriptorIndexingFeaturesEXT(p uintptr) (interface{},
 }
 
 func (p *PhysicalDeviceDescriptorIndexingFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceDescriptorIndexingFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceDescriptorIndexingFeaturesEXT. The caller is expected to
@@ -22130,7 +25565,12 @@ func marshalPhysicalDeviceDescriptorIndexingPropertiesEXT(p uintptr) (interface{
 }
 
 func (p *PhysicalDeviceDescriptorIndexingPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceDescriptorIndexingPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceDescriptorIndexingPropertiesEXT. The caller is expected to
@@ -22161,7 +25601,12 @@ func marshalDescriptorSetVariableDescriptorCountAllocateInfoEXT(p uintptr) (inte
 }
 
 func (d *DescriptorSetVariableDescriptorCountAllocateInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetVariableDescriptorCountAllocateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetVariableDescriptorCountAllocateInfoEXT. The caller is expected to
@@ -22192,7 +25637,12 @@ func marshalDescriptorSetVariableDescriptorCountLayoutSupportEXT(p uintptr) (int
 }
 
 func (d *DescriptorSetVariableDescriptorCountLayoutSupportEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DescriptorSetVariableDescriptorCountLayoutSupportEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDescriptorSetVariableDescriptorCountLayoutSupportEXT. The caller is expected to
@@ -22223,7 +25673,12 @@ func marshalShadingRatePaletteEntryNV(p uintptr) (interface{}, error) {
 }
 
 func (s *ShadingRatePaletteEntryNV) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShadingRatePaletteEntryNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShadingRatePaletteEntryNV. The caller is expected to
@@ -22254,7 +25709,12 @@ func marshalCoarseSampleOrderTypeNV(p uintptr) (interface{}, error) {
 }
 
 func (c *CoarseSampleOrderTypeNV) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CoarseSampleOrderTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCoarseSampleOrderTypeNV. The caller is expected to
@@ -22285,7 +25745,12 @@ func marshalShadingRatePaletteNV(p uintptr) (interface{}, error) {
 }
 
 func (s *ShadingRatePaletteNV) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShadingRatePaletteNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkShadingRatePaletteNV. The caller is expected to
@@ -22316,7 +25781,12 @@ func marshalPipelineViewportShadingRateImageStateCreateInfoNV(p uintptr) (interf
 }
 
 func (p *PipelineViewportShadingRateImageStateCreateInfoNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineViewportShadingRateImageStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineViewportShadingRateImageStateCreateInfoNV. The caller is expected to
@@ -22347,7 +25817,12 @@ func marshalPhysicalDeviceShadingRateImageFeaturesNV(p uintptr) (interface{}, er
 }
 
 func (p *PhysicalDeviceShadingRateImageFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceShadingRateImageFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceShadingRateImageFeaturesNV. The caller is expected to
@@ -22378,7 +25853,12 @@ func marshalPhysicalDeviceShadingRateImagePropertiesNV(p uintptr) (interface{}, 
 }
 
 func (p *PhysicalDeviceShadingRateImagePropertiesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceShadingRateImagePropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceShadingRateImagePropertiesNV. The caller is expected to
@@ -22409,7 +25889,12 @@ func marshalCoarseSampleLocationNV(p uintptr) (interface{}, error) {
 }
 
 func (c *CoarseSampleLocationNV) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CoarseSampleLocationNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCoarseSampleLocationNV. The caller is expected to
@@ -22440,7 +25925,12 @@ func marshalCoarseSampleOrderCustomNV(p uintptr) (interface{}, error) {
 }
 
 func (c *CoarseSampleOrderCustomNV) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CoarseSampleOrderCustomNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCoarseSampleOrderCustomNV. The caller is expected to
@@ -22471,7 +25961,12 @@ func marshalPipelineViewportCoarseSampleOrderStateCreateInfoNV(p uintptr) (inter
 }
 
 func (p *PipelineViewportCoarseSampleOrderStateCreateInfoNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineViewportCoarseSampleOrderStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineViewportCoarseSampleOrderStateCreateInfoNV. The caller is expected to
@@ -22502,7 +25997,12 @@ func marshalAccelerationStructureNV(p uintptr) (interface{}, error) {
 }
 
 func (a *AccelerationStructureNV) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AccelerationStructureNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAccelerationStructureNV. The caller is expected to
@@ -22533,7 +26033,12 @@ func marshalRayTracingShaderGroupTypeNV(p uintptr) (interface{}, error) {
 }
 
 func (r *RayTracingShaderGroupTypeNV) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RayTracingShaderGroupTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRayTracingShaderGroupTypeNV. The caller is expected to
@@ -22564,7 +26069,12 @@ func marshalGeometryTypeNV(p uintptr) (interface{}, error) {
 }
 
 func (g *GeometryTypeNV) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GeometryTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.VkGeometryTypeNV. The caller is expected to
@@ -22595,7 +26105,12 @@ func marshalAccelerationStructureTypeNV(p uintptr) (interface{}, error) {
 }
 
 func (a *AccelerationStructureTypeNV) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AccelerationStructureTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAccelerationStructureTypeNV. The caller is expected to
@@ -22626,7 +26141,12 @@ func marshalCopyAccelerationStructureModeNV(p uintptr) (interface{}, error) {
 }
 
 func (c *CopyAccelerationStructureModeNV) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CopyAccelerationStructureModeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCopyAccelerationStructureModeNV. The caller is expected to
@@ -22657,7 +26177,12 @@ func marshalAccelerationStructureMemoryRequirementsTypeNV(p uintptr) (interface{
 }
 
 func (a *AccelerationStructureMemoryRequirementsTypeNV) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AccelerationStructureMemoryRequirementsTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAccelerationStructureMemoryRequirementsTypeNV. The caller is expected to
@@ -22688,7 +26213,12 @@ func marshalGeometryFlagBitsNV(p uintptr) (interface{}, error) {
 }
 
 func (g *GeometryFlagBitsNV) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GeometryFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.VkGeometryFlagBitsNV. The caller is expected to
@@ -22719,7 +26249,12 @@ func marshalGeometryFlagsNV(p uintptr) (interface{}, error) {
 }
 
 func (g *GeometryFlagsNV) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GeometryFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.VkGeometryFlagsNV. The caller is expected to
@@ -22750,7 +26285,12 @@ func marshalGeometryInstanceFlagBitsNV(p uintptr) (interface{}, error) {
 }
 
 func (g *GeometryInstanceFlagBitsNV) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GeometryInstanceFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.VkGeometryInstanceFlagBitsNV. The caller is expected to
@@ -22781,7 +26321,12 @@ func marshalGeometryInstanceFlagsNV(p uintptr) (interface{}, error) {
 }
 
 func (g *GeometryInstanceFlagsNV) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GeometryInstanceFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.VkGeometryInstanceFlagsNV. The caller is expected to
@@ -22812,7 +26357,12 @@ func marshalBuildAccelerationStructureFlagBitsNV(p uintptr) (interface{}, error)
 }
 
 func (b *BuildAccelerationStructureFlagBitsNV) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BuildAccelerationStructureFlagBitsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBuildAccelerationStructureFlagBitsNV. The caller is expected to
@@ -22843,7 +26393,12 @@ func marshalBuildAccelerationStructureFlagsNV(p uintptr) (interface{}, error) {
 }
 
 func (b *BuildAccelerationStructureFlagsNV) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BuildAccelerationStructureFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBuildAccelerationStructureFlagsNV. The caller is expected to
@@ -22874,7 +26429,12 @@ func marshalRayTracingShaderGroupCreateInfoNV(p uintptr) (interface{}, error) {
 }
 
 func (r *RayTracingShaderGroupCreateInfoNV) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RayTracingShaderGroupCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRayTracingShaderGroupCreateInfoNV. The caller is expected to
@@ -22905,7 +26465,12 @@ func marshalRayTracingPipelineCreateInfoNV(p uintptr) (interface{}, error) {
 }
 
 func (r *RayTracingPipelineCreateInfoNV) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RayTracingPipelineCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRayTracingPipelineCreateInfoNV. The caller is expected to
@@ -22936,7 +26501,12 @@ func marshalGeometryTrianglesNV(p uintptr) (interface{}, error) {
 }
 
 func (g *GeometryTrianglesNV) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GeometryTrianglesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.VkGeometryTrianglesNV. The caller is expected to
@@ -22967,7 +26537,12 @@ func marshalGeometryAABBNV(p uintptr) (interface{}, error) {
 }
 
 func (g *GeometryAABBNV) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GeometryAABBNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.VkGeometryAABBNV. The caller is expected to
@@ -22998,7 +26573,12 @@ func marshalGeometryDataNV(p uintptr) (interface{}, error) {
 }
 
 func (g *GeometryDataNV) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GeometryDataNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.VkGeometryDataNV. The caller is expected to
@@ -23029,7 +26609,12 @@ func marshalGeometryNV(p uintptr) (interface{}, error) {
 }
 
 func (g *GeometryNV) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GeometryNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.VkGeometryNV. The caller is expected to
@@ -23060,7 +26645,12 @@ func marshalAccelerationStructureInfoNV(p uintptr) (interface{}, error) {
 }
 
 func (a *AccelerationStructureInfoNV) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AccelerationStructureInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAccelerationStructureInfoNV. The caller is expected to
@@ -23091,7 +26681,12 @@ func marshalAccelerationStructureCreateInfoNV(p uintptr) (interface{}, error) {
 }
 
 func (a *AccelerationStructureCreateInfoNV) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AccelerationStructureCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAccelerationStructureCreateInfoNV. The caller is expected to
@@ -23122,7 +26717,12 @@ func marshalBindAccelerationStructureMemoryInfoNV(p uintptr) (interface{}, error
 }
 
 func (b *BindAccelerationStructureMemoryInfoNV) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BindAccelerationStructureMemoryInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBindAccelerationStructureMemoryInfoNV. The caller is expected to
@@ -23153,7 +26753,12 @@ func marshalWriteDescriptorSetAccelerationStructureNV(p uintptr) (interface{}, e
 }
 
 func (w *WriteDescriptorSetAccelerationStructureNV) free() {
-	C.free(unsafe.Pointer(w.native))
+	C.free(w.Native())
+}
+
+// Native returns the underlying source pointer.
+func (w *WriteDescriptorSetAccelerationStructureNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(w.native)
 }
 
 // Native returns the pointer to *C.VkWriteDescriptorSetAccelerationStructureNV. The caller is expected to
@@ -23184,7 +26789,12 @@ func marshalAccelerationStructureMemoryRequirementsInfoNV(p uintptr) (interface{
 }
 
 func (a *AccelerationStructureMemoryRequirementsInfoNV) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AccelerationStructureMemoryRequirementsInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.VkAccelerationStructureMemoryRequirementsInfoNV. The caller is expected to
@@ -23215,7 +26825,12 @@ func marshalPhysicalDeviceRayTracingPropertiesNV(p uintptr) (interface{}, error)
 }
 
 func (p *PhysicalDeviceRayTracingPropertiesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceRayTracingPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceRayTracingPropertiesNV. The caller is expected to
@@ -23246,7 +26861,12 @@ func marshalPhysicalDeviceRepresentativeFragmentTestFeaturesNV(p uintptr) (inter
 }
 
 func (p *PhysicalDeviceRepresentativeFragmentTestFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceRepresentativeFragmentTestFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceRepresentativeFragmentTestFeaturesNV. The caller is expected to
@@ -23277,7 +26897,12 @@ func marshalPipelineRepresentativeFragmentTestStateCreateInfoNV(p uintptr) (inte
 }
 
 func (p *PipelineRepresentativeFragmentTestStateCreateInfoNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineRepresentativeFragmentTestStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineRepresentativeFragmentTestStateCreateInfoNV. The caller is expected to
@@ -23308,7 +26933,12 @@ func marshalPhysicalDeviceImageViewImageFormatInfoEXT(p uintptr) (interface{}, e
 }
 
 func (p *PhysicalDeviceImageViewImageFormatInfoEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceImageViewImageFormatInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceImageViewImageFormatInfoEXT. The caller is expected to
@@ -23339,7 +26969,12 @@ func marshalFilterCubicImageViewImageFormatPropertiesEXT(p uintptr) (interface{}
 }
 
 func (f *FilterCubicImageViewImageFormatPropertiesEXT) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FilterCubicImageViewImageFormatPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFilterCubicImageViewImageFormatPropertiesEXT. The caller is expected to
@@ -23370,7 +27005,12 @@ func marshalQueueGlobalPriorityEXT(p uintptr) (interface{}, error) {
 }
 
 func (q *QueueGlobalPriorityEXT) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueueGlobalPriorityEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueueGlobalPriorityEXT. The caller is expected to
@@ -23401,7 +27041,12 @@ func marshalDeviceQueueGlobalPriorityCreateInfoEXT(p uintptr) (interface{}, erro
 }
 
 func (d *DeviceQueueGlobalPriorityCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceQueueGlobalPriorityCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceQueueGlobalPriorityCreateInfoEXT. The caller is expected to
@@ -23432,7 +27077,12 @@ func marshalImportMemoryHostPointerInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (i *ImportMemoryHostPointerInfoEXT) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImportMemoryHostPointerInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImportMemoryHostPointerInfoEXT. The caller is expected to
@@ -23463,7 +27113,12 @@ func marshalMemoryHostPointerPropertiesEXT(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryHostPointerPropertiesEXT) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryHostPointerPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryHostPointerPropertiesEXT. The caller is expected to
@@ -23494,7 +27149,12 @@ func marshalPhysicalDeviceExternalMemoryHostPropertiesEXT(p uintptr) (interface{
 }
 
 func (p *PhysicalDeviceExternalMemoryHostPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceExternalMemoryHostPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceExternalMemoryHostPropertiesEXT. The caller is expected to
@@ -23525,7 +27185,12 @@ func marshalTimeDomainEXT(p uintptr) (interface{}, error) {
 }
 
 func (t *TimeDomainEXT) free() {
-	C.free(unsafe.Pointer(t.native))
+	C.free(t.Native())
+}
+
+// Native returns the underlying source pointer.
+func (t *TimeDomainEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // Native returns the pointer to *C.VkTimeDomainEXT. The caller is expected to
@@ -23556,7 +27221,12 @@ func marshalCalibratedTimestampInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (c *CalibratedTimestampInfoEXT) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CalibratedTimestampInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCalibratedTimestampInfoEXT. The caller is expected to
@@ -23587,7 +27257,12 @@ func marshalPhysicalDeviceShaderCorePropertiesAMD(p uintptr) (interface{}, error
 }
 
 func (p *PhysicalDeviceShaderCorePropertiesAMD) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceShaderCorePropertiesAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceShaderCorePropertiesAMD. The caller is expected to
@@ -23618,7 +27293,12 @@ func marshalMemoryOverallocationBehaviorAMD(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryOverallocationBehaviorAMD) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryOverallocationBehaviorAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryOverallocationBehaviorAMD. The caller is expected to
@@ -23649,7 +27329,12 @@ func marshalDeviceMemoryOverallocationCreateInfoAMD(p uintptr) (interface{}, err
 }
 
 func (d *DeviceMemoryOverallocationCreateInfoAMD) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceMemoryOverallocationCreateInfoAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceMemoryOverallocationCreateInfoAMD. The caller is expected to
@@ -23680,7 +27365,12 @@ func marshalPhysicalDeviceVertexAttributeDivisorPropertiesEXT(p uintptr) (interf
 }
 
 func (p *PhysicalDeviceVertexAttributeDivisorPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceVertexAttributeDivisorPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceVertexAttributeDivisorPropertiesEXT. The caller is expected to
@@ -23711,7 +27401,12 @@ func marshalVertexInputBindingDivisorDescriptionEXT(p uintptr) (interface{}, err
 }
 
 func (v *VertexInputBindingDivisorDescriptionEXT) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *VertexInputBindingDivisorDescriptionEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkVertexInputBindingDivisorDescriptionEXT. The caller is expected to
@@ -23742,7 +27437,12 @@ func marshalPipelineVertexInputDivisorStateCreateInfoEXT(p uintptr) (interface{}
 }
 
 func (p *PipelineVertexInputDivisorStateCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineVertexInputDivisorStateCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineVertexInputDivisorStateCreateInfoEXT. The caller is expected to
@@ -23773,7 +27473,12 @@ func marshalPhysicalDeviceVertexAttributeDivisorFeaturesEXT(p uintptr) (interfac
 }
 
 func (p *PhysicalDeviceVertexAttributeDivisorFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceVertexAttributeDivisorFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceVertexAttributeDivisorFeaturesEXT. The caller is expected to
@@ -23804,7 +27509,12 @@ func marshalPipelineCreationFeedbackFlagBitsEXT(p uintptr) (interface{}, error) 
 }
 
 func (p *PipelineCreationFeedbackFlagBitsEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCreationFeedbackFlagBitsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCreationFeedbackFlagBitsEXT. The caller is expected to
@@ -23835,7 +27545,12 @@ func marshalPipelineCreationFeedbackFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineCreationFeedbackFlagsEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCreationFeedbackFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCreationFeedbackFlagsEXT. The caller is expected to
@@ -23866,7 +27581,12 @@ func marshalPipelineCreationFeedbackEXT(p uintptr) (interface{}, error) {
 }
 
 func (p *PipelineCreationFeedbackEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCreationFeedbackEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCreationFeedbackEXT. The caller is expected to
@@ -23897,7 +27617,12 @@ func marshalPipelineCreationFeedbackCreateInfoEXT(p uintptr) (interface{}, error
 }
 
 func (p *PipelineCreationFeedbackCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCreationFeedbackCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCreationFeedbackCreateInfoEXT. The caller is expected to
@@ -23928,7 +27653,12 @@ func marshalPhysicalDeviceComputeShaderDerivativesFeaturesNV(p uintptr) (interfa
 }
 
 func (p *PhysicalDeviceComputeShaderDerivativesFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceComputeShaderDerivativesFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceComputeShaderDerivativesFeaturesNV. The caller is expected to
@@ -23959,7 +27689,12 @@ func marshalPhysicalDeviceMeshShaderFeaturesNV(p uintptr) (interface{}, error) {
 }
 
 func (p *PhysicalDeviceMeshShaderFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMeshShaderFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMeshShaderFeaturesNV. The caller is expected to
@@ -23990,7 +27725,12 @@ func marshalPhysicalDeviceMeshShaderPropertiesNV(p uintptr) (interface{}, error)
 }
 
 func (p *PhysicalDeviceMeshShaderPropertiesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMeshShaderPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMeshShaderPropertiesNV. The caller is expected to
@@ -24021,7 +27761,12 @@ func marshalDrawMeshTasksIndirectCommandNV(p uintptr) (interface{}, error) {
 }
 
 func (d *DrawMeshTasksIndirectCommandNV) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DrawMeshTasksIndirectCommandNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDrawMeshTasksIndirectCommandNV. The caller is expected to
@@ -24052,7 +27797,12 @@ func marshalPhysicalDeviceFragmentShaderBarycentricFeaturesNV(p uintptr) (interf
 }
 
 func (p *PhysicalDeviceFragmentShaderBarycentricFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceFragmentShaderBarycentricFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceFragmentShaderBarycentricFeaturesNV. The caller is expected to
@@ -24083,7 +27833,12 @@ func marshalPhysicalDeviceShaderImageFootprintFeaturesNV(p uintptr) (interface{}
 }
 
 func (p *PhysicalDeviceShaderImageFootprintFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceShaderImageFootprintFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceShaderImageFootprintFeaturesNV. The caller is expected to
@@ -24114,7 +27869,12 @@ func marshalPipelineViewportExclusiveScissorStateCreateInfoNV(p uintptr) (interf
 }
 
 func (p *PipelineViewportExclusiveScissorStateCreateInfoNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineViewportExclusiveScissorStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineViewportExclusiveScissorStateCreateInfoNV. The caller is expected to
@@ -24145,7 +27905,12 @@ func marshalPhysicalDeviceExclusiveScissorFeaturesNV(p uintptr) (interface{}, er
 }
 
 func (p *PhysicalDeviceExclusiveScissorFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceExclusiveScissorFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceExclusiveScissorFeaturesNV. The caller is expected to
@@ -24176,7 +27941,12 @@ func marshalQueueFamilyCheckpointPropertiesNV(p uintptr) (interface{}, error) {
 }
 
 func (q *QueueFamilyCheckpointPropertiesNV) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *QueueFamilyCheckpointPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.VkQueueFamilyCheckpointPropertiesNV. The caller is expected to
@@ -24207,7 +27977,12 @@ func marshalCheckpointDataNV(p uintptr) (interface{}, error) {
 }
 
 func (c *CheckpointDataNV) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CheckpointDataNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCheckpointDataNV. The caller is expected to
@@ -24238,7 +28013,12 @@ func marshalPhysicalDevicePCIBusInfoPropertiesEXT(p uintptr) (interface{}, error
 }
 
 func (p *PhysicalDevicePCIBusInfoPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDevicePCIBusInfoPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDevicePCIBusInfoPropertiesEXT. The caller is expected to
@@ -24269,7 +28049,12 @@ func marshalDisplayNativeHdrSurfaceCapabilitiesAMD(p uintptr) (interface{}, erro
 }
 
 func (d *DisplayNativeHdrSurfaceCapabilitiesAMD) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DisplayNativeHdrSurfaceCapabilitiesAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDisplayNativeHdrSurfaceCapabilitiesAMD. The caller is expected to
@@ -24300,7 +28085,12 @@ func marshalSwapchainDisplayNativeHdrCreateInfoAMD(p uintptr) (interface{}, erro
 }
 
 func (s *SwapchainDisplayNativeHdrCreateInfoAMD) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SwapchainDisplayNativeHdrCreateInfoAMD) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkSwapchainDisplayNativeHdrCreateInfoAMD. The caller is expected to
@@ -24331,7 +28121,12 @@ func marshalPhysicalDeviceFragmentDensityMapFeaturesEXT(p uintptr) (interface{},
 }
 
 func (p *PhysicalDeviceFragmentDensityMapFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceFragmentDensityMapFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceFragmentDensityMapFeaturesEXT. The caller is expected to
@@ -24362,7 +28157,12 @@ func marshalPhysicalDeviceFragmentDensityMapPropertiesEXT(p uintptr) (interface{
 }
 
 func (p *PhysicalDeviceFragmentDensityMapPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceFragmentDensityMapPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceFragmentDensityMapPropertiesEXT. The caller is expected to
@@ -24393,7 +28193,12 @@ func marshalRenderPassFragmentDensityMapCreateInfoEXT(p uintptr) (interface{}, e
 }
 
 func (r *RenderPassFragmentDensityMapCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RenderPassFragmentDensityMapCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.VkRenderPassFragmentDensityMapCreateInfoEXT. The caller is expected to
@@ -24424,7 +28229,12 @@ func marshalPhysicalDeviceScalarBlockLayoutFeaturesEXT(p uintptr) (interface{}, 
 }
 
 func (p *PhysicalDeviceScalarBlockLayoutFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceScalarBlockLayoutFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceScalarBlockLayoutFeaturesEXT. The caller is expected to
@@ -24455,7 +28265,12 @@ func marshalPhysicalDeviceMemoryBudgetPropertiesEXT(p uintptr) (interface{}, err
 }
 
 func (p *PhysicalDeviceMemoryBudgetPropertiesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMemoryBudgetPropertiesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMemoryBudgetPropertiesEXT. The caller is expected to
@@ -24486,7 +28301,12 @@ func marshalPhysicalDeviceMemoryPriorityFeaturesEXT(p uintptr) (interface{}, err
 }
 
 func (p *PhysicalDeviceMemoryPriorityFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceMemoryPriorityFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceMemoryPriorityFeaturesEXT. The caller is expected to
@@ -24517,7 +28337,12 @@ func marshalMemoryPriorityAllocateInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (m *MemoryPriorityAllocateInfoEXT) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *MemoryPriorityAllocateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.VkMemoryPriorityAllocateInfoEXT. The caller is expected to
@@ -24548,7 +28373,12 @@ func marshalPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV(p uintptr) 
 }
 
 func (p *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV. The caller is expected to
@@ -24579,7 +28409,12 @@ func marshalDeviceAddress(p uintptr) (interface{}, error) {
 }
 
 func (d *DeviceAddress) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DeviceAddress) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.VkDeviceAddress. The caller is expected to
@@ -24610,7 +28445,12 @@ func marshalPhysicalDeviceBufferDeviceAddressFeaturesEXT(p uintptr) (interface{}
 }
 
 func (p *PhysicalDeviceBufferDeviceAddressFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceBufferDeviceAddressFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceBufferDeviceAddressFeaturesEXT. The caller is expected to
@@ -24641,7 +28481,12 @@ func marshalPhysicalDeviceBufferAddressFeaturesEXT(p uintptr) (interface{}, erro
 }
 
 func (p *PhysicalDeviceBufferAddressFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceBufferAddressFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceBufferAddressFeaturesEXT. The caller is expected to
@@ -24672,7 +28517,12 @@ func marshalBufferDeviceAddressInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferDeviceAddressInfoEXT) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferDeviceAddressInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferDeviceAddressInfoEXT. The caller is expected to
@@ -24703,7 +28553,12 @@ func marshalBufferDeviceAddressCreateInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (b *BufferDeviceAddressCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *BufferDeviceAddressCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.VkBufferDeviceAddressCreateInfoEXT. The caller is expected to
@@ -24734,7 +28589,12 @@ func marshalImageStencilUsageCreateInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (i *ImageStencilUsageCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(i.native))
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *ImageStencilUsageCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.VkImageStencilUsageCreateInfoEXT. The caller is expected to
@@ -24765,7 +28625,12 @@ func marshalValidationFeatureEnableEXT(p uintptr) (interface{}, error) {
 }
 
 func (v *ValidationFeatureEnableEXT) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ValidationFeatureEnableEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkValidationFeatureEnableEXT. The caller is expected to
@@ -24796,7 +28661,12 @@ func marshalValidationFeatureDisableEXT(p uintptr) (interface{}, error) {
 }
 
 func (v *ValidationFeatureDisableEXT) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ValidationFeatureDisableEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkValidationFeatureDisableEXT. The caller is expected to
@@ -24827,7 +28697,12 @@ func marshalValidationFeaturesEXT(p uintptr) (interface{}, error) {
 }
 
 func (v *ValidationFeaturesEXT) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *ValidationFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.VkValidationFeaturesEXT. The caller is expected to
@@ -24858,7 +28733,12 @@ func marshalComponentTypeNV(p uintptr) (interface{}, error) {
 }
 
 func (c *ComponentTypeNV) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ComponentTypeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkComponentTypeNV. The caller is expected to
@@ -24889,7 +28769,12 @@ func marshalScopeNV(p uintptr) (interface{}, error) {
 }
 
 func (s *ScopeNV) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ScopeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.VkScopeNV. The caller is expected to
@@ -24920,7 +28805,12 @@ func marshalCooperativeMatrixPropertiesNV(p uintptr) (interface{}, error) {
 }
 
 func (c *CooperativeMatrixPropertiesNV) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CooperativeMatrixPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCooperativeMatrixPropertiesNV. The caller is expected to
@@ -24951,7 +28841,12 @@ func marshalPhysicalDeviceCooperativeMatrixFeaturesNV(p uintptr) (interface{}, e
 }
 
 func (p *PhysicalDeviceCooperativeMatrixFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceCooperativeMatrixFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceCooperativeMatrixFeaturesNV. The caller is expected to
@@ -24982,7 +28877,12 @@ func marshalPhysicalDeviceCooperativeMatrixPropertiesNV(p uintptr) (interface{},
 }
 
 func (p *PhysicalDeviceCooperativeMatrixPropertiesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceCooperativeMatrixPropertiesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceCooperativeMatrixPropertiesNV. The caller is expected to
@@ -25013,7 +28913,12 @@ func marshalCoverageReductionModeNV(p uintptr) (interface{}, error) {
 }
 
 func (c *CoverageReductionModeNV) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *CoverageReductionModeNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.VkCoverageReductionModeNV. The caller is expected to
@@ -25044,7 +28949,12 @@ func marshalPipelineCoverageReductionStateCreateFlagsNV(p uintptr) (interface{},
 }
 
 func (p *PipelineCoverageReductionStateCreateFlagsNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCoverageReductionStateCreateFlagsNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCoverageReductionStateCreateFlagsNV. The caller is expected to
@@ -25075,7 +28985,12 @@ func marshalPhysicalDeviceCoverageReductionModeFeaturesNV(p uintptr) (interface{
 }
 
 func (p *PhysicalDeviceCoverageReductionModeFeaturesNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceCoverageReductionModeFeaturesNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceCoverageReductionModeFeaturesNV. The caller is expected to
@@ -25106,7 +29021,12 @@ func marshalPipelineCoverageReductionStateCreateInfoNV(p uintptr) (interface{}, 
 }
 
 func (p *PipelineCoverageReductionStateCreateInfoNV) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PipelineCoverageReductionStateCreateInfoNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPipelineCoverageReductionStateCreateInfoNV. The caller is expected to
@@ -25137,7 +29057,12 @@ func marshalFramebufferMixedSamplesCombinationNV(p uintptr) (interface{}, error)
 }
 
 func (f *FramebufferMixedSamplesCombinationNV) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FramebufferMixedSamplesCombinationNV) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.VkFramebufferMixedSamplesCombinationNV. The caller is expected to
@@ -25168,7 +29093,12 @@ func marshalPhysicalDeviceYcbcrImageArraysFeaturesEXT(p uintptr) (interface{}, e
 }
 
 func (p *PhysicalDeviceYcbcrImageArraysFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceYcbcrImageArraysFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceYcbcrImageArraysFeaturesEXT. The caller is expected to
@@ -25199,7 +29129,12 @@ func marshalHeadlessSurfaceCreateFlagsEXT(p uintptr) (interface{}, error) {
 }
 
 func (h *HeadlessSurfaceCreateFlagsEXT) free() {
-	C.free(unsafe.Pointer(h.native))
+	C.free(h.Native())
+}
+
+// Native returns the underlying source pointer.
+func (h *HeadlessSurfaceCreateFlagsEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
 }
 
 // Native returns the pointer to *C.VkHeadlessSurfaceCreateFlagsEXT. The caller is expected to
@@ -25230,7 +29165,12 @@ func marshalHeadlessSurfaceCreateInfoEXT(p uintptr) (interface{}, error) {
 }
 
 func (h *HeadlessSurfaceCreateInfoEXT) free() {
-	C.free(unsafe.Pointer(h.native))
+	C.free(h.Native())
+}
+
+// Native returns the underlying source pointer.
+func (h *HeadlessSurfaceCreateInfoEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(h.native)
 }
 
 // Native returns the pointer to *C.VkHeadlessSurfaceCreateInfoEXT. The caller is expected to
@@ -25261,7 +29201,12 @@ func marshalPhysicalDeviceHostQueryResetFeaturesEXT(p uintptr) (interface{}, err
 }
 
 func (p *PhysicalDeviceHostQueryResetFeaturesEXT) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PhysicalDeviceHostQueryResetFeaturesEXT) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.VkPhysicalDeviceHostQueryResetFeaturesEXT. The caller is expected to

@@ -116,7 +116,7 @@ func (fg *callbackGenerator) CBlock() string {
 
 	iterateParams(fg.CallableAttrs, func(i int, param gir.Parameter) bool {
 		goName := SnakeToGo(false, param.Name)
-		goType, _ := fg.Ng.ResolveAnyType(param.AnyType, false)
+		goType, _ := fg.Ng.ResolveAnyType(param.AnyType, true)
 		b.Linef("var %s %s", goName, goType)
 
 		b.Line(fg.Ng.CGoConverter(TypeConversion{

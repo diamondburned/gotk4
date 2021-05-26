@@ -1046,12 +1046,12 @@ const (
 	IOErrorEnumPartialInput IOErrorEnum = 34
 	// IOErrorEnumInvalidData: the input data was invalid. Since 2.24
 	IOErrorEnumInvalidData IOErrorEnum = 35
-	// IOErrorEnumDbusError: a remote object generated an error that doesn't
+	// IOErrorEnumDBusError: a remote object generated an error that doesn't
 	// correspond to a locally registered #GError error domain. Use
 	// g_dbus_error_get_remote_error() to extract the D-Bus error name and
 	// g_dbus_error_strip_remote_error() to fix up the message so it matches
 	// what was received on the wire. Since 2.26.
-	IOErrorEnumDbusError IOErrorEnum = 36
+	IOErrorEnumDBusError IOErrorEnum = 36
 	// IOErrorEnumHostUnreachable: host unreachable. Since 2.26
 	IOErrorEnumHostUnreachable IOErrorEnum = 37
 	// IOErrorEnumNetworkUnreachable: network unreachable. Since 2.26
@@ -2526,7 +2526,7 @@ func gotk4_AsyncReadyCallback(arg0 *C.GObject, arg1 *C.GAsyncResult, arg2 C.gpoi
 		panic(`callback not found`)
 	}
 
-	var sourceObject *externglib.Object
+	var sourceObject gextras.Objector
 	sourceObject = externglib.Take(unsafe.Pointer(arg0.Native()))
 
 	var res AsyncResult
@@ -2545,8 +2545,8 @@ func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var name string
 	arg1 = C.GoString(name)
@@ -2565,8 +2565,8 @@ func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var name string
 	arg1 = C.GoString(name)
@@ -2586,8 +2586,8 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var name string
 	arg1 = C.GoString(name)
@@ -2611,8 +2611,8 @@ func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var name string
 	arg1 = C.GoString(name)
@@ -2635,8 +2635,8 @@ func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var name string
 	arg1 = C.GoString(name)
@@ -2656,8 +2656,8 @@ func gotk4_CancellableSourceFunc(arg0 *C.GCancellable, arg1 C.gpointer) C.gboole
 		panic(`callback not found`)
 	}
 
-	var cancellable cancellable
-	cancellable = gio.WrapCancellable(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var cancellable Cancellable
+	cancellable = WrapCancellable(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	ok := v.(CancellableSourceFunc)(cancellable)
 }
@@ -2673,8 +2673,8 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
 	arg1 = C.GoString(sender)
@@ -2709,8 +2709,8 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
 	arg1 = C.GoString(sender)
@@ -2731,8 +2731,8 @@ func gotk4_DBusInterfaceMethodCallFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, a
 	var parameters *glib.Variant
 	parameters = glib.WrapVariant(arg5)
 
-	var invocation dBusMethodInvocation
-	invocation = gio.WrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg6.Native())))
+	var invocation DBusMethodInvocation
+	invocation = WrapDBusMethodInvocation(externglib.Take(unsafe.Pointer(arg6.Native())))
 
 	v.(DBusInterfaceMethodCallFunc)(connection, sender, objectPath, interfaceName, methodName, parameters, invocation)
 }
@@ -2748,8 +2748,8 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
 	arg1 = C.GoString(sender)
@@ -2846,11 +2846,11 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	var message dBusMessage
-	message = gio.WrapDBusMessage(externglib.Take(unsafe.Pointer(arg1.Native())))
+	var message DBusMessage
+	message = WrapDBusMessage(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	var incoming bool
 	incoming = gextras.Gobool(arg2)
@@ -2873,8 +2873,8 @@ func gotk4_DBusProxyTypeFunc(arg0 *C.GDBusObjectManagerClient, arg1 *C.gchar, ar
 		panic(`callback not found`)
 	}
 
-	var manager dBusObjectManagerClient
-	manager = gio.WrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var manager DBusObjectManagerClient
+	manager = WrapDBusObjectManagerClient(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var objectPath string
 	arg1 = C.GoString(objectPath)
@@ -2898,8 +2898,8 @@ func gotk4_DBusSignalCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gc
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var senderName string
 	arg1 = C.GoString(senderName)
@@ -2937,8 +2937,8 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
 	arg1 = C.GoString(sender)
@@ -2983,8 +2983,8 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
 	arg1 = C.GoString(sender)
@@ -3024,8 +3024,8 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 		panic(`callback not found`)
 	}
 
-	var connection dBusConnection
-	connection = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var connection DBusConnection
+	connection = WrapDBusConnection(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var sender string
 	arg1 = C.GoString(sender)
@@ -3073,8 +3073,8 @@ func gotk4_DesktopAppLaunchCallback(arg0 *C.GDesktopAppInfo, arg1 C.GPid, arg2 C
 		panic(`callback not found`)
 	}
 
-	var appinfo desktopAppInfo
-	appinfo = gio.WrapDesktopAppInfo(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var appinfo DesktopAppInfo
+	appinfo = WrapDesktopAppInfo(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var pid glib.Pid
 	{
@@ -3196,10 +3196,10 @@ func gotk4_IOSchedulerJobFunc(arg0 *C.GIOSchedulerJob, arg1 *C.GCancellable, arg
 	}
 
 	var job *IOSchedulerJob
-	job = gio.WrapIOSchedulerJob(arg0)
+	job = WrapIOSchedulerJob(arg0)
 
-	var cancellable cancellable
-	cancellable = gio.WrapCancellable(externglib.Take(unsafe.Pointer(arg1.Native())))
+	var cancellable Cancellable
+	cancellable = WrapCancellable(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	ok := v.(IOSchedulerJobFunc)(job, cancellable)
 }
@@ -3216,7 +3216,7 @@ func gotk4_PollableSourceFunc(arg0 *C.GObject, arg1 C.gpointer) C.gboolean {
 		panic(`callback not found`)
 	}
 
-	var pollableStream *externglib.Object
+	var pollableStream gextras.Objector
 	pollableStream = externglib.Take(unsafe.Pointer(arg0.Native()))
 
 	ok := v.(PollableSourceFunc)(pollableStream)
@@ -3297,8 +3297,8 @@ func gotk4_SocketSourceFunc(arg0 *C.GSocket, arg1 C.GIOCondition, arg2 C.gpointe
 		panic(`callback not found`)
 	}
 
-	var socket socket
-	socket = gio.WrapSocket(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var socket Socket
+	socket = WrapSocket(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var condition glib.IOCondition
 	condition = glib.IOCondition(arg1)
@@ -3321,8 +3321,8 @@ func gotk4_VfsFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFi
 		panic(`callback not found`)
 	}
 
-	var vfs vfs
-	vfs = gio.WrapVfs(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var vfs Vfs
+	vfs = WrapVfs(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var identifier string
 	arg1 = C.GoString(identifier)
@@ -3339,8 +3339,8 @@ func gotk4_VfsFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFi
 // It is an error to call this function with a non-utf8 @action_name.
 // @action_name must not be nil.
 func ActionNameIsValid(actionName string) bool {
-	var arg0 string
-	actionName = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(actionName))
 
 	ret := C.g_action_name_is_valid(arg0)
@@ -3375,8 +3375,8 @@ func ActionNameIsValid(actionName string) bool {
 // target value is empty or contains characters other than alphanumerics, '-'
 // and '.'.
 func ActionParseDetailedName(detailedName string) (actionName string, targetValue *glib.Variant, ok bool) {
-	var arg0 string
-	detailedName = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(detailedName))
 	defer C.free(unsafe.Pointer(detailedName))
 
 	var arg1 **C.gchar // out
@@ -3410,12 +3410,12 @@ func ActionParseDetailedName(detailedName string) (actionName string, targetValu
 // See that function for the types of strings that will be printed by this
 // function.
 func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) string {
-	var arg0 string
-	actionName = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(actionName))
 
-	var arg1 *glib.Variant
-	arg1 = glib.WrapVariant(targetValue)
+	var arg1 *C.GVariant
+	arg1 = (*C.C.GVariant)(targetValue.Native())
 
 	ret := C.g_action_print_detailed_name(arg0, arg1)
 
@@ -3435,16 +3435,16 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 // percent-character must be doubled in order to prevent it from being swallowed
 // by Exec key unquoting. See the specification for exact quoting rules.
 func AppInfoCreateFromCommandline(commandline string, applicationName string, flags AppInfoCreateFlags) AppInfo {
-	var arg0 string
-	commandline = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(commandline))
 	defer C.free(unsafe.Pointer(commandline))
 
-	var arg1 string
-	applicationName = C.GoString(arg1)
+	var arg1 *C.char
+	arg1 = (*C.gchar)(C.CString(applicationName))
 	defer C.free(unsafe.Pointer(applicationName))
 
-	var arg2 AppInfoCreateFlags
-	arg2 = AppInfoCreateFlags(flags)
+	var arg2 C.GAppInfoCreateFlags
+	arg2 = (C.C.GAppInfoCreateFlags)(flags)
 
 	ret := C.g_app_info_create_from_commandline(arg0, arg1, arg2)
 
@@ -3473,8 +3473,8 @@ func AppInfoGetAll() *glib.List {
 // including the recommended and fallback Infos. See
 // g_app_info_get_recommended_for_type() and g_app_info_get_fallback_for_type().
 func AppInfoGetAllForType(contentType string) *glib.List {
-	var arg0 string
-	contentType = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(contentType))
 
 	ret := C.g_app_info_get_all_for_type(arg0)
@@ -3487,12 +3487,12 @@ func AppInfoGetAllForType(contentType string) *glib.List {
 
 // AppInfoGetDefaultForType gets the default Info for a given content type.
 func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfo {
-	var arg0 string
-	contentType = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(contentType))
 
-	var arg1 bool
-	arg1 = gextras.Gobool(mustSupportUris)
+	var arg1 C.gboolean
+	arg1 = gextras.Cbool(mustSupportUris)
 
 	ret := C.g_app_info_get_default_for_type(arg0, arg1)
 
@@ -3505,8 +3505,8 @@ func AppInfoGetDefaultForType(contentType string, mustSupportUris bool) AppInfo 
 // with the given URI scheme. A URI scheme is the initial part of the URI, up to
 // but not including the ':', e.g. "http", "ftp" or "sip".
 func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfo {
-	var arg0 string
-	uriScheme = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(uriScheme))
 	defer C.free(unsafe.Pointer(uriScheme))
 
 	ret := C.g_app_info_get_default_for_uri_scheme(arg0)
@@ -3520,8 +3520,8 @@ func AppInfoGetDefaultForURIScheme(uriScheme string) AppInfo {
 // type, i.e. those applications which claim to support the given content type
 // by MIME type subclassing and not directly.
 func AppInfoGetFallbackForType(contentType string) *glib.List {
-	var arg0 string
-	contentType = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(contentType))
 
 	ret := C.g_app_info_get_fallback_for_type(arg0)
@@ -3538,8 +3538,8 @@ func AppInfoGetFallbackForType(contentType string) *glib.List {
 // application of the list is the last used one, i.e. the last one for which
 // g_app_info_set_as_last_used_for_type() has been called.
 func AppInfoGetRecommendedForType(contentType string) *glib.List {
-	var arg0 string
-	contentType = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(contentType))
 
 	ret := C.g_app_info_get_recommended_for_type(arg0)
@@ -3558,12 +3558,12 @@ func AppInfoGetRecommendedForType(contentType string) *glib.List {
 // terminates too soon after this function. To prevent this, use
 // g_app_info_launch_default_for_uri_async() instead.
 func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContext) bool {
-	var arg0 string
-	uri = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(uri))
 
-	var arg1 AppLaunchContext
-	arg1 = gio.WrapAppLaunchContext(externglib.Take(unsafe.Pointer(context.Native())))
+	var arg1 *C.GAppLaunchContext
+	arg1 = (*C.C.GAppLaunchContext)(context.Native())
 
 	ret := C.g_app_info_launch_default_for_uri(arg0, arg1)
 
@@ -3584,18 +3584,21 @@ func AppInfoLaunchDefaultForURI(uri string, context AppLaunchContext) bool {
 // applications are really started before termination and if you are interested
 // in receiving error information from their activation.
 func AppInfoLaunchDefaultForURIAsync(uri string, context AppLaunchContext, cancellable Cancellable, callback AsyncReadyCallback) {
-	var arg0 string
-	uri = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(uri))
 
-	var arg1 AppLaunchContext
-	arg1 = gio.WrapAppLaunchContext(externglib.Take(unsafe.Pointer(context.Native())))
+	var arg1 *C.GAppLaunchContext
+	arg1 = (*C.C.GAppLaunchContext)(context.Native())
 
-	var arg2 Cancellable
-	arg2 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg2 *C.GCancellable
+	arg2 = (*C.C.GCancellable)(cancellable.Native())
+
+	var arg3 C.GAsyncReadyCallback
+	arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	arg4 := C.gpointer(box.Assign(box.Callback, userData))
-	C.g_app_info_launch_default_for_uri_async(arg0, arg1, arg2)
+	C.g_app_info_launch_default_for_uri_async(arg0, arg1, arg2, arg3)
 }
 
 // AppInfoLaunchDefaultForURIFinish finishes an asynchronous
@@ -3614,8 +3617,8 @@ func AppInfoLaunchDefaultForURIFinish(result AsyncResult) bool {
 // g_app_info_set_as_default_for_extension(), g_app_info_add_supports_type() or
 // g_app_info_remove_supports_type().
 func AppInfoResetTypeAssociations(contentType string) {
-	var arg0 string
-	contentType = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(contentType))
 
 	C.g_app_info_reset_type_associations(arg0)
@@ -3629,14 +3632,17 @@ func AppInfoResetTypeAssociations(contentType string) {
 // This is an asynchronous failable function. See g_bus_get_sync() for the
 // synchronous version.
 func BusGet(busType BusType, cancellable Cancellable, callback AsyncReadyCallback) {
-	var arg0 BusType
-	arg0 = BusType(busType)
+	var arg0 C.GBusType
+	arg0 = (C.C.GBusType)(busType)
 
-	var arg1 Cancellable
-	arg1 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg1 *C.GCancellable
+	arg1 = (*C.C.GCancellable)(cancellable.Native())
+
+	var arg2 C.GAsyncReadyCallback
+	arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	arg3 := C.gpointer(box.Assign(box.Callback, userData))
-	C.g_bus_get(arg0, arg1)
+	C.g_bus_get(arg0, arg1, arg2)
 }
 
 // BusGetFinish finishes an operation started with g_bus_get().
@@ -3652,7 +3658,7 @@ func BusGetFinish(res AsyncResult) DBusConnection {
 	ret := C.g_bus_get_finish()
 
 	var ret0 DBusConnection
-	ret0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -3673,16 +3679,16 @@ func BusGetFinish(res AsyncResult) DBusConnection {
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
 func BusGetSync(busType BusType, cancellable Cancellable) DBusConnection {
-	var arg0 BusType
-	arg0 = BusType(busType)
+	var arg0 C.GBusType
+	arg0 = (C.C.GBusType)(busType)
 
-	var arg1 Cancellable
-	arg1 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg1 *C.GCancellable
+	arg1 = (*C.C.GCancellable)(cancellable.Native())
 
 	ret := C.g_bus_get_sync(arg0, arg1)
 
 	var ret0 DBusConnection
-	ret0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapDBusConnection(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -3737,18 +3743,27 @@ func BusGetSync(busType BusType, cancellable Cancellable) DBusConnection {
 // exported in @bus_acquired_handler and unregister the objects (if any) in
 // @name_lost_handler.
 func BusOwnName(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredHandler BusAcquiredCallback, nameAcquiredHandler BusNameAcquiredCallback, nameLostHandler BusNameLostCallback) uint {
-	var arg0 BusType
-	arg0 = BusType(busType)
+	var arg0 C.GBusType
+	arg0 = (C.C.GBusType)(busType)
 
-	var arg1 string
-	name = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
-	var arg2 BusNameOwnerFlags
-	arg2 = BusNameOwnerFlags(flags)
+	var arg2 C.GBusNameOwnerFlags
+	arg2 = (C.C.GBusNameOwnerFlags)(flags)
+
+	var arg3 C.GBusAcquiredCallback
+	arg3 = (*[0]byte)(C.gotk4_BusAcquiredCallback)
+
+	var arg4 C.GBusNameAcquiredCallback
+	arg4 = (*[0]byte)(C.gotk4_BusNameAcquiredCallback)
+
+	var arg5 C.GBusNameLostCallback
+	arg5 = (*[0]byte)(C.gotk4_BusNameLostCallback)
 
 	arg6 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_own_name(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
+	ret := C.g_bus_own_name(arg0, arg1, arg2, arg3, arg4, arg5, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3759,18 +3774,24 @@ func BusOwnName(busType BusType, name string, flags BusNameOwnerFlags, busAcquir
 // BusOwnNameOnConnection: like g_bus_own_name() but takes a BusConnection
 // instead of a Type.
 func BusOwnNameOnConnection(connection DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredHandler BusNameAcquiredCallback, nameLostHandler BusNameLostCallback) uint {
-	var arg0 DBusConnection
-	arg0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(connection.Native())))
+	var arg0 *C.GDBusConnection
+	arg0 = (*C.C.GDBusConnection)(connection.Native())
 
-	var arg1 string
-	name = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
-	var arg2 BusNameOwnerFlags
-	arg2 = BusNameOwnerFlags(flags)
+	var arg2 C.GBusNameOwnerFlags
+	arg2 = (C.C.GBusNameOwnerFlags)(flags)
+
+	var arg3 C.GBusNameAcquiredCallback
+	arg3 = (*[0]byte)(C.gotk4_BusNameAcquiredCallback)
+
+	var arg4 C.GBusNameLostCallback
+	arg4 = (*[0]byte)(C.gotk4_BusNameLostCallback)
 
 	arg5 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_own_name_on_connection(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
+	ret := C.g_bus_own_name_on_connection(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3781,15 +3802,15 @@ func BusOwnNameOnConnection(connection DBusConnection, name string, flags BusNam
 // BusOwnNameOnConnectionWithClosures: version of g_bus_own_name_on_connection()
 // using closures instead of callbacks for easier binding in other languages.
 func BusOwnNameOnConnectionWithClosures(connection DBusConnection, name string, flags BusNameOwnerFlags, nameAcquiredClosure *externglib.Closure, nameLostClosure *externglib.Closure) uint {
-	var arg0 DBusConnection
-	arg0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(connection.Native())))
+	var arg0 *C.GDBusConnection
+	arg0 = (*C.C.GDBusConnection)(connection.Native())
 
-	var arg1 string
-	name = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
-	var arg2 BusNameOwnerFlags
-	arg2 = BusNameOwnerFlags(flags)
+	var arg2 C.GBusNameOwnerFlags
+	arg2 = (C.C.GBusNameOwnerFlags)(flags)
 
 	ret := C.g_bus_own_name_on_connection_with_closures(arg0, arg1, arg2)
 
@@ -3802,15 +3823,15 @@ func BusOwnNameOnConnectionWithClosures(connection DBusConnection, name string, 
 // BusOwnNameWithClosures: version of g_bus_own_name() using closures instead of
 // callbacks for easier binding in other languages.
 func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlags, busAcquiredClosure *externglib.Closure, nameAcquiredClosure *externglib.Closure, nameLostClosure *externglib.Closure) uint {
-	var arg0 BusType
-	arg0 = BusType(busType)
+	var arg0 C.GBusType
+	arg0 = (C.C.GBusType)(busType)
 
-	var arg1 string
-	name = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
-	var arg2 BusNameOwnerFlags
-	arg2 = BusNameOwnerFlags(flags)
+	var arg2 C.GBusNameOwnerFlags
+	arg2 = (C.C.GBusNameOwnerFlags)(flags)
 
 	ret := C.g_bus_own_name_with_closures(arg0, arg1, arg2)
 
@@ -3828,8 +3849,8 @@ func BusOwnNameWithClosures(busType BusType, name string, flags BusNameOwnerFlag
 // function passed to g_bus_own_name() is called, in order to avoid memory leaks
 // through callbacks queued on the Context after it’s stopped being iterated.
 func BusUnownName(ownerID uint) {
-	var arg0 uint
-	arg0 = uint(ownerID)
+	var arg0 C.guint
+	arg0 = C.guint(ownerID)
 
 	C.g_bus_unown_name(arg0)
 }
@@ -3843,8 +3864,8 @@ func BusUnownName(ownerID uint) {
 // memory leaks through callbacks queued on the Context after it’s stopped being
 // iterated.
 func BusUnwatchName(watcherID uint) {
-	var arg0 uint
-	arg0 = uint(watcherID)
+	var arg0 C.guint
+	arg0 = C.guint(watcherID)
 
 	C.g_bus_unwatch_name(arg0)
 }
@@ -3876,18 +3897,24 @@ func BusUnwatchName(watcherID uint) {
 // application should create object proxies in @name_appeared_handler and
 // destroy them again (if any) in @name_vanished_handler.
 func BusWatchName(busType BusType, name string, flags BusNameWatcherFlags, nameAppearedHandler BusNameAppearedCallback, nameVanishedHandler BusNameVanishedCallback) uint {
-	var arg0 BusType
-	arg0 = BusType(busType)
+	var arg0 C.GBusType
+	arg0 = (C.C.GBusType)(busType)
 
-	var arg1 string
-	name = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
-	var arg2 BusNameWatcherFlags
-	arg2 = BusNameWatcherFlags(flags)
+	var arg2 C.GBusNameWatcherFlags
+	arg2 = (C.C.GBusNameWatcherFlags)(flags)
+
+	var arg3 C.GBusNameAppearedCallback
+	arg3 = (*[0]byte)(C.gotk4_BusNameAppearedCallback)
+
+	var arg4 C.GBusNameVanishedCallback
+	arg4 = (*[0]byte)(C.gotk4_BusNameVanishedCallback)
 
 	arg5 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_watch_name(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
+	ret := C.g_bus_watch_name(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3898,18 +3925,24 @@ func BusWatchName(busType BusType, name string, flags BusNameWatcherFlags, nameA
 // BusWatchNameOnConnection: like g_bus_watch_name() but takes a BusConnection
 // instead of a Type.
 func BusWatchNameOnConnection(connection DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedHandler BusNameAppearedCallback, nameVanishedHandler BusNameVanishedCallback) uint {
-	var arg0 DBusConnection
-	arg0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(connection.Native())))
+	var arg0 *C.GDBusConnection
+	arg0 = (*C.C.GDBusConnection)(connection.Native())
 
-	var arg1 string
-	name = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
-	var arg2 BusNameWatcherFlags
-	arg2 = BusNameWatcherFlags(flags)
+	var arg2 C.GBusNameWatcherFlags
+	arg2 = (C.C.GBusNameWatcherFlags)(flags)
+
+	var arg3 C.GBusNameAppearedCallback
+	arg3 = (*[0]byte)(C.gotk4_BusNameAppearedCallback)
+
+	var arg4 C.GBusNameVanishedCallback
+	arg4 = (*[0]byte)(C.gotk4_BusNameVanishedCallback)
 
 	arg5 := C.gpointer(box.Assign(box.Callback, userData))
-	ret := C.g_bus_watch_name_on_connection(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
+	ret := C.g_bus_watch_name_on_connection(arg0, arg1, arg2, arg3, arg4, (*[0]byte)(C.callbackDelete))
 
 	var ret0 uint
 	ret0 = uint(ret)
@@ -3921,15 +3954,15 @@ func BusWatchNameOnConnection(connection DBusConnection, name string, flags BusN
 // g_bus_watch_name_on_connection() using closures instead of callbacks for
 // easier binding in other languages.
 func BusWatchNameOnConnectionWithClosures(connection DBusConnection, name string, flags BusNameWatcherFlags, nameAppearedClosure *externglib.Closure, nameVanishedClosure *externglib.Closure) uint {
-	var arg0 DBusConnection
-	arg0 = gio.WrapDBusConnection(externglib.Take(unsafe.Pointer(connection.Native())))
+	var arg0 *C.GDBusConnection
+	arg0 = (*C.C.GDBusConnection)(connection.Native())
 
-	var arg1 string
-	name = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
-	var arg2 BusNameWatcherFlags
-	arg2 = BusNameWatcherFlags(flags)
+	var arg2 C.GBusNameWatcherFlags
+	arg2 = (C.C.GBusNameWatcherFlags)(flags)
 
 	ret := C.g_bus_watch_name_on_connection_with_closures(arg0, arg1, arg2)
 
@@ -3942,15 +3975,15 @@ func BusWatchNameOnConnectionWithClosures(connection DBusConnection, name string
 // BusWatchNameWithClosures: version of g_bus_watch_name() using closures
 // instead of callbacks for easier binding in other languages.
 func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcherFlags, nameAppearedClosure *externglib.Closure, nameVanishedClosure *externglib.Closure) uint {
-	var arg0 BusType
-	arg0 = BusType(busType)
+	var arg0 C.GBusType
+	arg0 = (C.C.GBusType)(busType)
 
-	var arg1 string
-	name = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
-	var arg2 BusNameWatcherFlags
-	arg2 = BusNameWatcherFlags(flags)
+	var arg2 C.GBusNameWatcherFlags
+	arg2 = (C.C.GBusNameWatcherFlags)(flags)
 
 	ret := C.g_bus_watch_name_with_closures(arg0, arg1, arg2)
 
@@ -3964,8 +3997,8 @@ func BusWatchNameWithClosures(busType BusType, name string, flags BusNameWatcher
 // that for instance things like text files can be executables (i.e. scripts and
 // batch files).
 func ContentTypeCanBeExecutable(_type string) bool {
-	var arg0 string
-	_type = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(_type))
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_can_be_executable(arg0)
@@ -3978,12 +4011,12 @@ func ContentTypeCanBeExecutable(_type string) bool {
 
 // ContentTypeEquals compares two content types for equality.
 func ContentTypeEquals(type1 string, type2 string) bool {
-	var arg0 string
-	type1 = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(type1))
 	defer C.free(unsafe.Pointer(type1))
 
-	var arg1 string
-	type2 = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(type2))
 	defer C.free(unsafe.Pointer(type2))
 
 	ret := C.g_content_type_equals(arg0, arg1)
@@ -3997,8 +4030,8 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 // ContentTypeFromMIMEType tries to find a content type based on the mime type
 // name.
 func ContentTypeFromMIMEType(mimeType string) string {
-	var arg0 string
-	mimeType = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(mimeType))
 
 	ret := C.g_content_type_from_mime_type(arg0)
@@ -4013,8 +4046,8 @@ func ContentTypeFromMIMEType(mimeType string) string {
 // ContentTypeGetDescription gets the human readable description of the content
 // type.
 func ContentTypeGetDescription(_type string) string {
-	var arg0 string
-	_type = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(_type))
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_get_description(arg0)
@@ -4032,8 +4065,8 @@ func ContentTypeGetDescription(_type string) string {
 // (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
 // specification for more on the generic icon name.
 func ContentTypeGetGenericIconName(_type string) string {
-	var arg0 string
-	_type = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(_type))
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_get_generic_icon_name(arg0)
@@ -4047,8 +4080,8 @@ func ContentTypeGetGenericIconName(_type string) string {
 
 // ContentTypeGetIcon gets the icon for a content type.
 func ContentTypeGetIcon(_type string) Icon {
-	var arg0 string
-	_type = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(_type))
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_get_icon(arg0)
@@ -4084,8 +4117,8 @@ func ContentTypeGetMIMEDirs() []string {
 // ContentTypeGetMIMEType gets the mime type for the content type, if one is
 // registered.
 func ContentTypeGetMIMEType(_type string) string {
-	var arg0 string
-	_type = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(_type))
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_get_mime_type(arg0)
@@ -4099,8 +4132,8 @@ func ContentTypeGetMIMEType(_type string) string {
 
 // ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
 func ContentTypeGetSymbolicIcon(_type string) Icon {
-	var arg0 string
-	_type = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(_type))
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_get_symbolic_icon(arg0)
@@ -4115,16 +4148,15 @@ func ContentTypeGetSymbolicIcon(_type string) Icon {
 // @filename or @data may be nil, in which case the guess will be based solely
 // on the other argument.
 func ContentTypeGuess(filename string, data []uint8) (resultUncertain bool, utf8 string) {
-	var arg0 string
-	filename = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(filename))
 
-	var arg1 []uint8
+	var arg1 *C.guchar
 	{
+		arg1 = (C.C.guint8)(C.malloc(C.sizeof_C.guint8 * a))
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			arg1[i] = uint8(src)
 		}
 	}
 
@@ -4177,12 +4209,12 @@ func ContentTypeGuessForTree(root File) []string {
 
 // ContentTypeIsA determines if @type is a subset of @supertype.
 func ContentTypeIsA(_type string, supertype string) bool {
-	var arg0 string
-	_type = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(_type))
 	defer C.free(unsafe.Pointer(_type))
 
-	var arg1 string
-	supertype = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(supertype))
 	defer C.free(unsafe.Pointer(supertype))
 
 	ret := C.g_content_type_is_a(arg0, arg1)
@@ -4196,12 +4228,12 @@ func ContentTypeIsA(_type string, supertype string) bool {
 // ContentTypeIsMIMEType determines if @type is a subset of @mime_type.
 // Convenience wrapper around g_content_type_is_a().
 func ContentTypeIsMIMEType(_type string, mimeType string) bool {
-	var arg0 string
-	_type = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(_type))
 	defer C.free(unsafe.Pointer(_type))
 
-	var arg1 string
-	mimeType = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(mimeType))
 
 	ret := C.g_content_type_is_mime_type(arg0, arg1)
@@ -4216,8 +4248,8 @@ func ContentTypeIsMIMEType(_type string, mimeType string) bool {
 // type. On UNIX this is the "application/octet-stream" mimetype, while on win32
 // it is "*" and on OSX it is a dynamic type or octet-stream.
 func ContentTypeIsUnknown(_type string) bool {
-	var arg0 string
-	_type = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(_type))
 	defer C.free(unsafe.Pointer(_type))
 
 	ret := C.g_content_type_is_unknown(arg0)
@@ -4251,19 +4283,9 @@ func ContentTypeIsUnknown(_type string) bool {
 //      return g_test_run ();
 //
 func ContentTypeSetMIMEDirs(dirs []string) {
-	var arg0 []string
+	var arg0 **C.gchar
 	{
-		var length uint
-		for p := unsafe.Pointer(dirs); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
 
-		arg0 = make([]string, length)
-		for i := 0; i < length; i++ {
-			src := (*C.gchar)(unsafe.Pointer(uintptr(unsafe.Pointer(dirs)) + i))
-			src = C.GoString(arg0[i])
-			defer C.free(unsafe.Pointer(src))
-		}
 	}
 
 	C.g_content_type_set_mime_dirs(arg0)
@@ -4281,15 +4303,15 @@ func ContentTypesGetRegistered() *glib.List {
 	return ret0
 }
 
-// DbusAddressEscapeValue: escape @string so it can appear in a D-Bus address as
+// DBusAddressEscapeValue: escape @string so it can appear in a D-Bus address as
 // the value part of a key-value pair.
 //
 // For instance, if @string is `/run/bus-for-:0`, this function would return
 // `/run/bus-for-3A0`, which could be used in a D-Bus address like
 // `unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-3A0`.
-func DbusAddressEscapeValue(string string) string {
-	var arg0 string
-	string = C.GoString(arg0)
+func DBusAddressEscapeValue(string string) string {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_address_escape_value(arg0)
@@ -4301,18 +4323,18 @@ func DbusAddressEscapeValue(string string) string {
 	return ret0
 }
 
-// DbusAddressGetForBusSync: synchronously looks up the D-Bus address for the
+// DBusAddressGetForBusSync: synchronously looks up the D-Bus address for the
 // well-known message bus instance specified by @bus_type. This may involve
 // using various platform specific mechanisms.
 //
 // The returned address will be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DbusAddressGetForBusSync(busType BusType, cancellable Cancellable) string {
-	var arg0 BusType
-	arg0 = BusType(busType)
+func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) string {
+	var arg0 C.GBusType
+	arg0 = (C.C.GBusType)(busType)
 
-	var arg1 Cancellable
-	arg1 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg1 *C.GCancellable
+	arg1 = (*C.C.GCancellable)(cancellable.Native())
 
 	ret := C.g_dbus_address_get_for_bus_sync(arg0, arg1)
 
@@ -4323,7 +4345,7 @@ func DbusAddressGetForBusSync(busType BusType, cancellable Cancellable) string {
 	return ret0
 }
 
-// DbusAddressGetStream: asynchronously connects to an endpoint specified by
+// DBusAddressGetStream: asynchronously connects to an endpoint specified by
 // @address and sets up the connection so it is in a state to run the
 // client-side of the D-Bus authentication conversation. @address must be in the
 // D-Bus address format
@@ -4334,21 +4356,24 @@ func DbusAddressGetForBusSync(busType BusType, cancellable Cancellable) string {
 //
 // This is an asynchronous failable function. See
 // g_dbus_address_get_stream_sync() for the synchronous version.
-func DbusAddressGetStream(address string, cancellable Cancellable, callback AsyncReadyCallback) {
-	var arg0 string
-	address = C.GoString(arg0)
+func DBusAddressGetStream(address string, cancellable Cancellable, callback AsyncReadyCallback) {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(address))
 
-	var arg1 Cancellable
-	arg1 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg1 *C.GCancellable
+	arg1 = (*C.C.GCancellable)(cancellable.Native())
+
+	var arg2 C.GAsyncReadyCallback
+	arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	arg3 := C.gpointer(box.Assign(box.Callback, userData))
-	C.g_dbus_address_get_stream(arg0, arg1)
+	C.g_dbus_address_get_stream(arg0, arg1, arg2)
 }
 
-// DbusAddressGetStreamFinish finishes an operation started with
+// DBusAddressGetStreamFinish finishes an operation started with
 // g_dbus_address_get_stream().
-func DbusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStream) {
+func DBusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStream) {
 	var arg1 **C.gchar // out
 
 	ret := C.g_dbus_address_get_stream_finish(&arg1)
@@ -4358,12 +4383,12 @@ func DbusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStr
 	defer C.free(unsafe.Pointer(arg1))
 
 	var ret1 IOStream
-	ret1 = gio.WrapIOStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret1 = WrapIOStream(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0, ret1
 }
 
-// DbusAddressGetStreamSync: synchronously connects to an endpoint specified by
+// DBusAddressGetStreamSync: synchronously connects to an endpoint specified by
 // @address and sets up the connection so it is in a state to run the
 // client-side of the D-Bus authentication conversation. @address must be in the
 // D-Bus address format
@@ -4371,15 +4396,15 @@ func DbusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStr
 //
 // This is a synchronous failable function. See g_dbus_address_get_stream() for
 // the asynchronous version.
-func DbusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid string, ioStream IOStream) {
-	var arg0 string
-	address = C.GoString(arg0)
+func DBusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid string, ioStream IOStream) {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(address))
 
 	var arg1 **C.gchar // out
 
-	var arg2 Cancellable
-	arg2 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg2 *C.GCancellable
+	arg2 = (*C.C.GCancellable)(cancellable.Native())
 
 	ret := C.g_dbus_address_get_stream_sync(arg0, &arg1, arg2)
 
@@ -4388,31 +4413,22 @@ func DbusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid 
 	defer C.free(unsafe.Pointer(arg1))
 
 	var ret1 IOStream
-	ret1 = gio.WrapIOStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret1 = WrapIOStream(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0, ret1
 }
 
-// DbusAnnotationInfoLookup looks up the value of an annotation.
+// DBusAnnotationInfoLookup looks up the value of an annotation.
 //
 // The cost of this function is O(n) in number of annotations.
-func DbusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
-	var arg0 []*DBusAnnotationInfo
+func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) string {
+	var arg0 **C.GDBusAnnotationInfo
 	{
-		var length uint
-		for p := unsafe.Pointer(annotations); *p != 0; p = unsafe.Pointer(uintptr(p) + 1) {
-			length++
-		}
 
-		arg0 = make([]*DBusAnnotationInfo, length)
-		for i := 0; i < length; i++ {
-			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(annotations)) + i))
-			arg0[i] = gio.WrapDBusAnnotationInfo(src)
-		}
 	}
 
-	var arg1 string
-	name = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
 	ret := C.g_dbus_annotation_info_lookup(arg0, arg1)
@@ -4424,7 +4440,7 @@ func DbusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 	return ret0
 }
 
-// DbusErrorEncodeGerror creates a D-Bus error name to use for @error. If @error
+// DBusErrorEncodeGerror creates a D-Bus error name to use for @error. If @error
 // matches a registered error (cf. g_dbus_error_register_error()), the
 // corresponding D-Bus error name will be returned.
 //
@@ -4435,9 +4451,9 @@ func DbusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) st
 //
 // This function is typically only used in object mappings to put a #GError on
 // the wire. Regular applications should not use it.
-func DbusErrorEncodeGerror(error *glib.Error) string {
-	var arg0 *glib.Error
-	arg0 = glib.WrapError(error)
+func DBusErrorEncodeGerror(error *glib.Error) string {
+	var arg0 *C.GError
+	arg0 = (*C.C.GError)(error.Native())
 
 	ret := C.g_dbus_error_encode_gerror(arg0)
 
@@ -4448,15 +4464,15 @@ func DbusErrorEncodeGerror(error *glib.Error) string {
 	return ret0
 }
 
-// DbusErrorGetRemoteError gets the D-Bus error name used for @error, if any.
+// DBusErrorGetRemoteError gets the D-Bus error name used for @error, if any.
 //
 // This function is guaranteed to return a D-Bus error name for all #GErrors
 // returned from functions handling remote method calls (e.g.
 // g_dbus_connection_call_finish()) unless g_dbus_error_strip_remote_error() has
 // been used on @error.
-func DbusErrorGetRemoteError(error *glib.Error) string {
-	var arg0 *glib.Error
-	arg0 = glib.WrapError(error)
+func DBusErrorGetRemoteError(error *glib.Error) string {
+	var arg0 *C.GError
+	arg0 = (*C.C.GError)(error.Native())
 
 	ret := C.g_dbus_error_get_remote_error(arg0)
 
@@ -4467,12 +4483,12 @@ func DbusErrorGetRemoteError(error *glib.Error) string {
 	return ret0
 }
 
-// DbusErrorIsRemoteError checks if @error represents an error received via
+// DBusErrorIsRemoteError checks if @error represents an error received via
 // D-Bus from a remote peer. If so, use g_dbus_error_get_remote_error() to get
 // the name of the error.
-func DbusErrorIsRemoteError(error *glib.Error) bool {
-	var arg0 *glib.Error
-	arg0 = glib.WrapError(error)
+func DBusErrorIsRemoteError(error *glib.Error) bool {
+	var arg0 *C.GError
+	arg0 = (*C.C.GError)(error.Native())
 
 	ret := C.g_dbus_error_is_remote_error(arg0)
 
@@ -4482,7 +4498,7 @@ func DbusErrorIsRemoteError(error *glib.Error) bool {
 	return ret0
 }
 
-// DbusErrorNewForDbusError creates a #GError based on the contents of
+// DBusErrorNewForDBusError creates a #GError based on the contents of
 // @dbus_error_name and @dbus_error_message.
 //
 // Errors registered with g_dbus_error_register_error() will be looked up using
@@ -4507,13 +4523,13 @@ func DbusErrorIsRemoteError(error *glib.Error) bool {
 //
 // This function is typically only used in object mappings to prepare #GError
 // instances for applications. Regular applications should not use it.
-func DbusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) *glib.Error {
-	var arg0 string
-	dbusErrorName = C.GoString(arg0)
+func DBusErrorNewForDBusError(dbusErrorName string, dbusErrorMessage string) *glib.Error {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(dbusErrorName))
 	defer C.free(unsafe.Pointer(dbusErrorName))
 
-	var arg1 string
-	dbusErrorMessage = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(dbusErrorMessage))
 	defer C.free(unsafe.Pointer(dbusErrorMessage))
 
 	ret := C.g_dbus_error_new_for_dbus_error(arg0, arg1)
@@ -4524,7 +4540,7 @@ func DbusErrorNewForDbusError(dbusErrorName string, dbusErrorMessage string) *gl
 	return ret0
 }
 
-func DbusErrorQuark() glib.Quark {
+func DBusErrorQuark() glib.Quark {
 	ret := C.g_dbus_error_quark()
 
 	var ret0 glib.Quark
@@ -4537,27 +4553,20 @@ func DbusErrorQuark() glib.Quark {
 	return ret0
 }
 
-// DbusErrorRegisterError creates an association to map between @dbus_error_name
+// DBusErrorRegisterError creates an association to map between @dbus_error_name
 // and #GErrors specified by @error_domain and @error_code.
 //
 // This is typically done in the routine that returns the #GQuark for an error
 // domain.
-func DbusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
-	var arg0 glib.Quark
-	{
-		var tmp uint32
-		tmp = uint32(errorDomain)
-		arg0 = glib.Quark(tmp)
-	}
+func DBusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
+	var arg1 C.gint
+	arg1 = C.gint(errorCode)
 
-	var arg1 int
-	arg1 = int(errorCode)
-
-	var arg2 string
-	dbusErrorName = C.GoString(arg2)
+	var arg2 *C.gchar
+	arg2 = (*C.gchar)(C.CString(dbusErrorName))
 	defer C.free(unsafe.Pointer(dbusErrorName))
 
-	ret := C.g_dbus_error_register_error(arg0, arg1, arg2)
+	ret := C.g_dbus_error_register_error(arg1, arg2)
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -4565,37 +4574,36 @@ func DbusErrorRegisterError(errorDomain glib.Quark, errorCode int, dbusErrorName
 	return ret0
 }
 
-// DbusErrorRegisterErrorDomain: helper function for associating a #GError error
+// DBusErrorRegisterErrorDomain: helper function for associating a #GError error
 // domain with D-Bus error names.
-func DbusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uint, entries []DBusErrorEntry) {
-	var arg0 string
-	errorDomainQuarkName = C.GoString(arg0)
+func DBusErrorRegisterErrorDomain(errorDomainQuarkName string, quarkVolatile uint, entries []DBusErrorEntry) {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(errorDomainQuarkName))
 	defer C.free(unsafe.Pointer(errorDomainQuarkName))
 
-	var arg1 uint
-	arg1 = uint(quarkVolatile)
+	var arg1 *C.gsize
+	arg1 = (*C.gsize)(quarkVolatile)
 
-	var arg2 []DBusErrorEntry
+	var arg2 *C.GDBusErrorEntry
 	{
+		arg2 = (C.C.GDBusErrorEntry)(C.malloc(C.sizeof_C.GDBusErrorEntry * a))
 		arg2 = make([]DBusErrorEntry, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.GDBusErrorEntry)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			arg2[i] = gio.WrapDBusErrorEntry(src)
 		}
 	}
 
 	C.g_dbus_error_register_error_domain(arg0, arg1, arg2)
 }
 
-// DbusErrorStripRemoteError looks for extra information in the error message
+// DBusErrorStripRemoteError looks for extra information in the error message
 // used to recover the D-Bus error name and strips it if found. If stripped, the
 // message field in @error will correspond exactly to what was received on the
 // wire.
 //
 // This is typically used when presenting errors to the end user.
-func DbusErrorStripRemoteError(error *glib.Error) bool {
-	var arg0 *glib.Error
-	arg0 = glib.WrapError(error)
+func DBusErrorStripRemoteError(error *glib.Error) bool {
+	var arg0 *C.GError
+	arg0 = (*C.C.GError)(error.Native())
 
 	ret := C.g_dbus_error_strip_remote_error(arg0)
 
@@ -4605,24 +4613,17 @@ func DbusErrorStripRemoteError(error *glib.Error) bool {
 	return ret0
 }
 
-// DbusErrorUnregisterError destroys an association previously set up with
+// DBusErrorUnregisterError destroys an association previously set up with
 // g_dbus_error_register_error().
-func DbusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
-	var arg0 glib.Quark
-	{
-		var tmp uint32
-		tmp = uint32(errorDomain)
-		arg0 = glib.Quark(tmp)
-	}
+func DBusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorName string) bool {
+	var arg1 C.gint
+	arg1 = C.gint(errorCode)
 
-	var arg1 int
-	arg1 = int(errorCode)
-
-	var arg2 string
-	dbusErrorName = C.GoString(arg2)
+	var arg2 *C.gchar
+	arg2 = (*C.gchar)(C.CString(dbusErrorName))
 	defer C.free(unsafe.Pointer(dbusErrorName))
 
-	ret := C.g_dbus_error_unregister_error(arg0, arg1, arg2)
+	ret := C.g_dbus_error_unregister_error(arg1, arg2)
 
 	var ret0 bool
 	ret0 = gextras.Gobool(ret)
@@ -4630,12 +4631,12 @@ func DbusErrorUnregisterError(errorDomain glib.Quark, errorCode int, dbusErrorNa
 	return ret0
 }
 
-// DbusGenerateGuid: generate a D-Bus GUID that can be used with e.g.
+// DBusGenerateGuid: generate a D-Bus GUID that can be used with e.g.
 // g_dbus_connection_new().
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
 // example, D-Bus GUIDs are not RFC-4122 compliant).
-func DbusGenerateGuid() string {
+func DBusGenerateGuid() string {
 	ret := C.g_dbus_generate_guid()
 
 	var ret0 string
@@ -4645,7 +4646,7 @@ func DbusGenerateGuid() string {
 	return ret0
 }
 
-// DbusGValueToGvariant converts a #GValue to a #GVariant of the type indicated
+// DBusGValueToGvariant converts a #GValue to a #GVariant of the type indicated
 // by the @type parameter.
 //
 // The conversion is using the following rules:
@@ -4666,11 +4667,14 @@ func DbusGenerateGuid() string {
 //
 // See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
 // to a #GValue.
-func DbusGValueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *glib.Variant {
-	var arg1 *glib.VariantType
-	arg1 = glib.WrapVariantType(_type)
+func DBusGValueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *glib.Variant {
+	var arg0 *C.GValue
+	arg0 = (*C.GValue)(gvalue.GValue)
 
-	ret := C.g_dbus_gvalue_to_gvariant(arg1)
+	var arg1 *C.GVariantType
+	arg1 = (*C.C.GVariantType)(_type.Native())
+
+	ret := C.g_dbus_gvalue_to_gvariant(arg0, arg1)
 
 	var ret0 *glib.Variant
 	ret0 = glib.WrapVariant(ret)
@@ -4678,7 +4682,7 @@ func DbusGValueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *gl
 	return ret0
 }
 
-// DbusGvariantToGValue converts a #GVariant to a #GValue. If @value is
+// DBusGvariantToGValue converts a #GVariant to a #GValue. If @value is
 // floating, it is consumed.
 //
 // The rules specified in the g_dbus_gvalue_to_gvariant() function are used -
@@ -4689,9 +4693,9 @@ func DbusGValueToGvariant(gvalue *externglib.Value, _type *glib.VariantType) *gl
 //
 // The conversion never fails - a valid #GValue is always returned in
 // @out_gvalue.
-func DbusGvariantToGValue(value *glib.Variant) externglib.Value {
-	var arg0 *glib.Variant
-	arg0 = glib.WrapVariant(value)
+func DBusGvariantToGValue(value *glib.Variant) externglib.Value {
+	var arg0 *C.GVariant
+	arg0 = (*C.C.GVariant)(value.Native())
 
 	var arg1 *C.GValue // out
 
@@ -4702,14 +4706,14 @@ func DbusGvariantToGValue(value *glib.Variant) externglib.Value {
 	return ret0
 }
 
-// DbusIsAddress checks if @string is a D-Bus address
+// DBusIsAddress checks if @string is a D-Bus address
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 //
 // This doesn't check if @string is actually supported by BusServer or
 // BusConnection - use g_dbus_is_supported_address() to do more checks.
-func DbusIsAddress(string string) bool {
-	var arg0 string
-	string = C.GoString(arg0)
+func DBusIsAddress(string string) bool {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_address(arg0)
@@ -4720,13 +4724,13 @@ func DbusIsAddress(string string) bool {
 	return ret0
 }
 
-// DbusIsGuid checks if @string is a D-Bus GUID.
+// DBusIsGuid checks if @string is a D-Bus GUID.
 //
 // See the D-Bus specification regarding what strings are valid D-Bus GUID (for
 // example, D-Bus GUIDs are not RFC-4122 compliant).
-func DbusIsGuid(string string) bool {
-	var arg0 string
-	string = C.GoString(arg0)
+func DBusIsGuid(string string) bool {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_guid(arg0)
@@ -4737,10 +4741,10 @@ func DbusIsGuid(string string) bool {
 	return ret0
 }
 
-// DbusIsInterfaceName checks if @string is a valid D-Bus interface name.
-func DbusIsInterfaceName(string string) bool {
-	var arg0 string
-	string = C.GoString(arg0)
+// DBusIsInterfaceName checks if @string is a valid D-Bus interface name.
+func DBusIsInterfaceName(string string) bool {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_interface_name(arg0)
@@ -4751,11 +4755,11 @@ func DbusIsInterfaceName(string string) bool {
 	return ret0
 }
 
-// DbusIsMemberName checks if @string is a valid D-Bus member (e.g. signal or
+// DBusIsMemberName checks if @string is a valid D-Bus member (e.g. signal or
 // method) name.
-func DbusIsMemberName(string string) bool {
-	var arg0 string
-	string = C.GoString(arg0)
+func DBusIsMemberName(string string) bool {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_member_name(arg0)
@@ -4766,11 +4770,11 @@ func DbusIsMemberName(string string) bool {
 	return ret0
 }
 
-// DbusIsName checks if @string is a valid D-Bus bus name (either unique or
+// DBusIsName checks if @string is a valid D-Bus bus name (either unique or
 // well-known).
-func DbusIsName(string string) bool {
-	var arg0 string
-	string = C.GoString(arg0)
+func DBusIsName(string string) bool {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_name(arg0)
@@ -4781,13 +4785,13 @@ func DbusIsName(string string) bool {
 	return ret0
 }
 
-// DbusIsSupportedAddress: like g_dbus_is_address() but also checks if the
+// DBusIsSupportedAddress: like g_dbus_is_address() but also checks if the
 // library supports the transports in @string and that key/value pairs for each
 // transport are valid. See the specification of the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DbusIsSupportedAddress(string string) bool {
-	var arg0 string
-	string = C.GoString(arg0)
+func DBusIsSupportedAddress(string string) bool {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_supported_address(arg0)
@@ -4798,10 +4802,10 @@ func DbusIsSupportedAddress(string string) bool {
 	return ret0
 }
 
-// DbusIsUniqueName checks if @string is a valid D-Bus unique bus name.
-func DbusIsUniqueName(string string) bool {
-	var arg0 string
-	string = C.GoString(arg0)
+// DBusIsUniqueName checks if @string is a valid D-Bus unique bus name.
+func DBusIsUniqueName(string string) bool {
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.g_dbus_is_unique_name(arg0)
@@ -4825,8 +4829,8 @@ func NewDtlsClientConnection(baseSocket DatagramBased, serverIdentity SocketConn
 
 // NewDtlsServerConnection creates a new ServerConnection wrapping @base_socket.
 func NewDtlsServerConnection(baseSocket DatagramBased, certificate TlsCertificate) DtlsServerConnection {
-	var arg1 TlsCertificate
-	arg1 = gio.WrapTlsCertificate(externglib.Take(unsafe.Pointer(certificate.Native())))
+	var arg1 *C.GTlsCertificate
+	arg1 = (*C.C.GTlsCertificate)(certificate.Native())
 
 	ret := C.g_dtls_server_connection_new(arg1)
 
@@ -4849,8 +4853,8 @@ func NewDtlsServerConnection(baseSocket DatagramBased, certificate TlsCertificat
 // you there. It is also always possible to use this function with Context
 // arguments of type G_OPTION_ARG_FILENAME.
 func FileNewForCommandlineArg(arg string) File {
-	var arg0 string
-	arg = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(arg))
 	defer C.free(unsafe.Pointer(arg))
 
 	ret := C.g_file_new_for_commandline_arg(arg0)
@@ -4872,12 +4876,12 @@ func FileNewForCommandlineArg(arg string) File {
 //
 // See also g_application_command_line_create_file_for_arg().
 func FileNewForCommandlineArgAndCwd(arg string, cwd string) File {
-	var arg0 string
-	arg = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(arg))
 	defer C.free(unsafe.Pointer(arg))
 
-	var arg1 string
-	cwd = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(cwd))
 	defer C.free(unsafe.Pointer(cwd))
 
 	ret := C.g_file_new_for_commandline_arg_and_cwd(arg0, arg1)
@@ -4891,8 +4895,8 @@ func FileNewForCommandlineArgAndCwd(arg string, cwd string) File {
 // fails, but the returned object might not support any I/O operation if @path
 // is malformed.
 func FileNewForPath(path string) File {
-	var arg0 string
-	path = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(path))
 
 	ret := C.g_file_new_for_path(arg0)
@@ -4906,8 +4910,8 @@ func FileNewForPath(path string) File {
 // fails, but the returned object might not support any I/O operation if @uri is
 // malformed or if the uri type is not supported.
 func FileNewForURI(uri string) File {
-	var arg0 string
-	uri = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(uri))
 
 	ret := C.g_file_new_for_uri(arg0)
@@ -4928,8 +4932,8 @@ func FileNewForURI(uri string) File {
 // Unlike the other #GFile constructors, this will return nil if a temporary
 // file could not be created.
 func FileNewTmp(tmpl string) (iostream FileIOStream, file File) {
-	var arg0 string
-	tmpl = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(tmpl))
 
 	var arg1 **C.GFileIOStream // out
@@ -4937,7 +4941,7 @@ func FileNewTmp(tmpl string) (iostream FileIOStream, file File) {
 	ret := C.g_file_new_tmp(arg0, &arg1)
 
 	var ret0 FileIOStream
-	ret0 = gio.WrapFileIOStream(externglib.Take(unsafe.Pointer(arg1.Native())))
+	ret0 = WrapFileIOStream(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	var ret1 File
 
@@ -4949,8 +4953,8 @@ func FileNewTmp(tmpl string) (iostream FileIOStream, file File) {
 // returned object might not support any I/O operation if the @parse_name cannot
 // be parsed.
 func FileParseName(parseName string) File {
-	var arg0 string
-	parseName = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(parseName))
 	defer C.free(unsafe.Pointer(parseName))
 
 	ret := C.g_file_parse_name(arg0)
@@ -4963,8 +4967,8 @@ func FileParseName(parseName string) File {
 // IconDeserialize deserializes a #GIcon previously serialized using
 // g_icon_serialize().
 func IconDeserialize(value *glib.Variant) Icon {
-	var arg0 *glib.Variant
-	arg0 = glib.WrapVariant(value)
+	var arg0 *C.GVariant
+	arg0 = (*C.C.GVariant)(value.Native())
 
 	ret := C.g_icon_deserialize(arg0)
 
@@ -4975,8 +4979,8 @@ func IconDeserialize(value *glib.Variant) Icon {
 
 // IconHash gets a hash for an icon.
 func IconHash(icon interface{}) uint {
-	var arg0 interface{}
-	arg0 = box.Get(uintptr(icon))
+	var arg0 C.gpointer
+	arg0 = C.gpointer(box.Assign(icon))
 
 	ret := C.g_icon_hash(arg0)
 
@@ -4993,8 +4997,8 @@ func IconHash(icon interface{}) uint {
 // you need to ensure that each #GType is registered with the type system prior
 // to calling g_icon_new_for_string().
 func IconNewForString(str string) Icon {
-	var arg0 string
-	str = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(str))
 
 	ret := C.g_icon_new_for_string(arg0)
@@ -5012,8 +5016,8 @@ func IconNewForString(str string) Icon {
 // As errno is global and may be modified by intermediate function calls, you
 // should save its value as soon as the call which sets it
 func IOErrorFromErrno(errNo int) IOErrorEnum {
-	var arg0 int
-	arg0 = int(errNo)
+	var arg0 C.gint
+	arg0 = C.gint(errNo)
 
 	ret := C.g_io_error_from_errno(arg0)
 
@@ -5043,49 +5047,52 @@ func IOErrorQuark() glib.Quark {
 // If @type has already been registered as an extension for this extension
 // point, the existing OExtension object is returned.
 func IOExtensionPointImplement(extensionPointName string, _type externglib.Type, extensionName string, priority int) *IOExtension {
-	var arg0 string
-	extensionPointName = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(extensionPointName))
 	defer C.free(unsafe.Pointer(extensionPointName))
 
-	var arg2 string
-	extensionName = C.GoString(arg2)
+	var arg1 C.GType
+	arg1 = C.GType(_type)
+
+	var arg2 *C.char
+	arg2 = (*C.gchar)(C.CString(extensionName))
 	defer C.free(unsafe.Pointer(extensionName))
 
-	var arg3 int
-	arg3 = int(priority)
+	var arg3 C.gint
+	arg3 = C.gint(priority)
 
-	ret := C.g_io_extension_point_implement(arg0, arg2, arg3)
+	ret := C.g_io_extension_point_implement(arg0, arg1, arg2, arg3)
 
 	var ret0 *IOExtension
-	ret0 = gio.WrapIOExtension(ret)
+	ret0 = WrapIOExtension(ret)
 
 	return ret0
 }
 
 // IOExtensionPointLookup looks up an existing extension point.
 func IOExtensionPointLookup(name string) *IOExtensionPoint {
-	var arg0 string
-	name = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
 	ret := C.g_io_extension_point_lookup(arg0)
 
 	var ret0 *IOExtensionPoint
-	ret0 = gio.WrapIOExtensionPoint(ret)
+	ret0 = WrapIOExtensionPoint(ret)
 
 	return ret0
 }
 
 // IOExtensionPointRegister registers an extension point.
 func IOExtensionPointRegister(name string) *IOExtensionPoint {
-	var arg0 string
-	name = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
 	ret := C.g_io_extension_point_register(arg0)
 
 	var ret0 *IOExtensionPoint
-	ret0 = gio.WrapIOExtensionPoint(ret)
+	ret0 = WrapIOExtensionPoint(ret)
 
 	return ret0
 }
@@ -5096,8 +5103,8 @@ func IOExtensionPointRegister(name string) *IOExtensionPoint {
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
 func IOModulesLoadAllInDirectory(dirname string) *glib.List {
-	var arg0 string
-	dirname = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(dirname))
 	defer C.free(unsafe.Pointer(dirname))
 
 	ret := C.g_io_modules_load_all_in_directory(arg0)
@@ -5115,12 +5122,12 @@ func IOModulesLoadAllInDirectory(dirname string) *glib.List {
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
 func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) *glib.List {
-	var arg0 string
-	dirname = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(dirname))
 	defer C.free(unsafe.Pointer(dirname))
 
-	var arg1 *IOModuleScope
-	arg1 = gio.WrapIOModuleScope(scope)
+	var arg1 *C.GIOModuleScope
+	arg1 = (*C.C.GIOModuleScope)(scope.Native())
 
 	ret := C.g_io_modules_load_all_in_directory_with_scope(arg0, arg1)
 
@@ -5141,8 +5148,8 @@ func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) 
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
 func IOModulesScanAllInDirectory(dirname string) {
-	var arg0 string
-	dirname = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(dirname))
 	defer C.free(unsafe.Pointer(dirname))
 
 	C.g_io_modules_scan_all_in_directory(arg0)
@@ -5160,12 +5167,12 @@ func IOModulesScanAllInDirectory(dirname string) {
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
 func IOModulesScanAllInDirectoryWithScope(dirname string, scope *IOModuleScope) {
-	var arg0 string
-	dirname = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(dirname))
 	defer C.free(unsafe.Pointer(dirname))
 
-	var arg1 *IOModuleScope
-	arg1 = gio.WrapIOModuleScope(scope)
+	var arg1 *C.GIOModuleScope
+	arg1 = (*C.C.GIOModuleScope)(scope.Native())
 
 	C.g_io_modules_scan_all_in_directory_with_scope(arg0, arg1)
 }
@@ -5186,14 +5193,17 @@ func IOSchedulerCancelAllJobs() {
 // If @cancellable is not nil, it can be used to cancel the I/O job by calling
 // g_cancellable_cancel() or by calling g_io_scheduler_cancel_all_jobs().
 func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, ioPriority int, cancellable Cancellable) {
+	var arg0 C.GIOSchedulerJobFunc
+	arg0 = (*[0]byte)(C.gotk4_IOSchedulerJobFunc)
+
 	arg1 := C.gpointer(box.Assign(box.Callback, userData))
-	var arg3 int
-	arg3 = int(ioPriority)
+	var arg3 C.gint
+	arg3 = C.gint(ioPriority)
 
-	var arg4 Cancellable
-	arg4 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg4 *C.GCancellable
+	arg4 = (*C.C.GCancellable)(cancellable.Native())
 
-	C.g_io_scheduler_push_job((*[0]byte)(C.callbackDelete), arg3, arg4)
+	C.g_io_scheduler_push_job(arg0, (*[0]byte)(C.callbackDelete), arg3, arg4)
 }
 
 // NewKeyfileSettingsBackend creates a keyfile-backed Backend.
@@ -5243,22 +5253,22 @@ func IOSchedulerPushJob(jobFunc IOSchedulerJobFunc, ioPriority int, cancellable 
 // directory specified by the SettingsBackend:defaults-dir property, and a list
 // of locked keys from a text file with the name `locks` in the same location.
 func NewKeyfileSettingsBackend(filename string, rootPath string, rootGroup string) SettingsBackend {
-	var arg0 string
-	filename = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(filename))
 
-	var arg1 string
-	rootPath = C.GoString(arg1)
+	var arg1 *C.gchar
+	arg1 = (*C.gchar)(C.CString(rootPath))
 	defer C.free(unsafe.Pointer(rootPath))
 
-	var arg2 string
-	rootGroup = C.GoString(arg2)
+	var arg2 *C.gchar
+	arg2 = (*C.gchar)(C.CString(rootGroup))
 	defer C.free(unsafe.Pointer(rootGroup))
 
 	ret := C.g_keyfile_settings_backend_new(arg0, arg1, arg2)
 
 	var ret0 SettingsBackend
-	ret0 = gio.WrapSettingsBackend(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSettingsBackend(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5282,7 +5292,7 @@ func NewMemorySettingsBackend() SettingsBackend {
 	ret := C.g_memory_settings_backend_new()
 
 	var ret0 SettingsBackend
-	ret0 = gio.WrapSettingsBackend(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSettingsBackend(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5312,7 +5322,7 @@ func NewNullSettingsBackend() SettingsBackend {
 	ret := C.g_null_settings_backend_new()
 
 	var ret0 SettingsBackend
-	ret0 = gio.WrapSettingsBackend(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapSettingsBackend(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5323,8 +5333,8 @@ func NewNullSettingsBackend() SettingsBackend {
 // g_source_add_child_source() to add other sources to it to cause it to
 // trigger.
 func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
-	var arg0 gextras.Objector
-	arg0 = externglib.Take(unsafe.Pointer(pollableStream.Native()))
+	var arg0 *C.GObject
+	arg0 = (*C.GObject)(pollableStream.Native())
 
 	ret := C.g_pollable_source_new(arg0)
 
@@ -5339,14 +5349,14 @@ func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 // also attaching @child_source (with a dummy callback), and @cancellable, if
 // they are non-nil.
 func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.Source, cancellable Cancellable) *glib.Source {
-	var arg0 gextras.Objector
-	arg0 = externglib.Take(unsafe.Pointer(pollableStream.Native()))
+	var arg0 C.gpointer
+	arg0 = (*C.GObject)(pollableStream.Native())
 
-	var arg1 *glib.Source
-	arg1 = glib.WrapSource(childSource)
+	var arg1 *C.GSource
+	arg1 = (*C.C.GSource)(childSource.Native())
 
-	var arg2 Cancellable
-	arg2 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg2 *C.GCancellable
+	arg2 = (*C.C.GCancellable)(cancellable.Native())
 
 	ret := C.g_pollable_source_new_full(arg0, arg1, arg2)
 
@@ -5366,23 +5376,22 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.So
 // undefined. If @blocking is true, then @stream does not need to be a
 // InputStream.
 func PollableStreamRead(stream InputStream, buffer []uint8, blocking bool, cancellable Cancellable) int {
-	var arg0 InputStream
-	arg0 = gio.WrapInputStream(externglib.Take(unsafe.Pointer(stream.Native())))
+	var arg0 *C.GInputStream
+	arg0 = (*C.C.GInputStream)(stream.Native())
 
-	var arg1 []uint8
+	var arg1 *C.void
 	{
+		arg1 = (C.C.guint8)(C.malloc(C.sizeof_C.guint8 * a))
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			arg1[i] = uint8(src)
 		}
 	}
 
-	var arg3 bool
-	arg3 = gextras.Gobool(blocking)
+	var arg3 C.gboolean
+	arg3 = gextras.Cbool(blocking)
 
-	var arg4 Cancellable
-	arg4 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg4 *C.GCancellable
+	arg4 = (*C.C.GCancellable)(cancellable.Native())
 
 	ret := C.g_pollable_stream_read(arg0, arg1, arg3, arg4)
 
@@ -5403,23 +5412,22 @@ func PollableStreamRead(stream InputStream, buffer []uint8, blocking bool, cance
 // undefined. If @blocking is true, then @stream does not need to be a
 // OutputStream.
 func PollableStreamWrite(stream OutputStream, buffer []uint8, blocking bool, cancellable Cancellable) int {
-	var arg0 OutputStream
-	arg0 = gio.WrapOutputStream(externglib.Take(unsafe.Pointer(stream.Native())))
+	var arg0 *C.GOutputStream
+	arg0 = (*C.C.GOutputStream)(stream.Native())
 
-	var arg1 []uint8
+	var arg1 *C.void
 	{
+		arg1 = (C.C.guint8)(C.malloc(C.sizeof_C.guint8 * a))
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			arg1[i] = uint8(src)
 		}
 	}
 
-	var arg3 bool
-	arg3 = gextras.Gobool(blocking)
+	var arg3 C.gboolean
+	arg3 = gextras.Cbool(blocking)
 
-	var arg4 Cancellable
-	arg4 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg4 *C.GCancellable
+	arg4 = (*C.C.GCancellable)(cancellable.Native())
 
 	ret := C.g_pollable_stream_write(arg0, arg1, arg3, arg4)
 
@@ -5446,25 +5454,24 @@ func PollableStreamWrite(stream OutputStream, buffer []uint8, blocking bool, can
 // or else the behavior is undefined. If @blocking is true, then @stream does
 // not need to be a OutputStream.
 func PollableStreamWriteAll(stream OutputStream, buffer []uint8, blocking bool, cancellable Cancellable) (bytesWritten uint, ok bool) {
-	var arg0 OutputStream
-	arg0 = gio.WrapOutputStream(externglib.Take(unsafe.Pointer(stream.Native())))
+	var arg0 *C.GOutputStream
+	arg0 = (*C.C.GOutputStream)(stream.Native())
 
-	var arg1 []uint8
+	var arg1 *C.void
 	{
+		arg1 = (C.C.guint8)(C.malloc(C.sizeof_C.guint8 * a))
 		arg1 = make([]uint8, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			arg1[i] = uint8(src)
 		}
 	}
 
-	var arg3 bool
-	arg3 = gextras.Gobool(blocking)
+	var arg3 C.gboolean
+	arg3 = gextras.Cbool(blocking)
 
 	var arg4 *C.gsize // out
 
-	var arg5 Cancellable
-	arg5 = gio.WrapCancellable(externglib.Take(unsafe.Pointer(cancellable.Native())))
+	var arg5 *C.GCancellable
+	arg5 = (*C.C.GCancellable)(cancellable.Native())
 
 	ret := C.g_pollable_stream_write_all(arg0, arg1, arg3, &arg4, arg5)
 
@@ -5480,8 +5487,8 @@ func PollableStreamWriteAll(stream OutputStream, buffer []uint8, blocking bool, 
 // ProxyGetDefaultForProtocol: find the `gio-proxy` extension point for a proxy
 // implementation that supports the specified protocol.
 func ProxyGetDefaultForProtocol(protocol string) Proxy {
-	var arg0 string
-	protocol = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(protocol))
 	defer C.free(unsafe.Pointer(protocol))
 
 	ret := C.g_proxy_get_default_for_protocol(arg0)
@@ -5538,14 +5545,14 @@ func ResourceErrorQuark() glib.Quark {
 // will be returned. If @filename doesn’t exist, or there is an error in reading
 // it, an error from g_mapped_file_new() will be returned.
 func ResourceLoad(filename string) *Resource {
-	var arg0 string
-	filename = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(filename))
 
 	ret := C.g_resource_load(arg0)
 
 	var ret0 *Resource
-	ret0 = gio.WrapResource(ret)
+	ret0 = WrapResource(ret)
 
 	return ret0
 }
@@ -5556,12 +5563,12 @@ func ResourceLoad(filename string) *Resource {
 //
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []string {
-	var arg0 string
-	path = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(path))
 
-	var arg1 ResourceLookupFlags
-	arg1 = ResourceLookupFlags(lookupFlags)
+	var arg1 C.GResourceLookupFlags
+	arg1 = (C.C.GResourceLookupFlags)(lookupFlags)
 
 	ret := C.g_resources_enumerate_children(arg0, arg1)
 
@@ -5588,12 +5595,12 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) []
 //
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, ok bool) {
-	var arg0 string
-	path = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(path))
 
-	var arg1 ResourceLookupFlags
-	arg1 = ResourceLookupFlags(lookupFlags)
+	var arg1 C.GResourceLookupFlags
+	arg1 = (C.C.GResourceLookupFlags)(lookupFlags)
 
 	var arg2 *C.gsize // out
 
@@ -5627,12 +5634,12 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, 
 //
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Bytes {
-	var arg0 string
-	path = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(path))
 
-	var arg1 ResourceLookupFlags
-	arg1 = ResourceLookupFlags(lookupFlags)
+	var arg1 C.GResourceLookupFlags
+	arg1 = (C.C.GResourceLookupFlags)(lookupFlags)
 
 	ret := C.g_resources_lookup_data(arg0, arg1)
 
@@ -5648,17 +5655,17 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) *glib.Byt
 //
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) InputStream {
-	var arg0 string
-	path = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(path))
 
-	var arg1 ResourceLookupFlags
-	arg1 = ResourceLookupFlags(lookupFlags)
+	var arg1 C.GResourceLookupFlags
+	arg1 = (C.C.GResourceLookupFlags)(lookupFlags)
 
 	ret := C.g_resources_open_stream(arg0, arg1)
 
 	var ret0 InputStream
-	ret0 = gio.WrapInputStream(externglib.Take(unsafe.Pointer(ret.Native())))
+	ret0 = WrapInputStream(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
 }
@@ -5667,8 +5674,8 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) InputStre
 // resources. Once a resource is registered the files in it can be accessed with
 // the global resource lookup functions like g_resources_lookup_data().
 func ResourcesRegister(resource *Resource) {
-	var arg0 *Resource
-	arg0 = gio.WrapResource(resource)
+	var arg0 *C.GResource
+	arg0 = (*C.C.GResource)(resource.Native())
 
 	C.g_resources_register(arg0)
 }
@@ -5676,8 +5683,8 @@ func ResourcesRegister(resource *Resource) {
 // ResourcesUnregister unregisters the resource from the process-global set of
 // resources.
 func ResourcesUnregister(resource *Resource) {
-	var arg0 *Resource
-	arg0 = gio.WrapResource(resource)
+	var arg0 *C.GResource
+	arg0 = (*C.C.GResource)(resource.Native())
 
 	C.g_resources_unregister(arg0)
 }
@@ -5698,7 +5705,7 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 	ret := C.g_settings_schema_source_get_default()
 
 	var ret0 *SettingsSchemaSource
-	ret0 = gio.WrapSettingsSchemaSource(ret)
+	ret0 = WrapSettingsSchemaSource(ret)
 
 	return ret0
 }
@@ -5707,14 +5714,17 @@ func SettingsSchemaSourceGetDefault() *SettingsSchemaSource {
 // to g_simple_async_report_error_in_idle(), but takes a #GError rather than
 // building a new one.
 func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error *glib.Error) {
-	var arg0 gextras.Objector
-	arg0 = externglib.Take(unsafe.Pointer(object.Native()))
+	var arg0 *C.GObject
+	arg0 = (*C.GObject)(object.Native())
+
+	var arg1 C.GAsyncReadyCallback
+	arg1 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	arg2 := C.gpointer(box.Assign(box.Callback, userData))
-	var arg3 *glib.Error
-	arg3 = glib.WrapError(error)
+	var arg3 *C.GError
+	arg3 = (*C.C.GError)(error.Native())
 
-	C.g_simple_async_report_gerror_in_idle(arg0, arg3)
+	C.g_simple_async_report_gerror_in_idle(arg0, arg1, arg3)
 }
 
 // SimpleAsyncReportTakeGerrorInIdle reports an error in an idle function.
@@ -5722,21 +5732,24 @@ func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyC
 // caller's ownership of @error, so the caller does not have to free it any
 // more.
 func SimpleAsyncReportTakeGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, error *glib.Error) {
-	var arg0 gextras.Objector
-	arg0 = externglib.Take(unsafe.Pointer(object.Native()))
+	var arg0 *C.GObject
+	arg0 = (*C.GObject)(object.Native())
+
+	var arg1 C.GAsyncReadyCallback
+	arg1 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
 	arg2 := C.gpointer(box.Assign(box.Callback, userData))
-	var arg3 *glib.Error
-	arg3 = glib.WrapError(error)
+	var arg3 *C.GError
+	arg3 = (*C.C.GError)(error.Native())
 
-	C.g_simple_async_report_take_gerror_in_idle(arg0, arg3)
+	C.g_simple_async_report_take_gerror_in_idle(arg0, arg1, arg3)
 }
 
 // SrvTargetListSort sorts @targets in place according to the algorithm in RFC
 // 2782.
 func SrvTargetListSort(targets *glib.List) *glib.List {
-	var arg0 *glib.List
-	arg0 = glib.WrapList(targets)
+	var arg0 *C.GList
+	arg0 = (*C.C.GList)(targets.Native())
 
 	ret := C.g_srv_target_list_sort(arg0)
 
@@ -5777,8 +5790,8 @@ func TlsChannelBindingErrorQuark() glib.Quark {
 // application code can run operations on the @base_io_stream after this
 // function has returned.
 func NewTlsClientConnection(baseIOStream IOStream, serverIdentity SocketConnectable) TlsClientConnection {
-	var arg0 IOStream
-	arg0 = gio.WrapIOStream(externglib.Take(unsafe.Pointer(baseIOStream.Native())))
+	var arg0 *C.GIOStream
+	arg0 = (*C.C.GIOStream)(baseIOStream.Native())
 
 	ret := C.g_tls_client_connection_new(arg0)
 
@@ -5806,8 +5819,8 @@ func TlsErrorQuark() glib.Quark {
 //
 // The certificates in @anchors must be PEM encoded.
 func NewTlsFileDatabase(anchors string) TlsFileDatabase {
-	var arg0 string
-	anchors = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(anchors))
 	defer C.free(unsafe.Pointer(anchors))
 
 	ret := C.g_tls_file_database_new(arg0)
@@ -5824,11 +5837,11 @@ func NewTlsFileDatabase(anchors string) TlsFileDatabase {
 // application code can run operations on the @base_io_stream after this
 // function has returned.
 func NewTlsServerConnection(baseIOStream IOStream, certificate TlsCertificate) TlsServerConnection {
-	var arg0 IOStream
-	arg0 = gio.WrapIOStream(externglib.Take(unsafe.Pointer(baseIOStream.Native())))
+	var arg0 *C.GIOStream
+	arg0 = (*C.C.GIOStream)(baseIOStream.Native())
 
-	var arg1 TlsCertificate
-	arg1 = gio.WrapTlsCertificate(externglib.Take(unsafe.Pointer(certificate.Native())))
+	var arg1 *C.GTlsCertificate
+	arg1 = (*C.C.GTlsCertificate)(certificate.Native())
 
 	ret := C.g_tls_server_connection_new(arg0, arg1)
 
@@ -5842,8 +5855,8 @@ func NewTlsServerConnection(baseIOStream IOStream, certificate TlsCertificate) T
 // mounted volumes that only are used in the OS and has little to no relevance
 // to the casual user.
 func UnixIsMountPathSystemInternal(mountPath string) bool {
-	var arg0 string
-	mountPath = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(mountPath))
 	defer C.free(unsafe.Pointer(mountPath))
 
 	ret := C.g_unix_is_mount_path_system_internal(arg0)
@@ -5863,8 +5876,8 @@ func UnixIsMountPathSystemInternal(mountPath string) bool {
 //
 // The list of device paths considered ‘system’ ones may change over time.
 func UnixIsSystemDevicePath(devicePath string) bool {
-	var arg0 string
-	devicePath = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(devicePath))
 	defer C.free(unsafe.Pointer(devicePath))
 
 	ret := C.g_unix_is_system_device_path(arg0)
@@ -5883,8 +5896,8 @@ func UnixIsSystemDevicePath(devicePath string) bool {
 //
 // The list of file system types considered ‘system’ ones may change over time.
 func UnixIsSystemFSType(fsType string) bool {
-	var arg0 string
-	fsType = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(fsType))
 	defer C.free(unsafe.Pointer(fsType))
 
 	ret := C.g_unix_is_system_fs_type(arg0)
@@ -5901,8 +5914,8 @@ func UnixIsSystemFSType(fsType string) bool {
 //
 // If more mounts have the same mount path, the last matching mount is returned.
 func UnixMountAt(mountPath string) (timeRead uint64, unixMountEntry *UnixMountEntry) {
-	var arg0 string
-	mountPath = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(mountPath))
 	defer C.free(unsafe.Pointer(mountPath))
 
 	var arg1 *C.guint64 // out
@@ -5913,18 +5926,18 @@ func UnixMountAt(mountPath string) (timeRead uint64, unixMountEntry *UnixMountEn
 	ret0 = uint64(arg1)
 
 	var ret1 *UnixMountEntry
-	ret1 = gio.WrapUnixMountEntry(ret)
+	ret1 = WrapUnixMountEntry(ret)
 
 	return ret0, ret1
 }
 
 // UnixMountCompare compares two unix mounts.
 func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mount1)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mount1.Native())
 
-	var arg1 *UnixMountEntry
-	arg1 = gio.WrapUnixMountEntry(mount2)
+	var arg1 *C.GUnixMountEntry
+	arg1 = (*C.C.GUnixMountEntry)(mount2.Native())
 
 	ret := C.g_unix_mount_compare(arg0, arg1)
 
@@ -5936,13 +5949,13 @@ func UnixMountCompare(mount1 *UnixMountEntry, mount2 *UnixMountEntry) int {
 
 // UnixMountCopy makes a copy of @mount_entry.
 func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_copy(arg0)
 
 	var ret0 *UnixMountEntry
-	ret0 = gio.WrapUnixMountEntry(ret)
+	ret0 = WrapUnixMountEntry(ret)
 
 	return ret0
 }
@@ -5953,8 +5966,8 @@ func UnixMountCopy(mountEntry *UnixMountEntry) *UnixMountEntry {
 //
 // If more mounts have the same mount path, the last matching mount is returned.
 func UnixMountFor(filePath string) (timeRead uint64, unixMountEntry *UnixMountEntry) {
-	var arg0 string
-	filePath = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(filePath))
 	defer C.free(unsafe.Pointer(filePath))
 
 	var arg1 *C.guint64 // out
@@ -5965,23 +5978,23 @@ func UnixMountFor(filePath string) (timeRead uint64, unixMountEntry *UnixMountEn
 	ret0 = uint64(arg1)
 
 	var ret1 *UnixMountEntry
-	ret1 = gio.WrapUnixMountEntry(ret)
+	ret1 = WrapUnixMountEntry(ret)
 
 	return ret0, ret1
 }
 
 // UnixMountFree frees a unix mount.
 func UnixMountFree(mountEntry *UnixMountEntry) {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	C.g_unix_mount_free(arg0)
 }
 
 // UnixMountGetDevicePath gets the device path for a unix mount.
 func UnixMountGetDevicePath(mountEntry *UnixMountEntry) string {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_get_device_path(arg0)
 
@@ -5994,8 +6007,8 @@ func UnixMountGetDevicePath(mountEntry *UnixMountEntry) string {
 
 // UnixMountGetFSType gets the filesystem type for the unix mount.
 func UnixMountGetFSType(mountEntry *UnixMountEntry) string {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_get_fs_type(arg0)
 
@@ -6008,8 +6021,8 @@ func UnixMountGetFSType(mountEntry *UnixMountEntry) string {
 
 // UnixMountGetMountPath gets the mount path for a unix mount.
 func UnixMountGetMountPath(mountEntry *UnixMountEntry) string {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_get_mount_path(arg0)
 
@@ -6026,8 +6039,8 @@ func UnixMountGetMountPath(mountEntry *UnixMountEntry) string {
 // This is similar to g_unix_mount_point_get_options(), but it takes a
 // MountEntry as an argument.
 func UnixMountGetOptions(mountEntry *UnixMountEntry) string {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_get_options(arg0)
 
@@ -6044,8 +6057,8 @@ func UnixMountGetOptions(mountEntry *UnixMountEntry) string {
 // For example, the root path is equal to "/" for mount created by "mount
 // /dev/sda1 /mnt/foo" and "/bar" for "mount --bind /mnt/foo/bar /mnt/bar".
 func UnixMountGetRootPath(mountEntry *UnixMountEntry) string {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_get_root_path(arg0)
 
@@ -6058,8 +6071,8 @@ func UnixMountGetRootPath(mountEntry *UnixMountEntry) string {
 
 // UnixMountGuessCanEject guesses whether a Unix mount can be ejected.
 func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_guess_can_eject(arg0)
 
@@ -6071,8 +6084,8 @@ func UnixMountGuessCanEject(mountEntry *UnixMountEntry) bool {
 
 // UnixMountGuessIcon guesses the icon of a Unix mount.
 func UnixMountGuessIcon(mountEntry *UnixMountEntry) Icon {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_guess_icon(arg0)
 
@@ -6084,8 +6097,8 @@ func UnixMountGuessIcon(mountEntry *UnixMountEntry) Icon {
 // UnixMountGuessName guesses the name of a Unix mount. The result is a
 // translated string.
 func UnixMountGuessName(mountEntry *UnixMountEntry) string {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_guess_name(arg0)
 
@@ -6099,8 +6112,8 @@ func UnixMountGuessName(mountEntry *UnixMountEntry) string {
 // UnixMountGuessShouldDisplay guesses whether a Unix mount should be displayed
 // in the UI.
 func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_guess_should_display(arg0)
 
@@ -6112,8 +6125,8 @@ func UnixMountGuessShouldDisplay(mountEntry *UnixMountEntry) bool {
 
 // UnixMountGuessSymbolicIcon guesses the symbolic icon of a Unix mount.
 func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Icon {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_guess_symbolic_icon(arg0)
 
@@ -6124,8 +6137,8 @@ func UnixMountGuessSymbolicIcon(mountEntry *UnixMountEntry) Icon {
 
 // UnixMountIsReadonly checks if a unix mount is mounted read only.
 func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_is_readonly(arg0)
 
@@ -6142,8 +6155,8 @@ func UnixMountIsReadonly(mountEntry *UnixMountEntry) bool {
 // The definition of what a ‘system’ mount entry is may change over time as new
 // file system types and device paths are ignored.
 func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
-	var arg0 *UnixMountEntry
-	arg0 = gio.WrapUnixMountEntry(mountEntry)
+	var arg0 *C.GUnixMountEntry
+	arg0 = (*C.C.GUnixMountEntry)(mountEntry.Native())
 
 	ret := C.g_unix_mount_is_system_internal(arg0)
 
@@ -6160,8 +6173,8 @@ func UnixMountIsSystemInternal(mountEntry *UnixMountEntry) bool {
 // If more mount points have the same mount path, the last matching mount point
 // is returned.
 func UnixMountPointAt(mountPath string) (timeRead uint64, unixMountPoint *UnixMountPoint) {
-	var arg0 string
-	mountPath = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(mountPath))
 	defer C.free(unsafe.Pointer(mountPath))
 
 	var arg1 *C.guint64 // out
@@ -6172,7 +6185,7 @@ func UnixMountPointAt(mountPath string) (timeRead uint64, unixMountPoint *UnixMo
 	ret0 = uint64(arg1)
 
 	var ret1 *UnixMountPoint
-	ret1 = gio.WrapUnixMountPoint(ret)
+	ret1 = WrapUnixMountPoint(ret)
 
 	return ret0, ret1
 }
@@ -6180,8 +6193,8 @@ func UnixMountPointAt(mountPath string) (timeRead uint64, unixMountPoint *UnixMo
 // UnixMountPointsChangedSince checks if the unix mount points have changed
 // since a given unix time.
 func UnixMountPointsChangedSince(time uint64) bool {
-	var arg0 uint64
-	arg0 = uint64(time)
+	var arg0 C.guint64
+	arg0 = C.guint64(time)
 
 	ret := C.g_unix_mount_points_changed_since(arg0)
 
@@ -6212,8 +6225,8 @@ func UnixMountPointsGet() (timeRead uint64, list *glib.List) {
 // UnixMountsChangedSince checks if the unix mounts have changed since a given
 // unix time.
 func UnixMountsChangedSince(time uint64) bool {
-	var arg0 uint64
-	arg0 = uint64(time)
+	var arg0 C.guint64
+	arg0 = C.guint64(time)
 
 	ret := C.g_unix_mounts_changed_since(arg0)
 
@@ -7500,7 +7513,12 @@ func marshalActionEntry(p uintptr) (interface{}, error) {
 }
 
 func (a *ActionEntry) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *ActionEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.GActionEntry. The caller is expected to
@@ -7528,7 +7546,7 @@ type DBusAnnotationInfo struct {
 // primarily used internally.
 func WrapDBusAnnotationInfo(ptr unsafe.Pointer) *DBusAnnotationInfo {
 	p := (*C.GDBusAnnotationInfo)(ptr)
-	var v DBusAnnotationInfo
+	v := DBusAnnotationInfo{native: p}
 
 	v.RefCount = int(p.ref_count)
 	p.key = C.GoString(v.Key)
@@ -7543,10 +7561,13 @@ func WrapDBusAnnotationInfo(ptr unsafe.Pointer) *DBusAnnotationInfo {
 
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
+			src := (*C.C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
+			v.Annotations[i] = WrapDBusAnnotationInfo(src)
 		}
 	}
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DBusAnnotationInfo).free)
 
 	return &v
 }
@@ -7554,6 +7575,15 @@ func WrapDBusAnnotationInfo(ptr unsafe.Pointer) *DBusAnnotationInfo {
 func marshalDBusAnnotationInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapDBusAnnotationInfo(unsafe.Pointer(b))
+}
+
+func (d *DBusAnnotationInfo) free() {
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.GDBusAnnotationInfo. The caller is expected to
@@ -7581,7 +7611,7 @@ type DBusArgInfo struct {
 // primarily used internally.
 func WrapDBusArgInfo(ptr unsafe.Pointer) *DBusArgInfo {
 	p := (*C.GDBusArgInfo)(ptr)
-	var v DBusArgInfo
+	v := DBusArgInfo{native: p}
 
 	v.RefCount = int(p.ref_count)
 	p.name = C.GoString(v.Name)
@@ -7596,10 +7626,13 @@ func WrapDBusArgInfo(ptr unsafe.Pointer) *DBusArgInfo {
 
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
+			src := (*C.C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
+			v.Annotations[i] = WrapDBusAnnotationInfo(src)
 		}
 	}
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DBusArgInfo).free)
 
 	return &v
 }
@@ -7607,6 +7640,15 @@ func WrapDBusArgInfo(ptr unsafe.Pointer) *DBusArgInfo {
 func marshalDBusArgInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapDBusArgInfo(unsafe.Pointer(b))
+}
+
+func (d *DBusArgInfo) free() {
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DBusArgInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.GDBusArgInfo. The caller is expected to
@@ -7619,8 +7661,8 @@ func (d *DBusArgInfo) Native() unsafe.Pointer {
 type DBusErrorEntry struct {
 	// ErrorCode: an error code.
 	ErrorCode int
-	// DbusErrorName: the D-Bus error name to associate with @error_code.
-	DbusErrorName string
+	// DBusErrorName: the D-Bus error name to associate with @error_code.
+	DBusErrorName string
 
 	native *C.GDBusErrorEntry
 }
@@ -7629,11 +7671,14 @@ type DBusErrorEntry struct {
 // primarily used internally.
 func WrapDBusErrorEntry(ptr unsafe.Pointer) *DBusErrorEntry {
 	p := (*C.GDBusErrorEntry)(ptr)
-	var v DBusErrorEntry
+	v := DBusErrorEntry{native: p}
 
 	v.ErrorCode = int(p.error_code)
-	p.dbus_error_name = C.GoString(v.DbusErrorName)
+	p.dbus_error_name = C.GoString(v.DBusErrorName)
 	defer C.free(unsafe.Pointer(p.dbus_error_name))
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DBusErrorEntry).free)
 
 	return &v
 }
@@ -7641,6 +7686,15 @@ func WrapDBusErrorEntry(ptr unsafe.Pointer) *DBusErrorEntry {
 func marshalDBusErrorEntry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapDBusErrorEntry(unsafe.Pointer(b))
+}
+
+func (d *DBusErrorEntry) free() {
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DBusErrorEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.GDBusErrorEntry. The caller is expected to
@@ -7676,7 +7730,7 @@ type DBusInterfaceInfo struct {
 // primarily used internally.
 func WrapDBusInterfaceInfo(ptr unsafe.Pointer) *DBusInterfaceInfo {
 	p := (*C.GDBusInterfaceInfo)(ptr)
-	var v DBusInterfaceInfo
+	v := DBusInterfaceInfo{native: p}
 
 	v.RefCount = int(p.ref_count)
 	p.name = C.GoString(v.Name)
@@ -7689,8 +7743,8 @@ func WrapDBusInterfaceInfo(ptr unsafe.Pointer) *DBusInterfaceInfo {
 
 		v.Methods = make([]*DBusMethodInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusMethodInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.methods)) + i))
-			v.Methods[i] = gio.WrapDBusMethodInfo(src)
+			src := (*C.C.GDBusMethodInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.methods)) + i))
+			v.Methods[i] = WrapDBusMethodInfo(src)
 		}
 	}
 	{
@@ -7701,8 +7755,8 @@ func WrapDBusInterfaceInfo(ptr unsafe.Pointer) *DBusInterfaceInfo {
 
 		v.Signals = make([]*DBusSignalInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusSignalInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.signals)) + i))
-			v.Signals[i] = gio.WrapDBusSignalInfo(src)
+			src := (*C.C.GDBusSignalInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.signals)) + i))
+			v.Signals[i] = WrapDBusSignalInfo(src)
 		}
 	}
 	{
@@ -7713,8 +7767,8 @@ func WrapDBusInterfaceInfo(ptr unsafe.Pointer) *DBusInterfaceInfo {
 
 		v.Properties = make([]*DBusPropertyInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusPropertyInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.properties)) + i))
-			v.Properties[i] = gio.WrapDBusPropertyInfo(src)
+			src := (*C.C.GDBusPropertyInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.properties)) + i))
+			v.Properties[i] = WrapDBusPropertyInfo(src)
 		}
 	}
 	{
@@ -7725,10 +7779,13 @@ func WrapDBusInterfaceInfo(ptr unsafe.Pointer) *DBusInterfaceInfo {
 
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
+			src := (*C.C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
+			v.Annotations[i] = WrapDBusAnnotationInfo(src)
 		}
 	}
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DBusInterfaceInfo).free)
 
 	return &v
 }
@@ -7736,6 +7793,15 @@ func WrapDBusInterfaceInfo(ptr unsafe.Pointer) *DBusInterfaceInfo {
 func marshalDBusInterfaceInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapDBusInterfaceInfo(unsafe.Pointer(b))
+}
+
+func (d *DBusInterfaceInfo) free() {
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.GDBusInterfaceInfo. The caller is expected to
@@ -7811,7 +7877,12 @@ func marshalDBusInterfaceVTable(p uintptr) (interface{}, error) {
 }
 
 func (d *DBusInterfaceVTable) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DBusInterfaceVTable) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.GDBusInterfaceVTable. The caller is expected to
@@ -7843,7 +7914,7 @@ type DBusMethodInfo struct {
 // primarily used internally.
 func WrapDBusMethodInfo(ptr unsafe.Pointer) *DBusMethodInfo {
 	p := (*C.GDBusMethodInfo)(ptr)
-	var v DBusMethodInfo
+	v := DBusMethodInfo{native: p}
 
 	v.RefCount = int(p.ref_count)
 	p.name = C.GoString(v.Name)
@@ -7856,8 +7927,8 @@ func WrapDBusMethodInfo(ptr unsafe.Pointer) *DBusMethodInfo {
 
 		v.InArgs = make([]*DBusArgInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.in_args)) + i))
-			v.InArgs[i] = gio.WrapDBusArgInfo(src)
+			src := (*C.C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.in_args)) + i))
+			v.InArgs[i] = WrapDBusArgInfo(src)
 		}
 	}
 	{
@@ -7868,8 +7939,8 @@ func WrapDBusMethodInfo(ptr unsafe.Pointer) *DBusMethodInfo {
 
 		v.OutArgs = make([]*DBusArgInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.out_args)) + i))
-			v.OutArgs[i] = gio.WrapDBusArgInfo(src)
+			src := (*C.C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.out_args)) + i))
+			v.OutArgs[i] = WrapDBusArgInfo(src)
 		}
 	}
 	{
@@ -7880,10 +7951,13 @@ func WrapDBusMethodInfo(ptr unsafe.Pointer) *DBusMethodInfo {
 
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
+			src := (*C.C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
+			v.Annotations[i] = WrapDBusAnnotationInfo(src)
 		}
 	}
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DBusMethodInfo).free)
 
 	return &v
 }
@@ -7891,6 +7965,15 @@ func WrapDBusMethodInfo(ptr unsafe.Pointer) *DBusMethodInfo {
 func marshalDBusMethodInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapDBusMethodInfo(unsafe.Pointer(b))
+}
+
+func (d *DBusMethodInfo) free() {
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DBusMethodInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.GDBusMethodInfo. The caller is expected to
@@ -7923,7 +8006,7 @@ type DBusNodeInfo struct {
 // primarily used internally.
 func WrapDBusNodeInfo(ptr unsafe.Pointer) *DBusNodeInfo {
 	p := (*C.GDBusNodeInfo)(ptr)
-	var v DBusNodeInfo
+	v := DBusNodeInfo{native: p}
 
 	v.RefCount = int(p.ref_count)
 	p.path = C.GoString(v.Path)
@@ -7936,8 +8019,8 @@ func WrapDBusNodeInfo(ptr unsafe.Pointer) *DBusNodeInfo {
 
 		v.Interfaces = make([]*DBusInterfaceInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusInterfaceInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.interfaces)) + i))
-			v.Interfaces[i] = gio.WrapDBusInterfaceInfo(src)
+			src := (*C.C.GDBusInterfaceInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.interfaces)) + i))
+			v.Interfaces[i] = WrapDBusInterfaceInfo(src)
 		}
 	}
 	{
@@ -7948,8 +8031,8 @@ func WrapDBusNodeInfo(ptr unsafe.Pointer) *DBusNodeInfo {
 
 		v.Nodes = make([]*DBusNodeInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusNodeInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.nodes)) + i))
-			v.Nodes[i] = gio.WrapDBusNodeInfo(src)
+			src := (*C.C.GDBusNodeInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.nodes)) + i))
+			v.Nodes[i] = WrapDBusNodeInfo(src)
 		}
 	}
 	{
@@ -7960,10 +8043,13 @@ func WrapDBusNodeInfo(ptr unsafe.Pointer) *DBusNodeInfo {
 
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
+			src := (*C.C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
+			v.Annotations[i] = WrapDBusAnnotationInfo(src)
 		}
 	}
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DBusNodeInfo).free)
 
 	return &v
 }
@@ -7971,6 +8057,15 @@ func WrapDBusNodeInfo(ptr unsafe.Pointer) *DBusNodeInfo {
 func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapDBusNodeInfo(unsafe.Pointer(b))
+}
+
+func (d *DBusNodeInfo) free() {
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DBusNodeInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.GDBusNodeInfo. The caller is expected to
@@ -8002,7 +8097,7 @@ type DBusPropertyInfo struct {
 // primarily used internally.
 func WrapDBusPropertyInfo(ptr unsafe.Pointer) *DBusPropertyInfo {
 	p := (*C.GDBusPropertyInfo)(ptr)
-	var v DBusPropertyInfo
+	v := DBusPropertyInfo{native: p}
 
 	v.RefCount = int(p.ref_count)
 	p.name = C.GoString(v.Name)
@@ -8018,10 +8113,13 @@ func WrapDBusPropertyInfo(ptr unsafe.Pointer) *DBusPropertyInfo {
 
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
+			src := (*C.C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
+			v.Annotations[i] = WrapDBusAnnotationInfo(src)
 		}
 	}
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DBusPropertyInfo).free)
 
 	return &v
 }
@@ -8029,6 +8127,15 @@ func WrapDBusPropertyInfo(ptr unsafe.Pointer) *DBusPropertyInfo {
 func marshalDBusPropertyInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapDBusPropertyInfo(unsafe.Pointer(b))
+}
+
+func (d *DBusPropertyInfo) free() {
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DBusPropertyInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.GDBusPropertyInfo. The caller is expected to
@@ -8057,7 +8164,7 @@ type DBusSignalInfo struct {
 // primarily used internally.
 func WrapDBusSignalInfo(ptr unsafe.Pointer) *DBusSignalInfo {
 	p := (*C.GDBusSignalInfo)(ptr)
-	var v DBusSignalInfo
+	v := DBusSignalInfo{native: p}
 
 	v.RefCount = int(p.ref_count)
 	p.name = C.GoString(v.Name)
@@ -8070,8 +8177,8 @@ func WrapDBusSignalInfo(ptr unsafe.Pointer) *DBusSignalInfo {
 
 		v.Args = make([]*DBusArgInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.args)) + i))
-			v.Args[i] = gio.WrapDBusArgInfo(src)
+			src := (*C.C.GDBusArgInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.args)) + i))
+			v.Args[i] = WrapDBusArgInfo(src)
 		}
 	}
 	{
@@ -8082,10 +8189,13 @@ func WrapDBusSignalInfo(ptr unsafe.Pointer) *DBusSignalInfo {
 
 		v.Annotations = make([]*DBusAnnotationInfo, length)
 		for i := 0; i < length; i++ {
-			src := (*C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
-			v.Annotations[i] = gio.WrapDBusAnnotationInfo(src)
+			src := (*C.C.GDBusAnnotationInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p.annotations)) + i))
+			v.Annotations[i] = WrapDBusAnnotationInfo(src)
 		}
 	}
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*DBusSignalInfo).free)
 
 	return &v
 }
@@ -8093,6 +8203,15 @@ func WrapDBusSignalInfo(ptr unsafe.Pointer) *DBusSignalInfo {
 func marshalDBusSignalInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapDBusSignalInfo(unsafe.Pointer(b))
+}
+
+func (d *DBusSignalInfo) free() {
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DBusSignalInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.GDBusSignalInfo. The caller is expected to
@@ -8132,7 +8251,12 @@ func marshalDBusSubtreeVTable(p uintptr) (interface{}, error) {
 }
 
 func (d *DBusSubtreeVTable) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *DBusSubtreeVTable) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.GDBusSubtreeVTable. The caller is expected to
@@ -8157,12 +8281,15 @@ type FileAttributeInfo struct {
 // primarily used internally.
 func WrapFileAttributeInfo(ptr unsafe.Pointer) *FileAttributeInfo {
 	p := (*C.GFileAttributeInfo)(ptr)
-	var v FileAttributeInfo
+	v := FileAttributeInfo{native: p}
 
 	p.name = C.GoString(v.Name)
 	defer C.free(unsafe.Pointer(p.name))
 	v.Type = FileAttributeType(p._type)
 	v.Flags = FileAttributeInfoFlags(p.flags)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FileAttributeInfo).free)
 
 	return &v
 }
@@ -8170,6 +8297,15 @@ func WrapFileAttributeInfo(ptr unsafe.Pointer) *FileAttributeInfo {
 func marshalFileAttributeInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapFileAttributeInfo(unsafe.Pointer(b))
+}
+
+func (f *FileAttributeInfo) free() {
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FileAttributeInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.GFileAttributeInfo. The caller is expected to
@@ -8193,10 +8329,13 @@ type FileAttributeInfoList struct {
 // primarily used internally.
 func WrapFileAttributeInfoList(ptr unsafe.Pointer) *FileAttributeInfoList {
 	p := (*C.GFileAttributeInfoList)(ptr)
-	var v FileAttributeInfoList
+	v := FileAttributeInfoList{native: p}
 
-	v.Infos = gio.WrapFileAttributeInfo(p.infos)
+	v.Infos = WrapFileAttributeInfo(p.infos)
 	v.NInfos = int(p.n_infos)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FileAttributeInfoList).free)
 
 	return &v
 }
@@ -8204,6 +8343,15 @@ func WrapFileAttributeInfoList(ptr unsafe.Pointer) *FileAttributeInfoList {
 func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapFileAttributeInfoList(unsafe.Pointer(b))
+}
+
+func (f *FileAttributeInfoList) free() {
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FileAttributeInfoList) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.GFileAttributeInfoList. The caller is expected to
@@ -8237,7 +8385,12 @@ func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 }
 
 func (f *FileAttributeMatcher) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FileAttributeMatcher) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.GFileAttributeMatcher. The caller is expected to
@@ -8288,14 +8441,14 @@ type InputMessage struct {
 // primarily used internally.
 func WrapInputMessage(ptr unsafe.Pointer) *InputMessage {
 	p := (*C.GInputMessage)(ptr)
-	var v InputMessage
+	v := InputMessage{native: p}
 
-	v.Address = gio.WrapSocketAddress(externglib.Take(unsafe.Pointer(p.address.Native())))
+	v.Address = WrapSocketAddress(externglib.Take(unsafe.Pointer(p.address.Native())))
 	{
 		v.Vectors = make([]InputVector, p.num_vectors)
 		for i := 0; i < uintptr(p.num_vectors); i++ {
-			src := (C.GInputVector)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			v.Vectors[i] = gio.WrapInputVector(src)
+			src := (C.C.GInputVector)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			v.Vectors[i] = WrapInputVector(src)
 		}
 	}
 	v.BytesReceived = uint(p.bytes_received)
@@ -8303,10 +8456,13 @@ func WrapInputMessage(ptr unsafe.Pointer) *InputMessage {
 	{
 		v.ControlMessages = make([]SocketControlMessage, p.num_control_messages)
 		for i := 0; i < uintptr(p.num_control_messages); i++ {
-			src := (**C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			v.ControlMessages[i] = gio.WrapSocketControlMessage(externglib.Take(unsafe.Pointer(src.Native())))
+			src := (**C.C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			v.ControlMessages[i] = WrapSocketControlMessage(externglib.Take(unsafe.Pointer(src.Native())))
 		}
 	}
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*InputMessage).free)
 
 	return &v
 }
@@ -8314,6 +8470,15 @@ func WrapInputMessage(ptr unsafe.Pointer) *InputMessage {
 func marshalInputMessage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapInputMessage(unsafe.Pointer(b))
+}
+
+func (i *InputMessage) free() {
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *InputMessage) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.GInputMessage. The caller is expected to
@@ -8338,10 +8503,13 @@ type InputVector struct {
 // primarily used internally.
 func WrapInputVector(ptr unsafe.Pointer) *InputVector {
 	p := (*C.GInputVector)(ptr)
-	var v InputVector
+	v := InputVector{native: p}
 
 	v.Buffer = box.Get(uintptr(p.buffer))
 	v.Size = uint(p.size)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*InputVector).free)
 
 	return &v
 }
@@ -8349,6 +8517,15 @@ func WrapInputVector(ptr unsafe.Pointer) *InputVector {
 func marshalInputVector(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapInputVector(unsafe.Pointer(b))
+}
+
+func (i *InputVector) free() {
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *InputVector) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.GInputVector. The caller is expected to
@@ -8384,19 +8561,22 @@ type OutputMessage struct {
 // primarily used internally.
 func WrapOutputMessage(ptr unsafe.Pointer) *OutputMessage {
 	p := (*C.GOutputMessage)(ptr)
-	var v OutputMessage
+	v := OutputMessage{native: p}
 
-	v.Address = gio.WrapSocketAddress(externglib.Take(unsafe.Pointer(p.address.Native())))
-	v.Vectors = gio.WrapOutputVector(p.vectors)
+	v.Address = WrapSocketAddress(externglib.Take(unsafe.Pointer(p.address.Native())))
+	v.Vectors = WrapOutputVector(p.vectors)
 	v.NumVectors = uint(p.num_vectors)
 	v.BytesSent = uint(p.bytes_sent)
 	{
 		v.ControlMessages = make([]SocketControlMessage, p.num_control_messages)
 		for i := 0; i < uintptr(p.num_control_messages); i++ {
-			src := (*C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			v.ControlMessages[i] = gio.WrapSocketControlMessage(externglib.Take(unsafe.Pointer(src.Native())))
+			src := (*C.C.GSocketControlMessage)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			v.ControlMessages[i] = WrapSocketControlMessage(externglib.Take(unsafe.Pointer(src.Native())))
 		}
 	}
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*OutputMessage).free)
 
 	return &v
 }
@@ -8404,6 +8584,15 @@ func WrapOutputMessage(ptr unsafe.Pointer) *OutputMessage {
 func marshalOutputMessage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapOutputMessage(unsafe.Pointer(b))
+}
+
+func (o *OutputMessage) free() {
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *OutputMessage) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.GOutputMessage. The caller is expected to
@@ -8428,10 +8617,13 @@ type OutputVector struct {
 // primarily used internally.
 func WrapOutputVector(ptr unsafe.Pointer) *OutputVector {
 	p := (*C.GOutputVector)(ptr)
-	var v OutputVector
+	v := OutputVector{native: p}
 
 	v.Buffer = box.Get(uintptr(p.buffer))
 	v.Size = uint(p.size)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*OutputVector).free)
 
 	return &v
 }
@@ -8439,6 +8631,15 @@ func WrapOutputVector(ptr unsafe.Pointer) *OutputVector {
 func marshalOutputVector(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapOutputVector(unsafe.Pointer(b))
+}
+
+func (o *OutputVector) free() {
+	C.free(o.Native())
+}
+
+// Native returns the underlying source pointer.
+func (o *OutputVector) Native() unsafe.Pointer {
+	return unsafe.Pointer(o.native)
 }
 
 // Native returns the pointer to *C.GOutputVector. The caller is expected to
@@ -8607,7 +8808,12 @@ func marshalResource(p uintptr) (interface{}, error) {
 }
 
 func (r *Resource) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *Resource) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.GResource. The caller is expected to
@@ -8670,7 +8876,12 @@ func marshalSettingsSchema(p uintptr) (interface{}, error) {
 }
 
 func (s *SettingsSchema) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SettingsSchema) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.GSettingsSchema. The caller is expected to
@@ -8703,7 +8914,12 @@ func marshalSettingsSchemaKey(p uintptr) (interface{}, error) {
 }
 
 func (s *SettingsSchemaKey) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SettingsSchemaKey) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.GSettingsSchemaKey. The caller is expected to
@@ -8736,7 +8952,12 @@ func marshalSettingsSchemaSource(p uintptr) (interface{}, error) {
 }
 
 func (s *SettingsSchemaSource) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SettingsSchemaSource) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.GSettingsSchemaSource. The caller is expected to
@@ -8781,7 +9002,12 @@ func marshalSrvTarget(p uintptr) (interface{}, error) {
 }
 
 func (s *SrvTarget) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SrvTarget) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.GSrvTarget. The caller is expected to
@@ -8816,7 +9042,12 @@ func marshalStaticResource(p uintptr) (interface{}, error) {
 }
 
 func (s *StaticResource) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *StaticResource) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.GStaticResource. The caller is expected to
@@ -8849,7 +9080,12 @@ func marshalUnixMountEntry(p uintptr) (interface{}, error) {
 }
 
 func (u *UnixMountEntry) free() {
-	C.free(unsafe.Pointer(u.native))
+	C.free(u.Native())
+}
+
+// Native returns the underlying source pointer.
+func (u *UnixMountEntry) Native() unsafe.Pointer {
+	return unsafe.Pointer(u.native)
 }
 
 // Native returns the pointer to *C.GUnixMountEntry. The caller is expected to
@@ -8882,7 +9118,12 @@ func marshalUnixMountPoint(p uintptr) (interface{}, error) {
 }
 
 func (u *UnixMountPoint) free() {
-	C.free(unsafe.Pointer(u.native))
+	C.free(u.Native())
+}
+
+// Native returns the underlying source pointer.
+func (u *UnixMountPoint) Native() unsafe.Pointer {
+	return unsafe.Pointer(u.native)
 }
 
 // Native returns the pointer to *C.GUnixMountPoint. The caller is expected to
@@ -9157,7 +9398,7 @@ type Application interface {
 	BindBusyProperty(object gextras.Objector, property string)
 	// ApplicationID gets the unique identifier for @application.
 	ApplicationID() string
-	// DbusConnection gets the BusConnection being used by the application, or
+	// DBusConnection gets the BusConnection being used by the application, or
 	// nil.
 	//
 	// If #GApplication is using its D-Bus backend then this function will
@@ -9170,8 +9411,8 @@ type Application interface {
 	//
 	// This function must not be called before the application has been
 	// registered. See g_application_get_is_registered().
-	DbusConnection() DBusConnection
-	// DbusObjectPath gets the D-Bus object path being used by the application,
+	DBusConnection() DBusConnection
+	// DBusObjectPath gets the D-Bus object path being used by the application,
 	// or nil.
 	//
 	// If #GApplication is using its D-Bus backend then this function will
@@ -9186,7 +9427,7 @@ type Application interface {
 	//
 	// This function must not be called before the application has been
 	// registered. See g_application_get_is_registered().
-	DbusObjectPath() string
+	DBusObjectPath() string
 	// Flags gets the flags for @application.
 	//
 	// See Flags.
@@ -9547,9 +9788,9 @@ func (a application) BindBusyProperty(object gextras.Objector, property string)
 
 func (a application) ApplicationID() string
 
-func (a application) DbusConnection() DBusConnection
+func (a application) DBusConnection() DBusConnection
 
-func (a application) DbusObjectPath() string
+func (a application) DBusObjectPath() string
 
 func (a application) Flags() ApplicationFlags
 
@@ -11664,12 +11905,12 @@ type DBusMethodInvocation interface {
 	// UserData gets the @user_data #gpointer passed to
 	// g_dbus_connection_register_object().
 	UserData() interface{}
-	// ReturnDbusError finishes handling a D-Bus method call by returning an
+	// ReturnDBusError finishes handling a D-Bus method call by returning an
 	// error.
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	ReturnDbusError(errorName string, errorMessage string)
+	ReturnDBusError(errorName string, errorMessage string)
 	// ReturnErrorLiteral: like g_dbus_method_invocation_return_error() but
 	// without printf()-style formatting.
 	//
@@ -11765,7 +12006,7 @@ func (d dBusMethodInvocation) Sender() string
 
 func (d dBusMethodInvocation) UserData() interface{}
 
-func (d dBusMethodInvocation) ReturnDbusError(errorName string, errorMessage string)
+func (d dBusMethodInvocation) ReturnDBusError(errorName string, errorMessage string)
 
 func (d dBusMethodInvocation) ReturnErrorLiteral(domain glib.Quark, code int, message string)
 

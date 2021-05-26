@@ -10,7 +10,6 @@ import (
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib"
 	externglib "github.com/gotk3/gotk3/glib"
-	"github.com/linuxdeepin/go-gir/pango-1.0"
 )
 
 // #cgo pkg-config: pango
@@ -973,7 +972,7 @@ func marshalShowFlags(p uintptr) (interface{}, error) {
 type AttrDataCopyFunc func() interface{}
 
 //export gotk4_AttrDataCopyFunc
-func gotk4_AttrDataCopyFunc(arg0 C.gconstpointer) C.gpointer {
+func gotk4_AttrDataCopyFunc(arg0 C.gpointer) C.gpointer {
 	v := box.Get(box.Callback, uintptr(arg0))
 	if v == nil {
 		panic(`callback not found`)
@@ -993,7 +992,7 @@ func gotk4_AttrFilterFunc(arg0 *C.PangoAttribute, arg1 C.gpointer) C.gboolean {
 	}
 
 	var attribute *Attribute
-	attribute = pango.WrapAttribute(arg0)
+	attribute = WrapAttribute(arg0)
 
 	ok := v.(AttrFilterFunc)(attribute)
 }
@@ -1009,11 +1008,11 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 		panic(`callback not found`)
 	}
 
-	var fontset fontset
-	fontset = pango.WrapFontset(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var fontset Fontset
+	fontset = WrapFontset(externglib.Take(unsafe.Pointer(arg0.Native())))
 
-	var font font
-	font = pango.WrapFont(externglib.Take(unsafe.Pointer(arg1.Native())))
+	var font Font
+	font = WrapFont(externglib.Take(unsafe.Pointer(arg1.Native())))
 
 	ok := v.(FontsetForeachFunc)(fontset, font)
 }
@@ -1023,45 +1022,45 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 // If breaks are disabled, the range will be kept in a single run, as far as
 // possible.
 func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
-	var arg0 bool
-	arg0 = gextras.Gobool(allowBreaks)
+	var arg0 C.gboolean
+	arg0 = gextras.Cbool(allowBreaks)
 
 	ret := C.pango_attr_allow_breaks_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrBackgroundAlpha: create a new background alpha attribute.
 func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
-	var arg0 uint16
-	arg0 = uint16(alpha)
+	var arg0 C.guint16
+	arg0 = C.guint16(alpha)
 
 	ret := C.pango_attr_background_alpha_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrBackground: create a new background color attribute.
 func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
-	var arg0 uint16
-	arg0 = uint16(red)
+	var arg0 C.guint16
+	arg0 = C.guint16(red)
 
-	var arg1 uint16
-	arg1 = uint16(green)
+	var arg1 C.guint16
+	arg1 = C.guint16(green)
 
-	var arg2 uint16
-	arg2 = uint16(blue)
+	var arg2 C.guint16
+	arg2 = C.guint16(blue)
 
 	ret := C.pango_attr_background_new(arg0, arg1, arg2)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1072,27 +1071,27 @@ func NewAttrBackground(red uint16, green uint16, blue uint16) *Attribute {
 // matching font on the system. No fallback will be done to other fonts on the
 // system that might contain the characters in the text.
 func NewAttrFallback(enableFallback bool) *Attribute {
-	var arg0 bool
-	arg0 = gextras.Gobool(enableFallback)
+	var arg0 C.gboolean
+	arg0 = gextras.Cbool(enableFallback)
 
 	ret := C.pango_attr_fallback_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrFamily: create a new font family attribute.
 func NewAttrFamily(family string) *Attribute {
-	var arg0 string
-	family = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(family))
 	defer C.free(unsafe.Pointer(family))
 
 	ret := C.pango_attr_family_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1102,85 +1101,85 @@ func NewAttrFamily(family string) *Attribute {
 // This attribute allows setting family, style, weight, variant, stretch, and
 // size simultaneously.
 func NewAttrFontDesc(desc *FontDescription) *Attribute {
-	var arg0 *FontDescription
-	arg0 = pango.WrapFontDescription(desc)
+	var arg0 *C.PangoFontDescription
+	arg0 = (*C.C.PangoFontDescription)(desc.Native())
 
 	ret := C.pango_attr_font_desc_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrFontFeatures: create a new font features tag attribute.
 func NewAttrFontFeatures(features string) *Attribute {
-	var arg0 string
-	features = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(features))
 	defer C.free(unsafe.Pointer(features))
 
 	ret := C.pango_attr_font_features_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrForegroundAlpha: create a new foreground alpha attribute.
 func NewAttrForegroundAlpha(alpha uint16) *Attribute {
-	var arg0 uint16
-	arg0 = uint16(alpha)
+	var arg0 C.guint16
+	arg0 = C.guint16(alpha)
 
 	ret := C.pango_attr_foreground_alpha_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrForeground: create a new foreground color attribute.
 func NewAttrForeground(red uint16, green uint16, blue uint16) *Attribute {
-	var arg0 uint16
-	arg0 = uint16(red)
+	var arg0 C.guint16
+	arg0 = C.guint16(red)
 
-	var arg1 uint16
-	arg1 = uint16(green)
+	var arg1 C.guint16
+	arg1 = C.guint16(green)
 
-	var arg2 uint16
-	arg2 = uint16(blue)
+	var arg2 C.guint16
+	arg2 = C.guint16(blue)
 
 	ret := C.pango_attr_foreground_new(arg0, arg1, arg2)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrGravityHint: create a new gravity hint attribute.
 func NewAttrGravityHint(hint GravityHint) *Attribute {
-	var arg0 GravityHint
-	arg0 = GravityHint(hint)
+	var arg0 C.PangoGravityHint
+	arg0 = (C.C.PangoGravityHint)(hint)
 
 	ret := C.pango_attr_gravity_hint_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrGravity: create a new gravity attribute.
 func NewAttrGravity(gravity Gravity) *Attribute {
-	var arg0 Gravity
-	arg0 = Gravity(gravity)
+	var arg0 C.PangoGravity
+	arg0 = (C.C.PangoGravity)(gravity)
 
 	ret := C.pango_attr_gravity_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1190,39 +1189,39 @@ func NewAttrGravity(gravity Gravity) *Attribute {
 // Pango will insert hyphens when breaking lines in the middle of a word. This
 // attribute can be used to suppress the hyphen.
 func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
-	var arg0 bool
-	arg0 = gextras.Gobool(insertHyphens)
+	var arg0 C.gboolean
+	arg0 = gextras.Cbool(insertHyphens)
 
 	ret := C.pango_attr_insert_hyphens_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrLanguage: create a new language tag attribute.
 func NewAttrLanguage(language *Language) *Attribute {
-	var arg0 *Language
-	arg0 = pango.WrapLanguage(language)
+	var arg0 *C.PangoLanguage
+	arg0 = (*C.C.PangoLanguage)(language.Native())
 
 	ret := C.pango_attr_language_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrLetterSpacing: create a new letter-spacing attribute.
 func NewAttrLetterSpacing(letterSpacing int) *Attribute {
-	var arg0 int
-	arg0 = int(letterSpacing)
+	var arg0 C.int
+	arg0 = C.int(letterSpacing)
 
 	ret := C.pango_attr_letter_spacing_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1232,45 +1231,45 @@ func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 // This attribute modifies the color of overlines. If not set, overlines will
 // use the foreground color.
 func NewAttrOverlineColor(red uint16, green uint16, blue uint16) *Attribute {
-	var arg0 uint16
-	arg0 = uint16(red)
+	var arg0 C.guint16
+	arg0 = C.guint16(red)
 
-	var arg1 uint16
-	arg1 = uint16(green)
+	var arg1 C.guint16
+	arg1 = C.guint16(green)
 
-	var arg2 uint16
-	arg2 = uint16(blue)
+	var arg2 C.guint16
+	arg2 = C.guint16(blue)
 
 	ret := C.pango_attr_overline_color_new(arg0, arg1, arg2)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrOverline: create a new overline-style attribute.
 func NewAttrOverline(overline Overline) *Attribute {
-	var arg0 Overline
-	arg0 = Overline(overline)
+	var arg0 C.PangoOverline
+	arg0 = (C.C.PangoOverline)(overline)
 
 	ret := C.pango_attr_overline_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrRise: create a new baseline displacement attribute.
 func NewAttrRise(rise int) *Attribute {
-	var arg0 int
-	arg0 = int(rise)
+	var arg0 C.int
+	arg0 = C.int(rise)
 
 	ret := C.pango_attr_rise_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1280,13 +1279,13 @@ func NewAttrRise(rise int) *Attribute {
 // The base font for the affected text will have its size multiplied by
 // @scale_factor.
 func NewAttrScale(scaleFactor float64) *Attribute {
-	var arg0 float64
-	arg0 = float64(scaleFactor)
+	var arg0 C.double
+	arg0 = C.double(scaleFactor)
 
 	ret := C.pango_attr_scale_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1297,16 +1296,16 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 // result of shaping a particular glyph. This might be used, for instance, for
 // embedding a picture or a widget inside a `PangoLayout`.
 func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
-	var arg0 *Rectangle
-	arg0 = pango.WrapRectangle(inkRect)
+	var arg0 *C.PangoRectangle
+	arg0 = (*C.C.PangoRectangle)(inkRect.Native())
 
-	var arg1 *Rectangle
-	arg1 = pango.WrapRectangle(logicalRect)
+	var arg1 *C.PangoRectangle
+	arg1 = (*C.C.PangoRectangle)(logicalRect.Native())
 
 	ret := C.pango_attr_shape_new(arg0, arg1)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1316,19 +1315,22 @@ func NewAttrShape(inkRect *Rectangle, logicalRect *Rectangle) *Attribute {
 // Like pango_attr_shape_new(), but a user data pointer is also provided; this
 // pointer can be accessed when later rendering the glyph.
 func AttrShapeNewWithData(inkRect *Rectangle, logicalRect *Rectangle, data interface{}, copyFunc AttrDataCopyFunc) *Attribute {
-	var arg0 *Rectangle
-	arg0 = pango.WrapRectangle(inkRect)
+	var arg0 *C.PangoRectangle
+	arg0 = (*C.C.PangoRectangle)(inkRect.Native())
 
-	var arg1 *Rectangle
-	arg1 = pango.WrapRectangle(logicalRect)
+	var arg1 *C.PangoRectangle
+	arg1 = (*C.C.PangoRectangle)(logicalRect.Native())
 
-	var arg2 interface{}
-	arg2 = box.Get(uintptr(data))
+	var arg2 C.gpointer
+	arg2 = C.gpointer(box.Assign(data))
 
-	ret := C.pango_attr_shape_new_with_data(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
+	var arg3 C.PangoAttrDataCopyFunc
+	arg3 = (*[0]byte)(C.gotk4_AttrDataCopyFunc)
+
+	ret := C.pango_attr_shape_new_with_data(arg0, arg1, arg2, arg3, (*[0]byte)(C.callbackDelete))
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1336,52 +1338,52 @@ func AttrShapeNewWithData(inkRect *Rectangle, logicalRect *Rectangle, data inter
 // NewAttrShow: create a new attribute that influences how invisible characters
 // are rendered.
 func NewAttrShow(flags ShowFlags) *Attribute {
-	var arg0 ShowFlags
-	arg0 = ShowFlags(flags)
+	var arg0 C.PangoShowFlags
+	arg0 = (C.C.PangoShowFlags)(flags)
 
 	ret := C.pango_attr_show_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrSize: create a new font-size attribute in fractional points.
 func NewAttrSize(size int) *Attribute {
-	var arg0 int
-	arg0 = int(size)
+	var arg0 C.int
+	arg0 = C.int(size)
 
 	ret := C.pango_attr_size_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // AttrSizeNewAbsolute: create a new font-size attribute in device units.
 func AttrSizeNewAbsolute(size int) *Attribute {
-	var arg0 int
-	arg0 = int(size)
+	var arg0 C.int
+	arg0 = C.int(size)
 
 	ret := C.pango_attr_size_new_absolute(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrStretch: create a new font stretch attribute.
 func NewAttrStretch(stretch Stretch) *Attribute {
-	var arg0 Stretch
-	arg0 = Stretch(stretch)
+	var arg0 C.PangoStretch
+	arg0 = (C.C.PangoStretch)(stretch)
 
 	ret := C.pango_attr_stretch_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1391,45 +1393,45 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 // This attribute modifies the color of strikethrough lines. If not set,
 // strikethrough lines will use the foreground color.
 func NewAttrStrikethroughColor(red uint16, green uint16, blue uint16) *Attribute {
-	var arg0 uint16
-	arg0 = uint16(red)
+	var arg0 C.guint16
+	arg0 = C.guint16(red)
 
-	var arg1 uint16
-	arg1 = uint16(green)
+	var arg1 C.guint16
+	arg1 = C.guint16(green)
 
-	var arg2 uint16
-	arg2 = uint16(blue)
+	var arg2 C.guint16
+	arg2 = C.guint16(blue)
 
 	ret := C.pango_attr_strikethrough_color_new(arg0, arg1, arg2)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrStrikethrough: create a new strike-through attribute.
 func NewAttrStrikethrough(strikethrough bool) *Attribute {
-	var arg0 bool
-	arg0 = gextras.Gobool(strikethrough)
+	var arg0 C.gboolean
+	arg0 = gextras.Cbool(strikethrough)
 
 	ret := C.pango_attr_strikethrough_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrStyle: create a new font slant style attribute.
 func NewAttrStyle(style Style) *Attribute {
-	var arg0 Style
-	arg0 = Style(style)
+	var arg0 C.PangoStyle
+	arg0 = (C.C.PangoStyle)(style)
 
 	ret := C.pango_attr_style_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1442,8 +1444,8 @@ func NewAttrStyle(style Style) *Attribute {
 // The returned value is an interned string (see g_intern_string() for what that
 // means) that should not be modified or freed.
 func AttrTypeGetName(_type AttrType) string {
-	var arg0 AttrType
-	arg0 = AttrType(_type)
+	var arg0 C.PangoAttrType
+	arg0 = (C.C.PangoAttrType)(_type)
 
 	ret := C.pango_attr_type_get_name(arg0)
 
@@ -1459,8 +1461,8 @@ func AttrTypeGetName(_type AttrType) string {
 // The attribute type name can be accessed later by using
 // [type_func@Pango.AttrType.get_name].
 func AttrTypeRegister(name string) AttrType {
-	var arg0 string
-	name = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(name))
 
 	ret := C.pango_attr_type_register(arg0)
@@ -1476,58 +1478,58 @@ func AttrTypeRegister(name string) AttrType {
 // This attribute modifies the color of underlines. If not set, underlines will
 // use the foreground color.
 func NewAttrUnderlineColor(red uint16, green uint16, blue uint16) *Attribute {
-	var arg0 uint16
-	arg0 = uint16(red)
+	var arg0 C.guint16
+	arg0 = C.guint16(red)
 
-	var arg1 uint16
-	arg1 = uint16(green)
+	var arg1 C.guint16
+	arg1 = C.guint16(green)
 
-	var arg2 uint16
-	arg2 = uint16(blue)
+	var arg2 C.guint16
+	arg2 = C.guint16(blue)
 
 	ret := C.pango_attr_underline_color_new(arg0, arg1, arg2)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrUnderline: create a new underline-style attribute.
 func NewAttrUnderline(underline Underline) *Attribute {
-	var arg0 Underline
-	arg0 = Underline(underline)
+	var arg0 C.PangoUnderline
+	arg0 = (C.C.PangoUnderline)(underline)
 
 	ret := C.pango_attr_underline_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrVariant: create a new font variant attribute (normal or small caps).
 func NewAttrVariant(variant Variant) *Attribute {
-	var arg0 Variant
-	arg0 = Variant(variant)
+	var arg0 C.PangoVariant
+	arg0 = (C.C.PangoVariant)(variant)
 
 	ret := C.pango_attr_variant_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
 
 // NewAttrWeight: create a new font weight attribute.
 func NewAttrWeight(weight Weight) *Attribute {
-	var arg0 Weight
-	arg0 = Weight(weight)
+	var arg0 C.PangoWeight
+	arg0 = (C.C.PangoWeight)(weight)
 
 	ret := C.pango_attr_weight_new(arg0)
 
 	var ret0 *Attribute
-	ret0 = pango.WrapAttribute(ret)
+	ret0 = WrapAttribute(ret)
 
 	return ret0
 }
@@ -1539,8 +1541,8 @@ func NewAttrWeight(weight Weight) *Attribute {
 // A simplified version of this function is available as
 // [func@unichar_direction].
 func BidiTypeForUnichar(ch uint32) BidiType {
-	var arg0 uint32
-	arg0 = uint32(ch)
+	var arg0 C.gunichar
+	arg0 = C.gunichar(ch)
 
 	ret := C.pango_bidi_type_for_unichar(arg0)
 
@@ -1555,22 +1557,21 @@ func BidiTypeForUnichar(ch uint32) BidiType {
 //
 // For most purposes you may want to use pango_get_log_attrs().
 func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
-	var arg0 string
-	text = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(text))
 
-	var arg1 int
-	arg1 = int(length)
+	var arg1 C.int
+	arg1 = C.int(length)
 
-	var arg2 *Analysis
-	arg2 = pango.WrapAnalysis(analysis)
+	var arg2 *C.PangoAnalysis
+	arg2 = (*C.C.PangoAnalysis)(analysis.Native())
 
-	var arg3 []LogAttr
+	var arg3 *C.PangoLogAttr
 	{
+		arg3 = (C.C.PangoLogAttr)(C.malloc(C.sizeof_C.PangoLogAttr * a))
 		arg3 = make([]LogAttr, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.PangoLogAttr)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			arg3[i] = pango.WrapLogAttr(src)
 		}
 	}
 
@@ -1584,21 +1585,21 @@ func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
 //
 // See pango_tailor_break() for language-specific breaks.
 func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int) {
-	var arg0 string
-	text = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(text))
 
-	var arg1 int
-	arg1 = int(length)
+	var arg1 C.int
+	arg1 = C.int(length)
 
-	var arg2 *Analysis
-	arg2 = pango.WrapAnalysis(analysis)
+	var arg2 *C.PangoAnalysis
+	arg2 = (*C.C.PangoAnalysis)(analysis.Native())
 
-	var arg3 *LogAttr
-	arg3 = pango.WrapLogAttr(attrs)
+	var arg3 *C.PangoLogAttr
+	arg3 = (*C.C.PangoLogAttr)(attrs.Native())
 
-	var arg4 int
-	arg4 = int(attrsLen)
+	var arg4 C.int
+	arg4 = C.int(attrsLen)
 
 	C.pango_default_break(arg0, arg1, arg2, arg3, arg4)
 }
@@ -1621,11 +1622,11 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 // touching-but-not-overlapping after rounding to device units, pass them in as
 // @nearest.
 func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
-	var arg0 *Rectangle
-	arg0 = pango.WrapRectangle(inclusive)
+	var arg0 *C.PangoRectangle
+	arg0 = (*C.C.PangoRectangle)(inclusive.Native())
 
-	var arg1 *Rectangle
-	arg1 = pango.WrapRectangle(nearest)
+	var arg1 *C.PangoRectangle
+	arg1 = (*C.C.PangoRectangle)(nearest.Native())
 
 	C.pango_extents_to_pixels(arg0, arg1)
 }
@@ -1633,12 +1634,12 @@ func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 // FindBaseDir searches a string the first character that has a strong
 // direction, according to the Unicode bidirectional algorithm.
 func FindBaseDir(text string, length int) Direction {
-	var arg0 string
-	text = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(text))
 
-	var arg1 int
-	arg1 = int(length)
+	var arg1 C.gint
+	arg1 = C.gint(length)
 
 	ret := C.pango_find_base_dir(arg0, arg1)
 
@@ -1660,12 +1661,12 @@ func FindBaseDir(text string, length int) Direction {
 // @next_paragraph_start are filled with the length of @text (an index one off
 // the end).
 func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int, nextParagraphStart int) {
-	var arg0 string
-	text = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(text))
 
-	var arg1 int
-	arg1 = int(length)
+	var arg1 C.gint
+	arg1 = C.gint(length)
 
 	var arg2 *C.gint // out
 
@@ -1723,14 +1724,14 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 //
 //    "Cantarell Italic Light 15 \@wght=200"
 func FontDescriptionFromString(str string) *FontDescription {
-	var arg0 string
-	str = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(str))
 
 	ret := C.pango_font_description_from_string(arg0)
 
 	var ret0 *FontDescription
-	ret0 = pango.WrapFontDescription(ret)
+	ret0 = WrapFontDescription(ret)
 
 	return ret0
 }
@@ -1743,25 +1744,24 @@ func FontDescriptionFromString(str string) *FontDescription {
 // attributes can't be computed without context (for example you need to see
 // spaces on either side of a word to know the word is a word).
 func GetLogAttrs(text string, length int, level int, language *Language, logAttrs []LogAttr) {
-	var arg0 string
-	text = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(text))
 
-	var arg1 int
-	arg1 = int(length)
+	var arg1 C.int
+	arg1 = C.int(length)
 
-	var arg2 int
-	arg2 = int(level)
+	var arg2 C.int
+	arg2 = C.int(level)
 
-	var arg3 *Language
-	arg3 = pango.WrapLanguage(language)
+	var arg3 *C.PangoLanguage
+	arg3 = (*C.C.PangoLanguage)(language.Native())
 
-	var arg4 []LogAttr
+	var arg4 *C.PangoLogAttr
 	{
+		arg4 = (C.C.PangoLogAttr)(C.malloc(C.sizeof_C.PangoLogAttr * a))
 		arg4 = make([]LogAttr, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.PangoLogAttr)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			arg4[i] = pango.WrapLogAttr(src)
 		}
 	}
 
@@ -1775,11 +1775,11 @@ func GetLogAttrs(text string, length int, level int, language *Language, logAttr
 // Use g_unichar_get_mirror_char() instead; the docs for that function provide
 // full details.
 func GetMirrorChar(ch uint32, mirroredCh uint32) bool {
-	var arg0 uint32
-	arg0 = uint32(ch)
+	var arg0 C.gunichar
+	arg0 = C.gunichar(ch)
 
-	var arg1 uint32
-	arg1 = uint32(mirroredCh)
+	var arg1 *C.gunichar
+	arg1 = (*C.gunichar)(mirroredCh)
 
 	ret := C.pango_get_mirror_char(arg0, arg1)
 
@@ -1792,8 +1792,8 @@ func GetMirrorChar(ch uint32, mirroredCh uint32) bool {
 // GravityGetForMatrix finds the gravity that best matches the rotation
 // component in a `PangoMatrix`.
 func GravityGetForMatrix(matrix *Matrix) Gravity {
-	var arg0 *Matrix
-	arg0 = pango.WrapMatrix(matrix)
+	var arg0 *C.PangoMatrix
+	arg0 = (*C.C.PangoMatrix)(matrix.Native())
 
 	ret := C.pango_gravity_get_for_matrix(arg0)
 
@@ -1811,14 +1811,14 @@ func GravityGetForMatrix(matrix *Matrix) Gravity {
 // preferred gravity of @script. To get the preferred gravity of a script, pass
 // PANGO_GRAVITY_AUTO and PANGO_GRAVITY_HINT_STRONG in.
 func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) Gravity {
-	var arg0 Script
-	arg0 = Script(script)
+	var arg0 C.PangoScript
+	arg0 = (C.C.PangoScript)(script)
 
-	var arg1 Gravity
-	arg1 = Gravity(baseGravity)
+	var arg1 C.PangoGravity
+	arg1 = (C.C.PangoGravity)(baseGravity)
 
-	var arg2 GravityHint
-	arg2 = GravityHint(hint)
+	var arg2 C.PangoGravityHint
+	arg2 = (C.C.PangoGravityHint)(hint)
 
 	ret := C.pango_gravity_get_for_script(arg0, arg1, arg2)
 
@@ -1843,17 +1843,17 @@ func GravityGetForScript(script Script, baseGravity Gravity, hint GravityHint) G
 // If @base_gravity is PANGO_GRAVITY_AUTO, it is first replaced with the
 // preferred gravity of @script.
 func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, hint GravityHint) Gravity {
-	var arg0 Script
-	arg0 = Script(script)
+	var arg0 C.PangoScript
+	arg0 = (C.C.PangoScript)(script)
 
-	var arg1 bool
-	arg1 = gextras.Gobool(wide)
+	var arg1 C.gboolean
+	arg1 = gextras.Cbool(wide)
 
-	var arg2 Gravity
-	arg2 = Gravity(baseGravity)
+	var arg2 C.PangoGravity
+	arg2 = (C.C.PangoGravity)(baseGravity)
 
-	var arg3 GravityHint
-	arg3 = GravityHint(hint)
+	var arg3 C.PangoGravityHint
+	arg3 = (C.C.PangoGravityHint)(hint)
 
 	ret := C.pango_gravity_get_for_script_and_width(arg0, arg1, arg2, arg3)
 
@@ -1870,8 +1870,8 @@ func GravityGetForScriptAndWidth(script Script, wide bool, baseGravity Gravity, 
 // So, to call [method@Pango.Matrix,rotate] with the output of this function you
 // should multiply it by (180. / G_PI).
 func GravityToRotation(gravity Gravity) float64 {
-	var arg0 Gravity
-	arg0 = Gravity(gravity)
+	var arg0 C.PangoGravity
+	arg0 = (C.C.PangoGravity)(gravity)
 
 	ret := C.pango_gravity_to_rotation(arg0)
 
@@ -1887,8 +1887,8 @@ func GravityToRotation(gravity Gravity) float64 {
 // as *bidi* formatting characters, and a few other ones. This is totally
 // different from g_unichar_iszerowidth() and is at best misnamed.
 func IsZeroWidth(ch uint32) bool {
-	var arg0 uint32
-	arg0 = uint32(ch)
+	var arg0 C.gunichar
+	arg0 = C.gunichar(ch)
 
 	ret := C.pango_is_zero_width(arg0)
 
@@ -1910,24 +1910,24 @@ func IsZeroWidth(ch uint32) bool {
 // range covering the position just after @start_index + @length. (i.e. if
 // itemizing in a loop, just keep passing in the same @cached_iter).
 func Itemize(context Context, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *glib.List {
-	var arg0 Context
-	arg0 = pango.WrapContext(externglib.Take(unsafe.Pointer(context.Native())))
+	var arg0 *C.PangoContext
+	arg0 = (*C.C.PangoContext)(context.Native())
 
-	var arg1 string
-	text = C.GoString(arg1)
+	var arg1 *C.char
+	arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(text))
 
-	var arg2 int
-	arg2 = int(startIndex)
+	var arg2 C.int
+	arg2 = C.int(startIndex)
 
-	var arg3 int
-	arg3 = int(length)
+	var arg3 C.int
+	arg3 = C.int(length)
 
-	var arg4 *AttrList
-	arg4 = pango.WrapAttrList(attrs)
+	var arg4 *C.PangoAttrList
+	arg4 = (*C.C.PangoAttrList)(attrs.Native())
 
-	var arg5 *AttrIterator
-	arg5 = pango.WrapAttrIterator(cachedIter)
+	var arg5 *C.PangoAttrIterator
+	arg5 = (*C.C.PangoAttrIterator)(cachedIter.Native())
 
 	ret := C.pango_itemize(arg0, arg1, arg2, arg3, arg4, arg5)
 
@@ -1944,27 +1944,27 @@ func Itemize(context Context, text string, startIndex int, length int, attrs *At
 // [method@Pango.Context.set_base_dir]). [func@itemize] gets the base direction
 // from the `PangoContext`.
 func ItemizeWithBaseDir(context Context, baseDir Direction, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *glib.List {
-	var arg0 Context
-	arg0 = pango.WrapContext(externglib.Take(unsafe.Pointer(context.Native())))
+	var arg0 *C.PangoContext
+	arg0 = (*C.C.PangoContext)(context.Native())
 
-	var arg1 Direction
-	arg1 = Direction(baseDir)
+	var arg1 C.PangoDirection
+	arg1 = (C.C.PangoDirection)(baseDir)
 
-	var arg2 string
-	text = C.GoString(arg2)
+	var arg2 *C.char
+	arg2 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(text))
 
-	var arg3 int
-	arg3 = int(startIndex)
+	var arg3 C.int
+	arg3 = C.int(startIndex)
 
-	var arg4 int
-	arg4 = int(length)
+	var arg4 C.int
+	arg4 = C.int(length)
 
-	var arg5 *AttrList
-	arg5 = pango.WrapAttrList(attrs)
+	var arg5 *C.PangoAttrList
+	arg5 = (*C.C.PangoAttrList)(attrs.Native())
 
-	var arg6 *AttrIterator
-	arg6 = pango.WrapAttrIterator(cachedIter)
+	var arg6 *C.PangoAttrIterator
+	arg6 = (*C.C.PangoAttrIterator)(cachedIter.Native())
 
 	ret := C.pango_itemize_with_base_dir(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 
@@ -1986,14 +1986,14 @@ func ItemizeWithBaseDir(context Context, baseDir Direction, text string, startIn
 // Use [type_func@Pango.Language.get_default] if you want to get the
 // `PangoLanguage` for the current locale of the process.
 func LanguageFromString(language string) *Language {
-	var arg0 string
-	language = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(language))
 	defer C.free(unsafe.Pointer(language))
 
 	ret := C.pango_language_from_string(arg0)
 
 	var ret0 *Language
-	ret0 = pango.WrapLanguage(ret)
+	ret0 = WrapLanguage(ret)
 
 	return ret0
 }
@@ -2026,7 +2026,7 @@ func LanguageGetDefault() *Language {
 	ret := C.pango_language_get_default()
 
 	var ret0 *Language
-	ret0 = pango.WrapLanguage(ret)
+	ret0 = WrapLanguage(ret)
 
 	return ret0
 }
@@ -2044,7 +2044,7 @@ func LanguageGetPreferred() **Language {
 	ret := C.pango_language_get_preferred()
 
 	var ret0 **Language
-	ret0 = pango.WrapLanguage(ret)
+	ret0 = WrapLanguage(ret)
 
 	return ret0
 }
@@ -2060,15 +2060,15 @@ func LanguageGetPreferred() **Language {
 // If the input base direction is a weak direction, the direction of the
 // characters in the text will determine the final resolved direction.
 func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) uint8 {
-	var arg0 string
-	text = C.GoString(arg0)
+	var arg0 *C.gchar
+	arg0 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(text))
 
-	var arg1 int
-	arg1 = int(length)
+	var arg1 C.int
+	arg1 = C.int(length)
 
-	var arg2 *Direction
-	arg2 = (*Direction)(pbaseDir)
+	var arg2 *C.PangoDirection
+	arg2 = (*C.C.PangoDirection)(pbaseDir)
 
 	ret := C.pango_log2vis_get_embedding_levels(arg0, arg1, arg2)
 
@@ -2085,8 +2085,8 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) uin
 // attributes and text out of the markup. This function will not free @context,
 // use g_markup_parse_context_free() to do so.
 func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, text string, accelChar uint32, ok bool) {
-	var arg0 *glib.MarkupParseContext
-	arg0 = glib.WrapMarkupParseContext(context)
+	var arg0 *C.GMarkupParseContext
+	arg0 = (*C.C.GMarkupParseContext)(context.Native())
 
 	var arg1 **C.PangoAttrList // out
 
@@ -2097,7 +2097,7 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, t
 	ret := C.pango_markup_parser_finish(arg0, &arg1, &arg2, &arg3)
 
 	var ret0 **AttrList
-	ret0 = pango.WrapAttrList(arg1)
+	ret0 = WrapAttrList(arg1)
 
 	var ret1 string
 	arg2 = C.GoString(ret1)
@@ -2135,8 +2135,8 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (attrList *AttrList, t
 // streams. To simply parse a string containing Pango markup, the
 // [func@parse_markup] API is recommended instead.
 func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
-	var arg0 uint32
-	arg0 = uint32(accelMarker)
+	var arg0 C.gunichar
+	arg0 = C.gunichar(accelMarker)
 
 	ret := C.pango_markup_parser_new(arg0)
 
@@ -2155,18 +2155,21 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 // If failed and @possible_values is not nil, returned string should be freed
 // using g_free().
 func ParseEnum(_type externglib.Type, str string, warn bool) (value int, possibleValues string, ok bool) {
-	var arg1 string
-	str = C.GoString(arg1)
+	var arg0 C.GType
+	arg0 = C.GType(_type)
+
+	var arg1 *C.char
+	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(str))
 
 	var arg2 *C.int // out
 
-	var arg3 bool
-	arg3 = gextras.Gobool(warn)
+	var arg3 C.gboolean
+	arg3 = gextras.Cbool(warn)
 
 	var arg4 **C.char // out
 
-	ret := C.pango_parse_enum(arg1, &arg2, arg3, &arg4)
+	ret := C.pango_parse_enum(arg0, arg1, &arg2, arg3, &arg4)
 
 	var ret0 int
 	ret0 = int(arg2)
@@ -2200,15 +2203,15 @@ func ParseEnum(_type externglib.Type, str string, warn bool) (value int, possibl
 // If any error happens, none of the output arguments are touched except for
 // @error.
 func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *AttrList, text string, accelChar uint32, ok bool) {
-	var arg0 string
-	markupText = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(markupText))
 	defer C.free(unsafe.Pointer(markupText))
 
-	var arg1 int
-	arg1 = int(length)
+	var arg1 C.int
+	arg1 = C.int(length)
 
-	var arg2 uint32
-	arg2 = uint32(accelMarker)
+	var arg2 C.gunichar
+	arg2 = C.gunichar(accelMarker)
 
 	var arg3 **C.PangoAttrList // out
 
@@ -2219,7 +2222,7 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *A
 	ret := C.pango_parse_markup(arg0, arg1, arg2, &arg3, &arg4, &arg5)
 
 	var ret0 **AttrList
-	ret0 = pango.WrapAttrList(arg3)
+	ret0 = WrapAttrList(arg3)
 
 	var ret1 string
 	arg4 = C.GoString(ret1)
@@ -2241,14 +2244,14 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (attrList *A
 // "ultra_expanded". Case variations are ignored and the '_' characters may be
 // omitted.
 func ParseStretch(str string, warn bool) (stretch Stretch, ok bool) {
-	var arg0 string
-	str = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(str))
 
 	var arg1 *C.PangoStretch // out
 
-	var arg2 bool
-	arg2 = gextras.Gobool(warn)
+	var arg2 C.gboolean
+	arg2 = gextras.Cbool(warn)
 
 	ret := C.pango_parse_stretch(arg0, &arg1, arg2)
 
@@ -2266,14 +2269,14 @@ func ParseStretch(str string, warn bool) (stretch Stretch, ok bool) {
 // The allowed values are "normal", "italic" and "oblique", case variations
 // being ignored.
 func ParseStyle(str string, warn bool) (style Style, ok bool) {
-	var arg0 string
-	str = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(str))
 
 	var arg1 *C.PangoStyle // out
 
-	var arg2 bool
-	arg2 = gextras.Gobool(warn)
+	var arg2 C.gboolean
+	arg2 = gextras.Cbool(warn)
 
 	ret := C.pango_parse_style(arg0, &arg1, arg2)
 
@@ -2291,14 +2294,14 @@ func ParseStyle(str string, warn bool) (style Style, ok bool) {
 // The allowed values are "normal" and "smallcaps" or "small_caps", case
 // variations being ignored.
 func ParseVariant(str string, warn bool) (variant Variant, ok bool) {
-	var arg0 string
-	str = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(str))
 
 	var arg1 *C.PangoVariant // out
 
-	var arg2 bool
-	arg2 = gextras.Gobool(warn)
+	var arg2 C.gboolean
+	arg2 = gextras.Cbool(warn)
 
 	ret := C.pango_parse_variant(arg0, &arg1, arg2)
 
@@ -2316,14 +2319,14 @@ func ParseVariant(str string, warn bool) (variant Variant, ok bool) {
 // The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
 // "ultraleight" and integers. Case variations are ignored.
 func ParseWeight(str string, warn bool) (weight Weight, ok bool) {
-	var arg0 string
-	str = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(str))
 
 	var arg1 *C.PangoWeight // out
 
-	var arg2 bool
-	arg2 = gextras.Gobool(warn)
+	var arg2 C.gboolean
+	arg2 = gextras.Cbool(warn)
 
 	ret := C.pango_parse_weight(arg0, &arg1, arg2)
 
@@ -2346,11 +2349,11 @@ func ParseWeight(str string, warn bool) (weight Weight, ok bool) {
 // function returns, but returned @position may become zero as a result of
 // rounding.
 func QuantizeLineGeometry(thickness int, position int) {
-	var arg0 int
-	arg0 = int(thickness)
+	var arg0 *C.int
+	arg0 = (*C.int)(thickness)
 
-	var arg1 int
-	arg1 = int(position)
+	var arg1 *C.int
+	arg1 = (*C.int)(position)
 
 	C.pango_quantize_line_geometry(arg0, arg1)
 }
@@ -2366,11 +2369,11 @@ func QuantizeLineGeometry(thickness int, position int) {
 // '\' proceeding a line delimiter combines adjacent lines. A '\' proceeding any
 // other character is ignored and written into the output buffer unmodified.
 func ReadLine(stream interface{}, str *glib.String) int {
-	var arg0 interface{}
-	arg0 = box.Get(uintptr(stream))
+	var arg0 *C.FILE
+	arg0 = C.gpointer(box.Assign(stream))
 
-	var arg1 *glib.String
-	arg1 = glib.WrapString(str)
+	var arg1 *C.GString
+	arg1 = (*C.C.GString)(str.Native())
 
 	ret := C.pango_read_line(arg0, arg1)
 
@@ -2385,8 +2388,8 @@ func ReadLine(stream interface{}, str *glib.String) int {
 // The visual order is determined from the associated directional levels of the
 // items. The original list is unmodified.
 func ReorderItems(logicalItems *glib.List) *glib.List {
-	var arg0 *glib.List
-	arg0 = glib.WrapList(logicalItems)
+	var arg0 *C.GList
+	arg0 = (*C.C.GList)(logicalItems.Native())
 
 	ret := C.pango_reorder_items(arg0)
 
@@ -2400,8 +2403,8 @@ func ReorderItems(logicalItems *glib.List) *glib.List {
 //
 // Leading white space is skipped.
 func ScanInt(pos string) (out int, ok bool) {
-	var arg0 string
-	pos = C.GoString(arg0)
+	var arg0 **C.char
+	arg0 = (*C.gchar)(C.CString(pos))
 	defer C.free(unsafe.Pointer(pos))
 
 	var arg1 *C.int // out
@@ -2423,12 +2426,12 @@ func ScanInt(pos string) (out int, ok bool) {
 // quoted string with '"'. Instead a quoted string, '\"' represents a literal
 // quote. Leading white space outside of quotes is skipped.
 func ScanString(pos string, out *glib.String) bool {
-	var arg0 string
-	pos = C.GoString(arg0)
+	var arg0 **C.char
+	arg0 = (*C.gchar)(C.CString(pos))
 	defer C.free(unsafe.Pointer(pos))
 
-	var arg1 *glib.String
-	arg1 = glib.WrapString(out)
+	var arg1 *C.GString
+	arg1 = (*C.C.GString)(out.Native())
 
 	ret := C.pango_scan_string(arg0, arg1)
 
@@ -2443,12 +2446,12 @@ func ScanString(pos string, out *glib.String) bool {
 // A word consists of [A-Za-z_] followed by zero or more [A-Za-z_0-9]. Leading
 // white space is skipped.
 func ScanWord(pos string, out *glib.String) bool {
-	var arg0 string
-	pos = C.GoString(arg0)
+	var arg0 **C.char
+	arg0 = (*C.gchar)(C.CString(pos))
 	defer C.free(unsafe.Pointer(pos))
 
-	var arg1 *glib.String
-	arg1 = glib.WrapString(out)
+	var arg1 *C.GString
+	arg1 = (*C.C.GString)(out.Native())
 
 	ret := C.pango_scan_word(arg0, arg1)
 
@@ -2469,8 +2472,8 @@ func ScanWord(pos string, out *glib.String) bool {
 // value of g_unichar_get_script(). Callers must be prepared to handle unknown
 // values.
 func ScriptForUnichar(ch uint32) Script {
-	var arg0 uint32
-	arg0 = uint32(ch)
+	var arg0 C.gunichar
+	arg0 = C.gunichar(ch)
 
 	ret := C.pango_script_for_unichar(arg0)
 
@@ -2506,13 +2509,13 @@ func ScriptForUnichar(ch uint32) Script {
 // an otherwise non-Arabic text. The same trick can be used to choose a default
 // language for PANGO_SCRIPT_HAN when setting context language is not feasible.
 func ScriptGetSampleLanguage(script Script) *Language {
-	var arg0 Script
-	arg0 = Script(script)
+	var arg0 C.PangoScript
+	arg0 = (C.C.PangoScript)(script)
 
 	ret := C.pango_script_get_sample_language(arg0)
 
 	var ret0 *Language
-	ret0 = pango.WrapLanguage(ret)
+	ret0 = WrapLanguage(ret)
 
 	return ret0
 }
@@ -2531,18 +2534,18 @@ func ScriptGetSampleLanguage(script Script) *Language {
 // need to subtract the item offset from their indices before calling
 // [func@shape].
 func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
-	var arg0 string
-	text = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(text))
 
-	var arg1 int
-	arg1 = int(length)
+	var arg1 C.int
+	arg1 = C.int(length)
 
-	var arg2 *Analysis
-	arg2 = pango.WrapAnalysis(analysis)
+	var arg2 *C.PangoAnalysis
+	arg2 = (*C.C.PangoAnalysis)(analysis.Native())
 
-	var arg3 *GlyphString
-	arg3 = pango.WrapGlyphString(glyphs)
+	var arg3 *C.PangoGlyphString
+	arg3 = (*C.C.PangoGlyphString)(glyphs.Native())
 
 	C.pango_shape(arg0, arg1, arg2, arg3)
 }
@@ -2564,25 +2567,25 @@ func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 // do not pass the full paragraph text as @paragraph_text, you need to subtract
 // the item offset from their indices before calling [func@shape_full].
 func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString) {
-	var arg0 string
-	itemText = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(itemText))
 	defer C.free(unsafe.Pointer(itemText))
 
-	var arg1 int
-	arg1 = int(itemLength)
+	var arg1 C.int
+	arg1 = C.int(itemLength)
 
-	var arg2 string
-	paragraphText = C.GoString(arg2)
+	var arg2 *C.char
+	arg2 = (*C.gchar)(C.CString(paragraphText))
 	defer C.free(unsafe.Pointer(paragraphText))
 
-	var arg3 int
-	arg3 = int(paragraphLength)
+	var arg3 C.int
+	arg3 = C.int(paragraphLength)
 
-	var arg4 *Analysis
-	arg4 = pango.WrapAnalysis(analysis)
+	var arg4 *C.PangoAnalysis
+	arg4 = (*C.C.PangoAnalysis)(analysis.Native())
 
-	var arg5 *GlyphString
-	arg5 = pango.WrapGlyphString(glyphs)
+	var arg5 *C.PangoGlyphString
+	arg5 = (*C.C.PangoGlyphString)(glyphs.Native())
 
 	C.pango_shape_full(arg0, arg1, arg2, arg3, arg4, arg5)
 }
@@ -2601,36 +2604,36 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 // do not pass the full paragraph text as @paragraph_text, you need to subtract
 // the item offset from their indices before calling [func@shape_with_flags].
 func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags) {
-	var arg0 string
-	itemText = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(itemText))
 	defer C.free(unsafe.Pointer(itemText))
 
-	var arg1 int
-	arg1 = int(itemLength)
+	var arg1 C.int
+	arg1 = C.int(itemLength)
 
-	var arg2 string
-	paragraphText = C.GoString(arg2)
+	var arg2 *C.char
+	arg2 = (*C.gchar)(C.CString(paragraphText))
 	defer C.free(unsafe.Pointer(paragraphText))
 
-	var arg3 int
-	arg3 = int(paragraphLength)
+	var arg3 C.int
+	arg3 = C.int(paragraphLength)
 
-	var arg4 *Analysis
-	arg4 = pango.WrapAnalysis(analysis)
+	var arg4 *C.PangoAnalysis
+	arg4 = (*C.C.PangoAnalysis)(analysis.Native())
 
-	var arg5 *GlyphString
-	arg5 = pango.WrapGlyphString(glyphs)
+	var arg5 *C.PangoGlyphString
+	arg5 = (*C.C.PangoGlyphString)(glyphs.Native())
 
-	var arg6 ShapeFlags
-	arg6 = ShapeFlags(flags)
+	var arg6 C.PangoShapeFlags
+	arg6 = (C.C.PangoShapeFlags)(flags)
 
 	C.pango_shape_with_flags(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 }
 
 // SkipSpace skips 0 or more characters of white space.
 func SkipSpace(pos string) bool {
-	var arg0 string
-	pos = C.GoString(arg0)
+	var arg0 **C.char
+	arg0 = (*C.gchar)(C.CString(pos))
 	defer C.free(unsafe.Pointer(pos))
 
 	ret := C.pango_skip_space(arg0)
@@ -2644,8 +2647,8 @@ func SkipSpace(pos string) bool {
 // SplitFileList splits a G_SEARCHPATH_SEPARATOR-separated list of files,
 // stripping white space and substituting ~/ with $HOME/.
 func SplitFileList(str string) []string {
-	var arg0 string
-	str = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(str))
 
 	ret := C.pango_split_file_list(arg0)
@@ -2675,25 +2678,24 @@ func SplitFileList(str string) []string {
 // If @offset is not -1, it is used to apply attributes from @analysis that are
 // relevant to line breaking.
 func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
-	var arg0 string
-	text = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(text))
 
-	var arg1 int
-	arg1 = int(length)
+	var arg1 C.int
+	arg1 = C.int(length)
 
-	var arg2 *Analysis
-	arg2 = pango.WrapAnalysis(analysis)
+	var arg2 *C.PangoAnalysis
+	arg2 = (*C.C.PangoAnalysis)(analysis.Native())
 
-	var arg3 int
-	arg3 = int(offset)
+	var arg3 C.int
+	arg3 = C.int(offset)
 
-	var arg4 []LogAttr
+	var arg4 *C.PangoLogAttr
 	{
+		arg4 = (C.C.PangoLogAttr)(C.malloc(C.sizeof_C.PangoLogAttr * a))
 		arg4 = make([]LogAttr, a)
 		for i := 0; i < uintptr(a); i++ {
-			src := (C.PangoLogAttr)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			arg4[i] = pango.WrapLogAttr(src)
 		}
 	}
 
@@ -2702,8 +2704,8 @@ func TailorBreak(text string, length int, analysis *Analysis, offset int, logAtt
 
 // TrimString trims leading and trailing whitespace from a string.
 func TrimString(str string) string {
-	var arg0 string
-	str = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(str))
 
 	ret := C.pango_trim_string(arg0)
@@ -2725,8 +2727,8 @@ func TrimString(str string) string {
 // type of a character is needed, [type_func@Pango.BidiType.for_unichar] can be
 // used instead.
 func UnicharDirection(ch uint32) Direction {
-	var arg0 uint32
-	arg0 = uint32(ch)
+	var arg0 C.gunichar
+	arg0 = C.gunichar(ch)
 
 	ret := C.pango_unichar_direction(arg0)
 
@@ -2741,8 +2743,8 @@ func UnicharDirection(ch uint32) Direction {
 // The conversion is done by multiplying @d by PANGO_SCALE and rounding the
 // result to nearest integer.
 func UnitsFromDouble(d float64) int {
-	var arg0 float64
-	arg0 = float64(d)
+	var arg0 C.double
+	arg0 = C.double(d)
 
 	ret := C.pango_units_from_double(arg0)
 
@@ -2756,8 +2758,8 @@ func UnitsFromDouble(d float64) int {
 //
 // The conversion is done by dividing @i by PANGO_SCALE.
 func UnitsToDouble(i int) float64 {
-	var arg0 int
-	arg0 = int(i)
+	var arg0 C.int
+	arg0 = C.int(i)
 
 	ret := C.pango_units_to_double(arg0)
 
@@ -2798,14 +2800,14 @@ func Version() int {
 //
 // For compile-time version checking use PANGO_VERSION_CHECK().
 func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) string {
-	var arg0 int
-	arg0 = int(requiredMajor)
+	var arg0 C.int
+	arg0 = C.int(requiredMajor)
 
-	var arg1 int
-	arg1 = int(requiredMinor)
+	var arg1 C.int
+	arg1 = C.int(requiredMinor)
 
-	var arg2 int
-	arg2 = int(requiredMicro)
+	var arg2 C.int
+	arg2 = C.int(requiredMicro)
 
 	ret := C.pango_version_check(arg0, arg1, arg2)
 
@@ -2860,17 +2862,20 @@ type Analysis struct {
 // primarily used internally.
 func WrapAnalysis(ptr unsafe.Pointer) *Analysis {
 	p := (*C.PangoAnalysis)(ptr)
-	var v Analysis
+	v := Analysis{native: p}
 
 	v.ShapeEngine = box.Get(uintptr(p.shape_engine))
 	v.LangEngine = box.Get(uintptr(p.lang_engine))
-	v.Font = pango.WrapFont(externglib.Take(unsafe.Pointer(p.font.Native())))
+	v.Font = WrapFont(externglib.Take(unsafe.Pointer(p.font.Native())))
 	v.Level = uint8(p.level)
 	v.Gravity = uint8(p.gravity)
 	v.Flags = uint8(p.flags)
 	v.Script = uint8(p.script)
-	v.Language = pango.WrapLanguage(p.language)
+	v.Language = WrapLanguage(p.language)
 	v.ExtraAttrs = glib.WrapSList(p.extra_attrs)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Analysis).free)
 
 	return &v
 }
@@ -2878,6 +2883,15 @@ func WrapAnalysis(ptr unsafe.Pointer) *Analysis {
 func marshalAnalysis(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAnalysis(unsafe.Pointer(b))
+}
+
+func (a *Analysis) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *Analysis) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAnalysis. The caller is expected to
@@ -2901,10 +2915,13 @@ type AttrColor struct {
 // primarily used internally.
 func WrapAttrColor(ptr unsafe.Pointer) *AttrColor {
 	p := (*C.PangoAttrColor)(ptr)
-	var v AttrColor
+	v := AttrColor{native: p}
 
-	v.Attr = pango.WrapAttribute(p.attr)
-	v.Color = pango.WrapColor(p.color)
+	v.Attr = WrapAttribute(p.attr)
+	v.Color = WrapColor(p.color)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttrColor).free)
 
 	return &v
 }
@@ -2912,6 +2929,15 @@ func WrapAttrColor(ptr unsafe.Pointer) *AttrColor {
 func marshalAttrColor(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAttrColor(unsafe.Pointer(b))
+}
+
+func (a *AttrColor) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrColor) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrColor. The caller is expected to
@@ -2935,10 +2961,13 @@ type AttrFloat struct {
 // primarily used internally.
 func WrapAttrFloat(ptr unsafe.Pointer) *AttrFloat {
 	p := (*C.PangoAttrFloat)(ptr)
-	var v AttrFloat
+	v := AttrFloat{native: p}
 
-	v.Attr = pango.WrapAttribute(p.attr)
+	v.Attr = WrapAttribute(p.attr)
 	v.Value = float64(p.value)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttrFloat).free)
 
 	return &v
 }
@@ -2946,6 +2975,15 @@ func WrapAttrFloat(ptr unsafe.Pointer) *AttrFloat {
 func marshalAttrFloat(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAttrFloat(unsafe.Pointer(b))
+}
+
+func (a *AttrFloat) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrFloat) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrFloat. The caller is expected to
@@ -2969,10 +3007,13 @@ type AttrFontDesc struct {
 // primarily used internally.
 func WrapAttrFontDesc(ptr unsafe.Pointer) *AttrFontDesc {
 	p := (*C.PangoAttrFontDesc)(ptr)
-	var v AttrFontDesc
+	v := AttrFontDesc{native: p}
 
-	v.Attr = pango.WrapAttribute(p.attr)
-	v.Desc = pango.WrapFontDescription(p.desc)
+	v.Attr = WrapAttribute(p.attr)
+	v.Desc = WrapFontDescription(p.desc)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttrFontDesc).free)
 
 	return &v
 }
@@ -2980,6 +3021,15 @@ func WrapAttrFontDesc(ptr unsafe.Pointer) *AttrFontDesc {
 func marshalAttrFontDesc(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAttrFontDesc(unsafe.Pointer(b))
+}
+
+func (a *AttrFontDesc) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrFontDesc) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrFontDesc. The caller is expected to
@@ -3003,11 +3053,14 @@ type AttrFontFeatures struct {
 // primarily used internally.
 func WrapAttrFontFeatures(ptr unsafe.Pointer) *AttrFontFeatures {
 	p := (*C.PangoAttrFontFeatures)(ptr)
-	var v AttrFontFeatures
+	v := AttrFontFeatures{native: p}
 
-	v.Attr = pango.WrapAttribute(p.attr)
+	v.Attr = WrapAttribute(p.attr)
 	p.features = C.GoString(v.Features)
 	defer C.free(unsafe.Pointer(p.features))
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttrFontFeatures).free)
 
 	return &v
 }
@@ -3015,6 +3068,15 @@ func WrapAttrFontFeatures(ptr unsafe.Pointer) *AttrFontFeatures {
 func marshalAttrFontFeatures(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAttrFontFeatures(unsafe.Pointer(b))
+}
+
+func (a *AttrFontFeatures) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrFontFeatures) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrFontFeatures. The caller is expected to
@@ -3038,10 +3100,13 @@ type AttrInt struct {
 // primarily used internally.
 func WrapAttrInt(ptr unsafe.Pointer) *AttrInt {
 	p := (*C.PangoAttrInt)(ptr)
-	var v AttrInt
+	v := AttrInt{native: p}
 
-	v.Attr = pango.WrapAttribute(p.attr)
+	v.Attr = WrapAttribute(p.attr)
 	v.Value = int(p.value)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttrInt).free)
 
 	return &v
 }
@@ -3049,6 +3114,15 @@ func WrapAttrInt(ptr unsafe.Pointer) *AttrInt {
 func marshalAttrInt(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAttrInt(unsafe.Pointer(b))
+}
+
+func (a *AttrInt) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrInt) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrInt. The caller is expected to
@@ -3087,7 +3161,12 @@ func marshalAttrIterator(p uintptr) (interface{}, error) {
 }
 
 func (a *AttrIterator) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrIterator) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrIterator. The caller is expected to
@@ -3111,10 +3190,13 @@ type AttrLanguage struct {
 // primarily used internally.
 func WrapAttrLanguage(ptr unsafe.Pointer) *AttrLanguage {
 	p := (*C.PangoAttrLanguage)(ptr)
-	var v AttrLanguage
+	v := AttrLanguage{native: p}
 
-	v.Attr = pango.WrapAttribute(p.attr)
-	v.Value = pango.WrapLanguage(p.value)
+	v.Attr = WrapAttribute(p.attr)
+	v.Value = WrapLanguage(p.value)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttrLanguage).free)
 
 	return &v
 }
@@ -3122,6 +3204,15 @@ func WrapAttrLanguage(ptr unsafe.Pointer) *AttrLanguage {
 func marshalAttrLanguage(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAttrLanguage(unsafe.Pointer(b))
+}
+
+func (a *AttrLanguage) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrLanguage) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrLanguage. The caller is expected to
@@ -3163,7 +3254,12 @@ func marshalAttrList(p uintptr) (interface{}, error) {
 }
 
 func (a *AttrList) free() {
-	C.free(unsafe.Pointer(a.native))
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrList) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrList. The caller is expected to
@@ -3197,12 +3293,15 @@ type AttrShape struct {
 // primarily used internally.
 func WrapAttrShape(ptr unsafe.Pointer) *AttrShape {
 	p := (*C.PangoAttrShape)(ptr)
-	var v AttrShape
+	v := AttrShape{native: p}
 
-	v.Attr = pango.WrapAttribute(p.attr)
-	v.InkRect = pango.WrapRectangle(p.ink_rect)
-	v.LogicalRect = pango.WrapRectangle(p.logical_rect)
+	v.Attr = WrapAttribute(p.attr)
+	v.InkRect = WrapRectangle(p.ink_rect)
+	v.LogicalRect = WrapRectangle(p.logical_rect)
 	v.Data = box.Get(uintptr(p.data))
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttrShape).free)
 
 	return &v
 }
@@ -3210,6 +3309,15 @@ func WrapAttrShape(ptr unsafe.Pointer) *AttrShape {
 func marshalAttrShape(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAttrShape(unsafe.Pointer(b))
+}
+
+func (a *AttrShape) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrShape) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrShape. The caller is expected to
@@ -3239,11 +3347,14 @@ type AttrSize struct {
 // primarily used internally.
 func WrapAttrSize(ptr unsafe.Pointer) *AttrSize {
 	p := (*C.PangoAttrSize)(ptr)
-	var v AttrSize
+	v := AttrSize{native: p}
 
-	v.Attr = pango.WrapAttribute(p.attr)
+	v.Attr = WrapAttribute(p.attr)
 	v.Size = int(p.size)
 	v.Absolute = uint(p.absolute)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttrSize).free)
 
 	return &v
 }
@@ -3251,6 +3362,15 @@ func WrapAttrSize(ptr unsafe.Pointer) *AttrSize {
 func marshalAttrSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAttrSize(unsafe.Pointer(b))
+}
+
+func (a *AttrSize) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrSize) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrSize. The caller is expected to
@@ -3274,11 +3394,14 @@ type AttrString struct {
 // primarily used internally.
 func WrapAttrString(ptr unsafe.Pointer) *AttrString {
 	p := (*C.PangoAttrString)(ptr)
-	var v AttrString
+	v := AttrString{native: p}
 
-	v.Attr = pango.WrapAttribute(p.attr)
+	v.Attr = WrapAttribute(p.attr)
 	p.value = C.GoString(v.Value)
 	defer C.free(unsafe.Pointer(p.value))
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*AttrString).free)
 
 	return &v
 }
@@ -3286,6 +3409,15 @@ func WrapAttrString(ptr unsafe.Pointer) *AttrString {
 func marshalAttrString(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAttrString(unsafe.Pointer(b))
+}
+
+func (a *AttrString) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *AttrString) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttrString. The caller is expected to
@@ -3319,11 +3451,14 @@ type Attribute struct {
 // primarily used internally.
 func WrapAttribute(ptr unsafe.Pointer) *Attribute {
 	p := (*C.PangoAttribute)(ptr)
-	var v Attribute
+	v := Attribute{native: p}
 
-	v.Klass = pango.WrapAttrClass(p.klass)
+	v.Klass = WrapAttrClass(p.klass)
 	v.StartIndex = uint(p.start_index)
 	v.EndIndex = uint(p.end_index)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Attribute).free)
 
 	return &v
 }
@@ -3331,6 +3466,15 @@ func WrapAttribute(ptr unsafe.Pointer) *Attribute {
 func marshalAttribute(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapAttribute(unsafe.Pointer(b))
+}
+
+func (a *Attribute) free() {
+	C.free(a.Native())
+}
+
+// Native returns the underlying source pointer.
+func (a *Attribute) Native() unsafe.Pointer {
+	return unsafe.Pointer(a.native)
 }
 
 // Native returns the pointer to *C.PangoAttribute. The caller is expected to
@@ -3356,11 +3500,14 @@ type Color struct {
 // primarily used internally.
 func WrapColor(ptr unsafe.Pointer) *Color {
 	p := (*C.PangoColor)(ptr)
-	var v Color
+	v := Color{native: p}
 
 	v.Red = uint16(p.red)
 	v.Green = uint16(p.green)
 	v.Blue = uint16(p.blue)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Color).free)
 
 	return &v
 }
@@ -3368,6 +3515,15 @@ func WrapColor(ptr unsafe.Pointer) *Color {
 func marshalColor(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapColor(unsafe.Pointer(b))
+}
+
+func (c *Color) free() {
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *Color) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.PangoColor. The caller is expected to
@@ -3404,7 +3560,12 @@ func marshalFontDescription(p uintptr) (interface{}, error) {
 }
 
 func (f *FontDescription) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FontDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.PangoFontDescription. The caller is expected to
@@ -3444,7 +3605,12 @@ func marshalFontMetrics(p uintptr) (interface{}, error) {
 }
 
 func (f *FontMetrics) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FontMetrics) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.PangoFontMetrics. The caller is expected to
@@ -3470,7 +3636,7 @@ type GlyphGeometry struct {
 // primarily used internally.
 func WrapGlyphGeometry(ptr unsafe.Pointer) *GlyphGeometry {
 	p := (*C.PangoGlyphGeometry)(ptr)
-	var v GlyphGeometry
+	v := GlyphGeometry{native: p}
 
 	{
 		var tmp int32
@@ -3488,12 +3654,24 @@ func WrapGlyphGeometry(ptr unsafe.Pointer) *GlyphGeometry {
 		v.YOffset = GlyphUnit(tmp)
 	}
 
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GlyphGeometry).free)
+
 	return &v
 }
 
 func marshalGlyphGeometry(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapGlyphGeometry(unsafe.Pointer(b))
+}
+
+func (g *GlyphGeometry) free() {
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GlyphGeometry) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.PangoGlyphGeometry. The caller is expected to
@@ -3519,15 +3697,18 @@ type GlyphInfo struct {
 // primarily used internally.
 func WrapGlyphInfo(ptr unsafe.Pointer) *GlyphInfo {
 	p := (*C.PangoGlyphInfo)(ptr)
-	var v GlyphInfo
+	v := GlyphInfo{native: p}
 
 	{
 		var tmp uint32
 		tmp = uint32(p.glyph)
 		v.Glyph = Glyph(tmp)
 	}
-	v.Geometry = pango.WrapGlyphGeometry(p.geometry)
-	v.Attr = pango.WrapGlyphVisAttr(p.attr)
+	v.Geometry = WrapGlyphGeometry(p.geometry)
+	v.Attr = WrapGlyphVisAttr(p.attr)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GlyphInfo).free)
 
 	return &v
 }
@@ -3535,6 +3716,15 @@ func WrapGlyphInfo(ptr unsafe.Pointer) *GlyphInfo {
 func marshalGlyphInfo(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapGlyphInfo(unsafe.Pointer(b))
+}
+
+func (g *GlyphInfo) free() {
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GlyphInfo) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.PangoGlyphInfo. The caller is expected to
@@ -3562,10 +3752,13 @@ type GlyphItem struct {
 // primarily used internally.
 func WrapGlyphItem(ptr unsafe.Pointer) *GlyphItem {
 	p := (*C.PangoGlyphItem)(ptr)
-	var v GlyphItem
+	v := GlyphItem{native: p}
 
-	v.Item = pango.WrapItem(p.item)
-	v.Glyphs = pango.WrapGlyphString(p.glyphs)
+	v.Item = WrapItem(p.item)
+	v.Glyphs = WrapGlyphString(p.glyphs)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GlyphItem).free)
 
 	return &v
 }
@@ -3573,6 +3766,15 @@ func WrapGlyphItem(ptr unsafe.Pointer) *GlyphItem {
 func marshalGlyphItem(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapGlyphItem(unsafe.Pointer(b))
+}
+
+func (g *GlyphItem) free() {
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GlyphItem) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.PangoGlyphItem. The caller is expected to
@@ -3637,9 +3839,9 @@ type GlyphItemIter struct {
 // primarily used internally.
 func WrapGlyphItemIter(ptr unsafe.Pointer) *GlyphItemIter {
 	p := (*C.PangoGlyphItemIter)(ptr)
-	var v GlyphItemIter
+	v := GlyphItemIter{native: p}
 
-	v.GlyphItem = pango.WrapGlyphItem(p.glyph_item)
+	v.GlyphItem = WrapGlyphItem(p.glyph_item)
 	p.text = C.GoString(v.Text)
 	defer C.free(unsafe.Pointer(p.text))
 	v.StartGlyph = int(p.start_glyph)
@@ -3649,12 +3851,24 @@ func WrapGlyphItemIter(ptr unsafe.Pointer) *GlyphItemIter {
 	v.EndIndex = int(p.end_index)
 	v.EndChar = int(p.end_char)
 
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GlyphItemIter).free)
+
 	return &v
 }
 
 func marshalGlyphItemIter(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapGlyphItemIter(unsafe.Pointer(b))
+}
+
+func (g *GlyphItemIter) free() {
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GlyphItemIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.PangoGlyphItemIter. The caller is expected to
@@ -3690,8 +3904,8 @@ func WrapGlyphString(ptr unsafe.Pointer) *GlyphString {
 	{
 		v.Glyphs = make([]GlyphInfo, p.num_glyphs)
 		for i := 0; i < uintptr(p.num_glyphs); i++ {
-			src := (C.PangoGlyphInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
-			v.Glyphs[i] = pango.WrapGlyphInfo(src)
+			src := (C.C.PangoGlyphInfo)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			v.Glyphs[i] = WrapGlyphInfo(src)
 		}
 	}
 	v.LogClusters = int(p.log_clusters)
@@ -3708,7 +3922,12 @@ func marshalGlyphString(p uintptr) (interface{}, error) {
 }
 
 func (g *GlyphString) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GlyphString) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.PangoGlyphString. The caller is expected to
@@ -3739,9 +3958,12 @@ type GlyphVisAttr struct {
 // primarily used internally.
 func WrapGlyphVisAttr(ptr unsafe.Pointer) *GlyphVisAttr {
 	p := (*C.PangoGlyphVisAttr)(ptr)
-	var v GlyphVisAttr
+	v := GlyphVisAttr{native: p}
 
 	v.IsClusterStart = uint(p.is_cluster_start)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*GlyphVisAttr).free)
 
 	return &v
 }
@@ -3749,6 +3971,15 @@ func WrapGlyphVisAttr(ptr unsafe.Pointer) *GlyphVisAttr {
 func marshalGlyphVisAttr(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapGlyphVisAttr(unsafe.Pointer(b))
+}
+
+func (g *GlyphVisAttr) free() {
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GlyphVisAttr) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.PangoGlyphVisAttr. The caller is expected to
@@ -3778,12 +4009,15 @@ type Item struct {
 // primarily used internally.
 func WrapItem(ptr unsafe.Pointer) *Item {
 	p := (*C.PangoItem)(ptr)
-	var v Item
+	v := Item{native: p}
 
 	v.Offset = int(p.offset)
 	v.Length = int(p.length)
 	v.NumChars = int(p.num_chars)
-	v.Analysis = pango.WrapAnalysis(p.analysis)
+	v.Analysis = WrapAnalysis(p.analysis)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Item).free)
 
 	return &v
 }
@@ -3791,6 +4025,15 @@ func WrapItem(ptr unsafe.Pointer) *Item {
 func marshalItem(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapItem(unsafe.Pointer(b))
+}
+
+func (i *Item) free() {
+	C.free(i.Native())
+}
+
+// Native returns the underlying source pointer.
+func (i *Item) Native() unsafe.Pointer {
+	return unsafe.Pointer(i.native)
 }
 
 // Native returns the pointer to *C.PangoItem. The caller is expected to
@@ -3827,7 +4070,12 @@ func marshalLanguage(p uintptr) (interface{}, error) {
 }
 
 func (l *Language) free() {
-	C.free(unsafe.Pointer(l.native))
+	C.free(l.Native())
+}
+
+// Native returns the underlying source pointer.
+func (l *Language) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // Native returns the pointer to *C.PangoLanguage. The caller is expected to
@@ -3864,7 +4112,12 @@ func marshalLayoutIter(p uintptr) (interface{}, error) {
 }
 
 func (l *LayoutIter) free() {
-	C.free(unsafe.Pointer(l.native))
+	C.free(l.Native())
+}
+
+// Native returns the underlying source pointer.
+func (l *LayoutIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // Native returns the pointer to *C.PangoLayoutIter. The caller is expected to
@@ -3900,14 +4153,17 @@ type LayoutLine struct {
 // primarily used internally.
 func WrapLayoutLine(ptr unsafe.Pointer) *LayoutLine {
 	p := (*C.PangoLayoutLine)(ptr)
-	var v LayoutLine
+	v := LayoutLine{native: p}
 
-	v.Layout = pango.WrapLayout(externglib.Take(unsafe.Pointer(p.layout.Native())))
+	v.Layout = WrapLayout(externglib.Take(unsafe.Pointer(p.layout.Native())))
 	v.StartIndex = int(p.start_index)
 	v.Length = int(p.length)
 	v.Runs = glib.WrapSList(p.runs)
 	v.IsParagraphStart = uint(p.is_paragraph_start)
 	v.ResolvedDir = uint(p.resolved_dir)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*LayoutLine).free)
 
 	return &v
 }
@@ -3915,6 +4171,15 @@ func WrapLayoutLine(ptr unsafe.Pointer) *LayoutLine {
 func marshalLayoutLine(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapLayoutLine(unsafe.Pointer(b))
+}
+
+func (l *LayoutLine) free() {
+	C.free(l.Native())
+}
+
+// Native returns the underlying source pointer.
+func (l *LayoutLine) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // Native returns the pointer to *C.PangoLayoutLine. The caller is expected to
@@ -3987,7 +4252,7 @@ type LogAttr struct {
 // primarily used internally.
 func WrapLogAttr(ptr unsafe.Pointer) *LogAttr {
 	p := (*C.PangoLogAttr)(ptr)
-	var v LogAttr
+	v := LogAttr{native: p}
 
 	v.IsLineBreak = uint(p.is_line_break)
 	v.IsMandatoryBreak = uint(p.is_mandatory_break)
@@ -4003,12 +4268,24 @@ func WrapLogAttr(ptr unsafe.Pointer) *LogAttr {
 	v.IsExpandableSpace = uint(p.is_expandable_space)
 	v.IsWordBoundary = uint(p.is_word_boundary)
 
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*LogAttr).free)
+
 	return &v
 }
 
 func marshalLogAttr(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapLogAttr(unsafe.Pointer(b))
+}
+
+func (l *LogAttr) free() {
+	C.free(l.Native())
+}
+
+// Native returns the underlying source pointer.
+func (l *LogAttr) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // Native returns the pointer to *C.PangoLogAttr. The caller is expected to
@@ -4046,7 +4323,7 @@ type Matrix struct {
 // primarily used internally.
 func WrapMatrix(ptr unsafe.Pointer) *Matrix {
 	p := (*C.PangoMatrix)(ptr)
-	var v Matrix
+	v := Matrix{native: p}
 
 	v.XX = float64(p.xx)
 	v.XY = float64(p.xy)
@@ -4055,12 +4332,24 @@ func WrapMatrix(ptr unsafe.Pointer) *Matrix {
 	v.X0 = float64(p.x0)
 	v.Y0 = float64(p.y0)
 
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Matrix).free)
+
 	return &v
 }
 
 func marshalMatrix(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapMatrix(unsafe.Pointer(b))
+}
+
+func (m *Matrix) free() {
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *Matrix) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.PangoMatrix. The caller is expected to
@@ -4091,12 +4380,15 @@ type Rectangle struct {
 // primarily used internally.
 func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
 	p := (*C.PangoRectangle)(ptr)
-	var v Rectangle
+	v := Rectangle{native: p}
 
 	v.X = int(p.x)
 	v.Y = int(p.y)
 	v.Width = int(p.width)
 	v.Height = int(p.height)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Rectangle).free)
 
 	return &v
 }
@@ -4104,6 +4396,15 @@ func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapRectangle(unsafe.Pointer(b))
+}
+
+func (r *Rectangle) free() {
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.PangoRectangle. The caller is expected to
@@ -4136,7 +4437,12 @@ func marshalScriptIter(p uintptr) (interface{}, error) {
 }
 
 func (s *ScriptIter) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ScriptIter) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.PangoScriptIter. The caller is expected to
@@ -4173,7 +4479,12 @@ func marshalTabArray(p uintptr) (interface{}, error) {
 }
 
 func (t *TabArray) free() {
-	C.free(unsafe.Pointer(t.native))
+	C.free(t.Native())
+}
+
+// Native returns the underlying source pointer.
+func (t *TabArray) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // Native returns the pointer to *C.PangoTabArray. The caller is expected to

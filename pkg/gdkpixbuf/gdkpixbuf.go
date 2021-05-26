@@ -186,7 +186,7 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 	{
 		buf = make([]uint8, arg1)
 		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (C.C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			buf[i] = uint8(src)
 		}
 	}
@@ -229,7 +229,12 @@ func marshalPixbufFormat(p uintptr) (interface{}, error) {
 }
 
 func (p *PixbufFormat) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *PixbufFormat) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.GdkPixbufFormat. The caller is expected to

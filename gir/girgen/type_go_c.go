@@ -2,6 +2,7 @@ package girgen
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/diamondburned/gotk4/internal/pen"
 )
@@ -12,6 +13,8 @@ func (ng *NamespaceGenerator) GoCConverter(conv TypeConversion) string {
 	switch {
 	case conv.Type.Type != nil:
 		return ng.gocTypeConverter(conv)
+	case conv.Type.Array != nil:
+		return ng.gocArrayConverter(conv)
 	default:
 		return ""
 	}
@@ -25,7 +28,58 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversion) string {
 		ng.logln(logWarn, "skipping nested array", array.CType)
 	}
 
-	return ""
+	innerResolved := ng.ResolveType(*array.Type)
+	if innerResolved == nil {
+		return ""
+	}
+	innerType := ng.PublicType(innerResolved)
+	innerCGoType := innerResolved.CGoType()
+
+	// Generate a type converter from "src" to "${target}[i]" variables.
+	innerTypeConv := conv
+	innerTypeConv.Value = "src"
+	innerTypeConv.Target = conv.Target + "[i]"
+	innerTypeConv.Type = array.AnyType
+
+	innerConv := ng.CGoConverter(innerTypeConv)
+	if innerConv == "" {
+		return ""
+	}
+
+	var b pen.Block
+
+	switch {
+	case array.FixedSize > 0:
+		if t, ok := girPrimitiveGo[array.Type.Name]; ok && t != "string" {
+			return conv.callf("[%d]%s", array.FixedSize, innerCGoType)
+		}
+
+		b.Linef("goArray := ([%d]%s)(%s)", array.FixedSize)
+		b.EmptyLine()
+		b.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
+		b.Linef("  src := goArray[i]")
+		b.Linef("  " + innerConv)
+		b.Linef("}")
+
+	case array.Length != nil:
+		lengthArg := conv.ArgAt(*array.Length)
+		b.Linef("%s = (%s)(C.malloc(%s * %s))", conv.Target, innerCGoType, csizeof(ng, innerResolved), lengthArg)
+		b.Linef("%s = make([]%s, %s)", conv.Target, innerType, lengthArg)
+		b.Linef("for i := 0; i < uintptr(%s); i++ {", lengthArg)
+		// b.Linef("  src := ")
+		b.Linef("}")
+	}
+
+	return b.String()
+}
+
+func csizeof(ng *NamespaceGenerator, resolved *ResolvedType) string {
+	if !strings.Contains(resolved.CType, "*") {
+		return "C.sizeof_" + resolved.CType
+	}
+
+	ng.addImport("unsafe")
+	return "unsafe.Sizeof((*struct{})(nil))"
 }
 
 func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversion) string {
@@ -44,7 +98,7 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversion) string {
 			return conv.call("gextras.Cbool")
 
 		default:
-			return conv.call("C." + typ.CType)
+			return conv.call(anyTypeCGo(conv.Type))
 		}
 	}
 
@@ -67,10 +121,12 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversion) string {
 		// https://pkg.go.dev/github.com/gotk3/gotk3/glib#Type
 		return fmt.Sprintf("%s = (*C.GValue)(%s.GValue)", conv.Target, conv.Value)
 
-	case "GObject.Object", "GObject.InitiallyUnowned":
+	case "GObject.Object":
 		// Use .Native() here instead of directly accessing the native pointer,
 		// since Value might be an Objector interface.
-		return fmt.Sprintf("%s = (%s)(%s.Native())", conv.Target, typ.CType, conv.Value)
+		return fmt.Sprintf("%s = (*C.GObject)(%s.Native())", conv.Target, conv.Value)
+	case "GObject.InitiallyUnowned":
+		return fmt.Sprintf("%s = (*C.GInitiallyUnowned)(%s.Native())", conv.Target, conv.Value)
 
 	// These are empty until they're filled out in type_c_go.go
 	case "GObject.Closure":
@@ -99,7 +155,7 @@ func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversion) string {
 		return fmt.Sprintf("%s = (%s)(%s)", conv.Target, resolved.CGoType(), conv.Value)
 	}
 
-	if result.Class != nil {
+	if result.Class != nil || result.Record != nil {
 		// gextras.Objector has Native() uintptr.
 		return fmt.Sprintf(
 			"%s = (%s)(%s.Native())",

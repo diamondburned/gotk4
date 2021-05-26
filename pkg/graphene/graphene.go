@@ -165,7 +165,7 @@ func BoxEmpty() *Box {
 	ret := C.graphene_box_empty()
 
 	var ret0 *Box
-	ret0 = graphene.WrapBox(ret)
+	ret0 = WrapBox(ret)
 
 	return ret0
 }
@@ -177,7 +177,7 @@ func BoxInfinite() *Box {
 	ret := C.graphene_box_infinite()
 
 	var ret0 *Box
-	ret0 = graphene.WrapBox(ret)
+	ret0 = WrapBox(ret)
 
 	return ret0
 }
@@ -190,7 +190,7 @@ func BoxMinusOne() *Box {
 	ret := C.graphene_box_minus_one()
 
 	var ret0 *Box
-	ret0 = graphene.WrapBox(ret)
+	ret0 = WrapBox(ret)
 
 	return ret0
 }
@@ -203,7 +203,7 @@ func BoxOne() *Box {
 	ret := C.graphene_box_one()
 
 	var ret0 *Box
-	ret0 = graphene.WrapBox(ret)
+	ret0 = WrapBox(ret)
 
 	return ret0
 }
@@ -216,7 +216,7 @@ func BoxOneMinusOne() *Box {
 	ret := C.graphene_box_one_minus_one()
 
 	var ret0 *Box
-	ret0 = graphene.WrapBox(ret)
+	ret0 = WrapBox(ret)
 
 	return ret0
 }
@@ -229,7 +229,7 @@ func BoxZero() *Box {
 	ret := C.graphene_box_zero()
 
 	var ret0 *Box
-	ret0 = graphene.WrapBox(ret)
+	ret0 = WrapBox(ret)
 
 	return ret0
 }
@@ -239,7 +239,7 @@ func Point3DZero() *Point3D {
 	ret := C.graphene_point3d_zero()
 
 	var ret0 *Point3D
-	ret0 = graphene.WrapPoint3D(ret)
+	ret0 = WrapPoint3D(ret)
 
 	return ret0
 }
@@ -249,7 +249,7 @@ func PointZero() *Point {
 	ret := C.graphene_point_zero()
 
 	var ret0 *Point
-	ret0 = graphene.WrapPoint(ret)
+	ret0 = WrapPoint(ret)
 
 	return ret0
 }
@@ -261,7 +261,7 @@ func RectAlloc() *Rect {
 	ret := C.graphene_rect_alloc()
 
 	var ret0 *Rect
-	ret0 = graphene.WrapRect(ret)
+	ret0 = WrapRect(ret)
 
 	return ret0
 }
@@ -272,7 +272,7 @@ func RectZero() *Rect {
 	ret := C.graphene_rect_zero()
 
 	var ret0 *Rect
-	ret0 = graphene.WrapRect(ret)
+	ret0 = WrapRect(ret)
 
 	return ret0
 }
@@ -283,7 +283,7 @@ func SizeZero() *Size {
 	ret := C.graphene_size_zero()
 
 	var ret0 *Size
-	ret0 = graphene.WrapSize(ret)
+	ret0 = WrapSize(ret)
 
 	return ret0
 }
@@ -293,7 +293,7 @@ func Vec2One() *Vec2 {
 	ret := C.graphene_vec2_one()
 
 	var ret0 *Vec2
-	ret0 = graphene.WrapVec2(ret)
+	ret0 = WrapVec2(ret)
 
 	return ret0
 }
@@ -303,7 +303,7 @@ func Vec2XAxis() *Vec2 {
 	ret := C.graphene_vec2_x_axis()
 
 	var ret0 *Vec2
-	ret0 = graphene.WrapVec2(ret)
+	ret0 = WrapVec2(ret)
 
 	return ret0
 }
@@ -313,7 +313,7 @@ func Vec2YAxis() *Vec2 {
 	ret := C.graphene_vec2_y_axis()
 
 	var ret0 *Vec2
-	ret0 = graphene.WrapVec2(ret)
+	ret0 = WrapVec2(ret)
 
 	return ret0
 }
@@ -323,7 +323,7 @@ func Vec2Zero() *Vec2 {
 	ret := C.graphene_vec2_zero()
 
 	var ret0 *Vec2
-	ret0 = graphene.WrapVec2(ret)
+	ret0 = WrapVec2(ret)
 
 	return ret0
 }
@@ -334,7 +334,7 @@ func Vec3One() *Vec3 {
 	ret := C.graphene_vec3_one()
 
 	var ret0 *Vec3
-	ret0 = graphene.WrapVec3(ret)
+	ret0 = WrapVec3(ret)
 
 	return ret0
 }
@@ -345,7 +345,7 @@ func Vec3XAxis() *Vec3 {
 	ret := C.graphene_vec3_x_axis()
 
 	var ret0 *Vec3
-	ret0 = graphene.WrapVec3(ret)
+	ret0 = WrapVec3(ret)
 
 	return ret0
 }
@@ -356,7 +356,7 @@ func Vec3YAxis() *Vec3 {
 	ret := C.graphene_vec3_y_axis()
 
 	var ret0 *Vec3
-	ret0 = graphene.WrapVec3(ret)
+	ret0 = WrapVec3(ret)
 
 	return ret0
 }
@@ -367,7 +367,7 @@ func Vec3ZAxis() *Vec3 {
 	ret := C.graphene_vec3_z_axis()
 
 	var ret0 *Vec3
-	ret0 = graphene.WrapVec3(ret)
+	ret0 = WrapVec3(ret)
 
 	return ret0
 }
@@ -378,7 +378,7 @@ func Vec3Zero() *Vec3 {
 	ret := C.graphene_vec3_zero()
 
 	var ret0 *Vec3
-	ret0 = graphene.WrapVec3(ret)
+	ret0 = WrapVec3(ret)
 
 	return ret0
 }
@@ -389,7 +389,7 @@ func Vec4One() *Vec4 {
 	ret := C.graphene_vec4_one()
 
 	var ret0 *Vec4
-	ret0 = graphene.WrapVec4(ret)
+	ret0 = WrapVec4(ret)
 
 	return ret0
 }
@@ -400,7 +400,7 @@ func Vec4WAxis() *Vec4 {
 	ret := C.graphene_vec4_w_axis()
 
 	var ret0 *Vec4
-	ret0 = graphene.WrapVec4(ret)
+	ret0 = WrapVec4(ret)
 
 	return ret0
 }
@@ -411,7 +411,7 @@ func Vec4XAxis() *Vec4 {
 	ret := C.graphene_vec4_x_axis()
 
 	var ret0 *Vec4
-	ret0 = graphene.WrapVec4(ret)
+	ret0 = WrapVec4(ret)
 
 	return ret0
 }
@@ -422,7 +422,7 @@ func Vec4YAxis() *Vec4 {
 	ret := C.graphene_vec4_y_axis()
 
 	var ret0 *Vec4
-	ret0 = graphene.WrapVec4(ret)
+	ret0 = WrapVec4(ret)
 
 	return ret0
 }
@@ -433,7 +433,7 @@ func Vec4ZAxis() *Vec4 {
 	ret := C.graphene_vec4_z_axis()
 
 	var ret0 *Vec4
-	ret0 = graphene.WrapVec4(ret)
+	ret0 = WrapVec4(ret)
 
 	return ret0
 }
@@ -444,7 +444,7 @@ func Vec4Zero() *Vec4 {
 	ret := C.graphene_vec4_zero()
 
 	var ret0 *Vec4
-	ret0 = graphene.WrapVec4(ret)
+	ret0 = WrapVec4(ret)
 
 	return ret0
 }
@@ -473,7 +473,12 @@ func marshalBox(p uintptr) (interface{}, error) {
 }
 
 func (b *Box) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *Box) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.graphene_box_t. The caller is expected to
@@ -510,7 +515,12 @@ func marshalEuler(p uintptr) (interface{}, error) {
 }
 
 func (e *Euler) free() {
-	C.free(unsafe.Pointer(e.native))
+	C.free(e.Native())
+}
+
+// Native returns the underlying source pointer.
+func (e *Euler) Native() unsafe.Pointer {
+	return unsafe.Pointer(e.native)
 }
 
 // Native returns the pointer to *C.graphene_euler_t. The caller is expected to
@@ -547,7 +557,12 @@ func marshalFrustum(p uintptr) (interface{}, error) {
 }
 
 func (f *Frustum) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *Frustum) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.graphene_frustum_t. The caller is expected to
@@ -584,7 +599,12 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 }
 
 func (m *Matrix) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *Matrix) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.graphene_matrix_t. The caller is expected to
@@ -621,7 +641,12 @@ func marshalPlane(p uintptr) (interface{}, error) {
 }
 
 func (p *Plane) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *Plane) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.graphene_plane_t. The caller is expected to
@@ -646,10 +671,13 @@ type Point struct {
 // primarily used internally.
 func WrapPoint(ptr unsafe.Pointer) *Point {
 	p := (*C.graphene_point_t)(ptr)
-	var v Point
+	v := Point{native: p}
 
 	v.X = float32(p.x)
 	v.Y = float32(p.y)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Point).free)
 
 	return &v
 }
@@ -657,6 +685,15 @@ func WrapPoint(ptr unsafe.Pointer) *Point {
 func marshalPoint(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapPoint(unsafe.Pointer(b))
+}
+
+func (p *Point) free() {
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *Point) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.graphene_point_t. The caller is expected to
@@ -683,11 +720,14 @@ type Point3D struct {
 // primarily used internally.
 func WrapPoint3D(ptr unsafe.Pointer) *Point3D {
 	p := (*C.graphene_point3d_t)(ptr)
-	var v Point3D
+	v := Point3D{native: p}
 
 	v.X = float32(p.x)
 	v.Y = float32(p.y)
 	v.Z = float32(p.z)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Point3D).free)
 
 	return &v
 }
@@ -695,6 +735,15 @@ func WrapPoint3D(ptr unsafe.Pointer) *Point3D {
 func marshalPoint3D(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapPoint3D(unsafe.Pointer(b))
+}
+
+func (p *Point3D) free() {
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *Point3D) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.graphene_point3d_t. The caller is expected to
@@ -731,7 +780,12 @@ func marshalQuad(p uintptr) (interface{}, error) {
 }
 
 func (q *Quad) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *Quad) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.graphene_quad_t. The caller is expected to
@@ -768,7 +822,12 @@ func marshalQuaternion(p uintptr) (interface{}, error) {
 }
 
 func (q *Quaternion) free() {
-	C.free(unsafe.Pointer(q.native))
+	C.free(q.Native())
+}
+
+// Native returns the underlying source pointer.
+func (q *Quaternion) Native() unsafe.Pointer {
+	return unsafe.Pointer(q.native)
 }
 
 // Native returns the pointer to *C.graphene_quaternion_t. The caller is expected to
@@ -805,7 +864,12 @@ func marshalRay(p uintptr) (interface{}, error) {
 }
 
 func (r *Ray) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *Ray) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.graphene_ray_t. The caller is expected to
@@ -841,10 +905,13 @@ type Rect struct {
 // primarily used internally.
 func WrapRect(ptr unsafe.Pointer) *Rect {
 	p := (*C.graphene_rect_t)(ptr)
-	var v Rect
+	v := Rect{native: p}
 
-	v.Origin = graphene.WrapPoint(p.origin)
-	v.Size = graphene.WrapSize(p.size)
+	v.Origin = WrapPoint(p.origin)
+	v.Size = WrapSize(p.size)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Rect).free)
 
 	return &v
 }
@@ -852,6 +919,15 @@ func WrapRect(ptr unsafe.Pointer) *Rect {
 func marshalRect(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapRect(unsafe.Pointer(b))
+}
+
+func (r *Rect) free() {
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *Rect) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.graphene_rect_t. The caller is expected to
@@ -882,7 +958,12 @@ func marshalSIMD4F(p uintptr) (interface{}, error) {
 }
 
 func (s *SIMD4F) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SIMD4F) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.graphene_simd4f_t. The caller is expected to
@@ -913,7 +994,12 @@ func marshalSIMD4X4F(p uintptr) (interface{}, error) {
 }
 
 func (s *SIMD4X4F) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *SIMD4X4F) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.graphene_simd4x4f_t. The caller is expected to
@@ -936,10 +1022,13 @@ type Size struct {
 // primarily used internally.
 func WrapSize(ptr unsafe.Pointer) *Size {
 	p := (*C.graphene_size_t)(ptr)
-	var v Size
+	v := Size{native: p}
 
 	v.Width = float32(p.width)
 	v.Height = float32(p.height)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Size).free)
 
 	return &v
 }
@@ -947,6 +1036,15 @@ func WrapSize(ptr unsafe.Pointer) *Size {
 func marshalSize(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapSize(unsafe.Pointer(b))
+}
+
+func (s *Size) free() {
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *Size) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.graphene_size_t. The caller is expected to
@@ -980,7 +1078,12 @@ func marshalSphere(p uintptr) (interface{}, error) {
 }
 
 func (s *Sphere) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *Sphere) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.graphene_sphere_t. The caller is expected to
@@ -1014,7 +1117,12 @@ func marshalTriangle(p uintptr) (interface{}, error) {
 }
 
 func (t *Triangle) free() {
-	C.free(unsafe.Pointer(t.native))
+	C.free(t.Native())
+}
+
+// Native returns the underlying source pointer.
+func (t *Triangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // Native returns the pointer to *C.graphene_triangle_t. The caller is expected to
@@ -1051,7 +1159,12 @@ func marshalVec2(p uintptr) (interface{}, error) {
 }
 
 func (v *Vec2) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *Vec2) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.graphene_vec2_t. The caller is expected to
@@ -1089,7 +1202,12 @@ func marshalVec3(p uintptr) (interface{}, error) {
 }
 
 func (v *Vec3) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *Vec3) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.graphene_vec3_t. The caller is expected to
@@ -1127,7 +1245,12 @@ func marshalVec4(p uintptr) (interface{}, error) {
 }
 
 func (v *Vec4) free() {
-	C.free(unsafe.Pointer(v.native))
+	C.free(v.Native())
+}
+
+// Native returns the underlying source pointer.
+func (v *Vec4) Native() unsafe.Pointer {
+	return unsafe.Pointer(v.native)
 }
 
 // Native returns the pointer to *C.graphene_vec4_t. The caller is expected to

@@ -53,7 +53,12 @@ func marshalBitmap(p uintptr) (interface{}, error) {
 }
 
 func (b *Bitmap) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *Bitmap) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.FT_Bitmap. The caller is expected to
@@ -84,7 +89,12 @@ func marshalFace(p uintptr) (interface{}, error) {
 }
 
 func (f *Face) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *Face) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.FT_Face. The caller is expected to
@@ -115,7 +125,12 @@ func marshalLibrary(p uintptr) (interface{}, error) {
 }
 
 func (l *Library) free() {
-	C.free(unsafe.Pointer(l.native))
+	C.free(l.Native())
+}
+
+// Native returns the underlying source pointer.
+func (l *Library) Native() unsafe.Pointer {
+	return unsafe.Pointer(l.native)
 }
 
 // Native returns the pointer to *C.FT_Library. The caller is expected to

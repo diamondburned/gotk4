@@ -52,8 +52,8 @@ func gotk4_WaylandToplevelExported(arg0 *C.GdkToplevel, arg1 *C.char, arg2 C.gpo
 		panic(`callback not found`)
 	}
 
-	var toplevel waylandToplevel
-	toplevel = gdkwayland.WrapWaylandToplevel(externglib.Take(unsafe.Pointer(arg0.Native())))
+	var toplevel WaylandToplevel
+	toplevel = WrapWaylandToplevel(externglib.Take(unsafe.Pointer(arg0.Native())))
 
 	var handle string
 	arg1 = C.GoString(handle)

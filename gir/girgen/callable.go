@@ -112,7 +112,7 @@ func (cg *callableGenerator) Block() string {
 			// TODO: nullability.
 			// TODO: GoCConverter.
 
-			conv := cg.Ng.CGoConverter(TypeConversion{
+			conv := cg.Ng.GoCConverter(TypeConversion{
 				Value:  valn,
 				Target: targ,
 				Type:   param.AnyType,
@@ -122,8 +122,7 @@ func (cg *callableGenerator) Block() string {
 				continue
 			}
 
-			resolved, _ := cg.Ng.ResolveAnyType(param.AnyType, true)
-			block.Linef("var %s %s", targ, resolved)
+			block.Linef("var %s %s", targ, anyTypeCGo(param.AnyType))
 			block.Line(conv)
 			block.EmptyLine()
 			args = append(args, targ)

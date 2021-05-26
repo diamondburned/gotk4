@@ -347,10 +347,10 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	}
 
 	var start *ParseLocation
-	start = gsk.WrapParseLocation(arg0)
+	start = WrapParseLocation(arg0)
 
 	var end *ParseLocation
-	end = gsk.WrapParseLocation(arg1)
+	end = WrapParseLocation(arg1)
 
 	var error *glib.Error
 	error = glib.WrapError(arg2)
@@ -378,8 +378,8 @@ func SerializationErrorQuark() glib.Quark {
 // If @string does not describe a valid transform, false is returned and nil is
 // put in @out_transform.
 func TransformParse(string string) (outTransform *Transform, ok bool) {
-	var arg0 string
-	string = C.GoString(arg0)
+	var arg0 *C.char
+	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	var arg1 **C.GskTransform // out
@@ -387,7 +387,7 @@ func TransformParse(string string) (outTransform *Transform, ok bool) {
 	ret := C.gsk_transform_parse(arg0, &arg1)
 
 	var ret0 **Transform
-	ret0 = gsk.WrapTransform(arg1)
+	ret0 = WrapTransform(arg1)
 
 	var ret1 bool
 	ret1 = gextras.Gobool(ret)
@@ -409,10 +409,13 @@ type ColorStop struct {
 // primarily used internally.
 func WrapColorStop(ptr unsafe.Pointer) *ColorStop {
 	p := (*C.GskColorStop)(ptr)
-	var v ColorStop
+	v := ColorStop{native: p}
 
 	v.Offset = float32(p.offset)
 	v.Color = gdk.WrapRGBA(p.color)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ColorStop).free)
 
 	return &v
 }
@@ -420,6 +423,15 @@ func WrapColorStop(ptr unsafe.Pointer) *ColorStop {
 func marshalColorStop(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapColorStop(unsafe.Pointer(b))
+}
+
+func (c *ColorStop) free() {
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *ColorStop) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.GskColorStop. The caller is expected to
@@ -448,7 +460,7 @@ type ParseLocation struct {
 // primarily used internally.
 func WrapParseLocation(ptr unsafe.Pointer) *ParseLocation {
 	p := (*C.GskParseLocation)(ptr)
-	var v ParseLocation
+	v := ParseLocation{native: p}
 
 	v.Bytes = uint(p.bytes)
 	v.Chars = uint(p.chars)
@@ -456,12 +468,24 @@ func WrapParseLocation(ptr unsafe.Pointer) *ParseLocation {
 	v.LineBytes = uint(p.line_bytes)
 	v.LineChars = uint(p.line_chars)
 
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*ParseLocation).free)
+
 	return &v
 }
 
 func marshalParseLocation(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapParseLocation(unsafe.Pointer(b))
+}
+
+func (p *ParseLocation) free() {
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *ParseLocation) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.GskParseLocation. The caller is expected to
@@ -491,7 +515,7 @@ type RoundedRect struct {
 // primarily used internally.
 func WrapRoundedRect(ptr unsafe.Pointer) *RoundedRect {
 	p := (*C.GskRoundedRect)(ptr)
-	var v RoundedRect
+	v := RoundedRect{native: p}
 
 	v.Bounds = graphene.WrapRect(p.bounds)
 	{
@@ -503,12 +527,24 @@ func WrapRoundedRect(ptr unsafe.Pointer) *RoundedRect {
 		}
 	}
 
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RoundedRect).free)
+
 	return &v
 }
 
 func marshalRoundedRect(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapRoundedRect(unsafe.Pointer(b))
+}
+
+func (r *RoundedRect) free() {
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RoundedRect) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.GskRoundedRect. The caller is expected to
@@ -540,7 +576,12 @@ func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 }
 
 func (s *ShaderArgsBuilder) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.GskShaderArgsBuilder. The caller is expected to
@@ -569,12 +610,15 @@ type Shadow struct {
 // primarily used internally.
 func WrapShadow(ptr unsafe.Pointer) *Shadow {
 	p := (*C.GskShadow)(ptr)
-	var v Shadow
+	v := Shadow{native: p}
 
 	v.Color = gdk.WrapRGBA(p.color)
 	v.Dx = float32(p.dx)
 	v.Dy = float32(p.dy)
 	v.Radius = float32(p.radius)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Shadow).free)
 
 	return &v
 }
@@ -582,6 +626,15 @@ func WrapShadow(ptr unsafe.Pointer) *Shadow {
 func marshalShadow(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapShadow(unsafe.Pointer(b))
+}
+
+func (s *Shadow) free() {
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *Shadow) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.GskShadow. The caller is expected to
@@ -613,7 +666,12 @@ func marshalTransform(p uintptr) (interface{}, error) {
 }
 
 func (t *Transform) free() {
-	C.free(unsafe.Pointer(t.native))
+	C.free(t.Native())
+}
+
+// Native returns the underlying source pointer.
+func (t *Transform) Native() unsafe.Pointer {
+	return unsafe.Pointer(t.native)
 }
 
 // Native returns the pointer to *C.GskTransform. The caller is expected to

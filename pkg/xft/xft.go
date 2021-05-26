@@ -52,7 +52,12 @@ func marshalColor(p uintptr) (interface{}, error) {
 }
 
 func (c *Color) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *Color) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.XftColor. The caller is expected to
@@ -83,7 +88,12 @@ func marshalDraw(p uintptr) (interface{}, error) {
 }
 
 func (d *Draw) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *Draw) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.XftDraw. The caller is expected to
@@ -114,7 +124,12 @@ func marshalFont(p uintptr) (interface{}, error) {
 }
 
 func (f *Font) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *Font) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.XftFont. The caller is expected to
@@ -145,7 +160,12 @@ func marshalGlyphSpec(p uintptr) (interface{}, error) {
 }
 
 func (g *GlyphSpec) free() {
-	C.free(unsafe.Pointer(g.native))
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *GlyphSpec) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.XftGlyphSpec. The caller is expected to

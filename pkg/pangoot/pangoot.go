@@ -54,8 +54,8 @@ const (
 // TagFromLanguage finds the OpenType language-system tag best describing
 // @language.
 func TagFromLanguage(language *pango.Language) Tag {
-	var arg0 *pango.Language
-	arg0 = pango.WrapLanguage(language)
+	var arg0 *C.PangoLanguage
+	arg0 = (*C.C.PangoLanguage)(language.Native())
 
 	ret := C.pango_ot_tag_from_language(arg0)
 
@@ -79,8 +79,8 @@ func TagFromLanguage(language *pango.Language) Tag {
 // particular, PANGO_SCRIPT_HIRAGANA and PANGO_SCRIPT_KATAKANA both map to the
 // OT tag 'kana'.
 func TagFromScript(script pango.Script) Tag {
-	var arg0 pango.Script
-	arg0 = pango.Script(script)
+	var arg0 C.PangoScript
+	arg0 = (C.C.PangoScript)(script)
 
 	ret := C.pango_ot_tag_from_script(arg0)
 
@@ -96,14 +96,7 @@ func TagFromScript(script pango.Script) Tag {
 
 // TagToLanguage finds a Language corresponding to @language_tag.
 func TagToLanguage(languageTag Tag) *pango.Language {
-	var arg0 Tag
-	{
-		var tmp uint32
-		tmp = uint32(languageTag)
-		arg0 = Tag(tmp)
-	}
-
-	ret := C.pango_ot_tag_to_language(arg0)
+	ret := C.pango_ot_tag_to_language()
 
 	var ret0 *pango.Language
 	ret0 = pango.WrapLanguage(ret)
@@ -120,14 +113,7 @@ func TagToLanguage(languageTag Tag) *pango.Language {
 // particular, PANGO_SCRIPT_HIRAGANA and PANGO_SCRIPT_KATAKANA both map to the
 // OT tag 'kana'. This function will return PANGO_SCRIPT_HIRAGANA for 'kana'.
 func TagToScript(scriptTag Tag) pango.Script {
-	var arg0 Tag
-	{
-		var tmp uint32
-		tmp = uint32(scriptTag)
-		arg0 = Tag(tmp)
-	}
-
-	ret := C.pango_ot_tag_to_script(arg0)
+	ret := C.pango_ot_tag_to_script()
 
 	var ret0 pango.Script
 	ret0 = pango.Script(ret)
@@ -157,7 +143,12 @@ func marshalBuffer(p uintptr) (interface{}, error) {
 }
 
 func (b *Buffer) free() {
-	C.free(unsafe.Pointer(b.native))
+	C.free(b.Native())
+}
+
+// Native returns the underlying source pointer.
+func (b *Buffer) Native() unsafe.Pointer {
+	return unsafe.Pointer(b.native)
 }
 
 // Native returns the pointer to *C.PangoOTBuffer. The caller is expected to
@@ -185,10 +176,13 @@ type FeatureMap struct {
 // primarily used internally.
 func WrapFeatureMap(ptr unsafe.Pointer) *FeatureMap {
 	p := (*C.PangoOTFeatureMap)(ptr)
-	var v FeatureMap
+	v := FeatureMap{native: p}
 
 	v.FeatureName = [5]byte(p.feature_name)
 	v.PropertyBit = uint32(p.property_bit)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*FeatureMap).free)
 
 	return &v
 }
@@ -196,6 +190,15 @@ func WrapFeatureMap(ptr unsafe.Pointer) *FeatureMap {
 func marshalFeatureMap(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapFeatureMap(unsafe.Pointer(b))
+}
+
+func (f *FeatureMap) free() {
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FeatureMap) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.PangoOTFeatureMap. The caller is expected to
@@ -229,7 +232,7 @@ type Glyph struct {
 // primarily used internally.
 func WrapGlyph(ptr unsafe.Pointer) *Glyph {
 	p := (*C.PangoOTGlyph)(ptr)
-	var v Glyph
+	v := Glyph{native: p}
 
 	v.Glyph = uint32(p.glyph)
 	v.Properties = uint(p.properties)
@@ -238,12 +241,24 @@ func WrapGlyph(ptr unsafe.Pointer) *Glyph {
 	v.LigID = uint16(p.ligID)
 	v.Internal = uint(p.internal)
 
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Glyph).free)
+
 	return &v
 }
 
 func marshalGlyph(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapGlyph(unsafe.Pointer(b))
+}
+
+func (g *Glyph) free() {
+	C.free(g.Native())
+}
+
+// Native returns the underlying source pointer.
+func (g *Glyph) Native() unsafe.Pointer {
+	return unsafe.Pointer(g.native)
 }
 
 // Native returns the pointer to *C.PangoOTGlyph. The caller is expected to
@@ -285,16 +300,19 @@ type RulesetDescription struct {
 // primarily used internally.
 func WrapRulesetDescription(ptr unsafe.Pointer) *RulesetDescription {
 	p := (*C.PangoOTRulesetDescription)(ptr)
-	var v RulesetDescription
+	v := RulesetDescription{native: p}
 
 	v.Script = pango.Script(p.script)
 	v.Language = pango.WrapLanguage(p.language)
-	v.StaticGsubFeatures = pangoot.WrapFeatureMap(p.static_gsub_features)
+	v.StaticGsubFeatures = WrapFeatureMap(p.static_gsub_features)
 	v.NStaticGsubFeatures = uint(p.n_static_gsub_features)
-	v.StaticGposFeatures = pangoot.WrapFeatureMap(p.static_gpos_features)
+	v.StaticGposFeatures = WrapFeatureMap(p.static_gpos_features)
 	v.NStaticGposFeatures = uint(p.n_static_gpos_features)
-	v.OtherFeatures = pangoot.WrapFeatureMap(p.other_features)
+	v.OtherFeatures = WrapFeatureMap(p.other_features)
 	v.NOtherFeatures = uint(p.n_other_features)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RulesetDescription).free)
 
 	return &v
 }
@@ -302,6 +320,15 @@ func WrapRulesetDescription(ptr unsafe.Pointer) *RulesetDescription {
 func marshalRulesetDescription(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapRulesetDescription(unsafe.Pointer(b))
+}
+
+func (r *RulesetDescription) free() {
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RulesetDescription) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.PangoOTRulesetDescription. The caller is expected to

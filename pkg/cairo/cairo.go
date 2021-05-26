@@ -607,7 +607,12 @@ func marshalContext(p uintptr) (interface{}, error) {
 }
 
 func (c *Context) free() {
-	C.free(unsafe.Pointer(c.native))
+	C.free(c.Native())
+}
+
+// Native returns the underlying source pointer.
+func (c *Context) Native() unsafe.Pointer {
+	return unsafe.Pointer(c.native)
 }
 
 // Native returns the pointer to *C.cairo_t. The caller is expected to
@@ -638,7 +643,12 @@ func marshalDevice(p uintptr) (interface{}, error) {
 }
 
 func (d *Device) free() {
-	C.free(unsafe.Pointer(d.native))
+	C.free(d.Native())
+}
+
+// Native returns the underlying source pointer.
+func (d *Device) Native() unsafe.Pointer {
+	return unsafe.Pointer(d.native)
 }
 
 // Native returns the pointer to *C.cairo_device_t. The caller is expected to
@@ -669,7 +679,12 @@ func marshalSurface(p uintptr) (interface{}, error) {
 }
 
 func (s *Surface) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *Surface) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.cairo_surface_t. The caller is expected to
@@ -700,7 +715,12 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 }
 
 func (m *Matrix) free() {
-	C.free(unsafe.Pointer(m.native))
+	C.free(m.Native())
+}
+
+// Native returns the underlying source pointer.
+func (m *Matrix) Native() unsafe.Pointer {
+	return unsafe.Pointer(m.native)
 }
 
 // Native returns the pointer to *C.cairo_matrix_t. The caller is expected to
@@ -731,7 +751,12 @@ func marshalPattern(p uintptr) (interface{}, error) {
 }
 
 func (p *Pattern) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *Pattern) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.cairo_pattern_t. The caller is expected to
@@ -762,7 +787,12 @@ func marshalRegion(p uintptr) (interface{}, error) {
 }
 
 func (r *Region) free() {
-	C.free(unsafe.Pointer(r.native))
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *Region) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.cairo_region_t. The caller is expected to
@@ -793,7 +823,12 @@ func marshalFontOptions(p uintptr) (interface{}, error) {
 }
 
 func (f *FontOptions) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FontOptions) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.cairo_font_options_t. The caller is expected to
@@ -824,7 +859,12 @@ func marshalFontFace(p uintptr) (interface{}, error) {
 }
 
 func (f *FontFace) free() {
-	C.free(unsafe.Pointer(f.native))
+	C.free(f.Native())
+}
+
+// Native returns the underlying source pointer.
+func (f *FontFace) Native() unsafe.Pointer {
+	return unsafe.Pointer(f.native)
 }
 
 // Native returns the pointer to *C.cairo_font_face_t. The caller is expected to
@@ -855,7 +895,12 @@ func marshalScaledFont(p uintptr) (interface{}, error) {
 }
 
 func (s *ScaledFont) free() {
-	C.free(unsafe.Pointer(s.native))
+	C.free(s.Native())
+}
+
+// Native returns the underlying source pointer.
+func (s *ScaledFont) Native() unsafe.Pointer {
+	return unsafe.Pointer(s.native)
 }
 
 // Native returns the pointer to *C.cairo_scaled_font_t. The caller is expected to
@@ -886,7 +931,12 @@ func marshalPath(p uintptr) (interface{}, error) {
 }
 
 func (p *Path) free() {
-	C.free(unsafe.Pointer(p.native))
+	C.free(p.Native())
+}
+
+// Native returns the underlying source pointer.
+func (p *Path) Native() unsafe.Pointer {
+	return unsafe.Pointer(p.native)
 }
 
 // Native returns the pointer to *C.cairo_path_t. The caller is expected to
@@ -911,12 +961,15 @@ type Rectangle struct {
 // primarily used internally.
 func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
 	p := (*C.cairo_rectangle_t)(ptr)
-	var v Rectangle
+	v := Rectangle{native: p}
 
 	v.X = float64(p.x)
 	v.Y = float64(p.y)
 	v.Width = float64(p.width)
 	v.Height = float64(p.height)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*Rectangle).free)
 
 	return &v
 }
@@ -924,6 +977,15 @@ func WrapRectangle(ptr unsafe.Pointer) *Rectangle {
 func marshalRectangle(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapRectangle(unsafe.Pointer(b))
+}
+
+func (r *Rectangle) free() {
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *Rectangle) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.cairo_rectangle_t. The caller is expected to
@@ -948,12 +1010,15 @@ type RectangleInt struct {
 // primarily used internally.
 func WrapRectangleInt(ptr unsafe.Pointer) *RectangleInt {
 	p := (*C.cairo_rectangle_int_t)(ptr)
-	var v RectangleInt
+	v := RectangleInt{native: p}
 
 	v.X = int(p.x)
 	v.Y = int(p.y)
 	v.Width = int(p.width)
 	v.Height = int(p.height)
+
+	runtime.SetFinalizer(&v, nil)
+	runtime.SetFinalizer(&v, (*RectangleInt).free)
 
 	return &v
 }
@@ -961,6 +1026,15 @@ func WrapRectangleInt(ptr unsafe.Pointer) *RectangleInt {
 func marshalRectangleInt(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapRectangleInt(unsafe.Pointer(b))
+}
+
+func (r *RectangleInt) free() {
+	C.free(r.Native())
+}
+
+// Native returns the underlying source pointer.
+func (r *RectangleInt) Native() unsafe.Pointer {
+	return unsafe.Pointer(r.native)
 }
 
 // Native returns the pointer to *C.cairo_rectangle_int_t. The caller is expected to

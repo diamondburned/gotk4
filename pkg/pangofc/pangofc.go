@@ -47,6 +47,7 @@ func gotk4_DecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder
 	}
 
 	var pattern *fontconfig.Pattern
+
 	pattern = fontconfig.WrapPattern(arg0)
 
 	decoder := v.(DecoderFindFunc)(pattern)

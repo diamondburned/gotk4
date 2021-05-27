@@ -25,6 +25,26 @@ type TypeConversion struct {
 
 	// ArgAt is used for array and closure generation.
 	ArgAt ArgAtFunc
+}
+
+// TypeConversionToC contains type information that is only useful when
+// converting from Go to C.
+type TypeConversionToC struct {
+	TypeConversion
+
+	// Closure marks the user_data argument. If this is provided, then the
+	// conversion function will set the parameter to the callback ID.
+	Closure *int
+	// Destroy marks the callback to destroy the user_data argument. If this is
+	// provided, then callbackDelete will be set along with Closure.
+	Destroy *int
+}
+
+// TypeConversionToGo contains type information that is only useful when
+// converting from C to Go.
+type TypeConversionToGo struct {
+	TypeConversion
+
 	// BoxCast is an optional Go type that the boxed value should be casted to,
 	// but only if the Type is a gpointer. This is only useful to convert from C
 	// to Go.
@@ -112,12 +132,20 @@ func anyTypeCGo(any gir.AnyType) string {
 func anyTypeC(any gir.AnyType) string {
 	switch {
 	case any.Array != nil:
-		return any.Array.CType
+		return oneOrOtherStr(any.Array.CType, any.Array.Name)
 	case any.Type != nil:
-		return any.Type.CType
+		return oneOrOtherStr(any.Type.CType, any.Type.Name)
 	default:
 		return ""
 	}
+}
+
+// oneOrOtherStr returns one or the other string, whichever is not empty.
+func oneOrOtherStr(one, other string) string {
+	if one != "" {
+		return one
+	}
+	return other
 }
 
 // cgoType turns the given C type into CGo.
@@ -176,13 +204,6 @@ var cgoPrimitiveTypes = map[string]string{
 	"long double": "longdouble",
 }
 
-func cTypeOrGIRType(girType gir.Type) string {
-	if girType.CType == "" {
-		return girType.Name
-	}
-	return girType.CType
-}
-
 // ResolvedType is a resolved type from a given gir.Type.
 type ResolvedType struct {
 	// either or
@@ -220,7 +241,7 @@ func builtinType(imp, typ string, girType gir.Type) *ResolvedType {
 		Import:  imp,
 		Package: path.Base(imp),
 		GType:   girType.Name,
-		CType:   cTypeOrGIRType(girType),
+		CType:   oneOrOtherStr(girType.CType, girType.Name),
 		Ptr:     countPtrs(girType, nil),
 	}
 }
@@ -340,7 +361,7 @@ func (typ *ResolvedType) PublicType(needsNamespace bool) string {
 
 // CGoType returns the CGo type.
 func (typ *ResolvedType) CGoType() string {
-	return movePtr(typ.CType, "C."+strings.ReplaceAll(cgoType(typ.CType), "*", ""))
+	return cgoType(typ.CType)
 }
 
 // PublicType returns the generated public Go type of the given resolved type.

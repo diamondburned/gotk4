@@ -10,10 +10,10 @@ import (
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk"
+	"github.com/diamondburned/gotk4/pkg/glib"
 	"github.com/diamondburned/gotk4/pkg/graphene"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
-	"github.com/gotk3/gotk3/pango"
-	"github.com/linuxdeepin/go-gir/glib-2.0"
 )
 
 // #cgo pkg-config: gtk4
@@ -347,21 +347,24 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	}
 
 	var start *ParseLocation
+	var end *ParseLocation
+	var error *glib.Error
+
 	start = WrapParseLocation(arg0)
 
-	var end *ParseLocation
 	end = WrapParseLocation(arg1)
 
-	var error *glib.Error
 	error = glib.WrapError(arg2)
 
 	v.(ParseErrorFunc)(start, end, error)
 }
 
 func SerializationErrorQuark() glib.Quark {
+
 	ret := C.gsk_serialization_error_quark()
 
 	var ret0 glib.Quark
+
 	{
 		var tmp uint32
 		tmp = uint32(ret)
@@ -379,17 +382,18 @@ func SerializationErrorQuark() glib.Quark {
 // put in @out_transform.
 func TransformParse(string string) (outTransform *Transform, ok bool) {
 	var arg0 *C.char
+	var arg1 **C.GskTransform // out
+
 	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
-
-	var arg1 **C.GskTransform // out
 
 	ret := C.gsk_transform_parse(arg0, &arg1)
 
 	var ret0 **Transform
+	var ret1 bool
+
 	ret0 = WrapTransform(arg1)
 
-	var ret1 bool
 	ret1 = gextras.Gobool(ret)
 
 	return ret0, ret1

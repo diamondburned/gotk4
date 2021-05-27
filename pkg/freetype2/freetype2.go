@@ -28,6 +28,7 @@ func init() {
 type Int32 int32
 
 func LibraryVersion() {
+
 	C.FT_Library_Version()
 }
 

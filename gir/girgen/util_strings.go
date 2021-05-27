@@ -15,6 +15,7 @@ var (
 		"Id",
 		"Io",
 		"Fs",
+		"Tls",
 		"Rgb",
 		"Hsv",
 		"Uri",

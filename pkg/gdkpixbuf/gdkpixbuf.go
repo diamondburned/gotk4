@@ -183,10 +183,11 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 	}
 
 	var buf []uint8
+
 	{
 		buf = make([]uint8, arg1)
 		for i := 0; i < uintptr(arg1); i++ {
-			src := (C.C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p)) + i))
 			buf[i] = uint8(src)
 		}
 	}
@@ -195,9 +196,11 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 }
 
 func PixbufErrorQuark() glib.Quark {
+
 	ret := C.gdk_pixbuf_error_quark()
 
 	var ret0 glib.Quark
+
 	{
 		var tmp uint32
 		tmp = uint32(ret)

@@ -97,14 +97,15 @@ const (
 // newly-allocated memory; otherwise it is reused.
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) gdkpixbuf.Pixbuf {
 	var arg0 *C.GdkPixdata
-	arg0 = (*C.C.GdkPixdata)(pixdata.Native())
-
 	var arg1 C.gboolean
+
+	arg0 = (*C.GdkPixdata)(pixdata.Native())
 	arg1 = gextras.Cbool(copyPixels)
 
 	ret := C.gdk_pixbuf_from_pixdata(arg0, arg1)
 
 	var ret0 gdkpixbuf.Pixbuf
+
 	ret0 = gdkpixbuf.WrapPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
@@ -155,7 +156,7 @@ func WrapPixdata(ptr unsafe.Pointer) *Pixdata {
 
 		v.PixelData = make([]uint8, length)
 		for i := 0; i < length; i++ {
-			src := (C.C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p.pixel_data)) + i))
+			src := (C.guint8)(unsafe.Pointer(uintptr(unsafe.Pointer(p.pixel_data)) + i))
 			v.PixelData[i] = uint8(src)
 		}
 	}

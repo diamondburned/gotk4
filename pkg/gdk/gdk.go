@@ -11,9 +11,9 @@ import (
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf"
 	"github.com/diamondburned/gotk4/pkg/gio"
+	"github.com/diamondburned/gotk4/pkg/glib"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
-	"github.com/linuxdeepin/go-gir/glib-2.0"
-	"github.com/linuxdeepin/go-gir/pango-1.0"
 )
 
 // #cgo pkg-config: gtk4
@@ -922,30 +922,23 @@ func marshalToplevelState(p uintptr) (interface{}, error) {
 // Calling this may change the current GL context.
 func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
 	var arg0 *C.cairo_t
-	arg0 = (*C.C.cairo_t)(cr.Native())
-
 	var arg1 *C.GdkSurface
-	arg1 = (*C.C.GdkSurface)(surface.Native())
-
 	var arg2 C.int
-	arg2 = C.int(source)
-
 	var arg3 C.int
-	arg3 = C.int(sourceType)
-
 	var arg4 C.int
-	arg4 = C.int(bufferScale)
-
 	var arg5 C.int
-	arg5 = C.int(x)
-
 	var arg6 C.int
-	arg6 = C.int(y)
-
 	var arg7 C.int
-	arg7 = C.int(width)
-
 	var arg8 C.int
+
+	arg0 = (*C.cairo_t)(cr.Native())
+	arg1 = (*C.GdkSurface)(surface.Native())
+	arg2 = C.int(source)
+	arg3 = C.int(sourceType)
+	arg4 = C.int(bufferScale)
+	arg5 = C.int(x)
+	arg6 = C.int(y)
+	arg7 = C.int(width)
 	arg8 = C.int(height)
 
 	C.gdk_cairo_draw_from_gl(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
@@ -954,10 +947,10 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType 
 // CairoRectangle adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 	var arg0 *C.cairo_t
-	arg0 = (*C.C.cairo_t)(cr.Native())
-
 	var arg1 *C.GdkRectangle
-	arg1 = (*C.C.GdkRectangle)(rectangle.Native())
+
+	arg0 = (*C.cairo_t)(cr.Native())
+	arg1 = (*C.GdkRectangle)(rectangle.Native())
 
 	C.gdk_cairo_rectangle(arg0, arg1)
 }
@@ -965,10 +958,10 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 // CairoRegion adds the given region to the current path of @cr.
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	var arg0 *C.cairo_t
-	arg0 = (*C.C.cairo_t)(cr.Native())
-
 	var arg1 *C.cairo_region_t
-	arg1 = (*C.C.cairo_region_t)(region.Native())
+
+	arg0 = (*C.cairo_t)(cr.Native())
+	arg1 = (*C.cairo_region_t)(region.Native())
 
 	C.gdk_cairo_region(arg0, arg1)
 }
@@ -980,11 +973,13 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 // cairo_surface_set_device_offset().
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var arg0 *C.cairo_surface_t
-	arg0 = (*C.C.cairo_surface_t)(surface.Native())
+
+	arg0 = (*C.cairo_surface_t)(surface.Native())
 
 	ret := C.gdk_cairo_region_create_from_surface(arg0)
 
 	var ret0 *cairo.Region
+
 	ret0 = cairo.WrapRegion(ret)
 
 	return ret0
@@ -996,15 +991,13 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 // the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
 	var arg0 *C.cairo_t
-	arg0 = (*C.C.cairo_t)(cr.Native())
-
 	var arg1 *C.GdkPixbuf
-	arg1 = (*C.C.GdkPixbuf)(pixbuf.Native())
-
 	var arg2 C.double
-	arg2 = C.double(pixbufX)
-
 	var arg3 C.double
+
+	arg0 = (*C.cairo_t)(cr.Native())
+	arg1 = (*C.GdkPixbuf)(pixbuf.Native())
+	arg2 = C.double(pixbufX)
 	arg3 = C.double(pixbufY)
 
 	C.gdk_cairo_set_source_pixbuf(arg0, arg1, arg2, arg3)
@@ -1013,10 +1006,10 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 // CairoSetSourceRgba sets the specified RGBA as the source color of @cr.
 func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA) {
 	var arg0 *C.cairo_t
-	arg0 = (*C.C.cairo_t)(cr.Native())
-
 	var arg1 *C.GdkRGBA
-	arg1 = (*C.C.GdkRGBA)(rgba.Native())
+
+	arg0 = (*C.cairo_t)(cr.Native())
+	arg1 = (*C.GdkRGBA)(rgba.Native())
 
 	C.gdk_cairo_set_source_rgba(arg0, arg1)
 }
@@ -1027,36 +1020,35 @@ func CairoSetSourceRgba(cr *cairo.Context, rgba *RGBA) {
 // result of the operation.
 func ContentDeserializeAsync(stream gio.InputStream, mimeType string, _type externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg0 *C.GInputStream
-	arg0 = (*C.C.GInputStream)(stream.Native())
-
 	var arg1 *C.char
+	var arg2 C.GType
+	var arg3 C.int
+	var arg4 *C.GCancellable
+	var arg5 C.GAsyncReadyCallback
+	arg6 := C.gpointer(box.Assign(userData))
+
+	arg0 = (*C.GInputStream)(stream.Native())
 	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(mimeType))
-
-	var arg2 C.GType
 	arg2 = C.GType(_type)
-
-	var arg3 C.int
 	arg3 = C.int(ioPriority)
-
-	var arg4 *C.GCancellable
-	arg4 = (*C.C.GCancellable)(cancellable.Native())
-
-	var arg5 C.GAsyncReadyCallback
+	arg4 = (*C.GCancellable)(cancellable.Native())
 	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
-	arg6 := C.gpointer(box.Assign(box.Callback, userData))
 	C.gdk_content_deserialize_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // ContentDeserializeFinish finishes a content deserialization operation.
 func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) bool {
+	var arg0 *C.GAsyncResult
 	var arg1 *C.GValue
+
 	arg1 = (*C.GValue)(value.GValue)
 
-	ret := C.gdk_content_deserialize_finish(arg1)
+	ret := C.gdk_content_deserialize_finish(arg0, arg1)
 
 	var ret0 bool
+
 	ret0 = gextras.Gobool(ret)
 
 	return ret0
@@ -1066,16 +1058,15 @@ func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) b
 // @type from a serialized representation with the given mime type.
 func ContentRegisterDeserializer(mimeType string, _type externglib.Type, deserialize ContentDeserializeFunc) {
 	var arg0 *C.char
+	var arg1 C.GType
+	var arg2 C.GdkContentDeserializeFunc
+	arg3 := C.gpointer(box.Assign(data))
+
 	arg0 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(mimeType))
-
-	var arg1 C.GType
 	arg1 = C.GType(_type)
-
-	var arg2 C.GdkContentDeserializeFunc
 	arg2 = (*[0]byte)(C.gotk4_ContentDeserializeFunc)
 
-	arg3 := C.gpointer(box.Assign(box.Callback, data))
 	C.gdk_content_register_deserializer(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
 }
 
@@ -1083,16 +1074,15 @@ func ContentRegisterDeserializer(mimeType string, _type externglib.Type, deseria
 // given @type to a serialized representation with the given mime type.
 func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize ContentSerializeFunc) {
 	var arg0 C.GType
-	arg0 = C.GType(_type)
-
 	var arg1 *C.char
+	var arg2 C.GdkContentSerializeFunc
+	arg3 := C.gpointer(box.Assign(data))
+
+	arg0 = C.GType(_type)
 	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(mimeType))
-
-	var arg2 C.GdkContentSerializeFunc
 	arg2 = (*[0]byte)(C.gotk4_ContentSerializeFunc)
 
-	arg3 := C.gpointer(box.Assign(box.Callback, data))
 	C.gdk_content_register_serializer(arg0, arg1, arg2, (*[0]byte)(C.callbackDelete))
 }
 
@@ -1102,33 +1092,32 @@ func ContentRegisterSerializer(_type externglib.Type, mimeType string, serialize
 // the operation.
 func ContentSerializeAsync(stream gio.OutputStream, mimeType string, value *externglib.Value, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var arg0 *C.GOutputStream
-	arg0 = (*C.C.GOutputStream)(stream.Native())
-
 	var arg1 *C.char
+	var arg2 *C.GValue
+	var arg3 C.int
+	var arg4 *C.GCancellable
+	var arg5 C.GAsyncReadyCallback
+	arg6 := C.gpointer(box.Assign(userData))
+
+	arg0 = (*C.GOutputStream)(stream.Native())
 	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(mimeType))
-
-	var arg2 *C.GValue
 	arg2 = (*C.GValue)(value.GValue)
-
-	var arg3 C.int
 	arg3 = C.int(ioPriority)
-
-	var arg4 *C.GCancellable
-	arg4 = (*C.C.GCancellable)(cancellable.Native())
-
-	var arg5 C.GAsyncReadyCallback
+	arg4 = (*C.GCancellable)(cancellable.Native())
 	arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
 
-	arg6 := C.gpointer(box.Assign(box.Callback, userData))
 	C.gdk_content_serialize_async(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // ContentSerializeFinish finishes a content serialization operation.
 func ContentSerializeFinish(result gio.AsyncResult) bool {
-	ret := C.gdk_content_serialize_finish()
+	var arg0 *C.GAsyncResult
+
+	ret := C.gdk_content_serialize_finish(arg0)
 
 	var ret0 bool
+
 	ret0 = gextras.Gobool(ret)
 
 	return ret0
@@ -1140,11 +1129,13 @@ func ContentSerializeFinish(result gio.AsyncResult) bool {
 // When @action is 0 - ie no action was given, true is returned.
 func DragActionIsUnique(action DragAction) bool {
 	var arg0 C.GdkDragAction
-	arg0 = (C.C.GdkDragAction)(action)
+
+	arg0 = (C.GdkDragAction)(action)
 
 	ret := C.gdk_drag_action_is_unique(arg0)
 
 	var ret0 bool
+
 	ret0 = gextras.Gobool(ret)
 
 	return ret0
@@ -1156,19 +1147,19 @@ func DragActionIsUnique(action DragAction) bool {
 // towards the positive Y axis.
 func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 	var arg0 *C.GdkEvent
-	arg0 = (*C.C.GdkEvent)(event1.Native())
-
 	var arg1 *C.GdkEvent
-	arg1 = (*C.C.GdkEvent)(event2.Native())
-
 	var arg2 *C.double // out
+
+	arg0 = (*C.GdkEvent)(event1.Native())
+	arg1 = (*C.GdkEvent)(event2.Native())
 
 	ret := C.gdk_events_get_angle(arg0, arg1, &arg2)
 
 	var ret0 float64
+	var ret1 bool
+
 	ret0 = float64(arg2)
 
-	var ret1 bool
 	ret1 = gextras.Gobool(ret)
 
 	return ret0, ret1
@@ -1178,24 +1169,24 @@ func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
 // coordinates will be returned in @x and @y.
 func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
 	var arg0 *C.GdkEvent
-	arg0 = (*C.C.GdkEvent)(event1.Native())
-
 	var arg1 *C.GdkEvent
-	arg1 = (*C.C.GdkEvent)(event2.Native())
-
 	var arg2 *C.double // out
 
 	var arg3 *C.double // out
 
+	arg0 = (*C.GdkEvent)(event1.Native())
+	arg1 = (*C.GdkEvent)(event2.Native())
+
 	ret := C.gdk_events_get_center(arg0, arg1, &arg2, &arg3)
 
 	var ret0 float64
+	var ret1 float64
+	var ret2 bool
+
 	ret0 = float64(arg2)
 
-	var ret1 float64
 	ret1 = float64(arg3)
 
-	var ret2 bool
 	ret2 = gextras.Gobool(ret)
 
 	return ret0, ret1, ret2
@@ -1206,28 +1197,30 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 // be returned.
 func EventsGetDistance(event1 Event, event2 Event) (distance float64, ok bool) {
 	var arg0 *C.GdkEvent
-	arg0 = (*C.C.GdkEvent)(event1.Native())
-
 	var arg1 *C.GdkEvent
-	arg1 = (*C.C.GdkEvent)(event2.Native())
-
 	var arg2 *C.double // out
+
+	arg0 = (*C.GdkEvent)(event1.Native())
+	arg1 = (*C.GdkEvent)(event2.Native())
 
 	ret := C.gdk_events_get_distance(arg0, arg1, &arg2)
 
 	var ret0 float64
+	var ret1 bool
+
 	ret0 = float64(arg2)
 
-	var ret1 bool
 	ret1 = gextras.Gobool(ret)
 
 	return ret0, ret1
 }
 
 func GLErrorQuark() glib.Quark {
+
 	ret := C.gdk_gl_error_quark()
 
 	var ret0 glib.Quark
+
 	{
 		var tmp uint32
 		tmp = uint32(ret)
@@ -1243,12 +1236,14 @@ func GLErrorQuark() glib.Quark {
 // for the syntax if mime types.
 func InternMIMEType(string string) string {
 	var arg0 *C.char
+
 	arg0 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(string))
 
 	ret := C.gdk_intern_mime_type(arg0)
 
 	var ret0 string
+
 	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
@@ -1259,18 +1254,19 @@ func InternMIMEType(string string) string {
 // @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 	var arg0 C.guint
-	arg0 = C.guint(symbol)
-
 	var arg1 *C.guint // out
 
 	var arg2 *C.guint // out
 
+	arg0 = C.guint(symbol)
+
 	ret := C.gdk_keyval_convert_case(arg0, &arg1, &arg2)
 
 	var ret0 uint
+	var ret1 uint
+
 	ret0 = uint(arg1)
 
-	var ret1 uint
 	ret1 = uint(arg2)
 
 	return ret0, ret1
@@ -1282,12 +1278,14 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 // without the leading “GDK_KEY_”.
 func KeyvalFromName(keyvalName string) uint {
 	var arg0 *C.char
+
 	arg0 = (*C.gchar)(C.CString(keyvalName))
 	defer C.free(unsafe.Pointer(keyvalName))
 
 	ret := C.gdk_keyval_from_name(arg0)
 
 	var ret0 uint
+
 	ret0 = uint(ret)
 
 	return ret0
@@ -1296,11 +1294,13 @@ func KeyvalFromName(keyvalName string) uint {
 // KeyvalIsLower returns true if the given key value is in lower case.
 func KeyvalIsLower(keyval uint) bool {
 	var arg0 C.guint
+
 	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_is_lower(arg0)
 
 	var ret0 bool
+
 	ret0 = gextras.Gobool(ret)
 
 	return ret0
@@ -1309,11 +1309,13 @@ func KeyvalIsLower(keyval uint) bool {
 // KeyvalIsUpper returns true if the given key value is in upper case.
 func KeyvalIsUpper(keyval uint) bool {
 	var arg0 C.guint
+
 	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_is_upper(arg0)
 
 	var ret0 bool
+
 	ret0 = gextras.Gobool(ret)
 
 	return ret0
@@ -1325,11 +1327,13 @@ func KeyvalIsUpper(keyval uint) bool {
 // without the leading “GDK_KEY_”.
 func KeyvalName(keyval uint) string {
 	var arg0 C.guint
+
 	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_name(arg0)
 
 	var ret0 string
+
 	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
@@ -1339,11 +1343,13 @@ func KeyvalName(keyval uint) string {
 // KeyvalToLower converts a key value to lower case, if applicable.
 func KeyvalToLower(keyval uint) uint {
 	var arg0 C.guint
+
 	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_to_lower(arg0)
 
 	var ret0 uint
+
 	ret0 = uint(ret)
 
 	return ret0
@@ -1356,11 +1362,13 @@ func KeyvalToLower(keyval uint) uint {
 // which might be expected for particular keyvals, such as GDK_KEY_KP_Decimal.
 func KeyvalToUnicode(keyval uint) uint32 {
 	var arg0 C.guint
+
 	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_to_unicode(arg0)
 
 	var ret0 uint32
+
 	ret0 = uint32(ret)
 
 	return ret0
@@ -1369,11 +1377,13 @@ func KeyvalToUnicode(keyval uint) uint32 {
 // KeyvalToUpper converts a key value to upper case, if applicable.
 func KeyvalToUpper(keyval uint) uint {
 	var arg0 C.guint
+
 	arg0 = C.guint(keyval)
 
 	ret := C.gdk_keyval_to_upper(arg0)
 
 	var ret0 uint
+
 	ret0 = uint(ret)
 
 	return ret0
@@ -1385,9 +1395,9 @@ func KeyvalToUpper(keyval uint) uint {
 // in an incomplete state (like a MediaStream before receiving the first frame).
 func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable {
 	var arg0 C.int
-	arg0 = C.int(intrinsicWidth)
-
 	var arg1 C.int
+
+	arg0 = C.int(intrinsicWidth)
 	arg1 = C.int(intrinsicHeight)
 
 	ret := C.gdk_paintable_new_empty(arg0, arg1)
@@ -1408,23 +1418,21 @@ func PaintableNewEmpty(intrinsicWidth int, intrinsicHeight int) Paintable {
 // text, such as when text is selected.
 func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, indexRanges int, nRanges int) *cairo.Region {
 	var arg0 *C.PangoLayout
-	arg0 = (*C.C.PangoLayout)(layout.Native())
-
 	var arg1 C.int
-	arg1 = C.int(xOrigin)
-
 	var arg2 C.int
-	arg2 = C.int(yOrigin)
-
 	var arg3 *C.int
-	arg3 = (*C.int)(indexRanges)
-
 	var arg4 C.int
+
+	arg0 = (*C.PangoLayout)(layout.Native())
+	arg1 = C.int(xOrigin)
+	arg2 = C.int(yOrigin)
+	arg3 = (*C.int)(indexRanges)
 	arg4 = C.int(nRanges)
 
 	ret := C.gdk_pango_layout_get_clip_region(arg0, arg1, arg2, arg3, arg4)
 
 	var ret0 *cairo.Region
+
 	ret0 = cairo.WrapRegion(ret)
 
 	return ret0
@@ -1445,25 +1453,23 @@ func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, ind
 // text, such as when text is selected.
 func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin int, indexRanges []int, nRanges int) *cairo.Region {
 	var arg0 *C.PangoLayoutLine
-	arg0 = (*C.C.PangoLayoutLine)(line.Native())
-
 	var arg1 C.int
-	arg1 = C.int(xOrigin)
-
 	var arg2 C.int
-	arg2 = C.int(yOrigin)
-
 	var arg3 *C.int
+	var arg4 C.int
+
+	arg0 = (*C.PangoLayoutLine)(line.Native())
+	arg1 = C.int(xOrigin)
+	arg2 = C.int(yOrigin)
 	{
 
 	}
-
-	var arg4 C.int
 	arg4 = C.int(nRanges)
 
 	ret := C.gdk_pango_layout_line_get_clip_region(arg0, arg1, arg2, arg3, arg4)
 
 	var ret0 *cairo.Region
+
 	ret0 = cairo.WrapRegion(ret)
 
 	return ret0
@@ -1477,23 +1483,21 @@ func PangoLayoutLineGetClipRegion(line *pango.LayoutLine, xOrigin int, yOrigin i
 // will contain an alpha channel if the @surface contains one.
 func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) gdkpixbuf.Pixbuf {
 	var arg0 *C.cairo_surface_t
-	arg0 = (*C.C.cairo_surface_t)(surface.Native())
-
 	var arg1 C.int
-	arg1 = C.int(srcX)
-
 	var arg2 C.int
-	arg2 = C.int(srcY)
-
 	var arg3 C.int
-	arg3 = C.int(width)
-
 	var arg4 C.int
+
+	arg0 = (*C.cairo_surface_t)(surface.Native())
+	arg1 = C.int(srcX)
+	arg2 = C.int(srcY)
+	arg3 = C.int(width)
 	arg4 = C.int(height)
 
 	ret := C.gdk_pixbuf_get_from_surface(arg0, arg1, arg2, arg3, arg4)
 
 	var ret0 gdkpixbuf.Pixbuf
+
 	ret0 = gdkpixbuf.WrapPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
@@ -1504,11 +1508,13 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 // certainly convert the pixbuf back into a texture to draw it on screen.
 func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 	var arg0 *C.GdkTexture
-	arg0 = (*C.C.GdkTexture)(texture.Native())
+
+	arg0 = (*C.GdkTexture)(texture.Native())
 
 	ret := C.gdk_pixbuf_get_from_texture(arg0)
 
 	var ret0 gdkpixbuf.Pixbuf
+
 	ret0 = gdkpixbuf.WrapPixbuf(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
@@ -1540,6 +1546,7 @@ func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 // gtk_init_check() in order to take effect.
 func SetAllowedBackends(backends string) {
 	var arg0 *C.char
+
 	arg0 = (*C.gchar)(C.CString(backends))
 	defer C.free(unsafe.Pointer(backends))
 
@@ -1547,6 +1554,7 @@ func SetAllowedBackends(backends string) {
 }
 
 func ToplevelSizeGetType() externglib.Type {
+
 	ret := C.gdk_toplevel_size_get_type()
 
 	var ret0 externglib.Type
@@ -1557,20 +1565,24 @@ func ToplevelSizeGetType() externglib.Type {
 // UnicodeToKeyval: convert from a ISO10646 character to a key symbol.
 func UnicodeToKeyval(wc uint32) uint {
 	var arg0 C.guint32
+
 	arg0 = C.guint32(wc)
 
 	ret := C.gdk_unicode_to_keyval(arg0)
 
 	var ret0 uint
+
 	ret0 = uint(ret)
 
 	return ret0
 }
 
 func VulkanErrorQuark() glib.Quark {
+
 	ret := C.gdk_vulkan_error_quark()
 
 	var ret0 glib.Quark
+
 	{
 		var tmp uint32
 		tmp = uint32(ret)

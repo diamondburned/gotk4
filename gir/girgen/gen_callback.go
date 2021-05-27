@@ -100,15 +100,15 @@ func (fg *callbackGenerator) Use(cb gir.Callback) bool {
 }
 
 func (fg *callbackGenerator) CBlock() string {
-	b := pen.NewBlock()
+	b := pen.NewBlockSections(1024, 4096)
 
 	fg.Ng.addImport("github.com/diamondburned/gotk4/internal/box")
 
-	b.Linef("v := box.Get(box.Callback, uintptr(arg%d))", *fg.Closure)
-	b.Linef("if v == nil {")
-	b.Linef("  panic(`callback not found`)")
-	b.Linef("}")
-	b.EmptyLine()
+	b.Linef(0, "v := box.Get(box.Callback, uintptr(arg%d))", *fg.Closure)
+	b.Linef(0, "if v == nil {")
+	b.Linef(0, "  panic(`callback not found`)")
+	b.Linef(0, "}")
+	b.EmptyLine(0)
 
 	argAt := func(i int) string { return fmt.Sprintf("arg%d", i) }
 	goArgs := pen.NewJoints(", ", len(fg.Parameters.Parameters))
@@ -117,15 +117,20 @@ func (fg *callbackGenerator) CBlock() string {
 	iterateParams(fg.CallableAttrs, func(i int, param gir.Parameter) bool {
 		goName := SnakeToGo(false, param.Name)
 		goType, _ := fg.Ng.ResolveAnyType(param.AnyType, true)
-		b.Linef("var %s %s", goName, goType)
 
-		b.Line(fg.Ng.CGoConverter(TypeConversion{
-			Value:  argAt(i),
-			Target: goName,
-			Type:   param.AnyType,
-			ArgAt:  argAt,
-		}))
-		b.EmptyLine()
+		b.Linef(1, "var %s %s", goName, goType)
+
+		converter := fg.Ng.CGoConverter(TypeConversionToGo{
+			TypeConversion: TypeConversion{
+				Value:  argAt(i),
+				Target: goName,
+				Type:   param.AnyType,
+				ArgAt:  argAt,
+			},
+		})
+
+		b.Line(2, converter)
+		b.EmptyLine(2)
 
 		goArgs.Add(goName)
 		return true
@@ -137,11 +142,11 @@ func (fg *callbackGenerator) CBlock() string {
 	})
 
 	if goRets.Len() == 0 {
-		b.Linef("v.(%s)(%s)", fg.GoName, goArgs.Join())
+		b.Linef(3, "v.(%s)(%s)", fg.GoName, goArgs.Join())
 		return b.String()
 	}
 
-	b.Linef("%s := v.(%s)(%s)", goRets.Join(), fg.GoName, goArgs.Join())
+	b.Linef(3, "%s := v.(%s)(%s)", goRets.Join(), fg.GoName, goArgs.Join())
 
 	return b.String()
 }

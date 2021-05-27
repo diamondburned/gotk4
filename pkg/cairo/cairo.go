@@ -582,6 +582,7 @@ func marshalRegionOverlap(p uintptr) (interface{}, error) {
 }
 
 func ImageSurfaceCreate() {
+
 	C.cairo_image_surface_create()
 }
 

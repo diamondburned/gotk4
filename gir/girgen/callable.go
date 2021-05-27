@@ -40,15 +40,17 @@ func (cg *callableGenerator) Block() string {
 		Type gir.AnyType
 	}
 
-	var block pen.Block
+	blocks := pen.NewBlockSections(1024, 4096)
+
+	var ignores ignoreIxs
 	var args []string
 	var rets []retVar
-	var ignores ignoreIxs
 
 	argNamer := func(i int) string { return fmt.Sprintf("arg%d", i) }
 
 	if cg.Parameters != nil {
 		args = make([]string, 0, len(cg.Parameters.Parameters))
+
 		var closure *int // user-data arg
 		var destroy *int
 
@@ -65,8 +67,8 @@ func (cg *callableGenerator) Block() string {
 			valn := SnakeToGo(false, param.Name)
 
 			if param.Direction == "out" {
-				block.Linef("var %s %s // out", targ, anyTypeCGo(param.AnyType))
-				block.EmptyLine()
+				blocks.Linef(0, "var %s %s // out", targ, anyTypeCGo(param.AnyType))
+				blocks.EmptyLine(0)
 
 				args = append(args, "&"+targ)
 				rets = append(rets, retVar{
@@ -91,7 +93,7 @@ func (cg *callableGenerator) Block() string {
 				cg.Ng.addImport("github.com/diamondburned/gotk4/internal/box")
 				// TODO: this is probably not always gpointer. Handle with
 				// anyCGoType.
-				block.Linef("%s := C.gpointer(box.Assign(box.Callback, %s))", targ, valn)
+				blocks.Linef(0, "%s := C.gpointer(box.Assign(%s))", targ, valn)
 				continue
 			}
 
@@ -103,29 +105,31 @@ func (cg *callableGenerator) Block() string {
 				continue
 			}
 
-			// Skip user_data fields because we need them for the callback
-			// registry.
-			if ignores.ignore(i) {
-				continue
-			}
-
 			// TODO: nullability.
 			// TODO: GoCConverter.
 
-			conv := cg.Ng.GoCConverter(TypeConversion{
-				Value:  valn,
-				Target: targ,
-				Type:   param.AnyType,
-				ArgAt:  func(int) string { return "a" },
-			})
-			if conv == "" {
-				continue
-			}
-
-			block.Linef("var %s %s", targ, anyTypeCGo(param.AnyType))
-			block.Line(conv)
-			block.EmptyLine()
+			// Generate a zero-value variable regardless if we have the
+			// conversions or not.
+			blocks.Linef(0, "var %s %s", targ, anyTypeCGo(param.AnyType))
 			args = append(args, targ)
+
+			// Ignored arguments may be covered by GoCConverter if the
+			// attributes are part of the type and not the parameter attributes.
+			if !ignores.ignore(i) {
+				converter := cg.Ng.GoCConverter(TypeConversionToC{
+					TypeConversion: TypeConversion{
+						Value:  valn,
+						Target: targ,
+						Type:   param.AnyType,
+						ArgAt:  argNamer,
+					},
+					Closure: closure,
+					Destroy: destroy,
+				})
+				if converter != "" {
+					blocks.Line(1, converter)
+				}
+			}
 		}
 	}
 
@@ -139,12 +143,12 @@ func (cg *callableGenerator) Block() string {
 	callArgs := strings.Join(args, ", ")
 
 	if len(rets) == 0 {
-		block.Linef("C.%s(%s)", cg.CIdentifier, callArgs)
-		return block.String()
+		blocks.Linef(2, "C.%s(%s)", cg.CIdentifier, callArgs)
+		return blocks.String()
 	}
 
-	block.Linef("ret := C.%s(%s)", cg.CIdentifier, callArgs)
-	block.EmptyLine()
+	blocks.Linef(2, "ret := C.%s(%s)", cg.CIdentifier, callArgs)
+	blocks.EmptyLine(2)
 
 	retvars := pen.NewJoints(", ", len(rets))
 
@@ -153,18 +157,23 @@ func (cg *callableGenerator) Block() string {
 		retName := fmt.Sprintf("ret%d", i)
 		retvars.Add(retName)
 
-		block.Linef("var %s %s", retName, resolved)
-		block.Line(cg.Ng.CGoConverter(TypeConversion{
-			Value:  ret.Name,
-			Target: retName,
-			Type:   ret.Type,
-			ArgAt:  argNamer,
-		}))
-		block.EmptyLine()
+		blocks.Linef(3, "var %s %s", retName, resolved)
+
+		converter := cg.Ng.CGoConverter(TypeConversionToGo{
+			TypeConversion: TypeConversion{
+				Value:  ret.Name,
+				Target: retName,
+				Type:   ret.Type,
+				ArgAt:  argNamer,
+			},
+		})
+
+		blocks.Line(4, converter)
+		blocks.EmptyLine(4)
 	}
 
-	block.Line("return " + retvars.Join())
-	return block.String()
+	blocks.Line(5, "return "+retvars.Join())
+	return blocks.String()
 }
 
 // FnCall generates the tail of the function, that is, everything underlined

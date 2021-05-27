@@ -29,14 +29,15 @@ func init() {
 // pango_font_get_coverage() instead.
 func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 	var arg0 *C.PangoFont
-	arg0 = (*C.C.PangoFont)(font.Native())
-
 	var arg1 *C.PangoLanguage
-	arg1 = (*C.C.PangoLanguage)(language.Native())
+
+	arg0 = (*C.PangoFont)(font.Native())
+	arg1 = (*C.PangoLanguage)(language.Native())
 
 	ret := C.pango_ft2_font_get_coverage(arg0, arg1)
 
 	var ret0 pango.Coverage
+
 	ret0 = pango.WrapCoverage(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
@@ -49,11 +50,13 @@ func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 // pango_fc_font_lock_face() you must call pango_fc_font_unlock_face().
 func FontGetFace(font pango.Font) freetype2.Face {
 	var arg0 *C.PangoFont
-	arg0 = (*C.C.PangoFont)(font.Native())
+
+	arg0 = (*C.PangoFont)(font.Native())
 
 	ret := C.pango_ft2_font_get_face(arg0)
 
 	var ret0 freetype2.Face
+
 	ret0 = freetype2.WrapFace(ret)
 
 	return ret0
@@ -64,11 +67,15 @@ func FontGetFace(font pango.Font) freetype2.Face {
 // Use pango_fc_font_kern_glyphs() instead.
 func FontGetKerning(font pango.Font, left pango.Glyph, right pango.Glyph) int {
 	var arg0 *C.PangoFont
-	arg0 = (*C.C.PangoFont)(font.Native())
+	var arg1 C.PangoGlyph
+	var arg2 C.PangoGlyph
 
-	ret := C.pango_ft2_font_get_kerning(arg0)
+	arg0 = (*C.PangoFont)(font.Native())
+
+	ret := C.pango_ft2_font_get_kerning(arg0, arg1, arg2)
 
 	var ret0 int
+
 	ret0 = int(ret)
 
 	return ret0
@@ -79,14 +86,15 @@ func FontGetKerning(font pango.Font, left pango.Glyph, right pango.Glyph) int {
 // fontmap to @dpi_x by @dpi_y.
 func GetContext(dpiX float64, dpiY float64) pango.Context {
 	var arg0 C.double
-	arg0 = C.double(dpiX)
-
 	var arg1 C.double
+
+	arg0 = C.double(dpiX)
 	arg1 = C.double(dpiY)
 
 	ret := C.pango_ft2_get_context(arg0, arg1)
 
 	var ret0 pango.Context
+
 	ret0 = pango.WrapContext(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
@@ -99,11 +107,13 @@ func GetContext(dpiX float64, dpiY float64) pango.Context {
 // font, use PANGO_GET_UNKNOWN_GLYPH() instead.
 func GetUnknownGlyph(font pango.Font) pango.Glyph {
 	var arg0 *C.PangoFont
-	arg0 = (*C.C.PangoFont)(font.Native())
+
+	arg0 = (*C.PangoFont)(font.Native())
 
 	ret := C.pango_ft2_get_unknown_glyph(arg0)
 
 	var ret0 pango.Glyph
+
 	{
 		var tmp uint32
 		tmp = uint32(ret)
@@ -116,18 +126,15 @@ func GetUnknownGlyph(font pango.Font) pango.Glyph {
 // Render renders a GlyphString onto a FreeType2 bitmap.
 func Render(bitmap *freetype2.Bitmap, font pango.Font, glyphs *pango.GlyphString, x int, y int) {
 	var arg0 *C.FT_Bitmap
-	arg0 = (*C.C.FT_Bitmap)(bitmap.Native())
-
 	var arg1 *C.PangoFont
-	arg1 = (*C.C.PangoFont)(font.Native())
-
 	var arg2 *C.PangoGlyphString
-	arg2 = (*C.C.PangoGlyphString)(glyphs.Native())
-
 	var arg3 C.gint
-	arg3 = C.gint(x)
-
 	var arg4 C.gint
+
+	arg0 = (*C.FT_Bitmap)(bitmap.Native())
+	arg1 = (*C.PangoFont)(font.Native())
+	arg2 = (*C.PangoGlyphString)(glyphs.Native())
+	arg3 = C.gint(x)
 	arg4 = C.gint(y)
 
 	C.pango_ft2_render(arg0, arg1, arg2, arg3, arg4)
@@ -136,15 +143,13 @@ func Render(bitmap *freetype2.Bitmap, font pango.Font, glyphs *pango.GlyphString
 // RenderLayout: render a Layout onto a FreeType2 bitmap
 func RenderLayout(bitmap *freetype2.Bitmap, layout pango.Layout, x int, y int) {
 	var arg0 *C.FT_Bitmap
-	arg0 = (*C.C.FT_Bitmap)(bitmap.Native())
-
 	var arg1 *C.PangoLayout
-	arg1 = (*C.C.PangoLayout)(layout.Native())
-
 	var arg2 C.int
-	arg2 = C.int(x)
-
 	var arg3 C.int
+
+	arg0 = (*C.FT_Bitmap)(bitmap.Native())
+	arg1 = (*C.PangoLayout)(layout.Native())
+	arg2 = C.int(x)
 	arg3 = C.int(y)
 
 	C.pango_ft2_render_layout(arg0, arg1, arg2, arg3)
@@ -153,15 +158,13 @@ func RenderLayout(bitmap *freetype2.Bitmap, layout pango.Layout, x int, y int) {
 // RenderLayoutLine: render a LayoutLine onto a FreeType2 bitmap
 func RenderLayoutLine(bitmap *freetype2.Bitmap, line *pango.LayoutLine, x int, y int) {
 	var arg0 *C.FT_Bitmap
-	arg0 = (*C.C.FT_Bitmap)(bitmap.Native())
-
 	var arg1 *C.PangoLayoutLine
-	arg1 = (*C.C.PangoLayoutLine)(line.Native())
-
 	var arg2 C.int
-	arg2 = C.int(x)
-
 	var arg3 C.int
+
+	arg0 = (*C.FT_Bitmap)(bitmap.Native())
+	arg1 = (*C.PangoLayoutLine)(line.Native())
+	arg2 = C.int(x)
 	arg3 = C.int(y)
 
 	C.pango_ft2_render_layout_line(arg0, arg1, arg2, arg3)
@@ -173,15 +176,13 @@ func RenderLayoutLine(bitmap *freetype2.Bitmap, line *pango.LayoutLine, x int, y
 // times, even if the final glyph positions are integers.)
 func RenderLayoutLineSubpixel(bitmap *freetype2.Bitmap, line *pango.LayoutLine, x int, y int) {
 	var arg0 *C.FT_Bitmap
-	arg0 = (*C.C.FT_Bitmap)(bitmap.Native())
-
 	var arg1 *C.PangoLayoutLine
-	arg1 = (*C.C.PangoLayoutLine)(line.Native())
-
 	var arg2 C.int
-	arg2 = C.int(x)
-
 	var arg3 C.int
+
+	arg0 = (*C.FT_Bitmap)(bitmap.Native())
+	arg1 = (*C.PangoLayoutLine)(line.Native())
+	arg2 = C.int(x)
 	arg3 = C.int(y)
 
 	C.pango_ft2_render_layout_line_subpixel(arg0, arg1, arg2, arg3)
@@ -193,15 +194,13 @@ func RenderLayoutLineSubpixel(bitmap *freetype2.Bitmap, line *pango.LayoutLine, 
 // even if the final glyph positions are integers.)
 func RenderLayoutSubpixel(bitmap *freetype2.Bitmap, layout pango.Layout, x int, y int) {
 	var arg0 *C.FT_Bitmap
-	arg0 = (*C.C.FT_Bitmap)(bitmap.Native())
-
 	var arg1 *C.PangoLayout
-	arg1 = (*C.C.PangoLayout)(layout.Native())
-
 	var arg2 C.int
-	arg2 = C.int(x)
-
 	var arg3 C.int
+
+	arg0 = (*C.FT_Bitmap)(bitmap.Native())
+	arg1 = (*C.PangoLayout)(layout.Native())
+	arg2 = C.int(x)
 	arg3 = C.int(y)
 
 	C.pango_ft2_render_layout_subpixel(arg0, arg1, arg2, arg3)
@@ -214,21 +213,17 @@ func RenderLayoutSubpixel(bitmap *freetype2.Bitmap, layout pango.Layout, x int, 
 // with an identical transformation matrix to that passed in to this function.
 func RenderTransformed(bitmap *freetype2.Bitmap, matrix *pango.Matrix, font pango.Font, glyphs *pango.GlyphString, x int, y int) {
 	var arg0 *C.FT_Bitmap
-	arg0 = (*C.C.FT_Bitmap)(bitmap.Native())
-
 	var arg1 *C.PangoMatrix
-	arg1 = (*C.C.PangoMatrix)(matrix.Native())
-
 	var arg2 *C.PangoFont
-	arg2 = (*C.C.PangoFont)(font.Native())
-
 	var arg3 *C.PangoGlyphString
-	arg3 = (*C.C.PangoGlyphString)(glyphs.Native())
-
 	var arg4 C.int
-	arg4 = C.int(x)
-
 	var arg5 C.int
+
+	arg0 = (*C.FT_Bitmap)(bitmap.Native())
+	arg1 = (*C.PangoMatrix)(matrix.Native())
+	arg2 = (*C.PangoFont)(font.Native())
+	arg3 = (*C.PangoGlyphString)(glyphs.Native())
+	arg4 = C.int(x)
 	arg5 = C.int(y)
 
 	C.pango_ft2_render_transformed(arg0, arg1, arg2, arg3, arg4, arg5)
@@ -238,6 +233,7 @@ func RenderTransformed(bitmap *freetype2.Bitmap, matrix *pango.Matrix, font pang
 // pango_ft2_font_map_for_display()) Use of the global PangoFT2 fontmap is
 // deprecated.
 func ShutdownDisplay() {
+
 	C.pango_ft2_shutdown_display()
 }
 

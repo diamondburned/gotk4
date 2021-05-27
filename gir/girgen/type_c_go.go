@@ -9,14 +9,12 @@ import (
 
 // C to Go type conversions.
 
-// TODO: GoTypeConverter converts Go types to C with GIR type.
-
 // CGoConverter returns Go code that is the conversion from the given C value
 // type to its respective Go value type. An empty string returned is invalid.
 //
 // The given argPrefix is used to get the nth parameter by concatenating the
 // prefix with the index number. This is used for length parameters.
-func (ng *NamespaceGenerator) CGoConverter(conv TypeConversion) string {
+func (ng *NamespaceGenerator) CGoConverter(conv TypeConversionToGo) string {
 	switch {
 	case conv.Type.Array != nil:
 		return ng.cgoArrayConverter(conv)
@@ -28,7 +26,7 @@ func (ng *NamespaceGenerator) CGoConverter(conv TypeConversion) string {
 	return ""
 }
 
-func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversion) string {
+func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversionToGo) string {
 	array := conv.Type.Array
 
 	if array.Type == nil {
@@ -110,7 +108,7 @@ func (ng *NamespaceGenerator) cgoArrayConverter(conv TypeConversion) string {
 	return b.String()
 }
 
-func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversion) string {
+func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversionToGo) string {
 	typ := conv.Type.Type
 
 	// Resolve primitive types.
@@ -135,20 +133,15 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversion) string {
 	case "gpointer":
 		ng.addImport("github.com/diamondburned/gotk4/internal/box")
 
-		if conv.BoxCast == "" {
-			return fmt.Sprintf(
-				"%s = box.Get(uintptr(%s))",
-				conv.Target, conv.Value,
-			)
+		castTail := conv.BoxCast
+		if castTail != "" {
+			castTail = fmt.Sprintf(".(%s)", castTail)
 		}
 
-		return fmt.Sprintf(
-			"%s = box.Get(uintptr(%s)).(%s)",
-			conv.Target, conv.Value, conv.BoxCast,
-		)
+		return fmt.Sprintf("%s = box.Get(uintptr(%s))%s", conv.Target, conv.Value, castTail)
 
 	case "GObject.Object", "GObject.InitiallyUnowned":
-		return cgoTakeObject(conv, "")
+		return cgoTakeObject(conv.TypeConversion, "")
 
 	case "GLib.DestroyNotify", "DestroyNotify":
 		// There's no Go equivalent for C's DestroyNotify; the user should never
@@ -218,7 +211,7 @@ func (ng *NamespaceGenerator) cgoTypeConverter(conv TypeConversion) string {
 
 		switch {
 		case result.Class != nil:
-			return cgoTakeObject(conv, wrapName)
+			return cgoTakeObject(conv.TypeConversion, wrapName)
 		case result.Record != nil:
 			return conv.call(wrapName)
 		}

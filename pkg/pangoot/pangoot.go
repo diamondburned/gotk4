@@ -55,11 +55,13 @@ const (
 // @language.
 func TagFromLanguage(language *pango.Language) Tag {
 	var arg0 *C.PangoLanguage
-	arg0 = (*C.C.PangoLanguage)(language.Native())
+
+	arg0 = (*C.PangoLanguage)(language.Native())
 
 	ret := C.pango_ot_tag_from_language(arg0)
 
 	var ret0 Tag
+
 	{
 		var tmp uint32
 		tmp = uint32(ret)
@@ -80,11 +82,13 @@ func TagFromLanguage(language *pango.Language) Tag {
 // OT tag 'kana'.
 func TagFromScript(script pango.Script) Tag {
 	var arg0 C.PangoScript
-	arg0 = (C.C.PangoScript)(script)
+
+	arg0 = (C.PangoScript)(script)
 
 	ret := C.pango_ot_tag_from_script(arg0)
 
 	var ret0 Tag
+
 	{
 		var tmp uint32
 		tmp = uint32(ret)
@@ -96,9 +100,12 @@ func TagFromScript(script pango.Script) Tag {
 
 // TagToLanguage finds a Language corresponding to @language_tag.
 func TagToLanguage(languageTag Tag) *pango.Language {
-	ret := C.pango_ot_tag_to_language()
+	var arg0 C.PangoOTTag
+
+	ret := C.pango_ot_tag_to_language(arg0)
 
 	var ret0 *pango.Language
+
 	ret0 = pango.WrapLanguage(ret)
 
 	return ret0
@@ -113,9 +120,12 @@ func TagToLanguage(languageTag Tag) *pango.Language {
 // particular, PANGO_SCRIPT_HIRAGANA and PANGO_SCRIPT_KATAKANA both map to the
 // OT tag 'kana'. This function will return PANGO_SCRIPT_HIRAGANA for 'kana'.
 func TagToScript(scriptTag Tag) pango.Script {
-	ret := C.pango_ot_tag_to_script()
+	var arg0 C.PangoOTTag
+
+	ret := C.pango_ot_tag_to_script(arg0)
 
 	var ret0 pango.Script
+
 	ret0 = pango.Script(ret)
 
 	return ret0

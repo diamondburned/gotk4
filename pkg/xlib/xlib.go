@@ -58,6 +58,7 @@ type XID uint32
 type Pixmap uint32
 
 func OpenDisplay() {
+
 	C.XOpenDisplay()
 }
 

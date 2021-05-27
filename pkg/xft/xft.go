@@ -27,6 +27,7 @@ func init() {
 }
 
 func Init() {
+
 	C.XftInit()
 }
 

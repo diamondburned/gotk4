@@ -162,9 +162,11 @@ const (
 //
 // The returned value is owned by Graphene and should not be modified or freed.
 func BoxEmpty() *Box {
+
 	ret := C.graphene_box_empty()
 
 	var ret0 *Box
+
 	ret0 = WrapBox(ret)
 
 	return ret0
@@ -174,9 +176,11 @@ func BoxEmpty() *Box {
 //
 // The returned value is owned by Graphene and should not be modified or freed.
 func BoxInfinite() *Box {
+
 	ret := C.graphene_box_infinite()
 
 	var ret0 *Box
+
 	ret0 = WrapBox(ret)
 
 	return ret0
@@ -187,9 +191,11 @@ func BoxInfinite() *Box {
 //
 // The returned value is owned by Graphene and should not be modified or freed.
 func BoxMinusOne() *Box {
+
 	ret := C.graphene_box_minus_one()
 
 	var ret0 *Box
+
 	ret0 = WrapBox(ret)
 
 	return ret0
@@ -200,9 +206,11 @@ func BoxMinusOne() *Box {
 //
 // The returned value is owned by Graphene and should not be modified or freed.
 func BoxOne() *Box {
+
 	ret := C.graphene_box_one()
 
 	var ret0 *Box
+
 	ret0 = WrapBox(ret)
 
 	return ret0
@@ -213,9 +221,11 @@ func BoxOne() *Box {
 //
 // The returned value is owned by Graphene and should not be modified or freed.
 func BoxOneMinusOne() *Box {
+
 	ret := C.graphene_box_one_minus_one()
 
 	var ret0 *Box
+
 	ret0 = WrapBox(ret)
 
 	return ret0
@@ -226,9 +236,11 @@ func BoxOneMinusOne() *Box {
 //
 // The returned value is owned by Graphene and should not be modified or freed.
 func BoxZero() *Box {
+
 	ret := C.graphene_box_zero()
 
 	var ret0 *Box
+
 	ret0 = WrapBox(ret)
 
 	return ret0
@@ -236,9 +248,11 @@ func BoxZero() *Box {
 
 // Point3DZero retrieves a constant point with all three coordinates set to 0.
 func Point3DZero() *Point3D {
+
 	ret := C.graphene_point3d_zero()
 
 	var ret0 *Point3D
+
 	ret0 = WrapPoint3D(ret)
 
 	return ret0
@@ -246,9 +260,11 @@ func Point3DZero() *Point3D {
 
 // PointZero returns a point fixed at (0, 0).
 func PointZero() *Point {
+
 	ret := C.graphene_point_zero()
 
 	var ret0 *Point
+
 	ret0 = WrapPoint(ret)
 
 	return ret0
@@ -258,9 +274,11 @@ func PointZero() *Point {
 //
 // The contents of the returned rectangle are undefined.
 func RectAlloc() *Rect {
+
 	ret := C.graphene_rect_alloc()
 
 	var ret0 *Rect
+
 	ret0 = WrapRect(ret)
 
 	return ret0
@@ -269,9 +287,11 @@ func RectAlloc() *Rect {
 // RectZero returns a degenerate rectangle with origin fixed at (0, 0) and a
 // size of 0, 0.
 func RectZero() *Rect {
+
 	ret := C.graphene_rect_zero()
 
 	var ret0 *Rect
+
 	ret0 = WrapRect(ret)
 
 	return ret0
@@ -280,9 +300,11 @@ func RectZero() *Rect {
 // SizeZero: a constant pointer to a zero #graphene_size_t, useful for equality
 // checks and interpolations.
 func SizeZero() *Size {
+
 	ret := C.graphene_size_zero()
 
 	var ret0 *Size
+
 	ret0 = WrapSize(ret)
 
 	return ret0
@@ -290,9 +312,11 @@ func SizeZero() *Size {
 
 // Vec2One retrieves a constant vector with (1, 1) components.
 func Vec2One() *Vec2 {
+
 	ret := C.graphene_vec2_one()
 
 	var ret0 *Vec2
+
 	ret0 = WrapVec2(ret)
 
 	return ret0
@@ -300,9 +324,11 @@ func Vec2One() *Vec2 {
 
 // Vec2XAxis retrieves a constant vector with (1, 0) components.
 func Vec2XAxis() *Vec2 {
+
 	ret := C.graphene_vec2_x_axis()
 
 	var ret0 *Vec2
+
 	ret0 = WrapVec2(ret)
 
 	return ret0
@@ -310,9 +336,11 @@ func Vec2XAxis() *Vec2 {
 
 // Vec2YAxis retrieves a constant vector with (0, 1) components.
 func Vec2YAxis() *Vec2 {
+
 	ret := C.graphene_vec2_y_axis()
 
 	var ret0 *Vec2
+
 	ret0 = WrapVec2(ret)
 
 	return ret0
@@ -320,9 +348,11 @@ func Vec2YAxis() *Vec2 {
 
 // Vec2Zero retrieves a constant vector with (0, 0) components.
 func Vec2Zero() *Vec2 {
+
 	ret := C.graphene_vec2_zero()
 
 	var ret0 *Vec2
+
 	ret0 = WrapVec2(ret)
 
 	return ret0
@@ -331,9 +361,11 @@ func Vec2Zero() *Vec2 {
 // Vec3One provides a constant pointer to a vector with three components, all
 // sets to 1.
 func Vec3One() *Vec3 {
+
 	ret := C.graphene_vec3_one()
 
 	var ret0 *Vec3
+
 	ret0 = WrapVec3(ret)
 
 	return ret0
@@ -342,9 +374,11 @@ func Vec3One() *Vec3 {
 // Vec3XAxis provides a constant pointer to a vector with three components with
 // values set to (1, 0, 0).
 func Vec3XAxis() *Vec3 {
+
 	ret := C.graphene_vec3_x_axis()
 
 	var ret0 *Vec3
+
 	ret0 = WrapVec3(ret)
 
 	return ret0
@@ -353,9 +387,11 @@ func Vec3XAxis() *Vec3 {
 // Vec3YAxis provides a constant pointer to a vector with three components with
 // values set to (0, 1, 0).
 func Vec3YAxis() *Vec3 {
+
 	ret := C.graphene_vec3_y_axis()
 
 	var ret0 *Vec3
+
 	ret0 = WrapVec3(ret)
 
 	return ret0
@@ -364,9 +400,11 @@ func Vec3YAxis() *Vec3 {
 // Vec3ZAxis provides a constant pointer to a vector with three components with
 // values set to (0, 0, 1).
 func Vec3ZAxis() *Vec3 {
+
 	ret := C.graphene_vec3_z_axis()
 
 	var ret0 *Vec3
+
 	ret0 = WrapVec3(ret)
 
 	return ret0
@@ -375,9 +413,11 @@ func Vec3ZAxis() *Vec3 {
 // Vec3Zero provides a constant pointer to a vector with three components, all
 // sets to 0.
 func Vec3Zero() *Vec3 {
+
 	ret := C.graphene_vec3_zero()
 
 	var ret0 *Vec3
+
 	ret0 = WrapVec3(ret)
 
 	return ret0
@@ -386,9 +426,11 @@ func Vec3Zero() *Vec3 {
 // Vec4One retrieves a pointer to a #graphene_vec4_t with all its components set
 // to 1.
 func Vec4One() *Vec4 {
+
 	ret := C.graphene_vec4_one()
 
 	var ret0 *Vec4
+
 	ret0 = WrapVec4(ret)
 
 	return ret0
@@ -397,9 +439,11 @@ func Vec4One() *Vec4 {
 // Vec4WAxis retrieves a pointer to a #graphene_vec4_t with its components set
 // to (0, 0, 0, 1).
 func Vec4WAxis() *Vec4 {
+
 	ret := C.graphene_vec4_w_axis()
 
 	var ret0 *Vec4
+
 	ret0 = WrapVec4(ret)
 
 	return ret0
@@ -408,9 +452,11 @@ func Vec4WAxis() *Vec4 {
 // Vec4XAxis retrieves a pointer to a #graphene_vec4_t with its components set
 // to (1, 0, 0, 0).
 func Vec4XAxis() *Vec4 {
+
 	ret := C.graphene_vec4_x_axis()
 
 	var ret0 *Vec4
+
 	ret0 = WrapVec4(ret)
 
 	return ret0
@@ -419,9 +465,11 @@ func Vec4XAxis() *Vec4 {
 // Vec4YAxis retrieves a pointer to a #graphene_vec4_t with its components set
 // to (0, 1, 0, 0).
 func Vec4YAxis() *Vec4 {
+
 	ret := C.graphene_vec4_y_axis()
 
 	var ret0 *Vec4
+
 	ret0 = WrapVec4(ret)
 
 	return ret0
@@ -430,9 +478,11 @@ func Vec4YAxis() *Vec4 {
 // Vec4ZAxis retrieves a pointer to a #graphene_vec4_t with its components set
 // to (0, 0, 1, 0).
 func Vec4ZAxis() *Vec4 {
+
 	ret := C.graphene_vec4_z_axis()
 
 	var ret0 *Vec4
+
 	ret0 = WrapVec4(ret)
 
 	return ret0
@@ -441,9 +491,11 @@ func Vec4ZAxis() *Vec4 {
 // Vec4Zero retrieves a pointer to a #graphene_vec4_t with all its components
 // set to 0.
 func Vec4Zero() *Vec4 {
+
 	ret := C.graphene_vec4_zero()
 
 	var ret0 *Vec4
+
 	ret0 = WrapVec4(ret)
 
 	return ret0

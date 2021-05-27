@@ -59,11 +59,13 @@ const (
 // X11DeviceGetID returns the device ID as seen by XInput2.
 func X11DeviceGetID(device X11DeviceXI2) int {
 	var arg0 *C.GdkDevice
-	arg0 = (*C.C.GdkDevice)(device.Native())
+
+	arg0 = (*C.GdkDevice)(device.Native())
 
 	ret := C.gdk_x11_device_get_id(arg0)
 
 	var ret0 int
+
 	ret0 = int(ret)
 
 	return ret0
@@ -72,14 +74,15 @@ func X11DeviceGetID(device X11DeviceXI2) int {
 // X11DeviceManagerLookup returns the Device that wraps the given device ID.
 func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) X11DeviceXI2 {
 	var arg0 *C.GdkX11DeviceManagerXI2
-	arg0 = (*C.C.GdkX11DeviceManagerXI2)(deviceManager.Native())
-
 	var arg1 C.int
+
+	arg0 = (*C.GdkX11DeviceManagerXI2)(deviceManager.Native())
 	arg1 = C.int(deviceID)
 
 	ret := C.gdk_x11_device_manager_lookup(arg0, arg1)
 
 	var ret0 X11DeviceXI2
+
 	ret0 = WrapX11DeviceXI2(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
@@ -89,6 +92,7 @@ func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceID int) X11
 // gdk_x11_display_string_to_compound_text().
 func X11FreeCompoundText(ctext uint8) {
 	var arg0 *C.guchar
+
 	arg0 = (*C.guchar)(ctext)
 
 	C.gdk_x11_free_compound_text(arg0)
@@ -98,6 +102,7 @@ func X11FreeCompoundText(ctext uint8) {
 // gdk_x11_display_text_property_to_text_list().
 func X11FreeTextList(list string) {
 	var arg0 **C.char
+
 	arg0 = (*C.gchar)(C.CString(list))
 	defer C.free(unsafe.Pointer(list))
 
@@ -107,11 +112,13 @@ func X11FreeTextList(list string) {
 // X11GetServerTime: routine to get the current X server time stamp.
 func X11GetServerTime(surface X11Surface) uint32 {
 	var arg0 *C.GdkSurface
-	arg0 = (*C.C.GdkSurface)(surface.Native())
+
+	arg0 = (*C.GdkSurface)(surface.Native())
 
 	ret := C.gdk_x11_get_server_time(arg0)
 
 	var ret0 uint32
+
 	ret0 = uint32(ret)
 
 	return ret0
@@ -123,15 +130,16 @@ func X11GetServerTime(surface X11Surface) uint32 {
 // time.
 func X11GetXatomByNameForDisplay(display X11Display, atomName string) xlib.Atom {
 	var arg0 *C.GdkDisplay
-	arg0 = (*C.C.GdkDisplay)(display.Native())
-
 	var arg1 *C.char
+
+	arg0 = (*C.GdkDisplay)(display.Native())
 	arg1 = (*C.gchar)(C.CString(atomName))
 	defer C.free(unsafe.Pointer(atomName))
 
 	ret := C.gdk_x11_get_xatom_by_name_for_display(arg0, arg1)
 
 	var ret0 xlib.Atom
+
 	{
 		var tmp uint32
 		tmp = uint32(ret)
@@ -146,11 +154,14 @@ func X11GetXatomByNameForDisplay(display X11Display, atomName string) xlib.Atom 
 // XAtomName() and the result doesn’t need to be freed.
 func X11GetXatomNameForDisplay(display X11Display, xatom xlib.Atom) string {
 	var arg0 *C.GdkDisplay
-	arg0 = (*C.C.GdkDisplay)(display.Native())
+	var arg1 C.Atom
 
-	ret := C.gdk_x11_get_xatom_name_for_display(arg0)
+	arg0 = (*C.GdkDisplay)(display.Native())
+
+	ret := C.gdk_x11_get_xatom_name_for_display(arg0, arg1)
 
 	var ret0 string
+
 	ret = C.GoString(ret0)
 	defer C.free(unsafe.Pointer(ret))
 
@@ -161,11 +172,13 @@ func X11GetXatomNameForDisplay(display X11Display, xatom xlib.Atom) string {
 // exists.
 func X11LookupXdisplay(xdisplay *xlib.Display) X11Display {
 	var arg0 *C.Display
-	arg0 = (*C.C.Display)(xdisplay.Native())
+
+	arg0 = (*C.Display)(xdisplay.Native())
 
 	ret := C.gdk_x11_lookup_xdisplay(arg0)
 
 	var ret0 X11Display
+
 	ret0 = WrapX11Display(externglib.Take(unsafe.Pointer(ret.Native())))
 
 	return ret0
@@ -179,6 +192,7 @@ func X11LookupXdisplay(xdisplay *xlib.Display) X11Display {
 // session management and the Inter-Client Communication Conventions Manual
 func X11SetSmClientID(smClientID string) {
 	var arg0 *C.char
+
 	arg0 = (*C.gchar)(C.CString(smClientID))
 	defer C.free(unsafe.Pointer(smClientID))
 

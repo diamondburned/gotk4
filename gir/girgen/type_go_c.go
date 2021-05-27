@@ -9,7 +9,9 @@ import (
 
 // Go to C type conversions.
 
-func (ng *NamespaceGenerator) GoCConverter(conv TypeConversion) string {
+// TODO: is there a reason GoCConverter just doesn't take in ParameterAttr?
+
+func (ng *NamespaceGenerator) GoCConverter(conv TypeConversionToC) string {
 	switch {
 	case conv.Type.Type != nil:
 		return ng.gocTypeConverter(conv)
@@ -21,7 +23,7 @@ func (ng *NamespaceGenerator) GoCConverter(conv TypeConversion) string {
 
 }
 
-func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversion) string {
+func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversionToC) string {
 	array := conv.Type.Array
 
 	if array.Type == nil {
@@ -38,7 +40,7 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversion) string {
 	// Generate a type converter from "src" to "${target}[i]" variables.
 	innerTypeConv := conv
 	innerTypeConv.Value = "src"
-	innerTypeConv.Target = "dst"
+	innerTypeConv.Target = "dst[i]"
 	innerTypeConv.Type = array.AnyType
 
 	innerConv := ng.GoCConverter(innerTypeConv)
@@ -54,24 +56,29 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversion) string {
 			return conv.callf("[%d]%s", array.FixedSize, innerCGoType)
 		}
 
-		b.Linef("goArray := ([%d]%s)(%s)", array.FixedSize)
+		b.Linef("dst := &%s", conv.Target)
 		b.EmptyLine()
 		b.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
-		b.Linef("  src := goArray[i]")
-		b.Linef("  var dst %s", innerCGoType)
+		b.Linef("  src := %s[i]", conv.Value)
 		b.Linef("  " + innerConv)
-		b.Linef("  %s[i] = dst", conv.Target)
 		b.Linef("}")
 
 	case array.Length != nil:
-		lengthArg := conv.ArgAt(*array.Length)
-		b.Linef("%s = (*%s)(C.malloc(%s * %s))", conv.Target, innerCGoType, csizeof(ng, innerResolved), lengthArg)
-		b.Linef("for i := 0; i < uintptr(%s); i++ {", lengthArg)
-		b.Linef("  src := %s[i]", conv.Value)
-		b.Linef("  var dst %s", innerCGoType)
-		b.Linef("  " + innerConv)
-		b.Linef("  *(*%s)(unsafe.Pointer(uintptr(unsafe.Pointer(%s))+i)) = dst", innerCGoType, conv.Target)
+		// Avoid pointer arithmetic.
+		b.Linef("sliceHeader := reflect.SliceHeader{")
+		b.Linef("  Data: uintptr(C.malloc(%s * len(%s))),", csizeof(ng, innerResolved), conv.Value)
+		b.Linef("  Len:  len(%s),", conv.Value)
+		b.Linef("  Cap:  len(%s),", conv.Value)
 		b.Linef("}")
+		b.Linef("dst := *(*[]%s)(unsafe.Pointer(&sliceHeader))", innerCGoType)
+		b.EmptyLine()
+		b.Linef("for i := 0; i < len(%s); i++ {", conv.Value)
+		b.Linef("  src := %s[i]", conv.Value)
+		b.Linef("  " + innerConv)
+		b.Linef("}")
+		b.EmptyLine()
+		b.Linef("%s = (*%s)(unsafe.Pointer(sliceHeader.Data))", conv.Target, innerCGoType)
+		b.Linef("%s = len(%s)", conv.ArgAt(*array.Length), conv.Value)
 	}
 
 	return b.String()
@@ -86,7 +93,7 @@ func csizeof(ng *NamespaceGenerator, resolved *ResolvedType) string {
 	return "unsafe.Sizeof((*struct{})(nil))"
 }
 
-func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversion) string {
+func (ng *NamespaceGenerator) gocTypeConverter(conv TypeConversionToC) string {
 	typ := conv.Type.Type
 
 	if prim, ok := girPrimitiveGo[typ.Name]; ok {

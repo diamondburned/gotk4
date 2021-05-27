@@ -32,16 +32,16 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversion) string {
 	if innerResolved == nil {
 		return ""
 	}
-	innerType := ng.PublicType(innerResolved)
+	// innerType := ng.PublicType(innerResolved)
 	innerCGoType := innerResolved.CGoType()
 
 	// Generate a type converter from "src" to "${target}[i]" variables.
 	innerTypeConv := conv
 	innerTypeConv.Value = "src"
-	innerTypeConv.Target = conv.Target + "[i]"
+	innerTypeConv.Target = "dst"
 	innerTypeConv.Type = array.AnyType
 
-	innerConv := ng.CGoConverter(innerTypeConv)
+	innerConv := ng.GoCConverter(innerTypeConv)
 	if innerConv == "" {
 		return ""
 	}
@@ -58,15 +58,19 @@ func (ng *NamespaceGenerator) gocArrayConverter(conv TypeConversion) string {
 		b.EmptyLine()
 		b.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
 		b.Linef("  src := goArray[i]")
+		b.Linef("  var dst %s", innerCGoType)
 		b.Linef("  " + innerConv)
+		b.Linef("  %s[i] = dst", conv.Target)
 		b.Linef("}")
 
 	case array.Length != nil:
 		lengthArg := conv.ArgAt(*array.Length)
-		b.Linef("%s = (%s)(C.malloc(%s * %s))", conv.Target, innerCGoType, csizeof(ng, innerResolved), lengthArg)
-		b.Linef("%s = make([]%s, %s)", conv.Target, innerType, lengthArg)
+		b.Linef("%s = (*%s)(C.malloc(%s * %s))", conv.Target, innerCGoType, csizeof(ng, innerResolved), lengthArg)
 		b.Linef("for i := 0; i < uintptr(%s); i++ {", lengthArg)
-		// b.Linef("  src := ")
+		b.Linef("  src := %s[i]", conv.Value)
+		b.Linef("  var dst %s", innerCGoType)
+		b.Linef("  " + innerConv)
+		b.Linef("  *(*%s)(unsafe.Pointer(uintptr(unsafe.Pointer(%s))+i)) = dst", innerCGoType, conv.Target)
 		b.Linef("}")
 	}
 

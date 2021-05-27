@@ -180,7 +180,7 @@ func cTypeOrGIRType(girType gir.Type) string {
 	if girType.CType == "" {
 		return girType.Name
 	}
-	return cgoType(girType.CType)
+	return girType.CType
 }
 
 // ResolvedType is a resolved type from a given gir.Type.
@@ -239,7 +239,7 @@ func externGLibType(goType string, typ gir.Type, ctyp string) *ResolvedType {
 		Import:  "github.com/gotk3/gotk3/glib",
 		Package: "externglib",
 		GType:   typ.Name,
-		CType:   cgoType(ctyp),
+		CType:   ctyp,
 		Ptr:     uint8(ptrs),
 	}
 }
@@ -265,7 +265,7 @@ func typeFromResult(gen *Generator, typ gir.Type, result *gir.TypeFindResult) *R
 		Package: pkg,
 		Parent:  parent,
 		GType:   typ.Name,
-		CType:   cgoType(typ.CType),
+		CType:   typ.CType,
 		Ptr:     countPtrs(typ, result),
 	}
 }
@@ -340,10 +340,7 @@ func (typ *ResolvedType) PublicType(needsNamespace bool) string {
 
 // CGoType returns the CGo type.
 func (typ *ResolvedType) CGoType() string {
-	ptr := strings.Count(typ.CType, "*")
-	val := strings.ReplaceAll(typ.CType, "*", "")
-
-	return strings.Repeat("*", ptr) + "C." + val
+	return movePtr(typ.CType, "C."+strings.ReplaceAll(cgoType(typ.CType), "*", ""))
 }
 
 // PublicType returns the generated public Go type of the given resolved type.
